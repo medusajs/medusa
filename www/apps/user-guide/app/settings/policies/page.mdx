@@ -1,0 +1,47 @@
+---
+sidebar_label: "View Policies"
+tags:
+  - user guide
+  - rbac
+  - user
+products:
+  - user
+---
+
+export const metadata = {
+  title: `View Policies in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how to view policies in the Medusa Admin.
+
+<Note title="Enterprise feature">
+
+Policies are part of the [role-based access control (RBAC) feature](!resources!/commerce-modules/rbac), which is an enterprise feature. A developer must enable it in your Medusa configuration before the **Roles** and **Policies** settings appear.
+
+</Note>
+
+## Overview
+
+A policy is a single permission that allows an operation on a resource. For example, the `order:read` policy allows viewing orders.
+
+Policies are defined by your team and grouped into [roles](../roles/page.mdx) that you assign to users.
+
+---
+
+## View Policies
+
+<PermissionsBadge permissions={["rbac_policy:read"]} />
+
+To view the available policies, go to Settings → Policies. In the list, you can see each policy's key, resource, and operation. You can search and sort the policies to find a specific one.
+
+To see which roles include a policy, click on the policy in the list. The policy's details page shows the roles that grant it. To see those roles, you also need the `rbac_role:read` policy.
+
+<Note>
+
+By default, Medusa defines policies for its built-in resources, such as `user:read`. To add custom policies, ask your developers to [define them in code](!resources!/commerce-modules/rbac/define-policies).
+
+</Note>

@@ -1,0 +1,292 @@
+---
+sidebar_label: "Common Roles"
+tags:
+  - user guide
+  - rbac
+  - user
+products:
+  - user
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Common Roles and Their Policies`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+This guide suggests common roles you can create in the Medusa Admin and the policies each one typically needs. Use it as a starting point, then adjust the policies to match how your team works.
+
+<Note title="Enterprise feature">
+
+Roles and policies are part of the role-based access control (RBAC) feature, which is an enterprise feature. A developer must enable it in your Medusa configuration before the **Roles** and **Policies** settings appear.
+
+</Note>
+
+## How to Read This Guide
+
+Each policy is written as `resource:operation`, where the operation is one of `read`, `create`, `update`, or `delete`. For example:
+
+- `product:read` allows viewing products.
+- `product:create` allows creating products.
+
+In the Medusa Admin, you select each policy individually. Operations are independent: granting `product:update` doesn't also grant `product:read`. So, to give a role full access to a resource, select all four of its operations.
+
+Roles also often need `read` access to related resources to use a page without errors. For example, a product manager needs `sales_channel:read` to assign products to sales channels. These related policies are listed for each role below.
+
+To find the exact policy keys available in your store, browse the [Policies](../../policies/page.mdx) list in the dashboard.
+
+To create any of these roles, follow the steps in the [Manage Roles](../page.mdx#create-a-role) guide and select the listed policies.
+
+---
+
+## Super Admin
+
+A super admin has full access to the store, including managing roles and policies.
+
+To create this role, select all available policies so the role can perform every operation on every resource.
+
+<Note title="Tip">
+
+Medusa already provides a built-in Super Admin role with full access. You only need to create a custom role like this if you want to manage it yourself.
+
+</Note>
+
+---
+
+## Product Manager
+
+A product manager creates and maintains products, categories, inventory, and related resources.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Policies
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `product:read`, `product:create`, `product:update`, `product:delete`, `product_variant:read`, `product_variant:create`, `product_variant:update`, `product_variant:delete`, `product_option:read`, `product_option:create`, `product_option:update`, `product_option:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage products, their variants, and options.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `product_category:read`, `product_category:create`, `product_category:update`, `product_category:delete`, `product_collection:read`, `product_collection:create`, `product_collection:update`, `product_collection:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage categories and collections.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `product_tag:read`, `product_tag:create`, `product_tag:update`, `product_tag:delete`, `product_type:read`, `product_type:create`, `product_type:update`, `product_type:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage product tags and types.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `inventory_item:read`, `inventory_item:create`, `inventory_item:update`, `inventory_item:delete`, `inventory_level:read`, `inventory_level:create`, `inventory_level:update`, `inventory_level:delete`, `reservation_item:read`, `reservation_item:create`, `reservation_item:update`, `reservation_item:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage inventory items, stock levels, and reservations.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `sales_channel:read`, `shipping_profile:read`, `stock_location:read`, `region:read`, `file:create`
+      </Table.Cell>
+      <Table.Cell>
+        Related access: assign products to sales channels and shipping profiles, view stock locations, set prices per region, and upload product media.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Order Manager
+
+An order manager processes orders, returns, and exchanges.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Policies
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `order:read`, `order:update`, `order_address:update`
+      </Table.Cell>
+      <Table.Cell>
+        View and edit orders, including their addresses.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `order_change:read`, `order_change:create`, `order_change:update`, `return:read`, `return:create`, `return:update`, `order_exchange:read`, `order_exchange:create`, `order_exchange:update`, `order_claim:read`, `order_claim:create`, `order_claim:update`
+      </Table.Cell>
+      <Table.Cell>
+        Manage order edits, returns, exchanges, and claims.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `fulfillment:read`, `fulfillment:create`, `fulfillment:update`, `reservation_item:create`, `stock_location:read`
+      </Table.Cell>
+      <Table.Cell>
+        Fulfill orders, create shipments, and allocate items from stock locations.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `payment:read`
+      </Table.Cell>
+      <Table.Cell>
+        View an order's payments.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `customer:read`, `customer:update`, `return_reason:read`, `refund_reason:read`
+      </Table.Cell>
+      <Table.Cell>
+        View customer details, transfer an order to another customer, and view return and refund reasons.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* TODO confirm this information */}
+
+<Note>
+
+Capturing payments and issuing refunds may require additional permissions that aren't yet available as separate policies. For those actions, use the built-in Super Admin role.
+
+</Note>
+
+---
+
+## Customer Support
+
+A customer support agent manages customers and views orders to help shoppers.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Policies
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `customer:read`, `customer:create`, `customer:update`, `customer_address:read`, `customer_address:create`, `customer_address:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage customers and their addresses.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `customer_group:read`, `customer_group:update`
+      </Table.Cell>
+      <Table.Cell>
+        Add and remove customers from customer groups.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `order:read`, `order:update`, `order_address:update`, `return:read`, `return:create`, `return:update`
+      </Table.Cell>
+      <Table.Cell>
+        View and update orders, edit order addresses, and process returns to resolve issues.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `fulfillment:read`, `payment:read`, `return_reason:read`, `refund_reason:read`
+      </Table.Cell>
+      <Table.Cell>
+        Related read access for order pages.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Marketing Manager
+
+A marketing manager runs promotions and campaigns.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Policies
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        `promotion:read`, `promotion:create`, `promotion:update`, `promotion:delete`, `campaign:read`, `campaign:create`, `campaign:update`, `campaign:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage promotions and campaigns.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `price_list:read`, `price_list:create`, `price_list:update`, `price_list:delete`
+      </Table.Cell>
+      <Table.Cell>
+        Manage price lists for sales and overrides.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `product:read`, `customer_group:read`, `region:read`, `store:read`
+      </Table.Cell>
+      <Table.Cell>
+        Related read access: select products and customer groups for rules, set prices per region, and read store currencies for campaigns.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Read-Only Analyst
+
+A read-only analyst views data across the store without making changes.
+
+To create this role, select the `read` operation for every resource, such as `product:read`, `order:read`, and `customer:read`. Don't select any `create`, `update`, or `delete` operations.

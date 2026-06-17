@@ -1,0 +1,150 @@
+---
+products:
+  - user
+---
+
+import { CodeTabs, CodeTab, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Links between RBAC Module and Other Modules`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+
+This document showcases the module links defined between the role-based access control (RBAC) Module and other Commerce Modules.
+
+## Summary
+
+The RBAC Module has the following links to other modules:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        First Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Second Data Model
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [User](/references/user/models/User) in [User Module](../../user/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        `RbacRole`
+      </Table.Cell>
+      <Table.Cell>
+        Stored - many-to-many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#user-module)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## User Module
+
+You assign roles to admin users to control their access. Medusa defines a link between the `RbacRole` data model and the `User` data model from the [User Module](../../user/page.mdx).
+
+An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
+
+### Retrieve with Query
+
+To retrieve the users of a role with [Query](!docs!/learn/fundamentals/module-links/query), pass `users.*` in `fields`:
+
+<CodeTabs group="relation-query">
+  <CodeTab label="query.graph" value="method">
+
+```ts
+const { data: roles } = await query.graph({
+  entity: "rbac_role",
+  fields: [
+    "users.*",
+  ],
+})
+
+// roles[0].users
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="step">
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: roles } = useQueryGraphStep({
+  entity: "rbac_role",
+  fields: [
+    "users.*",
+  ],
+})
+
+// roles[0].users
+```
+
+  </CodeTab>
+</CodeTabs>
+
+You can also retrieve the roles of a user by passing `rbac_roles.*` in `fields` when querying the `user` entity. Learn more in the [User Module's links documentation](../../user/links-to-other-modules/page.mdx#rbac-module).
+
+### Manage with Link
+
+To assign a role to a user, use [Link](!docs!/learn/fundamentals/module-links/link):
+
+<CodeTabs group="relation-link">
+  <CodeTab label="link.create" value="method">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await link.create({
+  [Modules.USER]: {
+    user_id: "user_123",
+  },
+  [Modules.RBAC]: {
+    rbac_role_id: "role_123",
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="createRemoteLinkStep" value="step">
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+createRemoteLinkStep([
+  {
+    [Modules.USER]: {
+      user_id: "user_123",
+    },
+    [Modules.RBAC]: {
+      rbac_role_id: "role_123",
+    },
+  },
+])
+```
+
+  </CodeTab>
+</CodeTabs>

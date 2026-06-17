@@ -1,0 +1,35 @@
+---
+slug: /references/medusa-workflows/steps/validateUserPermissionsStep
+sidebar_label: validateUserPermissionsStep
+tags:
+  - query
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateUserPermissionsStep - Medusa Core Workflows Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the `validateUserPermissionsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+Validates that a user has access to all the policies they are trying to assign.
+A user can only create roles and add policies that they themselves have access to.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { validateUserPermissionsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = validateUserPermissionsStep({})
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"ValidateUserPermissionsStepInput","type":"[ValidateUserPermissionsStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.ValidateUserPermissionsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateUserPermissionsStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateUserPermissionsStep"/>

@@ -5507,10 +5507,10 @@ There are several ways to debug workflows in Medusa:
 
 |Approach|When to Use|
 |---|---|
-|Write integration tests|To ensure your workflow produces the expected results and handles edge cases.|
-|Add breakpoints|To inspect specific steps in your workflow and understand the data flow.|
-|Log messages|To check values during execution with minimal overhead.|
-|View Workflow Executions in Medusa Admin|To monitor stored workflow executions and long-running workflows, especially in production environments.|
+|\[Write integration tests]\(#approach-1-write-integration-tests)|To ensure your workflow produces the expected results and handles edge cases.|
+|\[Add breakpoints]\(#approach-2-add-breakpoints)|To inspect specific steps in your workflow and understand the data flow.|
+|\[Log messages]\(#approach-3-log-messages)|To check values during execution with minimal overhead.|
+|\[View Workflow Executions in Medusa Admin]\(#approach-4-monitor-workflow-executions-in-medusa-admin)|To monitor stored workflow executions and long-running workflows, especially in production environments.|
 
 ***
 
@@ -8609,8 +8609,8 @@ The following pre-defined environment variables are available starting [Medusa v
 
 |Environment Variable|Description|Default|
 |---|---|---|
-|\`ADMIN\_AUTH\_TYPE\`|A string indicating the authentication method that the JS SDK instance uses in the Medusa Admin. Possible values are |\`session\`|
-|\`ADMIN\_JWT\_TOKEN\_STORAGE\_KEY\`|A string indicating the key used to store the authentication JWT token in the browser's local storage. Only applicable if |\`medusa\_auth\_token\`|
+|\`ADMIN\_AUTH\_TYPE\`|A string indicating the authentication method that the JS SDK instance uses in the Medusa Admin. Possible values are \`session\` and \`jwt\`. Learn more in the \[JS SDK Authentication guide]\(https://docs.medusajs.com/resources/js-sdk/auth/overview).|\`session\`|
+|\`ADMIN\_JWT\_TOKEN\_STORAGE\_KEY\`|A string indicating the key used to store the authentication JWT token in the browser's local storage. Only applicable if \`ADMIN\_AUTH\_TYPE\` is set to \`jwt\`.|\`medusa\_auth\_token\`|
 
 ***
 
@@ -10544,14 +10544,14 @@ The error object returned in the response has three properties:
 |---|---|---|---|---|
 |\`DB\_ERROR\`|Indicates a database error.|\`500\`|
 |\`DUPLICATE\_ERROR\`|Indicates a duplicate of a record already exists. For example, when trying to create a customer whose email is registered by another customer.|\`422\`|
-|\`INVALID\_ARGUMENT\`|Indicates an error that occurred due to incorrect arguments or other unexpected state.|\`500\`|
+|\`INVALID\_ARGUMENT\` and \`UNEXPECTED\_STATE\`|Indicates an error that occurred due to incorrect arguments or other unexpected state.|\`500\`|
 |\`INVALID\_DATA\`|Indicates a validation error.|\`400\`|
 |\`UNAUTHORIZED\`|Indicates that a user is not authorized to perform an action or access a route.|\`401\`|
 |\`NOT\_FOUND\`|Indicates that the requested resource, such as a route or a record, isn't found.|\`404\`|
 |\`NOT\_ALLOWED\`|Indicates that an operation isn't allowed.|\`400\`|
 |\`CONFLICT\`|Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message.|\`409\`|
 |\`PAYMENT\_AUTHORIZATION\_ERROR\`|Indicates an error has occurred while authorizing a payment.|\`422\`|
-|Other error types|Any other error type results in an |\`500\`|
+|Other error types|Any other error type results in an \`unknown\_error\` code and message.|\`500\`|
 
 ***
 
@@ -10866,8 +10866,8 @@ There are two types of middlewares:
 
 |Type|Description|Example|
 |---|---|---|
-|Global Middleware|A middleware that applies to all routes matching a specified pattern.|\`/custom\*\`|
-|Route Middleware|A middleware that applies to routes matching a specified pattern and HTTP method(s).|A middleware that applies to all |
+|Global Middleware|A middleware that applies to all routes matching a specified pattern.|\`/custom\*\` applies to all routes starting with \`/custom\`|
+|Route Middleware|A middleware that applies to routes matching a specified pattern and HTTP method(s).|A middleware that applies to all \`POST\` requests to routes starting with \`/custom\`.|
 
 These middlewares generally have the same definition and usage, but they differ in the routes they apply to. You'll learn how to create both types in the following sections.
 
@@ -11242,10 +11242,10 @@ Medusa provides the following approaches to customize API routes:
 
 |Approach|Description|
 |---|---|
-|Pass Additional Data|Pass custom data to the API route with custom validation.|
-|Perform Custom Logic within an Existing Flows|API routes execute workflows to perform business logic, which may have hooks that allow you to perform custom logic.|
-|Use Custom Middlewares|Use custom middlewares to perform custom logic before the API route is executed. However, you cannot remove or replace middlewares applied to existing API routes.|
-|Listen to Events in Subscribers|Functionalities in API routes may trigger events that you can handle in subscribers. This is useful if you're performing an action that isn't integral to the API route's core functionality or response.|
+|\[Pass Additional Data]\(/learn/fundamentals/api-routes/additional-data)|Pass custom data to the API route with custom validation.|
+|\[Perform Custom Logic within an Existing Flows]\(/learn/fundamentals/workflows/workflow-hooks)|API routes execute workflows to perform business logic, which may have hooks that allow you to perform custom logic.|
+|\[Use Custom Middlewares]\(/learn/fundamentals/api-routes/middlewares)|Use custom middlewares to perform custom logic before the API route is executed. However, you cannot remove or replace middlewares applied to existing API routes.|
+|\[Listen to Events in Subscribers]\(/learn/fundamentals/events-and-subscribers)|Functionalities in API routes may trigger events that you can handle in subscribers. This is useful if you're performing an action that isn't integral to the API route's core functionality or response.|
 
 If the above approaches do not meet your needs, you can consider the approaches mentioned in the rest of this chapter.
 
@@ -11275,10 +11275,10 @@ Some examples of when you might want to replicate an API route include:
 
 |Use Case|Description|
 |---|---|
-|Custom Validation|You want to change the validation logic for a specific API route, and the |
-|Change Authentication|You want to remove required authentication for a specific API route, or you want to allow custom |
+|Custom Validation|You want to change the validation logic for a specific API route, and the \[Additional Data]\(/learn/fundamentals/api-routes/additional-data) isn't sufficient or applicable.|
+|Change Authentication|You want to remove required authentication for a specific API route, or you want to allow custom \[actor types]\(https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types) to access existing protected API routes.|
 |Custom Response|You want to change the response format of an existing API route.|
-|Override Middleware|You want to override the middleware applied on existing API routes. Because of |
+|Override Middleware|You want to override the middleware applied on existing API routes. Because of \[how middlewares are ordered and applied]\(/learn/fundamentals/api-routes/middlewares#how-are-middlewares-ordered-and-applied), you can't remove or replace middlewares applied to existing API routes.|
 
 
 # API Routes
@@ -14724,12 +14724,12 @@ Based on your `NODE_ENV` system environment variable, Medusa will try to load en
 
 As of [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0), `NODE_ENV` defaults to `production` when using `medusa start`. Otherwise, it defaults to `development`.
 
-|\`.env\`|
+|\`.env\` File|
 |---|---|
-|\`NODE\_ENV\`|\`.env\`|
-|\`NODE\_ENV\`|\`.env.production\`|
-|\`NODE\_ENV\`|\`.env.staging\`|
-|\`NODE\_ENV\`|\`.env.test\`|
+|\`NODE\_ENV\` = \`development\` or not set|\`.env\`|
+|\`NODE\_ENV\` = \`production\`|\`.env.production\`|
+|\`NODE\_ENV\` = \`staging\`|\`.env.staging\`|
+|\`NODE\_ENV\` = \`test\`|\`.env.test\`|
 
 ### Set Environment in `loadEnv`
 
@@ -14759,22 +14759,22 @@ You should opt for setting configurations in `medusa-config.ts` where possible. 
 |---|---|---|
 |\`HOST\`|The host to run the Medusa application on.|\`localhost\`|
 |\`PORT\`|The port to run the Medusa application on.|\`9000\`|
-|\`DATABASE\_URL\`|The URL to connect to the PostgreSQL database. Only used if |\`postgres://localhost/medusa-starter-default\`|
-|\`STORE\_CORS\`|URLs of storefronts that can access the Medusa backend's Store APIs. Only used if |\`http://localhost:8000\`|
-||URLs of admin dashboards that can access the Medusa backend's Admin APIs. Only used if |\`http://localhost:7000,http://localhost:7001,http://localhost:5173\`|
-||URLs of clients that can access the Medusa backend's authentication routes. Only used if |\`http://localhost:7000,http://localhost:7001,http://localhost:5173\`|
-||A random string used to create authentication tokens in the http layer. Only used if |-|
-|\`COOKIE\_SECRET\`|A random string used to create cookie tokens in the http layer. Only used if |-|
-|\`MEDUSA\_BACKEND\_URL\`|The URL to the Medusa backend. Only used if |-|
+|\`DATABASE\_URL\`|The URL to connect to the PostgreSQL database. Only used if \[projectConfig.databaseUrl]\(/learn/configurations/medusa-config#databaseurl) isn't set in \`medusa-config.ts\`.|\`postgres://localhost/medusa-starter-default\`|
+|\`STORE\_CORS\`|URLs of storefronts that can access the Medusa backend's Store APIs. Only used if \[projectConfig.http.storeCors]\(/learn/configurations/medusa-config#http-storeCors-1-1) isn't set in \`medusa-config.ts\`.|\`http://localhost:8000\`|
+|\`ADMIN\_CORS\`|URLs of admin dashboards that can access the Medusa backend's Admin APIs. Only used if \[projectConfig.http.adminCors]\(/learn/configurations/medusa-config#http-adminCors-1-2) isn't set in \`medusa-config.ts\`.|\`http://localhost:7000,http://localhost:7001,http://localhost:5173\`|
+|\`AUTH\_CORS\`|URLs of clients that can access the Medusa backend's authentication routes. Only used if \[projectConfig.http.authCors]\(/learn/configurations/medusa-config#http-authCors-1-0) isn't set in \`medusa-config.ts\`.|\`http://localhost:7000,http://localhost:7001,http://localhost:5173\`|
+|\`JWT\_SECRET\`|A random string used to create authentication tokens in the http layer. Only used if \[projectConfig.http.jwtSecret]\(/learn/configurations/medusa-config#http-jwtSecret-1-3) isn't set in \`medusa-config.ts\`.|-|
+|\`COOKIE\_SECRET\`|A random string used to create cookie tokens in the http layer. Only used if \[projectConfig.http.cookieSecret]\(/learn/configurations/medusa-config#http-cookieSecret-1-5) isn't set in \`medusa-config.ts\`.|-|
+|\`MEDUSA\_BACKEND\_URL\`|The URL to the Medusa backend. Only used if \[admin.backendUrl]\(/learn/configurations/medusa-config#backendurl) isn't set in \`medusa-config.ts\`.|-|
 |\`DB\_HOST\`|The host for the database. It's used when generating migrations for a plugin, and when running integration tests.|\`localhost\`|
 |\`DB\_USERNAME\`|The username for the database. It's used when generating migrations for a plugin, and when running integration tests.|-|
 |\`DB\_PASSWORD\`|The password for the database user. It's used when generating migrations for a plugin, and when running integration tests.|-|
 |\`DB\_TEMP\_NAME\`|The database name to create for integration tests.|-|
-|\`LOG\_LEVEL\`|The allowed levels to log. Learn more in the |\`silly\`|
-|\`LOG\_FILE\`|The file to save logs in. By default, logs aren't saved in any file. Learn more in the |-|
-|\`MEDUSA\_DISABLE\_TELEMETRY\`|Whether to disable analytics data collection. Learn more in the |-|
-|\`ADMIN\_AUTH\_TYPE\`|A string indicating the authentication method that the JS SDK instance uses in the Medusa Admin. Possible values are |\`session\`|
-|\`ADMIN\_JWT\_TOKEN\_STORAGE\_KEY\`|A string indicating the key used to store the authentication JWT token in the browser's local storage. Only applicable if |\`medusa\_auth\_token\`|
+|\`LOG\_LEVEL\`|The allowed levels to log. Learn more in the \[Logging]\(/learn/debugging-and-testing/logging#log-levels) chapter.|\`silly\`|
+|\`LOG\_FILE\`|The file to save logs in. By default, logs aren't saved in any file. Learn more in the \[Logging]\(/learn/debugging-and-testing/logging) chapter.|-|
+|\`MEDUSA\_DISABLE\_TELEMETRY\`|Whether to disable analytics data collection. Learn more in the \[Usage]\(/learn/resources/usage) chapter.|-|
+|\`ADMIN\_AUTH\_TYPE\` (\[v2.12.0+]\(https://github.com/medusajs/medusa/releases/tag/v2.12.0))|A string indicating the authentication method that the JS SDK instance uses in the Medusa Admin. Possible values are \`session\` and \`jwt\`. Learn more in the \[JS SDK Authentication guide]\(https://docs.medusajs.com/resources/js-sdk/auth/overview).|\`session\`|
+|\`ADMIN\_JWT\_TOKEN\_STORAGE\_KEY\` (\[v2.12.0+]\(https://github.com/medusajs/medusa/releases/tag/v2.12.0))|A string indicating the key used to store the authentication JWT token in the browser's local storage. Only applicable if \`ADMIN\_AUTH\_TYPE\` is set to \`jwt\`.|\`medusa\_auth\_token\`|
 
 
 # Event Data Payload
@@ -15124,11 +15124,11 @@ Events are assigned a priority level that determines their processing order. Low
 
 |Priority Level (Numeric Value)|Description|
 |---|---|
-|\`CRITICAL\`|Highest priority for critical business events. Medusa uses this for the order placement event.|
-|\`HIGH\`|High priority for important operations. For example, you can assign this priority to customer account-related events.|
-|\`DEFAULT\`|The default priority used if no specific priority is assigned. All Medusa business events except for order placement use this priority.|
-|\`LOW\`|Low priority for background operations. For example, you can assign this priority to third-party sync events.|
-|\`LOWEST\`|Lowest priority. Medusa assigns this to internal system events.|
+|\`CRITICAL\` (10)|Highest priority for critical business events. Medusa uses this for the order placement event.|
+|\`HIGH\` (50)|High priority for important operations. For example, you can assign this priority to customer account-related events.|
+|\`DEFAULT\` (100)|The default priority used if no specific priority is assigned. All Medusa business events except for order placement use this priority.|
+|\`LOW\` (500)|Low priority for background operations. For example, you can assign this priority to third-party sync events.|
+|\`LOWEST\` (2,097,152)|Lowest priority. Medusa assigns this to internal system events.|
 
 ***
 
@@ -19844,8 +19844,8 @@ When you retrieve the linked record through a read-only module link, the retriev
 
 |Scenario|Relation Type|
 |---|---|---|
-|The first data model's |One-to-one relation|
-|The first data model's |One-to-many relation|
+|The first data model's \`field\` is of type string.|One-to-one relation|
+|The first data model's \`field\` is of type array of strings.|One-to-many relation|
 |The read-only module link is inversed.|One-to-many relation if multiple records in the second data model have the same ID of the first data model. Otherwise, one-to-one relation.|
 
 ### One-to-One Relation
@@ -27936,25 +27936,25 @@ You can refer to the full list of configurations in the [Medusa Configurations](
 
 |Medusa v1|Medusa v2|
 |---|---|
-|\`projectConfig.store\_cors\`|projectConfig.http.storeCors|
-|\`projectConfig.admin\_cors\`|projectConfig.http.adminCors|
-|\`projectConfig.auth\_cors\`|projectConfig.http.authCors|
-|\`projectConfig.cookie\_secret\`|projectConfig.http.cookieSecret|
-|\`projectConfig.jwt\_secret\`|projectConfig.http.jwtSecret|
-|\`projectConfig.database\_database\`|projectConfig.databaseName|
-|\`projectConfig.database\_url\`|projectConfig.databaseUrl|
-|\`projectConfig.database\_schema\`|projectConfig.databaseSchema|
-|\`projectConfig.database\_logging\`|projectConfig.databaseLogging|
-|\`projectConfig.database\_extra\`|projectConfig.databaseDriverOptions|
-|\`projectConfig.database\_driver\_options\`|projectConfig.databaseDriverOptions|
-|\`projectConfig.redis\_url\`|projectConfig.redisUrl|
-|\`projectConfig.redis\_prefix\`|projectConfig.redisPrefix|
-|\`projectConfig.redis\_options\`|projectConfig.redisOptions|
-|\`projectConfig.session\_options\`|projectConfig.sessionOptions|
-|\`projectConfig.http\_compression\`|projectConfig.http.compression|
+|\`projectConfig.store\_cors\`|\[projectConfig.http.storeCors]\(/learn/configurations/medusa-config#httpstorecors)|
+|\`projectConfig.admin\_cors\`|\[projectConfig.http.adminCors]\(/learn/configurations/medusa-config#httpadmincors)|
+|\`projectConfig.auth\_cors\`|\[projectConfig.http.authCors]\(/learn/configurations/medusa-config#httpauthcors)|
+|\`projectConfig.cookie\_secret\`|\[projectConfig.http.cookieSecret]\(/learn/configurations/medusa-config#httpcookiesecret)|
+|\`projectConfig.jwt\_secret\`|\[projectConfig.http.jwtSecret]\(/learn/configurations/medusa-config#httpjwtsecret)|
+|\`projectConfig.database\_database\`|\[projectConfig.databaseName]\(/learn/configurations/medusa-config#databasename)|
+|\`projectConfig.database\_url\`|\[projectConfig.databaseUrl]\(/learn/configurations/medusa-config#databaseurl)|
+|\`projectConfig.database\_schema\`|\[projectConfig.databaseSchema]\(/learn/configurations/medusa-config#databaseschema)|
+|\`projectConfig.database\_logging\`|\[projectConfig.databaseLogging]\(/learn/configurations/medusa-config#databaselogging)|
+|\`projectConfig.database\_extra\`|\[projectConfig.databaseDriverOptions]\(/learn/configurations/medusa-config#databasedriveroptions)|
+|\`projectConfig.database\_driver\_options\`|\[projectConfig.databaseDriverOptions]\(/learn/configurations/medusa-config#databasedriveroptions)|
+|\`projectConfig.redis\_url\`|\[projectConfig.redisUrl]\(/learn/configurations/medusa-config#redisurl)|
+|\`projectConfig.redis\_prefix\`|\[projectConfig.redisPrefix]\(/learn/configurations/medusa-config#redisprefix)|
+|\`projectConfig.redis\_options\`|\[projectConfig.redisOptions]\(/learn/configurations/medusa-config#redisoptions)|
+|\`projectConfig.session\_options\`|\[projectConfig.sessionOptions]\(/learn/configurations/medusa-config#sessionoptions)|
+|\`projectConfig.http\_compression\`|\[projectConfig.http.compression]\(/learn/configurations/medusa-config#httpcompression)|
 |\`projectConfig.jobs\_batch\_size\`|No longer supported.|
-|\`projectConfig.worker\_mode\`|projectConfig.workerMode|
-|\`modules\`|Array of modules|
+|\`projectConfig.worker\_mode\`|\[projectConfig.workerMode]\(/learn/configurations/medusa-config#workermode)|
+|\`modules\`|\[Array of modules]\(/learn/configurations/medusa-config#module-configurations-modules)|
 
 #### Plugin Changes
 
@@ -28044,11 +28044,11 @@ You can refer to the [Medusa Configuration](https://docs.medusajs.com/learn/conf
 
 |Medusa v1|Medusa v2|
 |---|---|
-|\`serve\`|admin.disable|
-|\`autoRebuild\`|No longer supported. The Medusa Admin is always built when you run the |
-|\`backend\`|admin.backendUrl|
-|\`outDir\`|No longer supported. The Medusa Admin is now built in the |
-|\`develop\`|No longer supported. The |
+|\`serve\`|\[admin.disable]\(/learn/configurations/medusa-config#disable)|
+|\`autoRebuild\`|No longer supported. The Medusa Admin is always built when you run the \`medusa build\` command.|
+|\`backend\`|\[admin.backendUrl]\(/learn/configurations/medusa-config#backendurl)|
+|\`outDir\`|No longer supported. The Medusa Admin is now built in the \`.medusa/server/public/admin\` directory. Learn more in the \[Build]\(/learn/build) chapter.|
+|\`develop\` options|No longer supported. The \[admin.vite]\(/learn/configurations/medusa-config#vite) property may be used to achieve similar results.|
 
 ### Admin Webpack Configurations
 
@@ -28074,11 +28074,11 @@ Refer to the [Medusa CLI reference](https://docs.medusajs.com/resources/medusa-c
 
 |Medusa v1|Medusa v2|
 |---|---|
-|\`migrations run\`|db:migrate|
-|\`migrations revert\`|db:rollback|
+|\`migrations run\`|\[db:migrate]\(https://docs.medusajs.com/resources/medusa-cli/commands/db#dbmigrate)|
+|\`migrations revert\`|\[db:rollback]\(https://docs.medusajs.com/resources/medusa-cli/commands/db#dbrollback). However, this command reverts migrations of specific modules, not all migrations.|
 |\`migrations show\`|No longer supported.|
-|\`seed\`|No longer supported. However, you can create a |
-|\`start-cluster\`|start --cluster \<number>|
+|\`seed\`|No longer supported. However, you can create a \[custom CLI script]\(/learn/fundamentals/custom-cli-scripts) and \[seed data in it]\(/learn/fundamentals/custom-cli-scripts/seed-data).|
+|\`start-cluster\`|\[start --cluster \<number>]\(https://docs.medusajs.com/resources/medusa-cli/commands/start)|
 
 ***
 
@@ -28104,28 +28104,28 @@ The following table highlights the alternatives for the Medusa v1 plugins:
 
 |Medusa v1|v2 Alternative|
 |---|---|
-|Algolia|Guide|
-|Brightpearl|Not available, but you can follow the |
-|Contenful|Guide|
-|Discount Generator|Not available, but you can build it |
-|IP Lookup|Not available, but you can build it |
-|Klarna|Not available, but you can integrate it as a |
-|Local File|Local File Module Provider|
-|Mailchimp|Guide|
-|MinIO|S3 (compatible APIs) File Module Provider|
-|MeiliSearch|Not available, but you can integrate it |
-|PayPal|Not available, but you can integrate it as a |
-|Restock Notification|Guide|
-|S3|S3 (compatible APIs) File Module Provider|
-|Segment|Guide|
-|SendGrid|SendGrid Module Provider|
-|Shopify|Not available, but you can build it |
-|Slack|Guide|
-|Spaces (DigitalOcean)|S3 (compatible APIs) File Module Provider|
-|Strapi|Not available, but you can integrate it |
-|Stripe|Stripe Payment Module Provider|
-|Twilio|Guide|
-|Wishlist|Guide|
+|Algolia|\[Guide]\(https://docs.medusajs.com/resources/integrations/guides/algolia)|
+|Brightpearl|Not available, but you can follow the \[ERP recipe]\(https://docs.medusajs.com/resources/recipes/erp).|
+|Contenful|\[Guide]\(https://docs.medusajs.com/resources/integrations/guides/contentful)|
+|Discount Generator|Not available, but you can build it \[as a module]\(/learn/fundamentals/modules).|
+|IP Lookup|Not available, but you can build it \[as a module]\(/learn/fundamentals/modules).|
+|Klarna|Not available, but you can integrate it as a \[Payment Module Provider]\(https://docs.medusajs.com/resources/references/payment/provider).|
+|Local File|\[Local File Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/file/local).|
+|Mailchimp|\[Guide]\(https://docs.medusajs.com/resources/integrations/guides/mailchimp)|
+|MinIO|\[S3 (compatible APIs) File Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/file/s3)|
+|MeiliSearch|Not available, but you can integrate it \[in a module]\(/learn/fundamentals/modules).|
+|PayPal|Not available, but you can integrate it as a \[Payment Module Provider]\(https://docs.medusajs.com/resources/references/payment/provider).|
+|Restock Notification|\[Guide]\(https://docs.medusajs.com/resources/recipes/commerce-automation/restock-notification)|
+|S3|\[S3 (compatible APIs) File Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/file/s3)|
+|Segment|\[Guide]\(https://docs.medusajs.com/resources/integrations/guides/segment)|
+|SendGrid|\[SendGrid Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/notification/sendgrid)|
+|Shopify|Not available, but you can build it \[as a module]\(/learn/fundamentals/modules).|
+|Slack|\[Guide]\(https://docs.medusajs.com/resources/integrations/guides/slack)|
+|Spaces (DigitalOcean)|\[S3 (compatible APIs) File Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/file/s3).|
+|Strapi|Not available, but you can integrate it \[in a module]\(/learn/fundamentals/modules).|
+|Stripe|\[Stripe Payment Module Provider]\(https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe)|
+|Twilio|\[Guide]\(https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth#step-3-integrate-twilio-sms)|
+|Wishlist|\[Guide]\(https://docs.medusajs.com/resources/plugins/guides/wishlist)|
 
 You can also find Medusa and community integrations in the [Integrations](https://medusajs.com/integrations/) page.
 
@@ -28174,9 +28174,9 @@ This section covers changes to tools that were available in Medusa v1.
 
 |Medusa v1|Medusa v2|
 |---|---|
-|JS Client|JS SDK|
-|Medusa React|No longer supported. Instead, you can |
-|Next.js Starter Template|Next.js Starter Storefront|
+|JS Client|\[JS SDK]\(https://docs.medusajs.com/resources/js-sdk)|
+|Medusa React|No longer supported. Instead, you can \[use the JS SDK with Tanstack Query]\(https://docs.medusajs.com/resources/js-sdk#use-tanstack-react-query-in-admin-customizations) or similar approaches.|
+|Next.js Starter Template|\[Next.js Starter Storefront]\(https://docs.medusajs.com/resources/nextjs-starter). The changes may be big to support v2 commerce changes.|
 |Medusa Dev CLI|No longer supported.|
 
 ***
@@ -28415,8 +28415,8 @@ In Medusa v2, there are two containers:
 
 |Container|Description|Accessed By|
 |---|---|---|
-|Medusa container|Main container that contains Framework and commerce resources, such as services of registered modules.||
-|Module container|Container of a module. It contains some resources from the Framework, and resources implemented in the module.|Services and loaders in the module.|
+|\[Medusa container]\(/learn/fundamentals/medusa-container)|Main container that contains Framework and commerce resources, such as services of registered modules.|WorkflowsAPI routesSubscribersScheduled jobsCustom CLI scripts|
+|\[Module container]\(/learn/fundamentals/modules/container)|Container of a module. It contains some resources from the Framework, and resources implemented in the module.|Services and loaders in the module.|
 
 You can view the list of resources in each container in the [Container Resources](https://docs.medusajs.com/resources/medusa-container-resources/index.html.md) reference.
 
@@ -28876,10 +28876,10 @@ The following table highlights concepts that have been removed or changed in Med
 
 |Medusa v1|Medusa v2|
 |---|---|
-|Batch Jobs and Strategies|Long-Running Workflows|
-|File Service|File Module Provider|
-|Notification Provider Service|Notification Module Provider|
-|Search Service|Can be integrated as a |
+|Batch Jobs and Strategies|\[Long-Running Workflows]\(/learn/fundamentals/workflows/long-running-workflow)|
+|File Service|\[File Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/file)|
+|Notification Provider Service|\[Notification Module Provider]\(https://docs.medusajs.com/resources/infrastructure-modules/notification)|
+|Search Service|Can be integrated as a \[module]\(/learn/fundamentals/modules).|
 
 ***
 
@@ -29167,14 +29167,14 @@ This documentation is split into the following sections:
 
 |Section|Description|
 |---|---|---|
-|Main Documentation|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
-|Cloud|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
-|Product|Documentation for the |
-|Build|Recipes|
-|Tools|Guides on how to setup and use Medusa's CLI tools, |
-|API Routes References|References of the |
-|References|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the |
-|User Guide|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
+|\[Main Documentation]\(/learn)|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
+|\[Cloud]\(https://docs.medusajs.com/cloud)|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
+|Product|Documentation for the \[Framework]\(/learn/fundamentals/framework), \[Commerce Modules]\(https://docs.medusajs.com/resources/commerce-modules), and \[Infrastructure Modules]\(https://docs.medusajs.com/resources/infrastructure-modules). These sections include concepts, guides, and references for each of those products.|
+|Build|\[Recipes]\(https://docs.medusajs.com/resources/recipes), \[How-To & Tutorials]\(https://docs.medusajs.com/resources/how-to-tutorials), \[Integrations]\(https://docs.medusajs.com/resources/integrations), and \[Storefront Development]\(https://docs.medusajs.com/resources/storefront-development) guides. You can follow these guides after you've learned Medusa's core concepts.|
+|\[Tools]\(https://docs.medusajs.com/resources/tools)|Guides on how to setup and use Medusa's CLI tools, \[JS SDK]\(https://docs.medusajs.com/resources/js-sdk), \[Next.js Starter]\(https://docs.medusajs.com/resources/nextjs-starter), and \[Medusa UI]\(https://docs.medusajs.com/ui)|
+|API Routes References|References of the \[Store]\(https://docs.medusajs.com/api/store) and \[Admin]\(https://docs.medusajs.com/api/admin) API routes in Medusa. They also include instructions related to authentication, parameter types in requests, and more.|
+|\[References]\(https://docs.medusajs.com/resources/references-overview)|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the \[Events Reference]\(https://docs.medusajs.com/resources/references/events), \[Core Workflows Reference]\(https://docs.medusajs.com/resources/medusa-workflows-reference), and more.|
+|\[User Guide]\(https://docs.medusajs.com/user-guide)|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
 
 To get started, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
 
@@ -30066,7 +30066,7 @@ The API Key Module has the following links to other modules:
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|ApiKey|SalesChannel|Stored - many-to-many|Learn more|
+|\[ApiKey]\(/references/api-key/models/ApiKey)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel) in \[Sales Channel Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel)|Stored - many-to-many|\[Learn more]\(#sales-channel-module)|
 
 ***
 
@@ -30686,14 +30686,15 @@ module.exports = defineConfig({
 |Configuration|Description|Required|Default|
 |---|---|---|---|---|---|---|
 |\`hashConfig\`|An object of configurations for hashing the user's
-password. Refer to |No|\`\`\`ts
+password. Refer to \[scrypt-kdf]\(https://www.npmjs.com/package/scrypt-kdf#-hash)'s
+documentation for accepted options.|No|\`\`\`ts
 const hashConfig = \{
 &#x20; logN: 15,
 &#x20; r: 8,
 &#x20; p: 1
 }
 \`\`\`|
-|\`require\_verification\`|Whether to require email verification for new registrations
+|\`require\_verification\` (v2.15.5+)|Whether to require email verification for new registrations
 and authentications. When enabled, users must verify their
 email address before they can authenticate successfully.|No|\`false\`|
 
@@ -30769,7 +30770,7 @@ GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
 |---|---|---|---|---|
 |\`clientId\`|A string indicating the client ID of your GitHub app.|Yes|
 |\`clientSecret\`|A string indicating the client secret of your GitHub app.|Yes|
-|\`callbackUrl\`|A string indicating the URL to redirect to in your frontend after the user completes their authentication in GitHub.|Yes|
+|\`callbackUrl\`|A string indicating the URL to redirect to in your frontend after the user completes their authentication in GitHub.At this URL, the frontend will receive a \`code\` query parameter. It then sends that  \`code\` query parameter to the Medusa application's \`/auth/\{actor\_type}/github/callback\` route.|Yes|
 
 ***
 
@@ -30853,9 +30854,9 @@ GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 
 |Configuration|Description|Required|
 |---|---|---|---|---|
-|\`clientId\`|A string indicating the |Yes|
-|\`clientSecret\`|A string indicating the |Yes|
-|\`callbackUrl\`|A string indicating the URL to redirect to in your frontend after the user completes their authentication in Google.|Yes|
+|\`clientId\`|A string indicating the \[Google API Client ID]\(https://developers.google.com/identity/oauth2/web/guides/get-google-api-clientid).|Yes|
+|\`clientSecret\`|A string indicating the \[Google Client Secret]\(https://support.google.com/cloud/answer/6158849?hl=en#zippy=%2Cstep-create-a-new-client-secret).|Yes|
+|\`callbackUrl\`|A string indicating the URL to redirect to in your frontend after the user completes their authentication in Google.At this URL, the frontend will receive a \`code\` query parameter. It then sends that  \`code\` query parameter to the Medusa application's \`/auth/\{actor\_type}/google/callback\` route.|Yes|
 
 ***
 
@@ -33617,15 +33618,15 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Cart|Customer|Read-only - has one|Learn more|
-|ShippingMethod|ShippingOption|Read-only - has one|Learn more|
-|Order|Cart|Stored - one-to-one|Learn more|
-|Cart|PaymentCollection|Stored - one-to-one|Learn more|
-|LineItem|Product|Read-only - has one|Learn more|
-|LineItem|ProductVariant|Read-only - has one|Learn more|
-|Cart|Promotion|Stored - many-to-many|Learn more|
-|Cart|Region|Read-only - has one|Learn more|
-|Cart|SalesChannel|Read-only - has one|Learn more|
+|\[Cart]\(/references/cart/models/Cart)|\[Customer]\(/references/customer/models/Customer) in \[Customer Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/customer)|Read-only - has one|\[Learn more]\(#customer-module)|
+|\[ShippingMethod]\(/references/cart/models/ShippingMethod)|\[ShippingOption]\(/references/fulfillment/models/ShippingOption) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|Read-only - has one|\[Learn more]\(#fulfillment-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Cart]\(/references/cart/models/Cart)|Stored - one-to-one|\[Learn more]\(#order-module)|
+|\[Cart]\(/references/cart/models/Cart)|\[PaymentCollection]\(/references/payment/models/PaymentCollection) in \[Payment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment)|Stored - one-to-one|\[Learn more]\(#payment-module)|
+|\[LineItem]\(/references/cart/models/LineItem)|\[Product]\(/references/product/models/Product) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|Read-only - has one|\[Learn more]\(#product-module)|
+|\[LineItem]\(/references/cart/models/LineItem)|\[ProductVariant]\(/references/product/models/ProductVariant) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|Read-only - has one|\[Learn more]\(#product-module)|
+|\[Cart]\(/references/cart/models/Cart)|\[Promotion]\(/references/promotion/models/Promotion) in \[Promotion Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/promotion)|Stored - many-to-many|\[Learn more]\(#promotion-module)|
+|\[Cart]\(/references/cart/models/Cart)|\[Region]\(/references/region/models/Region) in \[Region Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region)|Read-only - has one|\[Learn more]\(#region-module)|
+|\[Cart]\(/references/cart/models/Cart)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel) in \[Sales Channel Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel)|Read-only - has one|\[Learn more]\(#sales-channel-module)|
 
 ***
 
@@ -34442,7 +34443,7 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|StoreCurrency|Currency|Read-only - has one|Learn more|
+|\[StoreCurrency]\(/references/store/models/StoreCurrency) in \[Store Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/store)|\[Currency]\(/references/currency/models/Currency)|Read-only - has one|\[Learn more]\(#store-module)|
 
 ***
 
@@ -34700,9 +34701,9 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Customer|AccountHolder|Stored - many-to-many|Learn more|
-|Cart|Customer|Read-only - has one|Learn more|
-|Order|Customer|Read-only - has one|Learn more|
+|\[Customer]\(/references/customer/models/Customer)|\[AccountHolder]\(/references/payment/models/AccountHolder) in \[Payment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment)|Stored - many-to-many|\[Learn more]\(#payment-module)|
+|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[Customer]\(/references/customer/models/Customer)|Read-only - has one|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Customer]\(/references/customer/models/Customer)|Read-only - has one|\[Learn more]\(#order-module)|
 
 ***
 
@@ -35219,13 +35220,13 @@ The Fulfillment Module has the following links to other modules:
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|ShippingMethod|ShippingOption|Read-only - has one|Learn more|
-|Order|Fulfillment|Stored - one-to-many|Learn more|
-|Return|Fulfillment|Stored - one-to-many|Learn more|
-|PriceSet|ShippingOption|Stored - many-to-one|Learn more|
-|Product|ShippingProfile|Stored - many-to-one|Learn more|
-|StockLocation|FulfillmentProvider|Stored - one-to-many|Learn more|
-|StockLocation|FulfillmentSet|Stored - one-to-many|Learn more|
+|\[ShippingMethod]\(/references/cart/models/ShippingMethod) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[ShippingOption]\(/references/fulfillment/models/ShippingOption)|Read-only - has one|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Fulfillment]\(/references/fulfillment/models/Fulfillment)|Stored - one-to-many|\[Learn more]\(#order-module)|
+|\[Return]\(/references/order/models/Return) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Fulfillment]\(/references/fulfillment/models/Fulfillment)|Stored - one-to-many|\[Learn more]\(#order-module)|
+|\[PriceSet]\(/references/pricing/models/PriceSet) in \[Pricing Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing)|\[ShippingOption]\(/references/fulfillment/models/ShippingOption)|Stored - many-to-one|\[Learn more]\(#pricing-module)|
+|\[Product]\(/references/product/models/Product) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[ShippingProfile]\(/references/fulfillment/models/ShippingProfile)|Stored - many-to-one|\[Learn more]\(#product-module)|
+|\[StockLocation]\(/references/stock-location-next/models/StockLocation) in \[Stock Location Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/stock-location)|\[FulfillmentProvider]\(/references/fulfillment/models/FulfillmentProvider)|Stored - one-to-many|\[Learn more]\(#stock-location-module)|
+|\[StockLocation]\(/references/stock-location-next/models/StockLocation) in \[Stock Location Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/stock-location)|\[FulfillmentSet]\(/references/fulfillment/models/FulfillmentSet)|Stored - one-to-many|\[Learn more]\(#stock-location-module)|
 
 ***
 
@@ -36408,8 +36409,8 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|ProductVariant|InventoryItem|Stored - many-to-many|Learn more|
-|InventoryLevel|StockLocation|Read-only - has many|Learn more|
+|\[ProductVariant]\(/references/product/models/ProductVariant) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[InventoryItem]\(/references/inventory-next/models/InventoryItem)|Stored - many-to-many|\[Learn more]\(#product-module)|
+|\[InventoryLevel]\(/references/inventory-next/models/InventoryLevel)|\[StockLocation]\(/references/stock-location-next/models/StockLocation) in \[Stock Location Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/stock-location)|Read-only - has many|\[Learn more]\(#stock-location-module)|
 
 ***
 
@@ -36770,10 +36771,10 @@ The Loyalty Module has the following links to other modules:
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Cart|\`GiftCard\`|Stored - many-to-many|Learn more|
-|Order|\`GiftCard\`|Stored - many-to-many|Learn more|
-|\`GiftCard\`|OrderLineItem|Read-only|Learn more|
-|\`GiftCard\`|\`StoreCreditAccount\`|Stored - many-to-one|Learn more|
+|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\`GiftCard\` in \[Loyalty Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/loyalty)|Stored - many-to-many|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\`GiftCard\` in \[Loyalty Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/loyalty)|Stored - many-to-many|\[Learn more]\(#order-module)|
+|\`GiftCard\` in \[Loyalty Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/loyalty)|\[OrderLineItem]\(/references/order/models/OrderLineItem) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|Read-only|\[Learn more]\(#gift-card-and-order-line-item)|
+|\`GiftCard\` in \[Loyalty Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/loyalty)|\`StoreCreditAccount\` in \[Store Credit Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/store-credit)|Stored - many-to-one|\[Learn more]\(#store-credit-module)|
 
 ***
 
@@ -37663,8 +37664,8 @@ The `OrderExchange` data model has a `difference_due` property that stores the o
 
 |Condition|Result|
 |---|---|
-|\`difference\_due \< 0\`|The merchant owes the customer a refund of the |
-|\`difference\_due > 0\`|The merchant requires additional payment from the customer of the |
+|\`difference\_due \< 0\`|The merchant owes the customer a refund of the \`difference\_due\` amount.|
+|\`difference\_due > 0\`|The merchant requires additional payment from the customer of the \`difference\_due\` amount.|
 |\`difference\_due = 0\`|No payment processing is required.|
 
 Any payments or refunds made are stored in the [OrderTransaction data model](https://docs.medusajs.com/references/order/models/OrderTransaction/index.html.md).
@@ -37688,17 +37689,17 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Order|Customer|Read-only - has one|Learn more|
-|Order|Cart|Stored - one-to-one|Learn more|
-|Order|Fulfillment|Stored - one-to-many|Learn more|
-|Return|Fulfillment|Stored - one-to-many|Learn more|
-|Order|PaymentCollection|Stored - one-to-many|Learn more|
-|OrderClaim|PaymentCollection|Stored - one-to-many|Learn more|
-|OrderExchange|PaymentCollection|Stored - one-to-many|Learn more|
-|OrderLineItem|Product|Read-only - has many|Learn more|
-|Order|Promotion|Stored - many-to-many|Learn more|
-|Order|Region|Read-only - has one|Learn more|
-|Order|SalesChannel|Read-only - has one|Learn more|
+|\[Order]\(/references/order/models/Order)|\[Customer]\(/references/customer/models/Customer) in \[Customer Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/customer)|Read-only - has one|\[Learn more]\(#customer-module)|
+|\[Order]\(/references/order/models/Order)|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|Stored - one-to-one|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order)|\[Fulfillment]\(/references/fulfillment/models/Fulfillment) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|Stored - one-to-many|\[Learn more]\(#fulfillment-module)|
+|\[Return]\(/references/order/models/Return)|\[Fulfillment]\(/references/fulfillment/models/Fulfillment) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|Stored - one-to-many|\[Learn more]\(#fulfillment-module)|
+|\[Order]\(/references/order/models/Order)|\[PaymentCollection]\(/references/payment/models/PaymentCollection) in \[Payment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment)|Stored - one-to-many|\[Learn more]\(#payment-module)|
+|\[OrderClaim]\(/references/order/models/OrderClaim)|\[PaymentCollection]\(/references/payment/models/PaymentCollection) in \[Payment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment)|Stored - one-to-many|\[Learn more]\(#payment-module)|
+|\[OrderExchange]\(/references/order/models/OrderExchange)|\[PaymentCollection]\(/references/payment/models/PaymentCollection) in \[Payment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment)|Stored - one-to-many|\[Learn more]\(#payment-module)|
+|\[OrderLineItem]\(/references/order/models/OrderLineItem)|\[Product]\(/references/product/models/Product) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|Read-only - has many|\[Learn more]\(#product-module)|
+|\[Order]\(/references/order/models/Order)|\[Promotion]\(/references/promotion/models/Promotion) in \[Promotion Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/promotion)|Stored - many-to-many|\[Learn more]\(#promotion-module)|
+|\[Order]\(/references/order/models/Order)|\[Region]\(/references/region/models/Region) in \[Region Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region)|Read-only - has one|\[Learn more]\(#region-module)|
+|\[Order]\(/references/order/models/Order)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel) in \[Sales Channel Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel)|Read-only - has one|\[Learn more]\(#sales-channel-module)|
 
 ***
 
@@ -38229,27 +38230,27 @@ The following table lists the possible `action` values that Medusa uses and the 
 
 |Action|Description|Details|
 |---|---|---|---|---|
-|\`ITEM\_ADD\`|Add an item to the order. The item is only added after the change is confirmed.|\`details\`|
-|\`ITEM\_UPDATE\`|Update an item in an order change. It's only applied to the order after the change is confirmed.|\`details\`|
-|\`ITEM\_REMOVE\`|Remove an item from an order change. This can happen when a claim or an exchange is canceled.|\`details\`|
-|\`RETURN\_ITEM\`|Set an item to be returned.|\`details\`|
-|\`RECEIVE\_RETURN\_ITEM\`|Mark a return item as received.|\`details\`|
-|\`RECEIVE\_DAMAGED\_RETURN\_ITEM\`|Mark a return item that's damaged as received.|\`details\`|
-|\`CANCEL\_RETURN\_ITEM\`|Cancel the return of an item. This can happen when a return is canceled.|\`details\`|
-|\`SHIPPING\_ADD\`|Add a shipping method to an order change. It's only added to the order after the change is confirmed.|No details added. The ID to the shipping method is added in the |
-|\`SHIPPING\_REMOVE\`|Remove a shipping method from an order change. This can happen when a claim or an exchange is canceled.|No details added. The ID to the shipping method is added in the |
-|\`SHIP\_ITEM\`|Mark an item's quantity as shipped.|\`details\`|
-|\`FULFILL\_ITEM\`|Fulfill an item's quantity as part of a change.|\`details\`|
-|\`DELIVER\_ITEM\`|Mark an item's quantity as delivered.|\`details\`|
-|\`WRITE\_OFF\_ITEM\`|Remove an item's quantity from an order change, without adding the quantity back to the item variant's inventory. The quantity isn't removed from the order until the change is confirmed.|\`details\`|
-|\`REINSTATE\_ITEM\`|Reinstate an item's quantity in an order change that was previously written off. The quantity is added back to the item variant's inventory when the change is confirmed.|\`details\`|
-|\`TRANSFER\_CUSTOMER\`|Transfer an order to another customer. The order is not removed from the original customer until the change is confirmed.|No details added. The ID to the new customer is added in the |
-|\`UPDATE\_ORDER\_PROPERTIES\`|Update the properties of an order, such as customer information or shipping address. The properties are not updated on the original order until the change is confirmed.|\`details\`|
-|\`PROMOTION\_ADD\`|Add a promotion to an order. The promotion is not added to the original order until the change is confirmed.|No details added. The ID to the promotion is added in the |
-|\`PROMOTION\_REMOVE\`|Remove a promotion from an order. The promotion is not removed from the original order until the change is confirmed.|No details added. The ID to the promotion is added in the |
-|\`ITEM\_ADJUSTMENTS\_REPLACE\`|Replace item adjustments with new adjustments. The adjustments are not updated on the original order until the change is confirmed.|\`details\`|
-|\`SHIPPING\_ADJUSTMENTS\_REPLACE\`|Replace shipping method adjustments with new adjustments. The adjustments are not updated on the original order until the change is confirmed.|\`details\`|
-|\`CREDIT\_LINE\_ADD\`|Add a credit line to an order. The credit line is not added to the original order until the change is confirmed.|No details added. The ID to the associated payment is added in the |
+|\`ITEM\_ADD\`|Add an item to the order. The item is only added after the change is confirmed.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the new item.\`quantity\`: The item's quantity.\`unit\_price\`: The item's unit price.\`metadata\`: The item's metadata.|
+|\`ITEM\_UPDATE\`|Update an item in an order change. It's only applied to the order after the change is confirmed.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The item's quantity.\`unit\_price\`: The item's unit price.|
+|\`ITEM\_REMOVE\`|Remove an item from an order change. This can happen when a claim or an exchange is canceled.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to remove.|
+|\`RETURN\_ITEM\`|Set an item to be returned.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to be returned.\`metadata\`: The item's metadata.|
+|\`RECEIVE\_RETURN\_ITEM\`|Mark a return item as received.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity received. This quantity is added to the inventory quantity of the item's variant when the return is confirmed.|
+|\`RECEIVE\_DAMAGED\_RETURN\_ITEM\`|Mark a return item that's damaged as received.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity received. This quantity isn't added to the item variant's inventory quantity, as the quantity is damaged.|
+|\`CANCEL\_RETURN\_ITEM\`|Cancel the return of an item. This can happen when a return is canceled.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to cancel.|
+|\`SHIPPING\_ADD\`|Add a shipping method to an order change. It's only added to the order after the change is confirmed.|No details added. The ID to the shipping method is added in the \`reference\_id\` property of the action.|
+|\`SHIPPING\_REMOVE\`|Remove a shipping method from an order change. This can happen when a claim or an exchange is canceled.|No details added. The ID to the shipping method is added in the \`reference\_id\` property of the action.|
+|\`SHIP\_ITEM\`|Mark an item's quantity as shipped.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to mark as shipped.\`metadata\`: The item's metadata.|
+|\`FULFILL\_ITEM\`|Fulfill an item's quantity as part of a change.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to fulfill.\`metadata\`: The item's metadata.|
+|\`DELIVER\_ITEM\`|Mark an item's quantity as delivered.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to mark as delivered.\`metadata\`: The item's metadata.|
+|\`WRITE\_OFF\_ITEM\`|Remove an item's quantity from an order change, without adding the quantity back to the item variant's inventory. The quantity isn't removed from the order until the change is confirmed.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to write off.\`metadata\`: The item's metadata.|
+|\`REINSTATE\_ITEM\`|Reinstate an item's quantity in an order change that was previously written off. The quantity is added back to the item variant's inventory when the change is confirmed.|\`details\` is an object having the following properties:\`reference\_id\`: the ID of the item.\`quantity\`: The quantity to reinstate.|
+|\`TRANSFER\_CUSTOMER\`|Transfer an order to another customer. The order is not removed from the original customer until the change is confirmed.|No details added. The ID to the new customer is added in the \`reference\_id\` property of the action.|
+|\`UPDATE\_ORDER\_PROPERTIES\`|Update the properties of an order, such as customer information or shipping address. The properties are not updated on the original order until the change is confirmed.|\`details\` is an object that has the properties to update. The properties are the same as the ones in the \[Order data model]\(/references/order/models/Order).|
+|\`PROMOTION\_ADD\`|Add a promotion to an order. The promotion is not added to the original order until the change is confirmed.|No details added. The ID to the promotion is added in the \`reference\_id\` property of the action.|
+|\`PROMOTION\_REMOVE\`|Remove a promotion from an order. The promotion is not removed from the original order until the change is confirmed.|No details added. The ID to the promotion is added in the \`reference\_id\` property of the action.|
+|\`ITEM\_ADJUSTMENTS\_REPLACE\`|Replace item adjustments with new adjustments. The adjustments are not updated on the original order until the change is confirmed.|\`details\` is an object containing the new adjustment data:\`reference\_id\`: the ID of the item.\`adjustments\`: an array of adjustments to apply to the item. Each adjustment is an object having the following properties:\`code\`: the promotion code that generated the adjustment, if applicable.\`amount\`: the adjustment amount.\`item\_id\`: the ID of the item to apply the adjustment to.\`promotion\_id\`: the ID of the promotion that generated the adjustment, if applicable.|
+|\`SHIPPING\_ADJUSTMENTS\_REPLACE\` (v2.14.0+)|Replace shipping method adjustments with new adjustments. The adjustments are not updated on the original order until the change is confirmed.|\`details\` is an object containing the new adjustment data:\`reference\_id\`: the ID of the shipping method.\`adjustments\`: an array of adjustments to apply to the shipping method. Each adjustment is an object having the following properties:\`code\`: the promotion code that generated the adjustment, if applicable.\`amount\`: the adjustment amount.\`shipping\_method\_id\`: the ID of the shipping method to apply the adjustment to.\`promotion\_id\`: the ID of the promotion that generated the adjustment, if applicable.|
+|\`CREDIT\_LINE\_ADD\`|Add a credit line to an order. The credit line is not added to the original order until the change is confirmed.|No details added. The ID to the associated payment is added in the \`reference\_id\` property of the action.|
 
 
 # Retrieve Order Totals Using Query
@@ -39087,6 +39088,7 @@ A Commerce Module also defines data models, representing tables in the database.
 - [Pricing Module](https://docs.medusajs.com/commerce-modules/pricing/index.html.md)
 - [Product Module](https://docs.medusajs.com/commerce-modules/product/index.html.md)
 - [Promotion Module](https://docs.medusajs.com/commerce-modules/promotion/index.html.md)
+- [RBAC Module](https://docs.medusajs.com/commerce-modules/rbac/index.html.md)
 - [Region Module](https://docs.medusajs.com/commerce-modules/region/index.html.md)
 - [Sales Channel Module](https://docs.medusajs.com/commerce-modules/sales-channel/index.html.md)
 - [Stock Location Module](https://docs.medusajs.com/commerce-modules/stock-location/index.html.md)
@@ -39094,8 +39096,7 @@ A Commerce Module also defines data models, representing tables in the database.
 - [Store Credit Module](https://docs.medusajs.com/commerce-modules/store-credit/index.html.md)
 - [Tax Module](https://docs.medusajs.com/commerce-modules/tax/index.html.md)
 - [Translation Module](https://docs.medusajs.com/commerce-modules/translation/index.html.md)
-
-[User Module](https://docs.medusajs.com/commerce-modules/user/index.html.md): undefined
+- [User Module](https://docs.medusajs.com/commerce-modules/user/index.html.md)
 
 ***
 
@@ -39167,12 +39168,12 @@ The Payment Module has the following links to other modules:
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Cart|PaymentCollection|Stored - one-to-one|Learn more|
-|Customer|AccountHolder|Stored - many-to-many|Learn more|
-|Order|PaymentCollection|Stored - one-to-many|Learn more|
-|OrderClaim|PaymentCollection|Stored - one-to-many|Learn more|
-|OrderExchange|PaymentCollection|Stored - one-to-many|Learn more|
-|Region|PaymentProvider|Stored - many-to-many|Learn more|
+|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[PaymentCollection]\(/references/payment/models/PaymentCollection)|Stored - one-to-one|\[Learn more]\(#cart-module)|
+|\[Customer]\(/references/customer/models/Customer) in \[Customer Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/customer)|\[AccountHolder]\(/references/payment/models/AccountHolder)|Stored - many-to-many|\[Learn more]\(#customer-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[PaymentCollection]\(/references/payment/models/PaymentCollection)|Stored - one-to-many|\[Learn more]\(#order-module)|
+|\[OrderClaim]\(/references/order/models/OrderClaim) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[PaymentCollection]\(/references/payment/models/PaymentCollection)|Stored - one-to-many|\[Learn more]\(#order-module)|
+|\[OrderExchange]\(/references/order/models/OrderExchange) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[PaymentCollection]\(/references/payment/models/PaymentCollection)|Stored - one-to-many|\[Learn more]\(#order-module)|
+|\[Region]\(/references/region/models/Region) in \[Region Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region)|\[PaymentProvider]\(/references/payment/models/PaymentProvider)|Stored - many-to-many|\[Learn more]\(#region-module)|
 
 ***
 
@@ -39513,7 +39514,7 @@ In this document, you'll learn about the options you can pass to the Payment Mod
 |---|---|---|---|---|---|---|
 |\`webhook\_delay\`|A number indicating the delay in milliseconds before processing a webhook event.|No|\`5000\`|
 |\`webhook\_retries\`|The number of times to retry the webhook event processing in case of an error.|No|\`3\`|
-|\`providers\`|An array of payment providers to install and register. Learn more |No|-|
+|\`providers\`|An array of payment providers to install and register. Learn more \[in this section]\(#providers).|No|-|
 
 ***
 
@@ -40209,7 +40210,7 @@ Assuming you set the ID of the Stripe Module Provider to `stripe` in `medusa-con
 |iDEAL Payments|\`pp\_stripe-ideal\_stripe\`|
 |Przelewy24 Payments|\`pp\_stripe-przelewy24\_stripe\`|
 |PromptPay Payments|\`pp\_stripe-promptpay\_stripe\`|
-|OXXO Payments (Available since |\`pp\_stripe-oxxo\_stripe\`|
+|OXXO Payments (Available since \[Medusa v2.12.0]\(https://github.com/medusajs/medusa/releases/tag/v2.12.0))|\`pp\_stripe-oxxo\_stripe\`|
 
 ***
 
@@ -40235,7 +40236,7 @@ The Stripe Module Provider supports the following payment types, and the webhook
 |iDEAL Payments|\`\{server\_url}/hooks/payment/stripe-ideal\_stripe\`|
 |Przelewy24 Payments|\`\{server\_url}/hooks/payment/stripe-przelewy24\_stripe\`|
 |PromptPay Payments|\`\{server\_url}/hooks/payment/stripe-promptpay\_stripe\`|
-|OXXO Payments (Available since |\`\{server\_url}/hooks/payment/stripe-oxxo\_stripe\`|
+|OXXO Payments (Available since \[Medusa v2.12.0]\(https://github.com/medusajs/medusa/releases/tag/v2.12.0))|\`\{server\_url}/hooks/payment/stripe-oxxo\_stripe\`|
 
 ### Webhook Events
 
@@ -40497,8 +40498,8 @@ The Pricing Module has the following links to other modules:
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|ShippingOption|PriceSet|Stored - one-to-one|Learn more|
-|ProductVariant|PriceSet|Stored - one-to-one|Learn more|
+|\[ShippingOption]\(/references/fulfillment/models/ShippingOption) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|\[PriceSet]\(/references/pricing/models/PriceSet)|Stored - one-to-one|\[Learn more]\(#fulfillment-module)|
+|\[ProductVariant]\(/references/product/models/ProductVariant) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[PriceSet]\(/references/pricing/models/PriceSet)|Stored - one-to-one|\[Learn more]\(#product-module)|
 
 ***
 
@@ -42441,20 +42442,20 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|LineItem|Product|Read-only - has one|Learn more|
-|Product|ShippingProfile|Stored - many-to-one|Learn more|
-|ProductVariant|InventoryItem|Stored - many-to-many|Learn more|
-|OrderLineItem|Product|Read-only - has one|Learn more|
-|ProductVariant|PriceSet|Stored - one-to-one|Learn more|
-|Product|SalesChannel|Stored - many-to-many|Learn more|
-|Product|Translation|Read-only - one-to-many|Learn more|
-|ProductVariant|Translation|Read-only - one-to-many|Learn more|
-|ProductCategory|Translation|Read-only - one-to-many|Learn more|
-|ProductCollection|Translation|Read-only - one-to-many|Learn more|
-|ProductTag|Translation|Read-only - one-to-many|Learn more|
-|ProductType|Translation|Read-only - one-to-many|Learn more|
-|ProductOption|Translation|Read-only - one-to-many|Learn more|
-|ProductOptionValue|Translation|Read-only - one-to-many|Learn more|
+|\[LineItem]\(/references/cart/models/LineItem) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[Product]\(/references/product/models/Product)|Read-only - has one|\[Learn more]\(#cart-module)|
+|\[Product]\(/references/product/models/Product)|\[ShippingProfile]\(/references/fulfillment/models/ShippingProfile) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|Stored - many-to-one|\[Learn more]\(#fulfillment-module)|
+|\[ProductVariant]\(/references/product/models/ProductVariant)|\[InventoryItem]\(/references/inventory-next/models/InventoryItem) in \[Inventory Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory)|Stored - many-to-many|\[Learn more]\(#inventory-module)|
+|\[OrderLineItem]\(/references/order/models/OrderLineItem) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Product]\(/references/product/models/Product)|Read-only - has one|\[Learn more]\(#order-module)|
+|\[ProductVariant]\(/references/product/models/ProductVariant)|\[PriceSet]\(/references/pricing/models/PriceSet) in \[Pricing Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing)|Stored - one-to-one|\[Learn more]\(#pricing-module)|
+|\[Product]\(/references/product/models/Product)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel) in \[Sales Channel Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel)|Stored - many-to-many|\[Learn more]\(#sales-channel-module)|
+|\[Product]\(/references/product/models/Product)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductVariant]\(/references/product/models/ProductVariant)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductCategory]\(/references/product/models/ProductCategory)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductCollection]\(/references/product/models/ProductCollection)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductTag]\(/references/product/models/ProductTag)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductType]\(/references/product/models/ProductType)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductOption]\(/references/product/models/ProductOption)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
+|\[ProductOptionValue]\(/references/product/models/ProductOptionValue)|\[Translation]\(/references/translation/models/Translation) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - one-to-many|\[Learn more]\(#translation-module)|
 
 ***
 
@@ -43161,10 +43162,10 @@ By combining configurations of shipment requirements and inventory management, y
 
 |Use Case|Configurations|Example|
 |---|---|---|---|---|
-|Item that's shipped on purchase, and its variant inventory is managed by the Medusa application.||Any stock-kept item (clothing, for example), whose inventory is managed in the Medusa application.|
-|Item that's shipped on purchase, but its variant inventory is managed externally (not by Medusa) or it has infinite stock.||Any stock-kept item (clothing, for example), whose inventory is managed in an ERP or has infinite stock.|
-|Item that's not shipped on purchase, but its variant inventory is managed by Medusa.||Digital products, such as licenses, that don't require shipping but have a limited quantity.|
-|Item that doesn't require shipping and its variant inventory isn't managed by Medusa.|||
+|Item that's shipped on purchase, and its variant inventory is managed by the Medusa application.|Product has a shipping profile, or variant inventory item's \`requires\_shipping\` property is \`true\`.Product variant's \`manage\_inventory\` property is \`true\`.|Any stock-kept item (clothing, for example), whose inventory is managed in the Medusa application.|
+|Item that's shipped on purchase, but its variant inventory is managed externally (not by Medusa) or it has infinite stock.|Product has a shipping profile.Product variant's \`manage\_inventory\` property is \`false\`.|Any stock-kept item (clothing, for example), whose inventory is managed in an ERP or has infinite stock.|
+|Item that's not shipped on purchase, but its variant inventory is managed by Medusa.|Product doesn't have a shipping profile, or variant inventory item's \`requires\_shipping\` property is \`false\`.Product variant's \`manage\_inventory\` property is \`true\`.|Digital products, such as licenses, that don't require shipping but have a limited quantity.|
+|Item that doesn't require shipping and its variant inventory isn't managed by Medusa.|Product doesn't have a shipping profile, or variant inventory item's \`requires\_shipping\` property is \`false\`.Product variant's \`manage\_inventory\` property is \`false\`.|Digital products, such as eBooks, that don't require shipping and don't have a stock quantity.Services, such as appointments, that don't require shipping and don't have a stock quantity.|
 
 
 # Product Variant Inventory
@@ -43356,9 +43357,9 @@ The [ApplicationMethod data model](https://docs.medusajs.com/references/promotio
 
 |Property|Purpose|Possible Values|
 |---|---|---|
-|\`type\`|Does the promotion discount a fixed amount or a percentage?|\`fixed\`|
-|\`target\_type\`|Is the promotion applied to a cart item, shipping method, or the entire order?|\`items\`|
-|\`allocation\`|Is the discounted amount applied to each item, split between the applicable items, or applied on specific number of items?|\`each\`|
+|\`type\`|Does the promotion discount a fixed amount or a percentage?|\`fixed\`, \`percentage\`|
+|\`target\_type\`|Is the promotion applied to a cart item, shipping method, or the entire order?|\`items\`, \`shipping\_methods\`, \`order\`|
+|\`allocation\`|Is the discounted amount applied to each item, split between the applicable items, or applied on specific number of items?|\`each\`, \`across\`, \`once\`|
 
 ## Target Promotion Rules
 
@@ -43625,7 +43626,7 @@ A promotion has two types:
 - `standard`: A standard promotion with rules.
 - `buyget`: “A buy X get Y” promotion with rules.
 
-|\`standard\`|\`buyget\`|
+|\`standard\` Promotion Examples|\`buyget\` Promotion Examples|
 |---|---|
 |A coupon code that gives customers 10% off their entire order.|Buy two shirts and get another for free.|
 |A coupon code that gives customers $15 off any shirt in their order.|Buy two shirts and get 10% off the entire order.|
@@ -43802,9 +43803,9 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Cart|Promotion|Stored - many-to-many|Learn more|
-|LineItemAdjustment|Promotion|Read-only - has one|Learn more|
-|Order|Promotion|Stored - many-to-many|Learn more|
+|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[Promotion]\(/references/promotion/models/Promotion)|Stored - many-to-many|\[Learn more]\(#cart-module)|
+|\[LineItemAdjustment]\(/references/cart/models/LineItemAdjustment) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[Promotion]\(/references/promotion/models/Promotion)|Read-only - has one|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Promotion]\(/references/promotion/models/Promotion)|Stored - many-to-many|\[Learn more]\(#order-module)|
 
 ***
 
@@ -44257,6 +44258,459 @@ The result:
 The final total is `$90`, which correctly applies both the tax-inclusive promotion and tax-inclusive pricing.
 
 
+# RBAC Concepts
+
+This feature requires an enterprise license. You must also enable its feature flag: `rbac`.
+
+In this guide, you'll learn about the main concepts of the role-based access control (RBAC) Module: policies, roles, role hierarchy, and how roles link to admin users.
+
+## Policy
+
+A policy, represented by the `RbacPolicy` data model, is the smallest unit of access in RBAC. It allows an operation on a resource.
+
+A policy has a `key` in the format `resource:operation`, where:
+
+- `resource` is the entity the policy applies to, such as `product` or `order`.
+- `operation` is the action allowed on the resource, such as `read`, `create`, `update`, or `delete`.
+
+For example, the `order:read` policy allows viewing orders.
+
+### Granular Policies
+
+Since policies are defined at the resource-operation level, you can create granular access control by granting access to parent resources, but not to their children.
+
+For example, the `product:read` policy allows viewing products, but not their variants. To allow viewing variants, you would also need to grant the `product_variant:read` policy.
+
+### Wildcard Policies
+
+A policy can use the wildcard `*` for its resource, operation, or both:
+
+- `product:*` allows all operations on products.
+- `*:read` allows reading all resources.
+- `*:*` allows all operations on all resources. This is the policy granted to the Super Admin role.
+
+### Registered Policies
+
+Medusa registers the policies for its commerce resources, such as products and orders. When the application starts, Medusa compares the policies registered in code with those in the database, then:
+
+- Creates a policy for each registered policy that doesn't exist in the database yet.
+- Updates a policy whose name or description changed in code.
+- Restores a policy that was previously deleted from the database, if it's registered in code again.
+- Deletes a policy from the database if it's no longer registered in code.
+
+You can also define policies for your custom resources. Learn how in the [Defining Custom Policies](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/define-policies/index.html.md) guide.
+
+***
+
+## Role
+
+A role, represented by the `RbacRole` data model, groups a set of policies under a name, such as "Product Manager" or "Order Manager". You assign roles to admin users (or any actor type) to control what they can access.
+
+A role has the following main properties:
+
+- `name`: The role's unique name.
+- `description`: An optional description of the role's purpose.
+- `policies`: The policies granted by the role.
+
+When an admin user is assigned a role, they gain all the policies of that role.
+
+### Super Admin Role
+
+When you enable the RBAC feature flag, the Medusa application does the following:
+
+1. Creates a Super Admin role with the `*:*` wildcard policy. This role has full access to all resources and operations. It's created by the RBAC Module when the application starts or when you run database migrations.
+2. Grants the Super Admin role to all existing admin users. This ensures your current users keep their full access after enabling RBAC. This happens the first time you run database migrations after enabling the RBAC feature flag.
+
+New users created with the [user CLI command](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/medusa-cli/commands/user/index.html.md) are also assigned the Super Admin role by default while RBAC is enabled.
+
+***
+
+## Role Hierarchy
+
+A role can have one or more parent roles. When a role has a parent, it inherits all the parent's policies in addition to its own.
+
+This hierarchy is represented by the `RbacRoleParent` data model. Each record links a role to one of its parents, so a role can have multiple parent records. The `RbacRole` data model exposes these records through its `parents` relation.
+
+For example, if a "Senior Product Manager" role has the "Product Manager" role as a parent, it inherits all of the Product Manager's policies. The following diagram shows how an `RbacRoleParent` record links these two roles:
+
+```mermaid
+graph TD
+    A["RbacRole<br/>Senior Product Manager"] -->|role| B["RbacRoleParent"]
+    B -->|parent| C["RbacRole<br/>Product Manager"]
+```
+
+Role inheritance is resolved recursively, so a role inherits the policies of its parents, their parents, and so on. Medusa prevents circular inheritance: a role can't be a parent of itself, directly or indirectly.
+
+***
+
+## Linking Roles to Admin Users
+
+Roles are linked to admin users through a [module link](https://docs.medusajs.com/docs/learn/fundamentals/module-links/index.html.md) between the [User Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/user/index.html.md) and the RBAC Module.
+
+An admin user can have multiple roles. Their effective policies are the union of the policies from all their assigned roles, including any policies inherited through role hierarchy.
+
+When you assign a role to a user in your customizations, the user performing the assignment must already have all the policies granted by that role. This prevents an admin user from granting access that they don't have themselves.
+
+Learn how the link is defined and how to manage it in the [Links to Other Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/links-to-other-modules/index.html.md) guide.
+
+***
+
+## Permission Resolution
+
+When the RBAC feature flag is enabled, Medusa checks an admin user's effective policies before allowing an operation on a resource. A request is allowed if the user has a matching policy, including a wildcard policy that covers the resource or operation.
+
+When the RBAC feature flag is disabled, no access control is enforced, and admin users have access to all resources and operations.
+
+
+# Define Custom Policies
+
+This feature requires an enterprise license. You must also enable its feature flag: `rbac`.
+
+In this guide, you'll learn how to define policies for your custom resources so they can be protected by role-based access control (RBAC).
+
+### Prerequisites
+
+- [RBAC feature flag enabled](../page.mdx#how-to-use-the-rbac-module)
+
+## How Policies are Discovered
+
+When the application starts, Medusa scans your project and plugins for directories named `policies`. It imports the files in those directories and registers the policies they define, then syncs them to the database.
+
+This allows you to define policies for your custom resources in your project or plugin code. For example, if you have a Brand Module with brand data models, you can define policies for the `brand` resource to ensure only authorized users can access it.
+
+***
+
+## Define a Policy
+
+To define policies, use the `definePolicies` function. It accepts a single policy definition or an array of definitions.
+
+For example, create the file `src/policies/brand.ts` with the following content:
+
+```ts title="src/policies/brand.ts" highlights={highlights}
+import { definePolicies } from "@medusajs/framework/utils"
+
+export const brandPolicies = definePolicies([
+  {
+    name: "ReadBrands",
+    resource: "brand",
+    operation: "read",
+    description: "Read brands",
+  },
+  {
+    name: "CreateBrands",
+    resource: "brand",
+    operation: "create",
+    description: "Create brands",
+  },
+])
+```
+
+Each policy definition accepts the following properties:
+
+- `name`: A unique name for the policy.
+- `resource`: The resource the policy applies to. It's normalized to snake\_case. This is the name passed as the first parameter to `model.define` when defining a data model.
+- `operation`: The allowed operation, such as `read`, `create`, `update`, `delete`, or the wildcard `*`.
+- `description`: An optional description of the policy.
+
+The exported policies are registered the next time the application starts.
+
+***
+
+## Use the Policy
+
+After defining a policy, you can assign it to roles. Admin users assigned a role with the policy can then perform the policy's operation on its resource.
+
+You can manage roles and their policies:
+
+- In the [Medusa Admin dashboard](https://docs.medusajs.com/user-guide/settings/roles/index.html.md).
+- Or using the RBAC Module's workflows and service in your customizations.
+
+### Example: Create a Role with a CLI Script
+
+The following example uses the `createRbacRolesWorkflow` from Medusa's core flows to create a "Brand Manager" role that grants the brand policies. It's written as a [custom CLI script](https://docs.medusajs.com/docs/learn/fundamentals/custom-cli-scripts/index.html.md):
+
+```ts title="src/scripts/create-brand-role.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import {
+  createRbacRolesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function ({ container }: ExecArgs) {
+  const rbacModuleService = container.resolve(Modules.RBAC)
+  const logger = container.resolve("logger")
+
+  // find the brand policies registered in src/policies
+  const policies = await rbacModuleService.listRbacPolicies({
+    key: ["brand:read", "brand:create"],
+  })
+
+  // create a role that grants the brand policies
+  const { result } = await createRbacRolesWorkflow(
+    container
+  ).run({
+    input: {
+      roles: [
+        {
+          name: "Brand Manager",
+          description: "Manage brands",
+          policy_ids: policies.map((policy) => policy.id),
+        },
+      ],
+    },
+  })
+
+  logger.info(`Created role: ${result.roles[0].name} with policies: ${policies.map((policy) => policy.name).join(", ")}`)
+}
+```
+
+In the script, you:
+
+1. Resolve the RBAC Module's service to find the brand policies by their keys.
+2. Run the `createRbacRolesWorkflow` to create the role with the policies' IDs.
+
+Then, run the script with the following command:
+
+```bash
+npx medusa exec ./src/scripts/create-brand-role.ts
+```
+
+The RBAC Module also has workflows to update or delete roles and policies, such as `updateRbacRolesWorkflow` and `deleteRbacRolesWorkflow`.
+
+***
+
+## Wildcard Policies
+
+To grant all operations on a resource, use the wildcard `*` as the operation:
+
+```ts title="src/policies/brand.ts"
+import { definePolicies } from "@medusajs/framework/utils"
+
+export const brandPolicies = definePolicies({
+  name: "ManageBrands",
+  resource: "brand",
+  operation: "*",
+  description: "Manage brands",
+})
+```
+
+Learn more about wildcard policies in the [RBAC Concepts](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#wildcard-policies/index.html.md) guide.
+
+
+# Links between RBAC Module and Other Modules
+
+This feature requires an enterprise license. You must also enable its feature flag: `rbac`.
+
+This document showcases the module links defined between the role-based access control (RBAC) Module and other Commerce Modules.
+
+## Summary
+
+The RBAC Module has the following links to other modules:
+
+|First Data Model|Second Data Model|Type|Description|
+|---|---|---|---|
+|\[User]\(/references/user/models/User) in \[User Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/user)|\`RbacRole\`|Stored - many-to-many|\[Learn more]\(#user-module)|
+
+***
+
+## User Module
+
+You assign roles to admin users to control their access. Medusa defines a link between the `RbacRole` data model and the `User` data model from the [User Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/user/index.html.md).
+
+An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
+
+### Retrieve with Query
+
+To retrieve the users of a role with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), pass `users.*` in `fields`:
+
+### query.graph
+
+```ts
+const { data: roles } = await query.graph({
+  entity: "rbac_role",
+  fields: [
+    "users.*",
+  ],
+})
+
+// roles[0].users
+```
+
+### useQueryGraphStep
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: roles } = useQueryGraphStep({
+  entity: "rbac_role",
+  fields: [
+    "users.*",
+  ],
+})
+
+// roles[0].users
+```
+
+You can also retrieve the roles of a user by passing `rbac_roles.*` in `fields` when querying the `user` entity. Learn more in the [User Module's links documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/user/links-to-other-modules#rbac-module/index.html.md).
+
+### Manage with Link
+
+To assign a role to a user, use [Link](https://docs.medusajs.com/docs/learn/fundamentals/module-links/link/index.html.md):
+
+### link.create
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await link.create({
+  [Modules.USER]: {
+    user_id: "user_123",
+  },
+  [Modules.RBAC]: {
+    rbac_role_id: "role_123",
+  },
+})
+```
+
+### createRemoteLinkStep
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+createRemoteLinkStep([
+  {
+    [Modules.USER]: {
+      user_id: "user_123",
+    },
+    [Modules.RBAC]: {
+      rbac_role_id: "role_123",
+    },
+  },
+])
+```
+
+
+# RBAC Module
+
+This feature requires an enterprise license. You must also enable its feature flag: `rbac`.
+
+In this section of the documentation, you will find resources to learn more about the role-based access control (RBAC) Module and how to use it in your application.
+
+Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/roles/index.html.md) to learn how to manage roles and policies using the dashboard.
+
+Medusa has role-based access control features available through the RBAC Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this RBAC Module.
+
+The RBAC Module restricts what admin users can do based on the roles assigned to them. Each role grants a set of policies, where a policy allows an operation on a resource.
+
+## RBAC Features
+
+- [Roles and Policies](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#role/index.html.md): Group policies into roles, then assign roles to admin users to control their access.
+- [Role Hierarchy](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/concepts#role-hierarchy/index.html.md): Build roles that inherit policies from parent roles.
+- [Custom Policies](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/define-policies/index.html.md): Define policies for your custom resources so they can be protected by RBAC.
+
+***
+
+## How to Use the RBAC Module
+
+### Prerequisites
+
+- [Medusa v2.16.0+](https://github.com/medusajs/medusa/releases/tag/v2.16.0)
+
+### 1. Enable the RBAC Feature Flag
+
+The RBAC Module is only registered when its feature flag is enabled. You can enable it in `medusa-config.ts`:
+
+{/* TODO check details */}
+
+The RBAC Module is an enterprise feature and requires a valid enterprise license. By using it, you agree to the license terms. Contact Medusa for more information.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    rbac: true,
+  },
+})
+```
+
+Or set the following environment variable:
+
+```shell
+MEDUSA_FF_RBAC=true
+```
+
+Learn more about feature flags in the [feature flags documentation](https://docs.medusajs.com/docs/learn/debugging-and-testing/feature-flags/index.html.md).
+
+### 2. Run Migrations
+
+After enabling the feature flag, run the migrations to create the RBAC tables in the database:
+
+```bash
+npx medusa db:migrate
+```
+
+Then, the first time the application starts, Medusa creates a Super Admin role with full access and registers the policies defined across your modules.
+
+### 3. Use RBAC Features in Your Application
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md), which is a special function composed of a series of steps that guarantees data consistency and a reliable roll-back mechanism.
+
+For example, to resolve the RBAC Module's service in a step:
+
+```ts title="src/workflows/create-role.ts" highlights={highlights}
+import {
+  createWorkflow,
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createRoleStep = createStep(
+  "create-role",
+  async ({}, { container }) => {
+    const rbacModuleService = container.resolve(
+      Modules.RBAC
+    )
+
+    const role = await rbacModuleService.createRbacRoles({
+      name: "Product Manager",
+      description: "Manages products and inventory",
+    })
+
+    return new StepResponse(role, role.id)
+  },
+  async (roleId, { container }) => {
+    const rbacModuleService = container.resolve(
+      Modules.RBAC
+    )
+
+    await rbacModuleService.deleteRbacRoles([roleId])
+  }
+)
+
+export const createRoleWorkflow = createWorkflow(
+  "create-role",
+  () => {
+    const role = createRoleStep()
+
+    return new WorkflowResponse(role)
+  }
+)
+```
+
+Refer to the [Workflows documentation](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md) to learn more.
+
+***
+
+
 # Links between Region Module and Other Modules
 
 This document showcases the module links defined between the Region Module and other Commerce Modules.
@@ -44269,9 +44723,9 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Cart|Region|Read-only - has one|Learn more|
-|Order|Region|Read-only - has one|Learn more|
-|Region|PaymentProvider|Stored - many-to-many|Learn more|
+|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[Region]\(/references/region/models/Region)|Read-only - has one|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[Region]\(/references/region/models/Region)|Read-only - has one|\[Learn more]\(#order-module)|
+|\[Region]\(/references/region/models/Region)|\[PaymentProvider]\(/references/payment/models/PaymentProvider) in \[Payment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment)|Stored - many-to-many|\[Learn more]\(#payment-module)|
 
 ***
 
@@ -44592,11 +45046,11 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|ApiKey|SalesChannel|Stored - many-to-many|Learn more|
-|Cart|SalesChannel|Read-only - has one|Learn more|
-|Order|SalesChannel|Read-only - has one|Learn more|
-|Product|SalesChannel|Stored - many-to-many|Learn more|
-|SalesChannel|StockLocation|Stored - many-to-many|Learn more|
+|\[ApiKey]\(/references/api-key/models/ApiKey) in \[API Key Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/api-key)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel)|Stored - many-to-many|\[Learn more]\(#api-key-module)|
+|\[Cart]\(/references/cart/models/Cart) in \[Cart Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel)|Read-only - has one|\[Learn more]\(#cart-module)|
+|\[Order]\(/references/order/models/Order) in \[Order Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel)|Read-only - has one|\[Learn more]\(#order-module)|
+|\[Product]\(/references/product/models/Product) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[SalesChannel]\(/references/sales-channel/models/SalesChannel)|Stored - many-to-many|\[Learn more]\(#product-module)|
+|\[SalesChannel]\(/references/sales-channel/models/SalesChannel)|\[StockLocation]\(/references/stock-location-next/models/StockLocation) in \[Stock Location Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/stock-location)|Stored - many-to-many|\[Learn more]\(#stock-location-module)|
 
 ***
 
@@ -45181,10 +45635,10 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|FulfillmentSet|StockLocation|Stored - many-to-one|Learn more|
-|FulfillmentProvider|StockLocation|Stored - many-to-many|Learn more|
-|InventoryLevel|StockLocation|Read-only - has many|Learn more|
-|SalesChannel|StockLocation|Stored - many-to-many|Learn more|
+|\[FulfillmentSet]\(/references/fulfillment/models/FulfillmentSet) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|\[StockLocation]\(/references/stock-location-next/models/StockLocation)|Stored - many-to-one|\[Learn more]\(#fulfillment-module)|
+|\[FulfillmentProvider]\(/references/fulfillment/models/FulfillmentProvider) in \[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)|\[StockLocation]\(/references/stock-location-next/models/StockLocation)|Stored - many-to-many|\[Learn more]\(#fulfillment-module)|
+|\[InventoryLevel]\(/references/inventory-next/models/InventoryLevel) in \[Inventory Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory)|\[StockLocation]\(/references/stock-location-next/models/StockLocation)|Read-only - has many|\[Learn more]\(#inventory-module)|
+|\[SalesChannel]\(/references/sales-channel/models/SalesChannel) in \[Sales Channel Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel)|\[StockLocation]\(/references/stock-location-next/models/StockLocation)|Stored - many-to-many|\[Learn more]\(#sales-channel-module)|
 
 ***
 
@@ -45657,8 +46111,8 @@ The Store Credit Module has the following links to other modules:
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|\`StoreCreditAccount\`|\`Customer\`|Read-only|Learn more|
-|\`GiftCard\`|\`StoreCreditAccount\`|Stored - many-to-one|Learn more|
+|\`StoreCreditAccount\` in \[Store Credit Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/store-credit)|\`Customer\` in \[Customer Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/customer)|Read-only|\[Learn more]\(#customer-module)|
+|\`GiftCard\` in \[Loyalty Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/loyalty)|\`StoreCreditAccount\` in \[Store Credit Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/store-credit)|Stored - many-to-one|\[Learn more]\(#loyalty-module)|
 
 ***
 
@@ -45965,8 +46419,8 @@ Read-only links are used to query data across modules, but the relations aren't 
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|StoreCurrency|Currency|Read-only - has many|Learn more|
-|StoreLocale|Locale|Read-only - has many|Learn more|
+|\[StoreCurrency]\(/references/store/models/StoreCurrency)|\[Currency]\(/references/currency/models/Currency) in \[Currency Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/currency)|Read-only - has many|\[Learn more]\(#currency-module)|
+|\[StoreLocale]\(/references/store/models/StoreLocale)|\[Locale]\(/references/translation/models/Locale) in \[Translation Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation)|Read-only - has many|\[Learn more]\(#translation-module)|
 
 ***
 
@@ -47075,15 +47529,15 @@ Medusa defines the following links between the Translation Module and other Comm
 
 |First Data Model|Second Data Model|Type|Description|
 |---|---|---|---|
-|Product|Translation|Read-only - one-to-many|Learn more|
-|ProductVariant|Translation|Read-only - one-to-many|Learn more|
-|ProductCategory|Translation|Read-only - one-to-many|Learn more|
-|ProductCollection|Translation|Read-only - one-to-many|Learn more|
-|ProductTag|Translation|Read-only - one-to-many|Learn more|
-|ProductType|Translation|Read-only - one-to-many|Learn more|
-|ProductOption|Translation|Read-only - one-to-many|Learn more|
-|ProductOptionValue|Translation|Read-only - one-to-many|Learn more|
-|StoreLocale|Locale|Read-only - has many|Learn more|
+|\[Product]\(/references/product/models/Product) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductVariant]\(/references/product/models/ProductVariant) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductCategory]\(/references/product/models/ProductCategory) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductCollection]\(/references/product/models/ProductCollection) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductTag]\(/references/product/models/ProductTag) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductType]\(/references/product/models/ProductType) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductOption]\(/references/product/models/ProductOption) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[ProductOptionValue]\(/references/product/models/ProductOptionValue) in \[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product)|\[Translation]\(/references/translation/models/Translation)|Read-only - one-to-many|\[Learn more]\(#product-module)|
+|\[StoreLocale]\(/references/store/models/StoreLocale) in \[Store Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/store)|\[Locale]\(/references/translation/models/Locale)|Read-only - has many|\[Learn more]\(#store-module)|
 
 ***
 
@@ -47093,14 +47547,14 @@ Medusa defines the following read-only links between the Translation and Product
 
 |Data Model|Link Type|Description|
 |---|---|---|
-|Product|One-to-many (bidirectional)|Retrieve translations associated with a product and vice versa.|
-|ProductVariant|One-to-many (read-only)|Retrieve translations of a product variant only.|
-|ProductCategory|One-to-many (read-only)|Retrieve translations of a product category only.|
-|ProductCollection|One-to-many (read-only)|Retrieve translations of a product collection only.|
-|ProductTag|One-to-many (read-only)|Retrieve translations of a product tag only.|
-|ProductType|One-to-many (read-only)|Retrieve translations of a product type only.|
-|ProductOption|One-to-many (read-only)|Retrieve translations of a product option only.|
-|ProductOptionValue|One-to-many (read-only)|Retrieve translations of a product option value only.|
+|\[Product]\(/references/product/models/Product) \<-> \[Translation]\(/references/translation/models/Translation)|One-to-many (bidirectional)|Retrieve translations associated with a product and vice versa.|
+|\[ProductVariant]\(/references/product/models/ProductVariant) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product variant only.|
+|\[ProductCategory]\(/references/product/models/ProductCategory) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product category only.|
+|\[ProductCollection]\(/references/product/models/ProductCollection) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product collection only.|
+|\[ProductTag]\(/references/product/models/ProductTag) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product tag only.|
+|\[ProductType]\(/references/product/models/ProductType) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product type only.|
+|\[ProductOption]\(/references/product/models/ProductOption) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product option only.|
+|\[ProductOptionValue]\(/references/product/models/ProductOptionValue) -> \[Translation]\(/references/translation/models/Translation)|One-to-many (read-only)|Retrieve translations of a product option value only.|
 
 ### Retrieve with Query
 
@@ -47366,19 +47820,19 @@ The Translation Module currently supports translations for the following data mo
 
 |Data Model|Translatable Fields|
 |---|---|
-|\`CustomerGroup\`|\`name\`|
-|\`Product\`||
-|\`ProductCategory\`||
-|\`ProductCollection\`|\`title\`|
-|\`ProductOption\`|\`title\`|
-|\`ProductOptionValue\`|\`value\`|
-|\`ProductTag\`|\`value\`|
-|\`ProductType\`|\`value\`|
-|\`ProductVariant\`||
-|\`Region\`|\`name\`|
-|\`ShippingOption\`|\`name\`|
-|\`ShippingOptionType\`||
-|\`TaxRate\`|\`name\`|
+|\`CustomerGroup\` (\[Customer Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/customer)) (\[+v2.12.4]\(https://github.com/medusajs/medusa/releases/tag/v2.12.4))|\`name\`|
+|\`Product\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`title\`\`description\`\`material\`\`subtitle\`|
+|\`ProductCategory\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`name\`\`description\`|
+|\`ProductCollection\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`title\`|
+|\`ProductOption\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`title\`|
+|\`ProductOptionValue\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`value\`|
+|\`ProductTag\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`value\`|
+|\`ProductType\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`value\`|
+|\`ProductVariant\` (\[Product Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product))|\`title\`\`material\`|
+|\`Region\` (\[Region Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region)) (\[+v2.12.4]\(https://github.com/medusajs/medusa/releases/tag/v2.12.4))|\`name\`|
+|\`ShippingOption\` (\[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)) (\[+v2.12.4]\(https://github.com/medusajs/medusa/releases/tag/v2.12.4))|\`name\`|
+|\`ShippingOptionType\` (\[Fulfillment Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/fulfillment)) (\[+v2.12.4]\(https://github.com/medusajs/medusa/releases/tag/v2.12.4))|\`label\`\`description\`|
+|\`TaxRate\` (\[Tax Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/tax)) (\[+v2.12.4]\(https://github.com/medusajs/medusa/releases/tag/v2.12.4))|\`name\`|
 
 Future versions of the Translation Module will include support for all Commerce Modules.
 
@@ -47904,6 +48358,106 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
 ```
 
 
+# Links between User Module and Other Modules
+
+This document showcases the module links defined between the User Module and other Commerce Modules.
+
+## Summary
+
+The User Module has the following links to other modules:
+
+|First Data Model|Second Data Model|Type|Description|
+|---|---|---|---|
+|\[User]\(/references/user/models/User)|\`RbacRole\` in \[RBAC Module]\(/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac)|Stored - many-to-many|\[Learn more]\(#rbac-module)|
+
+***
+
+## RBAC Module
+
+This feature requires an enterprise license. You must also enable its feature flag: `rbac`.
+
+You assign roles to admin users to control their access. Medusa defines a link between the `User` data model and the `RbacRole` data model from the [RBAC Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/index.html.md).
+
+An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
+
+### Retrieve with Query
+
+To retrieve the roles of a user with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), pass `rbac_roles.*` in `fields`:
+
+### query.graph
+
+```ts
+const { data: users } = await query.graph({
+  entity: "user",
+  fields: [
+    "rbac_roles.*",
+  ],
+})
+
+// users[0].rbac_roles
+```
+
+### useQueryGraphStep
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: users } = useQueryGraphStep({
+  entity: "user",
+  fields: [
+    "rbac_roles.*",
+  ],
+})
+
+// users[0].rbac_roles
+```
+
+You can also retrieve the users of a role by passing `users.*` in `fields` when querying the `rbac_role` entity.
+
+### Manage with Link
+
+To assign a role to a user, use [Link](https://docs.medusajs.com/docs/learn/fundamentals/module-links/link/index.html.md):
+
+### link.create
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// ...
+
+await link.create({
+  [Modules.USER]: {
+    user_id: "user_123",
+  },
+  [Modules.RBAC]: {
+    rbac_role_id: "role_123",
+  },
+})
+```
+
+### createRemoteLinkStep
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+createRemoteLinkStep([
+  {
+    [Modules.USER]: {
+      user_id: "user_123",
+    },
+    [Modules.RBAC]: {
+      rbac_role_id: "role_123",
+    },
+  },
+])
+```
+
+
 # User Module Options
 
 In this guide, you'll learn about the options you can pass to the User Module.
@@ -47951,10 +48505,10 @@ JWT_ISSUER=medusa
 |Option|Description|Required|Default|
 |---|---|---|---|---|---|---|
 |\`jwt\_secret\`|A string indicating the secret used to sign the invite tokens.|Yes|-|
-|\`jwt\_public\_key\`|A string indicating the public key used to verify JWT tokens when using asymmetric validation. Only used when the JWT secret is a private key for asymmetric signing.|No|-|
-|\`valid\_duration\`|A number indicating the duration in seconds that an invite token is valid. This is used to set the expiration time for invite tokens.|No|\`86400\`|
-|\`jwt\_options\`|An object containing options for signing JWT tokens when using asymmetric signing with a private/public key pair. Accepts any options from |No|\`\{}\`|
-|\`jwt\_verify\_options\`|An object containing options for verifying JWT tokens when using asymmetric validation with a private/public key pair. Accepts any options from |No|Value of |
+|\`jwt\_public\_key\`|A string indicating the public key used to verify JWT tokens when using asymmetric validation. Only used when the JWT secret is a private key for asymmetric signing.Learn more in the \[Asymmetric Encryption]\(https://docs.medusajs.com/docs/learn/configurations/medusa-config/asymmetric-encryption) guide.|No|-|
+|\`valid\_duration\`|A number indicating the duration in seconds that an invite token is valid. This is used to set the expiration time for invite tokens.|No|\`86400\` seconds (\`1\` day)|
+|\`jwt\_options\`|An object containing options for signing JWT tokens when using asymmetric signing with a private/public key pair. Accepts any options from \[jsonwebtoken's SignOptions]\(https://github.com/auth0/node-jsonwebtoken#usage), such as \`algorithm\`. If \`expiresIn\` is provided here, it will be used as a fallback if \`valid\_duration\` is not set.Learn more in the \[Asymmetric Encryption]\(https://docs.medusajs.com/docs/learn/configurations/medusa-config/asymmetric-encryption) guide.|No|\`\{}\`|
+|\`jwt\_verify\_options\`|An object containing options for verifying JWT tokens when using asymmetric validation with a private/public key pair. Accepts any options from \[jsonwebtoken's VerifyOptions]\(https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback), such as \`algorithms\`. If not provided, the \`jwt\_options\` will be used for verification.Learn more in the \[Asymmetric Encryption]\(https://docs.medusajs.com/docs/learn/configurations/medusa-config/asymmetric-encryption) guide.|No|Value of \`jwt\_options\`|
 
 
 # User Module
@@ -48880,7 +49434,7 @@ module.exports = defineConfig({
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`ttl\`|The number of seconds an item can live in the cache before it’s removed.|\`30\`|
+|\`ttl\`|The number of seconds an item can live in the cache before it’s removed.|\`30\` seconds|
 
 
 # Cache Module
@@ -48992,9 +49546,9 @@ CACHE_REDIS_URL=<YOUR_REDIS_URL>
 |Option|Description|Required|Default|
 |---|---|---|---|---|---|---|
 |\`redisUrl\`|A string indicating the Redis connection URL.|Yes|-|
-|\`redisOptions\`|An object of Redis options. Refer to the |No|-|
-|\`ttl\`|The number of seconds an item can live in the cache before it’s removed.|No|\`30\`|
-|\`namespace\`|A string used to prefix all cached keys with |No|\`medusa\`|
+|\`redisOptions\`|An object of Redis options. Refer to the \[Redis API Reference]\(https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.|No|-|
+|\`ttl\`|The number of seconds an item can live in the cache before it’s removed.|No|\`30\` seconds|
+|\`namespace\`|A string used to prefix all cached keys with \`\{namespace}:\`.|No|\`medusa\`. So, all cached keys are prefixed with \`medusa:\`.|
 
 ***
 
@@ -49112,9 +49666,9 @@ The following table shows when the Caching Module invalidates cached data based 
 
 |Database Operation|Invalidated Cache Tags|
 |---|---|
-|Create|\`Entity:list:\*\`|
-|Update|\`Entity:\{id}\`|
-|Delete|\`Entity:list:\*\`|
+|Create|\`Entity:list:\*\` (\`Product:list:\*\`)|
+|Update|\`Entity:\{id}\`, \`Entity:list:\*\` if the list includes the updated record. (\`Product:prod\_123\`, \`Product:list:\*\`)|
+|Delete|\`Entity:list:\*\` (\`Product:list:\*\`)|
 
 ### Which Data is Automatically Invalidated?
 
@@ -50668,7 +51222,7 @@ You can pass the following options to the Caching Module when registering it in 
 |Option|Description|Default|
 |---|---|---|
 |\`ttl\`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.
-This number is passed to the underlying caching provider if no TTL is specified when caching data.|\`3600\`|
+This number is passed to the underlying caching provider if no TTL is specified when caching data.|\`3600\` (1 hour)|
 |\`providers\`|An array of caching providers to use. This allows you to configure multiple caching providers for different use cases.|No providers by default|
 
 ***
@@ -50704,7 +51258,7 @@ The Caching Module determines the default Caching Module Provider based on the f
 |Scenario|Default Provider|
 |---|---|---|
 |One provider is registered.|The registered provider.|
-|Multiple providers and one of them has an |The provider with the |
+|Multiple providers and one of them has an \`is\_default\` flag.|The provider with the \`is\_default\` flag set to \`true\`.|
 
 If none of the above scenarios apply, the Caching Module throws an error during startup indicating that no default provider is configured.
 
@@ -50843,9 +51397,9 @@ CACHE_REDIS_URL=redis://localhost:6379
 |Option|Description|Default|
 |---|---|---|
 |\`redisUrl\`|The connection URL for the Redis server.|Required. An error is thrown if not provided.|
-|\`ttl\`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.|\`3600\`|
+|\`ttl\`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.|\`3600\` (1 hour)|
 |\`prefix\`|A string to prefix all cache keys with. This is useful for namespacing your cache keys, especially when sharing a Redis instance with other applications or modules.|No prefix by default|
-|\`compressionThreshold\`|A number indicating the size threshold in bytes above which cached items will be compressed before being stored in Redis. This helps save memory when caching large items.|\`1024\`|
+|\`compressionThreshold\`|A number indicating the size threshold in bytes above which cached items will be compressed before being stored in Redis. This helps save memory when caching large items.|\`1024\` (1 KB)|
 
 ***
 
@@ -51315,11 +51869,11 @@ EVENTS_REDIS_URL=<YOUR_REDIS_URL>
 |Option|Description|Required|Default|
 |---|---|---|---|---|---|---|
 |\`redisUrl\`|A string indicating the Redis connection URL.|Yes|-|
-|\`redisOptions\`|An object of Redis options. Refer to the |No|-|
+|\`redisOptions\`|An object of Redis options. Refer to the \[Redis API Reference]\(https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.|No|-|
 |\`queueName\`|A string indicating BullMQ's queue name.|No|\`events-queue\`|
-|\`queueOptions\`|An object of options to pass to the BullMQ constructor. Refer to |No|-|
-|\`workerOptions\`|An object of options to pass to the BullMQ Worker constructor. Refer to |No|-|
-|\`jobOptions\`|An object of options to pass to jobs added to the BullMQ queue. Refer to |No|-|
+|\`queueOptions\`|An object of options to pass to the BullMQ constructor. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v3.QueueOptions.html) for allowed properties.|No|-|
+|\`workerOptions\`|An object of options to pass to the BullMQ Worker constructor. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v3.WorkerOptions.html) for allowed properties.|No|-|
+|\`jobOptions\`|An object of options to pass to jobs added to the BullMQ queue. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/modules/v3.html#BulkJobOptions) for allowed properties.|No|-|
 
 ## Test the Module
 
@@ -51383,7 +51937,7 @@ module.exports = {
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`upload\_dir\`|The directory to upload files to. Medusa exposes the content of the |\`static\`|
+|\`upload\_dir\`|The directory to upload files to. Medusa exposes the content of the \`static\` directory publicly. If you change the directory, it must be served and publicly accessible.|\`static\`|
 |\`backend\_url\`|The URL that serves the files.|\`http://localhost:9000/static\`|
 
 
@@ -51598,16 +52152,16 @@ module.exports = defineConfig({
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`file\_url\`|The base URL to upload files to.|-|
+|\`file\_url\`|The base URL to upload files to.For AWS S3, the endpoint is of the format \`https://\{bucket}.s3.\{region}.amazonaws.com\`For MinIO, it's the URL to the MinIO server with the bucket's name. For example, \`https://\{server-domain}/\{bucket}\`. Locally, it may be something like \`http://192.168.0.123:9001/\{bucket}\`.For DigitalOcean Spaces, it's either the Origin Endpoint or the CDN endpoint of your Spaces Object Storage bucket.for Supabase, it's \`https://\{uniqueID}.supabase.co/storage/v1/object/public/\{bucket}\`. You can retrieve the \`uniqueID\` from \[Storage Settings]\(https://supabase.com/docs/guides/storage/s3/authentication?queryGroups=language\&language=javascript#s3-access-keys) page in the Endpoint URL.For Cloudflare R2, it's your \`Custom Domain\` (recommended for production use) or \`Public R2.dev Bucket URL\` (for development).|-|
 |\`access\_key\_id\`|The AWS or (S3 compatible) user's access key ID.|-|
 |\`secret\_access\_key\`|The AWS or (S3 compatible) user's secret access key.|-|
-|\`region\`|The bucket's region code.|-|
+|\`region\`|The bucket's region code.For MinIO, use \`us-east-1\`.For Cloudflare, use \`auto\`.|-|
 |\`bucket\`|The bucket's name.|-|
-|\`endpoint\`|The URL to the AWS S3 (or compatible S3 API) server.|-|
+|\`endpoint\`|The URL to the AWS S3 (or compatible S3 API) server.For AWS S3, the endpoint is of the format \`https://s3.\{region}.amazonaws.com\`For MinIO, it's the URL to the MinIO server. For example, locally, it may be something like \`http://192.168.0.123:9001\`.For DigitalOcean Spaces, it's the Spaces Origin Endpoint of the format \`https://\{region}.digitaloceanspaces.com\`.For Supabase, it's the Endpoint URL in the \[Storage Settings]\(https://supabase.com/docs/guides/storage/s3/authentication?queryGroups=language\&language=javascript#s3-access-keys).For Cloudflare, it's the endpoint for S3 clients \`https://\{your-account-id}.r2.cloudflarestorage.com\`.|-|
 |\`prefix\`|A string to prefix each uploaded file's name.|-|
 |\`cache\_control\`|A string indicating how long objects remain in the AWS S3 (or compatible S3 API) cache.|\`public, max-age=31536000\`|
-|\`download\_file\_duration\`|A number indicating the expiry time of presigned URLs in seconds.|\`3600\`|
-|\`additional\_client\_config\`|Any additional configurations to pass to the S3 client.|-|
+|\`download\_file\_duration\`|A number indicating the expiry time of presigned URLs in seconds.|\`3600\` (An hour)|
+|\`additional\_client\_config\`|Any additional configurations to pass to the S3 client.Refer to \[this AWS API reference]\(https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html) for a full list of accepted configuration.|-|
 
 ***
 
@@ -51720,8 +52274,8 @@ When you register other providers in `medusa-config.ts`, Medusa will set the def
 |Scenario|Default Provider|
 |---|---|---|
 |One provider is registered.|The registered provider.|
-|Multiple providers are registered and none of them has an |In-Memory Locking Module Provider.|
-|Multiple providers and one of them has an |The provider with the |
+|Multiple providers are registered and none of them has an \`is\_default\` flag.|In-Memory Locking Module Provider.|
+|Multiple providers and one of them has an \`is\_default\` flag.|The provider with the \`is\_default\` flag.|
 
 ***
 
@@ -51888,12 +52442,12 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
 |Option|Description|Required|Default|
 |---|---|---|---|---|---|---|
 |\`redisUrl\`|A string indicating the Redis connection URL.|Yes|-|
-|\`redisOptions\`|An object of Redis options. Refer to the |No|-|
-|\`namespace\`|A string used to prefix all locked keys with |No|\`medusa\_lock:\`|
+|\`redisOptions\`|An object of Redis options. Refer to the \[Redis API Reference]\(https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.|No|-|
+|\`namespace\`|A string used to prefix all locked keys with \`\{namespace}\`.|No|\`medusa\_lock:\`. So, all locked keys are prefixed with \`medusa\_lock:\`.|
 |\`waitLockingTimeout\`|A number indicating the default timeout (in seconds) to wait while acquiring a lock. This timeout is used when no timeout is specified when executing an asynchronous job or acquiring a lock.|No|\`5\`|
-|\`defaultRetryInterval\`|A number indicating the time (in milliseconds) to wait before retrying to acquire a lock.|No|\`20\`|
-|\`maximumRetryInterval\`|A number indicating the maximum time (in milliseconds) to wait before retrying to acquire a lock.|No|\`1000\`|
-|\`backoffFactor\`|A number indicating the multiplier used for exponential backoff when retrying to acquire a lock. Each retry will wait longer than the previous one by this factor.|No|\`2\`|
+|\`defaultRetryInterval\`|A number indicating the time (in milliseconds) to wait before retrying to acquire a lock.|No|\`20\` (changed from \`5\` in v2.13.6+)|
+|\`maximumRetryInterval\`|A number indicating the maximum time (in milliseconds) to wait before retrying to acquire a lock.|No|\`1000\` (changed from \`200\` in v2.13.6+)|
+|\`backoffFactor\` (v2.13.6+)|A number indicating the multiplier used for exponential backoff when retrying to acquire a lock. Each retry will wait longer than the previous one by this factor.|No|\`2\`|
 
 ***
 
@@ -52359,12 +52913,12 @@ SENDGRID_FROM=<YOUR_SENDGRID_FROM>
 
 |Option|Description|
 |---|---|---|
-||The channels this notification module is used to send notifications for.
+|\`channels\`|The channels this notification module is used to send notifications for.
 Only one provider can be defined for a channel.|
-|
-|
-|
-|
+|\`api\_key\`
+The SendGrid API key.|
+|\`from\`
+The SendGrid from email.|
 
 ## SendGrid Templates
 
@@ -53033,21 +53587,21 @@ WE_REDIS_URL=<YOUR_REDIS_URL>
 
 |Option|Description|Required|
 |---|---|---|---|---|
-|\`url\`|A string indicating the Redis connection URL.|No. If not provided, you must provide the |
-|\`redisUrl\`|A string indicating the Redis connection URL.|No. If not provided, you must provide the |
-|\`pubsub\`|A connection object having the following properties:|No. If not provided, you must provide the |
-|\`queueName\`|The name of the queue used to keep track of retries and timeouts for workflow executions.|No|
-|\`jobQueueName\`|The name of the queue used to keep track of retries and timeouts for scheduled jobs.|No|
-|\`options\`|An object of Redis options. Refer to the |No|
-|\`redisOptions\`|An object of Redis options. Refer to the |No|
-|\`queueOptions\`|An object of options to pass to all BullMQ instances. Refer to |No|
-|\`workerOptions\`|An object of options to pass to all BullMQ worker instances. Refer to |No|
-|\`mainQueueOptions\`|An object of options to pass to the main BullMQ queue instance for workflows. Refer to |No|
-|\`mainWorkerOptions\`|An object of options to pass to the main BullMQ worker instance for workflows. Refer to |No|
-|\`jobQueueOptions\`|An object of options to pass to the main BullMQ workflow queue instance for scheduled jobs. Refer to |No|
-|\`jobWorkerOptions\`|An object of options to pass to the main BullMQ workflow worker instance for scheduled jobs. Refer to |No|
-|\`cleanerQueueOptions\`|An object of options to pass to the BullMQ cleaner queue instance. Refer to |No|
-|\`cleanerWorkerOptions\`|An object of options to pass to the BullMQ cleaner worker instance. Refer to |No|
+|\`url\` (Deprecated v2.12.2+, use \`redisUrl\` instead)|A string indicating the Redis connection URL.|No. If not provided, you must provide the \`pubsub\` option.|
+|\`redisUrl\` (v2.12.2+)|A string indicating the Redis connection URL.|No. If not provided, you must provide the \`pubsub\` option.|
+|\`pubsub\`|A connection object having the following properties:\`url\`: A required string indicating the Redis connection URL.\`options\`: An optional object of Redis options. Refer to the \[Redis API Reference]\(https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.|No. If not provided, you must provide the \`url\` option.|
+|\`queueName\`|The name of the queue used to keep track of retries and timeouts for workflow executions.Default: \`medusa-workflows\`|No|
+|\`jobQueueName\`|The name of the queue used to keep track of retries and timeouts for scheduled jobs.Default: \`medusa-workflows-jobs\`|No|
+|\`options\` (deprecated v2.12.2+, use \`redisOptions\` instead)|An object of Redis options. Refer to the \[Redis API Reference]\(https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.|No|
+|\`redisOptions\` (v2.12.2+)|An object of Redis options. Refer to the \[Redis API Reference]\(https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.|No|
+|\`queueOptions\` (v2.12.2+)|An object of options to pass to all BullMQ instances. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.|No|
+|\`workerOptions\` (v2.12.2+)|An object of options to pass to all BullMQ worker instances. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.You can instead set options per worker using the \`mainWorkerOptions\`, \`jobWorkerOptions\`, and \`cleanerWorkerOptions\` options.|No|
+|\`mainQueueOptions\` (v2.12.2+)|An object of options to pass to the main BullMQ queue instance for workflows. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.|No|
+|\`mainWorkerOptions\` (v2.12.2+)|An object of options to pass to the main BullMQ worker instance for workflows. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.|No|
+|\`jobQueueOptions\` (v2.12.2+)|An object of options to pass to the main BullMQ workflow queue instance for scheduled jobs. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.|No|
+|\`jobWorkerOptions\` (v2.12.2+)|An object of options to pass to the main BullMQ workflow worker instance for scheduled jobs. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.|No|
+|\`cleanerQueueOptions\` (v2.12.2+)|An object of options to pass to the BullMQ cleaner queue instance. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html) for allowed properties.|No|
+|\`cleanerWorkerOptions\` (v2.12.2+)|An object of options to pass to the BullMQ cleaner worker instance. Refer to \[BullMQ's API reference]\(https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html) for allowed properties.|No|
 
 ## Test the Module
 
@@ -53099,6 +53653,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartWorkflow/index.html.md)
 - [updateLineItemInCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateLineItemInCartWorkflow/index.html.md)
 - [updateTaxLinesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTaxLinesWorkflow/index.html.md)
+- [upsertTaxLinesWorkflow](https://docs.medusajs.com/references/medusa-workflows/upsertTaxLinesWorkflow/index.html.md)
 - [validateCartGiftCardStep](https://docs.medusajs.com/references/medusa-workflows/validateCartGiftCardStep/index.html.md)
 - [validateCartStep](https://docs.medusajs.com/references/medusa-workflows/validateCartStep/index.html.md)
 - [validateCustomerStoreCreditAccountStep](https://docs.medusajs.com/references/medusa-workflows/validateCustomerStoreCreditAccountStep/index.html.md)
@@ -53418,6 +53973,14 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updatePromotionsStatusWorkflow](https://docs.medusajs.com/references/medusa-workflows/updatePromotionsStatusWorkflow/index.html.md)
 - [updatePromotionsValidationStep](https://docs.medusajs.com/references/medusa-workflows/updatePromotionsValidationStep/index.html.md)
 - [updatePromotionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updatePromotionsWorkflow/index.html.md)
+- [createRbacPoliciesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createRbacPoliciesWorkflow/index.html.md)
+- [createRbacRolePoliciesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createRbacRolePoliciesWorkflow/index.html.md)
+- [createRbacRolesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createRbacRolesWorkflow/index.html.md)
+- [deleteRbacPoliciesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteRbacPoliciesWorkflow/index.html.md)
+- [deleteRbacRolePoliciesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteRbacRolePoliciesWorkflow/index.html.md)
+- [deleteRbacRolesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteRbacRolesWorkflow/index.html.md)
+- [updateRbacPoliciesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateRbacPoliciesWorkflow/index.html.md)
+- [updateRbacRolesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateRbacRolesWorkflow/index.html.md)
 - [createRegionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createRegionsWorkflow/index.html.md)
 - [deleteRegionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteRegionsWorkflow/index.html.md)
 - [updateRegionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateRegionsWorkflow/index.html.md)
@@ -53474,10 +54037,14 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [createTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createTranslationsWorkflow/index.html.md)
 - [deleteTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteTranslationsWorkflow/index.html.md)
 - [updateTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateTranslationsWorkflow/index.html.md)
+- [assignUserRolesWorkflow](https://docs.medusajs.com/references/medusa-workflows/assignUserRolesWorkflow/index.html.md)
 - [createUserAccountWorkflow](https://docs.medusajs.com/references/medusa-workflows/createUserAccountWorkflow/index.html.md)
 - [createUsersWorkflow](https://docs.medusajs.com/references/medusa-workflows/createUsersWorkflow/index.html.md)
 - [deleteUsersWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteUsersWorkflow/index.html.md)
+- [getAssignablePoliciesWorkflow](https://docs.medusajs.com/references/medusa-workflows/getAssignablePoliciesWorkflow/index.html.md)
+- [getAssignableRolesWorkflow](https://docs.medusajs.com/references/medusa-workflows/getAssignableRolesWorkflow/index.html.md)
 - [removeUserAccountWorkflow](https://docs.medusajs.com/references/medusa-workflows/removeUserAccountWorkflow/index.html.md)
+- [removeUserRolesWorkflow](https://docs.medusajs.com/references/medusa-workflows/removeUserRolesWorkflow/index.html.md)
 - [updateUsersWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateUsersWorkflow/index.html.md)
 
 
@@ -53489,6 +54056,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [revokeApiKeysStep](https://docs.medusajs.com/references/medusa-workflows/steps/revokeApiKeysStep/index.html.md)
 - [updateApiKeysStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateApiKeysStep/index.html.md)
 - [validateSalesChannelsExistStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateSalesChannelsExistStep/index.html.md)
+- [createPasswordResetTokenStep](https://docs.medusajs.com/references/medusa-workflows/steps/createPasswordResetTokenStep/index.html.md)
 - [requestVerificationStep](https://docs.medusajs.com/references/medusa-workflows/steps/requestVerificationStep/index.html.md)
 - [setAuthAppMetadataStep](https://docs.medusajs.com/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md)
 - [addShippingMethodToCartStep](https://docs.medusajs.com/references/medusa-workflows/steps/addShippingMethodToCartStep/index.html.md)
@@ -53727,6 +54295,17 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateCampaignsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateCampaignsStep/index.html.md)
 - [updatePromotionRulesStep](https://docs.medusajs.com/references/medusa-workflows/steps/updatePromotionRulesStep/index.html.md)
 - [updatePromotionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/updatePromotionsStep/index.html.md)
+- [createRbacPoliciesStep](https://docs.medusajs.com/references/medusa-workflows/steps/createRbacPoliciesStep/index.html.md)
+- [createRbacRoleParentsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createRbacRoleParentsStep/index.html.md)
+- [createRbacRolePoliciesStep](https://docs.medusajs.com/references/medusa-workflows/steps/createRbacRolePoliciesStep/index.html.md)
+- [createRbacRolesStep](https://docs.medusajs.com/references/medusa-workflows/steps/createRbacRolesStep/index.html.md)
+- [deleteRbacPoliciesStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteRbacPoliciesStep/index.html.md)
+- [deleteRbacRolePoliciesStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteRbacRolePoliciesStep/index.html.md)
+- [deleteRbacRolesStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteRbacRolesStep/index.html.md)
+- [setRoleParentStep](https://docs.medusajs.com/references/medusa-workflows/steps/setRoleParentStep/index.html.md)
+- [updateRbacPoliciesStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateRbacPoliciesStep/index.html.md)
+- [updateRbacRolesStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateRbacRolesStep/index.html.md)
+- [validateUserPermissionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateUserPermissionsStep/index.html.md)
 - [createRegionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/createRegionsStep/index.html.md)
 - [deleteRegionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteRegionsStep/index.html.md)
 - [setRegionsPaymentProvidersStep](https://docs.medusajs.com/references/medusa-workflows/steps/setRegionsPaymentProvidersStep/index.html.md)
@@ -53787,7 +54366,10 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [validateTranslationsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateTranslationsStep/index.html.md)
 - [createUsersStep](https://docs.medusajs.com/references/medusa-workflows/steps/createUsersStep/index.html.md)
 - [deleteUsersStep](https://docs.medusajs.com/references/medusa-workflows/steps/deleteUsersStep/index.html.md)
+- [getAssignablePoliciesStep](https://docs.medusajs.com/references/medusa-workflows/steps/getAssignablePoliciesStep/index.html.md)
+- [getAssignableRolesStep](https://docs.medusajs.com/references/medusa-workflows/steps/getAssignableRolesStep/index.html.md)
 - [updateUsersStep](https://docs.medusajs.com/references/medusa-workflows/steps/updateUsersStep/index.html.md)
+- [validateUserRolePermissionsStep](https://docs.medusajs.com/references/medusa-workflows/steps/validateUserRolePermissionsStep/index.html.md)
 
 
 # Events Reference
@@ -53800,12 +54382,16 @@ This documentation page includes the list of all events emitted by [Medusa's wor
 
 |Event|Description|
 |---|---|
-|auth.mfa\_enabled|Emitted when an MFA factor is enabled for an auth identity.|
-|auth.mfa\_disabled|Emitted when an MFA factor is disabled for an auth identity.|
-|auth.mfa\_recovery\_codes\_generated|Emitted when recovery codes are generated for an auth identity.|
-|auth.password\_reset|Emitted when a reset password token is generated. You can listen to this event
+|\[auth.mfa\_enabled]\(#authmfa\_enabled)
+v2.15.5|Emitted when an MFA factor is enabled for an auth identity.|
+|\[auth.mfa\_disabled]\(#authmfa\_disabled)
+v2.15.5|Emitted when an MFA factor is disabled for an auth identity.|
+|\[auth.mfa\_recovery\_codes\_generated]\(#authmfa\_recovery\_codes\_generated)
+v2.15.5|Emitted when recovery codes are generated for an auth identity.|
+|\[auth.password\_reset]\(#authpassword\_reset)|Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.|
-|auth.verification\_requested|Emitted when a verification token is generated. You can listen to
+|\[auth.verification\_requested]\(#authverification\_requested)
+v2.15.5|Emitted when a verification token is generated. You can listen to
 this event and decide how to deliver the token to the user or customer.|
 
 ### auth.mfa\_enabled&#xA;
@@ -53913,11 +54499,12 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|cart.created|Emitted when a cart is created.|
-|cart.updated|Emitted when a cart's details are updated.|
-|cart.region\_updated|Emitted when the cart's region is updated. This
-event is emitted alongside the |
-|cart.customer\_transferred|Emitted when the customer in the cart is transferred.|
+|\[cart.created]\(#cartcreated)|Emitted when a cart is created.|
+|\[cart.updated]\(#cartupdated)|Emitted when a cart's details are updated.|
+|\[cart.region\_updated]\(#cartregion\_updated)|Emitted when the cart's region is updated. This
+event is emitted alongside the \`cart.updated\` event.|
+|\[cart.customer\_transferred]\(#cartcustomer\_transferred)
+v2.8.0|Emitted when the customer in the cart is transferred.|
 
 ### cart.created
 
@@ -54012,9 +54599,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|customer.created|Emitted when a customer is created.|
-|customer.updated|Emitted when a customer is updated.|
-|customer.deleted|Emitted when a customer is deleted.|
+|\[customer.created]\(#customercreated)|Emitted when a customer is created.|
+|\[customer.updated]\(#customerupdated)|Emitted when a customer is updated.|
+|\[customer.deleted]\(#customerdeleted)|Emitted when a customer is deleted.|
 
 ### customer.created
 
@@ -54084,8 +54671,8 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|shipment.created|Emitted when a shipment is created for an order.|
-|delivery.created|Emitted when a fulfillment is marked as delivered.|
+|\[shipment.created]\(#shipmentcreated)|Emitted when a shipment is created for an order.|
+|\[delivery.created]\(#deliverycreated)|Emitted when a fulfillment is marked as delivered.|
 
 ### shipment.created
 
@@ -54134,11 +54721,11 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|invite.accepted|Emitted when an invite is accepted.|
-|invite.created|Emitted when invites are created. You can listen to this event
+|\[invite.accepted]\(#inviteaccepted)|Emitted when an invite is accepted.|
+|\[invite.created]\(#invitecreated)|Emitted when invites are created. You can listen to this event
 to send an email to the invited users, for example.|
-|invite.deleted|Emitted when invites are deleted.|
-|invite.resent|Emitted when invites should be resent because their token was
+|\[invite.deleted]\(#invitedeleted)|Emitted when invites are deleted.|
+|\[invite.resent]\(#inviteresent)|Emitted when invites should be resent because their token was
 refreshed. You can listen to this event to send an email to the invited users,
 for example.|
 
@@ -54231,20 +54818,20 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|order.updated|Emitted when the details of an order or draft order is updated. This
+|\[order.updated]\(#orderupdated)|Emitted when the details of an order or draft order is updated. This
 doesn't include updates made by an edit.|
-|order.placed|Emitted when an order is placed, or when a draft order is converted to an
+|\[order.placed]\(#orderplaced)|Emitted when an order is placed, or when a draft order is converted to an
 order.|
-|order.canceled|Emitted when an order is canceld.|
-|order.completed|Emitted when orders are completed.|
-|order.archived|Emitted when an order is archived.|
-|order.fulfillment\_created|Emitted when a fulfillment is created for an order.|
-|order.fulfillment\_canceled|Emitted when an order's fulfillment is canceled.|
-|order.return\_requested|Emitted when a return request is confirmed.|
-|order.return\_received|Emitted when a return is marked as received.|
-|order.claim\_created|Emitted when a claim is created for an order.|
-|order.exchange\_created|Emitted when an exchange is created for an order.|
-|order.transfer\_requested|Emitted when an order is requested to be transferred to
+|\[order.canceled]\(#ordercanceled)|Emitted when an order is canceld.|
+|\[order.completed]\(#ordercompleted)|Emitted when orders are completed.|
+|\[order.archived]\(#orderarchived)|Emitted when an order is archived.|
+|\[order.fulfillment\_created]\(#orderfulfillment\_created)|Emitted when a fulfillment is created for an order.|
+|\[order.fulfillment\_canceled]\(#orderfulfillment\_canceled)|Emitted when an order's fulfillment is canceled.|
+|\[order.return\_requested]\(#orderreturn\_requested)|Emitted when a return request is confirmed.|
+|\[order.return\_received]\(#orderreturn\_received)|Emitted when a return is marked as received.|
+|\[order.claim\_created]\(#orderclaim\_created)|Emitted when a claim is created for an order.|
+|\[order.exchange\_created]\(#orderexchange\_created)|Emitted when an exchange is created for an order.|
+|\[order.transfer\_requested]\(#ordertransfer\_requested)|Emitted when an order is requested to be transferred to
 another customer.|
 
 ### order.updated
@@ -54509,9 +55096,12 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|order-edit.requested|Emitted when an order edit is requested.|
-|order-edit.confirmed|Emitted when an order edit request is confirmed.|
-|order-edit.canceled|Emitted when an order edit request is canceled.|
+|\[order-edit.requested]\(#order-editrequested)
+v2.8.0|Emitted when an order edit is requested.|
+|\[order-edit.confirmed]\(#order-editconfirmed)
+v2.8.0|Emitted when an order edit request is confirmed.|
+|\[order-edit.canceled]\(#order-editcanceled)
+v2.8.0|Emitted when an order edit request is canceled.|
 
 ### order-edit.requested&#xA;
 
@@ -54582,8 +55172,8 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|payment.captured|Emitted when a payment is captured.|
-|payment.refunded|Emitted when a payment is refunded.|
+|\[payment.captured]\(#paymentcaptured)|Emitted when a payment is captured.|
+|\[payment.refunded]\(#paymentrefunded)|Emitted when a payment is refunded.|
 
 ### payment.captured
 
@@ -54633,9 +55223,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product.updated|Emitted when products are updated.|
-|product.created|Emitted when products are created.|
-|product.deleted|Emitted when products are deleted.|
+|\[product.updated]\(#productupdated)|Emitted when products are updated.|
+|\[product.created]\(#productcreated)|Emitted when products are created.|
+|\[product.deleted]\(#productdeleted)|Emitted when products are deleted.|
 
 ### product.updated
 
@@ -54709,9 +55299,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product-category.created|Emitted when product categories are created.|
-|product-category.updated|Emitted when product categories are updated.|
-|product-category.deleted|Emitted when product categories are deleted.|
+|\[product-category.created]\(#product-categorycreated)|Emitted when product categories are created.|
+|\[product-category.updated]\(#product-categoryupdated)|Emitted when product categories are updated.|
+|\[product-category.deleted]\(#product-categorydeleted)|Emitted when product categories are deleted.|
 
 ### product-category.created
 
@@ -54779,9 +55369,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product-collection.created|Emitted when product collections are created.|
-|product-collection.updated|Emitted when product collections are updated.|
-|product-collection.deleted|Emitted when product collections are deleted.|
+|\[product-collection.created]\(#product-collectioncreated)|Emitted when product collections are created.|
+|\[product-collection.updated]\(#product-collectionupdated)|Emitted when product collections are updated.|
+|\[product-collection.deleted]\(#product-collectiondeleted)|Emitted when product collections are deleted.|
 
 ### product-collection.created
 
@@ -54849,9 +55439,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product-option.updated|Emitted when product options are updated.|
-|product-option.created|Emitted when product options are created.|
-|product-option.deleted|Emitted when product options are deleted.|
+|\[product-option.updated]\(#product-optionupdated)|Emitted when product options are updated.|
+|\[product-option.created]\(#product-optioncreated)|Emitted when product options are created.|
+|\[product-option.deleted]\(#product-optiondeleted)|Emitted when product options are deleted.|
 
 ### product-option.updated
 
@@ -54919,9 +55509,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product-tag.updated|Emitted when product tags are updated.|
-|product-tag.created|Emitted when product tags are created.|
-|product-tag.deleted|Emitted when product tags are deleted.|
+|\[product-tag.updated]\(#product-tagupdated)|Emitted when product tags are updated.|
+|\[product-tag.created]\(#product-tagcreated)|Emitted when product tags are created.|
+|\[product-tag.deleted]\(#product-tagdeleted)|Emitted when product tags are deleted.|
 
 ### product-tag.updated
 
@@ -54989,9 +55579,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product-type.updated|Emitted when product types are updated.|
-|product-type.created|Emitted when product types are created.|
-|product-type.deleted|Emitted when product types are deleted.|
+|\[product-type.updated]\(#product-typeupdated)|Emitted when product types are updated.|
+|\[product-type.created]\(#product-typecreated)|Emitted when product types are created.|
+|\[product-type.deleted]\(#product-typedeleted)|Emitted when product types are deleted.|
 
 ### product-type.updated
 
@@ -55059,9 +55649,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|product-variant.updated|Emitted when product variants are updated.|
-|product-variant.created|Emitted when product variants are created.|
-|product-variant.deleted|Emitted when product variants are deleted.|
+|\[product-variant.updated]\(#product-variantupdated)|Emitted when product variants are updated.|
+|\[product-variant.created]\(#product-variantcreated)|Emitted when product variants are created.|
+|\[product-variant.deleted]\(#product-variantdeleted)|Emitted when product variants are deleted.|
 
 ### product-variant.updated
 
@@ -55135,9 +55725,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|region.updated|Emitted when regions are updated.|
-|region.created|Emitted when regions are created.|
-|region.deleted|Emitted when regions are deleted.|
+|\[region.updated]\(#regionupdated)|Emitted when regions are updated.|
+|\[region.created]\(#regioncreated)|Emitted when regions are created.|
+|\[region.deleted]\(#regiondeleted)|Emitted when regions are deleted.|
 
 ### region.updated
 
@@ -55205,9 +55795,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|sales-channel.created|Emitted when sales channels are created.|
-|sales-channel.updated|Emitted when sales channels are updated.|
-|sales-channel.deleted|Emitted when sales channels are deleted.|
+|\[sales-channel.created]\(#sales-channelcreated)|Emitted when sales channels are created.|
+|\[sales-channel.updated]\(#sales-channelupdated)|Emitted when sales channels are updated.|
+|\[sales-channel.deleted]\(#sales-channeldeleted)|Emitted when sales channels are deleted.|
 
 ### sales-channel.created
 
@@ -55275,9 +55865,12 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|shipping-option.created|Emitted when shipping options are created.|
-|shipping-option.updated|Emitted when shipping options are updated.|
-|shipping-option.deleted|Emitted when shipping options are deleted.|
+|\[shipping-option.created]\(#shipping-optioncreated)
+v2.12.4|Emitted when shipping options are created.|
+|\[shipping-option.updated]\(#shipping-optionupdated)
+v2.12.4|Emitted when shipping options are updated.|
+|\[shipping-option.deleted]\(#shipping-optiondeleted)
+v2.12.4|Emitted when shipping options are deleted.|
 
 ### shipping-option.created&#xA;
 
@@ -55345,9 +55938,12 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|shipping-option-type.updated|Emitted when shipping option types are updated.|
-|shipping-option-type.created|Emitted when shipping option types are created.|
-|shipping-option-type.deleted|Emitted when shipping option types are deleted.|
+|\[shipping-option-type.updated]\(#shipping-option-typeupdated)
+v2.10.0|Emitted when shipping option types are updated.|
+|\[shipping-option-type.created]\(#shipping-option-typecreated)
+v2.10.0|Emitted when shipping option types are created.|
+|\[shipping-option-type.deleted]\(#shipping-option-typedeleted)
+v2.10.0|Emitted when shipping option types are deleted.|
 
 ### shipping-option-type.updated&#xA;
 
@@ -55415,9 +56011,12 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|translation.created|Emitted when translations are created.|
-|translation.updated|Emitted when translations are updated.|
-|translation.deleted|Emitted when translations are deleted.|
+|\[translation.created]\(#translationcreated)
+v2.12.3|Emitted when translations are created.|
+|\[translation.updated]\(#translationupdated)
+v2.12.3|Emitted when translations are updated.|
+|\[translation.deleted]\(#translationdeleted)
+v2.12.3|Emitted when translations are deleted.|
 
 ### translation.created&#xA;
 
@@ -55488,9 +56087,9 @@ The following workflows emit this event when they're executed. These workflows a
 
 |Event|Description|
 |---|---|
-|user.created|Emitted when users are created.|
-|user.updated|Emitted when users are updated.|
-|user.deleted|Emitted when users are deleted.|
+|\[user.created]\(#usercreated)|Emitted when users are created.|
+|\[user.updated]\(#userupdated)|Emitted when users are updated.|
+|\[user.deleted]\(#userdeleted)|Emitted when users are deleted.|
 
 ### user.created
 
@@ -55575,7 +56174,7 @@ Refer to the [Build Medusa Application](https://docs.medusajs.com/docs/learn/bui
 
 |Option|Description|
 |---|---|---|
-|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |
+|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the \`.medusa/server/public/admin\` directory. When this option is passed, the admin is built to the \`.medusa/admin\` directory instead.|
 
 ***
 
@@ -55618,7 +56217,7 @@ npx medusa codemod <transformation>
 
 |Argument|Description|
 |---|---|---|
-|\`\<transformation>\`|The name of the codemod transformation to run. For example, |
+|\`\<transformation>\`|The name of the codemod transformation to run. For example, \`replace-zod-imports\`.|
 
 
 # db Commands - Medusa CLI Reference
@@ -55682,7 +56281,7 @@ npx medusa db:generate <module_names...>
 
 |Argument|Description|Required|
 |---|---|---|---|---|
-|\`module\_names\`|The name of one or more modules (separated by spaces) to generate migrations for. For example, |Yes|
+|\`module\_names\`|The name of one or more modules (separated by spaces) to generate migrations for. For example, \`brand\`.|Yes|
 
 ***
 
@@ -55702,8 +56301,8 @@ Use this command if you've updated the Medusa packages, or you've created custom
 |---|---|---|---|---|---|---|
 |\`--skip-links\`|Skip syncing links to the database.|No|Links are synced by default.|
 |\`--skip-scripts\`|Skip running data migration scripts. This option is added starting from
-|No|Data migration scripts are run by default starting from
-|
+\[Medusa v2.3.0]\(https://github.com/medusajs/medusa/releases/tag/v2.3.0).|No|Data migration scripts are run by default starting from
+\[Medusa v2.3.0]\(https://github.com/medusajs/medusa/releases/tag/v2.3.0).|
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
 
@@ -55721,7 +56320,7 @@ npx medusa db:rollback <module_names...>
 
 |Argument|Description|Required|
 |---|---|---|---|---|
-|\`module\_names\`|The name of one or more modules (separated by spaces) to rollback their migrations for. For example, |Yes|
+|\`module\_names\`|The name of one or more modules (separated by spaces) to rollback their migrations for. For example, \`brand\`.|Yes|
 
 ***
 
@@ -55755,8 +56354,8 @@ npx medusa develop
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`-H \<host>\`|Set the host of the Medusa server.|\`localhost\`|
-|\`-p \<port>\`|Set the port of the Medusa server.|\`9000\`|
+|\`-H \<host>\`, \`--host \<host>\`|Set the host of the Medusa server.|\`localhost\`|
+|\`-p \<port>\`, \`--port \<port>\`|Set the port of the Medusa server.|\`9000\`|
 
 
 # exec Command - Medusa CLI Reference
@@ -55772,7 +56371,7 @@ npx medusa exec [file] [args...]
 |Argument|Description|Required|
 |---|---|---|---|---|
 |\`file\`|The path to the TypeScript or JavaScript file containing the function to execute.|Yes|
-|\`args\`|A list of arguments to pass to the function. These arguments are passed in the |No|
+|\`args\`|A list of arguments to pass to the function. These arguments are passed in the \`args\` property of the function's object parameter.|No|
 
 
 # new Command - Medusa CLI Reference
@@ -55793,9 +56392,9 @@ medusa new [<dir_name>]
 
 |Option|Description|
 |---|---|---|
-|\`-y\`|Skip all prompts, such as database prompts. A database might not be created if default PostgreSQL credentials don't work.|
+|\`-y\`, \`--useDefaults\`|Skip all prompts, such as database prompts. A database might not be created if default PostgreSQL credentials don't work.|
 |\`--skip-db\`|Skip database creation.|
-|\`--skip-env\`|Skip populating |
+|\`--skip-env\`|Skip populating \`.env\`.|
 |\`--db-user \<user>\`|The database user to use for database setup.|
 |\`--db-database \<database>\`|The name of the database used for database setup.|
 |\`--db-pass \<password>\`|The database password to use for database setup.|
@@ -55846,7 +56445,7 @@ npx medusa plugin:add [names...]
 
 |Argument|Description|Required|
 |---|---|---|---|---|
-|\`names\`|The names of one or more plugins to install from the local package registry. A plugin's name is as specified in its |Yes|
+|\`names\`|The names of one or more plugins to install from the local package registry. A plugin's name is as specified in its \`package.json\` file.|Yes|
 
 ***
 
@@ -55891,9 +56490,9 @@ npx medusa start
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`-H \<host>\`|Set host of the Medusa server.|\`localhost\`|
-|\`-p \<port>\`|Set port of the Medusa server.|\`9000\`|
-|\`--cluster \<string> \[--workers \<string>] \[--servers \<string>]\`|Start Medusa in cluster mode. Learn more in the |Cluster mode is disabled by default. If the option is passed but no number or percentage is passed, Medusa will try to consume all available CPU cores.|
+|\`-H \<host>\`, \`--host \<host>\`|Set host of the Medusa server.|\`localhost\`|
+|\`-p \<port>\`, \`--port \<port>\`|Set port of the Medusa server.|\`9000\`|
+|\`--cluster \<string> \[--workers \<string>] \[--servers \<string>]\`|Start Medusa in cluster mode. Learn more in the \[Starting Medusa in Cluster Mode]\(#starting-medusa-in-cluster-mode) section.|Cluster mode is disabled by default. If the option is passed but no number or percentage is passed, Medusa will try to consume all available CPU cores.|
 
 ***
 
@@ -55959,14 +56558,16 @@ Create a new admin user.
 npx medusa user --email <email> [--password <password>]
 ```
 
+If the [role-based access control (RBAC)](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/index.html.md) feature is enabled, the created user is assigned the Super Admin role by default, giving them full access to all resources and operations.
+
 ## Options
 
 |Option|Description|Required|Default|
 |---|---|---|---|---|---|---|
-|\`-e \<email>\`|The user's email.|Yes|-|
-|\`-p \<password>\`|The user's password.|No|-|
-|\`-i \<id>\`|The user's ID.|No|An automatically generated ID is used.|
-|\`--invite\`|Whether to create a user invite instead of directly creating a user. Learn more in the |No|\`false\`|
+|\`-e \<email>\`, \`--email \<email>\`|The user's email.|Yes|-|
+|\`-p \<password>\`, \`--password \<password>\`|The user's password.|No|-|
+|\`-i \<id>\`, \`--id \<id>\`|The user's ID.|No|An automatically generated ID is used.|
+|\`--invite\`|Whether to create a user invite instead of directly creating a user. Learn more in the \[Create User Invite]\(#create-user-invite-with-medusa-cli) section.|No|\`false\`|
 
 ***
 
@@ -56030,7 +56631,7 @@ Refer to the [Build Medusa Application](https://docs.medusajs.com/docs/learn/bui
 
 |Option|Description|
 |---|---|---|
-|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |
+|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the \`.medusa/server/public/admin\` directory. When this option is passed, the admin is built to the \`.medusa/admin\` directory instead.|
 
 ***
 
@@ -56073,7 +56674,7 @@ npx medusa codemod <transformation>
 
 |Argument|Description|
 |---|---|---|
-|\`\<transformation>\`|The name of the codemod transformation to run. For example, |
+|\`\<transformation>\`|The name of the codemod transformation to run. For example, \`replace-zod-imports\`.|
 
 
 # db Commands - Medusa CLI Reference
@@ -56137,7 +56738,7 @@ npx medusa db:generate <module_names...>
 
 |Argument|Description|Required|
 |---|---|---|---|---|
-|\`module\_names\`|The name of one or more modules (separated by spaces) to generate migrations for. For example, |Yes|
+|\`module\_names\`|The name of one or more modules (separated by spaces) to generate migrations for. For example, \`brand\`.|Yes|
 
 ***
 
@@ -56157,8 +56758,8 @@ Use this command if you've updated the Medusa packages, or you've created custom
 |---|---|---|---|---|---|---|
 |\`--skip-links\`|Skip syncing links to the database.|No|Links are synced by default.|
 |\`--skip-scripts\`|Skip running data migration scripts. This option is added starting from
-|No|Data migration scripts are run by default starting from
-|
+\[Medusa v2.3.0]\(https://github.com/medusajs/medusa/releases/tag/v2.3.0).|No|Data migration scripts are run by default starting from
+\[Medusa v2.3.0]\(https://github.com/medusajs/medusa/releases/tag/v2.3.0).|
 |\`--execute-safe-links\`|Skip prompts when syncing links and execute only safe actions.|No|Prompts are shown for unsafe actions, by default.|
 |\`--execute-all-links\`|Skip prompts when syncing links and execute all (including unsafe) actions.|No|Prompts are shown for unsafe actions, by default.|
 
@@ -56176,7 +56777,7 @@ npx medusa db:rollback <module_names...>
 
 |Argument|Description|Required|
 |---|---|---|---|---|
-|\`module\_names\`|The name of one or more modules (separated by spaces) to rollback their migrations for. For example, |Yes|
+|\`module\_names\`|The name of one or more modules (separated by spaces) to rollback their migrations for. For example, \`brand\`.|Yes|
 
 ***
 
@@ -56210,8 +56811,8 @@ npx medusa develop
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`-H \<host>\`|Set the host of the Medusa server.|\`localhost\`|
-|\`-p \<port>\`|Set the port of the Medusa server.|\`9000\`|
+|\`-H \<host>\`, \`--host \<host>\`|Set the host of the Medusa server.|\`localhost\`|
+|\`-p \<port>\`, \`--port \<port>\`|Set the port of the Medusa server.|\`9000\`|
 
 
 # exec Command - Medusa CLI Reference
@@ -56227,7 +56828,7 @@ npx medusa exec [file] [args...]
 |Argument|Description|Required|
 |---|---|---|---|---|
 |\`file\`|The path to the TypeScript or JavaScript file containing the function to execute.|Yes|
-|\`args\`|A list of arguments to pass to the function. These arguments are passed in the |No|
+|\`args\`|A list of arguments to pass to the function. These arguments are passed in the \`args\` property of the function's object parameter.|No|
 
 
 # new Command - Medusa CLI Reference
@@ -56248,9 +56849,9 @@ medusa new [<dir_name>]
 
 |Option|Description|
 |---|---|---|
-|\`-y\`|Skip all prompts, such as database prompts. A database might not be created if default PostgreSQL credentials don't work.|
+|\`-y\`, \`--useDefaults\`|Skip all prompts, such as database prompts. A database might not be created if default PostgreSQL credentials don't work.|
 |\`--skip-db\`|Skip database creation.|
-|\`--skip-env\`|Skip populating |
+|\`--skip-env\`|Skip populating \`.env\`.|
 |\`--db-user \<user>\`|The database user to use for database setup.|
 |\`--db-database \<database>\`|The name of the database used for database setup.|
 |\`--db-pass \<password>\`|The database password to use for database setup.|
@@ -56301,7 +56902,7 @@ npx medusa plugin:add [names...]
 
 |Argument|Description|Required|
 |---|---|---|---|---|
-|\`names\`|The names of one or more plugins to install from the local package registry. A plugin's name is as specified in its |Yes|
+|\`names\`|The names of one or more plugins to install from the local package registry. A plugin's name is as specified in its \`package.json\` file.|Yes|
 
 ***
 
@@ -56346,9 +56947,9 @@ npx medusa start
 
 |Option|Description|Default|
 |---|---|---|---|---|
-|\`-H \<host>\`|Set host of the Medusa server.|\`localhost\`|
-|\`-p \<port>\`|Set port of the Medusa server.|\`9000\`|
-|\`--cluster \<string> \[--workers \<string>] \[--servers \<string>]\`|Start Medusa in cluster mode. Learn more in the |Cluster mode is disabled by default. If the option is passed but no number or percentage is passed, Medusa will try to consume all available CPU cores.|
+|\`-H \<host>\`, \`--host \<host>\`|Set host of the Medusa server.|\`localhost\`|
+|\`-p \<port>\`, \`--port \<port>\`|Set port of the Medusa server.|\`9000\`|
+|\`--cluster \<string> \[--workers \<string>] \[--servers \<string>]\`|Start Medusa in cluster mode. Learn more in the \[Starting Medusa in Cluster Mode]\(#starting-medusa-in-cluster-mode) section.|Cluster mode is disabled by default. If the option is passed but no number or percentage is passed, Medusa will try to consume all available CPU cores.|
 
 ***
 
@@ -56414,14 +57015,16 @@ Create a new admin user.
 npx medusa user --email <email> [--password <password>]
 ```
 
+If the [role-based access control (RBAC)](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/rbac/index.html.md) feature is enabled, the created user is assigned the Super Admin role by default, giving them full access to all resources and operations.
+
 ## Options
 
 |Option|Description|Required|Default|
 |---|---|---|---|---|---|---|
-|\`-e \<email>\`|The user's email.|Yes|-|
-|\`-p \<password>\`|The user's password.|No|-|
-|\`-i \<id>\`|The user's ID.|No|An automatically generated ID is used.|
-|\`--invite\`|Whether to create a user invite instead of directly creating a user. Learn more in the |No|\`false\`|
+|\`-e \<email>\`, \`--email \<email>\`|The user's email.|Yes|-|
+|\`-p \<password>\`, \`--password \<password>\`|The user's password.|No|-|
+|\`-i \<id>\`, \`--id \<id>\`|The user's ID.|No|An automatically generated ID is used.|
+|\`--invite\`|Whether to create a user invite instead of directly creating a user. Learn more in the \[Create User Invite]\(#create-user-invite-with-medusa-cli) section.|No|\`false\`|
 
 ***
 
@@ -56476,9 +57079,9 @@ There are three types of authentication:
 
 |Method|Description|When to use|
 |---|---|---|
-|JWT token (default)|When you log in a user, the JS SDK stores the JWT for you and automatically includes it in the headers of all requests to the Medusa API. This means you don't have to manually set the authorization header for each request. When the user logs out, the SDK clears the stored JWT.||
-|Cookie session|When you log in a user, the JS SDK stores the session cookie for you and automatically includes it in the headers of all requests to the Medusa API. This means you don't have to manually set the authorization header for each request. When the user logs out, the SDK destroys the session cookie using Medusa's API.||
-|Secret API Key|Only available for admin users. You pass the API key in the JS SDK configurations, and it's always passed in the headers of all requests to the Medusa API.||
+|JWT token (default)|When you log in a user, the JS SDK stores the JWT for you and automatically includes it in the headers of all requests to the Medusa API. This means you don't have to manually set the authorization header for each request. When the user logs out, the SDK clears the stored JWT.|You need stateless authentication. For example, you're building a mobile storefront with React Native.Keep in mind: when logging out, the JS SDK clears the token from storage. However, if the user still has access to the token, they can still send authenticated requests.|
+|Cookie session|When you log in a user, the JS SDK stores the session cookie for you and automatically includes it in the headers of all requests to the Medusa API. This means you don't have to manually set the authorization header for each request. When the user logs out, the SDK destroys the session cookie using Medusa's API.|You need stateful authentication. For example, you're building a web storefront with Next.js or customizations in Medusa Admin.You want to ensure the session is revoked when the user logs out.|
+|Secret API Key|Only available for admin users. You pass the API key in the JS SDK configurations, and it's always passed in the headers of all requests to the Medusa API.|You're authenticating the admin user.Keep in mind: the API key must be stored securely and not exposed to the client-side code.|
 
 ***
 
@@ -56528,10 +57131,10 @@ You can change the storage method by setting the `auth.jwtTokenStorageMethod` co
 
 |Value|Description|
 |---|---|
-|\`local\`|Uses |
-|\`session\`|Uses |
+|\`local\` (default)|Uses \`localStorage\` to store the JWT token.|
+|\`session\`|Uses \`sessionStorage\` to store the JWT token. This means the token will be cleared when the user closes the browser tab or window.|
 |\`memory\`|Uses a memory storage method. This means the token will be cleared when the user refreshes the page or closes the browser tab or window. This is also useful when using the JS SDK in a server-side environment.|
-|\`custom\`|Uses a custom storage method. This means you can provide your own implementation of the storage method. For example, you can use |
+|\`custom\`|Uses a custom storage method. This means you can provide your own implementation of the storage method. For example, you can use \`AsyncStorage\` in React Native or any other storage method that fits your use case.|
 |\`nostore\`|Does not store the JWT token. This means you have to manually set the authorization header for each request. This is useful when you want to use a different authentication method or when you're using the JS SDK in a server-side environment.|
 
 #### Custom Authentication Storage in JS SDK
@@ -56580,9 +57183,9 @@ You can change the `credentials` option by setting the `auth.fetchCredentials` c
 
 |Value|Description|
 |---|---|
-|\`include\`|Passes the |
-|\`same-origin\`|Passes the |
-|\`omit\`|Passes the |
+|\`include\` (default)|Passes the \`credentials: include\` option in the fetch requests. This means the JS SDK will include cookies and authorization headers in the requests to the Medusa API.|
+|\`same-origin\`|Passes the \`credentials: same-origin\` option in the fetch requests. This means the JS SDK will include cookies and authorization headers in the requests to the Medusa API only if the request is made to the same origin as the current page.|
+|\`omit\`|Passes the \`credentials: omit\` option in the fetch requests. This means the JS SDK will not include cookies or authorization headers in the requests to the Medusa API.|
 
 For example:
 
@@ -56817,16 +57420,16 @@ The `Medusa` initializer accepts as a parameter an object with the following pro
 |Property|Description|Default|
 |---|---|---|---|---|
 |\`baseUrl\`|A required string indicating the URL to the Medusa backend.|-|
-|\`publishableKey\`|A string indicating the publishable API key to use in the storefront. You can retrieve it from the Medusa Admin.|-|
-|\`auth.type\`|A string that specifies the user authentication method to use.|-|
-|\`auth.jwtTokenStorageKey\`|A string that, when |\`medusa\_auth\_token\`|
-|\`auth.jwtTokenStorageMethod\`|A string that, when |\`local\`|
-|\`auth.storage\`|This option is only available after Medusa v2.5.1. It's an object or class that's used when |-|
-|\`auth.fetchCredentials\`|By default, if |\`include\`|
+|\`publishableKey\`|A string indicating the publishable API key to use in the storefront. You can retrieve it from the Medusa Admin.This is required for storefront applications. Otherwise, all requests will fail.|-|
+|\`auth.type\`|A string that specifies the user authentication method to use.Possible types are:\`session\`: The user is authenticated with a cookie session.\`jwt\`: The user is authenticated with a JWT token that's passed in the Bearer authorization header.|-|
+|\`auth.jwtTokenStorageKey\`|A string that, when \`auth.type\` is \`jwt\`, specifies the key of the JWT token in the storage specified in the \`auth.jwtTokenStorageMethod\` configuration.|\`medusa\_auth\_token\`|
+|\`auth.jwtTokenStorageMethod\`|A string that, when \`auth.type\` is \`jwt\`, specifies where the JWT token is stored. Possible values are:\`local\` for the Local Storage.\`session\` for the Session Storage.\`memory\` to store it within the SDK for the current application's runtime.\`custom\` to define custom storage using the \`auth.storage\` configuration. If \`auth.storage\` isn't defined, the SDK throws an error. This option is only available after Medusa v2.5.1.\`nostore\` to not store the token.|\`local\`|
+|\`auth.storage\`|This option is only available after Medusa v2.5.1. It's an object or class that's used when \`auth.jwtTokenStorageMethod\` is \`custom\` to store the JWT token. It's useful when using the JS SDK in an environment where Local or Session Storage isn't available. The object or class must have the following methods:\`setItem\`: A function that accepts a key and value to store the JWT token.\`getItem\`: A function that accepts a key to retrieve the JWT token.\`removeItem\`: A function that accepts a key to remove the JWT token from storage.Learn more in the \[Authentication]\(/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/auth/overview#custom-authentication-storage-in-js-sdk) guide.|-|
+|\`auth.fetchCredentials\`|By default, if \`auth.type\` is \`session\`, the \`credentials: include\` option is passed in \[fetch requests]\(https://developer.mozilla.org/en-US/docs/Web/API/Fetch\_API/Using\_Fetch#including\_credentials) under the hood. However, some platforms or environments may not support passing this option.This option accepts a string to configure the value of \`credentials\` when the authentication type is \`session\`. It accepts one of the following values:\`include\`: (default) to pass the \`credentials: include\` option.\`omit\`: to pass the \`credentials: omit\` option.\`same-origin\`: to pass the \`credentials: same-origin\` option.This option is only available after \[Medusa v2.1.1]\(https://github.com/medusajs/medusa/releases/tag/v2.1.1).|\`include\`|
 |\`globalHeaders\`|An object of key-value pairs indicating headers to pass in all requests, where the key indicates the name of the header field.|-|
 |\`apiKey\`|A string indicating the admin user's API key. If specified, it's used to send authenticated requests.|-|
 |\`debug\`|A boolean indicating whether to show debug messages of requests sent in the console. This is useful during development.|\`false\`|
-|\`logger\`|Replace the logger used by the JS SDK to log messages. The logger must be a class or object having the following methods:|JavaScript's |
+|\`logger\`|Replace the logger used by the JS SDK to log messages. The logger must be a class or object having the following methods:\`error\`: A function that accepts an error message to log.\`warn\`: A function that accepts a warning message to log.\`info\`: A function that accepts an info message to log.\`debug\`: A function that accepts a debug message to log.|JavaScript's \[console]\(https://developer.mozilla.org/en-US/docs/Web/API/console) is used by default.|
 
 ***
 
@@ -132320,8 +132923,8 @@ The following operators are supported by the service factory filtering mechanism
 |\`$ilike\`|Matches values containing a specified substring, case-insensitive.|
 |\`$fulltext\`|Performs a full-text search on a text property.|
 |\`$overlap\`|Matches values that have overlapping elements with the specified array.|
-|\`$contains\`|Performs an |
-|\`$contained\`|Performs an |
+|\`$contains\`|Performs an \`@> value\` comparison. Learn more in the \[PostgreSQL documentation]\(https://www.postgresql.org/docs/9.6/functions-array.html).|
+|\`$contained\`|Performs an \`value @>\` comparison. Learn more in the \[PostgreSQL documentation]\(https://www.postgresql.org/docs/9.6/functions-array.html).|
 |Logical Operators|
 |\`$and\`|Joins two or more conditions with a logical AND.|
 |\`$or\`|Joins two or more conditions with a logical OR.|

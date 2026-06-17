@@ -296,6 +296,10 @@ export const link = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteStoresWorkflow"
   },
   {
+    "title": "assignUserRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/assignUserRolesWorkflow"
+  },
+  {
     "title": "createUserAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow"
   },
@@ -310,5 +314,9 @@ export const link = [
   {
     "title": "removeUserAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserAccountWorkflow"
+  },
+  {
+    "title": "removeUserRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserRolesWorkflow"
   }
 ]

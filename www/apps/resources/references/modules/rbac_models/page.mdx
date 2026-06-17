@@ -1,0 +1,28 @@
+---
+displayed_sidebar: rbacModelReference
+slug: /references/rbac/models
+---
+
+import { TypeList } from "docs-ui"
+
+# RBAC Module Data Models Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the data models in the RBAC Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	RbacRole ||--|| RbacRolePolicy : policies
+	RbacRole ||--|| RbacRoleParent : parents
+
+```
+
+## Data Models
+
+- [RbacPolicy](../../rbac_models/variables/rbac_models.RbacPolicy/page.mdx)
+- [RbacRole](../../rbac_models/variables/rbac_models.RbacRole/page.mdx)
+- [RbacRoleParent](../../rbac_models/variables/rbac_models.RbacRoleParent/page.mdx)
+- [RbacRolePolicy](../../rbac_models/variables/rbac_models.RbacRolePolicy/page.mdx)

@@ -5,6 +5,7 @@ import {
   localLinksRehypePlugin,
   workflowDiagramLinkFixerPlugin,
   prerequisitesLinkFixerPlugin,
+  enterpriseNoticeLinkFixerPlugin,
   recmaInjectMdxDataPlugin,
 } from "remark-rehype-plugins"
 import { serialize } from "next-mdx-remote-client/serialize"
@@ -126,6 +127,13 @@ const loadReferencesFile = unstable_cache(async (slug: string[]) => {
           ],
           [
             prerequisitesLinkFixerPlugin,
+            {
+              ...pluginOptions,
+              checkLinksType: "value",
+            },
+          ],
+          [
+            enterpriseNoticeLinkFixerPlugin,
             {
               ...pluginOptions,
               checkLinksType: "value",

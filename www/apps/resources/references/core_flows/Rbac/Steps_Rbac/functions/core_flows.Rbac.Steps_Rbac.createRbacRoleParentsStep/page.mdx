@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/createRbacRoleParentsStep
+sidebar_label: createRbacRoleParentsStep
+tags:
+  - rbac
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createRbacRoleParentsStep - Medusa Core Workflows Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the `createRbacRoleParentsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createRbacRoleParentsStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = createRbacRoleParentsStep({})
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"CreateRbacRoleParentsStepInput","type":"[CreateRbacRoleParentsStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRoleParentsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateRbacRoleParentsStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createRbacRoleParentsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"RbacRoleParentDTO[]","type":"[RbacRoleParentDTO](../../../../../types/types/types.RbacRoleParentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"role_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"parent_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createRbacRoleParentsStep"/>

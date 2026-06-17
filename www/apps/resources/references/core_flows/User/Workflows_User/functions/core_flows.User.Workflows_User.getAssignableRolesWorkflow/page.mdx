@@ -1,0 +1,133 @@
+---
+slug: /references/medusa-workflows/getAssignableRolesWorkflow
+sidebar_label: getAssignableRolesWorkflow
+sidebar_description: ""
+tags:
+  - query
+  - workflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# getAssignableRolesWorkflow - Medusa Core Workflows Reference
+
+:::note
+
+To use this resource, make sure to [enable its feature flag: rbac](https://docs.medusajs.com/development/feature-flags/toggle)
+
+:::
+
+This documentation provides a reference to the `getAssignableRolesWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+Returns the set of `rbac_role`s that the actor is allowed to assign.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/735e0aa51ef64274257057a59046776af54203f4/packages/core/core-flows/src/user/workflows/get-assignable-roles.ts#L32" />
+
+## Examples
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { getAssignableRolesWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await getAssignableRolesWorkflow(req.scope)
+    .run({
+      input: {}
+    })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { getAssignableRolesWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await getAssignableRolesWorkflow(container)
+    .run({
+      input: {}
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { getAssignableRolesWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await getAssignableRolesWorkflow(container)
+    .run({
+      input: {}
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { getAssignableRolesWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = getAssignableRolesWorkflow
+      .runAsStep({
+        input: {}
+      })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"getAssignableRolesWorkflow","steps":[{"type":"step","name":"getAssignableRolesStep","description":"Resolves the set of roles the actor is allowed to assign.","link":"../../../Steps_User/functions/core_flows.User.Steps_User.getAssignableRolesStep/page.mdx","depth":1}]}} />
+
+## Input
+
+<TypeList types={[{"name":"GetAssignableRolesStepInput","type":"[GetAssignableRolesStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetAssignableRolesStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[],"since":"2.16.0"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getAssignableRolesWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"GetAssignableRolesStepOutput","type":"[GetAssignableRolesStepOutput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetAssignableRolesStepOutput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[],"since":"2.16.0"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getAssignableRolesWorkflow"/>

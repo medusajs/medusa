@@ -14,7 +14,9 @@ import {
   parseComponentExample,
   parseComponentReference,
   parseDetails,
+  parseEnterpriseNotice,
   parseEventHeader,
+  parsePermissionsBadge,
   parseHookValues,
   parseIconSearch,
   parseNote,
@@ -50,6 +52,8 @@ const parsers: Record<string, ComponentParser> = {
   Colors: parseColors,
   SplitList: parseSplitList,
   EventHeader: parseEventHeader,
+  PermissionsBadge: parsePermissionsBadge,
+  EnterpriseNotice: parseEnterpriseNotice,
 }
 
 const asyncParserNames = new Set(["ComponentExample", "ComponentReference"])

@@ -200,6 +200,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/settings/locations-and-shipping/shipping-profiles"
   },
   {
+    "title": "View Policies",
+    "path": "https://docs.medusajs.com/user-guide/settings/policies"
+  },
+  {
     "title": "Manage Product Tags",
     "path": "https://docs.medusajs.com/user-guide/settings/product-tags"
   },
@@ -222,6 +226,14 @@ export const userGuide = [
   {
     "title": "Manage Return Reasons",
     "path": "https://docs.medusajs.com/user-guide/settings/return-reasons"
+  },
+  {
+    "title": "Common Roles",
+    "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles"
+  },
+  {
+    "title": "Manage Roles",
+    "path": "https://docs.medusajs.com/user-guide/settings/roles"
   },
   {
     "title": "Manage Sales Channels",

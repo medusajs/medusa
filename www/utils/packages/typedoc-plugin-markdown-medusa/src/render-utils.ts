@@ -160,7 +160,7 @@ export function registerHelpers(theme: MarkdownTheme) {
   showPropertiesAsComponentHelper(theme)
   commentTagHelper(theme)
   exampleHelper()
-  ifFeatureFlagHelper()
+  ifFeatureFlagHelper(theme)
   featureFlagHelper()
   decrementCurrentTitleLevelHelper(theme)
   incrementCurrentTitleLevelHelper(theme)

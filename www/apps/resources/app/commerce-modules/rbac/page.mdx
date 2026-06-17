@@ -1,0 +1,141 @@
+---
+generate_toc: true
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `RBAC Module`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice featureFlag="rbac" featureFlagHref="#how-to-use-the-rbac-module" />
+
+In this section of the documentation, you will find resources to learn more about the role-based access control (RBAC) Module and how to use it in your application.
+
+<Note title="Looking for no-code docs?">
+
+Refer to the [Medusa Admin User Guide](!user-guide!/settings/roles) to learn how to manage roles and policies using the dashboard.
+
+</Note>
+
+Medusa has role-based access control features available through the RBAC Module. A [module](!docs!/learn/fundamentals/modules) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this RBAC Module.
+
+The RBAC Module restricts what admin users can do based on the roles assigned to them. Each role grants a set of policies, where a policy allows an operation on a resource.
+
+## RBAC Features
+
+- [Roles and Policies](./concepts/page.mdx#role): Group policies into roles, then assign roles to admin users to control their access.
+- [Role Hierarchy](./concepts/page.mdx#role-hierarchy): Build roles that inherit policies from parent roles.
+- [Custom Policies](./define-policies/page.mdx): Define policies for your custom resources so they can be protected by RBAC.
+
+---
+
+## How to Use the RBAC Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.16.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.16.0"
+    }
+  ]}
+/>
+
+### 1. Enable the RBAC Feature Flag
+
+The RBAC Module is only registered when its feature flag is enabled. You can enable it in `medusa-config.ts`:
+
+<Note type="warning">
+
+{/* TODO check details */}
+
+The RBAC Module is an enterprise feature and requires a valid enterprise license. By using it, you agree to the license terms. Contact Medusa for more information.
+
+</Note>
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    rbac: true,
+  },
+})
+```
+
+Or set the following environment variable:
+
+```shell
+MEDUSA_FF_RBAC=true
+```
+
+Learn more about feature flags in the [feature flags documentation](!docs!/learn/debugging-and-testing/feature-flags).
+
+### 2. Run Migrations
+
+After enabling the feature flag, run the migrations to create the RBAC tables in the database:
+
+```bash
+npx medusa db:migrate
+```
+
+Then, the first time the application starts, Medusa creates a Super Admin role with full access and registers the policies defined across your modules.
+
+### 3. Use RBAC Features in Your Application
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](!docs!/learn/fundamentals/workflows), which is a special function composed of a series of steps that guarantees data consistency and a reliable roll-back mechanism.
+
+For example, to resolve the RBAC Module's service in a step:
+
+export const highlights = [
+  ["13", "Modules.RBAC", "Resolve the RBAC Module."]
+]
+
+```ts title="src/workflows/create-role.ts" highlights={highlights}
+import {
+  createWorkflow,
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const createRoleStep = createStep(
+  "create-role",
+  async ({}, { container }) => {
+    const rbacModuleService = container.resolve(
+      Modules.RBAC
+    )
+
+    const role = await rbacModuleService.createRbacRoles({
+      name: "Product Manager",
+      description: "Manages products and inventory",
+    })
+
+    return new StepResponse(role, role.id)
+  },
+  async (roleId, { container }) => {
+    const rbacModuleService = container.resolve(
+      Modules.RBAC
+    )
+
+    await rbacModuleService.deleteRbacRoles([roleId])
+  }
+)
+
+export const createRoleWorkflow = createWorkflow(
+  "create-role",
+  () => {
+    const role = createRoleStep()
+
+    return new WorkflowResponse(role)
+  }
+)
+```
+
+Refer to the [Workflows documentation](!docs!/learn/fundamentals/workflows) to learn more.
+
+---
+
+<CommerceModuleSections />

@@ -339,7 +339,7 @@ export const parseTable: ComponentParser = (
         return
       }
       nodeText += `|`
-      nodeText += formatNodeText(getTextNode(headerCell))
+      nodeText += getCellText(headerCell)
     })
     nodeText += `|`
   })
@@ -350,7 +350,7 @@ export const parseTable: ComponentParser = (
     nodeText += `\n`
     bodyRow.children?.forEach((bodyCell) => {
       nodeText += `|`
-      nodeText += formatNodeText(getTextNode(bodyCell))
+      nodeText += getCellText(bodyCell)
     })
     nodeText += `|`
   })
@@ -985,6 +985,126 @@ export const parseSplitList: ComponentParser = (
   return [SKIP, index]
 }
 
+export const parsePermissionsBadge: ComponentParser = (
+  node: UnistNodeWithData,
+  index: number,
+  parent: UnistTree
+): VisitorResult => {
+  const permissionsAttr = node.attributes?.find(
+    (attr) => attr.name === "permissions"
+  )
+  if (
+    !permissionsAttr ||
+    typeof permissionsAttr.value === "string" ||
+    !permissionsAttr.value.data?.estree
+  ) {
+    return
+  }
+
+  const permissionsJsVar = estreeToJs(permissionsAttr.value.data.estree)
+
+  if (!permissionsJsVar || !Array.isArray(permissionsJsVar)) {
+    return
+  }
+
+  const permissions = permissionsJsVar
+    .map((item) => (isExpressionJsVarLiteral(item) ? (item.data as string) : ""))
+    .filter((permission) => permission.length > 0)
+
+  if (!permissions.length) {
+    return
+  }
+
+  let requireAll = true
+  const requireAllAttr = node.attributes?.find(
+    (attr) => attr.name === "requireAll"
+  )
+  if (requireAllAttr) {
+    if (typeof requireAllAttr.value === "string") {
+      requireAll = requireAllAttr.value !== "false"
+    } else if (requireAllAttr.value?.data?.estree) {
+      const requireAllJsVar = estreeToJs(requireAllAttr.value.data.estree)
+      if (isExpressionJsVarLiteral(requireAllJsVar)) {
+        requireAll = requireAllJsVar.data !== false
+      }
+    }
+  }
+
+  const labelText =
+    permissions.length > 1
+      ? `Required policies (${requireAll ? "all of" : "any of"}): `
+      : `Required policy: `
+
+  const children: UnistNode[] = [
+    {
+      type: "text",
+      value: labelText,
+    },
+  ]
+
+  permissions.forEach((permission, permissionIndex) => {
+    if (permissionIndex > 0) {
+      children.push({
+        type: "text",
+        value: ", ",
+      })
+    }
+    children.push({
+      type: "inlineCode",
+      value: permission,
+    })
+  })
+
+  parent?.children.splice(index, 1, {
+    type: "paragraph",
+    children,
+  })
+  return [SKIP, index]
+}
+
+export const parseEnterpriseNotice: ComponentParser = (
+  node: UnistNodeWithData,
+  index: number,
+  parent: UnistTree
+): VisitorResult => {
+  const featureName =
+    (node.attributes?.find((attr) => attr.name === "featureName")
+      ?.value as string) || "feature"
+  const featureFlag = node.attributes?.find(
+    (attr) => attr.name === "featureFlag"
+  )?.value as string | undefined
+
+  const children: UnistNode[] = [
+    {
+      type: "text",
+      value: `This ${featureName} requires an enterprise license.`,
+    },
+  ]
+
+  if (featureFlag) {
+    children.push(
+      {
+        type: "text",
+        value: ` You must also enable its feature flag: `,
+      },
+      {
+        type: "inlineCode",
+        value: featureFlag,
+      },
+      {
+        type: "text",
+        value: `.`,
+      }
+    )
+  }
+
+  parent?.children.splice(index, 1, {
+    type: "paragraph",
+    children,
+  })
+  return [SKIP, index]
+}
+
 export const parseEventHeader: ComponentParser = (
   node: UnistNodeWithData,
   index: number,
@@ -1070,5 +1190,25 @@ const formatNodeText = (node?: UnistNode): string => {
     return `[${node.children?.[0].value}](${node.url})`
   }
 
+  return node.value || ""
+}
+
+// Concatenates all inline content of a table cell so cells with multiple
+// segments (e.g. several inline code values) aren't truncated to the first.
+const getCellText = (node?: UnistNode): string => {
+  if (!node) {
+    return ""
+  }
+  if (
+    node.type === "text" ||
+    node.type === "inlineCode" ||
+    node.type === "code" ||
+    node.type === "link"
+  ) {
+    return formatNodeText(node)
+  }
+  if (node.children?.length) {
+    return node.children.map((child) => getCellText(child)).join("")
+  }
   return node.value || ""
 }
