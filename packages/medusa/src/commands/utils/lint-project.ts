@@ -130,7 +130,7 @@ export async function lintProject(opts: {
  */
 export async function runLintStep(opts: {
   directory: string
-  lint?: boolean
+  lint: boolean
   fix?: boolean
   /** When true, only error-level results are reported (warnings suppressed). */
   quiet?: boolean
@@ -140,7 +140,7 @@ export async function runLintStep(opts: {
   /** When true (default), lint errors exit the process with code 1. */
   failOnError?: boolean
 }): Promise<void> {
-  const lintEnabled = opts.lint ?? true
+  const lintEnabled = opts.lint
   const failOnError = opts.failOnError ?? true
 
   if (!lintEnabled) {

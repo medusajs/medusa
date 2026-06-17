@@ -13,7 +13,7 @@ export default async function build({
 }: {
   directory: string
   adminOnly: boolean
-  lint?: boolean
+  lint: boolean
   fix?: boolean
   quiet?: boolean
 }) {
