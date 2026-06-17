@@ -201,6 +201,7 @@ type OrderLineItem {
   created_at: DateTime!
   updated_at: DateTime!
   metadata: JSON
+  line_item_metadata: JSON
   original_total: Float
   original_subtotal: Float
   original_tax_total: Float
