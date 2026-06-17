@@ -52,6 +52,16 @@ ruleTester.run("use-inject-manager-on-public-methods", rule, {
         }
       `,
     },
+    // A `*Service`-named class that doesn't extend `MedusaService` is not a
+    // service class — its undecorated Context method is not flagged.
+    {
+      code: `
+        import { InjectManager } from "@medusajs/framework/utils"
+        class OrderService {
+          async list(sharedContext: Context = {}) {}
+        }
+      `,
+    },
     // Constructor is exempt.
     {
       code: `
@@ -80,6 +90,19 @@ ruleTester.run("use-inject-manager-on-public-methods", rule, {
         class FooService extends MedusaService({}) {
           get name() { return "foo" }
           static helper() {}
+        }
+      `,
+    },
+    // Overload signatures (bodyless) are ignored — the decorator lives on the
+    // implementation, which carries it here.
+    {
+      code: `
+        import { MedusaService, InjectManager } from "@medusajs/framework/utils"
+        class FooService extends MedusaService({}) {
+          list(id: string, sharedContext?: Context): Promise<string>
+          list(id: number, sharedContext?: Context): Promise<number>
+          @InjectManager()
+          async list(id: any, sharedContext: Context = {}): Promise<any> {}
         }
       `,
     },
@@ -161,23 +184,6 @@ ruleTester.run("use-inject-manager-on-public-methods", rule, {
         class FooService extends MedusaService({}) {
           @InjectManager()
           @EmitEvents()
-          async list(sharedContext: Context = {}) {}
-        }
-      `,
-      errors: [{ messageId: "missingInjectManager" }],
-    },
-    // Service class detected by *Service suffix alone (no MedusaService extension).
-    {
-      code: `
-        import { InjectManager } from "@medusajs/framework/utils"
-        class OrderService {
-          async list(sharedContext: Context = {}) {}
-        }
-      `,
-      output: `
-        import { InjectManager } from "@medusajs/framework/utils"
-        class OrderService {
-          @InjectManager()
           async list(sharedContext: Context = {}) {}
         }
       `,
