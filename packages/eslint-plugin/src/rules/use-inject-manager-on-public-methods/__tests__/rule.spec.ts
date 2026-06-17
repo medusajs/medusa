@@ -93,6 +93,19 @@ ruleTester.run("use-inject-manager-on-public-methods", rule, {
         }
       `,
     },
+    // Overload signatures (bodyless) are ignored — the decorator lives on the
+    // implementation, which carries it here.
+    {
+      code: `
+        import { MedusaService, InjectManager } from "@medusajs/framework/utils"
+        class FooService extends MedusaService({}) {
+          list(id: string, sharedContext?: Context): Promise<string>
+          list(id: number, sharedContext?: Context): Promise<number>
+          @InjectManager()
+          async list(id: any, sharedContext: Context = {}): Promise<any> {}
+        }
+      `,
+    },
   ],
   invalid: [
     // Public method with Context param missing @InjectManager() — autofix inserts decorator.

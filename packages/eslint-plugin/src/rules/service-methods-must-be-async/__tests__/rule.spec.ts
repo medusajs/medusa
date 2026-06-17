@@ -59,12 +59,15 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
     },
-    // Getter with Promise return type is fine (caller can await the property access).
+    // Getters and setters are exempt — they can't be async and are accessed as
+    // properties, not invoked like service methods.
     {
       code: `
         import { MedusaService } from "@medusajs/framework/utils"
         class FooService extends MedusaService({}) {
-          get pending(): Promise<void> { return Promise.resolve() }
+          get name() { return "foo" }
+          set name(v: string) {}
+          get model() { return this.model_ }
           async run() {}
         }
       `,
@@ -237,22 +240,6 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
       errors: [{ messageId: "methodMustBeAsync" }],
-    },
-    // Getters and setters are invocable from outside the service — flagged, but no autofix
-    // (you can't make a getter/setter async). Getter passes only with a Promise return type.
-    {
-      code: `
-        import { MedusaService } from "@medusajs/framework/utils"
-        class FooService extends MedusaService({}) {
-          get name() { return "foo" }
-          set name(v: string) {}
-        }
-      `,
-      output: null,
-      errors: [
-        { messageId: "methodMustBeAsync" },
-        { messageId: "methodMustBeAsync" },
-      ],
     },
   ],
 })

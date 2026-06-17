@@ -46,6 +46,11 @@ export const rule = createRule<[], MessageIds>({
         if (member.kind === "constructor") {
           continue
         }
+        // Getters and setters can't be `async` and aren't invoked like service
+        // methods (the caller reads/writes a property), so they're exempt.
+        if (member.kind === "get" || member.kind === "set") {
+          continue
+        }
         if (
           member.accessibility === "private" ||
           member.accessibility === "protected"
@@ -71,14 +76,10 @@ export const rule = createRule<[], MessageIds>({
           continue
         }
 
-        const canAutofix = member.kind === "method"
-
         context.report({
           node: member.key,
           messageId: "methodMustBeAsync",
-          fix: canAutofix
-            ? (fixer) => fixer.insertTextBefore(member.key, "async ")
-            : undefined,
+          fix: (fixer) => fixer.insertTextBefore(member.key, "async "),
         })
       }
     }
