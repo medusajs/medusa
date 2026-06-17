@@ -158,7 +158,10 @@ export const useUpdateProductVariant = (
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateProductVariant) =>
-      sdk.admin.product.updateVariant(productId, variantId, payload),
+      sdk.admin.product.updateVariant(productId, variantId, payload, {
+        // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+        fields: "-prices,-options",
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
