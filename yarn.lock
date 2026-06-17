@@ -3739,7 +3739,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/eslint-plugin@workspace:packages/eslint-plugin":
+"@medusajs/eslint-plugin@2.15.5, @medusajs/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@medusajs/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
@@ -25885,6 +25885,7 @@ __metadata:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
     "@faker-js/faker": ^9.2.0
+    "@medusajs/eslint-plugin": 2.15.5
     "@rollup/plugin-node-resolve": ^15.1.0
     "@rollup/plugin-replace": ^5.0.2
     "@storybook/addon-essentials": ^8.3.5

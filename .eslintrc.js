@@ -1,4 +1,63 @@
 const path = require("path")
+const medusa = require("@medusajs/eslint-plugin")
+
+// ---------------------------------------------------------------------------
+// Scope definitions
+// ---------------------------------------------------------------------------
+// The repo's style lint (eslint:recommended + google + prettier + the
+// @typescript-eslint formatting rules) historically ran only on a curated set
+// of packages (the `.eslintignore` allowlist) plus root/integration-tests.
+//
+// We now also run `@medusajs/eslint-plugin` (Medusa convention rules) over all
+// of the framework's own packages. Those packages must get the Medusa rules
+// WITHOUT suddenly being subjected to the full style/prettier lint.
+//
+// NOTE: of the Medusa target packages, only `packages/medusa` was ever actually
+// reached by the style lint. The `.eslintignore` allowlist negations for
+// `packages/modules/*`, `packages/modules/providers/*`, and `packages/core/*`
+// were no-ops — `packages/*` excludes the `packages/modules`/`packages/core`
+// directories, and gitignore cannot re-include a grandchild whose parent dir is
+// excluded. So to keep the style scope exactly as it was, style is excluded from
+// every Medusa target except `packages/medusa`, plus data-model files (which the
+// historical `**/models/*` ignore already kept out of style).
+const STYLE_EXCLUDED = [
+  "packages/plugins/**",
+  "packages/modules/**",
+  "packages/core/core-flows/**",
+  "**/models/**",
+]
+
+const MEDUSA_EXCLUDED = [
+  "**/__tests__/**",
+  "**/__mocks__/**",
+  "**/__fixtures__/**",
+  "**/*.spec.*",
+  "**/*.test.*",
+  "**/integration-tests/**",
+  "**/migrations/**",
+  "packages/modules/**",
+  "packages/core/framework/**",
+  "packages/admin/**"
+]
+
+// Turn a flat preset's rule blocks into eslintrc `overrides`, scoping each
+// block's `files` globs to the given package directories. The plugin presets
+// remain the single source of truth for which rules run; this only decides
+// where. (No `project`/type info is involved — these rules are AST-only.)
+function medusaOverrides(presetName, dirs) {
+  return medusa.configs[presetName]
+    .filter((b) => b.files && b.rules && Object.keys(b.rules).length > 0)
+    .map((b) => ({
+      files: dirs.flatMap((d) => b.files.map((f) => `${d}/${f}`)),
+      excludedFiles: [
+        ...MEDUSA_EXCLUDED,
+        ...(b.ignores
+          ? dirs.flatMap((d) => b.ignores.map((i) => `${d}/${i}`))
+          : []),
+      ],
+      rules: b.rules,
+    }))
+}
 
 module.exports = {
   root: true,
@@ -8,250 +67,112 @@ module.exports = {
       experimentalDecorators: true,
     },
   },
-  plugins: ["prettier"],
-  extends: ["eslint:recommended", "google", "plugin:prettier/recommended"],
-  rules: {
-    curly: ["error", "all"],
-    "new-cap": "off",
-    "require-jsdoc": "off",
-    "no-unused-expressions": "off",
-    "no-unused-vars": "off",
-    camelcase: "off",
-    "no-invalid-this": "off",
-    "max-len": [
-      "error",
-      {
-        code: 80,
-        ignoreStrings: true,
-        ignoreRegExpLiterals: true,
-        ignoreComments: true,
-        ignoreTrailingComments: true,
-        ignoreUrls: true,
-        ignoreTemplateLiterals: true,
-      },
-    ],
-    semi: ["error", "never"],
-    quotes: [
-      "error",
-      "double",
-      {
-        allowTemplateLiterals: true,
-      },
-    ],
-    "comma-dangle": [
-      "error",
-      {
-        arrays: "always-multiline",
-        objects: "always-multiline",
-        imports: "always-multiline",
-        exports: "always-multiline",
-        functions: "never",
-      },
-    ],
-    "object-curly-spacing": ["error", "always"],
-    "arrow-parens": ["error", "always"],
-    "linebreak-style": 0,
-    "no-confusing-arrow": [
-      "error",
-      {
-        allowParens: false,
-      },
-    ],
-    "space-before-function-paren": [
-      "error",
-      {
-        anonymous: "always",
-        named: "never",
-        asyncArrow: "always",
-      },
-    ],
-    "space-infix-ops": "error",
-    "eol-last": ["error", "always"],
-  },
+  // Registered so rule references and `eslint-disable` directives resolve. The
+  // style rules come from the scoped overrides below; the Medusa rules from the
+  // generated overrides. `react-hooks`/`@typescript-eslint` are registered (not
+  // enabled globally) so their disable-directives in now-linted packages don't
+  // error "rule not found".
+  plugins: ["prettier", "@medusajs", "@typescript-eslint", "react-hooks"],
   env: {
     es6: true,
     node: true,
     jest: true,
   },
   overrides: [
+    // --- TypeScript parser (syntactic, no `project`) for ALL .ts/.tsx ---
+    // No rule in this repo needs type information anymore (the type-aware
+    // @typescript-eslint rules were disabled to avoid OOM), so a single
+    // program-free parser block covers every TypeScript file.
     {
-      files: ["*.ts"],
-      plugins: ["@typescript-eslint/eslint-plugin"],
-      extends: ["plugin:@typescript-eslint/recommended"],
+      files: ["*.ts", "*.tsx"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: [
-          path.join(__dirname, "./packages/admin/admin-bundler/tsconfig.json"),
-          path.join(__dirname, "./packages/admin/admin-sdk/tsconfig.json"),
-          path.join(__dirname, "./packages/admin/admin-shared/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/admin/admin-vite-plugin/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/admin/dashboard/tsconfig.json"),
-
-          path.join(
-            __dirname,
-            "./packages/cli/create-medusa-app/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/cli/medusa-cli/tsconfig.json"),
-          path.join(__dirname, "./packages/cli/medusa-dev-cli/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/cli/oas/medusa-oas-cli/tsconfig.json"
-          ),
-
-          path.join(__dirname, "./packages/core/core-flows/tsconfig.json"),
-          path.join(__dirname, "./packages/core/framework/tsconfig.json"),
-          path.join(__dirname, "./packages/core/js-sdk/tsconfig.json"),
-          path.join(__dirname, "./packages/core/modules-sdk/tsconfig.json"),
-          path.join(__dirname, "./packages/core/orchestration/tsconfig.json"),
-          path.join(__dirname, "./packages/core/types/tsconfig.json"),
-          path.join(__dirname, "./packages/core/utils/tsconfig.json"),
-          path.join(__dirname, "./packages/core/workflows-sdk/tsconfig.json"),
-
-          path.join(__dirname, "./packages/deps/tsconfig.json"),
-
-          path.join(__dirname, "./packages/eslint-plugin/tsconfig.json"),
-
-          path.join(__dirname, "./packages/design-system/icons/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/design-system/toolbox/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/design-system/ui/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/design-system/ui-preset/tsconfig.json"
-          ),
-
-          path.join(__dirname, "./packages/medusa/tsconfig.json"),
-
-          path.join(__dirname, "./packages/medusa-telemetry/tsconfig.json"),
-          path.join(__dirname, "./packages/medusa-test-utils/tsconfig.json"),
-
-          path.join(__dirname, "./packages/modules/analytics/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/api-key/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/auth/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/modules/cache-inmemory/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/modules/cache-redis/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/caching/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/cart/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/currency/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/customer/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/modules/event-bus-local/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/event-bus-redis/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/modules/file/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/fulfillment/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/index/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/inventory/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/link-modules/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/locking/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/notification/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/order/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/payment/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/pricing/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/product/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/promotion/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/region/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/modules/sales-channel/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/modules/settings/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/modules/stock-location/tsconfig.json"
-          ),
-          path.join(__dirname, "./packages/modules/store/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/tax/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/translation/tsconfig.json"),
-          path.join(__dirname, "./packages/modules/user/tsconfig.json"),
-          path.join(
-            __dirname,
-            "./packages/modules/workflow-engine-inmemory/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/workflow-engine-redis/tsconfig.json"
-          ),
-
-          path.join(
-            __dirname,
-            "./packages/modules/providers/analytics-local/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/analytics-posthog/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/auth-emailpass/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/auth-github/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/auth-google/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/caching-redis/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/file-local/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/file-s3/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/fulfillment-manual/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/locking-postgres/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/locking-redis/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/notification-local/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/notification-sendgrid/tsconfig.json"
-          ),
-          path.join(
-            __dirname,
-            "./packages/modules/providers/payment-stripe/tsconfig.json"
-          ),
-
-          path.join(__dirname, "./packages/plugins/draft-order/tsconfig.json"),
-          path.join(__dirname, "./packages/plugins/loyalty/tsconfig.json"),
-        ],
+        sourceType: "module",
+        ecmaVersion: 2021,
       },
+    },
+
+    // --- Base style rules — historical scope only (Medusa-only pkgs excluded) ---
+    {
+      files: ["**/*.{js,jsx,ts,tsx,cjs,mjs}"],
+      excludedFiles: STYLE_EXCLUDED,
+      plugins: ["prettier"],
+      extends: ["eslint:recommended", "google", "plugin:prettier/recommended"],
+      rules: {
+        curly: ["error", "all"],
+        "new-cap": "off",
+        "require-jsdoc": "off",
+        "no-unused-expressions": "off",
+        "no-unused-vars": "off",
+        camelcase: "off",
+        "no-invalid-this": "off",
+        "max-len": [
+          "error",
+          {
+            code: 80,
+            ignoreStrings: true,
+            ignoreRegExpLiterals: true,
+            ignoreComments: true,
+            ignoreTrailingComments: true,
+            ignoreUrls: true,
+            ignoreTemplateLiterals: true,
+          },
+        ],
+        semi: ["error", "never"],
+        quotes: [
+          "error",
+          "double",
+          {
+            allowTemplateLiterals: true,
+          },
+        ],
+        "comma-dangle": [
+          "error",
+          {
+            arrays: "always-multiline",
+            objects: "always-multiline",
+            imports: "always-multiline",
+            exports: "always-multiline",
+            functions: "never",
+          },
+        ],
+        "object-curly-spacing": ["error", "always"],
+        "arrow-parens": ["error", "always"],
+        "linebreak-style": 0,
+        "no-confusing-arrow": [
+          "error",
+          {
+            allowParens: false,
+          },
+        ],
+        "space-before-function-paren": [
+          "error",
+          {
+            anonymous: "always",
+            named: "never",
+            asyncArrow: "always",
+          },
+        ],
+        "space-infix-ops": "error",
+        "eol-last": ["error", "always"],
+      },
+    },
+
+    // --- TypeScript style rules — historical scope only ---
+    {
+      files: ["*.ts"],
+      excludedFiles: STYLE_EXCLUDED,
+      plugins: ["@typescript-eslint/eslint-plugin"],
+      extends: ["plugin:@typescript-eslint/recommended"],
       rules: {
         "valid-jsdoc": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-floating-promises": "error",
-        "@typescript-eslint/await-thenable": "error",
-        "@typescript-eslint/promise-function-async": "error",
+        // Disabled to avoid OOM: these require the TS type-checker, and pointing
+        // `parserOptions.project` at the whole monorepo to feed them exhausted
+        // the heap. Re-enabling needs a scoped/chunked `project` setup.
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/await-thenable": "off",
+        "@typescript-eslint/promise-function-async": "off",
         "@typescript-eslint/keyword-spacing": "error",
         "@typescript-eslint/space-before-function-paren": [
           "error",
@@ -272,6 +193,7 @@ module.exports = {
         "@typescript-eslint/no-var-requires": "off",
       },
     },
+
     {
       files: [
         "./packages/design-system/ui/**/*.ts",
@@ -383,5 +305,16 @@ module.exports = {
         ],
       },
     },
+
+    // --- Medusa convention rules (generated from the plugin presets) ---
+    // `recommended` for the app-like packages. `packages/modules` and
+    // `packages/core/framework` are intentionally excluded from the Medusa rules
+    // here (see MEDUSA_EXCLUDED_DIRS) — they're linted for conventions
+    // separately — so no `modules`-preset override is registered.
+    ...medusaOverrides("recommended", [
+      "packages/medusa",
+      "packages/plugins/*",
+      "packages/core/core-flows",
+    ]),
   ],
 }
