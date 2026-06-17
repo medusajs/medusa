@@ -77,9 +77,10 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
     },
-    // A `*Service`-named class outside a module's service location is NOT treated
-    // as a service — its sync methods are allowed. (Fixes false positives on
-    // helper classes like `EntityDiscoveryService` in `modules/**/utils/**`.)
+    // A `*Service`-named class that doesn't extend `MedusaService` is NOT
+    // treated as a service — its sync methods are allowed, regardless of file
+    // location. (Fixes false positives on helper classes like
+    // `EntityDiscoveryService`.)
     {
       filename: "/repo/packages/modules/settings/src/utils/entity-discovery.ts",
       code: `
@@ -88,13 +89,21 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
     },
-    // A plain class in a module's service location is still fine when its
-    // public methods are async.
+    // A plain class in a module's service location that doesn't extend
+    // `MedusaService` is not checked, even when its methods are sync.
     {
-      filename: "/repo/packages/modules/foo/src/service.ts",
+      filename: "/repo/packages/modules/order/src/services/order.ts",
       code: `
-        class Foo {
-          async create() {}
+        class OrderHelper {
+          create() {}
+        }
+      `,
+    },
+    {
+      filename: "/repo/packages/modules/order/src/service.ts",
+      code: `
+        class OrderModuleService {
+          create() {}
         }
       `,
     },
@@ -208,38 +217,6 @@ ruleTester.run("service-methods-must-be-async", rule, {
       output: `
         import { MedusaService } from "@medusajs/framework/utils"
         const FooService = class extends MedusaService({}) {
-          async create() {}
-        }
-      `,
-      errors: [{ messageId: "methodMustBeAsync" }],
-    },
-    // Class in a module's `services/` directory (no MedusaService extension) —
-    // flagged by location, regardless of the class name.
-    {
-      filename: "/repo/packages/modules/order/src/services/order.ts",
-      code: `
-        class OrderHelper {
-          create() {}
-        }
-      `,
-      output: `
-        class OrderHelper {
-          async create() {}
-        }
-      `,
-      errors: [{ messageId: "methodMustBeAsync" }],
-    },
-    // Class in a module's main `service.ts` (no MedusaService extension) —
-    // flagged by location.
-    {
-      filename: "/repo/packages/modules/order/src/service.ts",
-      code: `
-        class OrderModuleService {
-          create() {}
-        }
-      `,
-      output: `
-        class OrderModuleService {
           async create() {}
         }
       `,

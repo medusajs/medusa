@@ -91,6 +91,24 @@ ruleTester.run("step-must-return-step-response", rule, {
         })
       `,
     },
+    // `StepResponse.permanentFailure()` is a valid step return.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.permanentFailure("failed")
+        })
+      `,
+    },
+    // `StepResponse.permanentFailure()` via an aliased import.
+    {
+      code: `
+        import { createStep, StepResponse as SR } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return SR.permanentFailure("failed")
+        })
+      `,
+    },
     // `new StepResponse(...)` with a TS type assertion is still valid.
     {
       code: `
