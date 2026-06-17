@@ -93,11 +93,7 @@ export const RoleListTable = () => {
   )
 }
 
-type RoleWithUsers = HttpTypes.AdminRbacRole & {
-  users_link?: { user?: HttpTypes.AdminUser | null }[]
-}
-
-const columnHelper = createDataTableColumnHelper<RoleWithUsers>()
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminRbacRole>()
 
 const useColumns = ({
   canUpdate,
@@ -162,9 +158,9 @@ const useColumns = ({
         header: t("users.domain"),
         cell: ({ row }) => {
           const users =
-            row.original.users_link
-              ?.map((link) => link.user)
-              .filter((user): user is HttpTypes.AdminUser => !!user) ?? []
+            row.original.users?.filter(
+              (user): user is HttpTypes.AdminUser => !!user
+            ) ?? []
 
           if (!users.length) {
             return "-"

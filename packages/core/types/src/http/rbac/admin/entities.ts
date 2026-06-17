@@ -1,3 +1,5 @@
+import { AdminUser } from "../.."
+
 export interface AdminRbacRole {
   /**
    * The role's ID.
@@ -23,6 +25,10 @@ export interface AdminRbacRole {
    * The policies associated with the role.
    */
   policies?: AdminRbacPolicy[]
+  /**
+   * The users associated with the role.
+   */
+  users?: AdminUser[]
   /**
    * The date the role was created.
    */
