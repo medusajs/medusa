@@ -26,6 +26,8 @@ A campaign is a collection of promotions related to specific marketing or sales 
 
 ## View Campaigns
 
+<PermissionsBadge permissions={["campaign:read"]} />
+
 To view the campaigns in your store, go to Promotions -> Campaigns from the sidebar.
 
 In the list, you can see campaign details such as the name, description, and identifier. You can also search, filter, and sort the campaigns to find the specific item you are looking for.
@@ -41,6 +43,8 @@ Find tips to use lists effectively in [this guide](../../tips/lists/page.mdx).
 ---
 
 ## Create Campaign
+
+<PermissionsBadge permissions={["campaign:create"]} />
 
 To create a campaign:
 
@@ -77,12 +81,14 @@ The **Limit usage per** field is available from [Medusa Admin v2.11.0](https://g
 
 ## View Campaign Details
 
+<PermissionsBadge permissions={["campaign:read"]} />
+
 To view the details of a campaign:
 
 1. Go to Promotions -> Campaigns from the sidebar.
 2. Click on the campaign you want to view.
 
-This opens the campaign's details page.
+This opens the campaign's details page. To see the campaign's promotions in the **Promotions** section, you also need the `promotion:read` policy.
 
 ![Campaign Details](https://res.cloudinary.com/dza7lstvk/image/upload/v1739953751/User%20Guide/Screenshot_2025-02-19_at_10.28.59_AM_lvi2vl.png)
 
@@ -117,6 +123,8 @@ In the first section's header, you can see the campaign's status. The status can
 
 ## Edit Campaign Details
 
+<PermissionsBadge permissions={["campaign:update"]} />
+
 To edit the details of a campaign:
 
 1. Go to the campaign's details page.
@@ -130,6 +138,8 @@ To edit the details of a campaign:
 ---
 
 ## Edit Campaign Budget Limit
+
+<PermissionsBadge permissions={["campaign:update"]} />
 
 To edit a campaign's budget usage or spending limit:
 
@@ -166,6 +176,8 @@ From the campaign's details page, you can manage which promotions belong to the 
 
 ### Add Promotions to Campaign
 
+<PermissionsBadge permissions={["campaign:update", "promotion:read", "promotion:update"]} />
+
 To add promotions to a campaign:
 
 <Note title="Tip">
@@ -182,6 +194,8 @@ You can only add promotions that don't belong to another campaign.
 ![Add Promotions to Campaign](https://res.cloudinary.com/dza7lstvk/image/upload/v1739954374/User%20Guide/Screenshot_2025-02-19_at_10.39.17_AM_gvzsjj.png)
 
 ### Remove Promotions from Campaign
+
+<PermissionsBadge permissions={["campaign:update", "promotion:read", "promotion:update"]} />
 
 To remove promotions from a campaign:
 
@@ -201,6 +215,8 @@ To remove promotions from a campaign:
 Deleting a campaign is irreversible. Deleting a campaign doesn't delete its promotions.
 
 </Note>
+
+<PermissionsBadge permissions={["campaign:delete"]} />
 
 To delete a campaign:
 

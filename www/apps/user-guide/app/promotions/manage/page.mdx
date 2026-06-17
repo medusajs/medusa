@@ -21,12 +21,14 @@ In this guide, you’ll learn how to manage promotions.
 
 ## View Promotion's Details
 
+<PermissionsBadge permissions={["promotion:read"]} />
+
 To view a promotion's details:
 
 1. Go to Promotions from the sidebar.
 2. Choose the promotion from the list.
 
-This opens the promotion's details page. The sections in the details page may differ based on the promotion's type.
+This opens the promotion's details page. The sections in the details page may differ based on the promotion's type. To see the promotion's associated campaign in the **Campaign** section, you also need the `campaign:read` policy.
 
 ![Promotion Details](https://res.cloudinary.com/dza7lstvk/image/upload/v1764580476/User%20Guide/CleanShot_2025-12-01_at_11.03.26_2x_xxxa8m.png)
 
@@ -86,6 +88,8 @@ If any of the fields are not visible in your admin, contact your technical team 
 
 </Note>
 
+<PermissionsBadge permissions={["promotion:update"]} />
+
 To edit a promotion's general details:
 
 1. Go to the promotion's details page.
@@ -108,6 +112,8 @@ To edit a promotion's general details:
 ---
 
 ## Edit Who Can Use the Promotion
+
+<PermissionsBadge permissions={["promotion:update"]} />
 
 To edit who can use the promotion:
 
@@ -142,6 +148,8 @@ To edit who can use the promotion:
 For "Buy X Get Y" or "buyget" promotion types, this section allows you to edit which items the customer gets for free when they buy the specified items. To edit the items that the customer must buy to get the free items, refer to the [Edit Buy X Promotion Condition](#edit-buy-x-promotion-condition) section.
 
 </Note>
+
+<PermissionsBadge permissions={["promotion:update"]} />
 
 To edit the items the promotion applies to:
 
@@ -180,6 +188,8 @@ To edit the items that the customer gets for free when they buy the specified it
 
 </Note>
 
+<PermissionsBadge permissions={["promotion:update"]} />
+
 To edit the "Buy X" part of the promotion:
 
 1. Go to the promotion's details page.
@@ -217,6 +227,8 @@ Free shipping promotions were added in [Medusa v2.10.0](https://github.com/medus
 
 For "Free Shipping" promotions, you can edit the required conditions for the promotion to be applicable on a cart's shipping methods.
 
+<PermissionsBadge permissions={["promotion:update"]} />
+
 To edit the shipping methods the promotion applies to:
 
 1. Go to the promotion's details page.
@@ -237,6 +249,8 @@ To edit the shipping methods the promotion applies to:
 
 ## Add Promotion to Campaign
 
+<PermissionsBadge permissions={["promotion:update", "campaign:read", "campaign:update"]} />
+
 If you created a promotion without a campaign, you can add it to an existing campaign from its details page.
 
 To add a promotion to a campaign:
@@ -253,6 +267,8 @@ To add a promotion to a campaign:
 ---
 
 ## Change Promotion's Campaign
+
+<PermissionsBadge permissions={["promotion:update", "campaign:read", "campaign:update"]} />
 
 You can change the campaign that a promotion belongs to, or remove it from a campaign.
 
@@ -275,6 +291,8 @@ To change a promotion's campaign:
 Deleting a promotion is irreversible.
 
 </Note>
+
+<PermissionsBadge permissions={["promotion:delete"]} />
 
 To delete a promotion:
 

@@ -70,6 +70,8 @@ At the top of the order details page, you can see the payment status of the orde
 
 ## Capture Payment
 
+<PermissionsBadge permissions={["capture:create", "order:update"]} />
+
 Unless the payment provider that the customer chose is configured to automatically capture an order's payment, you need to manually capture the payment.
 
 Capturing an order's payment triggers its processing with the chosen payment provider, such as Stripe.
@@ -92,6 +94,8 @@ To capture an order’s payment:
 ---
 
 ## Refund Payment
+
+<PermissionsBadge permissions={["refund:create", "order:update"]} />
 
 You can refund a payment either partially or in full. This can be done for various reasons, such as when a customer returns an item or if there was an error in the order.
 
@@ -147,6 +151,8 @@ You can handle it by either:
 
 ### Mark Outstanding Amount as Paid
 
+<PermissionsBadge permissions={["payment_collection:update", "order:update"]} />
+
 By marking a positive outstanding amount as paid, you're capturing the payment without processing it through the associated payment provider. Instead, you handle capturing the payment outside of Medusa.
 
 To mark a positive outstanding amount as paid:
@@ -156,6 +162,8 @@ To mark a positive outstanding amount as paid:
 3. Confirm marking the payment as paid by clicking the "Confirm" button in the pop-up.
 
 ### Copy Payment Link for Additional Payment
+
+<PermissionsBadge permissions={["payment_collection:update", "order:update"]} />
 
 Another way you can handle a positive outstanding amount is by sharing a payment link with the customer to authorize the payment. The payment link is a link in the storefront that the customer can use to pay for the additional amount.
 

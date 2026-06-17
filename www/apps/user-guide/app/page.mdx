@@ -94,3 +94,19 @@ Learn how to change the language in the [Profile Settings](./settings/profile/pa
 The Medusa Admin comes with light and dark themes. You can change the theme by clicking the profile item at the bottom of the sidebar → Theme → Light, Dark, or System, which defaults to your Operating System or Browser theme.
 
 ![Dark Theme](https://res.cloudinary.com/dza7lstvk/image/upload/v1739530936/User%20Guide/Screenshot_2025-02-14_at_1.01.56_PM_fdcgmz.png)
+
+---
+
+## Understanding User Permissions Across Guides
+
+Throughout this guide, some pages and actions show a badge indicating the permissions a user needs to perform that action. For example:
+
+<PermissionsBadge permissions={["product:create"]} />
+
+These permissions, called policies, are part of the [role-based access control (RBAC)](!resources!/commerce-modules/rbac) feature, which is an enterprise feature. When RBAC is enabled, an admin user is assigned roles that grant them specific policies, controlling what they can access and do in the Medusa Admin.
+
+So, if you find a badge on an action you can't perform, you might be missing the listed policies. When a badge lists more than one policy, you need all of them to perform the action.
+
+If RBAC isn't enabled in your store, you can ignore these badges, as all admin users have full access.
+
+Learn more about roles and policies in the [Manage Roles](./settings/roles/page.mdx) guide.

@@ -21,6 +21,8 @@ In this guide, you'll learn about editing a product's details in the Medusa Admi
 
 ## Open Product's Details
 
+<PermissionsBadge permissions={["product:read"]} />
+
 To open a product's details:
 
 1. Go to the Products page from the sidebar.
@@ -69,6 +71,8 @@ In the first section's header, you can see the product's status. A product can h
 
 ### Edit Product Details
 
+<PermissionsBadge permissions={["product:update"]} />
+
 To edit the product's general details:
 
 1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section's header.
@@ -77,6 +81,8 @@ To edit the product's general details:
 4. Once you're done, click the "Save" button.
 
 ### Manage Product's Translations
+
+<PermissionsBadge permissions={["translation:update"]} />
 
 <Note>
 
@@ -95,6 +101,8 @@ To manage translations for the product:
 4. Once you're done editing, click the Save button to apply the changes.
 
 ### Delete Product
+
+<PermissionsBadge permissions={["product:delete"]} />
 
 In this section, you can also delete the product.
 
@@ -120,6 +128,8 @@ The Media section includes the product's images. Use this section to view and ed
 
 ### Add Images
 
+<PermissionsBadge permissions={["product:update"]} />
+
 To add images to the product:
 
 1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the "Media" section's header.
@@ -129,6 +139,8 @@ To add images to the product:
 
 ### Edit Images Order
 
+<PermissionsBadge permissions={["product:update"]} />
+
 You can edit the order that images are shown in. To do this:
 
 1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the "Media" section's header.
@@ -137,6 +149,8 @@ You can edit the order that images are shown in. To do this:
 4. Once you're done, click the Save button.
 
 ### Set Thumbnail Image
+
+<PermissionsBadge permissions={["product:update"]} />
 
 The product's thumbnail image has the <InlineIcon Icon={ThumbnailBadge} alt="thumbnail" /> icon in the top corner.
 
@@ -150,6 +164,8 @@ To set an image as the thumbnail:
 
 ### Delete Images
 
+<PermissionsBadge permissions={["product:update"]} />
+
 You can delete the images from the product's page or from the images form.
 
 To delete product images:
@@ -159,6 +175,8 @@ To delete product images:
 3. Confirm deleting the images by clicking the "Delete" button in the pop-up.
 
 ### Associate Images with Variants
+
+<PermissionsBadge permissions={["product:update", "product_variant:update"]} />
 
 <Note>
 
@@ -189,6 +207,8 @@ The Options section includes the product's options. Use this section to view and
 
 ### Create Options
 
+<PermissionsBadge permissions={["product:update", "product_option:create"]} />
+
 <Note>
 
 Unlike the product-creation form, when you create an option for an existing product you must create the variants manually.
@@ -206,6 +226,8 @@ To add a new option to the product:
 
 ### Edit Option
 
+<PermissionsBadge permissions={["product:update", "product_option:update"]} />
+
 To edit an option:
 
 1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in its row.
@@ -214,6 +236,8 @@ To edit an option:
 4. Once you're done, click the Save button.
 
 ### Delete Option
+
+<PermissionsBadge permissions={["product:update", "product_option:delete"]} />
 
 <Note type="warning">
 
@@ -231,6 +255,8 @@ To delete an option:
 
 ## Variants Section
 
+<PermissionsBadge permissions={["product:read", "product_variant:read"]} />
+
 The Variants section includes the product's variants. You can view, search, and filter variants. You can also edit a variant's informtion, or click on it to edit more of its details.
 
 Refer to [this guide](../variants/page.mdx) to learn about managing product variants.
@@ -240,6 +266,8 @@ Refer to [this guide](../variants/page.mdx) to learn about managing product vari
 ---
 
 ## Manage Product Metadata
+
+<PermissionsBadge permissions={["product:update"]} />
 
 Metadata is custom data that can be associated with the product in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the product.
 
@@ -259,6 +287,8 @@ To edit the product's metadata:
 ---
 
 ## Manage Product's Sales Channels
+
+<PermissionsBadge permissions={["product:update"]} />
 
 The Sales Channels section includes the sales channels the product is available in. Use this section to view and edit the product's sales channels.
 
@@ -287,6 +317,8 @@ The Shipping Configuration section includes the product's shipping profile. Use 
 
 ### Edit Product's Shipping Profile
 
+<PermissionsBadge permissions={["product:update"]} />
+
 To edit the product's shipping profile:
 
 1. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the "Shipping Configuration" section's header.
@@ -297,6 +329,8 @@ To edit the product's shipping profile:
 ---
 
 ## Manage Product Organization
+
+<PermissionsBadge permissions={["product:update"]} />
 
 The Organize section includes the product's organization details. Use this section to view and edit the product's organization details, such as categories and collection.
 
@@ -312,6 +346,8 @@ To edit the product's organization details:
 ---
 
 ## Manage Product Attributes
+
+<PermissionsBadge permissions={["product:update"]} />
 
 The Attributes section includes the product's attributes, such as height and weight. Use this section to view and edit the product's attributes.
 

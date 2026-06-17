@@ -21,6 +21,8 @@ In this guide, you’ll learn how to create and manage customers and their detai
 
 ## Create a Customer
 
+<PermissionsBadge permissions={["customer:create"]} />
+
 You can create a customer through the Medusa Admin, which is useful if a customer is creating an order offline. The customer will be a guest customer; to register, the customer must register through the storefront.
 
 To create a customer from the Medusa Admin:
@@ -35,6 +37,8 @@ To create a customer from the Medusa Admin:
 ---
 
 ## View Customer Details
+
+<PermissionsBadge permissions={["customer:read"]} />
 
 To view a customer’s details:
 
@@ -70,6 +74,8 @@ In the first section's header, you can see a badge with the customer's type:
 
 ## Edit Customer Details
 
+<PermissionsBadge permissions={["customer:update"]} />
+
 <Note>
 
 You can't edit a customer's password from the Medusa Admin. The customer has to reset it from the storefront.
@@ -90,9 +96,13 @@ To edit a customer’s details:
 
 ## View Customer Orders
 
+<PermissionsBadge permissions={["customer:read"]} />
+
 You can view a customer’s orders from their details page in the Orders section. By clicking on an order, you can view its details.
 
 ### Transfer Order to Another Customer
+
+<PermissionsBadge permissions={["customer:update", "order:update"]} />
 
 You can transfer an order to another customer. For example, a guest customer registered, or a customer created an order offline.
 
@@ -130,6 +140,8 @@ You can add a customer to multiple groups, allowing you to offer different promo
 
 ### Add Customer to Groups
 
+<PermissionsBadge permissions={["customer:update", "customer_group:update"]} />
+
 To add a customer to customer groups:
 
 1. Go to the customer's details page.
@@ -140,6 +152,8 @@ To add a customer to customer groups:
 ![Add groups form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739888065/User%20Guide/Screenshot_2025-02-18_at_4.14.13_PM_jntqs2.png)
 
 ### Remove Customer from Groups
+
+<PermissionsBadge permissions={["customer:update", "customer_group:update"]} />
 
 To remove a customer from customer groups:
 
@@ -153,6 +167,8 @@ To remove a customer from customer groups:
 ---
 
 ## Edit Customer Metadata
+
+<PermissionsBadge permissions={["customer:update"]} />
 
 Metadata is custom data that can be associated with the customer in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the customer.
 
@@ -184,6 +200,8 @@ The Address section and management features are only available after  This injec
 
 ### Add Customer Address
 
+<PermissionsBadge permissions={["customer:update", "customer_address:create"]} />
+
 To add an address to a customer:
 
 1. Go to the customer's details page.
@@ -194,6 +212,8 @@ To add an address to a customer:
 ![Add address form](https://res.cloudinary.com/dza7lstvk/image/upload/v1744363680/User%20Guide/Screenshot_2025-04-11_at_12.27.45_PM_h0fkqm.png)
 
 ### Delete Customer Address
+
+<PermissionsBadge permissions={["customer:update", "customer_address:delete"]} />
 
 <Note type="warning">
 
@@ -234,6 +254,8 @@ By clicking on an account, you can view its details and transaction history, and
 ---
 
 ## Delete a Customer
+
+<PermissionsBadge permissions={["customer:delete"]} />
 
 <Note type="warning">
 

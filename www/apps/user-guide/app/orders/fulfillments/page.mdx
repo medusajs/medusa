@@ -94,6 +94,8 @@ At the top of the order details page, you can see the fulfillment status of the 
 
 ## Create Fulfillment
 
+<PermissionsBadge permissions={["order:update", "fulfillment:create"]} />
+
 To create a fulfillment for an order:
 
 1. Open the order's details page.
@@ -120,6 +122,8 @@ This can also change the order's fulfillment status to "Partially Fulfilled" or 
 ---
 
 ## Add a Shipment to a Fulfillment
+
+<PermissionsBadge permissions={["order:update", "fulfillment:update"]} />
 
 <Note>
 
@@ -156,6 +160,8 @@ This changes the order's fulfillment status to "Partially Shipped" or "Shipped" 
 
 ## Mark Fulfillment as Delivered
 
+<PermissionsBadge permissions={["fulfillment:update", "order:update"]} />
+
 <Note>
 
 You can only mark a fulfillment as delivered if its shipping option isn't a pickup option.
@@ -185,6 +191,8 @@ This changes the order's fulfillment status to "Partially Delivered" or "Deliver
 
 ## Mark Fulfillment as Picked Up
 
+<PermissionsBadge permissions={["fulfillment:update", "order:update"]} />
+
 If the fulfillment's shipping option is a pickup option, you can mark the fulfillment as picked up. This can be useful if the customer picks up the items in person.
 
 <Note type="warning">
@@ -207,6 +215,8 @@ This changes the order's fulfillment status to "Partially Delivered" or "Deliver
 ---
 
 ## Cancel a Fulfillment
+
+<PermissionsBadge permissions={["fulfillment:update", "order:update"]} />
 
 You can cancel a fulfillment if you haven't shipped or marked it as delivered yet. This can be useful if you need to change the items fulfilled or if the customer cancels the order.
 

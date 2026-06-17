@@ -42,6 +42,8 @@ Developers can use [Publishable API Keys](../developer/secret-api-keys/page.mdx)
 
 ## View Sales Channels
 
+<PermissionsBadge permissions={["sales_channel:read"]} />
+
 To view sales channels in your store, go to Settings → Sales Channels. Here, you can see a list of all the sales channels you have set up in your store. You can also search, filter, and sort the sales channels to find the one you are looking for.
 
 ![Sales channels list](https://res.cloudinary.com/dza7lstvk/image/upload/v1739977340/User%20Guide/Screenshot_2025-02-19_at_5.02.07_PM_pmw1v0.png)
@@ -49,6 +51,8 @@ To view sales channels in your store, go to Settings → Sales Channels. Here, y
 ---
 
 ## Create Sales Channel
+
+<PermissionsBadge permissions={["sales_channel:create"]} />
 
 To create a sales channel:
 
@@ -66,12 +70,14 @@ To create a sales channel:
 
 ## View Sales Channel Details
 
+<PermissionsBadge permissions={["sales_channel:read"]} />
+
 To view the details of a sales channel:
 
 1. Go to Settings → Sales Channels.
 2. Click on a sales channel from the list.
 
-This opens the sales channel's details page where you can also manage the sales channel.
+This opens the sales channel's details page where you can also manage the sales channel. To see the products in the sales channel, you also need the `product:read` policy.
 
 ![Sales channel details](https://res.cloudinary.com/dza7lstvk/image/upload/v1739977621/User%20Guide/Screenshot_2025-02-19_at_5.06.47_PM_ma6abe.png)
 
@@ -82,6 +88,8 @@ The status of a sales channel is shown in the header of the first section in the
 ---
 
 ## Edit Sales Channel Details
+
+<PermissionsBadge permissions={["sales_channel:update"]} />
 
 To edit the details of a sales channel:
 
@@ -101,6 +109,8 @@ You can manage the products available in a sales channel from the sales channel'
 
 ### Add Products to Sales Channel
 
+<PermissionsBadge permissions={["sales_channel:update", "product:read", "product:update"]} />
+
 To add products to a sales channel:
 
 1. Go to the sales channel's details page.
@@ -111,6 +121,8 @@ To add products to a sales channel:
 ![Add products to sales channel](https://res.cloudinary.com/dza7lstvk/image/upload/v1739978037/User%20Guide/Screenshot_2025-02-19_at_5.13.37_PM_maqev3.png)
 
 ### Remove Products from Sales Channel
+
+<PermissionsBadge permissions={["sales_channel:update", "product:update"]} />
 
 To remove products from a sales channel:
 
@@ -124,6 +136,8 @@ To remove products from a sales channel:
 ---
 
 ## Delete Sales Channel
+
+<PermissionsBadge permissions={["sales_channel:delete"]} />
 
 <Note type="warning">
 
