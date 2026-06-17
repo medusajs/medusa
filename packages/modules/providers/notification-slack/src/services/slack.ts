@@ -91,7 +91,7 @@ export class SlackNotificationService extends AbstractNotificationProviderServic
    *   template: "order.placed",
    *   data: {
    *     order_id: "order_123",
-   *     customer_name: "Azhar Doe",
+   *     customer_name: "Azhar Hayat",
    *     total: "$99.99",
    *   },
    * })
