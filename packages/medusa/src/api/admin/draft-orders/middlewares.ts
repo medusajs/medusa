@@ -92,6 +92,16 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["DELETE"],
+    matcher: "/admin/draft-orders/:id",
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.delete,
+      },
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/draft-orders/:id/convert-to-order",
     middlewares: [
