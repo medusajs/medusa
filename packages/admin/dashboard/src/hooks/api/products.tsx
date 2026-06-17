@@ -139,7 +139,11 @@ export const useCreateProductVariant = (
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateProductVariant) =>
-      sdk.admin.product.createVariant(productId, payload),
+      sdk.admin.product.createVariant(productId, payload, {
+        // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+        fields:
+          "-type,-collection,-options,-tags,-images,-sales_channels,-variants",
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -160,7 +164,8 @@ export const useUpdateProductVariant = (
     mutationFn: (payload: HttpTypes.AdminUpdateProductVariant) =>
       sdk.admin.product.updateVariant(productId, variantId, payload, {
         // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
-        fields: "-prices,-options",
+        fields:
+          "-type,-collection,-options,-tags,-images,-sales_channels,-variants",
       }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
@@ -231,7 +236,12 @@ export const useDeleteVariant = (
   options?: UseMutationOptions<any, FetchError, void>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.product.deleteVariant(productId, variantId),
+    mutationFn: () =>
+      sdk.admin.product.deleteVariant(productId, variantId, undefined, {
+        // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+        fields:
+          "-type,-collection,-options,-tags,-images,-sales_channels,-variants",
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({

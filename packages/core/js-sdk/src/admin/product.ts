@@ -780,12 +780,18 @@ export class Product {
    *   console.log(deleted)
    * })
    */
-  async deleteVariant(productId: string, id: string, headers?: ClientHeaders) {
+  async deleteVariant(
+    productId: string,
+    id: string,
+    headers?: ClientHeaders,
+    query?: SelectParams
+  ) {
     return await this.client.fetch<HttpTypes.AdminProductVariantDeleteResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         method: "DELETE",
         headers,
+        query,
       }
     )
   }
@@ -1080,7 +1086,7 @@ export class Product {
    * This method manages image-variant associations for a specific image. It sends a request to the
    * [Batch Image Variants](https://docs.medusajs.com/api/admin#products_postproductsidimagesimage_idvariantsbatch)
    * API route.
-   * 
+   *
    * @since 2.11.2
    *
    * @param productId - The product's ID.
@@ -1118,7 +1124,7 @@ export class Product {
    * This method manages variant-image associations for a specific variant. It sends a request to the
    * [Batch Variant Images](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_idimagesbatch)
    * API route.
-   * 
+   *
    * @since 2.11.2
    *
    * @param productId - The product's ID.
