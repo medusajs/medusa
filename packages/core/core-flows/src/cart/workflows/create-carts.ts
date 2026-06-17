@@ -17,9 +17,11 @@ import {
   parallelize,
   StepResponse,
   transform,
+  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { emitEventStep } from "../../common/steps/emit-event"
 import {
   createCartsStep,
@@ -36,7 +38,6 @@ import { getVariantsAndItemsWithPrices } from "./get-variants-and-items-with-pri
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
-import { getTranslatedLineItemsStep } from "../../common"
 
 /**
  * The data to create the cart, along with custom data that's passed to the workflow's hooks.
@@ -215,11 +216,32 @@ export const createCartWorkflow = createWorkflow(
     )
     const setPricingContextResult = setPricingContext.getResult()
 
+    const customerId = transform(
+      { customerData },
+      (data) => data.customerData.customer?.id
+    )
+
+    const customerForPricing = when(
+      "fetch-customer-groups",
+      { customerId },
+      ({ customerId }) => !!customerId
+    ).then(() => {
+      const { data: customer } = useQueryGraphStep({
+        entity: "customer",
+        fields: ["id", "groups.id"],
+        filters: { id: customerId },
+        options: { isList: false },
+      }).config({ name: "customer-groups-query" })
+
+      return customer
+    })
+
     const getVariantsAndItemsWithPricesInput = transform(
       {
         input,
         region,
         customerData,
+        customerForPricing,
         setPricingContextResult,
         variantIds,
         productVariantsFields,
@@ -232,6 +254,7 @@ export const createCartWorkflow = createWorkflow(
             region: data.region,
             region_id: data.region?.id,
             customer_id: data.customerData.customer?.id,
+            customer: data.customerForPricing,
           },
           items: data.input.items,
           setPricingContextResult: data.setPricingContextResult!,
