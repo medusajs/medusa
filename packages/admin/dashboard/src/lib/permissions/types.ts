@@ -29,7 +29,7 @@ export type PermissionResource =
   | "payment"
   | "refund"
   | "payment_collection"
-  | "credit_line"
+  | "order_credit_line"
   | "reservation_item"
   | "product"
   | "product_category"

@@ -25,7 +25,7 @@ import {
   useCreateOrderCreditLine,
   useRefundPayment,
 } from "../../../../../hooks/api"
-import { useCreditLinePermissions } from "../../../../../hooks/use-resource-permissions"
+import { useOrderCreditLinePermissions } from "../../../../../hooks/use-resource-permissions"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
@@ -61,7 +61,7 @@ export const OrderBalanceSettlementForm = ({
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const { handleSuccess } = useRouteModal()
-  const { canCreate: canCreateCreditLine } = useCreditLinePermissions()
+  const { canCreate: canCreateCreditLine } = useOrderCreditLinePermissions()
   const paymentId = searchParams.get("paymentId")
   const payments = getPaymentsFromOrder(order)
   const pendingDifference = order.summary.pending_difference * -1

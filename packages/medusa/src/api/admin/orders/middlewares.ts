@@ -193,7 +193,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     ],
     policies: [
       {
-        resource: Entities.credit_line,
+        resource: Entities.order_credit_line,
         operation: PolicyOperation.create,
       },
       {

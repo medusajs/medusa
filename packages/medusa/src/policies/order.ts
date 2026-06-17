@@ -9,6 +9,7 @@ const orderResources = [
   "order_claim",
   "order_claim_item",
   "order_exchange",
+  "order_credit_line",
   "return",
   "return_reason",
 ]
