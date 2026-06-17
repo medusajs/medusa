@@ -231,7 +231,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminCreateProductVariant),
       validateAndTransformQuery(
         AdminGetProductParams,
-        QueryConfig.retrieveProductQueryConfig
+        QueryConfig.retrieveVariantConfig
       ),
     ],
     policies: [
@@ -301,7 +301,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminUpdateProductVariant),
       validateAndTransformQuery(
         AdminGetProductParams,
-        QueryConfig.retrieveProductQueryConfig
+        QueryConfig.retrieveVariantConfig
       ),
     ],
   },
@@ -311,7 +311,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformQuery(
         AdminGetProductParams,
-        QueryConfig.retrieveProductQueryConfig
+        QueryConfig.retrieveVariantConfig
       ),
     ],
     policies: [
