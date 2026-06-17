@@ -18,8 +18,9 @@
     "binding": "IMAGES"
   },
   "observability": {
+    "enabled": true,
     "logs": {
-      "enabled": false,
+      "enabled": true,
       "invocation_logs": true
     }
   },
@@ -34,6 +35,13 @@
       ],
       "images": {
         "binding": "IMAGES"
+      },
+      "observability": {
+        "enabled": true,
+        "logs": {
+          "enabled": true,
+          "invocation_logs": true
+        }
       }
     }
   }

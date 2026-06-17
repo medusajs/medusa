@@ -77,12 +77,24 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
     },
-    // Service class (name ends in "Service") with all async methods is fine.
+    // A `*Service`-named class outside a module's service location is NOT treated
+    // as a service — its sync methods are allowed. (Fixes false positives on
+    // helper classes like `EntityDiscoveryService` in `modules/**/utils/**`.)
     {
+      filename: "/repo/packages/modules/settings/src/utils/entity-discovery.ts",
       code: `
-        class FooService {
+        export class EntityDiscoveryService {
+          discover() {}
+        }
+      `,
+    },
+    // A plain class in a module's service location is still fine when its
+    // public methods are async.
+    {
+      filename: "/repo/packages/modules/foo/src/service.ts",
+      code: `
+        class Foo {
           async create() {}
-          async update() {}
         }
       `,
     },
@@ -201,15 +213,33 @@ ruleTester.run("service-methods-must-be-async", rule, {
       `,
       errors: [{ messageId: "methodMustBeAsync" }],
     },
-    // Service class detected by name suffix alone (no MedusaService extension).
+    // Class in a module's `services/` directory (no MedusaService extension) —
+    // flagged by location, regardless of the class name.
     {
+      filename: "/repo/packages/modules/order/src/services/order.ts",
       code: `
-        class OrderService {
+        class OrderHelper {
           create() {}
         }
       `,
       output: `
-        class OrderService {
+        class OrderHelper {
+          async create() {}
+        }
+      `,
+      errors: [{ messageId: "methodMustBeAsync" }],
+    },
+    // Class in a module's main `service.ts` (no MedusaService extension) —
+    // flagged by location.
+    {
+      filename: "/repo/packages/modules/order/src/service.ts",
+      code: `
+        class OrderModuleService {
+          create() {}
+        }
+      `,
+      output: `
+        class OrderModuleService {
           async create() {}
         }
       `,

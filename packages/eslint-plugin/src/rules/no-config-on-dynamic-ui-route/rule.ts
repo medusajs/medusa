@@ -25,7 +25,9 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     // Only dynamic routes are affected — a non-dynamic route's `defineRouteConfig`
     // is fine (and enforced by `ui-route-config-via-define-route-config`).
-    if (!isDynamicUiRoutePath(context.filename)) return {}
+    if (!isDynamicUiRoutePath(context.filename)) {
+      return {}
+    }
 
     const defineRouteConfigLocalNames = new Set<string>()
     // Every `defineRouteConfig(...)` call we find, reported at `Program:exit`
@@ -35,7 +37,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        if (node.source.value !== ADMIN_SDK_SOURCE) return
+        if (node.source.value !== ADMIN_SDK_SOURCE) {
+          return
+        }
         for (const spec of node.specifiers) {
           if (
             spec.type === AST_NODE_TYPES.ImportSpecifier &&

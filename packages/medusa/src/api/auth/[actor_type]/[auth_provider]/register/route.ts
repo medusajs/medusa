@@ -13,9 +13,6 @@ import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-tok
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
-  const config: ConfigModule = req.scope.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
 
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
@@ -28,21 +25,24 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, verification } = await service.register(
+  const { success, error, authIdentity } = await service.register(
     auth_provider,
     authData
   )
 
-  if (success && verification) {
-    return res.status(200).json({
-      verification_required: true,
-      verification,
-    })
-  }
-
   if (success && authIdentity) {
-    const { http } = config.projectConfig
+    const { http } = req.scope.resolve<ConfigModule>(
+      ContainerRegistrationKeys.CONFIG_MODULE
+    ).projectConfig
 
+    /*
+      At registration time the auth identity doesn't have an actor attached to it, so we return the actorless token.
+      The token can be used for few, auth-related operations, such as creating an actor, completing MFA,
+      and completing other verifications.
+
+      Once those are done the user either needs to use the returned token with an actor attached (eg. after verifying an MFA challenge)
+      Or request a token refresh (such as after passing a verification)
+     */
     const token = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
@@ -56,7 +56,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
         options: http.jwtOptions,
       }
     )
-
     return res.status(200).json({ token })
   }
 

@@ -39,12 +39,20 @@ export const rule = createRule<[], MessageIds>({
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, serviceBindings)) return
+      if (!isServiceClass(node, serviceBindings)) {
+        return
+      }
 
       for (const member of node.body.body) {
-        if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-        if (member.kind === "constructor") continue
-        if (member.computed) continue
+        if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+          continue
+        }
+        if (member.kind === "constructor") {
+          continue
+        }
+        if (member.computed) {
+          continue
+        }
         const value = member.value
         if (
           value.type !== AST_NODE_TYPES.FunctionExpression &&
@@ -55,8 +63,12 @@ export const rule = createRule<[], MessageIds>({
 
         for (const param of value.params) {
           const id = getParamIdentifier(param)
-          if (!id) continue
-          if (!isContextTypedIdentifier(id)) continue
+          if (!id) {
+            continue
+          }
+          if (!isContextTypedIdentifier(id)) {
+            continue
+          }
 
           if (
             hasDecoratorWithLocalName(
@@ -75,8 +87,7 @@ export const rule = createRule<[], MessageIds>({
             node: param,
             messageId: "missingMedusaContext",
             fix: canAutofix
-              ? (fixer) =>
-                  fixer.insertTextBefore(param, `@${localName}() `)
+              ? (fixer) => fixer.insertTextBefore(param, `@${localName}() `)
               : undefined,
           })
         }

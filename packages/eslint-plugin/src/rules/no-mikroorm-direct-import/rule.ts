@@ -46,9 +46,13 @@ function check(
   context: Parameters<Parameters<typeof createRule>[0]["create"]>[0],
   source: TSESTree.StringLiteral | null | undefined
 ) {
-  if (!source) return
+  if (!source) {
+    return
+  }
   const value = source.value
-  if (typeof value !== "string") return
+  if (typeof value !== "string") {
+    return
+  }
 
   const isMikroOrm = value.startsWith(MIKRO_ORM_PREFIX)
   if (value !== AWILIX_SOURCE && !isMikroOrm) {

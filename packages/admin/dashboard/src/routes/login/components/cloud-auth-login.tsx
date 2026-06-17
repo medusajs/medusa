@@ -183,6 +183,10 @@ const useAuthCallback = (
           return
         }
 
+        if (typeof result === "object" && "verification_required" in result) {
+          throw new Error("Verification required but not implemented yet")
+        }
+
         token = result
       } catch (error) {
         throw new Error("Authentication callback failed")

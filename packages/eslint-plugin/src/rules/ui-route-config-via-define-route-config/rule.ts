@@ -25,7 +25,9 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     // Dynamic routes (e.g. `[id]/page.tsx`) aren't added to the sidebar, so
     // route `config` doesn't apply to them — skip the file entirely.
-    if (isDynamicUiRoutePath(context.filename)) return {}
+    if (isDynamicUiRoutePath(context.filename)) {
+      return {}
+    }
 
     const defineRouteConfigLocalNames = new Set<string>()
     // The `config` identifier(s) we report on, so the warning lands on the
@@ -33,7 +35,9 @@ export const rule = createRule<[], MessageIds>({
     const badConfigNodes: TSESTree.Node[] = []
 
     function isDefineRouteConfigCall(node: TSESTree.Node | null): boolean {
-      if (!node || node.type !== AST_NODE_TYPES.CallExpression) return false
+      if (!node || node.type !== AST_NODE_TYPES.CallExpression) {
+        return false
+      }
       const callee = node.callee
       return (
         callee.type === AST_NODE_TYPES.Identifier &&
@@ -42,13 +46,17 @@ export const rule = createRule<[], MessageIds>({
     }
 
     function declaratorName(decl: TSESTree.VariableDeclarator): string | null {
-      if (decl.id.type === AST_NODE_TYPES.Identifier) return decl.id.name
+      if (decl.id.type === AST_NODE_TYPES.Identifier) {
+        return decl.id.name
+      }
       return null
     }
 
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        if (node.source.value !== ADMIN_SDK_SOURCE) return
+        if (node.source.value !== ADMIN_SDK_SOURCE) {
+          return
+        }
         for (const spec of node.specifiers) {
           if (
             spec.type === AST_NODE_TYPES.ImportSpecifier &&

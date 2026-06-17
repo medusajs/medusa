@@ -21,7 +21,9 @@ const defaultConfig = {
 } as boxen.Options
 
 export default async function ({ types, directory, lint, fix }) {
-  const container = await initializeContainer(directory)
+  const container = await initializeContainer(directory, {
+    skipDbConnection: true,
+  })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   // Lint once at startup, before the dev server is forked. On lint errors this

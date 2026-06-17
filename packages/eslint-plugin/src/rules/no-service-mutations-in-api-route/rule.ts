@@ -66,7 +66,9 @@ function getHandlerFunctions(
 ): TSESTree.Node[] {
   const out: TSESTree.Node[] = []
   const decl = node.declaration
-  if (!decl) return out
+  if (!decl) {
+    return out
+  }
   if (decl.type === AST_NODE_TYPES.VariableDeclaration) {
     for (const d of decl.declarations) {
       if (
@@ -92,19 +94,20 @@ function getHandlerFunctions(
 function walk(node: TSESTree.Node, visit: (n: TSESTree.Node) => void): void {
   visit(node)
   for (const key of Object.keys(node) as Array<keyof typeof node>) {
-    if (key === "parent") continue
+    if (key === "parent") {
+      continue
+    }
     const value = (node as unknown as Record<string, unknown>)[key as string]
-    if (!value) continue
+    if (!value) {
+      continue
+    }
     if (Array.isArray(value)) {
       for (const child of value) {
         if (child && typeof child === "object" && "type" in child) {
           walk(child as TSESTree.Node, visit)
         }
       }
-    } else if (
-      typeof value === "object" &&
-      "type" in (value as object)
-    ) {
+    } else if (typeof value === "object" && "type" in (value as object)) {
       walk(value as TSESTree.Node, visit)
     }
   }
@@ -142,9 +145,15 @@ export const rule = createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [options]) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
-    if (!isUnderApiDir(filename)) return {}
-    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
+    if (!isUnderApiDir(filename)) {
+      return {}
+    }
+    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) {
+      return {}
+    }
 
     const allowed = new Set(options?.allowedMutations ?? [])
     const mutationRegex = buildMutationRegex([
@@ -163,7 +172,9 @@ export const rule = createRule<Options, MessageIds>({
       "Program:exit"() {
         for (const fn of handlerFns) {
           const body = (fn as TSESTree.FunctionLike).body
-          if (!body) continue
+          if (!body) {
+            continue
+          }
           const tracked = new Set<string>()
 
           walk(body as TSESTree.Node, (n) => {
@@ -189,10 +200,14 @@ export const rule = createRule<Options, MessageIds>({
             tracked.add(n.id.name)
           })
 
-          if (tracked.size === 0) continue
+          if (tracked.size === 0) {
+            continue
+          }
 
           walk(body as TSESTree.Node, (n) => {
-            if (n.type !== AST_NODE_TYPES.CallExpression) return
+            if (n.type !== AST_NODE_TYPES.CallExpression) {
+              return
+            }
             const callee = n.callee
             if (
               callee.type !== AST_NODE_TYPES.MemberExpression ||
@@ -202,10 +217,16 @@ export const rule = createRule<Options, MessageIds>({
             ) {
               return
             }
-            if (!tracked.has(callee.object.name)) return
+            if (!tracked.has(callee.object.name)) {
+              return
+            }
             const method = callee.property.name
-            if (allowed.has(method)) return
-            if (!mutationRegex.test(method)) return
+            if (allowed.has(method)) {
+              return
+            }
+            if (!mutationRegex.test(method)) {
+              return
+            }
             context.report({
               node: callee,
               messageId: "noMutation",
