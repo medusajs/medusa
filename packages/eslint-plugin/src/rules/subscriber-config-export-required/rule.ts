@@ -85,7 +85,10 @@ export const rule = createRule<[], MessageIds>({
           return
         }
 
-        if (configObject && objectHasProperty(configObject, "event") === false) {
+        if (
+          configObject &&
+          objectHasProperty(configObject, "event") === false
+        ) {
           context.report({
             node: configObject,
             messageId: "missingEventProperty",

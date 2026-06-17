@@ -35,13 +35,21 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
-    if (!isUnderApiDir(filename)) return {}
-    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
+    if (!isUnderApiDir(filename)) {
+      return {}
+    }
+    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) {
+      return {}
+    }
 
     function reportIdentifier(id: TSESTree.Identifier) {
       const name = id.name
-      if (!LOWERCASE_HTTP_METHODS.has(name)) return
+      if (!LOWERCASE_HTTP_METHODS.has(name)) {
+        return
+      }
       const upper = name.toUpperCase()
       context.report({
         node: id,
@@ -53,10 +61,7 @@ export const rule = createRule<[], MessageIds>({
       })
     }
 
-    function reportStringLiteral(
-      node: TSESTree.StringLiteral,
-      name: string
-    ) {
+    function reportStringLiteral(node: TSESTree.StringLiteral, name: string) {
       const upper = name.toUpperCase()
       context.report({
         node,
@@ -84,7 +89,9 @@ export const rule = createRule<[], MessageIds>({
         }
 
         for (const spec of node.specifiers) {
-          if (spec.type !== AST_NODE_TYPES.ExportSpecifier) continue
+          if (spec.type !== AST_NODE_TYPES.ExportSpecifier) {
+            continue
+          }
           const exported = spec.exported
           if (exported.type === AST_NODE_TYPES.Identifier) {
             reportIdentifier(exported)

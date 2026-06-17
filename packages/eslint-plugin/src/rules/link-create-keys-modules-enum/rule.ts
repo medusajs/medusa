@@ -21,7 +21,9 @@ const REMOTE_LINK_STEPS = new Set([
 function getStaticKey(
   prop: TSESTree.Property
 ): { value: string; node: TSESTree.Node; isLiteral: boolean } | null {
-  if (prop.computed) return null
+  if (prop.computed) {
+    return null
+  }
   if (prop.key.type === AST_NODE_TYPES.Identifier) {
     return { value: prop.key.name, node: prop.key, isLiteral: false }
   }
@@ -73,11 +75,17 @@ export const rule = createRule<[], MessageIds>({
 
     function checkObject(obj: TSESTree.ObjectExpression) {
       for (const prop of obj.properties) {
-        if (prop.type !== AST_NODE_TYPES.Property) continue
+        if (prop.type !== AST_NODE_TYPES.Property) {
+          continue
+        }
         const key = getStaticKey(prop)
-        if (!key) continue
+        if (!key) {
+          continue
+        }
         const enumMember = MODULES_BY_VALUE[key.value]
-        if (!enumMember) continue
+        if (!enumMember) {
+          continue
+        }
 
         context.report({
           node: key.node,
@@ -103,7 +111,9 @@ export const rule = createRule<[], MessageIds>({
 
             if (modulesLocalNames.size === 0) {
               const importFix = addModulesImport(fixer)
-              if (!importFix) return null
+              if (!importFix) {
+                return null
+              }
               fixes.push(importFix)
               modulesLocalNames.add(MODULES)
             }
@@ -122,7 +132,9 @@ export const rule = createRule<[], MessageIds>({
           (s): s is TSESTree.ImportSpecifier =>
             s.type === AST_NODE_TYPES.ImportSpecifier
         )
-        if (specifiers.length === 0) return null
+        if (specifiers.length === 0) {
+          return null
+        }
         const last = specifiers[specifiers.length - 1]
         return fixer.insertTextAfter(last, `, ${MODULES}`)
       }
@@ -179,7 +191,9 @@ export const rule = createRule<[], MessageIds>({
       CallExpression(node) {
         if (isLinkMethodCall(node.callee) || isStepCall(node.callee)) {
           const arg = node.arguments[0]
-          if (arg) checkFirstArg(arg)
+          if (arg) {
+            checkFirstArg(arg)
+          }
         }
       },
     }

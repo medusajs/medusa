@@ -64,6 +64,42 @@ ruleTester.run("step-must-return-step-response", rule, {
         })
       `,
     },
+    // `StepResponse.skip()` is a valid step return.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.skip()
+        })
+      `,
+    },
+    // `StepResponse.skip()` via an aliased import.
+    {
+      code: `
+        import { createStep, StepResponse as SR } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return SR.skip()
+        })
+      `,
+    },
+    // `StepResponse.skip()` with a TS type assertion (`as any`) is still valid.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.skip() as any
+        })
+      `,
+    },
+    // `new StepResponse(...)` with a TS type assertion is still valid.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return new StepResponse({ ok: true }) as any
+        })
+      `,
+    },
     // Return inside a nested function helper is irrelevant to this rule.
     {
       code: `
@@ -193,6 +229,22 @@ ruleTester.run("step-must-return-step-response", rule, {
         class Other {}
         createStep("s", (input) => {
           return new StepResponse(new Other())
+        })
+      `,
+    },
+    // A non-\`skip\` static call on StepResponse is not a valid return — wrapped.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.from(input)
+        })
+      `,
+      errors: [{ messageId: "missingStepResponse" }],
+      output: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return new StepResponse(StepResponse.from(input))
         })
       `,
     },

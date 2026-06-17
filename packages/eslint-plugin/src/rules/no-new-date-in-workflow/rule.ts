@@ -37,13 +37,21 @@ export const rule = createRule<[], MessageIds>({
         trackWorkflowSdkImports(node, bindings)
       },
       NewExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isDateIdentifier(node.callee)) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isDateIdentifier(node.callee)) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({ node, messageId: "newDateInWorkflow" })
       },
       CallExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
         const callee = node.callee
         if (
           callee.type !== "MemberExpression" ||
@@ -53,7 +61,9 @@ export const rule = createRule<[], MessageIds>({
         ) {
           return
         }
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "dateMethodInWorkflow",
