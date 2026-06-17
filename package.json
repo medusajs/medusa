@@ -22,6 +22,7 @@
   "devDependencies": {
     "@atomico/rollup-plugin-sizes": "^1.1.4",
     "@faker-js/faker": "^9.2.0",
+    "@medusajs/eslint-plugin": "2.15.5",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-replace": "^5.0.2",
     "@storybook/addon-essentials": "^8.3.5",
@@ -142,6 +143,7 @@
   "scripts": {
     "build": "turbo run build --concurrency=100% --no-daemon",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
+    "lint:medusa": "eslint --no-eslintrc --config eslint.medusa.cjs --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "lint:path": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx",
     "prettier": "prettier",
     "jest": "jest",
