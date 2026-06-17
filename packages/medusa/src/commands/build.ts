@@ -36,8 +36,8 @@ export default async function build({
 
   // Lint after type generation. Like the compiler's treatment of type errors,
   // this is non-blocking: lint problems are surfaced as warnings but never fail
-  // the build (failOnError: false).
-  await runLintStep({ directory, lint, fix, quiet, logger, failOnError: false })
+  // the build
+  await runLintStep({ directory, lint, fix, quiet, logger })
 
   logger.info("Starting build...")
   const compiler = new Compiler(directory, logger)
