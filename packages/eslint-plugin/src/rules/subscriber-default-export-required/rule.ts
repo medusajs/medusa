@@ -8,7 +8,8 @@ export const rule = createRule<[], MessageIds>({
   meta: {
     type: "problem",
     docs: {
-      description: "Subscriber files must default-export the subscriber function.",
+      description:
+        "Subscriber files must default-export the subscriber function.",
     },
     messages: {
       missingDefaultExport:
@@ -36,7 +37,9 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       "Program:exit"(node: TSESTree.Program) {
-        if (hasDefaultExport) return
+        if (hasDefaultExport) {
+          return
+        }
         context.report({
           node,
           messageId: "missingDefaultExport",

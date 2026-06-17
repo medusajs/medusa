@@ -25,7 +25,9 @@ function collectExportedHttpMethodNodes(
   if (node.declaration) {
     const decl = node.declaration
     if (decl.type === AST_NODE_TYPES.FunctionDeclaration && decl.id) {
-      if (HTTP_METHODS.has(decl.id.name)) hits.push(decl.id)
+      if (HTTP_METHODS.has(decl.id.name)) {
+        hits.push(decl.id)
+      }
     } else if (decl.type === AST_NODE_TYPES.VariableDeclaration) {
       for (const d of decl.declarations) {
         if (
@@ -39,14 +41,16 @@ function collectExportedHttpMethodNodes(
   }
 
   for (const spec of node.specifiers) {
-    if (spec.type !== AST_NODE_TYPES.ExportSpecifier) continue
+    if (spec.type !== AST_NODE_TYPES.ExportSpecifier) {
+      continue
+    }
     const exported = spec.exported
     const exportedName =
       exported.type === AST_NODE_TYPES.Identifier
         ? exported.name
         : typeof exported.value === "string"
-          ? exported.value
-          : null
+        ? exported.value
+        : null
     if (exportedName && HTTP_METHODS.has(exportedName)) {
       hits.push(exported)
     }
@@ -74,8 +78,12 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
-    if (!isUnderApiDir(filename)) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
+    if (!isUnderApiDir(filename)) {
+      return {}
+    }
 
     const basename = path.basename(filename)
     const isRouteFile = ROUTE_FILE_BASENAMES.has(basename)
@@ -96,9 +104,9 @@ export const rule = createRule<[], MessageIds>({
               hit.type === AST_NODE_TYPES.Identifier
                 ? hit.name
                 : hit.type === AST_NODE_TYPES.Literal &&
-                    typeof hit.value === "string"
-                  ? hit.value
-                  : "handler"
+                  typeof hit.value === "string"
+                ? hit.value
+                : "handler"
             context.report({
               node: hit,
               messageId: "wrongFileName",

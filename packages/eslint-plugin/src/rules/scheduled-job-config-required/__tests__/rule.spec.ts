@@ -13,6 +13,11 @@ ruleTester.run("scheduled-job-config-required", rule, {
 export const config = { name: "sync-products", schedule: "0 0 * * *" }`,
       filename: JOB,
     },
+    // `index.ts` barrel in the jobs directory is a re-export, not a job — ignored.
+    {
+      code: `export * from "./sync-products"`,
+      filename: "src/jobs/index.ts",
+    },
     // Typed config export.
     {
       code: `import type { MedusaContainer } from "@medusajs/framework/types"

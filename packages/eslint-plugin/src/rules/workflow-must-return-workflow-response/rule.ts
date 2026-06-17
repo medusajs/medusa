@@ -42,13 +42,23 @@ export const rule = createRule<[], MessageIds>({
       },
 
       ReturnStatement(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!node.argument) return
-        if (isUndefinedExpression(node.argument)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!node.argument) {
+          return
+        }
+        if (isUndefinedExpression(node.argument)) {
+          return
+        }
 
         const fn = getEnclosingFunction(node)
-        if (!fn) return
-        if (!isWorkflowConstructorFunction(fn, bindings)) return
+        if (!fn) {
+          return
+        }
+        if (!isWorkflowConstructorFunction(fn, bindings)) {
+          return
+        }
 
         const arg = node.argument
         if (
@@ -71,13 +81,17 @@ export const rule = createRule<[], MessageIds>({
               return fixer.replaceText(arg, `new ${name}(${argText})`)
             }
 
-            if (!workflowsSdkImportNode) return null
+            if (!workflowsSdkImportNode) {
+              return null
+            }
             const importNode = workflowsSdkImportNode
             const specifiers = importNode.specifiers.filter(
               (s): s is TSESTree.ImportSpecifier =>
                 s.type === AST_NODE_TYPES.ImportSpecifier
             )
-            if (specifiers.length === 0) return null
+            if (specifiers.length === 0) {
+              return null
+            }
 
             const lastSpecifier = specifiers[specifiers.length - 1]
             bindings.workflowResponse.add(WORKFLOW_RESPONSE)

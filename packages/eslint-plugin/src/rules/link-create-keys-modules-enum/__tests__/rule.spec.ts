@@ -176,8 +176,14 @@ await link.create({ [Modules.PRODUCT]: { product_id: "1" } })`,
         })
       `,
       errors: [
-        { messageId: "preferEnumKey", data: { key: "product", enumMember: "PRODUCT" } },
-        { messageId: "preferEnumKey", data: { key: "order", enumMember: "ORDER" } },
+        {
+          messageId: "preferEnumKey",
+          data: { key: "product", enumMember: "PRODUCT" },
+        },
+        {
+          messageId: "preferEnumKey",
+          data: { key: "order", enumMember: "ORDER" },
+        },
       ],
       output: `
         import { Modules } from "@medusajs/framework/utils"

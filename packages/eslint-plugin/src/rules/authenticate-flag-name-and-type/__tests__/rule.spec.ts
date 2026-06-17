@@ -51,18 +51,14 @@ ruleTester.run("authenticate-flag-name-and-type", rule, {
     {
       code: `export const authenticate = false`,
       filename: "src/api/store/customers/me/route.ts",
-      errors: [
-        { messageId: "wrongCase", data: { name: "authenticate" } },
-      ],
+      errors: [{ messageId: "wrongCase", data: { name: "authenticate" } }],
       output: `export const AUTHENTICATE = false`,
     },
     // PascalCase `Authenticate` — autofix renames.
     {
       code: `export const Authenticate = true`,
       filename: "src/api/admin/products/route.ts",
-      errors: [
-        { messageId: "wrongCase", data: { name: "Authenticate" } },
-      ],
+      errors: [{ messageId: "wrongCase", data: { name: "Authenticate" } }],
       output: `export const AUTHENTICATE = true`,
     },
     // AUTHENTICATE with string value — flag value, no autofix on the value.

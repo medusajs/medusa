@@ -12,7 +12,9 @@ function collectParams(segments: string[]): Set<string> {
   const params = new Set<string>()
   for (const segment of segments) {
     const m = segment.match(VALID_PARAM_FOLDER)
-    if (m) params.add(m[1])
+    if (m) {
+      params.add(m[1])
+    }
   }
   return params
 }
@@ -45,11 +47,17 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
-    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
+    if (!ROUTE_FILE_BASENAMES.has(path.basename(filename))) {
+      return {}
+    }
 
     const segments = getApiRouteSegments(filename)
-    if (!segments) return {}
+    if (!segments) {
+      return {}
+    }
 
     const params = collectParams(segments)
     const available = params.size
@@ -59,7 +67,9 @@ export const rule = createRule<[], MessageIds>({
       : "(none)"
 
     function report(node: TSESTree.Node, name: string) {
-      if (params.has(name)) return
+      if (params.has(name)) {
+        return
+      }
       context.report({
         node,
         messageId: "unknownRouteParam",
@@ -69,7 +79,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       MemberExpression(node) {
-        if (!isReqParams(node.object)) return
+        if (!isReqParams(node.object)) {
+          return
+        }
         if (node.computed) {
           const prop = node.property
           if (
@@ -85,11 +97,19 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       VariableDeclarator(node) {
-        if (!node.init || !isReqParams(node.init)) return
-        if (node.id.type !== AST_NODE_TYPES.ObjectPattern) return
+        if (!node.init || !isReqParams(node.init)) {
+          return
+        }
+        if (node.id.type !== AST_NODE_TYPES.ObjectPattern) {
+          return
+        }
         for (const prop of node.id.properties) {
-          if (prop.type !== AST_NODE_TYPES.Property) continue
-          if (prop.computed) continue
+          if (prop.type !== AST_NODE_TYPES.Property) {
+            continue
+          }
+          if (prop.computed) {
+            continue
+          }
           const key = prop.key
           if (key.type === AST_NODE_TYPES.Identifier) {
             report(key, key.name)

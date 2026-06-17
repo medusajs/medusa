@@ -37,16 +37,21 @@ const ZERO_DECIMAL_CURRENCIES = new Set([
 const LARGE_INT_THRESHOLD = 1000
 
 function isMultiplyByCentsFactor(node: TSESTree.Node): boolean {
-  if (node.type !== AST_NODE_TYPES.BinaryExpression) return false
-  if (node.operator !== "*") return false
+  if (node.type !== AST_NODE_TYPES.BinaryExpression) {
+    return false
+  }
+  if (node.operator !== "*") {
+    return false
+  }
   const isFactor = (n: TSESTree.Node): boolean =>
-    n.type === AST_NODE_TYPES.Literal &&
-    (n.value === 100 || n.value === 1000)
+    n.type === AST_NODE_TYPES.Literal && (n.value === 100 || n.value === 1000)
   return isFactor(node.right) || isFactor(node.left)
 }
 
 function getReferenceName(node: TSESTree.Node): string | null {
-  if (node.type === AST_NODE_TYPES.Identifier) return node.name
+  if (node.type === AST_NODE_TYPES.Identifier) {
+    return node.name
+  }
   if (
     node.type === AST_NODE_TYPES.MemberExpression &&
     !node.computed &&
@@ -59,25 +64,37 @@ function getReferenceName(node: TSESTree.Node): string | null {
 
 function isCentsReference(node: TSESTree.Node): boolean {
   const name = getReferenceName(node)
-  if (!name) return false
+  if (!name) {
+    return false
+  }
   return CENTS_NAME_REGEX.test(name)
 }
 
 function isLargeIntegerLiteral(node: TSESTree.Node): boolean {
-  if (node.type !== AST_NODE_TYPES.Literal) return false
-  if (typeof node.value !== "number") return false
-  if (!Number.isInteger(node.value)) return false
-  if (node.value < LARGE_INT_THRESHOLD) return false
+  if (node.type !== AST_NODE_TYPES.Literal) {
+    return false
+  }
+  if (typeof node.value !== "number") {
+    return false
+  }
+  if (!Number.isInteger(node.value)) {
+    return false
+  }
+  if (node.value < LARGE_INT_THRESHOLD) {
+    return false
+  }
   // The raw source must have no decimal point — `1000.0` should not trigger.
-  if (typeof node.raw === "string" && node.raw.includes(".")) return false
+  if (typeof node.raw === "string" && node.raw.includes(".")) {
+    return false
+  }
   return true
 }
 
-function getSiblingCurrencyCode(
-  obj: TSESTree.ObjectExpression
-): string | null {
+function getSiblingCurrencyCode(obj: TSESTree.ObjectExpression): string | null {
   const prop = findProperty(obj, "currency_code")
-  if (!prop) return null
+  if (!prop) {
+    return null
+  }
   const value = prop.value
   if (
     value.type === AST_NODE_TYPES.Literal &&
@@ -152,9 +169,13 @@ export const rule = createRule<[], MessageIds>({
           currency !== null && ZERO_DECIMAL_CURRENCIES.has(currency)
 
         for (const prop of node.properties) {
-          if (prop.type !== AST_NODE_TYPES.Property) continue
+          if (prop.type !== AST_NODE_TYPES.Property) {
+            continue
+          }
           const key = getPropertyKeyName(prop)
-          if (!key || !PRICE_KEY_REGEX.test(key)) continue
+          if (!key || !PRICE_KEY_REGEX.test(key)) {
+            continue
+          }
           const value = prop.value
           if (
             value.type === AST_NODE_TYPES.AssignmentPattern ||
@@ -166,15 +187,25 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       VariableDeclarator(node) {
-        if (node.id.type !== AST_NODE_TYPES.Identifier) return
-        if (!PRICE_KEY_REGEX.test(node.id.name)) return
-        if (!node.init) return
+        if (node.id.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
+        if (!PRICE_KEY_REGEX.test(node.id.name)) {
+          return
+        }
+        if (!node.init) {
+          return
+        }
         checkAssignment(node.id.name, node.init, node.init, false)
       },
       AssignmentExpression(node) {
-        if (node.operator !== "=") return
+        if (node.operator !== "=") {
+          return
+        }
         const name = getReferenceName(node.left)
-        if (!name || !PRICE_KEY_REGEX.test(name)) return
+        if (!name || !PRICE_KEY_REGEX.test(name)) {
+          return
+        }
         checkAssignment(name, node.right, node.right, false)
       },
     }

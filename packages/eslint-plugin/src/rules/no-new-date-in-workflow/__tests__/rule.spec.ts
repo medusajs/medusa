@@ -166,7 +166,9 @@ ruleTester.run("no-new-date-in-workflow", rule, {
           return input
         })
       `,
-      errors: [{ messageId: "dateMethodInWorkflow", data: { method: "parse" } }],
+      errors: [
+        { messageId: "dateMethodInWorkflow", data: { method: "parse" } },
+      ],
     },
     // Date.UTC(...) directly in the constructor.
     {

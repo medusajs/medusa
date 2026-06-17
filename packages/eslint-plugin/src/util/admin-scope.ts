@@ -13,7 +13,9 @@ const UI_ROUTE_RE_NO_SRC = /(?:^|\/)admin\/routes\/.+\/page\.(?:tsx|jsx)$/
  * where `process.env` is legitimate. Bails on synthetic / empty filenames.
  */
 export function isAdminFile(filename: string | undefined): boolean {
-  if (!filename || filename.startsWith("<")) return false
+  if (!filename || filename.startsWith("<")) {
+    return false
+  }
   return ADMIN_FILE_RE.test(toPosix(filename))
 }
 
@@ -43,7 +45,9 @@ export function isAdminUiRoutePageFile(filename: string): boolean {
  * filenames.
  */
 export function isAdminComponentFile(filename: string | undefined): boolean {
-  if (!filename || filename.startsWith("<")) return false
+  if (!filename || filename.startsWith("<")) {
+    return false
+  }
   return isAdminWidgetFile(filename) || isAdminUiRoutePageFile(filename)
 }
 
@@ -53,7 +57,9 @@ export function isAdminComponentFile(filename: string | undefined): boolean {
  * added to the sidebar, so route `config` doesn't apply to them.
  */
 export function isDynamicUiRoutePath(filename: string | undefined): boolean {
-  if (!filename) return false
+  if (!filename) {
+    return false
+  }
   return toPosix(filename)
     .split("/")
     .some((segment) => /^\[.+\]$/.test(segment))

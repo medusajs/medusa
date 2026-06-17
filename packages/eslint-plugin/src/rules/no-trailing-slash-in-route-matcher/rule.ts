@@ -27,9 +27,13 @@ function collectMatcherLiterals(
       }
     }
     for (const key of Object.keys(node) as Array<keyof typeof node>) {
-      if (key === "parent") continue
+      if (key === "parent") {
+        continue
+      }
       const value = (node as unknown as Record<string, unknown>)[key as string]
-      if (!value) continue
+      if (!value) {
+        continue
+      }
       if (Array.isArray(value)) {
         for (const child of value) {
           if (child && typeof child === "object" && "type" in child) {
@@ -69,14 +73,18 @@ export const rule = createRule<[], MessageIds>({
           return
         }
         const arg = node.arguments[0]
-        if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) return
+        if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) {
+          return
+        }
 
         const matchers: TSESTree.Literal[] = []
         collectMatcherLiterals(arg, matchers)
 
         for (const lit of matchers) {
           const value = lit.value as string
-          if (value.length <= 1 || !value.endsWith("/")) continue
+          if (value.length <= 1 || !value.endsWith("/")) {
+            continue
+          }
           context.report({
             node: lit,
             messageId: "trailingSlash",
