@@ -20,7 +20,9 @@ const defaultConfig = {
 } as boxen.Options
 
 export default async function ({ types, directory }) {
-  const container = await initializeContainer(directory)
+  const container = await initializeContainer(directory, {
+    skipDbConnection: true,
+  })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   const isBackendHmrEnabled = FeatureFlag.isFeatureEnabled(
