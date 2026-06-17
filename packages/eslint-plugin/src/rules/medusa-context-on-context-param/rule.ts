@@ -54,10 +54,11 @@ export const rule = createRule<[], MessageIds>({
           continue
         }
         const value = member.value
-        if (
-          value.type !== AST_NODE_TYPES.FunctionExpression &&
-          value.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-        ) {
+        // Skip TypeScript overload signatures (bodyless declarations): the
+        // `@MedusaContext()` decorator can only live on the implementation,
+        // which is the method that carries a function body and is checked on
+        // its own.
+        if (value.type !== AST_NODE_TYPES.FunctionExpression) {
           continue
         }
 

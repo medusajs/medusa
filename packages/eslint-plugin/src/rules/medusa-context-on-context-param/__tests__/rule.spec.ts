@@ -79,6 +79,18 @@ ruleTester.run("medusa-context-on-context-param", rule, {
         }
       `,
     },
+    // Overload signatures (bodyless) with a bare Context param are ignored —
+    // the decorator lives on the implementation, which carries it here.
+    {
+      code: `
+        import { MedusaService, MedusaContext } from "@medusajs/framework/utils"
+        class FooService extends MedusaService({}) {
+          list(id: string, sharedContext?: Context): Promise<string>
+          list(id: number, sharedContext?: Context): Promise<number>
+          async list(id: any, @MedusaContext() sharedContext: Context = {}): Promise<any> {}
+        }
+      `,
+    },
   ],
   invalid: [
     // Public method with bare Context param — autofix inserts decorator.
