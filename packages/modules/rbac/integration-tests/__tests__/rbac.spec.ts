@@ -15,7 +15,7 @@ moduleIntegrationTestRunner<IRbacModuleService>({
   injectedDependencies: {
     [Modules.EVENT_BUS]: new MockEventBusService(),
   },
-  testSuite: ({ service }) => {
+  testSuite: ({ service, medusaApp }) => {
     it.skip(`should export the appropriate linkable configuration`, () => {
       const linkable = Module(Modules.RBAC, {
         service: RbacModuleService,
@@ -298,6 +298,18 @@ moduleIntegrationTestRunner<IRbacModuleService>({
 
         expect(roles).toHaveLength(1)
         expect(roles[0].name).toBe("Updated Test Role")
+      })
+
+      it("should be idempotent across repeated runs", async () => {
+        // Seed data was already created by the initial-data loader during module init
+        // Verify retrieving them works (no duplicate-key crash)
+        await expect(
+          service.listRbacRoles({ id: "role_super_admin" })
+        ).resolves.toHaveLength(1)
+
+        await expect(
+          service.listRbacPolicies({ id: "rpol_super_admin" })
+        ).resolves.toHaveLength(1)
       })
     })
   },
