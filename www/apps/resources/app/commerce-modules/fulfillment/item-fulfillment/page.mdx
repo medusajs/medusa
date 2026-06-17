@@ -46,6 +46,30 @@ The fulfillment item holds details relevant to fulfilling the item, such as barc
 
 Once a shipment is created for the fulfillment, you can store its tracking number, URL, or other related details as a label, represented by the [FulfillmentLabel data model](/references/fulfillment/models/FulfillmentLabel).
 
+### Accessing Tracking Information
+
+To access tracking information for a fulfillment, you must retrieve the related labels. For example, to retrieve the tracking data with [Query](!docs!/learn/fundamentals/module-links/query):
+
+```ts
+const { data: fulfillment } = query.graph({
+  entity: "fulfillment",
+  fields: [
+    "labels.tracking_number",
+    "labels.tracking_url",
+    "labels.label_url",
+  ],
+  filters: {
+    id: "fulfillment_123",
+  }
+})
+
+fulfillment.labels.forEach((label) => {
+  console.log("Tracking Number:", label.tracking_number)
+  console.log("Tracking URL:", label.tracking_url)
+  console.log("Label URL:", label.label_url)
+})
+```
+
 ---
 
 ## Fulfillment Status

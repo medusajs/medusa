@@ -53,6 +53,7 @@
   "devDependencies": {
     "@medusajs/admin-sdk": "2.15.5",
     "@medusajs/cli": "2.15.5",
+    "@medusajs/dashboard": "2.15.5",
     "@medusajs/framework": "2.15.5",
     "@medusajs/icons": "2.15.5",
     "@medusajs/test-utils": "2.15.5",
@@ -68,6 +69,7 @@
   "peerDependencies": {
     "@medusajs/admin-sdk": "2.15.5",
     "@medusajs/cli": "2.15.5",
+    "@medusajs/dashboard": "2.15.5",
     "@medusajs/framework": "2.15.5",
     "@medusajs/icons": "2.15.5",
     "@medusajs/test-utils": "2.15.5",
@@ -81,6 +83,9 @@
       "optional": true
     },
     "@medusajs/cli": {
+      "optional": true
+    },
+    "@medusajs/dashboard": {
       "optional": true
     },
     "@medusajs/icons": {

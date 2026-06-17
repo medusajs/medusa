@@ -40,8 +40,9 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
         [ruleId("link-create-keys-modules-enum")]: "warn",
-        [ruleId("prefer-container-registration-keys-query")]: "warn",
+        [ruleId("prefer-container-registration-keys")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
+        [ruleId("prefer-modules-enum")]: "warn",
         [ruleId("prices-in-major-units")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
         [ruleId("use-query-context-utility")]: "warn",
@@ -120,6 +121,61 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("data-model-table-name-snake-case")]: "warn",
         [ruleId("link-no-cross-module-relationship")]: "error",
         [ruleId("no-reserved-default-properties-in-model")]: "error",
+        [ruleId("primary-key-required")]: "warn",
+      },
+    },
+    {
+      // Whole admin-dashboard tree. Requires the `src/admin` segment pair so it
+      // does not match API admin routes (`src/api/admin/**`), which are server
+      // code where `process.env` is legitimate.
+      files: [
+        "src/admin/**/*.{ts,tsx,js,jsx}",
+        "**/src/admin/**/*.{ts,tsx,js,jsx}",
+      ],
+      rules: {
+        [ruleId("admin-env-vars-import-meta")]: "warn",
+      },
+    },
+    {
+      files: [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("admin-component-must-be-arrow-function")]: "error",
+        [ruleId("widget-zone-must-be-string-literal")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("widget-must-export-config")]: "error",
+        [ruleId("widget-must-have-default-export")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/admin/routes/**/*.{tsx,jsx}",
+        "**/admin/routes/**/*.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("ui-route-file-name-page-tsx")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}",
+      ],
+      rules: {
+        [ruleId("no-config-on-dynamic-ui-route")]: "warn",
+        [ruleId("ui-route-config-via-define-route-config")]: "warn",
+        [ruleId("ui-route-must-have-default-export")]: "error",
       },
     },
     {
@@ -130,6 +186,29 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       rules: {
         [ruleId("link-uses-linkable-properties")]: "warn",
         [ruleId("read-only-link-requires-field")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/subscribers/**/*.{ts,js}",
+        "**/src/subscribers/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("subscriber-config-export-required")]: "error",
+        [ruleId("subscriber-default-export-must-be-async")]: "error",
+        [ruleId("subscriber-default-export-required")]: "error",
+      },
+    },
+    {
+      files: [
+        "src/jobs/**/*.{ts,js}",
+        "**/src/jobs/**/*.{ts,js}",
+      ],
+      rules: {
+        [ruleId("scheduled-job-config-required")]: "error",
+        [ruleId("scheduled-job-default-export-async")]: "error",
+        [ruleId("scheduled-job-default-export-required")]: "error",
+        [ruleId("scheduled-job-schedule-valid-cron")]: "error",
       },
     },
   ]
