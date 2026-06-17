@@ -6,26 +6,41 @@ import {
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to validate that an actor has the policies of the given roles.
  */
 export type ValidateUserRolePermissionsStepInput = {
+  /**
+   * The ID of the actor (for example, a user) assigning the roles.
+   */
   actor_id: string
+  /**
+   * The type of the actor, such as `user`. Defaults to `user`.
+   */
   actor?: string
+  /**
+   * The IDs of the roles being assigned. The actor must have access to all the policies
+   * of these roles.
+   */
   role_ids: string[]
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const validateUserRolePermissionsStepId =
   "validate-user-role-permissions"
 
 /**
- * Validates that the actor has all the policies from the roles being assigned.
- * A user can only assign roles whose policies they themselves have.
- * @ignore
+ * This step validates that the actor has all the policies of the roles being assigned.
+ * An actor can only assign roles whose policies they themselves have. The step throws
+ * an error if the actor doesn't have access to all of the roles' policies.
+ *
+ * @example
+ * validateUserRolePermissionsStep({
+ *   actor_id: "user_123",
+ *   role_ids: ["role_123"]
+ * })
+ *
  * @featureFlag rbac
  */
 export const validateUserRolePermissionsStep = createStep(

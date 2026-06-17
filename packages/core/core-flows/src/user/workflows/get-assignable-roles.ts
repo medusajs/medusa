@@ -10,27 +10,39 @@ import {
 } from "../steps/get-assignable-roles"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The data to retrieve the roles an actor can assign.
  */
 export type GetAssignableRolesWorkflowInput = GetAssignableRolesStepInput
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The roles that the actor is allowed to assign.
  */
 export type GetAssignableRolesWorkflowOutput = GetAssignableRolesStepOutput
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const getAssignableRolesWorkflowId = "get-assignable-roles-workflow"
 
 /**
- * Returns the set of `rbac_role`s that the actor is allowed to assign.
+ * This workflow retrieves the set of RBAC roles that an actor is allowed to assign. An
+ * actor can only assign roles whose policies they themselves have access to.
  *
- * @ignore
+ * You can use this workflow within your customizations or your own custom workflows,
+ * allowing you to retrieve the roles an actor can assign within your custom flows.
+ *
+ * @example
+ * const { result } = await getAssignableRolesWorkflow(container)
+ * .run({
+ *   input: {
+ *     actor_id: "user_123"
+ *   }
+ * })
+ *
+ * @summary
+ *
+ * Retrieve the RBAC roles an actor can assign.
+ *
  * @featureFlag rbac
  */
 export const getAssignableRolesWorkflow = createWorkflow(

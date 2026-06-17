@@ -10,22 +10,21 @@ import {
 } from "../steps/get-assignable-policies"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The data to retrieve the policies an actor can assign.
+ *
  * @since 2.16.0
  */
 export type GetAssignablePoliciesWorkflowInput = GetAssignablePoliciesStepInput
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The policies that the actor is allowed to assign.
+ *
  * @since 2.16.0
  */
 export type GetAssignablePoliciesWorkflowOutput =
   GetAssignablePoliciesStepOutput
 
 /**
- * @ignore
  * @featureFlag rbac
  * @since 2.16.0
  */
@@ -33,9 +32,24 @@ export const getAssignablePoliciesWorkflowId =
   "get-assignable-policies-workflow"
 
 /**
- * Returns the set of `rbac_policy` rows the actor is allowed to assign.
+ * This workflow retrieves the set of RBAC policies that an actor is allowed to assign.
+ * An actor can only assign policies they themselves have access to.
  *
- * @ignore
+ * You can use this workflow within your customizations or your own custom workflows,
+ * allowing you to retrieve the policies an actor can assign within your custom flows.
+ *
+ * @example
+ * const { result } = await getAssignablePoliciesWorkflow(container)
+ * .run({
+ *   input: {
+ *     actor_id: "user_123"
+ *   }
+ * })
+ *
+ * @summary
+ *
+ * Retrieve the RBAC policies an actor can assign.
+ *
  * @featureFlag rbac
  * @since 2.16.0
  */

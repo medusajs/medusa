@@ -6,22 +6,37 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService, UpdateRbacRolePolicyDTO } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to update RBAC role policies.
  */
 export type UpdateRbacRolePoliciesStepInput = {
+  /**
+   * The filters to select the role-policy assignments to update.
+   */
   selector: Record<string, any>
+  /**
+   * The data to update in the selected role-policy assignments.
+   */
   update: Omit<UpdateRbacRolePolicyDTO, "id">
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const updateRbacRolePoliciesStepId = "update-rbac-role-policies"
 
 /**
- * @ignore
+ * This step updates the role-policy assignments matching the specified filters.
+ *
+ * @example
+ * const data = updateRbacRolePoliciesStep({
+ *   selector: {
+ *     role_id: "role_123"
+ *   },
+ *   update: {
+ *     policy_id: "pol_456"
+ *   }
+ * })
+ *
  * @featureFlag rbac
  */
 export const updateRbacRolePoliciesStep = createStep(

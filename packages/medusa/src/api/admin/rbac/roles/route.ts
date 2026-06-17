@@ -12,7 +12,6 @@ import RbacFeatureFlag from "../../../../feature-flags/rbac"
 import { AdminCreateRbacRoleType } from "./validators"
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const GET = async (
@@ -37,7 +36,6 @@ export const GET = async (
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const POST = async (

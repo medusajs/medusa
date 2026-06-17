@@ -6,22 +6,37 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService, UpdateRbacRoleDTO } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to update RBAC roles.
  */
 export type UpdateRbacRolesStepInput = {
+  /**
+   * The filters to select the roles to update.
+   */
   selector: Record<string, any>
+  /**
+   * The data to update in the selected roles.
+   */
   update: Omit<UpdateRbacRoleDTO, "id">
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const updateRbacRolesStepId = "update-rbac-roles"
 
 /**
- * @ignore
+ * This step updates the RBAC roles matching the specified filters.
+ *
+ * @example
+ * const data = updateRbacRolesStep({
+ *   selector: {
+ *     id: "role_123"
+ *   },
+ *   update: {
+ *     name: "Order Manager"
+ *   }
+ * })
+ *
  * @featureFlag rbac
  */
 export const updateRbacRolesStep = createStep(

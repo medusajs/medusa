@@ -12,27 +12,70 @@ import { updateRbacRolesStep } from "../steps/update-rbac-roles"
 import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The data to update RBAC roles.
  */
 export type UpdateRbacRolesWorkflowInput = {
+  /**
+   * The ID of the actor (for example, a user) updating the roles. It's used to
+   * validate that the actor has access to the policies they're assigning.
+   */
   actor_id?: string
+  /**
+   * The type of the actor updating the roles, such as `user`. Defaults to `user`.
+   */
   actor?: string
+  /**
+   * The filters to select the roles to update.
+   */
   selector: Record<string, any>
+  /**
+   * The data to update in the selected roles.
+   */
   update: Omit<UpdateRbacRoleDTO, "id"> & {
+    /**
+     * The IDs of the roles that the selected roles inherit from. If provided,
+     * the parent roles are replaced with the new set.
+     */
     parent_ids?: string[]
+    /**
+     * The IDs of the policies to assign to the selected roles.
+     */
     policy_ids?: string[]
   }
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const updateRbacRolesWorkflowId = "update-rbac-roles"
 
 /**
- * @ignore
+ * This workflow updates one or more RBAC roles matching the specified filters. It can
+ * also update the roles' parent roles and assigned policies. If an `actor_id` is
+ * provided, the workflow validates that the actor has access to all the policies
+ * they're assigning before updating the roles.
+ *
+ * You can use this workflow within your customizations or your own custom workflows,
+ * allowing you to update RBAC roles within your custom flows.
+ *
+ * @example
+ * const { result } = await updateRbacRolesWorkflow(container)
+ * .run({
+ *   input: {
+ *     selector: {
+ *       id: "role_123"
+ *     },
+ *     update: {
+ *       name: "Order Manager",
+ *       policy_ids: ["pol_123"]
+ *     }
+ *   }
+ * })
+ *
+ * @summary
+ *
+ * Update one or more RBAC roles.
+ *
  * @featureFlag rbac
  */
 export const updateRbacRolesWorkflow = createWorkflow(

@@ -5,7 +5,6 @@ import {
 } from "@medusajs/framework/http"
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const DELETE = async (

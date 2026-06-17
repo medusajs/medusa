@@ -3,23 +3,22 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The IDs of the RBAC roles to delete.
  */
 export type DeleteRbacRolesStepInput = string[]
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const deleteRbacRolesStepId = "delete-rbac-roles"
 
 /**
- * This step deletes one or more RBAC roles.
- * @param ids - The IDs of the roles to delete
- * @param container - The workflow container
- * @returns A step response with the deleted role IDs
- * @ignore
+ * This step deletes one or more RBAC roles. The roles are soft-deleted and restored
+ * during compensation.
+ *
+ * @example
+ * const data = deleteRbacRolesStep(["role_123"])
+ *
  * @featureFlag rbac
  */
 export const deleteRbacRolesStep = createStep(

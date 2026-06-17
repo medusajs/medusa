@@ -13,7 +13,6 @@ import RbacFeatureFlag from "../../../../../../feature-flags/rbac"
 /**
  * Lists the roles that include the given policy.
  *
- * @ignore
  * @featureFlag rbac
  */
 export const GET = async (

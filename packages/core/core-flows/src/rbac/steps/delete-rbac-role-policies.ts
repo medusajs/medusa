@@ -3,19 +3,22 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The IDs of the role-policy assignments to delete.
  */
 export type DeleteRbacRolePoliciesStepInput = string[]
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const deleteRbacRolePoliciesStepId = "delete-rbac-role-policies"
 
 /**
- * @ignore
+ * This step deletes one or more role-policy assignments, removing the associated
+ * policies from their roles.
+ *
+ * @example
+ * const data = deleteRbacRolePoliciesStep(["rolepol_123"])
+ *
  * @featureFlag rbac
  */
 export const deleteRbacRolePoliciesStep = createStep(

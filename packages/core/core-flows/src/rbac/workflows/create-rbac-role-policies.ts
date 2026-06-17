@@ -9,26 +9,63 @@ import { createRbacRolePoliciesStep } from "../steps"
 import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The data to assign policies to roles.
  */
 export type CreateRbacRolePoliciesWorkflowInput = {
+  /**
+   * The ID of the actor (for example, a user) creating the role-policy assignments.
+   * It's used to validate that the actor has access to the policies they're assigning.
+   */
   actor_id?: string
+  /**
+   * The type of the actor, such as `user`. Defaults to `user`.
+   */
   actor?: string
+  /**
+   * The role-policy assignments to create.
+   */
   policies: {
+    /**
+     * The ID of the role to assign the policy to.
+     */
     role_id: string
+    /**
+     * The ID of the policy to assign to the role.
+     */
     policy_id: string
   }[]
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const createRbacRolePoliciesWorkflowId = "create-rbac-role-policies"
 
 /**
- * @ignore
+ * This workflow assigns one or more policies to roles by creating role-policy
+ * associations. If an `actor_id` is provided, the workflow validates that the actor
+ * has access to all the policies they're assigning before creating the associations.
+ *
+ * You can use this workflow within your customizations or your own custom workflows,
+ * allowing you to assign policies to RBAC roles within your custom flows.
+ *
+ * @example
+ * const { result } = await createRbacRolePoliciesWorkflow(container)
+ * .run({
+ *   input: {
+ *     policies: [
+ *       {
+ *         role_id: "role_123",
+ *         policy_id: "pol_123"
+ *       }
+ *     ]
+ *   }
+ * })
+ *
+ * @summary
+ *
+ * Assign one or more policies to RBAC roles.
+ *
  * @featureFlag rbac
  */
 export const createRbacRolePoliciesWorkflow = createWorkflow(

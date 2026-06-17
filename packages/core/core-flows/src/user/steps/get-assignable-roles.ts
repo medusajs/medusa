@@ -3,8 +3,8 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to retrieve the roles an actor can assign.
+ *
  * @since 2.16.0
  */
 export type GetAssignableRolesStepInput = {
@@ -33,26 +33,37 @@ type AssignableRole = {
 }
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The roles the actor can assign and their total count.
+ *
  * @since 2.16.0
  */
 export type GetAssignableRolesStepOutput = {
+  /**
+   * The roles the actor is allowed to assign.
+   */
   roles: AssignableRole[]
+  /**
+   * The number of assignable roles.
+   */
   count: number
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  * @since 2.16.0
  */
 export const getAssignableRolesStepId = "get-assignable-roles"
 
 /**
- * Resolves the set of roles the actor is allowed to assign.
+ * This step resolves the set of roles that the actor is allowed to assign. For each
+ * candidate role, it checks whether the actor's own roles grant access to all of the
+ * role's policies, and only returns the roles the actor has full access to.
  *
- * @ignore
+ * @example
+ * const data = getAssignableRolesStep({
+ *   actor_id: "user_123"
+ * })
+ *
  * @featureFlag rbac
  * @since 2.16.0
  */

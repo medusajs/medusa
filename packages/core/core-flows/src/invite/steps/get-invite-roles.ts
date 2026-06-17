@@ -2,8 +2,9 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
+ * The input to retrieve the roles associated with an invite.
+ *
  * @ignore
- * @featureFlag rbac
  */
 export interface GetInviteRolesStepInput {
   invite_id: string

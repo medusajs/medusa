@@ -3,31 +3,51 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The data to create an RBAC role.
  */
 export type CreateRbacRoleDTO = {
+  /**
+   * The role's name.
+   */
   name: string
+  /**
+   * The role's description.
+   */
   description?: string | null
+  /**
+   * Custom key-value pairs to store with the role.
+   */
   metadata?: Record<string, unknown> | null
 }
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to create RBAC roles.
  */
 export type CreateRbacRolesStepInput = {
+  /**
+   * The roles to create.
+   */
   roles: CreateRbacRoleDTO[]
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const createRbacRolesStepId = "create-rbac-roles"
 
 /**
- * @ignore
+ * This step creates one or more RBAC roles.
+ *
+ * @example
+ * const data = createRbacRolesStep({
+ *   roles: [
+ *     {
+ *       name: "Order Manager",
+ *       description: "Can manage orders"
+ *     }
+ *   ]
+ * })
+ *
  * @featureFlag rbac
  */
 export const createRbacRolesStep = createStep(

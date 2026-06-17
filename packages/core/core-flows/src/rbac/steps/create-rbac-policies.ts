@@ -3,21 +3,33 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateRbacPolicyDTO, IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to create one or more RBAC policies.
  */
 export type CreateRbacPoliciesStepInput = {
+  /**
+   * The policies to create.
+   */
   policies: CreateRbacPolicyDTO[]
 }
 
 /**
- * @ignore
- * @featureFlag rbac
  */
 export const createRbacPoliciesStepId = "create-rbac-policies"
 
 /**
- * @ignore
+ * This step creates one or more RBAC policies. The `resource` and `operation` of each
+ * policy are normalized to lowercase before they're created.
+ *
+ * @example
+ * const data = createRbacPoliciesStep({
+ *   policies: [
+ *     {
+ *       resource: "order",
+ *       operation: "read"
+ *     }
+ *   ]
+ * })
+ *
  * @featureFlag rbac
  */
 export const createRbacPoliciesStep = createStep(

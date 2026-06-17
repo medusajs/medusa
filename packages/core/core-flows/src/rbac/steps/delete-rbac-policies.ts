@@ -3,19 +3,21 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The IDs of the RBAC policies to delete.
  */
 export type DeleteRbacPoliciesStepInput = string[]
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const deleteRbacPoliciesStepId = "delete-rbac-policies"
 
 /**
- * @ignore
+ * This step deletes one or more RBAC policies.
+ *
+ * @example
+ * const data = deleteRbacPoliciesStep(["pol_123"])
+ *
  * @featureFlag rbac
  */
 export const deleteRbacPoliciesStep = createStep(

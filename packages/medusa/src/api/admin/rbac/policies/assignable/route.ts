@@ -11,7 +11,6 @@ import { AdminGetRbacPoliciesParamsType } from "../validators"
 /**
  * Returns the subset of `rbac_policy` rows the authenticated actor is allowed to assign.
  *
- * @ignore
  * @featureFlag rbac
  */
 export const GET = async (

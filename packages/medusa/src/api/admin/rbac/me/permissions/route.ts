@@ -27,7 +27,6 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  *
  * Clients can rely on literal set membership.
  *
- * @ignore
  * @featureFlag rbac
  */
 export const GET = async (

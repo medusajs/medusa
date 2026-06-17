@@ -3,22 +3,38 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to set the parent roles for one or more roles.
  */
 export type SetRoleParentStepInput = Array<{
+  /**
+   * The ID of the role whose parent roles are being set.
+   */
   role_id: string
+  /**
+   * The IDs of the parent roles the role should inherit from. This replaces the role's
+   * existing parents with the new set.
+   */
   parent_ids: string[]
 }>
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const setRoleParentStepId = "set-role-parent"
 
 /**
- * @ignore
+ * This step sets the parent roles for one or more roles, replacing their existing
+ * parents with the provided set. For each role, it adds any new parent associations and
+ * removes the ones that are no longer specified.
+ *
+ * @example
+ * const data = setRoleParentStep([
+ *   {
+ *     role_id: "role_123",
+ *     parent_ids: ["role_456"]
+ *   }
+ * ])
+ *
  * @featureFlag rbac
  */
 export const setRoleParentStep = createStep(

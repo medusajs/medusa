@@ -3,21 +3,33 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateRbacRolePolicyDTO, IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to create RBAC role policies.
  */
 export type CreateRbacRolePoliciesStepInput = {
+  /**
+   * The role-policy assignments to create.
+   */
   policies: CreateRbacRolePolicyDTO[]
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const createRbacRolePoliciesStepId = "create-rbac-role-policies"
 
 /**
- * @ignore
+ * This step assigns one or more policies to roles by creating role-policy associations.
+ *
+ * @example
+ * const data = createRbacRolePoliciesStep({
+ *   policies: [
+ *     {
+ *       role_id: "role_123",
+ *       policy_id: "pol_123"
+ *     }
+ *   ]
+ * })
+ *
  * @featureFlag rbac
  */
 export const createRbacRolePoliciesStep = createStep(

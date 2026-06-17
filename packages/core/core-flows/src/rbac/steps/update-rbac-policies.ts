@@ -6,22 +6,38 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService, UpdateRbacPolicyDTO } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to update RBAC policies.
  */
 export type UpdateRbacPoliciesStepInput = {
+  /**
+   * The filters to select the policies to update.
+   */
   selector: Record<string, any>
+  /**
+   * The data to update in the selected policies.
+   */
   update: Omit<UpdateRbacPolicyDTO, "id">
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  */
 export const updateRbacPoliciesStepId = "update-rbac-policies"
 
 /**
- * @ignore
+ * This step updates the RBAC policies matching the specified filters. If the update
+ * includes a `resource` or `operation`, they're normalized to lowercase.
+ *
+ * @example
+ * const data = updateRbacPoliciesStep({
+ *   selector: {
+ *     id: "pol_123"
+ *   },
+ *   update: {
+ *     operation: "write"
+ *   }
+ * })
+ *
  * @featureFlag rbac
  */
 export const updateRbacPoliciesStep = createStep(

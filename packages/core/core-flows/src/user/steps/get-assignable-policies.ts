@@ -3,8 +3,8 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to retrieve the policies an actor can assign.
+ *
  * @since 2.16.0
  */
 export type GetAssignablePoliciesStepInput = {
@@ -35,26 +35,37 @@ type AssignablePolicy = {
 }
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The policies the actor can assign and their total count.
+ *
  * @since 2.16.0
  */
 export type GetAssignablePoliciesStepOutput = {
+  /**
+   * The policies the actor is allowed to assign, after pagination is applied.
+   */
   policies: AssignablePolicy[]
+  /**
+   * The total number of assignable policies, before pagination is applied.
+   */
   count: number
 }
 
 /**
- * @ignore
  * @featureFlag rbac
  * @since 2.16.0
  */
 export const getAssignablePoliciesStepId = "get-assignable-policies"
 
 /**
- * Resolves the set of policies the actor is allowed to assign.
+ * This step resolves the set of policies that the actor is allowed to assign. It
+ * resolves the permissions granted by the actor's roles and only returns the policies
+ * the actor has access to, applying any provided pagination to the result.
  *
- * @ignore
+ * @example
+ * const data = getAssignablePoliciesStep({
+ *   actor_id: "user_123"
+ * })
+ *
  * @featureFlag rbac
  * @since 2.16.0
  */

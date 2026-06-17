@@ -12,7 +12,6 @@ import { AdminGetRbacRolesParamsType } from "../validators"
  * Returns the subset of `rbac_role`s the authenticated actor is allowed to
  * assign.
  *
- * @ignore
  * @featureFlag rbac
  */
 export const GET = async (

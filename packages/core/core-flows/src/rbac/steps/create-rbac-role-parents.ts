@@ -3,31 +3,53 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The data to create a role-parent association, establishing that a role inherits
+ * permissions from a parent role.
  */
 export type CreateRbacRoleParentDTO = {
+  /**
+   * The ID of the role that inherits permissions.
+   */
   role_id: string
+  /**
+   * The ID of the parent role whose permissions are inherited.
+   */
   parent_id: string
+  /**
+   * Custom key-value pairs to store with the association.
+   */
   metadata?: Record<string, unknown> | null
 }
 
 /**
- * @ignore
- * @featureFlag rbac
+ * The input to create one or more role-parent associations, establishing role inheritance
+ * where a role inherits the permissions of its parent roles.
  */
 export type CreateRbacRoleParentsStepInput = {
+  /**
+   * The role-parent associations to create.
+   */
   role_parents: CreateRbacRoleParentDTO[]
 }
 
 /**
- * @ignore
- * @featureFlag rbac
  */
 export const createRbacRoleParentsStepId = "create-rbac-role-parents"
 
 /**
- * @ignore
+ * This step creates one or more role-parent associations, establishing role inheritance
+ * where a role inherits the permissions of its parent roles.
+ *
+ * @example
+ * const data = createRbacRoleParentsStep({
+ *   role_parents: [
+ *     {
+ *       role_id: "role_123",
+ *       parent_id: "role_456"
+ *     }
+ *   ]
+ * })
+ *
  * @featureFlag rbac
  */
 export const createRbacRoleParentsStep = createStep(
