@@ -5,7 +5,7 @@ import {
   createMedusaServiceBindings,
   hasContextParam,
   hasDecoratorWithLocalName,
-  isServiceClass,
+  isMedusaServiceSuper,
   trackFrameworkUtilsImports,
   trackMedusaServiceImports,
 } from "../../util/service-scope"
@@ -41,7 +41,7 @@ export const rule = createRule<[], MessageIds>({
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, serviceBindings)) {
+      if (!isMedusaServiceSuper(node.superClass, serviceBindings)) {
         return
       }
 
@@ -59,10 +59,10 @@ export const rule = createRule<[], MessageIds>({
           continue
         }
         const value = member.value
-        if (
-          value.type !== AST_NODE_TYPES.FunctionExpression &&
-          value.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-        ) {
+        // Skip TypeScript overload signatures (bodyless declarations): the
+        // decorator can only live on the implementation, which is the method
+        // that carries a function body and is checked on its own.
+        if (value.type !== AST_NODE_TYPES.FunctionExpression) {
           continue
         }
 
