@@ -1,0 +1,39 @@
+{
+  "name": "@medusajs/notification-slack",
+  "version": "0.0.1",
+  "description": "Slack notification provider for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/modules/providers/notification-slack"
+  },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
+    "watch": "yarn run -T tsc --watch"
+  },
+  "devDependencies": {
+    "@medusajs/framework": "2.15.5"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@medusajs/framework": "2.15.5"
+  },
+  "keywords": [
+    "medusa-provider",
+    "medusa-provider-slack"
+  ]
+}

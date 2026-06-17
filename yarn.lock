@@ -4177,6 +4177,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/notification-slack@workspace:packages/modules/providers/notification-slack":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/notification-slack@workspace:packages/modules/providers/notification-slack"
+  dependencies:
+    "@medusajs/framework": 2.15.5
+  peerDependencies:
+    "@medusajs/framework": 2.15.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/notification@2.15.5, @medusajs/notification@workspace:packages/modules/notification":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification@workspace:packages/modules/notification"
