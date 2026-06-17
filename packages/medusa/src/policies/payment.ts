@@ -6,6 +6,8 @@ const paymentResources = [
   "payment_collection",
   "payment_method",
   "payment_session",
+  "refund",
+  "capture",
   "refund_reason",
 ]
 
