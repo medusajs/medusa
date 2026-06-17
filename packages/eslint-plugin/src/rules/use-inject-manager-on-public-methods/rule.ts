@@ -5,7 +5,7 @@ import {
   createMedusaServiceBindings,
   hasContextParam,
   hasDecoratorWithLocalName,
-  isServiceClass,
+  isMedusaServiceSuper,
   trackFrameworkUtilsImports,
   trackMedusaServiceImports,
 } from "../../util/service-scope"
@@ -41,7 +41,7 @@ export const rule = createRule<[], MessageIds>({
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, serviceBindings)) {
+      if (!isMedusaServiceSuper(node.superClass, serviceBindings)) {
         return
       }
 

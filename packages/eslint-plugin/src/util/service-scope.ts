@@ -64,29 +64,6 @@ export function isMedusaServiceSuper(
 }
 
 /**
- * True when `node` looks like a Medusa "service class": **either** its
- * superclass is `MedusaService(...)` (from `@medusajs/framework/utils`), **or**
- * its class name ends with the `Service` suffix.
- *
- * The suffix convention catches custom domain services that don't extend
- * `MedusaService` but still expose awaitable methods to callers (Medusa
- * convention is to name them `XxxService`).
- *
- * Anonymous class expressions assigned to `Service`-suffixed variables are
- * not covered here — the predicate only inspects the class node's own `id`.
- * Add a `VariableDeclarator`-aware variant if a rule needs that.
- */
-export function isServiceClass(
-  node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
-  bindings: MedusaServiceBindings
-): boolean {
-  if (isMedusaServiceSuper(node.superClass, bindings)) {
-    return true
-  }
-  return node.id?.name.endsWith("Service") ?? false
-}
-
-/**
  * Generic import tracker for named specifiers from
  * `@medusajs/framework/utils`. Given a map of canonical imported names to
  * `Set<string>` buckets, populates each bucket with the *local* name a

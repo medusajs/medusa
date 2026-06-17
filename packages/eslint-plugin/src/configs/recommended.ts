@@ -173,10 +173,11 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: [
-        "src/subscribers/**/*.{ts,js}",
-        "**/src/subscribers/**/*.{ts,js}",
-      ],
+      // Direct descendants of `subscribers/` only — Medusa loads a subscriber
+      // from each file directly under this directory. Files in nested
+      // subdirectories are treated as utilities, not subscribers, so they are
+      // not subject to these rules.
+      files: ["src/subscribers/*.{ts,js}", "**/src/subscribers/*.{ts,js}"],
       rules: {
         [ruleId("subscriber-config-export-required")]: "error",
         [ruleId("subscriber-default-export-must-be-async")]: "error",
@@ -184,7 +185,11 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: ["src/jobs/**/*.{ts,js}", "**/src/jobs/**/*.{ts,js}"],
+      // Direct descendants of `jobs/` only — Medusa loads a scheduled job from
+      // each file directly under this directory. Files in nested subdirectories
+      // are treated as utilities, not jobs, so they are not subject to these
+      // rules.
+      files: ["src/jobs/*.{ts,js}", "**/src/jobs/*.{ts,js}"],
       rules: {
         [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",
