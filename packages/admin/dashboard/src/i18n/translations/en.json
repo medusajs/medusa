@@ -1442,6 +1442,7 @@
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
+      "deletedLocation": "Location deleted",
       "itemsLabel": "Items"
     },
     "refund": {
