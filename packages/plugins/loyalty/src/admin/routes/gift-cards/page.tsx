@@ -1,26 +1,30 @@
-import { defineRouteConfig } from "@medusajs/admin-sdk";
-import { Toaster } from "@medusajs/ui";
-import GiftCardIcon from "../../components/icons/gift-card-icon";
-import { TwoColumnLayout } from "../../components/layouts/two-column";
-import GiftCardProductsSection from "./components/gift-card-products-section";
-import { GiftCardsTable } from "./components/gift-cards-table/gift-cards-table";
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { LayoutComposer } from "@medusajs/dashboard/components"
+import { Toaster } from "@medusajs/ui"
+import GiftCardIcon from "../../components/icons/gift-card-icon"
+import GiftCardProductsSection from "./components/gift-card-products-section"
+import { GiftCardsTable } from "./components/gift-cards-table/gift-cards-table"
 
 const GiftCardsPage = () => {
   return (
     <>
-      <TwoColumnLayout
-        firstCol={<GiftCardsTable />}
-        secondCol={<GiftCardProductsSection />}
+      <LayoutComposer
+        widgetsZonePrefix="gift_card.list"
+        preferredLayoutId="core:two-column"
+        sections={{
+          main: <GiftCardsTable />,
+          side: <GiftCardProductsSection />,
+        }}
       />
 
       <Toaster />
     </>
-  );
-};
+  )
+}
 
 export const config = defineRouteConfig({
   label: "Gift Cards",
   icon: GiftCardIcon,
-});
+})
 
-export default GiftCardsPage;
+export default GiftCardsPage

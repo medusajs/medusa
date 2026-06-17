@@ -2823,7 +2823,7 @@ In this chapter, you'll learn how to use `pnpm` as the package manager for your 
 
 Medusa supports `pnpm`, `yarn`, and `npm` as package managers. Our team recommends using either `yarn` or `pnpm` for better performance and faster installations.
 
-To use `pnpm` with Medusa, you need to add some configuration to your project. This guide walks you through the necessary steps.
+To use `pnpm` with Medusa, you need to add some configuration to your project. This guide walks you through the necessary steps for both standalone projects and monorepos.
 
 ### Who is This Guide For?
 
@@ -2833,19 +2833,22 @@ As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0),
 pnpm dlx create-medusa-app@latest
 ```
 
-This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`.
+This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`. Choose the section that matches your project's setup:
 
-### Monorepo Support
-
-At the moment, `pnpm` is only supported in single-package Medusa projects. If you're using a monorepo setup, these steps may not work as expected. We recommend using `yarn` or `npm` for monorepo setups until we add support for `pnpm` in monorepos.
+- [Standalone Project](#standalone-project): Your Medusa application is a single package in its own directory.
+- [Monorepo](#monorepo): Your Medusa application is one of multiple packages managed in a workspace.
 
 ***
+
+## Standalone Project
+
+Follow the steps in this section if your Medusa application is a standalone, single-package project.
 
 ### Prerequisites
 
 - [pnpm Installed](https://pnpm.io/installation)
 
-## Step 0: Update Medusa to the Latest Version
+### Step 0: Update Medusa to the Latest Version
 
 If you're using a Medusa version prior to v2.13.0, you should update to the latest version to ensure compatibility with `pnpm`.
 
@@ -2853,17 +2856,13 @@ Refer to the [Update Medusa](https://docs.medusajs.com/learn/update/index.html.m
 
 If you're updating to v2.13.0, you also need to run the [replace-zod-imports codemod](https://docs.medusajs.com/learn/codemods/replace-zod-imports/index.html.md).
 
-***
+### Step 1: Remove Existing Lock File
 
-## Step 1: Remove Existing Lock File
-
-The first step is to delete the existing lock file in your project directory. Depending on your current package manager, this will be either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
+Delete the existing lock file in your project directory. Depending on your current package manager, this will be either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
 
 When you install dependencies with `pnpm` later, a new `pnpm-lock.yaml` file will be created automatically.
 
-***
-
-## Step 2: Add .npmrc File
+### Step 2: Add .npmrc File
 
 Medusa requires some packages to be installed in the top-level `node_modules` directory. To ensure this works correctly with `pnpm`, you need to create a `.npmrc` file that specifies the `public-hoist-pattern` configuration.
 
@@ -2883,9 +2882,7 @@ This configuration tells `pnpm` to hoist the following packages to the top-level
 3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/translations/index.html.md). It's hoisted to ensure compatibility with the Medusa Admin.
 4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](https://docs.medusajs.com/learn/fundamentals/admin/routing/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
 
-***
-
-## Step 3: Install Dependencies with pnpm
+### Step 3: Install Dependencies with pnpm
 
 Finally, install your project dependencies using `pnpm`. Run the following command in your project directory:
 
@@ -2897,6 +2894,75 @@ This will install all your dependencies in `node_modules` and create a `pnpm-loc
 
 ***
 
+## Monorepo
+
+Follow the steps in this section if your Medusa application is part of a monorepo, where it's one of multiple packages managed in a workspace.
+
+### Prerequisites
+
+- [pnpm Installed](https://pnpm.io/installation)
+
+### Step 1: Set pnpm as the Package Manager
+
+In the root `package.json` file of your monorepo, set the `packageManager` field to the `pnpm` version you have installed:
+
+```json title="package.json"
+{
+  "packageManager": "pnpm@10.11.1"
+}
+```
+
+If your `package.json` has a `workspaces` field, remove it. With `pnpm`, you define the workspace packages in a `pnpm-workspace.yaml` file instead, as explained in the next step.
+
+### Step 2: Define Workspace Packages
+
+Create a `pnpm-workspace.yaml` file at the root of your monorepo to define the packages in your workspace.
+
+For example, if your packages are under an `apps` directory:
+
+```yaml title="pnpm-workspace.yaml"
+packages:
+  - "apps/*"
+```
+
+Adjust the patterns to match the directories where your packages are located.
+
+### Step 3: Add .npmrc File
+
+Medusa requires some packages to be installed in the top-level `node_modules` directory. To ensure this works correctly with `pnpm`, create a `.npmrc` file at the root of your monorepo with the following content:
+
+```ini title=".npmrc"
+public-hoist-pattern[]=*@medusajs/*
+public-hoist-pattern[]=@tanstack/react-query
+public-hoist-pattern[]=react-i18next
+public-hoist-pattern[]=react-router-dom
+```
+
+This configuration tells `pnpm` to hoist the following packages to the top-level `node_modules` directory:
+
+1. All packages under the `@medusajs` scope.
+2. `@tanstack/react-query`: Tanstack Query, used in [Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/tips#send-requests-to-api-routes/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/translations/index.html.md). It's hoisted to ensure compatibility with the Medusa Admin.
+4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](https://docs.medusajs.com/learn/fundamentals/admin/routing/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+
+### Step 4: Remove Existing Lock Files
+
+Delete the existing lock file and the `node_modules` directory in your monorepo. Depending on your previous package manager, the lock file is either `package-lock.json` for `npm` or `yarn.lock` for `yarn`.
+
+When you install dependencies with `pnpm` in the next step, a new `pnpm-lock.yaml` file will be created automatically.
+
+### Step 5: Install Dependencies with pnpm
+
+Finally, install your monorepo's dependencies using `pnpm`. Run the following command in the root of your monorepo:
+
+```bash
+pnpm install
+```
+
+This will install the dependencies of all packages in your workspace and create a `pnpm-lock.yaml` file to lock the versions of your installed packages.
+
+***
+
 ## Test Your Setup
 
 You can now use `pnpm` for your Medusa development. For example, you can start the Medusa server in development with the following command:
@@ -2904,6 +2970,8 @@ You can now use `pnpm` for your Medusa development. For example, you can start t
 ```bash
 pnpm dev
 ```
+
+In a monorepo, run this command from your Medusa application's package directory, such as `apps/backend`.
 
 You can also run commands from the Medusa CLI tool with `pnpm`. For example, to run migrations:
 
@@ -15311,7 +15379,7 @@ type Input = {
   title: string
 }
 
-const createPostStep = createStep(
+export const createPostStep = createStep(
   "create-post", 
   async (input: Input, { container }) => {
     const blogModuleService: BlogModuleService = container.resolve(
@@ -16571,7 +16639,9 @@ export default defineLink(
 
 In this chapter, you'll learn about the Index Module and how you can use it.
 
-The Index Module is experimental and still in development, so it is subject to change. Consider whether your application can tolerate minor issues before using it in production.
+The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
+
+For multi-vendor setups with sales channel filtering needs, the Index Module provides the most efficient approach for filtering products by sales channels and other linked data models.
 
 ## What is the Index Module?
 
@@ -17334,6 +17404,29 @@ export const retrieveBrandsWorkflow = createWorkflow(
 ```
 
 This will retrieve all brands that are linked to at least one product.
+
+### Sales Channel Filtering for Multi-Vendor Setups
+
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
+
+For example, to filter vendor products by multiple sales channels:
+
+```ts title="src/api/custom/vendor-products/route.ts"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "sales_channels.*", "vendor.*"],
+  filters: {
+    sales_channels: {
+      id: ["sc_vendor_1", "sc_vendor_2"],
+    },
+    vendor: {
+      id: "vendor_123",
+    },
+  },
+})
+```
+
+This query efficiently filters products by both vendor and sales channels in a single operation.
 
 ### Retrieve Localized Data
 
@@ -26193,7 +26286,7 @@ The rest of the steps are performed inside this directory.
 
 ### Change Package Manager
 
-The project uses pnpm as the package manager, as declared in `package.json`.
+The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`. This demonstrates a working pnpm monorepo configuration for Medusa.
 
 To use a different package manager:
 
@@ -26329,7 +26422,19 @@ You define four services in this file:
 
 The `env_file` paths are relative to the project root: `apps/backend/.env` for the backend and `apps/storefront/.env` for the storefront.
 
-The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies.
+The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies. This configuration is essential for pnpm to work correctly in a monorepo Docker setup.
+
+### Port Configuration Explained
+
+The ports configuration maps container ports to host ports using the format `"host_port:container_port"`:
+
+- `"5432:5432"`: PostgreSQL database accessible at `localhost:5432`
+- `"6379:6379"`: Redis accessible at `localhost:6379`
+- `"9000:9000"`: Medusa backend server accessible at `localhost:9000`
+- `"5173:5173"`: Medusa Admin development server with Hot Module Replacement (HMR)
+- `"8000:8000"`: Storefront accessible at `localhost:8000`
+
+If these ports conflict with other services on your host machine, change the host port (left side). For example, use `"9001:9000"` to access the Medusa backend at `localhost:9001` instead.
 
 ### Recommendations for Multiple Local Projects
 
@@ -26615,6 +26720,21 @@ module.exports = defineConfig({
 
 You configure the Vite development server to listen on all network interfaces (`0.0.0.0`) and set up HMR to work correctly within the Docker environment.
 
+### Redis Configuration
+
+If you encounter Redis connection issues, you may need to explicitly configure the Redis URL in your `medusa-config.ts` file:
+
+```ts title="apps/backend/medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    // ...
+    redisUrl: process.env.REDIS_URL,
+  },
+})
+```
+
+This ensures the Redis URL from the environment variable is properly used by Medusa.
+
 ***
 
 ## 8. Add `.dockerignore`
@@ -26816,6 +26936,18 @@ to
 container_name: medusa_postgres_myproject
 ```
 
+### Medusa Backend Returns "Cannot GET /" Error
+
+If you access `http://localhost:9000` and see a "Cannot GET /" error, this usually means the Medusa backend started successfully but there's no route handler for the root path.
+
+This is expected behavior. The Medusa backend API endpoints are available at paths like `/admin` and `/store`. To verify your installation:
+
+1. Access the Medusa Admin dashboard at `http://localhost:9000/app`
+2. Check the backend health at `http://localhost:9000/health`
+3. Access the storefront at `http://localhost:8000` (if you deployed it)
+
+The "Cannot GET /" message doesn't indicate an error - it just means there's no content at the root URL.
+
 ***
 
 ## Learn More about your Medusa Application
@@ -26868,7 +27000,7 @@ A Medusa application is made up of a Node.js server and a Vite admin dashboard. 
 
 To create a Medusa application, use the `create-medusa-app` command:
 
-Considering using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
+Consider using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
 
 ### yarn
 
@@ -27543,6 +27675,48 @@ For example, you can ask:
 2. "How to update Medusa to the latest version?"
 3. "Explain the Medusa workflow system."
 4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."
+
+***
+
+## MCP Server Prompts
+
+The MCP server provides prompts with step-by-step instructions for common tasks. These are useful for your AI agent to learn how to perform specific tasks and what information it should look for in the documentation.
+
+The MCP server provides prompts for the following tasks:
+
+When integrating third-party providers, consider adding the [Context7 MCP server](https://github.com/upstash/context7#installation). It retrieves the latest information from the provider's documentation, which is essential for successful integration.
+
+1. Integrate a third-party payment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate PayPal as a payment provider in my Medusa store.
+```
+
+2. Integrate a third-party fulfillment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate ShipStation as a fulfillment provider in my Medusa store.
+```
+
+3. Extend the Product Module with custom properties and features. For example:
+
+```bash title="Example prompt"
+Implement a brand feature to allow merchants to associate products with brands
+```
+
+***
+
+## Submit Feedback with the MCP Server
+
+If you run into any issues or have suggestions to improve Medusa, you can ask your AI agent to submit feedback. It will use the MCP server to submit feedback to our team.
+
+For example, you can ask:
+
+```bash title="Example prompt"
+Submit feedback that the documentation on how to create a custom payment provider is outdated and needs to be updated.
+```
+
+You can submit feedback about the documentation, the developer experience, the MCP server, or any other aspect of Medusa. Your feedback will help us improve Medusa for everyone.
 
 
 # Build with AI Assistants and LLMs
@@ -30488,6 +30662,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -30555,6 +30732,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -30634,6 +30814,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -31496,9 +31679,843 @@ In the workflow, you:
 You can use this workflow when deleting a manager, such as in an API route.
 
 
+# Send Email Verification Notification
+
+In this guide, you'll learn how to enable email verification requirement for customers in your Medusa application, and how to send email verification notifications.
+
+### Prerequisites
+
+- [Medusa v2.15.5 or later](https://docs.medusajs.com/docs/learn/update/index.html.md)
+- [Notification Module Provider for the email channel, such as SendGrid or Resend](https://docs.medusajs.com/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md)
+
+## How Email Verification Works
+
+By default, customers can register an account and log in to your Medusa store without verifying their email address. You can enable email verification to require customers to verify their email address before they can log in.
+
+When email verification is enabled, the customer registration flow changes to the following:
+
+```mermaid
+sequenceDiagram
+    actor C as Customer
+    participant S as Store
+    C->>S: Register
+    S->>C: Send verification email
+    C->>S: Click verification link
+    S->>C: Email verified
+    C->>S: Log in
+```
+
+1. A customer registers an account by providing their email and password.
+2. The customer receives an email with a verification link. The link points to a page in your storefront that verifies the customer's email when visited.
+3. The customer clicks the verification link, which verifies their email address and completes the registration process.
+4. The customer can now log in to their account.
+
+This guide focuses on the backend implementation of this flow, which involves enabling email verification and sending the verification email.
+
+To implement the storefront part of the flow, refer to the [Verify Customer Account in Storefront guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/verify-account/index.html.md).
+
+***
+
+## Enable Email Verification
+
+To enable email verification, set the `require_verification` property of the [Emailpass Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/index.html.md) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts" highlights={configHighlights}
+module.exports = defineConfig({
+  // other configurations...
+  modules: [
+    // other modules...
+    {
+      resolve: "@medusajs/medusa/auth",
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+            options: {
+              require_verification: true,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+With this configuration, customers will be required to verify their email address after registering. This includes previously registered customers as well.
+
+***
+
+## Send Email Verification Notification
+
+When the storefront requests to send an email verification notification, Medusa emits the `auth.verification_requested` event. You can listen to this event in a [subscriber](https://docs.medusajs.com/docs/learn/fundamentals/events-and-subscribers/index.html.md) to send the email verification notification.
+
+### Prerequisite Configurations
+
+#### Notification Module Provider for Email Channel
+
+To send the email verification notification, you need a [Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md) configured for the email channel, such as [SendGrid](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) or [Resend](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/guides/resend/index.html.md).
+
+For development purposes, you can set the [Notification Local Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/local/index.html.md)'s channel to `email` in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              channels: ["email"],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+This will log the email verification notification to the console when it's sent, instead of actually sending an email.
+
+#### Storefront URL Configuration
+
+To format the verification link in the email, you need to set the URL to your storefront in `medusa-config.ts`. You can use the `admin.storefrontUrl` configuration for that:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  admin: {
+    storefrontUrl: process.env.STOREFRONT_URL || "https://storefront.com",
+  },
+})
+```
+
+This will allow you to use the `admin.storefrontUrl` value in the subscriber when formatting the verification link. If `admin.storefrontUrl` is not set, you can use a placeholder URL as shown in the subscriber example below.
+
+### Email Verification Notification Subscriber
+
+To send the email verification notification when the `auth.verification_requested` event is emitted, create a [subscriber](https://docs.medusajs.com/docs/learn/fundamentals/events-and-subscribers/index.html.md) at `src/subscribers/send-email-verification.ts` with the following content:
+
+```ts title="src/subscribers/send-email-verification.ts"
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { Modules } from "@medusajs/framework/utils"
+
+export default async function verificationRequestedHandler({
+  event: { data: {
+    entity_id: email,
+    token,
+    actor_type,
+  } },
+  container,
+}: SubscriberArgs<{
+  entity_id: string
+  token: string
+  actor_type: string
+  provider: string
+  auth_identity_id: string
+  provider_identity_id: string
+  expires_at: string
+}>) {
+  if (actor_type !== "customer") {
+    return
+  }
+
+  const notificationModuleService = container.resolve(
+    Modules.NOTIFICATION
+  )
+  const config = container.resolve("configModule")
+
+  const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
+
+  console.log(`${urlPrefix}/verify-account?token=${token}&email=${email}`)
+
+  await notificationModuleService.createNotifications({
+    to: email,
+    channel: "email",
+    // TODO replace with template ID in notification provider
+    template: "email-verification",
+    data: {
+      // a URL to a frontend application
+      verification_url: `${urlPrefix}/verify-account?token=${token}&email=${email}`,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "auth.verification_requested",
+}
+```
+
+#### Event Payload
+
+This subscriber receives in the event payload an object with the following properties:
+
+- `entity_id`: The email address of the customer to which the verification email should be sent.
+- `token`: The token to be included in the verification link. When the customer clicks the verification link, the frontend application should send the token back to the Medusa application to verify the customer's email address.
+- `actor_type`: The type of the actor for which the verification was requested. In this case, you only want to send email verification notifications for customers, so you check if the `actor_type` is `customer` before sending the notification.
+- `provider`: The auth provider used for the verification. In this case, it will be `emailpass`.
+- `auth_identity_id`: The ID of the auth identity for which the verification was requested.
+- `provider_identity_id`: The provider-specific ID of the auth identity for which the verification was requested.
+- `expires_at`: The date and time at which the verification token expires.
+
+#### Subscriber Implementation
+
+In the subscriber, you first format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
+
+Then, you send a notification using the Notification Module's main service. You pass the following properties to the `createNotifications` method:
+
+- `to`: The email address of the customer to which the verification email should be sent.
+- `channel`: The channel to send the notification through. In this case, it's `email`.
+- `template`: The ID of the template to use for the notification. This depends on your Notification Module Provider. For example, if you're using the SendGrid Notification Module Provider, this should be the ID of a SendGrid template that you've set up to format the email verification notification.
+- `data`: The data to be passed to the template when sending the notification. In this case, you pass the `verification_url` property, which contains the verification link to be included in the email.
+
+The verification link points to a page in your storefront, such as `/verify-account`, which should handle verifying the customer's email when visited.
+
+***
+
+## Handle Email Verification in Storefront
+
+When the customer clicks the verification link, they should be directed to a page in your storefront that sends the token back to the Medusa application to verify the customer's email address.
+
+To learn how to implement this part of the flow, refer to the [Verify Customer Account in Storefront guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/verify-account/index.html.md).
+
+***
+
+## Example Notification Templates
+
+The following section provides example notification templates for some Notification Module Providers.
+
+### SendGrid
+
+Refer to the [SendGrid Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) documentation for more details on how to set up SendGrid.
+
+The following HTML template can be used with SendGrid to send an email verification email:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 465px;
+            margin: 40px auto;
+            border: 1px solid #eaeaea;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .title {
+            color: #000000;
+            font-size: 24px;
+            font-weight: normal;
+            margin: 0;
+        }
+        .content {
+            margin: 32px 0;
+        }
+        .text {
+            color: #000000;
+            font-size: 14px;
+            line-height: 24px;
+            margin: 0 0 16px 0;
+        }
+        .button-container {
+            text-align: center;
+            margin: 32px 0;
+        }
+        .verify-button {
+            background-color: #000000;
+            border-radius: 3px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 20px;
+            display: inline-block;
+        }
+        .verify-button:hover {
+            background-color: #333333;
+        }
+        .url-section {
+            margin: 32px 0;
+        }
+        .url-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 24px;
+            word-break: break-all;
+        }
+        .disclaimer {
+            margin: 32px 0;
+        }
+        .disclaimer-text {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+            margin: 0 0 8px 0;
+        }
+        .security-footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        .security-text {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Verify Your Email</h1>
+        </div>
+
+        <div class="content">
+            <p class="text">
+                Hello,
+            </p>
+            <p class="text">
+                Thanks for creating an account. Please confirm your email address by clicking the button below to complete your registration.
+            </p>
+        </div>
+
+        <div class="button-container">
+            <a href="{{verification_url}}" class="verify-button">
+                Verify Email
+            </a>
+        </div>
+
+        <div class="url-section">
+            <p class="text">
+                Or copy and paste this URL into your browser:
+            </p>
+            <a href="{{verification_url}}" class="url-link">
+                {{verification_url}}
+            </a>
+        </div>
+
+        <div class="disclaimer">
+            <p class="disclaimer-text">
+                This verification link will expire soon for security reasons.
+            </p>
+            <p class="disclaimer-text">
+                If you didn't create an account, you can safely ignore this email.
+            </p>
+        </div>
+
+        <div class="security-footer">
+            <p class="security-text">
+                For security reasons, never share this verification link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+```
+
+Make sure to pass the `verification_url` variable to the template, which contains the URL to verify the customer's email.
+
+You can also customize the template further to show other information.
+
+### Resend
+
+If you've integrated Resend as explained in the [Resend Integration Guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/guides/resend/index.html.md), you can add a new template for email verification at `src/modules/resend/emails/email-verification.tsx`:
+
+```tsx title="src/modules/resend/emails/email-verification.tsx"
+import { 
+  Text, 
+  Container, 
+  Heading, 
+  Html, 
+  Section, 
+  Tailwind, 
+  Head, 
+  Preview, 
+  Body, 
+  Link,
+  Button, 
+} from "@react-email/components"
+
+type EmailVerificationEmailProps = {
+  verification_url: string
+}
+
+function EmailVerificationEmailComponent({ verification_url }: EmailVerificationEmailProps) {
+  return (
+    <Html>
+      <Head />
+      <Preview>Verify your email</Preview>
+      <Tailwind>
+        <Body className="bg-white my-auto mx-auto font-sans px-2">
+          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
+            <Section className="mt-[32px]">
+              <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
+                Verify Your Email
+              </Heading>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-black text-[14px] leading-[24px]">
+                Hello,
+              </Text>
+              <Text className="text-black text-[14px] leading-[24px]">
+                Thanks for creating an account. Please confirm your email address by clicking the button below to complete your registration.
+              </Text>
+            </Section>
+
+            <Section className="text-center mt-[32px] mb-[32px]">
+              <Button
+                className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
+                href={verification_url}
+              >
+                Verify Email
+              </Button>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-black text-[14px] leading-[24px]">
+                Or copy and paste this URL into your browser:
+              </Text>
+              <Link
+                href={verification_url}
+                className="text-blue-600 no-underline text-[14px] leading-[24px] break-all"
+              >
+                {verification_url}
+              </Link>
+            </Section>
+
+            <Section className="my-[32px]">
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                This verification link will expire soon for security reasons.
+              </Text>
+              <Text className="text-[#666666] text-[12px] leading-[24px] mt-2">
+                If you didn't create an account, you can safely ignore this email.
+              </Text>
+            </Section>
+
+            <Section className="mt-[32px] pt-[20px] border-t border-solid border-[#eaeaea]">
+              <Text className="text-[#666666] text-[12px] leading-[24px]">
+                For security reasons, never share this verification link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
+              </Text>
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  )
+}
+
+export const emailVerificationEmail = (props: EmailVerificationEmailProps) => (
+  <EmailVerificationEmailComponent {...props} />
+)
+
+// Mock data for preview/development
+const mockEmailVerification: EmailVerificationEmailProps = {
+  verification_url: "https://your-app.com/verify-account?token=sample-verification-token-123&email=user@example.com",
+}
+
+export default () => <EmailVerificationEmailComponent {...mockEmailVerification} />
+```
+
+Feel free to customize the email template further to match your branding and style, or to add additional information.
+
+Then, in the Resend Module's service at `src/modules/resend/service.ts`, add the new template to the `templates` object and `Templates` type:
+
+```ts title="src/modules/resend/service.ts"
+// other imports...
+import { emailVerificationEmail } from "./emails/email-verification"
+
+enum Templates {
+  // ...
+  EMAIL_VERIFICATION = "email-verification",
+}
+
+const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
+  // ...
+  [Templates.EMAIL_VERIFICATION]: emailVerificationEmail,
+}
+```
+
+Finally, find the `getTemplateSubject` function in the `ResendNotificationProviderService` and add a case for the `EMAIL_VERIFICATION` template:
+
+```ts title="src/modules/resend/service.ts"
+class ResendNotificationProviderService extends AbstractNotificationProviderService {
+  // ...
+
+  private getTemplateSubject(template: Templates) {
+    // ...
+    switch (template) {
+      // ...
+      case Templates.EMAIL_VERIFICATION:
+        return "Verify Your Email"
+    }
+  }
+}
+```
+
+
+# Multi-Factor Authentication
+
+In this guide, you'll learn how multi-factor authentication (MFA) works in the Auth Module, the providers it ships with, and how the authentication flow changes when an auth identity has MFA enabled.
+
+### Prerequisites
+
+- [Medusa v2.15.5+](https://docs.medusajs.com/docs/learn/update/index.html.md)
+
+## What is Multi-Factor Authentication?
+
+Multi-factor authentication adds a second verification step to the standard authentication flow. After a user authenticates with their credentials (such as email and password), they must pass another verification step using a second factor, such as a code from an authenticator app or a recovery code.
+
+The Auth Module implements MFA around two concepts:
+
+- **MFA factor**: A second factor enrolled for an auth identity, such as a TOTP authenticator. A factor is enabled only after the user verifies it once during setup.
+- **MFA challenge**: A short-lived challenge issued during authentication. The user must verify the challenge with a registered MFA method to obtain a session token.
+
+***
+
+## Configure MFA Encryption Key
+
+By default, Medusa sets the MFA encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
+
+If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
+
+```bash
+AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
+```
+
+Also, if you've added the Auth Module to your `medusa-config.ts` file to set any of its options, make sure to set the `mfa.encryption_key` option to the same environment variable:
+
+```ts title="medusa-config.ts"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+
+***
+
+## MFA Providers
+
+The Auth Module registers two MFA providers out of the box:
+
+- `totp`: Time-based one-time password provider. Users enroll by scanning a QR code in an authenticator app (such as Google Authenticator or 1Password) and verify the factor with a six-digit code.
+- `recovery_code`: Provides single-use backup codes that users can use to verify an MFA challenge when they don't have access to their primary factor.
+
+The `recovery_code` provider is not enrolled as a factor on its own. It becomes available as a verification method once the user has at least one enabled MFA factor and generates recovery codes.
+
+{/* ### Custom MFA Providers
+
+You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. A custom provider must implement the `AuthMfaProvider` interface, exposing `start`, `verifySetup`, `canVerifyForAuthIdentity`, and `verify` methods.
+
+Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options. */}
+
+***
+
+## Enrolling an MFA Factor
+
+Enrolling an MFA factor means registering a second factor for an auth identity (such as a TOTP authenticator). Once the factor is enrolled and enabled, the user must verify with that factor during authentication.
+
+The user enrolls an MFA factor by starting the enrollment, then verifying it.
+
+### Step 1: Authenticate with the Primary Factor
+
+Before enrolling an MFA factor, the user must be authenticated with their primary factor (for example, by logging in with their email and password). This ensures that only authenticated users can enroll MFA factors for their account.
+
+To authenticate, send a `POST` request to the `/auth/{actor_type}/{auth_provider}` API route with the user's credentials.
+
+For example, to authenticate an admin user with their email and password, send a request to the login route:
+
+```bash
+curl -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "supersecret"
+  }'
+```
+
+Use the returned JWT token in the `Authorization` header of subsequent requests to enroll and manage MFA factors.
+
+### Step 2: Start Enrollment
+
+The client sends a `POST` request to `/auth/mfa/factors` to start enrollment for a specific provider:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/factors \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "provider": "totp",
+    "label": "Authenticator App",
+    "issuer": "My Store"
+  }'
+```
+
+In the request body, you pass the following parameters:
+
+- `provider`: The MFA provider to enroll (for example, `totp`).
+- `label`: A label to identify the factor in the user's authenticator app.
+- `issuer`: The name of your application or store, shown in the authenticator app.
+
+The response contains the new factor in `pending` status, along with the data the user needs to register the factor in their authenticator app:
+
+```json title="Example Response"
+{
+  "mfa_factor": { "id": "authmfa_...", "status": "pending", ... },
+  "secret": "JBSWY3DPEHPK3PXP",
+  "otpauth_url": "otpauth://totp/My%20Store:user@example.com?secret=..."
+}
+```
+
+For `totp` providers, the client typically renders `otpauth_url` as a QR code that the user scans with their authenticator app.
+
+### Step 3: Verify the Factor
+
+Once the user has registered the factor in their authenticator app, the client sends the generated code to `/auth/mfa/factors/{id}/verify` to verify and activate the factor:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/factors/{id}/verify \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "code": "123456"
+  }'
+```
+
+In the request body, you pass the `code` generated by the user's authenticator app.
+
+On success, the factor's `status` becomes `enabled`, and the `auth.mfa_enabled` event is emitted. From now on, any authentication for this auth identity will require an MFA challenge.
+
+***
+
+## Authenticating with MFA
+
+When an auth identity has at least one enabled MFA factor, the standard authentication flow returns an MFA challenge instead of an immediate session token.
+
+Once the user successfully verifies the MFA challenge, they receive the session token and can access protected resources as usual.
+
+### Step 1: Authenticate with the Primary Factor
+
+The user initiates authentication with their primary factor (for example, by logging in with their email and password):
+
+```bash
+curl -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "supersecret"
+  }'
+```
+
+The response indicates that an MFA challenge is required:
+
+```json title="Example Response"
+{
+  "mfa_challenge": {
+    "id": "authmfachal_...",
+    "methods": ["totp", "recovery_code"]
+  }
+}
+```
+
+The `methods` array lists the verification methods the user can complete to satisfy the challenge.
+
+### Step 2: Verify the Challenge
+
+Based on the available methods, the client prompts the user to verify the challenge. For example, if `totp` is available, the user can enter the six-digit code from their authenticator app.
+
+To verify the challenge, the client sends a `POST` request to `/auth/mfa/challenges/{id}/verify` with the chosen verification method and the corresponding code:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/challenges/{id}/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "totp",
+    "code": "123456"
+  }'
+```
+
+On success, the response contains the JWT token the user can use in the `Authorization` header for subsequent requests:
+
+```json
+{
+  "token": "..."
+}
+```
+
+Each challenge is single-use and expires after the configured TTL (default five minutes).
+
+***
+
+## Recovery Codes
+
+Recovery codes give the user a way to verify an MFA challenge if they lose access to their primary factor.
+
+### Generating Recovery Codes
+
+Once the user has at least one enabled MFA factor, they can generate recovery codes. First, they must be authenticated:
+
+```bash
+curl -X POST http://localhost:9000/auth/user/emailpass \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "supersecret"
+  }'
+```
+
+Then, they can generate recovery codes using the `/auth/mfa/recovery-codes` route:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/recovery-codes \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "count": 10
+  }'
+```
+
+In the request body, you can specify the number of recovery codes to generate. The default is either the `mfa.recovery_code_count` option from the Auth Module's configuration or `10`.
+
+The response returns the generated codes in plain text:
+
+```json
+{
+  "recovery_codes": ["abcd-efgh-ijkl", "..."]
+}
+```
+
+The user should store these codes in a safe place. The Auth Module stores only the hashed codes, so they cannot be retrieved again.
+
+Generating a new set of recovery codes replaces the previous ones and emits the `auth.mfa_recovery_codes_generated` event.
+
+### Using a Recovery Code
+
+To verify an MFA challenge with a recovery code, send a `POST` request to `/auth/mfa/challenges/{id}/verify` with `method` set to `recovery_code` and the `code` set to one of the valid recovery codes:
+
+```bash
+curl -X POST http://localhost:9000/auth/mfa/challenges/{id}/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "recovery_code",
+    "code": "abcd-efgh-ijkl"
+  }'
+```
+
+Each recovery code can be used only once. Once consumed, it cannot be reused for future challenges.
+
+***
+
+## Disabling an MFA Factor
+
+To disable an enabled MFA factor, the client must be authenticated and send a `DELETE` request to `/auth/mfa/factors/{id}`:
+
+```bash
+curl -X DELETE http://localhost:9000/auth/mfa/factors/{id} \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}" \
+  -d '{
+    "method": "totp",
+    "code": "123456"
+  }'
+```
+
+Whether the `method` and `code` fields are required depends on the value of the Auth Module's `disable_policy` option:
+
+- `session` (default): A valid session is enough to disable the factor. The `method` and `code` fields are optional.
+- `challenge`: The user must additionally verify with an MFA method (TOTP code or recovery code) before the factor can be disabled.
+
+Use the `challenge` policy to protect users from a stolen session being used to remove their MFA factor.
+
+On success, the factor's `status` becomes `disabled`, and the `auth.mfa_disabled` event is emitted.
+
+***
+
+## Listing Enrolled Factors
+
+The client can list the MFA factors enrolled for the authenticated user by sending a `GET` request to `/auth/mfa/factors`:
+
+```bash
+curl -X GET http://localhost:9000/auth/mfa/factors \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {jwt_token}"
+```
+
+The response includes each factor's `id`, `provider`, `status`, and metadata. Use this route to render the user's MFA settings page in your application.
+
+***
+
+## Events
+
+The Auth Module emits the following events around MFA:
+
+- `auth.mfa_enabled`: Emitted when a factor transitions from `pending` to `enabled`.
+- `auth.mfa_disabled`: Emitted when an enabled factor is disabled.
+- `auth.mfa_recovery_codes_generated`: Emitted when a user generates a new set of recovery codes.
+
+Subscribe to these events to send confirmation emails, audit log entries, or admin notifications.
+
+Refer to the [Events Reference](https://docs.medusajs.com/references/auth/events/index.html.md) for the full list of Auth Module events.
+
+
 # Auth Module Options
 
-In this document, you'll learn about the options of the Auth Module.
+In this guide, you'll learn about the options of the Auth Module.
 
 ## providers
 
@@ -31522,6 +32539,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           {
             resolve: "@medusajs/medusa/auth-emailpass",
@@ -31559,7 +32579,9 @@ Refer to [Medusa's configuration guide](https://docs.medusajs.com/docs/learn/con
 
 The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
 
-This feature is available in Medusa v2.15.5 and above.
+When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you created your Medusa application after v2.15.5, this environment variable is already set in your `.env` file. If not, make sure to set it to a random string.
+
+This feature is available in [Medusa v2.15.5](https://docs.medusajs.com/docs/learn/update/index.html.md) and above.
 
 For example:
 
@@ -31576,7 +32598,8 @@ module.exports = defineConfig({
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
         mfa: {
-          disable_policy: "challenge", // or "session"
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+          disable_policy: "challenge",
         },
       },
     },
@@ -31586,9 +32609,18 @@ module.exports = defineConfig({
 
 The `mfa` option accepts the following properties:
 
+- `encryption_key`: A string indicating the encryption key used for MFA. This is required and should be set to the `AUTH_MFA_ENCRYPTION_KEY` environment variable.
+  - If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+- `recovery_code_count`: An optional number indicating the number of recovery codes to generate for each user. The default is `10`.
+- `challenge_ttl_seconds`: An optional number indicating the time-to-live (TTL) of MFA challenges in seconds. The default is `300` seconds (5 minutes).
+- `challenge_max_attempts`: An optional number indicating the maximum number of failed attempts allowed for an MFA challenge. The default is `5`.
 - `disable_policy`: A string indicating the policy for disabling MFA factors. Can be either:
-  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor
-  - `"session"` (default): Only requires a valid session to disable an MFA factor
+  - `"session"` (default): Only requires a valid session to disable an MFA factor.
+  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor.
+- `providers`: An optional array of MFA providers to use. These are registered alongside, and can override, the default `totp` and `recovery_code` providers. Each object in the array accepts the following properties:
+  - `resolve`: A string indicating the package name of the MFA provider or the path to it relative to the `src` directory.
+  - `id`: A string indicating the MFA provider's unique name or ID. The ID is prefixed with `mfa_`. If not provided, the `identifier` static property of the provider's service is used.
+  - `options`: An optional object of the MFA provider's options.
 
 ***
 
@@ -31612,8 +32644,8 @@ Learn more about why modules are isolated in [this documentation](https://docs.m
 - [Basic User Authentication](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#1-basic-authentication-flow/index.html.md): Authenticate users using their email and password credentials.
 - [Third-Party and Social Authentication](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow/index.html.md): Authenticate users using third-party services and social platforms, such as [Google](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google/index.html.md) and [GitHub](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/github/index.html.md).
 - [Authenticate Custom Actor Types](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type/index.html.md): Create custom user or actor types, such as managers, authenticate them in your application, and guard routes based on the custom user types.
-- **Email Verification**: Require email verification for new registrations and authentications.
-- **Multi-Factor Authentication (MFA)**: Add an extra layer of security with time-based one-time passwords (TOTP), backup recovery codes, and configurable disable policies.
+- [Email Verification](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/email-verification/index.html.md): Require email verification for new registrations and authentications.
+- [Multi-Factor Authentication (MFA)](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/mfa/index.html.md): Add an extra layer of security with time-based one-time passwords (TOTP), backup recovery codes, and configurable disable policies.
 - [Custom Authentication Providers](https://docs.medusajs.com/references/auth/provider/index.html.md): Integrate third-party services with custom authentication providers.
 
 ***
@@ -34141,6 +35173,30 @@ The fulfillment item holds details relevant to fulfilling the item, such as barc
 ## Fulfillment Label
 
 Once a shipment is created for the fulfillment, you can store its tracking number, URL, or other related details as a label, represented by the [FulfillmentLabel data model](https://docs.medusajs.com/references/fulfillment/models/FulfillmentLabel/index.html.md).
+
+### Accessing Tracking Information
+
+To access tracking information for a fulfillment, you must retrieve the related labels. For example, to retrieve the tracking data with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md):
+
+```ts
+const { data: fulfillment } = query.graph({
+  entity: "fulfillment",
+  fields: [
+    "labels.tracking_number",
+    "labels.tracking_url",
+    "labels.label_url",
+  ],
+  filters: {
+    id: "fulfillment_123",
+  }
+})
+
+fulfillment.labels.forEach((label) => {
+  console.log("Tracking Number:", label.tracking_number)
+  console.log("Tracking URL:", label.tracking_url)
+  console.log("Label URL:", label.label_url)
+})
+```
 
 ***
 
@@ -44516,7 +45572,7 @@ All store credit activity is tracked through transactions, which are stored in t
 Each transaction includes:
 
 - `type`: `credit` (adding funds) or `debit` (spending funds)
-- `amount`: The transaction amount in the smallest currency unit.
+- `amount`: The transaction amount in the major currency unit (decimal).
   - If `type` is `credit`, the amount is added to the balance.
   - If `type` is `debit`, the amount is subtracted from the balance
 - `reference`: The name of the table that triggered the transaction (for example, `order`, `refund`, `promotion`, etc...)
@@ -52744,10 +53800,60 @@ This documentation page includes the list of all events emitted by [Medusa's wor
 
 |Event|Description|
 |---|---|
+|auth.mfa\_enabled|Emitted when an MFA factor is enabled for an auth identity.|
+|auth.mfa\_disabled|Emitted when an MFA factor is disabled for an auth identity.|
+|auth.mfa\_recovery\_codes\_generated|Emitted when recovery codes are generated for an auth identity.|
 |auth.password\_reset|Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.|
 |auth.verification\_requested|Emitted when a verification token is generated. You can listen to
 this event and decide how to deliver the token to the user or customer.|
+
+### auth.mfa\_enabled&#xA;
+
+Emitted when an MFA factor is enabled for an auth identity.
+
+#### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.
+  mfa_id, // The ID of the MFA factor that was enabled.
+  provider, // The provider of the MFA factor that was enabled.
+}
+```
+
+***
+
+### auth.mfa\_disabled&#xA;
+
+Emitted when an MFA factor is disabled for an auth identity.
+
+#### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.
+  mfa_id, // The ID of the MFA factor that was disabled.
+  provider, // The provider of the MFA factor that was disabled.
+}
+```
+
+***
+
+### auth.mfa\_recovery\_codes\_generated&#xA;
+
+Emitted when recovery codes are generated for an auth identity.
+
+#### Payload
+
+```ts
+{
+  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.
+  count, // (number) The number of recovery codes that were generated.
+}
+```
+
+***
 
 ### auth.password\_reset
 
@@ -53119,79 +54225,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
-## Order Edit Events
-
-### Summary
-
-|Event|Description|
-|---|---|
-|order-edit.requested|Emitted when an order edit is requested.|
-|order-edit.confirmed|Emitted when an order edit request is confirmed.|
-|order-edit.canceled|Emitted when an order edit request is canceled.|
-
-### order-edit.requested&#xA;
-
-Emitted when an order edit is requested.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [requestOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/requestOrderEditRequestWorkflow/index.html.md)
-
-***
-
-### order-edit.confirmed&#xA;
-
-Emitted when an order edit request is confirmed.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [confirmOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmOrderEditRequestWorkflow/index.html.md)
-
-***
-
-### order-edit.canceled&#xA;
-
-Emitted when an order edit request is canceled.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [cancelBeginOrderEditWorkflow](https://docs.medusajs.com/references/medusa-workflows/cancelBeginOrderEditWorkflow/index.html.md)
-
-***
-
 ## Order Events
 
 ### Summary
@@ -53470,6 +54503,79 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
+## Order Edit Events
+
+### Summary
+
+|Event|Description|
+|---|---|
+|order-edit.requested|Emitted when an order edit is requested.|
+|order-edit.confirmed|Emitted when an order edit request is confirmed.|
+|order-edit.canceled|Emitted when an order edit request is canceled.|
+
+### order-edit.requested&#xA;
+
+Emitted when an order edit is requested.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [requestOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/requestOrderEditRequestWorkflow/index.html.md)
+
+***
+
+### order-edit.confirmed&#xA;
+
+Emitted when an order edit request is confirmed.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [confirmOrderEditRequestWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmOrderEditRequestWorkflow/index.html.md)
+
+***
+
+### order-edit.canceled&#xA;
+
+Emitted when an order edit request is canceled.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [cancelBeginOrderEditWorkflow](https://docs.medusajs.com/references/medusa-workflows/cancelBeginOrderEditWorkflow/index.html.md)
+
+***
+
 ## Payment Events
 
 ### Summary
@@ -53518,6 +54624,82 @@ Emitted when a payment is refunded.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [refundPaymentWorkflow](https://docs.medusajs.com/references/medusa-workflows/refundPaymentWorkflow/index.html.md)
+
+***
+
+## Product Events
+
+### Summary
+
+|Event|Description|
+|---|---|
+|product.updated|Emitted when products are updated.|
+|product.created|Emitted when products are created.|
+|product.deleted|Emitted when products are deleted.|
+
+### product.updated
+
+Emitted when products are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateProductsWorkflow/index.html.md)
+- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
+- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
+
+***
+
+### product.created
+
+Emitted when products are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createProductsWorkflow/index.html.md)
+- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
+- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
+
+***
+
+### product.deleted
+
+Emitted when products are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the product
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteProductsWorkflow/index.html.md)
+- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
+- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
 
 ***
 
@@ -53947,82 +55129,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
-## Product Events
-
-### Summary
-
-|Event|Description|
-|---|---|
-|product.updated|Emitted when products are updated.|
-|product.created|Emitted when products are created.|
-|product.deleted|Emitted when products are deleted.|
-
-### product.updated
-
-Emitted when products are updated.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [updateProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateProductsWorkflow/index.html.md)
-- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
-- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
-
-***
-
-### product.created
-
-Emitted when products are created.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [createProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createProductsWorkflow/index.html.md)
-- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
-- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
-
-***
-
-### product.deleted
-
-Emitted when products are deleted.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the product
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [deleteProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteProductsWorkflow/index.html.md)
-- [batchProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchProductsWorkflow/index.html.md)
-- [importProductsWorkflow](https://docs.medusajs.com/references/medusa-workflows/importProductsWorkflow/index.html.md)
-
-***
-
 ## Region Events
 
 ### Summary
@@ -54163,76 +55269,6 @@ The following workflows emit this event when they're executed. These workflows a
 
 ***
 
-## Shipping Option Type Events
-
-### Summary
-
-|Event|Description|
-|---|---|
-|shipping-option-type.updated|Emitted when shipping option types are updated.|
-|shipping-option-type.created|Emitted when shipping option types are created.|
-|shipping-option-type.deleted|Emitted when shipping option types are deleted.|
-
-### shipping-option-type.updated&#xA;
-
-Emitted when shipping option types are updated.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [updateShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateShippingOptionTypesWorkflow/index.html.md)
-
-***
-
-### shipping-option-type.created&#xA;
-
-Emitted when shipping option types are created.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [createShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createShippingOptionTypesWorkflow/index.html.md)
-
-***
-
-### shipping-option-type.deleted&#xA;
-
-Emitted when shipping option types are deleted.
-
-#### Payload
-
-```ts
-{
-  id, // The ID of the shipping option type
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [deleteShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionTypesWorkflow/index.html.md)
-
-***
-
 ## Shipping Option Events
 
 ### Summary
@@ -54300,6 +55336,76 @@ Emitted when shipping options are deleted.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [deleteShippingOptionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionsWorkflow/index.html.md)
+
+***
+
+## Shipping Option Type Events
+
+### Summary
+
+|Event|Description|
+|---|---|
+|shipping-option-type.updated|Emitted when shipping option types are updated.|
+|shipping-option-type.created|Emitted when shipping option types are created.|
+|shipping-option-type.deleted|Emitted when shipping option types are deleted.|
+
+### shipping-option-type.updated&#xA;
+
+Emitted when shipping option types are updated.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [updateShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateShippingOptionTypesWorkflow/index.html.md)
+
+***
+
+### shipping-option-type.created&#xA;
+
+Emitted when shipping option types are created.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [createShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/createShippingOptionTypesWorkflow/index.html.md)
+
+***
+
+### shipping-option-type.deleted&#xA;
+
+Emitted when shipping option types are deleted.
+
+#### Payload
+
+```ts
+{
+  id, // The ID of the shipping option type
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [deleteShippingOptionTypesWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteShippingOptionTypesWorkflow/index.html.md)
 
 ***
 
@@ -55586,92 +56692,6 @@ sdk.client.setToken("your-jwt-token")
 ```
 
 You can also clear the token manually as explained in the [Manually Clearing JWT Token](#manually-clearing-jwt-token) section.
-
-***
-
-## Email Verification in JS SDK
-
-This feature is available since Medusa [v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
-
-When email verification is required for authentication, the JS SDK provides methods to handle the verification flow:
-
-### Request Verification Token
-
-Use the `auth.verification.request` method to request a new verification token:
-
-```ts
-try {
-  const { verification } = await sdk.auth.verification.request(
-    "customer", 
-    "emailpass",
-    {
-      entity_id: "customer@example.com",
-      metadata: {
-        source: "frontend_app",
-      },
-    }
-  )
-
-  console.log("Verification code sent!")
-  console.log("Expires at:", verification.expires_at)
-} catch (error) {
-  console.error("Failed to send verification code:", error)
-}
-```
-
-### Confirm Verification
-
-Use the `auth.verification.confirm` method to verify the user's email with their token:
-
-```ts
-try {
-  const result = await sdk.auth.verification.confirm(
-    "customer",
-    "emailpass", 
-    {
-      token: "user-entered-token",
-    }
-  )
-
-  if (result.verified) {
-    console.log("Email verified successfully!")
-    // User can now authenticate normally
-  }
-} catch (error) {
-  console.error("Verification failed:", error)
-}
-```
-
-### Handle Verification-Required Registration
-
-When registering with `returnVerification: true`, the register method can return verification details instead of throwing an error:
-
-```ts
-try {
-  const result = await sdk.auth.register(
-    "customer",
-    "emailpass",
-    {
-      email: "customer@example.com", 
-      password: "password123",
-    },
-    { returnVerification: true }
-  )
-
-  if (typeof result === "object" && result.verification_required) {
-    // Show verification form to user
-    console.log("Please verify your email to complete registration")
-    console.log("Verification expires:", result.verification.expires_at)
-  } else {
-    // Registration completed without verification
-    console.log("Registration successful:", result)
-  }
-} catch (error) {
-  console.error("Registration failed:", error)
-}
-```
-
-Learn more about implementing email verification in the [email verification guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/email-verification/index.html.md).
 
 ***
 
@@ -57558,7 +58578,7 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { CreateOrderLineItemDTO } from "@medusajs/framework/types"
 import { createQuotesStep } from "./steps/create-quotes"
 
@@ -59401,7 +60421,7 @@ You can now implement the merchant-rejection workflow. Create the file `src/work
 
 ```ts title="src/workflows/merchant-reject-quote.ts" highlights={merchantRejectionWorkflowHighlights}
 import { useQueryGraphStep } from "@medusajs/core-flows"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { validateQuoteNotAccepted } from "./steps/validate-quote-not-accepted"
 import { updateQuotesStep } from "./steps/update-quotes"
@@ -59672,7 +60692,7 @@ Create the file `src/workflows/merchant-send-quote.ts` with the following conten
 
 ```ts title="src/workflows/merchant-send-quote.ts" highlights={sendQuoteHighlights}
 import { useQueryGraphStep } from "@medusajs/core-flows"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { updateQuotesStep } from "./steps/update-quotes"
 import { validateQuoteNotAccepted } from "./steps/validate-quote-not-accepted"
@@ -60033,7 +61053,7 @@ Create the file `src/workflows/customer-reject-quote.ts` with the following cont
 
 ```ts title="src/workflows/customer-reject-quote.ts" highlights={customerRejectQuoteHighlights}
 import { useQueryGraphStep } from "@medusajs/core-flows"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { updateQuotesStep } from "./steps/update-quotes"
 import { validateQuoteNotAccepted } from "./steps/validate-quote-not-accepted"
@@ -60224,7 +61244,7 @@ import {
   useQueryGraphStep,
 } from "@medusajs/core-flows"
 import { OrderStatus } from "@medusajs/framework/utils"
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { validateQuoteCanAcceptStep } from "./steps/validate-quote-can-accept"
 import { QuoteStatus } from "../modules/quote/models/quote"
 import { updateQuotesStep } from "./steps/update-quotes"
@@ -135298,6 +136318,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 
 ## Store API Reference
 
+- [POST /auth/customer/emailpass/verification/confirm](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerverificationconfirm)
 - [POST /auth/customer/{auth_provider}](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider)
 - [POST /auth/customer/{auth_provider}/callback](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providercallback)
 - [POST /auth/customer/{auth_provider}/register](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register)

@@ -4,5 +4,4 @@ export interface EmailPassAuthProviderOptions {
     r: number
     p: number
   }
-  require_verification?: boolean
 }

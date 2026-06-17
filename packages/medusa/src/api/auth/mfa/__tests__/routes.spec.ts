@@ -74,6 +74,21 @@ const createRequest = ({
   } as any
 }
 
+const authIdentity = {
+  id: "auth_identity_1",
+  app_metadata: {
+    user_id: "user_1",
+  },
+  provider_identities: [
+    {
+      provider: "emailpass",
+      user_metadata: {
+        email: "test@example.com",
+      },
+    },
+  ],
+}
+
 describe("MFA auth routes", () => {
   it("returns an MFA challenge from the auth route", async () => {
     const mfaChallenge = {
@@ -88,7 +103,8 @@ describe("MFA auth routes", () => {
     const authService = {
       authenticate: jest.fn().mockResolvedValue({
         success: true,
-        mfa_challenge: mfaChallenge,
+        authIdentity,
+        mfaChallenge: mfaChallenge,
       }),
     }
     const req = createRequest({
@@ -117,10 +133,13 @@ describe("MFA auth routes", () => {
       })
     )
     expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({
-      mfa_required: true,
-      mfa_challenge: mfaChallenge,
-    })
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mfa_required: true,
+        mfa_challenge: mfaChallenge,
+        token: expect.any(String),
+      })
+    )
   })
 
   it("returns an MFA challenge from the auth callback route", async () => {
@@ -136,7 +155,18 @@ describe("MFA auth routes", () => {
     const authService = {
       validateCallback: jest.fn().mockResolvedValue({
         success: true,
-        mfa_challenge: mfaChallenge,
+        authIdentity: {
+          ...authIdentity,
+          provider_identities: [
+            {
+              provider: "google",
+              user_metadata: {
+                email: "test@example.com",
+              },
+            },
+          ],
+        },
+        mfaChallenge: mfaChallenge,
       }),
     }
     const req = createRequest({
@@ -162,11 +192,13 @@ describe("MFA auth routes", () => {
         },
       })
     )
-    expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({
-      mfa_required: true,
-      mfa_challenge: mfaChallenge,
-    })
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mfa_required: true,
+        mfa_challenge: mfaChallenge,
+        token: expect.any(String),
+      })
+    )
   })
 
   it("verifies an MFA challenge and issues an auth token", async () => {

@@ -50,7 +50,7 @@ export const useStartAuthMfa = (
     AuthMfaSetupResponse,
     FetchError,
     {
-      provider: AuthTypes.AuthMfaProvider
+      provider: AuthTypes.AuthMfaProviderMethod
       label?: string | null
       issuer?: string
       metadata?: Record<string, unknown> | null

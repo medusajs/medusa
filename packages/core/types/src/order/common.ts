@@ -31,12 +31,12 @@ export type ChangeActionType =
   | "PROMOTION_ADD"
   | "PROMOTION_REMOVE"
   | "ITEM_ADJUSTMENTS_REPLACE"
-  | /**
+  /**
    * Replace shipping method adjustments.
    *
    * @since 2.13.7
    */
-  "SHIPPING_ADJUSTMENTS_REPLACE"
+  | "SHIPPING_ADJUSTMENTS_REPLACE"
 
 /**
  * The order change's status.
@@ -892,9 +892,14 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   updated_at: Date
 
   /**
-   * Holds custom data in key-value pairs.
+   * The versioned order item metadata. Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The metadata of the line item. Holds custom data in key-value pairs.
+   */
+  line_item_metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -3050,7 +3055,7 @@ export interface OrderPreviewDTO
   /**
    * The items of the order, along with changes on the items.
    */
-  items: (OrderLineItemDTO & { 
+  items: (OrderLineItemDTO & {
     actions?: OrderChangeActionDTO[]
     return_requested_total: number
   })[]

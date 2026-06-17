@@ -17,7 +17,7 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.AdminOrderChangeResponse>
 ) => {
   const { id } = req.params
-  const { carry_over_promotions } = req.validatedBody
+  const { carry_over_promotions, internal_note } = req.validatedBody
   const query = req.scope.resolve<RemoteQueryFunction>(
     ContainerRegistrationKeys.QUERY
   )
@@ -27,6 +27,7 @@ export const POST = async (
     input: {
       id,
       carry_over_promotions,
+      internal_note,
     },
   })
 

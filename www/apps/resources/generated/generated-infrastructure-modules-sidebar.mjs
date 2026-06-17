@@ -547,6 +547,14 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
+              "type": "ref",
+              "title": "Send Email Verification",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/notification/send-notification",
               "title": "Send Notification",

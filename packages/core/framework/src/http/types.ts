@@ -213,6 +213,9 @@ export interface AuthContext {
   auth_provider?: string
   app_metadata: Record<string, unknown>
   user_metadata: Record<string, unknown>
+  entity_id?: string
+  purpose?: string
+  jti?: string
 }
 
 export interface PublishableKeyContext {

@@ -6,6 +6,10 @@ import {
   InjectionZone,
   NestedRoutePosition,
 } from "@medusajs/admin-shared"
+import {
+  LayoutDefinition,
+  SectionWidgetMap,
+} from "../components/layout-composer"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"
@@ -131,7 +135,9 @@ export type DisplayMap = Map<
 
 export type MenuMap = Map<MenuItemKey, INavItem[]>
 
-export type WidgetMap = Map<InjectionZone, React.ComponentType[]>
+export type WidgetMap = Map<InjectionZone, WidgetExtension[]>
+
+export type LayoutMap = Map<string, LayoutDefinition>
 
 export type DashboardPlugin = {
   formModule: FormModule
@@ -140,4 +146,25 @@ export type DashboardPlugin = {
   widgetModule: WidgetModule
   routeModule: RouteModule
   i18nModule?: I18nModule
+}
+
+export type ExtensionApi = {
+  getMenu: (path: MenuItemKey) => INavItem[]
+  getWidgets: (zone: InjectionZone) => ComponentType[]
+  getLayout: (layoutId: string) => LayoutDefinition | undefined
+  getWidgetsForSections: (route: string, sections: string[]) => SectionWidgetMap
+  getFormFields: (
+    model: CustomFieldModel,
+    zone: CustomFieldFormZone,
+    tab?: CustomFieldFormTab
+  ) => FormField[]
+  getFormConfigs: (
+    model: CustomFieldModel,
+    zone: CustomFieldFormZone
+  ) => ConfigField[]
+  getDisplays: (
+    model: CustomFieldModel,
+    zone: CustomFieldContainerZone
+  ) => ComponentType<{ data: any }>[]
+  getI18nResources: () => I18nExtension
 }

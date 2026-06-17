@@ -16,6 +16,9 @@ import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 import { useExtension } from "../../../../../providers/extension-provider"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
+import { collectionsQueryKeys } from "../../../../../hooks/api/collections"
+import { productTypesQueryKeys } from "../../../../../hooks/api/product-types"
+import { productTagsQueryKeys } from "../../../../../hooks/api/tags"
 
 type ProductOrganizationFormProps = {
   product: HttpTypes.AdminProduct
@@ -39,7 +42,7 @@ export const ProductOrganizationForm = ({
   const fields = getFormFields("product", "organize")
 
   const collections = useComboboxData({
-    queryKey: ["product_collections"],
+    queryKey: collectionsQueryKeys.lists(),
     queryFn: (params) => sdk.admin.productCollection.list(params),
     getOptions: (data) =>
       data.collections.map((collection) => ({
@@ -49,7 +52,7 @@ export const ProductOrganizationForm = ({
   })
 
   const types = useComboboxData({
-    queryKey: ["product_types"],
+    queryKey: productTypesQueryKeys.lists(),
     queryFn: (params) => sdk.admin.productType.list(params),
     getOptions: (data) =>
       data.product_types.map((type) => ({
@@ -59,7 +62,7 @@ export const ProductOrganizationForm = ({
   })
 
   const tags = useComboboxData({
-    queryKey: ["product_tags"],
+    queryKey: productTagsQueryKeys.lists(),
     queryFn: (params) => sdk.admin.productTag.list(params),
     getOptions: (data) =>
       data.product_tags.map((tag) => ({

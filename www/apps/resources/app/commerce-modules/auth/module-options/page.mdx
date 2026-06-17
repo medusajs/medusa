@@ -10,7 +10,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn about the options of the Auth Module.
+In this guide, you'll learn about the options of the Auth Module.
 
 ## providers
 
@@ -38,6 +38,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           {
             resolve: "@medusajs/medusa/auth-emailpass",
@@ -75,9 +78,11 @@ Refer to [Medusa's configuration guide](!docs!/learn/configurations/medusa-confi
 
 The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
 
+When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you created your Medusa application after v2.15.5, this environment variable is already set in your `.env` file. If not, make sure to set it to a random string.
+
 <Note>
 
-This feature is available in Medusa v2.15.5 and above.
+This feature is available in [Medusa v2.15.5](!docs!/learn/update) and above.
 
 </Note>
 
@@ -96,7 +101,8 @@ module.exports = defineConfig({
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
         mfa: {
-          disable_policy: "challenge", // or "session"
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+          disable_policy: "challenge",
         },
       },
     },
@@ -106,9 +112,18 @@ module.exports = defineConfig({
 
 The `mfa` option accepts the following properties:
 
+- `encryption_key`: A string indicating the encryption key used for MFA. This is required and should be set to the `AUTH_MFA_ENCRYPTION_KEY` environment variable.
+  - If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+- `recovery_code_count`: An optional number indicating the number of recovery codes to generate for each user. The default is `10`.
+- `challenge_ttl_seconds`: An optional number indicating the time-to-live (TTL) of MFA challenges in seconds. The default is `300` seconds (5 minutes).
+- `challenge_max_attempts`: An optional number indicating the maximum number of failed attempts allowed for an MFA challenge. The default is `5`.
 - `disable_policy`: A string indicating the policy for disabling MFA factors. Can be either:
-  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor
-  - `"session"` (default): Only requires a valid session to disable an MFA factor
+  - `"session"` (default): Only requires a valid session to disable an MFA factor.
+  - `"challenge"`: Requires MFA challenge verification to disable an MFA factor.
+- `providers`: An optional array of MFA providers to use. These are registered alongside, and can override, the default `totp` and `recovery_code` providers. Each object in the array accepts the following properties:
+  - `resolve`: A string indicating the package name of the MFA provider or the path to it relative to the `src` directory.
+  - `id`: A string indicating the MFA provider's unique name or ID. The ID is prefixed with `mfa_`. If not provided, the `identifier` static property of the provider's service is used.
+  - `options`: An optional object of the MFA provider's options.
 
 ---
 
