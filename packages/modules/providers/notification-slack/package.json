@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/notification-slack",
-  "version": "0.0.1",
+  "version": "2.15.5",
   "description": "Slack notification provider for Medusa",
   "main": "dist/index.js",
   "repository": {

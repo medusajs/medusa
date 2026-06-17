@@ -176,7 +176,11 @@ export class SlackNotificationService extends AbstractNotificationProviderServic
     } else if (data) {
       // Build text from data fields
       text = Object.entries(data)
-        .map(([key, value]) => `${key}: ${value}`)
+        .map(([key, value]) => {
+          const serializedValue =
+            typeof value === "object" ? JSON.stringify(value) : value
+          return `${key}: ${serializedValue}`
+        })
         .join("\n")
     }
 
@@ -219,9 +223,11 @@ export class SlackNotificationService extends AbstractNotificationProviderServic
       const fields: Array<Record<string, any>> = []
 
       Object.entries(data).slice(0, 8).forEach(([key, value]) => {
+        const serializedValue =
+          typeof value === "object" ? JSON.stringify(value) : value
         fields.push({
           type: "mrkdwn",
-          text: `*${key}:*\n${value}`,
+          text: `*${key}:*\n${serializedValue}`,
         })
       })
 

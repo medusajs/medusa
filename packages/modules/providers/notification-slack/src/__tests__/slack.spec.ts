@@ -190,4 +190,49 @@ describe("SlackNotificationService", () => {
     expect(payload.username).toBe("Custom Bot")
     expect(payload.icon_emoji).toBe(":robot_face:")
   })
+
+  it("should serialize nested objects in data fields", async () => {
+    service = new SlackNotificationService(
+      { logger: mockLogger },
+      { webhook_url: webhookUrl }
+    )
+
+    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      text: async () => "ok",
+    })
+
+    await service.send({
+      to: "C1234567890",
+      channel: "slack",
+      template: "order.updated",
+      data: {
+        order_id: "order_123",
+        metadata: { key: "value", nested: { prop: "data" } },
+        items: ["item1", "item2"],
+      },
+    })
+
+    const callArgs = (global.fetch as jest.Mock).mock.calls[0]
+    const payload = JSON.parse(callArgs[1].body)
+
+    // Verify that objects don't render as [object Object]
+    const blockText = JSON.stringify(payload.blocks)
+    expect(blockText).not.toContain("[object Object]")
+
+    // Verify that nested objects are properly serialized
+    expect(blockText).toContain("order_123")
+    // The metadata object should be serialized
+    const fieldsBlock = payload.blocks.find(
+      (b: any) => b.type === "section" && b.fields
+    )
+    if (fieldsBlock) {
+      const metadataField = fieldsBlock.fields.find(
+        (f: any) => f.text.includes("metadata")
+      )
+      expect(metadataField).toBeDefined()
+      // Should contain serialized JSON
+      expect(metadataField.text).toContain("nested")
+    }
+  })
 })
