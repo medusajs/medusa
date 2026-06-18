@@ -117,14 +117,9 @@ export function SectionDropzone({
           />
         ) : (
           // `display: contents` keeps the SortableEntry wrappers as direct
-          // children of the author's grid. As a side effect this node has no box
-          // of its own, so the section-level droppable attached here is never
-          // measured — drops onto the grid are covered by the entries and the
-          // SectionTail instead. Harmless; kept for parity with the other
-          // branches.
-          <div ref={setNodeRef} className="contents">
-            {children}
-          </div>
+          // children of the author's grid, so this node has no box of its own.
+          // Drops onto the grid are covered by the entries and the SectionTail.
+          <div className="contents">{children}</div>
         )}
         <SectionTail sectionId={section.id} className="col-span-full" />
       </SortableContext>

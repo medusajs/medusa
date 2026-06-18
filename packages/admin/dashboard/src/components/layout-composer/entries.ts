@@ -71,7 +71,7 @@ export function buildCoreEntries(
   // saved preference) when its natural section changes in code — which means
   // dedup must be shared across sections by the caller to catch same-named
   // entries that live in different sections.
-  seen: Map<string, number> = new Map()
+  seen: Map<string, number>
 ): BuiltCoreEntries {
   const entries: RawEntry[] = []
   const elementById = new Map<string, ReactElement>()

@@ -21,6 +21,7 @@ import {
   ReactElement,
   ReactNode,
   useCallback,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -97,10 +98,13 @@ function resolveOverSection(
   return widgetSectionMap[overId]
 }
 
-/** Whether a drop landed on a section body/tail (i.e. "append to end") rather
- * than on a specific entry. */
-function isEndDropTarget(overId: string, sectionIds: Set<string>): boolean {
-  return sectionIds.has(overId) || isSectionTailId(overId)
+/**
+ * Whether `id` targets a section container — its body or trailing drop zone —
+ * rather than a specific entry. Used both to de-prioritize containers during
+ * collision detection and to detect an "append to end" drop.
+ */
+function isContainerTarget(id: string, sectionIds: Set<string>): boolean {
+  return sectionIds.has(id) || isSectionTailId(id)
 }
 
 /**
@@ -195,77 +199,124 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
 
   const layout = getLayout(layoutId)
 
-  const elementsBySection = extractSectionElements(
-    sections as Record<string, ReactNode>
-  )
+  // Derive the layout model: core + widget entries placed into their effective
+  // sections with the active preference applied. Memoized so it isn't rebuilt
+  // on unrelated re-renders (drag start, emptiness reports) — only when the
+  // sections, registered widgets, or active preference actually change.
+  const { coreElementMap, entriesBySection, widgetSectionMap, validSectionIds } =
+    useMemo(() => {
+      const elementsBySection = extractSectionElements(
+        sections as Record<string, ReactNode>
+      )
+      const naturalWidgets = getWidgetsForSections(
+        widgetsZonePrefix,
+        layout?.sections?.map((s) => s.id) ?? []
+      )
 
-  const naturalWidgets = getWidgetsForSections(
-    widgetsZonePrefix,
-    layout?.sections?.map((s) => s.id) ?? []
-  )
+      // Build raw entries (core + widgets) at their natural sections. Every
+      // entry shares the same natural order (0); their relative placement
+      // before any user preference comes purely from the order they are pushed
+      // here and is preserved by the stable sort in `buildDisplayEntries`.
+      // Widgets are pushed before core entries so they render first by default —
+      // and so a newly added widget or core entry (which has no saved order)
+      // surfaces at the top.
+      const rawEntries: RawEntry[] = []
+      const coreElementMap = new Map<string, ReactElement>()
+      for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
+        for (const w of widgets) {
+          rawEntries.push({
+            widgetId: w.widgetId,
+            Component: w.Component,
+            order: 0,
+            isCore: false,
+            naturalSection,
+          })
+        }
+      }
+      // Shared so duplicate ids are deduped across the whole page rather than
+      // per-section (ids no longer carry their section).
+      const coreSeen = new Map<string, number>()
+      for (const [sectionName, elements] of Object.entries(elementsBySection)) {
+        const { entries, elementById } = buildCoreEntries(
+          sectionName,
+          elements,
+          coreSeen
+        )
+        rawEntries.push(...entries)
+        for (const [id, el] of elementById) {
+          coreElementMap.set(id, el)
+        }
+      }
 
-  // Build raw entries (core + widgets) at their natural sections. Every entry
-  // shares the same natural order (0); their relative placement
-  // before any user preference comes purely from the order they are pushed here
-  // and is preserved by the stable sort in `buildDisplayEntries`. Widgets are
-  // pushed before core entries so they render first by default — and so a newly
-  // added widget or core entry (which has no saved order) surfaces at the top.
-  const rawEntries: RawEntry[] = []
-  const coreElementMap = new Map<string, ReactElement>()
-  for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
-    for (const w of widgets) {
-      rawEntries.push({
-        widgetId: w.widgetId,
-        Component: w.Component,
-        order: 0,
-        isCore: false,
-        naturalSection,
-      })
-    }
-  }
-  // Shared so duplicate ids are deduped across the whole page rather than
-  // per-section (ids no longer carry their section).
-  const coreSeen = new Map<string, number>()
-  for (const [sectionName, elements] of Object.entries(elementsBySection)) {
-    const { entries, elementById } = buildCoreEntries(
-      sectionName,
-      elements,
-      coreSeen
-    )
-    rawEntries.push(...entries)
-    for (const [id, el] of elementById) {
-      coreElementMap.set(id, el)
-    }
-  }
+      // Apply the active preference (draft when editing, persisted otherwise),
+      // keeping hidden entries with `hidden: true` so we can ghost them in edit
+      // mode.
+      const validSectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
+      const entriesBySection = buildDisplayEntries(
+        rawEntries,
+        activePreference,
+        validSectionIds
+      )
 
-  // Apply the active preference (draft when editing, persisted otherwise),
-  // keeping hidden entries with `hidden: true` so we can ghost them in edit mode.
-  const validSectionIds = new Set(layout?.sections.map((s) => s.id) ?? [])
-  const entriesBySection = buildDisplayEntries(
-    rawEntries,
-    activePreference,
-    validSectionIds
-  )
+      // Maps each entry's widgetId to the section it currently renders in.
+      // Shared by collision detection and the drag handlers to resolve the
+      // active/over sections of a move.
+      const widgetSectionMap: Record<string, string> = {}
+      for (const [sectionId, entries] of Object.entries(entriesBySection)) {
+        for (const e of entries) {
+          widgetSectionMap[e.widgetId] = sectionId
+        }
+      }
 
-  // Maps each entry's widgetId to the section it currently renders in. Shared by
-  // the collision detection and drag handlers to resolve the active/over
-  // sections of a move.
-  const widgetSectionMap: Record<string, string> = {}
-  for (const [sectionId, entries] of Object.entries(entriesBySection)) {
-    for (const e of entries) {
-      widgetSectionMap[e.widgetId] = sectionId
-    }
-  }
+      return {
+        coreElementMap,
+        entriesBySection,
+        widgetSectionMap,
+        validSectionIds,
+      }
+    }, [sections, widgetsZonePrefix, layout, activePreference, getWidgetsForSections])
 
   function renderEntryContent(entry: DisplayEntry): ReactNode {
     if (entry.isCore) {
-      const el = coreElementMap.get(entry.widgetId)
-      return el ?? null
+      return coreElementMap.get(entry.widgetId)
     }
     const WidgetComponent = entry.Component as ComponentType<{
       data?: unknown
     }>
-    return <WidgetComponent data={data as unknown} />
+    return <WidgetComponent data={data} />
+  }
+
+  // Renders a single entry for the current mode: plain content at idle; in edit
+  // mode a sortable wrapper with chrome, or a chrome-less probe for entries that
+  // currently render nothing (see `emptyWidgetIds`).
+  function renderEntry(entry: DisplayEntry): ReactNode {
+    const content = renderEntryContent(entry)
+    if (!editMode) {
+      return <Fragment key={entry.widgetId}>{content}</Fragment>
+    }
+    if (emptyWidgetIds.has(entry.widgetId)) {
+      return (
+        <EntryProbe
+          key={entry.widgetId}
+          widgetId={entry.widgetId}
+          onEmptyChange={reportEmptiness}
+        >
+          {content}
+        </EntryProbe>
+      )
+    }
+    return (
+      <SortableEntry
+        key={entry.widgetId}
+        widgetId={entry.widgetId}
+        order={entry.order}
+        hidden={entry.hidden}
+        onToggleHidden={() => toggleHidden(entry.widgetId)}
+        onEmptyChange={reportEmptiness}
+      >
+        {content}
+      </SortableEntry>
+    )
   }
 
   function toggleHidden(widgetId: string) {
@@ -383,12 +434,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     // Section bodies and their tail drop zones are container targets — prefer a
     // real entry over them whenever one is in range so the insertion slot
     // anchors to a widget rather than the whole column or the end zone.
-    const isContainerId = (id: string) =>
-      validSectionIds.has(id) || isSectionTailId(id)
     const preferWidget = (
       collisions: ReturnType<typeof closestCenter>
     ): ReturnType<typeof closestCenter> => {
-      const widget = collisions.find((c) => !isContainerId(c.id as string))
+      const widget = collisions.find(
+        (c) => !isContainerTarget(c.id as string, validSectionIds)
+      )
       return widget ? [widget] : collisions
     }
 
@@ -415,6 +466,29 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   }
 
   /**
+   * Resolves a drag event into the move it describes, or `null` when there's
+   * nothing actionable: no drop target, dropped onto itself, or a target whose
+   * section can't be resolved. Shared by the live `onDragOver` and the
+   * `onDragEnd` fallback.
+   */
+  function resolveMove(event: DragOverEvent | DragEndEvent) {
+    const { active, over } = event
+    if (!over || active.id === over.id) return null
+
+    const activeWidgetId = active.id as string
+    const overId = over.id as string
+    const activeSection = widgetSectionMap[activeWidgetId]
+    const overSection = resolveOverSection(
+      overId,
+      validSectionIds,
+      widgetSectionMap
+    )
+    if (!activeSection || !overSection) return null
+
+    return { activeWidgetId, overId, activeSection, overSection }
+  }
+
+  /**
    * Fires continuously while dragging. When the cursor crosses into a
    * different section, we move the dragged item into that section's
    * `SortableContext` immediately so the items there shift to make room
@@ -422,40 +496,18 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
    * fallback for keyboard-driven drags that never fire `onDragOver`.
    */
   function handleDragOver(event: DragOverEvent) {
-    const { active, over } = event
-    if (!over || active.id === over.id) return
-
-    const activeWidgetId = active.id as string
-    const overId = over.id as string
-
-    const activeSection = widgetSectionMap[activeWidgetId]
-    const overSection = resolveOverSection(
-      overId,
-      validSectionIds,
-      widgetSectionMap
-    )
-    if (!activeSection || !overSection) return
-    if (activeSection === overSection) return
-
-    moveToSection(activeWidgetId, overSection, overId)
+    const move = resolveMove(event)
+    if (!move || move.activeSection === move.overSection) return
+    moveToSection(move.activeWidgetId, move.overSection, move.overId)
   }
 
   function handleDragEnd(event: DragEndEvent) {
     setActiveDragId(null)
     lastOverIdRef.current = null
-    const { active, over } = event
-    if (!over || active.id === over.id) return
 
-    const activeWidgetId = active.id as string
-    const overId = over.id as string
-
-    const activeSection = widgetSectionMap[activeWidgetId]
-    const overSection = resolveOverSection(
-      overId,
-      validSectionIds,
-      widgetSectionMap
-    )
-    if (!activeSection || !overSection) return
+    const move = resolveMove(event)
+    if (!move) return
+    const { activeWidgetId, overId, activeSection, overSection } = move
 
     // Cross-section moves are normally handled live by `handleDragOver`; this
     // covers keyboard-driven drags that never fire it. Pins the absolute
@@ -469,7 +521,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     const oldIndex = ids.indexOf(activeWidgetId)
     // Dropped on the section body/tail → move to the end; otherwise to the slot
     // of the entry under the cursor.
-    const newIndex = isEndDropTarget(overId, validSectionIds)
+    const newIndex = isContainerTarget(overId, validSectionIds)
       ? ids.length - 1
       : ids.indexOf(overId)
     if (oldIndex === -1 || newIndex === -1) return
@@ -486,54 +538,20 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   for (const section of layout.sections) {
     const entries = entriesBySection[section.id] ?? []
     const visibleEntries = editMode ? entries : entries.filter((e) => !e.hidden)
+    const renderedItems = visibleEntries.map(renderEntry)
 
-    const renderedItems = visibleEntries.map((entry) => {
-      const content = renderEntryContent(entry)
-      if (!editMode) {
-        return <Fragment key={entry.widgetId}>{content}</Fragment>
-      }
-      // Entries that currently render nothing stay mounted as a probe — no
-      // chrome, no sortable — so they neither show a bare control row nor act
-      // as an invisible drop target, but can return if their content comes back.
-      if (emptyWidgetIds.has(entry.widgetId)) {
-        return (
-          <EntryProbe
-            key={entry.widgetId}
-            widgetId={entry.widgetId}
-            onEmptyChange={reportEmptiness}
-          >
-            {content}
-          </EntryProbe>
-        )
-      }
-      return (
-        <SortableEntry
-          key={entry.widgetId}
-          widgetId={entry.widgetId}
-          order={entry.order}
-          hidden={entry.hidden}
-          onToggleHidden={() => toggleHidden(entry.widgetId)}
-          onEmptyChange={reportEmptiness}
-        >
-          {content}
-        </SortableEntry>
-      )
-    })
-
-    if (editMode) {
-      renderedSections[section.id] = (
-        <SectionDropzone
-          section={section}
-          items={visibleEntries
-            .filter((e) => !emptyWidgetIds.has(e.widgetId))
-            .map((e) => e.widgetId)}
-        >
-          {renderedItems}
-        </SectionDropzone>
-      )
-    } else {
-      renderedSections[section.id] = renderedItems
-    }
+    renderedSections[section.id] = editMode ? (
+      <SectionDropzone
+        section={section}
+        items={visibleEntries
+          .filter((e) => !emptyWidgetIds.has(e.widgetId))
+          .map((e) => e.widgetId)}
+      >
+        {renderedItems}
+      </SectionDropzone>
+    ) : (
+      renderedItems
+    )
   }
 
   // Active drag entry, used by DragOverlay to render the moving ghost.
