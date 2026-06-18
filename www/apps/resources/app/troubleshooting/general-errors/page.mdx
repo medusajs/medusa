@@ -37,3 +37,45 @@ import { MedusaService } from "@medusajs/framework/utils" // correct
 ```
 
 Common utilities and classes available from `@medusajs/framework/utils` include `MedusaService`, `MedusaError`, `Modules`, `InjectManager`, `InjectTransactionManager`, and `MedusaContext`.
+
+---
+
+## TypeError During `medusa build` Config Loading
+
+If you encounter a `TypeError` like the following during `medusa build` or `medusa start`:
+
+```bash
+TypeError: Cannot read properties of null (reading 'admin')
+    at ConfigManager.loadConfig
+```
+
+This error means one of the required top-level properties in your `medusa-config.ts` is `null` or has an incorrect value. The config loader expects an object to be exported, not `null` or `undefined`.
+
+Check your `medusa-config.ts` and make sure:
+
+1. The file exports a valid configuration object using `defineConfig`.
+2. None of the required properties (`projectConfig`, `admin`, `modules`) are explicitly set to `null`.
+
+A minimal valid configuration looks like:
+
+```ts title="medusa-config.ts"
+import { loadEnv, defineConfig } from "@medusajs/framework/utils"
+
+loadEnv(process.env.NODE_ENV || "development", process.cwd())
+
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    http: {
+      storeCors: process.env.STORE_CORS!,
+      adminCors: process.env.ADMIN_CORS!,
+      authCors: process.env.AUTH_CORS!,
+      jwtSecret: process.env.JWT_SECRET || "supersecret",
+      cookieSecret:
+        process.env.COOKIE_SECRET || "supersecret",
+    },
+  },
+})
+```
+
+For the full list of available configuration options, refer to [Configure Medusa](!docs!/learn/configurations/medusa-config).
