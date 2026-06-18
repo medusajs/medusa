@@ -28,7 +28,6 @@ export type LayoutPreference = {
 }
 
 export type WidgetRenderEntry = {
-  order: number
   Component: ComponentType
   widgetId: string
 }

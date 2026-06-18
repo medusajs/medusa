@@ -6,7 +6,6 @@ import {
   ReactNode,
   isValidElement,
 } from "react"
-import { CORE_CONTENT_ORDER } from "./constants"
 import { LayoutPreference } from "./types"
 
 export type DisplayEntry = {
@@ -77,7 +76,7 @@ export function buildCoreEntries(
   const entries: RawEntry[] = []
   const elementById = new Map<string, ReactElement>()
 
-  elements.forEach((el, i) => {
+  elements.forEach((el) => {
     const name = getCoreEntryKey(el)
     const base = `core:${name}`
     const count = seen.get(base) ?? 0
@@ -87,7 +86,10 @@ export function buildCoreEntries(
     entries.push({
       Component: CORE_PLACEHOLDER,
       widgetId,
-      order: CORE_CONTENT_ORDER + i,
+      // Every entry shares the same natural order; relative placement (widgets
+      // before core, each group in its source order) comes from insertion order
+      // preserved by the stable sort in `buildDisplayEntries`.
+      order: 0,
       isCore: true,
       naturalSection: sectionName,
     })

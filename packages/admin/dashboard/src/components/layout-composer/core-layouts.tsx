@@ -1,5 +1,5 @@
 import * as React from "react"
-import { CORE_LAYOUT_IDS } from "./constants"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { LayoutComponentProps, LayoutDefinition } from "./types"
 
 const SingleColumnLayoutComponent = ({

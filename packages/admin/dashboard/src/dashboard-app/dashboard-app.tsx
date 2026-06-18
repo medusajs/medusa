@@ -7,7 +7,6 @@ import {
   InjectionZone,
   NESTED_ROUTE_POSITIONS,
 } from "@medusajs/admin-shared"
-import { AFTER_ORDER, BEFORE_ORDER } from "../components/layout-composer/constants"
 import {
   LayoutDefinition,
   SectionWidgetMap,
@@ -468,12 +467,9 @@ export class DashboardApp {
 
   /**
    * Returns widgets for a given base zone grouped by layout section.
-   *
-   * Zone suffixes determine section and order, e.g.:
-   *   "before"      → main section, order BEFORE_ORDER
-   *   "after"       → main section, order AFTER_ORDER
-   *   "side.before" → side section, order BEFORE_ORDER
-   *   "side.after"  → side section, order AFTER_ORDER
+   * The legacy `.before`/`.after` ordering suffixes are stripped and
+   * ignored. Widgets are returned inregistration order and will be 
+   * assigned a default order of 0 in the LayoutComposer.
    */
   private getWidgetsForSections(
     route: string,
@@ -486,21 +482,9 @@ export class DashboardApp {
         continue
       }
 
-      let suffix = zone.slice(route.length + 1)
-
-      let order: number
-
-      if (suffix.endsWith("before")) {
-        order = BEFORE_ORDER
-        suffix = suffix.replace(/before$/, "")
-      } else if (suffix.endsWith("after")) {
-        order = AFTER_ORDER
-        suffix = suffix.replace(/after$/, "")
-      } else {
-        order = AFTER_ORDER
-      }
-
-      suffix = suffix.replace(/\.$/, "") // Remove trailing dot if exists
+      const suffix = zone
+        .slice(route.length + 1)
+        .replace(/\.?(before|after)$/, "")
 
       const mainSection = sections.includes("main") ? "main" : sections[0]
       const section = suffix || mainSection
@@ -520,7 +504,6 @@ export class DashboardApp {
           // identity (and saved preference) when its zone moves to a different
           // section of the same route.
           widgetId: `widget:${sourceId}`,
-          order: order,
         })
       })
     }
@@ -540,7 +523,6 @@ export class DashboardApp {
           entry.widgetId = `${entry.widgetId}#${count + 1}`
         }
       }
-      result[section].sort((a, b) => a.order - b.order)
     }
 
     return result

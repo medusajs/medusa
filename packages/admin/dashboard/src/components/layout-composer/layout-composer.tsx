@@ -204,9 +204,25 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     layout?.sections?.map((s) => s.id) ?? []
   )
 
-  // Build raw entries (core + widgets) at their natural sections/orders.
+  // Build raw entries (core + widgets) at their natural sections. Every entry
+  // shares the same natural order (0); their relative placement
+  // before any user preference comes purely from the order they are pushed here
+  // and is preserved by the stable sort in `buildDisplayEntries`. Widgets are
+  // pushed before core entries so they render first by default — and so a newly
+  // added widget or core entry (which has no saved order) surfaces at the top.
   const rawEntries: RawEntry[] = []
   const coreElementMap = new Map<string, ReactElement>()
+  for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
+    for (const w of widgets) {
+      rawEntries.push({
+        widgetId: w.widgetId,
+        Component: w.Component,
+        order: 0,
+        isCore: false,
+        naturalSection,
+      })
+    }
+  }
   // Shared so duplicate ids are deduped across the whole page rather than
   // per-section (ids no longer carry their section).
   const coreSeen = new Map<string, number>()
@@ -219,17 +235,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     rawEntries.push(...entries)
     for (const [id, el] of elementById) {
       coreElementMap.set(id, el)
-    }
-  }
-  for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
-    for (const w of widgets) {
-      rawEntries.push({
-        widgetId: w.widgetId,
-        Component: w.Component,
-        order: w.order,
-        isCore: false,
-        naturalSection,
-      })
     }
   }
 
