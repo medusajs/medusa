@@ -5,6 +5,11 @@ on:
     branches:
       - develop
   workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit SHA or ref to release from (defaults to the triggering branch tip)"
+        required: false
+        type: string
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -20,6 +25,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.ref || github.sha }}
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
