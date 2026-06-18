@@ -4,7 +4,7 @@
   "description": "OAS CLI",
   "main": "dist/index.js",
   "bin": {
-    "medusa-oas": "./dist/index.js"
+    "medusa-oas": "dist/index.js"
   },
   "files": [
     "dist",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/oas/medusa-oas-cli"
   },
   "publishConfig": {

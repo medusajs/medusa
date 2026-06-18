@@ -4,7 +4,9 @@
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
-  "bin": "dist/index.js",
+  "bin": {
+    "create-medusa-app": "dist/index.js"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "node --loader ts-node/esm src/index.ts",
@@ -38,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/create-medusa-app"
   },
   "author": "Medusa",
