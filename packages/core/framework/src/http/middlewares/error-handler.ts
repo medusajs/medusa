@@ -1,4 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Response } from "express"
+import createHttpError from "http-errors"
 import { fromZodIssue } from "zod-validation-error"
 
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
@@ -28,6 +29,20 @@ export function errorHandler() {
       logger.error(
         "req.scope is missing unexpectedly. It should be defined in all the cases"
       )
+    }
+
+    // handle errors from body-parser
+    if (createHttpError.isHttpError(err)) {
+      if (err.statusCode >= 500) {
+        logger.error(`Error ${err.statusCode} at ${req.path}`, err)
+      } else {
+        logger.info(`Error ${err.statusCode} at ${req.path}: ${err.message}`)
+      }
+
+      res.status(err.statusCode).json({
+        message: err.message,
+      })
+      return
     }
 
     err = formatException(err)
