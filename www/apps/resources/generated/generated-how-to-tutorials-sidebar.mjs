@@ -99,7 +99,7 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "isPathHref": true,
               "type": "ref",
               "title": "Create MFA Provider",
-              "path": "https://docs.medusajs.com/resources/references/mfa-module-provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider",
               "children": []
             },
             {
@@ -123,7 +123,7 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "isPathHref": true,
               "type": "ref",
               "title": "Create Recovery Code MFA Provider",
-              "path": "https://docs.medusajs.com/resources/references/recovery-code-mfa-module-provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider",
               "children": []
             },
             {

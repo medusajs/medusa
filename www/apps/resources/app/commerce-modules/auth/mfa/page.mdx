@@ -89,16 +89,14 @@ The `recovery_code` provider is not enrolled as a factor on its own. It becomes 
 
 ### Custom MFA Providers
 
-You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. There are two types of MFA providers you can implement:
+You can register custom MFA providers in the `mfa.providers` array of the Auth Module's options. These are either additional providers for custom usage, or providers that override the default `totp` and `recovery_code` providers.
 
-{/* TODO add links to guides */}
+For example, you can create a custom MFA provider that generates codes and sends them to the user via email or SMS. You can also override the default recovery code provider to customize the format of the generated codes or the way they're consumed.
 
-1. **Verification providers**: Providers like `totp` that verify MFA challenges and can be enrolled as factors.
-2. **Recovery Code providers**: Providers with the `recovery_code` method that only verify MFA challenges but aren't enrolled as factors.
+To create a custom MFA provider, refer to the following guides:
 
-After you create the provider, you add it to the Auth Module's configuration in `medusa-config.ts`. Then, you can use it in your custom MFA flows.
-
-Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options.
+- [Create a Custom MFA Provider](/references/auth/mfa-module-provider)
+- [Create a Custom Recovery Code Provider](/references/auth/recovery-code-mfa-module-provider)
 
 ---
 

@@ -5610,6 +5610,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/loyalty_models/variables/loyalty_models.GiftCard/page.mdx"
   },
   {
+    "origSlug": "/references/mfa/interfaces/mfa.AuthMfaProvider",
+    "newSlug": "/references/auth/mfa-module-provider",
+    "filePath": "/www/apps/resources/references/mfa/interfaces/mfa.AuthMfaProvider/page.mdx"
+  },
+  {
+    "origSlug": "/references/mfa/interfaces/mfa.RecoveryCodeAuthMfaProvider",
+    "newSlug": "/references/auth/recovery-code-mfa-module-provider",
+    "filePath": "/www/apps/resources/references/mfa/interfaces/mfa.RecoveryCodeAuthMfaProvider/page.mdx"
+  },
+  {
     "origSlug": "/references/module_events/module_events.Auth",
     "newSlug": "/references/auth/events",
     "filePath": "/www/apps/resources/references/module_events/module_events.Auth/page.mdx"

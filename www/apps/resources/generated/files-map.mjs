@@ -16132,6 +16132,14 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.SubscriberConfig"
   },
   {
+    "filePath": "/www/apps/resources/references/mfa/interfaces/mfa.AuthMfaProvider/page.mdx",
+    "pathname": "/references/mfa/interfaces/mfa.AuthMfaProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/mfa/interfaces/mfa.RecoveryCodeAuthMfaProvider/page.mdx",
+    "pathname": "/references/mfa/interfaces/mfa.RecoveryCodeAuthMfaProvider"
+  },
+  {
     "filePath": "/www/apps/resources/references/module_events/module_events.Auth/page.mdx",
     "pathname": "/references/module_events/module_events.Auth"
   },
@@ -16302,6 +16310,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/medusa/page.mdx",
     "pathname": "/references/modules/medusa"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/mfa/page.mdx",
+    "pathname": "/references/modules/mfa"
   },
   {
     "filePath": "/www/apps/resources/references/modules/module_events/page.mdx",
