@@ -81,7 +81,7 @@ export function SortableEntry({
         aria-hidden
         className="text-ui-fg-muted border-ui-border-strong hidden min-h-16 items-center justify-center rounded-lg border border-dashed px-2 text-center text-xs peer-[:empty]:flex"
       >
-        {t("layout.empty", "Empty")}
+        {t("layout.empty")}
       </div>
       {/* Overlay rendered after children so it stacks above them by DOM order —
           no z-index needed, which keeps Radix portal dropdowns above us. */}

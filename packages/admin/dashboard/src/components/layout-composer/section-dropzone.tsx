@@ -58,7 +58,7 @@ function SectionTail({ sectionId, className }: SectionTailProps) {
       }}
     >
       <Text size="small" leading="compact">
-        {t("layout.dropToSectionEnd", "Drop here to move to the end")}
+        {t("layout.dropToSectionEnd")}
       </Text>
     </div>
   )

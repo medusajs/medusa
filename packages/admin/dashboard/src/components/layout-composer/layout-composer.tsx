@@ -314,13 +314,10 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   async function commitEdit() {
     if (editScope === "default" && hasChanges) {
       const confirmed = await prompt({
-        title: t("layout.saveForEveryoneTitle", "Save layout for everyone"),
-        description: t(
-          "layout.saveForEveryoneDescription",
-          "This updates the default layout for this page for all users who haven't customized it themselves. Are you sure?"
-        ),
-        confirmText: t("layout.saveForEveryone", "Save for everyone"),
-        cancelText: t("actions.cancel", "Cancel"),
+        title: t("layout.saveForEveryoneTitle"),
+        description: t("layout.saveForEveryoneDescription"),
+        confirmText: t("layout.saveForEveryone"),
+        cancelText: t("actions.cancel"),
       })
       if (!confirmed) {
         return
@@ -537,7 +534,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           className="cursor-pointer"
           onClick={() => switchScope("personal")}
         >
-          {t("layout.personalView", "Personal")}
+          {t("layout.personalView")}
         </Badge>
         <Badge
           size="xsmall"
@@ -545,16 +542,16 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           className="cursor-pointer"
           onClick={() => switchScope("default")}
         >
-          {t("layout.defaultView", "Default")}
+          {t("layout.defaultView")}
         </Badge>
       </div>
       <Button size="small" variant="secondary" onClick={cancelEdit}>
-        {t("actions.cancel", "Cancel")}
+        {t("actions.cancel")}
       </Button>
       <Button size="small" variant="primary" onClick={commitEdit}>
         {editScope === "default" && hasChanges
-          ? t("layout.saveForEveryone", "Save for everyone")
-          : t("actions.save", "Save")}
+          ? t("layout.saveForEveryone")
+          : t("actions.save")}
       </Button>
     </div>
   ) : (
@@ -562,7 +559,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       size="small"
       variant="transparent"
       onClick={enterEdit}
-      aria-label={t("layout.customizeWidgets", "Customize widgets")}
+      aria-label={t("layout.customizeWidgets")}
       className="text-ui-fg-muted hover:text-ui-fg-subtle"
     >
       <AdjustmentsDone />
@@ -592,7 +589,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
                   {renderEntryContent(activeEntry)}
                 </div>
                 <div className="text-ui-fg-muted hidden min-h-16 items-center justify-center px-2 text-center text-xs peer-[:empty]:flex">
-                  {t("layout.empty", "Empty")}
+                  {t("layout.empty")}
                 </div>
               </div>
             ) : null}
