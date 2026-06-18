@@ -99,6 +99,17 @@ export default defineConfig([
 
 You can add overide rules in the application package's configuration file to customize linting, as explained in the [usage guidelines](#usage-guidelines).
 
+To avoid type errors on this file, make sure to add it to `apps/backend/tsconfig.json`'s `exclude` array:
+
+```json title="apps/backend/tsconfig.json"
+{
+  "exclude": [
+    // ...
+    "eslint.config.*"
+  ]
+}
+```
+
 #### b. Configuration for Standalone Medusa Projects
 
 After installing the plugin, create an `eslint.config.ts` file at the root of your project that spreads one of the plugin's [presets](#presets):
