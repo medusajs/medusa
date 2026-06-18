@@ -81,8 +81,7 @@ tags:
 
       <Note>
 
-      Gift Cards are only available for Cloud users using the [Loyalty
-      Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Gift Cards are available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:
@@ -227,8 +226,7 @@ tags:
 
         <Note>
 
-        Store Credit Accounts are only available for Cloud users using the
-        [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+        Store Credit Accounts are only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
         </Note>
       $ref: "#/components/schemas/StoreStoreCreditAccount"

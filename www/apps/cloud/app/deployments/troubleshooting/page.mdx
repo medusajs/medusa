@@ -1,3 +1,5 @@
+import { Note } from "docs-ui"
+
 export const metadata = {
   title: `Troubleshooting Cloud Deployments`,
 }
@@ -109,6 +111,59 @@ To fix this error:
 1. Run `pnpm install` locally to update the lockfile.
 2. Commit the updated `pnpm-lock.yaml` file.
 3. Push the changes to trigger a new deployment.
+
+---
+
+## Storefront Build Failed with Empty Logs
+
+If your storefront build fails with a `build-failed` status but the build logs are empty or show minimal output, the cause is usually one of the following:
+
+- An outdated lockfile that is out of sync with `package.json`
+- Incompatible or missing dependencies in the monorepo
+
+### Check for Lockfile Mismatches
+
+Cloud installs dependencies with a frozen lockfile to ensure reproducible builds. If your lockfile is out of sync with `package.json`, the dependency installation step may fail silently.
+
+To check and fix a lockfile mismatch:
+
+1. Run your package manager's install command locally to regenerate the lockfile:
+
+```bash npm2yarn
+npm install
+```
+
+2. Commit the updated lockfile.
+3. Push the changes to trigger a new deployment.
+
+### Retrieve Detailed Build Logs with the CLI
+
+When the Cloud dashboard shows minimal or empty build logs, use the Cloud CLI to retrieve the full output:
+
+```bash
+# Install the CLI
+npm install @medusajs/mcloud -g
+
+# Login
+mcloud login
+
+# List recent deployments to find the failed deployment's ID
+mcloud deployments list \
+  --organization org_123 \
+  --project proj_123
+
+# Fetch the storefront build logs for a specific deployment
+mcloud deployments build-logs deploy_123 \
+  --organization org_123 \
+  --project proj_123 \
+  --type storefront
+```
+
+Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs. You can find the deployment ID in the output of `mcloud deployments list` or in the Cloud dashboard's deployment details page.
+
+### Contact Support
+
+If neither of the steps above resolves the issue and the storefront build logs remain empty, contact support and include the deployment ID so the team can investigate at the platform level.
 
 ---
 

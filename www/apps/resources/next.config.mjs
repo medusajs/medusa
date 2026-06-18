@@ -255,8 +255,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/storefront-development/customer",
-        destination: "/storefront-development/customer/register",
+        source: "/storefront-development/customers",
+        destination: "/storefront-development/customers/register",
         permanent: true,
       },
       {
