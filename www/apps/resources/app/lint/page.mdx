@@ -52,14 +52,13 @@ In monorepo projects, install the plugin and its dependencies in the root `packa
 </Note>
 
 ```bash npm2yarn
-npm install --save-dev @medusajs/eslint-plugin eslint jiti
+npm install --save-dev @medusajs/eslint-plugin eslint
 ```
 
 Where:
 
 - `@medusajs/eslint-plugin` is the plugin that provides Medusa's lint rules.
 - `eslint` is a peer dependency of the plugin. The plugin supports ESLint v8.57 and later, including the [flat config format](https://eslint.org/docs/latest/use/configure/configuration-files) introduced in v9.
-- `jiti` allows ESLint to load a TypeScript configuration file (`eslint.config.ts`). Install it if you want to write your ESLint configuration in TypeScript.
 
 ### 2. Add an ESLint Configuration File
 
@@ -192,6 +191,12 @@ import { defineConfig } from "eslint/config"
 import medusa from "@medusajs/eslint-plugin"
 
 export default defineConfig([...medusa.configs.strict])
+```
+
+Since `strict` is type aware, you must also install `jiti`:
+
+```bash npm2yarn
+npm install --save-dev jiti
 ```
 
 ### modules
