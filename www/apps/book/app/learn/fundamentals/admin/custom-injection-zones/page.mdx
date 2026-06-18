@@ -203,6 +203,15 @@ export default BrandListWidget
 
 In this example, the widget is injected into the `brand.list.before` zone, so it's rendered before the main content of the brand list page you added to your plugin.
 
+If you don't see `brand.list.before` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
+
+```json title="src/admin/tsconfig.json"
+"include": [
+  ".",
+  "../../.medusa/types/plugin-augmentations.d.ts"
+]
+```
+
 <Note>
 
 When you build your application, you'll see a warning that this zone is unknown. This is only a precaution since the system doesn't recognize the custom zone. Make sure to use the correct zone name.
