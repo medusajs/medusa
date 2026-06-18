@@ -1,0 +1,18 @@
+/**
+ * @schema StoreAddCartShippingMethodsBase
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: StoreAddCartShippingMethodsBase
+ * required:
+ *   - option_id
+ * properties:
+ *   option_id:
+ *     type: string
+ *     title: option_id
+ *     description: The cart's option id.
+ *   data:
+ *     type: object
+ *     description: The cart's data.
+ * 
+*/
+
