@@ -227,7 +227,14 @@ This will change the view to the selected environment, and you'll see its detail
 
 You can promote a long-lived environment to Production in Cloud. This is useful when you want to make the environment's deployment the live application for your users, or when you want to switch the Production environment to a different branch.
 
-By promoting a long-lived environment to Production, the Production environment will become a long-lived environment, and the promoted environment will become the new Production environment. The previous Production environment will no longer be the live application for your users, and its name will be changed to the name of the promoted environment.
+<Note title="Caution" type="warning">
+
+Before promoting an environment to Production, consider the following:
+
+- By promoting a long-lived environment to Production, the Production environment will become a long-lived environment, and the promoted environment will become the new Production environment. The previous Production environment will no longer be the live application for your users, and its name will be changed to the name of the promoted environment.
+- Promoting the environment doesn't retain the Production environment's settings or custom domain. If you want to keep certain settings the same, such as the same custom domain, make sure to set them up again after promotion.
+
+</Note>
 
 For example, if you have a Staging environment and you want to promote it to Production, the Staging environment will become the new Production environment, and the previous Production environment will be renamed to "Staging".
 
