@@ -7618,5 +7618,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.StoreAddCartShippingMethodsBase/page.mdx": "2026-06-18T12:15:35.905Z",
   "references/types/HttpTypes/types/types.HttpTypes.StoreAddCartShippingMethods/page.mdx": "2026-06-18T12:15:35.906Z",
   "references/types/interfaces/types.DeletePaymentMethodInput/page.mdx": "2026-06-18T12:15:38.792Z",
-  "references/types/interfaces/types.DeletePaymentMethodOutput/page.mdx": "2026-06-18T12:15:38.824Z"
+  "references/types/interfaces/types.DeletePaymentMethodOutput/page.mdx": "2026-06-18T12:15:38.824Z",
+  "app/lint/rules/link-uses-linkable-properties/page.mdx": "2026-06-18T14:23:23.151Z",
+  "app/lint/rules/read-only-link-requires-field/page.mdx": "2026-06-18T14:23:41.893Z"
 }

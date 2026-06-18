@@ -2333,8 +2333,8 @@ module.exports = defineConfig({
           {
             entity_type: "email",
             auth_provider: "emailpass",
-          }
-        ]
+          },
+        ],
       },
     },
     // ...
@@ -8599,7 +8599,7 @@ When you build a custom admin page in a plugin, use the [LayoutComposer](undefin
 
 Single-column layouts are useful for listing pages or pages with a single main content area. For example:
 
-```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={singleHighlights}
 import { LayoutComposer } from "@medusajs/dashboard/components"
 
 const BrandListPage = () => {
@@ -8765,7 +8765,7 @@ For example, if you pass a `brand` object as data to the `LayoutComposer`, you c
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { Container, Heading } from "@medusajs/ui"
 import { 
-  DetailWidgetProps
+  DetailWidgetProps,
 } from "@medusajs/framework/types"
 
 type BrandDetailsData = {
@@ -32554,16 +32554,14 @@ The `recovery_code` provider is not enrolled as a factor on its own. It becomes 
 
 ### Custom MFA Providers
 
-You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. There are two types of MFA providers you can implement:
+You can register custom MFA providers in the `mfa.providers` array of the Auth Module's options. These are either additional providers for custom usage, or providers that override the default `totp` and `recovery_code` providers.
 
-{/* TODO add links to guides */}
+For example, you can create a custom MFA provider that generates codes and sends them to the user via email or SMS. You can also override the default recovery code provider to customize the format of the generated codes or the way they're consumed.
 
-1. **Verification providers**: Providers like `totp` that verify MFA challenges and can be enrolled as factors.
-2. **Recovery Code providers**: Providers with the `recovery_code` method that only verify MFA challenges but aren't enrolled as factors.
+To create a custom MFA provider, refer to the following guides:
 
-After you create the provider, you add it to the Auth Module's configuration in `medusa-config.ts`. Then, you can use it in your custom MFA flows.
-
-Refer to the [Module Options guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/module-options#mfa) for the full list of MFA configuration options.
+- [Create a Custom MFA Provider](undefined/references/auth/mfa-module-provider)
+- [Create a Custom Recovery Code Provider](undefined/references/auth/recovery-code-mfa-module-provider)
 
 ***
 
@@ -53441,6 +53439,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateCartWorkflow](undefined/references/medusa-workflows/updateCartWorkflow/index.html.md)
 - [updateLineItemInCartWorkflow](undefined/references/medusa-workflows/updateLineItemInCartWorkflow/index.html.md)
 - [updateTaxLinesWorkflow](undefined/references/medusa-workflows/updateTaxLinesWorkflow/index.html.md)
+- [upsertTaxLinesWorkflow](undefined/references/medusa-workflows/upsertTaxLinesWorkflow/index.html.md)
 - [validateCartGiftCardStep](undefined/references/medusa-workflows/validateCartGiftCardStep/index.html.md)
 - [validateCartStep](undefined/references/medusa-workflows/validateCartStep/index.html.md)
 - [validateCustomerStoreCreditAccountStep](undefined/references/medusa-workflows/validateCustomerStoreCreditAccountStep/index.html.md)
@@ -53831,6 +53830,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [revokeApiKeysStep](undefined/references/medusa-workflows/steps/revokeApiKeysStep/index.html.md)
 - [updateApiKeysStep](undefined/references/medusa-workflows/steps/updateApiKeysStep/index.html.md)
 - [validateSalesChannelsExistStep](undefined/references/medusa-workflows/steps/validateSalesChannelsExistStep/index.html.md)
+- [createPasswordResetTokenStep](undefined/references/medusa-workflows/steps/createPasswordResetTokenStep/index.html.md)
 - [requestVerificationStep](undefined/references/medusa-workflows/steps/requestVerificationStep/index.html.md)
 - [setAuthAppMetadataStep](undefined/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md)
 - [addShippingMethodToCartStep](undefined/references/medusa-workflows/steps/addShippingMethodToCartStep/index.html.md)
@@ -129203,15 +129203,21 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [create](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.create/index.html.md)
 - [delete](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.delete/index.html.md)
 - [list](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.list/index.html.md)
+- [listAssignable](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listAssignable/index.html.md)
+- [listRoles](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listRoles/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.retrieve/index.html.md)
 - [update](undefined/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.update/index.html.md)
 - [addPolicies](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies/index.html.md)
+- [addUsers](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addUsers/index.html.md)
 - [create](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create/index.html.md)
 - [delete](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.delete/index.html.md)
 - [list](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.list/index.html.md)
+- [listAssignable](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignable/index.html.md)
 - [listPolicies](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies/index.html.md)
+- [listUsers](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listUsers/index.html.md)
 - [mePermissions](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions/index.html.md)
 - [removePolicy](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/index.html.md)
+- [removeUsers](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeUsers/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.retrieve/index.html.md)
 - [update](undefined/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.update/index.html.md)
 - [create](undefined/references/js_sdk/admin/RefundReason/methods/js_sdk.admin.RefundReason.create/index.html.md)
@@ -129311,9 +129317,13 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [delete](undefined/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.delete/index.html.md)
 - [presignedUrl](undefined/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.presignedUrl/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/Upload/methods/js_sdk.admin.Upload.retrieve/index.html.md)
+- [addRoles](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.addRoles/index.html.md)
 - [delete](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.delete/index.html.md)
 - [list](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.list/index.html.md)
+- [listRoles](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.listRoles/index.html.md)
 - [me](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.me/index.html.md)
+- [removeRole](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRole/index.html.md)
+- [removeRoles](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRoles/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.retrieve/index.html.md)
 - [update](undefined/references/js_sdk/admin/User/methods/js_sdk.admin.User.update/index.html.md)
 - [columns](undefined/references/js_sdk/admin/Views/methods/js_sdk.admin.Views.columns/index.html.md)
@@ -129334,6 +129344,7 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [login](undefined/references/js-sdk/auth/login/index.html.md)
 - [logout](undefined/references/js-sdk/auth/logout/index.html.md)
 - [refresh](undefined/references/js-sdk/auth/refresh/index.html.md)
+- [register](undefined/references/js-sdk/auth/register/index.html.md)
 - [resetPassword](undefined/references/js-sdk/auth/resetPassword/index.html.md)
 - [updateProvider](undefined/references/js-sdk/auth/updateProvider/index.html.md)
 
@@ -136886,15 +136897,17 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /auth/customer/{auth_provider}/register](undefined/api/store#auth_postactor_typeauth_provider_register)
 - [POST /auth/customer/{auth_provider}/reset-password](undefined/api/store#auth_postactor_typeauth_providerresetpassword)
 - [POST /auth/customer/{auth_provider}/update](undefined/api/store#auth_postactor_typeauth_providerupdate)
-- [POST /auth/mfa/challenges/{id}/verify](undefined/api/store#auth_postmfachallengesidverify)
-- [GET /auth/mfa/factors](undefined/api/store#auth_getmfafactors)
-- [POST /auth/mfa/factors](undefined/api/store#auth_postmfafactors)
-- [DELETE /auth/mfa/factors/{id}](undefined/api/store#auth_deletemfafactorsid)
-- [POST /auth/mfa/factors/{id}/verify](undefined/api/store#auth_postmfafactorsidverify)
-- [POST /auth/mfa/recovery-codes](undefined/api/store#auth_postmfarecoverycodes)
+- [POST /auth/mfa/challenges/{id}/verify](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfachallengesidverify)
+- [GET /auth/mfa/factors](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_getmfafactors)
+- [POST /auth/mfa/factors](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfafactors)
+- [DELETE /auth/mfa/factors/{id}](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_deletemfafactorsid)
+- [POST /auth/mfa/factors/{id}/verify](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfafactorsidverify)
+- [POST /auth/mfa/recovery-codes](undefined/api/store#multi-factor-authentication-\(mfa\)-factors_postmfarecoverycodes)
 - [POST /auth/session](undefined/api/store#auth_postsession)
 - [DELETE /auth/session](undefined/api/store#auth_deletesession)
 - [POST /auth/token/refresh](undefined/api/store#auth_postadminauthtokenrefresh)
+- [POST /auth/verification/confirm](undefined/api/store#verification_postverificationconfirm)
+- [POST /auth/verification/request](undefined/api/store#verification_postverificationrequest)
 - [POST /store/carts](undefined/api/store#carts_postcarts)
 - [GET /store/carts/{id}](undefined/api/store#carts_getcartsid)
 - [POST /store/carts/{id}](undefined/api/store#carts_postcartsid)
