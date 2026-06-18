@@ -63,18 +63,18 @@
  *           - allOf:
  *               - $ref: "#/components/schemas/StoreAddCartShippingMethodsBase"
  *               - type: object
- *                 description: SUMMARY
+ *                 description: The shipping method's details.
  *                 properties:
  *                   additional_data:
  *                     type: object
  *                     description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
  *           - allOf:
  *               - type: array
- *                 description: SUMMARY
+ *                 description: An array of shipping methods to add to the cart.
  *                 items:
  *                   $ref: "#/components/schemas/StoreAddCartShippingMethodsBase"
  *               - type: object
- *                 description: SUMMARY
+ *                 description: The shipping method's details.
  *                 properties:
  *                   additional_data:
  *                     type: object

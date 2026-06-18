@@ -10,5 +10,7 @@ properties:
   provider_id:
     type: string
     title: provider_id
-    description: The payment collection's provider id.
+    description: >-
+      The ID of the payment provider to use for marking the payment collection
+      as paid. If not provided, the `system` provider will be used.
 x-schemaName: AdminMarkPaymentCollectionAsPaid

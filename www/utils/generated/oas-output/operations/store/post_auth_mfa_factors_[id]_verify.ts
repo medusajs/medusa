@@ -57,7 +57,7 @@
  *         "code": "{value}"
  *       }'
  * tags:
- *   - Auth
+ *   - Multi-Factor Authentication (MFA) Factors
  * responses:
  *   "200":
  *     description: OK

@@ -73,7 +73,7 @@ post:
             - allOf:
                 - $ref: ../components/schemas/StoreAddCartShippingMethodsBase.yaml
                 - type: object
-                  description: SUMMARY
+                  description: The shipping method's details.
                   properties:
                     additional_data:
                       type: object
@@ -83,11 +83,11 @@ post:
                         `additional_data` parameter.
             - allOf:
                 - type: array
-                  description: SUMMARY
+                  description: An array of shipping methods to add to the cart.
                   items:
                     $ref: ../components/schemas/StoreAddCartShippingMethodsBase.yaml
                 - type: object
-                  description: SUMMARY
+                  description: The shipping method's details.
                   properties:
                     additional_data:
                       type: object
