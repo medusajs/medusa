@@ -75,6 +75,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.confirmAuthVerification/page.mdx"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.consumePasswordResetToken",
+    "newSlug": "/references/auth/consumePasswordResetToken",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.consumePasswordResetToken/page.mdx"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities",
     "newSlug": "/references/auth/createAuthIdentities",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities/page.mdx"
@@ -88,6 +93,11 @@ export const slugChanges = [
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthVerificationToken",
     "newSlug": "/references/auth/createAuthVerificationToken",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthVerificationToken/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createPasswordResetToken",
+    "newSlug": "/references/auth/createPasswordResetToken",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createPasswordResetToken/page.mdx"
   },
   {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createProviderIdentities",
@@ -218,6 +228,11 @@ export const slugChanges = [
     "origSlug": "/references/auth_models/variables/auth_models.AuthMfaRecoveryCode",
     "newSlug": "/references/auth/models/AuthMfaRecoveryCode",
     "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthMfaRecoveryCode/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth_models/variables/auth_models.AuthPasswordResetToken",
+    "newSlug": "/references/auth/models/AuthPasswordResetToken",
+    "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthPasswordResetToken/page.mdx"
   },
   {
     "origSlug": "/references/auth_models/variables/auth_models.AuthVerificationToken",
@@ -630,6 +645,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Api_Key/Workflows_Api_Key/functions/core_flows.Api_Key.Workflows_Api_Key.updateApiKeysWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep",
+    "newSlug": "/references/medusa-workflows/steps/createPasswordResetTokenStep",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep",
     "newSlug": "/references/medusa-workflows/steps/requestVerificationStep",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep/page.mdx"
@@ -963,6 +983,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.updateTaxLinesWorkflow",
     "newSlug": "/references/medusa-workflows/updateTaxLinesWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.updateTaxLinesWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.upsertTaxLinesWorkflow",
+    "newSlug": "/references/medusa-workflows/upsertTaxLinesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.upsertTaxLinesWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateCartGiftCardStep",
@@ -5465,6 +5490,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.refresh/page.mdx"
   },
   {
+    "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register",
+    "newSlug": "/references/js-sdk/auth/register",
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register/page.mdx"
+  },
+  {
     "origSlug": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword",
     "newSlug": "/references/js-sdk/auth/resetPassword",
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword/page.mdx"
@@ -6628,6 +6658,11 @@ export const slugChanges = [
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentCollections",
     "newSlug": "/references/payment/deletePaymentCollections",
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentCollections/page.mdx"
+  },
+  {
+    "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentMethods",
+    "newSlug": "/references/payment/deletePaymentMethods",
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentMethods/page.mdx"
   },
   {
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentSession",

@@ -3,7 +3,7 @@ slug: /references/medusa-workflows/generateResetPasswordTokenWorkflow
 sidebar_label: generateResetPasswordTokenWorkflow
 sidebar_description: Generate a reset password token for a user or customer.
 tags:
-  - remote query
+  - auth
   - event bus
   - workflow
 ---
@@ -27,7 +27,13 @@ how to handle this event.
 You can use this workflow within your customizations or your own custom workflows, allowing you to
 generate reset password tokens within your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/core/core-flows/src/auth/workflows/generate-reset-password-token.ts#L43" />
+:::note
+
+This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+:::
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/core-flows/src/auth/workflows/generate-reset-password-token.ts#L47" />
 
 ## Examples
 
@@ -148,7 +154,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"generateResetPasswordTokenWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).\n\n:::note\n\nThis step is deprecated. Use [useQueryGraphStep](../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx) instead.\n\n:::","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useRemoteQueryStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"generateResetPasswordTokenWorkflow","steps":[{"type":"step","name":"createPasswordResetTokenStep","description":"Issues a single-use password reset token via the auth module. The token's\n`jti` is meant to be embedded in the JWT delivered to the user; the auth\nmodule stores its hash in a dedicated table so the consume side can verify\nand atomically delete it on first use.\n\nIssuing a new token automatically invalidates any prior password-reset\ntokens for the same provider identity. Compensation consumes the token\n(best-effort) if the workflow rolls back.","link":"../../../Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep/page.mdx","depth":1},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":2}]}} />
 
 ## Output
 
