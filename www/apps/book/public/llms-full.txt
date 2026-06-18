@@ -2315,6 +2315,39 @@ module.exports = defineConfig({
 })
 ```
 
+#### http.authVerificationsPerActor
+
+This option is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+The `projectConfig.http.authVerificationsPerActor` configuration specifies the required verification methods per actor type (such as `user`, `customer`, or any custom actor). This configuration is useful to enforce email verification or other verification methods for specific actor types.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authVerificationsPerActor: {
+        user: [], // No verification required for users
+        customer: [
+          {
+            entity_type: "email",
+            auth_provider: "emailpass",
+          }
+        ]
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+The configuration accepts an object whose key is the actor type (for example, `user` for admin user, `customer` for customer, or any custom actor type), and the value is an array of objects having the following properties:
+
+- entity\_type: (\`string\`) The type of entity to verify. For example, "email" for email verification.
+- auth\_provider: (\`string\`) The auth provider ID that the verification is associated with. For example, "emailpass" for email/password authentication.
+
 #### http.compression
 
 The `projectConfig.http.compression` configuration modifies the HTTP compression settings at the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
@@ -2960,6 +2993,20 @@ pnpm install
 ```
 
 This will install the dependencies of all packages in your workspace and create a `pnpm-lock.yaml` file to lock the versions of your installed packages.
+
+### Workspace Package Dependencies
+
+If your monorepo contains packages that import `@medusajs/framework` in their compiled output (for example, custom plugins or shared packages), declare `@medusajs/framework` as a `peerDependency` in those packages rather than a `devDependency`:
+
+```json title="apps/my-plugin/package.json"
+{
+  "peerDependencies": {
+    "@medusajs/framework": "*"
+  }
+}
+```
+
+Declaring it only as a `devDependency` can cause a `Cannot find module '@medusajs/framework/utils'` error at runtime, because `devDependencies` are not included in production deployments.
 
 ***
 
@@ -8527,7 +8574,7 @@ export const config = defineWidgetConfig({
 
 In this chapter, you'll learn how to add custom widget injection zones in a plugin.
 
-Custom injection zones are available since Medusa v2.16.0.
+Custom injection zones are available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 ## What are Custom Injection Zones?
 
@@ -8548,30 +8595,59 @@ Adding custom injection zones in a plugin requires two steps:
 
 When you build a custom admin page in a plugin, use the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) component from `@medusajs/dashboard/components` to structure the page's layout. This component also exposes injection zones based on the prefix you pass to its `widgetsZonePrefix` prop.
 
-For example:
+### Single-Column Layout Example
+
+Single-column layouts are useful for listing pages or pages with a single main content area. For example:
 
 ```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
 import { LayoutComposer } from "@medusajs/dashboard/components"
 
-const CustomPageDetails = () => {
+const BrandListPage = () => {
   // ...
   return (
     <LayoutComposer
-      widgetsZonePrefix="custom.details"
-      preferredLayoutId="core:two-column"
-      data={order}
+      widgetsZonePrefix="brand.list"
+      preferredLayoutId="core:single-column"
+      sections={{
+        main: (
+          <BrandListSection />
+        ),
+      }}
+    />
+  )
+}
+
+export default BrandListPage
+```
+
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+
+- `brand.list.before`: Widgets rendered before the main content of the brand list page.
+- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+
+Widgets injected into these zones are rendered around the page's sections.
+
+Refer to the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+
+### Two-Column Layout Example
+
+Two-column layouts are useful for details pages or pages with a main content area and a side column. For example:
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandDetailsPage = () => {
+  // ...
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.details"
+      preferredLayoutId="core:single-column"
+      data={brand}
       sections={{
         main: (
           <>
-            <GeneralSection order={order} />
-            <SummarySection order={order} />
+            <GeneralSection brand={brand} />
             {/* ... */}
-          </>
-        ),
-        side: (
-          <>
-            <CustomerSection order={order} />
-            <ActivitySection order={order} />
           </>
         ),
       }}
@@ -8579,19 +8655,29 @@ const CustomPageDetails = () => {
   )
 }
 
-export default CustomPageDetails
+export default BrandDetailsPage
 ```
 
 Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
 
-- `custom.details.before`
-- `custom.details.after`
-- `custom.details.side.before` (since layout is two-column)
-- `custom.details.side.after` (since layout is two-column)
+- `brand.details.before`: Widgets rendered before the main content of the brand details page.
+- `brand.details.after`: Widgets rendered after the main content of the brand details page.
+- `brand.details.side.before` (since layout is two-column): Widgets rendered before the side content of the brand details page.
+- `brand.details.side.after` (since layout is two-column): Widgets rendered after the side content of the brand details page.
 
-Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `order` object is passed as data, so widgets can access it through their props.
+Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `brand` object is passed as data, so widgets can access it through their props.
 
 Refer to the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+
+### Custom Zone Naming Convention
+
+Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+
+- `resource-name`: The name of the resource being accessed in the page. For example, `brand` in the example above.
+- `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
+- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+
+This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
 
 ***
 
@@ -8604,10 +8690,10 @@ To register the injection zones, augment the `InjectionZoneRegistry` interface t
 ```ts title="index.d.ts"
 declare module "@medusajs/admin-shared" {
   interface InjectionZoneRegistry {
-    "custom.details.before": true
-    "custom.details.after": true
-    "custom.details.side.before": true
-    "custom.details.side.after": true
+    "brand.details.before": true
+    "brand.details.after": true
+    "brand.details.side.before": true
+    "brand.details.side.after": true
   }
 }
 ```
@@ -8637,46 +8723,12 @@ Once registered, users using the plugin can inject widgets into the custom zones
 ```tsx title="src/admin/widgets/draft-order-widget.tsx"
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 
-const DraftOrderWidget = () => {
-  return <div>Custom Widget Content</div>
-}
-
-export const config = defineWidgetConfig({
-  zone: "custom.details.before",
-})
-
-export default DraftOrderWidget
-```
-
-In this example, the widget is injected into the `custom.details.before` zone, so it's rendered before the main content of the custom details page.
-
-When you build your application, you'll see a warning that this zone is unknown. This is only a precaution since the system doesn't recognize the custom zone. Make sure to use the correct zone name.
-
-### Use Data Prop in Widgets
-
-If you pass a `data` prop to the `LayoutComposer`, widgets can access it through their props.
-
-For example, if you pass an `order` object as data to the `LayoutComposer`, you can access it in your widget like this:
-
-```tsx title="src/admin/widgets/draft-order-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { Container, Heading } from "@medusajs/ui"
-import { 
-  DetailWidgetProps, 
-  AdminOrder
-} from "@medusajs/framework/types"
-
-// TODO: replace AdminOrder with the expected type of the data prop
-type CustomDetailsData = AdminOrder
-
-const CustomWidget = ({ 
-  data,
-}: DetailWidgetProps<CustomDetailsData>) => {
+const BrandListWidget = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">
-          Custom Widget {data.title}
+          Brand Widget
         </Heading>
       </div>
     </Container>
@@ -8684,25 +8736,66 @@ const CustomWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "custom.details.before",
+  zone: "brand.list.before",
 })
 
-export default CustomWidget
+export default BrandListWidget
 ```
 
-***
+In this example, the widget is injected into the `brand.list.before` zone, so it's rendered before the main content of the brand list page you added to your plugin.
 
-## Custom Zone Naming Convention
+If you don't see `brand.list.before` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
 
-Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+```json title="src/admin/tsconfig.json"
+"include": [
+  ".",
+  "../../.medusa/types/plugin-augmentations.d.ts"
+]
+```
 
-- `resource-name`: The name of the resource being accessed in the page. For example, `custom` in the example above.
-- `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
-- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+When you build your application, you'll see a warning that this zone is unknown. This is only a precaution since the system doesn't recognize the custom zone. Make sure to use the correct zone name.
 
-This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
+### Use Data Prop in Widgets
 
-Custom injection zones are validated using a pattern check. If a zone doesn't match a core injection zone, the system shows a warning but still allows the zone if it follows the expected pattern.
+If you pass a `data` prop to the `LayoutComposer`, widgets can access it through their props.
+
+For example, if you pass a `brand` object as data to the `LayoutComposer`, you can access it in your widget like this:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+import { 
+  DetailWidgetProps
+} from "@medusajs/framework/types"
+
+type BrandDetailsData = {
+  id: string
+  title: string
+  // other brand properties...
+}
+
+const BrandWidget = ({ 
+  data,
+}: DetailWidgetProps<BrandDetailsData>) => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Brand Widget {data.title}
+        </Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "brand.details.before",
+})
+
+export default BrandWidget
+```
+
+In this example, the `BrandWidget` is injected into the `brand.details.before` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.
 
 
 # Environment Variables in Admin Customizations
@@ -10293,7 +10386,7 @@ Refer to the [Admin Widget Injection Zones](undefined/resources/admin-widget-inj
 
 ## Custom Injection Zones
 
-Plugins can register custom injection zones to extend the widget system beyond the core zones. This is useful when creating custom admin pages or extending existing pages with plugin-specific zones.
+Plugins can register custom injection zones to extend the widget system beyond the core zones. This is useful when creating custom admin pages in a plugin and you want to allow other developers to inject widgets into your custom pages.
 
 Refer to the [Custom Injection Zones](undefined/learn/fundamentals/admin/custom-injection-zones) chapter to learn how to add custom injection zones in a plugin.
 
@@ -26372,7 +26465,7 @@ updateTaxLinesWorkflow.hooks.setTaxLineContext(
 
 The returned object from the hook handler is passed as `additional_context` to the tax provider, allowing you to customize tax calculations based on your business requirements.
 
-The `setTaxLineContext` hook is available in the `updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow` workflows.
+The `setTaxLineContext` hook is available in the `updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow` workflows. It's available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 
 # Workflow Timeout
@@ -30887,6 +30980,8 @@ module.exports = defineConfig({
 
 ### Module Options
 
+The `require_verification` option was removed since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). Use the [authVerificationsPerActor configuration](undefined/docs/learn/configurations/medusa-config#httpauthVerificationsPerActor) instead.
+
 |Configuration|Description|Required|Default|
 |---|---|---|---|---|---|---|
 |\`hashConfig\`|An object of configurations for hashing the user's
@@ -30897,10 +30992,6 @@ const hashConfig = \{
 &#x20; p: 1
 }
 \`\`\`|
-|\`require\_verification\`|Array of actor types that require email verification before they can
-authenticate. When omitted or empty, no actor type requires verification.
-Developers must explicitly list the actor types that should require
-verification (for example |No|\`undefined\`|
 
 ***
 
@@ -31888,6 +31979,8 @@ You can use this workflow when deleting a manager, such as in an API route.
 
 In this guide, you'll learn how to enable email verification requirement for customers in your Medusa application, and how to send email verification notifications.
 
+The steps of this guide have changed since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). It now uses the `http.authVerificationsPerActor` configuration instead of the `require_verification` option in the Emailpass Auth Module Provider.
+
 ### Prerequisites
 
 - [Medusa v2.16.0 or later](undefined/docs/learn/update)
@@ -31923,37 +32016,30 @@ To implement the storefront part of the flow, refer to the [Verify Customer Acco
 
 ## Enable Email Verification
 
-To enable email verification, set the `require_verification` property of the [Emailpass Auth Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass) in `medusa-config.ts`:
+To enable email verification, set the `http.authVerificationsPerActor` configuration in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts" highlights={configHighlights}
 module.exports = defineConfig({
-  // other configurations...
-  modules: [
-    // other modules...
-    {
-      resolve: "@medusajs/medusa/auth",
-      options: {
-        mfa: {
-          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
-        },
-        providers: [
+  // ...
+  projectConfig: {
+    // ...
+    http: {
+      authVerificationsPerActor: {
+        customer: [
           {
-            resolve: "@medusajs/medusa/auth-emailpass",
-            id: "emailpass",
-            options: {
-              require_verification: ["customer"],
-            },
+            entity_type: "email",
+            auth_provider: "emailpass",
           },
         ],
       },
     },
-  ],
+  },
 })
 ```
 
-With this configuration, customers will be required to verify their email address after registering. You can specify multiple actor types in the array if needed. This includes previously registered customers as well.
+The `http.authVerificationsPerActor` configuration is an object that specifies the required verification methods for each actor type. The value for each actor type is an array of objects, each specifying a verification method. In this case, you include the `customer` actor type and specify that email verification is required using the `emailpass` auth provider.
 
-Before [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), `require_verification` was a boolean option. To migrate from the previous version, change `require_verification: true` to `require_verification: ["customer"]`.
+Learn more in the [authVerificationsPerActor configuration reference](undefined/docs/learn/configurations/medusa-config#httpauthVerificationsPerActor).
 
 ***
 
@@ -32023,20 +32109,21 @@ import { Modules } from "@medusajs/framework/utils"
 export default async function verificationRequestedHandler({
   event: { data: {
     entity_id: email,
-    token,
-    actor_type,
+    entity_type,
+    code,
   } },
   container,
 }: SubscriberArgs<{
   entity_id: string
-  token: string
-  actor_type: string
-  provider: string
+  entity_type: string
+  code_provider: string
   auth_identity_id: string
-  provider_identity_id: string
+  code: string
   expires_at: string
+  metadata?: Record<string, unknown>
 }>) {
-  if (actor_type !== "customer") {
+  // only handle email verifications.
+  if (entity_type !== "email") {
     return
   }
 
@@ -32047,7 +32134,7 @@ export default async function verificationRequestedHandler({
 
   const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
 
-  console.log(`${urlPrefix}/verify-account?token=${token}&email=${email}`)
+  console.log(`${urlPrefix}/verify-account?token=${code}&email=${email}`)
 
   await notificationModuleService.createNotifications({
     to: email,
@@ -32056,7 +32143,7 @@ export default async function verificationRequestedHandler({
     template: "email-verification",
     data: {
       // a URL to a frontend application
-      verification_url: `${urlPrefix}/verify-account?token=${token}&email=${email}`,
+      verification_url: `${urlPrefix}/verify-account?token=${code}&email=${email}`,
     },
   })
 }
@@ -32070,17 +32157,17 @@ export const config: SubscriberConfig = {
 
 This subscriber receives in the event payload an object with the following properties:
 
-- `entity_id`: The email address of the customer to which the verification email should be sent.
-- `token`: The token to be included in the verification link. When the customer clicks the verification link, the frontend application should send the token back to the Medusa application to verify the customer's email address.
-- `actor_type`: The type of the actor for which the verification was requested. In this case, you only want to send email verification notifications for customers, so you check if the `actor_type` is `customer` before sending the notification.
-- `provider`: The auth provider used for the verification. In this case, it will be `emailpass`.
+- `entity_id`: The identifier of the provider identity to verify. For email verification, this is the customer's email address.
+- `entity_type`: The kind of entity being verified, such as `email`. You check that it's `email` before sending the notification, since you only want to handle email verifications.
+- `code`: The verification code to include in the verification link. When the customer clicks the verification link, the storefront should send the code back to the Medusa application to verify the customer's email address.
+- `code_provider`: The verification provider used to generate the code. By default, this is `token`.
 - `auth_identity_id`: The ID of the auth identity for which the verification was requested.
-- `provider_identity_id`: The provider-specific ID of the auth identity for which the verification was requested.
-- `expires_at`: The date and time at which the verification token expires.
+- `expires_at`: The date and time at which the verification code expires.
+- `metadata`: Optional metadata included in the verification request.
 
 #### Subscriber Implementation
 
-In the subscriber, you first format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
+In the subscriber, you first check that the `entity_type` is `email` to only handle email verifications. Then, you format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
 
 Then, you send a notification using the Notification Module's main service. You pass the following properties to the `createNotifications` method:
 
@@ -34654,6 +34741,8 @@ await cartModuleService.setLineItemTaxLines(
 
 The tax line workflows (`updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow`) expose a `setTaxLineContext` hook that allows you to add custom context to tax calculations.
 
+This hook is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
 This is useful when you need to pass additional information to your tax provider that isn't included in the default cart or order data.
 
 For example, create the file `src/workflows/hooks/tax-context.ts` with the following content:
@@ -35440,7 +35529,7 @@ const { data: fulfillment } = query.graph({
   ],
   filters: {
     id: "fulfillment_123",
-  }
+  },
 })
 
 fulfillment.labels.forEach((label) => {
@@ -55827,7 +55916,7 @@ Refer to the [Build Medusa Application](undefined/docs/learn/build) guide for ne
 ## Options
 
 |Option|Description|Default|
-|---|---|---|---|---|
+|---|---|---|
 |\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |\`false\`|
 |\`--lint\`|Run the Medusa linter before building. Pass |\`true\`|
 |\`--fix\`|Auto-fix lint issues where possible before building.|\`false\`|
@@ -56035,7 +56124,7 @@ npx medusa exec [file] [args...]
 
 # lint Command - Medusa CLI Reference
 
-This command is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6).
+This command is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 Lint your project using its ESLint configuration.
 
@@ -56050,13 +56139,13 @@ The `eslint` package must be installed in your project. It is a peer dependency 
 ## Arguments
 
 |Argument|Description|
-|---|---|---|
+|---|---|
 |\`\[paths...]\`|Files or directories to lint. Defaults to the whole project.|
 
 ## Options
 
 |Option|Description|Default|
-|---|---|---|---|---|
+|---|---|---|
 |\`--fix\`|Auto-fix lint issues where possible.|\`false\`|
 |\`--quiet\`|Report lint errors only, suppressing warnings.|\`false\`|
 
@@ -56319,7 +56408,7 @@ Refer to the [Build Medusa Application](undefined/docs/learn/build) guide for ne
 ## Options
 
 |Option|Description|Default|
-|---|---|---|---|---|
+|---|---|---|
 |\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |\`false\`|
 |\`--lint\`|Run the Medusa linter before building. Pass |\`true\`|
 |\`--fix\`|Auto-fix lint issues where possible before building.|\`false\`|
@@ -56527,7 +56616,7 @@ npx medusa exec [file] [args...]
 
 # lint Command - Medusa CLI Reference
 
-This command is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6).
+This command is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 Lint your project using its ESLint configuration.
 
@@ -56542,13 +56631,13 @@ The `eslint` package must be installed in your project. It is a peer dependency 
 ## Arguments
 
 |Argument|Description|
-|---|---|---|
+|---|---|
 |\`\[paths...]\`|Files or directories to lint. Defaults to the whole project.|
 
 ## Options
 
 |Option|Description|Default|
-|---|---|---|---|---|
+|---|---|---|
 |\`--fix\`|Auto-fix lint issues where possible.|\`false\`|
 |\`--quiet\`|Report lint errors only, suppressing warnings.|\`false\`|
 
@@ -130997,36 +131086,35 @@ This shows the JSON section at the top of the product page, passing it the objec
 
 The `LayoutComposer` component provides a flexible layout composition system for building admin pages with widget support. It manages the rendering of widgets in specific sections and supports different layout structures.
 
-## Usage
+The `LayoutComposer` is useful for plugins that want to create custom admin pages with a consistent layout and custom widget injection zones.
 
-Import the `LayoutComposer` component from `@medusajs/dashboard/components`:
+This component is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
-```tsx
-import { LayoutComposer } from "@medusajs/dashboard/components"
-```
+## Basic Example
 
-### Basic Example
+In the following example, the `LayoutComposer` is used to create a two-column layout for a custom brand details page:
 
 ```tsx
 import { LayoutComposer } from "@medusajs/dashboard/components"
 
-const ProductDetailsPage = ({ product }) => {
+const BrandDetailsPage = () => {
+  // retrieve brand...
   return (
     <LayoutComposer
-      widgetsZonePrefix="product.details"
+      widgetsZonePrefix="brand.details"
       preferredLayoutId="core:two-column"
-      data={product}
+      data={brand}
       sections={{
         main: (
           <>
-            <ProductGeneralSection product={product} />
-            <ProductVariantsSection product={product} />
+            <BrandGeneralSection brand={brand} />
+            <BrandVariantsSection brand={brand} />
           </>
         ),
         side: (
           <>
-            <ProductMediaSection product={product} />
-            <ProductStatusSection product={product} />
+            <BrandMediaSection brand={brand} />
+            <BrandStatusSection brand={brand} />
           </>
         ),
       }}
@@ -131035,65 +131123,51 @@ const ProductDetailsPage = ({ product }) => {
 }
 ```
 
+The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+
+- `brand.details.before`: Widgets rendered before the main content of the brand details page.
+- `brand.details.after`: Widgets rendered after the main content of the brand details page.
+- `brand.details.side.before`: Widgets rendered before the side content of the brand details page.
+- `brand.details.side.after`: Widgets rendered after the side content of the brand details page.
+
 ### Single Column Layout
+
+The `LayoutComposer` also supports single-column layouts, which is useful for listing pages or pages with a single main content area. For example:
 
 ```tsx
 import { LayoutComposer } from "@medusajs/dashboard/components"
 
-const ProductListPage = () => {
+const BrandListPage = () => {
   return (
     <LayoutComposer
-      widgetsZonePrefix="product.list"
+      widgetsZonePrefix="brand.list"
       preferredLayoutId="core:single-column"
+      data={brand}
       sections={{
-        main: <ProductDataTable />,
+        main: (
+          <BrandListSection />
+        ),
       }}
     />
   )
 }
 ```
 
+The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+
+- `brand.list.before`: Widgets rendered before the main content of the brand list page.
+- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+
+***
+
 ## Props
 
 |Prop|Type|Description|
-|---|---|---|---|---|
+|---|---|---|
 |\`widgetsZonePrefix\`|\`string\`|The prefix used to determine widget injection zones for the page. The component automatically appends |
-|\`preferredLayoutId\`|\`string\`|The ID of the preferred layout to use. Core layouts include |
-|\`sections\`|\`Record\<string, ReactNode>\`|Object mapping section names to their content. Available sections depend on the chosen layout.|
-|\`data\`|\`unknown\`|Data to be passed to widgets and layout components.|
-
-## Core Layouts
-
-The `LayoutComposer` comes with two built-in layouts:
-
-### Single Column Layout (`core:single-column`)
-
-Renders content in a single column with the following sections:
-
-- `main`: Primary content area
-
-### Two Column Layout (`core:two-column`)
-
-Renders content in two columns with the following sections:
-
-- `main`: Left column (main content)
-- `side`: Right column (sidebar content)
-
-## Widget Integration
-
-The `LayoutComposer` automatically renders widgets based on the `widgetsZonePrefix` prop. For each section, it looks for widgets registered to specific zones:
-
-- `{prefix}.before` - Widgets rendered before the main section content
-- `{prefix}.after` - Widgets rendered after the main section content
-- `{prefix}.side.before` - Widgets rendered before the side section content (two-column layout only)
-- `{prefix}.side.after` - Widgets rendered after the side section content (two-column layout only)
-
-For example, with `widgetsZonePrefix="product.details"`, the component will render widgets from:
-
-- `product.details.before`
-- `product.details.after`
-- `product.details.side.before`
-- `product.details.side.after`
+|\`preferredLayoutId\`|\`string\`|The ID of the preferred layout to use. By default, accepted values are |
+|\`sections\`|\`Record\<string, ReactNode>\`|Object mapping section names to their content. The key is the name of the section, and the value is a |
+|\`data\`|\`unknown\`|Data passed from the UI route to the |
 
 ## Custom Layouts
 
@@ -131129,20 +131203,24 @@ declare module "@medusajs/dashboard/components" {
 }
 ```
 
-## Widget Ordering
-
-Widgets within each section are ordered using the `order` property. Common order constants are available:
-
-- `BEFORE_ORDER` (0): For widgets that should appear first
-- `CORE_CONTENT_ORDER` (100): For core content (default)
-- `AFTER_ORDER` (999): For widgets that should appear last
+You can then use the custom layout in the `LayoutComposer`:
 
 ```tsx
-import { 
-  BEFORE_ORDER, 
-  CORE_CONTENT_ORDER, 
-  AFTER_ORDER, 
-} from "@medusajs/dashboard/components"
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandPage = () => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.list"
+      preferredLayoutId="my-plugin:three-column"
+      sections={{
+        main: <BrandListSection />,
+        side: <BrandFiltersSection />,
+        extra: <BrandStatsSection />,
+      }}
+    />
+  )
+}
 ```
 
 
@@ -161944,6 +162022,7 @@ And to show the subscription form during checkout, add the `SubscriptionForm` in
 ```tsx title="src/modules/checkout/templates/checkout-form/index.tsx" badgeLabel="Storefront" badgeColor="orange"
 // other imports...
 import SubscriptionForm from "@modules/checkout/components/subscriptions"
+import { Suspense } from "react"
 
 export default async function CheckoutForm({
   cart,
@@ -161959,13 +162038,17 @@ export default async function CheckoutForm({
       {/* ... */}
       {/* After Addresses, before Shipping */}
       <div>
-        <SubscriptionForm />
+        <Suspense fallback={<></>}>
+          <SubscriptionForm />
+        </Suspense>
       </div>
       {/* ... */}
     </div>
   )
 }
 ```
+
+In Next.js 15, any component that uses `useSearchParams()` must be wrapped in a `<Suspense>` boundary to enable static prerendering. Without the `<Suspense>` boundary, the build fails with: `useSearchParams() should be wrapped in a suspense boundary`.
 
 ### Pass Additional Data to Payment Provider
 
