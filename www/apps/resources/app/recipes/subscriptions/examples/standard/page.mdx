@@ -1192,6 +1192,7 @@ And to show the subscription form during checkout, add the `SubscriptionForm` in
 ```tsx title="src/modules/checkout/templates/checkout-form/index.tsx" badgeLabel="Storefront" badgeColor="orange"
 // other imports...
 import SubscriptionForm from "@modules/checkout/components/subscriptions"
+import { Suspense } from "react"
 
 export default async function CheckoutForm({
   cart,
@@ -1207,13 +1208,21 @@ export default async function CheckoutForm({
       {/* ... */}
       {/* After Addresses, before Shipping */}
       <div>
-        <SubscriptionForm />
+        <Suspense fallback={<></>}>
+          <SubscriptionForm />
+        </Suspense>
       </div>
       {/* ... */}
     </div>
   )
 }
 ```
+
+<Note>
+
+In Next.js 15, any component that uses `useSearchParams()` must be wrapped in a `<Suspense>` boundary to enable static prerendering. Without the `<Suspense>` boundary, the build fails with: `useSearchParams() should be wrapped in a suspense boundary`.
+
+</Note>
 
 ### Pass Additional Data to Payment Provider
 

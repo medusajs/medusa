@@ -2,6 +2,7 @@ import type { ESLint, Linter } from "eslint"
 import { rules } from "./rules"
 import { buildRecommended } from "./configs/recommended"
 import { buildStrict } from "./configs/strict"
+import { buildModules } from "./configs/modules"
 import { PLUGIN_NAME } from "./constants"
 
 const plugin = {
@@ -10,11 +11,13 @@ const plugin = {
   configs: {} as {
     recommended: Linter.Config[]
     strict: Linter.Config[]
+    modules: Linter.Config[]
   },
 } satisfies ESLint.Plugin
 
 plugin.configs.recommended = buildRecommended(plugin)
 plugin.configs.strict = buildStrict(plugin)
+plugin.configs.modules = buildModules(plugin)
 
 export default plugin
 export const { meta, configs } = plugin

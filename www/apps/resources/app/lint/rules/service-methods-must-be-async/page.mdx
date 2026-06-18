@@ -1,0 +1,55 @@
+---
+sidebar_label: "service-methods-must-be-async"
+---
+
+export const metadata = {
+  title: `service-methods-must-be-async - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that all public methods on a service class are `async` or return a `Promise`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets service files in your project's `src/modules` directory. It only reports public methods on a class that is recognized as a module service, which is a class that either:
+
+- Extends `MedusaService`.
+- Is defined in a module's `service.ts` file (`src/modules/*/service.ts`).
+- Is defined under a module's `services` directory (`src/modules/*/services/**`).
+
+A class isn't considered a service just because its name ends with `Service`. The rule reports a service class's public method when it isn't `async` and doesn't return a `Promise`.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+
+class BlogModuleService extends MedusaService({}) {
+  create() {}
+}
+```
+
+Instead, make the method `async`:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+
+class BlogModuleService extends MedusaService({}) {
+  async create() {}
+}
+```
+
+## Why it's Important
+
+Medusa always awaits service method calls. A method that isn't `async` and doesn't return a `Promise` can lead to unexpected behavior when its result is awaited.
+
+Learn more in the [Service Constraints documentation](!docs!/learn/fundamentals/modules/service-constraints).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

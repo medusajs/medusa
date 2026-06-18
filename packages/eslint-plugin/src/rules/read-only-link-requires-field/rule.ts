@@ -8,18 +8,22 @@ type MessageIds = "missingField" | "missingPrimaryKey"
 const DEFINE_LINK = "defineLink"
 
 function isReadOnlyTrue(options: TSESTree.Node): boolean {
-  if (options.type !== "ObjectExpression") return false
+  if (options.type !== "ObjectExpression") {
+    return false
+  }
   const readOnly = findProperty(options, "readOnly")
-  if (!readOnly) return false
-  return (
-    readOnly.value.type === "Literal" && readOnly.value.value === true
-  )
+  if (!readOnly) {
+    return false
+  }
+  return readOnly.value.type === "Literal" && readOnly.value.value === true
 }
 
 function isLinkableIdSpread(node: TSESTree.Node): boolean {
   // Match `...<X>.linkable.<y>.id` — i.e. a MemberExpression ending in `.id`
   // whose object chain contains a non-computed `.linkable` segment.
-  if (node.type !== "MemberExpression" || node.computed) return false
+  if (node.type !== "MemberExpression" || node.computed) {
+    return false
+  }
   if (node.property.type !== "Identifier" || node.property.name !== "id") {
     return false
   }
@@ -68,7 +72,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         for (const specifier of node.specifiers) {
           if (
             specifier.type === "ImportSpecifier" &&
@@ -81,7 +87,9 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (defineLinkLocalNames.size === 0) return
+        if (defineLinkLocalNames.size === 0) {
+          return
+        }
         if (
           node.callee.type !== "Identifier" ||
           !defineLinkLocalNames.has(node.callee.name)
@@ -90,14 +98,15 @@ export const rule = createRule<[], MessageIds>({
         }
 
         const [arg1, arg2, options] = node.arguments
-        if (!options || !arg1 || !arg2) return
-        if (!isReadOnlyTrue(options)) return
+        if (!options || !arg1 || !arg2) {
+          return
+        }
+        if (!isReadOnlyTrue(options)) {
+          return
+        }
 
         // First arg must be an ObjectExpression with `field`.
-        if (
-          arg1.type !== "ObjectExpression" ||
-          !findProperty(arg1, "field")
-        ) {
+        if (arg1.type !== "ObjectExpression" || !findProperty(arg1, "field")) {
           context.report({ node: arg1, messageId: "missingField" })
         }
 

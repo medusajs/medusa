@@ -1097,11 +1097,21 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/learn/fundamentals/admin/custom-injection-zones",
+            "title": "Custom Injection Zones",
+            "children": [],
+            "chapterTitle": "5.3. Custom Injection Zones",
+            "number": "5.3."
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/learn/fundamentals/admin/ui-routes",
             "title": "Admin UI Routes",
             "children": [],
-            "chapterTitle": "5.3. Admin UI Routes",
-            "number": "5.3."
+            "chapterTitle": "5.4. Admin UI Routes",
+            "number": "5.4."
           },
           {
             "loaded": true,
@@ -1110,8 +1120,8 @@ export const generatedSidebars = [
             "path": "/learn/fundamentals/admin/environment-variables",
             "title": "Environment Variables",
             "children": [],
-            "chapterTitle": "5.4. Environment Variables",
-            "number": "5.4."
+            "chapterTitle": "5.5. Environment Variables",
+            "number": "5.5."
           },
           {
             "loaded": true,
@@ -1120,8 +1130,8 @@ export const generatedSidebars = [
             "path": "/learn/fundamentals/admin/routing",
             "title": "Routing Customizations",
             "children": [],
-            "chapterTitle": "5.5. Routing Customizations",
-            "number": "5.5."
+            "chapterTitle": "5.6. Routing Customizations",
+            "number": "5.6."
           },
           {
             "loaded": true,
@@ -1130,8 +1140,8 @@ export const generatedSidebars = [
             "path": "/learn/fundamentals/admin/translations",
             "title": "Translations",
             "children": [],
-            "chapterTitle": "5.6. Translations",
-            "number": "5.6."
+            "chapterTitle": "5.7. Translations",
+            "number": "5.7."
           },
           {
             "loaded": true,
@@ -1140,8 +1150,8 @@ export const generatedSidebars = [
             "path": "/learn/fundamentals/admin/constraints",
             "title": "Constraints",
             "children": [],
-            "chapterTitle": "5.7. Constraints",
-            "number": "5.7."
+            "chapterTitle": "5.8. Constraints",
+            "number": "5.8."
           },
           {
             "loaded": true,
@@ -1150,8 +1160,8 @@ export const generatedSidebars = [
             "path": "/learn/fundamentals/admin/tips",
             "title": "Tips",
             "children": [],
-            "chapterTitle": "5.8. Tips",
-            "number": "5.8."
+            "chapterTitle": "5.9. Tips",
+            "number": "5.9."
           }
         ],
         "chapterTitle": "5. Admin Development",

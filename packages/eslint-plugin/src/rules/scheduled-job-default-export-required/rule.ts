@@ -1,5 +1,6 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
+import { isIndexFile } from "../../util/filename"
 
 type MessageIds = "missingDefaultExport"
 
@@ -8,8 +9,7 @@ export const rule = createRule<[], MessageIds>({
   meta: {
     type: "problem",
     docs: {
-      description:
-        "Scheduled job files must default-export the job function.",
+      description: "Scheduled job files must default-export the job function.",
     },
     messages: {
       missingDefaultExport:
@@ -19,6 +19,12 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    // `index.<ext>` files in a jobs directory are barrels/re-exports, not job
+    // definitions, so they have no default-exported job function.
+    if (isIndexFile(context.filename)) {
+      return {}
+    }
+
     let hasDefaultExport = false
 
     return {
@@ -37,7 +43,9 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       "Program:exit"(node: TSESTree.Program) {
-        if (hasDefaultExport) return
+        if (hasDefaultExport) {
+          return
+        }
         context.report({
           node,
           messageId: "missingDefaultExport",

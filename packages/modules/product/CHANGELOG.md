@@ -1,5 +1,27 @@
 # @medusajs/product
 
+## 2.16.0
+
+### Patch Changes
+
+- [`8b3b9f7dc97731688e4a5f1c0bb2714e00483bc6`](undefined) - fix(product, utils): Support non-Latin characters in product handles
+
+- [`801dbdb2ae70152aaa5917590885bd36bd44efc4`](undefined) - fix(utils,product): handle array of mikroORM entities serialization and fix variant image assignment serialization issue
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
+- [`ffae1bee3fe51c6c5dc68f27ace7b257da2327b4`](undefined) - perf(product): skip option resolution/validation/reconcile on scalar-only variant updates
+
+  `updateVariants_` loaded every variant of the product (with options) and ran the
+  option-uniqueness validation + relation reconcile on every update, even when no
+  options were changing. This is O(the product's total variant count) and synchronous,
+  making scalar-only updates on products with many variants block the event loop for
+  tens of seconds. The option work is now only performed when the payload actually
+  changes options.
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`20352f4fa2f31e5b491c8b1b244c407392939fbf`](https://github.com/medusajs/medusa/commit/20352f4fa2f31e5b491c8b1b244c407392939fbf), [`90af038c95c835dee5168ffd19cda5182d81b904`](https://github.com/medusajs/medusa/commit/90af038c95c835dee5168ffd19cda5182d81b904), [`66610b87efb112e37b78c7c9536d95070b8d6b11`](https://github.com/medusajs/medusa/commit/66610b87efb112e37b78c7c9536d95070b8d6b11)]:
+  - @medusajs/framework@2.16.0
+
 ## 2.15.5
 
 ### Patch Changes

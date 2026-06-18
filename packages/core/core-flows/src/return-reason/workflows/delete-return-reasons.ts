@@ -38,14 +38,12 @@ export const deleteReturnReasonsWorkflow = createWorkflow(
   (
     input: WorkflowData<DeleteReturnReasonsWorkflowInput>
   ): WorkflowData<void> => {
-    const deletedReturnReasons = deleteReturnReasonStep(input.ids)
+    deleteReturnReasonStep(input.ids)
 
     removeRemoteLinkStep({
       [Modules.ORDER]: {
         return_reason_id: input.ids,
       },
     })
-
-    return deletedReturnReasons
   }
 )

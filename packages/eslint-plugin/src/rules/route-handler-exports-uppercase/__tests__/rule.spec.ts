@@ -65,7 +65,10 @@ ruleTester.run("route-handler-exports-uppercase", rule, {
       code: `export async function post(req, res) { res.json({}) }`,
       filename: "src/api/admin/orders/route.ts",
       errors: [
-        { messageId: "lowercaseHandler", data: { name: "post", upper: "POST" } },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "post", upper: "POST" },
+        },
       ],
       output: `export async function POST(req, res) { res.json({}) }`,
     },
@@ -78,7 +81,10 @@ ruleTester.run("route-handler-exports-uppercase", rule, {
       filename: "src/api/store/products/route.ts",
       errors: [
         { messageId: "lowercaseHandler", data: { name: "get", upper: "GET" } },
-        { messageId: "lowercaseHandler", data: { name: "post", upper: "POST" } },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "post", upper: "POST" },
+        },
       ],
       output: `
         export const GET = async (req, res) => {}
@@ -115,12 +121,27 @@ ruleTester.run("route-handler-exports-uppercase", rule, {
       filename: "src/api/admin/things/route.ts",
       errors: [
         { messageId: "lowercaseHandler", data: { name: "get", upper: "GET" } },
-        { messageId: "lowercaseHandler", data: { name: "post", upper: "POST" } },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "post", upper: "POST" },
+        },
         { messageId: "lowercaseHandler", data: { name: "put", upper: "PUT" } },
-        { messageId: "lowercaseHandler", data: { name: "patch", upper: "PATCH" } },
-        { messageId: "lowercaseHandler", data: { name: "delete", upper: "DELETE" } },
-        { messageId: "lowercaseHandler", data: { name: "head", upper: "HEAD" } },
-        { messageId: "lowercaseHandler", data: { name: "options", upper: "OPTIONS" } },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "patch", upper: "PATCH" },
+        },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "delete", upper: "DELETE" },
+        },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "head", upper: "HEAD" },
+        },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "options", upper: "OPTIONS" },
+        },
       ],
       output: `
         export const GET = (req, res) => {}
@@ -148,7 +169,10 @@ ruleTester.run("route-handler-exports-uppercase", rule, {
 export { delete_ as delete }`,
       filename: "api/admin/orders/route.ts",
       errors: [
-        { messageId: "lowercaseHandler", data: { name: "delete", upper: "DELETE" } },
+        {
+          messageId: "lowercaseHandler",
+          data: { name: "delete", upper: "DELETE" },
+        },
       ],
       output: `export const delete_ = async (req, res) => {}
 export { delete_ as DELETE }`,
