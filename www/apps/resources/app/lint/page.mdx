@@ -82,20 +82,16 @@ The plugin ignores `node_modules`, `dist`, `apps/storefront`, and test directori
 
 The plugin only supports ESLint's flat config format.
 
-Then, in the Medusa application package, create an `eslint.config.ts` file that extends the root configuration:
+Then, in the Medusa application package, create a similar `eslint.config.ts` file:
 
 ```ts title="apps/medusa-app/eslint.config.ts"
 import { defineConfig } from "eslint/config"
-import base from "../../eslint.config"
+import medusa from "@medusajs/eslint-plugin"
 
-export default defineConfig([
-  {
-    extends: [base],
-    // backend-specific overrides go here
-    rules: {},
-  },
-])
+export default defineConfig([...medusa.configs.recommended])
 ```
+
+This setup is necessary to support both `medusa lint` command and code editor hints.
 
 You can add overide rules in the application package's configuration file to customize linting, as explained in the [usage guidelines](#usage-guidelines).
 
