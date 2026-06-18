@@ -65,8 +65,8 @@ export const sidebars = [
             type: "link",
             title: "AI-Friendly Docs",
             path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
-          }
-        ]
+          },
+        ],
       },
       {
         type: "category",
@@ -577,6 +577,11 @@ export const sidebars = [
           },
           {
             type: "link",
+            path: "/learn/fundamentals/admin/custom-injection-zones",
+            title: "Custom Injection Zones",
+          },
+          {
+            type: "link",
             path: "/learn/fundamentals/admin/ui-routes",
             title: "Admin UI Routes",
           },
@@ -599,11 +604,6 @@ export const sidebars = [
             type: "link",
             path: "/learn/fundamentals/admin/constraints",
             title: "Constraints",
-          },
-          {
-            type: "link",
-            path: "/learn/fundamentals/admin/eslint",
-            title: "ESLint Plugin",
           },
           {
             type: "link",

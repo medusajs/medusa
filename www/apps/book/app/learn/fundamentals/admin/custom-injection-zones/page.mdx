@@ -1,0 +1,212 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Custom Injection Zones`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to add custom widget injection zones in a plugin.
+
+<Note>
+
+Custom injection zones are available since Medusa v2.16.0.
+
+</Note>
+
+## What are Custom Injection Zones?
+
+The Medusa Admin has [pre-defined injection zones](!resources!/admin-widget-injection-zones) where you insert [widgets](../widgets/page.mdx). When you build a plugin that adds custom admin pages, you can also register custom injection zones to allow other developers to inject widgets into your plugin's pages.
+
+Adding custom injection zones in a plugin requires two steps:
+
+1. Expose the injection zones in your custom admin page using the `LayoutComposer` component.
+2. Register the injection zones in the `InjectionZoneRegistry` interface to enable type checking and autocompletion in `defineWidgetConfig`.
+
+---
+
+## Step 1: Expose Injection Zones with LayoutComposer
+
+<Prerequisites
+  items={[
+    {
+      link: "/learn/fundamentals/admin/ui-routes",
+      text: "Custom admin page (UI route)",
+    },
+  ]}
+/>
+
+When you build a custom admin page in a plugin, use the [LayoutComposer](!resources!/admin-components/components/layout-composer) component from `@medusajs/dashboard/components` to structure the page's layout. This component also exposes injection zones based on the prefix you pass to its `widgetsZonePrefix` prop.
+
+For example:
+
+export const customHighlights = [
+  ["7", "widgetsZonePrefix", "The prefix of the injection zones to expose."],
+  ["8", "preferredLayoutId", "Use a two-column layout."],
+  ["9", "data", "The data passed to the widgets injected into the zones."],
+  ["10", "sections", "The page's sections, which are rendered in the layout's main and side columns."],
+  ["11", "main", "Components shown in the main (left) column."],
+  ["18", "side", "Components shown in the side (right) column."],
+]
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const CustomPageDetails = () => {
+  // ...
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="custom.details"
+      preferredLayoutId="core:two-column"
+      data={order}
+      sections={{
+        main: (
+          <>
+            <GeneralSection order={order} />
+            <SummarySection order={order} />
+            {/* ... */}
+          </>
+        ),
+        side: (
+          <>
+            <CustomerSection order={order} />
+            <ActivitySection order={order} />
+          </>
+        ),
+      }}
+    />
+  )
+}
+
+export default CustomPageDetails
+```
+
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+
+- `custom.details.before`
+- `custom.details.after`
+- `custom.details.side.before` (since layout is two-column)
+- `custom.details.side.after` (since layout is two-column)
+
+Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `order` object is passed as data, so widgets can access it through their props.
+
+Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+
+---
+
+## Step 2: Register Injection Zones for Type Checking
+
+Once your page exposes injection zones, register them in the `InjectionZoneRegistry` interface. This enables type checking and autocompletion for the zones when other developers create widgets using `defineWidgetConfig`.
+
+To register the injection zones, augment the `InjectionZoneRegistry` interface through declaration merging. Create an `index.d.ts` file in your plugin's root directory with the following content:
+
+```ts title="index.d.ts"
+declare module "@medusajs/admin-shared" {
+  interface InjectionZoneRegistry {
+    "custom.details.before": true
+    "custom.details.after": true
+    "custom.details.side.before": true
+    "custom.details.side.after": true
+  }
+}
+```
+
+Then, include the declaration file in your plugin's `package.json`:
+
+```json title="package.json"
+{
+  "files": [
+    ".medusa/server",
+    "index.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    }
+  }
+}
+```
+
+---
+
+## Use Custom Injection Zones in Widgets
+
+Once registered, users using the plugin can inject widgets into the custom zones using `defineWidgetConfig`. For example:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const DraftOrderWidget = () => {
+  return <div>Custom Widget Content</div>
+}
+
+export const config = defineWidgetConfig({
+  zone: "custom.details.before",
+})
+
+export default DraftOrderWidget
+```
+
+In this example, the widget is injected into the `custom.details.before` zone, so it's rendered before the main content of the custom details page.
+
+<Note>
+
+When you build your application, you'll see a warning that this zone is unknown. This is only a precaution since the system doesn't recognize the custom zone. Make sure to use the correct zone name.
+
+</Note>
+
+### Use Data Prop in Widgets
+
+If you pass a `data` prop to the `LayoutComposer`, widgets can access it through their props.
+
+For example, if you pass an `order` object as data to the `LayoutComposer`, you can access it in your widget like this:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+import { 
+  DetailWidgetProps, 
+  AdminOrder
+} from "@medusajs/framework/types"
+
+// TODO: replace AdminOrder with the expected type of the data prop
+type CustomDetailsData = AdminOrder
+
+const CustomWidget = ({ 
+  data,
+}: DetailWidgetProps<CustomDetailsData>) => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Custom Widget {data.title}
+        </Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "custom.details.before",
+})
+
+export default CustomWidget
+```
+
+---
+
+## Custom Zone Naming Convention
+
+Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+
+- `resource-name`: The name of the resource being accessed in the page. For example, `custom` in the example above.
+- `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
+- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+
+This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
+
+<Note>
+
+Custom injection zones are validated using a pattern check. If a zone doesn't match a core injection zone, the system shows a warning but still allows the zone if it follows the expected pattern.
+
+</Note>
