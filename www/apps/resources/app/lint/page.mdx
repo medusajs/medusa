@@ -57,6 +57,44 @@ Where:
 
 ### 2. Add an ESLint Configuration File
 
+#### a. Configuration for Monorepo Projects
+
+After installing the plugin, create an `eslint.config.ts` file at the root of your monorepo that spreads one of the plugin's [presets](#presets):
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.recommended])
+```
+
+<Note>
+
+The plugin ignores `node_modules`, `dist`, `apps/storefront`, and test directories by default.
+
+</Note>
+
+The plugin only supports ESLint's flat config format.
+
+Then, in the Medusa application package, create an `eslint.config.ts` file that extends the root configuration:
+
+```ts title="apps/medusa-app/eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import base from "../../eslint.config"
+
+export default defineConfig([
+  {
+    extends: [base],
+    // backend-specific overrides go here
+    rules: {},
+  },
+])
+```
+
+You can add overide rules in the application package's configuration file to customize linting, as explained in the [usage guidelines](#usage-guidelines).
+
+#### b. Configuration for Standalone Medusa Projects
+
 After installing the plugin, create an `eslint.config.ts` file at the root of your project that spreads one of the plugin's [presets](#presets):
 
 ```ts title="eslint.config.ts"
@@ -238,7 +276,13 @@ The severity of each rule is mentioned in its [reference page](./rules/page.mdx)
 
 ### Change a Rule's Severity or Disable it
 
-To change a rule's severity or disable it, add a configuration block after the preset in your `eslint.config.ts` file.
+To change a rule's severity or disable it, add a configuration block after the preset in your Medusa application's `eslint.config.ts` file.
+
+<Note title="Tip">
+
+If your project is a monorepo, add the configuration block in `apps/backend/eslint.config.ts`. If your project is a standalone Medusa application, add the configuration block in `eslint.config.ts` at the root of your project.
+
+</Note>
 
 For example, to disable the `admin-env-vars-import-meta` rule:
 
