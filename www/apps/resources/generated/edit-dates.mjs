@@ -559,7 +559,7 @@ export const generatedEditDates = {
   "references/types/interfaces/types.BaseProductCategory/page.mdx": "2026-04-23T12:32:50.610Z",
   "references/types/types.NotificationTypes/page.mdx": "2024-11-25T17:49:28.027Z",
   "app/medusa-cli/commands/db/page.mdx": "2026-01-12T12:27:03.881Z",
-  "app/medusa-cli/commands/develop/page.mdx": "2026-04-23T11:32:59.042Z",
+  "app/medusa-cli/commands/develop/page.mdx": "2026-06-18T07:25:00.611Z",
   "app/medusa-cli/commands/exec/page.mdx": "2026-01-12T12:27:09.845Z",
   "app/medusa-cli/commands/new/page.mdx": "2026-04-09T12:47:57.535Z",
   "app/medusa-cli/commands/start/page.mdx": "2026-01-12T12:27:25.481Z",
@@ -2125,7 +2125,7 @@ export const generatedEditDates = {
   "app/commerce-modules/stock-location/links-to-other-modules/page.mdx": "2025-04-17T16:02:51.467Z",
   "app/commerce-modules/store/links-to-other-modules/page.mdx": "2025-12-16T06:36:58.256Z",
   "app/examples/page.mdx": "2026-03-27T12:55:32.030Z",
-  "app/medusa-cli/commands/build/page.mdx": "2026-01-12T12:26:54.418Z",
+  "app/medusa-cli/commands/build/page.mdx": "2026-06-18T07:24:49.355Z",
   "app/js-sdk/page.mdx": "2025-12-16T07:15:37.754Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.apiKey/page.mdx": "2026-04-30T16:36:41.141Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign/page.mdx": "2026-01-06T15:55:12.396Z",
@@ -7577,5 +7577,6 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-05T10:33:10.552Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
   "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z",
-  "app/troubleshooting/modules/resolve-path/page.mdx": "2026-06-12T13:10:01.363Z"
+  "app/troubleshooting/modules/resolve-path/page.mdx": "2026-06-12T13:10:01.363Z",
+  "app/medusa-cli/commands/lint/page.mdx": "2026-06-18T07:25:14.530Z"
 }

@@ -2941,9 +2941,9 @@ public-hoist-pattern[]=react-router-dom
 This configuration tells `pnpm` to hoist the following packages to the top-level `node_modules` directory:
 
 1. All packages under the `@medusajs` scope.
-2. `@tanstack/react-query`: Tanstack Query, used in [Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/tips#send-requests-to-api-routes/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
-3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](https://docs.medusajs.com/learn/fundamentals/admin/translations/index.html.md). It's hoisted to ensure compatibility with the Medusa Admin.
-4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](https://docs.medusajs.com/learn/fundamentals/admin/routing/index.html.md). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+2. `@tanstack/react-query`: Tanstack Query, used in [Medusa Admin customizations](undefined/learn/fundamentals/admin/tips#send-requests-to-api-routes). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
+3. `react-i18next`: Used for [internationalization in Medusa Admin customizations](undefined/learn/fundamentals/admin/translations). It's hoisted to ensure compatibility with the Medusa Admin.
+4. `react-router-dom`: Used for [routing customizations in the Medusa Admin](undefined/learn/fundamentals/admin/routing). It's hoisted to avoid version and instance conflicts with the Medusa Admin.
 
 ### Step 4: Remove Existing Lock Files
 
@@ -8523,6 +8523,188 @@ export const config = defineWidgetConfig({
 ```
 
 
+# Custom Injection Zones
+
+In this chapter, you'll learn how to add custom widget injection zones in a plugin.
+
+Custom injection zones are available since Medusa v2.16.0.
+
+## What are Custom Injection Zones?
+
+The Medusa Admin has [pre-defined injection zones](undefined/resources/admin-widget-injection-zones) where you insert [widgets](undefined/learn/fundamentals/admin/widgets). When you build a plugin that adds custom admin pages, you can also register custom injection zones to allow other developers to inject widgets into your plugin's pages.
+
+Adding custom injection zones in a plugin requires two steps:
+
+1. Expose the injection zones in your custom admin page using the `LayoutComposer` component.
+2. Register the injection zones in the `InjectionZoneRegistry` interface to enable type checking and autocompletion in `defineWidgetConfig`.
+
+***
+
+## Step 1: Expose Injection Zones with LayoutComposer
+
+### Prerequisites
+
+- [Custom admin page (UI route)](undefined/learn/fundamentals/admin/ui-routes)
+
+When you build a custom admin page in a plugin, use the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) component from `@medusajs/dashboard/components` to structure the page's layout. This component also exposes injection zones based on the prefix you pass to its `widgetsZonePrefix` prop.
+
+For example:
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const CustomPageDetails = () => {
+  // ...
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="custom.details"
+      preferredLayoutId="core:two-column"
+      data={order}
+      sections={{
+        main: (
+          <>
+            <GeneralSection order={order} />
+            <SummarySection order={order} />
+            {/* ... */}
+          </>
+        ),
+        side: (
+          <>
+            <CustomerSection order={order} />
+            <ActivitySection order={order} />
+          </>
+        ),
+      }}
+    />
+  )
+}
+
+export default CustomPageDetails
+```
+
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+
+- `custom.details.before`
+- `custom.details.after`
+- `custom.details.side.before` (since layout is two-column)
+- `custom.details.side.after` (since layout is two-column)
+
+Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `order` object is passed as data, so widgets can access it through their props.
+
+Refer to the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+
+***
+
+## Step 2: Register Injection Zones for Type Checking
+
+Once your page exposes injection zones, register them in the `InjectionZoneRegistry` interface. This enables type checking and autocompletion for the zones when other developers create widgets using `defineWidgetConfig`.
+
+To register the injection zones, augment the `InjectionZoneRegistry` interface through declaration merging. Create an `index.d.ts` file in your plugin's root directory with the following content:
+
+```ts title="index.d.ts"
+declare module "@medusajs/admin-shared" {
+  interface InjectionZoneRegistry {
+    "custom.details.before": true
+    "custom.details.after": true
+    "custom.details.side.before": true
+    "custom.details.side.after": true
+  }
+}
+```
+
+Then, include the declaration file in your plugin's `package.json`:
+
+```json title="package.json"
+{
+  "files": [
+    ".medusa/server",
+    "index.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    }
+  }
+}
+```
+
+***
+
+## Use Custom Injection Zones in Widgets
+
+Once registered, users using the plugin can inject widgets into the custom zones using `defineWidgetConfig`. For example:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const DraftOrderWidget = () => {
+  return <div>Custom Widget Content</div>
+}
+
+export const config = defineWidgetConfig({
+  zone: "custom.details.before",
+})
+
+export default DraftOrderWidget
+```
+
+In this example, the widget is injected into the `custom.details.before` zone, so it's rendered before the main content of the custom details page.
+
+When you build your application, you'll see a warning that this zone is unknown. This is only a precaution since the system doesn't recognize the custom zone. Make sure to use the correct zone name.
+
+### Use Data Prop in Widgets
+
+If you pass a `data` prop to the `LayoutComposer`, widgets can access it through their props.
+
+For example, if you pass an `order` object as data to the `LayoutComposer`, you can access it in your widget like this:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+import { 
+  DetailWidgetProps, 
+  AdminOrder
+} from "@medusajs/framework/types"
+
+// TODO: replace AdminOrder with the expected type of the data prop
+type CustomDetailsData = AdminOrder
+
+const CustomWidget = ({ 
+  data,
+}: DetailWidgetProps<CustomDetailsData>) => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Custom Widget {data.title}
+        </Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "custom.details.before",
+})
+
+export default CustomWidget
+```
+
+***
+
+## Custom Zone Naming Convention
+
+Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+
+- `resource-name`: The name of the resource being accessed in the page. For example, `custom` in the example above.
+- `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
+- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+
+This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
+
+Custom injection zones are validated using a pattern check. If a zone doesn't match a core injection zone, the system shows a warning but still allows the zone if it follows the expected pattern.
+
+
 # Environment Variables in Admin Customizations
 
 In this chapter, you'll learn how to use environment variables in your admin customizations.
@@ -8546,8 +8728,6 @@ VITE_MY_API_KEY=sk_123
 ## How to Use Environment Variables
 
 To access or use an environment variable starting with `VITE_`, use the `import.meta.env` object.
-
-The [Admin ESLint Plugin](undefined/learn/fundamentals/admin/eslint) automatically detects and fixes usage of `process.env` in admin code, suggesting `import.meta.env` instead.
 
 For example:
 
@@ -8709,563 +8889,6 @@ declare const __STOREFRONT_URL__: string
 As explained in the [Environment Variables in Production section](#environment-variables-in-production), environment variables are inlined into the build. This presents a limitation for plugins, where you can't use environment variables.
 
 Instead, you can use the [Plugin Global Variables](#global-variables-in-plugins) described above to access the backend URL, base path, and storefront URL.
-
-
-# Medusa ESLint Plugin
-
-When developing admin customizations and event subscribers, following consistent patterns and conventions ensures maintainable, error-free code. Medusa provides an ESLint plugin with rules specifically designed for admin widget, UI route, and subscriber development.
-
-## Installation
-
-Install the ESLint plugin in your Medusa project:
-
-```bash npm2yarn
-npm install --save-dev @medusajs/eslint-plugin
-```
-
-## Configuration
-
-### Automatic Configuration (Recommended)
-
-The easiest way to use the plugin is to extend the recommended configuration in your ESLint config file:
-
-```js title="eslint.config.mjs"
-import medusaPlugin from "@medusajs/eslint-plugin"
-
-export default [
-  ...medusaPlugin.configs.recommended,
-  // your other ESLint configs...
-]
-```
-
-### Strict Configuration
-
-For additional rules that are more performance-intensive (including cross-file analysis), you can use the strict preset:
-
-```js title="eslint.config.mjs"
-import medusaPlugin from "@medusajs/eslint-plugin"
-
-export default [
-  ...medusaPlugin.configs.strict,
-  // your other ESLint configs...
-]
-```
-
-The strict configuration includes all recommended rules plus additional rules like `scheduled-job-name-unique` that ensure job names are unique across your entire project.
-
-The recommended configuration automatically applies the appropriate rules to admin, subscriber, and scheduled job files based on their file patterns:
-
-- Admin rules: `src/admin/**/*.{ts,tsx}` files
-- Subscriber rules: `src/subscribers/**/*.{ts,js}` files
-- Scheduled job rules: `src/jobs/**/*.{ts,js}` files
-
-### Manual Configuration
-
-For more granular control, you can configure the rules manually:
-
-```js title="eslint.config.mjs"
-import medusaPlugin from "@medusajs/eslint-plugin"
-
-export default [
-  {
-    plugins: {
-      "@medusajs": medusaPlugin,
-    },
-    files: ["src/admin/**/*.{ts,tsx}"],
-    rules: {
-      "@medusajs/admin-env-vars-import-meta": "warn",
-      "@medusajs/admin-component-must-be-arrow-function": "error",
-      "@medusajs/admin-no-medusa-utils-import": "error",
-    },
-  },
-  {
-    files: ["src/subscribers/**/*.{ts,js}"],
-    rules: {
-      "@medusajs/subscriber-config-export-required": "error",
-      "@medusajs/subscriber-default-export-must-be-async": "error",
-      "@medusajs/subscriber-default-export-required": "error",
-    },
-  },
-  {
-    files: ["src/jobs/**/*.{ts,js}"],
-    rules: {
-      "@medusajs/scheduled-job-config-required": "error",
-      "@medusajs/scheduled-job-default-export-async": "error",
-      "@medusajs/scheduled-job-default-export-required": "error",
-      "@medusajs/scheduled-job-schedule-valid-cron": "error",
-    },
-  },
-  {
-    files: ["**/*.{ts,tsx,js}"],
-    rules: {
-      "@medusajs/import-from-framework-not-internal": "warn",
-      "@medusajs/prefer-modules-enum": "warn",
-      "@medusajs/use-medusa-error-not-generic-error": "warn",
-      "@medusajs/no-mikroorm-direct-import": "warn",
-    },
-  },
-  // Additional configurations for widgets and UI routes...
-]
-```
-
-***
-
-## Admin Development Rules
-
-### Environment Variables
-
-**Rule: `admin-env-vars-import-meta`**
-
-Admin code is bundled by Vite for the browser. Use `import.meta.env` instead of `process.env` for environment variables.
-
-```tsx
-// ❌ Incorrect - process.env is undefined in the browser
-const url = process.env.VITE_BACKEND_URL
-
-// ✅ Correct - use import.meta.env
-const url = import.meta.env.VITE_BACKEND_URL
-```
-
-### Framework Imports in Admin Code
-
-**Rule: `admin-no-medusa-utils-import`**
-
-Don't import Node-only framework modules in admin code as they break the browser bundle. These modules are designed for server-side use only.
-
-```tsx
-// ❌ Incorrect - Node-only modules break browser builds
-import { MedusaError } from "@medusajs/framework/utils"
-import { defineMiddlewares } from "@medusajs/framework/http"
-import { createWorkflow } from "@medusajs/framework/workflows-sdk"
-
-// ✅ Correct - Use browser-safe admin SDK
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-
-// ✅ Also correct - Types are erased at build time
-import type { HttpTypes } from "@medusajs/framework/types"
-```
-
-Move server logic to workflows, API routes, or module services and call them from the admin via the JS SDK.
-
-### Component Structure
-
-**Rule: `admin-component-must-be-arrow-function`**
-
-Admin widgets and UI route components must be arrow functions for consistency and hot-reloading compatibility.
-
-```tsx
-// ❌ Incorrect - function declaration
-export default function MyWidget() {
-  return <div>Widget content</div>
-}
-
-// ✅ Correct - arrow function
-const MyWidget = () => {
-  return <div>Widget content</div>
-}
-
-export default MyWidget
-```
-
-***
-
-## Widget Development Rules
-
-### Default Export
-
-**Rule: `widget-must-have-default-export`**
-
-Widget files must export a React component as the default export.
-
-```tsx title="src/admin/widgets/product-widget.tsx"
-// ✅ Required default export
-const ProductWidget = () => {
-  return <div>Widget content</div>
-}
-
-export default ProductWidget
-```
-
-### Config Export
-
-**Rule: `widget-must-export-config`**
-
-Widget files must export a `config` object to define widget configuration.
-
-```tsx title="src/admin/widgets/product-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-
-const ProductWidget = () => {
-  return <div>Widget content</div>
-}
-
-// ✅ Required config export
-export const config = defineWidgetConfig({
-  zone: "product.details.before",
-})
-
-export default ProductWidget
-```
-
-### Zone Definition
-
-**Rule: `widget-zone-must-be-string-literal`**
-
-Widget zones must be defined as string literals for static analysis and validation.
-
-```tsx
-// ❌ Incorrect - dynamic zone
-const zoneName = "product.details.before"
-export const config = defineWidgetConfig({
-  zone: zoneName,
-})
-
-// ✅ Correct - string literal
-export const config = defineWidgetConfig({
-  zone: "product.details.before",
-})
-```
-
-***
-
-## UI Route Development Rules
-
-### File Naming
-
-**Rule: `ui-route-file-name-page-tsx`**
-
-UI route files must be named `page.tsx` or `page.jsx` to be recognized by the admin routing system.
-
-```
-src/admin/routes/
-├── brands/
-│   └── page.tsx    ✅ Correct filename
-├── products/
-│   └── list.tsx    ❌ Incorrect - should be page.tsx
-```
-
-### Default Export
-
-**Rule: `ui-route-must-have-default-export`**
-
-UI route files must export a React component as the default export.
-
-```tsx title="src/admin/routes/brands/page.tsx"
-// ✅ Required default export
-const BrandsPage = () => {
-  return <div>Brands listing</div>
-}
-
-export default BrandsPage
-```
-
-### Route Configuration
-
-**Rule: `ui-route-config-via-define-route-config`**
-
-When exporting route configuration, use the `defineRouteConfig` helper for type safety.
-
-```tsx title="src/admin/routes/brands/page.tsx"
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-
-const BrandsPage = () => {
-  return <div>Brands listing</div>
-}
-
-// ✅ Use defineRouteConfig helper
-export const config = defineRouteConfig({
-  label: "Brands",
-  icon: TagSolid,
-})
-
-export default BrandsPage
-```
-
-**Rule: `no-config-on-dynamic-ui-route`**
-
-Dynamic routes (with `[param]` syntax) should not export route configuration, as the route config only applies to static routes.
-
-```tsx title="src/admin/routes/brands/[id]/page.tsx"
-import { defineRouteConfig } from "@medusajs/admin-sdk"
-
-const BrandDetailsPage = () => {
-  return <div>Brand details</div>
-}
-
-// ❌ Config on dynamic route has no effect
-export const config = defineRouteConfig({
-  label: "Brand Details", // This won't be used
-})
-
-export default BrandDetailsPage
-```
-
-***
-
-## Subscriber Development Rules
-
-### Default Export
-
-**Rule: `subscriber-default-export-required`**
-
-Subscriber files must export a handler function as the default export.
-
-```ts title="src/subscribers/order-placed.ts"
-import type { SubscriberConfig, SubscriberArgs } from "@medusajs/framework"
-
-// ✅ Required default export
-export default async function orderPlacedHandler({
-  event: { data },
-  container,
-}: SubscriberArgs<{ id: string }>) {
-  // Handle the event...
-}
-
-export const config: SubscriberConfig = {
-  event: "order.placed",
-}
-```
-
-### Async Function Requirement
-
-**Rule: `subscriber-default-export-must-be-async`**
-
-The default-exported subscriber handler function must be async. Subscribers receive events and are always awaited by the framework.
-
-```ts
-// ❌ Incorrect - not async
-export default function orderPlacedHandler() {
-  // Handle the event...
-}
-
-// ✅ Correct - async function
-export default async function orderPlacedHandler() {
-  // Handle the event...
-}
-```
-
-### Config Export
-
-**Rule: `subscriber-config-export-required`**
-
-Subscriber files must export a `config` object with at least an `event` property to specify which event(s) to listen for.
-
-```ts title="src/subscribers/order-placed.ts"
-export default async function orderPlacedHandler() {
-  // Handle the event...
-}
-
-// ✅ Required config export
-export const config: SubscriberConfig = {
-  event: "order.placed", // Single event
-}
-
-// ✅ Multiple events
-export const config: SubscriberConfig = {
-  event: ["order.placed", "order.updated"], // Array of events
-}
-```
-
-***
-
-## Scheduled Job Development Rules
-
-### Default Export
-
-**Rule: `scheduled-job-default-export-required`**
-
-Scheduled job files must export a handler function as the default export.
-
-```ts title="src/jobs/hello-world.ts"
-import { MedusaContainer } from "@medusajs/framework/types"
-
-// ✅ Required default export
-export default async function greetingJob(container: MedusaContainer) {
-  const logger = container.resolve("logger")
-  logger.info("Greeting!")
-}
-
-export const config = {
-  name: "greeting-every-minute",
-  schedule: "* * * * *",
-}
-```
-
-### Async Function Requirement
-
-**Rule: `scheduled-job-default-export-async`**
-
-The default-exported scheduled job handler function must be async. Scheduled jobs are always awaited by the framework.
-
-```ts
-// ❌ Incorrect - not async
-export default function greetingJob() {
-  // Handle the job...
-}
-
-// ✅ Correct - async function
-export default async function greetingJob() {
-  // Handle the job...
-}
-```
-
-### Config Export
-
-**Rule: `scheduled-job-config-required`**
-
-Scheduled job files must export a `config` object with `name` and `schedule` properties.
-
-```ts title="src/jobs/hello-world.ts"
-export default async function greetingJob() {
-  // Handle the job...
-}
-
-// ✅ Required config export
-export const config = {
-  name: "greeting-every-minute",    // Unique job name
-  schedule: "* * * * *",           // Cron expression or interval object
-}
-```
-
-### Valid Cron Expression
-
-**Rule: `scheduled-job-schedule-valid-cron`**
-
-When using cron-based scheduling, the `config.schedule` value must be a valid cron expression.
-
-```ts
-// ❌ Incorrect - invalid cron expression
-export const config = {
-  name: "my-job",
-  schedule: "* * * *", // Missing required field
-}
-
-// ✅ Correct - valid cron expression
-export const config = {
-  name: "my-job",
-  schedule: "0 0 * * *", // Daily at midnight
-}
-
-// ✅ Also correct - interval-based scheduling
-export const config = {
-  name: "my-job",
-  schedule: { interval: 60000 }, // Every minute
-}
-```
-
-### Unique Job Names
-
-**Rule: `scheduled-job-name-unique`** (strict preset only)
-
-Each scheduled job must have a unique `name` across all job files in the project.
-
-```ts title="src/jobs/sync-products.ts"
-export const config = {
-  name: "sync-products", // ❌ If another job already uses this name
-  schedule: "0 0 * * *",
-}
-```
-
-```ts title="src/jobs/daily-cleanup.ts"
-export const config = {
-  name: "sync-products", // ❌ Duplicate name - will cause conflict
-  schedule: "0 1 * * *",
-}
-```
-
-**Note:** This rule is only enabled in the `strict` preset as it requires cross-file analysis and can be slower on large projects.
-
-***
-
-## General Development Rules
-
-### Framework Imports
-
-**Rule: `import-from-framework-not-internal`**
-
-Use the public `@medusajs/framework/*` entry points instead of deprecated standalone packages or internal build output.
-
-```ts
-// ❌ Incorrect - deprecated standalone package
-import { MedusaError } from "@medusajs/utils"
-
-// ✅ Correct - use framework entry point (autofix available)
-import { MedusaError } from "@medusajs/framework/utils"
-
-// ❌ Incorrect - internal dist import
-import { foo } from "@medusajs/medusa/dist/utils/foo"
-
-// ✅ Correct - use public API
-import { foo } from "@medusajs/framework/utils"
-```
-
-**Rule: `no-mikroorm-direct-import`**
-
-Don't import MikroORM or awilix directly. As of Medusa v2.11, they're bundled into `@medusajs/framework`.
-
-```ts
-// ❌ Incorrect - direct MikroORM import
-import { EntityManager } from "@mikro-orm/core"
-import { Container } from "awilix"
-
-// ✅ Correct - use framework re-exports (autofix available)
-import { EntityManager } from "@medusajs/framework/mikro-orm/core"
-import { Container } from "@medusajs/framework/awilix"
-```
-
-### Module Resolution
-
-**Rule: `prefer-modules-enum`**
-
-Use the `Modules` enum instead of magic strings when resolving modules from the container.
-
-```ts
-// ❌ Incorrect - magic string
-const productService = container.resolve("product")
-
-// ✅ Correct - use Modules enum (autofix available)
-import { Modules } from "@medusajs/framework/utils"
-const productService = container.resolve(Modules.PRODUCT)
-```
-
-### Error Handling
-
-**Rule: `use-medusa-error-not-generic-error`**
-
-Throw `MedusaError` instead of generic JavaScript errors. `MedusaError` carries a `type` that Medusa maps to the correct HTTP status and consistent client response.
-
-```ts
-// ❌ Incorrect - generic Error
-throw new Error("Something went wrong")
-
-// ✅ Correct - MedusaError with appropriate type
-import { MedusaError } from "@medusajs/framework/utils"
-throw new MedusaError(MedusaError.Types.NOT_FOUND, "Order not found")
-```
-
-***
-
-## Benefits
-
-Using the ESLint plugin provides several advantages:
-
-1. **Consistency**: Enforces consistent patterns across your admin customizations, subscribers, and scheduled jobs
-2. **Early Error Detection**: Catches common mistakes before runtime, including invalid cron expressions and configuration errors
-3. **Better Developer Experience**: Provides immediate feedback with auto-fixing capabilities
-4. **Framework Compatibility**: Ensures your code works correctly with Medusa's admin, event, and job scheduling frameworks
-5. **Maintainability**: Makes your codebase easier to maintain and debug
-
-***
-
-## IDE Integration
-
-Most modern code editors automatically pick up ESLint configuration. For the best development experience:
-
-1. **VS Code**: Install the ESLint extension
-2. **Enable auto-fix on save** in your editor settings
-3. **Configure your editor** to show ESLint warnings and errors inline
-
-This provides real-time feedback while developing admin customizations, subscribers, and scheduled jobs.
 
 
 # Admin Development
@@ -9493,13 +9116,12 @@ Do not install Tanstack Query as that will cause unexpected errors in your devel
 
 First, create the file `src/admin/lib/sdk.ts` to set up the SDK for use in your customizations:
 
-### Medusa Project
-
 ```ts title="src/admin/lib/sdk.ts"
 import Medusa from "@medusajs/js-sdk"
 
+// add __BACKEND_URL__ to src/admin/vite-env.d.ts if you get type errors
 export const sdk = new Medusa({
-  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  baseUrl: __BACKEND_URL__ || "/",
   debug: import.meta.env.DEV,
   auth: {
     type: "session",
@@ -9507,21 +9129,7 @@ export const sdk = new Medusa({
 })
 ```
 
-### Medusa Plugin
-
-```ts title="src/admin/lib/sdk.ts"
-import Medusa from "@medusajs/js-sdk"
-
-export const sdk = new Medusa({
-  // add __BACKEND_URL__ to src/admin/vite-env.d.ts if you get type errors
-  baseUrl: __BACKEND_URL__ || "/",
-  auth: {
-    type: "session",
-  },
-})
-```
-
-Notice that in a Medusa project, you use `import.meta.env` to access environment variables in your customizations, whereas in a plugin you use the global variable `__BACKEND_URL__` to access the backend URL. You can learn more in the [Admin Environment Variables](undefined/learn/fundamentals/admin/environment-variables) chapter.
+The `__BACKEND_URL__` global variable is injected by the admin bundler at build time. You can learn more about available global variables and environment variables in the [Admin Environment Variables](undefined/learn/fundamentals/admin/environment-variables) chapter.
 
 Refer to the [JS SDK](undefined/resources/js-sdk#js-sdk-configurations) reference for more details on the SDK's configurations.
 
@@ -10156,7 +9764,7 @@ You add a new route at `http://localhost:9000/app/custom`. The `CustomPage` comp
 
 In the route, you use [Medusa UI](undefined/ui), a package that Medusa maintains to allow you to customize the dashboard with the same components used to build it.
 
-The UI route component must be created as an arrow function. The [Admin ESLint Plugin](undefined/learn/fundamentals/admin/eslint) enforces this and other UI route development patterns automatically.
+The UI route component must be created as an arrow function.
 
 ### Test the UI Route
 
@@ -10622,7 +10230,7 @@ You export the `ProductWidget` component, which displays the heading `Product Wi
 
 To export the widget's configuration, you use `defineWidgetConfig` from the Admin Extension SDK. It accepts an object as a parameter with the `zone` property, whose value is a string or an array of strings, each being the name of the zone to inject the widget into.
 
-The widget component must be created as an arrow function. The [Admin ESLint Plugin](undefined/learn/fundamentals/admin/eslint) enforces this and other widget development patterns automatically.
+The widget component must be created as an arrow function.
 
 ### Test the Widget
 
@@ -10687,66 +10295,7 @@ Refer to the [Admin Widget Injection Zones](undefined/resources/admin-widget-inj
 
 Plugins can register custom injection zones to extend the widget system beyond the core zones. This is useful when creating custom admin pages or extending existing pages with plugin-specific zones.
 
-### Plugin-Defined Injection Zones
-
-To register custom injection zones in a plugin, augment the `InjectionZoneRegistry` interface through declaration merging. Create an `index.d.ts` file in your plugin root with the following structure:
-
-```ts title="my-plugin/index.d.ts"
-declare module "@medusajs/admin-shared" {
-  interface InjectionZoneRegistry {
-    "my-plugin.product-page.before": true
-    "my-plugin.product-page.after": true
-    "my-plugin.custom-section.side.before": true
-    "my-plugin.custom-section.side.after": true
-  }
-}
-```
-
-Make sure to include the declaration file in your plugin's package.json:
-
-```json title="my-plugin/package.json"
-{
-  "files": [
-    ".medusa/server",
-    "index.d.ts"
-  ],
-  "exports": {
-    ".": {
-      "types": "./index.d.ts"
-    }
-  }
-}
-```
-
-### Using Custom Injection Zones
-
-Once registered, custom injection zones can be used in widget configurations just like core zones:
-
-```tsx title="src/admin/widgets/my-custom-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-
-const MyCustomWidget = () => {
-  return <div>Custom Widget Content</div>
-}
-
-export const config = defineWidgetConfig({
-  zone: "my-plugin.product-page.before",
-})
-
-export default MyCustomWidget
-```
-
-### Custom Zone Naming Convention
-
-Custom injection zones should follow the pattern: `{plugin-name}.{page-context}.{position}`, where:
-
-- `plugin-name`: Your plugin's identifier
-- `page-context`: The page or section context
-- `position`: One of `before`, `after`, `side.before`, or `side.after`
-
-This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
-
-Custom injection zones are validated using a pattern check. If a zone doesn't match core injection zones, the system will show a warning but still allow the zone if it follows the expected pattern.
+Refer to the [Custom Injection Zones](undefined/learn/fundamentals/admin/custom-injection-zones) chapter to learn how to add custom injection zones in a plugin.
 
 ***
 
@@ -35879,7 +35428,7 @@ Once a shipment is created for the fulfillment, you can store its tracking numbe
 
 ### Accessing Tracking Information
 
-To access tracking information for a fulfillment, you must retrieve the related labels. For example, to retrieve the tracking data with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md):
+To access tracking information for a fulfillment, you must retrieve the related labels. For example, to retrieve the tracking data with [Query](undefined/docs/learn/fundamentals/module-links/query):
 
 ```ts
 const { data: fulfillment } = query.graph({
@@ -56277,9 +55826,12 @@ Refer to the [Build Medusa Application](undefined/docs/learn/build) guide for ne
 
 ## Options
 
-|Option|Description|
-|---|---|---|
-|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |
+|Option|Description|Default|
+|---|---|---|---|---|
+|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |\`false\`|
+|\`--lint\`|Run the Medusa linter before building. Pass |\`true\`|
+|\`--fix\`|Auto-fix lint issues where possible before building.|\`false\`|
+|\`--quiet\`|Report lint errors only, suppressing warnings.|\`false\`|
 
 ***
 
@@ -56461,6 +56013,8 @@ npx medusa develop
 |---|---|---|---|---|
 |\`-H \<host>\`|Set the host of the Medusa server.|\`localhost\`|
 |\`-p \<port>\`|Set the port of the Medusa server.|\`9000\`|
+|\`--lint\`|Run the Medusa linter before starting the dev server. Pass |\`true\`|
+|\`--fix\`|Auto-fix lint issues where possible before starting the dev server.|\`false\`|
 
 
 # exec Command - Medusa CLI Reference
@@ -56477,6 +56031,38 @@ npx medusa exec [file] [args...]
 |---|---|---|---|---|
 |\`file\`|The path to the TypeScript or JavaScript file containing the function to execute.|Yes|
 |\`args\`|A list of arguments to pass to the function. These arguments are passed in the |No|
+
+
+# lint Command - Medusa CLI Reference
+
+This command is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6).
+
+Lint your project using its ESLint configuration.
+
+```bash npx2yarn
+npx medusa lint
+```
+
+The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar) at the project root. If no config file is found, the command exits with an error.
+
+The `eslint` package must be installed in your project. It is a peer dependency of `@medusajs/eslint-plugin`.
+
+## Arguments
+
+|Argument|Description|
+|---|---|---|
+|\`\[paths...]\`|Files or directories to lint. Defaults to the whole project.|
+
+## Options
+
+|Option|Description|Default|
+|---|---|---|---|---|
+|\`--fix\`|Auto-fix lint issues where possible.|\`false\`|
+|\`--quiet\`|Report lint errors only, suppressing warnings.|\`false\`|
+
+## Exit Codes
+
+The command exits with code `1` when lint errors are found. It exits with code `0` when only warnings are produced or no issues are found.
 
 
 # new Command - Medusa CLI Reference
@@ -56732,9 +56318,12 @@ Refer to the [Build Medusa Application](undefined/docs/learn/build) guide for ne
 
 ## Options
 
-|Option|Description|
-|---|---|---|
-|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |
+|Option|Description|Default|
+|---|---|---|---|---|
+|\`--admin-only\`|Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the |\`false\`|
+|\`--lint\`|Run the Medusa linter before building. Pass |\`true\`|
+|\`--fix\`|Auto-fix lint issues where possible before building.|\`false\`|
+|\`--quiet\`|Report lint errors only, suppressing warnings.|\`false\`|
 
 ***
 
@@ -56916,6 +56505,8 @@ npx medusa develop
 |---|---|---|---|---|
 |\`-H \<host>\`|Set the host of the Medusa server.|\`localhost\`|
 |\`-p \<port>\`|Set the port of the Medusa server.|\`9000\`|
+|\`--lint\`|Run the Medusa linter before starting the dev server. Pass |\`true\`|
+|\`--fix\`|Auto-fix lint issues where possible before starting the dev server.|\`false\`|
 
 
 # exec Command - Medusa CLI Reference
@@ -56932,6 +56523,38 @@ npx medusa exec [file] [args...]
 |---|---|---|---|---|
 |\`file\`|The path to the TypeScript or JavaScript file containing the function to execute.|Yes|
 |\`args\`|A list of arguments to pass to the function. These arguments are passed in the |No|
+
+
+# lint Command - Medusa CLI Reference
+
+This command is available since Medusa [v2.15.6](https://github.com/medusajs/medusa/releases/tag/v2.15.6).
+
+Lint your project using its ESLint configuration.
+
+```bash npx2yarn
+npx medusa lint
+```
+
+The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar) at the project root. If no config file is found, the command exits with an error.
+
+The `eslint` package must be installed in your project. It is a peer dependency of `@medusajs/eslint-plugin`.
+
+## Arguments
+
+|Argument|Description|
+|---|---|---|
+|\`\[paths...]\`|Files or directories to lint. Defaults to the whole project.|
+
+## Options
+
+|Option|Description|Default|
+|---|---|---|---|---|
+|\`--fix\`|Auto-fix lint issues where possible.|\`false\`|
+|\`--quiet\`|Report lint errors only, suppressing warnings.|\`false\`|
+
+## Exit Codes
+
+The command exits with code `1` when lint errors are found. It exits with code `0` when only warnings are produced or no issues are found.
 
 
 # new Command - Medusa CLI Reference
@@ -131423,7 +131046,7 @@ const ProductListPage = () => {
       widgetsZonePrefix="product.list"
       preferredLayoutId="core:single-column"
       sections={{
-        main: <ProductDataTable />
+        main: <ProductDataTable />,
       }}
     />
   )
@@ -131484,7 +131107,7 @@ const customLayout: LayoutDefinition = {
   sections: [
     { id: "main" },
     { id: "side" },
-    { id: "extra" }
+    { id: "extra" },
   ],
   Component: ({ sections, data }) => (
     <div className="grid grid-cols-3 gap-4">
@@ -131492,7 +131115,7 @@ const customLayout: LayoutDefinition = {
       <div>{sections.side}</div>
       <div>{sections.extra}</div>
     </div>
-  )
+  ),
 }
 ```
 
@@ -131518,7 +131141,7 @@ Widgets within each section are ordered using the `order` property. Common order
 import { 
   BEFORE_ORDER, 
   CORE_CONTENT_ORDER, 
-  AFTER_ORDER 
+  AFTER_ORDER, 
 } from "@medusajs/dashboard/components"
 ```
 
@@ -131911,6 +131534,8 @@ To test it out, log into the Medusa Admin and open `http://localhost:9000/app/cu
 
 In this guide, you'll learn how to create a layout component that matches the Medusa Admin's design conventions for pages with a single column of content.
 
+As of Medusa v2.16.0, Medusa provides a [LayoutComposer](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/admin-components/components/layout-composer) component that you can use to create layouts, including the single column layout.
+
 The Medusa Admin has pages with a single column of content.
 
 This doesn't include the sidebar, only the main content.
@@ -131973,6 +131598,8 @@ This UI route also uses a [Container](undefined/home/runner/work/medusa/medusa/w
 
 In this guide, you'll learn how to create a layout component that matches the Medusa Admin's design conventions for pages with two columns of content.
 
+As of Medusa v2.16.0, Medusa provides a [LayoutComposer](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/admin-components/components/layout-composer) component that you can use to create layouts, including the two column layout.
+
 The Medusa Admin has pages with two columns of content.
 
 This doesn't include the sidebar, only the main content.
@@ -132013,7 +131640,7 @@ The `TwoColumnLayout` accepts two props:
 
 ## Example
 
-Use the `TwoColumnLayout` component in your UI routes that have a single column. For example:
+Use the `TwoColumnLayout` component in your UI routes that have two columns. For example:
 
 ```tsx title="src/admin/routes/custom/page.tsx" highlights={[["9"]]}
 import { defineRouteConfig } from "@medusajs/admin-sdk"
@@ -132047,7 +131674,7 @@ export const config = defineRouteConfig({
 export default CustomPage
 ```
 
-This UI route also uses [Container](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/admin-components/components/container) and [Header]() custom components.
+This UI route also uses [Container](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/admin-components/components/container) and [Header](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/admin-components/components/header) custom components.
 
 
 # Admin Components & Layouts

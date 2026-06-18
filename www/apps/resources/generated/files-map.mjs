@@ -288,6 +288,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/inventory/workflows"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/loyalty/admin-widget-zones"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/page.mdx",
     "pathname": "/commerce-modules/loyalty/gift-cards"
   },
@@ -650,6 +654,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/workflows/page.mdx",
     "pathname": "/commerce-modules/store/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/store-credit/admin-widget-zones"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store-credit/concepts/page.mdx",
@@ -1126,6 +1134,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/exec/page.mdx",
     "pathname": "/medusa-cli/commands/exec"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/lint/page.mdx",
+    "pathname": "/medusa-cli/commands/lint"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/new/page.mdx",
