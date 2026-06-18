@@ -1,0 +1,115 @@
+---
+sidebar_label: "lint"
+sidebar_position: 6
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `lint Command - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This command is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+Lint your project using its ESLint configuration.
+
+```bash npx2yarn
+npx medusa lint
+```
+
+The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar) at the project root. If no config file is found, the command exits with an error.
+
+The `eslint` package must be installed in your project. It is a peer dependency of `@medusajs/eslint-plugin`.
+
+## Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Argument
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `[paths...]`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Files or directories to lint. Defaults to the whole project.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--fix`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Auto-fix lint issues where possible.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--quiet`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Report lint errors only, suppressing warnings.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Exit Codes
+
+The command exits with code `1` when lint errors are found. It exits with code `0` when only warnings are produced or no issues are found.

@@ -1,0 +1,78 @@
+---
+sidebar_label: "use-inject-manager-on-public-methods"
+---
+
+export const metadata = {
+  title: `use-inject-manager-on-public-methods - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that service methods accepting a `Context` parameter are decorated with `@InjectManager()` (public) or `@InjectTransactionManager()` (protected or private).
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets service files in your project's `src/modules` directory. It reports a method on a service class that accepts a `Context` parameter but isn't decorated with the appropriate manager decorator.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+
+class BlogModuleService extends MedusaService({}) {
+  async list(sharedContext: Context = {}) {}
+}
+```
+
+Instead, decorate a public method with `@InjectManager()`:
+
+```ts title="src/modules/blog/service.ts"
+import {
+  MedusaService,
+  InjectManager,
+} from "@medusajs/framework/utils"
+
+class BlogModuleService extends MedusaService({}) {
+  @InjectManager()
+  async list(sharedContext: Context = {}) {}
+}
+```
+
+## Why it's Important
+
+The `@InjectManager()` and `@InjectTransactionManager()` decorators inject the entity manager into the method's context. Without them, the method runs without a managed transaction and database operations can fail.
+
+Learn more in the [Database Operations in Services documentation](!docs!/learn/fundamentals/modules/db-operations).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/use-inject-manager-on-public-methods": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/use-inject-manager-on-public-methods
+async list(sharedContext: Context = {}) {}
+```

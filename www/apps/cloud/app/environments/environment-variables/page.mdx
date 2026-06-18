@@ -40,7 +40,23 @@ The following environment variable names are reserved by Cloud and you can't use
 - `AWS_REGION`
 - `MEDUSA_CLOUD_API_KEY`
 - `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`
+- `MEDUSA_CLOUD_ENVIRONMENT_TYPE`
+- `MEDUSA_CLOUD_ENVIRONMENT_NAME`
+- `MEDUSA_CLOUD_PROJECT_HANDLE`
 - `MEDUSA_CLOUD_EMAILS_ENDPOINT`
+
+---
+
+## System Environment Variables
+
+Cloud automatically provides the following system environment variables in all environments at both runtime and build time:
+
+- `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`: The unique handle/identifier for the environment
+- `MEDUSA_CLOUD_ENVIRONMENT_TYPE`: The type of environment (`production`, `preview-instance`, or `long-lived`)
+- `MEDUSA_CLOUD_ENVIRONMENT_NAME`: The display name of the environment. For example, "Production" or "Staging".
+- `MEDUSA_CLOUD_PROJECT_HANDLE`: The unique handle/identifier for the project
+
+These variables are automatically set by Cloud and don't need to be configured manually. You can use them in your application code to access information about the current environment context.
 
 ---
 

@@ -40,6 +40,26 @@ export const isUndefinedExpression = (node: TSESTree.Node): boolean => {
 }
 
 /**
+ * Strips TypeScript-only expression wrappers (`x as T`, `x satisfies T`, `x!`,
+ * `<T>x`) that don't change the runtime value, so the underlying expression can
+ * be inspected — e.g. `StepResponse.skip() as any` unwraps to the call.
+ */
+export const unwrapTsExpression = (
+  node: TSESTree.Expression
+): TSESTree.Expression => {
+  let current = node
+  while (
+    current.type === AST_NODE_TYPES.TSAsExpression ||
+    current.type === AST_NODE_TYPES.TSSatisfiesExpression ||
+    current.type === AST_NODE_TYPES.TSNonNullExpression ||
+    current.type === AST_NODE_TYPES.TSTypeAssertion
+  ) {
+    current = current.expression
+  }
+  return current
+}
+
+/**
  * The three AST node types that represent a function value:
  * `ArrowFunctionExpression`, `FunctionExpression`, and `FunctionDeclaration`.
  */
@@ -67,13 +87,21 @@ export const walkAst = (
   node: TSESTree.Node | null | undefined,
   visit: (node: TSESTree.Node) => boolean | void
 ): void => {
-  if (!node) return
-  if (visit(node) === false) return
+  if (!node) {
+    return
+  }
+  if (visit(node) === false) {
+    return
+  }
 
   for (const key of Object.keys(node)) {
-    if (key === "parent") continue
+    if (key === "parent") {
+      continue
+    }
     const value = (node as unknown as Record<string, unknown>)[key]
-    if (!value) continue
+    if (!value) {
+      continue
+    }
     if (Array.isArray(value)) {
       for (const child of value) {
         if (child && typeof child === "object" && "type" in child) {
@@ -104,9 +132,13 @@ export const isFunctionNode = (
 export const getPropertyKeyName = (
   prop: TSESTree.ObjectLiteralElement
 ): string | null => {
-  if (prop.type !== AST_NODE_TYPES.Property || prop.computed) return null
+  if (prop.type !== AST_NODE_TYPES.Property || prop.computed) {
+    return null
+  }
   const key = prop.key
-  if (key.type === AST_NODE_TYPES.Identifier) return key.name
+  if (key.type === AST_NODE_TYPES.Identifier) {
+    return key.name
+  }
   if (key.type === AST_NODE_TYPES.Literal && typeof key.value === "string") {
     return key.value
   }
@@ -123,8 +155,12 @@ export const findProperty = (
   name: string
 ): TSESTree.Property | null => {
   for (const prop of obj.properties) {
-    if (prop.type !== AST_NODE_TYPES.Property) continue
-    if (getPropertyKeyName(prop) === name) return prop
+    if (prop.type !== AST_NODE_TYPES.Property) {
+      continue
+    }
+    if (getPropertyKeyName(prop) === name) {
+      return prop
+    }
   }
   return null
 }
@@ -220,7 +256,9 @@ export const findVariableInScope = (
   let current: TSESLint.Scope.Scope | null = scope
   while (current) {
     const found = current.variables.find((v) => v.name === name)
-    if (found) return found
+    if (found) {
+      return found
+    }
     current = current.upper
   }
   return null
@@ -269,9 +307,13 @@ export const resolveFunctionFromIdentifier = (
 export const getConstStringInit = (
   variable: TSESLint.Scope.Variable
 ): string | null => {
-  if (variable.defs.length !== 1) return null
+  if (variable.defs.length !== 1) {
+    return null
+  }
   const def = variable.defs[0]
-  if (def.type !== "Variable") return null
+  if (def.type !== "Variable") {
+    return null
+  }
   if (
     def.parent?.type !== AST_NODE_TYPES.VariableDeclaration ||
     def.parent.kind !== "const"
@@ -334,12 +376,20 @@ export const getReturnedExpression = (
     return fn.body
   }
   const body = fn.body
-  if (body.type !== AST_NODE_TYPES.BlockStatement) return null
+  if (body.type !== AST_NODE_TYPES.BlockStatement) {
+    return null
+  }
   let found: TSESTree.Expression | null = null
   for (const stmt of body.body) {
-    if (stmt.type !== AST_NODE_TYPES.ReturnStatement) continue
-    if (!stmt.argument) return null
-    if (found) return null
+    if (stmt.type !== AST_NODE_TYPES.ReturnStatement) {
+      continue
+    }
+    if (!stmt.argument) {
+      return null
+    }
+    if (found) {
+      return null
+    }
     found = stmt.argument
   }
   return found
@@ -362,10 +412,16 @@ export const returnTypeIsPromise = (
     | TSESTree.TSEmptyBodyFunctionExpression
 ): boolean => {
   const annotation = fn.returnType?.typeAnnotation
-  if (!annotation) return false
-  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) return false
+  if (!annotation) {
+    return false
+  }
+  if (annotation.type !== AST_NODE_TYPES.TSTypeReference) {
+    return false
+  }
   const name = annotation.typeName
-  if (name.type !== AST_NODE_TYPES.Identifier) return false
+  if (name.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return name.name === "Promise"
 }
 
@@ -377,8 +433,12 @@ export const findConstructor = (
   node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
 ): TSESTree.MethodDefinition | null => {
   for (const member of node.body.body) {
-    if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-    if (member.kind === "constructor") return member
+    if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+      continue
+    }
+    if (member.kind === "constructor") {
+      return member
+    }
   }
   return null
 }

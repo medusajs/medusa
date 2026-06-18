@@ -497,6 +497,59 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 <TypeList types={[{"name":"Promise","type":"Promise&#60;[DeletePaymentOutput](../../../types/interfaces/types.DeletePaymentOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The new data to store in the payment's `data` property, if any. Throws in case of an error.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePayment"/>
 
+### deletePaymentMethod
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+This method is used to delete a customer's saved payment method from the
+third-party payment provider. A payment provider that supports saving payment methods
+should implement this method.
+
+:::note
+
+This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+:::
+
+#### Example
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+class MyPaymentProviderService extends AbstractPaymentProvider<
+  Options
+> {
+  async deletePaymentMethod({ data }: DeletePaymentMethodInput) {
+    const paymentMethodId = data.id
+
+    if (!paymentMethodId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Missing payment method ID."
+      )
+    }
+
+   // assuming you have a client that deletes the payment method
+   await this.client.deletePaymentMethod(paymentMethodId)
+
+  return {}
+ }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[DeletePaymentMethodInput](../../../types/interfaces/types.DeletePaymentMethodInput/page.mdx)","description":"The details of the payment method to delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`object` & `Record<string, unknown>`","description":"The payment method's data.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PaymentProviderContext](../../../types/interfaces/types.PaymentProviderContext/page.mdx)","description":"The context for this payment operation. The data is guaranteed to be validated and not directly provided by the user.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentMethod"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[DeletePaymentMethodOutput](../../../types/interfaces/types.DeletePaymentMethodOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of deleting the payment method. If an error occurs, throw it.","expandable":false,"children":[],"since":"2.16.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentMethod"/>
+
 ### getPaymentStatus
 
 This method gets the status of a payment session based on the status in the third-party integration.

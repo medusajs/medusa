@@ -8,7 +8,9 @@ function functionDeclarationToArrow(
   context: Parameters<Parameters<typeof createRule>[0]["create"]>[0],
   fn: TSESTree.FunctionDeclaration
 ): string | null {
-  if (!fn.id) return null
+  if (!fn.id) {
+    return null
+  }
   const source = context.sourceCode ?? context.getSourceCode()
   const name = fn.id.name
   const params = fn.params
@@ -49,7 +51,9 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    if (!isAdminComponentFile(context.filename)) return {}
+    if (!isAdminComponentFile(context.filename)) {
+      return {}
+    }
 
     return {
       ExportDefaultDeclaration(node) {
@@ -63,14 +67,18 @@ export const rule = createRule<[], MessageIds>({
             fix(fixer) {
               if (decl.id) {
                 const arrow = functionDeclarationToArrow(context, decl)
-                if (!arrow) return null
+                if (!arrow) {
+                  return null
+                }
                 return fixer.replaceText(
                   node,
                   `${arrow}\nexport default ${decl.id.name}`
                 )
               }
               const arrow = anonymousFunctionToArrow(context, decl)
-              if (!arrow) return null
+              if (!arrow) {
+                return null
+              }
               return fixer.replaceText(decl, arrow)
             },
           })
@@ -84,7 +92,9 @@ export const rule = createRule<[], MessageIds>({
             messageId: "mustBeArrowFunction",
             fix(fixer) {
               const arrow = anonymousFunctionToArrow(context, decl)
-              if (!arrow) return null
+              if (!arrow) {
+                return null
+              }
               return fixer.replaceText(decl, arrow)
             },
           })
@@ -95,7 +105,9 @@ export const rule = createRule<[], MessageIds>({
         if (decl.type === AST_NODE_TYPES.Identifier) {
           const scope = context.sourceCode.getScope(node)
           const variable = scope.variables.find((v) => v.name === decl.name)
-          if (!variable) return
+          if (!variable) {
+            return
+          }
           for (const def of variable.defs) {
             if (def.node.type === AST_NODE_TYPES.FunctionDeclaration) {
               const fnDecl = def.node as TSESTree.FunctionDeclaration
@@ -104,7 +116,9 @@ export const rule = createRule<[], MessageIds>({
                 messageId: "mustBeArrowFunction",
                 fix(fixer) {
                   const arrow = functionDeclarationToArrow(context, fnDecl)
-                  if (!arrow) return null
+                  if (!arrow) {
+                    return null
+                  }
                   return fixer.replaceText(fnDecl, arrow)
                 },
               })

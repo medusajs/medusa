@@ -29,12 +29,12 @@ import {
   ConfirmAuthVerificationResponse,
   ConsumePasswordResetTokenDTO,
   ConsumePasswordResetTokenResponse,
-  CreateAuthVerificationTokenDTO,
-  CreateAuthVerificationTokenResponse,
   CreatePasswordResetTokenDTO,
   CreatePasswordResetTokenResponse,
   RequestAuthVerificationDTO,
   RequestAuthVerificationResponse,
+  AuthVerificationDTO,
+  FilterableAuthVerificationProps,
 } from "./common"
 
 /**
@@ -198,6 +198,21 @@ export interface IAuthModuleService extends IModuleService {
   validateCallback(
     provider: string,
     providerData: AuthenticationInput
+  ): Promise<AuthenticationResponse>
+
+  /**
+   * This method gets an auth identity, and does MFA checks, before returning the auth identity.
+   *
+   * @param {string} id - The ID of the auth identity to validate.
+   * @param {string} provider - The ID of the provider to use to validate the auth identity.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthenticationResponse>} The validation response.
+   */
+  validateAuthIdentity(
+    id: string,
+    provider: string,
+    config?: FindConfig<AuthIdentityDTO>,
+    sharedContext?: Context
   ): Promise<AuthenticationResponse>
 
   /**
@@ -423,21 +438,72 @@ export interface IAuthModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<void>
 
-  createAuthVerificationToken(
-    data: CreateAuthVerificationTokenDTO,
-    sharedContext?: Context
-  ): Promise<CreateAuthVerificationTokenResponse>
-
+  /**
+   * This method requests a verification code for a certain entity type - email, phone number, etc.
+   *
+   * @param {RequestAuthVerificationDTO} data - The data required to request a verification.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RequestAuthVerificationResponse>} The response containing the verification code.
+   */
   requestAuthVerification(
     data: RequestAuthVerificationDTO,
     sharedContext?: Context
   ): Promise<RequestAuthVerificationResponse>
 
+  /**
+   * This method confirms a verification code for a certain entity type - email, phone number, etc.
+   *
+   * @param {ConfirmAuthVerificationDTO} data - The data required to confirm a verification.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ConfirmAuthVerificationResponse>} The response containing the confirmation result.
+   */
   confirmAuthVerification(
     data: ConfirmAuthVerificationDTO,
     sharedContext?: Context
   ): Promise<ConfirmAuthVerificationResponse>
 
+  /**
+   * This method retrieves a verification by its ID.
+   *
+   * @param {string} id - The ID of the verification.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthVerificationDTO>} The retrieved verification.
+   */
+  retrieveAuthVerification(
+    id: string,
+    config?: FindConfig<AuthVerificationDTO>,
+    sharedContext?: Context
+  ): Promise<AuthVerificationDTO>
+
+  /**
+   * This method retrieves a list of verifications by entity type - email, phone number, etc.
+   *
+   * @param {FilterableAuthVerificationProps} filters - The filters to apply on the retrieved verifications.
+   * @param {FindConfig<AuthVerificationDTO>} config - The configurations determining how the verifications are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a verification.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthVerificationDTO[]>} The list of verifications.
+   */
+  listAuthVerifications(
+    filters: FilterableAuthVerificationProps,
+    config?: FindConfig<AuthVerificationDTO>,
+    sharedContext?: Context
+  ): Promise<AuthVerificationDTO[]>
+
+  /**
+   * This method retrieves a paginated list of verifications by entity type - email, phone number, etc.
+   *
+   * @param {FilterableAuthVerificationProps} filters - The filters to apply on the retrieved verifications.
+   * @param {FindConfig<AuthVerificationDTO>} config - The configurations determining how the verification is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a verification.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AuthVerificationDTO[]>} The list of verifications.
+   */
+  listAndCountAuthVerifications(
+    filters: FilterableAuthVerificationProps,
+    config?: FindConfig<AuthVerificationDTO>,
+    sharedContext?: Context
+  ): Promise<[AuthVerificationDTO[], number]>
   /**
    * This method retrieves an auth identity by its ID.
    *

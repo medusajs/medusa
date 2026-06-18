@@ -38,7 +38,9 @@ export const rule = createRule<[], MessageIds>({
           (s): s is TSESTree.ImportSpecifier =>
             s.type === AST_NODE_TYPES.ImportSpecifier
         )
-        if (specifiers.length === 0) return null
+        if (specifiers.length === 0) {
+          return null
+        }
         const last = specifiers[specifiers.length - 1]
         return fixer.insertTextAfter(last, `, ${MODULES_ENUM}`)
       }
@@ -53,7 +55,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         frameworkUtilsImportNode = node
         for (const specifier of node.specifiers) {
           if (
@@ -67,13 +71,23 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (!isResolveCallee(node.callee)) return
+        if (!isResolveCallee(node.callee)) {
+          return
+        }
         const arg = node.arguments[0]
-        if (!arg) return
-        if (arg.type !== AST_NODE_TYPES.Literal) return
-        if (typeof arg.value !== "string") return
+        if (!arg) {
+          return
+        }
+        if (arg.type !== AST_NODE_TYPES.Literal) {
+          return
+        }
+        if (typeof arg.value !== "string") {
+          return
+        }
         const enumMember = MODULES_BY_VALUE[arg.value]
-        if (!enumMember) return
+        if (!enumMember) {
+          return
+        }
 
         context.report({
           node: arg,
@@ -88,7 +102,9 @@ export const rule = createRule<[], MessageIds>({
             fixes.push(fixer.replaceText(arg, `${localName}.${enumMember}`))
             if (modulesLocalNames.size === 0) {
               const importFix = addModulesImport(fixer)
-              if (!importFix) return null
+              if (!importFix) {
+                return null
+              }
               fixes.push(importFix)
               modulesLocalNames.add(MODULES_ENUM)
             }

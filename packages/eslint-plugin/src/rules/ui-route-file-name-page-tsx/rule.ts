@@ -33,18 +33,26 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
-    if (!isUnderAdminRoutesDir(filename)) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
+    if (!isUnderAdminRoutesDir(filename)) {
+      return {}
+    }
 
     const basename = path.basename(filename)
-    if (PAGE_BASENAMES.has(basename)) return {}
+    if (PAGE_BASENAMES.has(basename)) {
+      return {}
+    }
 
     const defineRouteConfigNames = new Set<string>()
     const callSites: TSESTree.CallExpression[] = []
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== ADMIN_SDK_SOURCE) return
+        if (node.source.value !== ADMIN_SDK_SOURCE) {
+          return
+        }
         for (const spec of node.specifiers) {
           if (
             spec.type === AST_NODE_TYPES.ImportSpecifier &&

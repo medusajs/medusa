@@ -37,7 +37,9 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       "Program:exit"(node: TSESTree.Program) {
-        if (hasDefaultExport) return
+        if (hasDefaultExport) {
+          return
+        }
         context.report({
           node,
           messageId: "missingDefaultExport",

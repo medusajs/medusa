@@ -30,7 +30,7 @@ interface User {
 async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
   try {
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
-    logger.info("🚀 Starting super admin role assignment script...")
+    logger.info("Starting super admin role assignment script...")
 
     const userModuleService = container.resolve(Modules.USER)
     const rbacModuleService = container.resolve(Modules.RBAC)
@@ -38,18 +38,18 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
     const users: User[] = await userModuleService.listUsers({})
 
     if (!users.length) {
-      logger.info("⚠️  No users found. Exiting.")
+      logger.info("No users found. Exiting.")
       return
     }
 
-    logger.info(`📊 Found ${users.length} users`)
+    logger.info(`Found ${users.length} users`)
 
-    logger.info("\n👥 Users found:")
+    logger.info("\nUsers found:")
     users.forEach((user: User, index: number) => {
       logger.info(`  ${index + 1}. ${user.email || user.id} (${user.id})`)
     })
 
-    logger.info("\n🔐 Looking for super admin role...")
+    logger.info("\nLooking for super admin role...")
 
     // Get the pre-created super admin role
     let superAdminRole: any
@@ -61,7 +61,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
       if (existingRoles.length) {
         superAdminRole = existingRoles[0]
         logger.info(
-          `✅ Found super admin role: ${superAdminRole.name} (${superAdminRole.id})`
+          `Found super admin role: ${superAdminRole.name} (${superAdminRole.id})`
         )
       } else {
         throw new Error(
@@ -70,7 +70,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
       }
     } catch (error) {
       logger.error(
-        "❌ Could not find super admin role. Please ensure RBAC module is loaded.",
+        "Could not find super admin role. Please ensure RBAC module is loaded.",
         error
       )
       throw error
@@ -84,18 +84,18 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
 
       if (!rolePolicies.length) {
         logger.warn(
-          "⚠️  Super admin role has no policies assigned. This might indicate an issue with the migration."
+          "Super admin role has no policies assigned. This might indicate an issue with the migration."
         )
       } else {
         logger.info(
-          `✅ Super admin role has ${rolePolicies.length} policies assigned`
+          `Super admin role has ${rolePolicies.length} policies assigned`
         )
       }
     } catch (error) {
-      logger.warn("⚠️  Could not verify role policies:", error)
+      logger.warn("Could not verify role policies:", error)
     }
 
-    logger.info("👥 Assigning super admin role to all users...")
+    logger.info("Assigning super admin role to all users...")
 
     let successCount = 0
     let errorCount = 0
@@ -104,7 +104,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
 
     for (const user of users) {
       try {
-        logger.info(`  🔄 Processing user: ${user.email || user.id}`)
+        logger.info(`  Processing user: ${user.email || user.id}`)
 
         // Link the user to the super admin role
         await link.create({
@@ -116,43 +116,34 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
           },
         })
 
-        logger.info(`    ✅ Assigned super admin role to user`)
+        logger.info(`    Assigned super admin role to user`)
         successCount++
       } catch (error: any) {
         console.error(
-          `    ❌ Failed to assign role to user ${user.id}:`,
+          `    Failed to assign role to user ${user.id}:`,
           error.message
         )
         errorCount++
       }
     }
 
-    logger.info(`  ✅ Successfully assigned role: ${successCount} users`)
+    logger.info(`  Successfully assigned role: ${successCount} users`)
 
     if (errorCount > 0) {
-      logger.info(`  ❌ Failed to assign role: ${errorCount} users`)
+      logger.info(`  Failed to assign role: ${errorCount} users`)
     }
 
     if (successCount > 0) {
-      logger.log("\n🎉 Super admin role assignment completed successfully!")
+      logger.log("\nSuper admin role assignment completed successfully!")
 
       const totalAssigned = successCount
       logger.info(
         `Super admin role is now assigned to ${totalAssigned} out of ${users.length} users`
       )
-
-      if (successCount > 0) {
-        logger.info("\n📝 Next steps:")
-        logger.info("  1. Restart your Medusa server")
-        logger.info("  2. Test the permissions by logging in as an admin user")
-        logger.info(
-          "  3. Verify that the user has access to all admin endpoints"
-        )
-      }
     }
   } catch (error: any) {
-    console.error("\n❌ Fatal error:", error.message)
-    console.error("🔍 Stack trace:", error.stack)
+    console.error("\nFatal error:", error.message)
+    console.error("Stack trace:", error.stack)
 
     throw error
   }
@@ -166,7 +157,7 @@ export default async function createSuperAdminRole({ container }: ExecArgs) {
   ) {
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
     logger.info(
-      "⚠️  Required modules (USER, AUTH, RBAC) not installed. Skipping."
+      "Required modules (USER, AUTH, RBAC) not installed. Skipping."
     )
     return
   }

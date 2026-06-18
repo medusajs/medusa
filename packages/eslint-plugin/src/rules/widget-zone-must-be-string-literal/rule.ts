@@ -7,9 +7,7 @@ type MessageIds = "mustBeStringLiteral" | "templateLiteralMustBeString"
 const DEFINE_WIDGET_CONFIG = "defineWidgetConfig"
 
 function isStringLiteral(node: TSESTree.Node): boolean {
-  return (
-    node.type === AST_NODE_TYPES.Literal && typeof node.value === "string"
-  )
+  return node.type === AST_NODE_TYPES.Literal && typeof node.value === "string"
 }
 
 export const rule = createRule<[], MessageIds>({
@@ -34,7 +32,9 @@ export const rule = createRule<[], MessageIds>({
     const localNames = new Set<string>()
 
     function checkZoneValue(value: TSESTree.Node) {
-      if (isStringLiteral(value)) return
+      if (isStringLiteral(value)) {
+        return
+      }
 
       if (value.type === AST_NODE_TYPES.TemplateLiteral) {
         if (value.expressions.length === 0 && value.quasis.length === 1) {
@@ -58,7 +58,9 @@ export const rule = createRule<[], MessageIds>({
 
       if (value.type === AST_NODE_TYPES.ArrayExpression) {
         for (const element of value.elements) {
-          if (!element) continue
+          if (!element) {
+            continue
+          }
           if (element.type === AST_NODE_TYPES.SpreadElement) {
             context.report({
               node: element,
@@ -67,7 +69,9 @@ export const rule = createRule<[], MessageIds>({
             })
             continue
           }
-          if (isStringLiteral(element)) continue
+          if (isStringLiteral(element)) {
+            continue
+          }
           if (element.type === AST_NODE_TYPES.TemplateLiteral) {
             checkZoneValue(element)
             continue
@@ -90,7 +94,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== ADMIN_SDK_SOURCE) return
+        if (node.source.value !== ADMIN_SDK_SOURCE) {
+          return
+        }
         for (const spec of node.specifiers) {
           if (
             spec.type === AST_NODE_TYPES.ImportSpecifier &&
@@ -109,18 +115,27 @@ export const rule = createRule<[], MessageIds>({
           return
         }
         const first = node.arguments[0]
-        if (!first || first.type !== AST_NODE_TYPES.ObjectExpression) return
+        if (!first || first.type !== AST_NODE_TYPES.ObjectExpression) {
+          return
+        }
         for (const prop of first.properties) {
-          if (prop.type !== AST_NODE_TYPES.Property) continue
-          if (prop.computed) continue
+          if (prop.type !== AST_NODE_TYPES.Property) {
+            continue
+          }
+          if (prop.computed) {
+            continue
+          }
           const key = prop.key
           const keyName =
             key.type === AST_NODE_TYPES.Identifier
               ? key.name
-              : key.type === AST_NODE_TYPES.Literal && typeof key.value === "string"
-                ? key.value
-                : null
-          if (keyName !== "zone") continue
+              : key.type === AST_NODE_TYPES.Literal &&
+                typeof key.value === "string"
+              ? key.value
+              : null
+          if (keyName !== "zone") {
+            continue
+          }
           checkZoneValue(prop.value as TSESTree.Node)
         }
       },

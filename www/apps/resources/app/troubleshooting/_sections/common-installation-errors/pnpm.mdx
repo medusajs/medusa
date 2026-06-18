@@ -12,26 +12,62 @@ No QueryClient set, use QueryClientProvider to set one
 
 ## Why This Error Occurred
 
-Medusa doesn't officially support `pnpm` as a package manager, which may lead to unexpected errors, including issues with package resolution.
+These errors occur because `pnpm` uses a strict, isolated `node_modules` structure. Without the correct hoisting configuration, some packages that Medusa requires in the top-level `node_modules` directory are not available.
 
-For Tanstack Query, the error occurs because the package is required by `@medusajs/dashboard`, but `pnpm` does not automatically install it as a dependency of that package.
+For Tanstack Query, the error occurs because the package is required by `@medusajs/dashboard`, but `pnpm` does not automatically hoist it to the top-level `node_modules`.
 
 ---
 
 ## How to Fix it
 
-To resolve this error and other potential errors, consider switching to `yarn` as your package manager.
+Add a `.npmrc` file at the root of your project with the following content:
 
-If you still want to use `pnpm`, you must manually install the following packages in your project:
-
-```bash
-pnpm add @medusajs/dashboard @medusajs/icons @medusajs/types @medusajs/draft-order @medusajs/ui
+```ini title=".npmrc"
+public-hoist-pattern[]=*@medusajs/*
+public-hoist-pattern[]=@tanstack/react-query
+public-hoist-pattern[]=react-i18next
+public-hoist-pattern[]=react-router-dom
 ```
 
-Make sure to also update these packages whenever you update your Medusa application.
-
-For the Tanstack Query error, you must also install it manually. It must be the same version installed in [@medusajs/dashboard](https://github.com/medusajs/medusa/blob/d58462c9c91a3e335d03f758438e109caad1f839/packages/admin/dashboard/package.json#L54):
+Then, reinstall your dependencies:
 
 ```bash
-pnpm add @tanstack/react-query@{version}
+pnpm install
+```
+
+Refer to the [Use pnpm with Medusa](!docs!/learn/configurations/pnpm) guide for full setup instructions.
+
+---
+
+## "packages field missing or empty" Error in Monorepo
+
+If you get the following error when deploying a monorepo with `pnpm` workspaces:
+
+```bash
+ERROR packages field missing or empty
+```
+
+### Why This Error Occurred
+
+This error occurs when your `pnpm-workspace.yaml` file is missing or has a malformed `packages` field. The `pnpm-workspace.yaml` file defines which directories contain packages in your monorepo.
+
+### How to Fix it
+
+Make sure your `pnpm-workspace.yaml` file exists at the root of your monorepo and has a valid `packages` field. For example, if your packages are under an `apps` directory:
+
+```yaml title="pnpm-workspace.yaml"
+packages:
+  - "apps/*"
+```
+
+Adjust the patterns to match the directories where your packages are located. Common mistakes include:
+
+- Missing the `packages` field entirely
+- Using an empty `packages` array
+- Incorrect glob patterns that don't match your project structure
+
+After fixing the file, reinstall dependencies and redeploy:
+
+```bash
+pnpm install
 ```

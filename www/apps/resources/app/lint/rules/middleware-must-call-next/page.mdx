@@ -1,0 +1,80 @@
+---
+sidebar_label: "middleware-must-call-next"
+---
+
+export const metadata = {
+  title: `middleware-must-call-next - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires middleware functions registered via `defineMiddlewares` to reference their `next` parameter.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets the `src/api/middlewares.ts` file. It reports a middleware function that declares a `next` parameter but never references it, which stops the middleware chain.
+
+The following code is reported by the rule:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      middlewares: [(req, res, next) => { res.json({}) }],
+    },
+  ],
+})
+```
+
+Instead, call `next` so the chain continues:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      middlewares: [(req, res, next) => { next() }],
+    },
+  ],
+})
+```
+
+## Why it's Important
+
+A middleware that doesn't call `next` (or end the response) leaves the request hanging, so the route handler is never reached. Referencing `next` keeps the middleware chain moving.
+
+Learn more in the [Middlewares documentation](!docs!/learn/fundamentals/api-routes/middlewares).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/middleware-must-call-next": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/middleware-must-call-next
+middlewares: [(req, res, next) => { res.json({}) }],
+```

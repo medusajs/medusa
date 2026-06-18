@@ -1,0 +1,79 @@
+---
+sidebar_label: "no-non-serializable-step-return"
+---
+
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `no-non-serializable-step-return - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows non-serializable values, such as `Map`, `Set`, `WeakMap`, and `WeakSet`, inside `new StepResponse(...)` or `new WorkflowResponse(...)`.
+
+## Severity
+
+`error`. This rule is enabled in the [strict](../../page.mdx#strict) preset.
+
+By default, Medusa projects use the [recommended](../../page.mdx#recommended) preset, which doesn't enable this rule. To use it, switch to the [strict](../../page.mdx#strict) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports values passed to `new StepResponse(...)` or `new WorkflowResponse(...)` that contain a `Map`, `Set`, `WeakMap`, or `WeakSet`.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myMap = new Map()
+
+    // ...
+
+    return new StepResponse({
+      myMap,
+    })
+  }
+)
+```
+
+Instead, return a plain object or array:
+
+```ts title="src/workflows/example.ts"
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  (input, { container }) => {
+    const myMap = {
+      key: "value",
+    }
+
+    // ...
+
+    return new StepResponse({
+      myMap,
+    })
+  }
+)
+```
+
+## Why it's Important
+
+A step or workflow response must be serializable so the workflow engine can persist and pass it between steps. Values like `Map` and `Set` don't serialize to plain data and are lost. Use a plain object or array instead.
+
+Learn more in the [Workflow Constraints documentation](!docs!/learn/fundamentals/workflows/constructor-constraints#returned-value-constraints).
+
+## Fixable
+
+This rule isn't auto-fixable.
