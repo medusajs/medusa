@@ -120,9 +120,6 @@ export class S3FileService extends AbstractFileProviderService {
     if (this.config_.acl) {
       return this.config_.acl
     }
-    if (!access) {
-      return undefined
-    }
     return access === "public" ? "public-read" : "private"
   }
 
