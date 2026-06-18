@@ -23,7 +23,6 @@ const createRequest = ({
   validatedBody = {},
   authContext = {
     actor_id: "user_1",
-    actor_type: "user",
     auth_identity_id: "auth_identity_1",
     app_metadata: {},
     user_metadata: {},
@@ -94,7 +93,6 @@ describe("MFA auth routes", () => {
     const mfaChallenge = {
       id: "challenge_1",
       auth_identity_id: "auth_identity_1",
-      actor_type: "user",
       auth_provider: "emailpass",
       methods: ["totp"],
       attempts: 0,
@@ -110,7 +108,6 @@ describe("MFA auth routes", () => {
     const req = createRequest({
       authService,
       params: {
-        actor_type: "user",
         auth_provider: "emailpass",
       },
       validatedBody: {
@@ -125,7 +122,6 @@ describe("MFA auth routes", () => {
     expect(authService.authenticate).toHaveBeenCalledWith(
       "emailpass",
       expect.objectContaining({
-        actor_type: "user",
         body: {
           email: "test@example.com",
           password: "password",
@@ -146,7 +142,6 @@ describe("MFA auth routes", () => {
     const mfaChallenge = {
       id: "challenge_1",
       auth_identity_id: "auth_identity_1",
-      actor_type: "user",
       auth_provider: "google",
       methods: ["totp"],
       attempts: 0,
@@ -172,7 +167,6 @@ describe("MFA auth routes", () => {
     const req = createRequest({
       authService,
       params: {
-        actor_type: "user",
         auth_provider: "google",
       },
       validatedBody: {
@@ -186,7 +180,6 @@ describe("MFA auth routes", () => {
     expect(authService.validateCallback).toHaveBeenCalledWith(
       "google",
       expect.objectContaining({
-        actor_type: "user",
         body: {
           code: "oauth-code",
         },
@@ -206,7 +199,6 @@ describe("MFA auth routes", () => {
       verifyAuthMfaChallenge: jest.fn().mockResolvedValue({
         id: "challenge_1",
         auth_identity_id: "auth_identity_1",
-        actor_type: "user",
         auth_provider: "emailpass",
       }),
       retrieveAuthIdentity: jest.fn().mockResolvedValue({
@@ -247,7 +239,6 @@ describe("MFA auth routes", () => {
     expect(decoded).toEqual(
       expect.objectContaining({
         actor_id: "user_1",
-        actor_type: "user",
         auth_identity_id: "auth_identity_1",
         auth_provider: "emailpass",
       })

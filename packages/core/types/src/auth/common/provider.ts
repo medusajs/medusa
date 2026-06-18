@@ -49,11 +49,6 @@ export type AuthenticationResponse = {
  */
 export type AuthenticationInput = {
   /**
-   * Actor type used to issue the token after authentication.
-   */
-  actor_type?: string
-
-  /**
    * URL of the incoming authentication request.
    */
   url?: string

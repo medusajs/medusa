@@ -21,7 +21,6 @@ type InjectedDependencies = {
 type AuthIdentityParams = {
   email: string
   password: string
-  actor_type?: string
   authIdentityService: AuthIdentityProviderService
 }
 
@@ -186,7 +185,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const updatedAuthIdentity = await this.upsertAuthIdentity("update", {
           email,
           password,
-          actor_type: userData.actor_type,
           authIdentityService,
         })
 
@@ -205,7 +203,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const createdAuthIdentity = await this.upsertAuthIdentity("create", {
           email,
           password,
-          actor_type: userData.actor_type,
           authIdentityService,
         })
 
@@ -221,7 +218,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   private async upsertAuthIdentity(
     type: "update" | "create",
-    { email, password, actor_type, authIdentityService }: AuthIdentityParams
+    { email, password, authIdentityService }: AuthIdentityParams
   ) {
     const passwordHash = await this.hashPassword(password)
     const providerMetadata: ProviderMetadata =

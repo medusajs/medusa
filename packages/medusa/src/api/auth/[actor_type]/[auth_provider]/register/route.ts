@@ -17,7 +17,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authData = {
-    actor_type,
     url: req.url,
     headers: req.headers,
     query: req.query,
