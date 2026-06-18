@@ -510,7 +510,7 @@ export default class SettingsModuleService
     }
   }
 
-  protected activeLayoutScopeKey(zone: string): string {
+  protected getActiveLayoutScopeKey(zone: string): string {
     return `active_layout.${zone}`
   }
 
@@ -522,7 +522,7 @@ export default class SettingsModuleService
   ): Promise<"personal" | "default" | null> {
     const pref = await this.getUserPreference(
       userId,
-      this.activeLayoutScopeKey(zone),
+      this.getActiveLayoutScopeKey(zone),
       sharedContext
     )
 
@@ -539,7 +539,7 @@ export default class SettingsModuleService
   ): Promise<void> {
     await this.setUserPreference(
       userId,
-      this.activeLayoutScopeKey(zone),
+      this.getActiveLayoutScopeKey(zone),
       { scope },
       sharedContext
     )

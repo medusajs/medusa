@@ -9,7 +9,6 @@ import {
   setLayoutConfigurationWorkflow,
 } from "@medusajs/core-flows"
 import { ISettingsModuleService } from "@medusajs/framework/types"
-import { AdminSetLayoutConfigurationType } from "./validators"
 
 const getConfigurations = async (
   settingsService: ISettingsModuleService,
@@ -60,7 +59,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminSetLayoutConfigurationType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminSetLayoutConfiguration>,
   res: MedusaResponse<HttpTypes.AdminLayoutConfigurationResponse>
 ) => {
   await setLayoutConfigurationWorkflow(req.scope).run({
