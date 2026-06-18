@@ -479,7 +479,7 @@ tags:
       Store credit accounts allow you to build features that let customers pay for items using their store credit balance, such as gift cards or loyalty points.
       These API routes allow admin users to manage store credit accounts, their transactions, and more.
       <Note>
-      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
       </Note>
     x-associatedSchema:
       $ref: '#/components/schemas/AdminStoreCreditAccount'
@@ -22915,7 +22915,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/gift-cards/{id}:
     get:
       operationId: GetGiftCardsId
@@ -23016,7 +23016,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/gift-cards/{id}/orders:
     get:
       operationId: GetGiftCardsIdOrders
@@ -60385,7 +60385,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/store-credit-accounts/{id}:
     get:
       operationId: GetStoreCreditAccountsId

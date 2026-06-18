@@ -64,7 +64,7 @@ tags:
       Customers can purchase gift cards for themselves or others, and then use them to pay for their orders.
       These API routes allow logged-in customers to create and manage their gift cards.
       <Note>
-      Gift Cards are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Gift Cards are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
       </Note>
     x-associatedSchema:
       $ref: '#/components/schemas/StoreGiftCard'
@@ -185,7 +185,7 @@ tags:
         A store credit account is a way for customers to manage their store credit balance. Customers can use their store credit to pay for orders, and view their store credit balance.
         These API routes allow customers to view their store credit accounts.
         <Note>
-        Store Credit Accounts are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+        Store Credit Accounts are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
         </Note>
       $ref: '#/components/schemas/StoreStoreCreditAccount'
 paths:
@@ -2078,7 +2078,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
     delete:
       operationId: DeleteCartsIdGiftCards
       summary: Remove Gift Card from Cart
@@ -2160,7 +2160,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /store/carts/{id}/line-items:
     post:
       operationId: PostCartsIdLineItems
@@ -3087,7 +3087,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /store/carts/{id}/taxes:
     post:
       operationId: PostCartsIdTaxes
@@ -5359,7 +5359,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /store/locales:
     get:
       operationId: GetLocales
@@ -11861,7 +11861,7 @@ paths:
       x-badges:
         - text: Cloud
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 components:
   schemas:
     AdminAddClaimItems:

@@ -1,0 +1,75 @@
+---
+sidebar_label: "no-service-mutations-in-api-route"
+---
+
+export const metadata = {
+  title: `no-service-mutations-in-api-route - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows calling service mutation methods directly from an API route handler.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports calls to mutation methods, such as `create`, `update`, or `delete` methods, on a service resolved from the container.
+
+The following code is reported by the rule:
+
+```ts title="src/api/admin/products/route.ts"
+export const POST = async (req, res) => {
+  const productModule = req.scope.resolve(Modules.PRODUCT)
+  await productModule.createProducts(req.body)
+  res.status(200).json({})
+}
+```
+
+Instead, move the mutation into a workflow and run it:
+
+```ts title="src/api/admin/products/route.ts"
+export const POST = async (req, res) => {
+  await createProductWorkflow(req.scope).run({
+    input: req.body,
+  })
+  res.status(200).json({})
+}
+```
+
+## Why it's Important
+
+Workflows provide rollback, error handling, and a single place to maintain business logic. Calling service mutations directly in a route bypasses these benefits and makes the logic harder to reuse.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/no-service-mutations-in-api-route": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/no-service-mutations-in-api-route
+await productModule.createProducts(req.body)
+```

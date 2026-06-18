@@ -18,6 +18,25 @@ const handlerP =
     )
   }
 
+/**
+ * Adds the shared `--lint` / `--fix` options to a command builder. Used by both
+ * `build` and `develop`; the only difference is the `commandLabel` woven into
+ * the describe text.
+ */
+function addLintOptions(builder, commandLabel: string) {
+  return builder
+    .option("lint", {
+      type: "boolean",
+      describe: `Run the Medusa linter before ${commandLabel}. Use --no-lint to skip linting.`,
+      default: true,
+    })
+    .option("fix", {
+      type: "boolean",
+      default: false,
+      describe: `Auto-fix lint issues where possible before ${commandLabel}.`,
+    })
+}
+
 function buildLocalCommands(cli, isLocalProject) {
   const defaultPort = "9000"
   const directory = path.resolve(`.`)
@@ -429,28 +448,31 @@ function buildLocalCommands(cli, isLocalProject) {
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
-        _.option("types", {
-          type: "boolean",
-          default: true,
-          describe:
-            "Generate automated types for modules inside the .medusa directory",
-        })
-          .option(`H`, {
-            alias: `host`,
-            type: `string`,
-            default: process.env.HOST,
-            describe: process.env.HOST
-              ? `Set host. Defaults to ${process.env.HOST} (set by env.HOST)`
-              : "",
+        addLintOptions(
+          _.option("types", {
+            type: "boolean",
+            default: true,
+            describe:
+              "Generate automated types for modules inside the .medusa directory",
           })
-          .option(`p`, {
-            alias: `port`,
-            type: `string`,
-            default: process.env.PORT || defaultPort,
-            describe: process.env.PORT
-              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-              : `Set port. Defaults to ${defaultPort}`,
-          }),
+            .option(`H`, {
+              alias: `host`,
+              type: `string`,
+              default: process.env.HOST,
+              describe: process.env.HOST
+                ? `Set host. Defaults to ${process.env.HOST} (set by env.HOST)`
+                : "",
+            })
+            .option(`p`, {
+              alias: `port`,
+              type: `string`,
+              default: process.env.PORT || defaultPort,
+              describe: process.env.PORT
+                ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+                : `Set port. Defaults to ${defaultPort}`,
+            }),
+          "starting the dev server"
+        ),
       handler: handlerP(
         getCommandHandler(`develop`, async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
@@ -521,11 +543,18 @@ function buildLocalCommands(cli, isLocalProject) {
       command: "build",
       desc: "Build your project.",
       builder: (_) =>
-        _.option("admin-only", {
-          default: false,
+        addLintOptions(
+          _.option("admin-only", {
+            default: false,
+            type: "boolean",
+            describe:
+              "Only build the admin to serve it separately (outDir .medusa/admin)",
+          }),
+          "building"
+        ).option("quiet", {
           type: "boolean",
-          describe:
-            "Only build the admin to serve it separately (outDir .medusa/admin)",
+          default: false,
+          describe: "Report lint errors only, suppressing warnings.",
         }),
       handler: handlerP(
         getCommandHandler(`build`, async (args, cmd) => {
@@ -533,6 +562,33 @@ function buildLocalCommands(cli, isLocalProject) {
           cmd(args)
 
           return new Promise((resolve) => {})
+        })
+      ),
+    })
+    .command({
+      command: "lint [paths...]",
+      desc: "Lint your project using its ESLint configuration.",
+      builder: (_) =>
+        _.positional("paths", {
+          type: "string",
+          array: true,
+          describe:
+            "Files or directories to lint. Defaults to the whole project.",
+        })
+          .option("fix", {
+            type: "boolean",
+            default: false,
+            describe: "Auto-fix lint issues where possible.",
+          })
+          .option("quiet", {
+            type: "boolean",
+            default: false,
+            describe: "Report lint errors only, suppressing warnings.",
+          }),
+      handler: handlerP(
+        getCommandHandler(`lint`, async (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
         })
       ),
     })

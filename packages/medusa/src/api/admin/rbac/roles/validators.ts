@@ -40,6 +40,7 @@ export const AdminCreateRbacRole = z
     parent_id: z.string().nullish(),
     description: z.string().nullish(),
     metadata: z.record(z.string(), z.unknown()).nullish(),
+    policy_ids: z.array(z.string().min(1)).optional(),
   })
   .strict()
 

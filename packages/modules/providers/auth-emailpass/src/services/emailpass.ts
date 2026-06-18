@@ -21,13 +21,12 @@ type InjectedDependencies = {
 type AuthIdentityParams = {
   email: string
   password: string
+  actor_type?: string
   authIdentityService: AuthIdentityProviderService
 }
 
 type ProviderMetadata = {
   password?: unknown
-  verified_at?: string | null
-  requires_verification?: boolean
 }
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
@@ -187,6 +186,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const updatedAuthIdentity = await this.upsertAuthIdentity("update", {
           email,
           password,
+          actor_type: userData.actor_type,
           authIdentityService,
         })
 
@@ -205,6 +205,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         const createdAuthIdentity = await this.upsertAuthIdentity("create", {
           email,
           password,
+          actor_type: userData.actor_type,
           authIdentityService,
         })
 
@@ -220,7 +221,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   private async upsertAuthIdentity(
     type: "update" | "create",
-    { email, password, authIdentityService }: AuthIdentityParams
+    { email, password, actor_type, authIdentityService }: AuthIdentityParams
   ) {
     const passwordHash = await this.hashPassword(password)
     const providerMetadata: ProviderMetadata =
@@ -229,14 +230,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         : {}
 
     providerMetadata.password = passwordHash
-
-    if (
-      this.requiresVerification_() &&
-      !providerMetadata.verified_at &&
-      providerMetadata.requires_verification !== false
-    ) {
-      providerMetadata.requires_verification = true
-    }
 
     const authIdentity =
       type === "create"
@@ -249,10 +242,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
           })
 
     return this.sanitizeAuthIdentity_(authIdentity)
-  }
-
-  private requiresVerification_(): boolean {
-    return this.config_.require_verification === true
   }
 
   private async getProviderMetadata_(

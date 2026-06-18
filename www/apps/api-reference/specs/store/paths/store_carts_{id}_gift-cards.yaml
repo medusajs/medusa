@@ -77,7 +77,7 @@ post:
     - text: Cloud
       description: >
         This API route is only available in [Medusa
-        Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+        Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 delete:
   operationId: DeleteCartsIdGiftCards
   summary: Remove Gift Card from Cart
@@ -157,4 +157,4 @@ delete:
     - text: Cloud
       description: >
         This API route is only available in [Medusa
-        Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+        Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).

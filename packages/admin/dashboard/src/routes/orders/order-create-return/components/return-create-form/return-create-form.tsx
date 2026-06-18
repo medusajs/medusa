@@ -286,13 +286,16 @@ export const ReturnCreateForm = ({
   })
 
   const onItemsSelected = () => {
-    addReturnItem({
-      items: selectedItems.map((id) => ({
-        id,
-        quantity: 1,
-      })),
-    })
+    if (selectedItems.length) {
+      addReturnItem({
+        items: selectedItems.map((id) => ({
+          id,
+          quantity: 1,
+        })),
+      })
+    }
 
+    selectedItems = []
     setIsOpen("items", false)
   }
 

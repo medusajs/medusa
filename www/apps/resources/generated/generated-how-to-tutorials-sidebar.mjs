@@ -98,6 +98,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Notification Provider",
               "path": "https://docs.medusajs.com/resources/references/notification-provider-module",
               "children": []
@@ -108,6 +116,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Create Payment Provider",
               "path": "https://docs.medusajs.com/resources/references/payment/provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/recovery-code-mfa-module-provider",
               "children": []
             },
             {
@@ -369,6 +385,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                       "type": "link",
                       "path": "/admin-components/components/json-view-section",
                       "title": "JSON View",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/admin-components/components/layout-composer",
+                      "title": "LayoutComposer",
                       "description": "",
                       "children": []
                     },

@@ -1,5 +1,61 @@
 # @medusajs/dashboard
 
+## 2.16.0
+
+### Patch Changes
+
+- [#15478](https://github.com/medusajs/medusa/pull/15478) [`f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326`](https://github.com/medusajs/medusa/commit/f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(admin-shared,dashboard,draft-order,loyalty): LayoutComposer, injection zones for plugins
+
+- [#13268](https://github.com/medusajs/medusa/pull/13268) [`96dc7727d6f8c2fe5f8a5f47b1dc4c5914d7cc1b`](https://github.com/medusajs/medusa/commit/96dc7727d6f8c2fe5f8a5f47b1dc4c5914d7cc1b) Thanks [@radeknapora](https://github.com/radeknapora)! - fix(dashboard): enforce locale-specific plural forms in translations
+
+- [#15733](https://github.com/medusajs/medusa/pull/15733) [`dcfb81436439080f682f739173f9430d0527a36f`](https://github.com/medusajs/medusa/commit/dcfb81436439080f682f739173f9430d0527a36f) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): feature flag rbac sidebar entries
+
+- [#15704](https://github.com/medusajs/medusa/pull/15704) [`db6f79def971d2717dc30d833b4dbb923b250e0b`](https://github.com/medusajs/medusa/commit/db6f79def971d2717dc30d833b4dbb923b250e0b) Thanks [@Tusharkhadde](https://github.com/Tusharkhadde)! - fix(dashboard): prevent URL param collision breaking pagination in price list add products modal
+
+- [#15590](https://github.com/medusajs/medusa/pull/15590) [`088b2ba826736761a19e2d00c1f14f59336d4918`](https://github.com/medusajs/medusa/commit/088b2ba826736761a19e2d00c1f14f59336d4918) Thanks [@leobenzol](https://github.com/leobenzol)! - chore(dashboard): cleanup build, export components and hooks
+
+- [#15266](https://github.com/medusajs/medusa/pull/15266) [`735e0aa51ef64274257057a59046776af54203f4`](https://github.com/medusajs/medusa/commit/735e0aa51ef64274257057a59046776af54203f4) Thanks [@kzroo](https://github.com/kzroo)! - feat(utils, dashboard, loyalty-plugin): add GMD (Gambian Dalasi) to default currency lists
+
+  Adds a `GMD` entry to the hardcoded currency maps in `packages/core/utils/src/defaults/currencies.ts`, `packages/admin/dashboard/src/lib/data/currencies.ts`, and `packages/plugins/loyalty/src/admin/lib/currencies.ts`. Without it, admin pages that map over `store.supported_currencies` and look each one up — most notably the Regions create/edit form — crash with `TypeError: Cannot read properties of undefined (reading 'code')` when a store has GMD as a supported currency.
+
+- [#15444](https://github.com/medusajs/medusa/pull/15444) [`16894649b020b63ec0c92fe62393ed8c78c331d4`](https://github.com/medusajs/medusa/commit/16894649b020b63ec0c92fe62393ed8c78c331d4) Thanks [@appinteractive](https://github.com/appinteractive)! - fix(dashboard): prevent crash when deleting the last image from product media gallery
+
+- [#15349](https://github.com/medusajs/medusa/pull/15349) [`a4d7db86412bd5a8302ee43d881a9c9534296c6c`](https://github.com/medusajs/medusa/commit/a4d7db86412bd5a8302ee43d881a9c9534296c6c) Thanks [@Metbcy](https://github.com/Metbcy)! - fix(dashboard): fix refund form rounding for sub-cent amounts
+
+- [#15348](https://github.com/medusajs/medusa/pull/15348) [`0cbecc685b06da08e297a853c098cd158978d417`](https://github.com/medusajs/medusa/commit/0cbecc685b06da08e297a853c098cd158978d417) Thanks [@Metbcy](https://github.com/Metbcy)! - fix(dashboard): prevent duplicate items in return create form
+
+- [#15468](https://github.com/medusajs/medusa/pull/15468) [`9f932fc9e586ce13fe7926ffcc388a92facca0cc`](https://github.com/medusajs/medusa/commit/9f932fc9e586ce13fe7926ffcc388a92facca0cc) Thanks [@Ultron03](https://github.com/Ultron03)! - fix(dashboard): preserve zero-amount shipping option prices on re-save
+
+  Falsy checks treated a price of `0` as unset, dropping free-shipping prices from the API payload on subsequent edits. Replaced `!value` with `value === undefined || value === ""` in the create/edit form handlers, fixed the same issue in `buildShippingOptionPriceRules`, and used `??` instead of `||` in the price cell initialisation.
+
+- [#15483](https://github.com/medusajs/medusa/pull/15483) [`964313ffdd69c82f51b50eb76a5ff3ef1fa75d2d`](https://github.com/medusajs/medusa/commit/964313ffdd69c82f51b50eb76a5ff3ef1fa75d2d) Thanks [@aritradhabal](https://github.com/aritradhabal)! - csv accepted mime type to include `application/vnd.ms-excel`
+
+- [#14674](https://github.com/medusajs/medusa/pull/14674) [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,admin-shared,core-flows,js-sdk,types,medusa,link-modules): RBAC admin dashboard CRUD
+
+- [#15531](https://github.com/medusajs/medusa/pull/15531) [`a4a1dc95a60814fb6b7f8a480c38430dd166987a`](https://github.com/medusajs/medusa/commit/a4a1dc95a60814fb6b7f8a480c38430dd166987a) Thanks [@Tusharkhadde](https://github.com/Tusharkhadde)! - fix(dashboard): fix Copy API Key behavior in secret key created dialog
+
+- [#15642](https://github.com/medusajs/medusa/pull/15642) [`d815e81a1a4977f66d6aebb5abc742ee8780619c`](https://github.com/medusajs/medusa/commit/d815e81a1a4977f66d6aebb5abc742ee8780619c) Thanks [@sradevski](https://github.com/sradevski)! - Update the signature of the sdk register method to either return verification response or a token
+
+- [#15691](https://github.com/medusajs/medusa/pull/15691) [`5c20d034de9a0b32189963f20dd3d8e426f0e67b`](https://github.com/medusajs/medusa/commit/5c20d034de9a0b32189963f20dd3d8e426f0e67b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(draft-order, dashboard, loyalty-plugin): align react-router-dom version
+
+- [#15634](https://github.com/medusajs/medusa/pull/15634) [`d8ec021f88bfa68a3236ce3e89f634b808228636`](https://github.com/medusajs/medusa/commit/d8ec021f88bfa68a3236ce3e89f634b808228636) Thanks [@PrathamRanka](https://github.com/PrathamRanka)! - fix(dashboard): product organization combobox search and cache invalidation
+
+- [#15571](https://github.com/medusajs/medusa/pull/15571) [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
+
+- [#15630](https://github.com/medusajs/medusa/pull/15630) [`740132b7576d937b82e913c1ccf4cfabe56777d6`](https://github.com/medusajs/medusa/commit/740132b7576d937b82e913c1ccf4cfabe56777d6) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(create-medusa-app, telemetry, dashboard, medusa): update react-router-dom and uuid packages
+
+- [#15690](https://github.com/medusajs/medusa/pull/15690) [`60d63bd2c0e400f06b985d5275b86c72681e4f62`](https://github.com/medusajs/medusa/commit/60d63bd2c0e400f06b985d5275b86c72681e4f62) Thanks [@Tusharkhadde](https://github.com/Tusharkhadde)! - feat(dashboard,medusa,types): add internal note support to order edits
+
+- [#15486](https://github.com/medusajs/medusa/pull/15486) [`fc92079ac843a5304d37d94663edd3a31e42de73`](https://github.com/medusajs/medusa/commit/fc92079ac843a5304d37d94663edd3a31e42de73) Thanks [@xonaib](https://github.com/xonaib)! - fix(dashboard): use a unique order country table column id
+
+- [#15605](https://github.com/medusajs/medusa/pull/15605) [`af4dc161cf3ca90f68214138212416bc7b54209b`](https://github.com/medusajs/medusa/commit/af4dc161cf3ca90f68214138212416bc7b54209b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard, medusa): validate http(s) scheme on fulfillment label URLs
+
+- Updated dependencies [[`f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326`](https://github.com/medusajs/medusa/commit/f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326), [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44), [`d815e81a1a4977f66d6aebb5abc742ee8780619c`](https://github.com/medusajs/medusa/commit/d815e81a1a4977f66d6aebb5abc742ee8780619c), [`1344c10503f34e392bd03f733820bcd5a12a2766`](https://github.com/medusajs/medusa/commit/1344c10503f34e392bd03f733820bcd5a12a2766), [`f10e3ab70d2328fcc7202e6539c899cdf1313946`](https://github.com/medusajs/medusa/commit/f10e3ab70d2328fcc7202e6539c899cdf1313946), [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9)]:
+  - @medusajs/admin-shared@2.16.0
+  - @medusajs/js-sdk@2.16.0
+  - @medusajs/icons@2.16.0
+  - @medusajs/ui@4.1.16
+
 ## 2.15.5
 
 ### Patch Changes

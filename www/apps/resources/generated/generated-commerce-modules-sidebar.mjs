@@ -512,6 +512,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/recovery-code-mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Custom Admin Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth",
               "children": []
@@ -906,6 +922,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/consumePasswordResetToken",
+                      "title": "consumePasswordResetToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/createAuthIdentities",
                       "title": "createAuthIdentities",
                       "description": "",
@@ -926,6 +951,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/createAuthVerificationToken",
                       "title": "createAuthVerificationToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/createPasswordResetToken",
+                      "title": "createPasswordResetToken",
                       "description": "",
                       "children": []
                     },
@@ -1181,6 +1215,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/models/AuthMfaRecoveryCode",
                       "title": "AuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthPasswordResetToken",
+                      "title": "AuthPasswordResetToken",
                       "description": "",
                       "children": []
                     },
@@ -6550,6 +6593,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/loyalty/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
               "type": "sidebar",
               "sidebar_id": "loyalty-service-reference",
               "title": "Main Service Reference",
@@ -10780,6 +10831,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/payment/deletePaymentCollections",
                       "title": "deletePaymentCollections",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/payment/deletePaymentMethods",
+                      "title": "deletePaymentMethods",
                       "description": "",
                       "children": []
                     },
@@ -17177,6 +17237,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
             },
             {
               "loaded": true,

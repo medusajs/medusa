@@ -129,6 +129,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
+          "type": "link",
+          "path": "/troubleshooting/modules/resolve-path",
+          "title": "Module Provider Resolve Path Error",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
           "type": "sub-category",
           "title": "Query",
           "children": [

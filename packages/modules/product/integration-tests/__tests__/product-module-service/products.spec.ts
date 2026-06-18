@@ -341,9 +341,22 @@ moduleIntegrationTestRunner<IProductModuleService>({
             { relations: ["*"] }
           )
 
-          expect(products).toHaveLength(2)
-          expect(products[0].title).toEqual("updated title 1")
-          expect(products[1].title).toEqual("updated title 2")
+          expect(products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productOne.id,
+                title: "updated title 1",
+              }),
+            ])
+          )
+          expect(products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productTwo.id,
+                title: "updated title 2",
+              }),
+            ])
+          )
         })
 
         it("should update a product and upsert relations that are not created yet", async () => {
@@ -1825,6 +1838,65 @@ moduleIntegrationTestRunner<IProductModuleService>({
               expect.objectContaining({ id: generalImage2.id }),
             ])
           )
+        })
+
+        it("should return variant.images as plain serialized objects, not ORM entities", async () => {
+          // variant.images is attached dynamically by buildVariantImagesFromProduct
+          // before serialization. If serialization misses it, live MikroORM
+          // entities leak out of the module and their toJSON re-serializes the
+          // entire loaded entity graph downstream (res.json, cache writes),
+          // blocking the event loop.
+          const images = [
+            { url: "general-image-1" },
+            { url: "variant-specific-image" },
+          ]
+
+          const [product] = await service.createProducts([
+            buildProductAndRelationsData({
+              images,
+              options: [{ title: "size", values: ["small"] }],
+              variants: [{ title: "Small", options: { size: "small" } }],
+            }),
+          ])
+
+          const variantSpecificImage = product.images.find(
+            (img) => img.url === "variant-specific-image"
+          )!
+
+          await service.addImageToVariant([
+            {
+              image_id: variantSpecificImage.id,
+              variant_id: product.variants[0].id,
+            },
+          ])
+
+          const assertPlainObjects = (variants: any[]) => {
+            for (const variant of variants) {
+              expect(variant.images.length).toBeGreaterThan(0)
+              for (const image of variant.images) {
+                expect(image.constructor).toBe(Object)
+                expect(image.__meta).toBeUndefined()
+                expect(image.__helper).toBeUndefined()
+              }
+            }
+          }
+
+          const retrievedProduct = await service.retrieveProduct(product.id, {
+            relations: ["variants", "variants.images", "images"],
+          })
+          assertPlainObjects(retrievedProduct.variants)
+
+          const listedProducts = await service.listProducts(
+            { id: product.id },
+            { relations: ["variants", "variants.images", "images"] }
+          )
+          assertPlainObjects(listedProducts[0].variants)
+
+          const [listedAndCountedProducts] = await service.listAndCountProducts(
+            { id: product.id },
+            { relations: ["variants", "variants.images", "images"] }
+          )
+          assertPlainObjects(listedAndCountedProducts[0].variants)
         })
       })
     })

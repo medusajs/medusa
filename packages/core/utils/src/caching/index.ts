@@ -74,7 +74,7 @@ export async function useCache<T>(
           allowUnregistered: true,
         }) ?? (console as unknown as Logger)
       logger.error(
-        `An error occured while setting cache for key: ${key}\n${e.message}\n${e.stack}`
+        `An error occurred while setting cache for key: ${key}\n${e.message}\n${e.stack}`
       )
     })
 

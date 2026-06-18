@@ -170,7 +170,7 @@ export type CreateCompleteReturnValidationStepInput = {
  * })
  */
 export const createCompleteReturnValidationStep = createStep(
-  "create-return-order-validation",
+  "create-complete-return-validation",
   async function (
     { order, input }: CreateCompleteReturnValidationStepInput,
     context

@@ -1,11 +1,11 @@
 {
   "name": "@medusajs/telemetry",
-  "version": "2.15.5",
+  "version": "2.16.0",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/medusa-telemetry"
   },
   "engines": {
@@ -37,7 +37,7 @@
     "configstore": "^5.0.1",
     "is-docker": "^2.2.1",
     "remove-trailing-slash": "^0.1.1",
-    "uuid": "^9.0.0"
+    "uuid": "^11.1.1"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }
