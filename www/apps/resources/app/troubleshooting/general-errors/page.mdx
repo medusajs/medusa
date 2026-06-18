@@ -11,3 +11,29 @@ This troubleshooting guide covers general errors you may encounter while install
 ## Resolve "Cannot find module X" Errors
 
 <ModuleXErrorSection />
+
+---
+
+## Cannot Find Module `@medusajs/utils`
+
+If you encounter a TypeScript or build error like the following:
+
+```bash
+Cannot find module '@medusajs/utils' or its corresponding type declarations
+```
+
+The package `@medusajs/utils` does not exist as a public package. Use `@medusajs/framework/utils` instead.
+
+For example, replace:
+
+```ts
+import { MedusaService } from "@medusajs/utils" // wrong
+```
+
+With:
+
+```ts
+import { MedusaService } from "@medusajs/framework/utils" // correct
+```
+
+Common utilities and classes available from `@medusajs/framework/utils` include `MedusaService`, `MedusaError`, `Modules`, `InjectManager`, `InjectTransactionManager`, and `MedusaContext`.

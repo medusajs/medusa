@@ -93,6 +93,25 @@ To resolve this, ensure that your project's dependencies are compatible with tho
 
 ---
 
+## Outdated pnpm Lockfile
+
+If your build fails with the following error, your `pnpm-lock.yaml` file is out of sync with `package.json`:
+
+```bash
+ERR_PNPM_OUTDATED_LOCKFILE Cannot install with 'frozen-lockfile' because
+pnpm-lock.yaml is not up to date with package.json
+```
+
+Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducible builds. This means the lockfile must be committed and kept up to date with `package.json`.
+
+To fix this error:
+
+1. Run `pnpm install` locally to update the lockfile.
+2. Commit the updated `pnpm-lock.yaml` file.
+3. Push the changes to trigger a new deployment.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
