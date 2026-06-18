@@ -50,6 +50,36 @@ jobs:
             !packages/**/node_modules
           retention-days: 1
 
+  lint-medusa:
+    needs: setup
+    name: Lint (Medusa rules)
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 100
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+          skip-build: "true"
+
+      # The Medusa-only ESLint config resolves `@medusajs/eslint-plugin` from its
+      # built output, so build just that package.
+      - name: Build ESLint plugin
+        run: yarn workspace @medusajs/eslint-plugin build
+
+      # Runs ONLY the @medusajs/eslint-plugin convention rules (scope/rules from
+      # the root config, via eslint.medusa.cjs). ESLint exits non-zero on errors,
+      # so a Medusa rule error fails this check; warnings do not.
+      - name: Lint Medusa rules
+        run: yarn lint:medusa
+
   unit-tests-matrix:
     needs: setup
     name: Unit Tests - Shard ${{ matrix.shard_index }}

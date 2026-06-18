@@ -2,6 +2,7 @@ import {
   assignUserRolesWorkflow,
   createRbacRolesWorkflow,
   createUsersWorkflow,
+  getAssignableRolesWorkflow,
   removeUserRolesWorkflow,
   updateRbacRolesWorkflow,
 } from "@medusajs/core-flows"
@@ -69,6 +70,112 @@ medusaIntegrationTestRunner({
               metadata: { department: "sales" },
             })
           )
+        })
+
+        it("creates a role with attached policies in a single request", async () => {
+          // Seed two concrete policies for super-admin to attach.
+          const rbacModule = container.resolve(Modules.RBAC)
+          const [readPolicy] = await rbacModule.createRbacPolicies([
+            {
+              key: "product:read",
+              resource: "product",
+              operation: "read",
+              name: "Read Products",
+            },
+          ])
+          const [createPolicy] = await rbacModule.createRbacPolicies([
+            {
+              key: "product:create",
+              resource: "product",
+              operation: "create",
+              name: "Create Products",
+            },
+          ])
+
+          const response = await api.post(
+            "/admin/rbac/roles",
+            {
+              name: "Product Editor",
+              description: "Read and create products",
+              policy_ids: [readPolicy.id, createPolicy.id],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.role).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              name: "Product Editor",
+            })
+          )
+
+          // The role-policy join rows should exist
+          const rolePolicies = await rbacModule.listRbacRolePolicies({
+            role_id: response.data.role.id,
+          })
+          expect(rolePolicies.map((rp) => rp.policy_id)).toEqual(
+            expect.arrayContaining([readPolicy.id, createPolicy.id])
+          )
+          expect(rolePolicies).toHaveLength(2)
+        })
+
+        it("rejects creating a role with policies the actor doesn't hold", async () => {
+          // Build a scoped actor whose only grant is product:read, then try
+          // to create a role bundling product:read + customer:create.
+          const rbacModule = container.resolve(Modules.RBAC)
+
+          const [productRead] = await rbacModule.createRbacPolicies([
+            {
+              key: "product:read",
+              resource: "product",
+              operation: "read",
+              name: "Read Products",
+            },
+          ])
+          const [customerCreate] = await rbacModule.createRbacPolicies([
+            {
+              key: "customer:create",
+              resource: "customer",
+              operation: "create",
+              name: "Create Customers",
+            },
+          ])
+
+          const scopedRole = await rbacModule.createRbacRoles({
+            name: "Product Reader Only",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: scopedRole.id, policy_id: productRead.id },
+          ])
+
+          const scopedActorHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, scopedActorHeaders, container, {
+            email: "product-reader-only@medusa.js",
+            roles: [scopedRole.id],
+          })
+
+          const error = await api
+            .post(
+              "/admin/rbac/roles",
+              {
+                name: "Cannot Create",
+                policy_ids: [productRead.id, customerCreate.id],
+              },
+              scopedActorHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(403)
+          expect(error.response.data.message).toContain(
+            "You do not have access to some of the policies you are trying to assign."
+          )
+
+          // No role should have been persisted
+          const created = await rbacModule.listRbacRoles({
+            name: "Cannot Create",
+          })
+          expect(created).toHaveLength(0)
         })
       })
 
@@ -676,7 +783,8 @@ medusaIntegrationTestRunner({
             expect(error.response.status).toEqual(403)
             expect(error.response.data).toMatchObject({
               type: "forbidden",
-              message: "Forbidden",
+              message:
+                "You do not have access to some of the policies you are trying to assign.",
             })
           })
 
@@ -807,7 +915,9 @@ medusaIntegrationTestRunner({
               })
               .catch((e) => e)
 
-            expect(error.message).toContain("Forbidden")
+            expect(error.message).toContain(
+              "You do not have access to some of the policies you are trying to assign."
+            )
           })
 
           it("updateRbacRolesWorkflow: super-admin can update a role's policies", async () => {
@@ -1013,6 +1123,408 @@ medusaIntegrationTestRunner({
 
             expect(result).toBeUndefined()
           })
+        })
+      })
+
+      describe("GET /admin/rbac/roles/assignable", () => {
+        // Headers for actors with varying levels of permission coverage.
+        // `adminHeaders` is the super-admin baseline (holds `*:*`).
+        const productManagerHeaders = { headers: { ...adminHeaders.headers } }
+        const universalReaderHeaders = { headers: { ...adminHeaders.headers } }
+        const productReaderHeaders = { headers: { ...adminHeaders.headers } }
+        const noRolesUserHeaders = { headers: { ...adminHeaders.headers } }
+
+        // Role IDs created in setup, used to assert which subset each actor
+        // can assign. Names describe the policy composition of each target.
+        let productOnlyRoleId: string
+        let crossResourceRoleId: string
+        let universalReadRoleId: string
+        let emptyRoleId: string
+        let superAdminLikeRoleId: string
+
+        beforeEach(async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+
+          // Look up an existing policy by key, or create it if absent
+          const ensurePolicy = async (params: {
+            key: string
+            resource: string
+            operation: string
+            name: string
+          }) => {
+            const [existing] = await rbacModule.listRbacPolicies({
+              key: params.key,
+            })
+            if (existing) {
+              return existing
+            }
+            const [created] = await rbacModule.createRbacPolicies([params])
+            return created
+          }
+
+          // Concrete policies — the universe of `resource:operation` tuples
+          // that wildcard grants expand against in `hasPermission`.
+          const productRead = await ensurePolicy({
+            key: "product:read",
+            resource: "product",
+            operation: "read",
+            name: "Read Products",
+          })
+          const productCreate = await ensurePolicy({
+            key: "product:create",
+            resource: "product",
+            operation: "create",
+            name: "Create Products",
+          })
+          const customerRead = await ensurePolicy({
+            key: "customer:read",
+            resource: "customer",
+            operation: "read",
+            name: "Read Customers",
+          })
+          const customerCreate = await ensurePolicy({
+            key: "customer:create",
+            resource: "customer",
+            operation: "create",
+            name: "Create Customers",
+          })
+
+          // Wildcard grants attached to actor roles (drive the wildcard
+          // expansion code path in `hasPermission`).
+          const productWildcard = await ensurePolicy({
+            key: "product:*",
+            resource: "product",
+            operation: "*",
+            name: "Manage Products",
+          })
+          const universalRead = await ensurePolicy({
+            key: "*:read",
+            resource: "*",
+            operation: "read",
+            name: "Read Anything",
+          })
+          const fullWildcard = await ensurePolicy({
+            key: "*:*",
+            resource: "*",
+            operation: "*",
+            name: "Everything",
+          })
+
+          // The route is gated by `rbac_role:read` — every non-super-admin
+          // actor below also holds it so they reach the workflow.
+          const rbacRoleRead = await ensurePolicy({
+            key: "rbac_role:read",
+            resource: "rbac_role",
+            operation: "read",
+            name: "Read Roles",
+          })
+
+          // --- Actor roles (held by users we drive requests with) ---
+          const productManagerRole = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Product Manager (actor)",
+          })
+          const universalReaderRole = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Universal Reader (actor)",
+          })
+          const productReaderRole = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Product Reader (actor)",
+          })
+
+          await rbacModule.createRbacRolePolicies([
+            { role_id: productManagerRole.id, policy_id: productWildcard.id },
+            { role_id: productManagerRole.id, policy_id: rbacRoleRead.id },
+            { role_id: universalReaderRole.id, policy_id: universalRead.id },
+            { role_id: universalReaderRole.id, policy_id: rbacRoleRead.id },
+            { role_id: productReaderRole.id, policy_id: productRead.id },
+            { role_id: productReaderRole.id, policy_id: rbacRoleRead.id },
+          ])
+
+          // --- Target roles (the candidates the endpoint is asked about) ---
+          // (1) Needs only product:read + product:create → covered by product:*
+          const productOnly = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Target Product Only",
+          })
+          productOnlyRoleId = productOnly.id
+          await rbacModule.createRbacRolePolicies([
+            { role_id: productOnly.id, policy_id: productRead.id },
+            { role_id: productOnly.id, policy_id: productCreate.id },
+          ])
+
+          // (2) Needs customer:create — NOT covered by product:* nor by *:read
+          const crossResource = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Target Cross Resource",
+          })
+          crossResourceRoleId = crossResource.id
+          await rbacModule.createRbacRolePolicies([
+            { role_id: crossResource.id, policy_id: productRead.id },
+            { role_id: crossResource.id, policy_id: customerCreate.id },
+          ])
+
+          // (3) Needs read on multiple resources — covered by *:read
+          universalReadRoleId = (
+            await rbacModule.createRbacRoles({
+              name: "Assignable Suite — Target Universal Read",
+            })
+          ).id
+          await rbacModule.createRbacRolePolicies([
+            { role_id: universalReadRoleId, policy_id: productRead.id },
+            { role_id: universalReadRoleId, policy_id: customerRead.id },
+          ])
+
+          // (4) Empty policy set — assignable by any actor with at least one role.
+          const empty = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Target Empty",
+          })
+          emptyRoleId = empty.id
+
+          // (5) Holds `*:*` — only an actor that also holds `*:*` can cover it.
+          const superAdminLike = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Target Super-Admin Like",
+          })
+          superAdminLikeRoleId = superAdminLike.id
+          await rbacModule.createRbacRolePolicies([
+            { role_id: superAdminLike.id, policy_id: fullWildcard.id },
+          ])
+
+          // --- Users holding the actor roles ---
+          await createAdminUser(
+            dbConnection,
+            productManagerHeaders,
+            container,
+            {
+              email: "assignable-product-manager@medusa.js",
+              roles: [productManagerRole.id],
+            }
+          )
+          await createAdminUser(
+            dbConnection,
+            universalReaderHeaders,
+            container,
+            {
+              email: "assignable-universal-reader@medusa.js",
+              roles: [universalReaderRole.id],
+            }
+          )
+          await createAdminUser(dbConnection, productReaderHeaders, container, {
+            email: "assignable-product-reader@medusa.js",
+            roles: [productReaderRole.id],
+          })
+          // Actor with no roles linked at all. This actor would still
+          // fail the route's `rbac_role:read` gate, but for the endpoint's
+          // semantic test we use the super-admin headers to invoke it on
+          // their behalf when needed (see test below).
+          await createAdminUser(dbConnection, noRolesUserHeaders, container, {
+            email: "assignable-no-roles@medusa.js",
+            roles: [],
+          })
+        })
+
+        it("returns response shape `{ roles, count }` with count matching roles.length", async () => {
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toMatchObject({
+            roles: expect.any(Array),
+            count: expect.any(Number),
+          })
+          expect(response.data.count).toEqual(response.data.roles.length)
+        })
+
+        it("returns every target role for a super-admin (`*:*`)", async () => {
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            adminHeaders
+          )
+
+          const ids = response.data.roles.map((r: { id: string }) => r.id)
+          // Super-admin covers every action, so every target role is assignable.
+          expect(ids).toEqual(
+            expect.arrayContaining([
+              productOnlyRoleId,
+              crossResourceRoleId,
+              universalReadRoleId,
+              emptyRoleId,
+              superAdminLikeRoleId,
+            ])
+          )
+        })
+
+        it("returns role projection of `{ id, name, description }` without policies leakage", async () => {
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            adminHeaders
+          )
+
+          for (const role of response.data.roles) {
+            expect(typeof role.id).toEqual("string")
+            expect(typeof role.name).toEqual("string")
+            expect(
+              role.description === null || typeof role.description === "string"
+            ).toEqual(true)
+            expect(role).not.toHaveProperty("policies")
+          }
+        })
+
+        it("expands `resource:*` — product:* actor sees product-only roles, not cross-resource", async () => {
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            productManagerHeaders
+          )
+
+          const ids = response.data.roles.map((r: { id: string }) => r.id)
+          expect(ids).toContain(productOnlyRoleId)
+          expect(ids).toContain(emptyRoleId)
+          expect(ids).not.toContain(crossResourceRoleId)
+          expect(ids).not.toContain(universalReadRoleId)
+          expect(ids).not.toContain(superAdminLikeRoleId)
+        })
+
+        it("expands `*:op` — *:read actor sees read-only roles across resources", async () => {
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            universalReaderHeaders
+          )
+
+          const ids = response.data.roles.map((r: { id: string }) => r.id)
+          expect(ids).toContain(universalReadRoleId)
+          expect(ids).toContain(emptyRoleId)
+          // product:create + customer:create fall outside `*:read`.
+          expect(ids).not.toContain(productOnlyRoleId)
+          expect(ids).not.toContain(crossResourceRoleId)
+          expect(ids).not.toContain(superAdminLikeRoleId)
+        })
+
+        it("requires literal coverage — actor with product:read alone only covers empty targets", async () => {
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            productReaderHeaders
+          )
+
+          const ids = response.data.roles.map((r: { id: string }) => r.id)
+          expect(ids).toContain(emptyRoleId)
+          // Even productOnlyRoleId is out — it bundles product:read AND
+          // product:create; product:read alone doesn't cover create.
+          expect(ids).not.toContain(productOnlyRoleId)
+          expect(ids).not.toContain(crossResourceRoleId)
+          expect(ids).not.toContain(universalReadRoleId)
+          expect(ids).not.toContain(superAdminLikeRoleId)
+        })
+
+        it("returns empty roles via the workflow when the actor holds no roles", async () => {
+          // The no-roles user can't pass the route's `rbac_role:read` gate,
+          // so we exercise the empty-actor branch by running the workflow
+          // directly with their id.
+          const userModule = container.resolve(Modules.USER)
+          const [noRolesUser] = await userModule.listUsers({
+            email: "assignable-no-roles@medusa.js",
+          })
+
+          const { result } = await getAssignableRolesWorkflow(container).run({
+            input: {
+              actor_id: noRolesUser.id,
+              actor: "user",
+            },
+          })
+
+          expect(result.roles).toEqual([])
+          expect(result.count).toEqual(0)
+        })
+
+        it("treats roles with no policies as assignable by anyone with roles", async () => {
+          // hasPermission on an empty actions list returns true, so an empty
+          // target role passes for every actor that holds at least one role.
+          const responses = await Promise.all([
+            api.get("/admin/rbac/roles/assignable", productManagerHeaders),
+            api.get("/admin/rbac/roles/assignable", universalReaderHeaders),
+            api.get("/admin/rbac/roles/assignable", productReaderHeaders),
+          ])
+
+          for (const response of responses) {
+            const ids = response.data.roles.map((r: { id: string }) => r.id)
+            expect(ids).toContain(emptyRoleId)
+          }
+        })
+
+        it("only a `*:*` holder can assign a role whose policies include `*:*`", async () => {
+          // Super-admin holds *:* → can assign superAdminLikeRoleId.
+          const superAdminResponse = await api.get(
+            "/admin/rbac/roles/assignable",
+            adminHeaders
+          )
+          const superAdminIds = superAdminResponse.data.roles.map(
+            (r: { id: string }) => r.id
+          )
+          expect(superAdminIds).toContain(superAdminLikeRoleId)
+
+          // Every other actor (product:*, *:read, product:read) cannot.
+          const otherResponses = await Promise.all([
+            api.get("/admin/rbac/roles/assignable", productManagerHeaders),
+            api.get("/admin/rbac/roles/assignable", universalReaderHeaders),
+            api.get("/admin/rbac/roles/assignable", productReaderHeaders),
+          ])
+          for (const response of otherResponses) {
+            const ids = response.data.roles.map((r: { id: string }) => r.id)
+            expect(ids).not.toContain(superAdminLikeRoleId)
+          }
+        })
+
+        it("aggregates grants across multiple actor roles before checking coverage", async () => {
+          // Actor holds product:read via one role and customer:create via
+          // another. Neither covers crossResourceRoleId alone — together they
+          // do. Pins the actor-roles union behavior to the response.
+          const rbacModule = container.resolve(Modules.RBAC)
+
+          const [productReadPolicy] = await rbacModule.listRbacPolicies({
+            key: "product:read",
+          })
+          const [customerCreatePolicy] = await rbacModule.listRbacPolicies({
+            key: "customer:create",
+          })
+          const [rbacRoleReadPolicy] = await rbacModule.listRbacPolicies({
+            key: "rbac_role:read",
+          })
+
+          const roleA = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Multi-role A",
+          })
+          const roleB = await rbacModule.createRbacRoles({
+            name: "Assignable Suite — Multi-role B",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: roleA.id, policy_id: productReadPolicy.id },
+            { role_id: roleA.id, policy_id: rbacRoleReadPolicy.id },
+            { role_id: roleB.id, policy_id: customerCreatePolicy.id },
+          ])
+
+          const multiRoleHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, multiRoleHeaders, container, {
+            email: "assignable-multi-role@medusa.js",
+            roles: [roleA.id, roleB.id],
+          })
+
+          const response = await api.get(
+            "/admin/rbac/roles/assignable",
+            multiRoleHeaders
+          )
+
+          const ids = response.data.roles.map((r: { id: string }) => r.id)
+          expect(ids).toContain(crossResourceRoleId)
+        })
+
+        it("applies the `id` filter when forwarded", async () => {
+          // Verifies the route forwards `req.filterableFields` into the
+          // workflow so candidate narrowing happens before per-role coverage.
+          const response = await api.get(
+            `/admin/rbac/roles/assignable?id=${emptyRoleId}`,
+            adminHeaders
+          )
+
+          const ids = response.data.roles.map((r: { id: string }) => r.id)
+          expect(ids).toEqual([emptyRoleId])
+          expect(response.data.count).toEqual(1)
         })
       })
 

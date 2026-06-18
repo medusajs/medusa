@@ -6,7 +6,7 @@ tags:
     - server
 ---
 
-import { Prerequisites } from "docs-ui"
+import { Prerequisites, Note } from "docs-ui"
 
 export const metadata = {
   title: `Send Email Verification Notification`,
@@ -16,10 +16,16 @@ export const metadata = {
 
 In this guide, you'll learn how to enable email verification requirement for customers in your Medusa application, and how to send email verification notifications.
 
+<Note>
+
+The steps of this guide have changed since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). It now uses the `http.authVerificationsPerActor` configuration instead of the `require_verification` option in the Emailpass Auth Module Provider.
+
+</Note>
+
 <Prerequisites
   items={[
     {
-      text: "Medusa v2.15.5 or later",
+      text: "Medusa v2.16.0 or later",
       link: "!docs!/learn/update"
     },
     {
@@ -59,39 +65,38 @@ To implement the storefront part of the flow, refer to the [Verify Customer Acco
 
 ## Enable Email Verification
 
-To enable email verification, set the `require_verification` property of the [Emailpass Auth Module Provider](../auth-providers/emailpass/page.mdx) in `medusa-config.ts`:
+To enable email verification, set the `http.authVerificationsPerActor` configuration in `medusa-config.ts`:
 
 export const configHighlights = [
-  ["16", "require_verification", "Set to `true` to require email verification for customers."],
+  ["6", "authVerificationsPerActor", "Object specifying the required verification methods per actor type. Include `customer` to require email verification for customers."],
 ]
 
 ```ts title="medusa-config.ts" highlights={configHighlights}
 module.exports = defineConfig({
-  // other configurations...
-  modules: [
-    // other modules...
-    {
-      resolve: "@medusajs/medusa/auth",
-      options: {
-        mfa: {
-          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
-        },
-        providers: [
+  // ...
+  projectConfig: {
+    // ...
+    http: {
+      authVerificationsPerActor: {
+        customer: [
           {
-            resolve: "@medusajs/medusa/auth-emailpass",
-            id: "emailpass",
-            options: {
-              require_verification: true,
-            },
+            entity_type: "email",
+            auth_provider: "emailpass",
           },
         ],
       },
     },
-  ],
+  },
 })
 ```
 
-With this configuration, customers will be required to verify their email address after registering. This includes previously registered customers as well.
+The `http.authVerificationsPerActor` configuration is an object that specifies the required verification methods for each actor type. The value for each actor type is an array of objects, each specifying a verification method. In this case, you include the `customer` actor type and specify that email verification is required using the `emailpass` auth provider.
+
+<Note>
+
+Learn more in the [authVerificationsPerActor configuration reference](!docs!/learn/configurations/medusa-config#httpauthVerificationsPerActor).
+
+</Note>
 
 ---
 
@@ -161,20 +166,21 @@ import { Modules } from "@medusajs/framework/utils"
 export default async function verificationRequestedHandler({
   event: { data: {
     entity_id: email,
-    token,
-    actor_type,
+    entity_type,
+    code,
   } },
   container,
 }: SubscriberArgs<{
   entity_id: string
-  token: string
-  actor_type: string
-  provider: string
+  entity_type: string
+  code_provider: string
   auth_identity_id: string
-  provider_identity_id: string
+  code: string
   expires_at: string
+  metadata?: Record<string, unknown>
 }>) {
-  if (actor_type !== "customer") {
+  // only handle email verifications.
+  if (entity_type !== "email") {
     return
   }
 
@@ -185,7 +191,7 @@ export default async function verificationRequestedHandler({
 
   const urlPrefix = config.admin.storefrontUrl || "https://storefront.com"
 
-  console.log(`${urlPrefix}/verify-account?token=${token}&email=${email}`)
+  console.log(`${urlPrefix}/verify-account?token=${code}&email=${email}`)
 
   await notificationModuleService.createNotifications({
     to: email,
@@ -194,7 +200,7 @@ export default async function verificationRequestedHandler({
     template: "email-verification",
     data: {
       // a URL to a frontend application
-      verification_url: `${urlPrefix}/verify-account?token=${token}&email=${email}`,
+      verification_url: `${urlPrefix}/verify-account?token=${code}&email=${email}`,
     },
   })
 }
@@ -208,17 +214,17 @@ export const config: SubscriberConfig = {
 
 This subscriber receives in the event payload an object with the following properties:
 
-- `entity_id`: The email address of the customer to which the verification email should be sent.
-- `token`: The token to be included in the verification link. When the customer clicks the verification link, the frontend application should send the token back to the Medusa application to verify the customer's email address.
-- `actor_type`: The type of the actor for which the verification was requested. In this case, you only want to send email verification notifications for customers, so you check if the `actor_type` is `customer` before sending the notification.
-- `provider`: The auth provider used for the verification. In this case, it will be `emailpass`.
+- `entity_id`: The identifier of the provider identity to verify. For email verification, this is the customer's email address.
+- `entity_type`: The kind of entity being verified, such as `email`. You check that it's `email` before sending the notification, since you only want to handle email verifications.
+- `code`: The verification code to include in the verification link. When the customer clicks the verification link, the storefront should send the code back to the Medusa application to verify the customer's email address.
+- `code_provider`: The verification provider used to generate the code. By default, this is `token`.
 - `auth_identity_id`: The ID of the auth identity for which the verification was requested.
-- `provider_identity_id`: The provider-specific ID of the auth identity for which the verification was requested.
-- `expires_at`: The date and time at which the verification token expires.
+- `expires_at`: The date and time at which the verification code expires.
+- `metadata`: Optional metadata included in the verification request.
 
 #### Subscriber Implementation
 
-In the subscriber, you first format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
+In the subscriber, you first check that the `entity_type` is `email` to only handle email verifications. Then, you format the storefront URL either using the value of `admin.storefrontUrl` set in `medusa-config.ts` or a placeholder URL. You need this URL to format the verification link sent in the email.
 
 Then, you send a notification using the Notification Module's main service. You pass the following properties to the `createNotifications` method:
 

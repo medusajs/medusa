@@ -1,0 +1,41 @@
+---
+sidebar_label: "route-dynamic-folder-syntax"
+---
+
+export const metadata = {
+  title: `route-dynamic-folder-syntax - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires dynamic route parameters to use `[param]` folder syntax and disallows them as the first segment of a route.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets route folders in your project's `src/api` directory and dynamic folders in your project's `src/admin/routes` directory. It reports folders that use invalid bracket syntax, such as `[[id]]` or `[...slug]`, and routes that start with a dynamic segment.
+
+The following code is reported by the rule, since `[[id]]` isn't valid syntax:
+
+```ts title="src/api/admin/products/[[id]]/route.ts"
+export const GET = (req, res) => {}
+```
+
+Instead, use single-bracket syntax with an identifier name:
+
+```ts title="src/api/admin/products/[id]/route.ts"
+export const GET = (req, res) => {}
+```
+
+## Why it's Important
+
+Medusa only recognizes the `[param]` folder syntax for dynamic parameters, and a route can't start with a dynamic segment. Other patterns aren't matched, so the route isn't registered as you expect.
+
+Learn more in the [Route Parameters documentation](!docs!/learn/fundamentals/api-routes/parameters).
+
+## Fixable
+
+This rule isn't auto-fixable.

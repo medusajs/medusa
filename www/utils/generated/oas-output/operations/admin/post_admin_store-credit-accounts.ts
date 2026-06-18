@@ -49,7 +49,7 @@
  * x-badges:
  *   - text: Cloud
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/resources/commerce-modules/loyalty).
  * 
 */
 

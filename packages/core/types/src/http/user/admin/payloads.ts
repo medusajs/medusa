@@ -28,6 +28,9 @@ export interface AdminUpdateUser {
  * @featureFlag rbac
  */
 export interface AdminAssignUserRoles {
+  /**
+   * The IDs of the roles to assign to the user.
+   */
   roles: string[]
 }
 
@@ -35,5 +38,15 @@ export interface AdminAssignUserRoles {
  * @featureFlag rbac
  */
 export interface AdminRemoveUserRoles {
+  /**
+   * The IDs of the roles to remove from the user.
+   */
+  roles: string[]
+}
+
+/**
+ * @featureFlag rbac
+ */
+export interface AdminAssignUserRoles {
   roles: string[]
 }

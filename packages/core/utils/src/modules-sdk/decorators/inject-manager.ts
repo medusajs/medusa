@@ -47,7 +47,7 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
         !isPresent(originalContext.manager)
       ) {
         throw new Error(
-          `Could not find a manager in the context. Ensure that ${this.managerProperty} is set on your service that points to a repository.`
+          `Could not find a manager in the context. Ensure that "${managerProperty}" is set on your service and points to a repository — e.g. extend MedusaService(...), which provides "baseRepository_" automatically.`
         )
       }
 
