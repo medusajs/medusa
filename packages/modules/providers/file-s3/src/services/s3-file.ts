@@ -304,7 +304,9 @@ export class S3FileService extends AbstractFileProviderService {
 
     const fileKey = `${this.config_.prefix}${fileData.filename}`
 
-    const acl = this.resolveAcl(fileData.access as "public" | "private")
+    const acl = fileData.access
+      ? this.resolveAcl(fileData.access as "public" | "private")
+      : undefined
 
     // Using content-type, acl, etc. doesn't work with all providers, and some simply ignore it.
     const command = new PutObjectCommand({
