@@ -39,6 +39,7 @@ interface S3FileServiceConfig {
   cacheControl?: string
   downloadFileDuration?: number
   additionalClientConfig?: Record<string, any>
+  acl?: ObjectCannedACL | false
 }
 
 const DEFAULT_UPLOAD_EXPIRATION_DURATION_SECONDS = 60 * 60
@@ -77,6 +78,7 @@ export class S3FileService extends AbstractFileProviderService {
       cacheControl: options.cache_control ?? "public, max-age=31536000",
       downloadFileDuration: options.download_file_duration ?? 60 * 60,
       additionalClientConfig: options.additional_client_config ?? {},
+      acl: options.acl ?? undefined,
     }
     this.logger_ = logger
     this.client_ = this.getClient()
@@ -101,6 +103,27 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     return new S3Client(config)
+  }
+
+  /**
+   * Resolves the ACL to use for an upload. Returns undefined if ACLs are
+   * disabled (config_.acl === false), which causes the SDK to omit the
+   * ACL header entirely — required for buckets with BucketOwnerEnforced
+   * Object Ownership or Block Public Access enabled.
+   */
+  protected resolveAcl(
+    access?: "public" | "private"
+  ): ObjectCannedACL | undefined {
+    if (this.config_.acl === false) {
+      return undefined
+    }
+    if (this.config_.acl) {
+      return this.config_.acl
+    }
+    if (!access) {
+      return undefined
+    }
+    return access === "public" ? "public-read" : "private"
   }
 
   async upload(
@@ -142,7 +165,7 @@ export class S3FileService extends AbstractFileProviderService {
       // protected private_access_key_id_: string
       // protected private_secret_access_key_: string
 
-      ACL: file.access === "public" ? "public-read" : "private",
+      ACL: this.resolveAcl(file.access as "public" | "private"),
       Bucket: this.config_.bucket,
       Body: content,
       Key: fileKey,
@@ -194,7 +217,7 @@ export class S3FileService extends AbstractFileProviderService {
     const upload = new Upload({
       client: this.client_,
       params: {
-        ACL: fileData.access === "public" ? "public-read" : "private",
+        ACL: this.resolveAcl(fileData.access as "public" | "private"),
         Bucket: this.config_.bucket,
         Key: fileKey,
         Body: pass,
@@ -284,10 +307,7 @@ export class S3FileService extends AbstractFileProviderService {
 
     const fileKey = `${this.config_.prefix}${fileData.filename}`
 
-    let acl: ObjectCannedACL | undefined
-    if (fileData.access) {
-      acl = fileData.access === "public" ? "public-read" : "private"
-    }
+    const acl = this.resolveAcl(fileData.access as "public" | "private")
 
     // Using content-type, acl, etc. doesn't work with all providers, and some simply ignore it.
     const command = new PutObjectCommand({
