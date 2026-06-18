@@ -5,6 +5,39 @@ import { IconButton, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 
+/**
+ * An entry's rendered content plus a placeholder that appears (via the
+ * `peer`/`:empty` pair) only when that content produces no DOM — e.g. a section
+ * that exists solely while an edit is pending. Keeps such an entry a visible,
+ * labeled card rather than collapsing to a 0-height row. Shared by the in-place
+ * `SortableEntry` and the `DragOverlay` ghost so the two never drift.
+ */
+export function EntryContent({
+  children,
+  className,
+  placeholderClassName,
+}: {
+  children: ReactNode
+  className?: string
+  placeholderClassName?: string
+}) {
+  const { t } = useTranslation()
+  return (
+    <>
+      <div className={clx("peer flex flex-col", className)}>{children}</div>
+      <div
+        aria-hidden
+        className={clx(
+          "text-ui-fg-muted hidden min-h-16 items-center justify-center px-2 text-center text-xs peer-[:empty]:flex",
+          placeholderClassName
+        )}
+      >
+        {t("layout.empty")}
+      </div>
+    </>
+  )
+}
+
 type SortableEntryProps = {
   widgetId: string
   order: number
@@ -67,22 +100,13 @@ export function SortableEntry({
           `h-full` + `[&>*]:h-full` let the content fill the wrapper when a
           layout stretches the entry to a fixed height (e.g. a grid section
           equalizing row heights). When the wrapper height is auto (list
-          sections) these resolve to the content height, so they're inert.
-
-          `peer` exposes the content's `:empty` state to the placeholder
-          sibling below, which stands in when this entry currently renders
-          nothing (e.g. a section that only appears while an edit is pending) —
-          keeping it a visible, draggable card instead of a 0-height row. */}
-      <div className="peer flex h-full flex-col [&>*]:h-full">{children}</div>
-      {/* Shown (via `peer-[:empty]`) only when the content above renders no DOM,
-          marking the slot as currently empty (the overlay already names it).
-          Hidden the moment real content returns, so idle/edit layouts match. */}
-      <div
-        aria-hidden
-        className="text-ui-fg-muted border-ui-border-strong hidden min-h-16 items-center justify-center rounded-lg border border-dashed px-2 text-center text-xs peer-[:empty]:flex"
+          sections) these resolve to the content height, so they're inert. */}
+      <EntryContent
+        className="h-full [&>*]:h-full"
+        placeholderClassName="border-ui-border-strong rounded-lg border border-dashed"
       >
-        {t("layout.empty")}
-      </div>
+        {children}
+      </EntryContent>
       {/* Overlay rendered after children so it stacks above them by DOM order —
           no z-index needed, which keeps Radix portal dropdowns above us. */}
       <div className="bg-ui-bg-base shadow-elevation-card-rest absolute right-2 top-2 flex items-center gap-x-1 rounded-md p-1">
@@ -93,7 +117,7 @@ export function SortableEntry({
           size="2xsmall"
           variant="transparent"
           onClick={onToggleHidden}
-          aria-label={hidden ? "Show" : "Hide"}
+          aria-label={hidden ? t("actions.show") : t("actions.hide")}
         >
           {hidden ? <EyeSlash /> : <Eye />}
         </IconButton>
@@ -102,7 +126,7 @@ export function SortableEntry({
           className="text-ui-fg-muted cursor-grab touch-none rounded p-1 focus:outline-none"
           {...attributes}
           {...listeners}
-          aria-label="Drag to reorder"
+          aria-label={t("layout.dragToReorder")}
         >
           <DotsSix />
         </button>

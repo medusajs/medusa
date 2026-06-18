@@ -8,27 +8,25 @@ import {
 } from "react"
 import { LayoutPreference } from "./types"
 
+// Both core entries and widgets carry a `render` thunk so the rest of the
+// composer treats them uniformly: core entries return their prebuilt element
+// (ignoring `data`), widgets render their component with the page `data`. The
+// thunk is what keeps `data` out of the layout-model memo — rendering is
+// deferred to call time rather than baked into the entry.
+export type EntryRenderer = (data: unknown) => ReactNode
+
 export type DisplayEntry = {
   widgetId: string
-  Component: ComponentType
+  render: EntryRenderer
   order: number
   hidden: boolean
-  isCore: boolean
 }
 
 export type RawEntry = {
   widgetId: string
-  Component: ComponentType
-  order: number
-  isCore: boolean
+  render: EntryRenderer
   naturalSection: string
 }
-
-// Core entries render their content via `elementById`, not via their
-// `Component`, so the field only exists to satisfy the shared entry shape. A
-// single shared no-op stands in for all of them rather than minting one per
-// entry.
-const CORE_PLACEHOLDER: ComponentType = () => null
 
 /** Derives a stable string identifier from a React element's component type. */
 function getElementName(element: ReactElement): string {
@@ -47,7 +45,7 @@ function getElementName(element: ReactElement): string {
  * production minification (which mangles `Component.name`); otherwise falls
  * back to the component's display/function name.
  */
-export function getCoreEntryKey(element: ReactElement): string {
+function getCoreEntryKey(element: ReactElement): string {
   const explicit = (element.props as { layoutId?: unknown } | null)?.layoutId
   if (typeof explicit === "string" && explicit.length > 0) {
     return explicit
@@ -55,48 +53,40 @@ export function getCoreEntryKey(element: ReactElement): string {
   return getElementName(element)
 }
 
-export type BuiltCoreEntries = {
-  entries: RawEntry[]
-  /** Maps each entry's widgetId back to the element it should render. */
-  elementById: Map<string, ReactElement>
-}
-
+/**
+ * Builds a core entry for every element across all sections, in source order.
+ * Each entry renders its own prebuilt element.
+ *
+ * Duplicate ids (same component/name, or two anonymous elements) are
+ * disambiguated with a `#n` suffix via a single `seen` map shared across all
+ * sections — so two same-named entries in different sections still get distinct,
+ * deterministic ids and don't collide on keys, drag ids, or preference lookups.
+ * The id intentionally omits the section, so an entry keeps its identity (and
+ * saved preference) when its natural section changes in code.
+ */
 export function buildCoreEntries(
-  sectionName: string,
-  elements: ReactElement[],
-  // Tracks how many times each base id has been used so duplicates (same
-  // component/name, or two anonymous elements) get distinct, deterministic ids
-  // instead of silently colliding on keys, drag ids, and preference lookups.
-  // The id intentionally omits the section, so a widget keeps its identity (and
-  // saved preference) when its natural section changes in code — which means
-  // dedup must be shared across sections by the caller to catch same-named
-  // entries that live in different sections.
-  seen: Map<string, number>
-): BuiltCoreEntries {
+  elementsBySection: Record<string, ReactElement[]>
+): RawEntry[] {
   const entries: RawEntry[] = []
-  const elementById = new Map<string, ReactElement>()
+  const seen = new Map<string, number>()
 
-  elements.forEach((el) => {
-    const name = getCoreEntryKey(el)
-    const base = `core:${name}`
-    const count = seen.get(base) ?? 0
-    seen.set(base, count + 1)
-    const widgetId = count === 0 ? base : `${base}#${count + 1}`
+  for (const [sectionName, elements] of Object.entries(elementsBySection)) {
+    for (const el of elements) {
+      const name = getCoreEntryKey(el)
+      const base = `core:${name}`
+      const count = seen.get(base) ?? 0
+      seen.set(base, count + 1)
+      const widgetId = count === 0 ? base : `${base}#${count + 1}`
 
-    entries.push({
-      Component: CORE_PLACEHOLDER,
-      widgetId,
-      // Every entry shares the same natural order; relative placement (widgets
-      // before core, each group in its source order) comes from insertion order
-      // preserved by the stable sort in `buildDisplayEntries`.
-      order: 0,
-      isCore: true,
-      naturalSection: sectionName,
-    })
-    elementById.set(widgetId, el)
-  })
+      entries.push({
+        widgetId,
+        render: () => el,
+        naturalSection: sectionName,
+      })
+    }
+  }
 
-  return { entries, elementById }
+  return entries
 }
 
 export function extractSectionElements(
@@ -113,7 +103,7 @@ export function extractSectionElements(
  * Flattens a section's children into individual ReactElements, unwrapping
  * fragments so each direct child component becomes its own customizer entry.
  */
-export function collectElements(node: ReactNode): ReactElement[] {
+function collectElements(node: ReactNode): ReactElement[] {
   const elements: ReactElement[] = []
   Children.forEach(node, (child) => {
     if (!isValidElement(child)) return
@@ -151,15 +141,17 @@ export function buildDisplayEntries(
         ? pref.section
         : undefined
     const effectiveSection = overrideSection ?? entry.naturalSection
-    const effectiveOrder = pref?.order ?? entry.order
+    // Entries with no saved order share order 0; their relative placement
+    // (widgets before core, each group in source order) comes from insertion
+    // order preserved by the stable sort below.
+    const effectiveOrder = pref?.order ?? 0
     const hidden = pref?.hidden ?? false
     if (!result[effectiveSection]) result[effectiveSection] = []
     result[effectiveSection].push({
       widgetId: entry.widgetId,
-      Component: entry.Component,
+      render: entry.render,
       order: effectiveOrder,
       hidden,
-      isCore: entry.isCore,
     })
   }
   for (const k of Object.keys(result)) {

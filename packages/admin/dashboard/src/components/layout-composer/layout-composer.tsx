@@ -18,7 +18,6 @@ import { Badge, Button, IconButton, usePrompt } from "@medusajs/ui"
 import {
   ComponentType,
   Fragment,
-  ReactElement,
   ReactNode,
   useMemo,
   useRef,
@@ -41,7 +40,7 @@ import {
   getSectionIdFromTailId,
   isSectionTailId,
 } from "./section-dropzone"
-import { SortableEntry } from "./sortable-entry"
+import { EntryContent, SortableEntry } from "./sortable-entry"
 import type {
   LayoutPreference,
   SectionNameFor,
@@ -179,7 +178,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // sections with the active preference applied. Memoized so it isn't rebuilt
   // on unrelated re-renders (e.g. drag start) — only when the sections,
   // registered widgets, or active preference actually change.
-  const { coreElementMap, entriesBySection, widgetSectionMap, validSectionIds } =
+  const { entriesBySection, widgetSectionMap, validSectionIds } =
     useMemo(() => {
       const elementsBySection = extractSectionElements(
         sections as Record<string, ReactNode>
@@ -189,40 +188,26 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         layout?.sections?.map((s) => s.id) ?? []
       )
 
-      // Build raw entries (core + widgets) at their natural sections. Every
-      // entry shares the same natural order (0); their relative placement
-      // before any user preference comes purely from the order they are pushed
-      // here and is preserved by the stable sort in `buildDisplayEntries`.
+      // Build raw entries (core + widgets) at their natural sections. Relative
+      // placement before any user preference comes purely from the order they
+      // are pushed here, preserved by the stable sort in `buildDisplayEntries`.
       // Widgets are pushed before core entries so they render first by default —
       // and so a newly added widget or core entry (which has no saved order)
       // surfaces at the top.
       const rawEntries: RawEntry[] = []
-      const coreElementMap = new Map<string, ReactElement>()
       for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
         for (const w of widgets) {
+          const WidgetComponent = w.Component as ComponentType<{
+            data?: unknown
+          }>
           rawEntries.push({
             widgetId: w.widgetId,
-            Component: w.Component,
-            order: 0,
-            isCore: false,
+            render: (data) => <WidgetComponent data={data} />,
             naturalSection,
           })
         }
       }
-      // Shared so duplicate ids are deduped across the whole page rather than
-      // per-section (ids no longer carry their section).
-      const coreSeen = new Map<string, number>()
-      for (const [sectionName, elements] of Object.entries(elementsBySection)) {
-        const { entries, elementById } = buildCoreEntries(
-          sectionName,
-          elements,
-          coreSeen
-        )
-        rawEntries.push(...entries)
-        for (const [id, el] of elementById) {
-          coreElementMap.set(id, el)
-        }
-      }
+      rawEntries.push(...buildCoreEntries(elementsBySection))
 
       // Apply the active preference (draft when editing, persisted otherwise),
       // keeping hidden entries with `hidden: true` so we can ghost them in edit
@@ -245,29 +230,18 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       }
 
       return {
-        coreElementMap,
         entriesBySection,
         widgetSectionMap,
         validSectionIds,
       }
     }, [sections, widgetsZonePrefix, layout, activePreference, getWidgetsForSections])
 
-  function renderEntryContent(entry: DisplayEntry): ReactNode {
-    if (entry.isCore) {
-      return coreElementMap.get(entry.widgetId)
-    }
-    const WidgetComponent = entry.Component as ComponentType<{
-      data?: unknown
-    }>
-    return <WidgetComponent data={data} />
-  }
-
   // Renders a single entry for the current mode: plain content at idle, a
   // sortable wrapper with chrome in edit mode. An entry that currently renders
   // nothing stays a sortable card showing a placeholder (see `SortableEntry`),
   // so it remains visible and placeable rather than collapsing to a bare row.
   function renderEntry(entry: DisplayEntry): ReactNode {
-    const content = renderEntryContent(entry)
+    const content = entry.render(data)
     if (!editMode) {
       return <Fragment key={entry.widgetId}>{content}</Fragment>
     }
@@ -344,11 +318,10 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   /**
    * Write sequential integer `order`s (0..n) for a section's entries into the
    * draft, pinning each to `sectionId`. Renumbering the whole section on every
-   * move keeps orders as clean, collision-free integers — no fractional
-   * "insert between" values that drift over repeated edits. Pinning the
-   * absolute section (rather than a delta against the natural section) means the
-   * stored preference fully determines placement, so a later change to a
-   * widget's registered zone can't drag a user-placed widget out from under it.
+   * move keeps orders as clean, collision-free integers. Pinning the absolute
+   * section (rather than a delta against the natural section) means the stored
+   * preference fully determines placement, so a later change to a widget's
+   * registered zone can't drag a user-placed widget out from under it.
    */
   function reindexSection(sectionId: string, orderedWidgetIds: string[]) {
     setDraft((prev) => {
@@ -583,14 +556,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           <DragOverlay>
             {activeEntry ? (
               <div className="bg-ui-bg-base shadow-elevation-flyout ring-ui-border-base min-w-0 rounded-lg ring-1">
-                {/* Mirror the SortableEntry placeholder so an empty entry's
-                    drag ghost stays a visible, labeled card. */}
-                <div className="peer flex flex-col">
-                  {renderEntryContent(activeEntry)}
-                </div>
-                <div className="text-ui-fg-muted hidden min-h-16 items-center justify-center px-2 text-center text-xs peer-[:empty]:flex">
-                  {t("layout.empty")}
-                </div>
+                <EntryContent>{activeEntry.render(data)}</EntryContent>
               </div>
             ) : null}
           </DragOverlay>
