@@ -3,14 +3,13 @@ import { CSS } from "@dnd-kit/utilities"
 import { DotsSix, Eye, EyeSlash } from "@medusajs/icons"
 import { IconButton, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
-import { useContentEmptyReport } from "./use-content-empty-report"
+import { useTranslation } from "react-i18next"
 
 type SortableEntryProps = {
   widgetId: string
   order: number
   hidden: boolean
   onToggleHidden: () => void
-  onEmptyChange: (widgetId: string, isEmpty: boolean) => void
   children: ReactNode
 }
 
@@ -19,9 +18,9 @@ export function SortableEntry({
   order,
   hidden,
   onToggleHidden,
-  onEmptyChange,
   children,
 }: SortableEntryProps) {
+  const { t } = useTranslation()
   const {
     attributes,
     listeners,
@@ -30,11 +29,6 @@ export function SortableEntry({
     transition,
     isDragging,
   } = useSortable({ id: widgetId })
-
-  // Keep measuring our content: if it stops rendering anything (e.g. a section
-  // that only shows while an edit is pending) we report empty and the owner
-  // swaps us for a non-sortable probe so we don't leave a bare control row.
-  const contentRef = useContentEmptyReport(widgetId, onEmptyChange)
 
   // `CSS.Translate.toString` applies translate only, dropping the strategy's
   // scaleX/scaleY (which would stretch the dragged item to match the swapped
@@ -73,9 +67,21 @@ export function SortableEntry({
           `h-full` + `[&>*]:h-full` let the content fill the wrapper when a
           layout stretches the entry to a fixed height (e.g. a grid section
           equalizing row heights). When the wrapper height is auto (list
-          sections) these resolve to the content height, so they're inert. */}
-      <div ref={contentRef} className="flex h-full flex-col [&>*]:h-full">
-        {children}
+          sections) these resolve to the content height, so they're inert.
+
+          `peer` exposes the content's `:empty` state to the placeholder
+          sibling below, which stands in when this entry currently renders
+          nothing (e.g. a section that only appears while an edit is pending) —
+          keeping it a visible, draggable card instead of a 0-height row. */}
+      <div className="peer flex h-full flex-col [&>*]:h-full">{children}</div>
+      {/* Shown (via `peer-[:empty]`) only when the content above renders no DOM,
+          marking the slot as currently empty (the overlay already names it).
+          Hidden the moment real content returns, so idle/edit layouts match. */}
+      <div
+        aria-hidden
+        className="text-ui-fg-muted border-ui-border-strong hidden min-h-16 items-center justify-center rounded-lg border border-dashed px-2 text-center text-xs peer-[:empty]:flex"
+      >
+        {t("layout.empty", "Empty")}
       </div>
       {/* Overlay rendered after children so it stacks above them by DOM order —
           no z-index needed, which keeps Radix portal dropdowns above us. */}

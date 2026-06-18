@@ -20,7 +20,6 @@ import {
   Fragment,
   ReactElement,
   ReactNode,
-  useCallback,
   useMemo,
   useRef,
   useState,
@@ -30,7 +29,6 @@ import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
 import { useExtension } from "../../providers/extension-provider/use-extension"
 import { useLayoutCustomizerTriggerHost } from "./customizer-host"
-import { EntryProbe } from "./entry-probe"
 import {
   DisplayEntry,
   RawEntry,
@@ -149,28 +147,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // over-id when the cursor briefly leaves all droppables (column gutter,
   // padding, etc.) so the insertion slot doesn't flicker.
   const lastOverIdRef = useRef<string | null>(null)
-  // Entries whose content currently renders nothing. Core entries are derived
-  // statically from each section's JSX children, but some of those components
-  // conditionally render `null` — keeping them in the sortable set would leave
-  // bare 0-height control rows in edit mode. They report their emptiness from
-  // the DOM (see `useContentEmptyReport`) and we drop them from the layout
-  // until they have content again.
-  const [emptyWidgetIds, setEmptyWidgetIds] = useState<Set<string>>(new Set())
-
-  const reportEmptiness = useCallback((widgetId: string, isEmpty: boolean) => {
-    setEmptyWidgetIds((prev) => {
-      if (prev.has(widgetId) === isEmpty) {
-        return prev
-      }
-      const next = new Set(prev)
-      if (isEmpty) {
-        next.add(widgetId)
-      } else {
-        next.delete(widgetId)
-      }
-      return next
-    })
-  }, [])
 
   function preferenceForScope(scope: LayoutScope): LayoutPreference {
     return scope === "default" ? defaultPreference : personalPreference
@@ -201,8 +177,8 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
 
   // Derive the layout model: core + widget entries placed into their effective
   // sections with the active preference applied. Memoized so it isn't rebuilt
-  // on unrelated re-renders (drag start, emptiness reports) — only when the
-  // sections, registered widgets, or active preference actually change.
+  // on unrelated re-renders (e.g. drag start) — only when the sections,
+  // registered widgets, or active preference actually change.
   const { coreElementMap, entriesBySection, widgetSectionMap, validSectionIds } =
     useMemo(() => {
       const elementsBySection = extractSectionElements(
@@ -286,24 +262,14 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     return <WidgetComponent data={data} />
   }
 
-  // Renders a single entry for the current mode: plain content at idle; in edit
-  // mode a sortable wrapper with chrome, or a chrome-less probe for entries that
-  // currently render nothing (see `emptyWidgetIds`).
+  // Renders a single entry for the current mode: plain content at idle, a
+  // sortable wrapper with chrome in edit mode. An entry that currently renders
+  // nothing stays a sortable card showing a placeholder (see `SortableEntry`),
+  // so it remains visible and placeable rather than collapsing to a bare row.
   function renderEntry(entry: DisplayEntry): ReactNode {
     const content = renderEntryContent(entry)
     if (!editMode) {
       return <Fragment key={entry.widgetId}>{content}</Fragment>
-    }
-    if (emptyWidgetIds.has(entry.widgetId)) {
-      return (
-        <EntryProbe
-          key={entry.widgetId}
-          widgetId={entry.widgetId}
-          onEmptyChange={reportEmptiness}
-        >
-          {content}
-        </EntryProbe>
-      )
     }
     return (
       <SortableEntry
@@ -312,7 +278,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         order={entry.order}
         hidden={entry.hidden}
         onToggleHidden={() => toggleHidden(entry.widgetId)}
-        onEmptyChange={reportEmptiness}
       >
         {content}
       </SortableEntry>
@@ -543,9 +508,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     renderedSections[section.id] = editMode ? (
       <SectionDropzone
         section={section}
-        items={visibleEntries
-          .filter((e) => !emptyWidgetIds.has(e.widgetId))
-          .map((e) => e.widgetId)}
+        items={visibleEntries.map((e) => e.widgetId)}
       >
         {renderedItems}
       </SectionDropzone>
@@ -622,8 +585,15 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           {layoutNode}
           <DragOverlay>
             {activeEntry ? (
-              <div className="bg-ui-bg-base shadow-elevation-flyout ring-ui-border-base rounded-lg ring-1">
-                {renderEntryContent(activeEntry)}
+              <div className="bg-ui-bg-base shadow-elevation-flyout ring-ui-border-base min-w-0 rounded-lg ring-1">
+                {/* Mirror the SortableEntry placeholder so an empty entry's
+                    drag ghost stays a visible, labeled card. */}
+                <div className="peer flex flex-col">
+                  {renderEntryContent(activeEntry)}
+                </div>
+                <div className="text-ui-fg-muted hidden min-h-16 items-center justify-center px-2 text-center text-xs peer-[:empty]:flex">
+                  {t("layout.empty", "Empty")}
+                </div>
               </div>
             ) : null}
           </DragOverlay>
