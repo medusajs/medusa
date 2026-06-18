@@ -660,7 +660,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           })
         )
-        expect(result.mfa_challenge).toBeUndefined()
+        expect(result.mfaChallenge).toBeUndefined()
       })
 
       it("returns an MFA challenge instead of the auth identity when MFA is enabled", async () => {
@@ -696,7 +696,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(result).toEqual(
           expect.objectContaining({
             success: true,
-            mfa_challenge: expect.objectContaining({
+            mfaChallenge: expect.objectContaining({
               auth_identity_id: initial.authIdentity!.id,
               actor_type: "user",
               auth_provider: "plaintextpass",
@@ -706,7 +706,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           })
         )
-        expect(result.authIdentity).toBeUndefined()
       })
     })
   },

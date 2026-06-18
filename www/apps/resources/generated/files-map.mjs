@@ -24,6 +24,10 @@ export const filesMap = [
     "pathname": "/admin-components/components/json-view-section"
   },
   {
+    "filePath": "/www/apps/resources/app/admin-components/components/layout-composer/page.mdx",
+    "pathname": "/admin-components/components/layout-composer"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/components/section-row/page.mdx",
     "pathname": "/admin-components/components/section-row"
   },
@@ -282,6 +286,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/workflows/page.mdx",
     "pathname": "/commerce-modules/inventory/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/loyalty/admin-widget-zones"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/page.mdx",
@@ -646,6 +654,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/workflows/page.mdx",
     "pathname": "/commerce-modules/store/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/store-credit/admin-widget-zones"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store-credit/concepts/page.mdx",
@@ -1404,6 +1416,10 @@ export const filesMap = [
     "pathname": "/medusa-cli/commands/exec"
   },
   {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/lint/page.mdx",
+    "pathname": "/medusa-cli/commands/lint"
+  },
+  {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/new/page.mdx",
     "pathname": "/medusa-cli/commands/new"
   },
@@ -1878,6 +1894,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/medusa-admin/no-widget-route/page.mdx",
     "pathname": "/troubleshooting/medusa-admin/no-widget-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/modules/resolve-path/page.mdx",
+    "pathname": "/troubleshooting/modules/resolve-path"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/nextjs-node-25/page.mdx",

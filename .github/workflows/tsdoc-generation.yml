@@ -82,6 +82,7 @@ jobs:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,git log:*,git status:*,ls:*)"
           max_turns: 30
+          model: claude-sonnet-4-6
           prompt: |
             Load and follow the /writing-tsdocs skill before doing anything else.
 

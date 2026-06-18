@@ -6566,6 +6566,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/loyalty/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
               "type": "sidebar",
               "sidebar_id": "loyalty-service-reference",
               "title": "Main Service Reference",
@@ -17193,6 +17201,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
             },
             {
               "loaded": true,

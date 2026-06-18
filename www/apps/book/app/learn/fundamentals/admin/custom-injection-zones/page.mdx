@@ -1,0 +1,261 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Custom Injection Zones`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to add custom widget injection zones in a plugin.
+
+<Note>
+
+Custom injection zones are available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+## What are Custom Injection Zones?
+
+The Medusa Admin has [pre-defined injection zones](!resources!/admin-widget-injection-zones) where you insert [widgets](../widgets/page.mdx). When you build a plugin that adds custom admin pages, you can also register custom injection zones to allow other developers to inject widgets into your plugin's pages.
+
+Adding custom injection zones in a plugin requires two steps:
+
+1. Expose the injection zones in your custom admin page using the `LayoutComposer` component.
+2. Register the injection zones in the `InjectionZoneRegistry` interface to enable type checking and autocompletion in `defineWidgetConfig`.
+
+---
+
+## Step 1: Expose Injection Zones with LayoutComposer
+
+<Prerequisites
+  items={[
+    {
+      link: "/learn/fundamentals/admin/ui-routes",
+      text: "Custom admin page (UI route)",
+    },
+  ]}
+/>
+
+When you build a custom admin page in a plugin, use the [LayoutComposer](!resources!/admin-components/components/layout-composer) component from `@medusajs/dashboard/components` to structure the page's layout. This component also exposes injection zones based on the prefix you pass to its `widgetsZonePrefix` prop.
+
+### Single-Column Layout Example
+
+Single-column layouts are useful for listing pages or pages with a single main content area. For example:
+
+export const customHighlights = [
+  ["7", "widgetsZonePrefix", "The prefix of the injection zones to expose."],
+  ["8", "preferredLayoutId", "Use a two-column layout."],
+  ["9", "sections", "The page's sections, which are rendered in the layout's main columns."],
+  ["10", "main", "Components shown in the main column."],
+]
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandListPage = () => {
+  // ...
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.list"
+      preferredLayoutId="core:single-column"
+      sections={{
+        main: (
+          <BrandListSection />
+        ),
+      }}
+    />
+  )
+}
+
+export default BrandListPage
+```
+
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+
+- `brand.list.before`: Widgets rendered before the main content of the brand list page.
+- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+
+Widgets injected into these zones are rendered around the page's sections.
+
+Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+
+### Two-Column Layout Example
+
+Two-column layouts are useful for details pages or pages with a main content area and a side column. For example:
+
+export const customHighlights = [
+  ["7", "widgetsZonePrefix", "The prefix of the injection zones to expose."],
+  ["8", "preferredLayoutId", "Use a two-column layout."],
+  ["9", "data", "The data passed to the widgets injected into the zones."],
+  ["10", "sections", "The page's sections, which are rendered in the layout's main and side columns."],
+  ["11", "main", "Components shown in the main (left) column."],
+  ["18", "side", "Components shown in the side (right) column."],
+]
+
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandDetailsPage = () => {
+  // ...
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.details"
+      preferredLayoutId="core:single-column"
+      data={brand}
+      sections={{
+        main: (
+          <>
+            <GeneralSection brand={brand} />
+            {/* ... */}
+          </>
+        ),
+      }}
+    />
+  )
+}
+
+export default BrandDetailsPage
+```
+
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+
+- `brand.details.before`: Widgets rendered before the main content of the brand details page.
+- `brand.details.after`: Widgets rendered after the main content of the brand details page.
+- `brand.details.side.before` (since layout is two-column): Widgets rendered before the side content of the brand details page.
+- `brand.details.side.after` (since layout is two-column): Widgets rendered after the side content of the brand details page.
+
+Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `brand` object is passed as data, so widgets can access it through their props.
+
+Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
+
+### Custom Zone Naming Convention
+
+Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+
+- `resource-name`: The name of the resource being accessed in the page. For example, `brand` in the example above.
+- `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
+- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+
+This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
+
+---
+
+## Step 2: Register Injection Zones for Type Checking
+
+Once your page exposes injection zones, register them in the `InjectionZoneRegistry` interface. This enables type checking and autocompletion for the zones when other developers create widgets using `defineWidgetConfig`.
+
+To register the injection zones, augment the `InjectionZoneRegistry` interface through declaration merging. Create an `index.d.ts` file in your plugin's root directory with the following content:
+
+```ts title="index.d.ts"
+declare module "@medusajs/admin-shared" {
+  interface InjectionZoneRegistry {
+    "brand.details.before": true
+    "brand.details.after": true
+    "brand.details.side.before": true
+    "brand.details.side.after": true
+  }
+}
+```
+
+Then, include the declaration file in your plugin's `package.json`:
+
+```json title="package.json"
+{
+  "files": [
+    ".medusa/server",
+    "index.d.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    }
+  }
+}
+```
+
+---
+
+## Use Custom Injection Zones in Widgets
+
+Once registered, users using the plugin can inject widgets into the custom zones using `defineWidgetConfig`. For example:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const BrandListWidget = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Brand Widget
+        </Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "brand.list.before",
+})
+
+export default BrandListWidget
+```
+
+In this example, the widget is injected into the `brand.list.before` zone, so it's rendered before the main content of the brand list page you added to your plugin.
+
+If you don't see `brand.list.before` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
+
+```json title="src/admin/tsconfig.json"
+"include": [
+  ".",
+  "../../.medusa/types/plugin-augmentations.d.ts"
+]
+```
+
+<Note>
+
+When you build your application, you'll see a warning that this zone is unknown. This is only a precaution since the system doesn't recognize the custom zone. Make sure to use the correct zone name.
+
+</Note>
+
+### Use Data Prop in Widgets
+
+If you pass a `data` prop to the `LayoutComposer`, widgets can access it through their props.
+
+For example, if you pass a `brand` object as data to the `LayoutComposer`, you can access it in your widget like this:
+
+```tsx title="src/admin/widgets/draft-order-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+import { 
+  DetailWidgetProps,
+} from "@medusajs/framework/types"
+
+type BrandDetailsData = {
+  id: string
+  title: string
+  // other brand properties...
+}
+
+const BrandWidget = ({ 
+  data,
+}: DetailWidgetProps<BrandDetailsData>) => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">
+          Brand Widget {data.title}
+        </Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "brand.details.before",
+})
+
+export default BrandWidget
+```
+
+In this example, the `BrandWidget` is injected into the `brand.details.before` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.

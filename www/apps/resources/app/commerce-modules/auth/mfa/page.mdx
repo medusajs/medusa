@@ -34,7 +34,7 @@ The Auth Module implements MFA around two concepts:
 
 ## Configure MFA Encryption Key
 
-By default, Medusa sets the MFA encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
+Medusa automatically configures MFA with sensible defaults, including setting the encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
 
 If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
 
@@ -42,7 +42,7 @@ If you created your application before v2.15.5, generate a random 64-character s
 AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
 ```
 
-Also, if you've added the Auth Module to your `medusa-config.ts` file to set any of its options, make sure to set the `mfa.encryption_key` option to the same environment variable:
+You only need to explicitly configure MFA options in your `medusa-config.ts` if you want to override the defaults:
 
 ```ts title="medusa-config.ts"
 import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
@@ -74,7 +74,7 @@ module.exports = defineConfig({
 })
 ```
 
-If you don't set the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error whenever trying to enroll or verify an MFA factor.
+If the `AUTH_MFA_ENCRYPTION_KEY` environment variable is not set and you haven't explicitly configured the `mfa.encryption_key` option, you'll get a "MFA encryption key is required to use MFA methods" error when trying to enroll or verify an MFA factor.
 
 ---
 
@@ -87,11 +87,18 @@ The Auth Module registers two MFA providers out of the box:
 
 The `recovery_code` provider is not enrolled as a factor on its own. It becomes available as a verification method once the user has at least one enabled MFA factor and generates recovery codes.
 
-{/* ### Custom MFA Providers
+### Custom MFA Providers
 
-You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. A custom provider must implement the `AuthMfaProvider` interface, exposing `start`, `verifySetup`, `canVerifyForAuthIdentity`, and `verify` methods.
+You can register additional MFA providers in the `mfa.providers` array of the Auth Module's options. There are two types of MFA providers you can implement:
 
-Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options. */}
+{/* TODO add links to guides */}
+
+1. **Verification providers**: Providers like `totp` that verify MFA challenges and can be enrolled as factors.
+2. **Recovery Code providers**: Providers with the `recovery_code` method that only verify MFA challenges but aren't enrolled as factors.
+
+After you create the provider, you add it to the Auth Module's configuration in `medusa-config.ts`. Then, you can use it in your custom MFA flows.
+
+Refer to the [Module Options guide](../module-options/page.mdx#mfa) for the full list of MFA configuration options.
 
 ---
 

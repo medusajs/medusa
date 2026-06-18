@@ -6,7 +6,9 @@ import { toPosix } from "./filename"
  * Bails on synthetic / empty filenames.
  */
 export const isUnderApiDir = (filename: string | undefined): boolean => {
-  if (!filename || filename.startsWith("<")) return false
+  if (!filename || filename.startsWith("<")) {
+    return false
+  }
   const posix = toPosix(filename)
   return /(^|\/)src\/api\//.test(posix) || /(^|\/)api\//.test(posix)
 }
@@ -22,9 +24,10 @@ export const isUnderApiDir = (filename: string | undefined): boolean => {
 export function getApiRouteSegments(filename: string): string[] | null {
   const posix = toPosix(filename)
   const m =
-    posix.match(/(?:^|\/)src\/api\/(.+)$/) ??
-    posix.match(/(?:^|\/)api\/(.+)$/)
-  if (!m) return null
+    posix.match(/(?:^|\/)src\/api\/(.+)$/) ?? posix.match(/(?:^|\/)api\/(.+)$/)
+  if (!m) {
+    return null
+  }
   const segments = m[1].split("/")
   segments.pop()
   return segments
@@ -36,8 +39,9 @@ export function getApiRouteSegments(filename: string): string[] | null {
  */
 export function findApiRoot(filename: string): string | null {
   const posix = toPosix(filename)
-  const m =
-    posix.match(/^(.*\/src\/api)\//) ?? posix.match(/^(.*\/api)\//)
-  if (!m) return null
+  const m = posix.match(/^(.*\/src\/api)\//) ?? posix.match(/^(.*\/api)\//)
+  if (!m) {
+    return null
+  }
   return m[1]
 }

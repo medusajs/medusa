@@ -146,3 +146,41 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 ```
 
 Your hook handler then receives the passed data in the `additional_data` object.
+
+---
+
+## Hooks with Return Values
+
+Some workflow hooks expect you to return data from the hook handler. This data is then used in subsequent steps of the workflow.
+
+For example, the `setTaxLineContext` hook in tax-related workflows allows you to return custom context data that's passed to the tax provider during tax calculations:
+
+export const taxContextHighlights = [
+  ["3", "setTaxLineContext", "Consume the hook to add custom tax context."],
+  ["4", "return", "Return custom context data for tax calculations."],
+]
+
+```ts title="src/workflows/hooks/tax-context.ts" highlights={taxContextHighlights}
+import { updateTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+updateTaxLinesWorkflow.hooks.setTaxLineContext(
+  async ({ cart, items, shipping_methods }, { container }) => {
+    // Add custom logic to determine tax context
+    const customerService = container.resolve("customerService")
+    const customer = await customerService.retrieve(cart.customer_id)
+    
+    return {
+      customer_type: customer.metadata?.type || "regular",
+      loyalty_tier: customer.metadata?.loyalty_tier || "bronze",
+    }
+  }
+)
+```
+
+The returned object from the hook handler is passed as `additional_context` to the tax provider, allowing you to customize tax calculations based on your business requirements.
+
+<Note>
+
+The `setTaxLineContext` hook is available in the `updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow` workflows. It's available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>

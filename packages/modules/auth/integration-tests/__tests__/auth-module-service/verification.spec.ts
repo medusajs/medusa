@@ -82,7 +82,6 @@ const createUnverifiedIdentity = async (service: IAuthModuleService) => {
         provider: "emailpass",
         provider_metadata: {
           password: "plaintext",
-          requires_verification: true,
         },
       },
     ],
@@ -92,7 +91,7 @@ const createUnverifiedIdentity = async (service: IAuthModuleService) => {
 moduleIntegrationTestRunner<IAuthModuleService>({
   moduleName: Modules.AUTH,
   testSuite: ({ MikroOrmWrapper, service }) => {
-    describe("AuthModuleService - verification tokens", () => {
+    describe("AuthModuleService - verification providers", () => {
       beforeEach(async () => {
         jest.spyOn(Date, "now").mockReturnValue(1_710_000_000_000)
         await createUnverifiedIdentity(service)
@@ -102,181 +101,161 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         jest.restoreAllMocks()
       })
 
-      it("generates an opaque token and stores only its hash", async () => {
+      it("generates an opaque token and stores only its hash in provider_metadata", async () => {
         const result = await service.requestAuthVerification({
-          actor_type: "user",
-          provider: "emailpass",
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
-          ttl_seconds: 60,
           metadata: {
             source: "test",
           },
         })
 
-        expect(result).toEqual({
-          token: expect.any(String),
-          verification: expect.objectContaining({
-            actor_type: "user",
-            provider: "emailpass",
-            auth_identity_id: "auth-id",
-            provider_identity_id: "provider-id",
+        expect(result).toEqual(
+          expect.objectContaining({
+            code: expect.any(String),
+            expires_at: new Date(1_710_000_900_000),
             entity_id: "verify@test.com",
-            expires_at: new Date(1_710_000_060_000),
+            auth_identity_id: "auth-id",
+            entity_type: "email",
+            code_provider: "token",
             metadata: {
               source: "test",
             },
-          }),
-        })
-        expect(result.verification).not.toHaveProperty("token")
-
-        const [storedToken] = await MikroOrmWrapper.forkManager().execute(
-          "select * from auth_verification_token where provider_identity_id = ?",
-          ["provider-id"]
+            requested_at: new Date(1_710_000_000_000),
+            provider_metadata: {
+              token_hash: expect.stringMatching(/^[a-f0-9]{64}$/),
+            },
+          })
         )
+        expect(result.provider_metadata?.token_hash).not.toEqual(result.code)
 
-        expect(storedToken.token_hash).not.toEqual(result.token)
-        expect(storedToken.token_hash).toMatch(/^[a-f0-9]{64}$/)
+        const [storedVerification] =
+          await MikroOrmWrapper.forkManager().execute(
+            "select * from auth_verification where auth_identity_id = ?",
+            ["auth-id"]
+          )
+
+        expect(
+          parseJson(storedVerification.provider_metadata).token_hash
+        ).toEqual(result.provider_metadata?.token_hash)
+        expect(storedVerification).not.toHaveProperty("token_hash")
       })
 
-      it("uses a short default token TTL", async () => {
-        const result = await service.requestAuthVerification({
-          provider: "emailpass",
-          entity_id: "verify@test.com",
-        })
-
-        expect(result.verification.expires_at).toEqual(
-          new Date(1_710_000_900_000)
-        )
-      })
-
-      it("invalidates existing unused tokens when requesting a new token", async () => {
+      it("reuses the same verification record when requesting again", async () => {
         const first = await service.requestAuthVerification({
-          provider: "emailpass",
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
         const second = await service.requestAuthVerification({
-          provider: "emailpass",
-          entity_id: "verify@test.com",
-        })
-
-        const storedTokens = await MikroOrmWrapper.forkManager().execute(
-          "select * from auth_verification_token where provider_identity_id = ?",
-          ["provider-id"]
-        )
-
-        expect(first.token).not.toEqual(second.token)
-        expect(storedTokens).toHaveLength(1)
-        expect(storedTokens[0].deleted_at).toBeNull()
-
-        await expect(
-          service.confirmAuthVerification({ token: first.token })
-        ).rejects.toThrow("Verification token is invalid or already used")
-      })
-
-      it("confirms a token, consumes it, and marks the provider identity verified", async () => {
-        const { token } = await service.requestAuthVerification({
-          provider: "emailpass",
-          entity_id: "verify@test.com",
-        })
-
-        await expect(
-          service.confirmAuthVerification({ token })
-        ).resolves.toEqual({
-          verified: true,
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
-          provider_identity_id: "provider-id",
           entity_id: "verify@test.com",
         })
 
-        const [providerIdentity] = await MikroOrmWrapper.forkManager().execute(
-          "select provider_metadata from provider_identity where id = ?",
-          ["provider-id"]
-        )
-        const storedTokens = await MikroOrmWrapper.forkManager().execute(
-          "select * from auth_verification_token where provider_identity_id = ?",
-          ["provider-id"]
+        const storedVerifications = await MikroOrmWrapper.forkManager().execute(
+          "select * from auth_verification where auth_identity_id = ?",
+          ["auth-id"]
         )
 
-        expect(
-          parseJson(providerIdentity.provider_metadata).verified_at
-        ).toEqual(new Date(1_710_000_000_000).toISOString())
-        expect(
-          parseJson(providerIdentity.provider_metadata).requires_verification
-        ).toBe(false)
-        expect(storedTokens).toHaveLength(0)
+        expect(first.code).not.toEqual(second.code)
+        expect(storedVerifications).toHaveLength(1)
+        expect(storedVerifications[0].deleted_at).toBeNull()
+
+        await expect(
+          service.confirmAuthVerification({ code: first.code })
+        ).rejects.toThrow("Verification code is invalid or already used")
       })
 
-      it("rejects the wrong provider without consuming the token", async () => {
-        const { token } = await service.requestAuthVerification({
-          provider: "emailpass",
+      it("confirms a token without requiring auth identity context", async () => {
+        const { code } = await service.requestAuthVerification({
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
+          entity_id: "verify@test.com",
+        })
+
+        await expect(
+          service.confirmAuthVerification({ code })
+        ).resolves.toEqual(
+          expect.objectContaining({
+            auth_identity_id: "auth-id",
+            entity_id: "verify@test.com",
+            entity_type: "email",
+            code_provider: "token",
+            verified_at: new Date(1_710_000_000_000),
+          })
+        )
+      })
+
+      it("rejects an unregistered verification provider", async () => {
+        const { code } = await service.requestAuthVerification({
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
 
         await expect(
           service.confirmAuthVerification({
-            token,
-            provider: "google",
+            code,
+            code_provider: "unknown",
           })
         ).rejects.toThrow(
-          'Verification token does not belong to provider "google"'
+          "Unable to retrieve the verification provider with id: unknown"
         )
-
-        const [providerIdentity] = await MikroOrmWrapper.forkManager().execute(
-          "select provider_metadata from provider_identity where id = ?",
-          ["provider-id"]
-        )
-        const [storedToken] = await MikroOrmWrapper.forkManager().execute(
-          "select * from auth_verification_token where provider_identity_id = ?",
-          ["provider-id"]
-        )
-
-        expect(
-          parseJson(providerIdentity.provider_metadata).verified_at
-        ).toBeUndefined()
-        expect(parseJson(providerIdentity.provider_metadata)).toEqual(
-          expect.objectContaining({
-            requires_verification: true,
-          })
-        )
-        expect(storedToken).toBeDefined()
 
         await expect(
           service.confirmAuthVerification({
-            token,
-            provider: "emailpass",
+            code,
+            code_provider: "token",
           })
-        ).resolves.toEqual({
-          verified: true,
-          auth_identity_id: "auth-id",
-          provider_identity_id: "provider-id",
-          entity_id: "verify@test.com",
-        })
+        ).resolves.toEqual(
+          expect.objectContaining({
+            auth_identity_id: "auth-id",
+            entity_id: "verify@test.com",
+            entity_type: "email",
+            code_provider: "token",
+            verified_at: new Date(1_710_000_000_000),
+          })
+        )
       })
 
       it("rejects expired, used, and unknown tokens", async () => {
-        const expired = await service.createAuthVerificationToken({
+        const { code: expiredCode } = await service.requestAuthVerification({
+          entity_type: "email",
+          code_provider: "token",
           auth_identity_id: "auth-id",
-          provider_identity_id: "provider-id",
           entity_id: "verify@test.com",
-          expires_at: new Date(1_709_999_999_000),
         })
 
+        await MikroOrmWrapper.forkManager().execute(
+          "update auth_verification set requested_at = ? where auth_identity_id = ?",
+          [new Date(1_709_999_000_000), "auth-id"]
+        )
+
         await expect(
-          service.confirmAuthVerification({ token: expired.token })
-        ).rejects.toThrow("Verification token has expired")
+          service.confirmAuthVerification({ code: expiredCode })
+        ).rejects.toThrow("Verification code has expired")
 
         const active = await service.requestAuthVerification({
-          provider: "emailpass",
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
 
-        await service.confirmAuthVerification({ token: active.token })
+        await service.confirmAuthVerification({ code: active.code })
         await expect(
-          service.confirmAuthVerification({ token: active.token })
-        ).rejects.toThrow("Verification token is invalid or already used")
+          service.confirmAuthVerification({ code: active.code })
+        ).rejects.toThrow("Verification code is invalid or already used")
         await expect(
-          service.confirmAuthVerification({ token: "missing" })
-        ).rejects.toThrow("Verification token is invalid or already used")
+          service.confirmAuthVerification({ code: "missing" })
+        ).rejects.toThrow("Verification code is invalid or already used")
       })
     })
   },
@@ -325,42 +304,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         jest.restoreAllMocks()
       })
 
-      it("returns verification required before MFA challenge creation", async () => {
-        const setup = await service.startAuthMfa({
-          auth_identity_id: "auth-id",
-          provider: "totp",
-        })
-        const code = generateTotpCode({
-          secret: setup.secret,
-          timestamp: Date.now(),
-        })
-
-        await service.verifyAuthMfa({
-          id: setup.mfa.id,
-          code,
-        })
-
-        const result = await service.authenticate("emailpass", {
-          actor_type: "user",
-          body: {
-            email: "verify@test.com",
-            password: "plaintext",
-          },
-        })
-
-        expect(result).toEqual({
-          success: true,
-          verification: {
-            actor_type: "user",
-            provider: "emailpass",
-            entity_id: "verify@test.com",
-          },
-        })
-        expect(result.authIdentity).toBeUndefined()
-        expect(result.mfa_challenge).toBeUndefined()
-      })
-
-      it("continues to MFA once the emailpass identity is verified", async () => {
+      it("continues to MFA once the entity is verified", async () => {
         const setup = await service.startAuthMfa({
           auth_identity_id: "auth-id",
           provider: "totp",
@@ -370,7 +314,9 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           timestamp: Date.now(),
         })
         const verification = await service.requestAuthVerification({
-          provider: "emailpass",
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
           entity_id: "verify@test.com",
         })
 
@@ -379,7 +325,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           code,
         })
         await service.confirmAuthVerification({
-          token: verification.token,
+          code: verification.code,
         })
 
         const result = await service.authenticate("emailpass", {
@@ -393,14 +339,19 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(result).toEqual(
           expect.objectContaining({
             success: true,
-            mfa_challenge: expect.objectContaining({
+            mfaChallenge: expect.objectContaining({
               auth_identity_id: "auth-id",
               actor_type: "user",
               auth_provider: "emailpass",
             }),
+            authIdentity: expect.objectContaining({
+              id: "auth-id",
+              provider_identities: [
+                expect.objectContaining({ entity_id: "verify@test.com" }),
+              ],
+            }),
           })
         )
-        expect(result.authIdentity).toBeUndefined()
         expect(result.verification).toBeUndefined()
       })
     })

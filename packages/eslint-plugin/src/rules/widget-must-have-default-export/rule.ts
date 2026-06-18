@@ -8,8 +8,7 @@ export const rule = createRule<[], MessageIds>({
   meta: {
     type: "problem",
     docs: {
-      description:
-        "Widget files must default-export the widget component.",
+      description: "Widget files must default-export the widget component.",
     },
     messages: {
       missingDefaultExport:
@@ -37,7 +36,9 @@ export const rule = createRule<[], MessageIds>({
         }
       },
       "Program:exit"(node: TSESTree.Program) {
-        if (hasDefaultExport) return
+        if (hasDefaultExport) {
+          return
+        }
         context.report({
           node,
           messageId: "missingDefaultExport",

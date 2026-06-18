@@ -111,6 +111,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/medusa-cli/commands/lint",
+                  "title": "lint",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/medusa-cli/commands/plugin",
                   "title": "plugin",
                   "description": "",

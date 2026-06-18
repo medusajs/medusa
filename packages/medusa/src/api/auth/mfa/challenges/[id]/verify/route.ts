@@ -1,4 +1,7 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -9,7 +12,7 @@ import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
 export const POST = async (
-  req: MedusaRequest<AuthMfaVerifyChallengeRequestType>,
+  req: AuthenticatedMedusaRequest<AuthMfaVerifyChallengeRequestType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
@@ -57,11 +60,13 @@ export const POST = async (
     ContainerRegistrationKeys.CONFIG_MODULE
   ).projectConfig
 
+  // We don't do additinal checks here as initial authentication has to be done before doing the MFA challenge.
   const token = await generateJwtTokenForAuthIdentity(
     {
       authIdentity,
       actorType: challenge.actor_type,
-      authProvider: challenge.auth_provider ?? undefined,
+      authProvider:
+        req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
       container: req.scope,
     },
     {
