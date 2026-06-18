@@ -37664,9 +37664,18 @@ The items purchased in an order are represented by the [OrderItem data model](un
 
 ![A diagram showcasing the relation between an order and its items.](https://res.cloudinary.com/dza7lstvk/image/upload/v1712304722/Medusa%20Resources/order-order-items_uvckxd.jpg)
 
-### Item’s Product Details
+### Item's Product Details
 
 The details of the purchased products are represented by the [LineItem data model](undefined/references/order/models/OrderLineItem). Not only does a line item hold the details of the product, but also details related to its price, adjustments due to promotions, and taxes.
+
+### Item Metadata Fields
+
+An order item exposes two metadata fields:
+
+- `metadata`: Custom data stored on the versioned [OrderItem](undefined/references/order/models/OrderItem) record. This metadata is specific to a version of the item in the order.
+- `line_item_metadata`: Custom data stored on the underlying [OrderLineItem](undefined/references/order/models/OrderLineItem) record. This metadata belongs to the line item itself, independent of versioning.
+
+`line_item_metadata` is available starting [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
 
 ***
 

@@ -34,7 +34,7 @@ export const generatedEditDates = {
   "app/commerce-modules/order/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/order/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/order/claim/page.mdx": "2025-09-16T16:07:25.033Z",
-  "app/commerce-modules/order/concepts/page.mdx": "2026-04-22T19:13:33.001Z",
+  "app/commerce-modules/order/concepts/page.mdx": "2026-06-18T14:42:00.719Z",
   "app/commerce-modules/order/exchange/page.mdx": "2025-02-26T11:23:29.845Z",
   "app/commerce-modules/order/order-versioning/page.mdx": "2026-04-10T07:11:40.191Z",
   "app/commerce-modules/order/promotion-adjustments/page.mdx": "2024-10-09T10:19:19.333Z",
