@@ -18,7 +18,8 @@ tags:
       A cart is then used to checkout and place an order.
 
 
-      These API routes allow customers to create and manage their cart, and place an order.
+      These API routes allow customers to create and manage their cart, and
+      place an order.
     externalDocs:
       description: How to implement cart functionality in a storefront.
       url: https://docs.medusajs.com/resources/storefront-development/cart
@@ -42,7 +43,8 @@ tags:
       each currency.
 
 
-      When retrieving product variant prices, you specify either the ID of a region or a currency that the customer selected.
+      When retrieving product variant prices, you specify either the ID of a
+      region or a currency that the customer selected.
 
 
       These API routes allow customers to browse currencies.
@@ -56,7 +58,8 @@ tags:
       Customers can place orders as guest customers or register.
 
 
-      When a customer registers, they can manage their profile, save addresses for later usage, and more.
+      When a customer registers, they can manage their profile, save addresses
+      for later usage, and more.
 
 
       These API routes allow customers to create and manage their accounts.
@@ -70,22 +73,24 @@ tags:
       A gift card is a prepaid card that customers can use to purchase products
       in the store.
 
-      Customers can purchase gift cards for themselves or others, and then use them to pay for their orders.
+      Customers can purchase gift cards for themselves or others, and then use
+      them to pay for their orders.
 
-      These API routes allow logged-in customers to create and manage their gift cards.
+      These API routes allow logged-in customers to create and manage their gift
+      cards.
 
       <Note>
 
-      Gift Cards are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+      Gift Cards are available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:
       $ref: "#/components/schemas/StoreGiftCard"
   - name: Locales
     description: >
-      A locale is a language that content is translated into for customers to view
-      in a storefront.
-      
+      A locale is a language that content is translated into for customers to
+      view in a storefront.
+
       Medusa installs locales by default. These API routes allow you to retrieve
       supported locales in the store.
     externalDocs:
@@ -113,7 +118,8 @@ tags:
       A cart must have a payment collection with an authorized payment session.
 
 
-      Use these API routes during checkout to set the cart's payment provider and authorize its payment session.
+      Use these API routes during checkout to set the cart's payment provider
+      and authorize its payment session.
     externalDocs:
       description: How to implement payment during checkout.
       url: https://docs.medusajs.com/resources/storefront-development/checkout/payment
@@ -124,10 +130,13 @@ tags:
       Each region has a set of payment providers enabled.
 
 
-      During checkout, you retrieve the available payment providers in the customer's region to show them to the customer. Customers then choose their preferred provider to authorize their payment and place their order.
+      During checkout, you retrieve the available payment providers in the
+      customer's region to show them to the customer. Customers then choose
+      their preferred provider to authorize their payment and place their order.
 
 
-      These API routes allow customers to view available payment providers in their region.
+      These API routes allow customers to view available payment providers in
+      their region.
     externalDocs:
       description: How to implement payment during checkout.
       url: https://docs.medusajs.com/resources/storefront-development/checkout/payment
@@ -154,7 +163,8 @@ tags:
       Customers browse products for their purchase.
 
 
-      A product has variants for different option values. The customer chooses from these variants before adding it to the cart.
+      A product has variants for different option values. The customer chooses
+      from these variants before adding it to the cart.
 
 
       These API routes allow customers to browse products.
@@ -169,7 +179,8 @@ tags:
       store serves customers in.
 
 
-      Customers can choose what region they're in to view prices of that region's currency.
+      Customers can choose what region they're in to view prices of that
+      region's currency.
 
 
       Use these API routes to retrieve available regions in the store.
@@ -183,7 +194,8 @@ tags:
       A return reason is a possible reason a customer wants to return an item.
 
 
-      Use these API routes when implementing return creation flow in your storefront to allow customers to select their return reason.
+      Use these API routes when implementing return creation flow in your
+      storefront to allow customers to select their return reason.
     x-associatedSchema:
       $ref: "#/components/schemas/StoreReturnReason"
   - name: Returns
@@ -200,10 +212,12 @@ tags:
       A shipping option is a way of shipping an item to or from the customer.
 
 
-      During the checkout flow, the customer selects their preferred shipping option to receive their order.
+      During the checkout flow, the customer selects their preferred shipping
+      option to receive their order.
 
 
-      These API routes allow customers to retrieve available shipping options for their context.
+      These API routes allow customers to retrieve available shipping options
+      for their context.
     externalDocs:
       description: How to implement shipping during checkout.
       url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
@@ -220,7 +234,7 @@ tags:
 
         <Note>
 
-        Store Credit Accounts are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+        Store Credit Accounts are only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
         </Note>
       $ref: "#/components/schemas/StoreStoreCreditAccount"

@@ -27,7 +27,7 @@
  *     label: cURL
  *     source: curl '{backend_url}/auth/mfa/factors'
  * tags:
- *   - Auth
+ *   - Multi-Factor Authentication (MFA) Factors
  * responses:
  *   "200":
  *     description: OK

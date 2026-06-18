@@ -479,7 +479,7 @@ tags:
       Store credit accounts allow you to build features that let customers pay for items using their store credit balance, such as gift cards or loyalty points.
       These API routes allow admin users to manage store credit accounts, their transactions, and more.
       <Note>
-      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
       </Note>
     x-associatedSchema:
       $ref: '#/components/schemas/AdminStoreCreditAccount'
@@ -22913,9 +22913,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /admin/gift-cards/{id}:
     get:
       operationId: GetGiftCardsId
@@ -23014,9 +23014,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /admin/gift-cards/{id}/orders:
     get:
       operationId: GetGiftCardsIdOrders
@@ -60385,9 +60385,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /admin/store-credit-accounts/{id}:
     get:
       operationId: GetStoreCreditAccountsId
@@ -75837,6 +75837,11 @@ components:
           format: date-time
           title: updated_at
           description: The date the invite was updated.
+        rbac_roles:
+          type: array
+          description: The invite's rbac roles.
+          items:
+            $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
       type: object
       description: The invite's details.
@@ -75956,7 +75961,7 @@ components:
         provider_id:
           type: string
           title: provider_id
-          description: The ID of the payment provider to use for marking the payment collection as paid. If not provided, the `system` provider will be used.
+          description: The payment collection's provider id.
       x-schemaName: AdminMarkPaymentCollectionAsPaid
     AdminNotification:
       type: object
@@ -76438,7 +76443,6 @@ components:
         - created_at
         - updated_at
         - order_id
-        - internal_note
         - return_id
         - exchange_id
         - claim_id
@@ -76571,10 +76575,6 @@ components:
           type: string
           title: created_by
           description: The ID of the user that created the order change.
-        internal_note:
-          type: string
-          title: internal_note
-          description: The order change's internal note.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -80090,6 +80090,121 @@ components:
       properties:
         property_label:
           $ref: '#/components/schemas/AdminPropertyLabel'
+    AdminRbacPolicy:
+      type: object
+      description: The policy's policies.
+      x-schemaName: AdminRbacPolicy
+      required:
+        - id
+        - key
+        - resource
+        - operation
+        - name
+        - description
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The policy's ID.
+        key:
+          type: string
+          title: key
+          description: The policy's key.
+        resource:
+          type: string
+          title: resource
+          description: The policy's resource.
+        operation:
+          type: string
+          title: operation
+          description: The policy's operation.
+        name:
+          type: string
+          title: name
+          description: The policy's name.
+        description:
+          type: string
+          title: description
+          description: The policy's description.
+        metadata:
+          type: object
+          description: The policy's metadata.
+        inherited_from_role_id:
+          type: string
+          title: inherited_from_role_id
+          description: The policy's inherited from role id.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The policy's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The policy's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The policy's deleted at.
+    AdminRbacRole:
+      type: object
+      description: The rbac role's rbac roles.
+      x-schemaName: AdminRbacRole
+      required:
+        - id
+        - name
+        - description
+        - parent_id
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The rbac role's ID.
+        name:
+          type: string
+          title: name
+          description: The rbac role's name.
+        description:
+          type: string
+          title: description
+          description: The rbac role's description.
+        parent_id:
+          type: string
+          title: parent_id
+          description: The rbac role's parent id.
+        metadata:
+          type: object
+          description: The rbac role's metadata.
+        policies:
+          type: array
+          description: The rbac role's policies.
+          items:
+            $ref: '#/components/schemas/AdminRbacPolicy'
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The rbac role's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The rbac role's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The rbac role's deleted at.
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -83066,10 +83181,6 @@ components:
           type: boolean
           title: carry_over_promotions
           description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
-        internal_note:
-          type: string
-          title: internal_note
-          description: The order change's internal note.
     AdminUpdatePriceList:
       type: object
       description: the details to update in a price list.
@@ -89925,9 +90036,6 @@ components:
           type: boolean
           title: is_giftcard
           description: Whether the item is a gift card.
-        line_item_metadata:
-          type: object
-          description: Custom key-value pairs on the order's line items.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -90623,7 +90731,7 @@ components:
           description: The order transfer's token issued when the transfer was requested.
     StoreAddCartShippingMethodsBase:
       type: object
-      description: The shipping method's details.
+      description: SUMMARY
       x-schemaName: StoreAddCartShippingMethodsBase
       required:
         - option_id
@@ -90631,13 +90739,10 @@ components:
         option_id:
           type: string
           title: option_id
-          description: The ID of the shipping option to add to the cart.
+          description: The cart's option id.
         data:
           type: object
-          description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
-          externalDocs:
-            url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping#data-request-body-parameter
-            description: Learn more about the data parameter.
+          description: The cart's data.
     StoreAddGiftCardToCart:
       type: object
       description: The details to add a gift card to the cart.

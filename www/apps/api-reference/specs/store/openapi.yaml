@@ -86,7 +86,7 @@ tags:
 
       <Note>
 
-      Gift Cards are only available for Cloud users using the [Loyalty
+      Gift Cards are available through the [Loyalty
       Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
@@ -248,8 +248,8 @@ tags:
 
         <Note>
 
-        Store Credit Accounts are only available for Cloud users using the
-        [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+        Store Credit Accounts are only available through the [Loyalty
+        Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
         </Note>
       $ref: ./components/schemas/StoreStoreCreditAccount.yaml
@@ -280,6 +280,10 @@ paths:
     $ref: paths/auth_session.yaml
   /auth/token/refresh:
     $ref: paths/auth_token_refresh.yaml
+  /auth/verification/confirm:
+    $ref: paths/auth_verification_confirm.yaml
+  /auth/verification/request:
+    $ref: paths/auth_verification_request.yaml
   /store/carts:
     $ref: paths/store_carts.yaml
   /store/carts/{id}:

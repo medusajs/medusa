@@ -64,7 +64,7 @@ tags:
       Customers can purchase gift cards for themselves or others, and then use them to pay for their orders.
       These API routes allow logged-in customers to create and manage their gift cards.
       <Note>
-      Gift Cards are available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+      Gift Cards are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
       </Note>
     x-associatedSchema:
       $ref: '#/components/schemas/StoreGiftCard'
@@ -77,13 +77,6 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: '#/components/schemas/StoreLocale'
-  - name: Multi-Factor Authentication (MFA) Factors
-    description: |
-      Multi-factor authentication (MFA) factors are additional ways to verify a customer's identity during login, in addition to their password. Examples of MFA factors include authenticator apps, SMS messages, and email.
-      These API routes allow customers to manage their MFA factors, such as enabling an authenticator app or generating recovery codes.
-    externalDocs:
-      description: Learn more about MFA in Medusa
-      url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   - name: Orders
     description: |
       Guest and registered customers can view orders they placed.
@@ -185,7 +178,7 @@ tags:
         A store credit account is a way for customers to manage their store credit balance. Customers can use their store credit to pay for orders, and view their store credit balance.
         These API routes allow customers to view their store credit accounts.
         <Note>
-        Store Credit Accounts are only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+        Store Credit Accounts are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
         </Note>
       $ref: '#/components/schemas/StoreStoreCreditAccount'
 paths:
@@ -823,7 +816,7 @@ paths:
               "code": "{value}"
             }'
       tags:
-        - Multi-Factor Authentication (MFA) Factors
+        - Auth
       responses:
         '200':
           description: OK
@@ -869,7 +862,7 @@ paths:
           label: cURL
           source: curl '{backend_url}/auth/mfa/factors'
       tags:
-        - Multi-Factor Authentication (MFA) Factors
+        - Auth
       responses:
         '200':
           description: OK
@@ -953,7 +946,7 @@ paths:
               "provider": "{value}"
             }'
       tags:
-        - Multi-Factor Authentication (MFA) Factors
+        - Auth
       responses:
         '200':
           description: OK
@@ -1021,7 +1014,7 @@ paths:
           label: cURL
           source: curl -X DELETE '{backend_url}/auth/mfa/factors/{id}'
       tags:
-        - Multi-Factor Authentication (MFA) Factors
+        - Auth
       responses:
         '200':
           description: OK
@@ -1097,7 +1090,7 @@ paths:
               "code": "{value}"
             }'
       tags:
-        - Multi-Factor Authentication (MFA) Factors
+        - Auth
       responses:
         '200':
           description: OK
@@ -1159,7 +1152,7 @@ paths:
           label: cURL
           source: curl -X POST '{backend_url}/auth/mfa/recovery-codes'
       tags:
-        - Multi-Factor Authentication (MFA) Factors
+        - Auth
       responses:
         '200':
           description: OK
@@ -1330,147 +1323,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /auth/verification/confirm:
-    post:
-      operationId: PostVerificationConfirm
-      summary: Confirm Customer Verification
-      x-sidebar-summary: Confirm Verification
-      description: Confirm a verification token of the customer. This API route is used as the last step part of the email verification flow. It can also be used for custom flows, such as phone number verification. Once successfully verified, a customer can complete their registration and log into their account.
-      externalDocs:
-        url: https://docs.medusajs.com/resources/storefront-development/customers/verify-account
-        description: 'Storefront guide: Register Customer with Email Verification.'
-      x-authenticated: false
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              description: The verification details
-              required:
-                - code
-              properties:
-                code:
-                  type: string
-                  title: code
-                  description: The token, OTP, or any other code that was sent to the customer for verification.
-                code_provider:
-                  type: string
-                  title: code_provider
-                  description: The provider to use for verification. This is optional. When not provided, the default `token` provider is used.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/auth/verification/confirm' \
-            -H 'Content-Type: application/json' \
-            --data-raw '{
-              "code": "{value}"
-            }'
-      tags:
-        - Verification
-      responses:
-        '200':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-since: 2.16.0
-  /auth/verification/request:
-    post:
-      operationId: PostVerificationRequest
-      summary: Request Customer Verification
-      x-sidebar-summary: Request Verification
-      description: Create a verification request for a customer. This API route is used when a customer logs in, but their email requires verification. It can also be used for custom flows, such as phone number verification. Once successfully requested, a verification code will be generated and an `auth.verification_requested` event will be emitted. You can listen to this event and decide how to deliver the code to the customer.
-      externalDocs:
-        url: https://docs.medusajs.com/resources/storefront-development/customers/verify-account
-        description: 'Storefront guide: Register Customer with Email Verification.'
-      x-authenticated: false
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              description: The verification request details
-              required:
-                - entity_id
-                - entity_type
-                - code_provider
-              properties:
-                entity_id:
-                  type: string
-                  title: entity_id
-                  description: The identifier of the user or customer. For example, an email address.
-                entity_type:
-                  type: string
-                  title: entity_type
-                  description: The type of identity being verified. For example, "email" or "phone_number".
-                code_provider:
-                  type: string
-                  title: code_provider
-                  description: The provider to use to create the verification token or code. By default, Medusa provides a `token` provider that generates a random token. You can also implement your own provider to generate a code or OTP.
-                metadata:
-                  type: object
-                  description: Custom key-value pairs that can be passed to the verification request. This is optional and can be used to store additional information related to the verification request.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |-
-            curl -X POST '{backend_url}/auth/verification/request' \
-            -H 'Content-Type: application/json' \
-            --data-raw '{
-              "entity_id": "customer@example.com",
-              "entity_type": "email",
-              "code_provider": "token"
-            }'
-      tags:
-        - Verification
-      responses:
-        '201':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      x-workflow: requestVerificationWorkflow
-      x-events:
-        - name: auth.verification_requested
-          payload: |-
-            ```ts
-            {
-              entity_id, // The identifier of the user or customer. For example, an email address.
-              actor_type, // The type of actor. For example, "customer", "user", or custom.
-              provider, // The auth provider that requested verification.
-              auth_identity_id, // The ID of the auth identity being verified.
-              provider_identity_id, // The ID of the provider identity being verified.
-              code, // The generated verification code.
-              expires_at, // The code expiry date.
-              metadata, // Optional custom metadata passed from the request.
-            }
-            ```
-          description: |-
-            Emitted when a verification code is generated. You can listen to
-            this event and decide how to deliver the code to the user or customer.
-          deprecated: false
-          since: 2.15.5
-      x-since: 2.16.0
   /store/carts:
     post:
       operationId: PostCarts
@@ -2217,9 +2069,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
     delete:
       operationId: DeleteCartsIdGiftCards
       summary: Remove Gift Card from Cart
@@ -2299,9 +2151,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /store/carts/{id}/line-items:
     post:
       operationId: PostCartsIdLineItems
@@ -3059,18 +2911,18 @@ paths:
                 - allOf:
                     - $ref: '#/components/schemas/StoreAddCartShippingMethodsBase'
                     - type: object
-                      description: The shipping method's details.
+                      description: SUMMARY
                       properties:
                         additional_data:
                           type: object
                           description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
                 - allOf:
                     - type: array
-                      description: An array of shipping methods to add to the cart.
+                      description: SUMMARY
                       items:
                         $ref: '#/components/schemas/StoreAddCartShippingMethodsBase'
                     - type: object
-                      description: The shipping method's details.
+                      description: SUMMARY
                       properties:
                         additional_data:
                           type: object
@@ -3224,9 +3076,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /store/carts/{id}/taxes:
     post:
       operationId: PostCartsIdTaxes
@@ -5496,9 +5348,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
   /store/locales:
     get:
       operationId: GetLocales
@@ -11998,9 +11850,9 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-badges:
-        - text: Plugin
+        - text: Cloud
           description: |
-            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
 components:
   schemas:
     AdminAddClaimItems:
@@ -19094,6 +18946,11 @@ components:
           format: date-time
           title: updated_at
           description: The date the invite was updated.
+        rbac_roles:
+          type: array
+          description: The invite's rbac roles.
+          items:
+            $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
       type: object
       description: The invite's details.
@@ -19213,7 +19070,7 @@ components:
         provider_id:
           type: string
           title: provider_id
-          description: The ID of the payment provider to use for marking the payment collection as paid. If not provided, the `system` provider will be used.
+          description: The payment collection's provider id.
       x-schemaName: AdminMarkPaymentCollectionAsPaid
     AdminNotification:
       type: object
@@ -19695,7 +19552,6 @@ components:
         - created_at
         - updated_at
         - order_id
-        - internal_note
         - return_id
         - exchange_id
         - claim_id
@@ -19828,10 +19684,6 @@ components:
           type: string
           title: created_by
           description: The ID of the user that created the order change.
-        internal_note:
-          type: string
-          title: internal_note
-          description: The order change's internal note.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -23347,6 +23199,121 @@ components:
       properties:
         property_label:
           $ref: '#/components/schemas/AdminPropertyLabel'
+    AdminRbacPolicy:
+      type: object
+      description: The policy's policies.
+      x-schemaName: AdminRbacPolicy
+      required:
+        - id
+        - key
+        - resource
+        - operation
+        - name
+        - description
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The policy's ID.
+        key:
+          type: string
+          title: key
+          description: The policy's key.
+        resource:
+          type: string
+          title: resource
+          description: The policy's resource.
+        operation:
+          type: string
+          title: operation
+          description: The policy's operation.
+        name:
+          type: string
+          title: name
+          description: The policy's name.
+        description:
+          type: string
+          title: description
+          description: The policy's description.
+        metadata:
+          type: object
+          description: The policy's metadata.
+        inherited_from_role_id:
+          type: string
+          title: inherited_from_role_id
+          description: The policy's inherited from role id.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The policy's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The policy's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The policy's deleted at.
+    AdminRbacRole:
+      type: object
+      description: The rbac role's rbac roles.
+      x-schemaName: AdminRbacRole
+      required:
+        - id
+        - name
+        - description
+        - parent_id
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The rbac role's ID.
+        name:
+          type: string
+          title: name
+          description: The rbac role's name.
+        description:
+          type: string
+          title: description
+          description: The rbac role's description.
+        parent_id:
+          type: string
+          title: parent_id
+          description: The rbac role's parent id.
+        metadata:
+          type: object
+          description: The rbac role's metadata.
+        policies:
+          type: array
+          description: The rbac role's policies.
+          items:
+            $ref: '#/components/schemas/AdminRbacPolicy'
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The rbac role's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The rbac role's updated at.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The rbac role's deleted at.
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -26323,10 +26290,6 @@ components:
           type: boolean
           title: carry_over_promotions
           description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
-        internal_note:
-          type: string
-          title: internal_note
-          description: The order change's internal note.
     AdminUpdatePriceList:
       type: object
       description: the details to update in a price list.
@@ -33182,9 +33145,6 @@ components:
           type: boolean
           title: is_giftcard
           description: Whether the item is a gift card.
-        line_item_metadata:
-          type: object
-          description: Custom key-value pairs on the order's line items.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -33880,7 +33840,7 @@ components:
           description: The order transfer's token issued when the transfer was requested.
     StoreAddCartShippingMethodsBase:
       type: object
-      description: The shipping method's details.
+      description: SUMMARY
       x-schemaName: StoreAddCartShippingMethodsBase
       required:
         - option_id
@@ -33888,13 +33848,10 @@ components:
         option_id:
           type: string
           title: option_id
-          description: The ID of the shipping option to add to the cart.
+          description: The cart's option id.
         data:
           type: object
-          description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
-          externalDocs:
-            url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping#data-request-body-parameter
-            description: Learn more about the data parameter.
+          description: The cart's data.
     StoreAddGiftCardToCart:
       type: object
       description: The details to add a gift card to the cart.

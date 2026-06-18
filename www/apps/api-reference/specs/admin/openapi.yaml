@@ -653,7 +653,8 @@ tags:
       <Note>
 
       Store Credit Account routes are only available for Cloud users using the
-      [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+      [Loyalty
+      Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:
