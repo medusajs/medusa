@@ -5,11 +5,11 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "api-keys_getapikeys",
         "api-keys_postapikeys",
+        "api-keys_postapikeysidrevoke",
         "api-keys_getapikeysid",
         "api-keys_postapikeysid",
         "api-keys_deleteapikeysid",
-        "api-keys_postapikeysidsaleschannels",
-        "api-keys_postapikeysidrevoke"
+        "api-keys_postapikeysidsaleschannels"
       ]
     },
     {
@@ -20,10 +20,10 @@ export const specsSitemapData = {
         "auth_deletesession",
         "auth_postactor_typeauth_provider",
         "auth_postadminauthtokenrefresh",
+        "auth_postactor_typeauth_provider_register",
         "auth_postactor_typeauth_providercallback",
         "auth_postactor_typeauth_providerresetpassword",
-        "auth_postactor_typeauth_providerupdate",
-        "auth_postactor_typeauth_provider_register"
+        "auth_postactor_typeauth_providerupdate"
       ]
     },
     {
@@ -31,10 +31,10 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "campaigns_getcampaigns",
         "campaigns_postcampaigns",
+        "campaigns_postcampaignsidpromotions",
         "campaigns_getcampaignsid",
         "campaigns_postcampaignsid",
-        "campaigns_deletecampaignsid",
-        "campaigns_postcampaignsidpromotions"
+        "campaigns_deletecampaignsid"
       ]
     },
     {
@@ -44,117 +44,117 @@ export const specsSitemapData = {
         "claims_postclaims",
         "claims_getclaimsid",
         "claims_postclaimsidcancel",
-        "claims_postclaimsidclaimitems",
-        "claims_postclaimsidclaimitemsaction_id",
-        "claims_deleteclaimsidclaimitemsaction_id",
         "claims_postclaimsidinbounditems",
+        "claims_postclaimsidinboundshippingmethod",
         "claims_postclaimsidinbounditemsaction_id",
         "claims_deleteclaimsidinbounditemsaction_id",
-        "claims_postclaimsidinboundshippingmethod",
+        "claims_postclaimsidclaimitemsaction_id",
+        "claims_deleteclaimsidclaimitemsaction_id",
+        "claims_postclaimsidclaimitems",
+        "claims_postclaimsidoutbounditems",
         "claims_postclaimsidinboundshippingmethodaction_id",
         "claims_deleteclaimsidinboundshippingmethodaction_id",
         "claims_postclaimsidoutbounditemsaction_id",
         "claims_deleteclaimsidoutbounditemsaction_id",
-        "claims_postclaimsidoutboundshippingmethodaction_id",
-        "claims_deleteclaimsidoutboundshippingmethodaction_id",
-        "claims_postclaimsidoutbounditems",
+        "claims_postclaimsidoutboundshippingmethod",
         "claims_postclaimsidrequest",
         "claims_deleteclaimsidrequest",
-        "claims_postclaimsidoutboundshippingmethod"
+        "claims_postclaimsidoutboundshippingmethodaction_id",
+        "claims_deleteclaimsidoutboundshippingmethodaction_id"
       ]
     },
     {
       "tagSectionId": "collections",
       "operationSectionIds": [
+        "collections_getcollections",
+        "collections_postcollections",
+        "collections_postcollectionsidproducts",
         "collections_getcollectionsid",
         "collections_postcollectionsid",
-        "collections_deletecollectionsid",
-        "collections_postcollectionsidproducts",
-        "collections_getcollections",
-        "collections_postcollections"
+        "collections_deletecollectionsid"
       ]
     },
     {
       "tagSectionId": "currencies",
       "operationSectionIds": [
-        "currencies_getcurrencies",
-        "currencies_getcurrenciescode"
+        "currencies_getcurrenciescode",
+        "currencies_getcurrencies"
       ]
     },
     {
       "tagSectionId": "customer-groups",
       "operationSectionIds": [
+        "customer-groups_getcustomergroups",
+        "customer-groups_postcustomergroups",
         "customer-groups_getcustomergroupsid",
         "customer-groups_postcustomergroupsid",
         "customer-groups_deletecustomergroupsid",
-        "customer-groups_getcustomergroups",
-        "customer-groups_postcustomergroups",
         "customer-groups_postcustomergroupsidcustomers"
       ]
     },
     {
       "tagSectionId": "customers",
       "operationSectionIds": [
+        "customers_postcustomersidcustomergroups",
         "customers_getcustomersid",
         "customers_postcustomersid",
         "customers_deletecustomersid",
-        "customers_getcustomersidaddresses",
-        "customers_postcustomersidaddresses",
         "customers_getcustomers",
         "customers_postcustomers",
+        "customers_getcustomersidaddresses",
+        "customers_postcustomersidaddresses",
         "customers_getcustomersidaddressesaddress_id",
         "customers_postcustomersidaddressesaddress_id",
-        "customers_deletecustomersidaddressesaddress_id",
-        "customers_postcustomersidcustomergroups"
+        "customers_deletecustomersidaddressesaddress_id"
       ]
     },
     {
       "tagSectionId": "draft-orders",
       "operationSectionIds": [
-        "draft-orders_getdraftordersid",
-        "draft-orders_postdraftordersid",
-        "draft-orders_deletedraftordersid",
-        "draft-orders_getdraftorders",
-        "draft-orders_postdraftorders",
-        "draft-orders_postdraftordersidconverttoorder",
-        "draft-orders_postdraftordersidedit",
-        "draft-orders_deletedraftordersidedit",
-        "draft-orders_postdraftordersideditconfirm",
         "draft-orders_postdraftordersidedititemsitemitem_id",
+        "draft-orders_postdraftordersidconverttoorder",
         "draft-orders_postdraftordersidedititems",
-        "draft-orders_postdraftordersidedititemsaction_id",
-        "draft-orders_deletedraftordersidedititemsaction_id",
+        "draft-orders_postdraftordersideditconfirm",
         "draft-orders_postdraftordersideditpromotions",
         "draft-orders_deletedraftordersideditpromotions",
         "draft-orders_postdraftordersideditrequest",
-        "draft-orders_postdraftordersideditshippingmethods",
+        "draft-orders_postdraftordersidedit",
+        "draft-orders_deletedraftordersidedit",
+        "draft-orders_postdraftordersidedititemsaction_id",
+        "draft-orders_deletedraftordersidedititemsaction_id",
+        "draft-orders_postdraftordersideditshippingmethodsaction_id",
+        "draft-orders_deletedraftordersideditshippingmethodsaction_id",
+        "draft-orders_getdraftordersid",
+        "draft-orders_postdraftordersid",
+        "draft-orders_deletedraftordersid",
         "draft-orders_postdraftordersideditshippingmethodsmethodmethod_id",
         "draft-orders_deletedraftordersideditshippingmethodsmethodmethod_id",
-        "draft-orders_postdraftordersideditshippingmethodsaction_id",
-        "draft-orders_deletedraftordersideditshippingmethodsaction_id"
+        "draft-orders_getdraftorders",
+        "draft-orders_postdraftorders",
+        "draft-orders_postdraftordersideditshippingmethods"
       ]
     },
     {
       "tagSectionId": "exchanges",
       "operationSectionIds": [
-        "exchanges_getexchangesid",
         "exchanges_getexchanges",
         "exchanges_postexchanges",
-        "exchanges_postexchangesidcancel",
+        "exchanges_getexchangesid",
         "exchanges_postexchangesidinbounditems",
-        "exchanges_postexchangesidinbounditemsaction_id",
-        "exchanges_deleteexchangesidinbounditemsaction_id",
-        "exchanges_postexchangesidinboundshippingmethodaction_id",
-        "exchanges_deleteexchangesidinboundshippingmethodaction_id",
-        "exchanges_postexchangesidinboundshippingmethod",
+        "exchanges_postexchangesidcancel",
         "exchanges_postexchangesidoutbounditems",
-        "exchanges_postexchangesidoutbounditemsaction_id",
-        "exchanges_deleteexchangesidoutbounditemsaction_id",
-        "exchanges_postexchangesidoutboundshippingmethod",
+        "exchanges_postexchangesidinboundshippingmethod",
         "exchanges_postexchangesidoutboundshippingmethodaction_id",
         "exchanges_deleteexchangesidoutboundshippingmethodaction_id",
+        "exchanges_postexchangesidinbounditemsaction_id",
+        "exchanges_deleteexchangesidinbounditemsaction_id",
+        "exchanges_postexchangesidoutbounditemsaction_id",
+        "exchanges_deleteexchangesidoutbounditemsaction_id",
         "exchanges_postexchangesidrequest",
-        "exchanges_deleteexchangesidrequest"
+        "exchanges_deleteexchangesidrequest",
+        "exchanges_postexchangesidoutboundshippingmethod",
+        "exchanges_postexchangesidinboundshippingmethodaction_id",
+        "exchanges_deleteexchangesidinboundshippingmethodaction_id"
       ]
     },
     {
@@ -166,8 +166,8 @@ export const specsSitemapData = {
     {
       "tagSectionId": "fulfillment-providers",
       "operationSectionIds": [
-        "fulfillment-providers_getfulfillmentprovidersidoptions",
-        "fulfillment-providers_getfulfillmentproviders"
+        "fulfillment-providers_getfulfillmentproviders",
+        "fulfillment-providers_getfulfillmentprovidersidoptions"
       ]
     },
     {
@@ -191,45 +191,45 @@ export const specsSitemapData = {
     {
       "tagSectionId": "gift-cards",
       "operationSectionIds": [
-        "gift-cards_getgiftcards",
-        "gift-cards_postgiftcards",
         "gift-cards_getgiftcardsid",
         "gift-cards_postgiftcardsid",
-        "gift-cards_getgiftcardsidorders"
+        "gift-cards_getgiftcardsidorders",
+        "gift-cards_getgiftcards",
+        "gift-cards_postgiftcards"
       ]
     },
     {
       "tagSectionId": "index",
       "operationSectionIds": [
-        "index_getindexdetails",
-        "index_postindexsync"
+        "index_postindexsync",
+        "index_getindexdetails"
       ]
     },
     {
       "tagSectionId": "inventory-items",
       "operationSectionIds": [
         "inventory-items_postinventoryitemslocationlevelsbatch",
+        "inventory-items_getinventoryitemsidlocationlevels",
+        "inventory-items_postinventoryitemsidlocationlevels",
         "inventory-items_getinventoryitemsid",
         "inventory-items_postinventoryitemsid",
         "inventory-items_deleteinventoryitemsid",
-        "inventory-items_getinventoryitems",
-        "inventory-items_postinventoryitems",
         "inventory-items_postinventoryitemsidlocationlevelsbatch",
-        "inventory-items_getinventoryitemsidlocationlevels",
-        "inventory-items_postinventoryitemsidlocationlevels",
         "inventory-items_postinventoryitemsidlocationlevelslocation_id",
-        "inventory-items_deleteinventoryitemsidlocationlevelslocation_id"
+        "inventory-items_deleteinventoryitemsidlocationlevelslocation_id",
+        "inventory-items_getinventoryitems",
+        "inventory-items_postinventoryitems"
       ]
     },
     {
       "tagSectionId": "invites",
       "operationSectionIds": [
-        "invites_postinvitesaccept",
-        "invites_getinvites",
-        "invites_postinvites",
         "invites_getinvitesid",
         "invites_deleteinvitesid",
-        "invites_postinvitesidresend"
+        "invites_postinvitesidresend",
+        "invites_postinvitesaccept",
+        "invites_getinvites",
+        "invites_postinvites"
       ]
     },
     {
@@ -242,18 +242,18 @@ export const specsSitemapData = {
     {
       "tagSectionId": "multi-factor-authentication",
       "operationSectionIds": [
+        "multi-factor-authentication_postmfachallengesidverify",
         "multi-factor-authentication_getmfafactors",
         "multi-factor-authentication_postmfafactors",
         "multi-factor-authentication_postmfafactorsidverify",
-        "multi-factor-authentication_postmfachallengesidverify",
         "multi-factor-authentication_postmfarecoverycodes"
       ]
     },
     {
       "tagSectionId": "notifications",
       "operationSectionIds": [
-        "notifications_getnotifications",
-        "notifications_getnotificationsid"
+        "notifications_getnotificationsid",
+        "notifications_getnotifications"
       ]
     },
     {
@@ -267,57 +267,57 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "order-edits_postorderedits",
         "order-edits_deleteordereditsid",
-        "order-edits_postordereditsiditems",
         "order-edits_postordereditsidconfirm",
+        "order-edits_postordereditsiditemsitemitem_id",
+        "order-edits_postordereditsiditems",
         "order-edits_postordereditsiditemsaction_id",
         "order-edits_deleteordereditsiditemsaction_id",
         "order-edits_postordereditsidshippingmethod",
-        "order-edits_postordereditsiditemsitemitem_id",
-        "order-edits_postordereditsidrequest",
         "order-edits_postordereditsidshippingmethodaction_id",
-        "order-edits_deleteordereditsidshippingmethodaction_id"
+        "order-edits_deleteordereditsidshippingmethodaction_id",
+        "order-edits_postordereditsidrequest"
       ]
     },
     {
       "tagSectionId": "orders",
       "operationSectionIds": [
         "orders_getorders",
+        "orders_postordersidcancel",
+        "orders_postordersidarchive",
+        "orders_postordersidcomplete",
+        "orders_postordersexport",
+        "orders_postordersidfulfillmentsfulfillment_idcancel",
         "orders_getordersid",
         "orders_postordersid",
-        "orders_postordersexport",
-        "orders_postordersidarchive",
-        "orders_postordersidcancel",
-        "orders_postordersidcomplete",
-        "orders_postordersidfulfillments",
+        "orders_postordersidfulfillmentsfulfillment_idmarkasdelivered",
         "orders_postordersidcreditlines",
         "orders_getordersidchanges",
-        "orders_postordersidfulfillmentsfulfillment_idshipments",
-        "orders_postordersidfulfillmentsfulfillment_idcancel",
-        "orders_postordersidfulfillmentsfulfillment_idmarkasdelivered",
-        "orders_getordersidlineitems",
-        "orders_getordersidpreview",
-        "orders_getordersidshippingoptions",
+        "orders_postordersidfulfillments",
         "orders_postordersidtransfercancel",
+        "orders_postordersidfulfillmentsfulfillment_idshipments",
+        "orders_getordersidlineitems",
+        "orders_getordersidshippingoptions",
+        "orders_getordersidpreview",
         "orders_postordersidtransfer"
       ]
     },
     {
       "tagSectionId": "payment-collections",
       "operationSectionIds": [
-        "payment-collections_postpaymentcollections",
-        "payment-collections_deletepaymentcollectionsid",
         "payment-collections_postpaymentcollectionsidmarkaspaid",
+        "payment-collections_deletepaymentcollectionsid",
+        "payment-collections_postpaymentcollections",
         "payment-collections_postpaymentcollectionsidpaymentsessions"
       ]
     },
     {
       "tagSectionId": "payments",
       "operationSectionIds": [
-        "payments_getpayments",
         "payments_getpaymentspaymentproviders",
         "payments_getpaymentsid",
+        "payments_postpaymentsidrefund",
         "payments_postpaymentsidcapture",
-        "payments_postpaymentsidrefund"
+        "payments_getpayments"
       ]
     },
     {
@@ -329,14 +329,14 @@ export const specsSitemapData = {
     {
       "tagSectionId": "price-lists",
       "operationSectionIds": [
-        "price-lists_getpricelistsidprices",
         "price-lists_getpricelistsid",
         "price-lists_postpricelistsid",
         "price-lists_deletepricelistsid",
-        "price-lists_getpricelists",
-        "price-lists_postpricelists",
+        "price-lists_getpricelistsidprices",
+        "price-lists_postpricelistsidproducts",
         "price-lists_postpricelistsidpricesbatch",
-        "price-lists_postpricelistsidproducts"
+        "price-lists_getpricelists",
+        "price-lists_postpricelists"
       ]
     },
     {
@@ -352,12 +352,12 @@ export const specsSitemapData = {
     {
       "tagSectionId": "product-categories",
       "operationSectionIds": [
-        "product-categories_getproductcategories",
-        "product-categories_postproductcategories",
-        "product-categories_postproductcategoriesidproducts",
         "product-categories_getproductcategoriesid",
         "product-categories_postproductcategoriesid",
-        "product-categories_deleteproductcategoriesid"
+        "product-categories_deleteproductcategoriesid",
+        "product-categories_postproductcategoriesidproducts",
+        "product-categories_getproductcategories",
+        "product-categories_postproductcategories"
       ]
     },
     {
@@ -389,126 +389,126 @@ export const specsSitemapData = {
     {
       "tagSectionId": "products",
       "operationSectionIds": [
-        "products_postproductsbatch",
         "products_postproductsimport",
-        "products_postproductsimports",
         "products_getproducts",
         "products_postproducts",
         "products_postproductsimporttransaction_idconfirm",
-        "products_postproductsexport",
+        "products_postproductsimports",
+        "products_postproductsbatch",
         "products_postproductsimportstransaction_idconfirm",
-        "products_postproductsidimagesimage_idvariantsbatch",
         "products_getproductsid",
         "products_postproductsid",
         "products_deleteproductsid",
-        "products_getproductsidvariants",
-        "products_postproductsidvariants",
-        "products_getproductsidoptions",
-        "products_postproductsidoptions",
+        "products_postproductsidvariantsbatch",
+        "products_postproductsexport",
+        "products_postproductsidvariantsinventoryitemsbatch",
         "products_getproductsidoptionsoption_id",
         "products_postproductsidoptionsoption_id",
         "products_deleteproductsidoptionsoption_id",
-        "products_postproductsidvariantsbatch",
-        "products_postproductsidvariantsinventoryitemsbatch",
-        "products_postproductsidvariantsvariant_idimagesbatch",
-        "products_postproductsidvariantsvariant_idinventoryitems",
+        "products_postproductsidimagesimage_idvariantsbatch",
+        "products_getproductsidoptions",
+        "products_postproductsidoptions",
         "products_getproductsidvariantsvariant_id",
         "products_postproductsidvariantsvariant_id",
         "products_deleteproductsidvariantsvariant_id",
         "products_postproductsidvariantsvariant_idinventoryitemsinventory_item_id",
-        "products_deleteproductsidvariantsvariant_idinventoryitemsinventory_item_id"
+        "products_deleteproductsidvariantsvariant_idinventoryitemsinventory_item_id",
+        "products_postproductsidvariantsvariant_idinventoryitems",
+        "products_postproductsidvariantsvariant_idimagesbatch",
+        "products_getproductsidvariants",
+        "products_postproductsidvariants"
       ]
     },
     {
       "tagSectionId": "promotions",
       "operationSectionIds": [
         "promotions_getpromotionsruleattributeoptionsrule_type",
-        "promotions_getpromotionsrulevalueoptionsrule_typerule_attribute_id",
-        "promotions_getpromotions",
-        "promotions_postpromotions",
-        "promotions_postpromotionsidbuyrulesbatch",
         "promotions_getpromotionsid",
         "promotions_postpromotionsid",
         "promotions_deletepromotionsid",
-        "promotions_getpromotionsidrule_type",
+        "promotions_postpromotionsidbuyrulesbatch",
+        "promotions_postpromotionsidtargetrulesbatch",
         "promotions_postpromotionsidrulesbatch",
-        "promotions_postpromotionsidtargetrulesbatch"
+        "promotions_getpromotionsrulevalueoptionsrule_typerule_attribute_id",
+        "promotions_getpromotionsidrule_type",
+        "promotions_getpromotions",
+        "promotions_postpromotions"
       ]
     },
     {
       "tagSectionId": "property-labels",
       "operationSectionIds": [
-        "property-labels_postpropertylabelsbatch",
         "property-labels_getpropertylabels",
         "property-labels_postpropertylabels",
         "property-labels_getpropertylabelsid",
         "property-labels_postpropertylabelsid",
-        "property-labels_deletepropertylabelsid"
+        "property-labels_deletepropertylabelsid",
+        "property-labels_postpropertylabelsbatch"
       ]
     },
     {
       "tagSectionId": "refund-reasons",
       "operationSectionIds": [
-        "refund-reasons_getrefundreasons",
-        "refund-reasons_postrefundreasons",
         "refund-reasons_getrefundreasonsid",
         "refund-reasons_postrefundreasonsid",
-        "refund-reasons_deleterefundreasonsid"
+        "refund-reasons_deleterefundreasonsid",
+        "refund-reasons_getrefundreasons",
+        "refund-reasons_postrefundreasons"
       ]
     },
     {
       "tagSectionId": "regions",
       "operationSectionIds": [
-        "regions_getregions",
-        "regions_postregions",
         "regions_getregionsid",
         "regions_postregionsid",
-        "regions_deleteregionsid"
+        "regions_deleteregionsid",
+        "regions_getregions",
+        "regions_postregions"
       ]
     },
     {
       "tagSectionId": "reservations",
       "operationSectionIds": [
-        "reservations_getreservations",
-        "reservations_postreservations",
         "reservations_getreservationsid",
         "reservations_postreservationsid",
-        "reservations_deletereservationsid"
+        "reservations_deletereservationsid",
+        "reservations_getreservations",
+        "reservations_postreservations"
       ]
     },
     {
       "tagSectionId": "return-reasons",
       "operationSectionIds": [
-        "return-reasons_getreturnreasons",
-        "return-reasons_postreturnreasons",
         "return-reasons_getreturnreasonsid",
         "return-reasons_postreturnreasonsid",
-        "return-reasons_deletereturnreasonsid"
+        "return-reasons_deletereturnreasonsid",
+        "return-reasons_getreturnreasons",
+        "return-reasons_postreturnreasons"
       ]
     },
     {
       "tagSectionId": "returns",
       "operationSectionIds": [
-        "returns_getreturns",
-        "returns_postreturns",
         "returns_getreturnsid",
         "returns_postreturnsid",
+        "returns_getreturns",
+        "returns_postreturns",
         "returns_postreturnsidcancel",
-        "returns_postreturnsiddismissitems",
         "returns_postreturnsidreceiveitems",
         "returns_postreturnsiddismissitemsaction_id",
         "returns_deletereturnsiddismissitemsaction_id",
         "returns_postreturnsidreceive",
         "returns_deletereturnsidreceive",
-        "returns_postreturnsidreceiveconfirm",
-        "returns_postreturnsidrequestitems",
         "returns_postreturnsidreceiveitemsaction_id",
         "returns_deletereturnsidreceiveitemsaction_id",
-        "returns_postreturnsidrequestitemsaction_id",
-        "returns_deletereturnsidrequestitemsaction_id",
+        "returns_postreturnsidrequestitems",
         "returns_postreturnsidrequest",
         "returns_deletereturnsidrequest",
+        "returns_postreturnsidreceiveconfirm",
+        "returns_postreturnsiddismissitems",
         "returns_postreturnsidshippingmethod",
+        "returns_postreturnsidrequestitemsaction_id",
+        "returns_deletereturnsidrequestitemsaction_id",
         "returns_postreturnsidshippingmethodaction_id",
         "returns_deletereturnsidshippingmethodaction_id"
       ]
@@ -537,22 +537,22 @@ export const specsSitemapData = {
     {
       "tagSectionId": "shipping-options",
       "operationSectionIds": [
-        "shipping-options_postshippingoptionsidrulesbatch",
+        "shipping-options_getshippingoptions",
+        "shipping-options_postshippingoptions",
         "shipping-options_getshippingoptionsid",
         "shipping-options_postshippingoptionsid",
         "shipping-options_deleteshippingoptionsid",
-        "shipping-options_getshippingoptions",
-        "shipping-options_postshippingoptions"
+        "shipping-options_postshippingoptionsidrulesbatch"
       ]
     },
     {
       "tagSectionId": "shipping-profiles",
       "operationSectionIds": [
+        "shipping-profiles_getshippingprofiles",
+        "shipping-profiles_postshippingprofiles",
         "shipping-profiles_getshippingprofilesid",
         "shipping-profiles_postshippingprofilesid",
-        "shipping-profiles_deleteshippingprofilesid",
-        "shipping-profiles_getshippingprofiles",
-        "shipping-profiles_postshippingprofiles"
+        "shipping-profiles_deleteshippingprofilesid"
       ]
     },
     {
@@ -563,19 +563,19 @@ export const specsSitemapData = {
         "stock-locations_getstocklocationsid",
         "stock-locations_poststocklocationsid",
         "stock-locations_deletestocklocationsid",
-        "stock-locations_poststocklocationsidfulfillmentproviders",
         "stock-locations_poststocklocationsidfulfillmentsets",
-        "stock-locations_poststocklocationsidsaleschannels"
+        "stock-locations_poststocklocationsidsaleschannels",
+        "stock-locations_poststocklocationsidfulfillmentproviders"
       ]
     },
     {
       "tagSectionId": "store-credit-accounts",
       "operationSectionIds": [
+        "store-credit-accounts_poststorecreditaccountsidcredit",
         "store-credit-accounts_getstorecreditaccounts",
         "store-credit-accounts_poststorecreditaccounts",
-        "store-credit-accounts_getstorecreditaccountsid",
-        "store-credit-accounts_poststorecreditaccountsidcredit",
-        "store-credit-accounts_getstorecreditaccountsidtransactions"
+        "store-credit-accounts_getstorecreditaccountsidtransactions",
+        "store-credit-accounts_getstorecreditaccountsid"
       ]
     },
     {
@@ -595,12 +595,12 @@ export const specsSitemapData = {
     {
       "tagSectionId": "tax-rates",
       "operationSectionIds": [
-        "tax-rates_gettaxrates",
-        "tax-rates_posttaxrates",
         "tax-rates_gettaxratesid",
         "tax-rates_posttaxratesid",
         "tax-rates_deletetaxratesid",
         "tax-rates_posttaxratesidrules",
+        "tax-rates_gettaxrates",
+        "tax-rates_posttaxrates",
         "tax-rates_deletetaxratesidrulesrule_id"
       ]
     },
@@ -619,17 +619,17 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "translations_gettranslations",
         "translations_posttranslationsbatch",
-        "translations_gettranslationssettings",
-        "translations_posttranslationssettingsbatch",
         "translations_gettranslationsentities",
-        "translations_gettranslationsstatistics"
+        "translations_gettranslationssettings",
+        "translations_gettranslationsstatistics",
+        "translations_posttranslationssettingsbatch"
       ]
     },
     {
       "tagSectionId": "uploads",
       "operationSectionIds": [
-        "uploads_postuploads",
         "uploads_postuploadspresignedurls",
+        "uploads_postuploads",
         "uploads_getuploadsid",
         "uploads_deleteuploadsid"
       ]
@@ -637,38 +637,38 @@ export const specsSitemapData = {
     {
       "tagSectionId": "users",
       "operationSectionIds": [
-        "users_getusers",
-        "users_getusersme",
         "users_getusersid",
         "users_postusersid",
-        "users_deleteusersid"
+        "users_deleteusersid",
+        "users_getusersme",
+        "users_getusers"
       ]
     },
     {
       "tagSectionId": "views",
       "operationSectionIds": [
         "views_getviewsentities",
-        "views_getviewsentityconfigurationsactive",
-        "views_postviewsentityconfigurationsactive",
-        "views_getviewsentitycolumns",
         "views_getviewsentityconfigurationsid",
         "views_postviewsentityconfigurationsid",
         "views_deleteviewsentityconfigurationsid",
         "views_getviewsentityconfigurations",
-        "views_postviewsentityconfigurations"
+        "views_postviewsentityconfigurations",
+        "views_getviewsentitycolumns",
+        "views_getviewsentityconfigurationsactive",
+        "views_postviewsentityconfigurationsactive"
       ]
     },
     {
       "tagSectionId": "workflows-executions",
       "operationSectionIds": [
-        "workflows-executions_getworkflowsexecutions",
         "workflows-executions_getworkflowsexecutionsid",
         "workflows-executions_postworkflowsexecutionsworkflow_idrun",
-        "workflows-executions_postworkflowsexecutionsworkflow_idstepssuccess",
         "workflows-executions_postworkflowsexecutionsworkflow_idstepsfailure",
+        "workflows-executions_postworkflowsexecutionsworkflow_idstepssuccess",
+        "workflows-executions_getworkflowsexecutionsworkflow_idsubscribe",
         "workflows-executions_getworkflowsexecutionsworkflow_idtransaction_idsubscribe",
-        "workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id",
-        "workflows-executions_getworkflowsexecutionsworkflow_idsubscribe"
+        "workflows-executions_getworkflowsexecutions",
+        "workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id"
       ]
     }
   ],
@@ -676,21 +676,15 @@ export const specsSitemapData = {
     {
       "tagSectionId": "auth",
       "operationSectionIds": [
-        "auth_postactor_typeauth_providerverificationconfirm",
         "auth_postactor_typeauth_provider",
+        "auth_postactor_typeauth_providerverificationconfirm",
         "auth_postactor_typeauth_providercallback",
+        "auth_postactor_typeauth_providerupdate",
         "auth_postactor_typeauth_provider_register",
         "auth_postactor_typeauth_providerresetpassword",
-        "auth_postactor_typeauth_providerupdate",
-        "auth_postmfachallengesidverify",
-        "auth_getmfafactors",
-        "auth_postmfafactors",
-        "auth_postmfafactorsidverify",
-        "auth_deletemfafactorsid",
-        "auth_postmfarecoverycodes",
+        "auth_postadminauthtokenrefresh",
         "auth_postsession",
-        "auth_deletesession",
-        "auth_postadminauthtokenrefresh"
+        "auth_deletesession"
       ]
     },
     {
@@ -700,44 +694,44 @@ export const specsSitemapData = {
         "carts_getcartsid",
         "carts_postcartsid",
         "carts_postcartsidcomplete",
-        "carts_postcartsidgiftcards",
-        "carts_deletecartsidgiftcards",
-        "carts_postcartsidcustomer",
-        "carts_postcartsidlineitems",
         "carts_postcartsidlineitemsline_id",
         "carts_deletecartsidlineitemsline_id",
+        "carts_postcartsidgiftcards",
+        "carts_deletecartsidgiftcards",
+        "carts_postcartsidlineitems",
+        "carts_postcartsidcustomer",
         "carts_postcartsidpromotions",
         "carts_deletecartsidpromotions",
-        "carts_postcartsidshippingmethods",
         "carts_postcartsidstorecredits",
+        "carts_postcartsidshippingmethods",
         "carts_postcartsidtaxes"
       ]
     },
     {
       "tagSectionId": "collections",
       "operationSectionIds": [
-        "collections_getcollections",
-        "collections_getcollectionsid"
+        "collections_getcollectionsid",
+        "collections_getcollections"
       ]
     },
     {
       "tagSectionId": "currencies",
       "operationSectionIds": [
-        "currencies_getcurrencies",
-        "currencies_getcurrenciescode"
+        "currencies_getcurrenciescode",
+        "currencies_getcurrencies"
       ]
     },
     {
       "tagSectionId": "customers",
       "operationSectionIds": [
         "customers_postcustomers",
+        "customers_getcustomersmeaddressesaddress_id",
+        "customers_postcustomersmeaddressesaddress_id",
+        "customers_deletecustomersmeaddressesaddress_id",
         "customers_getcustomersmeaddresses",
         "customers_postcustomersmeaddresses",
         "customers_getcustomersme",
-        "customers_postcustomersme",
-        "customers_getcustomersmeaddressesaddress_id",
-        "customers_postcustomersmeaddressesaddress_id",
-        "customers_deletecustomersmeaddressesaddress_id"
+        "customers_postcustomersme"
       ]
     },
     {
@@ -753,21 +747,32 @@ export const specsSitemapData = {
       ]
     },
     {
+      "tagSectionId": "multi-factor-authentication-(mfa)-factors",
+      "operationSectionIds": [
+        "multi-factor-authentication-(mfa)-factors_deletemfafactorsid",
+        "multi-factor-authentication-(mfa)-factors_getmfafactors",
+        "multi-factor-authentication-(mfa)-factors_postmfafactors",
+        "multi-factor-authentication-(mfa)-factors_postmfachallengesidverify",
+        "multi-factor-authentication-(mfa)-factors_postmfafactorsidverify",
+        "multi-factor-authentication-(mfa)-factors_postmfarecoverycodes"
+      ]
+    },
+    {
       "tagSectionId": "orders",
       "operationSectionIds": [
-        "orders_getorders",
         "orders_getordersid",
         "orders_postordersidtransferaccept",
         "orders_postordersidtransfercancel",
-        "orders_postordersidtransferdecline",
-        "orders_postordersidtransferrequest"
+        "orders_getorders",
+        "orders_postordersidtransferrequest",
+        "orders_postordersidtransferdecline"
       ]
     },
     {
       "tagSectionId": "payment-collections",
       "operationSectionIds": [
-        "payment-collections_postpaymentcollections",
-        "payment-collections_postpaymentcollectionsidpaymentsessions"
+        "payment-collections_postpaymentcollectionsidpaymentsessions",
+        "payment-collections_postpaymentcollections"
       ]
     },
     {
@@ -786,8 +791,8 @@ export const specsSitemapData = {
     {
       "tagSectionId": "product-tags",
       "operationSectionIds": [
-        "product-tags_getproducttags",
-        "product-tags_getproducttagsid"
+        "product-tags_getproducttagsid",
+        "product-tags_getproducttags"
       ]
     },
     {
@@ -800,15 +805,15 @@ export const specsSitemapData = {
     {
       "tagSectionId": "products",
       "operationSectionIds": [
-        "products_getproductsid",
-        "products_getproducts"
+        "products_getproducts",
+        "products_getproductsid"
       ]
     },
     {
       "tagSectionId": "regions",
       "operationSectionIds": [
-        "regions_getregionsid",
-        "regions_getregions"
+        "regions_getregions",
+        "regions_getregionsid"
       ]
     },
     {
@@ -834,9 +839,9 @@ export const specsSitemapData = {
     {
       "tagSectionId": "store-credit-accounts",
       "operationSectionIds": [
-        "store-credit-accounts_getstorecreditaccounts",
         "store-credit-accounts_poststorecreditaccountsclaim",
-        "store-credit-accounts_getstorecreditaccountsid"
+        "store-credit-accounts_getstorecreditaccountsid",
+        "store-credit-accounts_getstorecreditaccounts"
       ]
     }
   ]

@@ -182,6 +182,13 @@ const generatedgeneratedStoreSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Multi-Factor Authentication (MFA) Factors",
+      "children": [],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Orders",
       "children": [
         {
