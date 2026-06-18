@@ -1116,6 +1116,286 @@ export const filesMap = [
     "pathname": "/js-sdk"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/page.mdx",
+    "pathname": "/lint"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/admin-component-must-be-arrow-function/page.mdx",
+    "pathname": "/lint/rules/admin-component-must-be-arrow-function"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/admin-env-vars-import-meta/page.mdx",
+    "pathname": "/lint/rules/admin-env-vars-import-meta"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/admin-no-medusa-utils-import/page.mdx",
+    "pathname": "/lint/rules/admin-no-medusa-utils-import"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/authenticate-flag-name-and-type/page.mdx",
+    "pathname": "/lint/rules/authenticate-flag-name-and-type"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/data-model-table-name-snake-case/page.mdx",
+    "pathname": "/lint/rules/data-model-table-name-snake-case"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/import-from-framework-not-internal/page.mdx",
+    "pathname": "/lint/rules/import-from-framework-not-internal"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/link-create-keys-modules-enum/page.mdx",
+    "pathname": "/lint/rules/link-create-keys-modules-enum"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/link-no-cross-module-relationship/page.mdx",
+    "pathname": "/lint/rules/link-no-cross-module-relationship"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/link-uses-linkable-properties/page.mdx",
+    "pathname": "/lint/rules/link-uses-linkable-properties"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/loader-must-be-exported-in-module-definition/page.mdx",
+    "pathname": "/lint/rules/loader-must-be-exported-in-module-definition"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/medusa-context-on-context-param/page.mdx",
+    "pathname": "/lint/rules/medusa-context-on-context-param"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/middleware-must-call-next/page.mdx",
+    "pathname": "/lint/rules/middleware-must-call-next"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/middlewares-file-location-and-name/page.mdx",
+    "pathname": "/lint/rules/middlewares-file-location-and-name"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/module-name-snake-case/page.mdx",
+    "pathname": "/lint/rules/module-name-snake-case"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-async-workflow-constructor/page.mdx",
+    "pathname": "/lint/rules/no-async-workflow-constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-conditional-expressions-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-conditional-expressions-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-config-on-dynamic-ui-route/page.mdx",
+    "pathname": "/lint/rules/no-config-on-dynamic-ui-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-console-log-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-console-log-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-deprecated-remote-query-config/page.mdx",
+    "pathname": "/lint/rules/no-deprecated-remote-query-config"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-direct-variable-mutation-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-direct-variable-mutation-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-duplicate-step-id-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-duplicate-step-id-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-if-in-workflow-constructor/page.mdx",
+    "pathname": "/lint/rules/no-if-in-workflow-constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-loops-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-loops-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-mikroorm-direct-import/page.mdx",
+    "pathname": "/lint/rules/no-mikroorm-direct-import"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-new-date-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-new-date-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-non-serializable-step-return/page.mdx",
+    "pathname": "/lint/rules/no-non-serializable-step-return"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-reserved-default-properties-in-model/page.mdx",
+    "pathname": "/lint/rules/no-reserved-default-properties-in-model"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-service-mutations-in-api-route/page.mdx",
+    "pathname": "/lint/rules/no-service-mutations-in-api-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-spread-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-spread-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-throw-in-transform/page.mdx",
+    "pathname": "/lint/rules/no-throw-in-transform"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-trailing-slash-in-route-matcher/page.mdx",
+    "pathname": "/lint/rules/no-trailing-slash-in-route-matcher"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-try-catch-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-try-catch-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-workflow-call-without-container/page.mdx",
+    "pathname": "/lint/rules/no-workflow-call-without-container"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/page.mdx",
+    "pathname": "/lint/rules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-container-registration-keys/page.mdx",
+    "pathname": "/lint/rules/prefer-container-registration-keys"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-link-over-remote-link/page.mdx",
+    "pathname": "/lint/rules/prefer-link-over-remote-link"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-modules-enum/page.mdx",
+    "pathname": "/lint/rules/prefer-modules-enum"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prices-in-major-units/page.mdx",
+    "pathname": "/lint/rules/prices-in-major-units"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/primary-key-required/page.mdx",
+    "pathname": "/lint/rules/primary-key-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/read-only-link-requires-field/page.mdx",
+    "pathname": "/lint/rules/read-only-link-requires-field"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-dynamic-folder-syntax/page.mdx",
+    "pathname": "/lint/rules/route-dynamic-folder-syntax"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-file-naming/page.mdx",
+    "pathname": "/lint/rules/route-file-naming"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-handler-exports-uppercase/page.mdx",
+    "pathname": "/lint/rules/route-handler-exports-uppercase"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-params-must-be-defined/page.mdx",
+    "pathname": "/lint/rules/route-params-must-be-defined"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-config-required/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-config-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-default-export-async/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-default-export-async"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-default-export-required/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-default-export-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-name-unique/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-name-unique"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-schedule-valid-cron/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-schedule-valid-cron"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/service-constructor-must-call-super/page.mdx",
+    "pathname": "/lint/rules/service-constructor-must-call-super"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/service-methods-must-be-async/page.mdx",
+    "pathname": "/lint/rules/service-methods-must-be-async"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/step-id-kebab-case/page.mdx",
+    "pathname": "/lint/rules/step-id-kebab-case"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/step-must-return-step-response/page.mdx",
+    "pathname": "/lint/rules/step-must-return-step-response"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/subscriber-config-export-required/page.mdx",
+    "pathname": "/lint/rules/subscriber-config-export-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/subscriber-default-export-must-be-async/page.mdx",
+    "pathname": "/lint/rules/subscriber-default-export-must-be-async"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/subscriber-default-export-required/page.mdx",
+    "pathname": "/lint/rules/subscriber-default-export-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/ui-route-config-via-define-route-config/page.mdx",
+    "pathname": "/lint/rules/ui-route-config-via-define-route-config"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/ui-route-file-name-page-tsx/page.mdx",
+    "pathname": "/lint/rules/ui-route-file-name-page-tsx"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/ui-route-must-have-default-export/page.mdx",
+    "pathname": "/lint/rules/ui-route-must-have-default-export"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-inject-manager-on-public-methods/page.mdx",
+    "pathname": "/lint/rules/use-inject-manager-on-public-methods"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-medusa-error-not-generic-error/page.mdx",
+    "pathname": "/lint/rules/use-medusa-error-not-generic-error"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-query-context-utility/page.mdx",
+    "pathname": "/lint/rules/use-query-context-utility"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-validated-body-or-query/page.mdx",
+    "pathname": "/lint/rules/use-validated-body-or-query"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/widget-must-export-config/page.mdx",
+    "pathname": "/lint/rules/widget-must-export-config"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/widget-must-have-default-export/page.mdx",
+    "pathname": "/lint/rules/widget-must-have-default-export"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/widget-zone-must-be-string-literal/page.mdx",
+    "pathname": "/lint/rules/widget-zone-must-be-string-literal"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/workflow-id-matches-export-or-filename/page.mdx",
+    "pathname": "/lint/rules/workflow-id-matches-export-or-filename"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/workflow-must-return-workflow-response/page.mdx",
+    "pathname": "/lint/rules/workflow-must-return-workflow-response"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/zod-import-source/page.mdx",
+    "pathname": "/lint/rules/zod-import-source"
+  },
+  {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/build/page.mdx",
     "pathname": "/medusa-cli/commands/build"
   },

@@ -42,14 +42,14 @@ When you build a custom admin page in a plugin, use the [LayoutComposer](!resour
 
 Single-column layouts are useful for listing pages or pages with a single main content area. For example:
 
-export const customHighlights = [
+export const singleHighlights = [
   ["7", "widgetsZonePrefix", "The prefix of the injection zones to expose."],
   ["8", "preferredLayoutId", "Use a two-column layout."],
   ["9", "sections", "The page's sections, which are rendered in the layout's main columns."],
   ["10", "main", "Components shown in the main column."],
 ]
 
-```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
+```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={singleHighlights}
 import { LayoutComposer } from "@medusajs/dashboard/components"
 
 const BrandListPage = () => {
@@ -89,7 +89,6 @@ export const customHighlights = [
   ["9", "data", "The data passed to the widgets injected into the zones."],
   ["10", "sections", "The page's sections, which are rendered in the layout's main and side columns."],
   ["11", "main", "Components shown in the main (left) column."],
-  ["18", "side", "Components shown in the side (right) column."],
 ]
 
 ```tsx title="src/admin/routes/custom/[id]/page.tsx" highlights={customHighlights}
