@@ -3739,20 +3739,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/eslint-plugin@npm:2.15.5":
-  version: 2.15.5
-  resolution: "@medusajs/eslint-plugin@npm:2.15.5"
-  dependencies:
-    "@typescript-eslint/parser": ^8.0.0
-    "@typescript-eslint/utils": ^8.0.0
-  peerDependencies:
-    eslint: ^9.0.0
-    typescript: ">=4.8.0"
-  checksum: f436a3a1414e3eb82a05c17500afd594ddc472230d49c09514b579c81d03e3e32bdcf1c2248eb7d989d6bacd7ff0587d2c8a6dc6aa9128868d142c4c07e7e541
-  languageName: node
-  linkType: hard
-
-"@medusajs/eslint-plugin@workspace:packages/eslint-plugin":
+"@medusajs/eslint-plugin@workspace:^, @medusajs/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@medusajs/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
@@ -25898,7 +25885,7 @@ __metadata:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
     "@faker-js/faker": ^9.2.0
-    "@medusajs/eslint-plugin": 2.15.5
+    "@medusajs/eslint-plugin": "workspace:^"
     "@rollup/plugin-node-resolve": ^15.1.0
     "@rollup/plugin-replace": ^5.0.2
     "@storybook/addon-essentials": ^8.3.5
