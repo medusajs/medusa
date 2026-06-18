@@ -4,7 +4,7 @@
   "version": "2.16.0",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "bin": {
-    "medusa-dev": "./dist/index.js"
+    "medusa-dev": "dist/index.js"
   },
   "files": [
     "dist"
@@ -44,7 +44,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/medusa-dev-cli"
   },
   "scripts": {

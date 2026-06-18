@@ -3867,7 +3867,7 @@ __metadata:
     vite:
       optional: true
   bin:
-    medusa-mikro-orm: ./dist/mikro-orm-cli/bin.js
+    medusa-mikro-orm: dist/mikro-orm-cli/bin.js
   languageName: unknown
   linkType: soft
 
@@ -3905,7 +3905,7 @@ __metadata:
     prettier: ^2.8.8
     typescript: ^5.6.2
   bin:
-    medusa-http-types: ./dist/index.js
+    medusa-http-types: dist/index.js
   languageName: unknown
   linkType: soft
 
@@ -4063,7 +4063,7 @@ __metadata:
     swagger-inline: ^6.1.0
     yargs: ^17.7.2
   bin:
-    medusa-oas: ./dist/index.js
+    medusa-oas: dist/index.js
   languageName: unknown
   linkType: soft
 
@@ -4420,7 +4420,7 @@ __metadata:
     picocolors: ^1.1.0
     ts-dedent: 2.2.0
   bin:
-    toolbox: ./bin/toolbox.js
+    toolbox: bin/toolbox.js
   languageName: unknown
   linkType: soft
 
@@ -21929,7 +21929,7 @@ __metadata:
     tsconfig-paths:
       optional: true
   bin:
-    medusa-dev: ./dist/index.js
+    medusa-dev: dist/index.js
   languageName: unknown
   linkType: soft
 

@@ -5,7 +5,7 @@
   "description": "CLI tool for importing Figma designs for Medusa UI",
   "license": "MIT",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
-  "bin": "./bin/toolbox.js",
+  "bin": "bin/toolbox.js",
   "scripts": {
     "build": "yarn run -T tsup"
   },
