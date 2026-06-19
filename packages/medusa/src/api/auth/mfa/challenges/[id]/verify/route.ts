@@ -32,13 +32,6 @@ export const POST = async (
     )
   }
 
-  if (!challenge.actor_type) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "MFA challenge is missing an actor type"
-    )
-  }
-
   const authIdentity = await authService.retrieveAuthIdentity(
     challenge.auth_identity_id,
     { relations: ["provider_identities"] }
@@ -64,7 +57,7 @@ export const POST = async (
   const token = await generateJwtTokenForAuthIdentity(
     {
       authIdentity,
-      actorType: challenge.actor_type,
+      actorType: req.auth_context.actor_type,
       authProvider:
         req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
       container: req.scope,

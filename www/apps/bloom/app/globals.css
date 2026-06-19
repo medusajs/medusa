@@ -41,3 +41,9 @@
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+/* Offset the layout to make room for the fixed Bloom sunset banner. */
+#root-layout {
+  margin-top: 40px;
+  height: calc(100vh - 40px);
+}

@@ -6,10 +6,10 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
   return [
     ignoresBlock,
     pluginBlock(plugin),
-    // Recommended rules don't need type information, but the parser is set up
-    // with `project` so the type-aware `strict` preset (which extends this one)
-    // has parser services available.
-    tsParserBlock(true),
+    // No recommended rule needs type information, so the parser runs without
+    // `project` — the preset stays zero-config (no tsconfig required). The
+    // type-aware `strict` preset turns `project` on itself.
+    tsParserBlock(),
     {
       files: ["**/*.{ts,js}"],
       ignores: ["src/admin/**", "**/src/admin/**"],

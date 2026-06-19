@@ -271,7 +271,6 @@ export interface IAuthModuleService extends IModuleService {
    * ```ts
    * const challenge = await authModuleService.createAuthMfaChallenge({
    *   auth_identity_id: "authusr_123",
-   *   actor_type: "user"
    * })
    * ```
    */

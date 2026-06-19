@@ -196,7 +196,6 @@ export default class AuthModuleService
       )
 
       return await this.applyMfaRequirement_(response, {
-        actor_type: authenticationData.actor_type,
         auth_provider: provider,
       })
     } catch (error) {
@@ -293,7 +292,6 @@ export default class AuthModuleService
       )
 
       return await this.applyMfaRequirement_(response, {
-        actor_type: authenticationData.actor_type,
         auth_provider: provider,
       })
     } catch (error) {
@@ -313,7 +311,6 @@ export default class AuthModuleService
       )
 
       return await this.applyMfaRequirement_(response, {
-        actor_type: authenticationData.actor_type,
         auth_provider: provider,
       })
     } catch (error) {
@@ -447,7 +444,6 @@ export default class AuthModuleService
     const challenge: AuthTypes.AuthMfaChallengeDTO = {
       id: generateEntityId(undefined, "authmfachal"),
       auth_identity_id: data.auth_identity_id,
-      actor_type: data.actor_type ?? null,
       auth_provider: data.auth_provider ?? null,
       methods,
       expires_at: new Date(Date.now() + challengeConfig.ttlSeconds * 1000),
@@ -715,10 +711,7 @@ export default class AuthModuleService
 
   protected async applyMfaRequirement_(
     response: AuthenticationResponse,
-    context: Pick<
-      AuthTypes.CreateAuthMfaChallengeDTO,
-      "actor_type" | "auth_provider"
-    >
+    context: Pick<AuthTypes.CreateAuthMfaChallengeDTO, "auth_provider">
   ): Promise<AuthenticationResponse> {
     if (!response.success || !response.authIdentity || response.location) {
       return response
@@ -734,7 +727,6 @@ export default class AuthModuleService
 
     const mfaChallenge = await this.createAuthMfaChallenge_({
       auth_identity_id: response.authIdentity.id,
-      actor_type: context.actor_type ?? null,
       auth_provider: context.auth_provider ?? null,
     })
 

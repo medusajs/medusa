@@ -31,6 +31,20 @@ ruleTester.run("read-only-link-requires-field", rule, {
         )
       `,
     },
+    // Inverse read-only link with `field` + `alias` (e.g. the only way to link
+    // to draft orders, via the `order` linkable re-aliased to `draft_order`).
+    {
+      code: `
+        import { defineLink } from "@medusajs/framework/utils"
+        import QuoteModule from "../modules/quote"
+        import OrderModule from "@medusajs/medusa/order"
+        export default defineLink(
+          { linkable: QuoteModule.linkable.quote, field: "draft_order_id" },
+          { ...OrderModule.linkable.order.id, alias: "draft_order" },
+          { readOnly: true }
+        )
+      `,
+    },
     // Read-only link with inline serviceName-based linkable descriptor + primaryKey on inverse not needed (no spread).
     {
       code: `
