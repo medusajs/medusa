@@ -35,10 +35,6 @@ async function getLayoutResults(
 }
 
 function generateCode(results: ParsedLayoutConfig[]): string {
-  if (results.length === 0) {
-    return "layouts: []"
-  }
-
   return outdent`
     layouts: [
       ${results

@@ -154,16 +154,21 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     return scope === "default" ? defaultPreference : personalPreference
   }
 
-  const activePreference: LayoutPreference =
-    editMode && draft ? draft : preferenceForScope(activeScope)
+  const activePreference: LayoutPreference = useMemo(
+    () => (editMode && draft ? draft : preferenceForScope(activeScope)),
+    [editMode, draft, activeScope, personalPreference, defaultPreference]
+  )
 
   // Whether the current draft actually differs from the persisted preference
   // for the scope being edited. Switching between scopes without making edits
   // leaves this false, so saving is a no-op confirmation we can streamline.
-  const hasChanges =
-    editMode && draft
-      ? !isSamePreference(draft, preferenceForScope(editScope))
-      : false
+  const hasChanges = useMemo(
+    () =>
+      editMode && draft
+        ? !isSamePreference(draft, preferenceForScope(editScope))
+        : false,
+    [editMode, draft, editScope, personalPreference, defaultPreference]
+  )
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -194,10 +199,11 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       // Build raw entries (core + widgets) at their natural sections. Relative
       // placement before any user preference comes purely from the order they
       // are pushed here, preserved by the stable sort in `buildDisplayEntries`.
-      // Widgets are pushed before core entries so they render first by default —
-      // and so a newly added widget or core entry (which has no saved order)
-      // surfaces at the top.
-      const rawEntries: RawEntry[] = []
+      // Widgets are pushed after core entries so they render after by default —
+      // If a configuration has been saved, newly added widget or core entry 
+      // (which has no saved order) surfaces at the top, otherwise it will be 
+      // placed at the bottom of the section.
+      const rawEntries: RawEntry[] = buildCoreEntries(coreElementsBySection)
       for (const [naturalSection, widgets] of Object.entries(naturalWidgets)) {
         for (const w of widgets) {
           const WidgetComponent = w.Component as ComponentType<{
@@ -210,7 +216,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           })
         }
       }
-      rawEntries.push(...buildCoreEntries(coreElementsBySection))
 
       // Apply the active preference (draft when editing, persisted otherwise),
       // keeping hidden entries with `hidden: true` so we can ghost them in edit
@@ -478,23 +483,28 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     return null
   }
 
-  const renderedSections: Record<string, ReactNode> = {}
-  for (const section of layout.sections) {
-    const entries = entriesBySection[section.id] ?? []
-    const visibleEntries = editMode ? entries : entries.filter((e) => !e.hidden)
-    const renderedItems = visibleEntries.map(renderEntry)
+  const renderedSections: Record<string, ReactNode> = useMemo(() => {
+    const sections: Record<string, ReactNode> = {}
+    for (const section of layout.sections) {
+      const entries = entriesBySection[section.id] ?? []
+      const visibleEntries = editMode
+        ? entries
+        : entries.filter((e) => !e.hidden)
+      const renderedItems = visibleEntries.map(renderEntry)
 
-    renderedSections[section.id] = editMode ? (
-      <SectionDropzone
-        section={section}
-        items={visibleEntries.map((e) => e.widgetId)}
-      >
-        {renderedItems}
-      </SectionDropzone>
-    ) : (
-      renderedItems
-    )
-  }
+      sections[section.id] = editMode ? (
+        <SectionDropzone
+          section={section}
+          items={visibleEntries.map((e) => e.widgetId)}
+        >
+          {renderedItems}
+        </SectionDropzone>
+      ) : (
+        renderedItems
+      )
+    }
+    return sections
+  }, [layout, entriesBySection, editMode, renderEntry])
 
   // Active drag entry, used by DragOverlay to render the moving ghost.
   const activeEntry = activeDragId
