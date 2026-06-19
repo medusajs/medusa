@@ -7622,5 +7622,6 @@ export const generatedEditDates = {
   "app/lint/rules/link-uses-linkable-properties/page.mdx": "2026-06-18T14:23:23.151Z",
   "app/lint/rules/read-only-link-requires-field/page.mdx": "2026-06-18T14:23:41.893Z",
   "app/lint/page.mdx": "2026-06-19T09:20:37.112Z",
-  "app/medusa-cli/commands/lint/page.mdx": "2026-06-19T09:20:30.518Z"
+  "app/medusa-cli/commands/lint/page.mdx": "2026-06-19T09:20:30.518Z",
+  "app/infrastructure-modules/caching/concepts/page.mdx": "2026-06-19T13:06:59.981Z"
 }

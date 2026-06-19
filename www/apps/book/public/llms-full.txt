@@ -49465,6 +49465,8 @@ The following table shows when the Caching Module invalidates cached data based 
 |Update|\`Entity:\{id}\`|
 |Delete|\`Entity:list:\*\`|
 
+The `Entity:list:*` tag is always invalidated on update because an update can change whether an entity matches a cached list's filters. For example, a product going from draft to published status would appear in a list filtered by published products. Since the cache layer has no way of knowing which fields are filter-relevant, it invalidates all list caches on every update.
+
 ### Which Data is Automatically Invalidated?
 
 The Caching Module automatically invalidates your cached data when:
