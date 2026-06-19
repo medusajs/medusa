@@ -16,14 +16,11 @@ const customFulfillmentProvider = {
 }
 
 const customFulfillmentProviderCalculated = {
-  resolve: require("./dist/utils/providers/fulfillment-manual-calculated")
+  resolve: require("../../dist/utils/providers/fulfillment-manual-calculated")
     .default,
   id: "test-provider-calculated",
 }
 
-// A second instance of the built-in system payment provider, registered under a
-// distinct id (`pp_system_default_2`) so tests can assert a non-default provider
-// is honored. The always-present `pp_system_default` is unaffected.
 const customPaymentProvider = {
   resolve: {
     services: [require("@medusajs/payment/dist/providers/system").default],
@@ -39,7 +36,6 @@ const modules = {
     },
   },
   [Modules.FULFILLMENT]: {
-    /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
     options: {
       providers: [
         customFulfillmentProvider,
@@ -70,7 +66,6 @@ const modules = {
           resolve: "@medusajs/file-local",
           id: "local",
           options: {
-            // This is the directory where we can reliably write in CI environments
             upload_dir: path.join(os.tmpdir(), "uploads"),
             private_upload_dir: path.join(os.tmpdir(), "static"),
           },
@@ -114,6 +109,14 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       jwtSecret: "test",
+      authVerificationsPerActor: {
+        user: [
+          {
+            entity_type: "email",
+            auth_provider: "emailpass",
+          },
+        ],
+      },
     },
   },
   featureFlags: {

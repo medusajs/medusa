@@ -329,7 +329,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         })
 
         const result = await service.authenticate("emailpass", {
-          actor_type: "user",
           body: {
             email: "verify@test.com",
             password: "plaintext",
@@ -341,7 +340,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             success: true,
             mfaChallenge: expect.objectContaining({
               auth_identity_id: "auth-id",
-              actor_type: "user",
               auth_provider: "emailpass",
             }),
             authIdentity: expect.objectContaining({
