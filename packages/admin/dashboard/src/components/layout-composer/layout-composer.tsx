@@ -1,7 +1,14 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core"
 import { AdjustmentsDone } from "@medusajs/icons"
 import { Badge, Button, IconButton, usePrompt } from "@medusajs/ui"
-import { ComponentType, Fragment, ReactNode, useMemo, useState } from "react"
+import {
+  ComponentType,
+  Fragment,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react"
 import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
@@ -66,9 +73,15 @@ function isSamePreference(a: LayoutPreference, b: LayoutPreference): boolean {
   for (const key of keys) {
     const aw = a.widgets[key]
     const bw = b.widgets[key]
-    if (!!aw?.hidden !== !!bw?.hidden) return false
-    if (aw?.order !== bw?.order) return false
-    if (aw?.section !== bw?.section) return false
+    if (!!aw?.hidden !== !!bw?.hidden) {
+      return false
+    }
+    if (aw?.order !== bw?.order) {
+      return false
+    }
+    if (aw?.section !== bw?.section) {
+      return false
+    }
   }
   return true
 }
@@ -93,25 +106,25 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // personal layout or the zone's shared default.
   const [editScope, setEditScope] = useState<LayoutScope>("personal")
 
-  function preferenceForScope(scope: LayoutScope): LayoutPreference {
-    return scope === "default" ? defaultPreference : personalPreference
-  }
-
-  const activePreference: LayoutPreference = useMemo(
-    () => (editMode && draft ? draft : preferenceForScope(activeScope)),
-    [editMode, draft, activeScope, personalPreference, defaultPreference]
+  const preferenceForScope = useCallback(
+    (scope: LayoutScope): LayoutPreference => {
+      return scope === "default" ? defaultPreference : personalPreference
+    },
+    [defaultPreference, personalPreference]
   )
+
+  const activePreference: LayoutPreference = useMemo(() => {
+    return editMode && draft ? draft : preferenceForScope(activeScope)
+  }, [editMode, draft, preferenceForScope, activeScope])
 
   // Whether the current draft actually differs from the persisted preference
   // for the scope being edited. Switching between scopes without making edits
   // leaves this false, so saving is a no-op confirmation we can streamline.
-  const hasChanges = useMemo(
-    () =>
-      editMode && draft
-        ? !isSamePreference(draft, preferenceForScope(editScope))
-        : false,
-    [editMode, draft, editScope, personalPreference, defaultPreference]
-  )
+  const hasChanges = useMemo(() => {
+    return editMode && draft
+      ? !isSamePreference(draft, preferenceForScope(editScope))
+      : false
+  }, [editMode, draft, preferenceForScope, editScope])
 
   // TODO: Implement switching between compatible layouts
   const layoutId = preferredLayoutId
@@ -204,27 +217,32 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // sortable wrapper with chrome in edit mode. An entry that currently renders
   // nothing stays a sortable card showing a placeholder (see `SortableEntry`),
   // so it remains visible and placeable rather than collapsing to a bare row.
-  function renderEntry(entry: DisplayEntry): ReactNode {
-    const content = entry.render(data)
-    if (!editMode) {
-      return <Fragment key={entry.widgetId}>{content}</Fragment>
-    }
-    return (
-      <SortableEntry
-        key={entry.widgetId}
-        widgetId={entry.widgetId}
-        order={entry.order}
-        hidden={entry.hidden}
-        onToggleHidden={() => toggleHidden(entry.widgetId)}
-      >
-        {content}
-      </SortableEntry>
-    )
-  }
+  const renderEntry = useCallback(
+    (entry: DisplayEntry): ReactNode => {
+      const content = entry.render(data)
+      if (!editMode) {
+        return <Fragment key={entry.widgetId}>{content}</Fragment>
+      }
+      return (
+        <SortableEntry
+          key={entry.widgetId}
+          widgetId={entry.widgetId}
+          order={entry.order}
+          hidden={entry.hidden}
+          onToggleHidden={() => toggleHidden(entry.widgetId)}
+        >
+          {content}
+        </SortableEntry>
+      )
+    },
+    [data, editMode]
+  )
 
   function toggleHidden(widgetId: string) {
     setDraft((prev) => {
-      if (!prev) return prev
+      if (!prev) {
+        return prev
+      }
       const current = prev.widgets[widgetId] ?? {}
       const nextWidget: WidgetPreference = {
         ...current,
@@ -244,7 +262,9 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   }
 
   function switchScope(scope: LayoutScope) {
-    if (scope === editScope) return
+    if (scope === editScope) {
+      return
+    }
     setEditScope(scope)
     setDraft(preferenceForScope(scope))
   }
@@ -262,7 +282,9 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       }
     }
 
-    if (draft) setPreference(draft, { asDefault: editScope === "default" })
+    if (draft) {
+      setPreference(draft, { asDefault: editScope === "default" })
+    }
     // The saved scope is persisted as the active view server-side, so the
     // refetched configuration keeps showing it after exiting edit mode.
     setEditMode(false)
@@ -274,14 +296,9 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     setDraft(null)
   }
 
-  const LayoutComponent = layout?.Component
-  if (!LayoutComponent) {
-    return null
-  }
-
   const renderedSections: Record<string, ReactNode> = useMemo(() => {
     const sections: Record<string, ReactNode> = {}
-    for (const section of layout.sections) {
+    for (const section of layout?.sections ?? []) {
       const entries = entriesBySection[section.id] ?? []
       const visibleEntries = editMode
         ? entries
@@ -301,6 +318,11 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     }
     return sections
   }, [layout, entriesBySection, editMode, renderEntry])
+
+  const LayoutComponent = layout?.Component
+  if (!LayoutComponent) {
+    return null
+  }
 
   // Customizer controls — all live in the single top-bar portal slot.
   // Idle: the trigger icon. Editing: Personal/Default badges to switch which

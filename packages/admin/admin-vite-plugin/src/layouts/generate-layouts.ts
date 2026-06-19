@@ -108,7 +108,9 @@ function hasConfigExport(ast: ParseResult<File>): boolean {
 
   traverse(ast, {
     ExportNamedDeclaration(path) {
-      if (found) return
+      if (found) {
+        return
+      }
       if (getConfigObjectProperties(path)) {
         found = true
       }

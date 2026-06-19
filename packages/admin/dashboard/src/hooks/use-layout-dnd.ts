@@ -88,7 +88,9 @@ export function useLayoutDnd({
    */
   function reindexSection(sectionId: string, orderedWidgetIds: string[]) {
     setDraft((prev) => {
-      if (!prev) return prev
+      if (!prev) {
+        return prev
+      }
       const widgets = { ...prev.widgets }
       orderedWidgetIds.forEach((id, index) => {
         widgets[id] = { ...widgets[id], section: sectionId, order: index }
@@ -171,7 +173,9 @@ export function useLayoutDnd({
    */
   function resolveMove(event: DragOverEvent | DragEndEvent) {
     const { active, over } = event
-    if (!over || active.id === over.id) return null
+    if (!over || active.id === over.id) {
+      return null
+    }
 
     const activeWidgetId = active.id as string
     const overId = over.id as string
@@ -181,7 +185,9 @@ export function useLayoutDnd({
       validSectionIds,
       widgetSectionMap
     )
-    if (!activeSection || !overSection) return null
+    if (!activeSection || !overSection) {
+      return null
+    }
 
     return { activeWidgetId, overId, activeSection, overSection }
   }
@@ -200,7 +206,9 @@ export function useLayoutDnd({
    */
   function handleDragOver(event: DragOverEvent) {
     const move = resolveMove(event)
-    if (!move || move.activeSection === move.overSection) return
+    if (!move || move.activeSection === move.overSection) {
+      return
+    }
     moveToSection(move.activeWidgetId, move.overSection, move.overId)
   }
 
@@ -209,7 +217,9 @@ export function useLayoutDnd({
     lastOverIdRef.current = null
 
     const move = resolveMove(event)
-    if (!move) return
+    if (!move) {
+      return
+    }
     const { activeWidgetId, overId, activeSection, overSection } = move
 
     // Cross-section moves are normally handled live by `handleDragOver`; this
@@ -227,7 +237,9 @@ export function useLayoutDnd({
     const newIndex = isContainerTarget(overId, validSectionIds)
       ? ids.length - 1
       : ids.indexOf(overId)
-    if (oldIndex === -1 || newIndex === -1) return
+    if (oldIndex === -1 || newIndex === -1) {
+      return
+    }
 
     reindexSection(activeSection, arrayMove(ids, oldIndex, newIndex))
   }

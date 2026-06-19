@@ -31,7 +31,9 @@ export type RawEntry = {
 /** Derives a stable string identifier from a React element's component type. */
 function getElementName(element: ReactElement): string {
   const { type } = element
-  if (typeof type === "string") return type
+  if (typeof type === "string") {
+    return type
+  }
   return (
     (type as ComponentType).displayName ??
     (type as ComponentType).name ??
@@ -106,7 +108,9 @@ export function extractSectionElements(
 function collectElements(node: ReactNode): ReactElement[] {
   const elements: ReactElement[] = []
   Children.forEach(node, (child) => {
-    if (!isValidElement(child)) return
+    if (!isValidElement(child)) {
+      return
+    }
     if (child.type === Fragment) {
       const fragmentChildren = (child.props as { children?: ReactNode })
         .children
@@ -146,7 +150,9 @@ export function buildDisplayEntries(
     // order preserved by the stable sort below.
     const effectiveOrder = pref?.order ?? 0
     const hidden = pref?.hidden ?? false
-    if (!result[effectiveSection]) result[effectiveSection] = []
+    if (!result[effectiveSection]) {
+      result[effectiveSection] = []
+    }
     result[effectiveSection].push({
       widgetId: entry.widgetId,
       render: entry.render,

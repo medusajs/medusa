@@ -1,5 +1,9 @@
 import type { ComponentType, ReactNode } from "react"
-import type { LayoutSection, Layouts, SectionNameFor } from "@medusajs/admin-shared"
+import type {
+  LayoutSection,
+  Layouts,
+  SectionNameFor,
+} from "@medusajs/admin-shared"
 
 export type { LayoutSection, Layouts, SectionNameFor }
 
