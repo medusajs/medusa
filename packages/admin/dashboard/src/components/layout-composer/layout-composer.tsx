@@ -183,7 +183,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // registered widgets, or active preference actually change.
   const { entriesBySection, widgetSectionMap, validSectionIds } =
     useMemo(() => {
-      const elementsBySection = extractSectionElements(
+      const coreElementsBySection = extractSectionElements(
         sections as Record<string, ReactNode>
       )
       const naturalWidgets = getWidgetsForSections(
@@ -210,7 +210,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           })
         }
       }
-      rawEntries.push(...buildCoreEntries(elementsBySection))
+      rawEntries.push(...buildCoreEntries(coreElementsBySection))
 
       // Apply the active preference (draft when editing, persisted otherwise),
       // keeping hidden entries with `hidden: true` so we can ghost them in edit
