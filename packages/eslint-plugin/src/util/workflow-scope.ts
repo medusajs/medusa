@@ -55,12 +55,20 @@ export function trackWorkflowSdkImports(
   node: TSESTree.ImportDeclaration,
   bindings: WorkflowSdkBindings
 ): void {
-  if (node.source.value !== WORKFLOWS_SDK_SOURCE) return
+  if (node.source.value !== WORKFLOWS_SDK_SOURCE) {
+    return
+  }
   for (const specifier of node.specifiers) {
-    if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) continue
-    if (specifier.imported.type !== AST_NODE_TYPES.Identifier) continue
+    if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) {
+      continue
+    }
+    if (specifier.imported.type !== AST_NODE_TYPES.Identifier) {
+      continue
+    }
     const imported = specifier.imported.name as TrackedImport
-    if (!(imported in BUCKET_BY_IMPORT)) continue
+    if (!(imported in BUCKET_BY_IMPORT)) {
+      continue
+    }
     bindings[BUCKET_BY_IMPORT[imported]].add(specifier.local.name)
   }
 }
@@ -70,9 +78,7 @@ export type FunctionLike =
   | TSESTree.FunctionExpression
   | TSESTree.FunctionDeclaration
 
-export function getEnclosingFunction(
-  node: TSESTree.Node
-): FunctionLike | null {
+export function getEnclosingFunction(node: TSESTree.Node): FunctionLike | null {
   let current: TSESTree.Node | undefined = node.parent
   while (current) {
     if (
@@ -96,9 +102,15 @@ export function isWorkflowConstructorFunction(
   bindings: WorkflowSdkBindings
 ): boolean {
   const parent = fn.parent
-  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
-  if (parent.arguments[1] !== fn) return false
-  if (parent.callee.type !== AST_NODE_TYPES.Identifier) return false
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) {
+    return false
+  }
+  if (parent.arguments[1] !== fn) {
+    return false
+  }
+  if (parent.callee.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return bindings.createWorkflow.has(parent.callee.name)
 }
 
@@ -115,15 +127,29 @@ export function isWhenThenCallbackFunction(
   bindings: WorkflowSdkBindings
 ): boolean {
   const parent = fn.parent
-  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
-  if (parent.arguments[0] !== fn) return false
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) {
+    return false
+  }
+  if (parent.arguments[0] !== fn) {
+    return false
+  }
   const callee = parent.callee
-  if (callee.type !== AST_NODE_TYPES.MemberExpression) return false
-  if (callee.property.type !== AST_NODE_TYPES.Identifier) return false
-  if (callee.property.name !== "then") return false
+  if (callee.type !== AST_NODE_TYPES.MemberExpression) {
+    return false
+  }
+  if (callee.property.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
+  if (callee.property.name !== "then") {
+    return false
+  }
   const receiver = callee.object
-  if (receiver.type !== AST_NODE_TYPES.CallExpression) return false
-  if (receiver.callee.type !== AST_NODE_TYPES.Identifier) return false
+  if (receiver.type !== AST_NODE_TYPES.CallExpression) {
+    return false
+  }
+  if (receiver.callee.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return bindings.when.has(receiver.callee.name)
 }
 
@@ -139,10 +165,18 @@ export function isTransformCallbackFunction(
   bindings: WorkflowSdkBindings
 ): boolean {
   const parent = fn.parent
-  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
-  const argIndex = parent.arguments.indexOf(fn as TSESTree.CallExpressionArgument)
-  if (argIndex < 1) return false
-  if (parent.callee.type !== AST_NODE_TYPES.Identifier) return false
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) {
+    return false
+  }
+  const argIndex = parent.arguments.indexOf(
+    fn as TSESTree.CallExpressionArgument
+  )
+  if (argIndex < 1) {
+    return false
+  }
+  if (parent.callee.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return bindings.transform.has(parent.callee.name)
 }
 
@@ -160,9 +194,15 @@ export function isStepCallbackFunction(
   bindings: WorkflowSdkBindings
 ): boolean {
   const parent = fn.parent
-  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) return false
-  if (parent.arguments[1] !== fn) return false
-  if (parent.callee.type !== AST_NODE_TYPES.Identifier) return false
+  if (!parent || parent.type !== AST_NODE_TYPES.CallExpression) {
+    return false
+  }
+  if (parent.arguments[1] !== fn) {
+    return false
+  }
+  if (parent.callee.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return bindings.createStep.has(parent.callee.name)
 }
 
@@ -175,7 +215,9 @@ export function isResponseConstructor(
   node: TSESTree.NewExpression,
   bindings: WorkflowSdkBindings
 ): boolean {
-  if (node.callee.type !== AST_NODE_TYPES.Identifier) return false
+  if (node.callee.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
   return (
     bindings.stepResponse.has(node.callee.name) ||
     bindings.workflowResponse.has(node.callee.name)
@@ -191,7 +233,9 @@ export function isInTransformCallback(
   bindings: WorkflowSdkBindings
 ): boolean {
   const fn = getEnclosingFunction(node)
-  if (!fn) return false
+  if (!fn) {
+    return false
+  }
   return isTransformCallbackFunction(fn, bindings)
 }
 
@@ -209,7 +253,9 @@ export function isInWorkflowConstructor(
   bindings: WorkflowSdkBindings
 ): boolean {
   const fn = getEnclosingFunction(node)
-  if (!fn) return false
+  if (!fn) {
+    return false
+  }
   return isWorkflowConstructorFunction(fn, bindings)
 }
 
@@ -233,7 +279,9 @@ export function isInWorkflowDefinitionScope(
   bindings: WorkflowSdkBindings
 ): boolean {
   const fn = getEnclosingFunction(node)
-  if (!fn) return false
+  if (!fn) {
+    return false
+  }
   if (
     !isWorkflowConstructorFunction(fn, bindings) &&
     !isWhenThenCallbackFunction(fn, bindings)
@@ -247,6 +295,8 @@ export function isInWorkflowDefinitionScope(
     current = parent
     parent = current.parent
   }
-  if (!parent) return false
+  if (!parent) {
+    return false
+  }
   return !(fn.params as TSESTree.Node[]).includes(current)
 }

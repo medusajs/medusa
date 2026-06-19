@@ -20,10 +20,11 @@ const mfaChallenge = {
 }
 
 const verification = {
-  actor_type: "user",
-  provider: "emailpass",
   entity_id: "test@example.com",
-  expires_at: "2026-05-20T10:00:00.000Z",
+  auth_identity_id: "authid_123",
+  entity_type: "email",
+  code_provider: "token",
+  requested_at: "2026-05-20T10:00:00.000Z",
 }
 
 const storage = {
@@ -99,6 +100,7 @@ describe("Auth", () => {
         return HttpResponse.json({
           mfa_required: true,
           mfa_challenge: mfaChallenge,
+          token,
         })
       })
     )
@@ -112,8 +114,9 @@ describe("Auth", () => {
     expect(result).toEqual({
       mfa_required: true,
       mfa_challenge: mfaChallenge,
+      token,
     })
-    expect(storage.setItem).not.toHaveBeenCalled()
+    expect(storage.setItem).toHaveBeenCalledWith(jwtTokenStorageKey, token)
   })
 
   it("returns a verification requirement from login without storing a token", async () => {
@@ -122,6 +125,7 @@ describe("Auth", () => {
         return HttpResponse.json({
           verification_required: true,
           verification: verification,
+          token,
         })
       })
     )
@@ -135,39 +139,9 @@ describe("Auth", () => {
     expect(result).toEqual({
       verification_required: true,
       verification: verification,
+      token,
     })
-    expect(storage.setItem).not.toHaveBeenCalled()
-  })
-
-  it("returns a verification requirement from register when opted in", async () => {
-    server.use(
-      http.post(
-        `${baseUrl}/auth/user/emailpass/register`,
-        async ({ request }) => {
-          expect(await request.json()).toEqual({
-            email: "test@example.com",
-            password: "secret",
-          })
-
-          return HttpResponse.json({
-            verification_required: true,
-            verification: verification,
-          })
-        }
-      )
-    )
-
-    const auth = createAuth()
-    const result = await auth.register("user", "emailpass", {
-      email: "test@example.com",
-      password: "secret",
-    })
-
-    expect(result).toEqual({
-      verification_required: true,
-      verification: verification,
-    })
-    expect(storage.setItem).not.toHaveBeenCalled()
+    expect(storage.setItem).toHaveBeenCalledWith(jwtTokenStorageKey, token)
   })
 
   it("returns redirect locations from login", async () => {
@@ -196,6 +170,7 @@ describe("Auth", () => {
         return HttpResponse.json({
           mfa_required: true,
           mfa_challenge: mfaChallenge,
+          token,
         })
       })
     )
@@ -208,8 +183,9 @@ describe("Auth", () => {
     expect(result).toEqual({
       mfa_required: true,
       mfa_challenge: mfaChallenge,
+      token,
     })
-    expect(storage.setItem).not.toHaveBeenCalled()
+    expect(storage.setItem).toHaveBeenCalledWith(jwtTokenStorageKey, token)
   })
 
   it("manages MFA factors", async () => {
@@ -343,44 +319,44 @@ describe("Auth", () => {
 
   it("requests and confirms verification", async () => {
     server.use(
-      http.post(
-        `${baseUrl}/auth/user/emailpass/verification/request`,
-        async ({ request }) => {
-          expect(await request.json()).toEqual({
-            entity_id: "test@example.com",
-            metadata: {
-              source: "dashboard",
-            },
-          })
+      http.post(`${baseUrl}/auth/verification/request`, async ({ request }) => {
+        expect(await request.json()).toEqual({
+          entity_id: "test@example.com",
+          entity_type: "email",
+          code_provider: "token",
+          metadata: {
+            source: "dashboard",
+          },
+        })
 
-          return HttpResponse.json(
-            {
-              verification: verification,
-            },
-            { status: 201 }
-          )
-        }
-      ),
-      http.post(
-        `${baseUrl}/auth/user/emailpass/verification/confirm`,
-        async ({ request }) => {
-          expect(await request.json()).toEqual({
-            token: "verify-token",
-          })
+        return HttpResponse.json(
+          {
+            verification: verification,
+          },
+          { status: 201 }
+        )
+      }),
+      http.post(`${baseUrl}/auth/verification/confirm`, async ({ request }) => {
+        expect(await request.json()).toEqual({
+          code: "verify-token",
+        })
 
-          return HttpResponse.json({
-            entity_id: "test@example.com",
-            verified: true,
-          })
-        }
-      )
+        return HttpResponse.json({
+          entity_id: "test@example.com",
+          entity_type: "email",
+          code_provider: "token",
+          verified_at: "2026-05-20T10:00:00.000Z",
+        })
+      })
     )
 
     const auth = createAuth()
 
     await expect(
-      auth.verification.request("user", "emailpass", {
+      auth.verification.request({
         entity_id: "test@example.com",
+        entity_type: "email",
+        code_provider: "token",
         metadata: {
           source: "dashboard",
         },
@@ -390,12 +366,14 @@ describe("Auth", () => {
     })
 
     await expect(
-      auth.verification.confirm("user", "emailpass", {
-        token: "verify-token",
+      auth.verification.confirm({
+        code: "verify-token",
       })
     ).resolves.toEqual({
       entity_id: "test@example.com",
-      verified: true,
+      entity_type: "email",
+      code_provider: "token",
+      verified_at: "2026-05-20T10:00:00.000Z",
     })
     expect(storage.setItem).not.toHaveBeenCalled()
   })

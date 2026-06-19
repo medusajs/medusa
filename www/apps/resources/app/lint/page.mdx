@@ -1,0 +1,340 @@
+---
+generate_toc: true
+---
+
+import { CodeTabs, CodeTab, Note, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa ESLint Plugin`,
+}
+
+# {metadata.title}
+
+In this section of the documentation, you'll learn how to set up and use the Medusa ESLint plugin in your application.
+
+The Medusa ESLint plugin (`@medusajs/eslint-plugin`) is the official ESLint plugin for Medusa projects. It codifies Medusa's conventions into static checks that run while you write code in your editor and when you build or develop your application.
+
+The plugin is useful for both developers and AI agents working on your codebase, as it provides immediate feedback on code that violates Medusa's conventions.
+
+The plugin catches mistakes that often lead to runtime errors or unexpected behavior, such as using loops in a workflow's constructor, returning a non-serializable value from a step, or naming an API route file incorrectly. Each [rule](./rules/page.mdx) maps to a Medusa convention.
+
+---
+
+## How to Install the Plugin
+
+<Note title="Tip">
+
+Projects created with Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0) or later already have the plugin installed and an `eslint.config.ts` file set up. You can skip the installation steps and go straight to the [usage guidelines](#usage-guidelines).
+
+</Note>
+
+### 1. Installation
+
+<Prerequisites
+  items={[
+    {
+      text: "Node.js v20+",
+      link: "https://nodejs.org/en/download",
+    },
+    {
+      text: "TypeScript v4.8+",
+      link: "https://www.typescriptlang.org/download",
+    },
+  ]}
+/>
+
+To use the plugin in an existing project, install it along with ESLint and `jiti`:
+
+<Note>
+
+In monorepo projects, install the plugin and its dependencies in the root `package.json`. In standalone Medusa projects, install them within the project.
+
+</Note>
+
+```bash npm2yarn
+npm install --save-dev @medusajs/eslint-plugin eslint jiti
+```
+
+Where:
+
+- `@medusajs/eslint-plugin` is the plugin that provides Medusa's lint rules.
+- `eslint` is a peer dependency of the plugin. The plugin supports ESLint v8.57 and later, including the [flat config format](https://eslint.org/docs/latest/use/configure/configuration-files) introduced in v9.
+- `jiti` allows ESLint to load a TypeScript configuration file (`eslint.config.ts`). Install it if you want to write your ESLint configuration in TypeScript.
+
+### 2. Add an ESLint Configuration File
+
+#### a. Configuration for Monorepo Projects
+
+After installing the plugin, create an `eslint.config.ts` file at the root of your monorepo that spreads one of the plugin's [presets](#presets):
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.recommended])
+```
+
+<Note>
+
+The plugin ignores `node_modules`, `dist`, `apps/storefront`, and test directories by default.
+
+</Note>
+
+The plugin only supports ESLint's flat config format.
+
+Then, in the Medusa application package, create a similar `eslint.config.ts` file:
+
+```ts title="apps/medusa-app/eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.recommended])
+```
+
+This setup is necessary to support both `medusa lint` command and code editor hints.
+
+You can add overide rules in the application package's configuration file to customize linting, as explained in the [usage guidelines](#usage-guidelines).
+
+To avoid type errors on this file, make sure to add it to `apps/backend/tsconfig.json`'s `exclude` array:
+
+```json title="apps/backend/tsconfig.json"
+{
+  "exclude": [
+    // ...
+    "eslint.config.*"
+  ]
+}
+```
+
+#### b. Configuration for Standalone Medusa Projects
+
+After installing the plugin, create an `eslint.config.ts` file at the root of your project that spreads one of the plugin's [presets](#presets):
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.recommended])
+```
+
+The plugin only supports ESLint's flat config format.
+
+You can add your own configuration blocks after the preset to customize linting, as explained in the [usage guidelines](#usage-guidelines).
+
+#### Configuration with ESLint v8.57
+
+The plugin's presets use the flat config format, which is the default since ESLint v9. If you're using ESLint v8.57, you can still use the same `eslint.config.ts` file, but you must opt in to the flat config format.
+
+The [Medusa CLI lint commands](#lint-your-project) load the `eslint.config.ts` file directly, so they work with ESLint v8.57 without any extra setup.
+
+However, when you run the `eslint` command directly or use an editor integration, ESLint v8 doesn't use the flat config file by default. To enable it, set the `ESLINT_USE_FLAT_CONFIG` environment variable to `true`:
+
+```bash
+ESLINT_USE_FLAT_CONFIG=true npx eslint .
+```
+
+<Note>
+
+The plugin supports ESLint v8.57 and later. Earlier v8 versions don't support the flat config format.
+
+</Note>
+
+### 3. Set Up Your IDE
+
+It's highly recommended to install an ESLint plugin or extension in your code editor. This way, you see the plugin's errors and warnings inline as you write code, and you can auto-fix issues during development instead of waiting for a build or a manual lint run.
+
+For example:
+
+- If you use [VS Code](https://code.visualstudio.com/), install the [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+- If you use a [JetBrains IDE](https://www.jetbrains.com/) such as WebStorm, enable ESLint in the IDE's settings.
+
+To auto-fix issues whenever you save a file in VS Code, enable the following in your editor settings:
+
+```json title=".vscode/settings.json"
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
+```
+
+---
+
+## Presets
+
+The plugin provides three presets that you spread into your ESLint configuration. Choose the preset based on your package type and how thorough you want the linting to be.
+
+### recommended
+
+The `recommended` preset is the default for Medusa projects. It enables rules scoped to your project's directories, such as `src/workflows` and `src/api`. These rules don't require TypeScript type information, so they're fast to run.
+
+Use this preset in all Medusa projects:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.recommended])
+```
+
+### strict
+
+The `strict` preset extends `recommended` with additional rules that require TypeScript type information or that check across multiple files. These rules are more thorough, but slower to run.
+
+To use the type-aware rules, your ESLint configuration must set `parserOptions.project`. Use this preset when you want the most thorough checking:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.strict])
+```
+
+### modules
+
+The `modules` preset is meant for packages whose only purpose is to provide a module or a module provider, such as a published module package. In these packages, a module's source code lives directly under `src`, rather than under `src/modules` as it does in a Medusa application.
+
+This preset applies only the rules that govern a module's service, module definition, and data models, scoped to the package's layout. It's zero-config and doesn't require TypeScript type information.
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([...medusa.configs.modules])
+```
+
+<Note title="Don't use this preset if" type="error">
+
+- Your package is a Medusa application. Use the [recommended](#recommended) preset instead.
+- Your package is a plugin that defines modules along with other customizations, such as API routes or workflows. Use the [recommended](#recommended) preset instead, as it scopes module rules to the `src/modules` directory.
+
+</Note>
+
+---
+
+## Lint your Project
+
+The Medusa CLI provides commands to lint your project. The commands require an `eslint.config.ts` file (or another supported extension, such as `eslint.config.js`) at the root of your project.
+
+### medusa lint
+
+Use the `medusa lint` command to lint your project:
+
+```bash npx2yarn
+npx medusa lint
+```
+
+By default, the command lints the whole project. You can pass paths to lint specific files or directories:
+
+```bash npx2yarn
+npx medusa lint src/workflows src/api
+```
+
+The command accepts the following options:
+
+- `--fix`: Auto-fix lint issues where possible.
+- `--quiet`: Report lint errors only, suppressing warnings.
+
+The command exits with a non-zero code if it finds lint errors.
+
+### Lint while Developing
+
+The `medusa develop` command lints your project once at startup, before the development server starts. If the linter finds errors, the development server doesn't start.
+
+The command accepts the following lint options:
+
+- `--lint` and `--no-lint`: Whether to run the linter before starting the development server. By default, linting is enabled.
+- `--fix` and `--no-fix`: Auto-fix lint issues where possible before starting. By default, auto-fixing is disabled.
+
+For example, to start the development server without linting:
+
+```bash
+npx medusa develop --no-lint
+```
+
+### Lint while Building
+
+The `medusa build` command lints your project after generating types and before building. Unlike `develop`, linting during `build` is non-blocking: lint problems are surfaced as warnings, but they never fail the build.
+
+The command accepts the following lint options:
+
+- `--lint` and `--no-lint`: Whether to run the linter before building. By default, linting is enabled.
+- `--fix` and `--no-fix`: Auto-fix lint issues where possible before building. By default, auto-fixing is disabled.
+- `--quiet`: Report lint errors only, suppressing warnings.
+
+For example, to build your project without linting:
+
+```bash
+npx medusa build --no-lint
+```
+
+<Note title="Tip">
+
+The linter caches results at `.medusa/cache/.eslintcache` to speed up repeated runs.
+
+</Note>
+
+---
+
+## Usage Guidelines
+
+### Rule Severities
+
+Each rule has one of two severities:
+
+- `error`: The rule flags code that heavily violates Medusa's conventions and may lead to runtime errors or unexpected results.
+- `warn`: The rule flags code that you should review, but that won't necessarily break your application.
+
+The severity of each rule is mentioned in its [reference page](./rules/page.mdx).
+
+### Change a Rule's Severity or Disable it
+
+To change a rule's severity or disable it, add a configuration block after the preset in your Medusa application's `eslint.config.ts` file.
+
+<Note title="Tip">
+
+If your project is a monorepo, add the configuration block in `apps/backend/eslint.config.ts`. If your project is a standalone Medusa application, add the configuration block in `eslint.config.ts` at the root of your project.
+
+</Note>
+
+For example, to disable the `admin-env-vars-import-meta` rule:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/admin-env-vars-import-meta": "off",
+    },
+  },
+])
+```
+
+You can also disable a rule for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/admin-env-vars-import-meta
+console.log(process.env.MEDUSA_BACKEND_URL)
+```
+
+Or disable a rule for a whole file:
+
+```ts
+/* eslint-disable @medusajs/admin-env-vars-import-meta */
+// The rest of the file's code
+```
+
+### Don't Disable Error Rules
+
+Rules with the `error` severity flag code that heavily violates Medusa's conventions. Disabling them can lead to runtime errors or unexpected behavior in your application. If a rule's severity is `error`, fix the underlying issue instead of disabling the rule.
+
+Only consider disabling rules with the `warn` severity, and only when you're certain the rule reports a false positive in your case. Each warning rule's [reference page](./rules/page.mdx) shows how to turn it off.
+
+---
+
+## Available Rules
+
+Refer to the [Rules reference](./rules/page.mdx) for the full list of rules, including what each rule targets, why it's important, and its severity.

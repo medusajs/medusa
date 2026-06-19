@@ -19,6 +19,7 @@ import coreTranslations from "../i18n/translations"
 import { getRouteMap } from "./routes/get-route.map"
 import { createRouteMap, getRouteExtensions } from "./routes/utils"
 import { sortMenuItemsByRank } from "./utils/sort-menu-items-by-rank"
+import { CORE_LAYOUTS } from "../components/layout-composer/core-layouts"
 import {
   ConfigExtension,
   ConfigField,
@@ -26,18 +27,27 @@ import {
   DashboardPlugin,
   DisplayExtension,
   DisplayMap,
+  ExtensionApi,
   FormExtension,
   FormField,
   FormFieldExtension,
   FormFieldMap,
   FormZoneMap,
   I18nExtension,
+  LayoutMap,
   MenuItemExtension,
   MenuItemKey,
   MenuMap,
+  WidgetExtension,
   WidgetMap,
   ZoneStructure,
 } from "./types"
+import {
+  AFTER_ORDER,
+  BEFORE_ORDER,
+  LayoutDefinition,
+  SectionWidgetMap,
+} from "../components/layout-composer"
 
 type DashboardAppProps = {
   plugins: DashboardPlugin[]
@@ -52,6 +62,7 @@ const OPTIONAL_LAST_SEGMENT_MATCH = /\/([^/])+\?$/
 
 export class DashboardApp {
   private widgets: WidgetMap
+  private layouts: LayoutMap
   private menus: MenuMap
   private fields: FormFieldMap
   private configs: ConfigFieldMap
@@ -62,6 +73,7 @@ export class DashboardApp {
 
   constructor({ plugins }: DashboardAppProps) {
     this.widgets = this.populateWidgets(plugins)
+    this.layouts = this.populateLayouts(plugins)
     this.menus = this.populateMenus(plugins)
 
     const { coreRoutes, settingsRoutes } = this.populateRoutes(plugins)
@@ -97,7 +109,7 @@ export class DashboardApp {
   }
 
   private populateWidgets(plugins: DashboardPlugin[]) {
-    const registry = new Map<InjectionZone, React.ComponentType[]>()
+    const registry = new Map<InjectionZone, WidgetExtension[]>()
 
     plugins.forEach((plugin) => {
       const widgets = plugin.widgetModule.widgets
@@ -110,10 +122,26 @@ export class DashboardApp {
           if (!registry.has(zone)) {
             registry.set(zone, [])
           }
-          registry.get(zone)!.push(widget.Component)
+          registry.get(zone)!.push(widget)
         })
       })
     })
+
+    return registry
+  }
+
+  private populateLayouts(_plugins: DashboardPlugin[]) {
+    const registry = new Map<string, LayoutDefinition>()
+
+    CORE_LAYOUTS.forEach((layout) => registry.set(layout.id, layout))
+
+    // TODO: layout virtual module for custom user layouts
+
+    // plugins.forEach((plugin) => {
+    //   plugin.layoutModule?.layouts?.forEach((layout) => {
+    //     registry.set(layout.id, layout)
+    //   })
+    // })
 
     return registry
   }
@@ -433,8 +461,70 @@ export class DashboardApp {
     return this.menus.get(path) || []
   }
 
-  private getWidgets(zone: InjectionZone) {
-    return this.widgets.get(zone) || []
+  private getWidgets(zone: InjectionZone): React.ComponentType[] {
+    return (this.widgets.get(zone) || []).map((w) => w.Component)
+  }
+
+  private getLayout(layoutId: string): LayoutDefinition | undefined {
+    return this.layouts.get(layoutId)
+  }
+
+  /**
+   * Returns widgets for a given base zone grouped by layout section.
+   *
+   * Zone suffixes determine section and order, e.g.:
+   *   "before"      → main section, order BEFORE_ORDER
+   *   "after"       → main section, order AFTER_ORDER
+   *   "side.before" → side section, order BEFORE_ORDER
+   *   "side.after"  → side section, order AFTER_ORDER
+   */
+  private getWidgetsForSections(
+    route: string,
+    sections: string[]
+  ): SectionWidgetMap {
+    const result: SectionWidgetMap = {}
+
+    for (const [zone, extensions] of this.widgets.entries()) {
+      if (!zone.startsWith(route + ".")) {
+        continue
+      }
+
+      let suffix = zone.slice(route.length + 1)
+
+      let order: number
+
+      if (suffix.endsWith("before")) {
+        order = BEFORE_ORDER
+        suffix = suffix.replace(/before$/, "")
+      } else if (suffix.endsWith("after")) {
+        order = AFTER_ORDER
+        suffix = suffix.replace(/after$/, "")
+      } else {
+        order = AFTER_ORDER
+      }
+
+      suffix = suffix.replace(/\.$/, "") // Remove trailing dot if exists
+
+      const mainSection = sections.includes("main") ? "main" : sections[0]
+      const section = suffix || mainSection
+
+      if (!result[section]) {
+        result[section] = []
+      }
+
+      extensions.forEach((ext) => {
+        result[section].push({
+          Component: ext.Component,
+          order: order,
+        })
+      })
+    }
+
+    for (const section of Object.keys(result)) {
+      result[section].sort((a, b) => a.order - b.order)
+    }
+
+    return result
   }
 
   private getFormFields(
@@ -467,10 +557,12 @@ export class DashboardApp {
     return this.i18nResources
   }
 
-  get api() {
+  get api(): ExtensionApi {
     return {
       getMenu: this.getMenu.bind(this),
       getWidgets: this.getWidgets.bind(this),
+      getLayout: this.getLayout.bind(this),
+      getWidgetsForSections: this.getWidgetsForSections.bind(this),
       getFormFields: this.getFormFields.bind(this),
       getFormConfigs: this.getFormConfigs.bind(this),
       getDisplays: this.getDisplays.bind(this),

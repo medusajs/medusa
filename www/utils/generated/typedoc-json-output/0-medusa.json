@@ -1,12 +1,12 @@
 {
-	"id": 43508,
+	"id": 43902,
 	"name": "medusa",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 43851,
+			"id": 44245,
 			"name": "HTTP_METHODS",
 			"variant": "declaration",
 			"kind": 32,
@@ -67,7 +67,7 @@
 			}
 		},
 		{
-			"id": 43786,
+			"id": 44180,
 			"name": "RouteVerb",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -89,7 +89,7 @@
 					"type": "query",
 					"queryType": {
 						"type": "reference",
-						"target": 43851,
+						"target": 44245,
 						"name": "HTTP_METHODS",
 						"package": "@medusajs/framework"
 					}
@@ -97,7 +97,7 @@
 			}
 		},
 		{
-			"id": 43718,
+			"id": 44112,
 			"name": "MiddlewareVerb",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -122,7 +122,7 @@
 					},
 					{
 						"type": "reference",
-						"target": 43786,
+						"target": 44180,
 						"name": "RouteVerb",
 						"package": "@medusajs/framework"
 					}
@@ -130,7 +130,7 @@
 			}
 		},
 		{
-			"id": 43521,
+			"id": 43915,
 			"name": "MiddlewareFunction",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -147,14 +147,14 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 43710,
+						"target": 44104,
 						"name": "MedusaRequestHandler",
 						"package": "@medusajs/framework"
 					},
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 43522,
+							"id": 43916,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
@@ -168,14 +168,14 @@
 							],
 							"signatures": [
 								{
-									"id": 43523,
+									"id": 43917,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"parameters": [
 										{
-											"id": 43524,
+											"id": 43918,
 											"name": "args",
 											"variant": "param",
 											"kind": 32768,
@@ -203,7 +203,7 @@
 			}
 		},
 		{
-			"id": 43720,
+			"id": 44114,
 			"name": "MedusaErrorHandlerFunction",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -218,7 +218,7 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43721,
+					"id": 44115,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
@@ -232,14 +232,14 @@
 					],
 					"signatures": [
 						{
-							"id": 43722,
+							"id": 44116,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 43723,
+									"id": 44117,
 									"name": "error",
 									"variant": "param",
 									"kind": 32768,
@@ -250,40 +250,40 @@
 									}
 								},
 								{
-									"id": 43724,
+									"id": 44118,
 									"name": "req",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 43737,
+										"target": 44131,
 										"name": "MedusaRequest",
 										"package": "@medusajs/framework"
 									}
 								},
 								{
-									"id": 43725,
+									"id": 44119,
 									"name": "res",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 43783,
+										"target": 44177,
 										"name": "MedusaResponse",
 										"package": "@medusajs/framework"
 									}
 								},
 								{
-									"id": 43726,
+									"id": 44120,
 									"name": "next",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 43785,
+										"target": 44179,
 										"name": "MedusaNextFunction",
 										"package": "@medusajs/framework"
 									}
@@ -319,7 +319,7 @@
 			}
 		},
 		{
-			"id": 43787,
+			"id": 44181,
 			"name": "ParserConfigArgs",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -334,14 +334,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43788,
+					"id": 44182,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43789,
+							"id": 44183,
 							"name": "sizeLimit",
 							"variant": "declaration",
 							"kind": 1024,
@@ -370,7 +370,7 @@
 							}
 						},
 						{
-							"id": 43790,
+							"id": 44184,
 							"name": "preserveRawBody",
 							"variant": "declaration",
 							"kind": 1024,
@@ -394,8 +394,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								43789,
-								43790
+								44183,
+								44184
 							]
 						}
 					],
@@ -410,7 +410,7 @@
 			}
 		},
 		{
-			"id": 43719,
+			"id": 44113,
 			"name": "ParserConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -431,7 +431,7 @@
 					},
 					{
 						"type": "reference",
-						"target": 43787,
+						"target": 44181,
 						"name": "ParserConfigArgs",
 						"package": "@medusajs/framework"
 					}
@@ -439,7 +439,7 @@
 			}
 		},
 		{
-			"id": 43525,
+			"id": 43919,
 			"name": "MiddlewareRoute",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -454,14 +454,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43526,
+					"id": 43920,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43527,
+							"id": 43921,
 							"name": "method",
 							"variant": "declaration",
 							"kind": 1024,
@@ -478,7 +478,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "MiddlewareRoute.methods",
-										"target": 43528
+										"target": 43922
 									}
 								]
 							},
@@ -494,7 +494,7 @@
 								"types": [
 									{
 										"type": "reference",
-										"target": 43718,
+										"target": 44112,
 										"name": "MiddlewareVerb",
 										"package": "@medusajs/framework"
 									},
@@ -502,7 +502,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 43718,
+											"target": 44112,
 											"name": "MiddlewareVerb",
 											"package": "@medusajs/framework"
 										}
@@ -511,7 +511,7 @@
 							}
 						},
 						{
-							"id": 43528,
+							"id": 43922,
 							"name": "methods",
 							"variant": "declaration",
 							"kind": 1024,
@@ -529,14 +529,14 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 43718,
+									"target": 44112,
 									"name": "MiddlewareVerb",
 									"package": "@medusajs/framework"
 								}
 							}
 						},
 						{
-							"id": 43529,
+							"id": 43923,
 							"name": "matcher",
 							"variant": "declaration",
 							"kind": 1024,
@@ -568,7 +568,7 @@
 							}
 						},
 						{
-							"id": 43530,
+							"id": 43924,
 							"name": "bodyParser",
 							"variant": "declaration",
 							"kind": 1024,
@@ -584,13 +584,13 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 43719,
+								"target": 44113,
 								"name": "ParserConfig",
 								"package": "@medusajs/framework"
 							}
 						},
 						{
-							"id": 43531,
+							"id": 43925,
 							"name": "additionalDataValidator",
 							"variant": "declaration",
 							"kind": 1024,
@@ -615,7 +615,7 @@
 							}
 						},
 						{
-							"id": 43532,
+							"id": 43926,
 							"name": "middlewares",
 							"variant": "declaration",
 							"kind": 1024,
@@ -633,7 +633,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 43521,
+									"target": 43915,
 									"name": "MiddlewareFunction",
 									"package": "@medusajs/framework"
 								}
@@ -644,12 +644,12 @@
 						{
 							"title": "Properties",
 							"children": [
-								43527,
-								43528,
-								43529,
-								43530,
-								43531,
-								43532
+								43921,
+								43922,
+								43923,
+								43924,
+								43925,
+								43926
 							]
 						}
 					],
@@ -664,7 +664,7 @@
 			}
 		},
 		{
-			"id": 43540,
+			"id": 43934,
 			"name": "MiddlewaresConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -679,14 +679,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43541,
+					"id": 43935,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43542,
+							"id": 43936,
 							"name": "errorHandler",
 							"variant": "declaration",
 							"kind": 1024,
@@ -709,7 +709,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 43720,
+										"target": 44114,
 										"name": "MedusaErrorHandlerFunction",
 										"package": "@medusajs/framework"
 									}
@@ -717,7 +717,7 @@
 							}
 						},
 						{
-							"id": 43543,
+							"id": 43937,
 							"name": "routes",
 							"variant": "declaration",
 							"kind": 1024,
@@ -735,7 +735,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 43525,
+									"target": 43919,
 									"name": "MiddlewareRoute",
 									"package": "@medusajs/framework"
 								}
@@ -746,8 +746,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								43542,
-								43543
+								43936,
+								43937
 							]
 						}
 					],
@@ -762,14 +762,14 @@
 			}
 		},
 		{
-			"id": 43737,
+			"id": 44131,
 			"name": "MedusaRequest",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 43741,
+					"id": 44135,
 					"name": "validatedBody",
 					"variant": "declaration",
 					"kind": 1024,
@@ -783,7 +783,7 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43781,
+						"target": 44175,
 						"name": "Body",
 						"package": "@medusajs/framework",
 						"qualifiedName": "MedusaRequest.Body",
@@ -796,7 +796,7 @@
 					}
 				},
 				{
-					"id": 43742,
+					"id": 44136,
 					"name": "validatedQuery",
 					"variant": "declaration",
 					"kind": 1024,
@@ -813,13 +813,13 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 43794,
+								"target": 44188,
 								"name": "RequestQueryFields",
 								"package": "@medusajs/types"
 							},
 							{
 								"type": "reference",
-								"target": 43782,
+								"target": 44176,
 								"name": "QueryFields",
 								"package": "@medusajs/framework",
 								"qualifiedName": "MedusaRequest.QueryFields",
@@ -834,7 +834,7 @@
 					}
 				},
 				{
-					"id": 43743,
+					"id": 44137,
 					"name": "allowedProperties",
 					"variant": "declaration",
 					"kind": 1024,
@@ -868,7 +868,7 @@
 					}
 				},
 				{
-					"id": 43744,
+					"id": 44138,
 					"name": "listConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -890,7 +890,7 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43800,
+						"target": 44194,
 						"typeArguments": [
 							{
 								"type": "intrinsic",
@@ -907,7 +907,7 @@
 					}
 				},
 				{
-					"id": 43745,
+					"id": 44139,
 					"name": "retrieveConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -929,7 +929,7 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43800,
+						"target": 44194,
 						"typeArguments": [
 							{
 								"type": "intrinsic",
@@ -946,7 +946,7 @@
 					}
 				},
 				{
-					"id": 43746,
+					"id": 44140,
 					"name": "queryConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -980,14 +980,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 43747,
+							"id": 44141,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 43748,
+									"id": 44142,
 									"name": "fields",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1008,7 +1008,7 @@
 									}
 								},
 								{
-									"id": 43749,
+									"id": 44143,
 									"name": "pagination",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1023,14 +1023,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 43750,
+											"id": 44144,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 43751,
+													"id": 44145,
 													"name": "order",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1065,7 +1065,7 @@
 													}
 												},
 												{
-													"id": 43752,
+													"id": 44146,
 													"name": "skip",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1083,7 +1083,7 @@
 													}
 												},
 												{
-													"id": 43753,
+													"id": 44147,
 													"name": "take",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1107,9 +1107,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														43751,
-														43752,
-														43753
+														44145,
+														44146,
+														44147
 													]
 												}
 											],
@@ -1124,7 +1124,7 @@
 									}
 								},
 								{
-									"id": 43754,
+									"id": 44148,
 									"name": "withDeleted",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1148,9 +1148,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										43748,
-										43749,
-										43754
+										44142,
+										44143,
+										44148
 									]
 								}
 							],
@@ -1170,7 +1170,7 @@
 					}
 				},
 				{
-					"id": 43755,
+					"id": 44149,
 					"name": "remoteQueryConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1189,7 +1189,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "queryConfig",
-										"target": 43746
+										"target": 44140
 									},
 									{
 										"kind": "text",
@@ -1209,14 +1209,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 43756,
+							"id": 44150,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 43757,
+									"id": 44151,
 									"name": "fields",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1237,7 +1237,7 @@
 									}
 								},
 								{
-									"id": 43758,
+									"id": 44152,
 									"name": "pagination",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1252,14 +1252,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 43759,
+											"id": 44153,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 43760,
+													"id": 44154,
 													"name": "order",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1294,7 +1294,7 @@
 													}
 												},
 												{
-													"id": 43761,
+													"id": 44155,
 													"name": "skip",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1312,7 +1312,7 @@
 													}
 												},
 												{
-													"id": 43762,
+													"id": 44156,
 													"name": "take",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1336,9 +1336,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														43760,
-														43761,
-														43762
+														44154,
+														44155,
+														44156
 													]
 												}
 											],
@@ -1353,7 +1353,7 @@
 									}
 								},
 								{
-									"id": 43763,
+									"id": 44157,
 									"name": "withDeleted",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1377,9 +1377,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										43757,
-										43758,
-										43763
+										44151,
+										44152,
+										44157
 									]
 								}
 							],
@@ -1399,7 +1399,7 @@
 					}
 				},
 				{
-					"id": 43764,
+					"id": 44158,
 					"name": "filterableFields",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1425,7 +1425,7 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43782,
+						"target": 44176,
 						"name": "QueryFields",
 						"package": "@medusajs/framework",
 						"qualifiedName": "MedusaRequest.QueryFields",
@@ -1438,7 +1438,7 @@
 					}
 				},
 				{
-					"id": 43765,
+					"id": 44159,
 					"name": "includes",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1478,7 +1478,7 @@
 					}
 				},
 				{
-					"id": 43766,
+					"id": 44160,
 					"name": "allowed",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1514,7 +1514,7 @@
 					}
 				},
 				{
-					"id": 43767,
+					"id": 44161,
 					"name": "errors",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1540,7 +1540,7 @@
 					}
 				},
 				{
-					"id": 43768,
+					"id": 44162,
 					"name": "scope",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1554,7 +1554,7 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43811,
+						"target": 44205,
 						"name": "MedusaContainer",
 						"package": "@medusajs/framework"
 					},
@@ -1565,7 +1565,7 @@
 					}
 				},
 				{
-					"id": 43769,
+					"id": 44163,
 					"name": "session",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1585,7 +1585,7 @@
 					}
 				},
 				{
-					"id": 43770,
+					"id": 44164,
 					"name": "rawBody",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1605,7 +1605,7 @@
 					}
 				},
 				{
-					"id": 43771,
+					"id": 44165,
 					"name": "requestId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1630,7 +1630,7 @@
 					}
 				},
 				{
-					"id": 43772,
+					"id": 44166,
 					"name": "restrictedFields",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1646,13 +1646,13 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43832,
+						"target": 44226,
 						"name": "RestrictedFields",
 						"package": "@medusajs/framework"
 					}
 				},
 				{
-					"id": 43773,
+					"id": 44167,
 					"name": "pricingContext",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1676,13 +1676,13 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43841,
+						"target": 44235,
 						"name": "MedusaPricingContext",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 43774,
+					"id": 44168,
 					"name": "context",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1725,7 +1725,7 @@
 					}
 				},
 				{
-					"id": 43775,
+					"id": 44169,
 					"name": "additionalDataValidator",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1798,7 +1798,7 @@
 					}
 				},
 				{
-					"id": 43776,
+					"id": 44170,
 					"name": "locale",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1834,7 +1834,7 @@
 					}
 				},
 				{
-					"id": 43777,
+					"id": 44171,
 					"name": "user",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1852,14 +1852,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 43778,
+							"id": 44172,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 43779,
+									"id": 44173,
 									"name": "customer_id",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1879,7 +1879,7 @@
 									}
 								},
 								{
-									"id": 43780,
+									"id": 44174,
 									"name": "userId",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1903,8 +1903,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										43779,
-										43780
+										44173,
+										44174
 									]
 								}
 							],
@@ -1928,27 +1928,27 @@
 				{
 					"title": "Properties",
 					"children": [
-						43741,
-						43742,
-						43743,
-						43744,
-						43745,
-						43746,
-						43755,
-						43764,
-						43765,
-						43766,
-						43767,
-						43768,
-						43769,
-						43770,
-						43771,
-						43772,
-						43773,
-						43774,
-						43775,
-						43776,
-						43777
+						44135,
+						44136,
+						44137,
+						44138,
+						44139,
+						44140,
+						44149,
+						44158,
+						44159,
+						44160,
+						44161,
+						44162,
+						44163,
+						44164,
+						44165,
+						44166,
+						44167,
+						44168,
+						44169,
+						44170,
+						44171
 					]
 				}
 			],
@@ -1961,7 +1961,7 @@
 			],
 			"typeParameters": [
 				{
-					"id": 43781,
+					"id": 44175,
 					"name": "Body",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -1972,7 +1972,7 @@
 					}
 				},
 				{
-					"id": 43782,
+					"id": 44176,
 					"name": "QueryFields",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2009,7 +2009,7 @@
 						{
 							"type": "reflection",
 							"declaration": {
-								"id": 43738,
+								"id": 44132,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
@@ -2023,7 +2023,7 @@
 								],
 								"indexSignatures": [
 									{
-										"id": 43739,
+										"id": 44133,
 										"name": "__index",
 										"variant": "signature",
 										"kind": 8192,
@@ -2037,7 +2037,7 @@
 										],
 										"parameters": [
 											{
-												"id": 43740,
+												"id": 44134,
 												"name": "key",
 												"variant": "param",
 												"kind": 32768,
@@ -2062,7 +2062,7 @@
 						},
 						{
 							"type": "reference",
-							"target": 43781,
+							"target": 44175,
 							"name": "Body",
 							"package": "@medusajs/framework",
 							"qualifiedName": "MedusaRequest.Body",
@@ -2076,7 +2076,7 @@
 			]
 		},
 		{
-			"id": 43783,
+			"id": 44177,
 			"name": "MedusaResponse",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2084,13 +2084,13 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/framework/dist/http/types.d.ts",
-					"line": 192,
+					"line": 195,
 					"character": 12
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 43784,
+					"id": 44178,
 					"name": "Body",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2110,7 +2110,7 @@
 				"typeArguments": [
 					{
 						"type": "reference",
-						"target": 43784,
+						"target": 44178,
 						"name": "Body",
 						"package": "@medusajs/framework",
 						"refersToTypeParameter": true
@@ -2122,7 +2122,7 @@
 			}
 		},
 		{
-			"id": 43785,
+			"id": 44179,
 			"name": "MedusaNextFunction",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2130,7 +2130,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/framework/dist/http/types.d.ts",
-					"line": 193,
+					"line": 196,
 					"character": 12
 				}
 			],
@@ -2146,7 +2146,7 @@
 			}
 		},
 		{
-			"id": 43710,
+			"id": 44104,
 			"name": "MedusaRequestHandler",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2154,13 +2154,13 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/framework/dist/http/types.d.ts",
-					"line": 194,
+					"line": 197,
 					"character": 12
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 43716,
+					"id": 44110,
 					"name": "Body",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2171,7 +2171,7 @@
 					}
 				},
 				{
-					"id": 43717,
+					"id": 44111,
 					"name": "Res",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2185,7 +2185,7 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43711,
+					"id": 44105,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
@@ -2193,31 +2193,31 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/framework/dist/http/types.d.ts",
-							"line": 194,
+							"line": 197,
 							"character": 66
 						}
 					],
 					"signatures": [
 						{
-							"id": 43712,
+							"id": 44106,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 43713,
+									"id": 44107,
 									"name": "req",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 43737,
+										"target": 44131,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 43716,
+												"target": 44110,
 												"name": "Body",
 												"package": "@medusajs/framework",
 												"refersToTypeParameter": true
@@ -2228,18 +2228,18 @@
 									}
 								},
 								{
-									"id": 43714,
+									"id": 44108,
 									"name": "res",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 43783,
+										"target": 44177,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 43717,
+												"target": 44111,
 												"name": "Res",
 												"package": "@medusajs/framework",
 												"refersToTypeParameter": true
@@ -2250,14 +2250,14 @@
 									}
 								},
 								{
-									"id": 43715,
+									"id": 44109,
 									"name": "next",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 43785,
+										"target": 44179,
 										"name": "MedusaNextFunction",
 										"package": "@medusajs/framework"
 									}
@@ -2293,28 +2293,28 @@
 			}
 		},
 		{
-			"id": 43832,
+			"id": 44226,
 			"name": "RestrictedFields",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 43833,
+					"id": 44227,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 43834,
+							"id": 44228,
 							"name": "RestrictedFields",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 43832,
+								"target": 44226,
 								"name": "RestrictedFields",
 								"package": "@medusajs/framework"
 							}
@@ -2322,7 +2322,7 @@
 					]
 				},
 				{
-					"id": 43835,
+					"id": 44229,
 					"name": "#private",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2342,7 +2342,7 @@
 					}
 				},
 				{
-					"id": 43836,
+					"id": 44230,
 					"name": "list",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2356,7 +2356,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43837,
+							"id": 44231,
 							"name": "list",
 							"variant": "signature",
 							"kind": 4096,
@@ -2379,7 +2379,7 @@
 					]
 				},
 				{
-					"id": 43838,
+					"id": 44232,
 					"name": "add",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2393,7 +2393,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43839,
+							"id": 44233,
 							"name": "add",
 							"variant": "signature",
 							"kind": 4096,
@@ -2407,7 +2407,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43840,
+									"id": 44234,
 									"name": "fields",
 									"variant": "param",
 									"kind": 32768,
@@ -2433,20 +2433,20 @@
 				{
 					"title": "Constructors",
 					"children": [
-						43833
+						44227
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						43835
+						44229
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						43836,
-						43838
+						44230,
+						44232
 					]
 				}
 			],
@@ -2459,7 +2459,7 @@
 			]
 		},
 		{
-			"id": 43811,
+			"id": 44205,
 			"name": "MedusaContainer",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2473,7 +2473,7 @@
 			],
 			"typeParameters": [
 				{
-					"id": 43831,
+					"id": 44225,
 					"name": "Cradle",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2523,14 +2523,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 43812,
+							"id": 44206,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 43813,
+									"id": 44207,
 									"name": "resolve",
 									"variant": "declaration",
 									"kind": 2048,
@@ -2549,7 +2549,7 @@
 									],
 									"signatures": [
 										{
-											"id": 43814,
+											"id": 44208,
 											"name": "resolve",
 											"variant": "signature",
 											"kind": 4096,
@@ -2563,7 +2563,7 @@
 											],
 											"typeParameters": [
 												{
-													"id": 43815,
+													"id": 44209,
 													"name": "K",
 													"variant": "typeParam",
 													"kind": 131072,
@@ -2589,21 +2589,21 @@
 											],
 											"parameters": [
 												{
-													"id": 43816,
+													"id": 44210,
 													"name": "key",
 													"variant": "param",
 													"kind": 32768,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 43815,
+														"target": 44209,
 														"name": "K",
 														"package": "@medusajs/framework",
 														"refersToTypeParameter": true
 													}
 												},
 												{
-													"id": 43817,
+													"id": 44211,
 													"name": "resolveOptions",
 													"variant": "param",
 													"kind": 32768,
@@ -2625,14 +2625,14 @@
 												"type": "indexedAccess",
 												"indexType": {
 													"type": "reference",
-													"target": 43815,
+													"target": 44209,
 													"name": "K",
 													"package": "@medusajs/framework",
 													"refersToTypeParameter": true
 												},
 												"objectType": {
 													"type": "reference",
-													"target": 43831,
+													"target": 44225,
 													"name": "Cradle",
 													"package": "@medusajs/framework",
 													"refersToTypeParameter": true
@@ -2640,7 +2640,7 @@
 											}
 										},
 										{
-											"id": 43818,
+											"id": 44212,
 											"name": "resolve",
 											"variant": "signature",
 											"kind": 4096,
@@ -2654,7 +2654,7 @@
 											],
 											"typeParameters": [
 												{
-													"id": 43819,
+													"id": 44213,
 													"name": "T",
 													"variant": "typeParam",
 													"kind": 131072,
@@ -2663,7 +2663,7 @@
 											],
 											"parameters": [
 												{
-													"id": 43820,
+													"id": 44214,
 													"name": "key",
 													"variant": "param",
 													"kind": 32768,
@@ -2674,7 +2674,7 @@
 													}
 												},
 												{
-													"id": 43821,
+													"id": 44215,
 													"name": "resolveOptions",
 													"variant": "param",
 													"kind": 32768,
@@ -2694,7 +2694,7 @@
 											],
 											"type": {
 												"type": "reference",
-												"target": 43819,
+												"target": 44213,
 												"name": "T",
 												"package": "@medusajs/framework",
 												"refersToTypeParameter": true
@@ -2703,7 +2703,7 @@
 									]
 								},
 								{
-									"id": 43822,
+									"id": 44216,
 									"name": "registerAdd",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2724,7 +2724,7 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 43823,
+											"id": 44217,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
@@ -2738,14 +2738,14 @@
 											],
 											"signatures": [
 												{
-													"id": 43824,
+													"id": 44218,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"typeParameters": [
 														{
-															"id": 43827,
+															"id": 44221,
 															"name": "T",
 															"variant": "typeParam",
 															"kind": 131072,
@@ -2754,7 +2754,7 @@
 													],
 													"parameters": [
 														{
-															"id": 43825,
+															"id": 44219,
 															"name": "name",
 															"variant": "param",
 															"kind": 32768,
@@ -2765,14 +2765,14 @@
 															}
 														},
 														{
-															"id": 43826,
+															"id": 44220,
 															"name": "registration",
 															"variant": "param",
 															"kind": 32768,
 															"flags": {},
 															"type": {
 																"type": "reference",
-																"target": 43827,
+																"target": 44221,
 																"name": "T",
 																"package": "@medusajs/framework",
 																"refersToTypeParameter": true
@@ -2781,7 +2781,7 @@
 													],
 													"type": {
 														"type": "reference",
-														"target": 43811,
+														"target": 44205,
 														"name": "MedusaContainer",
 														"package": "@medusajs/framework"
 													}
@@ -2791,7 +2791,7 @@
 									}
 								},
 								{
-									"id": 43828,
+									"id": 44222,
 									"name": "createScope",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2812,7 +2812,7 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 43829,
+											"id": 44223,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
@@ -2826,14 +2826,14 @@
 											],
 											"signatures": [
 												{
-													"id": 43830,
+													"id": 44224,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 43811,
+														"target": 44205,
 														"name": "MedusaContainer",
 														"package": "@medusajs/framework"
 													}
@@ -2847,14 +2847,14 @@
 								{
 									"title": "Properties",
 									"children": [
-										43822,
-										43828
+										44216,
+										44222
 									]
 								},
 								{
 									"title": "Methods",
 									"children": [
-										43813
+										44207
 									]
 								}
 							],
@@ -2871,7 +2871,7 @@
 			}
 		},
 		{
-			"id": 43852,
+			"id": 44246,
 			"name": "FindConfigOrder",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2894,7 +2894,7 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43853,
+					"id": 44247,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
@@ -2908,7 +2908,7 @@
 					],
 					"indexSignatures": [
 						{
-							"id": 43854,
+							"id": 44248,
 							"name": "__index",
 							"variant": "signature",
 							"kind": 8192,
@@ -2922,7 +2922,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43855,
+									"id": 44249,
 									"name": "Key",
 									"variant": "param",
 									"kind": 32768,
@@ -2946,7 +2946,7 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 43856,
+													"id": 44250,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
@@ -2957,7 +2957,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 43852,
+										"target": 44246,
 										"name": "FindConfigOrder",
 										"package": "@medusajs/types"
 									},
@@ -2977,7 +2977,7 @@
 			}
 		},
 		{
-			"id": 43800,
+			"id": 44194,
 			"name": "FindConfig",
 			"variant": "declaration",
 			"kind": 256,
@@ -3000,7 +3000,7 @@
 			},
 			"children": [
 				{
-					"id": 43801,
+					"id": 44195,
 					"name": "select",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3032,7 +3032,7 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": 43810,
+										"target": 44204,
 										"name": "Entity",
 										"package": "@medusajs/types",
 										"qualifiedName": "FindConfig.Entity",
@@ -3049,7 +3049,7 @@
 										{
 											"type": "reflection",
 											"declaration": {
-												"id": 43802,
+												"id": 44196,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
@@ -3063,7 +3063,7 @@
 					}
 				},
 				{
-					"id": 43803,
+					"id": 44197,
 					"name": "skip",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3100,7 +3100,7 @@
 					}
 				},
 				{
-					"id": 43804,
+					"id": 44198,
 					"name": "take",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3137,7 +3137,7 @@
 					}
 				},
 				{
-					"id": 43805,
+					"id": 44199,
 					"name": "relations",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3168,7 +3168,7 @@
 					}
 				},
 				{
-					"id": 43806,
+					"id": 44200,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3208,13 +3208,13 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 43852,
+						"target": 44246,
 						"name": "FindConfigOrder",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 43807,
+					"id": 44201,
 					"name": "withDeleted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3250,7 +3250,7 @@
 					}
 				},
 				{
-					"id": 43808,
+					"id": 44202,
 					"name": "filters",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3293,7 +3293,7 @@
 					}
 				},
 				{
-					"id": 43809,
+					"id": 44203,
 					"name": "options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3340,14 +3340,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						43801,
-						43803,
-						43804,
-						43805,
-						43806,
-						43807,
-						43808,
-						43809
+						44195,
+						44197,
+						44198,
+						44199,
+						44200,
+						44201,
+						44202,
+						44203
 					]
 				}
 			],
@@ -3360,7 +3360,7 @@
 			],
 			"typeParameters": [
 				{
-					"id": 43810,
+					"id": 44204,
 					"name": "Entity",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -3369,7 +3369,7 @@
 			]
 		},
 		{
-			"id": 43794,
+			"id": 44188,
 			"name": "RequestQueryFields",
 			"variant": "declaration",
 			"kind": 256,
@@ -3384,7 +3384,7 @@
 			},
 			"children": [
 				{
-					"id": 43795,
+					"id": 44189,
 					"name": "fields",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3428,7 +3428,7 @@
 					}
 				},
 				{
-					"id": 43796,
+					"id": 44190,
 					"name": "offset",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3456,7 +3456,7 @@
 					}
 				},
 				{
-					"id": 43797,
+					"id": 44191,
 					"name": "limit",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3484,7 +3484,7 @@
 					}
 				},
 				{
-					"id": 43798,
+					"id": 44192,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3520,7 +3520,7 @@
 					}
 				},
 				{
-					"id": 43799,
+					"id": 44193,
 					"name": "with_deleted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3552,11 +3552,11 @@
 				{
 					"title": "Properties",
 					"children": [
-						43795,
-						43796,
-						43797,
-						43798,
-						43799
+						44189,
+						44190,
+						44191,
+						44192,
+						44193
 					]
 				}
 			],
@@ -3569,7 +3569,7 @@
 			]
 		},
 		{
-			"id": 43636,
+			"id": 44030,
 			"name": "MedusaContainer",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -3591,7 +3591,7 @@
 			],
 			"typeParameters": [
 				{
-					"id": 43656,
+					"id": 44050,
 					"name": "Cradle",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -3641,14 +3641,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 43637,
+							"id": 44031,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 43638,
+									"id": 44032,
 									"name": "resolve",
 									"variant": "declaration",
 									"kind": 2048,
@@ -3667,7 +3667,7 @@
 									],
 									"signatures": [
 										{
-											"id": 43639,
+											"id": 44033,
 											"name": "resolve",
 											"variant": "signature",
 											"kind": 4096,
@@ -3681,7 +3681,7 @@
 											],
 											"typeParameters": [
 												{
-													"id": 43640,
+													"id": 44034,
 													"name": "K",
 													"variant": "typeParam",
 													"kind": 131072,
@@ -3707,21 +3707,21 @@
 											],
 											"parameters": [
 												{
-													"id": 43641,
+													"id": 44035,
 													"name": "key",
 													"variant": "param",
 													"kind": 32768,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 43640,
+														"target": 44034,
 														"name": "K",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
 													}
 												},
 												{
-													"id": 43642,
+													"id": 44036,
 													"name": "resolveOptions",
 													"variant": "param",
 													"kind": 32768,
@@ -3743,14 +3743,14 @@
 												"type": "indexedAccess",
 												"indexType": {
 													"type": "reference",
-													"target": 43640,
+													"target": 44034,
 													"name": "K",
 													"package": "@medusajs/types",
 													"refersToTypeParameter": true
 												},
 												"objectType": {
 													"type": "reference",
-													"target": 43656,
+													"target": 44050,
 													"name": "Cradle",
 													"package": "@medusajs/types",
 													"refersToTypeParameter": true
@@ -3758,7 +3758,7 @@
 											}
 										},
 										{
-											"id": 43643,
+											"id": 44037,
 											"name": "resolve",
 											"variant": "signature",
 											"kind": 4096,
@@ -3772,7 +3772,7 @@
 											],
 											"typeParameters": [
 												{
-													"id": 43644,
+													"id": 44038,
 													"name": "T",
 													"variant": "typeParam",
 													"kind": 131072,
@@ -3781,7 +3781,7 @@
 											],
 											"parameters": [
 												{
-													"id": 43645,
+													"id": 44039,
 													"name": "key",
 													"variant": "param",
 													"kind": 32768,
@@ -3792,7 +3792,7 @@
 													}
 												},
 												{
-													"id": 43646,
+													"id": 44040,
 													"name": "resolveOptions",
 													"variant": "param",
 													"kind": 32768,
@@ -3812,7 +3812,7 @@
 											],
 											"type": {
 												"type": "reference",
-												"target": 43644,
+												"target": 44038,
 												"name": "T",
 												"package": "@medusajs/types",
 												"refersToTypeParameter": true
@@ -3821,7 +3821,7 @@
 									]
 								},
 								{
-									"id": 43647,
+									"id": 44041,
 									"name": "registerAdd",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3842,7 +3842,7 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 43648,
+											"id": 44042,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
@@ -3856,14 +3856,14 @@
 											],
 											"signatures": [
 												{
-													"id": 43649,
+													"id": 44043,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"typeParameters": [
 														{
-															"id": 43652,
+															"id": 44046,
 															"name": "T",
 															"variant": "typeParam",
 															"kind": 131072,
@@ -3872,7 +3872,7 @@
 													],
 													"parameters": [
 														{
-															"id": 43650,
+															"id": 44044,
 															"name": "name",
 															"variant": "param",
 															"kind": 32768,
@@ -3883,14 +3883,14 @@
 															}
 														},
 														{
-															"id": 43651,
+															"id": 44045,
 															"name": "registration",
 															"variant": "param",
 															"kind": 32768,
 															"flags": {},
 															"type": {
 																"type": "reference",
-																"target": 43652,
+																"target": 44046,
 																"name": "T",
 																"package": "@medusajs/types",
 																"refersToTypeParameter": true
@@ -3899,7 +3899,7 @@
 													],
 													"type": {
 														"type": "reference",
-														"target": 43636,
+														"target": 44030,
 														"name": "MedusaContainer",
 														"package": "@medusajs/types"
 													}
@@ -3909,7 +3909,7 @@
 									}
 								},
 								{
-									"id": 43653,
+									"id": 44047,
 									"name": "createScope",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3930,7 +3930,7 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 43654,
+											"id": 44048,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
@@ -3944,14 +3944,14 @@
 											],
 											"signatures": [
 												{
-													"id": 43655,
+													"id": 44049,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 43636,
+														"target": 44030,
 														"name": "MedusaContainer",
 														"package": "@medusajs/types"
 													}
@@ -3965,14 +3965,14 @@
 								{
 									"title": "Properties",
 									"children": [
-										43647,
-										43653
+										44041,
+										44047
 									]
 								},
 								{
 									"title": "Methods",
 									"children": [
-										43638
+										44032
 									]
 								}
 							],
@@ -3989,7 +3989,7 @@
 			}
 		},
 		{
-			"id": 43791,
+			"id": 44185,
 			"name": "EventMetadata",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -4026,14 +4026,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 43792,
+							"id": 44186,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 43793,
+									"id": 44187,
 									"name": "eventGroupId",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4073,7 +4073,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										43793
+										44187
 									]
 								}
 							],
@@ -4090,7 +4090,7 @@
 			}
 		},
 		{
-			"id": 43731,
+			"id": 44125,
 			"name": "Event",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -4104,7 +4104,7 @@
 			],
 			"typeParameters": [
 				{
-					"id": 43736,
+					"id": 44130,
 					"name": "TData",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -4118,14 +4118,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43732,
+					"id": 44126,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43733,
+							"id": 44127,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4162,7 +4162,7 @@
 							}
 						},
 						{
-							"id": 43734,
+							"id": 44128,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4186,13 +4186,13 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 43791,
+								"target": 44185,
 								"name": "EventMetadata",
 								"package": "@medusajs/types"
 							}
 						},
 						{
-							"id": 43735,
+							"id": 44129,
 							"name": "data",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4214,7 +4214,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 43736,
+								"target": 44130,
 								"name": "TData",
 								"package": "@medusajs/types",
 								"refersToTypeParameter": true
@@ -4225,9 +4225,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								43733,
-								43734,
-								43735
+								44127,
+								44128,
+								44129
 							]
 						}
 					],
@@ -4242,14 +4242,14 @@
 			}
 		},
 		{
-			"id": 43657,
+			"id": 44051,
 			"name": "Logger",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 43658,
+					"id": 44052,
 					"name": "panic",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4263,7 +4263,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43659,
+							"id": 44053,
 							"name": "panic",
 							"variant": "signature",
 							"kind": 4096,
@@ -4277,7 +4277,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43660,
+									"id": 44054,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -4296,7 +4296,7 @@
 					]
 				},
 				{
-					"id": 43661,
+					"id": 44055,
 					"name": "shouldLog",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4310,7 +4310,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43662,
+							"id": 44056,
 							"name": "shouldLog",
 							"variant": "signature",
 							"kind": 4096,
@@ -4324,7 +4324,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43663,
+									"id": 44057,
 									"name": "level",
 									"variant": "param",
 									"kind": 32768,
@@ -4343,7 +4343,7 @@
 					]
 				},
 				{
-					"id": 43664,
+					"id": 44058,
 					"name": "setLogLevel",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4357,7 +4357,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43665,
+							"id": 44059,
 							"name": "setLogLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -4371,7 +4371,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43666,
+									"id": 44060,
 									"name": "level",
 									"variant": "param",
 									"kind": 32768,
@@ -4390,7 +4390,7 @@
 					]
 				},
 				{
-					"id": 43667,
+					"id": 44061,
 					"name": "unsetLogLevel",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4404,7 +4404,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43668,
+							"id": 44062,
 							"name": "unsetLogLevel",
 							"variant": "signature",
 							"kind": 4096,
@@ -4424,7 +4424,7 @@
 					]
 				},
 				{
-					"id": 43669,
+					"id": 44063,
 					"name": "activity",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4438,7 +4438,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43670,
+							"id": 44064,
 							"name": "activity",
 							"variant": "signature",
 							"kind": 4096,
@@ -4452,7 +4452,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43671,
+									"id": 44065,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4463,7 +4463,7 @@
 									}
 								},
 								{
-									"id": 43672,
+									"id": 44066,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -4484,7 +4484,7 @@
 					]
 				},
 				{
-					"id": 43673,
+					"id": 44067,
 					"name": "progress",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4498,7 +4498,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43674,
+							"id": 44068,
 							"name": "progress",
 							"variant": "signature",
 							"kind": 4096,
@@ -4512,7 +4512,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43675,
+									"id": 44069,
 									"name": "activityId",
 									"variant": "param",
 									"kind": 32768,
@@ -4523,7 +4523,7 @@
 									}
 								},
 								{
-									"id": 43676,
+									"id": 44070,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4542,7 +4542,7 @@
 					]
 				},
 				{
-					"id": 43677,
+					"id": 44071,
 					"name": "error",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4556,7 +4556,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43678,
+							"id": 44072,
 							"name": "error",
 							"variant": "signature",
 							"kind": 4096,
@@ -4570,7 +4570,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43679,
+									"id": 44073,
 									"name": "messageOrError",
 									"variant": "param",
 									"kind": 32768,
@@ -4595,7 +4595,7 @@
 									}
 								},
 								{
-									"id": 43680,
+									"id": 44074,
 									"name": "error",
 									"variant": "param",
 									"kind": 32768,
@@ -4621,7 +4621,7 @@
 					]
 				},
 				{
-					"id": 43681,
+					"id": 44075,
 					"name": "failure",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4635,7 +4635,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43682,
+							"id": 44076,
 							"name": "failure",
 							"variant": "signature",
 							"kind": 4096,
@@ -4649,7 +4649,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43683,
+									"id": 44077,
 									"name": "activityId",
 									"variant": "param",
 									"kind": 32768,
@@ -4660,7 +4660,7 @@
 									}
 								},
 								{
-									"id": 43684,
+									"id": 44078,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4679,7 +4679,7 @@
 					]
 				},
 				{
-					"id": 43685,
+					"id": 44079,
 					"name": "success",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4693,7 +4693,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43686,
+							"id": 44080,
 							"name": "success",
 							"variant": "signature",
 							"kind": 4096,
@@ -4707,7 +4707,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43687,
+									"id": 44081,
 									"name": "activityId",
 									"variant": "param",
 									"kind": 32768,
@@ -4718,7 +4718,7 @@
 									}
 								},
 								{
-									"id": 43688,
+									"id": 44082,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4752,7 +4752,7 @@
 					]
 				},
 				{
-					"id": 43689,
+					"id": 44083,
 					"name": "silly",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4766,7 +4766,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43690,
+							"id": 44084,
 							"name": "silly",
 							"variant": "signature",
 							"kind": 4096,
@@ -4780,7 +4780,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43691,
+									"id": 44085,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4799,7 +4799,7 @@
 					]
 				},
 				{
-					"id": 43692,
+					"id": 44086,
 					"name": "debug",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4813,7 +4813,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43693,
+							"id": 44087,
 							"name": "debug",
 							"variant": "signature",
 							"kind": 4096,
@@ -4827,7 +4827,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43694,
+									"id": 44088,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4846,7 +4846,7 @@
 					]
 				},
 				{
-					"id": 43695,
+					"id": 44089,
 					"name": "verbose",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4860,7 +4860,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43696,
+							"id": 44090,
 							"name": "verbose",
 							"variant": "signature",
 							"kind": 4096,
@@ -4874,7 +4874,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43697,
+									"id": 44091,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4893,7 +4893,7 @@
 					]
 				},
 				{
-					"id": 43698,
+					"id": 44092,
 					"name": "http",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4907,7 +4907,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43699,
+							"id": 44093,
 							"name": "http",
 							"variant": "signature",
 							"kind": 4096,
@@ -4921,7 +4921,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43700,
+									"id": 44094,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4940,7 +4940,7 @@
 					]
 				},
 				{
-					"id": 43701,
+					"id": 44095,
 					"name": "info",
 					"variant": "declaration",
 					"kind": 2048,
@@ -4954,7 +4954,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43702,
+							"id": 44096,
 							"name": "info",
 							"variant": "signature",
 							"kind": 4096,
@@ -4968,7 +4968,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43703,
+									"id": 44097,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -4987,7 +4987,7 @@
 					]
 				},
 				{
-					"id": 43704,
+					"id": 44098,
 					"name": "warn",
 					"variant": "declaration",
 					"kind": 2048,
@@ -5001,7 +5001,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43705,
+							"id": 44099,
 							"name": "warn",
 							"variant": "signature",
 							"kind": 4096,
@@ -5015,7 +5015,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43706,
+									"id": 44100,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -5034,7 +5034,7 @@
 					]
 				},
 				{
-					"id": 43707,
+					"id": 44101,
 					"name": "log",
 					"variant": "declaration",
 					"kind": 2048,
@@ -5048,7 +5048,7 @@
 					],
 					"signatures": [
 						{
-							"id": 43708,
+							"id": 44102,
 							"name": "log",
 							"variant": "signature",
 							"kind": 4096,
@@ -5062,7 +5062,7 @@
 							],
 							"parameters": [
 								{
-									"id": 43709,
+									"id": 44103,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -5090,22 +5090,22 @@
 				{
 					"title": "Methods",
 					"children": [
-						43658,
-						43661,
-						43664,
-						43667,
-						43669,
-						43673,
-						43677,
-						43681,
-						43685,
-						43689,
-						43692,
-						43695,
-						43698,
-						43701,
-						43704,
-						43707
+						44052,
+						44055,
+						44058,
+						44061,
+						44063,
+						44067,
+						44071,
+						44075,
+						44079,
+						44083,
+						44086,
+						44089,
+						44092,
+						44095,
+						44098,
+						44101
 					]
 				}
 			],
@@ -5118,7 +5118,7 @@
 			]
 		},
 		{
-			"id": 43841,
+			"id": 44235,
 			"name": "MedusaPricingContext",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5133,14 +5133,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43842,
+					"id": 44236,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43843,
+							"id": 44237,
 							"name": "region_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -5160,7 +5160,7 @@
 							}
 						},
 						{
-							"id": 43844,
+							"id": 44238,
 							"name": "currency_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -5180,7 +5180,7 @@
 							}
 						},
 						{
-							"id": 43845,
+							"id": 44239,
 							"name": "customer_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -5200,7 +5200,7 @@
 							}
 						},
 						{
-							"id": 43846,
+							"id": 44240,
 							"name": "customer",
 							"variant": "declaration",
 							"kind": 1024,
@@ -5217,14 +5217,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 43847,
+									"id": 44241,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 43848,
+											"id": 44242,
 											"name": "groups",
 											"variant": "declaration",
 											"kind": 1024,
@@ -5243,14 +5243,14 @@
 												"elementType": {
 													"type": "reflection",
 													"declaration": {
-														"id": 43849,
+														"id": 44243,
 														"name": "__type",
 														"variant": "declaration",
 														"kind": 65536,
 														"flags": {},
 														"children": [
 															{
-																"id": 43850,
+																"id": 44244,
 																"name": "id",
 																"variant": "declaration",
 																"kind": 1024,
@@ -5272,7 +5272,7 @@
 															{
 																"title": "Properties",
 																"children": [
-																	43850
+																	44244
 																]
 															}
 														],
@@ -5292,7 +5292,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												43848
+												44242
 											]
 										}
 									],
@@ -5311,10 +5311,10 @@
 						{
 							"title": "Properties",
 							"children": [
-								43843,
-								43844,
-								43845,
-								43846
+								44237,
+								44238,
+								44239,
+								44240
 							]
 						}
 					],
@@ -5329,7 +5329,7 @@
 			}
 		},
 		{
-			"id": 43615,
+			"id": 44009,
 			"name": "instrumentHttpLayer",
 			"variant": "declaration",
 			"kind": 64,
@@ -5339,12 +5339,12 @@
 					"fileName": "medusa/src/instrumentation/index.ts",
 					"line": 29,
 					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L29"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L29"
 				}
 			],
 			"signatures": [
 				{
-					"id": 43616,
+					"id": 44010,
 					"name": "instrumentHttpLayer",
 					"variant": "signature",
 					"kind": 4096,
@@ -5362,7 +5362,7 @@
 							"fileName": "medusa/src/instrumentation/index.ts",
 							"line": 29,
 							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L29"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L29"
 						}
 					],
 					"type": {
@@ -5373,7 +5373,7 @@
 			]
 		},
 		{
-			"id": 43617,
+			"id": 44011,
 			"name": "instrumentRemoteQuery",
 			"variant": "declaration",
 			"kind": 64,
@@ -5383,12 +5383,12 @@
 					"fileName": "medusa/src/instrumentation/index.ts",
 					"line": 134,
 					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L134"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L134"
 				}
 			],
 			"signatures": [
 				{
-					"id": 43618,
+					"id": 44012,
 					"name": "instrumentRemoteQuery",
 					"variant": "signature",
 					"kind": 4096,
@@ -5406,7 +5406,7 @@
 							"fileName": "medusa/src/instrumentation/index.ts",
 							"line": 134,
 							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L134"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L134"
 						}
 					],
 					"type": {
@@ -5417,7 +5417,7 @@
 			]
 		},
 		{
-			"id": 43619,
+			"id": 44013,
 			"name": "instrumentWorkflows",
 			"variant": "declaration",
 			"kind": 64,
@@ -5427,12 +5427,12 @@
 					"fileName": "medusa/src/instrumentation/index.ts",
 					"line": 224,
 					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L224"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L224"
 				}
 			],
 			"signatures": [
 				{
-					"id": 43620,
+					"id": 44014,
 					"name": "instrumentWorkflows",
 					"variant": "signature",
 					"kind": 4096,
@@ -5450,7 +5450,7 @@
 							"fileName": "medusa/src/instrumentation/index.ts",
 							"line": 224,
 							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L224"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L224"
 						}
 					],
 					"type": {
@@ -5461,7 +5461,7 @@
 			]
 		},
 		{
-			"id": 43621,
+			"id": 44015,
 			"name": "instrumentCache",
 			"variant": "declaration",
 			"kind": 64,
@@ -5471,12 +5471,12 @@
 					"fileName": "medusa/src/instrumentation/index.ts",
 					"line": 265,
 					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L265"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L265"
 				}
 			],
 			"signatures": [
 				{
-					"id": 43622,
+					"id": 44016,
 					"name": "instrumentCache",
 					"variant": "signature",
 					"kind": 4096,
@@ -5486,7 +5486,7 @@
 							"fileName": "medusa/src/instrumentation/index.ts",
 							"line": 265,
 							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L265"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L265"
 						}
 					],
 					"type": {
@@ -5497,7 +5497,7 @@
 			]
 		},
 		{
-			"id": 43623,
+			"id": 44017,
 			"name": "registerOtel",
 			"variant": "declaration",
 			"kind": 64,
@@ -5507,12 +5507,12 @@
 					"fileName": "medusa/src/instrumentation/index.ts",
 					"line": 382,
 					"character": 16,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L382"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L382"
 				}
 			],
 			"signatures": [
 				{
-					"id": 43624,
+					"id": 44018,
 					"name": "registerOtel",
 					"variant": "signature",
 					"kind": 4096,
@@ -5530,12 +5530,12 @@
 							"fileName": "medusa/src/instrumentation/index.ts",
 							"line": 382,
 							"character": 16,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L382"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L382"
 						}
 					],
 					"parameters": [
 						{
-							"id": 43625,
+							"id": 44019,
 							"name": "options",
 							"variant": "param",
 							"kind": 32768,
@@ -5566,14 +5566,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 43626,
+											"id": 44020,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 43627,
+													"id": 44021,
 													"name": "serviceName",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5583,7 +5583,7 @@
 															"fileName": "medusa/src/instrumentation/index.ts",
 															"line": 384,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L384"
+															"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L384"
 														}
 													],
 													"type": {
@@ -5592,7 +5592,7 @@
 													}
 												},
 												{
-													"id": 43628,
+													"id": 44022,
 													"name": "exporter",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5604,7 +5604,7 @@
 															"fileName": "medusa/src/instrumentation/index.ts",
 															"line": 385,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L385"
+															"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L385"
 														}
 													],
 													"type": {
@@ -5618,7 +5618,7 @@
 													}
 												},
 												{
-													"id": 43629,
+													"id": 44023,
 													"name": "instrument",
 													"variant": "declaration",
 													"kind": 1024,
@@ -5630,7 +5630,7 @@
 															"fileName": "medusa/src/instrumentation/index.ts",
 															"line": 386,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L386"
+															"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L386"
 														}
 													],
 													"type": {
@@ -5643,14 +5643,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 43630,
+																	"id": 44024,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 43631,
+																			"id": 44025,
 																			"name": "http",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5660,7 +5660,7 @@
 																					"fileName": "medusa/src/instrumentation/index.ts",
 																					"line": 387,
 																					"character": 6,
-																					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L387"
+																					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L387"
 																				}
 																			],
 																			"type": {
@@ -5669,7 +5669,7 @@
 																			}
 																		},
 																		{
-																			"id": 43632,
+																			"id": 44026,
 																			"name": "query",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5679,7 +5679,7 @@
 																					"fileName": "medusa/src/instrumentation/index.ts",
 																					"line": 388,
 																					"character": 6,
-																					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L388"
+																					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L388"
 																				}
 																			],
 																			"type": {
@@ -5688,7 +5688,7 @@
 																			}
 																		},
 																		{
-																			"id": 43633,
+																			"id": 44027,
 																			"name": "workflows",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5698,7 +5698,7 @@
 																					"fileName": "medusa/src/instrumentation/index.ts",
 																					"line": 389,
 																					"character": 6,
-																					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L389"
+																					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L389"
 																				}
 																			],
 																			"type": {
@@ -5707,7 +5707,7 @@
 																			}
 																		},
 																		{
-																			"id": 43634,
+																			"id": 44028,
 																			"name": "db",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5717,7 +5717,7 @@
 																					"fileName": "medusa/src/instrumentation/index.ts",
 																					"line": 390,
 																					"character": 6,
-																					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L390"
+																					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L390"
 																				}
 																			],
 																			"type": {
@@ -5726,7 +5726,7 @@
 																			}
 																		},
 																		{
-																			"id": 43635,
+																			"id": 44029,
 																			"name": "cache",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5736,7 +5736,7 @@
 																					"fileName": "medusa/src/instrumentation/index.ts",
 																					"line": 391,
 																					"character": 6,
-																					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L391"
+																					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L391"
 																				}
 																			],
 																			"type": {
@@ -5749,11 +5749,11 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				43631,
-																				43632,
-																				43633,
-																				43634,
-																				43635
+																				44025,
+																				44026,
+																				44027,
+																				44028,
+																				44029
 																			]
 																		}
 																	],
@@ -5762,7 +5762,7 @@
 																			"fileName": "medusa/src/instrumentation/index.ts",
 																			"line": 386,
 																			"character": 25,
-																			"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L386"
+																			"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L386"
 																		}
 																	]
 																}
@@ -5777,9 +5777,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														43627,
-														43628,
-														43629
+														44021,
+														44022,
+														44023
 													]
 												}
 											],
@@ -5788,7 +5788,7 @@
 													"fileName": "medusa/src/instrumentation/index.ts",
 													"line": 383,
 													"character": 43,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/instrumentation/index.ts#L383"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/instrumentation/index.ts#L383"
 												}
 											]
 										}
@@ -5805,7 +5805,7 @@
 			]
 		},
 		{
-			"id": 43509,
+			"id": 43903,
 			"name": "ClassConstructor",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5815,12 +5815,12 @@
 					"fileName": "medusa/src/types/global.ts",
 					"line": 62,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L62"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L62"
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 43513,
+					"id": 43907,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -5830,7 +5830,7 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43510,
+					"id": 43904,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
@@ -5840,12 +5840,12 @@
 							"fileName": "medusa/src/types/global.ts",
 							"line": 62,
 							"character": 34,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L62"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L62"
 						}
 					],
 					"signatures": [
 						{
-							"id": 43511,
+							"id": 43905,
 							"name": "ClassConstructor",
 							"variant": "signature",
 							"kind": 16384,
@@ -5855,12 +5855,12 @@
 									"fileName": "medusa/src/types/global.ts",
 									"line": 63,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L63"
+									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L63"
 								}
 							],
 							"parameters": [
 								{
-									"id": 43512,
+									"id": 43906,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -5878,7 +5878,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 43513,
+								"target": 43907,
 								"name": "T",
 								"package": "@medusajs/medusa",
 								"refersToTypeParameter": true
@@ -5889,7 +5889,7 @@
 			}
 		},
 		{
-			"id": 43514,
+			"id": 43908,
 			"name": "MedusaContainer",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5899,19 +5899,19 @@
 					"fileName": "medusa/src/types/global.ts",
 					"line": 66,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L66"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L66"
 				}
 			],
 			"type": {
 				"type": "reference",
-				"target": 43636,
+				"target": 44030,
 				"name": "coreMedusaContainer",
 				"package": "@medusajs/types",
 				"qualifiedName": "MedusaContainer"
 			}
 		},
 		{
-			"id": 43515,
+			"id": 43909,
 			"name": "Logger",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5921,19 +5921,19 @@
 					"fileName": "medusa/src/types/global.ts",
 					"line": 68,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L68"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L68"
 				}
 			],
 			"type": {
 				"type": "reference",
-				"target": 43657,
+				"target": 44051,
 				"name": "coreLogger",
 				"package": "@medusajs/types",
 				"qualifiedName": "Logger"
 			}
 		},
 		{
-			"id": 43516,
+			"id": 43910,
 			"name": "Constructor",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5943,12 +5943,12 @@
 					"fileName": "medusa/src/types/global.ts",
 					"line": 70,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L70"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L70"
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 43520,
+					"id": 43914,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -5958,7 +5958,7 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43517,
+					"id": 43911,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 512,
@@ -5968,19 +5968,19 @@
 							"fileName": "medusa/src/types/global.ts",
 							"line": 70,
 							"character": 29,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/global.ts#L70"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/global.ts#L70"
 						}
 					],
 					"signatures": [
 						{
-							"id": 43518,
+							"id": 43912,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 43519,
+									"id": 43913,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -5998,7 +5998,7 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 43520,
+								"target": 43914,
 								"name": "T",
 								"package": "@medusajs/medusa",
 								"refersToTypeParameter": true
@@ -6009,7 +6009,7 @@
 			}
 		},
 		{
-			"id": 43544,
+			"id": 43938,
 			"name": "DefaultPolicyResources",
 			"variant": "declaration",
 			"kind": 256,
@@ -6024,7 +6024,7 @@
 			},
 			"children": [
 				{
-					"id": 43545,
+					"id": 43939,
 					"name": "customer",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6034,7 +6034,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 8,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L8"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L8"
 						}
 					],
 					"type": {
@@ -6043,7 +6043,7 @@
 					}
 				},
 				{
-					"id": 43546,
+					"id": 43940,
 					"name": "customer_address",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6053,7 +6053,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 9,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L9"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L9"
 						}
 					],
 					"type": {
@@ -6062,7 +6062,7 @@
 					}
 				},
 				{
-					"id": 43547,
+					"id": 43941,
 					"name": "customer_group",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6072,7 +6072,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 10,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L10"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L10"
 						}
 					],
 					"type": {
@@ -6081,7 +6081,7 @@
 					}
 				},
 				{
-					"id": 43548,
+					"id": 43942,
 					"name": "inventory_item",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6091,7 +6091,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 13,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L13"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L13"
 						}
 					],
 					"type": {
@@ -6100,7 +6100,7 @@
 					}
 				},
 				{
-					"id": 43549,
+					"id": 43943,
 					"name": "inventory_level",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6110,7 +6110,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 14,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L14"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L14"
 						}
 					],
 					"type": {
@@ -6119,7 +6119,7 @@
 					}
 				},
 				{
-					"id": 43550,
+					"id": 43944,
 					"name": "reservation_item",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6129,7 +6129,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 15,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L15"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L15"
 						}
 					],
 					"type": {
@@ -6138,7 +6138,7 @@
 					}
 				},
 				{
-					"id": 43551,
+					"id": 43945,
 					"name": "stock_location",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6148,7 +6148,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 16,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L16"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L16"
 						}
 					],
 					"type": {
@@ -6157,7 +6157,7 @@
 					}
 				},
 				{
-					"id": 43552,
+					"id": 43946,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6167,7 +6167,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 19,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L19"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L19"
 						}
 					],
 					"type": {
@@ -6176,7 +6176,7 @@
 					}
 				},
 				{
-					"id": 43553,
+					"id": 43947,
 					"name": "order_change",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6186,7 +6186,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 20,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L20"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L20"
 						}
 					],
 					"type": {
@@ -6195,7 +6195,7 @@
 					}
 				},
 				{
-					"id": 43554,
+					"id": 43948,
 					"name": "order_claim",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6205,7 +6205,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 21,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L21"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L21"
 						}
 					],
 					"type": {
@@ -6214,7 +6214,7 @@
 					}
 				},
 				{
-					"id": 43555,
+					"id": 43949,
 					"name": "order_exchange",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6224,7 +6224,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 22,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L22"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L22"
 						}
 					],
 					"type": {
@@ -6233,7 +6233,7 @@
 					}
 				},
 				{
-					"id": 43556,
+					"id": 43950,
 					"name": "return",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6243,7 +6243,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 23,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L23"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L23"
 						}
 					],
 					"type": {
@@ -6252,7 +6252,7 @@
 					}
 				},
 				{
-					"id": 43557,
+					"id": 43951,
 					"name": "return_reason",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6262,7 +6262,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 24,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L24"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L24"
 						}
 					],
 					"type": {
@@ -6271,7 +6271,7 @@
 					}
 				},
 				{
-					"id": 43558,
+					"id": 43952,
 					"name": "credit_line",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6281,7 +6281,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 25,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L25"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L25"
 						}
 					],
 					"type": {
@@ -6290,7 +6290,7 @@
 					}
 				},
 				{
-					"id": 43559,
+					"id": 43953,
 					"name": "payment",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6300,7 +6300,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 28,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L28"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L28"
 						}
 					],
 					"type": {
@@ -6309,7 +6309,7 @@
 					}
 				},
 				{
-					"id": 43560,
+					"id": 43954,
 					"name": "payment_collection",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6319,7 +6319,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 29,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L29"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L29"
 						}
 					],
 					"type": {
@@ -6328,7 +6328,7 @@
 					}
 				},
 				{
-					"id": 43561,
+					"id": 43955,
 					"name": "payment_method",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6338,7 +6338,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 30,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L30"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L30"
 						}
 					],
 					"type": {
@@ -6347,7 +6347,7 @@
 					}
 				},
 				{
-					"id": 43562,
+					"id": 43956,
 					"name": "payment_session",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6357,7 +6357,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 31,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L31"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L31"
 						}
 					],
 					"type": {
@@ -6366,7 +6366,7 @@
 					}
 				},
 				{
-					"id": 43563,
+					"id": 43957,
 					"name": "refund_reason",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6376,7 +6376,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 32,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L32"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L32"
 						}
 					],
 					"type": {
@@ -6385,7 +6385,7 @@
 					}
 				},
 				{
-					"id": 43564,
+					"id": 43958,
 					"name": "capture",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6395,7 +6395,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 33,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L33"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L33"
 						}
 					],
 					"type": {
@@ -6404,7 +6404,7 @@
 					}
 				},
 				{
-					"id": 43565,
+					"id": 43959,
 					"name": "refund",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6414,7 +6414,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 34,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L34"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L34"
 						}
 					],
 					"type": {
@@ -6423,7 +6423,7 @@
 					}
 				},
 				{
-					"id": 43566,
+					"id": 43960,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6433,7 +6433,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 37,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L37"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L37"
 						}
 					],
 					"type": {
@@ -6442,7 +6442,7 @@
 					}
 				},
 				{
-					"id": 43567,
+					"id": 43961,
 					"name": "price_preference",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6452,7 +6452,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 38,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L38"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L38"
 						}
 					],
 					"type": {
@@ -6461,7 +6461,7 @@
 					}
 				},
 				{
-					"id": 43568,
+					"id": 43962,
 					"name": "price",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6471,7 +6471,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 39,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L39"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L39"
 						}
 					],
 					"type": {
@@ -6480,7 +6480,7 @@
 					}
 				},
 				{
-					"id": 43569,
+					"id": 43963,
 					"name": "price_set",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6490,7 +6490,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 40,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L40"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L40"
 						}
 					],
 					"type": {
@@ -6499,7 +6499,7 @@
 					}
 				},
 				{
-					"id": 43570,
+					"id": 43964,
 					"name": "currency",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6509,7 +6509,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 41,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L41"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L41"
 						}
 					],
 					"type": {
@@ -6518,7 +6518,7 @@
 					}
 				},
 				{
-					"id": 43571,
+					"id": 43965,
 					"name": "product",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6528,7 +6528,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 44,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L44"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L44"
 						}
 					],
 					"type": {
@@ -6537,7 +6537,7 @@
 					}
 				},
 				{
-					"id": 43572,
+					"id": 43966,
 					"name": "product_variant",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6547,7 +6547,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 45,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L45"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L45"
 						}
 					],
 					"type": {
@@ -6556,7 +6556,7 @@
 					}
 				},
 				{
-					"id": 43573,
+					"id": 43967,
 					"name": "product_option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6566,7 +6566,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 46,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L46"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L46"
 						}
 					],
 					"type": {
@@ -6575,7 +6575,7 @@
 					}
 				},
 				{
-					"id": 43574,
+					"id": 43968,
 					"name": "product_option_value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6585,7 +6585,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 47,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L47"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L47"
 						}
 					],
 					"type": {
@@ -6594,7 +6594,7 @@
 					}
 				},
 				{
-					"id": 43575,
+					"id": 43969,
 					"name": "product_tag",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6604,7 +6604,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 48,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L48"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L48"
 						}
 					],
 					"type": {
@@ -6613,7 +6613,7 @@
 					}
 				},
 				{
-					"id": 43576,
+					"id": 43970,
 					"name": "product_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6623,7 +6623,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 49,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L49"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L49"
 						}
 					],
 					"type": {
@@ -6632,7 +6632,7 @@
 					}
 				},
 				{
-					"id": 43577,
+					"id": 43971,
 					"name": "product_category",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6642,7 +6642,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 50,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L50"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L50"
 						}
 					],
 					"type": {
@@ -6651,7 +6651,7 @@
 					}
 				},
 				{
-					"id": 43578,
+					"id": 43972,
 					"name": "product_collection",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6661,7 +6661,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 51,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L51"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L51"
 						}
 					],
 					"type": {
@@ -6670,7 +6670,7 @@
 					}
 				},
 				{
-					"id": 43579,
+					"id": 43973,
 					"name": "campaign",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6680,7 +6680,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 54,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L54"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L54"
 						}
 					],
 					"type": {
@@ -6689,7 +6689,7 @@
 					}
 				},
 				{
-					"id": 43580,
+					"id": 43974,
 					"name": "promotion",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6699,7 +6699,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 55,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L55"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L55"
 						}
 					],
 					"type": {
@@ -6708,7 +6708,7 @@
 					}
 				},
 				{
-					"id": 43581,
+					"id": 43975,
 					"name": "region",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6718,7 +6718,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 58,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L58"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L58"
 						}
 					],
 					"type": {
@@ -6727,7 +6727,7 @@
 					}
 				},
 				{
-					"id": 43582,
+					"id": 43976,
 					"name": "store",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6737,7 +6737,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 61,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L61"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L61"
 						}
 					],
 					"type": {
@@ -6746,7 +6746,7 @@
 					}
 				},
 				{
-					"id": 43583,
+					"id": 43977,
 					"name": "store_locale",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6756,7 +6756,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 62,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L62"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L62"
 						}
 					],
 					"type": {
@@ -6765,7 +6765,7 @@
 					}
 				},
 				{
-					"id": 43584,
+					"id": 43978,
 					"name": "translation",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6775,7 +6775,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 65,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L65"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L65"
 						}
 					],
 					"type": {
@@ -6784,7 +6784,7 @@
 					}
 				},
 				{
-					"id": 43585,
+					"id": 43979,
 					"name": "translation_settings",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6794,7 +6794,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 66,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L66"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L66"
 						}
 					],
 					"type": {
@@ -6803,7 +6803,7 @@
 					}
 				},
 				{
-					"id": 43586,
+					"id": 43980,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6813,7 +6813,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 69,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L69"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L69"
 						}
 					],
 					"type": {
@@ -6822,7 +6822,7 @@
 					}
 				},
 				{
-					"id": 43587,
+					"id": 43981,
 					"name": "shipping_option_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6832,7 +6832,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 70,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L70"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L70"
 						}
 					],
 					"type": {
@@ -6841,7 +6841,7 @@
 					}
 				},
 				{
-					"id": 43588,
+					"id": 43982,
 					"name": "shipping_profile",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6851,7 +6851,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 71,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L71"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L71"
 						}
 					],
 					"type": {
@@ -6860,7 +6860,7 @@
 					}
 				},
 				{
-					"id": 43589,
+					"id": 43983,
 					"name": "fulfillment",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6870,7 +6870,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 72,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L72"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L72"
 						}
 					],
 					"type": {
@@ -6879,7 +6879,7 @@
 					}
 				},
 				{
-					"id": 43590,
+					"id": 43984,
 					"name": "fulfillment_provider",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6889,7 +6889,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 73,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L73"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L73"
 						}
 					],
 					"type": {
@@ -6898,7 +6898,7 @@
 					}
 				},
 				{
-					"id": 43591,
+					"id": 43985,
 					"name": "fulfillment_set",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6908,7 +6908,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 74,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L74"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L74"
 						}
 					],
 					"type": {
@@ -6917,7 +6917,7 @@
 					}
 				},
 				{
-					"id": 43592,
+					"id": 43986,
 					"name": "service_zone",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6927,7 +6927,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 75,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L75"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L75"
 						}
 					],
 					"type": {
@@ -6936,7 +6936,7 @@
 					}
 				},
 				{
-					"id": 43593,
+					"id": 43987,
 					"name": "file",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6946,7 +6946,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 78,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L78"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L78"
 						}
 					],
 					"type": {
@@ -6955,7 +6955,7 @@
 					}
 				},
 				{
-					"id": 43594,
+					"id": 43988,
 					"name": "notification",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6965,7 +6965,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 79,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L79"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L79"
 						}
 					],
 					"type": {
@@ -6974,7 +6974,7 @@
 					}
 				},
 				{
-					"id": 43595,
+					"id": 43989,
 					"name": "workflow_execution",
 					"variant": "declaration",
 					"kind": 1024,
@@ -6984,7 +6984,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 80,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L80"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L80"
 						}
 					],
 					"type": {
@@ -6993,7 +6993,7 @@
 					}
 				},
 				{
-					"id": 43596,
+					"id": 43990,
 					"name": "tax_provider",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7003,7 +7003,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 83,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L83"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L83"
 						}
 					],
 					"type": {
@@ -7012,7 +7012,7 @@
 					}
 				},
 				{
-					"id": 43597,
+					"id": 43991,
 					"name": "tax_rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7022,7 +7022,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 84,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L84"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L84"
 						}
 					],
 					"type": {
@@ -7031,7 +7031,7 @@
 					}
 				},
 				{
-					"id": 43598,
+					"id": 43992,
 					"name": "tax_region",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7041,7 +7041,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 85,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L85"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L85"
 						}
 					],
 					"type": {
@@ -7050,7 +7050,7 @@
 					}
 				},
 				{
-					"id": 43599,
+					"id": 43993,
 					"name": "user",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7060,7 +7060,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 88,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L88"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L88"
 						}
 					],
 					"type": {
@@ -7069,7 +7069,7 @@
 					}
 				},
 				{
-					"id": 43600,
+					"id": 43994,
 					"name": "api_key",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7079,7 +7079,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 89,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L89"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L89"
 						}
 					],
 					"type": {
@@ -7088,7 +7088,7 @@
 					}
 				},
 				{
-					"id": 43601,
+					"id": 43995,
 					"name": "invite",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7098,7 +7098,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 90,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L90"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L90"
 						}
 					],
 					"type": {
@@ -7107,7 +7107,7 @@
 					}
 				},
 				{
-					"id": 43602,
+					"id": 43996,
 					"name": "rbac_role",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7117,7 +7117,7 @@
 							"fileName": "medusa/src/types/policies.ts",
 							"line": 92,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L92"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L92"
 						}
 					],
 					"type": {
@@ -7130,64 +7130,64 @@
 				{
 					"title": "Properties",
 					"children": [
-						43545,
-						43546,
-						43547,
-						43548,
-						43549,
-						43550,
-						43551,
-						43552,
-						43553,
-						43554,
-						43555,
-						43556,
-						43557,
-						43558,
-						43559,
-						43560,
-						43561,
-						43562,
-						43563,
-						43564,
-						43565,
-						43566,
-						43567,
-						43568,
-						43569,
-						43570,
-						43571,
-						43572,
-						43573,
-						43574,
-						43575,
-						43576,
-						43577,
-						43578,
-						43579,
-						43580,
-						43581,
-						43582,
-						43583,
-						43584,
-						43585,
-						43586,
-						43587,
-						43588,
-						43589,
-						43590,
-						43591,
-						43592,
-						43593,
-						43594,
-						43595,
-						43596,
-						43597,
-						43598,
-						43599,
-						43600,
-						43601,
-						43602
+						43939,
+						43940,
+						43941,
+						43942,
+						43943,
+						43944,
+						43945,
+						43946,
+						43947,
+						43948,
+						43949,
+						43950,
+						43951,
+						43952,
+						43953,
+						43954,
+						43955,
+						43956,
+						43957,
+						43958,
+						43959,
+						43960,
+						43961,
+						43962,
+						43963,
+						43964,
+						43965,
+						43966,
+						43967,
+						43968,
+						43969,
+						43970,
+						43971,
+						43972,
+						43973,
+						43974,
+						43975,
+						43976,
+						43977,
+						43978,
+						43979,
+						43980,
+						43981,
+						43982,
+						43983,
+						43984,
+						43985,
+						43986,
+						43987,
+						43988,
+						43989,
+						43990,
+						43991,
+						43992,
+						43993,
+						43994,
+						43995,
+						43996
 					]
 				}
 			],
@@ -7196,12 +7196,12 @@
 					"fileName": "medusa/src/types/policies.ts",
 					"line": 6,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L6"
 				}
 			]
 		},
 		{
-			"id": 43603,
+			"id": 43997,
 			"name": "DefaultResourceKey",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7211,7 +7211,7 @@
 					"fileName": "medusa/src/types/policies.ts",
 					"line": 95,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L95"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L95"
 				}
 			],
 			"type": {
@@ -7219,14 +7219,14 @@
 				"operator": "keyof",
 				"target": {
 					"type": "reference",
-					"target": 43544,
+					"target": 43938,
 					"name": "DefaultPolicyResources",
 					"package": "@medusajs/medusa"
 				}
 			}
 		},
 		{
-			"id": 43604,
+			"id": 43998,
 			"name": "DefaultResourceValue",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7236,34 +7236,34 @@
 					"fileName": "medusa/src/types/policies.ts",
 					"line": 97,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/policies.ts#L97"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/policies.ts#L97"
 				}
 			],
 			"type": {
 				"type": "indexedAccess",
 				"indexType": {
 					"type": "reference",
-					"target": 43603,
+					"target": 43997,
 					"name": "DefaultResourceKey",
 					"package": "@medusajs/medusa"
 				},
 				"objectType": {
 					"type": "reference",
-					"target": 43544,
+					"target": 43938,
 					"name": "DefaultPolicyResources",
 					"package": "@medusajs/medusa"
 				}
 			}
 		},
 		{
-			"id": 43727,
+			"id": 44121,
 			"name": "SubscriberContext",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 43728,
+					"id": 44122,
 					"name": "subscriberId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7287,7 +7287,7 @@
 				{
 					"title": "Properties",
 					"children": [
-						43728
+						44122
 					]
 				}
 			],
@@ -7300,14 +7300,14 @@
 			],
 			"indexSignatures": [
 				{
-					"id": 43729,
+					"id": 44123,
 					"name": "__index",
 					"variant": "signature",
 					"kind": 8192,
 					"flags": {},
 					"parameters": [
 						{
-							"id": 43730,
+							"id": 44124,
 							"name": "key",
 							"variant": "param",
 							"kind": 32768,
@@ -7347,7 +7347,7 @@
 			]
 		},
 		{
-			"id": 43605,
+			"id": 43999,
 			"name": "SubscriberConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7357,20 +7357,20 @@
 					"fileName": "medusa/src/types/subscribers.ts",
 					"line": 7,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L7"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L7"
 				}
 			],
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43606,
+					"id": 44000,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43607,
+							"id": 44001,
 							"name": "event",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7380,7 +7380,7 @@
 									"fileName": "medusa/src/types/subscribers.ts",
 									"line": 8,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L8"
+									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L8"
 								}
 							],
 							"type": {
@@ -7401,7 +7401,7 @@
 							}
 						},
 						{
-							"id": 43608,
+							"id": 44002,
 							"name": "context",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7413,12 +7413,12 @@
 									"fileName": "medusa/src/types/subscribers.ts",
 									"line": 9,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L9"
+									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L9"
 								}
 							],
 							"type": {
 								"type": "reference",
-								"target": 43727,
+								"target": 44121,
 								"name": "SubscriberContext",
 								"package": "@medusajs/medusa"
 							}
@@ -7428,8 +7428,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								43607,
-								43608
+								44001,
+								44002
 							]
 						}
 					],
@@ -7438,14 +7438,14 @@
 							"fileName": "medusa/src/types/subscribers.ts",
 							"line": 7,
 							"character": 31,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L7"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L7"
 						}
 					]
 				}
 			}
 		},
 		{
-			"id": 43609,
+			"id": 44003,
 			"name": "SubscriberArgs",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7455,12 +7455,12 @@
 					"fileName": "medusa/src/types/subscribers.ts",
 					"line": 12,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L12"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L12"
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 43614,
+					"id": 44008,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -7474,14 +7474,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 43610,
+					"id": 44004,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 43611,
+							"id": 44005,
 							"name": "event",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7491,16 +7491,16 @@
 									"fileName": "medusa/src/types/subscribers.ts",
 									"line": 13,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L13"
+									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L13"
 								}
 							],
 							"type": {
 								"type": "reference",
-								"target": 43731,
+								"target": 44125,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 43614,
+										"target": 44008,
 										"name": "T",
 										"package": "@medusajs/medusa",
 										"refersToTypeParameter": true
@@ -7511,7 +7511,7 @@
 							}
 						},
 						{
-							"id": 43612,
+							"id": 44006,
 							"name": "container",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7521,18 +7521,18 @@
 									"fileName": "medusa/src/types/subscribers.ts",
 									"line": 14,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L14"
+									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L14"
 								}
 							],
 							"type": {
 								"type": "reference",
-								"target": 43636,
+								"target": 44030,
 								"name": "MedusaContainer",
 								"package": "@medusajs/types"
 							}
 						},
 						{
-							"id": 43613,
+							"id": 44007,
 							"name": "pluginOptions",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7542,7 +7542,7 @@
 									"fileName": "medusa/src/types/subscribers.ts",
 									"line": 15,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L15"
+									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L15"
 								}
 							],
 							"type": {
@@ -7570,9 +7570,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								43611,
-								43612,
-								43613
+								44005,
+								44006,
+								44007
 							]
 						}
 					],
@@ -7581,7 +7581,7 @@
 							"fileName": "medusa/src/types/subscribers.ts",
 							"line": 12,
 							"character": 42,
-							"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/medusa/src/types/subscribers.ts#L12"
+							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/medusa/src/types/subscribers.ts#L12"
 						}
 					]
 				}
@@ -7592,1410 +7592,1410 @@
 		{
 			"title": "Classes",
 			"children": [
-				43832
+				44226
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				43737,
-				43800,
-				43794,
-				43657,
-				43544,
-				43727
+				44131,
+				44194,
+				44188,
+				44051,
+				43938,
+				44121
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				43786,
-				43718,
-				43521,
-				43720,
-				43787,
-				43719,
-				43525,
-				43540,
-				43783,
-				43785,
-				43710,
-				43811,
-				43852,
-				43636,
-				43791,
-				43731,
-				43841,
-				43509,
-				43514,
-				43515,
-				43516,
-				43603,
-				43604,
-				43605,
-				43609
+				44180,
+				44112,
+				43915,
+				44114,
+				44181,
+				44113,
+				43919,
+				43934,
+				44177,
+				44179,
+				44104,
+				44205,
+				44246,
+				44030,
+				44185,
+				44125,
+				44235,
+				43903,
+				43908,
+				43909,
+				43910,
+				43997,
+				43998,
+				43999,
+				44003
 			]
 		},
 		{
 			"title": "Variables",
 			"children": [
-				43851
+				44245
 			]
 		},
 		{
 			"title": "Functions",
 			"children": [
-				43615,
-				43617,
-				43619,
-				43621,
-				43623
+				44009,
+				44011,
+				44013,
+				44015,
+				44017
 			]
 		}
 	],
 	"packageName": "@medusajs/medusa",
 	"symbolIdMap": {
-		"43508": {
+		"43902": {
 			"sourceFileName": "../../../../packages/medusa/src/index.ts",
 			"qualifiedName": ""
 		},
-		"43509": {
+		"43903": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "ClassConstructor"
 		},
-		"43510": {
+		"43904": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type"
 		},
-		"43511": {
+		"43905": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type"
 		},
-		"43512": {
+		"43906": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "args"
 		},
-		"43513": {
+		"43907": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "T"
 		},
-		"43514": {
+		"43908": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "MedusaContainer"
 		},
-		"43515": {
+		"43909": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "Logger"
 		},
-		"43516": {
+		"43910": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "Constructor"
 		},
-		"43517": {
+		"43911": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type"
 		},
-		"43518": {
+		"43912": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type"
 		},
-		"43519": {
+		"43913": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "args"
 		},
-		"43520": {
+		"43914": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "T"
 		},
-		"43521": {
+		"43915": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MiddlewareFunction"
 		},
-		"43522": {
+		"43916": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43523": {
+		"43917": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43524": {
+		"43918": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "args"
 		},
-		"43525": {
+		"43919": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MiddlewareRoute"
 		},
-		"43526": {
+		"43920": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43527": {
+		"43921": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.method"
 		},
-		"43528": {
+		"43922": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.methods"
 		},
-		"43529": {
+		"43923": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.matcher"
 		},
-		"43530": {
+		"43924": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.bodyParser"
 		},
-		"43531": {
+		"43925": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.additionalDataValidator"
 		},
-		"43532": {
+		"43926": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.middlewares"
 		},
-		"43540": {
+		"43934": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MiddlewaresConfig"
 		},
-		"43541": {
+		"43935": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43542": {
+		"43936": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.errorHandler"
 		},
-		"43543": {
+		"43937": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.routes"
 		},
-		"43544": {
+		"43938": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources"
 		},
-		"43545": {
+		"43939": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.customer"
 		},
-		"43546": {
+		"43940": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.customer_address"
 		},
-		"43547": {
+		"43941": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.customer_group"
 		},
-		"43548": {
+		"43942": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.inventory_item"
 		},
-		"43549": {
+		"43943": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.inventory_level"
 		},
-		"43550": {
+		"43944": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.reservation_item"
 		},
-		"43551": {
+		"43945": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.stock_location"
 		},
-		"43552": {
+		"43946": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.order"
 		},
-		"43553": {
+		"43947": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.order_change"
 		},
-		"43554": {
+		"43948": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.order_claim"
 		},
-		"43555": {
+		"43949": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.order_exchange"
 		},
-		"43556": {
+		"43950": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.return"
 		},
-		"43557": {
+		"43951": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.return_reason"
 		},
-		"43558": {
+		"43952": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.credit_line"
 		},
-		"43559": {
+		"43953": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.payment"
 		},
-		"43560": {
+		"43954": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.payment_collection"
 		},
-		"43561": {
+		"43955": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.payment_method"
 		},
-		"43562": {
+		"43956": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.payment_session"
 		},
-		"43563": {
+		"43957": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.refund_reason"
 		},
-		"43564": {
+		"43958": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.capture"
 		},
-		"43565": {
+		"43959": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.refund"
 		},
-		"43566": {
+		"43960": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.price_list"
 		},
-		"43567": {
+		"43961": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.price_preference"
 		},
-		"43568": {
+		"43962": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.price"
 		},
-		"43569": {
+		"43963": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.price_set"
 		},
-		"43570": {
+		"43964": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.currency"
 		},
-		"43571": {
+		"43965": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product"
 		},
-		"43572": {
+		"43966": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_variant"
 		},
-		"43573": {
+		"43967": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_option"
 		},
-		"43574": {
+		"43968": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_option_value"
 		},
-		"43575": {
+		"43969": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_tag"
 		},
-		"43576": {
+		"43970": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_type"
 		},
-		"43577": {
+		"43971": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_category"
 		},
-		"43578": {
+		"43972": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.product_collection"
 		},
-		"43579": {
+		"43973": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.campaign"
 		},
-		"43580": {
+		"43974": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.promotion"
 		},
-		"43581": {
+		"43975": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.region"
 		},
-		"43582": {
+		"43976": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.store"
 		},
-		"43583": {
+		"43977": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.store_locale"
 		},
-		"43584": {
+		"43978": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.translation"
 		},
-		"43585": {
+		"43979": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.translation_settings"
 		},
-		"43586": {
+		"43980": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.shipping_option"
 		},
-		"43587": {
+		"43981": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.shipping_option_type"
 		},
-		"43588": {
+		"43982": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.shipping_profile"
 		},
-		"43589": {
+		"43983": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.fulfillment"
 		},
-		"43590": {
+		"43984": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.fulfillment_provider"
 		},
-		"43591": {
+		"43985": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.fulfillment_set"
 		},
-		"43592": {
+		"43986": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.service_zone"
 		},
-		"43593": {
+		"43987": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.file"
 		},
-		"43594": {
+		"43988": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.notification"
 		},
-		"43595": {
+		"43989": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.workflow_execution"
 		},
-		"43596": {
+		"43990": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.tax_provider"
 		},
-		"43597": {
+		"43991": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.tax_rate"
 		},
-		"43598": {
+		"43992": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.tax_region"
 		},
-		"43599": {
+		"43993": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.user"
 		},
-		"43600": {
+		"43994": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.api_key"
 		},
-		"43601": {
+		"43995": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.invite"
 		},
-		"43602": {
+		"43996": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultPolicyResources.rbac_role"
 		},
-		"43603": {
+		"43997": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultResourceKey"
 		},
-		"43604": {
+		"43998": {
 			"sourceFileName": "../../../../packages/medusa/src/types/policies.ts",
 			"qualifiedName": "DefaultResourceValue"
 		},
-		"43605": {
+		"43999": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "SubscriberConfig"
 		},
-		"43606": {
+		"44000": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type"
 		},
-		"43607": {
+		"44001": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type.event"
 		},
-		"43608": {
+		"44002": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type.context"
 		},
-		"43609": {
+		"44003": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "SubscriberArgs"
 		},
-		"43610": {
+		"44004": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type"
 		},
-		"43611": {
+		"44005": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type.event"
 		},
-		"43612": {
+		"44006": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type.container"
 		},
-		"43613": {
+		"44007": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "__type.pluginOptions"
 		},
-		"43614": {
+		"44008": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "T"
 		},
-		"43615": {
+		"44009": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentHttpLayer"
 		},
-		"43616": {
+		"44010": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentHttpLayer"
 		},
-		"43617": {
+		"44011": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentRemoteQuery"
 		},
-		"43618": {
+		"44012": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentRemoteQuery"
 		},
-		"43619": {
+		"44013": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentWorkflows"
 		},
-		"43620": {
+		"44014": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentWorkflows"
 		},
-		"43621": {
+		"44015": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentCache"
 		},
-		"43622": {
+		"44016": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "instrumentCache"
 		},
-		"43623": {
+		"44017": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "registerOtel"
 		},
-		"43624": {
+		"44018": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "registerOtel"
 		},
-		"43625": {
+		"44019": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "options"
 		},
-		"43626": {
+		"44020": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type"
 		},
-		"43627": {
+		"44021": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.serviceName"
 		},
-		"43628": {
+		"44022": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.exporter"
 		},
-		"43629": {
+		"44023": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.instrument"
 		},
-		"43630": {
+		"44024": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type"
 		},
-		"43631": {
+		"44025": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.http"
 		},
-		"43632": {
+		"44026": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.query"
 		},
-		"43633": {
+		"44027": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.workflows"
 		},
-		"43634": {
+		"44028": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.db"
 		},
-		"43635": {
+		"44029": {
 			"sourceFileName": "../../../../packages/medusa/src/instrumentation/index.ts",
 			"qualifiedName": "__type.cache"
 		},
-		"43636": {
+		"44030": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "MedusaContainer"
 		},
-		"43637": {
+		"44031": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type"
 		},
-		"43638": {
+		"44032": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"43639": {
+		"44033": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"43640": {
+		"44034": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "K"
 		},
-		"43641": {
+		"44035": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "key"
 		},
-		"43642": {
+		"44036": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "resolveOptions"
 		},
-		"43643": {
+		"44037": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"43644": {
+		"44038": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "T"
 		},
-		"43645": {
+		"44039": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "key"
 		},
-		"43646": {
+		"44040": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "resolveOptions"
 		},
-		"43647": {
+		"44041": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type.registerAdd"
 		},
-		"43648": {
+		"44042": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type"
 		},
-		"43649": {
+		"44043": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type"
 		},
-		"43650": {
+		"44044": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "name"
 		},
-		"43651": {
+		"44045": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "registration"
 		},
-		"43652": {
+		"44046": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "T"
 		},
-		"43653": {
+		"44047": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type.createScope"
 		},
-		"43654": {
+		"44048": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type"
 		},
-		"43655": {
+		"44049": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "__type"
 		},
-		"43656": {
+		"44050": {
 			"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 			"qualifiedName": "Cradle"
 		},
-		"43657": {
+		"44051": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger"
 		},
-		"43658": {
+		"44052": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.panic"
 		},
-		"43659": {
+		"44053": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.panic"
 		},
-		"43660": {
+		"44054": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "data"
 		},
-		"43661": {
+		"44055": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.shouldLog"
 		},
-		"43662": {
+		"44056": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.shouldLog"
 		},
-		"43663": {
+		"44057": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "level"
 		},
-		"43664": {
+		"44058": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.setLogLevel"
 		},
-		"43665": {
+		"44059": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.setLogLevel"
 		},
-		"43666": {
+		"44060": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "level"
 		},
-		"43667": {
+		"44061": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.unsetLogLevel"
 		},
-		"43668": {
+		"44062": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.unsetLogLevel"
 		},
-		"43669": {
+		"44063": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.activity"
 		},
-		"43670": {
+		"44064": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.activity"
 		},
-		"43671": {
+		"44065": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43672": {
+		"44066": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "config"
 		},
-		"43673": {
+		"44067": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.progress"
 		},
-		"43674": {
+		"44068": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.progress"
 		},
-		"43675": {
+		"44069": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "activityId"
 		},
-		"43676": {
+		"44070": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43677": {
+		"44071": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.error"
 		},
-		"43678": {
+		"44072": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.error"
 		},
-		"43679": {
+		"44073": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "messageOrError"
 		},
-		"43680": {
+		"44074": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "error"
 		},
-		"43681": {
+		"44075": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.failure"
 		},
-		"43682": {
+		"44076": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.failure"
 		},
-		"43683": {
+		"44077": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "activityId"
 		},
-		"43684": {
+		"44078": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43685": {
+		"44079": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.success"
 		},
-		"43686": {
+		"44080": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.success"
 		},
-		"43687": {
+		"44081": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "activityId"
 		},
-		"43688": {
+		"44082": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43689": {
+		"44083": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.silly"
 		},
-		"43690": {
+		"44084": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.silly"
 		},
-		"43691": {
+		"44085": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43692": {
+		"44086": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.debug"
 		},
-		"43693": {
+		"44087": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.debug"
 		},
-		"43694": {
+		"44088": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43695": {
+		"44089": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.verbose"
 		},
-		"43696": {
+		"44090": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.verbose"
 		},
-		"43697": {
+		"44091": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43698": {
+		"44092": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.http"
 		},
-		"43699": {
+		"44093": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.http"
 		},
-		"43700": {
+		"44094": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43701": {
+		"44095": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.info"
 		},
-		"43702": {
+		"44096": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.info"
 		},
-		"43703": {
+		"44097": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43704": {
+		"44098": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.warn"
 		},
-		"43705": {
+		"44099": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.warn"
 		},
-		"43706": {
+		"44100": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "message"
 		},
-		"43707": {
+		"44101": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.log"
 		},
-		"43708": {
+		"44102": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "Logger.log"
 		},
-		"43709": {
+		"44103": {
 			"sourceFileName": "../../../../packages/core/types/src/logger/index.ts",
 			"qualifiedName": "args"
 		},
-		"43710": {
+		"44104": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequestHandler"
 		},
-		"43711": {
+		"44105": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43712": {
+		"44106": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43713": {
+		"44107": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "req"
 		},
-		"43714": {
+		"44108": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "res"
 		},
-		"43715": {
+		"44109": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "next"
 		},
-		"43716": {
+		"44110": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "Body"
 		},
-		"43717": {
+		"44111": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "Res"
 		},
-		"43718": {
+		"44112": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MiddlewareVerb"
 		},
-		"43719": {
+		"44113": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "ParserConfig"
 		},
-		"43720": {
+		"44114": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaErrorHandlerFunction"
 		},
-		"43721": {
+		"44115": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43722": {
+		"44116": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43723": {
+		"44117": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "error"
 		},
-		"43724": {
+		"44118": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "req"
 		},
-		"43725": {
+		"44119": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "res"
 		},
-		"43726": {
+		"44120": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "next"
 		},
-		"43727": {
+		"44121": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "SubscriberContext"
 		},
-		"43728": {
+		"44122": {
 			"sourceFileName": "../../../../packages/medusa/src/types/subscribers.ts",
 			"qualifiedName": "SubscriberContext.subscriberId"
 		},
-		"43731": {
+		"44125": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "Event"
 		},
-		"43732": {
+		"44126": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type"
 		},
-		"43733": {
+		"44127": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.name"
 		},
-		"43734": {
+		"44128": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.metadata"
 		},
-		"43735": {
+		"44129": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.data"
 		},
-		"43736": {
+		"44130": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "TData"
 		},
-		"43737": {
+		"44131": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest"
 		},
-		"43738": {
+		"44132": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43739": {
+		"44133": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"43741": {
+		"44135": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.validatedBody"
 		},
-		"43742": {
+		"44136": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.validatedQuery"
 		},
-		"43743": {
+		"44137": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.allowedProperties"
 		},
-		"43744": {
+		"44138": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.listConfig"
 		},
-		"43745": {
+		"44139": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.retrieveConfig"
 		},
-		"43746": {
+		"44140": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.queryConfig"
 		},
-		"43747": {
+		"44141": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43748": {
+		"44142": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.fields"
 		},
-		"43749": {
+		"44143": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.pagination"
 		},
-		"43750": {
+		"44144": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43751": {
+		"44145": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.order"
 		},
-		"43752": {
+		"44146": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.skip"
 		},
-		"43753": {
+		"44147": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.take"
 		},
-		"43754": {
+		"44148": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.withDeleted"
 		},
-		"43755": {
+		"44149": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.remoteQueryConfig"
 		},
-		"43756": {
+		"44150": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43757": {
+		"44151": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.fields"
 		},
-		"43758": {
+		"44152": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.pagination"
 		},
-		"43759": {
+		"44153": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43760": {
+		"44154": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.order"
 		},
-		"43761": {
+		"44155": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.skip"
 		},
-		"43762": {
+		"44156": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.take"
 		},
-		"43763": {
+		"44157": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.withDeleted"
 		},
-		"43764": {
+		"44158": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.filterableFields"
 		},
-		"43765": {
+		"44159": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.includes"
 		},
-		"43766": {
+		"44160": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.allowed"
 		},
-		"43767": {
+		"44161": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.errors"
 		},
-		"43768": {
+		"44162": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.scope"
 		},
-		"43769": {
+		"44163": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.session"
 		},
-		"43770": {
+		"44164": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.rawBody"
 		},
-		"43771": {
+		"44165": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.requestId"
 		},
-		"43772": {
+		"44166": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.restrictedFields"
 		},
-		"43773": {
+		"44167": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.pricingContext"
 		},
-		"43774": {
+		"44168": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.context"
 		},
-		"43775": {
+		"44169": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.additionalDataValidator"
 		},
-		"43776": {
+		"44170": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.locale"
 		},
-		"43777": {
+		"44171": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__global.Express.Request.user"
 		},
-		"43778": {
+		"44172": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type"
 		},
-		"43779": {
+		"44173": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type.customer_id"
 		},
-		"43780": {
+		"44174": {
 			"sourceFileName": "../../../../packages/medusa/src/types/global.ts",
 			"qualifiedName": "__type.userId"
 		},
-		"43781": {
+		"44175": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.Body"
 		},
-		"43782": {
+		"44176": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaRequest.QueryFields"
 		},
-		"43783": {
+		"44177": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaResponse"
 		},
-		"43784": {
+		"44178": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "Body"
 		},
-		"43785": {
+		"44179": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "MedusaNextFunction"
 		},
-		"43786": {
+		"44180": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "RouteVerb"
 		},
-		"43787": {
+		"44181": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "ParserConfigArgs"
 		},
-		"43788": {
+		"44182": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type"
 		},
-		"43789": {
+		"44183": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.sizeLimit"
 		},
-		"43790": {
+		"44184": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "__type.preserveRawBody"
 		},
-		"43791": {
+		"44185": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "EventMetadata"
 		},
-		"43792": {
+		"44186": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type"
 		},
-		"43793": {
+		"44187": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.eventGroupId"
 		},
-		"43794": {
+		"44188": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "RequestQueryFields"
 		},
-		"43795": {
+		"44189": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type.fields"
 		},
-		"43796": {
+		"44190": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type.offset"
 		},
-		"43797": {
+		"44191": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type.limit"
 		},
-		"43798": {
+		"44192": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type.order"
 		},
-		"43799": {
+		"44193": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type.with_deleted"
 		},
-		"43800": {
+		"44194": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig"
 		},
-		"43801": {
+		"44195": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.select"
 		},
-		"43802": {
+		"44196": {
 			"sourceFileName": "",
 			"qualifiedName": "__type"
 		},
-		"43803": {
+		"44197": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.skip"
 		},
-		"43804": {
+		"44198": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.take"
 		},
-		"43805": {
+		"44199": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.relations"
 		},
-		"43806": {
+		"44200": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.order"
 		},
-		"43807": {
+		"44201": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.withDeleted"
 		},
-		"43808": {
+		"44202": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.filters"
 		},
-		"43809": {
+		"44203": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.options"
 		},
-		"43810": {
+		"44204": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfig.Entity"
 		},
-		"43811": {
+		"44205": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "MedusaContainer"
 		},
-		"43812": {
+		"44206": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type"
 		},
-		"43813": {
+		"44207": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"43814": {
+		"44208": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"43815": {
+		"44209": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "K"
 		},
-		"43816": {
+		"44210": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "key"
 		},
-		"43817": {
+		"44211": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "resolveOptions"
 		},
-		"43818": {
+		"44212": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type.resolve"
 		},
-		"43819": {
+		"44213": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "T"
 		},
-		"43820": {
+		"44214": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "key"
 		},
-		"43821": {
+		"44215": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "resolveOptions"
 		},
-		"43822": {
+		"44216": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type.registerAdd"
 		},
-		"43823": {
+		"44217": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type"
 		},
-		"43824": {
+		"44218": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type"
 		},
-		"43825": {
+		"44219": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "name"
 		},
-		"43826": {
+		"44220": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "registration"
 		},
-		"43827": {
+		"44221": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "T"
 		},
-		"43828": {
+		"44222": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type.createScope"
 		},
-		"43829": {
+		"44223": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type"
 		},
-		"43830": {
+		"44224": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "__type"
 		},
-		"43831": {
+		"44225": {
 			"sourceFileName": "../../../../packages/core/framework/src/types/container.ts",
 			"qualifiedName": "Cradle"
 		},
-		"43832": {
+		"44226": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "RestrictedFields"
 		},
-		"43835": {
+		"44229": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "RestrictedFields.#private"
 		},
-		"43836": {
+		"44230": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "RestrictedFields.list"
 		},
-		"43837": {
+		"44231": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "RestrictedFields.list"
 		},
-		"43838": {
+		"44232": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "RestrictedFields.add"
 		},
-		"43839": {
+		"44233": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "RestrictedFields.add"
 		},
-		"43840": {
+		"44234": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/utils/restricted-fields.ts",
 			"qualifiedName": "fields"
 		},
-		"43841": {
+		"44235": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "MedusaPricingContext"
 		},
-		"43842": {
+		"44236": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type"
 		},
-		"43843": {
+		"44237": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type.region_id"
 		},
-		"43844": {
+		"44238": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type.currency_code"
 		},
-		"43845": {
+		"44239": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type.customer_id"
 		},
-		"43846": {
+		"44240": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type.customer"
 		},
-		"43847": {
+		"44241": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type"
 		},
-		"43848": {
+		"44242": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type.groups"
 		},
-		"43849": {
+		"44243": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type"
 		},
-		"43850": {
+		"44244": {
 			"sourceFileName": "../../../../packages/core/types/src/pricing/common/pricing-context.ts",
 			"qualifiedName": "__type.id"
 		},
-		"43851": {
+		"44245": {
 			"sourceFileName": "../../../../packages/core/framework/src/http/types.ts",
 			"qualifiedName": "HTTP_METHODS"
 		},
-		"43852": {
+		"44246": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "FindConfigOrder"
 		},
-		"43853": {
+		"44247": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type"
 		},
-		"43854": {
+		"44248": {
 			"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"43856": {
+		"44250": {
 			"sourceFileName": "",
 			"qualifiedName": "__type"
 		}
@@ -9005,7 +9005,7 @@
 			"1": "../../../../packages/medusa/src/index.ts"
 		},
 		"reflections": {
-			"1": 43508
+			"1": 43902
 		}
 	}
 }

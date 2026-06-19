@@ -1,0 +1,76 @@
+---
+sidebar_label: "primary-key-required"
+---
+
+export const metadata = {
+  title: `primary-key-required - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that a data model defined with `model.define` declares a primary key via `.primaryKey()`.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets data model files in your project's `src/modules` directory. It reports a `model.define` schema that doesn't declare a primary key on any of its properties.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Post = model.define("post", {
+  id: model.id(),
+  title: model.text(),
+})
+```
+
+Instead, add `.primaryKey()` to one of the properties:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  title: model.text(),
+})
+```
+
+## Why it's Important
+
+A data model needs a primary key to uniquely identify each record. Without one, the model can't be persisted or queried reliably.
+
+Learn more in the [Data Models documentation](!docs!/learn/fundamentals/data-models).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/primary-key-required": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/primary-key-required
+export const Post = model.define("post", {
+```

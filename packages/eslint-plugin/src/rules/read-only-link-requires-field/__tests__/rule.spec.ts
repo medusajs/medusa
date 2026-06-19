@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("read-only-link-requires-field", rule, {
   valid: [
@@ -32,6 +27,20 @@ ruleTester.run("read-only-link-requires-field", rule, {
         export default defineLink(
           { linkable: ProductModule.linkable.product, field: "id" },
           { ...BlogModule.linkable.post.id, primaryKey: "product_id" },
+          { readOnly: true }
+        )
+      `,
+    },
+    // Inverse read-only link with `field` + `alias` (e.g. the only way to link
+    // to draft orders, via the `order` linkable re-aliased to `draft_order`).
+    {
+      code: `
+        import { defineLink } from "@medusajs/framework/utils"
+        import QuoteModule from "../modules/quote"
+        import OrderModule from "@medusajs/medusa/order"
+        export default defineLink(
+          { linkable: QuoteModule.linkable.quote, field: "draft_order_id" },
+          { ...OrderModule.linkable.order.id, alias: "draft_order" },
           { readOnly: true }
         )
       `,

@@ -1,5 +1,5 @@
 import { Modules } from "@medusajs/framework/utils"
-import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { WorkflowData, createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 import { deletePricePreferencesStep } from "../steps"
 
@@ -37,6 +37,6 @@ export const deletePricePreferencesWorkflow = createWorkflow(
       },
     })
 
-    return deletedPricePreferences
+    return new WorkflowResponse(deletedPricePreferences)
   }
 )

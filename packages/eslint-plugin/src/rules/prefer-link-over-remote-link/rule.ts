@@ -1,6 +1,7 @@
-import type { TSESTree, TSESLint } from "@typescript-eslint/utils"
+import type { TSESLint } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { TYPES_SOURCES } from "../../constants"
+import { isResolveCallee } from "../../util/container"
 
 type MessageIds =
   | "remoteLinkString"
@@ -10,19 +11,6 @@ type MessageIds =
 const REMOTE_LINK_TYPE_RENAMES: Record<string, string> = {
   RemoteLink: "Link",
   IRemoteLink: "ILink",
-}
-
-function isResolveCallee(callee: TSESTree.Expression): boolean {
-  if (callee.type === "Identifier" && callee.name === "resolve") return true
-  if (
-    callee.type === "MemberExpression" &&
-    !callee.computed &&
-    callee.property.type === "Identifier" &&
-    callee.property.name === "resolve"
-  ) {
-    return true
-  }
-  return false
 }
 
 export const rule = createRule<[], MessageIds>({
@@ -48,14 +36,24 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     return {
       ImportDeclaration(node) {
-        if (typeof node.source.value !== "string") return
-        if (!TYPES_SOURCES.has(node.source.value)) return
+        if (typeof node.source.value !== "string") {
+          return
+        }
+        if (!TYPES_SOURCES.has(node.source.value)) {
+          return
+        }
         for (const specifier of node.specifiers) {
-          if (specifier.type !== "ImportSpecifier") continue
-          if (specifier.imported.type !== "Identifier") continue
+          if (specifier.type !== "ImportSpecifier") {
+            continue
+          }
+          if (specifier.imported.type !== "Identifier") {
+            continue
+          }
           const importedName = specifier.imported.name
           const replacement = REMOTE_LINK_TYPE_RENAMES[importedName]
-          if (!replacement) continue
+          if (!replacement) {
+            continue
+          }
           context.report({
             node: specifier.imported,
             messageId: "remoteLinkTypeImport",
@@ -74,9 +72,13 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (!isResolveCallee(node.callee)) return
+        if (!isResolveCallee(node.callee)) {
+          return
+        }
         const arg = node.arguments[0]
-        if (!arg) return
+        if (!arg) {
+          return
+        }
 
         if (arg.type === "Literal" && arg.value === "remoteLink") {
           context.report({

@@ -29,7 +29,7 @@ export const useComboboxData = <
   defaultValue,
   defaultValueKey,
   selectedValue,
-  pageSize = 10,
+  pageSize = 10, 
   enabled = true,
 }: {
   queryKey: QueryKey

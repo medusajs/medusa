@@ -46,6 +46,11 @@ const cartFields = ["completed_at", "locale"].concat(
   cartFieldsForPricingContext
 )
 
+const variantFields = deduplicate([
+  ...productVariantsFields,
+  ...requiredVariantFieldsForInventoryConfirmation,
+])
+
 export const addToCartWorkflowId = "add-to-cart"
 /**
  * This workflow adds a product variant to a cart as a line item. It's executed by the
@@ -174,10 +179,7 @@ export const addToCartWorkflow = createWorkflow(
             setPricingContextResult: setPricingContextResult!,
             variants: {
               id: variantIds,
-              fields: deduplicate([
-                ...productVariantsFields,
-                ...requiredVariantFieldsForInventoryConfirmation,
-              ]),
+              fields: variantFields,
             },
           },
         })
@@ -200,10 +202,7 @@ export const addToCartWorkflow = createWorkflow(
     ).then(() => {
       return useQueryGraphStep({
         entity: "variants",
-        fields: deduplicate([
-          ...productVariantsFields,
-          ...requiredVariantFieldsForInventoryConfirmation,
-        ]),
+        fields: variantFields,
         filters: {
           id: variantIds,
         },

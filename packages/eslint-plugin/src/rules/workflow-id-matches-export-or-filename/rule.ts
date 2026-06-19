@@ -47,14 +47,26 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (node.callee.type !== AST_NODE_TYPES.Identifier) return
-        if (!bindings.createWorkflow.has(node.callee.name)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (node.callee.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
+        if (!bindings.createWorkflow.has(node.callee.name)) {
+          return
+        }
 
         const idArg = node.arguments[0]
-        if (!idArg) return
-        if (idArg.type !== AST_NODE_TYPES.Literal) return
-        if (typeof idArg.value !== "string") return
+        if (!idArg) {
+          return
+        }
+        if (idArg.type !== AST_NODE_TYPES.Literal) {
+          return
+        }
+        if (typeof idArg.value !== "string") {
+          return
+        }
 
         const id = idArg.value
         const quote = context.sourceCode.getText(idArg).charAt(0)
@@ -74,7 +86,9 @@ export const rule = createRule<[], MessageIds>({
             data: { id },
             fix(fixer) {
               const replacement = expected ?? toKebab(id)
-              if (!KEBAB_CASE_RE.test(replacement)) return null
+              if (!KEBAB_CASE_RE.test(replacement)) {
+                return null
+              }
               return fixer.replaceText(idArg, `${quote}${replacement}${quote}`)
             },
           })

@@ -110,5 +110,13 @@ export const auth = [
   {
     "title": "updateProvider",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/updateProvider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
   }
 ]

@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.16.0
+
+### Minor Changes
+
+- [`456813f8b36ab1086dec09c6a89655d7ab0bae5b`](undefined) - chore(deps): bump OpenTelemetry packages
+
+### Patch Changes
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
 ## 2.15.5
 
 ## 2.15.4
