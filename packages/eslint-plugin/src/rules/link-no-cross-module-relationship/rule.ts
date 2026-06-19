@@ -5,6 +5,10 @@ import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
 import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
 import { findVariableInScope, getReturnedExpression } from "../../util/ast"
+import {
+  isPathInsideOrEqual,
+  normalizePathForComparison,
+} from "../../util/filename"
 
 type MessageIds = "crossModuleRelationship" | "unresolvableTarget"
 
@@ -56,10 +60,6 @@ function isRelativeImport(source: string): boolean {
   return source.startsWith("./") || source.startsWith("../") || source === "."
 }
 
-function normalizePathForComparison(filePath: string): string {
-  return filePath.replace(/\\/g, "/")
-}
-
 function pathImplForFilename(filename: string): typeof path {
   return filename.includes("\\") ? path.win32 : path
 }
@@ -79,17 +79,7 @@ function pathStaysInModule(
   resolved: string,
   moduleRoot: string | null
 ): boolean {
-  if (moduleRoot === null) {
-    return true
-  }
-  const normalizedResolved = normalizePathForComparison(resolved)
-  const normalizedModuleRoot = normalizePathForComparison(moduleRoot)
-  const root = normalizedModuleRoot + "/"
-
-  return (
-    normalizedResolved === normalizedModuleRoot ||
-    normalizedResolved.startsWith(root)
-  )
+  return moduleRoot === null || isPathInsideOrEqual(resolved, moduleRoot)
 }
 
 /**
