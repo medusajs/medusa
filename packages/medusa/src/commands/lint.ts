@@ -1,5 +1,5 @@
 import { logger } from "@medusajs/framework/logger"
-import { hasEslintConfig, lintProject } from "./utils/lint-project"
+import { lintProject, LintOutcome } from "./utils/lint-project"
 
 export default async function lint({
   directory,
@@ -12,18 +12,11 @@ export default async function lint({
   fix?: boolean
   quiet?: boolean
 }) {
-  if (!hasEslintConfig(directory)) {
-    logger.error(
-      "No eslint.config.js found. Add one that extends `@medusajs/eslint-plugin` to lint this project."
-    )
-    process.exit(1)
-  }
-
   const patterns = paths?.length ? paths : ["."]
 
-  let result
+  let outcome: LintOutcome
   try {
-    result = await lintProject({
+    outcome = await lintProject({
       cwd: directory,
       patterns,
       fix: fix ?? false,
@@ -37,9 +30,18 @@ export default async function lint({
   }
 
   // `eslint` not installed — lintProject already warned.
-  if (!result) {
+  if (outcome.status === "eslint-not-installed") {
     process.exit(1)
   }
+
+  if (outcome.status === "no-config") {
+    logger.error(
+      "No eslint.config.js found. Add one that extends `@medusajs/eslint-plugin` to lint this project."
+    )
+    process.exit(1)
+  }
+
+  const result = outcome.result
 
   if (result.errorCount > 0 || result.warningCount > 0) {
     process.stdout.write(result.formatted)
