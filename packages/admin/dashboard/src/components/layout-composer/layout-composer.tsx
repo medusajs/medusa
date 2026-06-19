@@ -94,8 +94,13 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   hasOutlet = true,
 }: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
-  const { personalPreference, defaultPreference, activeScope, setPreference } =
-    useLayoutPreference(widgetsZonePrefix)
+  const {
+    personalPreference,
+    defaultPreference,
+    activeScope,
+    setPreference,
+    isSaving,
+  } = useLayoutPreference(widgetsZonePrefix)
   const triggerHost = useLayoutCustomizerTriggerHost()
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -348,10 +353,20 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           {t("layout.defaultView")}
         </Badge>
       </div>
-      <Button size="small" variant="secondary" onClick={cancelEdit}>
+      <Button
+        size="small"
+        variant="secondary"
+        onClick={cancelEdit}
+        disabled={isSaving}
+      >
         {t("actions.cancel")}
       </Button>
-      <Button size="small" variant="primary" onClick={commitEdit}>
+      <Button
+        size="small"
+        variant="primary"
+        onClick={commitEdit}
+        isLoading={isSaving}
+      >
         {editScope === "default" && hasChanges
           ? t("layout.saveForEveryone")
           : t("actions.save")}

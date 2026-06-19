@@ -28,6 +28,7 @@ export type UseLayoutPreferenceReturn = {
     next: LayoutPreference,
     options?: SetPreferenceOptions
   ) => void
+  isSaving: boolean
 }
 
 function toPreference(
@@ -41,7 +42,8 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
   const { personal_configuration, default_configuration, active_scope } =
     useLayoutConfiguration(zone)
 
-  const { mutate: setLayoutConfiguration } = useSetLayoutConfiguration(zone)
+  const { mutate: setLayoutConfiguration, isPending: isSaving } =
+    useSetLayoutConfiguration(zone)
 
   const defaultPreference = useMemo(
     () =>
@@ -72,5 +74,6 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
     defaultPreference,
     activeScope,
     setPreference,
+    isSaving,
   }
 }
