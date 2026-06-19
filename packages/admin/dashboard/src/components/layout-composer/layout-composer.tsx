@@ -266,14 +266,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     setEditMode(true)
   }
 
-  function switchScope(scope: LayoutScope) {
-    if (scope === editScope) {
-      return
-    }
-    setEditScope(scope)
-    setDraft(preferenceForScope(scope))
-  }
-
   async function commitEdit() {
     if (editScope === "default" && hasChanges) {
       const confirmed = await prompt({
@@ -348,7 +340,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           size="xsmall"
           color={editScope === "personal" ? "blue" : "grey"}
           className="cursor-pointer"
-          onClick={() => switchScope("personal")}
+          onClick={() => setEditScope("personal")}
         >
           {t("layout.personalView")}
         </Badge>
@@ -356,7 +348,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           size="xsmall"
           color={editScope === "default" ? "blue" : "grey"}
           className="cursor-pointer"
-          onClick={() => switchScope("default")}
+          onClick={() => setEditScope("default")}
         >
           {t("layout.defaultView")}
         </Badge>
