@@ -162,6 +162,20 @@ pnpm install
 
 This will install the dependencies of all packages in your workspace and create a `pnpm-lock.yaml` file to lock the versions of your installed packages.
 
+### Workspace Package Dependencies
+
+If your monorepo contains packages that import `@medusajs/framework` in their compiled output (for example, custom plugins or shared packages), declare `@medusajs/framework` as a `peerDependency` in those packages rather than a `devDependency`:
+
+```json title="apps/my-plugin/package.json"
+{
+  "peerDependencies": {
+    "@medusajs/framework": "*"
+  }
+}
+```
+
+Declaring it only as a `devDependency` can cause a `Cannot find module '@medusajs/framework/utils'` error at runtime, because `devDependencies` are not included in production deployments.
+
 ---
 
 ## Test Your Setup

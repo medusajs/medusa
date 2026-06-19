@@ -6,4 +6,4 @@ The details to mark a payment collection as paid.
 
 ## Properties
 
-<TypeList types={[{"name":"order_id","type":"`string`","description":"The ID of the order this payment collection belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AdminMarkPaymentCollectionAsPaid"/>
+<TypeList types={[{"name":"order_id","type":"`string`","description":"The ID of the order this payment collection belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The ID of the payment provider to record the captured payment under.\nDefaults to the system (manual) payment provider when omitted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AdminMarkPaymentCollectionAsPaid"/>

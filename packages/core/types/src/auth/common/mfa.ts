@@ -113,10 +113,6 @@ export type AuthMfaChallengeDTO = {
    */
   auth_identity?: AuthIdentityDTO
   /**
-   * The type of actor initiating the challenge.
-   */
-  actor_type?: string | null
-  /**
    * The authentication provider handling the challenge.
    */
   auth_provider?: string | null
@@ -224,10 +220,6 @@ export type CreateAuthMfaChallengeDTO = {
    * The ID of the authentication identity to challenge.
    */
   auth_identity_id: string
-  /**
-   * The type of actor requesting the challenge.
-   */
-  actor_type?: string | null
   /**
    * The authentication provider handling the challenge.
    */

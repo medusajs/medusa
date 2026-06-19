@@ -1,0 +1,232 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `LayoutComposer`,
+}
+
+# {metadata.title}
+
+The `LayoutComposer` component provides a flexible layout composition system for building admin pages with widget support. It manages the rendering of widgets in specific sections and supports different layout structures.
+
+The `LayoutComposer` is useful for plugins that want to create custom admin pages with a consistent layout and custom widget injection zones.
+
+<Note>
+
+This component is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+## Basic Example
+
+In the following example, the `LayoutComposer` is used to create a two-column layout for a custom brand details page:
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandDetailsPage = () => {
+  // retrieve brand...
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.details"
+      preferredLayoutId="core:two-column"
+      data={brand}
+      sections={{
+        main: (
+          <>
+            <BrandGeneralSection brand={brand} />
+            <BrandVariantsSection brand={brand} />
+          </>
+        ),
+        side: (
+          <>
+            <BrandMediaSection brand={brand} />
+            <BrandStatusSection brand={brand} />
+          </>
+        ),
+      }}
+    />
+  )
+}
+```
+
+The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+
+- `brand.details.before`: Widgets rendered before the main content of the brand details page.
+- `brand.details.after`: Widgets rendered after the main content of the brand details page.
+- `brand.details.side.before`: Widgets rendered before the side content of the brand details page.
+- `brand.details.side.after`: Widgets rendered after the side content of the brand details page.
+
+### Single Column Layout
+
+The `LayoutComposer` also supports single-column layouts, which is useful for listing pages or pages with a single main content area. For example:
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandListPage = () => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.list"
+      preferredLayoutId="core:single-column"
+      data={brand}
+      sections={{
+        main: (
+          <BrandListSection />
+        ),
+      }}
+    />
+  )
+}
+```
+
+The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+
+- `brand.list.before`: Widgets rendered before the main content of the brand list page.
+- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+
+---
+
+## Props
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Prop
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `widgetsZonePrefix`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `string`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The prefix used to determine widget injection zones for the page. The component automatically appends `.before`, `.after`, `.side.before`, and `.side.after` to this prefix.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `preferredLayoutId`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `string`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The ID of the preferred layout to use. By default, accepted values are `"core:single-column"` and `"core:two-column"`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `sections`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `Record<string, ReactNode>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Object mapping section names to their content. The key is the name of the section, and the value is a `ReactNode`. Available sections depend on the chosen layout:
+
+        - `core:single-column`: `main`
+        - `core:two-column`: `main`, `side`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `data`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        `unknown` (optional)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Data passed from the UI route to the `LayoutComposer`. This data is passed to widgets injected into the zones, allowing them to access the page's main data.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Custom Layouts
+
+You can create custom layouts by registering them with the dashboard extension system. Custom layouts must implement the `LayoutDefinition` interface:
+
+```tsx
+import type { LayoutDefinition } from "@medusajs/dashboard/components"
+
+const customLayout: LayoutDefinition = {
+  id: "my-plugin:three-column",
+  sections: [
+    { id: "main" },
+    { id: "side" },
+    { id: "extra" },
+  ],
+  Component: ({ sections, data }) => (
+    <div className="grid grid-cols-3 gap-4">
+      <div>{sections.main}</div>
+      <div>{sections.side}</div>
+      <div>{sections.extra}</div>
+    </div>
+  ),
+}
+```
+
+Then augment the `LayoutSectionRegistry` interface to add type safety:
+
+```ts
+declare module "@medusajs/dashboard/components" {
+  interface LayoutSectionRegistry {
+    "my-plugin:three-column": "main" | "side" | "extra"
+  }
+}
+```
+
+You can then use the custom layout in the `LayoutComposer`:
+
+```tsx
+import { LayoutComposer } from "@medusajs/dashboard/components"
+
+const BrandPage = () => {
+  return (
+    <LayoutComposer
+      widgetsZonePrefix="brand.list"
+      preferredLayoutId="my-plugin:three-column"
+      sections={{
+        main: <BrandListSection />,
+        side: <BrandFiltersSection />,
+        extra: <BrandStatsSection />,
+      }}
+    />
+  )
+}
+```

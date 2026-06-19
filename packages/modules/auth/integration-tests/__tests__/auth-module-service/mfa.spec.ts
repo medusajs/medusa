@@ -643,7 +643,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("returns the auth identity when MFA is not enabled", async () => {
         const result = await service.authenticate("plaintextpass", {
-          actor_type: "user",
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -665,7 +664,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("returns an MFA challenge instead of the auth identity when MFA is enabled", async () => {
         const initial = await service.authenticate("plaintextpass", {
-          actor_type: "user",
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -686,7 +684,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         })
 
         const result = await service.authenticate("plaintextpass", {
-          actor_type: "user",
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -698,7 +695,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             success: true,
             mfaChallenge: expect.objectContaining({
               auth_identity_id: initial.authIdentity!.id,
-              actor_type: "user",
               auth_provider: "plaintextpass",
               methods: ["totp"],
               attempts: 0,

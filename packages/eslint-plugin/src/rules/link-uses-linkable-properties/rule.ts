@@ -26,6 +26,25 @@ function isLinkableMemberChain(node: TSESTree.Node): boolean {
   return true
 }
 
+function isLinkableMemberChainOrId(node: TSESTree.Node): boolean {
+  // Match `<X>.linkable.<y>` or `<X>.linkable.<y>.id`. The `.id` form is used
+  // when linking to a data model by its id (e.g. linking to draft orders via
+  // `OrderModule.linkable.order.id`).
+  if (isLinkableMemberChain(node)) {
+    return true
+  }
+  if (
+    node.type === "MemberExpression" &&
+    !node.computed &&
+    node.property.type === "Identifier" &&
+    node.property.name === "id" &&
+    isLinkableMemberChain(node.object)
+  ) {
+    return true
+  }
+  return false
+}
+
 function hasOwnPropertyNamed(
   node: TSESTree.ObjectExpression,
   name: string
@@ -91,7 +110,7 @@ function isValidLinkParticipant(node: TSESTree.Node): boolean {
       if (keyName !== "linkable") {
         continue
       }
-      if (isLinkableMemberChain(prop.value)) {
+      if (isLinkableMemberChainOrId(prop.value)) {
         return true
       }
       // Read-only link form: `linkable` is an inline object describing the

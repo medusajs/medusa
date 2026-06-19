@@ -205,14 +205,44 @@ class OasKindGenerator extends FunctionKindGenerator {
       return false
     }
 
-    const hasCorrectRequestType = this.REQUEST_TYPE_NAMES.some(
-      (name) => functionNode.parameters[0].type?.getText().startsWith(name)
-    )
-    const hasCorrectResponseType = this.RESPONSE_TYPE_NAMES.some(
-      (name) => functionNode.parameters[1].type?.getText().startsWith(name)
+    const hasCorrectRequestType =
+      this.getRequestTypeReferenceNode(functionNode.parameters[0].type) !==
+      undefined
+    const hasCorrectResponseType = this.RESPONSE_TYPE_NAMES.some((name) =>
+      functionNode.parameters[1].type?.getText().startsWith(name)
     )
 
     return hasCorrectRequestType && hasCorrectResponseType
+  }
+
+  /**
+   * Resolve the request's type reference node from a function's first parameter type.
+   * This supports both a direct type reference, such as `MedusaRequest<T>`, and a union
+   * of request types, such as `MedusaRequest<T> | AuthenticatedMedusaRequest<T>`. In the
+   * union case, the first member matching {@link REQUEST_TYPE_NAMES} is returned, as the
+   * union members share the same type arguments.
+   *
+   * @param typeNode - The first parameter's type node.
+   * @returns The matching request type reference node, if any.
+   */
+  getRequestTypeReferenceNode(
+    typeNode: ts.TypeNode | undefined
+  ): ts.TypeReferenceNode | undefined {
+    if (!typeNode) {
+      return undefined
+    }
+
+    const candidateNodes: ts.TypeNode[] = ts.isUnionTypeNode(typeNode)
+      ? [...typeNode.types]
+      : [typeNode]
+
+    return candidateNodes.find(
+      (candidate): candidate is ts.TypeReferenceNode =>
+        ts.isTypeReferenceNode(candidate) &&
+        this.REQUEST_TYPE_NAMES.some((name) =>
+          candidate.typeName.getText().startsWith(name)
+        )
+    )
   }
 
   /**
@@ -1233,10 +1263,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       )
     }
 
-    if (
-      !node.parameters[0].type ||
-      !ts.isTypeReferenceNode(node.parameters[0].type)
-    ) {
+    const requestTypeReferenceNode = this.getRequestTypeReferenceNode(
+      node.parameters[0].type
+    )
+
+    if (!requestTypeReferenceNode) {
       return {
         queryParameters,
         requestSchema,
@@ -1244,14 +1275,14 @@ class OasKindGenerator extends FunctionKindGenerator {
     }
 
     const requestType = this.checker.getTypeFromTypeNode(
-      node.parameters[0].type
+      requestTypeReferenceNode
     ) as ts.TypeReference
 
     const requestTypeArguments =
       requestType.typeArguments || requestType.aliasTypeArguments
     const shouldCheckTypeArgumentForQuery =
       this.REQUEST_CHECK_QUERY_ARGS.includes(
-        node.parameters[0].type.typeName.getText()
+        requestTypeReferenceNode.typeName.getText()
       )
 
     if (
@@ -1275,11 +1306,11 @@ class OasKindGenerator extends FunctionKindGenerator {
     const isQuery = methodName === "get"
 
     const zodObjectRequestBodyTypeName = getCorrectZodTypeName({
-      typeReferenceNode: node.parameters[0].type,
+      typeReferenceNode: requestTypeReferenceNode,
       itemType: requestTypeArguments[0],
     })
     const zodObjectQueryTypeName = getCorrectZodTypeName({
-      typeReferenceNode: node.parameters[0].type,
+      typeReferenceNode: requestTypeReferenceNode,
       itemType: requestTypeArguments[checkQueryIndex],
     })
 

@@ -9,7 +9,9 @@ export const sdk = new Medusa({
 })
 
 sdk.admin.paymentCollection.markAsPaid("paycol_123", {
-  order_id: "order_123"
+  order_id: "order_123",
+  // optional: record the payment under a specific provider
+  provider_id: "pp_system_default"
 })
 .then(({ payment_collection }) => {
   console.log(payment_collection)

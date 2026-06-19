@@ -5,6 +5,7 @@ import { BareboneLayout, TightLayout } from "docs-ui"
 import { config } from "@/config"
 import clsx from "clsx"
 import Footer from "../components/Footer"
+import SunsetBanner from "../components/SunsetBanner"
 import { inter, robotoMono } from "./fonts"
 
 const ogImage =
@@ -61,6 +62,7 @@ export default function RootLayout({
       gaId={process.env.NEXT_PUBLIC_GA_ID}
     >
       <TightLayout ProvidersComponent={Providers} footerComponent={<Footer />}>
+        <SunsetBanner />
         {children}
       </TightLayout>
     </BareboneLayout>
