@@ -1,12 +1,12 @@
 {
-	"id": 15871,
+	"id": 16001,
 	"name": "sales-channel-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 15872,
+			"id": 16002,
 			"name": "SalesChannel",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,7 +18,7 @@
 					"fileName": "sales-channel.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L3"
 				}
 			],
 			"type": {
@@ -38,14 +38,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15873,
+									"id": 16003,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15874,
+											"id": 16004,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,7 +63,7 @@
 													"fileName": "sales-channel.ts",
 													"line": 4,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L4"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L4"
 												}
 											],
 											"type": {
@@ -89,7 +89,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15875,
+											"id": 16005,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -107,7 +107,7 @@
 													"fileName": "sales-channel.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L5"
 												}
 											],
 											"type": {
@@ -122,7 +122,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15876,
+											"id": 16006,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -142,7 +142,7 @@
 													"fileName": "sales-channel.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L6"
 												}
 											],
 											"type": {
@@ -157,7 +157,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15877,
+											"id": 16007,
 											"name": "is_disabled",
 											"variant": "declaration",
 											"kind": 1024,
@@ -175,7 +175,7 @@
 													"fileName": "sales-channel.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L7"
 												}
 											],
 											"type": {
@@ -190,7 +190,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15878,
+											"id": 16008,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -210,7 +210,7 @@
 													"fileName": "sales-channel.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L8"
 												}
 											],
 											"type": {
@@ -229,11 +229,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												15874,
-												15875,
-												15876,
-												15877,
-												15878
+												16004,
+												16005,
+												16006,
+												16007,
+												16008
 											]
 										}
 									],
@@ -242,7 +242,7 @@
 											"fileName": "sales-channel.ts",
 											"line": 3,
 											"character": 50,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/sales-channel/src/models/sales-channel.ts#L3"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/sales-channel/src/models/sales-channel.ts#L3"
 										}
 									]
 								}
@@ -266,41 +266,41 @@
 		{
 			"title": "Variables",
 			"children": [
-				15872
+				16002
 			]
 		}
 	],
 	"packageName": "@medusajs/sales-channel",
 	"symbolIdMap": {
-		"15871": {
+		"16001": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"15872": {
+		"16002": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "SalesChannel"
 		},
-		"15873": {
+		"16003": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "__object"
 		},
-		"15874": {
+		"16004": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "__object.id"
 		},
-		"15875": {
+		"16005": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "__object.name"
 		},
-		"15876": {
+		"16006": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "__object.description"
 		},
-		"15877": {
+		"16007": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "__object.is_disabled"
 		},
-		"15878": {
+		"16008": {
 			"sourceFileName": "../../../../packages/modules/sales-channel/src/models/sales-channel.ts",
 			"qualifiedName": "__object.metadata"
 		}
@@ -310,7 +310,7 @@
 			"1": "../../../../packages/modules/sales-channel/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 15871
+			"1": 16001
 		}
 	}
 }

@@ -1411,6 +1411,7 @@
       "methodDescription": "Choose a different shipping method from the one customer selected",
       "error": {
         "wrongQuantity": "Only one item is available for fulfillment",
+        "wrongQuantity_one": "Only one item is available for fulfillment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
         "noItems": "No items to fulfill.",
         "noShippingOption": "Shipping option is required",

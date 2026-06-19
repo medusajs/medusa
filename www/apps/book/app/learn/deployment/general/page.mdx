@@ -243,7 +243,7 @@ REDIS_URL= # REDIS DATABASE URL
 
 Where:
 
-- The value of `COOKIE_SECRET` and `JWT_SECRET` must be a randomly generated secret.
+- The value of `COOKIE_SECRET` and `JWT_SECRET` must be a randomly generated secret. These are required in production. If not set, an error is thrown when starting the Medusa application.
 - `STORE_CORS`'s value is the URL of your storefront. If you don’t have it yet, you can skip adding it for now.
 - `ADMIN_CORS`'s value is the URL of the admin dashboard, which is the same as the server Medusa application. You can add it later if you don't currently have it.
 - `AUTH_CORS`'s value is the URLs of any application authenticating users, customers, or other actor types, such as the storefront and admin URLs. The URLs are separated by commas. If you don’t have the URLs yet, you can set its value later.
@@ -325,7 +325,7 @@ REDIS_URL= # REDIS DATABASE URL
 
 Where:
 
-- The value of `COOKIE_SECRET` and `JWT_SECRET` must be a randomly generated secret.
+- The value of `COOKIE_SECRET` and `JWT_SECRET` must be a randomly generated secret. These are required in production. If not set, an error is thrown when starting the Medusa application.
 - Set `DISABLE_MEDUSA_ADMIN`'s value to `true` so that the admin isn't built with the worker application.
 - Set the PostgreSQL database's connection URL as the value of `DATABASE_URL`
 - Set the Redis database's connection URL as the value of `REDIS_URL`.

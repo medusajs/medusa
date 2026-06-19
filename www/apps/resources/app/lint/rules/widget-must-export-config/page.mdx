@@ -1,0 +1,51 @@
+---
+sidebar_label: "widget-must-export-config"
+---
+
+export const metadata = {
+  title: `widget-must-export-config - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires widget files to export a named `config` initialized with `defineWidgetConfig`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/admin/widgets` directory. It reports a widget file that's missing a named `config` export, or whose `config` export isn't initialized with `defineWidgetConfig`.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+const MyWidget = () => <>Widget</>
+
+export default MyWidget
+```
+
+Instead, export a `config` initialized with `defineWidgetConfig`:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+const MyWidget = () => <>Widget</>
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default MyWidget
+```
+
+## Why it's Important
+
+The `config` export tells Medusa which zones a widget is injected into. Without it, Medusa can't register the widget in the admin dashboard.
+
+Learn more in the [Admin Widgets documentation](!docs!/learn/fundamentals/admin/widgets).
+
+## Fixable
+
+This rule isn't auto-fixable.

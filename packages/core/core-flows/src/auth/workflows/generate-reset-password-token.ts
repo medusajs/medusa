@@ -42,7 +42,7 @@ const RESET_PASSWORD_TOKEN_TTL_SECONDS = 15 * 60
  *
  * Generate a reset password token for a user or customer.
  *
- * @since 2.15.6
+ * @since 2.16.0
  */
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
@@ -82,14 +82,21 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
       }
     )
 
+    const payload = transform({
+      input,
+      token,
+    }, (data) => {
+      return {
+        entity_id: data.input.entityId,
+        actor_type: data.input.actorType,
+        token: data.token,
+        metadata: data.input.metadata ?? {},
+      }
+    })
+
     emitEventStep({
       eventName: AuthWorkflowEvents.PASSWORD_RESET,
-      data: {
-        entity_id: input.entityId,
-        actor_type: input.actorType,
-        token,
-        metadata: input.metadata ?? {},
-      },
+      data: payload,
     })
 
     return new WorkflowResponse(token)

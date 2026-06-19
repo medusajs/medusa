@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 /**
  * This class is used to send requests to the RBAC Policy API routes.

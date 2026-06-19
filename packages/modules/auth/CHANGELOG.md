@@ -1,5 +1,18 @@
 # @medusajs/auth
 
+## 2.16.0
+
+### Patch Changes
+
+- [`a46961ed421dc69fe991891d02b0f1c66f6180ab`](undefined) - fix(core-flows, auth, types, medusa): bind password reset tokens to a single-use server record
+
+- [#15571](https://github.com/medusajs/medusa/pull/15571) [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
+
+- [`42aa9bf7ec8cf8dede96ce4da13e12e3ef319e90`](undefined) - chore(auth-google, auth): verify OAuth id_token signatures via JWKS
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`20352f4fa2f31e5b491c8b1b244c407392939fbf`](https://github.com/medusajs/medusa/commit/20352f4fa2f31e5b491c8b1b244c407392939fbf), [`90af038c95c835dee5168ffd19cda5182d81b904`](https://github.com/medusajs/medusa/commit/90af038c95c835dee5168ffd19cda5182d81b904), [`66610b87efb112e37b78c7c9536d95070b8d6b11`](https://github.com/medusajs/medusa/commit/66610b87efb112e37b78c7c9536d95070b8d6b11)]:
+  - @medusajs/framework@2.16.0
+
 ## 2.15.5
 
 ### Patch Changes

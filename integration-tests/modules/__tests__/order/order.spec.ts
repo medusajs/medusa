@@ -358,6 +358,7 @@ medusaIntegrationTestRunner({
               },
               is_custom_price: false,
               metadata: null,
+              line_item_metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
               deleted_at: null,

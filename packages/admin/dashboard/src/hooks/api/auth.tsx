@@ -1,4 +1,8 @@
-import { AuthLoginResponse, FetchError } from "@medusajs/js-sdk"
+import {
+  AuthLoginResponse,
+  AuthRegisterResponse,
+  FetchError,
+} from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 import { sdk } from "../../lib/client"
@@ -26,7 +30,7 @@ export const useSignInWithEmailPass = (
 
 export const useSignUpWithEmailPass = (
   options?: UseMutationOptions<
-    string,
+    AuthRegisterResponse,
     FetchError,
     HttpTypes.AdminSignInWithEmailPassword
   >

@@ -1,11 +1,11 @@
 {
   "name": "@medusajs/dashboard",
-  "version": "2.15.5",
+  "version": "2.16.0",
   "scripts": {
     "typecheck": "tsgo --noEmit -p tsconfig.typecheck.json",
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "../../../node_modules/.bin/vite",
-    "build": "yarn typecheck && yarn run -T tsup && node ./scripts/generate-types.js",
+    "build": "yarn typecheck && yarn run -T tsup",
     "build:preview": "../../../node_modules/.bin/vite build",
     "preview": "../../../node_modules/.bin/vite preview",
     "test": "../../../node_modules/.bin/vitest --run",
@@ -22,6 +22,16 @@
       "import": "./dist/app.mjs",
       "require": "./dist/app.js"
     },
+    "./components": {
+      "types": "./dist/components.d.ts",
+      "import": "./dist/components.mjs",
+      "require": "./dist/components.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks.d.ts",
+      "import": "./dist/hooks.mjs",
+      "require": "./dist/hooks.js"
+    },
     "./css": {
       "import": "./dist/app.css",
       "require": "./dist/app.css"
@@ -31,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/admin/dashboard"
   },
   "files": [
@@ -47,10 +57,10 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "3.4.2",
-    "@medusajs/admin-shared": "2.15.5",
-    "@medusajs/icons": "2.15.5",
-    "@medusajs/js-sdk": "2.15.5",
-    "@medusajs/ui": "4.1.15",
+    "@medusajs/admin-shared": "2.16.0",
+    "@medusajs/icons": "2.16.0",
+    "@medusajs/js-sdk": "2.16.0",
+    "@medusajs/ui": "4.1.16",
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dismissable-layer": "1.1.4",
     "@tanstack/react-query": "5.64.2",
@@ -77,14 +87,14 @@
     "react-hook-form": "7.49.1",
     "react-i18next": "13.5.0",
     "react-jwt": "^1.2.0",
-    "react-router-dom": "^6.30.4",
+    "react-router-dom": "6.30.4",
     "zod": "4.2.0"
   },
   "devDependencies": {
-    "@medusajs/admin-shared": "2.15.5",
-    "@medusajs/admin-vite-plugin": "2.15.5",
-    "@medusajs/types": "2.15.5",
-    "@medusajs/ui-preset": "2.15.5",
+    "@medusajs/admin-shared": "2.16.0",
+    "@medusajs/admin-vite-plugin": "2.16.0",
+    "@medusajs/types": "2.16.0",
+    "@medusajs/ui-preset": "2.16.0",
     "@types/qrcode": "^1.5.5",
     "@typescript/native-preview": "^7.0.0-dev.20260423.1",
     "eslint": "8",

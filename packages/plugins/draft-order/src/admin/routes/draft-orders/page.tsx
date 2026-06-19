@@ -1,4 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { LayoutComposer } from "@medusajs/dashboard/components"
 import type { HttpTypes } from "@medusajs/types"
 import {
   Container,
@@ -7,8 +8,7 @@ import {
   Tooltip,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { Fragment, useMemo } from "react"
-import { Outlet } from "react-router-dom"
+import { useMemo } from "react"
 
 import { DataTable } from "../../components/common/data-table"
 import { useCustomers } from "../../hooks/api/customers"
@@ -52,36 +52,41 @@ const List = () => {
   }
 
   return (
-    <Fragment>
-      <Container className="p-0">
-        <DataTable
-          data={draft_orders}
-          getRowId={(row) => row.id}
-          columns={columns}
-          filters={filters}
-          isLoading={isPending}
-          pageSize={PAGE_SIZE}
-          rowCount={count}
-          heading={t("draftOrders.domain")}
-          action={{
-            label: t("actions.create"),
-            to: "create",
-          }}
-          rowHref={(row) => `${row.id}`}
-          emptyState={{
-            empty: {
-              heading: t("draftOrders.list.noRecordsMessage"),
-              description: t("draftOrders.list.description"),
-            },
-            filtered: {
-              heading: t("draftOrders.list.filtered.heading"),
-              description: t("draftOrders.list.filtered.description"),
-            },
-          }}
-        />
-      </Container>
-      <Outlet />
-    </Fragment>
+    <LayoutComposer
+      widgetsZonePrefix="draft_order.list"
+      preferredLayoutId="core:single-column"
+      sections={{
+        main: (
+          <Container className="p-0">
+            <DataTable
+              data={draft_orders}
+              getRowId={(row) => row.id}
+              columns={columns}
+              filters={filters}
+              isLoading={isPending}
+              pageSize={PAGE_SIZE}
+              rowCount={count}
+              heading={t("draftOrders.domain")}
+              action={{
+                label: t("actions.create"),
+                to: "create",
+              }}
+              rowHref={(row) => `${row.id}`}
+              emptyState={{
+                empty: {
+                  heading: t("draftOrders.list.noRecordsMessage"),
+                  description: t("draftOrders.list.description"),
+                },
+                filtered: {
+                  heading: t("draftOrders.list.filtered.heading"),
+                  description: t("draftOrders.list.filtered.description"),
+                },
+              }}
+            />
+          </Container>
+        ),
+      }}
+    />
   )
 }
 

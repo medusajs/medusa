@@ -1,0 +1,41 @@
+---
+sidebar_label: "authenticate-flag-name-and-type"
+---
+
+export const metadata = {
+  title: `authenticate-flag-name-and-type - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires the API route opt-out flag to be exported as `AUTHENTICATE` with a boolean literal value.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports an authentication flag whose export name uses the wrong casing or whose value isn't a boolean literal. Medusa ignores both cases.
+
+The following code is reported by the rule:
+
+```ts title="src/api/store/customers/me/route.ts"
+export const authenticate = false
+```
+
+Instead, export the flag as `AUTHENTICATE` with a boolean value:
+
+```ts title="src/api/store/customers/me/route.ts"
+export const AUTHENTICATE = false
+```
+
+## Why it's Important
+
+Medusa only recognizes the flag when it's exported as `AUTHENTICATE` with a boolean literal. Other casings or value types are silently ignored, so the route's authentication behavior won't change as intended.
+
+Learn more in the [Protected Routes documentation](!docs!/learn/fundamentals/api-routes/protected-routes).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
