@@ -17,11 +17,10 @@ import {
   parallelize,
   StepResponse,
   transform,
-  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
+import { getTranslatedLineItemsStep } from "../../common"
 import { emitEventStep } from "../../common/steps/emit-event"
 import {
   createCartsStep,
@@ -216,32 +215,11 @@ export const createCartWorkflow = createWorkflow(
     )
     const setPricingContextResult = setPricingContext.getResult()
 
-    const customerId = transform(
-      { customerData },
-      (data) => data.customerData.customer?.id
-    )
-
-    const customerForPricing = when(
-      "fetch-customer-groups",
-      { customerId },
-      ({ customerId }) => !!customerId
-    ).then(() => {
-      const { data: customer } = useQueryGraphStep({
-        entity: "customer",
-        fields: ["id", "groups.id"],
-        filters: { id: customerId },
-        options: { isList: false },
-      }).config({ name: "customer-groups-query" })
-
-      return customer
-    })
-
     const getVariantsAndItemsWithPricesInput = transform(
       {
         input,
         region,
         customerData,
-        customerForPricing,
         setPricingContextResult,
         variantIds,
         productVariantsFields,
@@ -254,7 +232,7 @@ export const createCartWorkflow = createWorkflow(
             region: data.region,
             region_id: data.region?.id,
             customer_id: data.customerData.customer?.id,
-            customer: data.customerForPricing,
+            customer: data.customerData.customer ?? undefined,
           },
           items: data.input.items,
           setPricingContextResult: data.setPricingContextResult!,
