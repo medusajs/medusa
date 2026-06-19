@@ -41,6 +41,7 @@ export function errorHandler() {
 
       res.status(err.statusCode).json({
         message: err.message,
+        type: mapStatusCodeToErrorType(err.statusCode),
       })
       return
     }
@@ -116,6 +117,25 @@ export function errorHandler() {
 
     res.status(statusCode).json(errObj)
   } as unknown as ErrorRequestHandler
+}
+
+// This is just to keep the promise of returning a type, but for bodyparse or other http errors,
+// we probably don't need to return a type
+const mapStatusCodeToErrorType = (statusCode: number) => {
+  switch (statusCode) {
+    case 400:
+      return MedusaError.Types.INVALID_DATA
+    case 401:
+      return MedusaError.Types.UNAUTHORIZED
+    case 403:
+      return MedusaError.Types.FORBIDDEN
+    case 404:
+      return MedusaError.Types.NOT_FOUND
+    case 409:
+      return MedusaError.Types.CONFLICT
+    default:
+      return "unknown_error"
+  }
 }
 
 /**

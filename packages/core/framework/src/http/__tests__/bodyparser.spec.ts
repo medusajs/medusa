@@ -133,12 +133,13 @@ describe("bodyparser preserveRawBody", () => {
       const res = await request
         .post("/webhook")
         .set("Content-Type", "application/json")
-        .send('{"value":"C:\\Users"}')
+        .send(`{"value":"C:\\Users"}`)
         .expect(400)
 
       expect(res.body).toEqual({
         message:
           "Bad escaped character in JSON at position 13 (line 1 column 14)",
+        type: "invalid_data",
       })
     })
   })
