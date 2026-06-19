@@ -16,7 +16,7 @@ import { DisplayEntry } from "../components/layout-composer/entries"
 import {
   getSectionIdFromTailId,
   isSectionTailId,
-} from "../components/layout-composer/section-dropzone"
+} from "../components/layout-composer/entries"
 import type { LayoutPreference } from "../components/layout-composer/types"
 
 /**

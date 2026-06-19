@@ -13,7 +13,7 @@ import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
 import { useExtension } from "../../providers/extension-provider/use-extension"
-import { useLayoutCustomizerTriggerHost } from "./customizer-host"
+import { useLayoutCustomizerTriggerHost } from "../../hooks/use-layout-customizer-trigger-host"
 import {
   DisplayEntry,
   RawEntry,

@@ -1,18 +1,10 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useState,
-} from "react"
+import { ReactNode, useCallback, useContext, useState } from "react"
+import { LayoutCustomizerHostContext } from "./customizer-host-context"
 
-type LayoutCustomizerHostValue = {
+export type LayoutCustomizerHostValue = {
   triggerNode: HTMLElement | null
   setTriggerNode: (node: HTMLElement | null) => void
 }
-
-const LayoutCustomizerHostContext =
-  createContext<LayoutCustomizerHostValue | null>(null)
 
 /**
  * Wraps a tree that hosts the layout customizer trigger UI in a fixed
@@ -48,12 +40,4 @@ export const LayoutCustomizerSlot = () => {
     [ctx]
   )
   return <div ref={ref} className="contents" />
-}
-
-/**
- * DOM node where customizer controls portal into. `null` if no host is
- * mounted (e.g. `LayoutComposer` used outside the shell).
- */
-export const useLayoutCustomizerTriggerHost = (): HTMLElement | null => {
-  return useContext(LayoutCustomizerHostContext)?.triggerNode ?? null
 }

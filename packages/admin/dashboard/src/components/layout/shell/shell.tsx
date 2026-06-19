@@ -19,7 +19,7 @@ import { ProgressBar } from "../../common/progress-bar"
 import {
   LayoutCustomizerHostProvider,
   LayoutCustomizerSlot,
-} from "../../layout-composer/customizer-host"
+} from "../../../providers/customizer-host-provider/customizer-host-provider"
 import { Notifications } from "../notifications"
 
 export const Shell = ({ children }: PropsWithChildren) => {
