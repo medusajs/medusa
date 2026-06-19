@@ -110,6 +110,12 @@ export class S3FileService extends AbstractFileProviderService {
    * disabled (config_.acl === false), which causes the SDK to omit the
    * ACL header entirely — required for buckets with BucketOwnerEnforced
    * Object Ownership or Block Public Access enabled.
+   *
+   * Note: getPresignedUploadUrl only calls this when `access` is explicitly
+   * provided. When access is undefined, presigned uploads omit ACL entirely
+   * (preserving original behaviour). The `acl` config option targets
+   * server-side uploads (upload/getUploadStream) where we control the
+   * PutObject call directly.
    */
   protected resolveAcl(
     access?: "public" | "private"
