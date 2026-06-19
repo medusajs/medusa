@@ -56141,7 +56141,7 @@ Lint your project using its ESLint configuration.
 npx medusa lint
 ```
 
-The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar) at the project root. If no config file is found, the command exits with an error.
+The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar). Config detection uses ESLint's own resolution, which walks ancestor directories, so a config at a monorepo root applies to nested projects. If no config file is found, the command exits with an error.
 
 The `eslint` package must be installed in your project. It is a peer dependency of `@medusajs/eslint-plugin`.
 
@@ -56633,7 +56633,7 @@ Lint your project using its ESLint configuration.
 npx medusa lint
 ```
 
-The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar) at the project root. If no config file is found, the command exits with an error.
+The command requires a flat ESLint config file (`eslint.config.js`, `eslint.config.mjs`, or similar). Config detection uses ESLint's own resolution, which walks ancestor directories, so a config at a monorepo root applies to nested projects. If no config file is found, the command exits with an error.
 
 The `eslint` package must be installed in your project. It is a peer dependency of `@medusajs/eslint-plugin`.
 

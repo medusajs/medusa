@@ -7620,5 +7620,7 @@ export const generatedEditDates = {
   "references/types/interfaces/types.DeletePaymentMethodInput/page.mdx": "2026-06-18T12:15:38.792Z",
   "references/types/interfaces/types.DeletePaymentMethodOutput/page.mdx": "2026-06-18T12:15:38.824Z",
   "app/lint/rules/link-uses-linkable-properties/page.mdx": "2026-06-18T14:23:23.151Z",
-  "app/lint/rules/read-only-link-requires-field/page.mdx": "2026-06-18T14:23:41.893Z"
+  "app/lint/rules/read-only-link-requires-field/page.mdx": "2026-06-18T14:23:41.893Z",
+  "app/lint/page.mdx": "2026-06-19T09:20:37.112Z",
+  "app/medusa-cli/commands/lint/page.mdx": "2026-06-19T09:20:30.518Z"
 }
