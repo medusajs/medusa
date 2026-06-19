@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from "react"
-import type { LayoutPreference } from "./types"
+import type { LayoutPreference } from "../components/layout-composer/types"
 import {
   useLayoutConfiguration,
   useSetLayoutConfiguration,
-} from "../../hooks/api/layouts"
+} from "./api/layouts"
 
 const EMPTY_PREFERENCE: LayoutPreference = { widgets: {} }
 
@@ -24,7 +24,10 @@ export type UseLayoutPreferenceReturn = {
   defaultPreference: LayoutPreference
   /** The persisted scope the user is actively viewing for this zone. */
   activeScope: LayoutScope
-  setPreference: (next: LayoutPreference, options?: SetPreferenceOptions) => void
+  setPreference: (
+    next: LayoutPreference,
+    options?: SetPreferenceOptions
+  ) => void
 }
 
 function toPreference(

@@ -47,7 +47,10 @@ import type {
   Layouts,
   WidgetPreference,
 } from "./types"
-import { useLayoutPreference, type LayoutScope } from "./use-layout-preference"
+import {
+  useLayoutPreference,
+  type LayoutScope,
+} from "../../hooks/use-layout-preference"
 
 type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   /**
@@ -234,7 +237,13 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         widgetSectionMap,
         validSectionIds,
       }
-    }, [sections, widgetsZonePrefix, layout, activePreference, getWidgetsForSections])
+    }, [
+      sections,
+      widgetsZonePrefix,
+      layout,
+      activePreference,
+      getWidgetsForSections,
+    ])
 
   // Renders a single entry for the current mode: plain content at idle, a
   // sortable wrapper with chrome in edit mode. An entry that currently renders
