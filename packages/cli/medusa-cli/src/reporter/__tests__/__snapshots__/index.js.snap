@@ -1,11 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Reporter handles "Error" signature correctly 1`] = `
-{
-  "level": "error",
-  "message": "Error",
-  "stack": Any<Array>,
-}
+[
+  {
+    "level": "error",
+    "message": "Error",
+    "stack": Any<Array>,
+  },
+]
 `;
 
 exports[`Reporter handles "String" signature correctly 1`] = `
@@ -16,3 +18,13 @@ exports[`Reporter handles "String" signature correctly 1`] = `
   },
 ]
 `;
+
+exports[`Reporter handles "String, Error" signature correctly 1`] = `
+[
+  {
+    "level": "error",
+    "message": "Test log: String Error",
+    "stack": Any<Array>,
+  },
+]
+`

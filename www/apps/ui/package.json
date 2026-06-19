@@ -23,9 +23,9 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.15.5",
-    "@medusajs/ui": "4.1.15",
-    "@medusajs/ui-preset": "2.15.5",
+    "@medusajs/icons": "2.16.0",
+    "@medusajs/ui": "4.1.16",
+    "@medusajs/ui-preset": "2.16.0",
     "@next/mdx": "15.5.18",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",

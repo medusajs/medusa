@@ -23,6 +23,7 @@ export const ignoresBlock: Linter.Config = {
     "**/integration-tests/**",
     "**/*.spec.*",
     "**/*.test.*",
+    "**/apps/storefront/**"
   ],
 }
 
