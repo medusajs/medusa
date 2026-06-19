@@ -11,6 +11,11 @@ import { useTranslation } from "react-i18next"
  * that exists solely while an edit is pending. Keeps such an entry a visible,
  * labeled card rather than collapsing to a 0-height row. Shared by the in-place
  * `SortableEntry` and the `DragOverlay` ghost so the two never drift.
+ *
+ * `empty:hidden` collapses the content box when it renders nothing so it stops
+ * reserving height — otherwise a layout that stretches the entry (e.g. a grid
+ * equalizing row heights) would size the empty content to the full cell and
+ * stack the placeholder below it, showing two boxes for one empty entry.
  */
 export function EntryContent({
   children,
@@ -24,7 +29,9 @@ export function EntryContent({
   const { t } = useTranslation()
   return (
     <>
-      <div className={clx("peer flex flex-col", className)}>{children}</div>
+      <div className={clx("peer flex flex-col empty:hidden", className)}>
+        {children}
+      </div>
       <div
         aria-hidden
         className={clx(
@@ -103,7 +110,7 @@ export function SortableEntry({
           sections) these resolve to the content height, so they're inert. */}
       <EntryContent
         className="h-full [&>*]:h-full"
-        placeholderClassName="border-ui-border-strong rounded-lg border border-dashed"
+        placeholderClassName="border-ui-border-strong h-full rounded-lg border border-dashed"
       >
         {children}
       </EntryContent>
