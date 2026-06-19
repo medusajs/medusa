@@ -56,12 +56,20 @@ function isRelativeImport(source: string): boolean {
   return source.startsWith("./") || source.startsWith("../") || source === "."
 }
 
+function normalizePathForComparison(filePath: string): string {
+  return filePath.replace(/\\/g, "/")
+}
+
+function pathImplForFilename(filename: string): typeof path {
+  return filename.includes("\\") ? path.win32 : path
+}
+
 /**
  * Returns the absolute path of the `modules/<name>/` directory containing the
  * given file, or `null` if the file isn't under a recognizable module root.
  */
 function getModuleRoot(filename: string): string | null {
-  const norm = filename.replace(/\\/g, "/")
+  const norm = normalizePathForComparison(filename)
   const match = norm.match(/^(.*\/modules\/[^/]+)\//)
   return match ? match[1] : null
 }
@@ -74,8 +82,14 @@ function pathStaysInModule(
   if (moduleRoot === null) {
     return true
   }
-  const root = moduleRoot + "/"
-  return resolved === moduleRoot || resolved.startsWith(root)
+  const normalizedResolved = normalizePathForComparison(resolved)
+  const normalizedModuleRoot = normalizePathForComparison(moduleRoot)
+  const root = normalizedModuleRoot + "/"
+
+  return (
+    normalizedResolved === normalizedModuleRoot ||
+    normalizedResolved.startsWith(root)
+  )
 }
 
 /**
@@ -91,8 +105,9 @@ function relativeImportStaysInModule(
   if (moduleRoot === null) {
     return true
   }
+  const pathImpl = pathImplForFilename(filename)
   return pathStaysInModule(
-    path.resolve(path.dirname(filename), source),
+    pathImpl.resolve(pathImpl.dirname(filename), source),
     moduleRoot
   )
 }
@@ -156,7 +171,7 @@ function findTsconfigPaths(startDir: string): TsconfigPaths | null {
   }
   let result: TsconfigPaths | null = null
   let dir = startDir
-  while (true) {
+  while (dir) {
     const candidate = path.join(dir, "tsconfig.json")
     if (ts.sys.fileExists(candidate)) {
       const loaded = loadTsconfigPaths(candidate)
