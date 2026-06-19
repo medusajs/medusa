@@ -287,13 +287,21 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       }
     }
 
-    if (draft) {
-      setPreference(draft, { asDefault: editScope === "default" })
+    if (!draft) {
+      setEditMode(false)
+      return
     }
-    // The saved scope is persisted as the active view server-side, so the
-    // refetched configuration keeps showing it after exiting edit mode.
-    setEditMode(false)
-    setDraft(null)
+
+    setPreference(
+      draft,
+      { asDefault: editScope === "default" },
+      {
+        onSuccess: () => {
+          setEditMode(false)
+          setDraft(null)
+        },
+      }
+    )
   }
 
   function cancelEdit() {

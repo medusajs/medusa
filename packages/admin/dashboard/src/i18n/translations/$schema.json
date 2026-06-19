@@ -1110,6 +1110,9 @@
         "dropToSectionEnd": {
           "type": "string"
         },
+        "dragToReorder": {
+          "type": "string"
+        },
         "saveForEveryone": {
           "type": "string"
         },
@@ -1117,6 +1120,9 @@
           "type": "string"
         },
         "saveForEveryoneDescription": {
+          "type": "string"
+        },
+        "saveSuccess": {
           "type": "string"
         }
       },
@@ -1126,9 +1132,11 @@
         "defaultView",
         "empty",
         "dropToSectionEnd",
+        "dragToReorder",
         "saveForEveryone",
         "saveForEveryoneTitle",
-        "saveForEveryoneDescription"
+        "saveForEveryoneDescription",
+        "saveSuccess"
       ],
       "additionalProperties": false
     },

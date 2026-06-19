@@ -282,7 +282,8 @@
     "dragToReorder": "Drag to reorder",
     "saveForEveryone": "Save for everyone",
     "saveForEveryoneTitle": "Save layout for everyone",
-    "saveForEveryoneDescription": "This updates the default layout for this page for all users who haven't customized it themselves. Are you sure?"
+    "saveForEveryoneDescription": "This updates the default layout for this page for all users who haven't customized it themselves. Are you sure?",
+    "saveSuccess": "Layout saved"
   },
   "dataGrid": {
     "columns": {
