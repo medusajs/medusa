@@ -48,6 +48,7 @@ const completeOrderFields = [
   "items.tax_lines.rate",
   "items.tax_lines.provider_id",
   "shipping_methods.id",
+  "shipping_methods.name",
   "shipping_methods.is_tax_inclusive",
   "shipping_methods.shipping_option_id",
   "shipping_methods.amount",
@@ -76,6 +77,8 @@ const orderFields = [
   "locale",
   "region.id",
   "region.automatic_taxes",
+  "shipping_methods.id",
+  "shipping_methods.name",
   "shipping_methods.tax_lines.id",
   "shipping_methods.tax_lines.description",
   "shipping_methods.tax_lines.code",
@@ -98,6 +101,7 @@ const orderFields = [
 
 const shippingMethodFields = [
   "id",
+  "name",
   "shipping_option_id",
   "is_tax_inclusive",
   "amount",
