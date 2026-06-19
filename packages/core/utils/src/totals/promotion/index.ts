@@ -88,6 +88,12 @@ function getAppliedValueInPromotionBase(promotion, lineItem) {
     return promotion.applied_value
   }
 
+  // Guard against division by zero for free ($0) items: subtotal=0 → 0/0=NaN via BigNumber.js,
+  // which then propagates through all downstream discount calculations.
+  if (MathBN.lte(lineItem.subtotal, 0)) {
+    return promotion.applied_value
+  }
+
   return MathBN.mult(
     promotion.applied_value,
     MathBN.div(lineItem.original_total, lineItem.subtotal)

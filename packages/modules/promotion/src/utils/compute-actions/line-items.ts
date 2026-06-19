@@ -93,12 +93,14 @@ function applyPromotionToItems(
         ? item.original_total
         : item.subtotal
       const appliedExclTax = appliedPromotionsMap.get(item.id) ?? 0
-      const appliedInBase = promotion.is_tax_inclusive
-        ? MathBN.mult(
-            appliedExclTax,
-            MathBN.div(item.original_total, item.subtotal)
-          )
-        : appliedExclTax
+      // Guard against division by zero for free ($0) items (subtotal=0 → NaN via BigNumber.js).
+      const appliedInBase =
+        promotion.is_tax_inclusive && MathBN.gt(item.subtotal, 0)
+          ? MathBN.mult(
+              appliedExclTax,
+              MathBN.div(item.original_total, item.subtotal)
+            )
+          : appliedExclTax
 
       return MathBN.sub(MathBN.add(acc, itemBase), appliedInBase)
     }, MathBN.convert(0))
