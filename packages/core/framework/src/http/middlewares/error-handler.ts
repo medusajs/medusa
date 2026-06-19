@@ -40,7 +40,8 @@ export function errorHandler() {
       }
 
       res.status(err.statusCode).json({
-        message: err.message,
+        message:
+          err.statusCode < 500 ? err.message : "An unknown error occurred.",
         type: mapStatusCodeToErrorType(err.statusCode),
       })
       return
