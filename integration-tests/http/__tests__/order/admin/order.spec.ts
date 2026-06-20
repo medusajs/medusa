@@ -86,9 +86,10 @@ medusaIntegrationTestRunner({
 
       it("should search orders by custom_display_id", async () => {
         const customDisplayId = "custom-display-id-1234"
-        await dbConnection("order")
-          .update({ custom_display_id: customDisplayId })
-          .where({ id: order.id })
+        await dbConnection.raw(
+          `UPDATE "order" SET custom_display_id = ? WHERE id = ?`,
+          [customDisplayId, order.id]
+        )
 
         const response = await api.get(
           `/admin/orders?q=${customDisplayId}`,
