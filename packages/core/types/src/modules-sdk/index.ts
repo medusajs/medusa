@@ -300,7 +300,7 @@ export interface ModuleServiceInitializeOptions {
     driverOptions?: Record<string, unknown> & {
       connection?: Record<string, unknown>
       /** Dynamic password function called for each new connection (e.g. AWS RDS IAM token) */
-      password?: (() => string) | (() => Promise<string>)
+      dynamicPassword?: (() => string) | (() => Promise<string>)
       /** Optional function to check if a connection's credentials have expired */
       expirationChecker?: () => boolean
     }
