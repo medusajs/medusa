@@ -13,6 +13,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/admin/admin-bundler"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "files": [
     "dist",
     "package.json"

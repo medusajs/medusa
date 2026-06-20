@@ -11,6 +11,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/core-flows"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "publishConfig": {
     "access": "public"
   },

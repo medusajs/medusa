@@ -15,6 +15,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/modules/link-modules"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "publishConfig": {
     "access": "public"
   },

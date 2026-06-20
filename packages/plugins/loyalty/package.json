@@ -9,6 +9,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/plugins/loyalty"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "files": [
     ".medusa/server"
   ],

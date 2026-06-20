@@ -11,6 +11,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/admin/admin-shared"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "files": [
     "dist",
     "package.json"

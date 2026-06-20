@@ -11,6 +11,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/core/utils"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "engines": {
     "node": ">=20.0.0"
   },
