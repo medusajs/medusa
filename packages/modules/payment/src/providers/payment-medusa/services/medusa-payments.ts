@@ -119,6 +119,10 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
         ...options.headers,
         ...headers,
       },
+      // fetch() has no default timeout. This call is wrapped in executeWithRetry, but
+      // without a per-attempt timeout a single hung attempt blocks every retry — so
+      // bound each attempt.
+      signal: AbortSignal.timeout(30_000),
     }).then(async (res) => {
       const body = await res.json().catch(() => ({}))
 

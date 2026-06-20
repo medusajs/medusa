@@ -157,6 +157,9 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
           redirect_uri: state.callback_url as string,
           grant_type: "authorization_code",
         }),
+        // fetch() has no default timeout; bound the token exchange so a slow auth
+        // service can't hang the login flow.
+        signal: AbortSignal.timeout(10_000),
       }).then((r) => {
         if (!r.ok) {
           this.logger_.warn(

@@ -42,6 +42,8 @@ export class MedusaCloudEmailNotificationProvider extends AbstractNotificationPr
           provider_data: notification.provider_data,
           content: notification.content,
         }),
+        // fetch() has no default timeout; bound the email send so it can't hang.
+        signal: AbortSignal.timeout(10_000),
       })
       const responseBody = await response.json()
 

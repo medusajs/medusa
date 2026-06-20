@@ -145,6 +145,9 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     try {
       const response = await fetch(exchangeTokenUrl.toString(), {
         method: "POST",
+        // fetch() has no default timeout; without this a slow Google response would
+        // hang the login request indefinitely.
+        signal: AbortSignal.timeout(10_000),
       }).then((r) => {
         if (!r.ok) {
           throw new MedusaError(
