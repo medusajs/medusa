@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("no-trailing-slash-in-route-matcher", rule, {
   valid: [
@@ -121,10 +116,7 @@ ruleTester.run("no-trailing-slash-in-route-matcher", rule, {
           ],
         })
       `,
-      errors: [
-        { messageId: "trailingSlash" },
-        { messageId: "trailingSlash" },
-      ],
+      errors: [{ messageId: "trailingSlash" }, { messageId: "trailingSlash" }],
     },
     // Multiple trailing slashes are all stripped.
     {

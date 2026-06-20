@@ -1,12 +1,12 @@
 {
-	"id": 18182,
+	"id": 18313,
 	"name": "translation-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 18191,
+			"id": 18322,
 			"name": "Locale",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,7 +18,7 @@
 					"fileName": "locale.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/locale.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/locale.ts#L3"
 				}
 			],
 			"type": {
@@ -38,14 +38,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 18192,
+									"id": 18323,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 18193,
+											"id": 18324,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,7 +63,7 @@
 													"fileName": "locale.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/locale.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/locale.ts#L5"
 												}
 											],
 											"type": {
@@ -89,7 +89,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18194,
+											"id": 18325,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -111,7 +111,7 @@
 													"fileName": "locale.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/locale.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/locale.ts#L9"
 												}
 											],
 											"type": {
@@ -126,7 +126,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18195,
+											"id": 18326,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -148,7 +148,7 @@
 													"fileName": "locale.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/locale.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/locale.ts#L13"
 												}
 											],
 											"type": {
@@ -167,9 +167,9 @@
 										{
 											"title": "Properties",
 											"children": [
-												18193,
-												18194,
-												18195
+												18324,
+												18325,
+												18326
 											]
 										}
 									],
@@ -178,7 +178,7 @@
 											"fileName": "locale.ts",
 											"line": 4,
 											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/locale.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/locale.ts#L4"
 										}
 									]
 								}
@@ -198,7 +198,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 18196,
+			"id": 18327,
 			"name": "Settings",
 			"variant": "declaration",
 			"kind": 32,
@@ -224,7 +224,7 @@
 					"fileName": "settings.ts",
 					"line": 6,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/settings.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/settings.ts#L6"
 				}
 			],
 			"type": {
@@ -244,14 +244,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 18197,
+									"id": 18328,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 18198,
+											"id": 18329,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -261,7 +261,7 @@
 													"fileName": "settings.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/settings.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/settings.ts#L8"
 												}
 											],
 											"type": {
@@ -287,7 +287,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18199,
+											"id": 18330,
 											"name": "entity_type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -305,7 +305,7 @@
 													"fileName": "settings.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/settings.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/settings.ts#L12"
 												}
 											],
 											"type": {
@@ -320,7 +320,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18200,
+											"id": 18331,
 											"name": "fields",
 											"variant": "declaration",
 											"kind": 1024,
@@ -349,7 +349,7 @@
 													"fileName": "settings.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/settings.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/settings.ts#L20"
 												}
 											],
 											"type": {
@@ -364,7 +364,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18201,
+											"id": 18332,
 											"name": "is_active",
 											"variant": "declaration",
 											"kind": 1024,
@@ -393,7 +393,7 @@
 													"fileName": "settings.ts",
 													"line": 26,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/settings.ts#L26"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/settings.ts#L26"
 												}
 											],
 											"type": {
@@ -412,10 +412,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												18198,
-												18199,
-												18200,
-												18201
+												18329,
+												18330,
+												18331,
+												18332
 											]
 										}
 									],
@@ -424,7 +424,7 @@
 											"fileName": "settings.ts",
 											"line": 7,
 											"character": 34,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/settings.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/settings.ts#L7"
 										}
 									]
 								}
@@ -444,7 +444,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 18183,
+			"id": 18314,
 			"name": "Translation",
 			"variant": "declaration",
 			"kind": 32,
@@ -456,7 +456,7 @@
 					"fileName": "translation.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L3"
 				}
 			],
 			"type": {
@@ -476,14 +476,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 18184,
+									"id": 18315,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 18185,
+											"id": 18316,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -501,7 +501,7 @@
 													"fileName": "translation.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L5"
 												}
 											],
 											"type": {
@@ -527,7 +527,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18186,
+											"id": 18317,
 											"name": "reference_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -549,7 +549,7 @@
 													"fileName": "translation.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L9"
 												}
 											],
 											"type": {
@@ -564,7 +564,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18187,
+											"id": 18318,
 											"name": "reference",
 											"variant": "declaration",
 											"kind": 1024,
@@ -586,7 +586,7 @@
 													"fileName": "translation.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L13"
 												}
 											],
 											"type": {
@@ -601,7 +601,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18188,
+											"id": 18319,
 											"name": "locale_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -634,7 +634,7 @@
 													"fileName": "translation.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L20"
 												}
 											],
 											"type": {
@@ -649,7 +649,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18189,
+											"id": 18320,
 											"name": "translations",
 											"variant": "declaration",
 											"kind": 1024,
@@ -682,7 +682,7 @@
 													"fileName": "translation.ts",
 													"line": 31,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L31"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L31"
 												}
 											],
 											"type": {
@@ -697,7 +697,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 18190,
+											"id": 18321,
 											"name": "translated_field_count",
 											"variant": "declaration",
 											"kind": 1024,
@@ -719,7 +719,7 @@
 													"fileName": "translation.ts",
 													"line": 36,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L36"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L36"
 												}
 											],
 											"type": {
@@ -738,12 +738,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												18185,
-												18186,
-												18187,
-												18188,
-												18189,
-												18190
+												18316,
+												18317,
+												18318,
+												18319,
+												18320,
+												18321
 											]
 										}
 									],
@@ -752,7 +752,7 @@
 											"fileName": "translation.ts",
 											"line": 4,
 											"character": 25,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/translation/src/models/translation.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/translation/src/models/translation.ts#L4"
 										}
 									]
 								}
@@ -776,91 +776,91 @@
 		{
 			"title": "Variables",
 			"children": [
-				18191,
-				18196,
-				18183
+				18322,
+				18327,
+				18314
 			]
 		}
 	],
 	"packageName": "@medusajs/translation",
 	"symbolIdMap": {
-		"18182": {
+		"18313": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"18183": {
+		"18314": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "Translation"
 		},
-		"18184": {
+		"18315": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object"
 		},
-		"18185": {
+		"18316": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object.id"
 		},
-		"18186": {
+		"18317": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object.reference_id"
 		},
-		"18187": {
+		"18318": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object.reference"
 		},
-		"18188": {
+		"18319": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object.locale_code"
 		},
-		"18189": {
+		"18320": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object.translations"
 		},
-		"18190": {
+		"18321": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
 			"qualifiedName": "__object.translated_field_count"
 		},
-		"18191": {
+		"18322": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
 			"qualifiedName": "Locale"
 		},
-		"18192": {
+		"18323": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
 			"qualifiedName": "__object"
 		},
-		"18193": {
+		"18324": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
 			"qualifiedName": "__object.id"
 		},
-		"18194": {
+		"18325": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
 			"qualifiedName": "__object.code"
 		},
-		"18195": {
+		"18326": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
 			"qualifiedName": "__object.name"
 		},
-		"18196": {
+		"18327": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
 			"qualifiedName": "Settings"
 		},
-		"18197": {
+		"18328": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
 			"qualifiedName": "__object"
 		},
-		"18198": {
+		"18329": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
 			"qualifiedName": "__object.id"
 		},
-		"18199": {
+		"18330": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
 			"qualifiedName": "__object.entity_type"
 		},
-		"18200": {
+		"18331": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
 			"qualifiedName": "__object.fields"
 		},
-		"18201": {
+		"18332": {
 			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
 			"qualifiedName": "__object.is_active"
 		}
@@ -870,7 +870,7 @@
 			"1": "../../../../packages/modules/translation/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 18182
+			"1": 18313
 		}
 	}
 }

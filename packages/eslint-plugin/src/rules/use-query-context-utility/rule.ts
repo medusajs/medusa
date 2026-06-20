@@ -26,22 +26,24 @@ function isQueryReceiver(node: TSESTree.Expression): boolean {
 function getContextProperty(
   arg: TSESTree.CallExpressionArgument | undefined
 ): TSESTree.Property | null {
-  if (!arg) return null
-  if (arg.type !== AST_NODE_TYPES.ObjectExpression) return null
+  if (!arg) {
+    return null
+  }
+  if (arg.type !== AST_NODE_TYPES.ObjectExpression) {
+    return null
+  }
   for (const prop of arg.properties) {
-    if (prop.type !== AST_NODE_TYPES.Property) continue
-    if (prop.computed) continue
+    if (prop.type !== AST_NODE_TYPES.Property) {
+      continue
+    }
+    if (prop.computed) {
+      continue
+    }
     const key = prop.key
-    if (
-      key.type === AST_NODE_TYPES.Identifier &&
-      key.name === "context"
-    ) {
+    if (key.type === AST_NODE_TYPES.Identifier && key.name === "context") {
       return prop
     }
-    if (
-      key.type === AST_NODE_TYPES.Literal &&
-      key.value === "context"
-    ) {
+    if (key.type === AST_NODE_TYPES.Literal && key.value === "context") {
       return prop
     }
   }
@@ -76,7 +78,9 @@ export const rule = createRule<[], MessageIds>({
           (s): s is TSESTree.ImportSpecifier =>
             s.type === AST_NODE_TYPES.ImportSpecifier
         )
-        if (specifiers.length === 0) return null
+        if (specifiers.length === 0) {
+          return null
+        }
         const last = specifiers[specifiers.length - 1]
         return fixer.insertTextAfter(last, `, ${QUERY_CONTEXT}`)
       }
@@ -91,9 +95,13 @@ export const rule = createRule<[], MessageIds>({
 
     function checkArg(arg: TSESTree.CallExpressionArgument | undefined): void {
       const contextProp = getContextProperty(arg)
-      if (!contextProp) return
+      if (!contextProp) {
+        return
+      }
       const value = contextProp.value
-      if (value.type !== AST_NODE_TYPES.ObjectExpression) return
+      if (value.type !== AST_NODE_TYPES.ObjectExpression) {
+        return
+      }
 
       context.report({
         node: value,
@@ -108,7 +116,9 @@ export const rule = createRule<[], MessageIds>({
           fixes.push(fixer.replaceText(value, `${localName}(${source})`))
           if (queryContextLocalNames.size === 0) {
             const importFix = addQueryContextImport(fixer)
-            if (!importFix) return null
+            if (!importFix) {
+              return null
+            }
             fixes.push(importFix)
             queryContextLocalNames.add(QUERY_CONTEXT)
           }
@@ -119,7 +129,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         frameworkUtilsImportNode = node
         for (const specifier of node.specifiers) {
           if (
@@ -134,11 +146,21 @@ export const rule = createRule<[], MessageIds>({
 
       CallExpression(node) {
         const callee = node.callee
-        if (callee.type !== AST_NODE_TYPES.MemberExpression) return
-        if (callee.computed) return
-        if (callee.property.type !== AST_NODE_TYPES.Identifier) return
-        if (!QUERY_METHODS.has(callee.property.name)) return
-        if (!isQueryReceiver(callee.object)) return
+        if (callee.type !== AST_NODE_TYPES.MemberExpression) {
+          return
+        }
+        if (callee.computed) {
+          return
+        }
+        if (callee.property.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
+        if (!QUERY_METHODS.has(callee.property.name)) {
+          return
+        }
+        if (!isQueryReceiver(callee.object)) {
+          return
+        }
 
         checkArg(node.arguments[0])
         checkArg(node.arguments[1])

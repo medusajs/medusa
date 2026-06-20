@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("authenticate-flag-name-and-type", rule, {
   valid: [
@@ -56,18 +51,14 @@ ruleTester.run("authenticate-flag-name-and-type", rule, {
     {
       code: `export const authenticate = false`,
       filename: "src/api/store/customers/me/route.ts",
-      errors: [
-        { messageId: "wrongCase", data: { name: "authenticate" } },
-      ],
+      errors: [{ messageId: "wrongCase", data: { name: "authenticate" } }],
       output: `export const AUTHENTICATE = false`,
     },
     // PascalCase `Authenticate` — autofix renames.
     {
       code: `export const Authenticate = true`,
       filename: "src/api/admin/products/route.ts",
-      errors: [
-        { messageId: "wrongCase", data: { name: "Authenticate" } },
-      ],
+      errors: [{ messageId: "wrongCase", data: { name: "Authenticate" } }],
       output: `export const AUTHENTICATE = true`,
     },
     // AUTHENTICATE with string value — flag value, no autofix on the value.

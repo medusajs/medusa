@@ -1,0 +1,170 @@
+---
+slug: /references/medusa-workflows/upsertTaxLinesWorkflow
+sidebar_label: upsertTaxLinesWorkflow
+sidebar_description: Update a cart's tax lines.
+tags:
+  - tax
+  - workflow
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# upsertTaxLinesWorkflow - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `upsertTaxLinesWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow upserts a cart's tax lines that are applied on line items and shipping methods. You can upsert the line item's quantity, unit price, and more. This workflow is executed
+by the [Calculate Taxes Store API Route](https://docs.medusajs.com/api/store#carts\_postcartsidtaxes).
+
+You can use this workflow within your own customizations or custom workflows, allowing you to upsert a cart's tax lines in your custom flows.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/core-flows/src/cart/workflows/upsert-tax-lines.ts#L131" />
+
+## Examples
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { upsertTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await upsertTaxLinesWorkflow(req.scope)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        items: [],
+        shipping_methods: [],
+      }
+    })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { upsertTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await upsertTaxLinesWorkflow(container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        items: [],
+        shipping_methods: [],
+      }
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { upsertTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await upsertTaxLinesWorkflow(container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        items: [],
+        shipping_methods: [],
+      }
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { upsertTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = upsertTaxLinesWorkflow
+      .runAsStep({
+        input: {
+          cart_id: "cart_123",
+          items: [],
+          shipping_methods: [],
+        }
+      })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"upsertTaxLinesWorkflow","steps":[{"type":"step","name":"validateCartStep","description":"This step validates a cart to ensure it exists and is not completed.\nIf not valid, the step throws an error.\n\n:::tip\n\nYou can use the [retrieveCartStep](../../../Steps_Cart/functions/core_flows.Cart.Steps_Cart.retrieveCartStep/page.mdx) to retrieve a cart's details.\n\n:::","link":"../../../Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartStep/page.mdx","depth":2},{"type":"hook","name":"setTaxLineContext","description":"This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional\\_context property in the getItemTaxLinesStep input.","link":"#setTaxLineContext","depth":3},{"type":"step","name":"getItemTaxLinesStep","description":"This step retrieves the tax lines for an order or cart's line items and shipping methods.\n\n:::note\n\nYou can retrieve an order, cart, item, shipping method, and address details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../../../../Tax/Steps_Tax/functions/core_flows.Tax.Steps_Tax.getItemTaxLinesStep/page.mdx","depth":4}]}} />
+
+## Input
+
+<TypeList types={[{"name":"UpsertTaxLinesWorkflowInput","type":"[UpsertTaxLinesWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.UpsertTaxLinesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpsertTaxLinesWorkflowInput","type":"`object`","description":"The details of the cart to upsert tax lines for.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="upsertTaxLinesWorkflow"/>
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).
+
+### setTaxLineContext
+
+This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional\_context property in the getItemTaxLinesStep input.
+
+#### Example
+
+```ts
+import { upsertTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+upsertTaxLinesWorkflow.hooks.setTaxLineContext(
+  (async ({}, { container }) => {
+    //TODO
+  })
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Cart.Workflows_Cart/page.mdx#__type-29)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setTaxLineContext"/>

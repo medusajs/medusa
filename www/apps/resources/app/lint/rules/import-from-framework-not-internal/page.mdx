@@ -1,0 +1,66 @@
+---
+sidebar_label: "import-from-framework-not-internal"
+---
+
+export const metadata = {
+  title: `import-from-framework-not-internal - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires using the public `@medusajs/framework/*` entry points, and disallows importing from a package's internal `dist/` build output or from deprecated standalone packages.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets all files in your project. It reports imports and re-exports from deprecated standalone packages, such as `@medusajs/utils`, and from internal `dist/` build output, such as `@medusajs/medusa/dist/...`.
+
+The following code is reported by the rule:
+
+```ts title="src/api/example.ts"
+// non-compliant
+import { MedusaError } from "@medusajs/utils"
+```
+
+Instead, import from the Medusa Framework entry point:
+
+```ts title="src/api/example.ts"
+// compliant
+import { MedusaError } from "@medusajs/framework/utils"
+```
+
+## Why it's Important
+
+The `@medusajs/framework/*` entry points are the supported public surface. Deprecated packages and internal build paths can change or disappear between versions, breaking your project.
+
+## Fixable
+
+This rule is auto-fixable for some paths. For example, the rule can fix an import of `@medusajs/utils` to `@medusajs/framework/utils`. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/import-from-framework-not-internal": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/import-from-framework-not-internal
+import { MedusaError } from "@medusajs/utils"
+```

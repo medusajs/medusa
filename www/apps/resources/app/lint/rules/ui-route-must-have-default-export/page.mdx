@@ -1,0 +1,57 @@
+---
+sidebar_label: "ui-route-must-have-default-export"
+---
+
+export const metadata = {
+  title: `ui-route-must-have-default-export - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires UI route `page` files to default-export the React component.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `page.tsx` files in your project's `src/admin/routes` directory. It reports a UI route file that doesn't have a default export.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const CustomPage = () => <>Custom</>
+
+export const config = defineRouteConfig({
+  label: "Custom",
+})
+
+export { CustomPage }
+```
+
+Instead, default-export the React component:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const CustomPage = () => <>Custom</>
+
+export const config = defineRouteConfig({
+  label: "Custom",
+})
+
+export default CustomPage
+```
+
+## Why it's Important
+
+Medusa renders the default export of a `page.tsx` file as the route's page. Without a default export, the route has no component to render.
+
+Learn more in the [UI Routes documentation](!docs!/learn/fundamentals/admin/ui-routes).
+
+## Fixable
+
+This rule isn't auto-fixable.

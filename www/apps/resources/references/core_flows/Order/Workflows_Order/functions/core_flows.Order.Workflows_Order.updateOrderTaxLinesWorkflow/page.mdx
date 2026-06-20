@@ -21,7 +21,7 @@ tax lines.
 You can use this workflow within your customizations or your own custom workflows, allowing you to update an
 order's tax lines in your custom flows.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/core/core-flows/src/order/workflows/update-tax-lines.ts#L188" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/core-flows/src/order/workflows/update-tax-lines.ts#L192" />
 
 ## Examples
 
@@ -134,8 +134,36 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"updateOrderTaxLinesWorkflow","steps":[{"type":"step","name":"getItemTaxLinesStep","description":"This step retrieves the tax lines for an order or cart's line items and shipping methods.\n\n:::note\n\nYou can retrieve an order, cart, item, shipping method, and address details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../../../../Tax/Steps_Tax/functions/core_flows.Tax.Steps_Tax.getItemTaxLinesStep/page.mdx","depth":3},{"type":"step","name":"setOrderTaxLinesForItemsStep","description":"This step sets the tax lines of an order's items and shipping methods.\n\n:::note\n\nYou can retrieve an order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.setOrderTaxLinesForItemsStep/page.mdx","depth":4}]}} />
+<WorkflowDiagram workflow={{"name":"updateOrderTaxLinesWorkflow","steps":[{"type":"hook","name":"setTaxLineContext","description":"This hook is executed after the cart is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional\\_context property in the getItemTaxLinesStep input.","link":"#setTaxLineContext","depth":3},{"type":"step","name":"getItemTaxLinesStep","description":"This step retrieves the tax lines for an order or cart's line items and shipping methods.\n\n:::note\n\nYou can retrieve an order, cart, item, shipping method, and address details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../../../../Tax/Steps_Tax/functions/core_flows.Tax.Steps_Tax.getItemTaxLinesStep/page.mdx","depth":4},{"type":"step","name":"setOrderTaxLinesForItemsStep","description":"This step sets the tax lines of an order's items and shipping methods.\n\n:::note\n\nYou can retrieve an order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),\nor [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).\n\n:::","link":"../../../Steps_Order/functions/core_flows.Order.Steps_Order.setOrderTaxLinesForItemsStep/page.mdx","depth":5}]}} />
 
 ## Input
 
 <TypeList types={[{"name":"UpdateOrderTaxLinesWorkflowInput","type":"[UpdateOrderTaxLinesWorkflowInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.UpdateOrderTaxLinesWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateOrderTaxLinesWorkflowInput","type":"`object`","description":"The data to update the order's tax lines.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateOrderTaxLinesWorkflow"/>
+
+## Hooks
+
+Hooks allow you to inject custom functionalities into the workflow. You'll receive data from the workflow, as well as additional data sent through an HTTP request.
+
+Learn more about [Hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks) and [Additional Data](https://docs.medusajs.com/learn/fundamentals/api-routes/additional-data).
+
+### setTaxLineContext
+
+This hook is executed after the order is fetched and before tax lines are calculated. You can consume this hook to add custom context to the tax calculation. The returned object is set as the additional\_context property in the getItemTaxLinesStep input.
+
+#### Example
+
+```ts
+import { updateOrderTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+
+updateOrderTaxLinesWorkflow.hooks.setTaxLineContext(
+  (async ({}, { container }) => {
+    //TODO
+  })
+)
+```
+
+#### Input
+
+Handlers consuming this hook accept the following input.
+
+<TypeList types={[{"name":"input","type":"[input](../../../core_flows.Order.Workflows_Order/page.mdx#__type-23)","description":"The input data for the hook.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="setTaxLineContext"/>

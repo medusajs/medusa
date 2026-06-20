@@ -45,7 +45,9 @@ function getEnclosingFunction(node: TSESTree.Node): FunctionNode | null {
 }
 
 function getParamName(param: TSESTree.Parameter): string | null {
-  if (param.type === AST_NODE_TYPES.Identifier) return param.name
+  if (param.type === AST_NODE_TYPES.Identifier) {
+    return param.name
+  }
   if (
     param.type === AST_NODE_TYPES.AssignmentPattern &&
     param.left.type === AST_NODE_TYPES.Identifier
@@ -58,7 +60,9 @@ function getParamName(param: TSESTree.Parameter): string | null {
 function getParamTypeAnnotation(
   param: TSESTree.Parameter
 ): TSESTree.TSTypeAnnotation | undefined {
-  if (param.type === AST_NODE_TYPES.Identifier) return param.typeAnnotation
+  if (param.type === AST_NODE_TYPES.Identifier) {
+    return param.typeAnnotation
+  }
   if (param.type === AST_NODE_TYPES.AssignmentPattern) {
     return param.left.type === AST_NODE_TYPES.Identifier
       ? param.left.typeAnnotation
@@ -71,9 +75,13 @@ function typeReferencesRequest(
   typeAnnotation: TSESTree.TSTypeAnnotation | undefined,
   requestLocalNames: ReadonlySet<string>
 ): boolean {
-  if (!typeAnnotation) return false
+  if (!typeAnnotation) {
+    return false
+  }
   const typeNode = typeAnnotation.typeAnnotation
-  if (typeNode.type !== AST_NODE_TYPES.TSTypeReference) return false
+  if (typeNode.type !== AST_NODE_TYPES.TSTypeReference) {
+    return false
+  }
   const name = typeNode.typeName
   if (
     name.type === AST_NODE_TYPES.Identifier &&
@@ -105,11 +113,19 @@ function isExportedHandler(fn: FunctionNode): boolean {
   }
   // Arrow / function expression: must be initializer of an exported VariableDeclarator.
   const parent = fn.parent
-  if (parent?.type !== AST_NODE_TYPES.VariableDeclarator) return false
-  if (parent.id.type !== AST_NODE_TYPES.Identifier) return false
-  if (!HTTP_HANDLER_NAMES.has(parent.id.name)) return false
+  if (parent?.type !== AST_NODE_TYPES.VariableDeclarator) {
+    return false
+  }
+  if (parent.id.type !== AST_NODE_TYPES.Identifier) {
+    return false
+  }
+  if (!HTTP_HANDLER_NAMES.has(parent.id.name)) {
+    return false
+  }
   const decl = parent.parent
-  if (decl?.type !== AST_NODE_TYPES.VariableDeclaration) return false
+  if (decl?.type !== AST_NODE_TYPES.VariableDeclaration) {
+    return false
+  }
   return decl.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration
 }
 
@@ -134,7 +150,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_HTTP_SOURCE) return
+        if (node.source.value !== FRAMEWORK_HTTP_SOURCE) {
+          return
+        }
         for (const specifier of node.specifiers) {
           if (
             specifier.type === AST_NODE_TYPES.ImportSpecifier &&
@@ -147,19 +165,25 @@ export const rule = createRule<[], MessageIds>({
       },
 
       MemberExpression(node) {
-        if (node.computed) return
-        if (node.property.type !== AST_NODE_TYPES.Identifier) return
-        if (node.property.name !== DEPRECATED_PROPERTY) return
-        if (node.object.type !== AST_NODE_TYPES.Identifier) return
+        if (node.computed) {
+          return
+        }
+        if (node.property.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
+        if (node.property.name !== DEPRECATED_PROPERTY) {
+          return
+        }
+        if (node.object.type !== AST_NODE_TYPES.Identifier) {
+          return
+        }
 
         const objectName = node.object.name
 
         let matched = false
         let fn: FunctionNode | null = getEnclosingFunction(node)
         while (fn) {
-          const param = fn.params.find(
-            (p) => getParamName(p) === objectName
-          )
+          const param = fn.params.find((p) => getParamName(p) === objectName)
           if (param) {
             if (
               typeReferencesRequest(
@@ -185,7 +209,9 @@ export const rule = createRule<[], MessageIds>({
           fn = getEnclosingFunction(fn)
         }
 
-        if (!matched) return
+        if (!matched) {
+          return
+        }
 
         context.report({
           node: node.property,

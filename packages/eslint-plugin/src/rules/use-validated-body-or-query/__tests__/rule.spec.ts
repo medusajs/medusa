@@ -1,46 +1,15 @@
-import * as fs from "fs"
-import * as os from "os"
-import * as path from "path"
-import { RuleTester } from "@typescript-eslint/rule-tester"
 import { rule } from "../rule"
+import {
+  cleanupFixtureWorkspaces,
+  createFixtureWorkspace,
+  createRuleTester,
+  type FixtureFile,
+} from "../../../test-utils"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
+afterAll(cleanupFixtureWorkspaces)
 
-const tmpRoots: string[] = []
-
-afterAll(() => {
-  for (const dir of tmpRoots) {
-    try {
-      fs.rmSync(dir, { recursive: true, force: true })
-    } catch {
-      // ignore
-    }
-  }
-})
-
-type ApiFile = { rel: string; content: string }
-
-function makeApi(files: ApiFile[]): {
-  apiDir: string
-  resolve: (rel: string) => string
-} {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "medusa-eslint-validated-"))
-  tmpRoots.push(root)
-  const apiDir = path.join(root, "src", "api")
-  fs.mkdirSync(apiDir, { recursive: true })
-  for (const f of files) {
-    const abs = path.join(apiDir, f.rel)
-    fs.mkdirSync(path.dirname(abs), { recursive: true })
-    fs.writeFileSync(abs, f.content, "utf8")
-  }
-  return {
-    apiDir,
-    resolve: (rel: string) => path.join(apiDir, rel),
-  }
-}
+const makeApi = (files: FixtureFile[]) =>
+  createFixtureWorkspace("src/api", files)
 
 const MIDDLEWARES_BODY_POST = `
 import {
@@ -227,7 +196,7 @@ const fixDifferent = makeApi([
 ])
 const fixNoMiddlewares = makeApi([])
 
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("use-validated-body-or-query", rule, {
   valid: [

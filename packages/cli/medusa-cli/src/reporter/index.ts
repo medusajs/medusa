@@ -179,13 +179,11 @@ export class Reporter {
     let errorAsObject: Error | undefined
 
     if (messageOrError && typeof messageOrError === "object") {
+      message = ""
       errorAsObject = messageOrError
-      message = messageOrError.message
-    } else if (error) {
-      message = messageOrError
-      errorAsObject = error
     } else {
       message = messageOrError
+      errorAsObject = error
     }
 
     const toLog = {
@@ -194,7 +192,9 @@ export class Reporter {
     }
 
     if (errorAsObject) {
-      toLog["message"] = errorAsObject.message
+      toLog["message"] = toLog.message
+        ? `${toLog.message}: ${errorAsObject.message}`
+        : errorAsObject.message
       toLog["stack"] = stackTrace.parse(errorAsObject)
       /**
        * Winston only logs the error properties when they are
@@ -207,17 +207,6 @@ export class Reporter {
       }
     }
 
-    /**
-     * If "errorAsObject" has a message property, then we will
-     * print the standalone message as one log item and then
-     * the actual error object as another log item.
-     *
-     * Otherwise, we always loose the message property from the
-     * actual error object
-     */
-    if (errorAsObject?.message && errorAsObject?.message !== message) {
-      this.loggerInstance_.log({ level: "error", message })
-    }
     this.loggerInstance_.log(toLog)
 
     /**

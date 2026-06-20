@@ -5,5 +5,15 @@ import { InjectionZone } from "./types"
  * Validates that the provided zone is a valid injection zone for a widget.
  */
 export function isValidInjectionZone(zone: any): zone is InjectionZone {
-  return INJECTION_ZONES.includes(zone)
+  if (typeof zone !== "string") return false
+  if (INJECTION_ZONES.includes(zone as any)) return true
+  const isValidCustom = /^.+\.(before|after|side\.before|side\.after)$/.test(
+    zone
+  )
+  if (isValidCustom) {
+    console.warn(
+      `The injection zone "${zone}" is not a core injection zone. Custom zones are not validated, verify it is correct.`
+    )
+  }
+  return isValidCustom
 }
