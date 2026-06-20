@@ -119,9 +119,9 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
         ...options.headers,
         ...headers,
       },
-      // fetch() has no default timeout. This call is wrapped in executeWithRetry, but
-      // without a per-attempt timeout a single hung attempt blocks every retry — so
-      // bound each attempt.
+      // fetch() has no default timeout. This call is wrapped in executeWithRetry, but without a
+      // per-attempt timeout a single hung attempt blocks every retry — so bound each attempt. The
+      // resulting TimeoutError is treated as retryable in handleStripeError().
       signal: AbortSignal.timeout(30_000),
     }).then(async (res) => {
       const body = await res.json().catch(() => ({}))
@@ -162,6 +162,14 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
 
   handleStripeError(error: CloudServiceError): HandledErrorType {
     let medusaPayment: MedusaPayment | undefined
+
+    // A request that exceeds its AbortSignal.timeout() (or is otherwise aborted) rejects with a
+    // DOMException that has no `type`, so it would fall through to the `default` case below and be
+    // thrown. A timed-out request is an uncertain result, so retry it like a connection error.
+    const errorName = (error as { name?: string })?.name
+    if (errorName === "TimeoutError" || errorName === "AbortError") {
+      return { retry: true }
+    }
 
     switch (error.type) {
       case "MedusaCardError":
