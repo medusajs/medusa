@@ -48,17 +48,20 @@ export abstract class ResourceLoader {
   protected async discoverResources({
     exclude,
     customFiltering,
+    allowIndex,
   }: {
     exclude?: RegExp[]
     customFiltering?: (entry: Dirent) => boolean
+    allowIndex?: boolean
   } = {}): Promise<Record<string, unknown>[]> {
     exclude ??= []
+    allowIndex ??= false
     customFiltering ??= (entry: Dirent) => {
       const parsedName = parse(entry.name)
 
       return (
         !entry.isDirectory() &&
-        parsedName.name !== "index" &&
+        (allowIndex || parsedName.name !== "index") &&
         !parsedName.base.endsWith(".d.ts") &&
         !entry.path.includes("__tests__") &&
         [".js", ".ts"].includes(parsedName.ext) &&

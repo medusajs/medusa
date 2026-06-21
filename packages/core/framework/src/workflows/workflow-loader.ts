@@ -31,10 +31,14 @@ export class WorkflowLoader extends ResourceLoader {
 
   /**
    * Load workflows from the source paths, workflows are registering themselves,
-   * therefore we only need to import them
+   * therefore we only need to import them.
+   *
+   * Unlike other resources, workflows are commonly defined directly in a
+   * `src/workflows/<name>/index.ts` file, so index files must be discovered
+   * (the base loader skips them by default).
    */
   async load() {
-    await super.discoverResources()
+    await super.discoverResources({ allowIndex: true })
 
     this.logger.debug(`Workflows registered.`)
   }
