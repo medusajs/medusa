@@ -11,7 +11,7 @@ export function InjectTransactionManager(
   ): void {
     if (!target.MedusaContextIndex_) {
       throw new Error(
-        `An error occured applying decorator '@InjectTransactionManager' to method ${String(
+        `An error occurred applying decorator '@InjectTransactionManager' to method ${String(
           propertyKey
         )}: Missing parameter with flag @MedusaContext`
       )

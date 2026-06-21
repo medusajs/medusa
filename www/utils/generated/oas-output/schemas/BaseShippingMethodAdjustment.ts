@@ -13,11 +13,9 @@
  *   - updated_at
  * properties:
  *   shipping_method:
- *     $ref: "#/components/schemas/BaseCartShippingMethod"
- *   shipping_method_id:
- *     type: string
- *     title: shipping_method_id
- *     description: The ID of the shipping method the adjustment is applied on.
+ *     type: object
+ *     title: shipping_method
+ *     description: The details of the method that the adjustment belongs to.
  *   id:
  *     type: string
  *     title: id
@@ -41,7 +39,7 @@
  *   promotion_id:
  *     type: string
  *     title: promotion_id
- *     description: The ID of the promotion applied by this adjustment.
+ *     description: The ID of the applied promotion.
  *   provider_id:
  *     type: string
  *     title: provider_id

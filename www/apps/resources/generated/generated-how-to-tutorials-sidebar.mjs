@@ -98,6 +98,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Notification Provider",
               "path": "https://docs.medusajs.com/resources/references/notification-provider-module",
               "children": []
@@ -108,6 +116,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Create Payment Provider",
               "path": "https://docs.medusajs.com/resources/references/payment/provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider",
               "children": []
             },
             {
@@ -172,6 +188,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Retrieve Order Totals",
               "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Send Email Verification",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification",
               "children": []
             },
             {
@@ -361,6 +385,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                       "type": "link",
                       "path": "/admin-components/components/json-view-section",
                       "title": "JSON View",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/admin-components/components/layout-composer",
+                      "title": "LayoutComposer",
                       "description": "",
                       "children": []
                     },

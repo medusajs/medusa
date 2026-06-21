@@ -45,7 +45,7 @@ All store credit activity is tracked through transactions, which are stored in t
 Each transaction includes:
 
 - `type`: `credit` (adding funds) or `debit` (spending funds)
-- `amount`: The transaction amount in the smallest currency unit.
+- `amount`: The transaction amount in the major currency unit (decimal).
   - If `type` is `credit`, the amount is added to the balance.
   - If `type` is `debit`, the amount is subtracted from the balance
 - `reference`: The name of the table that triggered the transaction (for example, `order`, `refund`, `promotion`, etc...)

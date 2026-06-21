@@ -1,6 +1,8 @@
 import { generateSplitSidebars } from "build-scripts"
+import { generateSpecsPathsManifest } from "./generate-specs-manifest.mjs"
 
 async function main() {
+  await generateSpecsPathsManifest()
   await generateSplitSidebars({
     sidebars: [
       {

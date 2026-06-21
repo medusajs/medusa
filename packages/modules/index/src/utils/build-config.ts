@@ -842,6 +842,11 @@ function processEntity(
               objectName: intermediateEntityName,
               prefix: kebabCasedServiceName,
             }),
+            buildModuleResourceEventName({
+              action: CommonEvents.RESTORED,
+              objectName: intermediateEntityName,
+              prefix: kebabCasedServiceName,
+            }),
           ]
           intermediateEntityObjectRepresentationRef.moduleConfig =
             intermediateEntityModule
@@ -1207,7 +1212,7 @@ function buildSchemaFromFilterableLinks(
       }
 
       const normalizedEntity = lowerCaseFirst(kebabCase(entity))
-      const events = `@Listeners(values: ["${serviceName}.${normalizedEntity}.created", "${serviceName}.${normalizedEntity}.updated", "${serviceName}.${normalizedEntity}.deleted"])`
+      const events = `@Listeners(values: ["${serviceName}.${normalizedEntity}.created", "${serviceName}.${normalizedEntity}.updated", "${serviceName}.${normalizedEntity}.deleted", "${serviceName}.${normalizedEntity}.restored"])`
 
       const fieldDefinitions = fields
         .map((field) => {

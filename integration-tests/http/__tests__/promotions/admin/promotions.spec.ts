@@ -3108,6 +3108,52 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("should update a buyget promotion when type is passed in the payload", async () => {
+          const buygetPromotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "BUYGET_UPDATE",
+                type: PromotionType.BUYGET,
+                status: PromotionStatus.ACTIVE,
+                application_method: {
+                  target_type: "items",
+                  type: "fixed",
+                  allocation: "each",
+                  value: 100,
+                  max_quantity: 100,
+                  apply_to_quantity: 1,
+                  buy_rules_min_quantity: 1,
+                  currency_code: "usd",
+                  target_rules: [promotionRule],
+                  buy_rules: [promotionRule],
+                },
+              },
+              adminHeaders
+            )
+          ).data.promotion
+
+          // Buy rules already exist on the persisted promotion, so a partial
+          // update that echoes back the type should not require them again.
+          const response = await api.post(
+            `/admin/promotions/${buygetPromotion.id}`,
+            {
+              type: PromotionType.BUYGET,
+              status: PromotionStatus.INACTIVE,
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: buygetPromotion.id,
+              type: "buyget",
+              status: "inactive",
+            })
+          )
+        })
       })
 
       describe("POST /admin/promotions/:id/rules/batch", () => {

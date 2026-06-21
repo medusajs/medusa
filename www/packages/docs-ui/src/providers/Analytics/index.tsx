@@ -61,7 +61,7 @@ export const AnalyticsProvider = ({
     const userId = getCookie("mc_cloud_user_id")
     const orgId = getCookie("mc_cloud_org_id")
 
-    if (userId) {
+    if (userId && !posthog._isIdentified()) {
       posthog.identify(userId)
       if (orgId) {
         posthog.group("organization", orgId)

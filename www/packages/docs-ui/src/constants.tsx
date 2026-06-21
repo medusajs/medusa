@@ -307,6 +307,12 @@ export const navDropdownItems: NavigationItem[] = [
         link: "/ui",
         sidebar_id: "ui",
       },
+      {
+        type: "link",
+        title: "ESLint Plugin",
+        link: "/resources/lint",
+        sidebar_id: "lint",
+      },
     ],
   },
   {

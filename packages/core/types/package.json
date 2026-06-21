@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "2.15.2",
+  "version": "2.16.0",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/core/types"
   },
   "engines": {
@@ -35,7 +35,7 @@
     "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
-    "@medusajs/deps": "2.15.2"
+    "@medusajs/deps": "2.16.0"
   },
   "peerDependencies": {
     "ioredis": "^5.4.1",

@@ -133,7 +133,7 @@ export function EditShippingOptionsPricingForm({
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
         if (
-          !value ||
+          (value === undefined || value === "") ||
           !currencies.some((c) => c.toLowerCase() === code.toLowerCase())
         ) {
           return undefined
@@ -173,7 +173,10 @@ export function EditShippingOptionsPricingForm({
      */
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
-        if (!value || !regions?.some((region) => region.id === region_id)) {
+        if (
+          (value === undefined || value === "") ||
+          !regions?.some((region) => region.id === region_id)
+        ) {
           return undefined
         }
 
@@ -300,7 +303,7 @@ const findRuleValue = (
   return (
     rules?.find(
       (r) => r.attribute === ITEM_TOTAL_ATTRIBUTE && r.operator === operator
-    )?.value || fallbackValue
+    )?.value ?? fallbackValue
   )
 }
 

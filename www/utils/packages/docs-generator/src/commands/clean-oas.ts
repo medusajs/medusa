@@ -81,12 +81,20 @@ export default async function () {
   const findReferencedSchemas = (schema: OpenApiSchema) => {
     if (schema.properties) {
       Object.values(schema.properties).forEach(testAndFindReferenceSchema)
-    } else if (schema.oneOf || schema.allOf || schema.anyOf) {
+    }
+    if (schema.oneOf || schema.allOf || schema.anyOf) {
       Object.values((schema.oneOf || schema.allOf || schema.anyOf)!).forEach(
         testAndFindReferenceSchema
       )
-    } else if (schema.type === "array") {
+    }
+    if (schema.type === "array" && schema.items) {
       testAndFindReferenceSchema(schema.items)
+    }
+    if (
+      schema.additionalProperties &&
+      typeof schema.additionalProperties === "object"
+    ) {
+      testAndFindReferenceSchema(schema.additionalProperties)
     }
   }
 

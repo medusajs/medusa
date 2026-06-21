@@ -505,6 +505,241 @@ medusaIntegrationTestRunner({
           )
         })
       })
+
+      describe("with cart spanning multiple shipping profiles", () => {
+        let shippingProfileB
+        let productB
+        let stockLocationB
+        let fulfillmentSetB
+        let shippingOptionCalculatedB
+
+        beforeEach(async () => {
+          shippingProfileB = (
+            await api.post(
+              `/admin/shipping-profiles`,
+              { name: "Profile B", type: "default" },
+              adminHeaders
+            )
+          ).data.shipping_profile
+
+          productB = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Test fixture B",
+                shipping_profile_id: shippingProfileB.id,
+                status: ProductStatus.PUBLISHED,
+                options: [{ title: "size", values: ["large"] }],
+                variants: [
+                  {
+                    title: "Variant B",
+                    manage_inventory: false,
+                    prices: [{ currency_code: "usd", amount: 100 }],
+                    options: { size: "large" },
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          stockLocationB = (
+            await api.post(
+              `/admin/stock-locations`,
+              { name: "test location B" },
+              adminHeaders
+            )
+          ).data.stock_location
+
+          await api.post(
+            `/admin/stock-locations/${stockLocationB.id}/sales-channels`,
+            { add: [salesChannel.id] },
+            adminHeaders
+          )
+
+          const fulfillmentSetsB = (
+            await api.post(
+              `/admin/stock-locations/${stockLocationB.id}/fulfillment-sets?fields=*fulfillment_sets`,
+              { name: "Test B", type: "test-type" },
+              adminHeaders
+            )
+          ).data.stock_location.fulfillment_sets
+
+          fulfillmentSetB = (
+            await api.post(
+              `/admin/fulfillment-sets/${fulfillmentSetsB[0].id}/service-zones`,
+              {
+                name: "Test B",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+              adminHeaders
+            )
+          ).data.fulfillment_set
+
+          await api.post(
+            `/admin/stock-locations/${stockLocationB.id}/fulfillment-providers`,
+            { add: ["manual-calculated_test-provider-calculated"] },
+            adminHeaders
+          )
+
+          shippingOptionCalculatedB = (
+            await api.post(
+              `/admin/shipping-options`,
+              {
+                name: "Calculated shipping option B",
+                service_zone_id: fulfillmentSetB.service_zones[0].id,
+                shipping_profile_id: shippingProfileB.id,
+                provider_id: "manual-calculated_test-provider-calculated",
+                price_type: "calculated",
+                type: {
+                  label: "Test type",
+                  description: "Test description",
+                  code: "test-code",
+                },
+                prices: [],
+                rules: [],
+              },
+              adminHeaders
+            )
+          ).data.shipping_option
+        })
+
+        it("POST /store/carts/:id/shipping-methods prices each calculated option from only its own location's items", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                shipping_address: { country_code: "us" },
+                items: [
+                  { variant_id: product.variants[0].id, quantity: 2 },
+                  { variant_id: productB.variants[0].id, quantity: 1 },
+                ],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Methods for different shipping profiles stack on the cart.
+          // Each calculated provider call sees only the
+          // items for that option's profile/location:
+          //   optionA: 2 * 1.5 = 3     optionB: 1 * 1.5 = 1.5
+          const respA = await api.post(
+            `/store/carts/${cart.id}/shipping-methods?fields=*shipping_methods`,
+            { option_id: shippingOptionCalculated.id, data: {} },
+            storeHeaders
+          )
+          expect(respA.data.cart.shipping_methods).toHaveLength(1)
+          const methodA = respA.data.cart.shipping_methods.find(
+            (m) => m.shipping_option_id === shippingOptionCalculated.id
+          )
+          expect(methodA).toBeDefined()
+          expect(methodA.amount).toBe(3)
+
+          const respB = await api.post(
+            `/store/carts/${cart.id}/shipping-methods?fields=*shipping_methods`,
+            { option_id: shippingOptionCalculatedB.id, data: {} },
+            storeHeaders
+          )
+          expect(respB.data.cart.shipping_methods).toHaveLength(2)
+          const methodB = respB.data.cart.shipping_methods.find(
+            (m) => m.shipping_option_id === shippingOptionCalculatedB.id
+          )
+          expect(methodB).toBeDefined()
+          expect(methodB.amount).toBe(1.5)
+
+          // Method A stacks alongside method B and keeps its profile-scoped
+          // price after the refresh that follows adding method B
+          const methodAAfterB = respB.data.cart.shipping_methods.find(
+            (m) => m.shipping_option_id === shippingOptionCalculated.id
+          )
+          expect(methodAAfterB).toBeDefined()
+          expect(methodAAfterB.amount).toBe(3)
+          expect(respB.data.cart.shipping_total).toBe(4.5)
+        })
+
+        it("POST /store/carts/:id/shipping-methods prices each option from its own profile's items when added in one call", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                shipping_address: { country_code: "us" },
+                items: [
+                  { variant_id: product.variants[0].id, quantity: 2 },
+                  { variant_id: productB.variants[0].id, quantity: 1 },
+                ],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const response = await api.post(
+            `/store/carts/${cart.id}/shipping-methods?fields=*shipping_methods`,
+            [
+              { option_id: shippingOptionCalculated.id, data: {} },
+              { option_id: shippingOptionCalculatedB.id, data: {} },
+            ],
+            storeHeaders
+          )
+
+          expect(response.data.cart.shipping_methods).toHaveLength(2)
+          expect(response.data.cart.shipping_methods).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                shipping_option_id: shippingOptionCalculated.id,
+                amount: 3,
+              }),
+              expect.objectContaining({
+                shipping_option_id: shippingOptionCalculatedB.id,
+                amount: 1.5,
+              }),
+            ])
+          )
+          expect(response.data.cart.shipping_total).toBe(4.5)
+        })
+
+        it("POST /store/shipping-options/:id/calculate prices each option from only its own location's items", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                shipping_address: { country_code: "us" },
+                items: [
+                  { variant_id: product.variants[0].id, quantity: 2 },
+                  { variant_id: productB.variants[0].id, quantity: 1 },
+                ],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const respA = await api.post(
+            `/store/shipping-options/${shippingOptionCalculated.id}/calculate`,
+            { cart_id: cart.id, data: {} },
+            storeHeaders
+          )
+          const respB = await api.post(
+            `/store/shipping-options/${shippingOptionCalculatedB.id}/calculate`,
+            { cart_id: cart.id, data: {} },
+            storeHeaders
+          )
+
+          // Same arithmetic as the GET case, via the single-option endpoint.
+          expect(respA.data.shipping_option.amount).toBe(3)
+          expect(respB.data.shipping_option.amount).toBe(1.5)
+        })
+      })
     })
   },
 })

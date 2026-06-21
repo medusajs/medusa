@@ -3,7 +3,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { IAuthModuleService } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { AuthEvents, MedusaError, Modules } from "@medusajs/framework/utils"
 import { AuthMfaGenerateRecoveryCodesRequestType } from "../../validators"
 
 export const POST = async (
@@ -26,6 +26,14 @@ export const POST = async (
   const { codes } = await authService.generateAuthMfaRecoveryCodes({
     auth_identity_id: req.auth_context.auth_identity_id,
     count: req.validatedBody.count,
+  })
+
+  await req.scope.resolve(Modules.EVENT_BUS).emit({
+    name: AuthEvents.MFA_RECOVERY_CODES_GENERATED,
+    data: {
+      auth_identity_id: req.auth_context.auth_identity_id,
+      count: codes.length,
+    },
   })
 
   return res.status(200).json({ recovery_codes: codes })

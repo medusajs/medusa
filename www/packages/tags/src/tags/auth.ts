@@ -44,12 +44,24 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/storefront-development/customers/third-party-login"
   },
   {
+    "title": "Register Customer with Email Verification in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account"
+  },
+  {
     "title": "Create Auth Provider",
     "path": "https://docs.medusajs.com/resources/references/auth/provider"
   },
   {
+    "title": "requestVerificationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
+  },
+  {
     "title": "setAuthAppMetadataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
+  },
+  {
+    "title": "requestVerificationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestVerificationWorkflow"
   },
   {
     "title": "setAuthAppMetadataWorkflow",
@@ -92,15 +104,19 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
   },
   {
-    "title": "register",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
-  },
-  {
     "title": "resetPassword",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/resetPassword"
   },
   {
     "title": "updateProvider",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/updateProvider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
   }
 ]

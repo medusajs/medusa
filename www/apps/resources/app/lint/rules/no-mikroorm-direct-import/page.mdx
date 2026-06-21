@@ -1,0 +1,66 @@
+---
+sidebar_label: "no-mikroorm-direct-import"
+---
+
+export const metadata = {
+  title: `no-mikroorm-direct-import - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows importing MikroORM or awilix directly. As of Medusa v2.11, they're bundled into `@medusajs/framework`, so use the `@medusajs/framework/mikro-orm/*` and `@medusajs/framework/awilix` re-exports.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets all files in your project. It reports imports and re-exports from `@mikro-orm/*` packages or the bare `awilix` package.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/example.ts"
+// non-compliant
+import { EntityManager } from "@mikro-orm/core"
+```
+
+Instead, import from the Medusa Framework re-export:
+
+```ts title="src/modules/example.ts"
+// compliant
+import { EntityManager } from "@medusajs/framework/mikro-orm/core"
+```
+
+## Why it's Important
+
+Using the Medusa Framework re-exports ensures you depend on the same MikroORM and awilix versions Medusa uses, avoiding version mismatches and duplicate copies in your project.
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/no-mikroorm-direct-import": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/no-mikroorm-direct-import
+import { EntityManager } from "@mikro-orm/core"
+```

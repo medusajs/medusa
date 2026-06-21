@@ -1,4 +1,5 @@
 import {
+  AuthMfaProvider,
   AuthTypes,
   Context,
   DAL,
@@ -7,7 +8,6 @@ import {
 import { MedusaError } from "@medusajs/framework/utils"
 import { AuthMfaFactor } from "@models"
 import { TotpMfaProviderOptions } from "@types"
-import { AuthMfaProvider } from "../../services/mfa-provider"
 import { decryptSecret, encryptSecret } from "../../utils/mfa"
 import {
   generateTotpSecret,

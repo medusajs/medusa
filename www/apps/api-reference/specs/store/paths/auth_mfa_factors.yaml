@@ -1,0 +1,115 @@
+get:
+  operationId: GetMfaFactors
+  summary: List Multifactor Authentication (MFA) Factors
+  x-sidebar-summary: List MFA Factors
+  description: >
+    Retrieve the list of multi-factor authentication (MFA) factors registered
+    for the authenticated user,
+
+    including both pending (not yet verified) and enabled factors.
+  x-authenticated: true
+  parameters: []
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/auth_mfa_factors/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_mfa_factors/get.sh
+  tags:
+    - Multi-Factor Authentication (MFA) Factors
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.15.3
+post:
+  operationId: PostMfaFactors
+  summary: Start Multi-Factor Authentication (MFA) Factor Enrollment
+  x-sidebar-summary: Start MFA Factor Enrollment
+  description: >
+    Start the enrollment of a new multi-factor authentication (MFA) factor for
+    the authenticated
+
+    user. The response contains the factor along with provider-specific setup
+    data (such as a
+
+    secret and an `otpauth_url` for TOTP) that can be used to display a QR code.
+    The factor must
+
+    then be verified via the verify endpoint before it can be used.
+  x-authenticated: true
+  externalDocs:
+    description: Learn more about MFA in Medusa
+    url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
+  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The details of the MFA factor to enroll.
+          required:
+            - provider
+          properties:
+            provider:
+              type: string
+              title: provider
+              description: >-
+                The ID of the MFA provider to enroll the factor with (for
+                example, `totp`).
+            label:
+              type: string
+              title: label
+              description: >-
+                A human-readable label to identify the factor (for example, the
+                name of the authenticator app or device).
+            issuer:
+              type: string
+              title: issuer
+              description: >-
+                The issuer name shown in authenticator apps for this factor.
+                Defaults to the application name when omitted.
+            metadata:
+              type: object
+              description: Additional provider-specific data to associate with the factor.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/auth_mfa_factors/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_mfa_factors/post.sh
+  tags:
+    - Multi-Factor Authentication (MFA) Factors
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.15.3

@@ -1,0 +1,51 @@
+---
+sidebar_label: "link-no-cross-module-relationship"
+---
+
+export const metadata = {
+  title: `link-no-cross-module-relationship - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that data model relationships (`hasOne`, `belongsTo`, `hasMany`, `manyToMany`) reference a data model defined in the same module.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets data model files in your project's `src/modules` directory. It reports a relationship method that references a data model imported from another module.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+import Product from "@medusajs/medusa/product/models/product"
+
+export const Post = model.define("post", {
+  product: model.belongsTo(() => Product, {}),
+})
+```
+
+Instead, reference a same-module data model and use a [module link](!docs!/learn/fundamentals/module-links) for cross-module references:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+import Author from "./author"
+
+export const Post = model.define("post", {
+  author: model.belongsTo(() => Author, {}),
+})
+```
+
+## Why it's Important
+
+Modules are isolated and can't have direct database relationships across module boundaries. Cross-module references are defined with module links instead, which keeps modules decoupled.
+
+Learn more in the [Module Links documentation](!docs!/learn/fundamentals/module-links).
+
+## Fixable
+
+This rule isn't auto-fixable.

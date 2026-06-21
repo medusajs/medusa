@@ -1,6 +1,8 @@
 import { model } from "@medusajs/framework/utils"
 import { AuthMfaFactor } from "./auth-mfa-factor"
 import { AuthMfaRecoveryCode } from "./auth-mfa-recovery-code"
+import { AuthPasswordResetToken } from "./auth-password-reset-token"
+import { AuthVerification } from "./auth-verification"
 import { ProviderIdentity } from "./provider-identity"
 
 export const AuthIdentity = model
@@ -15,6 +17,12 @@ export const AuthIdentity = model
     mfa_recovery_codes: model.hasMany(() => AuthMfaRecoveryCode, {
       mappedBy: "auth_identity",
     }),
+    verifications: model.hasMany(() => AuthVerification, {
+      mappedBy: "auth_identity",
+    }),
+    password_reset_tokens: model.hasMany(() => AuthPasswordResetToken, {
+      mappedBy: "auth_identity",
+    }),
     app_metadata: model.json().nullable(),
   })
   .cascades({
@@ -22,5 +30,7 @@ export const AuthIdentity = model
       "provider_identities",
       "mfa_factors",
       "mfa_recovery_codes",
+      "verifications",
+      "password_reset_tokens",
     ],
   })

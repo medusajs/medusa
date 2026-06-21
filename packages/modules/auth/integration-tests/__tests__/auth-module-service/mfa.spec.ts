@@ -118,9 +118,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           otpauth_url: expect.stringContaining("otpauth://totp/"),
           secret: expect.any(String),
         })
-        expect(setup.otpauth_url).toContain(
-          "Medusa%20Test:Authenticator%20app"
-        )
+        expect(setup.otpauth_url).toContain("Medusa%20Test:Authenticator%20app")
         expect(setup.otpauth_url).toContain("issuer=Medusa%20Test")
         expect(setup.mfa).not.toHaveProperty("secret")
         expect(setup.mfa).not.toHaveProperty("provider_metadata")
@@ -571,6 +569,30 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           })
         ).rejects.toThrow("MFA verification code is required to disable MFA")
       })
+
+      it("allows cancelling pending MFA setup without a challenge", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+
+        await expect(service.retrieveAuthMfa(setup.mfa.id)).resolves.toEqual(
+          expect.objectContaining({
+            status: "pending",
+          })
+        )
+
+        const factor = await service.disableAuthMfa({
+          id: setup.mfa.id,
+        })
+
+        expect(factor).toEqual(
+          expect.objectContaining({
+            id: setup.mfa.id,
+            status: "disabled",
+          })
+        )
+      })
     })
   },
 })
@@ -621,7 +643,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
 
       it("returns the auth identity when MFA is not enabled", async () => {
         const result = await service.authenticate("plaintextpass", {
-          actor_type: "user",
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -638,12 +659,11 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           })
         )
-        expect(result.mfa_challenge).toBeUndefined()
+        expect(result.mfaChallenge).toBeUndefined()
       })
 
       it("returns an MFA challenge instead of the auth identity when MFA is enabled", async () => {
         const initial = await service.authenticate("plaintextpass", {
-          actor_type: "user",
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -664,7 +684,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         })
 
         const result = await service.authenticate("plaintextpass", {
-          actor_type: "user",
           body: {
             email: "test@admin.com",
             password: "plaintext",
@@ -674,9 +693,8 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         expect(result).toEqual(
           expect.objectContaining({
             success: true,
-            mfa_challenge: expect.objectContaining({
+            mfaChallenge: expect.objectContaining({
               auth_identity_id: initial.authIdentity!.id,
-              actor_type: "user",
               auth_provider: "plaintextpass",
               methods: ["totp"],
               attempts: 0,
@@ -684,7 +702,6 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             }),
           })
         )
-        expect(result.authIdentity).toBeUndefined()
       })
     })
   },

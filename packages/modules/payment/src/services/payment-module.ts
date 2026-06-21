@@ -11,6 +11,7 @@ import {
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
+  DeletePaymentMethodDTO,
   FilterablePaymentCollectionProps,
   FilterablePaymentMethodProps,
   FilterablePaymentProviderProps,
@@ -1314,6 +1315,38 @@ export default class PaymentModuleService
     })
 
     return Array.isArray(data) ? normalizedResponse : normalizedResponse[0]
+  }
+
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectManager()
+  @EmitEvents()
+  async deletePaymentMethods(
+    data: DeletePaymentMethodDTO | DeletePaymentMethodDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    const input = Array.isArray(data) ? data : [data]
+
+    await promiseAll(
+      input.map((item) =>
+        this.paymentProviderService_.deletePaymentMethod(item.provider_id, {
+          context: item.context,
+          data: {
+            ...item.data,
+            id: item.id,
+          },
+        })
+      ),
+      { aggregateErrors: true }
+    )
   }
 
   @InjectManager()

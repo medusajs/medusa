@@ -20,14 +20,12 @@ Do not install Tanstack Query as that will cause unexpected errors in your devel
 
 First, create the file `src/admin/lib/sdk.ts` to set up the SDK for use in your customizations:
 
-<CodeTabs>
-  <CodeTab label="Medusa Project" value="medusa-project">
-
 ```ts title="src/admin/lib/sdk.ts"
 import Medusa from "@medusajs/js-sdk"
 
+// add __BACKEND_URL__ to src/admin/vite-env.d.ts if you get type errors
 export const sdk = new Medusa({
-  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  baseUrl: __BACKEND_URL__ || "/",
   debug: import.meta.env.DEV,
   auth: {
     type: "session",
@@ -35,26 +33,7 @@ export const sdk = new Medusa({
 })
 ```
 
-  </CodeTab>
-  <CodeTab label="Medusa Plugin" value="medusa-plugin">
-
-```ts title="src/admin/lib/sdk.ts"
-import Medusa from "@medusajs/js-sdk"
-
-export const sdk = new Medusa({
-  // add __BACKEND_URL__ to src/admin/vite-env.d.ts if you get type errors
-  baseUrl: __BACKEND_URL__ || "/",
-  auth: {
-    type: "session",
-  },
-})
-```
-
-  </CodeTab>
-</CodeTabs>
-
-
-Notice that in a Medusa project, you use `import.meta.env` to access environment variables in your customizations, whereas in a plugin you use the global variable `__BACKEND_URL__` to access the backend URL. You can learn more in the [Admin Environment Variables](../environment-variables/page.mdx) chapter.
+The `__BACKEND_URL__` global variable is injected by the admin bundler at build time. You can learn more about available global variables and environment variables in the [Admin Environment Variables](../environment-variables/page.mdx) chapter.
 
 <Note>
 

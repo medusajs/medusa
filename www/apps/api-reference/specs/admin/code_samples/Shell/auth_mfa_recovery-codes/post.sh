@@ -1,0 +1,1 @@
+curl -X POST '{backend_url}/auth/mfa/recovery-codes'

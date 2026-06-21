@@ -6,14 +6,14 @@ import { AuthIdentityDTO } from "./auth-identity"
  *
  * @since 2.15.3
  */
-export type AuthMfaProvider = "totp" | (string & {})
+export type AuthMfaProviderMethod = "totp" | (string & {})
 
 /**
  * Methods available for multi-factor authentication (MFA) challenges, including providers and recovery codes.
  *
  * @since 2.15.3
  */
-export type AuthMfaChallengeMethod = AuthMfaProvider | "recovery_code"
+export type AuthMfaChallengeMethod = AuthMfaProviderMethod | "recovery_code"
 
 /**
  * Status of a multi-factor authentication (MFA) setup for an authentication identity.
@@ -45,7 +45,7 @@ export type AuthMfaDTO = {
   /**
    * The multi-factor authentication (MFA) provider used.
    */
-  provider: AuthMfaProvider
+  provider: AuthMfaProviderMethod
   /**
    * The status of this multi-factor authentication (MFA) configuration.
    */
@@ -113,10 +113,6 @@ export type AuthMfaChallengeDTO = {
    */
   auth_identity?: AuthIdentityDTO
   /**
-   * The type of actor initiating the challenge.
-   */
-  actor_type?: string | null
-  /**
    * The authentication provider handling the challenge.
    */
   auth_provider?: string | null
@@ -159,7 +155,7 @@ export type AuthMfaStartDTO = {
   /**
    * The multi-factor authentication (MFA) provider to use.
    */
-  provider: AuthMfaProvider
+  provider: AuthMfaProviderMethod
   /**
    * Optional label for the multi-factor authentication (MFA) configuration.
    */
@@ -224,10 +220,6 @@ export type CreateAuthMfaChallengeDTO = {
    * The ID of the authentication identity to challenge.
    */
   auth_identity_id: string
-  /**
-   * The type of actor requesting the challenge.
-   */
-  actor_type?: string | null
   /**
    * The authentication provider handling the challenge.
    */
@@ -340,7 +332,7 @@ export interface FilterableAuthMfaProps
   /**
    * Filter by multi-factor authentication (MFA) provider.
    */
-  provider?: AuthMfaProvider
+  provider?: AuthMfaProviderMethod
   /**
    * Filter by multi-factor authentication (MFA) status.
    */

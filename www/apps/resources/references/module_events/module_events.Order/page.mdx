@@ -10,139 +10,6 @@ import { TypeList } from "docs-ui"
 
 This reference shows all the events emitted by the Medusa application related to the Order Module. If you use the module outside the Medusa application, these events aren't emitted.
 
-## Order Edit Events
-
-### Summary
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-Event
-</Table.HeaderCell>
-      <Table.HeaderCell>
-Description
-</Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-[order-edit.requested](#order-editrequested)
-<Tooltip text="This event was added in version v2.8.0"><Badge variant="blue">v2.8.0</Badge></Tooltip>
-</Table.Cell>
-      <Table.Cell>
-Emitted when an order edit is requested.
-</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-[order-edit.confirmed](#order-editconfirmed)
-<Tooltip text="This event was added in version v2.8.0"><Badge variant="blue">v2.8.0</Badge></Tooltip>
-</Table.Cell>
-      <Table.Cell>
-Emitted when an order edit request is confirmed.
-</Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-[order-edit.canceled](#order-editcanceled)
-<Tooltip text="This event was added in version v2.8.0"><Badge variant="blue">v2.8.0</Badge></Tooltip>
-</Table.Cell>
-      <Table.Cell>
-Emitted when an order edit request is canceled.
-</Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-<EventHeader headerLvl="3" headerProps={{ id: "order-editrequested", children: (<>order-edit.requested
-<Tooltip text="This event was added in version v2.8.0">
-<Badge variant="blue">v2.8.0</Badge>
-</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order-edit.requested" payload={`\`\`\`ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-\`\`\``} />
-
-Emitted when an order edit is requested.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [requestOrderEditRequestWorkflow](/references/medusa-workflows/requestOrderEditRequestWorkflow)
-
----
-
-<EventHeader headerLvl="3" headerProps={{ id: "order-editconfirmed", children: (<>order-edit.confirmed
-<Tooltip text="This event was added in version v2.8.0">
-<Badge variant="blue">v2.8.0</Badge>
-</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order-edit.confirmed" payload={`\`\`\`ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-\`\`\``} />
-
-Emitted when an order edit request is confirmed.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [confirmOrderEditRequestWorkflow](/references/medusa-workflows/confirmOrderEditRequestWorkflow)
-
----
-
-<EventHeader headerLvl="3" headerProps={{ id: "order-editcanceled", children: (<>order-edit.canceled
-<Tooltip text="This event was added in version v2.8.0">
-<Badge variant="blue">v2.8.0</Badge>
-</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order-edit.canceled" payload={`\`\`\`ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-\`\`\``} />
-
-Emitted when an order edit request is canceled.
-
-#### Payload
-
-```ts
-{
-  order_id, // The ID of the order
-  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
-}
-```
-
-#### Workflows Emitting this Event
-
-The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
-
-- [cancelBeginOrderEditWorkflow](/references/medusa-workflows/cancelBeginOrderEditWorkflow)
-
----
-
 ## Order Events
 
 ### Summary
@@ -571,3 +438,136 @@ another customer.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [requestOrderTransferWorkflow](/references/medusa-workflows/requestOrderTransferWorkflow)
+
+---
+
+## Order Edit Events
+
+### Summary
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+Event
+</Table.HeaderCell>
+      <Table.HeaderCell>
+Description
+</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+[order-edit.requested](#order-editrequested)
+<Tooltip text="This event was added in version v2.8.0"><Badge variant="blue">v2.8.0</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when an order edit is requested.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[order-edit.confirmed](#order-editconfirmed)
+<Tooltip text="This event was added in version v2.8.0"><Badge variant="blue">v2.8.0</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when an order edit request is confirmed.
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+[order-edit.canceled](#order-editcanceled)
+<Tooltip text="This event was added in version v2.8.0"><Badge variant="blue">v2.8.0</Badge></Tooltip>
+</Table.Cell>
+      <Table.Cell>
+Emitted when an order edit request is canceled.
+</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<EventHeader headerLvl="3" headerProps={{ id: "order-editrequested", children: (<>order-edit.requested
+<Tooltip text="This event was added in version v2.8.0">
+<Badge variant="blue">v2.8.0</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order-edit.requested" payload={`\`\`\`ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+\`\`\``} />
+
+Emitted when an order edit is requested.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [requestOrderEditRequestWorkflow](/references/medusa-workflows/requestOrderEditRequestWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "order-editconfirmed", children: (<>order-edit.confirmed
+<Tooltip text="This event was added in version v2.8.0">
+<Badge variant="blue">v2.8.0</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order-edit.confirmed" payload={`\`\`\`ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+\`\`\``} />
+
+Emitted when an order edit request is confirmed.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [confirmOrderEditRequestWorkflow](/references/medusa-workflows/confirmOrderEditRequestWorkflow)
+
+---
+
+<EventHeader headerLvl="3" headerProps={{ id: "order-editcanceled", children: (<>order-edit.canceled
+<Tooltip text="This event was added in version v2.8.0">
+<Badge variant="blue">v2.8.0</Badge>
+</Tooltip></>), className: "flex flex-wrap justify-center gap-docs_0.25" }} eventName="order-edit.canceled" payload={`\`\`\`ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+\`\`\``} />
+
+Emitted when an order edit request is canceled.
+
+#### Payload
+
+```ts
+{
+  order_id, // The ID of the order
+  actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+}
+```
+
+#### Workflows Emitting this Event
+
+The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
+
+- [cancelBeginOrderEditWorkflow](/references/medusa-workflows/cancelBeginOrderEditWorkflow)

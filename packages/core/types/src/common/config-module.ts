@@ -293,6 +293,20 @@ export type MedusaCloudOptions = {
    * Whether the Medusa Cloud OAuth service is disabled.
    */
   oauthDisabled?: boolean
+  /**
+   * The JWKS URI for the Medusa Cloud OAuth service. This is used to verify the JWT tokens issued by the Medusa Cloud OAuth service.
+   * If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+   *
+   * @since 2.16.0
+   */
+  oauthJwksUri?: string
+  /**
+   * The expected `aud` claim of id_tokens issued by the Medusa Cloud OAuth service.
+   * If not provided, an error is thrown when trying to use the Medusa Cloud OAuth service.
+   *
+   * @since 2.16.0
+   */
+  oauthAudience?: string
 }
 
 /**
@@ -926,6 +940,38 @@ export type ProjectConfigOptions = {
      */
     authMethodsPerActor?: Record<string, string[]>
 
+    /**
+     * This configuration specifies the required verification types per actor type (such as `user`, `customer`, or any custom actors).
+     * For example, you only want to require email verification for `customers` when authenticating with emailpass, or phone number verification for `users` when authenticating with phone-auth.
+     *
+     * `authVerificationsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of objects with the following properties:
+     * - `entity_type`: The type of entity being verified. For example, `email` or `phone_number`.
+     * - `auth_provider`: The provider that requires the verification. For example, `emailpass` or `phone-auth`.
+     *
+     * @example
+     *
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       authVerificationsPerActor: {
+     *         // No verifications required for users
+     *         user: [],
+     *         // Email verification required for customers using emailpass, but if they use google auth no need to verify
+     *         customer: [
+     *           { entity_type: "email", auth_provider: "emailpass" },
+     *         ],
+     *       },
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * ```
+     */
+    authVerificationsPerActor?: Record<
+      string,
+      { entity_type: string; auth_provider: string }[]
+    >
     /**
      * Specifies the fields that can't be selected in the response unless specified in the allowed query config.
      * This is useful to restrict sensitive fields from being exposed in the API.

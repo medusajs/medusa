@@ -1,6 +1,9 @@
-import { Context, ModulesSdkTypes } from "@medusajs/framework/types"
+import { 
+  Context, 
+  ModulesSdkTypes, 
+  RecoveryCodeAuthMfaProvider
+} from "@medusajs/framework/types"
 import { AuthMfaRecoveryCode } from "@models"
-import { RecoveryCodeAuthMfaProvider } from "../../services/mfa-provider"
 import {
   generateRecoveryCode,
   hashRecoveryCode,

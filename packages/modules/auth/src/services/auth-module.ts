@@ -13,6 +13,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
+import crypto from "node:crypto"
 import {
   InjectTransactionManager,
   InjectManager,
@@ -22,37 +23,51 @@ import {
   generateEntityId,
 } from "@medusajs/framework/utils"
 import {
+  AuthVerification,
   AuthIdentity,
   AuthMfaFactor,
   AuthMfaRecoveryCode,
+  AuthPasswordResetToken,
   ProviderIdentity,
 } from "@models"
 import { AuthModuleOptions } from "@types"
 import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"
 import AuthMfaProviderService from "./mfa-provider"
+import AuthVerificationProviderService from "./verification-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
+  authVerificationService: ModulesSdkTypes.IMedusaInternalService<any>
+  authPasswordResetTokenService: ModulesSdkTypes.IMedusaInternalService<any>
   authMfaFactorService: ModulesSdkTypes.IMedusaInternalService<any>
   authMfaRecoveryCodeService: ModulesSdkTypes.IMedusaInternalService<any>
   providerIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
   authProviderService: AuthProviderService
   authMfaProviderService: AuthMfaProviderService
+  authVerificationProviderService: AuthVerificationProviderService
   logger?: Logger
   cache?: ICacheService
 }
+
 export default class AuthModuleService
   extends MedusaService<{
     AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
     ProviderIdentity: { dto: AuthTypes.ProviderIdentityDTO }
-  }>({ AuthIdentity, ProviderIdentity })
+    AuthVerification: { dto: AuthTypes.AuthVerificationDTO }
+  }>({ AuthIdentity, ProviderIdentity, AuthVerification })
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected authIdentityService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof AuthIdentity>
+  >
+  protected authVerificationService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof AuthVerification>
+  >
+  protected authPasswordResetTokenService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof AuthPasswordResetToken>
   >
   protected authMfaFactorService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof AuthMfaFactor>
@@ -65,17 +80,21 @@ export default class AuthModuleService
   >
   protected readonly authProviderService_: AuthProviderService
   protected readonly authMfaProviderService_: AuthMfaProviderService
+  protected readonly authVerificationProviderService_: AuthVerificationProviderService
   protected readonly cache_: ICacheService | undefined
   protected readonly moduleOptions_: AuthModuleOptions
 
   constructor(
     {
       authIdentityService,
+      authVerificationService,
+      authPasswordResetTokenService,
       authMfaFactorService,
       authMfaRecoveryCodeService,
       providerIdentityService,
       authProviderService,
       authMfaProviderService,
+      authVerificationProviderService,
       baseRepository,
       cache,
     }: InjectedDependencies,
@@ -87,10 +106,13 @@ export default class AuthModuleService
 
     this.baseRepository_ = baseRepository
     this.authIdentityService_ = authIdentityService
+    this.authVerificationService_ = authVerificationService
+    this.authPasswordResetTokenService_ = authPasswordResetTokenService
     this.authMfaFactorService_ = authMfaFactorService
     this.authMfaRecoveryCodeService_ = authMfaRecoveryCodeService
     this.authProviderService_ = authProviderService
     this.authMfaProviderService_ = authMfaProviderService
+    this.authVerificationProviderService_ = authVerificationProviderService
     this.providerIdentityService_ = providerIdentityService
     this.cache_ = cache
     this.moduleOptions_ = moduleOptions
@@ -167,11 +189,15 @@ export default class AuthModuleService
     authenticationData: AuthenticationInput
   ): Promise<AuthenticationResponse> {
     try {
-      return await this.authProviderService_.register(
+      const response = await this.authProviderService_.register(
         provider,
         authenticationData,
         this.getAuthIdentityProviderService(provider)
       )
+
+      return await this.applyMfaRequirement_(response, {
+        auth_provider: provider,
+      })
     } catch (error) {
       return { success: false, error: error.message }
     }
@@ -266,7 +292,6 @@ export default class AuthModuleService
       )
 
       return await this.applyMfaRequirement_(response, {
-        actor_type: authenticationData.actor_type,
         auth_provider: provider,
       })
     } catch (error) {
@@ -286,9 +311,35 @@ export default class AuthModuleService
       )
 
       return await this.applyMfaRequirement_(response, {
-        actor_type: authenticationData.actor_type,
         auth_provider: provider,
       })
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  async validateAuthIdentity(
+    id: string,
+    provider: string,
+    config?: FindConfig<AuthTypes.AuthIdentityDTO>,
+    sharedContext?: Context
+  ): Promise<AuthenticationResponse> {
+    try {
+      const authIdentity = await this.authIdentityService_.retrieve(
+        id,
+        config,
+        sharedContext
+      )
+
+      return await this.applyMfaRequirement_(
+        {
+          success: true,
+          authIdentity: authIdentity as AuthTypes.AuthIdentityDTO,
+        },
+        {
+          auth_provider: provider,
+        }
+      )
     } catch (error) {
       return { success: false, error: error.message }
     }
@@ -349,11 +400,13 @@ export default class AuthModuleService
       )
     }
 
-    return await this.authMfaProviderService_.verifySetup(
+    const verifiedFactor = await this.authMfaProviderService_.verifySetup(
       factor.provider,
       data,
       sharedContext
     )
+
+    return verifiedFactor
   }
 
   @InjectManager()
@@ -391,7 +444,6 @@ export default class AuthModuleService
     const challenge: AuthTypes.AuthMfaChallengeDTO = {
       id: generateEntityId(undefined, "authmfachal"),
       auth_identity_id: data.auth_identity_id,
-      actor_type: data.actor_type ?? null,
       auth_provider: data.auth_provider ?? null,
       methods,
       expires_at: new Date(Date.now() + challengeConfig.ttlSeconds * 1000),
@@ -468,7 +520,10 @@ export default class AuthModuleService
       sharedContext
     )
 
-    if (this.getMfaDisablePolicy_() === "challenge") {
+    if (
+      factor.status === "enabled" &&
+      this.getMfaDisablePolicy_() === "challenge"
+    ) {
       if (!data.method || !data.code) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -621,12 +676,42 @@ export default class AuthModuleService
     }
   }
 
+  @InjectManager()
+  async requestAuthVerification(
+    data: AuthTypes.RequestAuthVerificationDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.RequestAuthVerificationResponse> {
+    if (!data.code_provider) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Verification provider is required"
+      )
+    }
+
+    return await this.authVerificationProviderService_.request(
+      data.code_provider,
+      data,
+      sharedContext
+    )
+  }
+
+  @InjectManager()
+  async confirmAuthVerification(
+    data: AuthTypes.ConfirmAuthVerificationDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConfirmAuthVerificationResponse> {
+    const codeProvider = data.code_provider ?? "token"
+
+    return await this.authVerificationProviderService_.confirm(
+      codeProvider,
+      { ...data, code_provider: codeProvider },
+      sharedContext
+    )
+  }
+
   protected async applyMfaRequirement_(
     response: AuthenticationResponse,
-    context: Pick<
-      AuthTypes.CreateAuthMfaChallengeDTO,
-      "actor_type" | "auth_provider"
-    >
+    context: Pick<AuthTypes.CreateAuthMfaChallengeDTO, "auth_provider">
   ): Promise<AuthenticationResponse> {
     if (!response.success || !response.authIdentity || response.location) {
       return response
@@ -642,13 +727,13 @@ export default class AuthModuleService
 
     const mfaChallenge = await this.createAuthMfaChallenge_({
       auth_identity_id: response.authIdentity.id,
-      actor_type: context.actor_type ?? null,
       auth_provider: context.auth_provider ?? null,
     })
 
     return {
       success: true,
-      mfa_challenge: mfaChallenge,
+      mfaChallenge: mfaChallenge,
+      authIdentity: response.authIdentity,
     }
   }
 
@@ -667,7 +752,9 @@ export default class AuthModuleService
 
     const factorMethods = Array.from(
       new Set(
-        factors.map((factor) => factor.provider as AuthTypes.AuthMfaProvider)
+        factors.map(
+          (factor) => factor.provider as AuthTypes.AuthMfaProviderMethod
+        )
       )
     )
 
@@ -751,14 +838,148 @@ export default class AuthModuleService
       )
     }
 
-    if (
-      !challenge.methods.includes(method)
-    ) {
+    if (!challenge.methods.includes(method)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `MFA challenge does not support method "${method}"`
       )
     }
+  }
+
+  @InjectManager()
+  async createPasswordResetToken(
+    data: AuthTypes.CreatePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.CreatePasswordResetTokenResponse> {
+    return await this.createPasswordResetToken_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async createPasswordResetToken_(
+    data: AuthTypes.CreatePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.CreatePasswordResetTokenResponse> {
+    const [providerIdentity] = await this.providerIdentityService_.list(
+      { provider: data.provider, entity_id: data.entity_id },
+      {},
+      sharedContext
+    )
+
+    if (!providerIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Provider identity with entity_id ${data.entity_id} and provider ${data.provider} not found`
+      )
+    }
+
+    await this.invalidatePasswordResetTokens_(
+      providerIdentity.id,
+      sharedContext
+    )
+
+    const jti = crypto.randomUUID()
+    const expiresAt = new Date(
+      Date.now() + this.getPasswordResetTokenTtlMs_(data.ttl_seconds ?? 900)
+    )
+
+    await this.authPasswordResetTokenService_.create(
+      {
+        auth_identity_id: providerIdentity.auth_identity_id,
+        provider_identity_id: providerIdentity.id,
+        entity_id: providerIdentity.entity_id,
+        token_hash: this.hashVerificationToken_(jti),
+        expires_at: expiresAt,
+      },
+      sharedContext
+    )
+
+    return { jti, expires_at: expiresAt }
+  }
+
+  @InjectManager()
+  async consumePasswordResetToken(
+    data: AuthTypes.ConsumePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConsumePasswordResetTokenResponse> {
+    return await this.consumePasswordResetToken_(data, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async consumePasswordResetToken_(
+    data: AuthTypes.ConsumePasswordResetTokenDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<AuthTypes.ConsumePasswordResetTokenResponse> {
+    const [resetToken] = await this.authPasswordResetTokenService_.list(
+      { token_hash: this.hashVerificationToken_(data.jti) },
+      {},
+      sharedContext
+    )
+
+    if (!resetToken) {
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
+
+    if (new Date(resetToken.expires_at).getTime() <= Date.now()) {
+      await this.authPasswordResetTokenService_.delete(
+        resetToken.id,
+        sharedContext
+      )
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
+
+    const providerIdentity = await this.providerIdentityService_.retrieve(
+      resetToken.provider_identity_id,
+      {},
+      sharedContext
+    )
+
+    if (
+      providerIdentity.provider !== data.provider ||
+      providerIdentity.entity_id !== data.entity_id
+    ) {
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
+
+    await this.authPasswordResetTokenService_.delete(
+      resetToken.id,
+      sharedContext
+    )
+
+    return {
+      auth_identity_id: resetToken.auth_identity_id!,
+      provider_identity_id: resetToken.provider_identity_id!,
+      entity_id: resetToken.entity_id,
+    }
+  }
+
+  protected async invalidatePasswordResetTokens_(
+    providerIdentityId: string,
+    sharedContext: Context = {}
+  ): Promise<void> {
+    const existing = await this.authPasswordResetTokenService_.list(
+      { provider_identity_id: providerIdentityId },
+      { select: ["id"] },
+      sharedContext
+    )
+    const ids = existing.map((token) => token.id)
+
+    if (ids.length) {
+      await this.authPasswordResetTokenService_.delete(ids, sharedContext)
+    }
+  }
+
+  protected getPasswordResetTokenTtlMs_(ttlSeconds: number): number {
+    if (!Number.isInteger(ttlSeconds) || ttlSeconds < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Password reset token TTL must be a positive integer"
+      )
+    }
+    return ttlSeconds * 1000
+  }
+
+  protected hashVerificationToken_(token: string): string {
+    return crypto.createHash("sha256").update(token).digest("hex")
   }
 
   protected getMfaChallengeConfig_(): {
