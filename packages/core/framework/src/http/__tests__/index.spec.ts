@@ -361,4 +361,82 @@ describe("RoutesLoader", function () {
       )
     })
   })
+
+  describe("Disabled routes", function () {
+    it("should return 404 for routes matching disabledRoutes wildcard pattern", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*"],
+          },
+        },
+      } as any)
+
+      // Disabled route should 404
+      const res = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(res.status).toBe(404)
+    })
+
+    it("should still serve routes not matching disabledRoutes pattern", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*"],
+          },
+        },
+      } as any)
+
+      // Non-disabled route should still work
+      const res = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(res.status).toBe(200)
+    })
+
+    it("should disable exact route paths", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/orders"],
+          },
+        },
+      } as any)
+
+      // Exact match should be disabled
+      const orderRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(orderRes.status).toBe(404)
+
+      // Products should still work
+      const productRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productRes.status).toBe(200)
+    })
+  })
 })

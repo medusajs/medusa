@@ -117,6 +117,26 @@ export class ApiLoader {
   }
 
   /**
+   * Checks if a route path matches any of the disabled route patterns
+   * from the config. Patterns support trailing `*` as a wildcard.
+   */
+  #isRouteDisabledByConfig(matcher: string): boolean {
+    const disabledRoutes =
+      configManager.config.projectConfig.http.disabledRoutes
+    if (!disabledRoutes || disabledRoutes.length === 0) {
+      return false
+    }
+
+    return disabledRoutes.some((pattern) => {
+      if (pattern.endsWith("*")) {
+        const prefix = pattern.slice(0, -1)
+        return matcher === prefix || matcher.startsWith(prefix)
+      }
+      return matcher === pattern
+    })
+  }
+
+  /**
    * Checks if a route file is disabled for a given matcher and method
    * by trying to find the corresponding route file path
    */
@@ -440,12 +460,45 @@ export class ApiLoader {
 
     const {
       errorHandler: sourceErrorHandler,
-      middlewares,
-      routes,
+      middlewares: loadedMiddlewares,
+      routes: loadedRoutes,
       routesFinder,
-      bodyParserConfigRoutes,
-      additionalDataValidatorRoutes,
+      bodyParserConfigRoutes: loadedBodyParserConfigRoutes,
+      additionalDataValidatorRoutes: loadedAdditionalDataValidatorRoutes,
     } = await this.#loadHttpResources()
+
+    /**
+     * Filter out routes and middlewares that match the disabledRoutes
+     * patterns from the config.
+     */
+    const routes = loadedRoutes.filter((route) => {
+      if (this.#isRouteDisabledByConfig(route.matcher)) {
+        this.#logger.debug(
+          `Skipping disabled route ${route.method} ${route.matcher}`
+        )
+        return false
+      }
+      return true
+    })
+
+    const middlewares = loadedMiddlewares.filter((mw) => {
+      if (this.#isRouteDisabledByConfig(mw.matcher)) {
+        this.#logger.debug(
+          `Skipping middleware for disabled route ${mw.matcher}`
+        )
+        return false
+      }
+      return true
+    })
+
+    const bodyParserConfigRoutes = loadedBodyParserConfigRoutes.filter((bp) => {
+      return !this.#isRouteDisabledByConfig(bp.matcher)
+    })
+
+    const additionalDataValidatorRoutes =
+      loadedAdditionalDataValidatorRoutes.filter((adv) => {
+        return !this.#isRouteDisabledByConfig(adv.matcher)
+      })
 
     /**
      * Parse request body on all the requests and use the routes finder

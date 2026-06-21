@@ -28,8 +28,9 @@ function asArray(resolvers) {
  * Sets up a test server that injects API Routes using the RoutesLoader
  *
  * @param {String} rootDir - The root directory of the project
+ * @param {Object} configOverrides - Optional overrides for the test config
  */
-export const createServer = async (rootDir) => {
+export const createServer = async (rootDir, configOverrides?: Partial<typeof config>) => {
   const app = express()
 
   const moduleResolutions = {}
@@ -42,8 +43,21 @@ export const createServer = async (rootDir) => {
     })[moduleKey]
   })
 
+  const mergedConfig = configOverrides
+    ? {
+        ...config,
+        projectConfig: {
+          ...config.projectConfig,
+          http: {
+            ...config.projectConfig.http,
+            ...configOverrides.projectConfig?.http,
+          },
+        },
+      }
+    : config
+
   configManager.loadConfig({
-    projectConfig: config,
+    projectConfig: mergedConfig,
     baseDir: rootDir,
   })
 

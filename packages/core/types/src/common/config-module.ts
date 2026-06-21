@@ -992,6 +992,34 @@ export type ProjectConfigOptions = {
       store?: string[]
       /*admin?: string[]*/
     }
+
+    /**
+     * An array of route path patterns to disable from the core Medusa API.
+     * Disabled routes will not be registered and their associated middlewares/policies
+     * will also be skipped.
+     *
+     * Patterns support trailing wildcards using `*`. For example:
+     * - `/admin/products*` disables all routes starting with `/admin/products`
+     * - `/admin/product-variants*` disables all product-variants routes
+     * - `/store/products/:id` disables a specific route
+     *
+     * @example
+     * ```ts title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       disabledRoutes: [
+     *         "/admin/products*",
+     *         "/admin/product-variants*",
+     *       ],
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    disabledRoutes?: string[]
   }
 
   /**
