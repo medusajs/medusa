@@ -42,22 +42,9 @@ export const GiftCardProductEditDenominationsForm = ({
   })
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
-
   const handleSubmit = form.handleSubmit(async (data: any) => {
-    const optionValues = data.denominations.map(
-      (denomination) => denomination.value
-    )
-
-    const options = [
-      {
-        title: "denomination",
-        values: optionValues,
-      },
-    ]
-
     await mutateAsync(
       {
-        options,
         variants: data.denominations.map((denomination) => ({
           id: denomination.id,
           title: denomination.value,
