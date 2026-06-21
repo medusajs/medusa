@@ -167,6 +167,38 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## npm Cache Errors During Build
+
+If your build fails with an error similar to:
+
+```bash
+npm error code EEXIST
+npm error syscall open
+npm error path /root/.npm/_cacache/tmp/...
+npm error errno -17
+npm error EEXIST: file already exists, open '/root/.npm/_cacache/tmp/...'
+```
+
+This is a transient npm cache corruption or a race condition in Docker's cache mount. The build environment's npm cache becomes temporarily inconsistent, causing `npm ci` to fail when writing temporary files.
+
+### Resolve npm Cache Errors
+
+Retry the build. The error is transient and the build typically succeeds on the second attempt.
+
+To retry a deployment from the Cloud dashboard:
+
+1. Navigate to your project's deployment history.
+2. Click the failed deployment to open its details.
+3. Click **Redeploy** to trigger a new build.
+
+<Note>
+
+If the error persists across two or three consecutive builds, contact support to clear the npm cache for your project.
+
+</Note>
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
