@@ -63,6 +63,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "ALL",
     name_plural: "Albanian lekë",
   },
+  AOA: {
+    symbol: "AOA",
+    name: "Angolan Kwanza",
+    symbol_native: "Kz",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "AOA",
+    name_plural: "Angolan kwanzas",
+  },
   AMD: {
     symbol: "AMD",
     name: "Armenian Dram",

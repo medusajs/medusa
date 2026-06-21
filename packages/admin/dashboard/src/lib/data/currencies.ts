@@ -43,6 +43,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "Lek",
     decimal_digits: 0,
   },
+  AOA: {
+    code: "AOA",
+    name: "Angolan Kwanza",
+    symbol_native: "Kz",
+    decimal_digits: 2,
+  },
   AMD: {
     code: "AMD",
     name: "Armenian Dram",
