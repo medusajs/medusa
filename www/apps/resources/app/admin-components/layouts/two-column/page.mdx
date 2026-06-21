@@ -10,6 +10,12 @@ export const metadata = {
 
 In this guide, you'll learn how to create a layout component that matches the Medusa Admin's design conventions for pages with two columns of content.
 
+<Note>
+
+As of Medusa v2.16.0, Medusa provides a [LayoutComposer](../../components/layout-composer/page.mdx) component that you can use to create layouts, including the two column layout.
+
+</Note>
+
 The Medusa Admin has pages with two columns of content.
 
 <Note>
@@ -54,7 +60,7 @@ The `TwoColumnLayout` accepts two props:
 
 ## Example
 
-Use the `TwoColumnLayout` component in your UI routes that have a single column. For example:
+Use the `TwoColumnLayout` component in your UI routes that have two columns. For example:
 
 ```tsx title="src/admin/routes/custom/page.tsx" highlights={[["9"]]}
 import { defineRouteConfig } from "@medusajs/admin-sdk"
@@ -88,4 +94,4 @@ export const config = defineRouteConfig({
 export default CustomPage
 ```
 
-This UI route also uses [Container](../../components/container/page.mdx) and [Header]() custom components.
+This UI route also uses [Container](../../components/container/page.mdx) and [Header](../../components/header/page.mdx) custom components.

@@ -1,0 +1,45 @@
+---
+sidebar_label: "subscriber-config-export-required"
+---
+
+export const metadata = {
+  title: `subscriber-config-export-required - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires subscriber files to export a `config` object with at least an `event` property.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/subscribers` directory. It reports a subscriber file that's missing the named `config` export, or whose `config` object doesn't declare an `event` property.
+
+The following code is reported by the rule:
+
+```ts title="src/subscribers/order-placed.ts"
+export default async function () {}
+```
+
+Instead, export a `config` object with an `event` property:
+
+```ts title="src/subscribers/order-placed.ts"
+export default async function () {}
+
+export const config = {
+  event: "order.placed",
+}
+```
+
+## Why it's Important
+
+The `config` export tells Medusa which event(s) the subscriber listens to. Without an `event` property, Medusa can't register the subscriber for any event.
+
+Learn more in the [Subscribers documentation](!docs!/learn/fundamentals/events-and-subscribers).
+
+## Fixable
+
+This rule isn't auto-fixable.

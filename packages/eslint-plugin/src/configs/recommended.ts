@@ -6,10 +6,10 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
   return [
     ignoresBlock,
     pluginBlock(plugin),
-    // Recommended rules don't need type information, but the parser is set up
-    // with `project` so the type-aware `strict` preset (which extends this one)
-    // has parser services available.
-    tsParserBlock(true),
+    // No recommended rule needs type information, so the parser runs without
+    // `project` — the preset stays zero-config (no tsconfig required). The
+    // type-aware `strict` preset turns `project` on itself.
+    tsParserBlock(),
     {
       files: ["**/*.{ts,js}"],
       ignores: ["src/admin/**", "**/src/admin/**"],
@@ -173,10 +173,11 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: [
-        "src/subscribers/**/*.{ts,js}",
-        "**/src/subscribers/**/*.{ts,js}",
-      ],
+      // Direct descendants of `subscribers/` only — Medusa loads a subscriber
+      // from each file directly under this directory. Files in nested
+      // subdirectories are treated as utilities, not subscribers, so they are
+      // not subject to these rules.
+      files: ["src/subscribers/*.{ts,js}", "**/src/subscribers/*.{ts,js}"],
       rules: {
         [ruleId("subscriber-config-export-required")]: "error",
         [ruleId("subscriber-default-export-must-be-async")]: "error",
@@ -184,7 +185,11 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: ["src/jobs/**/*.{ts,js}", "**/src/jobs/**/*.{ts,js}"],
+      // Direct descendants of `jobs/` only — Medusa loads a scheduled job from
+      // each file directly under this directory. Files in nested subdirectories
+      // are treated as utilities, not jobs, so they are not subject to these
+      // rules.
+      files: ["src/jobs/*.{ts,js}", "**/src/jobs/*.{ts,js}"],
       rules: {
         [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",

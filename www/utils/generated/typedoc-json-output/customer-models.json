@@ -1,5 +1,5 @@
 {
-	"id": 3852,
+	"id": 3970,
 	"name": "customer-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +18,7 @@
 	},
 	"children": [
 		{
-			"id": 3853,
+			"id": 3971,
 			"name": "CustomerAddress",
 			"variant": "declaration",
 			"kind": 32,
@@ -30,7 +30,7 @@
 					"fileName": "address.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L4"
 				}
 			],
 			"type": {
@@ -50,14 +50,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 3854,
+									"id": 3972,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 3855,
+											"id": 3973,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -75,7 +75,7 @@
 													"fileName": "address.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L6"
 												}
 											],
 											"type": {
@@ -101,7 +101,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3856,
+											"id": 3974,
 											"name": "address_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -121,7 +121,7 @@
 													"fileName": "address.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L7"
 												}
 											],
 											"type": {
@@ -136,7 +136,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3857,
+											"id": 3975,
 											"name": "is_default_shipping",
 											"variant": "declaration",
 											"kind": 1024,
@@ -154,7 +154,7 @@
 													"fileName": "address.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L8"
 												}
 											],
 											"type": {
@@ -169,7 +169,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3858,
+											"id": 3976,
 											"name": "is_default_billing",
 											"variant": "declaration",
 											"kind": 1024,
@@ -187,7 +187,7 @@
 													"fileName": "address.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L9"
 												}
 											],
 											"type": {
@@ -202,7 +202,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3859,
+											"id": 3977,
 											"name": "company",
 											"variant": "declaration",
 											"kind": 1024,
@@ -222,7 +222,7 @@
 													"fileName": "address.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L10"
 												}
 											],
 											"type": {
@@ -237,7 +237,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3860,
+											"id": 3978,
 											"name": "first_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -257,7 +257,7 @@
 													"fileName": "address.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L11"
 												}
 											],
 											"type": {
@@ -272,7 +272,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3861,
+											"id": 3979,
 											"name": "last_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -292,7 +292,7 @@
 													"fileName": "address.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L12"
 												}
 											],
 											"type": {
@@ -307,7 +307,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3862,
+											"id": 3980,
 											"name": "address_1",
 											"variant": "declaration",
 											"kind": 1024,
@@ -327,7 +327,7 @@
 													"fileName": "address.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L13"
 												}
 											],
 											"type": {
@@ -342,7 +342,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3863,
+											"id": 3981,
 											"name": "address_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -362,7 +362,7 @@
 													"fileName": "address.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L14"
 												}
 											],
 											"type": {
@@ -377,7 +377,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3864,
+											"id": 3982,
 											"name": "city",
 											"variant": "declaration",
 											"kind": 1024,
@@ -397,7 +397,7 @@
 													"fileName": "address.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L15"
 												}
 											],
 											"type": {
@@ -412,7 +412,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3865,
+											"id": 3983,
 											"name": "country_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -443,7 +443,7 @@
 													"fileName": "address.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L16"
 												}
 											],
 											"type": {
@@ -458,7 +458,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3866,
+											"id": 3984,
 											"name": "province",
 											"variant": "declaration",
 											"kind": 1024,
@@ -478,7 +478,7 @@
 													"fileName": "address.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L17"
 												}
 											],
 											"type": {
@@ -493,7 +493,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3867,
+											"id": 3985,
 											"name": "postal_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -513,7 +513,7 @@
 													"fileName": "address.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L18"
 												}
 											],
 											"type": {
@@ -528,7 +528,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3868,
+											"id": 3986,
 											"name": "phone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -548,7 +548,7 @@
 													"fileName": "address.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L19"
 												}
 											],
 											"type": {
@@ -563,7 +563,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3869,
+											"id": 3987,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -583,7 +583,7 @@
 													"fileName": "address.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L20"
 												}
 											],
 											"type": {
@@ -598,7 +598,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3870,
+											"id": 3988,
 											"name": "customer",
 											"variant": "declaration",
 											"kind": 1024,
@@ -619,7 +619,7 @@
 													"fileName": "address.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L21"
 												}
 											],
 											"type": {
@@ -631,7 +631,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 3889,
+														"target": 4007,
 														"name": "Customer"
 													}
 												],
@@ -645,22 +645,22 @@
 										{
 											"title": "Properties",
 											"children": [
-												3855,
-												3856,
-												3857,
-												3858,
-												3859,
-												3860,
-												3861,
-												3862,
-												3863,
-												3864,
-												3865,
-												3866,
-												3867,
-												3868,
-												3869,
-												3870
+												3973,
+												3974,
+												3975,
+												3976,
+												3977,
+												3978,
+												3979,
+												3980,
+												3981,
+												3982,
+												3983,
+												3984,
+												3985,
+												3986,
+												3987,
+												3988
 											]
 										}
 									],
@@ -669,7 +669,7 @@
 											"fileName": "address.ts",
 											"line": 5,
 											"character": 29,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/address.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/address.ts#L5"
 										}
 									]
 								}
@@ -689,7 +689,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 3958,
+			"id": 4076,
 			"name": "CustomerGroupCustomer",
 			"variant": "declaration",
 			"kind": 32,
@@ -701,7 +701,7 @@
 					"fileName": "customer-group-customer.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L5"
 				}
 			],
 			"type": {
@@ -721,14 +721,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 3959,
+									"id": 4077,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 3960,
+											"id": 4078,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -746,7 +746,7 @@
 													"fileName": "customer-group-customer.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L6"
 												}
 											],
 											"type": {
@@ -772,7 +772,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3961,
+											"id": 4079,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -792,7 +792,7 @@
 													"fileName": "customer-group-customer.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L7"
 												}
 											],
 											"type": {
@@ -807,7 +807,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3962,
+											"id": 4080,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -827,7 +827,7 @@
 													"fileName": "customer-group-customer.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L8"
 												}
 											],
 											"type": {
@@ -842,7 +842,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3963,
+											"id": 4081,
 											"name": "customer",
 											"variant": "declaration",
 											"kind": 1024,
@@ -863,7 +863,7 @@
 													"fileName": "customer-group-customer.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L9"
 												}
 											],
 											"type": {
@@ -875,7 +875,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 3889,
+														"target": 4007,
 														"name": "Customer"
 													}
 												],
@@ -885,7 +885,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3982,
+											"id": 4100,
 											"name": "customer_group",
 											"variant": "declaration",
 											"kind": 1024,
@@ -906,7 +906,7 @@
 													"fileName": "customer-group-customer.ts",
 													"line": 12,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L12"
 												}
 											],
 											"type": {
@@ -918,7 +918,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 3933,
+														"target": 4051,
 														"name": "CustomerGroup"
 													}
 												],
@@ -932,11 +932,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												3960,
-												3961,
-												3962,
-												3963,
-												3982
+												4078,
+												4079,
+												4080,
+												4081,
+												4100
 											]
 										}
 									],
@@ -945,7 +945,7 @@
 											"fileName": "customer-group-customer.ts",
 											"line": 5,
 											"character": 68,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group-customer.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group-customer.ts#L5"
 										}
 									]
 								}
@@ -965,7 +965,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 3933,
+			"id": 4051,
 			"name": "CustomerGroup",
 			"variant": "declaration",
 			"kind": 32,
@@ -977,7 +977,7 @@
 					"fileName": "customer-group.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L5"
 				}
 			],
 			"type": {
@@ -997,14 +997,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 3934,
+									"id": 4052,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 3935,
+											"id": 4053,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1022,7 +1022,7 @@
 													"fileName": "customer-group.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L7"
 												}
 											],
 											"type": {
@@ -1048,7 +1048,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3936,
+											"id": 4054,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1066,7 +1066,7 @@
 													"fileName": "customer-group.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L8"
 												}
 											],
 											"type": {
@@ -1081,7 +1081,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3937,
+											"id": 4055,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1101,7 +1101,7 @@
 													"fileName": "customer-group.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L9"
 												}
 											],
 											"type": {
@@ -1116,7 +1116,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3938,
+											"id": 4056,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1136,7 +1136,7 @@
 													"fileName": "customer-group.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L10"
 												}
 											],
 											"type": {
@@ -1151,7 +1151,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3939,
+											"id": 4057,
 											"name": "customers",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1172,7 +1172,7 @@
 													"fileName": "customer-group.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L11"
 												}
 											],
 											"type": {
@@ -1184,7 +1184,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 3889,
+														"target": 4007,
 														"name": "Customer"
 													}
 												],
@@ -1198,11 +1198,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												3935,
-												3936,
-												3937,
-												3938,
-												3939
+												4053,
+												4054,
+												4055,
+												4056,
+												4057
 											]
 										}
 									],
@@ -1211,7 +1211,7 @@
 											"fileName": "customer-group.ts",
 											"line": 6,
 											"character": 27,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer-group.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer-group.ts#L6"
 										}
 									]
 								}
@@ -1231,7 +1231,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 3889,
+			"id": 4007,
 			"name": "Customer",
 			"variant": "declaration",
 			"kind": 32,
@@ -1243,7 +1243,7 @@
 					"fileName": "customer.ts",
 					"line": 6,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L6"
 				}
 			],
 			"type": {
@@ -1263,14 +1263,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 3890,
+									"id": 4008,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 3891,
+											"id": 4009,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1288,7 +1288,7 @@
 													"fileName": "customer.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L8"
 												}
 											],
 											"type": {
@@ -1314,7 +1314,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3892,
+											"id": 4010,
 											"name": "company_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1334,7 +1334,7 @@
 													"fileName": "customer.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L9"
 												}
 											],
 											"type": {
@@ -1349,7 +1349,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3893,
+											"id": 4011,
 											"name": "first_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1369,7 +1369,7 @@
 													"fileName": "customer.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L10"
 												}
 											],
 											"type": {
@@ -1384,7 +1384,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3894,
+											"id": 4012,
 											"name": "last_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1404,7 +1404,7 @@
 													"fileName": "customer.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L11"
 												}
 											],
 											"type": {
@@ -1419,7 +1419,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3895,
+											"id": 4013,
 											"name": "email",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1439,7 +1439,7 @@
 													"fileName": "customer.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L12"
 												}
 											],
 											"type": {
@@ -1454,7 +1454,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3896,
+											"id": 4014,
 											"name": "phone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1474,7 +1474,7 @@
 													"fileName": "customer.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L13"
 												}
 											],
 											"type": {
@@ -1489,7 +1489,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3897,
+											"id": 4015,
 											"name": "has_account",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1507,7 +1507,7 @@
 													"fileName": "customer.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L14"
 												}
 											],
 											"type": {
@@ -1522,7 +1522,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3898,
+											"id": 4016,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1542,7 +1542,7 @@
 													"fileName": "customer.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L15"
 												}
 											],
 											"type": {
@@ -1557,7 +1557,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3899,
+											"id": 4017,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1577,7 +1577,7 @@
 													"fileName": "customer.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L16"
 												}
 											],
 											"type": {
@@ -1592,7 +1592,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3900,
+											"id": 4018,
 											"name": "groups",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1613,7 +1613,7 @@
 													"fileName": "customer.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L17"
 												}
 											],
 											"type": {
@@ -1625,7 +1625,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 3933,
+														"target": 4051,
 														"name": "CustomerGroup"
 													}
 												],
@@ -1635,7 +1635,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 3911,
+											"id": 4029,
 											"name": "addresses",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1656,7 +1656,7 @@
 													"fileName": "customer.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L21"
 												}
 											],
 											"type": {
@@ -1668,7 +1668,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 3853,
+														"target": 3971,
 														"name": "CustomerAddress"
 													}
 												],
@@ -1682,17 +1682,17 @@
 										{
 											"title": "Properties",
 											"children": [
-												3891,
-												3892,
-												3893,
-												3894,
-												3895,
-												3896,
-												3897,
-												3898,
-												3899,
-												3900,
-												3911
+												4009,
+												4010,
+												4011,
+												4012,
+												4013,
+												4014,
+												4015,
+												4016,
+												4017,
+												4018,
+												4029
 											]
 										}
 									],
@@ -1701,7 +1701,7 @@
 											"fileName": "customer.ts",
 											"line": 7,
 											"character": 22,
-											"url": "https://github.com/medusajs/medusa/blob/b74b5b19569534412a67835ffae8fb3afbf6f5c5/packages/modules/customer/src/models/customer.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/customer/src/models/customer.ts#L7"
 										}
 									]
 								}
@@ -1725,576 +1725,576 @@
 		{
 			"title": "Variables",
 			"children": [
-				3853,
-				3958,
-				3933,
-				3889
+				3971,
+				4076,
+				4051,
+				4007
 			]
 		}
 	],
 	"packageName": "@medusajs/customer",
 	"symbolIdMap": {
-		"3852": {
+		"3970": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"3853": {
+		"3971": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "CustomerAddress"
 		},
-		"3854": {
+		"3972": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object"
 		},
-		"3855": {
+		"3973": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3856": {
+		"3974": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.address_name"
 		},
-		"3857": {
+		"3975": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.is_default_shipping"
 		},
-		"3858": {
+		"3976": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.is_default_billing"
 		},
-		"3859": {
+		"3977": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.company"
 		},
-		"3860": {
+		"3978": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"3861": {
+		"3979": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"3862": {
+		"3980": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.address_1"
 		},
-		"3863": {
+		"3981": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.address_2"
 		},
-		"3864": {
+		"3982": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.city"
 		},
-		"3865": {
+		"3983": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.country_code"
 		},
-		"3866": {
+		"3984": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.province"
 		},
-		"3867": {
+		"3985": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.postal_code"
 		},
-		"3868": {
+		"3986": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"3869": {
+		"3987": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3870": {
+		"3988": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.customer"
 		},
-		"3871": {
+		"3989": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__function"
 		},
-		"3872": {
+		"3990": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__function"
 		},
-		"3873": {
+		"3991": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object"
 		},
-		"3874": {
+		"3992": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3875": {
+		"3993": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.company_name"
 		},
-		"3876": {
+		"3994": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"3877": {
+		"3995": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"3878": {
+		"3996": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.email"
 		},
-		"3879": {
+		"3997": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"3880": {
+		"3998": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.has_account"
 		},
-		"3881": {
+		"3999": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3882": {
+		"4000": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3883": {
+		"4001": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.groups"
 		},
-		"3884": {
+		"4002": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3885": {
+		"4003": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3886": {
+		"4004": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.addresses"
 		},
-		"3887": {
+		"4005": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3888": {
+		"4006": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3889": {
+		"4007": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "Customer"
 		},
-		"3890": {
+		"4008": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object"
 		},
-		"3891": {
+		"4009": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3892": {
+		"4010": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.company_name"
 		},
-		"3893": {
+		"4011": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"3894": {
+		"4012": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"3895": {
+		"4013": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.email"
 		},
-		"3896": {
+		"4014": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"3897": {
+		"4015": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.has_account"
 		},
-		"3898": {
+		"4016": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3899": {
+		"4017": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3900": {
+		"4018": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.groups"
 		},
-		"3901": {
+		"4019": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3902": {
+		"4020": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3903": {
+		"4021": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object"
 		},
-		"3904": {
+		"4022": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3905": {
+		"4023": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.name"
 		},
-		"3906": {
+		"4024": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3907": {
+		"4025": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3908": {
+		"4026": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.customers"
 		},
-		"3909": {
+		"4027": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__function"
 		},
-		"3910": {
+		"4028": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__function"
 		},
-		"3911": {
+		"4029": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.addresses"
 		},
-		"3912": {
+		"4030": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3913": {
+		"4031": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3914": {
+		"4032": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object"
 		},
-		"3915": {
+		"4033": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3916": {
+		"4034": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.address_name"
 		},
-		"3917": {
+		"4035": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.is_default_shipping"
 		},
-		"3918": {
+		"4036": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.is_default_billing"
 		},
-		"3919": {
+		"4037": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.company"
 		},
-		"3920": {
+		"4038": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"3921": {
+		"4039": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"3922": {
+		"4040": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.address_1"
 		},
-		"3923": {
+		"4041": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.address_2"
 		},
-		"3924": {
+		"4042": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.city"
 		},
-		"3925": {
+		"4043": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.country_code"
 		},
-		"3926": {
+		"4044": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.province"
 		},
-		"3927": {
+		"4045": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.postal_code"
 		},
-		"3928": {
+		"4046": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"3929": {
+		"4047": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3930": {
+		"4048": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__object.customer"
 		},
-		"3931": {
+		"4049": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__function"
 		},
-		"3932": {
+		"4050": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/address.ts",
 			"qualifiedName": "__function"
 		},
-		"3933": {
+		"4051": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "CustomerGroup"
 		},
-		"3934": {
+		"4052": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object"
 		},
-		"3935": {
+		"4053": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3936": {
+		"4054": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.name"
 		},
-		"3937": {
+		"4055": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3938": {
+		"4056": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3939": {
+		"4057": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.customers"
 		},
-		"3940": {
+		"4058": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__function"
 		},
-		"3941": {
+		"4059": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__function"
 		},
-		"3942": {
+		"4060": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object"
 		},
-		"3943": {
+		"4061": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3944": {
+		"4062": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.company_name"
 		},
-		"3945": {
+		"4063": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"3946": {
+		"4064": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"3947": {
+		"4065": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.email"
 		},
-		"3948": {
+		"4066": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"3949": {
+		"4067": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.has_account"
 		},
-		"3950": {
+		"4068": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3951": {
+		"4069": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3952": {
+		"4070": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.groups"
 		},
-		"3953": {
+		"4071": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3954": {
+		"4072": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3955": {
+		"4073": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.addresses"
 		},
-		"3956": {
+		"4074": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3957": {
+		"4075": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3958": {
+		"4076": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "CustomerGroupCustomer"
 		},
-		"3959": {
+		"4077": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__object"
 		},
-		"3960": {
+		"4078": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3961": {
+		"4079": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3962": {
+		"4080": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3963": {
+		"4081": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__object.customer"
 		},
-		"3964": {
+		"4082": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3965": {
+		"4083": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3966": {
+		"4084": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object"
 		},
-		"3967": {
+		"4085": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3968": {
+		"4086": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.company_name"
 		},
-		"3969": {
+		"4087": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"3970": {
+		"4088": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"3971": {
+		"4089": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.email"
 		},
-		"3972": {
+		"4090": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.phone"
 		},
-		"3973": {
+		"4091": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.has_account"
 		},
-		"3974": {
+		"4092": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3975": {
+		"4093": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3976": {
+		"4094": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.groups"
 		},
-		"3977": {
+		"4095": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3978": {
+		"4096": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3979": {
+		"4097": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__object.addresses"
 		},
-		"3980": {
+		"4098": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3981": {
+		"4099": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3982": {
+		"4100": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__object.customer_group"
 		},
-		"3983": {
+		"4101": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3984": {
+		"4102": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group-customer.ts",
 			"qualifiedName": "__function"
 		},
-		"3985": {
+		"4103": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object"
 		},
-		"3986": {
+		"4104": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.id"
 		},
-		"3987": {
+		"4105": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.name"
 		},
-		"3988": {
+		"4106": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"3989": {
+		"4107": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"3990": {
+		"4108": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__object.customers"
 		},
-		"3991": {
+		"4109": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__function"
 		},
-		"3992": {
+		"4110": {
 			"sourceFileName": "../../../../packages/modules/customer/src/models/customer-group.ts",
 			"qualifiedName": "__function"
 		}
@@ -2304,7 +2304,7 @@
 			"1": "../../../../packages/modules/customer/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 3852
+			"1": 3970
 		}
 	}
 }

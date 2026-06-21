@@ -13,8 +13,12 @@ import {
 
 type MessageIds = "missingStepResponse"
 
-/** Static `StepResponse` factory that returns a valid (skip) step response. */
-const SKIP_METHOD = "skip"
+/**
+ * Static `StepResponse` factories that return a valid step response:
+ * - `skip()` short-circuits a step.
+ * - `permanentFailure()` marks the step as permanently failed.
+ */
+const STATIC_FACTORY_METHODS = new Set(["skip", "permanentFailure"])
 
 export const rule = createRule<[], MessageIds>({
   name: "step-must-return-step-response",
@@ -75,8 +79,8 @@ export const rule = createRule<[], MessageIds>({
           return
         }
 
-        // `StepResponse.skip()` is a static factory that produces a (skip)
-        // StepResponse, used to short-circuit a step — a valid step return.
+        // `StepResponse.skip()` / `StepResponse.permanentFailure()` are static
+        // factories that produce a valid StepResponse — a valid step return.
         if (
           value.type === AST_NODE_TYPES.CallExpression &&
           value.callee.type === AST_NODE_TYPES.MemberExpression &&
@@ -84,7 +88,7 @@ export const rule = createRule<[], MessageIds>({
           value.callee.object.type === AST_NODE_TYPES.Identifier &&
           bindings.stepResponse.has(value.callee.object.name) &&
           value.callee.property.type === AST_NODE_TYPES.Identifier &&
-          value.callee.property.name === SKIP_METHOD
+          STATIC_FACTORY_METHODS.has(value.callee.property.name)
         ) {
           return
         }

@@ -1,5 +1,5 @@
 import type { LinkWorkflowInput } from "@medusajs/framework/types"
-import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { WorkflowData, createWorkflow, transform } from "@medusajs/framework/workflows-sdk"
 import {
   linkSalesChannelsToApiKeyStep,
   validateSalesChannelsExistStep,
@@ -39,8 +39,13 @@ export const linkSalesChannelsToApiKeyWorkflowId =
 export const linkSalesChannelsToApiKeyWorkflow = createWorkflow(
   linkSalesChannelsToApiKeyWorkflowId,
   (input: WorkflowData<LinkSalesChannelsToApiKeyWorkflowInput>) => {
+    const salesChannelIds = transform({
+      input
+    }, (data) => {
+      return data.input.add ?? []
+    })
     validateSalesChannelsExistStep({
-      sales_channel_ids: input.add ?? [],
+      sales_channel_ids: salesChannelIds,
     })
 
     linkSalesChannelsToApiKeyStep(input)

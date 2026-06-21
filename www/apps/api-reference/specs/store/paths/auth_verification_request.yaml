@@ -1,0 +1,98 @@
+post:
+  operationId: PostVerificationRequest
+  summary: Request Customer Verification
+  x-sidebar-summary: Request Verification
+  description: >-
+    Create a verification request for a customer. This API route is used when a
+    customer logs in, but their email requires verification. It can also be used
+    for custom flows, such as phone number verification. Once successfully
+    requested, a verification code will be generated and an
+    `auth.verification_requested` event will be emitted. You can listen to this
+    event and decide how to deliver the code to the customer.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/resources/storefront-development/customers/verify-account
+    description: 'Storefront guide: Register Customer with Email Verification.'
+  x-authenticated: false
+  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The verification request details
+          required:
+            - entity_id
+            - entity_type
+            - code_provider
+          properties:
+            entity_id:
+              type: string
+              title: entity_id
+              description: >-
+                The identifier of the user or customer. For example, an email
+                address.
+            entity_type:
+              type: string
+              title: entity_type
+              description: >-
+                The type of identity being verified. For example, "email" or
+                "phone_number".
+            code_provider:
+              type: string
+              title: code_provider
+              description: >-
+                The provider to use to create the verification token or code. By
+                default, Medusa provides a `token` provider that generates a
+                random token. You can also implement your own provider to
+                generate a code or OTP.
+            metadata:
+              type: object
+              description: >-
+                Custom key-value pairs that can be passed to the verification
+                request. This is optional and can be used to store additional
+                information related to the verification request.
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_verification_request/post.sh
+  tags:
+    - Verification
+  responses:
+    '201':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: requestVerificationWorkflow
+  x-events:
+    - name: auth.verification_requested
+      payload: |-
+        ```ts
+        {
+          entity_id, // The identifier of the user or customer. For example, an email address.
+          actor_type, // The type of actor. For example, "customer", "user", or custom.
+          provider, // The auth provider that requested verification.
+          auth_identity_id, // The ID of the auth identity being verified.
+          provider_identity_id, // The ID of the provider identity being verified.
+          code, // The generated verification code.
+          expires_at, // The code expiry date.
+          metadata, // Optional custom metadata passed from the request.
+        }
+        ```
+      description: |-
+        Emitted when a verification code is generated. You can listen to
+        this event and decide how to deliver the code to the user or customer.
+      deprecated: false
+      since: 2.15.5
+  x-since: 2.16.0

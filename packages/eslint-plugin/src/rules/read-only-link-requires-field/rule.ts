@@ -111,11 +111,15 @@ export const rule = createRule<[], MessageIds>({
         }
 
         // Inverse form: second arg is an ObjectExpression spreading
-        // `<X>.linkable.<y>.id`. It must also include a `primaryKey` override.
+        // `<X>.linkable.<y>.id`. It must include a `primaryKey` override, or
+        // an `alias` (e.g. linking to draft orders via the `order` linkable,
+        // where the foreign key lives on the first linkable's `field` and the
+        // spread `.id` is simply re-aliased).
         if (
           arg2.type === "ObjectExpression" &&
           hasInverseLinkableSpread(arg2) &&
-          !findProperty(arg2, "primaryKey")
+          !findProperty(arg2, "primaryKey") &&
+          !findProperty(arg2, "alias")
         ) {
           context.report({ node: arg2, messageId: "missingPrimaryKey" })
         }

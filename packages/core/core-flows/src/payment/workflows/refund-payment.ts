@@ -233,13 +233,18 @@ export const refundPaymentWorkflow = createWorkflow(
     when({ creditLineAmount }, ({ creditLineAmount }) =>
       MathBN.gt(creditLineAmount, 0)
     ).then(() => {
+      const createRefundCreditLinesData = transform({
+        order, creditLineAmount, refundReason,
+      }, (data) => {
+        return {
+          order_id: data.order.id,
+          amount: data.creditLineAmount,
+          reference: data.refundReason?.label,
+          referenceId: data.refundReason?.code,
+        }
+      })
       createOrderRefundCreditLinesWorkflow.runAsStep({
-        input: {
-          order_id: order.id,
-          amount: creditLineAmount,
-          reference: refundReason?.label,
-          referenceId: refundReason?.code,
-        },
+        input: createRefundCreditLinesData,
       })
     })
 

@@ -61,9 +61,17 @@ const findConfigCall = (
   return grand
 }
 
+/**
+ * Sentinel returned when a `.config({ name })` is present but its `name` value
+ * isn't a static string literal (e.g. a variable or expression). The developer
+ * explicitly set a name, so the call must not be treated as a bare duplicate —
+ * we just can't compare its value statically.
+ */
+const DYNAMIC_CONFIG_NAME = Symbol("dynamic-config-name")
+
 const extractConfigName = (
   configCall: TSESTree.CallExpression
-): string | null => {
+): string | typeof DYNAMIC_CONFIG_NAME | null => {
   const arg = configCall.arguments[0]
   if (!arg || arg.type !== AST_NODE_TYPES.ObjectExpression) {
     return null
@@ -91,7 +99,8 @@ const extractConfigName = (
     ) {
       return prop.value.value
     }
-    return null
+    // A `name` is set, but not to a literal we can compare — treat as dynamic.
+    return DYNAMIC_CONFIG_NAME
   }
   return null
 }
@@ -178,8 +187,13 @@ export const rule = createRule<[], MessageIds>({
         const configCall = findConfigCall(node)
         const configuredName = configCall ? extractConfigName(configCall) : null
 
+        // A literal name groups by value; a dynamic name (variable/expression)
+        // gets a per-call unique key so it never collides; no name falls back
+        // to the bare factory identifier.
         const effectiveKey =
-          configuredName !== null
+          configuredName === DYNAMIC_CONFIG_NAME
+            ? `DYNAMIC:${node.range[0]}`
+            : configuredName !== null
             ? `NAMED:${configuredName}`
             : `BARE:${calleeName}`
 
