@@ -377,7 +377,7 @@ export default class ProductModuleService
     if (shouldLoadVariantImages) {
       await this.assignImagesToVariants(serializedProducts, sharedContext)
     }
-    
+
     if (shouldFilterOptionValues) {
       await this.filterOptionValues(serializedProducts, sharedContext)
     }
@@ -501,14 +501,14 @@ export default class ProductModuleService
 
     const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
     const [variants, { optionsByProductId, valueIdsByProductId }] =
-    await promiseAll([
-      this.productVariantService_.list(
-        { product_id: productIds },
-        { relations: ["options"] },
-        sharedContext
-      ),
-      this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
-    ])
+      await promiseAll([
+        this.productVariantService_.list(
+          { product_id: productIds },
+          { relations: ["options"] },
+          sharedContext
+        ),
+        this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
+      ])
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
@@ -664,7 +664,7 @@ export default class ProductModuleService
     const productIds = Array.from(
       new Set(variantsWithProductId.map((v) => v.product_id!))
     )
-    const { optionsByProductId, valueIdsByProductId } = 
+    const { optionsByProductId, valueIdsByProductId } =
       await this.loadOptionsAndValuesByProductId_(productIds, sharedContext)
 
     const productVariantsWithOptions =
@@ -1666,6 +1666,13 @@ export default class ProductModuleService
     }
 
     const productOptionsProductIds = productOptionsProducts.map(({ id }) => id)
+    const unlinkedOptionIds = [
+      ...new Set(
+        productOptionsProducts
+          .map((ppo) => ppo.product_option_id)
+          .filter((id): id is string => !!id)
+      ),
+    ]
 
     await this.productProductOptionValueService_.delete(
       productOptionsProductIds.map((id) => ({ product_product_option_id: id })),
@@ -1676,6 +1683,40 @@ export default class ProductModuleService
       productOptionsProductIds,
       sharedContext
     )
+
+    // Delete exclusive options that are now orphaned.
+    if (unlinkedOptionIds.length) {
+      const [unlinkedOptions, remainingLinks] = await promiseAll([
+        this.productOptionService_.list(
+          { id: unlinkedOptionIds },
+          {},
+          sharedContext
+        ),
+        this.productProductOptionService_.list(
+          { product_option_id: unlinkedOptionIds },
+          {},
+          sharedContext
+        ),
+      ])
+
+      const stillLinkedOptionIds = new Set(
+        remainingLinks.map((link) => link.product_option_id)
+      )
+
+      const orphanedExclusiveOptionIds = unlinkedOptions
+        .filter(
+          (option) =>
+            option.is_exclusive && !stillLinkedOptionIds.has(option.id)
+        )
+        .map((option) => option.id)
+
+      if (orphanedExclusiveOptionIds.length) {
+        await this.productOptionService_.delete(
+          orphanedExclusiveOptionIds,
+          sharedContext
+        )
+      }
+    }
   }
 
   async updateProductOptionValuesOnProduct(
@@ -2618,7 +2659,10 @@ export default class ProductModuleService
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productIdHydratedData = new Map<string, (typeof hydratedData)[number]>()
+    const productIdHydratedData = new Map<
+      string,
+      (typeof hydratedData)[number]
+    >()
     const productsToCreate = normalizedProducts.map((product, index) => {
       const productId = generateEntityId(product.id, "prod")
       product.id = productId
@@ -3038,7 +3082,11 @@ export default class ProductModuleService
       if (duplicateOptionIds.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product "${productData.title}" has duplicate option assignments: [${duplicateOptionIds.join(", ")}]`
+          `Product "${
+            productData.title
+          }" has duplicate option assignments: [${duplicateOptionIds.join(
+            ", "
+          )}]`
         )
       }
     }
@@ -3260,8 +3308,7 @@ export default class ProductModuleService
         variant.options || {}
       ).length
 
-      const productsOptions =
-        optionsByProductId.get(variant.product_id) ?? []
+      const productsOptions = optionsByProductId.get(variant.product_id) ?? []
       const allowedValueIds = valueIdsByProductId?.get(variant.product_id)
 
       if (

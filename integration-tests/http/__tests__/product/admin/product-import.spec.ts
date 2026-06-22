@@ -663,16 +663,13 @@ medusaIntegrationTestRunner({
 
           // No new "size" options were created.
           const sizeOptions = (
-            await api.get(
-              "/admin/product-options?title=size",
-              adminHeaders
-            )
+            await api.get("/admin/product-options?title=size", adminHeaders)
           ).data.product_options
           expect(sizeOptions).toHaveLength(1)
           expect(sizeOptions[0].id).toEqual(globalSize.id)
         })
 
-        it("creates a global option when Is Exclusive is false and no Id is provided", async () => {
+        it("creates a non-exclusive (global) option per product when Is Exclusive is false and no Id is provided", async () => {
           const subscriberExecution = TestEventUtils.waitSubscribersExecution(
             `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
             eventBus
@@ -685,20 +682,33 @@ medusaIntegrationTestRunner({
           await importAndConfirm(csv)
           await subscriberExecution
 
-          // Both products share a single global "color" option.
+          // The import has no cross-product "find-or-create global option by
+          // title" — sharing one option across products is done via the Id
+          // column (see the previous test). With Is Exclusive = false and no
+          // Id, each imported product gets its OWN non-exclusive option. The
+          // fixture imports two products, so two distinct color options exist,
+          // both non-exclusive.
+          const products = (
+            await api.get("/admin/products?fields=*options", adminHeaders)
+          ).data.products
+
+          const colorOptionIds: string[] = []
+          products.forEach((p: any) => {
+            const colorOption = p.options.find((o: any) => o.title === "color")
+            expect(colorOption.is_exclusive).toBe(false)
+            colorOptionIds.push(colorOption.id)
+          })
+
+          // Each product references a distinct (non-shared) color option.
+          expect(new Set(colorOptionIds).size).toEqual(products.length)
+
           const colorOptions = (
-            await api.get(
-              "/admin/product-options?title=color",
-              adminHeaders
-            )
+            await api.get("/admin/product-options?title=color", adminHeaders)
           ).data.product_options
-          expect(colorOptions).toHaveLength(1)
-          expect(colorOptions[0]).toEqual(
-            expect.objectContaining({
-              title: "color",
-              is_exclusive: false,
-            })
-          )
+          expect(colorOptions).toHaveLength(2)
+          colorOptions.forEach((opt: any) => {
+            expect(opt.is_exclusive).toBe(false)
+          })
         })
 
         it("creates an exclusive option per product when no Id and no Is Exclusive are provided (default)", async () => {
