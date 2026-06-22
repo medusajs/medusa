@@ -2,15 +2,6 @@ import { Logger } from "@medusajs/framework/types"
 import fs from "node:fs"
 import path from "node:path"
 
-const ESLINT_CONFIG_FILES = [
-  "eslint.config.js",
-  "eslint.config.mjs",
-  "eslint.config.cjs",
-  "eslint.config.ts",
-  "eslint.config.mts",
-  "eslint.config.cts",
-]
-
 export interface LintResult {
   errorCount: number
   warningCount: number
@@ -18,13 +9,21 @@ export interface LintResult {
 }
 
 /**
- * Detect whether the project has a flat ESLint config at its root. The lint
- * step only runs when one of these files exists — there is no zero-config
- * fallback that synthesizes a config behind the user's back.
+ * The outcome of a lint attempt. `lintProject` resolves config presence and the
+ * availability of `eslint` itself, so callers branch on the discriminant
+ * instead of pre-checking the filesystem:
+ *
+ * - `eslint-not-installed` — the `eslint` package is not resolvable from the
+ *   project; nothing was linted (a warning was already logged).
+ * - `no-config` — no flat ESLint config was found for the project. Detection is
+ *   delegated to ESLint, so this matches the config the runner itself would
+ *   use, including its ancestor-directory lookup (monorepo support).
+ * - `linted` — ESLint ran; `result` holds the counts and formatted output.
  */
-export function hasEslintConfig(dir: string): boolean {
-  return ESLINT_CONFIG_FILES.some((file) => fs.existsSync(path.join(dir, file)))
-}
+export type LintOutcome =
+  | { status: "eslint-not-installed" }
+  | { status: "no-config" }
+  | { status: "linted"; result: LintResult }
 
 /**
  * Resolve the `eslint` module from the consumer's project rather than from the
@@ -46,8 +45,11 @@ function loadEslintModule(cwd: string): any | null {
  * own `eslint.config.js`. The user's flat config is responsible for scoping
  * rules via `files`/`ignores` blocks — we only invoke the runner.
  *
- * Returns `null` (after logging a warning) when `eslint` is not installed in
- * the project, so callers can decide whether that is fatal.
+ * Config detection is delegated to ESLint via `findConfigFile()` so it honors
+ * the exact same resolution the runner uses, including the ancestor-directory
+ * lookup that lets a config at a monorepo/repo root apply to a nested project.
+ *
+ * See {@link LintOutcome} for the possible results.
  */
 export async function lintProject(opts: {
   cwd: string
@@ -56,7 +58,7 @@ export async function lintProject(opts: {
   /** When true, only error-level results are reported (warnings suppressed). */
   quiet?: boolean
   logger: Logger
-}): Promise<LintResult | null> {
+}): Promise<LintOutcome> {
   const eslintModule = loadEslintModule(opts.cwd)
 
   if (!eslintModule) {
@@ -64,7 +66,7 @@ export async function lintProject(opts: {
       "Linting skipped: the `eslint` package is not installed in this project. " +
         "Install the `eslint` package with your package manager to enable linting, or pass `--lint false` to silence this message."
     )
-    return null
+    return { status: "eslint-not-installed" }
   }
 
   const { ESLint } = eslintModule
@@ -81,6 +83,16 @@ export async function lintProject(opts: {
     cache: true,
     cacheLocation,
   })
+
+  // Ask ESLint which config it would use from this cwd. This walks ancestor
+  // directories the same way the runner does, so a parent/root config counts as
+  // present. `undefined` means no config resolves anywhere up the tree.
+  const configFile = await eslint.findConfigFile()
+  if (!configFile) {
+    return { status: "no-config" }
+  }
+
+  opts.logger.info("Linting project...")
 
   const results = await eslint.lintFiles(opts.patterns ?? ["."])
 
@@ -103,7 +115,7 @@ export async function lintProject(opts: {
     warningCount += result.warningCount
   }
 
-  return { errorCount, warningCount, formatted }
+  return { status: "linted", result: { errorCount, warningCount, formatted } }
 }
 
 /**
@@ -148,16 +160,9 @@ export async function runLintStep(opts: {
     return
   }
 
-  if (!hasEslintConfig(opts.directory)) {
-    opts.logger.info("Linting skipped: no eslint.config.js found.")
-    return
-  }
-
-  opts.logger.info("Linting project...")
-
-  let result: LintResult | null = null
+  let outcome: LintOutcome
   try {
-    result = await lintProject({
+    outcome = await lintProject({
       cwd: opts.directory,
       fix: opts.fix ?? false,
       quiet: opts.quiet ?? false,
@@ -177,9 +182,16 @@ export async function runLintStep(opts: {
   }
 
   // `eslint` not installed — lintProject already warned. Continue.
-  if (!result) {
+  if (outcome.status === "eslint-not-installed") {
     return
   }
+
+  if (outcome.status === "no-config") {
+    opts.logger.info("Linting skipped: no eslint.config.js found.")
+    return
+  }
+
+  const result = outcome.result
 
   if (result.errorCount > 0) {
     process.stderr.write(result.formatted)

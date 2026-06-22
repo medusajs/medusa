@@ -91,7 +91,6 @@ export default async function ({
       const user = users[0]
 
       const { authIdentity, error } = await authService.register(provider, {
-        actor_type: "user",
         body: {
           email,
           password,
