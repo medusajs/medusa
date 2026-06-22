@@ -353,12 +353,10 @@ const PendingAuthorizationBanner = ({
   order,
   paymentCollectionId,
   sessionId,
-  currencyCode,
 }: {
   order: HttpTypes.AdminOrder
   paymentCollectionId: string
   sessionId: string
-  currencyCode: string
 }) => {
   const { t } = useTranslation()
   const { mutateAsync, isPending } = useAuthorizePaymentSession(
@@ -417,14 +415,13 @@ const PaymentBreakdown = ({
   currencyCode: string
   plugins: HttpTypes.AdminPlugin[]
 }) => {
-  const pendingAuthSessions = (order.payment_collections ?? []).flatMap(
-    (pc) =>
-      ((pc as any).payment_sessions ?? [])
-        .filter((s: any) => s.status === "pending_authorization")
-        .map((s: any) => ({
-          session_id: s.id,
-          payment_collection_id: pc.id,
-        }))
+  const pendingAuthSessions = (order.payment_collections ?? []).flatMap((pc) =>
+    ((pc as any).payment_sessions ?? [])
+      .filter((s: any) => s.status === "pending_authorization")
+      .map((s: any) => ({
+        session_id: s.id,
+        payment_collection_id: pc.id,
+      }))
   )
 
   /**
@@ -468,7 +465,6 @@ const PaymentBreakdown = ({
           order={order}
           paymentCollectionId={payment_collection_id}
           sessionId={session_id}
-          currencyCode={currencyCode}
         />
       ))}
       {entries.map(({ type, event }) => {
