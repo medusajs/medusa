@@ -43,6 +43,8 @@ export abstract class ResourceLoader {
    * Discover resources from the source directory
    * @param exclude - custom exclusion regexes
    * @param customFiltering - custom filtering function
+   * @param allowIndex - when true, files named `index.[js,ts]` are included
+   *   (they are skipped by default)
    * @returns The resources discovered
    */
   protected async discoverResources({

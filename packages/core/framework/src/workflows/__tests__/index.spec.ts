@@ -15,10 +15,18 @@ describe("WorkflowLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "workflows")
 
   beforeAll(async () => {
+    // Start from a clean registry so the assertions below are not affected by
+    // workflows registered in other test files.
+    WorkflowManager.unregisterAll()
+
     const container = createMedusaContainer()
     container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
 
     await new WorkflowLoader(rootDir, container).load()
+  })
+
+  afterAll(() => {
+    WorkflowManager.unregisterAll()
   })
 
   it("should register each workflow in the '/workflows' folder and sub folder", async () => {
