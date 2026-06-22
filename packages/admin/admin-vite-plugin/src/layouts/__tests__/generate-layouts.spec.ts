@@ -158,7 +158,7 @@ describe("generateLayouts", () => {
 
     expect(result.imports).toEqual([])
     expect(utils.normalizeString(result.code)).toEqual(
-      utils.normalizeString("layouts: []")
+      utils.normalizeString("layouts: [ ]")
     )
   })
 
@@ -176,7 +176,7 @@ describe("generateLayouts", () => {
 
     expect(result.imports).toEqual([])
     expect(utils.normalizeString(result.code)).toEqual(
-      utils.normalizeString("layouts: []")
+      utils.normalizeString("layouts: [ ]")
     )
   })
 
@@ -189,7 +189,7 @@ describe("generateLayouts", () => {
 
     expect(result.imports).toEqual([])
     expect(utils.normalizeString(result.code)).toEqual(
-      utils.normalizeString("layouts: []")
+      utils.normalizeString("layouts: [ ]")
     )
   })
 })
