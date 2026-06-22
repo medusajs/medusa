@@ -565,6 +565,9 @@
         "logout": {
           "type": "string"
         },
+        "show": {
+          "type": "string"
+        },
         "hide": {
           "type": "string"
         },
@@ -621,6 +624,7 @@
         "select",
         "browse",
         "logout",
+        "show",
         "hide",
         "export",
         "import",
