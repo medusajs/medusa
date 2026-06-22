@@ -67,15 +67,20 @@ function getModuleRoot(filename: string): string | null {
 }
 
 /** True when the absolute `resolved` path is inside (or equal to) `moduleRoot`. */
-function pathStaysInModule(
+export function pathStaysInModule(
   resolved: string,
   moduleRoot: string | null
 ): boolean {
   if (moduleRoot === null) {
     return true
   }
+  // `moduleRoot` is normalized to forward slashes by `getModuleRoot`, but
+  // `resolved` comes from `path.resolve`, which uses the platform separator
+  // (backslashes on Windows). Normalize so the comparison is separator-agnostic
+  // and the rule does not report false positives on Windows.
+  const normalized = resolved.replace(/\\/g, "/")
   const root = moduleRoot + "/"
-  return resolved === moduleRoot || resolved.startsWith(root)
+  return normalized === moduleRoot || normalized.startsWith(root)
 }
 
 /**

@@ -3,7 +3,7 @@ import {
   createFixtureWorkspace,
   createRuleTester,
 } from "../../../test-utils"
-import { rule } from "../rule"
+import { pathStaysInModule, rule } from "../rule"
 
 afterAll(cleanupFixtureWorkspaces)
 
@@ -349,4 +349,25 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
       ],
     },
   ],
+})
+
+describe("pathStaysInModule (path separator handling)", () => {
+  // Regression for Windows false positives: `getModuleRoot` normalizes to
+  // forward slashes, but `path.resolve` emits backslashes on Windows, so the
+  // containment check must be separator-agnostic.
+  const moduleRoot = "C:/project/src/modules/widget"
+
+  it("treats a same-module file as inside even when the resolved path uses backslashes", () => {
+    expect(pathStaysInModule("C:\\project\\src\\modules\\widget\\models\\widget.ts", moduleRoot)).toBe(true)
+  })
+
+  it("treats a different-module file as outside", () => {
+    expect(pathStaysInModule("C:\\project\\src\\modules\\other\\models\\thing.ts", moduleRoot)).toBe(false)
+  })
+
+  it("still resolves POSIX paths correctly", () => {
+    const root = "/project/src/modules/widget"
+    expect(pathStaysInModule("/project/src/modules/widget/models/a.ts", root)).toBe(true)
+    expect(pathStaysInModule("/project/src/modules/other/a.ts", root)).toBe(false)
+  })
 })
