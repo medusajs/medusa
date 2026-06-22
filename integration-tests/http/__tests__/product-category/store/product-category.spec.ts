@@ -1,21 +1,19 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { IStoreModuleService } from "@medusajs/types"
-import {
-    Modules
-} from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import qs from "qs"
 import {
-    adminHeaders,
-    createAdminUser,
-    generatePublishableKey,
-    generateStoreHeaders,
+  adminHeaders,
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let store
     let appContainer
     let productCategory1
@@ -46,8 +44,7 @@ medusaIntegrationTestRunner({
       return response2.data.product_category
     }
 
-
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       publishableKey = await generatePublishableKey(appContainer)
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -84,25 +81,34 @@ medusaIntegrationTestRunner({
         ],
       })
 
+      await dbUtils.snapshot()
     })
 
     describe("Get product-categories based on publishable key", () => {
-
       beforeEach(async () => {
-
         productCategory1 = await createCategory(
-          { name: "test", is_internal: false, is_active: true, external_id: "ext-id-1" },
+          {
+            name: "test",
+            is_internal: false,
+            is_active: true,
+            external_id: "ext-id-1",
+          },
           []
         )
 
-
         productCategory2 = await createCategory(
-          { name: "test2", is_internal: false, is_active: true, handle: 'test-2', external_id: "ext-id-2" },
+          {
+            name: "test2",
+            is_internal: false,
+            is_active: true,
+            handle: "test-2",
+            external_id: "ext-id-2",
+          },
           []
         )
       })
 
-       it("returns the external_id on id lookups", async () => {
+      it("returns the external_id on id lookups", async () => {
         const response = await api.get(
           `/store/product-categories/${productCategory1.id}`,
           storeHeaders
@@ -118,11 +124,8 @@ medusaIntegrationTestRunner({
       })
 
       it("it filters on the external_id field", async () => {
-
-
-
         const searchParam = qs.stringify({
-            external_id: "ext-id-2",
+          external_id: "ext-id-2",
         })
 
         const response = await api.get(
@@ -139,7 +142,7 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
-      })      
+      })
     })
   },
 })

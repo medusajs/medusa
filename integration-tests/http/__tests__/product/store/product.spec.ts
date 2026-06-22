@@ -20,7 +20,7 @@ import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let store
     let appContainer
     let collection
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
       return salesChannel
     }
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       publishableKey = await generatePublishableKey(appContainer)
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -144,6 +144,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_profile
+
+      await dbUtils.snapshot()
     })
 
     describe("Get products based on publishable key", () => {
@@ -532,10 +534,10 @@ medusaIntegrationTestRunner({
             {
               title: "test variant 1",
               manage_inventory: true,
-              sku: 'test-sku',
-              ean: 'test-ean',
-              upc: 'test-upc',
-              barcode: 'test-barcode',
+              sku: "test-sku",
+              ean: "test-ean",
+              upc: "test-upc",
+              barcode: "test-barcode",
               options: {
                 size: "large",
                 color: "green",
@@ -868,21 +870,30 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it('returns the external_id field when requested with `fields` param', async () => {  
-        const response  = await api.get('/store/products/' + product.id, storeHeaders);
-        expect(response.status).toEqual(200);
-        expect(response.data.product.external_id).toBeUndefined();
+      it("returns the external_id field when requested with `fields` param", async () => {
+        const response = await api.get(
+          "/store/products/" + product.id,
+          storeHeaders
+        )
+        expect(response.status).toEqual(200)
+        expect(response.data.product.external_id).toBeUndefined()
 
-        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
-        expect(response2.status).toEqual(200);
-        expect(response2.data.product.external_id).toEqual(product.external_id);
-      });
+        const response2 = await api.get(
+          "/store/products/" + product.id + "?fields=+external_id",
+          storeHeaders
+        )
+        expect(response2.status).toEqual(200)
+        expect(response2.data.product.external_id).toEqual(product.external_id)
+      })
 
       it("returns a list of products with given external_id", async () => {
-        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
-        expect(response2.status).toEqual(200);
-        expect(response2.data.product.external_id).toBeTruthy();
-        expect(response2.data.product.external_id).toEqual(product.external_id);
+        const response2 = await api.get(
+          "/store/products/" + product.id + "?fields=+external_id",
+          storeHeaders
+        )
+        expect(response2.status).toEqual(200)
+        expect(response2.data.product.external_id).toBeTruthy()
+        expect(response2.data.product.external_id).toEqual(product.external_id)
 
         const response = await api.get(
           `/store/products?external_id[]=${product.external_id}`,
@@ -895,9 +906,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: product.id }),
         ])
       })
-
-
-
 
       it("can filter products by ean", async () => {
         const response = await api.get(
@@ -937,7 +945,6 @@ medusaIntegrationTestRunner({
         ])
       })
 
-
       it("can filter products by sku", async () => {
         const response = await api.get(
           `/store/products?variants[sku]=${product.variants[0].sku}`,
@@ -950,10 +957,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: product.id }),
         ])
       })
-
-
-
-
 
       it("returns a list of products with one of the given handles", async () => {
         const response = await api.get(

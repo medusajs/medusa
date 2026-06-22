@@ -13,15 +13,14 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /auth/emailpass", () => {
       let appContainer
       beforeAll(async () => {
         appContainer = getContainer()
-      })
-
-      beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       const password = "supersecret"

@@ -40,12 +40,14 @@ const ensureRbacPolicy = async (
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     afterAll(async () => {

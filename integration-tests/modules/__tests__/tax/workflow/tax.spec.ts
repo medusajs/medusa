@@ -17,7 +17,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Taxes - Workflow", () => {
       let appContainer
       let service: ITaxModuleService
@@ -27,8 +27,10 @@ medusaIntegrationTestRunner({
         service = appContainer.resolve(Modules.TAX)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("compensates rules correctly", async () => {

@@ -11,16 +11,14 @@ jest.setTimeout(30000)
 process.env.MEDUSA_FF_TRANSLATION = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ getContainer, api }) => {
+  testSuite: ({ getContainer, api, dbUtils }) => {
     describe("Store Locales API", () => {
       let appContainer: MedusaContainer
       let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
 
-      beforeEach(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -39,6 +37,8 @@ medusaIntegrationTestRunner({
             { locale_code: "de-DE" },
           ],
         })
+
+        await dbUtils.snapshot()
       })
 
       afterAll(async () => {

@@ -77,6 +77,10 @@ async function withWaitingroomClient<T>(
   return await action(client)
 }
 
+const MAX_DROP_ATTEMPTS = 10
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 async function terminateDatabaseConnections(
   client: Client,
   databaseName: string
@@ -88,6 +92,21 @@ async function terminateDatabaseConnections(
      AND pid <> pg_backend_pid();`,
     [databaseName]
   )
+}
+
+async function cancelAndTerminateDatabaseConnections(
+  client: Client,
+  databaseName: string
+) {
+  await client.query(
+    `SELECT pg_cancel_backend(pid)
+     FROM pg_stat_activity
+     WHERE datname = $1
+     AND pid <> pg_backend_pid();`,
+    [databaseName]
+  )
+
+  await terminateDatabaseConnections(client, databaseName)
 }
 
 async function setAllowConnections(
@@ -105,8 +124,32 @@ async function setAllowConnections(
 async function dropDatabaseIfExists(client: Client, databaseName: string) {
   // Instead of checking for existence first, we just ignore a does not exist error so we don't have to query the DB all the time
   try {
-    await terminateDatabaseConnections(client, databaseName)
-    await client.query(`DROP DATABASE ${quoteIdentifier(databaseName)};`)
+    await setAllowConnections(client, databaseName, false).catch(() => void 0)
+
+    for (let attempt = 0; attempt < MAX_DROP_ATTEMPTS; attempt++) {
+      await cancelAndTerminateDatabaseConnections(client, databaseName)
+
+      try {
+        await client.query(`DROP DATABASE ${quoteIdentifier(databaseName)};`)
+        return
+      } catch (error) {
+        const message = String((error as Error).message)
+
+        if (message.includes("does not exist")) {
+          return
+        }
+
+        if (
+          message.includes("being accessed by other users") &&
+          attempt < MAX_DROP_ATTEMPTS - 1
+        ) {
+          await sleep(50 * (attempt + 1))
+          continue
+        }
+
+        throw error
+      }
+    }
   } catch (error) {
     if (String((error as Error).message).includes("does not exist")) {
       return

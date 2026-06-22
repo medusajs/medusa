@@ -53,7 +53,7 @@ const adminHeaders = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Workflow Engine API", () => {
       let medusaContainer
 
@@ -91,8 +91,10 @@ medusaIntegrationTestRunner({
         )
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, medusaContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("Should list all workflows in execution or completed and retrieve them by id", async () => {

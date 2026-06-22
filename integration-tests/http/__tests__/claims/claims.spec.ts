@@ -19,7 +19,7 @@ import { setupTaxStructure } from "../../../modules/__tests__/fixtures"
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseClaim
     let order, order2
     let returnShippingOption
@@ -34,7 +34,7 @@ medusaIntegrationTestRunner({
     let item
     const shippingProviderId = "manual_test-provider"
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -424,6 +424,8 @@ medusaIntegrationTestRunner({
       item = order.items[0]
 
       await setupTaxStructure(container.resolve(Modules.TAX))
+
+      await dbUtils.snapshot()
     })
 
     describe("Claims lifecycle", () => {
@@ -1570,10 +1572,7 @@ medusaIntegrationTestRunner({
         await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
 
         const finalOrder = (
-          await api.get(
-            `/admin/orders/${orderWithPromotion.id}`,
-            adminHeaders
-          )
+          await api.get(`/admin/orders/${orderWithPromotion.id}`, adminHeaders)
         ).data.order
 
         expect(finalOrder.items).toEqual(
@@ -1706,10 +1705,7 @@ medusaIntegrationTestRunner({
         await api.post(`/admin/claims/${claimId}/request`, {}, adminHeaders)
 
         const finalOrder = (
-          await api.get(
-            `/admin/orders/${orderWithPromotion.id}`,
-            adminHeaders
-          )
+          await api.get(`/admin/orders/${orderWithPromotion.id}`, adminHeaders)
         ).data.order
 
         expect(finalOrder.items).toEqual(

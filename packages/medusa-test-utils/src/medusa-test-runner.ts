@@ -14,6 +14,7 @@ import {
   clearInstances,
   closeWaitingroomClient,
   configLoaderOverride,
+  formatError,
   initDb,
   migrateDatabase,
   startApp,
@@ -84,6 +85,7 @@ class MedusaTestRunner {
   private shutdown: () => Promise<void> = async () => void 0
   private hooks: TestRunnerConfig["hooks"] = {}
   private databaseTemplateReady = false
+  private skipNextRestore = false
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -255,6 +257,7 @@ class MedusaTestRunner {
       await closeWaitingroomClient()
 
       this.databaseTemplateReady = false
+      this.skipNextRestore = false
       this.apiUtils = null
       this.loadedApplication = null
       this.globalContainer = null
@@ -296,6 +299,11 @@ class MedusaTestRunner {
         return
       }
 
+      if (this.skipNextRestore) {
+        this.skipNextRestore = false
+        return
+      }
+
       await this.dbUtils.restore({
         databaseName: this.dbName,
         templateName: this.dbTemplateName,
@@ -314,7 +322,9 @@ class MedusaTestRunner {
     try {
       await waitWorkflowExecutions(this.globalContainer)
     } catch (error) {
-      logger.error("Error tearing down database:", error?.message)
+      logger.error(
+        `Error waiting for workflow executions to finish:\n${formatError(error)}`
+      )
       throw error
     }
   }
@@ -332,11 +342,14 @@ class MedusaTestRunner {
       },
       dbUtils: {
         ...this.dbUtils,
-        snapshot: (options) =>
-          this.dbUtils.snapshot({
+        snapshot: async (options) => {
+          await this.dbUtils.snapshot({
             databaseName: this.dbName,
             templateName: options?.templateName ?? this.dbTemplateName,
-          }),
+          })
+          this.databaseTemplateReady = true
+          this.skipNextRestore = true
+        },
         restore: (options) =>
           this.dbUtils.restore({
             databaseName: this.dbName,
