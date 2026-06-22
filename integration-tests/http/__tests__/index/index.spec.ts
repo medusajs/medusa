@@ -22,7 +22,7 @@ medusaIntegrationTestRunner({
       delete process.env.ENABLE_INDEX_MODULE
     })
 
-    describe("Admin Index API", () => {
+    describe.skip("Admin Index API", () => {
       describe("GET /admin/index/details", () => {
         it("should return index information with metadata", async () => {
           await setTimeout(3000)

@@ -83,6 +83,7 @@ class MedusaTestRunner {
   private loadedApplication: any = null
   private shutdown: () => Promise<void> = async () => void 0
   private hooks: TestRunnerConfig["hooks"] = {}
+  private databaseTemplateReady = false
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -223,10 +224,6 @@ class MedusaTestRunner {
       this.apiUtils.cancelToken = { source: cancelTokenSource }
 
       await waitWorkflowExecutions(this.globalContainer as MedusaContainer)
-      await this.dbUtils.snapshot({
-        databaseName: this.dbName,
-        templateName: this.dbTemplateName,
-      })
     } catch (error) {
       logger.error(`Error starting the app: ${error?.message}`)
       await this.cleanup()
@@ -250,10 +247,14 @@ class MedusaTestRunner {
         await this.globalContainer.dispose()
       }
 
-      await this.dbUtils.dropTemplate(this.dbTemplateName)
+      if (this.databaseTemplateReady) {
+        await this.dbUtils.dropTemplate(this.dbTemplateName)
+      }
+
       await this.dbUtils.shutdown(this.dbName)
       await closeWaitingroomClient()
 
+      this.databaseTemplateReady = false
       this.apiUtils = null
       this.loadedApplication = null
       this.globalContainer = null
@@ -278,8 +279,23 @@ class MedusaTestRunner {
     }
   }
 
+  private async snapshotDatabase(): Promise<void> {
+    await this.dbUtils.snapshot({
+      databaseName: this.dbName,
+      templateName: this.dbTemplateName,
+    })
+    this.databaseTemplateReady = true
+  }
+
   public async beforeEach(): Promise<void> {
     try {
+      if (!this.databaseTemplateReady) {
+        // Snapshot after the suite's own beforeAll hooks so custom schema changes
+        // (for example ad-hoc link tables) are included in the restore template.
+        await this.snapshotDatabase()
+        return
+      }
+
       await this.dbUtils.restore({
         databaseName: this.dbName,
         templateName: this.dbTemplateName,
