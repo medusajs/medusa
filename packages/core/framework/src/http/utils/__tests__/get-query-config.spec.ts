@@ -247,6 +247,81 @@ describe("prepareListQuery", () => {
       })
     })
 
+    it("should throw error when order field is not in allowedOrderBy", async () => {
+      const validated: RequestQueryFields = {
+        order: "total",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        allowedOrderBy: ["display_id", "created_at"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field total is not valid"
+      )
+    })
+
+    it("should allow order field when it is in allowedOrderBy", async () => {
+      const validated: RequestQueryFields = {
+        order: "-created_at",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        allowedOrderBy: ["display_id", "created_at"],
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.listConfig.order).toEqual({ created_at: "DESC" })
+      expect(result.remoteQueryConfig.pagination.order).toEqual({
+        created_at: "DESC",
+      })
+    })
+
+    it("should prefer allowedOrderBy over allowed for sorting", async () => {
+      // `total` is selectable (in `allowed`) but not sortable (absent from
+      // `allowedOrderBy`) — sorting is decoupled from field selection.
+      const validated: RequestQueryFields = {
+        order: "total",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        allowed: ["id", "total", "created_at"],
+        allowedOrderBy: ["created_at"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field total is not valid"
+      )
+    })
+
+    it("should sort by a field in allowedOrderBy even when absent from allowed", async () => {
+      const validated: RequestQueryFields = {
+        order: "created_at",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        allowed: ["id"],
+        allowedOrderBy: ["created_at"],
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.listConfig.order).toEqual({ created_at: "ASC" })
+    })
+
     it("should allow nested order field when parent relation is in allowed fields", async () => {
       const validated: RequestQueryFields = {
         order: "product.title",
