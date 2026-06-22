@@ -84,6 +84,35 @@ medusaIntegrationTestRunner({
         expect(response.data.orders).toEqual([])
       })
 
+      describe("sort allowlist", () => {
+        it.each(["total", "-payment_status", "fulfillment_status"])(
+          "should return 400 when sorting by computed field '%s'",
+          async (order) => {
+            const response = await api
+              .get(`/admin/orders?order=${order}`, adminHeaders)
+              .catch((e) => e)
+
+            const field = order.replace(/^-/, "")
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data.message).toEqual(
+              `Order field ${field} is not valid`
+            )
+          }
+        )
+
+        it("should sort by a real column without error", async () => {
+          const response = await api.get(
+            `/admin/orders?order=-created_at`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.orders).toEqual([
+            expect.objectContaining({ id: order.id }),
+          ])
+        })
+      })
+
       it("should search orders by shipping address", async () => {
         let response = await api.get(
           `/admin/orders?fields=+shipping_address.address_1,+shipping_address.address_2`,

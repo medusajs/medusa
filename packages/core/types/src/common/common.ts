@@ -452,6 +452,12 @@ export type QueryConfig<TEntity> = {
    * the authorization search.
    */
   allowed?: string[]
+  /**
+   * Fields allowed in the `order` query param (sorting). Unlike `allowed`,
+   * this does NOT affect field selection. Sorting by a field outside this
+   * list throws INVALID_DATA (400). Falls back to `allowed` when unset.
+   */
+  allowedOrderBy?: string[]
   defaultLimit?: number
   /**
    * If the route that will use that configuration is supposed to return a list of entities. This
