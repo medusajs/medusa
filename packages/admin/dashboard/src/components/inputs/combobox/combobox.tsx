@@ -29,7 +29,6 @@ import {
   useMemo,
   useRef,
   useState,
-  useTransition,
 } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -85,7 +84,6 @@ const ComboboxImpl = <T extends Value = string>(
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [open, setOpen] = useState(false)
-  const [isPending, startTransition] = useTransition()
   const { t } = useTranslation()
 
   const comboboxRef = useRef<HTMLInputElement>(null)
@@ -138,6 +136,9 @@ const ComboboxImpl = <T extends Value = string>(
     }
 
     setUncontrolledSearchValue("")
+    if (onSearchValueChange) {
+      onSearchValueChange("")
+    }
   }
 
   const handleSearchChange = (query: string) => {
@@ -208,14 +209,15 @@ const ComboboxImpl = <T extends Value = string>(
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setUncontrolledSearchValue("")
+      if (onSearchValueChange) {
+        onSearchValueChange("")
+      }
     }
 
     setOpen(open)
   }
 
-  const hasValue = isArrayValue
-    ? selectedValues?.length > 0
-    : !!selectedValues
+  const hasValue = isArrayValue ? selectedValues?.length > 0 : !!selectedValues
 
   const showTag = hasValue && isArrayValue
   const showSelected = showTag && !searchValue && !open
@@ -261,9 +263,9 @@ const ComboboxImpl = <T extends Value = string>(
         }
         handleValueChange(value as T)
       }}
-      value={uncontrolledSearchValue}
+      value={searchValue}
       setValue={(query) => {
-        startTransition(() => handleSearchChange(query))
+        handleSearchChange(query)
       }}
     >
       {displayMode === "chips" && isArrayValue ? (
@@ -456,7 +458,6 @@ const ComboboxImpl = <T extends Value = string>(
         style={{
           pointerEvents: open ? "auto" : "none",
         }}
-        aria-busy={isPending}
       >
         {results.map(({ value, label, disabled }) => (
           <PrimitiveComboboxItem
@@ -507,7 +508,7 @@ const ComboboxImpl = <T extends Value = string>(
             <Fragment>
               <PrimitiveSeparator className="bg-ui-border-base -mx-1" />
               <PrimitiveComboboxItem
-                value={uncontrolledSearchValue}
+                value={searchValue}
                 focusOnHover
                 setValueOnClick={false}
                 disabled={hasLabelMatch}

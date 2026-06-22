@@ -47,5 +47,9 @@ export const POST = async (
     pagination: req.queryConfig.pagination,
   })
 
-  res.status(200).json({ product_category: category })
+  const response: HttpTypes.AdminProductCategoryResponse = {
+    product_category: category as HttpTypes.AdminProductCategory,
+  }
+
+  res.status(200).json(response)
 }

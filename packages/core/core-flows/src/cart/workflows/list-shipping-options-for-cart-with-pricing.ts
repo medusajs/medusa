@@ -22,6 +22,7 @@ import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment"
 import { cartFieldsForCalculateShippingOptionsPrices } from "../utils/fields"
+import { filterCartItemsByShippingProfile } from "../utils/filter-items-by-shipping-profile"
 import { shippingOptionsContextResult } from "../utils/schemas"
 import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
@@ -48,6 +49,22 @@ const COMMON_OPTIONS_FIELDS = [
   "rules.attribute",
   "rules.value",
   "rules.operator",
+]
+
+const flatRateFields = [
+  ...COMMON_OPTIONS_FIELDS,
+  "calculated_price.*",
+  "prices.*",
+  "prices.price_rules.*",
+]
+
+const cartFields = [
+  ...cartFieldsForCalculateShippingOptionsPrices,
+  "sales_channel_id",
+  "currency_code",
+  "region_id",
+  "item_total",
+  "total",
 ]
 
 export const listShippingOptionsForCartWithPricingWorkflowId =
@@ -138,14 +155,7 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },
-      fields: [
-        ...cartFieldsForCalculateShippingOptionsPrices,
-        "sales_channel_id",
-        "currency_code",
-        "region_id",
-        "item_total",
-        "total",
-      ],
+      fields: cartFields,
       options: { throwIfKeyNotFound: true },
     }).config({ name: "get-cart" })
 
@@ -305,17 +315,12 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
     const [shippingOptionsFlatRate, shippingOptionsCalculated] = parallelize(
       useRemoteQueryStep({
         entry_point: "shipping_options",
-        fields: [
-          ...COMMON_OPTIONS_FIELDS,
-          "calculated_price.*",
-          "prices.*",
-          "prices.price_rules.*",
-        ],
+        fields: flatRateFields,
         variables: flatRateOptionsQuery,
       }).config({ name: "shipping-options-query-flat-rate" }),
       useRemoteQueryStep({
         entry_point: "shipping_options",
-        fields: [...COMMON_OPTIONS_FIELDS],
+        fields: COMMON_OPTIONS_FIELDS,
         variables: calculatedShippingOptionsQuery,
       }).config({ name: "shipping-options-query-calculated" })
     )
@@ -344,6 +349,10 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               optionData: so.data,
               context: {
                 ...cart,
+                items: filterCartItemsByShippingProfile(
+                  cart.items,
+                  so.shipping_profile_id
+                ),
                 from_location:
                   fulfillmentSetLocationMap[so.service_zone.fulfillment_set_id],
               },

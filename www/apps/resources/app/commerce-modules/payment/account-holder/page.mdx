@@ -40,6 +40,7 @@ If a payment provider supports saving payment methods for a customer, they must 
 - `createAccountHolder`: Creates an account holder in the payment provider. The Payment Module uses this method before creating the account holder in Medusa, and uses the returned data to set fields like `external_id` and `data` in the created `AccountHolder` record.
 - `deleteAccountHolder`: Deletes an account holder in the payment provider. The Payment Module uses this method when an account holder is deleted in Medusa.
 - `savePaymentMethod`: Saves a payment method for an account holder in the payment provider.
+- `deletePaymentMethod`: Deletes a saved payment method from the payment provider. This allows customers to remove their saved payment methods.
 - `listPaymentMethods`: Lists saved payment methods in the third-party service for an account holder. This is useful when displaying the customer's saved payment methods in the storefront.
 
 Learn more about implementing these methods in the [Create Payment Provider guide](/references/payment/provider).

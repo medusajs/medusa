@@ -1,0 +1,25 @@
+import { TypeList } from "docs-ui"
+
+# addRoles
+
+This method assigns roles to a user. It sends a request to the
+Assign User Roles API route.
+
+## Example
+
+```ts
+sdk.admin.user.addRoles("user_123", {
+  roles: ["role_123"]
+})
+.then(({ roles }) => {
+  console.log(roles)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The user's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminAssignUserRoles](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminAssignUserRoles/page.mdx)","description":"The roles to assign.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"roles","type":"`string`[]","description":"The IDs of the roles to assign to the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addRoles"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminUserRolesResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The user's roles.","expandable":false,"children":[{"name":"roles","type":"[AdminRbacRole](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRole/page.mdx)[]","description":"The list of roles.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The role's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The role's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The role's description.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"The ID of the parent role, if any.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Custom key-value pairs that can be added to the role.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the role was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the role was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the role was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policies","type":"[AdminRbacPolicy](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicy/page.mdx)[]","description":"The policies associated with the role.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addRoles"/>

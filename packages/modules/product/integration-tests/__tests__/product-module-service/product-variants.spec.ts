@@ -444,6 +444,31 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(productVariant.title).toEqual("new test")
         })
 
+        it("should update scalar fields without altering the variant's options", async () => {
+          // A scalar-only update (no `options` in the payload) skips the option
+          // resolution/uniqueness/relation-reconcile path. This must NOT wipe or
+          // change the variant's existing option assignments.
+          const before = await service.retrieveProductVariant(variantOne.id, {
+            relations: ["options"],
+          })
+
+          await service.updateProductVariants(variantOne.id, {
+            title: "scalar-only update",
+            sku: "scalar-only-sku",
+          })
+
+          const after = await service.retrieveProductVariant(variantOne.id, {
+            relations: ["options"],
+          })
+
+          expect(after.title).toEqual("scalar-only update")
+          expect(after.sku).toEqual("scalar-only-sku")
+          // Options preserved unchanged.
+          expect(after.options?.map((o) => o.id).sort()).toEqual(
+            before.options?.map((o) => o.id).sort()
+          )
+        })
+
         it("should do a partial update on the options of a variant successfully", async () => {
           await service.updateProductVariants(variantOne.id, {
             options: { size: "small", color: "red" },

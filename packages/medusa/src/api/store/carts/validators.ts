@@ -88,12 +88,18 @@ export const StoreUpdateCartLineItem = z.object({
 export type StoreAddCartShippingMethodsType = z.infer<
   typeof StoreAddCartShippingMethods
 >
-export const StoreAddCartShippingMethods = z
-  .object({
+export const StoreAddCartShippingMethods = z.union([
+  z.object({
     option_id: z.string(),
     data: z.record(z.string(), z.unknown()).optional(),
-  })
-  .strict()
+  }),
+  z.array(
+    z.object({
+      option_id: z.string(),
+      data: z.record(z.string(), z.unknown()).optional(),
+    })
+  ),
+])
 
 export type StoreUpdateCartCustomerType = z.infer<
   typeof StoreUpdateCartCustomer

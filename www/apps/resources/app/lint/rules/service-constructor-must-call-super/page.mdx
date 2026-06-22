@@ -1,0 +1,51 @@
+---
+sidebar_label: "service-constructor-must-call-super"
+---
+
+export const metadata = {
+  title: `service-constructor-must-call-super - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that a service extending `MedusaService(...)` with a constructor calls `super(...arguments)`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets service files in your project's `src/modules` directory. It reports a constructor on a class that extends `MedusaService(...)` when the constructor doesn't call `super(...arguments)`.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+
+class BlogModuleService extends MedusaService({}) {
+  constructor() {}
+}
+```
+
+Instead, call `super(...arguments)` in the constructor:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+
+class BlogModuleService extends MedusaService({}) {
+  constructor() {
+    super(...arguments)
+  }
+}
+```
+
+## Why it's Important
+
+The `MedusaService` factory sets up the service's data-management methods and dependencies in its constructor. If you don't call `super(...arguments)`, that setup never runs and the service fails at runtime.
+
+Learn more in the [Service Factory documentation](!docs!/learn/fundamentals/modules/service-factory).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
