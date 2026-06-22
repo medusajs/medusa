@@ -30,6 +30,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/first-project",
+            "title": "Create First Project",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/faq",
             "title": "FAQ",
             "children": []
@@ -170,6 +178,14 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Access Deployment",
                 "path": "/deployments/access",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Fix with AI",
+                "path": "/deployments/fix-with-ai",
                 "children": []
               },
               {

@@ -19,6 +19,7 @@ import { Collapsible as RadixCollapsible } from "radix-ui"
 import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
+import { PermissionGuard } from "../../common/permission-guard"
 import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
@@ -43,12 +44,14 @@ const MainSidebar = () => {
   return (
     <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
       <div className="flex flex-1 flex-col">
-        <div className="bg-ui-bg-subtle sticky top-0">
-          <Header />
-          <div className="px-3">
-            <Divider variant="dashed" />
+        <PermissionGuard resource="store" operation="read">
+          <div className="bg-ui-bg-subtle sticky top-0">
+            <Header />
+            <div className="px-3">
+              <Divider variant="dashed" />
+            </div>
           </div>
-        </div>
+        </PermissionGuard>
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <CoreRouteSection />

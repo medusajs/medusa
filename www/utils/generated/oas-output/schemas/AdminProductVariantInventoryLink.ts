@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductVariantInventoryLink
  * type: object
- * description: The details of an association between a product variant and an inventory item.
+ * description: A created association between a product variant and an inventory item.
  * x-schemaName: AdminProductVariantInventoryLink
  * required:
  *   - Product

@@ -207,6 +207,81 @@ describe("mikroOrmSerializer", () => {
     })
   })
 
+  it("should serialize an array of entities assigned to an undeclared property", async () => {
+    // An array of entities assigned at runtime to a property that does not
+    // exist in the entity's metadata. Such arrays match neither the Collection
+    // nor the entity branches, so without dedicated handling they fall through
+    // to the scalar fallback and leak live ORM entities into the output, whose
+    // toJSON re-serializes the entire loaded graph downstream (e.g. in
+    // res.json or a cache write). See the test below for the sibling case
+    // where the property IS declared but its Collection value is replaced with a plain array.
+    const image1 = new Entity1WithUnDecoratedProp({
+      id: "img_1",
+      deleted_at: null,
+    })
+    const image2 = new Entity1WithUnDecoratedProp({
+      id: "img_2",
+      deleted_at: null,
+    })
+
+    const variant = new ProductVariant()
+    variant.id = "1"
+    variant.name = "Product variant 1"
+    ;(variant as any).images = [image1, image2]
+
+    const serialized = mikroOrmSerializer<any>(variant)
+
+    expect(serialized.images).toHaveLength(2)
+
+    for (const serializedImage of serialized.images) {
+      // Must be a plain object, not a live ORM entity
+      expect(serializedImage.constructor).toBe(Object)
+      expect(serializedImage.__meta).toBeUndefined()
+      expect(serializedImage.__helper).toBeUndefined()
+    }
+
+    expect(serialized.images).toEqual([
+      { id: "img_1", deleted_at: null, entity2: [] },
+      { id: "img_2", deleted_at: null, entity2: [] },
+    ])
+  })
+
+  it("should serialize a declared relation whose Collection was overwritten with a plain array of entities", async () => {
+    // Mirrors the runtime shape produced by the product module's
+    // buildVariantImagesFromProduct: ProductVariant.images is a declared m:n
+    // relation, but the service computes the value (general + variant-specific
+    // images) and assigns it as a plain array, replacing the Collection. The
+    // metadata then says "m:n" while the value is an Array, which matches
+    // neither the Collection nor the entity branches.
+    const optionValue = new ProductOptionValue()
+    optionValue.id = "val_1"
+    optionValue.name = "small"
+    optionValue.option_id = "opt_1"
+
+    const variant = new ProductVariant()
+    variant.id = "1"
+    variant.name = "Product variant 1"
+    // overwrite the declared m:n Collection with a plain array
+    ;(variant as any).options = [optionValue]
+
+    const serialized = mikroOrmSerializer<any>(variant)
+
+    expect(serialized.options).toHaveLength(1)
+    const serializedValue = serialized.options[0]
+
+    // Must be a plain object, not a live ORM entity
+    expect(serializedValue.constructor).toBe(Object)
+    expect(serializedValue.__meta).toBeUndefined()
+    expect(serializedValue.__helper).toBeUndefined()
+    expect(serializedValue).toEqual(
+      expect.objectContaining({
+        id: "val_1",
+        name: "small",
+        option_id: "opt_1",
+      })
+    )
+  })
+
   it.skip("should benchmark serializers with autocannon load testing", async () => {
     const logs: string[] = []
     logs.push("🚀 Load Testing Serializers with Autocannon")

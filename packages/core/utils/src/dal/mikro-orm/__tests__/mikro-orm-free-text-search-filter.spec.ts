@@ -75,4 +75,83 @@ describe("mikroOrmFreeTextSearchFilterOptionsFactory", () => {
       ],
     })
   })
+
+  it("should return a tokenized filter when multiple words are provided", async () => {
+    const entityManager = orm.em.fork()
+    const freeTextSearchValue = "John Doe"
+
+    const filterConstraints = mikroOrmFreeTextSearchFilterOptionsFactory(
+      SearchableEntity1.name
+    ).cond(
+      {
+        value: freeTextSearchValue,
+        fromEntity: SearchableEntity1.name,
+      },
+      "read",
+      entityManager
+    )
+
+    expect(filterConstraints).toEqual({
+      $and: [
+        {
+          $or: [
+            {
+              searchableField: {
+                $ilike: "%John%",
+              },
+            },
+            {
+              entity2: {
+                $or: [
+                  {
+                    searchableField: {
+                      $ilike: "%John%",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          $or: [
+            {
+              searchableField: {
+                $ilike: "%Doe%",
+              },
+            },
+            {
+              entity2: {
+                $or: [
+                  {
+                    searchableField: {
+                      $ilike: "%Doe%",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    })
+  })
+
+  it("should return an empty object when only whitespace is provided", async () => {
+    const entityManager = orm.em.fork()
+    const freeTextSearchValue = "   "
+
+    const filterConstraints = mikroOrmFreeTextSearchFilterOptionsFactory(
+      SearchableEntity1.name
+    ).cond(
+      {
+        value: freeTextSearchValue,
+        fromEntity: SearchableEntity1.name,
+      },
+      "read",
+      entityManager
+    )
+
+    expect(filterConstraints).toEqual({})
+  })
 })

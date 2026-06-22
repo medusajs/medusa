@@ -1,4 +1,4 @@
-import { statSync } from "fs"
+import { existsSync, statSync } from "fs"
 import { mkdir, readdir, rm, writeFile } from "fs/promises"
 import path from "path"
 import type { Tags } from "types"
@@ -131,9 +131,11 @@ export async function generateTags(basePath?: string) {
   }
 
   await Promise.all(
-    config.map(async (item) => {
-      await getTags(item)
-    })
+    config
+      .filter((item) => existsSync(item.path))
+      .map(async (item) => {
+        await getTags(item)
+      })
   )
 
   const tagsDir = path.join(basePath, "src", "tags")

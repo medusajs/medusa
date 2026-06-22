@@ -15,6 +15,7 @@ import {
   useCancelOrderEdit,
   useRequestOrderEdit,
 } from "../../../../../hooks/api/order-edits"
+import { useUpdateOrderChange } from "../../../../../hooks/api/orders"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { OrderEditItemsSection } from "./order-edit-items-section"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
@@ -43,13 +44,17 @@ export const OrderEditCreateForm = ({
 
   const isRequestRunning = isCanceling || isRequesting
 
+  const { mutateAsync: updateOrderChange } = useUpdateOrderChange(
+    preview?.order_change?.id ?? ""
+  )
+
   /**
    * FORM
    */
   const form = useForm<CreateOrderEditSchemaType>({
     defaultValues: () => {
       return Promise.resolve({
-        note: "", // TODO: add note when update edit route is added
+        note: "",
         send_notification: false, // TODO: not supported in the API ATM
       })
     },
@@ -58,7 +63,7 @@ export const OrderEditCreateForm = ({
 
   const prompt = usePrompt()
 
-  const handleSubmit = form.handleSubmit(async () => {
+  const handleSubmit = form.handleSubmit(async (data) => {
     try {
       const res = await prompt({
         title: t("general.areYouSure"),
@@ -70,6 +75,10 @@ export const OrderEditCreateForm = ({
 
       if (!res) {
         return
+      }
+
+      if (data.note && preview?.order_change?.id) {
+        await updateOrderChange({ internal_note: data.note })
       }
 
       await requestOrderEdit()

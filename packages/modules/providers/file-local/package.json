@@ -1,11 +1,11 @@
 {
   "name": "@medusajs/file-local",
-  "version": "2.14.2",
+  "version": "2.16.0",
   "description": "Local filesystem file storage for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/modules/providers/file-local"
   },
   "files": [
@@ -26,10 +26,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.14.2"
+    "@medusajs/framework": "2.16.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.14.2"
+    "@medusajs/framework": "2.16.0"
   },
   "keywords": [
     "medusa-plugin",

@@ -1,5 +1,64 @@
 # @medusajs/index
 
+## 2.16.0
+
+### Patch Changes
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
+- [`a63e47d0014fbe309a8594458fc84926dd107a79`](undefined) - fix(index): subscribe to restored events and re-index on restore
+
+- [`a3af5a25e4acea97514ad9b8362941c1a352bb0c`](undefined) - fix(index): use parameterized binding for JSONB containment filter
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`20352f4fa2f31e5b491c8b1b244c407392939fbf`](https://github.com/medusajs/medusa/commit/20352f4fa2f31e5b491c8b1b244c407392939fbf), [`90af038c95c835dee5168ffd19cda5182d81b904`](https://github.com/medusajs/medusa/commit/90af038c95c835dee5168ffd19cda5182d81b904), [`66610b87efb112e37b78c7c9536d95070b8d6b11`](https://github.com/medusajs/medusa/commit/66610b87efb112e37b78c7c9536d95070b8d6b11)]:
+  - @medusajs/framework@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- [#15131](https://github.com/medusajs/medusa/pull/15131) [`d784e637bd0762033601b8503633871dba779bfb`](https://github.com/medusajs/medusa/commit/d784e637bd0762033601b8503633871dba779bfb) Thanks [@ranma-dev](https://github.com/ranma-dev)! - fix(index): bug in index module that returned no results for a custom module with more than one entity linked to the same parent
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15176](https://github.com/medusajs/medusa/pull/15176) [`ae7bbaed1011e1a74f814c6c01c0da483f300338`](https://github.com/medusajs/medusa/commit/ae7bbaed1011e1a74f814c6c01c0da483f300338) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(index,modules-sdk,): introduce locking to avoid race conditions in distributed systems for migrations, links and index partition creation
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
 ## 2.14.2
 
 ### Patch Changes

@@ -1,0 +1,25 @@
+import { TypeList } from "docs-ui"
+
+# addPolicies
+
+This method adds policies to an RBAC role. It sends a request to the
+Add Role Policies API route.
+
+## Example
+
+```ts
+sdk.admin.rbacRole.addPolicies("role_123", {
+  policies: ["policy_123", "policy_456"]
+})
+.then(({ policies }) => {
+  console.log(policies)
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"roleId","type":"`string`","description":"The role's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminAddRolePolicies](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminAddRolePolicies/page.mdx)","description":"The policies to add to the role.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"policies","type":"`string`[]","description":"The IDs of the policies to add to the role.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addPolicies"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AdminRbacPolicyListResponse](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyListResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The updated role with policies.","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The maximum number of items retrieved.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip before retrieving the returned items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policies","type":"[AdminRbacPolicy](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicy/page.mdx)[]","description":"The list of policies.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The policy's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The policy's unique key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource","type":"`string`","description":"The resource the policy applies to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"operation","type":"`string`","description":"The operation the policy allows.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`null` \\| `string`","description":"The policy's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The policy's description.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Custom key-value pairs that can be added to the policy.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the policy was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the policy was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string`","description":"The date the policy was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inherited_from_role_id","type":"`null` \\| `string`","description":"The role ID the policy is inherited from, if any.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"estimate_count","type":"`number`","description":"The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.","optional":true,"defaultValue":"","expandable":false,"featureFlag":"index_engine","children":[],"since":"2.8.0"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addPolicies"/>

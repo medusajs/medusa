@@ -11,7 +11,7 @@ export const config: DocsConfig = {
   description:
     "Explore and learn how to use Medusa. Learn how to get started, the fundamental concepts, how to customize Medusa, and more.",
   baseUrl,
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   sidebars: generatedSidebars as Sidebar.Sidebar[],
   project: {
     title: "Documentation",

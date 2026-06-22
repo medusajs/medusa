@@ -30,7 +30,9 @@ export const buildShippingOptionPriceRules = (rule: {
     { value: rule.eq, operator: "eq" },
   ]
 
-  const conditionsWithValues = conditions.filter(({ value }) => value) as {
+  const conditionsWithValues = conditions.filter(
+    ({ value }) => value !== undefined && value !== null && value !== ""
+  ) as {
     value: string | number
     operator: string
   }[]

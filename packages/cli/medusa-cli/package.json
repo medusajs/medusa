@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cli",
-  "version": "2.14.2",
+  "version": "2.16.0",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/medusa-cli"
   },
   "publishConfig": {
@@ -32,9 +32,9 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "dependencies": {
-    "@medusajs/deps": "2.14.2",
-    "@medusajs/telemetry": "2.14.2",
-    "@medusajs/utils": "2.14.2",
+    "@medusajs/deps": "2.16.0",
+    "@medusajs/telemetry": "2.16.0",
+    "@medusajs/utils": "2.16.0",
     "@types/express": "^4.17.21",
     "chalk": "^4.1.2",
     "configstore": "^5.0.1",
@@ -49,7 +49,6 @@
     "is-valid-path": "^0.1.1",
     "meant": "^1.0.3",
     "ora": "^5.4.1",
-    "pg-god": "^1.0.12",
     "prompts": "^2.4.2",
     "resolve-cwd": "^3.0.0",
     "stack-trace": "^0.0.10",

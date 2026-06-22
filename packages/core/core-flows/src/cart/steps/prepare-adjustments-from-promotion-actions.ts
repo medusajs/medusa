@@ -1,8 +1,10 @@
 import {
   AddItemAdjustmentAction,
   AddShippingMethodAdjustment,
+  CampaignBudgetExceededAction,
   ComputeActions,
   PromotionDTO,
+  PromotionLimitExceededAction,
   RemoveItemAdjustmentAction,
   RemoveShippingMethodAdjustment,
 } from "@medusajs/framework/types"
@@ -80,6 +82,21 @@ export interface PrepareAdjustmentsFromPromotionActionsStepOutput {
    * The promotion codes that were computed.
    */
   computedPromotionCodes: string[]
+  /**
+   * The promotion codes that could not be applied, along with the reason.
+   */
+  skippedPromoCodes: {
+    /**
+     * The promotion code that was skipped.
+     */
+    code: string
+    /**
+     * The reason the promotion code was skipped.
+     * - `promotion_limit_exceeded`: the promotion's usage limit has been reached.
+     * - `campaign_budget_exceeded`: the promotion's campaign budget has been exhausted.
+     */
+    reason: "promotion_limit_exceeded" | "campaign_budget_exceeded"
+  }[]
 }
 
 export const prepareAdjustmentsFromPromotionActionsStepId =
@@ -115,6 +132,7 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
         shippingMethodAdjustmentsToCreate: [],
         shippingMethodAdjustmentIdsToRemove: [],
         computedPromotionCodes: [],
+        skippedPromoCodes: [],
       } as PrepareAdjustmentsFromPromotionActionsStepOutput)
     }
 
@@ -137,6 +155,8 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
     const shippingMethodAdjustmentsToCreate: PrepareAdjustmentsFromPromotionActionsStepOutput["shippingMethodAdjustmentsToCreate"] =
       []
     const shippingMethodAdjustmentIdsToRemove: string[] = []
+    const skippedPromoCodes: PrepareAdjustmentsFromPromotionActionsStepOutput["skippedPromoCodes"] =
+      []
 
     for (const action of actions) {
       switch (action.action) {
@@ -169,6 +189,18 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
             (action as RemoveShippingMethodAdjustment).adjustment_id
           )
           break
+        case ComputedActions.PROMOTION_LIMIT_EXCEEDED:
+          skippedPromoCodes.push({
+            code: (action as PromotionLimitExceededAction).code,
+            reason: "promotion_limit_exceeded",
+          })
+          break
+        case ComputedActions.CAMPAIGN_BUDGET_EXCEEDED:
+          skippedPromoCodes.push({
+            code: (action as CampaignBudgetExceededAction).code,
+            reason: "campaign_budget_exceeded",
+          })
+          break
       }
     }
 
@@ -183,6 +215,7 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
       shippingMethodAdjustmentsToCreate,
       shippingMethodAdjustmentIdsToRemove,
       computedPromotionCodes,
+      skippedPromoCodes,
     } as PrepareAdjustmentsFromPromotionActionsStepOutput)
   }
 )

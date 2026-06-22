@@ -274,6 +274,68 @@ describe("ZodPipe (transform) schemas", () => {
 })
 
 // ---------------------------------------------------------------------------
+// createOperatorMap fields routed through the shape-arg fallback
+// (regression: applyAndAndOrOperators' `z.lazy()` makes `_output` unresolvable)
+// ---------------------------------------------------------------------------
+
+describe("createOperatorMap shape-arg fallback", () => {
+  // Mimic the runtime situation where the outer schema's `_output` leaks the
+  // raw ZodObject type (because `applyAndAndOrOperators` introduces a
+  // self-referential `z.lazy()`). Inner Zod nodes intentionally omit `_output`
+  // so that `getZodOutputType` returns undefined and `propType` remains a Zod
+  // schema type — the path that previously emitted `any`.
+  const ZOD_DECLS = `
+    declare class ZodString { _zod: any }
+    declare class ZodArray<T> { _zod: any }
+    declare class ZodUnion<T> { _zod: any }
+    declare class ZodOptional<T> { _zod: any }
+    declare class ZodObject<Shape> {
+      _input: ZodObject<Shape>
+      _output: ZodObject<Shape>
+      _zod: any
+      parse: any
+      safeParse: any
+    }
+    type SimpleType = ZodOptional<ZodUnion<readonly [
+      ZodOptional<ZodString>,
+      ZodOptional<ZodArray<ZodString>>
+    ]>>
+    type ArrayType = ZodOptional<ZodArray<ZodString>>
+    type OperatorMap = ZodOptional<ZodUnion<readonly [
+      SimpleType,
+      ZodObject<{
+        $eq: SimpleType
+        $ne: SimpleType
+        $in: ArrayType
+        $nin: ArrayType
+        $like: SimpleType
+        $ilike: SimpleType
+        $gt: SimpleType
+        $gte: SimpleType
+        $lt: SimpleType
+        $lte: SimpleType
+      }>
+    ]>>
+  `
+
+  it("emits OperatorMap<string> instead of any for createOperatorMap fields", () => {
+    const [result] = runPipeline(`
+      ${ZOD_DECLS}
+      export declare const AdminGetShippingOptionTypesParams: ZodObject<{
+        created_at: OperatorMap
+        updated_at: OperatorMap
+        deleted_at: OperatorMap
+      }>
+    `)
+    expect(result.code).toMatch(/created_at\??: OperatorMap<string>/)
+    expect(result.code).toMatch(/updated_at\??: OperatorMap<string>/)
+    expect(result.code).toMatch(/deleted_at\??: OperatorMap<string>/)
+    expect(result.code).not.toMatch(/created_at\??:\s*any/)
+    expect(result.tracker.needsOperatorMap).toBe(true)
+  })
+})
+
+// ---------------------------------------------------------------------------
 // Pipeline runner that mirrors the generate command's name-resolution logic
 // (used to test the registry skip + domain-scoped override fixes)
 // ---------------------------------------------------------------------------

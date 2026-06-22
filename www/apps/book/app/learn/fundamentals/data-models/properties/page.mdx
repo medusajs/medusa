@@ -432,6 +432,31 @@ export default Post
 
 In this example, the `title` property is searchable.
 
+### Searchable Relationship Properties
+
+You can also make relationship properties searchable by adding the `searchable` method to relationship definitions like `hasMany`, `hasOne`, `belongsTo`, or `manyToMany`.
+
+For example:
+
+export const relationshipSearchableHighlights = [
+  ["6", "searchable", "Make the `variants` relationship searchable."]
+]
+
+```ts highlights={relationshipSearchableHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Product = model.define("product", {
+  variants: model.hasMany(() => ProductVariant, {
+    mappedBy: "product",
+  }).searchable(),
+  // ...
+})
+
+export default Product
+```
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter.
+
 ### Search Example
 
 If you pass a `q` filter to the `listPosts` method:

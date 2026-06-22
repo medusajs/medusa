@@ -2,6 +2,39 @@ import { Modules } from "../../modules-sdk"
 import { DEFAULT_STORE_RESTRICTED_FIELDS, defineConfig } from "../define-config"
 
 describe("defineConfig", function () {
+  const CLOUD_ENV_VARS = [
+    "MEDUSA_CLOUD_ENVIRONMENT_HANDLE",
+    "MEDUSA_CLOUD_SANDBOX_HANDLE",
+    "MEDUSA_CLOUD_API_KEY",
+    "MEDUSA_CLOUD_WEBHOOK_SECRET",
+    "MEDUSA_CLOUD_EMAILS_ENDPOINT",
+    "MEDUSA_CLOUD_PAYMENTS_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_CALLBACK_URL",
+    "MEDUSA_CLOUD_OAUTH_DISABLED",
+    "MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT",
+    "MEDUSA_CLOUD_OAUTH_AUDIENCE",
+  ]
+  const savedCloudEnv: Record<string, string | undefined> = {}
+
+  beforeEach(() => {
+    CLOUD_ENV_VARS.forEach((key) => {
+      savedCloudEnv[key] = process.env[key]
+      delete process.env[key]
+    })
+  })
+
+  afterEach(() => {
+    CLOUD_ENV_VARS.forEach((key) => {
+      if (savedCloudEnv[key] === undefined) {
+        delete process.env[key]
+      } else {
+        process.env[key] = savedCloudEnv[key]
+      }
+    })
+  })
+
   it("should merge empty config with the defaults", function () {
     expect(defineConfig()).toMatchInlineSnapshot(`
       {
@@ -18,6 +51,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -173,6 +209,158 @@ describe("defineConfig", function () {
     `)
   })
 
+  it("should include auth mfa encryption key when configured", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig()
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+        }),
+      })
+    )
+  })
+
+  it("should include auth mfa encryption key when auth options are customized", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/auth",
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/medusa/auth-emailpass",
+                  id: "emailpass",
+                  options: {
+                    require_verification: true,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+          providers: [
+            {
+              resolve: "@medusajs/medusa/auth-emailpass",
+              id: "emailpass",
+              options: {
+                require_verification: true,
+              },
+            },
+          ],
+        }),
+      })
+    )
+  })
+
+  it("should include auth mfa encryption key when object-style auth options are customized", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: {
+          auth: {
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/medusa/auth-emailpass",
+                  id: "emailpass",
+                  options: {
+                    require_verification: true,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "test-mfa-key",
+          },
+          providers: [
+            {
+              resolve: "@medusajs/medusa/auth-emailpass",
+              id: "emailpass",
+              options: {
+                require_verification: true,
+              },
+            },
+          ],
+        }),
+      })
+    )
+  })
+
+  it("should preserve custom auth mfa encryption key", function () {
+    const originalEnv = { ...process.env }
+    process.env.AUTH_MFA_ENCRYPTION_KEY = "test-mfa-key"
+
+    let config!: ReturnType<typeof defineConfig>
+    try {
+      config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/auth",
+            options: {
+              mfa: {
+                encryption_key: "custom-mfa-key",
+                challenge_ttl_seconds: 600,
+              },
+            },
+          },
+        ],
+      })
+    } finally {
+      process.env = { ...originalEnv }
+    }
+
+    expect(config.modules?.[Modules.AUTH]).toEqual(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          mfa: {
+            encryption_key: "custom-mfa-key",
+            challenge_ttl_seconds: 600,
+          },
+        }),
+      })
+    )
+  })
+
   it("should merge custom modules", function () {
     expect(
       defineConfig({
@@ -200,6 +388,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -390,6 +581,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -581,6 +775,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -760,6 +957,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -942,6 +1142,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1127,6 +1330,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1362,6 +1568,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1557,6 +1766,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -1809,6 +2021,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -2140,6 +2355,9 @@ describe("defineConfig", function () {
           },
           "auth": {
             "options": {
+              "mfa": {
+                "encryption_key": undefined,
+              },
               "providers": [
                 {
                   "id": "emailpass",
@@ -2339,9 +2557,14 @@ describe("defineConfig", function () {
                 "callback_url": "test-backend-url/app/login?auth_provider=cloud",
                 "disabled": true,
                 "environment_handle": "test-environment",
+                "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": undefined,
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2492,9 +2715,11 @@ describe("defineConfig", function () {
             "apiKey": "test-api-key",
             "emailsEndpoint": "test-emails-endpoint",
             "environmentHandle": "test-environment",
+            "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
             "oauthDisabled": true,
+            "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": undefined,
@@ -2560,9 +2785,14 @@ describe("defineConfig", function () {
                 "callback_url": "test-backend-url/app/login?auth_provider=cloud",
                 "disabled": true,
                 "environment_handle": undefined,
+                "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": "test-sandbox",
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2713,9 +2943,11 @@ describe("defineConfig", function () {
             "apiKey": "test-api-key",
             "emailsEndpoint": "test-emails-endpoint",
             "environmentHandle": undefined,
+            "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
             "oauthDisabled": true,
+            "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": "test-sandbox",
@@ -2790,9 +3022,14 @@ describe("defineConfig", function () {
                 "callback_url": "//app/login?auth_provider=cloud",
                 "disabled": true,
                 "environment_handle": "overriden-environment",
+                "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
+                "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
                 "sandbox_handle": undefined,
+              },
+              "mfa": {
+                "encryption_key": undefined,
               },
               "providers": [
                 {
@@ -2943,9 +3180,11 @@ describe("defineConfig", function () {
             "apiKey": "overriden-api-key",
             "emailsEndpoint": "overriden-emails-endpoint",
             "environmentHandle": "overriden-environment",
+            "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "overriden-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
             "oauthDisabled": true,
+            "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
             "paymentsEndpoint": "overriden-payments-endpoint",
             "sandboxHandle": undefined,
@@ -2974,5 +3213,104 @@ describe("defineConfig", function () {
         },
       }
     `)
+  })
+
+  describe("secret defaults", function () {
+    const originalNodeEnv = process.env.NODE_ENV
+    const originalJwtSecret = process.env.JWT_SECRET
+    const originalCookieSecret = process.env.COOKIE_SECRET
+
+    afterEach(() => {
+      process.env.NODE_ENV = originalNodeEnv
+      if (originalJwtSecret === undefined) {
+        delete process.env.JWT_SECRET
+      } else {
+        process.env.JWT_SECRET = originalJwtSecret
+      }
+      if (originalCookieSecret === undefined) {
+        delete process.env.COOKIE_SECRET
+      } else {
+        process.env.COOKIE_SECRET = originalCookieSecret
+      }
+    })
+
+    it("should apply the default secret in non-production environments when no env vars are set", function () {
+      process.env.NODE_ENV = "development"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBe("supersecret")
+      expect(config.projectConfig.http.cookieSecret).toBe("supersecret")
+      expect((config.modules!["user"] as any).options.jwt_secret).toBe(
+        "supersecret"
+      )
+    })
+
+    it("should not apply the default secret when NODE_ENV is production", function () {
+      process.env.NODE_ENV = "production"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBeUndefined()
+      expect(config.projectConfig.http.cookieSecret).toBeUndefined()
+      expect(
+        (config.modules!["user"] as any).options.jwt_secret
+      ).toBeUndefined()
+    })
+
+    it("should not apply the default secret when NODE_ENV is prod", function () {
+      process.env.NODE_ENV = "prod"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBeUndefined()
+      expect(config.projectConfig.http.cookieSecret).toBeUndefined()
+      expect(
+        (config.modules!["user"] as any).options.jwt_secret
+      ).toBeUndefined()
+    })
+
+    it("should use the configured env var secrets in production", function () {
+      process.env.NODE_ENV = "production"
+      process.env.JWT_SECRET = "prod-jwt-secret"
+      process.env.COOKIE_SECRET = "prod-cookie-secret"
+
+      const config = defineConfig()
+
+      expect(config.projectConfig.http.jwtSecret).toBe("prod-jwt-secret")
+      expect(config.projectConfig.http.cookieSecret).toBe("prod-cookie-secret")
+      expect((config.modules!["user"] as any).options.jwt_secret).toBe(
+        "prod-jwt-secret"
+      )
+    })
+
+    it("should prefer user-provided jwtSecret in production over the missing env var", function () {
+      process.env.NODE_ENV = "production"
+      delete process.env.JWT_SECRET
+      delete process.env.COOKIE_SECRET
+
+      const config = defineConfig({
+        projectConfig: {
+          http: {
+            jwtSecret: "configured-jwt-secret",
+            cookieSecret: "configured-cookie-secret",
+          },
+        } as any,
+      })
+
+      expect(config.projectConfig.http.jwtSecret).toBe("configured-jwt-secret")
+      expect(config.projectConfig.http.cookieSecret).toBe(
+        "configured-cookie-secret"
+      )
+      expect((config.modules!["user"] as any).options.jwt_secret).toBe(
+        "configured-jwt-secret"
+      )
+    })
   })
 })

@@ -1,14 +1,14 @@
 {
   "name": "@medusajs/admin-sdk",
   "description": "SDK for building extension for the Medusa admin dashboard.",
-  "version": "2.14.2",
+  "version": "2.16.0",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/admin/admin-sdk"
   },
   "files": [
@@ -19,7 +19,7 @@
     "build": "yarn run -T tsup"
   },
   "dependencies": {
-    "@medusajs/admin-shared": "2.14.2",
+    "@medusajs/admin-shared": "2.16.0",
     "zod": "4.2.0"
   },
   "packageManager": "yarn@3.2.1"

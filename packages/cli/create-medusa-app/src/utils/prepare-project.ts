@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import { randomBytes } from "crypto"
 import { Ora } from "ora"
 import { ExecuteResult } from "./execute.js"
 import { EOL } from "os"
@@ -18,6 +19,7 @@ const AUTH_CORS = [ADMIN_CORS, STORE_CORS, DOCS_CORS].join(",")
 STORE_CORS += `,${DOCS_CORS}`
 ADMIN_CORS += `,${DOCS_CORS}`
 const DEFAULT_REDIS_URL = "redis://localhost:6379"
+const AUTH_MFA_ENCRYPTION_KEY = "AUTH_MFA_ENCRYPTION_KEY"
 
 type PreparePluginOptions = {
   isPlugin: true
@@ -208,7 +210,9 @@ async function prepareProject({
   let inviteToken: string | undefined = undefined
 
   // add environment variables
-  let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}AUTH_CORS=${AUTH_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}COOKIE_SECRET=supersecret`
+  let env = `MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=${STORE_CORS}${EOL}ADMIN_CORS=${ADMIN_CORS}${EOL}AUTH_CORS=${AUTH_CORS}${EOL}REDIS_URL=${DEFAULT_REDIS_URL}${EOL}JWT_SECRET=supersecret${EOL}COOKIE_SECRET=supersecret${EOL}${AUTH_MFA_ENCRYPTION_KEY}=${randomBytes(
+    32
+  ).toString("hex")}`
 
   if (!skipDb) {
     if (dbName) {

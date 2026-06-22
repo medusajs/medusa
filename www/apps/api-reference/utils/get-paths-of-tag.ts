@@ -1,42 +1,39 @@
 import path from "path"
-import { promises as fs } from "fs"
 import type { OpenAPI } from "types"
 import readSpecDocument from "./read-spec-document"
 import dereference from "./dereference"
 import { unstable_cache } from "next/cache"
-import { getSectionId, oasFileToPath } from "docs-utils"
+import { oasFileToPath } from "docs-utils"
+import { specsTagIndex } from "@/generated/specs-tag-index.mjs"
+import { getPathForEnv } from "./get-path-for-env"
 
 async function getPathsOfTag_(
   tagName: string,
-  area: string
+  area: "admin" | "store"
 ): Promise<OpenAPI.Document> {
-  // get path files
-  const basePath = path.join(process.cwd(), "specs", `${area}/paths`)
+  const r2Base = process.env.SPECS_R2_BASE_URL
+  const areaIndex = (specsTagIndex[area] ?? {}) as Record<string, string[]>
+  const files: string[] = areaIndex[tagName] ?? []
 
-  const files = await fs.readdir(basePath)
+  const basePath = getPathForEnv(
+    r2Base || process.cwd(),
+    "specs",
+    area,
+    "paths"
+  )
 
-  // read the path documents
-  let documents: OpenAPI.ParsedPathItemObject[] = await Promise.all(
+  const documents: OpenAPI.ParsedPathItemObject[] = await Promise.all(
     files.map(async (file) => {
+      const filePath = getPathForEnv(basePath, file)
+
       const fileContent = (await readSpecDocument(
-        path.join(basePath, file)
+        filePath
       )) as OpenAPI.OpenAPIV3.PathItemObject<OpenAPI.Operation>
 
       return {
         ...fileContent,
         operationPath: oasFileToPath(file),
       }
-    })
-  )
-
-  // filter out operations not related to the passed tag
-  documents = documents.filter((document) =>
-    Object.values(document).some((operation) => {
-      if (typeof operation !== "object" || !("tags" in operation)) {
-        return false
-      }
-
-      return operation.tags?.some((tag) => getSectionId([tag]) === tagName)
     })
   )
 
@@ -47,7 +44,8 @@ async function getPathsOfTag_(
 }
 
 const getPathsOfTag = unstable_cache(
-  async (tagName: string, area: string) => getPathsOfTag_(tagName, area),
+  async (tagName: string, area: "admin" | "store") =>
+    getPathsOfTag_(tagName, area),
   ["tag-paths"],
   {
     revalidate: 3600,

@@ -35,6 +35,6 @@ export const deleteReservationsWorkflowId = "delete-reservations"
 export const deleteReservationsWorkflow = createWorkflow(
   deleteReservationsWorkflowId,
   (input: WorkflowData<WorkflowInput>): WorkflowData<void> => {
-    return deleteReservationsStep(input.ids)
+    deleteReservationsStep(input.ids)
   }
 )

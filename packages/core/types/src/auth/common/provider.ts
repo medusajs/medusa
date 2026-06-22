@@ -1,3 +1,4 @@
+import { AuthMfaChallengeDTO } from "../.."
 import { AuthIdentityDTO } from "./auth-identity"
 
 /**
@@ -15,6 +16,11 @@ export type AuthenticationResponse = {
    * The authenticated user's details.
    */
   authIdentity?: AuthIdentityDTO
+
+  /**
+   * The multi-factor authentication (MFA) challenge to complete before issuing a token.
+   */
+  mfaChallenge?: AuthMfaChallengeDTO
 
   /**
    * If an error occurs during the authentication process,

@@ -62,6 +62,34 @@ export const compensatePaymentIfNeededStep = createStep(
     }
 
     if (paymentSession.payment?.captured_at) {
+      const {
+        data: [cartPaymentCollectionLink],
+      } = await query.graph({
+        entity: "cart_payment_collection",
+        fields: ["cart_id"],
+        filters: {
+          payment_collection_id: paymentSession.payment_collection_id,
+        },
+      })
+
+      const cartId = cartPaymentCollectionLink?.cart_id
+      if (cartId) {
+        const {
+          data: [orderCartLink],
+        } = await query.graph({
+          entity: "order_cart",
+          fields: ["order_id"],
+          filters: { cart_id: cartId },
+        })
+
+        if (orderCartLink?.order_id) {
+          logger.warn(
+            `Skipping refund of payment ${paymentSession.payment.id}: a later completion attempt already placed order ${orderCartLink.order_id} for cart ${cartId}.`
+          )
+          return
+        }
+      }
+
       try {
         const workflowInput = {
           payment_collection_id: paymentSession.payment_collection_id,

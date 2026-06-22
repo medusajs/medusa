@@ -280,6 +280,11 @@ export const storefrontDevelopmentSidebar = [
           },
           {
             type: "link",
+            path: "/storefront-development/customers/verify-account",
+            title: "Register Customer with Email Verification",
+          },
+          {
+            type: "link",
             path: "/storefront-development/customers/login",
             title: "Login Customer",
           },

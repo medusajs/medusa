@@ -63,13 +63,21 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/admin/translations/statistics",
-    middlewares: [validateAndTransformQuery(AdminTranslationStatisticsParams, {})],
+    middlewares: [
+      validateAndTransformQuery(AdminTranslationStatisticsParams, {}),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/translations/settings",
     middlewares: [
       validateAndTransformQuery(AdminTranslationSettingsParams, {}),
+    ],
+    policies: [
+      {
+        resource: Entities.translation_setting,
+        operation: PolicyOperation.read,
+      },
     ],
   },
   {
@@ -95,6 +103,12 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
         AdminTranslationEntitiesParams,
         QueryConfig.listTransformQueryConfig
       ),
+    ],
+    policies: [
+      {
+        resource: Entities.translation,
+        operation: PolicyOperation.read,
+      },
     ],
   },
 ]

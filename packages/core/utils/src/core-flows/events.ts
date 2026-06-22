@@ -373,6 +373,27 @@ export const AuthWorkflowEvents = {
    * ```
    */
   PASSWORD_RESET: "auth.password_reset",
+  /**
+   * Emitted when a verification code is generated. You can listen to
+   * this event and decide how to deliver the code to the user or customer.
+   *
+   * @since 2.15.5
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   entity_id, // The identifier of the user or customer. For example, an email address.
+   *   actor_type, // The type of actor. For example, "customer", "user", or custom.
+   *   provider, // The auth provider that requested verification.
+   *   auth_identity_id, // The ID of the auth identity being verified.
+   *   provider_identity_id, // The ID of the provider identity being verified.
+   *   code, // The generated verification code.
+   *   expires_at, // The code expiry date.
+   *   metadata, // Optional custom metadata passed from the request.
+   * }
+   * ```
+   */
+  VERIFICATION_REQUESTED: "auth.verification_requested",
 } as const
 
 /**

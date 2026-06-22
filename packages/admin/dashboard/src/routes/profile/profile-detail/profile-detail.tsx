@@ -1,5 +1,6 @@
 import { useMe } from "../../../hooks/api/users"
 import { ProfileGeneralSection } from "./components/profile-general-section"
+import { ProfileMfaSection } from "./components/profile-mfa-section/profile-mfa-section"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
@@ -10,7 +11,7 @@ export const ProfileDetail = () => {
   const { getWidgets } = useExtension()
 
   if (isLoading || !user) {
-    return <SingleColumnPageSkeleton sections={1} />
+    return <SingleColumnPageSkeleton sections={2} />
   }
 
   if (isError) {
@@ -25,6 +26,7 @@ export const ProfileDetail = () => {
       }}
     >
       <ProfileGeneralSection user={user} />
+      <ProfileMfaSection />
     </SingleColumnPage>
   )
 }
