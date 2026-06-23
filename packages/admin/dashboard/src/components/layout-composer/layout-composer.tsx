@@ -266,6 +266,18 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     setEditMode(true)
   }
 
+  // When the user clicks a scope badge while editing:
+  // - If there are unsaved edits, keep the draft so the changes aren't lost
+  //   and just retarget which scope they'll be saved to.
+  // - If the draft is clean (no edits vs. the current scope), load the saved
+  //   preference for the new scope so the user sees its real state.
+  function switchScope(scope: LayoutScope) {
+    if (!hasChanges) {
+      setDraft(preferenceForScope(scope))
+    }
+    setEditScope(scope)
+  }
+
   async function commitEdit() {
     if (editScope === "default" && hasChanges) {
       const confirmed = await prompt({
@@ -340,7 +352,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           size="xsmall"
           color={editScope === "personal" ? "blue" : "grey"}
           className="cursor-pointer"
-          onClick={() => setEditScope("personal")}
+          onClick={() => switchScope("personal")}
         >
           {t("layout.personalView")}
         </Badge>
@@ -348,7 +360,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           size="xsmall"
           color={editScope === "default" ? "blue" : "grey"}
           className="cursor-pointer"
-          onClick={() => setEditScope("default")}
+          onClick={() => switchScope("default")}
         >
           {t("layout.defaultView")}
         </Badge>
