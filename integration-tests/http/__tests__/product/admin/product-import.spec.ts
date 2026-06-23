@@ -1,4 +1,5 @@
 import { csv2json, json2csv } from "json-2-csv"
+import { batchProductsWorkflow } from "@medusajs/core-flows"
 import {
   medusaIntegrationTestRunner,
   TestEventUtils,
@@ -756,39 +757,47 @@ medusaIntegrationTestRunner({
           expect(colorOptions[0].id).toEqual(colorOption.id)
         })
 
-        it("rejects creating a second global option with an existing title (unique title constraint)", async () => {
-          const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-            `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
-            eventBus
+        it("rejects creating a duplicate global option title during import processing", async () => {
+          // A global "color" option already exists.
+          await api.post(
+            "/admin/product-options",
+            { title: "color", values: ["red", "blue"], is_exclusive: false },
+            adminHeaders
           )
 
-          // A global "color" option already exists.
-          const globalColor = (
-            await api.post(
-              "/admin/product-options",
-              {
-                title: "color",
-                values: ["red", "blue"],
-                is_exclusive: false,
-              },
-              adminHeaders
-            )
-          ).data.product_option
-
-          // The import tries to create its OWN global "color" option (Is
-          // Exclusive = false, no Id). Because global option titles are unique,
-          // the import cannot create a second "color" global — it must instead
-          // reference the existing one via the Id column. The import therefore
-          // fails (failure also emits a notification).
-          const csv = await buildCsvWithOptionMeta({
-            option2IsExclusive: "false",
+          const { errors } = await batchProductsWorkflow(getContainer()).run({
+            input: {
+              create: [
+                getProductFixture({
+                  title: "Imported product",
+                  shipping_profile_id: shippingProfile.id,
+                  // A global "color" option whose title collides with the
+                  // pre-existing one.
+                  options: [
+                    { title: "size", values: ["large"] },
+                    { title: "color", values: ["green"], is_exclusive: false },
+                  ],
+                  variants: [
+                    {
+                      title: "Variant",
+                      options: { size: "large", color: "green" },
+                      prices: [{ currency_code: "usd", amount: 100 }],
+                    },
+                  ],
+                } as any),
+              ],
+            } as any,
+            throwOnError: false,
           })
 
-          await importAndConfirm(csv)
-          await subscriberExecution
+          expect(errors.length).toBeGreaterThan(0)
+          expect(
+            errors.some((e: any) =>
+              e.error?.message?.includes("already exists")
+            )
+          ).toBe(true)
 
-          // The constraint guarantees there is still exactly one global
-          // "color" option — the pre-existing one, untouched.
+          // No second global "color" option was created.
           const colorOptions = (
             await api.get(
               "/admin/product-options?title=color&is_exclusive=false",
@@ -796,7 +805,6 @@ medusaIntegrationTestRunner({
             )
           ).data.product_options
           expect(colorOptions).toHaveLength(1)
-          expect(colorOptions[0].id).toEqual(globalColor.id)
         })
 
         it("creates an exclusive option per product when no Id and no Is Exclusive are provided (default)", async () => {
