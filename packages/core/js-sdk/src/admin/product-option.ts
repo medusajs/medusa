@@ -1,5 +1,5 @@
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 import { HttpTypes, SelectParams } from "@medusajs/types"
 
 export class ProductOption {

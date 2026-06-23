@@ -245,8 +245,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           const emittedEvents = eventBusSpy.mock.calls[0][0]
 
-          // Total count should include: 1 product update + 1 option linked + 2 option values linked + 1 option unlinked + 1 option value unlinked + 1 variant created + 1 variant updated + 2 images created + 1 image deleted = 11 events
-          expect(emittedEvents).toHaveLength(11)
+          // Total count should include: 1 product update + 1 option linked + 2 option values linked + 1 option unlinked + 1 option value unlinked + 1 variant created + 1 variant updated + 2 images created + 1 image deleted + 1 orphaned exclusive option soft-deleted + 1 of its values soft-deleted = 13 events
+          expect(emittedEvents).toHaveLength(13)
 
           // Should emit product update event
           expect(emittedEvents).toEqual(
@@ -312,6 +312,31 @@ moduleIntegrationTestRunner<IProductModuleService>({
                   action: CommonEvents.DELETED,
                 }
               ),
+            ])
+          )
+
+          // Should emit a soft-delete event for the dropped exclusive option,
+          // which is now orphaned and garbage-collected by the module.
+          expect(emittedEvents).toEqual(
+            expect.arrayContaining([
+              composeMessage(ProductEvents.PRODUCT_OPTION_DELETED, {
+                data: expect.objectContaining({ id: expectedDeletedOption.id }),
+                object: "product_option",
+                source: Modules.PRODUCT,
+                action: CommonEvents.DELETED,
+              }),
+            ])
+          )
+
+          // ...and a cascade soft-delete event for that option's value.
+          expect(emittedEvents).toEqual(
+            expect.arrayContaining([
+              composeMessage(ProductEvents.PRODUCT_OPTION_VALUE_DELETED, {
+                data: expect.objectContaining({ id: expect.any(String) }),
+                object: "product_option_value",
+                source: Modules.PRODUCT,
+                action: CommonEvents.DELETED,
+              }),
             ])
           )
 

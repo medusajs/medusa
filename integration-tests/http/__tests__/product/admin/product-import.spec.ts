@@ -211,9 +211,32 @@ medusaIntegrationTestRunner({
             shippingProfile.id
           )
 
+          let csvContents = prepareCSVForImport(fileContent, testcase.delimiter)
+
+          // Mirror a real export round-trip: the exporter now emits option ids,
+          // so the re-import LINKS base-product's existing (exclusive) options
+          // instead of recreating them. Without the ids the import would create
+          // fresh options, orphaning the originals (which are then garbage
+          // collected) and dropping the variants' option values. The created
+          // row (proposed-product) keeps empty ids so new options are created.
+          const sizeOptionId = baseProduct.options.find(
+            (option: any) => option.title === "size"
+          )!.id
+          const colorOptionId = baseProduct.options.find(
+            (option: any) => option.title === "color"
+          )!.id
+          const rowsWithOptionIds = csv2json(csvContents)
+          rowsWithOptionIds.forEach((row: any) => {
+            if (row["Product Id"] === baseProduct.id) {
+              row["Variant Option 1 Id"] = sizeOptionId
+              row["Variant Option 2 Id"] = colorOptionId
+            }
+          })
+          csvContents = json2csv(rowsWithOptionIds)
+
           const { form, meta } = getUploadReq({
             name: "test.csv",
-            content: prepareCSVForImport(fileContent, testcase.delimiter),
+            content: csvContents,
           })
 
           // BREAKING: The batch endpoints moved to the domain routes (admin/batch-jobs -> /admin/products/import). The payload and response changed as well.
