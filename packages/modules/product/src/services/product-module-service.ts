@@ -1611,12 +1611,12 @@ export default class ProductModuleService
   async removeProductOptionFromProduct(
     groupCustomerPair: ProductTypes.ProductOptionProductPair,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<string[]>
 
   async removeProductOptionFromProduct(
     groupCustomerPairs: ProductTypes.ProductOptionProductPair[],
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<string[]>
 
   @InjectManager()
   @EmitEvents()
@@ -1625,8 +1625,12 @@ export default class ProductModuleService
       | ProductTypes.ProductOptionProductPair
       | ProductTypes.ProductOptionProductPair[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.removeProductOptionFromProduct_(data, new Set(), sharedContext)
+  ): Promise<string[]> {
+    return await this.removeProductOptionFromProduct_(
+      data,
+      new Set(),
+      sharedContext
+    )
   }
 
   @InjectTransactionManager()
@@ -1636,7 +1640,7 @@ export default class ProductModuleService
       | ProductTypes.ProductOptionProductPair[],
     alreadyValidatedProductIds: Set<string>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
+  ): Promise<string[]> {
     const pairs = Array.isArray(data) ? data : [data]
     const productOptionsProducts = await this.productProductOptionService_.list(
       {
@@ -1684,39 +1688,42 @@ export default class ProductModuleService
       sharedContext
     )
 
-    // Delete exclusive options that are now orphaned.
-    if (unlinkedOptionIds.length) {
-      const [unlinkedOptions, remainingLinks] = await promiseAll([
-        this.productOptionService_.list(
-          { id: unlinkedOptionIds },
-          {},
-          sharedContext
-        ),
-        this.productProductOptionService_.list(
-          { product_option_id: unlinkedOptionIds },
-          {},
-          sharedContext
-        ),
-      ])
-
-      const stillLinkedOptionIds = new Set(
-        remainingLinks.map((link) => link.product_option_id)
-      )
-
-      const orphanedExclusiveOptionIds = unlinkedOptions
-        .filter(
-          (option) =>
-            option.is_exclusive && !stillLinkedOptionIds.has(option.id)
-        )
-        .map((option) => option.id)
-
-      if (orphanedExclusiveOptionIds.length) {
-        await this.productOptionService_.delete(
-          orphanedExclusiveOptionIds,
-          sharedContext
-        )
-      }
+    // Soft-delete exclusive options that are now orphaned.
+    if (!unlinkedOptionIds.length) {
+      return []
     }
+
+    const [unlinkedOptions, remainingLinks] = await promiseAll([
+      this.productOptionService_.list(
+        { id: unlinkedOptionIds },
+        {},
+        sharedContext
+      ),
+      this.productProductOptionService_.list(
+        { product_option_id: unlinkedOptionIds },
+        {},
+        sharedContext
+      ),
+    ])
+
+    const stillLinkedOptionIds = new Set(
+      remainingLinks.map((link) => link.product_option_id)
+    )
+
+    const orphanedExclusiveOptionIds = unlinkedOptions
+      .filter(
+        (option) => option.is_exclusive && !stillLinkedOptionIds.has(option.id)
+      )
+      .map((option) => option.id)
+
+    if (orphanedExclusiveOptionIds.length) {
+      await this.productOptionService_.softDelete(
+        orphanedExclusiveOptionIds,
+        sharedContext
+      )
+    }
+
+    return orphanedExclusiveOptionIds
   }
 
   async updateProductOptionValuesOnProduct(
