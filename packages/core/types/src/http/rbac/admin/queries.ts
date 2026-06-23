@@ -75,3 +75,12 @@ export interface AdminRbacPolicyListParams extends FindParams {
 }
 
 export interface AdminRbacPolicyParams extends SelectParams {}
+
+export interface AdminRbacRoleUserListParams extends FindParams {
+  /**
+   * Filter by user ID(s).
+   */
+  user_id?: string | string[]
+}
+
+export interface AdminRbacPolicyRoleListParams extends FindParams {}

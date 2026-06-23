@@ -82,6 +82,42 @@ const { data: products } = useQueryGraphStep({
 })
 ```
 
+### Correct vs Incorrect Filter Usage
+
+```ts
+// ❌ Incorrect - This will cause a TypeScript error
+// Filters on linked data models from other modules don't work
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: ["*", "fulfillments.*"],
+  filters: {
+    fulfillments: { 
+      id: fulfillment_id // This won't work!
+    }
+  }
+})
+
+// ✅ Correct - Filter by the entity's own fields
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: ["*", "fulfillments.*"],
+  filters: {
+    id: order_id, // Filter by order's own fields
+    status: "completed"
+  }
+})
+
+// ✅ Alternative - Filter in JavaScript after fetching
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: ["*", "fulfillments.*"]
+})
+
+const filteredOrders = orders.filter(order => 
+  order.fulfillments?.some(f => f.id === fulfillment_id)
+)
+```
+
 ## Input
 
 <TypeList types={[{"name":"UseQueryGraphStepInput","type":"[UseQueryGraphStepInput](../../types/helper_steps.UseQueryGraphStepInput/page.mdx)&#60;TEntry, TIsList&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"TEntry","type":"TEntry","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"TIsList","type":"TIsList","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="useQueryGraphStep"/>

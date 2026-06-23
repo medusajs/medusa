@@ -1,0 +1,46 @@
+---
+sidebar_label: "scheduled-job-default-export-required"
+---
+
+export const metadata = {
+  title: `scheduled-job-default-export-required - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires scheduled job files to default-export the job function.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/jobs` directory. It reports a scheduled job file that has no default export.
+
+The following code is reported by the rule:
+
+```ts title="src/jobs/sync-products.ts"
+export const syncProducts = async () => {}
+```
+
+Instead, default-export the async job function:
+
+```ts title="src/jobs/sync-products.ts"
+export default async function syncProducts() {}
+
+export const config = {
+  name: "sync-products",
+  schedule: "0 0 * * *",
+}
+```
+
+## Why it's Important
+
+Medusa registers and runs the job's default export on its schedule. Without a default export, the job never runs.
+
+Learn more in the [Scheduled Jobs documentation](!docs!/learn/fundamentals/scheduled-jobs).
+
+## Fixable
+
+This rule isn't auto-fixable.

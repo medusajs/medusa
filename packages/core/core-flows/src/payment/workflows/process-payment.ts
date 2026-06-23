@@ -71,8 +71,17 @@ export const processPaymentWorkflow = createWorkflow(
     })
 
     const cartId = transform(
-      { cartPaymentCollection },
-      ({ cartPaymentCollection }) => {
+      { cartPaymentCollection, input },
+      ({ cartPaymentCollection, input }) => {
+        // A webhook action without a session id cannot be tied to a specific
+        // payment session, and therefore not to a specific cart. The queries
+        // above would otherwise resolve to an arbitrary cart (an undefined
+        // filter value matches every row), so we bail out here to avoid
+        // acting on an unrelated cart.
+        if (!input.data?.session_id) {
+          return undefined
+        }
+
         return cartPaymentCollection.data[0]?.cart_id
       }
     )
@@ -102,7 +111,9 @@ export const processPaymentWorkflow = createWorkflow(
 
     when({ input, paymentData }, ({ input, paymentData }) => {
       return (
-        input.action === PaymentActions.SUCCESSFUL && !!paymentData.data.length
+        !!input.data?.session_id &&
+        input.action === PaymentActions.SUCCESSFUL &&
+        !!paymentData.data.length
       )
     }).then(() => {
       capturePaymentWorkflow
@@ -120,7 +131,9 @@ export const processPaymentWorkflow = createWorkflow(
     when({ input, paymentData }, ({ input, paymentData }) => {
       // payment is captured with the provider but we dont't have any payment data which means we didn't call authorize yet - autocapture flow
       return (
-        input.action === PaymentActions.SUCCESSFUL && !paymentData.data.length
+        !!input.data?.session_id &&
+        input.action === PaymentActions.SUCCESSFUL &&
+        !paymentData.data.length
       )
     }).then(() => {
       const payment = authorizePaymentSessionStep({
@@ -171,9 +184,16 @@ export const processPaymentWorkflow = createWorkflow(
       })
     })
 
-    when({ cartPaymentCollection, order }, ({ cartPaymentCollection, order }) => {
-      return !!cartPaymentCollection.data.length && !order
-    }).then(() => {
+    when(
+      { input, cartPaymentCollection, order },
+      ({ input, cartPaymentCollection, order }) => {
+        return (
+          !!input.data?.session_id &&
+          !!cartPaymentCollection.data.length &&
+          !order
+        )
+      }
+    ).then(() => {
       completeCartAfterPaymentStep({
         cart_id: cartPaymentCollection.data[0].cart_id,
       }).config({

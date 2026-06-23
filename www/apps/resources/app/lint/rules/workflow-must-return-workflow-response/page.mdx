@@ -1,0 +1,52 @@
+---
+sidebar_label: "workflow-must-return-workflow-response"
+---
+
+export const metadata = {
+  title: `workflow-must-return-workflow-response - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires a `createWorkflow` constructor that returns a value to wrap it in `new WorkflowResponse(...)`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports a workflow constructor that returns a value not wrapped in `new WorkflowResponse(...)`.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  return { ok: true }
+})
+```
+
+Instead, wrap the return value in `new WorkflowResponse(...)`:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  return new WorkflowResponse({ ok: true })
+})
+```
+
+## Why it's Important
+
+A workflow's return value must be a `WorkflowResponse` so the workflow engine can resolve it correctly. Returning a plain value breaks this contract.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

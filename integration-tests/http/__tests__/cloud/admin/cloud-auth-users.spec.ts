@@ -59,6 +59,7 @@ medusaIntegrationTestRunner({
             actor_id: "",
             actor_type: "user",
             auth_identity_id: authIdentity.id,
+            auth_provider: "cloud",
             user_metadata: {
               email: "john@doe.com",
               given_name: "John",
@@ -136,6 +137,7 @@ medusaIntegrationTestRunner({
             actor_id: "",
             actor_type: "user",
             auth_identity_id: authIdentity.id,
+            auth_provider: "cloud",
             user_metadata: {
               email: existingUser.email,
               given_name: "John",
@@ -213,11 +215,13 @@ medusaIntegrationTestRunner({
         )
 
         // Call the endpoint to create the user
-        const createUserResponse = await api.post(
-          "/cloud/auth/users",
-          {},
-          { headers: { authorization: `Bearer ${token}` } }
-        ).catch((error) => error.response)
+        const createUserResponse = await api
+          .post(
+            "/cloud/auth/users",
+            {},
+            { headers: { authorization: `Bearer ${token}` } }
+          )
+          .catch((error) => error.response)
         expect(createUserResponse.status).toEqual(401)
       })
     })

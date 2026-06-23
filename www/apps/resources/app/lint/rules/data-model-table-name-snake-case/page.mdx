@@ -1,0 +1,74 @@
+---
+sidebar_label: "data-model-table-name-snake-case"
+---
+
+export const metadata = {
+  title: `data-model-table-name-snake-case - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that the name passed to `model.define(name, ...)` is snake_case.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets data model files in your project's `src/modules` directory. It reports the name passed to `model.define(name, ...)` when it isn't snake_case (lowercase letters, digits, and underscores, starting with a letter).
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Post = model.define("blogPost", {
+  id: model.id().primaryKey(),
+})
+```
+
+Instead, use a snake_case name:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Post = model.define("blog_post", {
+  id: model.id().primaryKey(),
+})
+```
+
+## Why it's Important
+
+The data model name is used to derive the database table name. A consistent snake_case name keeps table names predictable and aligned with Medusa's database conventions.
+
+Learn more in the [Data Models documentation](!docs!/learn/fundamentals/data-models).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/data-model-table-name-snake-case": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/data-model-table-name-snake-case
+export const Post = model.define("blogPost", {})
+```

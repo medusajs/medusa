@@ -84,7 +84,7 @@ export class DefaultCacheStrategy implements ICachingStrategy {
           }
         }
 
-        void this.#cacheModule.clear({
+        await this.#cacheModule.clear({
           tags,
           options: { autoInvalidate: true },
         })

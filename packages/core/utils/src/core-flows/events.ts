@@ -374,8 +374,8 @@ export const AuthWorkflowEvents = {
    */
   PASSWORD_RESET: "auth.password_reset",
   /**
-   * Emitted when a verification token is generated. You can listen to
-   * this event and decide how to deliver the token to the user or customer.
+   * Emitted when a verification code is generated. You can listen to
+   * this event and decide how to deliver the code to the user or customer.
    *
    * @since 2.15.5
    *
@@ -387,8 +387,8 @@ export const AuthWorkflowEvents = {
    *   provider, // The auth provider that requested verification.
    *   auth_identity_id, // The ID of the auth identity being verified.
    *   provider_identity_id, // The ID of the provider identity being verified.
-   *   token, // The generated token.
-   *   expires_at, // The token expiry date.
+   *   code, // The generated verification code.
+   *   expires_at, // The code expiry date.
    *   metadata, // Optional custom metadata passed from the request.
    * }
    * ```

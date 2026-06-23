@@ -75,12 +75,8 @@ export default class RbacModuleService
 
   __hooks = {
     onApplicationStart: async () => {
-      this.onApplicationStart()
+      await this.syncRegisteredPolicies()
     },
-  }
-
-  async onApplicationStart(): Promise<void> {
-    await this.syncRegisteredPolicies()
   }
 
   @InjectTransactionManager()

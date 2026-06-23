@@ -64,5 +64,39 @@ npx medusa develop
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--lint` / `--no-lint` (v2.16.0+)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Run the Medusa linter before starting the dev server. Pass `--no-lint` to skip linting. When lint errors are found, the dev server does not start. Linting is skipped automatically when no `eslint.config.js` is found in the project root.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `true`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--fix` (v2.16.0+)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Auto-fix lint issues where possible before starting the dev server.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
