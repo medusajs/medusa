@@ -637,6 +637,17 @@ export interface AdminUpdateProductOption {
   metadata?: Record<string, unknown> | null
 }
 
+export interface AdminUpdateProductOptionValue {
+  /**
+   * The option value's value.
+   */
+  value?: string
+  /**
+   * Key-value pairs of custom data.
+   */
+  metadata?: Record<string, unknown> | null
+}
+
 /**
  * @privateRemarks
  * These types don't match the validators, however, they're used by the admin

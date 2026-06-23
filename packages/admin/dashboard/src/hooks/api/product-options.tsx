@@ -16,6 +16,33 @@ export const productOptionsQueryKeys = queryKeysFactory(
   PRODUCT_OPTIONS_QUERY_KEY
 )
 
+const PRODUCT_OPTION_VALUES_QUERY_KEY = "product_option_values" as const
+export const productOptionValuesQueryKeys = queryKeysFactory(
+  PRODUCT_OPTION_VALUES_QUERY_KEY
+)
+
+// The option and option-value caches are interdependent: the values table reads
+// the value list endpoint (`product_option_values`), while the option detail and
+// edit views embed the option's `values` (`product_options`). A change made
+// through either entry point must refresh BOTH namespaces, otherwise the other
+// view keeps rendering a stale value list.
+const invalidateProductOptionQueries = (optionId?: string) => {
+  queryClient.invalidateQueries({
+    queryKey: productOptionsQueryKeys.lists(),
+  })
+  queryClient.invalidateQueries({
+    queryKey: optionId
+      ? productOptionsQueryKeys.detail(optionId)
+      : productOptionsQueryKeys.details(),
+  })
+  queryClient.invalidateQueries({
+    queryKey: productOptionValuesQueryKeys.lists(),
+  })
+  queryClient.invalidateQueries({
+    queryKey: productOptionValuesQueryKeys.details(),
+  })
+}
+
 export const useProductOption = (
   id: string,
   query?: HttpTypes.AdminProductOptionParams,
@@ -90,12 +117,7 @@ export const useUpdateProductOption = (
   return useMutation({
     mutationFn: (payload) => sdk.admin.productOption.update(id, payload),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
-        queryKey: productOptionsQueryKeys.lists(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: productOptionsQueryKeys.detail(id),
-      })
+      invalidateProductOptionQueries(id)
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -114,12 +136,7 @@ export const useDeleteProductOption = (
   return useMutation({
     mutationFn: () => sdk.admin.productOption.delete(id),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
-        queryKey: productOptionsQueryKeys.lists(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: productOptionsQueryKeys.detail(id),
-      })
+      invalidateProductOptionQueries(id)
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -137,12 +154,114 @@ export const useDeleteProductOptionLazy = (
   return useMutation({
     mutationFn: (id: string) => sdk.admin.productOption.delete(id),
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries({
-        queryKey: productOptionsQueryKeys.lists(),
-      })
-      queryClient.invalidateQueries({
-        queryKey: productOptionsQueryKeys.details(),
-      })
+      invalidateProductOptionQueries()
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useProductOptionValues = (
+  optionId: string,
+  query?: HttpTypes.AdminProductOptionValueListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminProductOptionValueListResponse,
+      FetchError,
+      HttpTypes.AdminProductOptionValueListResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryKey: productOptionValuesQueryKeys.list({ optionId, ...query }),
+    queryFn: () => sdk.admin.productOption.listValues(optionId, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useProductOptionValue = (
+  optionId: string,
+  valueId: string,
+  query?: HttpTypes.SelectParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminProductOptionValueResponse,
+      FetchError,
+      HttpTypes.AdminProductOptionValueResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryKey: productOptionValuesQueryKeys.detail(valueId, query),
+    queryFn: () =>
+      sdk.admin.productOption.retrieveValue(optionId, valueId, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useUpdateProductOptionValue = (
+  optionId: string,
+  valueId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductOptionValueResponse,
+    FetchError,
+    HttpTypes.AdminUpdateProductOptionValue
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      sdk.admin.productOption.updateValue(optionId, valueId, payload),
+    onSuccess: (data, variables, context) => {
+      invalidateProductOptionQueries(optionId)
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteProductOptionValue = (
+  optionId: string,
+  valueId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductOptionValueDeleteResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () => sdk.admin.productOption.deleteValue(optionId, valueId),
+    onSuccess: (data, variables, context) => {
+      invalidateProductOptionQueries(optionId)
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteProductOptionValueLazy = (
+  optionId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductOptionValueDeleteResponse,
+    FetchError,
+    string
+  >
+) => {
+  return useMutation({
+    mutationFn: (valueId: string) =>
+      sdk.admin.productOption.deleteValue(optionId, valueId),
+    onSuccess: (data, variables, context) => {
+      invalidateProductOptionQueries(optionId)
 
       options?.onSuccess?.(data, variables, context)
     },
