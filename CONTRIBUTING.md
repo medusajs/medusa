@@ -124,99 +124,152 @@ The code snippets in this section assume that your forked Medusa project and the
 }
 ```
 
-If you're using `pnpm`, use `pnpm.overrides` instead of `resolutions`:
+If you're using `pnpm`:
 
 ```
-// .npmrc
-shamefully-hoist=true
-node-linker=hoisted
+// pnpm-workspace.yaml
+packages:
+  - "."
+
+nodeLinker: isolated
+shamefullyHoist: true
+
+overrides:
+  "@medusajs/test-utils": "link:../medusa/packages/medusa-test-utils"
+  "@medusajs/api-key": "link:../medusa/packages/modules/api-key"
+  "@medusajs/auth": "link:../medusa/packages/modules/auth"
+  "@medusajs/cache-inmemory": "link:../medusa/packages/modules/cache-inmemory"
+  "@medusajs/cache-redis": "link:../medusa/packages/modules/cache-redis"
+  "@medusajs/cart": "link:../medusa/packages/modules/cart"
+  "@medusajs/locking": "link:../medusa/packages/modules/locking"
+  "@medusajs/currency": "link:../medusa/packages/modules/currency"
+  "@medusajs/customer": "link:../medusa/packages/modules/customer"
+  "@medusajs/event-bus-local": "link:../medusa/packages/modules/event-bus-local"
+  "@medusajs/file": "link:../medusa/packages/modules/file"
+  "@medusajs/file-local": "link:../medusa/packages/modules/providers/file-local"
+  "@medusajs/fulfillment": "link:../medusa/packages/modules/fulfillment"
+  "@medusajs/fulfillment-manual": "link:../medusa/packages/modules/providers/fulfillment-manual"
+  "@medusajs/index": "link:../medusa/packages/modules/index"
+  "@medusajs/inventory": "link:../medusa/packages/modules/inventory"
+  "@medusajs/medusa": "link:../medusa/packages/medusa"
+  "@medusajs/notification": "link:../medusa/packages/modules/notification"
+  "@medusajs/notification-local": "link:../medusa/packages/modules/providers/notification-local"
+  "@medusajs/order": "link:../medusa/packages/modules/order"
+  "@medusajs/payment": "link:../medusa/packages/modules/payment"
+  "@medusajs/pricing": "link:../medusa/packages/modules/pricing"
+  "@medusajs/product": "link:../medusa/packages/modules/product"
+  "@medusajs/promotion": "link:../medusa/packages/modules/promotion"
+  "@medusajs/rbac": "link:../medusa/packages/modules/rbac"
+  "@medusajs/region": "link:../medusa/packages/modules/region"
+  "@medusajs/sales-channel": "link:../medusa/packages/modules/sales-channel"
+  "@medusajs/stock-location": "link:../medusa/packages/modules/stock-location"
+  "@medusajs/store": "link:../medusa/packages/modules/store"
+  "@medusajs/tax": "link:../medusa/packages/modules/tax"
+  "@medusajs/user": "link:../medusa/packages/modules/user"
+  "@medusajs/workflow-engine-inmemory": "link:../medusa/packages/modules/workflow-engine-inmemory"
+  "@medusajs/link-modules": "link:../medusa/packages/modules/link-modules"
+  "@medusajs/admin-bundler": "link:../medusa/packages/admin/admin-bundler"
+  "@medusajs/admin-sdk": "link:../medusa/packages/admin/admin-sdk"
+  "@medusajs/admin-shared": "link:../medusa/packages/admin/admin-shared"
+  "@medusajs/dashboard": "link:../medusa/packages/admin/dashboard"
+  "@medusajs/admin-vite-plugin": "link:../medusa/packages/admin/admin-vite-plugin"
+  "@medusajs/ui": "link:../medusa/packages/design-system/ui"
+  "@medusajs/icons": "link:../medusa/packages/design-system/icons"
+  "@medusajs/toolbox": "link:../medusa/packages/design-system/toolbox"
+  "@medusajs/ui-preset": "link:../medusa/packages/design-system/ui-preset"
+  "@medusajs/utils": "link:../medusa/packages/core/utils"
+  "@medusajs/types": "link:../medusa/packages/core/types"
+  "@medusajs/core-flows": "link:../medusa/packages/core/core-flows"
+  "@medusajs/orchestration": "link:../medusa/packages/core/orchestration"
+  "@medusajs/cli": "link:../medusa/packages/cli/medusa-cli"
+  "@medusajs/modules-sdk": "link:../medusa/packages/core/modules-sdk"
+  "@medusajs/workflows-sdk": "link:../medusa/packages/core/workflows-sdk"
+  "@medusajs/js-sdk": "link:../medusa/packages/core/js-sdk"
+  "@medusajs/framework": "link:../medusa/packages/core/framework"
+  "@medusajs/auth-emailpass": "link:../medusa/packages/modules/providers/auth-emailpass"
+  "@medusajs/locking-redis": "link:../medusa/packages/modules/providers/locking-redis"
+  "@medusajs/locking-postgres": "link:../medusa/packages/modules/providers/locking-postgres"
+  "@medusajs/telemetry": "link:../medusa/packages/medusa-telemetry"
+  "@medusajs/settings": "link:../medusa/packages/modules/settings"
+  "@medusajs/draft-order": "link:../medusa/packages/plugins/draft-order"
+  "@medusajs/loyalty-plugin": "link:../medusa/packages/plugins/loyalty"
+  "@medusajs/deps": "link:../medusa/packages/deps"
+  "@medusajs/caching-redis": "link:../medusa/packages/modules/providers/caching-redis"
+  "@medusajs/caching": "link:../medusa/packages/modules/caching"
+  "@medusajs/translation": "link:../medusa/packages/modules/translation"
 ```
 
 ```json
-// test project package.json (for pnpm)
+// your project package.json (for pnpm)
 "dependencies": {
     // more deps
-    "@medusajs/admin-sdk": "link:../medusa/packages/admin/admin-sdk",
-    "@medusajs/cli": "link:../medusa/packages/cli/medusa-cli",
-    "@medusajs/framework": "link:../medusa/packages/core/framework",
-    "@medusajs/medusa": "link:../medusa/packages/medusa",
+    "@medusajs/admin-sdk": "*",
+    "@medusajs/cli": "*",
+    "@medusajs/framework": "*",
+    "@medusajs/medusa": "*",
+    "@medusajs/loyalty-plugin": "*",
+    "@medusajs/admin-bundler": "*",
+    "@medusajs/admin-shared": "*",
+    "@medusajs/admin-vite-plugin": "*",
+    "@medusajs/api-key": "*",
+    "@medusajs/auth": "*",
+    "@medusajs/auth-emailpass": "*",
+    "@medusajs/cache-inmemory": "*",
+    "@medusajs/cache-redis": "*",
+    "@medusajs/caching": "*",
+    "@medusajs/caching-redis": "*",
+    "@medusajs/cart": "*",
+    "@medusajs/core-flows": "*",
+    "@medusajs/currency": "*",
+    "@medusajs/customer": "*",
+    "@medusajs/dashboard": "*",
+    "@medusajs/deps": "*",
+    "@medusajs/draft-order": "*",
+    "@medusajs/event-bus-local": "*",
+    "@medusajs/file": "*",
+    "@medusajs/file-local": "*",
+    "@medusajs/fulfillment": "*",
+    "@medusajs/fulfillment-manual": "*",
+    "@medusajs/icons": "*",
+    "@medusajs/index": "*",
+    "@medusajs/inventory": "*",
+    "@medusajs/js-sdk": "*",
+    "@medusajs/link-modules": "*",
+    "@medusajs/locking": "*",
+    "@medusajs/locking-postgres": "*",
+    "@medusajs/locking-redis": "*",
+    "@medusajs/modules-sdk": "*",
+    "@medusajs/notification": "*",
+    "@medusajs/notification-local": "*",
+    "@medusajs/orchestration": "*",
+    "@medusajs/order": "*",
+    "@medusajs/payment": "*",
+    "@medusajs/pricing": "*",
+    "@medusajs/product": "*",
+    "@medusajs/promotion": "*",
+    "@medusajs/rbac": "*",
+    "@medusajs/region": "*",
+    "@medusajs/sales-channel": "*",
+    "@medusajs/settings": "*",
+    "@medusajs/stock-location": "*",
+    "@medusajs/store": "*",
+    "@medusajs/tax": "*",
+    "@medusajs/telemetry": "*",
+    "@medusajs/test-utils": "*",
+    "@medusajs/toolbox": "*",
+    "@medusajs/translation": "*",
+    "@medusajs/types": "*",
+    "@medusajs/ui": "*",
+    "@medusajs/ui-preset": "*",
+    "@medusajs/user": "*",
+    "@medusajs/utils": "*",
+    "@medusajs/workflow-engine-inmemory": "*",
+    "@medusajs/workflows-sdk": "*"
 },
 "devDependencies": {
     // more dev deps
-    "@medusajs/admin-shared": "link:../medusa/packages/admin/admin-shared",
-    "@medusajs/dashboard": "link:../medusa/packages/admin/dashboard",
-    "@medusajs/draft-order": "link:../medusa/packages/plugins/draft-order",
-    "@medusajs/icons": "link:../medusa/packages/design-system/icons",
-    "@medusajs/test-utils": "link:../medusa/packages/medusa-test-utils",
-    "@medusajs/eslint-plugin": "link:../medusa/packages/eslint-plugin",
-    "@medusajs/types": "link:../medusa/packages/core/types",
-    "@medusajs/ui": "link:../medusa/packages/design-system/ui",
-},
-"pnpm": {
-  "overrides": {
-    // more overrides
-      "@medusajs/test-utils": "link:../medusa/packages/medusa-test-utils",
-      "@medusajs/api-key": "link:../medusa/packages/modules/api-key",
-      "@medusajs/auth": "link:../medusa/packages/modules/auth",
-      "@medusajs/cache-inmemory": "link:../medusa/packages/modules/cache-inmemory",
-      "@medusajs/cache-redis": "link:../medusa/packages/modules/cache-redis",
-      "@medusajs/cart": "link:../medusa/packages/modules/cart",
-      "@medusajs/locking": "link:../medusa/packages/modules/locking",
-      "@medusajs/currency": "link:../medusa/packages/modules/currency",
-      "@medusajs/customer": "link:../medusa/packages/modules/customer",
-      "@medusajs/event-bus-local": "link:../medusa/packages/modules/event-bus-local",
-      "@medusajs/file": "link:../medusa/packages/modules/file",
-      "@medusajs/file-local": "link:../medusa/packages/modules/providers/file-local",
-      "@medusajs/fulfillment": "link:../medusa/packages/modules/fulfillment",
-      "@medusajs/fulfillment-manual": "link:../medusa/packages/modules/providers/fulfillment-manual",
-      "@medusajs/index": "link:../medusa/packages/modules/index",
-      "@medusajs/inventory": "link:../medusa/packages/modules/inventory",
-      "@medusajs/medusa": "link:../medusa/packages/medusa",
-      "@medusajs/notification": "link:../medusa/packages/modules/notification",
-      "@medusajs/notification-local": "link:../medusa/packages/modules/providers/notification-local",
-      "@medusajs/order": "link:../medusa/packages/modules/order",
-      "@medusajs/payment": "link:../medusa/packages/modules/payment",
-      "@medusajs/pricing": "link:../medusa/packages/modules/pricing",
-      "@medusajs/product": "link:../medusa/packages/modules/product",
-      "@medusajs/promotion": "link:../medusa/packages/modules/promotion",
-      "@medusajs/rbac": "link:../medusa/packages/modules/rbac",
-      "@medusajs/region": "link:../medusa/packages/modules/region",
-      "@medusajs/sales-channel": "link:../medusa/packages/modules/sales-channel",
-      "@medusajs/stock-location": "link:../medusa/packages/modules/stock-location",
-      "@medusajs/store": "link:../medusa/packages/modules/store",
-      "@medusajs/tax": "link:../medusa/packages/modules/tax",
-      "@medusajs/user": "link:../medusa/packages/modules/user",
-      "@medusajs/workflow-engine-inmemory": "link:../medusa/packages/modules/workflow-engine-inmemory",
-      "@medusajs/link-modules": "link:../medusa/packages/modules/link-modules",
-      "@medusajs/admin-bundler": "link:../medusa/packages/admin/admin-bundler",
-      "@medusajs/admin-sdk": "link:../medusa/packages/admin/admin-sdk",
-      "@medusajs/admin-shared": "link:../medusa/packages/admin/admin-shared",
-      "@medusajs/dashboard": "link:../medusa/packages/admin/dashboard",
-      "@medusajs/admin-vite-plugin": "link:../medusa/packages/admin/admin-vite-plugin",
-      "@medusajs/ui": "link:../medusa/packages/design-system/ui",
-      "@medusajs/icons": "link:../medusa/packages/design-system/icons",
-      "@medusajs/toolbox": "link:../medusa/packages/design-system/toolbox",
-      "@medusajs/ui-preset": "link:../medusa/packages/design-system/ui-preset",
-      "@medusajs/utils": "link:../medusa/packages/core/utils",
-      "@medusajs/types": "link:../medusa/packages/core/types",
-      "@medusajs/core-flows": "link:../medusa/packages/core/core-flows",
-      "@medusajs/orchestration": "link:../medusa/packages/core/orchestration",
-      "@medusajs/cli": "link:../medusa/packages/cli/medusa-cli",
-      "@medusajs/modules-sdk": "link:../medusa/packages/core/modules-sdk",
-      "@medusajs/workflows-sdk": "link:../medusa/packages/core/workflows-sdk",
-      "@medusajs/js-sdk": "link:../medusa/packages/core/js-sdk",
-      "@medusajs/framework": "link:../medusa/packages/core/framework",
-      "@medusajs/auth-emailpass": "link:../medusa/packages/modules/providers/auth-emailpass",
-      "@medusajs/locking-redis": "link:../medusa/packages/modules/providers/locking-redis",
-      "@medusajs/locking-postgres": "link:../medusa/packages/modules/providers/locking-postgres",
-      "@medusajs/telemetry": "link:../medusa/packages/medusa-telemetry",
-      "@medusajs/settings": "link:../medusa/packages/modules/settings",
-      "@medusajs/draft-order": "link:../medusa/packages/plugins/draft-order",
-      "@medusajs/deps": "link:../medusa/packages/deps",
-      "@medusajs/caching-redis": "link:../medusa/packages/modules/providers/caching-redis",
-      "@medusajs/caching": "link:../medusa/packages/modules/caching",
-      "@medusajs/translation": "link:../medusa/packages/modules/translation"
-  }
+    "@medusajs/test-utils": "*",
+    "@medusajs/eslint-plugin": "*"
 }
 ```
 
