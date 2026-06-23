@@ -1,10 +1,16 @@
-const ORDER_INJECTION_ZONES = [
+const LEGACY_ORDER_INJECTION_ZONES = [
   "order.details.before",
   "order.details.after",
   "order.details.side.before",
   "order.details.side.after",
   "order.list.before",
   "order.list.after",
+] as const
+
+const ORDER_INJECTION_ZONES = [
+  "order.details",
+  "order.details.side",
+  "order.list",
 ] as const
 
 const CUSTOMER_INJECTION_ZONES = [
@@ -23,13 +29,19 @@ const CUSTOMER_GROUP_INJECTION_ZONES = [
   "customer_group.list.after",
 ] as const
 
-const PRODUCT_INJECTION_ZONES = [
+const LEGACY_PRODUCT_INJECTION_ZONES = [
   "product.details.before",
   "product.details.after",
   "product.list.before",
   "product.list.after",
   "product.details.side.before",
   "product.details.side.after",
+] as const
+
+const PRODUCT_INJECTION_ZONES = [
+  "product.details",
+  "product.list",
+  "product.details.side",
 ] as const
 
 const PRODUCT_VARIANT_INJECTION_ZONES = [
@@ -260,9 +272,11 @@ const GIFT_CARD_PRODUCT_INJECTION_ZONES = [
  * in the admin panel where a plugin can inject custom widgets.
  */
 export const INJECTION_ZONES = [
+  ...LEGACY_ORDER_INJECTION_ZONES,
   ...ORDER_INJECTION_ZONES,
   ...CUSTOMER_INJECTION_ZONES,
   ...CUSTOMER_GROUP_INJECTION_ZONES,
+  ...LEGACY_PRODUCT_INJECTION_ZONES,
   ...PRODUCT_INJECTION_ZONES,
   ...PRODUCT_VARIANT_INJECTION_ZONES,
   ...PRODUCT_COLLECTION_INJECTION_ZONES,
