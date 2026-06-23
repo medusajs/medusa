@@ -209,4 +209,130 @@ export class ProductOption {
       }
     )
   }
+
+  /**
+   * This method retrieves a paginated list of a product option's values. It sends a
+   * request to the List Product Option Values Admin API route.
+   *
+   * @param optionId - The product option's ID.
+   * @param query - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The paginated list of product option values.
+   *
+   * @example
+   * sdk.admin.productOption.listValues("opt_123", { q: "red" })
+   * .then(({ product_option_values, count, limit, offset }) => {
+   *   console.log(product_option_values)
+   * })
+   */
+  async listValues(
+    optionId: string,
+    query?: HttpTypes.AdminProductOptionValueListParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminProductOptionValueListResponse>(
+      `/admin/product-options/${optionId}/values`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method retrieves a product option value by its ID. It sends a request to the
+   * Get Product Option Value Admin API route.
+   *
+   * @param optionId - The product option's ID.
+   * @param valueId - The product option value's ID.
+   * @param query - Configure the fields to retrieve in the option value.
+   * @param headers - Headers to pass in the request
+   * @returns The product option value's details.
+   *
+   * @example
+   * sdk.admin.productOption.retrieveValue("opt_123", "optval_123")
+   * .then(({ product_option_value }) => {
+   *   console.log(product_option_value)
+   * })
+   */
+  async retrieveValue(
+    optionId: string,
+    valueId: string,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminProductOptionValueResponse>(
+      `/admin/product-options/${optionId}/values/${valueId}`,
+      {
+        query,
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method updates a product option value. It sends a request to the
+   * Update Product Option Value Admin API route.
+   *
+   * @param optionId - The product option's ID.
+   * @param valueId - The product option value's ID.
+   * @param body - The data to update in the option value.
+   * @param query - Configure the fields to retrieve in the option value.
+   * @param headers - Headers to pass in the request
+   * @returns The product option value's details.
+   *
+   * @example
+   * sdk.admin.productOption.updateValue("opt_123", "optval_123", {
+   *   metadata: { is_default: true }
+   * })
+   * .then(({ product_option_value }) => {
+   *   console.log(product_option_value)
+   * })
+   */
+  async updateValue(
+    optionId: string,
+    valueId: string,
+    body: HttpTypes.AdminUpdateProductOptionValue,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminProductOptionValueResponse>(
+      `/admin/product-options/${optionId}/values/${valueId}`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  /**
+   * This method deletes a product option value. It sends a request to the
+   * Delete Product Option Value Admin API route.
+   *
+   * @param optionId - The product option's ID.
+   * @param valueId - The product option value's ID.
+   * @param headers - Headers to pass in the request
+   * @returns The deletion's details.
+   *
+   * @example
+   * sdk.admin.productOption.deleteValue("opt_123", "optval_123")
+   * .then(({ deleted }) => {
+   *   console.log(deleted)
+   * })
+   */
+  async deleteValue(
+    optionId: string,
+    valueId: string,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminProductOptionValueDeleteResponse>(
+      `/admin/product-options/${optionId}/values/${valueId}`,
+      {
+        method: "DELETE",
+        headers,
+      }
+    )
+  }
 }

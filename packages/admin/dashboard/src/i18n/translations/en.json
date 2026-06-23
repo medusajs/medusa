@@ -873,7 +873,14 @@
     "domain": "Options",
     "subtitle": "Manage product options and their associated values.",
     "values": {
-      "header": "Values"
+      "header": "Values",
+      "list": {
+        "noRecords": "There are no values for this option."
+      },
+      "delete": {
+        "confirmation": "You are about to delete the option value \"{{value}}\". This action cannot be undone.",
+        "successToast": "Option value was successfully deleted."
+      }
     },
     "products": {
       "list": {

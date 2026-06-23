@@ -244,13 +244,14 @@ export function getRouteMap({
                 },
                 {
                   path: ":id",
+                  errorElement: <ErrorBoundary />,
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Breadcrumb, loader } = await import(
                       "../../routes/product-options/product-option-detail"
                     )
 
                     return {
-                      Component,
+                      Component: Outlet,
                       loader,
                       handle: {
                         breadcrumb: (match: UIMatch<any>) => (
@@ -261,18 +262,55 @@ export function getRouteMap({
                   },
                   children: [
                     {
-                      path: "edit",
+                      path: "",
                       lazy: () =>
                         import(
-                          "../../routes/product-options/product-option-edit"
+                          "../../routes/product-options/product-option-detail"
                         ),
+                      children: [
+                        {
+                          path: "edit",
+                          lazy: () =>
+                            import(
+                              "../../routes/product-options/product-option-edit"
+                            ),
+                        },
+                        {
+                          path: "metadata/edit",
+                          lazy: () =>
+                            import(
+                              "../../routes/product-options/product-option-metadata"
+                            ),
+                        },
+                      ],
                     },
                     {
-                      path: "metadata/edit",
-                      lazy: () =>
-                        import(
-                          "../../routes/product-options/product-option-metadata"
-                        ),
+                      path: "values/:value_id",
+                      lazy: async () => {
+                        const { Component, Breadcrumb, loader } = await import(
+                          "../../routes/product-options/product-option-value-detail"
+                        )
+
+                        return {
+                          Component,
+                          loader,
+                          handle: {
+                            breadcrumb: (
+                              // eslint-disable-next-line max-len
+                              match: UIMatch<HttpTypes.AdminProductOptionValueResponse>
+                            ) => <Breadcrumb {...match} />,
+                          },
+                        }
+                      },
+                      children: [
+                        {
+                          path: "metadata/edit",
+                          lazy: () =>
+                            import(
+                              "../../routes/product-options/product-option-value-metadata"
+                            ),
+                        },
+                      ],
                     },
                   ],
                 },

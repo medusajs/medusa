@@ -10,7 +10,10 @@ import {
   AdminCreateProductOption,
   AdminGetProductOptionParams,
   AdminGetProductOptionsParams,
+  AdminGetProductOptionValueParams,
+  AdminGetProductOptionValuesParams,
   AdminUpdateProductOption,
+  AdminUpdateProductOptionValue,
 } from "./validators"
 
 export const adminProductOptionRoutesMiddlewares: MiddlewareRoute[] = [
@@ -84,6 +87,78 @@ export const adminProductOptionRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.product_option,
+        operation: PolicyOperation.delete,
+      },
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/product-options/:id/values",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetProductOptionValuesParams,
+        QueryConfig.listProductOptionValuesTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.product_option,
+        operation: PolicyOperation.read,
+      },
+      {
+        resource: Entities.product_option_value,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/product-options/:id/values/:value_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetProductOptionValueParams,
+        QueryConfig.retrieveProductOptionValuesTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.product_option_value,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/product-options/:id/values/:value_id",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateProductOptionValue),
+      validateAndTransformQuery(
+        AdminGetProductOptionValueParams,
+        QueryConfig.retrieveProductOptionValuesTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.product_option,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.product_option_value,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/product-options/:id/values/:value_id",
+    middlewares: [],
+    policies: [
+      {
+        resource: Entities.product_option,
+        operation: PolicyOperation.update,
+      },
+      {
+        resource: Entities.product_option_value,
         operation: PolicyOperation.delete,
       },
     ],

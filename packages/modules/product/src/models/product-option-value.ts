@@ -7,7 +7,7 @@ import ProductVariant from "./product-variant"
 const ProductOptionValue = model
   .define("ProductOptionValue", {
     id: model.id({ prefix: "optval" }).primaryKey(),
-    value: model.text().translatable(),
+    value: model.text().searchable().translatable(),
     /**
      * @since 2.16.0
      */

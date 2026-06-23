@@ -64,6 +64,11 @@ const PRODUCT_OPTION_INJECTION_ZONES = [
   "product_option.list.after",
 ] as const
 
+const PRODUCT_OPTION_VALUE_INJECTION_ZONES = [
+  "product_option_value.details.before",
+  "product_option_value.details.after",
+] as const
+
 const SHIPPING_OPTION_TYPE_INJECTION_ZONES = [
   "shipping_option_type.details.before",
   "shipping_option_type.details.after",
@@ -278,6 +283,7 @@ export const INJECTION_ZONES = [
   ...PRODUCT_CATEGORY_INJECTION_ZONES,
   ...PRODUCT_TYPE_INJECTION_ZONES,
   ...PRODUCT_OPTION_INJECTION_ZONES,
+  ...PRODUCT_OPTION_VALUE_INJECTION_ZONES,
   ...SHIPPING_OPTION_TYPE_INJECTION_ZONES,
   ...PRODUCT_TAG_INJECTION_ZONES,
   ...PRICE_LIST_INJECTION_ZONES,
