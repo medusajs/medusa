@@ -468,7 +468,7 @@ export class DashboardApp {
   /**
    * Returns widgets for a given base zone grouped by layout section.
    * The legacy `.before`/`.after` ordering suffixes are stripped and
-   * ignored. Widgets are returned inregistration order and will be 
+   * ignored. Widgets are returned inregistration order and will be
    * assigned a default order of 0 in the LayoutComposer.
    */
   private getWidgetsForSections(
@@ -478,7 +478,7 @@ export class DashboardApp {
     const result: SectionWidgetMap = {}
 
     for (const [zone, extensions] of this.widgets.entries()) {
-      if (!zone.startsWith(route + ".")) {
+      if (!zone.startsWith(route)) {
         continue
       }
 
