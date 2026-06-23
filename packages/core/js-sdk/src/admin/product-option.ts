@@ -1,5 +1,5 @@
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 import { HttpTypes, SelectParams } from "@medusajs/types"
 
 export class ProductOption {
@@ -116,10 +116,10 @@ export class ProductOption {
    *   console.log(product_options)
    * })
    * ```
-   * 
+   *
    * Using the `fields` query parameter, you can specify the fields and relations to retrieve
    * in each collection:
-   * 
+   *
    * ```ts
    * sdk.admin.productOption.list({
    *   fields: "id,title"
@@ -128,7 +128,7 @@ export class ProductOption {
    *   console.log(product_options)
    * })
    * ```
-   * 
+   *
    * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async list(
@@ -162,9 +162,9 @@ export class ProductOption {
    *   console.log(product_option)
    * })
    * ```
-   * 
+   *
    * To specify the fields and relations to retrieve:
-   * 
+   *
    * ```ts
    * sdk.admin.productOption.retrieve("opt_123", {
    *   fields: "id,title"
@@ -173,7 +173,7 @@ export class ProductOption {
    *   console.log(product_option)
    * })
    * ```
-   * 
+   *
    * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
