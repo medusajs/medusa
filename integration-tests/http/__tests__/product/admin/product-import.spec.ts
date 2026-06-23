@@ -589,14 +589,28 @@ medusaIntegrationTestRunner({
       })
 
       describe("with the new product option columns", () => {
+        // Option resolution on import is strictly by Id: a row with a
+        // "Variant Option N Id" links the existing option, a row without one
+        // creates a new option. There is no find-or-create by title. The
+        // exporter emits the Id column (normalize-for-export.ts), so an
+        // export -> import round-trip re-links existing options instead of
+        // duplicating them.
+        //
+        // Global (non-exclusive) option titles are unique (partial unique
+        // index on product_option). Sharing one global option across products
+        // is therefore done via the Id column, NOT by repeating its title with
+        // Is Exclusive = false on multiple rows (which the constraint rejects).
+        //
         // Builds a CSV by reusing the products-comma.csv fixture and injecting
         // the new Variant Option N Id / Is Exclusive columns.
         const buildCsvWithOptionMeta = async ({
           option1Id,
           option2IsExclusive,
+          onlyHandle,
         }: {
           option1Id?: string
           option2IsExclusive?: string
+          onlyHandle?: string
         }) => {
           let fileContent = await fs.readFile(
             path.join(__dirname, "__fixtures__", "products-comma.csv"),
@@ -621,7 +635,12 @@ medusaIntegrationTestRunner({
             shippingProfile.id
           )
 
-          const rows = csv2json(prepareCSVForImport(fileContent))
+          let rows = csv2json(prepareCSVForImport(fileContent))
+          if (onlyHandle !== undefined) {
+            rows = rows.filter(
+              (row: any) => row["Product Handle"] === onlyHandle
+            )
+          }
           rows.forEach((row: any) => {
             if (option1Id !== undefined) {
               row["Variant Option 1 Id"] = option1Id
@@ -694,12 +713,73 @@ medusaIntegrationTestRunner({
           expect(sizeOptions[0].id).toEqual(globalSize.id)
         })
 
-        it("creates a non-exclusive (global) option per product when Is Exclusive is false and no Id is provided", async () => {
+        it("creates a global (non-exclusive) option when Is Exclusive is false and no Id is provided", async () => {
           const subscriberExecution = TestEventUtils.waitSubscribersExecution(
             `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
             eventBus
           )
 
+          // Import a single new product whose "color" option has Is Exclusive =
+          // false and no Id. With no Id the option is created.
+          const csv = await buildCsvWithOptionMeta({
+            option2IsExclusive: "false",
+            onlyHandle: "proposed-product",
+          })
+
+          await importAndConfirm(csv)
+          await subscriberExecution
+
+          const products = (
+            await api.get(
+              "/admin/products?fields=handle,*options",
+              adminHeaders
+            )
+          ).data.products
+          const product = products.find(
+            (p: any) => p.handle === "proposed-product"
+          )
+
+          const colorOption = product.options.find(
+            (o: any) => o.title === "color"
+          )
+          expect(colorOption).toBeTruthy()
+          expect(colorOption.is_exclusive).toBe(false)
+
+          // Exactly one global "color" option exists — the one just created.
+          const colorOptions = (
+            await api.get(
+              "/admin/product-options?title=color&is_exclusive=false",
+              adminHeaders
+            )
+          ).data.product_options
+          expect(colorOptions).toHaveLength(1)
+          expect(colorOptions[0].id).toEqual(colorOption.id)
+        })
+
+        it("rejects creating a second global option with an existing title (unique title constraint)", async () => {
+          const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+            `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
+            eventBus
+          )
+
+          // A global "color" option already exists.
+          const globalColor = (
+            await api.post(
+              "/admin/product-options",
+              {
+                title: "color",
+                values: ["red", "blue"],
+                is_exclusive: false,
+              },
+              adminHeaders
+            )
+          ).data.product_option
+
+          // The import tries to create its OWN global "color" option (Is
+          // Exclusive = false, no Id). Because global option titles are unique,
+          // the import cannot create a second "color" global — it must instead
+          // reference the existing one via the Id column. The import therefore
+          // fails (failure also emits a notification).
           const csv = await buildCsvWithOptionMeta({
             option2IsExclusive: "false",
           })
@@ -707,33 +787,16 @@ medusaIntegrationTestRunner({
           await importAndConfirm(csv)
           await subscriberExecution
 
-          // The import has no cross-product "find-or-create global option by
-          // title" — sharing one option across products is done via the Id
-          // column (see the previous test). With Is Exclusive = false and no
-          // Id, each imported product gets its OWN non-exclusive option. The
-          // fixture imports two products, so two distinct color options exist,
-          // both non-exclusive.
-          const products = (
-            await api.get("/admin/products?fields=*options", adminHeaders)
-          ).data.products
-
-          const colorOptionIds: string[] = []
-          products.forEach((p: any) => {
-            const colorOption = p.options.find((o: any) => o.title === "color")
-            expect(colorOption.is_exclusive).toBe(false)
-            colorOptionIds.push(colorOption.id)
-          })
-
-          // Each product references a distinct (non-shared) color option.
-          expect(new Set(colorOptionIds).size).toEqual(products.length)
-
+          // The constraint guarantees there is still exactly one global
+          // "color" option — the pre-existing one, untouched.
           const colorOptions = (
-            await api.get("/admin/product-options?title=color", adminHeaders)
+            await api.get(
+              "/admin/product-options?title=color&is_exclusive=false",
+              adminHeaders
+            )
           ).data.product_options
-          expect(colorOptions).toHaveLength(2)
-          colorOptions.forEach((opt: any) => {
-            expect(opt.is_exclusive).toBe(false)
-          })
+          expect(colorOptions).toHaveLength(1)
+          expect(colorOptions[0].id).toEqual(globalColor.id)
         })
 
         it("creates an exclusive option per product when no Id and no Is Exclusive are provided (default)", async () => {
