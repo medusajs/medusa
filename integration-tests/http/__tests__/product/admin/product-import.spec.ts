@@ -227,10 +227,12 @@ medusaIntegrationTestRunner({
           )!.id
           const rowsWithOptionIds = csv2json(csvContents)
           rowsWithOptionIds.forEach((row: any) => {
-            if (row["Product Id"] === baseProduct.id) {
-              row["Variant Option 1 Id"] = sizeOptionId
-              row["Variant Option 2 Id"] = colorOptionId
-            }
+            // Set the id columns on EVERY row (empty for non-base rows). If a
+            // row is left without the key, json2csv serializes it as the string
+            // "undefined", which the importer would treat as a real option id.
+            const isBaseProduct = row["Product Id"] === baseProduct.id
+            row["Variant Option 1 Id"] = isBaseProduct ? sizeOptionId : ""
+            row["Variant Option 2 Id"] = isBaseProduct ? colorOptionId : ""
           })
           csvContents = json2csv(rowsWithOptionIds)
 
