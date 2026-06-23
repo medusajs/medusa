@@ -31,7 +31,6 @@ export interface MedusaSuiteOptions {
     create: (dbName: string) => Promise<void>
     snapshot: (options?: { templateName?: string }) => Promise<void>
     restore: (options?: { templateName?: string }) => Promise<void>
-    dropTemplate: (templateName: string) => Promise<void>
     teardown: (options: { schema?: string }) => Promise<void>
     shutdown: (dbName: string) => Promise<void>
   }
@@ -323,7 +322,9 @@ class MedusaTestRunner {
       await waitWorkflowExecutions(this.globalContainer)
     } catch (error) {
       logger.error(
-        `Error waiting for workflow executions to finish:\n${formatError(error)}`
+        `Error waiting for workflow executions to finish:\n${formatError(
+          error
+        )}`
       )
       throw error
     }

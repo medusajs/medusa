@@ -70,13 +70,6 @@ export async function closeWaitingroomClient() {
   await client?.end().catch(() => void 0)
 }
 
-async function withWaitingroomClient<T>(
-  action: (client: Client) => Promise<T>
-) {
-  const client = await getWaitingroomClient()
-  return await action(client)
-}
-
 const MAX_DROP_ATTEMPTS = 10
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -130,7 +123,9 @@ async function dropDatabaseIfExists(client: Client, databaseName: string) {
       await cancelAndTerminateDatabaseConnections(client, databaseName)
 
       try {
-        await client.query(`DROP DATABASE ${quoteIdentifier(databaseName)};`)
+        await client.query(
+          `DROP DATABASE IF EXISTS ${quoteIdentifier(databaseName)};`
+        )
         return
       } catch (error) {
         const message = String((error as Error).message)
@@ -167,21 +162,20 @@ export async function createPostgresDatabaseTemplate({
     throw new Error("Template database name must differ from source database")
   }
 
-  await withWaitingroomClient(async (client) => {
-    await dropDatabaseIfExists(client, templateName)
-    await setAllowConnections(client, databaseName, false)
-    await terminateDatabaseConnections(client, databaseName)
+  const client = await getWaitingroomClient()
+  await dropDatabaseIfExists(client, templateName)
+  await setAllowConnections(client, databaseName, false)
+  await terminateDatabaseConnections(client, databaseName)
 
-    try {
-      await client.query(
-        `CREATE DATABASE ${quoteIdentifier(
-          templateName
-        )} WITH TEMPLATE ${quoteIdentifier(databaseName)};`
-      )
-    } finally {
-      await setAllowConnections(client, databaseName, true)
-    }
-  })
+  try {
+    await client.query(
+      `CREATE DATABASE ${quoteIdentifier(
+        templateName
+      )} WITH TEMPLATE ${quoteIdentifier(databaseName)};`
+    )
+  } finally {
+    await setAllowConnections(client, databaseName, true)
+  }
 }
 
 export async function restorePostgresDatabaseFromTemplate({
@@ -192,21 +186,20 @@ export async function restorePostgresDatabaseFromTemplate({
     throw new Error("Template database name must differ from target database")
   }
 
-  await withWaitingroomClient(async (client) => {
-    await setAllowConnections(client, databaseName, false)
-    await dropDatabaseIfExists(client, databaseName)
-    await terminateDatabaseConnections(client, templateName)
-    await client.query(
-      `CREATE DATABASE ${quoteIdentifier(
-        databaseName
-      )} WITH TEMPLATE ${quoteIdentifier(templateName)};`
-    )
-    await setAllowConnections(client, databaseName, true)
-  })
+  const client = await getWaitingroomClient()
+
+  await setAllowConnections(client, databaseName, false)
+  await dropDatabaseIfExists(client, databaseName)
+  await terminateDatabaseConnections(client, templateName)
+  await client.query(
+    `CREATE DATABASE ${quoteIdentifier(
+      databaseName
+    )} WITH TEMPLATE ${quoteIdentifier(templateName)};`
+  )
+  await setAllowConnections(client, databaseName, true)
 }
 
 export async function dropPostgresDatabaseTemplate(templateName: string) {
-  await withWaitingroomClient(async (client) => {
-    await dropDatabaseIfExists(client, templateName)
-  })
+  const client = await getWaitingroomClient()
+  await dropDatabaseIfExists(client, templateName)
 }

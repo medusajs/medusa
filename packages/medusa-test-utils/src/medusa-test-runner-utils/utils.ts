@@ -40,21 +40,6 @@ export function formatError(error: unknown): string {
   return String(error)
 }
 
-export function isTransientConnectionError(error: unknown): boolean {
-  const message = formatError(error).toLowerCase()
-
-  return (
-    message.includes("connection ended unexpectedly") ||
-    message.includes("connection terminated") ||
-    message.includes("terminating connection") ||
-    message.includes("connection refused") ||
-    message.includes("timeout acquiring a connection") ||
-    message.includes("cannot acquire connection") ||
-    message.includes("the database system is starting up") ||
-    message.includes("server closed the connection unexpectedly")
-  )
-}
-
 /**
  * Execute a function and return a promise that resolves when the function
  * resolves or rejects when the function rejects or the timeout is reached.
