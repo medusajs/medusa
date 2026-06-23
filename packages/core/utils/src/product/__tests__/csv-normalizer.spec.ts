@@ -1385,6 +1385,22 @@ describe("CSV processor", () => {
       ])
     })
 
+    it("carries is_exclusive when the value is already a boolean (e.g. parsed by json-2-csv)", () => {
+      const resultFalse = runRow(
+        baseRow({ "Variant Option 1 Is Exclusive": false })
+      )
+      expect(resultFalse.toCreate["p1"].options).toEqual([
+        { title: "Color", values: ["Red"], is_exclusive: false },
+      ])
+
+      const resultTrue = runRow(
+        baseRow({ "Variant Option 1 Is Exclusive": true })
+      )
+      expect(resultTrue.toCreate["p1"].options).toEqual([
+        { title: "Color", values: ["Red"], is_exclusive: true },
+      ])
+    })
+
     it("ignores Is Exclusive values it cannot parse as boolean", () => {
       const result = runRow(
         baseRow({ "Variant Option 1 Is Exclusive": "garbage" })
