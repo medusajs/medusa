@@ -3437,9 +3437,32 @@
           "properties": {
             "header": {
               "type": "string"
+            },
+            "list": {
+              "type": "object",
+              "properties": {
+                "noRecords": {
+                  "type": "string"
+                }
+              },
+              "required": ["noRecords"],
+              "additionalProperties": false
+            },
+            "delete": {
+              "type": "object",
+              "properties": {
+                "confirmation": {
+                  "type": "string"
+                },
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["confirmation", "successToast"],
+              "additionalProperties": false
             }
           },
-          "required": ["header"],
+          "required": ["header", "list", "delete"],
           "additionalProperties": false
         },
         "products": {

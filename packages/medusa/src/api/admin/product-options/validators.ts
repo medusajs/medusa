@@ -14,6 +14,30 @@ export type AdminGetProductOptionParamsType = z.infer<
 >
 export const AdminGetProductOptionParams = createSelectParams()
 
+export type AdminGetProductOptionValueParamsType = z.infer<
+  typeof AdminGetProductOptionValueParams
+>
+export const AdminGetProductOptionValueParams = createSelectParams()
+
+export const AdminGetProductOptionValuesParamsFields = z.object({
+  q: z.string().optional(),
+  id: z.union([z.string(), z.array(z.string())]).optional(),
+  value: z.union([z.string(), z.array(z.string())]).optional(),
+  created_at: createOperatorMap().optional(),
+  updated_at: createOperatorMap().optional(),
+  deleted_at: createOperatorMap().optional(),
+})
+
+export type AdminGetProductOptionValuesParamsType = z.infer<
+  typeof AdminGetProductOptionValuesParams
+>
+export const AdminGetProductOptionValuesParams = createFindParams({
+  limit: 20,
+  offset: 0,
+})
+  .extend(AdminGetProductOptionValuesParamsFields.shape)
+  .extend(applyAndAndOrOperators(AdminGetProductOptionValuesParamsFields).shape)
+
 export const AdminGetProductOptionsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
@@ -50,6 +74,16 @@ export const AdminUpdateProductOption = z
     values: z.array(z.string()).optional(),
     ranks: z.record(z.string(), z.number()).optional(),
     is_exclusive: z.boolean().optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
+  })
+  .strict()
+
+export type AdminUpdateProductOptionValueType = z.infer<
+  typeof AdminUpdateProductOptionValue
+>
+export const AdminUpdateProductOptionValue = z
+  .object({
+    value: z.string().optional(),
     metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

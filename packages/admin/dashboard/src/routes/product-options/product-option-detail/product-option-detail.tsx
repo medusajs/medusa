@@ -7,6 +7,7 @@ import { useProductOption } from "../../../hooks/api"
 import { productOptionLoader } from "./loader.ts"
 import { ProductOptionGeneralSection } from "./components/product-option-general-section"
 import { ProductOptionProductSection } from "./components/product-option-product-section"
+import { ProductOptionValuesSection } from "./components/product-option-values-section"
 
 export const ProductOptionDetail = () => {
   const { id } = useParams()
@@ -44,6 +45,7 @@ export const ProductOptionDetail = () => {
       data={product_option}
     >
       <ProductOptionGeneralSection productOption={product_option} />
+      <ProductOptionValuesSection productOption={product_option} />
       <ProductOptionProductSection productOptionId={product_option.id} />
     </SingleColumnPage>
   )

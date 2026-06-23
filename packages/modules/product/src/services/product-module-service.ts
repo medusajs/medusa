@@ -1211,26 +1211,10 @@ export default class ProductModuleService
       }
     }
 
-    if (removedValueIds.size > 0) {
-      const productProductOptionValues =
-        await this.productProductOptionValueService_.list(
-          {
-            product_option_value_id: [...removedValueIds],
-          },
-          {
-            select: ["id"],
-            take: 1,
-          },
-          sharedContext
-        )
-
-      if (productProductOptionValues.length > 0) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Cannot delete product option values that are associated with products."
-        )
-      }
-    }
+    await this.validateOptionValuesNotAssociatedWithProducts_(
+      [...removedValueIds],
+      sharedContext
+    )
 
     // Data normalization
     const normalizedInput = data.map((opt) => {
@@ -1305,6 +1289,39 @@ export default class ProductModuleService
       )
 
     return productOptions
+  }
+
+  /**
+   * Guards against removing product option values that are still associated
+   * with products. Shared by the option update flow (when values are removed)
+   * and the option value deletion flow.
+   */
+  protected async validateOptionValuesNotAssociatedWithProducts_(
+    valueIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    if (!valueIds.length) {
+      return
+    }
+
+    const productProductOptionValues =
+      await this.productProductOptionValueService_.list(
+        {
+          product_option_value_id: valueIds,
+        },
+        {
+          select: ["id"],
+          take: 1,
+        },
+        sharedContext
+      )
+
+    if (productProductOptionValues.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Cannot delete product option values that are associated with products."
+      )
+    }
   }
 
   @InjectManager()
@@ -1395,6 +1412,46 @@ export default class ProductModuleService
     }
 
     return await super.softDeleteProductOptions(
+      primaryKeyValues,
+      config,
+      sharedContext
+    )
+  }
+
+  @InjectManager()
+  // @ts-expect-error
+  async softDeleteProductOptionValues<
+    TReturnableLinkableKeys extends string = string
+  >(
+    primaryKeyValues: string | object | string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    return await this.softDeleteProductOptionValues_(
+      primaryKeyValues,
+      config,
+      sharedContext
+    )
+  }
+
+  @InjectTransactionManager()
+  protected async softDeleteProductOptionValues_<
+    TReturnableLinkableKeys extends string = string
+  >(
+    primaryKeyValues: string | object | string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    const valueIds = (
+      Array.isArray(primaryKeyValues) ? primaryKeyValues : [primaryKeyValues]
+    ).map((v) => (isString(v) ? v : (v as any).id))
+
+    await this.validateOptionValuesNotAssociatedWithProducts_(
+      valueIds,
+      sharedContext
+    )
+
+    return await super.softDeleteProductOptionValues(
       primaryKeyValues,
       config,
       sharedContext

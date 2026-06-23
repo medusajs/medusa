@@ -839,6 +839,56 @@
       }
     }
   },
+  "productOptions": {
+    "domain": "Opciones",
+    "subtitle": "Gestiona las opciones de producto y sus valores asociados.",
+    "values": {
+      "header": "Valores",
+      "list": {
+        "noRecords": "No hay valores para esta opción."
+      },
+      "delete": {
+        "confirmation": "Estás a punto de eliminar el valor de opción \"{{value}}\". Esta acción no puede deshacerse.",
+        "successToast": "El valor de opción se eliminó correctamente."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "No hay productos con esta opción."
+      }
+    },
+    "create": {
+      "header": "Crear opción de producto",
+      "hint": "Crea una nueva opción de producto y gestiona sus valores.",
+      "successToast": "La opción de producto \"{{title}}\" se creó correctamente.",
+      "tabs": {
+        "details": "Detalles",
+        "organize": "Organizar clasificaciones"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Opción exclusiva del producto"
+    },
+    "edit": {
+      "header": "Editar opción de producto",
+      "description": "Edita la opción de producto para actualizar sus detalles y valores asociados.",
+      "successToast": "La opción de producto \"{{title}}\" se actualizó correctamente."
+    },
+    "delete": {
+      "confirmation": "Estás a punto de eliminar la opción de producto \"{{title}}\". Esta acción no puede deshacerse.",
+      "successToast": "La opción de producto se eliminó correctamente."
+    },
+    "fields": {
+      "title": {
+        "label": "Título",
+        "placeholder": "Talla"
+      },
+      "values": {
+        "label": "Valores",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
   "inventory": {
     "domain": "Inventario",
     "subtitle": "Gestiona tus ítems de inventario",
