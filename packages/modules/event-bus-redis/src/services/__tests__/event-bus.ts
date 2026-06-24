@@ -1111,7 +1111,7 @@ describe("RedisEventBusService", () => {
         expect(test).toEqual(["success"])
       })
 
-      it("should revive published_at and created_at as Dates after JSON serialization", async () => {
+      it("should parse published_at and created_at as Dates after JSON serialization", async () => {
         const publishedAt = "2026-06-20T12:00:00.000Z"
         const createdAt = "2026-06-20T11:00:00.000Z"
         let receivedPublishedAt: unknown

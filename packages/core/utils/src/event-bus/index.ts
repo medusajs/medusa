@@ -202,9 +202,9 @@ export abstract class AbstractEventBusModuleService
   }
 
   /**
-   * Revives date metadata fields after JSON serialization.
+   * Parses date metadata fields after JSON serialization.
    */
-  protected reviveEventMetadataDates(
+  protected parseEventMetadataDates(
     metadata?: EventMetadata
   ): EventMetadata | undefined {
     if (!metadata) {

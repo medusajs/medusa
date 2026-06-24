@@ -158,7 +158,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         const publishedEventBody = {
           ...eventBody,
           metadata: this.withPublishedAtMetadata(
-            this.reviveEventMetadataDates(eventBody.metadata) // necessary cause JSON.parse stringified created_at
+            this.parseEventMetadataDates(eventBody.metadata) // necessary cause JSON.parse stringified created_at
           ),
         }
 

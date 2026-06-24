@@ -431,7 +431,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const completedSubscribersInCurrentAttempt: string[] = []
 
-    const metadata = this.reviveEventMetadataDates(data.metadata)
+    const metadata = this.parseEventMetadataDates(data.metadata)
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {

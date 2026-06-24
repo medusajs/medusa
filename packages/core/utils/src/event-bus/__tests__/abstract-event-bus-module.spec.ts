@@ -29,8 +29,8 @@ class MockEventBusModuleService extends AbstractEventBusModuleService {
     return this.withPublishedAtMetadata(metadata)
   }
 
-  public testReviveEventMetadataDates(metadata?: EventBusTypes.EventMetadata) {
-    return this.reviveEventMetadataDates(metadata)
+  public testParseEventMetadataDates(metadata?: EventBusTypes.EventMetadata) {
+    return this.parseEventMetadataDates(metadata)
   }
 }
 
@@ -98,9 +98,9 @@ describe("AbstractEventBusModuleService", () => {
       jest.useRealTimers()
     })
 
-    it("should revive serialized metadata dates", () => {
+    it("should parse serialized metadata dates", () => {
       const eventBus = new MockEventBusModuleService()
-      const metadata = eventBus.testReviveEventMetadataDates({
+      const metadata = eventBus.testParseEventMetadataDates({
         created_at: "2026-06-20T10:00:00.000Z" as unknown as Date,
         published_at: "2026-06-20T11:00:00.000Z" as unknown as Date,
       })
