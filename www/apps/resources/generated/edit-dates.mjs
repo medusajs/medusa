@@ -674,7 +674,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminWorkflowExecution/page.mdx": "2025-04-11T09:04:47.748Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminWorkflowExecutionResponse/page.mdx": "2025-04-11T09:04:47.751Z",
   "references/types/interfaces/types.BaseReturnItem/page.mdx": "2025-04-11T09:04:47.951Z",
-  "app/test-tools-reference/medusaIntegrationTestRunner/page.mdx": "2025-09-01T16:10:30.965Z",
+  "app/test-tools-reference/medusaIntegrationTestRunner/page.mdx": "2026-06-24T07:37:55.953Z",
   "app/test-tools-reference/moduleIntegrationTestRunner/page.mdx": "2025-09-01T16:13:56.959Z",
   "app/test-tools-reference/page.mdx": "2024-12-09T16:23:04.825Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminGetInvitesParams/page.mdx": "2026-04-30T16:36:26.427Z",
