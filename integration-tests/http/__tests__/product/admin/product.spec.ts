@@ -9,7 +9,7 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseProduct
     let proposedProduct
     let publishedProduct
@@ -25,7 +25,7 @@ medusaIntegrationTestRunner({
 
     let shippingProfile
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       baseCollection = (
@@ -137,6 +137,8 @@ medusaIntegrationTestRunner({
         )
       ).data.product
       await api.delete(`/admin/products/${deletedProduct.id}`, adminHeaders)
+
+      await dbUtils.snapshot()
     })
 
     describe("/admin/products", () => {
@@ -972,8 +974,6 @@ medusaIntegrationTestRunner({
           ])
         })
 
-
-
         it("returns a list of products filtered by variants[sku]", async () => {
           const productWithSku = await api.post(
             "/admin/products",
@@ -1037,7 +1037,6 @@ medusaIntegrationTestRunner({
             ])
           )
         })
-
 
         it("returns a list of products filtered by variants[ean]", async () => {
           const productWithEan = await api.post(
@@ -1470,7 +1469,7 @@ medusaIntegrationTestRunner({
           ])
         })
 
-        it('should get product variants filtered by sku', async () => {
+        it("should get product variants filtered by sku", async () => {
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
@@ -1509,7 +1508,7 @@ medusaIntegrationTestRunner({
               product_id: product.id,
             }),
           ])
-        });
+        })
 
         it("should get product variants filtered by manage_inventory", async () => {
           const payload = {

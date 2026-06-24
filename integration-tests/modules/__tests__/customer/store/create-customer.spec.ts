@@ -16,19 +16,18 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /store/customers", () => {
       let appContainer
       let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
+          await createAdminUser(dbConnection, adminHeaders, appContainer)
+          const publishableKey = await generatePublishableKey(appContainer)
+          storeHeaders = generateStoreHeaders({ publishableKey })
 
-      beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders, appContainer)
-        const publishableKey = await generatePublishableKey(appContainer)
-        storeHeaders = generateStoreHeaders({ publishableKey })
+        await dbUtils.snapshot()
       })
 
       // TODO: Reenable once the customer authentication is fixed, and use the HTTP endpoints instead.

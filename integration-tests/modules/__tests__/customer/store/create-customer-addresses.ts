@@ -13,7 +13,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /store/customers/me/addresses", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
@@ -24,9 +24,11 @@ medusaIntegrationTestRunner({
         customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
+
+        await dbUtils.snapshot()
       })
 
       it("should create a customer address", async () => {

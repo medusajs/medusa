@@ -10,9 +10,13 @@ import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
-import { useSignUpWithEmailPass } from "../../hooks/api/auth"
+import {
+  useSignInWithEmailPass,
+  useSignUpWithEmailPass,
+} from "../../hooks/api/auth"
 import { useAcceptInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
+import { AuthLoginResponse } from "@medusajs/js-sdk"
 
 const CreateAccountSchema = z
   .object({
@@ -192,24 +196,56 @@ const CreateView = ({
   const { mutateAsync: signUpEmailPass, isPending: isCreatingAuthUser } =
     useSignUpWithEmailPass()
 
+  const { mutateAsync: logInWithEmailPass, isPending: isLoggingIn } =
+    useSignInWithEmailPass()
+
   const { mutateAsync: acceptInvite, isPending: isAcceptingInvite } =
     useAcceptInvite(token)
 
+  /**
+   * Sign up or login with email and password.
+   * If the email already exists, it will try to login instead of signing up, to allow other invited actory types to accept the invite
+   * @param email - The email to sign up or login with.
+   * @param password - The password to sign up or login with.
+   * @returns The authentication result.
+   */
+  const signUpOrLoginEmailPass = async (
+    email: string,
+    password: string
+  ): Promise<AuthLoginResponse | undefined> => {
+    try {
+      return await signUpEmailPass({
+        email,
+        password,
+      })
+    } catch (error) {
+      if (
+        isFetchError(error) &&
+        error.status === 401 &&
+        error.message === "Identity with email already exists"
+      ) {
+        return await logInWithEmailPass({
+          email,
+          password,
+        })
+      }
+
+      throw error
+    }
+  }
+
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
-      const signupResponse = await signUpEmailPass({
-        email: data.email,
-        password: data.password,
-      })
+      const authResult = await signUpOrLoginEmailPass(data.email, data.password)
 
       // This should not happen since email verification is not enabled in the admin, but it should be covered as a scenario.
-      if (typeof signupResponse !== "string") {
+      if (typeof authResult !== "string") {
         throw new Error(
           "Email verification is required, but not supported by this flow."
         )
       }
 
-      const authToken = signupResponse
+      const authToken = authResult
 
       const invitePayload = {
         email: data.email,
@@ -373,7 +409,7 @@ const CreateView = ({
           <Button
             className="w-full"
             type="submit"
-            isLoading={isCreatingAuthUser || isAcceptingInvite}
+            isLoading={isCreatingAuthUser || isAcceptingInvite || isLoggingIn}
             disabled={invalid}
           >
             {t("invite.createAccount")}
