@@ -925,7 +925,7 @@ Next, you'll create the Magento attributes as product options. Replace the `TODO
 
 ```ts title="src/workflows/migrate-products-from-magento.ts"
 const attributeExternalIds = transform({
-  attributes
+  attributes,
 }, (data) => {
   return data.attributes.map((attr) => attr.attribute_id.toString())
 })
@@ -935,14 +935,14 @@ const { data: existingOptions } = useQueryGraphStep({
   fields: ["id", "title", "metadata", "values.id", "values.value"],
   filters: {
     metadata: {
-      external_id: attributeExternalIds
-    }
-  }
+      external_id: attributeExternalIds,
+    },
+  },
 }).config({ name: "get-existing-options" })
 
 const { optionsToCreate } = transform({
   attributes,
-  existingOptions
+  existingOptions,
 }, (data) => {
   const optionsToCreate = new Map<
     string, 
@@ -963,29 +963,29 @@ const { optionsToCreate } = transform({
       title: attr.default_frontend_label,
       values: attr.options.map((opt) => opt.label),
       metadata: {
-        external_id: attr.attribute_id.toString()
-      }
+        external_id: attr.attribute_id.toString(),
+      },
     }
 
     optionsToCreate.set(attr.attribute_id.toString(), optionData)
   })
 
   return {
-    optionsToCreate: Array.from(optionsToCreate.values())
+    optionsToCreate: Array.from(optionsToCreate.values()),
   }
 })
 
 // Create missing options if any
 const newOptions = createProductOptionsWorkflow.runAsStep({
   input: {
-    product_options: optionsToCreate
-  }
+    product_options: optionsToCreate,
+  },
 })
 
 // Merge existing and newly created options
 const allOptions = transform({
   existingOptions,
-  newOptions
+  newOptions,
 }, (data) => {
   return [...(data.existingOptions || []), ...(data.newOptions || [])]
 })
@@ -1036,7 +1036,7 @@ const {
   stores,
   shippingProfiles,
   existingProducts,
-  allOptions
+  allOptions,
 }, (data) => {
   const productsToCreate = new Map<string, CreateProductWorkflowInputDTO>()
   const productsToUpdate = new Map<string, UpsertProductDTO>()
@@ -1098,7 +1098,7 @@ const {
 
         return {
           id: existingOption.id,
-          value_ids: valueIds
+          value_ids: valueIds,
         }
       })
       .filter((opt): opt is { id: string; value_ids: string[] } => opt !== null) || []

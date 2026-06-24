@@ -1,5 +1,5 @@
 export const generatedEditDates = {
-  "app/learn/fundamentals/scheduled-jobs/page.mdx": "2025-10-16T09:35:54.393Z",
+  "app/learn/fundamentals/scheduled-jobs/page.mdx": "2026-06-24T17:14:15.092Z",
   "app/learn/fundamentals/workflows/page.mdx": "2024-12-09T14:45:17.837Z",
   "app/learn/deployment/page.mdx": "2026-01-08T09:18:35.778Z",
   "app/learn/page.mdx": "2026-04-29T12:58:00.989Z",
@@ -128,7 +128,7 @@ export const generatedEditDates = {
   "app/learn/debugging-and-testing/debug-workflows/page.mdx": "2025-07-30T13:45:14.117Z",
   "app/learn/fundamentals/data-models/json-properties/page.mdx": "2025-07-31T14:25:01.268Z",
   "app/learn/debugging-and-testing/logging/custom-logger/page.mdx": "2025-08-28T15:37:07.328Z",
-  "app/learn/fundamentals/scheduled-jobs/interval/page.mdx": "2025-09-02T08:36:12.714Z",
+  "app/learn/fundamentals/scheduled-jobs/interval/page.mdx": "2026-06-24T17:13:48.506Z",
   "app/learn/debugging-and-testing/feature-flags/create/page.mdx": "2025-09-02T08:36:12.714Z",
   "app/learn/debugging-and-testing/feature-flags/page.mdx": "2025-09-02T08:36:12.714Z",
   "app/learn/fundamentals/workflows/locks/page.mdx": "2026-04-03T09:29:55.646Z",

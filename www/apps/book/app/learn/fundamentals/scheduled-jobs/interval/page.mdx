@@ -21,13 +21,17 @@ To set an interval for a scheduled job, pass in the scheduled job configurations
 For example:
 
 export const highlights = [
-  ["12", "interval", "Set the interval in milliseconds"]
+  ["16", "interval", "Set the interval in milliseconds"]
 ]
 
 ```ts title="src/jobs/hello-world.ts" highlights={highlights}
 import { MedusaContainer } from "@medusajs/framework/types"
+import { ScheduledJobContext } from "@medusajs/framework/jobs"
 
-export default async function greetingJob(container: MedusaContainer) {
+export default async function greetingJob(
+  container: MedusaContainer,
+  context: ScheduledJobContext
+) {
   const logger = container.resolve("logger")
 
   logger.info("Greeting!")

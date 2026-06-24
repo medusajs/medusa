@@ -33,21 +33,26 @@ For example, create the file `src/jobs/hello-world.ts` with the following conten
 ![Example of scheduled job file in the application's directory structure](https://res.cloudinary.com/dza7lstvk/image/upload/v1732866423/Medusa%20Book/scheduled-job-dir-overview_ediqgm.jpg)
 
 export const highlights = [
-  ["3", "greetingJob", "The scheduled job function to execute at a specified interval."]
-  ["3", "container", "Receive the Medusa container as a parameter"],
-  ["4", "logger", "Resolve the logger from the container"],
-  ["9", "config", "The scheduled job's configurations."],
-  ["10", "name", "The job's unique name"],
-  ["11", "schedule", "The schedule to run the job on."]
+  ["4", "greetingJob", "The scheduled job function to execute at a specified interval."],
+  ["5", "container", "Receive the Medusa container as a parameter"],
+  ["6", "context", "Receive context about the scheduled execution"],
+  ["8", "logger", "Resolve the logger from the container"],
+  ["13", "config", "The scheduled job's configurations."],
+  ["14", "name", "The job's unique name"],
+  ["15", "schedule", "The schedule to run the job on."]
 ]
 
 ```ts title="src/jobs/hello-world.ts" highlights={highlights}
 import { MedusaContainer } from "@medusajs/framework/types"
+import { ScheduledJobContext } from "@medusajs/framework/jobs"
 
-export default async function greetingJob(container: MedusaContainer) {
+export default async function greetingJob(
+  container: MedusaContainer,
+  context: ScheduledJobContext
+) {
   const logger = container.resolve("logger")
 
-  logger.info("Greeting!")
+  logger.info(`Greeting! Scheduled for: ${context.scheduledFor}`)
 }
 
 export const config = {
@@ -56,7 +61,17 @@ export const config = {
 }
 ```
 
-You export an asynchronous function that receives the [Medusa container](../medusa-container/page.mdx) as a parameter. In the function, you resolve the [Logger utility](../../debugging-and-testing/logging/page.mdx) from the Medusa container and log a message.
+You export an asynchronous function that receives the [Medusa container](../medusa-container/page.mdx) as the first parameter, and a `ScheduledJobContext` object as the second parameter. In the function, you resolve the [Logger utility](../../debugging-and-testing/logging/page.mdx) from the Medusa container and log a message.
+
+The `ScheduledJobContext` object has the following property:
+
+<Note>
+
+The `context` parameter is available since Medusa [v2.16.1](https://github.com/medusajs/medusa/releases/tag/v2.16.1).
+
+</Note>
+
+- `scheduledFor`: A `Date` object indicating the timestamp for which the job was scheduled to run.
 
 You also export a `config` object that has the following properties:
 
@@ -95,9 +110,13 @@ You can learn how to create a workflow in the [Workflows](../workflows/page.mdx)
 
 ```ts title="src/jobs/sync-products.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import { ScheduledJobContext } from "@medusajs/framework/jobs"
 import { syncProductToErpWorkflow } from "../workflows/sync-products-to-erp"
 
-export default async function syncProductsJob(container: MedusaContainer) {
+export default async function syncProductsJob(
+  container: MedusaContainer,
+  context: ScheduledJobContext
+) {
   await syncProductToErpWorkflow(container)
     .run()
 }
