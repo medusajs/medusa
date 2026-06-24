@@ -99,15 +99,26 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       )
 
       delay(options_?.delay).then(async () => {
+        const publishedEventBody = {
+          ...eventBody,
+          metadata: {
+            ...eventBody.metadata,
+            published_at: new Date(),
+          },
+        }
+
         // Call interceptors before emitting
-        void this.callInterceptors(eventData, { isGrouped: false })
+        void this.callInterceptors(
+          { ...eventData, ...publishedEventBody },
+          { isGrouped: false }
+        )
 
         if (eventListenersCount) {
-          this.eventEmitter_.emit(eventData.name, eventBody)
+          this.eventEmitter_.emit(eventData.name, publishedEventBody)
         }
 
         if (hasStarSubscriber) {
-          this.eventEmitter_.emit("*", eventBody)
+          this.eventEmitter_.emit("*", publishedEventBody)
         }
 
         const totalSubscribers =
@@ -144,15 +155,26 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       const delay = (ms?: number) => (ms ? setTimeout(ms) : Promise.resolve())
 
       delay(options_?.delay).then(async () => {
+        const publishedEventBody = {
+          ...eventBody,
+          metadata: {
+            ...eventBody.metadata,
+            published_at: new Date(),
+          },
+        }
+
         // Call interceptors before emitting grouped events
-        void this.callInterceptors(event, { isGrouped: true, eventGroupId })
+        void this.callInterceptors(
+          { ...event, ...publishedEventBody },
+          { isGrouped: true, eventGroupId }
+        )
 
         if (eventListenersCount) {
-          this.eventEmitter_.emit(event.name, eventBody)
+          this.eventEmitter_.emit(event.name, publishedEventBody)
         }
 
         if (hasStarSubscriber) {
-          this.eventEmitter_.emit("*", eventBody)
+          this.eventEmitter_.emit("*", publishedEventBody)
         }
 
         const totalSubscribers =

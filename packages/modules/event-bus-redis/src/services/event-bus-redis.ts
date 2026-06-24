@@ -224,11 +224,19 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const promises: Promise<unknown>[] = []
 
     if (eventsToEmit.length) {
-      eventsToEmit.map((eventData) =>
+      const publishedEvents = eventsToEmit.map((eventData) => ({
+        ...eventData,
+        metadata: {
+          ...eventData.metadata,
+          published_at: new Date(),
+        },
+      }))
+
+      publishedEvents.map((eventData) =>
         this.callInterceptors(eventData, { isGrouped: false })
       )
 
-      const eventsWithSubscribers = eventsToEmit.filter((eventData) => {
+      const eventsWithSubscribers = publishedEvents.filter((eventData) => {
         const eventSubscribers =
           this.eventToSubscribersMap.get(eventData.name) || []
         const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
@@ -291,21 +299,33 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   async releaseGroupedEvents(eventGroupId: string) {
     const groupedEvents = await this.getGroupedEvents(eventGroupId)
 
+    const publishedGroupedEvents = groupedEvents.map((jobData) => ({
+      ...jobData,
+      data: {
+        ...jobData.data,
+        metadata: {
+          ...jobData.data.metadata,
+          published_at: new Date(),
+        },
+      },
+    }))
+
     // Call interceptors before emitting grouped events
-    // Extract the original messages from the job data structure
-    groupedEvents.map((jobData) => {
-      const message = {
-        name: jobData.name,
-        data: jobData.data,
-        metadata: jobData.data.metadata,
-      }
-      this.callInterceptors(message as any, {
-        isGrouped: true,
-        eventGroupId,
-      })
+    publishedGroupedEvents.map((jobData) => {
+      this.callInterceptors(
+        {
+          name: jobData.name,
+          data: jobData.data.data,
+          metadata: jobData.data.metadata,
+        },
+        {
+          isGrouped: true,
+          eventGroupId,
+        }
+      )
     })
 
-    const eventsWithSubscribers = groupedEvents.filter((jobData) => {
+    const eventsWithSubscribers = publishedGroupedEvents.filter((jobData) => {
       const eventSubscribers =
         this.eventToSubscribersMap.get(jobData.name) || []
       const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []

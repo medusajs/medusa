@@ -35,11 +35,12 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
           data: {
             test: "test",
           },
-          metadata: {
+          metadata: expect.objectContaining({
             source: "test",
             object: "test",
             action: "created",
-          },
+            published_at: expect.any(Date),
+          }),
           name: "test",
         })
 
@@ -74,12 +75,13 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
           data: {
             test: "test",
           },
-          metadata: {
+          metadata: expect.objectContaining({
             source: "test",
             eventGroupId: "123",
             object: "test",
             action: "created",
-          },
+            published_at: expect.any(Date),
+          }),
           name: "test",
         })
 
