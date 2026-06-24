@@ -4,8 +4,8 @@ import { csv2json, json2csv } from "json-2-csv"
 import { CommonEvents, Modules } from "@medusajs/utils"
 import { IEventBusModuleService, IFileModuleService } from "@medusajs/types"
 import {
-  TestEventUtils,
   medusaIntegrationTestRunner,
+  TestEventUtils,
 } from "@medusajs/test-utils"
 import {
   adminHeaders,

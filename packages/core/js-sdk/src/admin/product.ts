@@ -1157,4 +1157,50 @@ export class Product {
       }
     )
   }
+
+  /**
+   * This method links product options to a product. It allows adding new options,
+   * removing existing ones, or updating option values. It sends a request to the
+   * [Batch Product Product Options](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch)
+   * API route.
+   *
+   * @since 2.16.0
+   *
+   * @param productId - The product's ID.
+   * @param body - The options to add or remove.
+   * @param query - Configure the fields to retrieve in the product.
+   * @param headers - Headers to pass in the request
+   * @returns The product's details.
+   *
+   * @example
+   * sdk.admin.product.linkOptions("prod_123", {
+   *   add: [
+   *       "opt_123",
+   *       {
+   *         id: "opt_123",
+   *         value_ids: ["optval_1", "optval_2"]
+   *       }
+   *     ],
+   *     remove: ["opt_456"]
+   * })
+   * .then(({ product }) => {
+   *   console.log(product)
+   * })
+   */
+  async linkOptions(
+    productId: string,
+    body: HttpTypes.AdminLinkProductOptions,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
+      `/admin/products/${productId}/options/batch`,
+      {
+        method: "POST",
+        headers,
+        body: body,
+        query,
+      }
+    )
+  }
 }

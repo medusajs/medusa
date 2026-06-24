@@ -47,6 +47,7 @@ import { WorkflowExecution } from "./workflow-execution.js"
 import { ShippingOptionType } from "./shipping-option-type.js"
 import { Locale } from "./locale.js"
 import { Translation } from "./translation.js"
+import { ProductOption } from "./product-option.js"
 import { RbacRole } from "./rbac-role.js"
 import { RbacPolicy } from "./rbac-policy.js"
 
@@ -70,6 +71,11 @@ export class Admin {
    * @tags product
    */
   public productCategory: ProductCategory
+  /**
+   * @tags product
+   * @since 2.16.0
+   */
+  public productOption: ProductOption
   /**
    * @tags pricing
    */
@@ -264,6 +270,7 @@ export class Admin {
     this.customer = new Customer(client)
     this.productCollection = new ProductCollection(client)
     this.productCategory = new ProductCategory(client)
+    this.productOption = new ProductOption(client)
     this.priceList = new PriceList(client)
     this.pricePreference = new PricePreference(client)
     this.product = new Product(client)

@@ -13,6 +13,7 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { inventoryItemsQueryKeys } from "./inventory.tsx"
+import { productOptionsQueryKeys } from "./product-options.tsx"
 import { useInfiniteList } from "../use-infinite-list.tsx"
 
 const PRODUCTS_QUERY_KEY = "products" as const
@@ -20,72 +21,6 @@ export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
 
 const VARIANTS_QUERY_KEY = "product_variants" as const
 export const variantsQueryKeys = queryKeysFactory(VARIANTS_QUERY_KEY)
-
-const OPTIONS_QUERY_KEY = "product_options" as const
-export const optionsQueryKeys = queryKeysFactory(OPTIONS_QUERY_KEY)
-
-export const useCreateProductOption = (
-  productId: string,
-  options?: UseMutationOptions<any, FetchError, any>
-) => {
-  return useMutation({
-    mutationFn: (payload: HttpTypes.AdminCreateProductOption) =>
-      sdk.admin.product.createOption(productId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: productsQueryKeys.detail(productId),
-      })
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useUpdateProductOption = (
-  productId: string,
-  optionId: string,
-  options?: UseMutationOptions<any, FetchError, any>
-) => {
-  return useMutation({
-    mutationFn: (payload: HttpTypes.AdminUpdateProductOption) =>
-      sdk.admin.product.updateOption(productId, optionId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: optionsQueryKeys.detail(optionId),
-      })
-      queryClient.invalidateQueries({
-        queryKey: productsQueryKeys.detail(productId),
-      })
-
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
-
-export const useDeleteProductOption = (
-  productId: string,
-  optionId: string,
-  options?: UseMutationOptions<any, FetchError, void>
-) => {
-  return useMutation({
-    mutationFn: () => sdk.admin.product.deleteOption(productId, optionId),
-    onSuccess: (data: any, variables: any, context: any) => {
-      queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
-      queryClient.invalidateQueries({
-        queryKey: optionsQueryKeys.detail(optionId),
-      })
-      queryClient.invalidateQueries({
-        queryKey: productsQueryKeys.detail(productId),
-      })
-
-      options?.onSuccess?.(data, variables, context)
-    },
-    ...options,
-  })
-}
 
 export const useProductVariant = (
   productId: string,
@@ -361,6 +296,12 @@ export const useCreateProduct = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
+
+      // users can create product exclusive options on product create
+      queryClient.invalidateQueries({
+        queryKey: productOptionsQueryKeys.lists(),
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -408,6 +349,35 @@ export const useDeleteProduct = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.detail(id) })
+
+      queryClient.invalidateQueries({
+        queryKey: productOptionsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useLinkProductOptions = (
+  productId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductResponse,
+    FetchError,
+    HttpTypes.AdminLinkProductOptions
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.product.linkOptions(productId, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+      queryClient.invalidateQueries({
+        queryKey: productOptionsQueryKeys.all,
+      })
 
       options?.onSuccess?.(data, variables, context)
     },
