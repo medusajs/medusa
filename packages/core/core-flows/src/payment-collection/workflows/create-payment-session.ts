@@ -152,14 +152,6 @@ export const createPaymentSessionsWorkflow = createWorkflow(
         return !isPresent(existingAccountHolder) && isPresent(accountHolder)
       }
     ).then(() => {
-      // The account holder is created with `noCompensation`, so it survives a
-      // workflow rollback. The customer link must survive too: if it were
-      // dismissed on rollback, the account holder would be orphaned (present in
-      // the DB but unreachable through `customer.account_holders`), the
-      // `existingAccountHolder` short-circuit above would keep missing it, and
-      // every later init would re-create the same provider customer and collide
-      // on the unique (provider_id, external_id) index. Keeping the link lets a
-      // later init reuse the existing holder instead.
       createRemoteLinkStep([
         {
           [Modules.CUSTOMER]: {
