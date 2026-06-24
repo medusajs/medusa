@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/dashboard",
-  "version": "2.17.0",
+  "version": "2.17.1",
   "scripts": {
     "typecheck": "tsgo --noEmit -p tsconfig.typecheck.json",
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
@@ -57,10 +57,10 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "3.4.2",
-    "@medusajs/admin-shared": "2.17.0",
-    "@medusajs/icons": "2.17.0",
-    "@medusajs/js-sdk": "2.17.0",
-    "@medusajs/ui": "4.1.17",
+    "@medusajs/admin-shared": "2.17.1",
+    "@medusajs/icons": "2.17.1",
+    "@medusajs/js-sdk": "2.17.1",
+    "@medusajs/ui": "4.1.18",
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dismissable-layer": "1.1.4",
     "@tanstack/react-query": "5.64.2",
@@ -91,10 +91,10 @@
     "zod": "4.2.0"
   },
   "devDependencies": {
-    "@medusajs/admin-shared": "2.17.0",
-    "@medusajs/admin-vite-plugin": "2.17.0",
-    "@medusajs/types": "2.17.0",
-    "@medusajs/ui-preset": "2.17.0",
+    "@medusajs/admin-shared": "2.17.1",
+    "@medusajs/admin-vite-plugin": "2.17.1",
+    "@medusajs/types": "2.17.1",
+    "@medusajs/ui-preset": "2.17.1",
     "@types/qrcode": "^1.5.5",
     "@typescript/native-preview": "^7.0.0-dev.20260423.1",
     "eslint": "8",

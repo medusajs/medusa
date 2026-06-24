@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.17.0",
+  "version": "2.17.1",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
