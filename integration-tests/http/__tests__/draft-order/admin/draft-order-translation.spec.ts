@@ -262,6 +262,79 @@ medusaIntegrationTestRunner({
         await dbUtils.snapshot()
       })
 
+      describe("POST /admin/draft-orders (create draft order with items and locale)", () => {
+        it("should translate items provided at draft order creation with locale", async () => {
+          const draftOrder = (
+            await api.post(
+              "/admin/draft-orders",
+              {
+                email: "test@test.com",
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                locale: "fr-FR",
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                shipping_address: {
+                  address_1: "123 Main St",
+                  city: "Anytown",
+                  country_code: "us",
+                  province: "ca",
+                  postal_code: "12345",
+                  first_name: "John",
+                },
+              },
+              adminHeaders
+            )
+          ).data.draft_order
+
+          const createdDraftOrder = (
+            await api.get(`/admin/draft-orders/${draftOrder.id}`, adminHeaders)
+          ).data.draft_order
+
+          expect(createdDraftOrder.items[0]).toEqual(
+            expect.objectContaining({
+              product_title: "T-Shirt Medusa",
+              product_description: "Un t-shirt en coton confortable",
+              variant_title: "Petit",
+            })
+          )
+        })
+
+        it("should keep original values when items are provided at creation without locale", async () => {
+          const draftOrder = (
+            await api.post(
+              "/admin/draft-orders",
+              {
+                email: "test@test.com",
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                shipping_address: {
+                  address_1: "123 Main St",
+                  city: "Anytown",
+                  country_code: "us",
+                  province: "ca",
+                  postal_code: "12345",
+                  first_name: "John",
+                },
+              },
+              adminHeaders
+            )
+          ).data.draft_order
+
+          const createdDraftOrder = (
+            await api.get(`/admin/draft-orders/${draftOrder.id}`, adminHeaders)
+          ).data.draft_order
+
+          expect(createdDraftOrder.items[0]).toEqual(
+            expect.objectContaining({
+              product_title: "Medusa T-Shirt",
+              product_description: "A comfortable cotton t-shirt",
+              variant_title: "Small",
+            })
+          )
+        })
+      })
+
       describe("POST /admin/draft-orders/:id/edit/items (add items to draft order)", () => {
         it("should translate items when adding to draft order with locale", async () => {
           const draftOrder = (

@@ -26,7 +26,7 @@ import {
 import { pricingContextResult } from "../../cart/utils/schemas"
 import { confirmVariantInventoryWorkflow } from "../../cart/workflows/confirm-variant-inventory"
 import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants-and-items-with-prices"
-import { useQueryGraphStep } from "../../common"
+import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { refreshDraftOrderAdjustmentsWorkflow } from "../../draft-order/workflows/refresh-draft-order-adjustments"
 import { createOrdersStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
@@ -388,12 +388,18 @@ export const createOrderWorkflow = createWorkflow(
       }
     )
 
-    validateLineItemPricesStep({ items: lineItems })
+    const translatedItems = getTranslatedLineItemsStep({
+      items: lineItems,
+      variants,
+      locale: input.locale,
+    })
 
-    const orderToCreate = transform({ lineItems, orderInput }, (data) => {
+    validateLineItemPricesStep({ items: translatedItems })
+
+    const orderToCreate = transform({ translatedItems, orderInput }, (data) => {
       return {
         ...data.orderInput,
-        items: data.lineItems,
+        items: data.translatedItems,
       }
     })
 
