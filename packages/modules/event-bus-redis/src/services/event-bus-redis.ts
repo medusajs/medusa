@@ -198,7 +198,15 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     eventsData: Message<T> | Message<T>[],
     options: Options = {}
   ): Promise<void> {
-    let eventsDataArray = Array.isArray(eventsData) ? eventsData : [eventsData]
+    let eventsDataArray = (Array.isArray(eventsData) ? eventsData : [eventsData]).map(
+      (eventData) => ({
+        ...eventData,
+        metadata: {
+          ...eventData.metadata,
+          created_at: new Date(),
+        },
+      })
+    )
 
     const { groupedEventsTTL = 600 } = options
     delete options.groupedEventsTTL
@@ -305,6 +313,13 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         ...jobData.data,
         metadata: {
           ...jobData.data.metadata,
+          ...(jobData.data.metadata?.created_at != null
+            ? {
+                created_at: new Date(
+                  jobData.data.metadata.created_at as string | Date
+                ),
+              }
+            : {}),
           published_at: new Date(),
         },
       },
@@ -435,7 +450,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const metadata = data.metadata
       ? {
           ...data.metadata,
-          ...(!!data.metadata?.published_at
+          ...(data.metadata.created_at != null
+            ? { created_at: new Date(data.metadata.created_at) }
+            : {}),
+          ...(data.metadata.published_at != null
             ? { published_at: new Date(data.metadata.published_at) }
             : {}),
         }

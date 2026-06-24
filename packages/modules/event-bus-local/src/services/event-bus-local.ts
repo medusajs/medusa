@@ -70,7 +70,13 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       ? eventsData
       : [eventsData]
 
-    for (const eventData of normalizedEventsData) {
+    for (const eventData of normalizedEventsData.map((event) => ({
+      ...event,
+      metadata: {
+        ...event.metadata,
+        created_at: new Date(),
+      },
+    }))) {
       await this.groupOrEmitEvent({
         ...eventData,
         options,
@@ -103,6 +109,13 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
           ...eventBody,
           metadata: {
             ...eventBody.metadata,
+            ...(eventBody.metadata?.created_at != null
+              ? {
+                  created_at: new Date(
+                    eventBody.metadata.created_at as string | Date
+                  ),
+                }
+              : {}),
             published_at: new Date(),
           },
         }
@@ -159,6 +172,13 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
           ...eventBody,
           metadata: {
             ...eventBody.metadata,
+            ...(eventBody.metadata?.created_at != null
+              ? {
+                  created_at: new Date(
+                    eventBody.metadata.created_at as string | Date
+                  ),
+                }
+              : {}),
             published_at: new Date(),
           },
         }

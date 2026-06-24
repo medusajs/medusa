@@ -40,6 +40,7 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
             object: "test",
             action: "created",
             published_at: expect.any(Date),
+            created_at: expect.any(Date),
           }),
           name: "test",
         })
@@ -81,6 +82,7 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
             object: "test",
             action: "created",
             published_at: expect.any(Date),
+            created_at: expect.any(Date),
           }),
           name: "test",
         })

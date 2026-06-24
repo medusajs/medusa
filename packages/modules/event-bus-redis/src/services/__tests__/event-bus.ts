@@ -103,7 +103,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -126,7 +126,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -170,7 +170,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -213,7 +213,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: 5,
@@ -232,16 +232,23 @@ describe("RedisEventBusService", () => {
           metadata: { eventGroupId: "test-group-1" },
         }
 
-        const [builtEvent] = (eventBus as any).buildEvents([event], options)
-
         await eventBus.emit(event, options)
 
         expect(queue.addBulk).toHaveBeenCalledTimes(0)
         expect(redis.rpush).toHaveBeenCalledTimes(1)
         expect(redis.rpush).toHaveBeenCalledWith(
           "staging:test-group-1",
-          JSON.stringify(builtEvent)
+          expect.any(String)
         )
+
+        const stagedEvent = JSON.parse(redis.rpush.mock.calls[0][1])
+        expect(stagedEvent.data.metadata).toEqual(
+          expect.objectContaining({
+            eventGroupId: "test-group-1",
+            created_at: expect.any(String),
+          })
+        )
+        expect(stagedEvent.data.metadata.published_at).toBeUndefined()
       })
 
       it("should successfully group, release and clear events", async () => {
@@ -294,16 +301,20 @@ describe("RedisEventBusService", () => {
           options
         )
 
+        const stagedGroup1Event = redis.rpush.mock.calls.find(
+          (call) => call[0] === "staging:test-group-1"
+        )![1]
+        const stagedGroup2Events = redis.rpush.mock.calls
+          .filter((call) => call[0] === "staging:test-group-2")
+          .flatMap((call) => call.slice(1))
+
         redis.lrange = jest.fn((key) => {
           if (key === "staging:test-group-1") {
-            return Promise.resolve([JSON.stringify(testGroup1Event)])
+            return Promise.resolve([stagedGroup1Event])
           }
 
           if (key === "staging:test-group-2") {
-            return Promise.resolve([
-              JSON.stringify(testGroup2Event),
-              JSON.stringify(testGroup2Event2),
-            ])
+            return Promise.resolve(stagedGroup2Events)
           }
 
           return
@@ -322,6 +333,7 @@ describe("RedisEventBusService", () => {
               data: testGroup1Event.data.data,
               metadata: expect.objectContaining({
                 eventGroupId: "test-group-1",
+                created_at: expect.any(Date),
                 published_at: expect.any(Date),
               }),
             },
@@ -345,6 +357,7 @@ describe("RedisEventBusService", () => {
               data: testGroup2Event.data.data,
               metadata: expect.objectContaining({
                 eventGroupId: "test-group-2",
+                created_at: expect.any(Date),
                 published_at: expect.any(Date),
               }),
             },
@@ -356,6 +369,7 @@ describe("RedisEventBusService", () => {
               data: testGroup2Event2.data.data,
               metadata: expect.objectContaining({
                 eventGroupId: "test-group-2",
+                created_at: expect.any(Date),
                 published_at: expect.any(Date),
               }),
             },
@@ -393,7 +407,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -420,7 +434,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -448,7 +462,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -486,7 +500,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -527,7 +541,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -568,7 +582,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -596,7 +610,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -626,7 +640,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName",
-              data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+              data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -666,7 +680,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName1",
-              data: { data: { id: "1" }, metadata: { published_at: expect.any(Date) } },
+              data: { data: { id: "1" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -675,7 +689,7 @@ describe("RedisEventBusService", () => {
             },
             {
               name: "eventName2",
-              data: { data: { id: "2" }, metadata: { published_at: expect.any(Date) } },
+              data: { data: { id: "2" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -684,7 +698,7 @@ describe("RedisEventBusService", () => {
             },
             {
               name: "eventName3",
-              data: { data: { id: "3" }, metadata: { published_at: expect.any(Date) } },
+              data: { data: { id: "3" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -723,7 +737,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName",
-              data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+              data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -751,7 +765,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName",
-              data: { data: { hi: "1234" }, metadata: { published_at: expect.any(Date) } },
+              data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -820,15 +834,18 @@ describe("RedisEventBusService", () => {
             metadata: { eventGroupId: "test-group-priority" },
           }
 
-          const [builtEvent] = (eventBus as any).buildEvents([event], {
-            priority: 75,
-          })
-
           eventBus.subscribe("grouped-event", () => Promise.resolve())
+
+          await eventBus.emit(event, { priority: 75 })
+
+          const stagedEvent = redis.rpush.mock.calls.find(
+            (call) => call[0] === "staging:test-group-priority"
+          )![1]
+          const builtEvent = JSON.parse(stagedEvent)
 
           redis.lrange = jest.fn((key) => {
             if (key === "staging:test-group-priority") {
-              return Promise.resolve([JSON.stringify(builtEvent)])
+              return Promise.resolve([stagedEvent])
             }
             return Promise.resolve([])
           })
@@ -844,6 +861,7 @@ describe("RedisEventBusService", () => {
                 data: builtEvent.data.data,
                 metadata: expect.objectContaining({
                   eventGroupId: "test-group-priority",
+                  created_at: expect.any(Date),
                   published_at: expect.any(Date),
                 }),
               },
@@ -951,6 +969,7 @@ describe("RedisEventBusService", () => {
             name: "eventWithoutSubscribers",
             data: { test: "data" },
             metadata: {
+              created_at: expect.any(Date),
               published_at: expect.any(Date),
             },
           },
@@ -1017,11 +1036,13 @@ describe("RedisEventBusService", () => {
 
         await eventBus.emit(event, options)
 
-        const [builtEvent] = (eventBus as any).buildEvents([event], options)
+        const stagedEvent = redis.rpush.mock.calls.find(
+          (call) => call[0] === "staging:test-group-no-sub-2"
+        )![1]
 
         redis.lrange = jest.fn((key) => {
           if (key === "staging:test-group-no-sub-2") {
-            return Promise.resolve([JSON.stringify(builtEvent)])
+            return Promise.resolve([stagedEvent])
           }
           return Promise.resolve([])
         })
@@ -1042,6 +1063,7 @@ describe("RedisEventBusService", () => {
             name: "grouped-event-no-sub-2",
             metadata: expect.objectContaining({
               eventGroupId: "test-group-no-sub-2",
+              created_at: expect.any(Date),
               published_at: expect.any(Date),
             }),
           }),
@@ -1089,12 +1111,15 @@ describe("RedisEventBusService", () => {
         expect(test).toEqual(["success"])
       })
 
-      it("should revive published_at as a Date after JSON serialization", async () => {
+      it("should revive published_at and created_at as Dates after JSON serialization", async () => {
         const publishedAt = "2026-06-20T12:00:00.000Z"
+        const createdAt = "2026-06-20T11:00:00.000Z"
         let receivedPublishedAt: unknown
+        let receivedCreatedAt: unknown
 
         eventBus.subscribe("eventName", (event) => {
           receivedPublishedAt = event.metadata?.published_at
+          receivedCreatedAt = event.metadata?.created_at
           return Promise.resolve()
         })
 
@@ -1102,13 +1127,15 @@ describe("RedisEventBusService", () => {
           name: "eventName",
           data: {
             data: { test: 1 },
-            metadata: { published_at: publishedAt },
+            metadata: { published_at: publishedAt, created_at: createdAt },
           },
           opts: { attempts: 1 },
         } as any)
 
         expect(receivedPublishedAt).toBeInstanceOf(Date)
         expect(receivedPublishedAt).toEqual(new Date(publishedAt))
+        expect(receivedCreatedAt).toBeInstanceOf(Date)
+        expect(receivedCreatedAt).toEqual(new Date(createdAt))
       })
 
       it("should process event with failing subscribers", async () => {
