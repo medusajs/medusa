@@ -498,17 +498,18 @@ export default class ProductModuleService
     data: UpdateProductVariantInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof ProductVariant>[]> {
+    // Whether any variant in this batch is changing its options. The option
+    // resolution + uniqueness validation + relation reconcile below are ONLY
+    // needed in that case. When no variant carries `options`, all of that work is
+    // dead weight — and on a product with a large number of variants it is very
+    // expensive (see below), so we skip it.
+    const hasOptions = data.some((d) => !!d.options)
+
     // Validation step
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.productVariantService_.list(
       { id: variantIdsToUpdate },
       {},
-      sharedContext
-    )
-
-    const allVariants = await this.productVariantService_.list(
-      { product_id: variants.map((v) => v.product_id) },
-      { relations: ["options"] },
       sharedContext
     )
 
@@ -531,23 +532,38 @@ export default class ProductModuleService
       })
     )
 
-    const productOptions = await this.productOptionService_.list(
-      {
-        product_id: Array.from(
-          new Set(variantsWithProductId.map((v) => v.product_id!))
-        ),
-      },
-      { relations: ["values"] },
-      sharedContext
-    )
+    let productVariantsWithOptions: UpdateProductVariantInput[] =
+      variantsWithProductId
 
-    const productVariantsWithOptions =
-      ProductModuleService.assignOptionsToVariants(
-        variantsWithProductId,
-        productOptions
+    if (hasOptions) {
+      // Loading EVERY variant of the affected products (with their options) and
+      // the option-tuple uniqueness scan are O(product's total variant count) and
+      // synchronous. They are only required to validate that an options change
+      // does not create a duplicate option combination — so only run them when an
+      // options change is actually being made. For products with many variants
+      // (thousands), doing this unconditionally on a scalar-only update blocks the
+      // event loop for tens of seconds.
+      const allVariants = await this.productVariantService_.list(
+        { product_id: variants.map((v) => v.product_id) },
+        { relations: ["options"] },
+        sharedContext
       )
 
-    if (data.some((d) => !!d.options)) {
+      const productOptions = await this.productOptionService_.list(
+        {
+          product_id: Array.from(
+            new Set(variantsWithProductId.map((v) => v.product_id!))
+          ),
+        },
+        { relations: ["values"] },
+        sharedContext
+      )
+
+      productVariantsWithOptions = ProductModuleService.assignOptionsToVariants(
+        variantsWithProductId,
+        productOptions
+      ) as UpdateProductVariantInput[]
+
       ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
         productVariantsWithOptions as any,
         allVariants
@@ -558,7 +574,10 @@ export default class ProductModuleService
       await this.productVariantService_.upsertWithReplace(
         productVariantsWithOptions,
         {
-          relations: ["options"],
+          // Only reconcile the options relation when options are actually being
+          // updated. With no options in the payload the relation loop is a no-op
+          // for these entries anyway, so this avoids the relation setup entirely.
+          relations: hasOptions ? ["options"] : [],
         },
         sharedContext
       )

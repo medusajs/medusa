@@ -11,4 +11,13 @@ export interface S3FileServiceOptions {
   cache_control?: string
   download_file_duration?: number
   additional_client_config?: Record<string, any>
+  /**
+   * Controls the ACL set on uploaded objects.
+   *
+   * - `undefined` (default): Uses "public-read" for public files and "private" for private files.
+   * - `false`: Omits the ACL header entirely. Required for S3 buckets with
+   *   BucketOwnerEnforced Object Ownership or Block Public Access enabled.
+   * - A specific `ObjectCannedACL` value: Uses that ACL for all uploads.
+   */
+  acl?: "public-read" | "private" | "authenticated-read" | "bucket-owner-full-control" | false
 }

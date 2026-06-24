@@ -1,5 +1,35 @@
 # @medusajs/types
 
+## 2.16.0
+
+### Minor Changes
+
+- [`30f6d407cfaca510939ad161fbbe74feebb97883`](undefined) - feat(auth-emailpass, types, medusa): require verification by actor type
+
+### Patch Changes
+
+- [`528b12cbd50f85079e157b920be306dec7c89938`](undefined) - feat(order,types): add line_item_metadata to order responses
+
+- [`55be5103e41ffe367400cc9317a3bd6dbaa1e0cf`](undefined) - feat(core-flows,types): add setTaxLineContext hook
+
+- [#15407](https://github.com/medusajs/medusa/pull/15407) [`46271f2c4f9b4d107a43b588b1082a3e572fbe76`](https://github.com/medusajs/medusa/commit/46271f2c4f9b4d107a43b588b1082a3e572fbe76) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,medusa,types): add multi shipping method carts support
+
+- [#14674](https://github.com/medusajs/medusa/pull/14674) [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,admin-shared,core-flows,js-sdk,types,medusa,link-modules): RBAC admin dashboard CRUD
+
+- [`2bd3b0d18d7d4fe9c6f36bdffb76d1104f58f47b`](undefined) - Add support for deleting a payment method
+
+- [#15561](https://github.com/medusajs/medusa/pull/15561) [`1344c10503f34e392bd03f733820bcd5a12a2766`](https://github.com/medusajs/medusa/commit/1344c10503f34e392bd03f733820bcd5a12a2766) Thanks [@GBreg19](https://github.com/GBreg19)! - feat(medusa,core-flows,js-sdk,types): allow provider_id when marking a payment collection as paid
+
+  The `mark-as-paid` admin route and the `markPaymentCollectionAsPaid` workflow now accept an optional `provider_id`. When provided, the captured payment is recorded under that provider instead of always using `pp_system_default`. Omitting it preserves the previous behavior. This completes the admin payment-provider flow started in #15169.
+
+- [`a46961ed421dc69fe991891d02b0f1c66f6180ab`](undefined) - fix(core-flows, auth, types, medusa): bind password reset tokens to a single-use server record
+
+- [`b74b5b19569534412a67835ffae8fb3afbf6f5c5`](undefined) - fix(http-types-generator, types): correctly generate types for OperatorMap
+
+- [#15571](https://github.com/medusajs/medusa/pull/15571) [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
+
+- [#15690](https://github.com/medusajs/medusa/pull/15690) [`60d63bd2c0e400f06b985d5275b86c72681e4f62`](https://github.com/medusajs/medusa/commit/60d63bd2c0e400f06b985d5275b86c72681e4f62) Thanks [@Tusharkhadde](https://github.com/Tusharkhadde)! - feat(dashboard,medusa,types): add internal note support to order edits
+
 ## 2.15.5
 
 ### Patch Changes

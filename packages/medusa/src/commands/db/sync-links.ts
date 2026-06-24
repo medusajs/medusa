@@ -211,10 +211,12 @@ const main = async function ({
   executeAll,
   concurrency,
 }) {
-  const container = await initializeContainer(directory)
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  let logger: Logger | undefined
 
   try {
+    const container = await initializeContainer(directory)
+    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
     await ensureDbExists(container)
 
     const configModule = container.resolve(
@@ -240,7 +242,11 @@ const main = async function ({
     })
     process.exit()
   } catch (error) {
-    logger.error(error)
+    if (logger) {
+      logger.error(error)
+    } else {
+      console.error(error)
+    }
     process.exit(1)
   }
 }

@@ -15,6 +15,15 @@ on:
           - next
           - snapshot
           - canary
+          - options-preview
+      branch:
+        type: choice
+        default: "develop"
+        description: Which branch do you want to release from?
+        required: true
+        options:
+          - develop
+          - chore/add-many-to-many-between-product-and-option
     branches:
       - develop
     paths-ignore:
@@ -62,13 +71,15 @@ jobs:
             core.setOutput('release_running', isRunning.toString())
 
   release:
-    name: Trigger Preview Release
+    name: Trigger ${{ github.event.inputs.version || 'preview' }} Release
     needs: check
     if: needs.check.outputs.release_running != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch || 'develop' }}
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -115,7 +126,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "plain_text",
-                    "text": "Triggering a release for preview environments failed for ${{ github.run_id }}"
+                    "text": "Triggering a release for ${{ github.event.inputs.version || 'preview' }} environments failed for ${{ github.run_id }}"
                   }
                 }
               ]

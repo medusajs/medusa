@@ -24,6 +24,10 @@ export const filesMap = [
     "pathname": "/admin-components/components/json-view-section"
   },
   {
+    "filePath": "/www/apps/resources/app/admin-components/components/layout-composer/page.mdx",
+    "pathname": "/admin-components/components/layout-composer"
+  },
+  {
     "filePath": "/www/apps/resources/app/admin-components/components/section-row/page.mdx",
     "pathname": "/admin-components/components/section-row"
   },
@@ -282,6 +286,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/workflows/page.mdx",
     "pathname": "/commerce-modules/inventory/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/loyalty/admin-widget-zones"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/gift-cards/page.mdx",
@@ -650,6 +658,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/workflows/page.mdx",
     "pathname": "/commerce-modules/store/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/store-credit/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/store-credit/admin-widget-zones"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store-credit/concepts/page.mdx",
@@ -1108,6 +1120,286 @@ export const filesMap = [
     "pathname": "/js-sdk"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/page.mdx",
+    "pathname": "/lint"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/admin-component-must-be-arrow-function/page.mdx",
+    "pathname": "/lint/rules/admin-component-must-be-arrow-function"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/admin-env-vars-import-meta/page.mdx",
+    "pathname": "/lint/rules/admin-env-vars-import-meta"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/admin-no-medusa-utils-import/page.mdx",
+    "pathname": "/lint/rules/admin-no-medusa-utils-import"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/authenticate-flag-name-and-type/page.mdx",
+    "pathname": "/lint/rules/authenticate-flag-name-and-type"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/data-model-table-name-snake-case/page.mdx",
+    "pathname": "/lint/rules/data-model-table-name-snake-case"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/import-from-framework-not-internal/page.mdx",
+    "pathname": "/lint/rules/import-from-framework-not-internal"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/link-create-keys-modules-enum/page.mdx",
+    "pathname": "/lint/rules/link-create-keys-modules-enum"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/link-no-cross-module-relationship/page.mdx",
+    "pathname": "/lint/rules/link-no-cross-module-relationship"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/link-uses-linkable-properties/page.mdx",
+    "pathname": "/lint/rules/link-uses-linkable-properties"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/loader-must-be-exported-in-module-definition/page.mdx",
+    "pathname": "/lint/rules/loader-must-be-exported-in-module-definition"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/medusa-context-on-context-param/page.mdx",
+    "pathname": "/lint/rules/medusa-context-on-context-param"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/middleware-must-call-next/page.mdx",
+    "pathname": "/lint/rules/middleware-must-call-next"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/middlewares-file-location-and-name/page.mdx",
+    "pathname": "/lint/rules/middlewares-file-location-and-name"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/module-name-snake-case/page.mdx",
+    "pathname": "/lint/rules/module-name-snake-case"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-async-workflow-constructor/page.mdx",
+    "pathname": "/lint/rules/no-async-workflow-constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-conditional-expressions-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-conditional-expressions-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-config-on-dynamic-ui-route/page.mdx",
+    "pathname": "/lint/rules/no-config-on-dynamic-ui-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-console-log-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-console-log-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-deprecated-remote-query-config/page.mdx",
+    "pathname": "/lint/rules/no-deprecated-remote-query-config"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-direct-variable-mutation-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-direct-variable-mutation-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-duplicate-step-id-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-duplicate-step-id-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-if-in-workflow-constructor/page.mdx",
+    "pathname": "/lint/rules/no-if-in-workflow-constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-loops-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-loops-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-mikroorm-direct-import/page.mdx",
+    "pathname": "/lint/rules/no-mikroorm-direct-import"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-new-date-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-new-date-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-non-serializable-step-return/page.mdx",
+    "pathname": "/lint/rules/no-non-serializable-step-return"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-reserved-default-properties-in-model/page.mdx",
+    "pathname": "/lint/rules/no-reserved-default-properties-in-model"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-service-mutations-in-api-route/page.mdx",
+    "pathname": "/lint/rules/no-service-mutations-in-api-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-spread-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-spread-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-throw-in-transform/page.mdx",
+    "pathname": "/lint/rules/no-throw-in-transform"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-trailing-slash-in-route-matcher/page.mdx",
+    "pathname": "/lint/rules/no-trailing-slash-in-route-matcher"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-try-catch-in-workflow/page.mdx",
+    "pathname": "/lint/rules/no-try-catch-in-workflow"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/no-workflow-call-without-container/page.mdx",
+    "pathname": "/lint/rules/no-workflow-call-without-container"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/page.mdx",
+    "pathname": "/lint/rules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-container-registration-keys/page.mdx",
+    "pathname": "/lint/rules/prefer-container-registration-keys"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-link-over-remote-link/page.mdx",
+    "pathname": "/lint/rules/prefer-link-over-remote-link"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prefer-modules-enum/page.mdx",
+    "pathname": "/lint/rules/prefer-modules-enum"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/prices-in-major-units/page.mdx",
+    "pathname": "/lint/rules/prices-in-major-units"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/primary-key-required/page.mdx",
+    "pathname": "/lint/rules/primary-key-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/read-only-link-requires-field/page.mdx",
+    "pathname": "/lint/rules/read-only-link-requires-field"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-dynamic-folder-syntax/page.mdx",
+    "pathname": "/lint/rules/route-dynamic-folder-syntax"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-file-naming/page.mdx",
+    "pathname": "/lint/rules/route-file-naming"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-handler-exports-uppercase/page.mdx",
+    "pathname": "/lint/rules/route-handler-exports-uppercase"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/route-params-must-be-defined/page.mdx",
+    "pathname": "/lint/rules/route-params-must-be-defined"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-config-required/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-config-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-default-export-async/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-default-export-async"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-default-export-required/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-default-export-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-name-unique/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-name-unique"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/scheduled-job-schedule-valid-cron/page.mdx",
+    "pathname": "/lint/rules/scheduled-job-schedule-valid-cron"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/service-constructor-must-call-super/page.mdx",
+    "pathname": "/lint/rules/service-constructor-must-call-super"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/service-methods-must-be-async/page.mdx",
+    "pathname": "/lint/rules/service-methods-must-be-async"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/step-id-kebab-case/page.mdx",
+    "pathname": "/lint/rules/step-id-kebab-case"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/step-must-return-step-response/page.mdx",
+    "pathname": "/lint/rules/step-must-return-step-response"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/subscriber-config-export-required/page.mdx",
+    "pathname": "/lint/rules/subscriber-config-export-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/subscriber-default-export-must-be-async/page.mdx",
+    "pathname": "/lint/rules/subscriber-default-export-must-be-async"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/subscriber-default-export-required/page.mdx",
+    "pathname": "/lint/rules/subscriber-default-export-required"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/ui-route-config-via-define-route-config/page.mdx",
+    "pathname": "/lint/rules/ui-route-config-via-define-route-config"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/ui-route-file-name-page-tsx/page.mdx",
+    "pathname": "/lint/rules/ui-route-file-name-page-tsx"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/ui-route-must-have-default-export/page.mdx",
+    "pathname": "/lint/rules/ui-route-must-have-default-export"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-inject-manager-on-public-methods/page.mdx",
+    "pathname": "/lint/rules/use-inject-manager-on-public-methods"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-medusa-error-not-generic-error/page.mdx",
+    "pathname": "/lint/rules/use-medusa-error-not-generic-error"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-query-context-utility/page.mdx",
+    "pathname": "/lint/rules/use-query-context-utility"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/use-validated-body-or-query/page.mdx",
+    "pathname": "/lint/rules/use-validated-body-or-query"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/widget-must-export-config/page.mdx",
+    "pathname": "/lint/rules/widget-must-export-config"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/widget-must-have-default-export/page.mdx",
+    "pathname": "/lint/rules/widget-must-have-default-export"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/widget-zone-must-be-string-literal/page.mdx",
+    "pathname": "/lint/rules/widget-zone-must-be-string-literal"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/workflow-id-matches-export-or-filename/page.mdx",
+    "pathname": "/lint/rules/workflow-id-matches-export-or-filename"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/workflow-must-return-workflow-response/page.mdx",
+    "pathname": "/lint/rules/workflow-must-return-workflow-response"
+  },
+  {
+    "filePath": "/www/apps/resources/app/lint/rules/zod-import-source/page.mdx",
+    "pathname": "/lint/rules/zod-import-source"
+  },
+  {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/build/page.mdx",
     "pathname": "/medusa-cli/commands/build"
   },
@@ -1126,6 +1418,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/exec/page.mdx",
     "pathname": "/medusa-cli/commands/exec"
+  },
+  {
+    "filePath": "/www/apps/resources/app/medusa-cli/commands/lint/page.mdx",
+    "pathname": "/medusa-cli/commands/lint"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-cli/commands/new/page.mdx",
@@ -1608,6 +1904,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/medusa-admin/no-widget-route"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/modules/resolve-path/page.mdx",
+    "pathname": "/troubleshooting/modules/resolve-path"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/nextjs-node-25/page.mdx",
     "pathname": "/troubleshooting/nextjs-node-25"
   },
@@ -1904,6 +2204,10 @@ export const filesMap = [
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.confirmAuthVerification"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.consumePasswordResetToken/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.consumePasswordResetToken"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities"
   },
@@ -1914,6 +2218,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthVerificationToken/page.mdx",
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthVerificationToken"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createPasswordResetToken/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createPasswordResetToken"
   },
   {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createProviderIdentities/page.mdx",
@@ -2116,8 +2424,8 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.AuthMfaDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaProvider/page.mdx",
-    "pathname": "/references/auth/types/auth.AuthMfaProvider"
+    "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaProviderMethod/page.mdx",
+    "pathname": "/references/auth/types/auth.AuthMfaProviderMethod"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.AuthMfaSelector/page.mdx",
@@ -2156,6 +2464,14 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.ConfirmAuthVerificationResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.ConsumePasswordResetTokenDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.ConsumePasswordResetTokenDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.ConsumePasswordResetTokenResponse/page.mdx",
+    "pathname": "/references/auth/types/auth.ConsumePasswordResetTokenResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.CreateAuthMfaChallengeDTO/page.mdx",
     "pathname": "/references/auth/types/auth.CreateAuthMfaChallengeDTO"
   },
@@ -2166,6 +2482,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.CreateAuthVerificationTokenResponse/page.mdx",
     "pathname": "/references/auth/types/auth.CreateAuthVerificationTokenResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.CreatePasswordResetTokenDTO/page.mdx",
+    "pathname": "/references/auth/types/auth.CreatePasswordResetTokenDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.CreatePasswordResetTokenResponse/page.mdx",
+    "pathname": "/references/auth/types/auth.CreatePasswordResetTokenResponse"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.DisableAuthMfaDTO/page.mdx",
@@ -2242,6 +2566,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthMfaRecoveryCode/page.mdx",
     "pathname": "/references/auth_models/variables/auth_models.AuthMfaRecoveryCode"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthPasswordResetToken/page.mdx",
+    "pathname": "/references/auth_models/variables/auth_models.AuthPasswordResetToken"
   },
   {
     "filePath": "/www/apps/resources/references/auth_models/variables/auth_models.AuthVerificationToken/page.mdx",
@@ -2976,12 +3304,20 @@ export const filesMap = [
     "pathname": "/references/core_flows/Api_Key/core_flows.Api_Key.Workflows_Api_Key"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep/page.mdx",
+    "pathname": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.createPasswordResetTokenStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep/page.mdx",
     "pathname": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.requestVerificationStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx",
     "pathname": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.createPasswordResetTokenStepId/page.mdx",
+    "pathname": "/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.createPasswordResetTokenStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.requestVerificationStepId/page.mdx",
@@ -3416,6 +3752,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.updateTaxLinesWorkflow"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.upsertTaxLinesWorkflow/page.mdx",
+    "pathname": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.upsertTaxLinesWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateCartGiftCardStep/page.mdx",
     "pathname": "/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.validateCartGiftCardStep"
   },
@@ -3518,6 +3858,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.updateTaxLinesWorkflowId/page.mdx",
     "pathname": "/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.updateTaxLinesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.upsertTaxLinesWorkflowId/page.mdx",
+    "pathname": "/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.upsertTaxLinesWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/core_flows.Cart.Steps_Cart/page.mdx",
@@ -9260,6 +9604,14 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateOrdersStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePasswordResetTokenStepInput/page.mdx",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePasswordResetTokenStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePasswordResetTokenStepOutput/page.mdx",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePasswordResetTokenStepOutput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePaymentCollectionCartStepInput/page.mdx",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePaymentCollectionCartStepInput"
   },
@@ -10534,6 +10886,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpsertShippingOptionsStepInput/page.mdx",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpsertShippingOptionsStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpsertTaxLinesWorkflowInput/page.mdx",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpsertTaxLinesWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpsertVariantPricesWorkflowInput/page.mdx",
@@ -14452,6 +14808,14 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.list"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listAssignable/page.mdx",
+    "pathname": "/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listAssignable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listRoles/page.mdx",
+    "pathname": "/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.listRoles"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.retrieve/page.mdx",
     "pathname": "/references/js_sdk/admin/RbacPolicy/methods/js_sdk.admin.RbacPolicy.retrieve"
   },
@@ -14468,6 +14832,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addUsers/page.mdx",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addUsers"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create/page.mdx",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create"
   },
@@ -14480,8 +14848,16 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.list"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignable/page.mdx",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignable"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies/page.mdx",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listUsers/page.mdx",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listUsers"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions/page.mdx",
@@ -14490,6 +14866,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/page.mdx",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeUsers/page.mdx",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeUsers"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.retrieve/page.mdx",
@@ -14976,6 +15356,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/Upload/properties/js_sdk.admin.Upload.client"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.addRoles/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.addRoles"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.delete/page.mdx",
     "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.delete"
   },
@@ -14984,8 +15368,20 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.list"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.listRoles/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.listRoles"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.me/page.mdx",
     "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.me"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRole/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRoles/page.mdx",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRoles"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.retrieve/page.mdx",
@@ -15316,6 +15712,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.refresh"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register/page.mdx",
+    "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.register"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword/page.mdx",
     "pathname": "/references/js_sdk/auth/Auth/methods/js_sdk.auth.Auth.resetPassword"
   },
@@ -15326,10 +15726,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.mfa/page.mdx",
     "pathname": "/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.mfa"
-  },
-  {
-    "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.register/page.mdx",
-    "pathname": "/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.register"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/auth/Auth/properties/js_sdk.auth.Auth.verification/page.mdx",
@@ -15390,10 +15786,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthRedirectResponse/page.mdx",
     "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthRedirectResponse"
-  },
-  {
-    "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthRegisterOptions/page.mdx",
-    "pathname": "/references/js_sdk/auth/types/js_sdk.auth.AuthRegisterOptions"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/auth/types/js_sdk.auth.AuthRegisterResponse/page.mdx",
@@ -15748,6 +16140,14 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.SubscriberConfig"
   },
   {
+    "filePath": "/www/apps/resources/references/mfa/interfaces/mfa.AuthMfaProvider/page.mdx",
+    "pathname": "/references/mfa/interfaces/mfa.AuthMfaProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/mfa/interfaces/mfa.RecoveryCodeAuthMfaProvider/page.mdx",
+    "pathname": "/references/mfa/interfaces/mfa.RecoveryCodeAuthMfaProvider"
+  },
+  {
     "filePath": "/www/apps/resources/references/module_events/module_events.Auth/page.mdx",
     "pathname": "/references/module_events/module_events.Auth"
   },
@@ -15918,6 +16318,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/medusa/page.mdx",
     "pathname": "/references/modules/medusa"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/mfa/page.mdx",
+    "pathname": "/references/modules/mfa"
   },
   {
     "filePath": "/www/apps/resources/references/modules/module_events/page.mdx",
@@ -17448,6 +17852,10 @@ export const filesMap = [
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentCollections"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentMethods/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentMethods"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentSession/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.deletePaymentSession"
   },
@@ -17606,6 +18014,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.CreateRefundReasonDTO/page.mdx",
     "pathname": "/references/payment/interfaces/payment.CreateRefundReasonDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.DeletePaymentMethodDTO/page.mdx",
+    "pathname": "/references/payment/interfaces/payment.DeletePaymentMethodDTO"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.FilterableCaptureProps/page.mdx",
@@ -22048,6 +22460,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApplicationMethod"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAssignRoleUsers/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAssignRoleUsers"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAssignUserRoles/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAssignUserRoles"
   },
@@ -23452,6 +23868,14 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPropertyLabelResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePoliciesListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePoliciesListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignableRolesListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignableRolesListResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsResponse"
   },
@@ -23480,6 +23904,14 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyRoleListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyRoleListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyRolesListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacPolicyRolesListResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRole/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRole"
   },
@@ -23502,6 +23934,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUserListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUserListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUserListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUserListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReceiveItems/page.mdx",
@@ -23566,6 +24014,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveDraftOrderPromotions/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveDraftOrderPromotions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveUserRoles/page.mdx",
@@ -24232,6 +24684,22 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRoleDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRoleDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRoleListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRoleListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUserRolesResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminViewConfigurationResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminViewConfigurationResponse"
   },
@@ -24348,8 +24816,8 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreAddCartLineItem"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreAddCartShippingMethods/page.mdx",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreAddCartShippingMethods"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreAddCartShippingMethodsBase/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreAddCartShippingMethodsBase"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreCalculateCartTaxes/page.mdx",
@@ -25082,6 +25550,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StepInvokeResult/page.mdx",
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StepInvokeResult"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreAddCartShippingMethods/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.StoreAddCartShippingMethods"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.StoreCalculateShippingOptionPrice/page.mdx",
@@ -26922,6 +27394,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.DeletePaymentInput/page.mdx",
     "pathname": "/references/types/interfaces/types.DeletePaymentInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.DeletePaymentMethodInput/page.mdx",
+    "pathname": "/references/types/interfaces/types.DeletePaymentMethodInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.DeletePaymentMethodOutput/page.mdx",
+    "pathname": "/references/types/interfaces/types.DeletePaymentMethodOutput"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.DeletePaymentOutput/page.mdx",

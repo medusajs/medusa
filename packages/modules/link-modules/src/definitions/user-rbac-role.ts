@@ -67,6 +67,12 @@ export const UserRbacRole: ModuleJoinerConfig = {
     {
       serviceName: Modules.RBAC,
       entity: "RbacRole",
+      fieldAlias: {
+        users: {
+          path: "users_link.user",
+          isList: true,
+        },
+      },
       relationship: {
         serviceName: LINKS.UserRbacRole,
         primaryKey: "rbac_role_id",

@@ -12,11 +12,14 @@ import {
   FeatureFlag,
   FileSystem,
   generateContainerTypes,
+  generatePluginAugmentations,
   generatePolicyTypes,
+  getResolvedPlugins,
   gqlSchemaToTypes,
   GracefulShutdownServer,
   isFileSkipped,
   isPresent,
+  isProduction,
   promiseAll,
 } from "@medusajs/framework/utils"
 
@@ -111,11 +114,7 @@ function displayAdminUrl({
   port: string | number
   container: MedusaContainer
 }) {
-  const isProduction = ["production", "prod"].includes(
-    process.env.NODE_ENV || ""
-  )
-
-  if (isProduction) {
+  if (isProduction()) {
     return
   }
 
@@ -306,6 +305,12 @@ async function start(args: {
             })
           )
         }
+
+        const configModule = container.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        )
+        const plugins = await getResolvedPlugins(directory, configModule, true)
+        fileGenPromises.push(generatePluginAugmentations({ directory, plugins }))
 
         await promiseAll(fileGenPromises)
         logger.debug("Generated policy types")

@@ -18,7 +18,7 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let region: HttpTypes.AdminRegion
     let salesChannel: HttpTypes.AdminSalesChannel
     let stockLocation: HttpTypes.AdminStockLocation
@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
     let apiKey: HttpTypes.AdminApiKeyResponse["api_key"]
     let userId: string
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
@@ -172,6 +172,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.draft_order
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /draft-orders", () => {
@@ -1689,6 +1691,50 @@ medusaIntegrationTestRunner({
               variant_id: product.variants[0].id,
               unit_price: 2,
               compare_at_unit_price: 10,
+              quantity: 1,
+            }),
+          ])
+        )
+      })
+
+      it("should apply price from price list associated to a customer group when items are provided at draft order creation", async () => {
+        const created = (
+          await api.post(
+            "/admin/draft-orders",
+            {
+              customer_id: customer.id,
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              shipping_address: {
+                address_1: "123 Main St",
+                city: "Anytown",
+                country_code: "US",
+                postal_code: "12345",
+                first_name: "Tony",
+              },
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.draft_order
+
+        const draftOrderWithItems = (
+          await api.get(
+            `/admin/draft-orders/${created.id}?fields=*items`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(draftOrderWithItems.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              variant_id: product.variants[0].id,
+              unit_price: 2,
               quantity: 1,
             }),
           ])

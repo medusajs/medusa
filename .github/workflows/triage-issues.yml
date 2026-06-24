@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       skip_triaged:
-        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good-first-issue, help-wanted, feedback)'
+        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good first issue, help-wanted, feedback)'
         required: false
         default: true
         type: boolean
@@ -37,7 +37,7 @@ jobs:
                   contains([\"type: bug\"]) or
                   contains([\"requires-more\"]) or
                   contains([\"requires-team\"]) or
-                  contains([\"good-first-issue\"]) or
+                  contains([\"good first issue\"]) or
                   contains([\"help-wanted\"]) or
                   contains([\"feedback\"])
                 )) | not

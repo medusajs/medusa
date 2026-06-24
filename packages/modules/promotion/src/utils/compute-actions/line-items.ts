@@ -88,17 +88,20 @@ function applyPromotionToItems(
 
   let lineItemsAmount = MathBN.convert(0)
   if (allocation === ApplicationMethodAllocation.ACROSS) {
-    lineItemsAmount = applicableItems.reduce(
-      (acc, item) =>
-        MathBN.sub(
-          MathBN.add(
-            acc,
-            promotion.is_tax_inclusive ? item.original_total : item.subtotal
-          ),
-          appliedPromotionsMap.get(item.id) ?? 0
-        ),
-      MathBN.convert(0)
-    )
+    lineItemsAmount = applicableItems.reduce((acc, item) => {
+      const itemBase = promotion.is_tax_inclusive
+        ? item.original_total
+        : item.subtotal
+      const appliedExclTax = appliedPromotionsMap.get(item.id) ?? 0
+      const appliedInBase = promotion.is_tax_inclusive
+        ? MathBN.mult(
+            appliedExclTax,
+            MathBN.div(item.original_total, item.subtotal)
+          )
+        : appliedExclTax
+
+      return MathBN.sub(MathBN.add(acc, itemBase), appliedInBase)
+    }, MathBN.convert(0))
 
     if (MathBN.lte(lineItemsAmount, 0)) {
       return computedActions
@@ -161,7 +164,14 @@ function applyPromotionToItems(
       continue
     }
 
-    appliedPromotionsMap.set(item.id, MathBN.add(appliedPromoValue, amount))
+    const appliedAmountExclTax = promotion.is_tax_inclusive
+      ? MathBN.mult(amount, MathBN.div(item.subtotal, item.original_total))
+      : amount
+
+    appliedPromotionsMap.set(
+      item.id,
+      MathBN.add(appliedPromoValue, appliedAmountExclTax)
+    )
 
     if (allocation === ApplicationMethodAllocation.ONCE) {
       // We already know exactly how many units we applied via effectiveMaxQuantity

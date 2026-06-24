@@ -462,7 +462,7 @@
     "js-sdk": "sdk.admin.paymentCollection.delete(\"paycol_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "POST /admin/payment-collections/{id}/mark-as-paid": {
-    "js-sdk": "sdk.admin.paymentCollection.markAsPaid(\"paycol_123\", {\n  order_id: \"order_123\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
+    "js-sdk": "sdk.admin.paymentCollection.markAsPaid(\"paycol_123\", {\n  order_id: \"order_123\",\n  // optional: record the payment under a specific provider\n  provider_id: \"pp_system_default\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
   },
   "POST /admin/payment-collections/{id}/payment-sessions": {
     "js-sdk": "sdk.admin.paymentCollection.createPaymentSession(\"paycol_123\", {\n  provider_id: \"pp_stripe_stripe\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
@@ -941,6 +941,18 @@
   "GET /admin/users/{id}": {
     "js-sdk": "sdk.admin.user.retrieve(\"user_123\")\n.then(({ user }) => {\n  console.log(user)\n})"
   },
+  "GET /admin/users/{id}/roles": {
+    "js-sdk": "sdk.admin.user.listRoles(\"user_123\")\n.then(({ roles, count, limit, offset }) => {\n  console.log(roles)\n})"
+  },
+  "POST /admin/users/{id}/roles": {
+    "js-sdk": "sdk.admin.user.addRoles(\"user_123\", {\n  roles: [\"role_123\"]\n})\n.then(({ roles }) => {\n  console.log(roles)\n})"
+  },
+  "DELETE /admin/users/{id}/roles/{roleid}": {
+    "js-sdk": "sdk.admin.user.removeRole(\"user_123\", \"role_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
+  "DELETE /admin/users/{id}/roles": {
+    "js-sdk": "sdk.admin.user.removeRoles(\"user_123\", {\n  roles: [\"role_123\"]\n})\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
   "DELETE /admin/users/{id}": {
     "js-sdk": "sdk.admin.user.delete(\"user_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
@@ -1010,6 +1022,15 @@
   "GET /admin/rbac/roles/{roleid}/policies": {
     "js-sdk": "sdk.admin.rbacRole.listPolicies(\"role_123\")\n.then(({ policies, count, limit, offset }) => {\n  console.log(policies)\n})"
   },
+  "GET /admin/rbac/roles/{roleid}/users": {
+    "js-sdk": "sdk.admin.rbacRole.listUsers(\"role_123\")\n.then(({ users, count, limit, offset }) => {\n  console.log(users)\n})"
+  },
+  "POST /admin/rbac/roles/{roleid}/users": {
+    "js-sdk": "sdk.admin.rbacRole.addUsers(\"role_123\", {\n  users: [\"user_123\"]\n})\n.then(({ users }) => {\n  console.log(users)\n})"
+  },
+  "DELETE /admin/rbac/roles/{roleid}/users": {
+    "js-sdk": "sdk.admin.rbacRole.removeUsers(\"role_123\", {\n  users: [\"user_123\"]\n})\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
   "POST /admin/rbac/roles/{roleid}/policies": {
     "js-sdk": "sdk.admin.rbacRole.addPolicies(\"role_123\", {\n  policies: [\"policy_123\", \"policy_456\"]\n})\n.then(({ policies }) => {\n  console.log(policies)\n})"
   },
@@ -1051,6 +1072,9 @@
   },
   "POST /auth/mfa/challenges/{id}/verify": {
     "js-sdk": "const result = await sdk.auth.login(\"user\", \"emailpass\", {\n  email: \"user@example.com\",\n  password: \"secret\"\n})\n\nif (typeof result === \"object\" && \"mfa_challenge\" in result) {\n  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {\n    method: \"totp\",\n    code: \"123456\"\n  })\n}"
+  },
+  "POST /auth/{actor}/{method}/register": {
+    "js-sdk": "await sdk.auth.register(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.create({\n  email: \"customer@gmail.com\",\n  password: \"supersecret\"\n})"
   },
   "POST /auth/{actor}/{method}": {
     "js-sdk": "const result = await sdk.auth.login(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\nif (typeof result !== \"string\") {\n  alert(\"Authentication requires additional steps\")\n  // replace with the redirect logic of your application\n  window.location.href = result.location\n  return\n}\n\n// customer is now authenticated\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.retrieve()"

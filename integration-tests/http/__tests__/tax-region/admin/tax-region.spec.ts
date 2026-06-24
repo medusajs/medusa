@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
 
     beforeAll(async () => {
@@ -20,8 +20,10 @@ medusaIntegrationTestRunner({
     })
 
     describe("/admin/tax-regions", () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, container)
+
+        await dbUtils.snapshot()
       })
 
       describe("POST /admin/tax-regions/:id", () => {

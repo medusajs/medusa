@@ -137,3 +137,49 @@ For example, you can ask:
 2. "How to update Medusa to the latest version?"
 3. "Explain the Medusa workflow system."
 4. "Integrate Medusa with X provider. Refer to the Medusa documentation for information."
+
+---
+
+## MCP Server Prompts
+
+The MCP server provides prompts with step-by-step instructions for common tasks. These are useful for your AI agent to learn how to perform specific tasks and what information it should look for in the documentation.
+
+The MCP server provides prompts for the following tasks:
+
+<Note title="Tip">
+
+When integrating third-party providers, consider adding the [Context7 MCP server](https://github.com/upstash/context7#installation). It retrieves the latest information from the provider's documentation, which is essential for successful integration.
+
+</Note>
+
+1. Integrate a third-party payment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate PayPal as a payment provider in my Medusa store.
+```
+
+2. Integrate a third-party fulfillment provider with Medusa. For example:
+
+```bash title="Example prompt"
+Integrate ShipStation as a fulfillment provider in my Medusa store.
+```
+
+3. Extend the Product Module with custom properties and features. For example:
+
+```bash title="Example prompt"
+Implement a brand feature to allow merchants to associate products with brands
+```
+
+---
+
+## Submit Feedback with the MCP Server
+
+If you run into any issues or have suggestions to improve Medusa, you can ask your AI agent to submit feedback. It will use the MCP server to submit feedback to our team.
+
+For example, you can ask:
+
+```bash title="Example prompt"
+Submit feedback that the documentation on how to create a custom payment provider is outdated and needs to be updated.
+```
+
+You can submit feedback about the documentation, the developer experience, the MCP server, or any other aspect of Medusa. Your feedback will help us improve Medusa for everyone.

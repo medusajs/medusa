@@ -163,6 +163,29 @@ export class InMemoryDistributedTransactionStorage
     this.workflowOrchestratorService_ = workflowOrchestratorService
   }
 
+  private async executeTransaction(
+    workflowId: string,
+    transactionId: string,
+    transactionMetadata: TransactionFlow["metadata"] = {}
+  ) {
+    try {
+      await this.workflowOrchestratorService_.run(workflowId, {
+        transactionId,
+        logOnError: true,
+        throwOnError: false,
+        context: {
+          eventGroupId: transactionMetadata.eventGroupId,
+          parentStepIdempotencyKey: transactionMetadata.parentStepIdempotencyKey,
+          preventReleaseEvents: transactionMetadata.preventReleaseEvents,
+        },
+      })
+    } catch (error) {
+      if (!SkipExecutionError.isSkipExecutionError(error)) {
+        throw error
+      }
+    }
+  }
+
   private createManagedTimer(
     callback: () => void | Promise<void>,
     delay: number
@@ -511,17 +534,11 @@ export class InMemoryDistributedTransactionStorage
 
     const timer = this.createManagedTimer(async () => {
       this.retries.delete(key)
-      const context = transaction.getFlow().metadata ?? {}
-      await this.workflowOrchestratorService_.run(workflowId, {
+      await this.executeTransaction(
+        workflowId,
         transactionId,
-        logOnError: true,
-        throwOnError: false,
-        context: {
-          eventGroupId: context.eventGroupId,
-          parentStepIdempotencyKey: context.parentStepIdempotencyKey,
-          preventReleaseEvents: context.preventReleaseEvents,
-        },
-      })
+        transaction.getFlow().metadata ?? {}
+      )
     }, interval * 1e3)
 
     this.retries.set(key, timer)
@@ -558,17 +575,11 @@ export class InMemoryDistributedTransactionStorage
 
     const timer = this.createManagedTimer(async () => {
       this.timeouts.delete(key)
-      const context = transaction.getFlow().metadata ?? {}
-      await this.workflowOrchestratorService_.run(workflowId, {
+      await this.executeTransaction(
+        workflowId,
         transactionId,
-        logOnError: true,
-        throwOnError: false,
-        context: {
-          eventGroupId: context.eventGroupId,
-          parentStepIdempotencyKey: context.parentStepIdempotencyKey,
-          preventReleaseEvents: context.preventReleaseEvents,
-        },
-      })
+        transaction.getFlow().metadata ?? {}
+      )
     }, interval * 1e3)
 
     this.timeouts.set(key, timer)
@@ -605,17 +616,11 @@ export class InMemoryDistributedTransactionStorage
 
     const timer = this.createManagedTimer(async () => {
       this.timeouts.delete(key)
-      const context = transaction.getFlow().metadata ?? {}
-      await this.workflowOrchestratorService_.run(workflowId, {
+      await this.executeTransaction(
+        workflowId,
         transactionId,
-        logOnError: true,
-        throwOnError: false,
-        context: {
-          eventGroupId: context.eventGroupId,
-          parentStepIdempotencyKey: context.parentStepIdempotencyKey,
-          preventReleaseEvents: context.preventReleaseEvents,
-        },
-      })
+        transaction.getFlow().metadata ?? {}
+      )
     }, interval * 1e3)
 
     this.timeouts.set(key, timer)

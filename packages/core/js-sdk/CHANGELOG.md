@@ -1,5 +1,23 @@
 # @medusajs/js-sdk
 
+## 2.16.0
+
+### Minor Changes
+
+- [#15642](https://github.com/medusajs/medusa/pull/15642) [`d815e81a1a4977f66d6aebb5abc742ee8780619c`](https://github.com/medusajs/medusa/commit/d815e81a1a4977f66d6aebb5abc742ee8780619c) Thanks [@sradevski](https://github.com/sradevski)! - Update the signature of the sdk register method to either return verification response or a token
+
+### Patch Changes
+
+- [#14674](https://github.com/medusajs/medusa/pull/14674) [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,admin-shared,core-flows,js-sdk,types,medusa,link-modules): RBAC admin dashboard CRUD
+
+- [#15561](https://github.com/medusajs/medusa/pull/15561) [`1344c10503f34e392bd03f733820bcd5a12a2766`](https://github.com/medusajs/medusa/commit/1344c10503f34e392bd03f733820bcd5a12a2766) Thanks [@GBreg19](https://github.com/GBreg19)! - feat(medusa,core-flows,js-sdk,types): allow provider_id when marking a payment collection as paid
+
+  The `mark-as-paid` admin route and the `markPaymentCollectionAsPaid` workflow now accept an optional `provider_id`. When provided, the captured payment is recorded under that provider instead of always using `pp_system_default`. Omitting it preserves the previous behavior. This completes the admin payment-provider flow started in #15169.
+
+- [#15597](https://github.com/medusajs/medusa/pull/15597) [`f10e3ab70d2328fcc7202e6539c899cdf1313946`](https://github.com/medusajs/medusa/commit/f10e3ab70d2328fcc7202e6539c899cdf1313946) Thanks [@puneetdixit200](https://github.com/puneetdixit200)! - fix(js-sdk): add explicit ESM extensions to RBAC admin imports
+
+- [#15571](https://github.com/medusajs/medusa/pull/15571) [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
+
 ## 2.15.5
 
 ### Patch Changes

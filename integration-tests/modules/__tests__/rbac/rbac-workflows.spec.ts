@@ -24,13 +24,11 @@ medusaIntegrationTestRunner({
   testSuite: ({ getContainer }) => {
     describe("Workflows: RBAC", () => {
       let appContainer: MedusaContainer
-      let rbacService: IRbacModuleService & { onApplicationStart: Function }
+      let rbacService: IRbacModuleService
 
       beforeAll(async () => {
         appContainer = getContainer()
-        rbacService = appContainer.resolve(
-          Modules.RBAC
-        ) as IRbacModuleService & { onApplicationStart: Function }
+        rbacService = appContainer.resolve(Modules.RBAC) as IRbacModuleService
       })
 
       describe("Role Parent and Policy Management", () => {
@@ -915,7 +913,9 @@ medusaIntegrationTestRunner({
           }
 
           expect(error).toBeDefined()
-          expect(error.message).toContain("Forbidden")
+          expect(error.message).toContain(
+            "You do not have access to some of the policies you are trying to assign."
+          )
         })
 
         it("should allow user to create roles with policies they have access to", async () => {
@@ -1161,7 +1161,7 @@ medusaIntegrationTestRunner({
           ])
 
           // Trigger sync by calling onApplicationStart
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           // Verify policies were created in database
           const policies = await rbacService.listRbacPolicies({
@@ -1208,7 +1208,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           let policies = await rbacService.listRbacPolicies({
             key: ["order:read", "order:write", "order:delete"],
@@ -1231,7 +1231,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           // Verify the removed policy is soft-deleted
           policies = await rbacService.listRbacPolicies({
@@ -1263,7 +1263,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           let policies = await rbacService.listRbacPolicies({
             resource: "customer",
@@ -1282,7 +1282,7 @@ medusaIntegrationTestRunner({
             operation: "read",
           })
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           policies = await rbacService.listRbacPolicies({
             resource: "customer",
@@ -1305,7 +1305,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           // Verify policy was restored (same ID)
           policies = await rbacService.listRbacPolicies({
@@ -1328,7 +1328,7 @@ medusaIntegrationTestRunner({
             operation: "read",
           })
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           let policies = await rbacService.listRbacPolicies({
             key: "inventory:read",
@@ -1346,7 +1346,7 @@ medusaIntegrationTestRunner({
             operation: "read",
           })
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           // Verify name was updated but ID remains the same
           policies = await rbacService.listRbacPolicies({
@@ -1372,7 +1372,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           const policies = await rbacService.listRbacPolicies({
             resource: "store",
@@ -1410,7 +1410,7 @@ medusaIntegrationTestRunner({
             operation: "read",
           })
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           // Role should now have only 1 active policy
           roleWithPolicies = await rbacService.listRbacRoles(
@@ -1435,7 +1435,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await rbacService.onApplicationStart()
+          await rbacService.__hooks?.onApplicationStart?.()
 
           // Role should have both policies again (association preserved)
           roleWithPolicies = await rbacService.listRbacRoles(

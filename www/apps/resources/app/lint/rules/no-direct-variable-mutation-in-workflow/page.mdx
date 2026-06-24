@@ -1,0 +1,67 @@
+---
+sidebar_label: "no-direct-variable-mutation-in-workflow"
+---
+
+export const metadata = {
+  title: `no-direct-variable-mutation-in-workflow - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows mutating or recomputing variables directly inside a `createWorkflow` constructor or a `when().then()` callback.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports assignments, increments, arithmetic, and template literals that use placeholder values directly in a workflow's constructor or in a `when().then()` callback.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  createStep,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const message1 = step1(input)
+  const message2 = step2(input)
+  const combined = `${message1} ${message2}`
+  return new WorkflowResponse(combined)
+})
+```
+
+Instead, derive new values inside `transform`:
+
+```ts title="src/workflows/example.ts"
+import {
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  const message1 = step1(input)
+  const message2 = step2(input)
+  const combined = transform({
+    message1, message2,
+  }, ({ message1, message2 }) => {
+    return `${message1} ${message2}`
+  })
+
+  return new WorkflowResponse(combined)
+})
+```
+
+## Why it's Important
+
+A workflow's constructor and `when().then()` callbacks run at definition time, not execution time. So, locals like step outputs and input are placeholders, not real values. Mutating or recomputing them doesn't work as expected. Use `transform` to derive new values.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule isn't auto-fixable.

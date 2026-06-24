@@ -8,6 +8,10 @@
  *     type: boolean
  *     title: carry_over_promotions
  *     description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+ *   internal_note:
+ *     type: string
+ *     title: internal_note
+ *     description: The order change's internal note.
  * 
 */
 

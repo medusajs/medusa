@@ -139,7 +139,9 @@ export const useCreateProductVariant = (
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateProductVariant) =>
-      sdk.admin.product.createVariant(productId, payload),
+      sdk.admin.product.createVariant(productId, payload, {
+        fields: "id",
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -158,7 +160,9 @@ export const useUpdateProductVariant = (
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateProductVariant) =>
-      sdk.admin.product.updateVariant(productId, variantId, payload),
+      sdk.admin.product.updateVariant(productId, variantId, payload, {
+        fields: "id",
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -228,7 +232,10 @@ export const useDeleteVariant = (
   options?: UseMutationOptions<any, FetchError, void>
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.product.deleteVariant(productId, variantId),
+    mutationFn: () =>
+      sdk.admin.product.deleteVariant(productId, variantId, undefined, {
+        fields: "id",
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
