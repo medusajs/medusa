@@ -540,6 +540,24 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Product Options",
+      "children": [
+        {
+          "type": "link",
+          "path": "product-options_productoption_schema",
+          "title": "ProductOption Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Product Tags",
       "children": [
         {
