@@ -13,12 +13,12 @@ import {
 jest.setTimeout(90000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("/admin/stores", () => {
       let store
       let container
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         container = getContainer()
         const storeModule: IStoreModuleService = container.resolve(
           Modules.STORE
@@ -40,6 +40,8 @@ medusaIntegrationTestRunner({
           ],
           default_sales_channel_id: "sc_12345",
         })
+
+        await dbUtils.snapshot()
       })
 
       // BREAKING: The URL changed from `GET /admin/store` to `GET /admin/stores`

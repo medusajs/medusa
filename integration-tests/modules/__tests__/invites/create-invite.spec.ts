@@ -10,10 +10,12 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /admin/invites", () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+        await dbUtils.snapshot()
       })
 
       it("create an invite", async () => {

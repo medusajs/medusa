@@ -18,7 +18,7 @@ const giftCardPayload = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer
     let giftCard
     let product
@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
     let cheapVariant, veryCheapVariant, expensiveVariant
     let region, salesChannel
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       const publishableKey = await generatePublishableKey(getContainer())
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -75,7 +75,11 @@ medusaIntegrationTestRunner({
       veryCheapVariant = product.variants.find((v) => v.title === "very cheap")
 
       giftCard = (
-        await api.post(`/admin/gift-cards`, { ...giftCardPayload }, adminHeaders)
+        await api.post(
+          `/admin/gift-cards`,
+          { ...giftCardPayload },
+          adminHeaders
+        )
       ).data.gift_card
 
       salesChannel = (
@@ -110,6 +114,8 @@ medusaIntegrationTestRunner({
       )
 
       cart = cart2
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /store/carts/:id/gift-cards", () => {
@@ -960,7 +966,11 @@ medusaIntegrationTestRunner({
           storeHeaders
         )
 
-        await api.post(`/store/carts/${updatedCart.id}/complete`, {}, storeHeaders)
+        await api.post(
+          `/store/carts/${updatedCart.id}/complete`,
+          {},
+          storeHeaders
+        )
 
         const { response } = await api
           .post(`/store/carts/${newCart.id}/complete`, {}, storeHeaders)

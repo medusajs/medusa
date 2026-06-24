@@ -10,13 +10,13 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseCollection
     let baseCollection1
     let baseCollection2
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       const publishableKey = await generatePublishableKey(container)
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -45,6 +45,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.collection
+
+      await dbUtils.snapshot()
     })
 
     describe("/store/collections", () => {
@@ -67,8 +69,11 @@ medusaIntegrationTestRunner({
       })
 
       describe("/store/collections", () => {
-        it('lists collections matching external_id search param', async () => {
-          const response = await api.get("/store/collections?external_id=ext-collection-01", storeHeaders)
+        it("lists collections matching external_id search param", async () => {
+          const response = await api.get(
+            "/store/collections?external_id=ext-collection-01",
+            storeHeaders
+          )
 
           expect(response.data).toEqual({
             collections: [
@@ -83,7 +88,7 @@ medusaIntegrationTestRunner({
             limit: 10,
             offset: 0,
           })
-        });
+        })
 
         it("lists collections", async () => {
           const response = await api.get("/store/collections", storeHeaders)

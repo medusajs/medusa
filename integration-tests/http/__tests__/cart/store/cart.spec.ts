@@ -46,7 +46,7 @@ const shippingAddressData = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer
 
     beforeAll(async () => {
@@ -66,7 +66,7 @@ medusaIntegrationTestRunner({
         shippingProfile,
         taxSeedData
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
@@ -163,6 +163,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.promotion
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /store/carts/[id]", () => {
