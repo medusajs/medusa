@@ -6,6 +6,9 @@ import {
 } from "@medusajs/types"
 import { ulid } from "ulid"
 
+/**
+ * An abstract class for event bus module providers. Extend this class to create a custom event bus provider.
+ */
 export abstract class AbstractEventBusModuleService
   implements EventBusTypes.IEventBusModuleService
 {
@@ -18,6 +21,9 @@ export abstract class AbstractEventBusModuleService
 
   protected interceptorSubscribers_: Set<InterceptorSubscriber> = new Set()
 
+  /**
+   * A map of event names to their registered subscriber descriptors.
+   */
   public get eventToSubscribersMap(): Map<
     string | symbol,
     EventBusTypes.SubscriberDescriptor[]
@@ -33,22 +39,63 @@ export abstract class AbstractEventBusModuleService
     this.isWorkerMode = moduleDeclaration.worker_mode !== "server"
   }
 
+  /**
+   * This method emits one or more events to the event bus.
+   *
+   * @param {EventBusTypes.Message<T> | EventBusTypes.Message<T>[]} data - The event or events to emit.
+   * @param {Record<string, unknown>} options - Options to pass to the event bus implementation.
+   * @returns {Promise<void>} Resolves when the events have been emitted.
+   *
+   * @example
+   * class MyEventBus extends AbstractEventBusModuleService {
+   *   async emit(data, options) {
+   *     const messages = Array.isArray(data) ? data : [data]
+   *     for (const message of messages) {
+   *       await this.broker.publish(message.name, message.data)
+   *     }
+   *   }
+   * }
+   */
   abstract emit<T>(
     data: EventBusTypes.Message<T> | EventBusTypes.Message<T>[],
     options: Record<string, unknown>
   ): Promise<void>
 
-  /*
-    Grouped events are useful when you have distributed transactions
-    where you need to explicitly group, release and clear events upon
-    lifecycle events of a transaction.
-  */
-  // Given a eventGroupId, all the grouped events will be released
+  /**
+   * This method releases all grouped events with the specified group ID, emitting them to the event bus.
+   *
+   * @param {string} eventGroupId - The ID of the event group to release.
+   * @returns {Promise<void>} Resolves when the grouped events have been released.
+   *
+   * @example
+   * class MyEventBus extends AbstractEventBusModuleService {
+   *   async releaseGroupedEvents(eventGroupId) {
+   *     const events = await this.store.getGroup(eventGroupId)
+   *     await this.emit(events, {})
+   *     await this.store.deleteGroup(eventGroupId)
+   *   }
+   * }
+   */
   abstract releaseGroupedEvents(eventGroupId: string): Promise<void>
 
-  // Given a eventGroupId, all the grouped events will be cleared unless eventNames are provided
-  // If eventNames are provided, only the events that match the eventNames will be cleared from the
-  // group
+  /**
+   * This method clears grouped events with the specified group ID without emitting them.
+   *
+   * @param {string} eventGroupId - The ID of the event group to clear.
+   * @param {{ eventNames?: string[] }} [options] - Options to filter which events to clear. If `eventNames` is provided, only events matching those names are cleared.
+   * @returns {Promise<void>} Resolves when the grouped events have been cleared.
+   *
+   * @example
+   * class MyEventBus extends AbstractEventBusModuleService {
+   *   async clearGroupedEvents(eventGroupId, options) {
+   *     if (options?.eventNames?.length) {
+   *       await this.store.deleteByNames(eventGroupId, options.eventNames)
+   *     } else {
+   *       await this.store.deleteGroup(eventGroupId)
+   *     }
+   *   }
+   * }
+   */
   abstract clearGroupedEvents(
     eventGroupId: string,
     options?: {
@@ -83,6 +130,19 @@ export abstract class AbstractEventBusModuleService
     ])
   }
 
+  /**
+   * This method subscribes a handler function to an event.
+   *
+   * @param {string | symbol} eventName - The name of the event to subscribe to.
+   * @param {EventBusTypes.Subscriber} subscriber - The handler function to invoke when the event is emitted.
+   * @param {EventBusTypes.SubscriberContext} [context] - Optional context used to identify the subscriber.
+   * @returns {this} The current instance for chaining.
+   *
+   * @example
+   * eventBusService.subscribe("order.placed", async (event) => {
+   *   console.log("Order placed:", event.data)
+   * })
+   */
   public subscribe(
     eventName: string | symbol,
     subscriber: EventBusTypes.Subscriber,
@@ -110,6 +170,21 @@ export abstract class AbstractEventBusModuleService
     return this
   }
 
+  /**
+   * This method removes a previously registered subscriber from an event.
+   *
+   * @param {string | symbol} eventName - The name of the event to unsubscribe from.
+   * @param {EventBusTypes.Subscriber} subscriber - The handler function to remove.
+   * @param {EventBusTypes.SubscriberContext} [context] - Optional context used to identify the subscriber.
+   * @returns {this} The current instance for chaining.
+   *
+   * @example
+   * const handler = async (event) => {
+   *   console.log("Order placed:", event.data)
+   * }
+   * eventBusService.subscribe("order.placed", handler)
+   * eventBusService.unsubscribe("order.placed", handler)
+   */
   unsubscribe(
     eventName: string | symbol,
     subscriber: EventBusTypes.Subscriber,
