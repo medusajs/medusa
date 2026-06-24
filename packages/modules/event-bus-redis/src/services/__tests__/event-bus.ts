@@ -1089,6 +1089,28 @@ describe("RedisEventBusService", () => {
         expect(test).toEqual(["success"])
       })
 
+      it("should revive published_at as a Date after JSON serialization", async () => {
+        const publishedAt = "2026-06-20T12:00:00.000Z"
+        let receivedPublishedAt: unknown
+
+        eventBus.subscribe("eventName", (event) => {
+          receivedPublishedAt = event.metadata?.published_at
+          return Promise.resolve()
+        })
+
+        await eventBus.worker_({
+          name: "eventName",
+          data: {
+            data: { test: 1 },
+            metadata: { published_at: publishedAt },
+          },
+          opts: { attempts: 1 },
+        } as any)
+
+        expect(receivedPublishedAt).toBeInstanceOf(Date)
+        expect(receivedPublishedAt).toEqual(new Date(publishedAt))
+      })
+
       it("should process event with failing subscribers", async () => {
         const test: string[] = []
 
