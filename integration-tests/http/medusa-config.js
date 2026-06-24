@@ -31,11 +31,17 @@ const customPaymentProvider = {
   id: "default_2",
 }
 
+const customPaymentProviderAccountHolder = {
+  resolve: require("./dist/utils/providers/payment-account-holder").default,
+  id: "test",
+}
+
 const modules = {
   [Modules.PAYMENT]: {
     resolve: "@medusajs/payment",
+    /** @type {import('@medusajs/payment').PaymentModuleOptions} */
     options: {
-      providers: [customPaymentProvider],
+      providers: [customPaymentProvider, customPaymentProviderAccountHolder],
     },
   },
   [Modules.FULFILLMENT]: {
