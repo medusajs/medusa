@@ -40,6 +40,22 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.groupedEventsMap_ = new Map()
   }
 
+  private logProcessingEvent(
+    eventData: Message,
+    options: Record<string, unknown> = {},
+    totalSubscribers: number
+  ) {
+    if (
+      totalSubscribers &&
+      !options?.internal &&
+      !eventData.options?.internal
+    ) {
+      this.logger_.info(
+        `Processing ${eventData.name} which has ${totalSubscribers} subscribers`
+      )
+    }
+  }
+
   /**
    * Accept an event name and some options
    *
@@ -107,14 +123,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
         const totalSubscribers =
           eventListenersCount + (hasStarSubscriber ? 1 : 0)
-
-        if (!options?.internal && !eventData.options?.internal) {
-          this.logEventProcessing(this.logger_, {
-            name: publishedEventBody.name,
-            metadata: publishedEventBody.metadata,
-            subscriberCount: totalSubscribers,
-          })
-        }
+        this.logProcessingEvent(eventData, options, totalSubscribers)
       })
     }
   }
@@ -169,14 +178,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
         const totalSubscribers =
           eventListenersCount + (hasStarSubscriber ? 1 : 0)
-
-        if (!options?.internal && !event.options?.internal) {
-          this.logEventProcessing(this.logger_, {
-            name: publishedEventBody.name,
-            metadata: publishedEventBody.metadata,
-            subscriberCount: totalSubscribers,
-          })
-        }
+        this.logProcessingEvent(event, options, totalSubscribers)
       })
     }
 

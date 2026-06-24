@@ -1099,19 +1099,13 @@ describe("RedisEventBusService", () => {
 
         await eventBus.worker_({
           name: "eventName",
-          data: {
-            data: { test: 1 },
-            metadata: {
-              created_at: "2026-06-20T10:00:00.000Z",
-              published_at: "2026-06-20T11:00:00.000Z",
-            },
-          },
+          data: { data: { test: 1 } },
           opts: { attempts: 1 },
         } as any)
 
         expect(loggerMock.info).toHaveBeenCalledTimes(1)
         expect(loggerMock.info).toHaveBeenCalledWith(
-          "Processing eventName (created_at: 2026-06-20T10:00:00.000Z, published_at: 2026-06-20T11:00:00.000Z) which has 1 subscribers"
+          "Processing eventName which has 1 subscribers"
         )
 
         expect(test).toEqual(["success"])

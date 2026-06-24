@@ -411,8 +411,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const isFinalAttempt = currentAttempt === configuredAttempts
 
-    const metadata = this.reviveEventMetadataDates(data.metadata)
-
     if (!opts.internal) {
       if (isRetry) {
         if (isFinalAttempt) {
@@ -423,17 +421,17 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           `Retrying ${name} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
         )
       } else {
-        this.logEventProcessing(this.logger_, {
-          name,
-          metadata,
-          subscriberCount: eventSubscribers.length,
-          details:
-            opts.priority != undefined ? { priority: opts.priority } : undefined,
-        })
+        const prioirityInfo =
+          opts.priority != undefined ? ` (priority: ${opts.priority})` : ""
+        this.logger_.info(
+          `Processing ${name}${prioirityInfo} which has ${eventSubscribers.length} subscribers`
+        )
       }
     }
 
     const completedSubscribersInCurrentAttempt: string[] = []
+
+    const metadata = this.reviveEventMetadataDates(data.metadata)
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
