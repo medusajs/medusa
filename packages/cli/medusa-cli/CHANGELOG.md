@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.17.0
+
+### Patch Changes
+
+- [#15748](https://github.com/medusajs/medusa/pull/15748) [`68b31157c3f9bbbfb970abdf58f79d4c57d792d5`](https://github.com/medusajs/medusa/commit/68b31157c3f9bbbfb970abdf58f79d4c57d792d5) Thanks [@peterlgh7](https://github.com/peterlgh7)! - Log single error log line
+
+- Updated dependencies [[`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/utils@2.17.0
+  - @medusajs/deps@2.17.0
+  - @medusajs/telemetry@2.17.0
+
 ## 2.16.0
 
 ### Patch Changes

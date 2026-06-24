@@ -1,5 +1,41 @@
 # @medusajs/dashboard
 
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(dashboard,admin-shared): product option redesign (client-side)
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(): allow linking a subset of an option's values to the product
+
+### Patch Changes
+
+- [#15791](https://github.com/medusajs/medusa/pull/15791) [`c11326f633e667c8bc9d33ad2cf2d84b7a9f8935`](https://github.com/medusajs/medusa/commit/c11326f633e667c8bc9d33ad2cf2d84b7a9f8935) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard): allow already registered actor to accept admin invite
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,core-flows,product,js-sdk,types,medusa): rework product option values views and add dedicated endpoints
+
+- [#15750](https://github.com/medusajs/medusa/pull/15750) [`213455d6c62aa005723c8d438c0cf2797b9c3743`](https://github.com/medusajs/medusa/commit/213455d6c62aa005723c8d438c0cf2797b9c3743) Thanks [@merkelis-p](https://github.com/merkelis-p)! - Fix Rules of Hooks violation in the admin sidebar `NavItem`. `useTranslation`
+  was called inside `items.map()` (suppressed with an
+  `eslint-disable react-hooks/rules-of-hooks`), so the number of hooks rendered by
+  `NavItem` varied with the sub-item list length and the dashboard crashed with
+  "Rendered more hooks than during the previous render" whenever the menu changed
+  at runtime. The mapped row is extracted into a `NavItemSubItem` component that
+  owns its own `useTranslation` call.
+
+- [#15735](https://github.com/medusajs/medusa/pull/15735) [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard,js-sdk): exclude unnecessary relations from variants mutation responses in dashboard
+
+- [#15751](https://github.com/medusajs/medusa/pull/15751) [`f266d9808a36a8e28da4d7781b5e46c4b52522ef`](https://github.com/medusajs/medusa/commit/f266d9808a36a8e28da4d7781b5e46c4b52522ef) Thanks [@merkelis-p](https://github.com/merkelis-p)! - Fix a Rules of Hooks violation in `UserLink`'s `By` component: `useUser` and
+  `useCustomer` were called after an early `return null` (suppressed with
+  `eslint-disable react-hooks/rules-of-hooks`), so the hook count could change
+  between renders of the same instance. The hooks now run unconditionally before
+  the early return — the existing `{ enabled }` flags already prevent fetching for
+  the branch that does not apply, so behaviour is unchanged.
+- Updated dependencies [[`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/admin-shared@2.17.0
+  - @medusajs/js-sdk@2.17.0
+  - @medusajs/icons@2.17.0
+  - @medusajs/ui@4.1.17
+
 ## 2.16.0
 
 ### Patch Changes

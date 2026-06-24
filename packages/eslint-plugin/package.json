@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/eslint-plugin",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "description": "Official ESLint plugin for Medusa projects. Enforces Medusa's framework conventions across API routes, modules, workflows, subscribers, jobs, admin extensions, and module links.",
   "repository": {
     "type": "git",

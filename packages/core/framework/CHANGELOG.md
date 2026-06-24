@@ -1,5 +1,21 @@
 # @medusajs/framework
 
+## 2.17.0
+
+### Patch Changes
+
+- [#15749](https://github.com/medusajs/medusa/pull/15749) [`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a) Thanks [@peterlgh7](https://github.com/peterlgh7)! - handle bodyparser errors
+
+- Updated dependencies [[`68b31157c3f9bbbfb970abdf58f79d4c57d792d5`](https://github.com/medusajs/medusa/commit/68b31157c3f9bbbfb970abdf58f79d4c57d792d5), [`2221e527701c7a47f243d808b0f4fe8c7f44f2f8`](https://github.com/medusajs/medusa/commit/2221e527701c7a47f243d808b0f4fe8c7f44f2f8), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/cli@2.17.0
+  - @medusajs/types@2.17.0
+  - @medusajs/utils@2.17.0
+  - @medusajs/modules-sdk@2.17.0
+  - @medusajs/orchestration@2.17.0
+  - @medusajs/workflows-sdk@2.17.0
+  - @medusajs/deps@2.17.0
+  - @medusajs/telemetry@2.17.0
+
 ## 2.16.0
 
 ### Patch Changes
