@@ -1,0 +1,35 @@
+---
+slug: /references/medusa-workflows/steps/addProductOptionsToProductStep
+sidebar_label: addProductOptionsToProductStep
+tags:
+  - product
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# addProductOptionsToProductStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `addProductOptionsToProductStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step adds product options to products.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { addProductOptionsToProductStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = addProductOptionsToProductStep({
+      "product_option_id": "{value}",
+      "product_id": "prod_123"
+    })
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"AddProductOptionsToProductStepInput","type":"[AddProductOptionsToProductStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.AddProductOptionsToProductStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"product_option_id","type":"`string`","description":"The product option's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"product_id","type":"`string`","description":"The product's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"product_option_value_ids","type":"`string`[]","description":"The IDs of specific option values to link. If not provided, all values will be linked.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addProductOptionsToProductStep"/>

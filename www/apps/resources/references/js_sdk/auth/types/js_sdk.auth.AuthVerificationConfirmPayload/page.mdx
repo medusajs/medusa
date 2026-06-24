@@ -2,7 +2,7 @@ import { TypeList } from "docs-ui"
 
 # AuthVerificationConfirmPayload
 
-Payload used to confirm a verification token.
+Payload used to confirm a verification code.
 
 :::note
 
@@ -10,10 +10,36 @@ This is available starting from [Medusa v2.15.5](https://github.com/medusajs/med
 
 :::
 
-## token
+## code
 
-The verification token delivered to the user.
+The verification code delivered to the user, such as an OTP or pseudorandom token.
 
-## token
+___
 
-The verification token delivered to the user.
+## code\_provider
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+The verification provider to use. Defaults to `token`.
+
+## code
+
+The verification code delivered to the user, such as an OTP or pseudorandom token.
+
+___
+
+## code\_provider
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+The verification provider to use. Defaults to `token`.

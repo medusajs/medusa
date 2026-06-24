@@ -1,12 +1,12 @@
 {
-	"id": 335,
+	"id": 337,
 	"name": "api-key-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 336,
+			"id": 338,
 			"name": "ApiKey",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,7 +18,7 @@
 					"fileName": "api-key.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L3"
 				}
 			],
 			"type": {
@@ -38,14 +38,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 337,
+									"id": 339,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 338,
+											"id": 340,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,7 +63,7 @@
 													"fileName": "api-key.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L5"
 												}
 											],
 											"type": {
@@ -89,7 +89,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 339,
+											"id": 341,
 											"name": "token",
 											"variant": "declaration",
 											"kind": 1024,
@@ -107,7 +107,7 @@
 													"fileName": "api-key.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L6"
 												}
 											],
 											"type": {
@@ -122,7 +122,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 340,
+											"id": 342,
 											"name": "salt",
 											"variant": "declaration",
 											"kind": 1024,
@@ -140,7 +140,7 @@
 													"fileName": "api-key.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L7"
 												}
 											],
 											"type": {
@@ -155,7 +155,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 341,
+											"id": 343,
 											"name": "redacted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -173,7 +173,7 @@
 													"fileName": "api-key.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L8"
 												}
 											],
 											"type": {
@@ -188,7 +188,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 342,
+											"id": 344,
 											"name": "title",
 											"variant": "declaration",
 											"kind": 1024,
@@ -206,7 +206,7 @@
 													"fileName": "api-key.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L9"
 												}
 											],
 											"type": {
@@ -221,7 +221,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 343,
+											"id": 345,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -239,7 +239,7 @@
 													"fileName": "api-key.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L10"
 												}
 											],
 											"type": {
@@ -269,7 +269,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 344,
+											"id": 346,
 											"name": "last_used_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -289,7 +289,7 @@
 													"fileName": "api-key.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L11"
 												}
 											],
 											"type": {
@@ -304,7 +304,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 345,
+											"id": 347,
 											"name": "created_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -322,7 +322,7 @@
 													"fileName": "api-key.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L12"
 												}
 											],
 											"type": {
@@ -337,7 +337,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 346,
+											"id": 348,
 											"name": "revoked_by",
 											"variant": "declaration",
 											"kind": 1024,
@@ -357,7 +357,7 @@
 													"fileName": "api-key.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L13"
 												}
 											],
 											"type": {
@@ -372,7 +372,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 347,
+											"id": 349,
 											"name": "revoked_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -392,7 +392,7 @@
 													"fileName": "api-key.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L14"
 												}
 											],
 											"type": {
@@ -411,8 +411,6 @@
 										{
 											"title": "Properties",
 											"children": [
-												338,
-												339,
 												340,
 												341,
 												342,
@@ -420,7 +418,9 @@
 												344,
 												345,
 												346,
-												347
+												347,
+												348,
+												349
 											]
 										}
 									],
@@ -429,7 +429,7 @@
 											"fileName": "api-key.ts",
 											"line": 4,
 											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/modules/api-key/src/models/api-key.ts#L4"
+											"url": "https://github.com/medusajs/medusa/blob/b9f64590e75a037f97760b6bfe5bef715f4e5938/packages/modules/api-key/src/models/api-key.ts#L4"
 										}
 									]
 								}
@@ -453,61 +453,61 @@
 		{
 			"title": "Variables",
 			"children": [
-				336
+				338
 			]
 		}
 	],
 	"packageName": "@medusajs/api-key",
 	"symbolIdMap": {
-		"335": {
+		"337": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"336": {
+		"338": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "ApiKey"
 		},
-		"337": {
+		"339": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object"
 		},
-		"338": {
+		"340": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.id"
 		},
-		"339": {
+		"341": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.token"
 		},
-		"340": {
+		"342": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.salt"
 		},
-		"341": {
+		"343": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.redacted"
 		},
-		"342": {
+		"344": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.title"
 		},
-		"343": {
+		"345": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.type"
 		},
-		"344": {
+		"346": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.last_used_at"
 		},
-		"345": {
+		"347": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.created_by"
 		},
-		"346": {
+		"348": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.revoked_by"
 		},
-		"347": {
+		"349": {
 			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
 			"qualifiedName": "__object.revoked_at"
 		}
@@ -517,7 +517,7 @@
 			"1": "../../../../packages/modules/api-key/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 335
+			"1": 337
 		}
 	}
 }
