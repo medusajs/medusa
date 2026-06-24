@@ -72,10 +72,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
 
     for (const eventData of normalizedEventsData.map((event) => ({
       ...event,
-      metadata: {
-        ...event.metadata,
-        created_at: new Date(),
-      },
+      metadata: this.withCreatedAtMetadata(event.metadata),
     }))) {
       await this.groupOrEmitEvent({
         ...eventData,
@@ -107,17 +104,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       delay(options_?.delay).then(async () => {
         const publishedEventBody = {
           ...eventBody,
-          metadata: {
-            ...eventBody.metadata,
-            ...(eventBody.metadata?.created_at != null
-              ? {
-                  created_at: new Date(
-                    eventBody.metadata.created_at as string | Date
-                  ),
-                }
-              : {}),
-            published_at: new Date(),
-          },
+          metadata: this.withPublishedAtMetadata(eventBody.metadata),
         }
 
         // Call interceptors before emitting
@@ -170,17 +157,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       delay(options_?.delay).then(async () => {
         const publishedEventBody = {
           ...eventBody,
-          metadata: {
-            ...eventBody.metadata,
-            ...(eventBody.metadata?.created_at != null
-              ? {
-                  created_at: new Date(
-                    eventBody.metadata.created_at as string | Date
-                  ),
-                }
-              : {}),
-            published_at: new Date(),
-          },
+          metadata: this.withPublishedAtMetadata(eventBody.metadata),
         }
 
         // Call interceptors before emitting grouped events

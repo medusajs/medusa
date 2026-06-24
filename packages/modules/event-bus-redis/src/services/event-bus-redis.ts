@@ -201,10 +201,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     let eventsDataArray = (Array.isArray(eventsData) ? eventsData : [eventsData]).map(
       (eventData) => ({
         ...eventData,
-        metadata: {
-          ...eventData.metadata,
-          created_at: new Date(),
-        },
+        metadata: this.withCreatedAtMetadata(eventData.metadata),
       })
     )
 
@@ -234,10 +231,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     if (eventsToEmit.length) {
       const publishedEvents = eventsToEmit.map((eventData) => ({
         ...eventData,
-        metadata: {
-          ...eventData.metadata,
-          published_at: new Date(),
-        },
+        metadata: this.withPublishedAtMetadata(eventData.metadata),
       }))
 
       publishedEvents.map((eventData) =>
@@ -311,17 +305,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       ...jobData,
       data: {
         ...jobData.data,
-        metadata: {
-          ...jobData.data.metadata,
-          ...(jobData.data.metadata?.created_at != null
-            ? {
-                created_at: new Date(
-                  jobData.data.metadata.created_at as string | Date
-                ),
-              }
-            : {}),
-          published_at: new Date(),
-        },
+        metadata: this.withPublishedAtMetadata(jobData.data.metadata),
       },
     }))
 
@@ -447,17 +431,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const completedSubscribersInCurrentAttempt: string[] = []
 
-    const metadata = data.metadata
-      ? {
-          ...data.metadata,
-          ...(data.metadata.created_at != null
-            ? { created_at: new Date(data.metadata.created_at) }
-            : {}),
-          ...(data.metadata.published_at != null
-            ? { published_at: new Date(data.metadata.published_at) }
-            : {}),
-        }
-      : data.metadata
+    const metadata = this.reviveEventMetadataDates(data.metadata)
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {

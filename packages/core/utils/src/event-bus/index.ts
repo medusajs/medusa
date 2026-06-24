@@ -1,5 +1,6 @@
 import {
   EventBusTypes,
+  EventMetadata,
   InterceptorSubscriber,
   InternalModuleDeclaration,
 } from "@medusajs/types"
@@ -178,6 +179,61 @@ export abstract class AbstractEventBusModuleService
         console.error("Error in event bus interceptor:", error)
       }
     })
+  }
+
+  /**
+   * Adds `created_at` to event metadata when an event is emitted.
+   */
+  protected withCreatedAtMetadata(
+    metadata?: EventMetadata
+  ): EventMetadata {
+    return {
+      ...metadata,
+      created_at: new Date(),
+    }
+  }
+
+  /**
+   * Adds `published_at` to event metadata when an event is published to subscribers.
+   * Also revives `created_at` if present (e.g. after JSON serialization).
+   */
+  protected withPublishedAtMetadata(
+    metadata?: EventMetadata
+  ): EventMetadata {
+    return {
+      ...metadata,
+      ...(metadata?.created_at != null
+        ? {
+            created_at: new Date(metadata.created_at as string | Date),
+          }
+        : {}),
+      published_at: new Date(),
+    }
+  }
+
+  /**
+   * Revives date metadata fields after JSON serialization.
+   */
+  protected reviveEventMetadataDates(
+    metadata?: EventMetadata
+  ): EventMetadata | undefined {
+    if (!metadata) {
+      return metadata
+    }
+
+    return {
+      ...metadata,
+      ...(metadata.created_at != null
+        ? {
+            created_at: new Date(metadata.created_at as string | Date),
+          }
+        : {}),
+      ...(metadata.published_at != null
+        ? {
+            published_at: new Date(metadata.published_at as string | Date),
+          }
+        : {}),
+    }
   }
 }
 
