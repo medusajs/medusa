@@ -43,12 +43,6 @@ export const GET = async (
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
   const filterableFields = req.filterableFields
 
-  if (filterableFields.value) {
-    filterableFields[queryConfig.valueAttr] = filterableFields.value
-
-    delete filterableFields.value
-  }
-
   validateRuleType(ruleType)
   validateRuleAttribute({
     ruleType: ruleType as RuleTypeValues,
@@ -60,6 +54,16 @@ export const GET = async (
         | ApplicationMethodTargetTypeValues
         | undefined,
   })
+
+  // `queryConfig` is only defined for valid rule attributes, so it must be used
+  // after `validateRuleAttribute`. Otherwise an invalid `rule_attribute_id`
+  // combined with a `value` filter dereferences `undefined` and throws a 500
+  // instead of returning the proper 400 for the invalid attribute.
+  if (filterableFields.value) {
+    filterableFields[queryConfig.valueAttr] = filterableFields.value
+
+    delete filterableFields.value
+  }
 
   if (filterableFields.application_method_target_type) {
     delete filterableFields.application_method_target_type
