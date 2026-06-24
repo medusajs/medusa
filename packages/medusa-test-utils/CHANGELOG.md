@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.17.0
+
+### Patch Changes
+
+- [#15805](https://github.com/medusajs/medusa/pull/15805) [`06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9`](https://github.com/medusajs/medusa/commit/06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9) Thanks [@sradevski](https://github.com/sradevski)! - Use db snapshotting/templates for faster test runs
+
+- Updated dependencies [[`f2d563a56b5f70834e113998ad36bcab30824cf8`](https://github.com/medusajs/medusa/commit/f2d563a56b5f70834e113998ad36bcab30824cf8), [`5770fe15c8b63407705cb96d0e77c6f7c76b5219`](https://github.com/medusajs/medusa/commit/5770fe15c8b63407705cb96d0e77c6f7c76b5219), [`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/medusa@2.17.0
+  - @medusajs/core-flows@2.17.0
+  - @medusajs/framework@2.17.0
+
 ## 2.16.0
 
 ### Patch Changes

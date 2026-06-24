@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-google",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "description": "Google OAuth authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -26,14 +26,14 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.16.0"
+    "@medusajs/framework": "2.17.0"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.16.0"
+    "@medusajs/framework": "2.17.0"
   },
   "keywords": [
     "medusa-provider",

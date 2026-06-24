@@ -1,5 +1,14 @@
 # @medusajs/workflow-engine-inmemory
 
+## 2.17.0
+
+### Patch Changes
+
+- [#15805](https://github.com/medusajs/medusa/pull/15805) [`06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9`](https://github.com/medusajs/medusa/commit/06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9) Thanks [@sradevski](https://github.com/sradevski)! - Use db snapshotting/templates for faster test runs
+
+- Updated dependencies [[`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a)]:
+  - @medusajs/framework@2.17.0
+
 ## 2.16.0
 
 ### Patch Changes

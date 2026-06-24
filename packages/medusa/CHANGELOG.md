@@ -1,5 +1,74 @@
 # Change Log
 
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(medusa,product,core-flows,types): product options redesign (server-side)
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(): allow linking a subset of an option's values to the product
+
+### Patch Changes
+
+- [#15776](https://github.com/medusajs/medusa/pull/15776) [`f2d563a56b5f70834e113998ad36bcab30824cf8`](https://github.com/medusajs/medusa/commit/f2d563a56b5f70834e113998ad36bcab30824cf8) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa): maintain ESLint config detection
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,core-flows,product,js-sdk,types,medusa): rework product option values views and add dedicated endpoints
+
+- Updated dependencies [[`c97a2ecaf4d29d16a1a8541b07722163d5015160`](https://github.com/medusajs/medusa/commit/c97a2ecaf4d29d16a1a8541b07722163d5015160), [`5770fe15c8b63407705cb96d0e77c6f7c76b5219`](https://github.com/medusajs/medusa/commit/5770fe15c8b63407705cb96d0e77c6f7c76b5219), [`2221e527701c7a47f243d808b0f4fe8c7f44f2f8`](https://github.com/medusajs/medusa/commit/2221e527701c7a47f243d808b0f4fe8c7f44f2f8), [`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6617a612ef57a0fa1b5fdea72b10e78205af56e9`](https://github.com/medusajs/medusa/commit/6617a612ef57a0fa1b5fdea72b10e78205af56e9), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9`](https://github.com/medusajs/medusa/commit/06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9)]:
+  - @medusajs/caching@2.17.0
+  - @medusajs/core-flows@2.17.0
+  - @medusajs/file-s3@2.17.0
+  - @medusajs/framework@2.17.0
+  - @medusajs/product@2.17.0
+  - @medusajs/order@2.17.0
+  - @medusajs/workflow-engine-inmemory@2.17.0
+  - @medusajs/draft-order@2.17.0
+  - @medusajs/admin-bundler@2.17.0
+  - @medusajs/event-bus-redis@2.17.0
+  - @medusajs/analytics@2.17.0
+  - @medusajs/api-key@2.17.0
+  - @medusajs/auth@2.17.0
+  - @medusajs/cache-inmemory@2.17.0
+  - @medusajs/cache-redis@2.17.0
+  - @medusajs/cart@2.17.0
+  - @medusajs/currency@2.17.0
+  - @medusajs/customer@2.17.0
+  - @medusajs/event-bus-local@2.17.0
+  - @medusajs/file@2.17.0
+  - @medusajs/fulfillment@2.17.0
+  - @medusajs/index@2.17.0
+  - @medusajs/inventory@2.17.0
+  - @medusajs/link-modules@2.17.0
+  - @medusajs/locking@2.17.0
+  - @medusajs/notification@2.17.0
+  - @medusajs/payment@2.17.0
+  - @medusajs/pricing@2.17.0
+  - @medusajs/promotion@2.17.0
+  - @medusajs/analytics-local@2.17.0
+  - @medusajs/analytics-posthog@2.17.0
+  - @medusajs/auth-emailpass@2.17.0
+  - @medusajs/auth-github@2.17.0
+  - @medusajs/auth-google@2.17.0
+  - @medusajs/caching-redis@2.17.0
+  - @medusajs/file-local@2.17.0
+  - @medusajs/fulfillment-manual@2.17.0
+  - @medusajs/locking-postgres@2.17.0
+  - @medusajs/locking-redis@2.17.0
+  - @medusajs/notification-local@2.17.0
+  - @medusajs/notification-sendgrid@2.17.0
+  - @medusajs/payment-stripe@2.17.0
+  - @medusajs/rbac@2.17.0
+  - @medusajs/region@2.17.0
+  - @medusajs/sales-channel@2.17.0
+  - @medusajs/settings@2.17.0
+  - @medusajs/stock-location@2.17.0
+  - @medusajs/store@2.17.0
+  - @medusajs/tax@2.17.0
+  - @medusajs/translation@2.17.0
+  - @medusajs/user@2.17.0
+  - @medusajs/workflow-engine-redis@2.17.0
+  - @medusajs/telemetry@2.17.0
+
 ## 2.16.0
 
 ### Minor Changes

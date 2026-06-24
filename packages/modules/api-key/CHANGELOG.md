@@ -1,5 +1,12 @@
 # @medusajs/api-key
 
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies [[`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a)]:
+  - @medusajs/framework@2.17.0
+
 ## 2.16.0
 
 ### Patch Changes

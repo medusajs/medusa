@@ -1,5 +1,18 @@
 # @medusajs/loyalty-plugin
 
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies [[`68b31157c3f9bbbfb970abdf58f79d4c57d792d5`](https://github.com/medusajs/medusa/commit/68b31157c3f9bbbfb970abdf58f79d4c57d792d5), [`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a), [`c11326f633e667c8bc9d33ad2cf2d84b7a9f8935`](https://github.com/medusajs/medusa/commit/c11326f633e667c8bc9d33ad2cf2d84b7a9f8935), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`213455d6c62aa005723c8d438c0cf2797b9c3743`](https://github.com/medusajs/medusa/commit/213455d6c62aa005723c8d438c0cf2797b9c3743), [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9`](https://github.com/medusajs/medusa/commit/06358e3a3b4bebf8b2cf5e6f9227a63b84937fb9), [`f266d9808a36a8e28da4d7781b5e46c4b52522ef`](https://github.com/medusajs/medusa/commit/f266d9808a36a8e28da4d7781b5e46c4b52522ef)]:
+  - @medusajs/cli@2.17.0
+  - @medusajs/framework@2.17.0
+  - @medusajs/dashboard@2.17.0
+  - @medusajs/test-utils@2.17.0
+  - @medusajs/admin-sdk@2.17.0
+  - @medusajs/icons@2.17.0
+  - @medusajs/ui@4.1.17
+
 ## 2.16.0
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @medusajs/utils
 
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(): allow linking a subset of an option's values to the product
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.17.0
+
 ## 2.16.0
 
 ### Patch Changes
