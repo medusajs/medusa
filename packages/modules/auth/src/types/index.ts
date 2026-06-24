@@ -97,6 +97,8 @@ export type TotpMfaProviderOptions = {
 export interface MedusaCloudAuthProviderOptions {
   oauth_authorize_endpoint: string
   oauth_token_endpoint: string
+  oauth_jwks_uri: string
+  oauth_audience: string
   environment_handle: string
   sandbox_handle: string
   api_key: string

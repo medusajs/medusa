@@ -96,7 +96,7 @@ async function getForDbName({
   } catch (e) {
     if (verbose) {
       logMessage({
-        message: `The following error occured when connecting to the database: ${e}`,
+        message: `The following error occurred when connecting to the database: ${e}`,
         type: "verbose",
       })
     }
@@ -204,7 +204,7 @@ async function getForDbUrl({
   } catch (e) {
     if (verbose) {
       logMessage({
-        message: `The following error occured when connecting to the database: ${e}`,
+        message: `The following error occurred when connecting to the database: ${e}`,
         type: "verbose",
       })
     }

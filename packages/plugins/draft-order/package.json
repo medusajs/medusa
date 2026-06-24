@@ -36,7 +36,8 @@
     "build": "medusa plugin:build",
     "dev": "medusa plugin:develop",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "link:watch": "medusa plugin:publish && medusa plugin:develop"
+    "link:watch": "medusa plugin:publish && medusa plugin:develop",
+    "watch": "medusa plugin:develop"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.15",

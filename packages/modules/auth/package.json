@@ -44,6 +44,8 @@
     "@otplib/plugin-crypto-node": "^13.4.0",
     "@otplib/totp": "^13.4.0",
     "@otplib/uri": "^13.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
     "scrypt-kdf": "^2.0.1"
   },
   "peerDependencies": {

@@ -4255,6 +4255,81 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should not generate tax lines for gift card products when taxes are recalculated", async () => {
+          const giftCardProduct = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "Gift Card",
+                description: "test",
+                status: ProductStatus.PUBLISHED,
+                is_giftcard: true,
+                options: [
+                  {
+                    title: "Denomination",
+                    values: ["10", "20", "50", "100"],
+                  },
+                ],
+                variants: [
+                  {
+                    title: "10",
+                    sku: "special-shirt",
+                    options: {
+                      Denomination: "10",
+                    },
+                    manage_inventory: false,
+                    prices: [
+                      {
+                        amount: 1000,
+                        currency_code: "usd",
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            { variant_id: giftCardProduct.variants[0].id, quantity: 1 },
+            storeHeaders
+          )
+
+          // Forces tax recalculation through updateTaxLinesWorkflow, which
+          // re-fetches the cart's items before filtering out gift cards.
+          const recalculated = await api.post(
+            `/store/carts/${cart.id}/taxes?fields=+items.is_giftcard`,
+            {},
+            storeHeaders
+          )
+
+          expect(recalculated.status).toEqual(200)
+          expect(recalculated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  is_giftcard: false,
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "CA Default Rate",
+                      code: "CADEFAULT",
+                      rate: 5,
+                      provider_id: "system",
+                    }),
+                  ],
+                }),
+                expect.objectContaining({
+                  is_giftcard: true,
+                  tax_lines: [],
+                }),
+              ]),
+            })
+          )
+        })
+
         it("should update a cart's region, sales channel, customer data and tax lines", async () => {
           const newSalesChannel = (
             await api.post(

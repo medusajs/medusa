@@ -112,6 +112,8 @@ module.exports = {
 
           path.join(__dirname, "./packages/deps/tsconfig.json"),
 
+          path.join(__dirname, "./packages/eslint-plugin/tsconfig.json"),
+
           path.join(__dirname, "./packages/design-system/icons/tsconfig.json"),
           path.join(
             __dirname,

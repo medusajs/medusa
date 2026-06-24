@@ -2,11 +2,11 @@ name: DX Triage Doc Fixes
 
 on:
   schedule:
-    - cron: "0 9 * * 0" # Every Sunday at 09:00 UTC
+    - cron: "0 9 * * *" # Every day at 09:00 UTC
   workflow_dispatch:
     inputs:
       all_issues:
-        description: "Process ALL triage issues (not just the past 7 days)"
+        description: "Process ALL triage issues (not just the past 24 hours)"
         type: boolean
         default: false
         required: false
@@ -37,8 +37,8 @@ jobs:
       - name: Compute date cutoff
         id: date
         run: |
-          CUTOFF=$(date -d '7 days ago' --utc +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || \
-                   date -v -7d -u +%Y-%m-%dT%H:%M:%SZ)
+          CUTOFF=$(date -d '24 hours ago' --utc +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || \
+                   date -v -24H -u +%Y-%m-%dT%H:%M:%SZ)
           echo "cutoff=$CUTOFF" >> $GITHUB_OUTPUT
 
       - name: Checkout or create triage fixes branch
@@ -88,7 +88,7 @@ jobs:
             - Team: DX
             - Status: Triage
 
-            ${{ inputs.all_issues == true && 'DATE FILTER: Process ALL triage issues regardless of when they were created.' || format('DATE FILTER: Only process issues created after {0}. Skip any issue with a createdAt timestamp earlier than this date.', steps.date.outputs.cutoff) }}
+            ${{ inputs.all_issues == true && 'DATE FILTER: Process ALL triage issues regardless of when they were created.' || format('DATE FILTER: Only process issues created in the last 24 hours (after {0}). Skip any issue with a createdAt timestamp earlier than this date.', steps.date.outputs.cutoff) }}
 
             ## Step 2 — Filter issues
 

@@ -1358,6 +1358,7 @@ describe("buildSchemaObjectRepresentation", () => {
       "price-service.price-set.created",
       "price-service.price-set.updated",
       "price-service.price-set.deleted",
+      "price-service.price-set.restored",
     ])
     expect(objectRepresentation["PriceSet"].parents).toEqual([
       {

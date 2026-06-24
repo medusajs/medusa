@@ -174,7 +174,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
           token: ${{ secrets.REFERENCE_PAT }}
           commit-message: "chore(docs): automated cloud documentation update"

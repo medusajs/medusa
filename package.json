@@ -65,6 +65,7 @@
     "@types/yargs": "^15.0.15",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
+    "@typescript-eslint/rule-tester": "^8.0.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^0.32.2",
     "ajv": "^8.17.1",

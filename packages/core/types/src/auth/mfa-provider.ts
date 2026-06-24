@@ -10,7 +10,7 @@ import { AuthTypes, Context } from ".."
  * 
  * @ignore
  * 
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface IAuthMfaProvider {
   /**
@@ -105,7 +105,7 @@ export interface IAuthMfaProvider {
  * }
  * ```
  * 
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface AuthMfaProvider extends IAuthMfaProvider {
   /**
@@ -369,7 +369,7 @@ export interface AuthMfaProvider extends IAuthMfaProvider {
  * }
  * ```
  * 
- * @since 2.15.6
+ * @since 2.16.0
  */
 export interface RecoveryCodeAuthMfaProvider extends IAuthMfaProvider {
   /**

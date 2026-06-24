@@ -81,18 +81,21 @@ export class PaymentCollection {
    * [Mark as Paid](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid)
    * API route.
    * 
-   * The API route creates and authorizes a payment session, then capture its payment, 
-   * using the manual payment provider.
-   * 
+   * The API route creates and authorizes a payment session, then capture its payment.
+   * It uses the manual payment provider by default, or the provider passed in
+   * `provider_id` to record the captured payment under a specific provider.
+   *
    * @param id - The payment collection to mark as paid.
    * @param body - The details to mark the payment collection as paid.
    * @param query - Configure the fields to retrieve in the payment collection.
    * @param headers - Headers to pass in the request.
    * @returns The payment collection's details.
-   * 
+   *
    * @example
    * sdk.admin.paymentCollection.markAsPaid("paycol_123", {
-   *   order_id: "order_123"
+   *   order_id: "order_123",
+   *   // optional: record the payment under a specific provider
+   *   provider_id: "pp_system_default"
    * })
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection)
