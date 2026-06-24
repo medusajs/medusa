@@ -73,6 +73,76 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 ---
 
+## Missing medusa-config.js in Build Output
+
+If your deployment fails with an error similar to:
+
+```
+Invalid build output: missing /build/apps/backend/.medusa/server/medusa-config.js.
+Ensure tsconfig compilerOptions.outDir is .medusa/server (or unset), your package.json
+build script runs medusa build, and the Medusa build step completed successfully.
+```
+
+Cloud validates that the Medusa build output contains a compiled `medusa-config.js` file at `.medusa/server/medusa-config.js`. This file is produced when `medusa build` compiles your `medusa-config.ts` file to the `.medusa/server` directory.
+
+The error occurs when one of the following is true:
+
+- The `build` script in `package.json` does not run `medusa build`.
+- The `tsconfig.json` file sets `compilerOptions.outDir` to a path other than `.medusa/server`, causing the build output to land in the wrong directory.
+- The `medusa build` step failed silently or was skipped during the build.
+
+### Verify the build script
+
+Open your `package.json` and confirm the `build` script calls `medusa build`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "build": "medusa build"
+  }
+}
+```
+
+If you have a custom post-build step, chain it after `medusa build`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "build": "medusa build && npm run postbuild"
+  }
+}
+```
+
+### Check tsconfig.json outDir
+
+Open `tsconfig.json` and check the `compilerOptions.outDir` value. Either remove it to use the default (`.medusa/server`), or set it explicitly to `.medusa/server`:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "outDir": ".medusa/server"
+  }
+}
+```
+
+<Note type="warning">
+
+Setting `outDir` to any path other than `.medusa/server` causes the build output to land in the wrong location and triggers this error.
+
+</Note>
+
+### Check the build logs
+
+After verifying the script and `tsconfig.json`, check the build logs to confirm `medusa build` ran and completed without errors. If you see TypeScript compilation errors in the logs, fix them locally by running:
+
+```bash npm2yarn
+npm run build
+```
+
+Then commit the fixes and push to trigger a new deployment.
+
+---
+
 ## Out of Memory (OOM) Build Failures
 
 Exit code 137 indicates that your build process was killed by the system due to memory exhaustion. This commonly occurs with TypeScript-heavy monorepos during compilation.
