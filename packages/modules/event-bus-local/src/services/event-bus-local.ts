@@ -157,7 +157,9 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       delay(options_?.delay).then(async () => {
         const publishedEventBody = {
           ...eventBody,
-          metadata: this.withPublishedAtMetadata(eventBody.metadata),
+          metadata: this.withPublishedAtMetadata(
+            this.reviveEventMetadataDates(eventBody.metadata) // necessary cause JSON.parse stringified created_at
+          ),
         }
 
         // Call interceptors before emitting grouped events

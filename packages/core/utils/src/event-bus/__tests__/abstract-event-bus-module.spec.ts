@@ -81,13 +81,13 @@ describe("AbstractEventBusModuleService", () => {
       jest.useRealTimers()
     })
 
-    it("should add published_at and revive created_at", () => {
+    it("should add published_at to metadata", () => {
       jest.useFakeTimers()
       jest.setSystemTime(new Date("2026-06-20T11:00:00.000Z"))
 
       const eventBus = new MockEventBusModuleService()
       const metadata = eventBus.testWithPublishedAtMetadata({
-        created_at: "2026-06-20T10:00:00.000Z" as unknown as Date,
+        created_at: new Date("2026-06-20T10:00:00.000Z"),
       })
 
       expect(metadata.created_at).toEqual(

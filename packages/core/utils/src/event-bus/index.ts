@@ -184,9 +184,7 @@ export abstract class AbstractEventBusModuleService
   /**
    * Adds `created_at` to event metadata when an event is emitted.
    */
-  protected withCreatedAtMetadata(
-    metadata?: EventMetadata
-  ): EventMetadata {
+  protected withCreatedAtMetadata(metadata?: EventMetadata): EventMetadata {
     return {
       ...metadata,
       created_at: new Date(),
@@ -194,19 +192,11 @@ export abstract class AbstractEventBusModuleService
   }
 
   /**
-   * Adds `published_at` to event metadata when an event is published to subscribers.
-   * Also revives `created_at` if present (e.g. after JSON serialization).
+   * Adds `published_at` to event metadata when an event is published to the event bus.
    */
-  protected withPublishedAtMetadata(
-    metadata?: EventMetadata
-  ): EventMetadata {
+  protected withPublishedAtMetadata(metadata?: EventMetadata): EventMetadata {
     return {
       ...metadata,
-      ...(metadata?.created_at != null
-        ? {
-            created_at: new Date(metadata.created_at as string | Date),
-          }
-        : {}),
       published_at: new Date(),
     }
   }

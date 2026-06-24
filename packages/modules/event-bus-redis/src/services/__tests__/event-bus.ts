@@ -333,7 +333,7 @@ describe("RedisEventBusService", () => {
               data: testGroup1Event.data.data,
               metadata: expect.objectContaining({
                 eventGroupId: "test-group-1",
-                created_at: expect.any(Date),
+                created_at: expect.any(String),
                 published_at: expect.any(Date),
               }),
             },
@@ -357,7 +357,7 @@ describe("RedisEventBusService", () => {
               data: testGroup2Event.data.data,
               metadata: expect.objectContaining({
                 eventGroupId: "test-group-2",
-                created_at: expect.any(Date),
+                created_at: expect.any(String),
                 published_at: expect.any(Date),
               }),
             },
@@ -369,7 +369,7 @@ describe("RedisEventBusService", () => {
               data: testGroup2Event2.data.data,
               metadata: expect.objectContaining({
                 eventGroupId: "test-group-2",
-                created_at: expect.any(Date),
+                created_at: expect.any(String),
                 published_at: expect.any(Date),
               }),
             },
@@ -861,7 +861,7 @@ describe("RedisEventBusService", () => {
                 data: builtEvent.data.data,
                 metadata: expect.objectContaining({
                   eventGroupId: "test-group-priority",
-                  created_at: expect.any(Date),
+                  created_at: expect.any(String),
                   published_at: expect.any(Date),
                 }),
               },
@@ -1063,7 +1063,7 @@ describe("RedisEventBusService", () => {
             name: "grouped-event-no-sub-2",
             metadata: expect.objectContaining({
               eventGroupId: "test-group-no-sub-2",
-              created_at: expect.any(Date),
+              created_at: expect.any(String),
               published_at: expect.any(Date),
             }),
           }),
