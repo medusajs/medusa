@@ -3,7 +3,7 @@ import path from "path"
 import { FileSystem } from "../../common/file-system"
 import { generateAugmentationRefs } from "../generate-augmentation-refs"
 
-const BASE_DIR = path.join(__dirname, "sample-proj-plugin-augmentations")
+const BASE_DIR = path.join(__dirname, "sample-proj-augmentation-refs")
 const fs = new FileSystem(BASE_DIR)
 
 afterEach(async () => {
@@ -44,7 +44,7 @@ describe("generateAugmentationRefs", () => {
       ],
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain('/// <reference types="@my-org/plugin-a" />')
   })
 
@@ -62,7 +62,7 @@ describe("generateAugmentationRefs", () => {
       plugins: [makePlugin("@my-org/backend-plugin")],
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain(
       '/// <reference types="@my-org/backend-plugin" />'
     )
@@ -83,7 +83,7 @@ describe("generateAugmentationRefs", () => {
       ],
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).not.toContain("@my-org/no-types")
     expect(content).toContain("No plugin or module type packages detected")
   })
@@ -98,7 +98,7 @@ describe("generateAugmentationRefs", () => {
       ],
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).not.toContain("project-plugin")
   })
 
@@ -119,7 +119,7 @@ describe("generateAugmentationRefs", () => {
       plugins: [makePlugin("@my-org/nested")],
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain('/// <reference types="@my-org/nested" />')
   })
 
@@ -144,7 +144,7 @@ describe("generateAugmentationRefs", () => {
       plugins: [makePlugin("@my-org/plugin-a"), makePlugin("@my-org/plugin-b")],
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain('/// <reference types="@my-org/plugin-a" />')
     expect(content).toContain('/// <reference types="@my-org/plugin-b" />')
   })
@@ -152,7 +152,7 @@ describe("generateAugmentationRefs", () => {
   it("generates placeholder file when no plugins have root types", async () => {
     await generateAugmentationRefs({ directory: BASE_DIR, plugins: [] })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain("No plugin or module type packages detected")
     expect(content).toContain("export {}")
   })
@@ -182,7 +182,7 @@ describe("generateAugmentationRefs", () => {
       },
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain('/// <reference types="@my-org/some-module" />')
   })
 
@@ -213,7 +213,7 @@ describe("generateAugmentationRefs", () => {
       },
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain('/// <reference types="@medusajs/medusa/rbac" />')
     expect(content).not.toContain('"@medusajs/rbac"')
   })
@@ -248,7 +248,7 @@ describe("generateAugmentationRefs", () => {
       },
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).toContain(
       '/// <reference types="@medusajs/medusa/event-bus-redis" />'
     )
@@ -268,7 +268,7 @@ describe("generateAugmentationRefs", () => {
       },
     })
 
-    const content = await fs.contents(".medusa/types/plugin-augmentations.d.ts")
+    const content = await fs.contents(".medusa/types/augmentation-refs.d.ts")
     expect(content).not.toContain("./src/modules/brand")
     expect(content).toContain("No plugin or module type packages detected")
   })
