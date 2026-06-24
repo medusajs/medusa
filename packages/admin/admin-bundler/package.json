@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/admin-bundler",
-  "version": "2.15.5",
+  "version": "2.16.0",
   "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@zjedene-medusa.com>",
   "scripts": {
@@ -18,13 +18,13 @@
     "package.json"
   ],
   "devDependencies": {
-    "@zjedene-medusa/types": "2.15.5"
+    "@zjedene-medusa/types": "2.16.0"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.2.1",
-    "@zjedene-medusa/admin-shared": "2.15.5",
-    "@zjedene-medusa/admin-vite-plugin": "2.15.5",
-    "@zjedene-medusa/dashboard": "2.15.5",
+    "@zjedene-medusa/admin-shared": "2.16.0",
+    "@zjedene-medusa/admin-vite-plugin": "2.16.0",
+    "@zjedene-medusa/dashboard": "2.16.0",
     "autoprefixer": "^10.4.19",
     "compression": "^1.8.0",
     "express": "^4.21.0",

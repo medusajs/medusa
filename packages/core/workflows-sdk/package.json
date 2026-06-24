@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/workflows-sdk",
-  "version": "2.15.5",
+  "version": "2.16.0",
   "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",
   "exports": {
@@ -27,13 +27,13 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@zjedene-medusa/types": "2.15.5"
+    "@zjedene-medusa/types": "2.16.0"
   },
   "dependencies": {
-    "@zjedene-medusa/deps": "2.15.5",
-    "@zjedene-medusa/modules-sdk": "2.15.5",
-    "@zjedene-medusa/orchestration": "2.15.5",
-    "@zjedene-medusa/utils": "2.15.5",
+    "@zjedene-medusa/deps": "2.16.0",
+    "@zjedene-medusa/modules-sdk": "2.16.0",
+    "@zjedene-medusa/orchestration": "2.16.0",
+    "@zjedene-medusa/utils": "2.16.0",
     "ulid": "^2.3.0"
   },
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/ui",
-  "version": "4.1.15",
+  "version": "4.1.16",
   "author": "Kasper Kristensen <kasper@zjedene-medusa.com>",
   "license": "MIT",
   "repository": {
@@ -42,7 +42,7 @@
     "typecheck": "yarn run -T tsc --noEmit"
   },
   "devDependencies": {
-    "@zjedene-medusa/ui-preset": "2.15.5",
+    "@zjedene-medusa/ui-preset": "2.16.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -53,7 +53,7 @@
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dismissable-layer": "1.1.4",
     "@tanstack/react-table": "8.20.5",
-    "@zjedene-medusa/icons": "2.15.5",
+    "@zjedene-medusa/icons": "2.16.0",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.3",
     "cva": "1.0.0-beta.1",

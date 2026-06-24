@@ -9693,15 +9693,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zjedene-medusa/admin-bundler@2.15.5, @zjedene-medusa/admin-bundler@workspace:packages/admin/admin-bundler":
+"@zjedene-medusa/admin-bundler@2.16.0, @zjedene-medusa/admin-bundler@workspace:packages/admin/admin-bundler":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/admin-bundler@workspace:packages/admin/admin-bundler"
   dependencies:
     "@vitejs/plugin-react": ^4.2.1
-    "@zjedene-medusa/admin-shared": 2.15.5
-    "@zjedene-medusa/admin-vite-plugin": 2.15.5
-    "@zjedene-medusa/dashboard": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
+    "@zjedene-medusa/admin-shared": 2.16.0
+    "@zjedene-medusa/admin-vite-plugin": 2.16.0
+    "@zjedene-medusa/dashboard": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
     autoprefixer: ^10.4.19
     compression: ^1.8.0
     express: ^4.21.0
@@ -9714,29 +9714,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/admin-sdk@2.15.5, @zjedene-medusa/admin-sdk@workspace:packages/admin/admin-sdk":
+"@zjedene-medusa/admin-sdk@2.16.0, @zjedene-medusa/admin-sdk@workspace:packages/admin/admin-sdk":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/admin-sdk@workspace:packages/admin/admin-sdk"
   dependencies:
-    "@zjedene-medusa/admin-shared": 2.15.5
+    "@zjedene-medusa/admin-shared": 2.16.0
     zod: 4.2.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/admin-shared@2.15.5, @zjedene-medusa/admin-shared@workspace:packages/admin/admin-shared":
+"@zjedene-medusa/admin-shared@2.16.0, @zjedene-medusa/admin-shared@workspace:packages/admin/admin-shared":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/admin-shared@workspace:packages/admin/admin-shared"
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/admin-vite-plugin@2.15.5, @zjedene-medusa/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
+"@zjedene-medusa/admin-vite-plugin@2.16.0, @zjedene-medusa/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin"
   dependencies:
     "@babel/parser": 7.25.6
     "@babel/traverse": 7.25.6
     "@babel/types": 7.25.6
-    "@zjedene-medusa/admin-shared": 2.15.5
+    "@zjedene-medusa/admin-shared": 2.16.0
     chokidar: ^3.5.3
     fdir: 6.1.1
     magic-string: 0.30.5
@@ -9748,84 +9748,84 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/analytics-local@2.15.5, @zjedene-medusa/analytics-local@workspace:packages/modules/providers/analytics-local":
+"@zjedene-medusa/analytics-local@2.16.0, @zjedene-medusa/analytics-local@workspace:packages/modules/providers/analytics-local":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/analytics-local@workspace:packages/modules/providers/analytics-local"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/analytics-posthog@2.15.5, @zjedene-medusa/analytics-posthog@workspace:packages/modules/providers/analytics-posthog":
+"@zjedene-medusa/analytics-posthog@2.16.0, @zjedene-medusa/analytics-posthog@workspace:packages/modules/providers/analytics-posthog":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/analytics-posthog@workspace:packages/modules/providers/analytics-posthog"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     posthog-node: ^5.11.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     posthog-node: ^5.11.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/analytics@2.15.5, @zjedene-medusa/analytics@workspace:packages/modules/analytics":
+"@zjedene-medusa/analytics@2.16.0, @zjedene-medusa/analytics@workspace:packages/modules/analytics":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/analytics@workspace:packages/modules/analytics"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/api-key@2.15.5, @zjedene-medusa/api-key@workspace:^, @zjedene-medusa/api-key@workspace:packages/modules/api-key":
+"@zjedene-medusa/api-key@2.16.0, @zjedene-medusa/api-key@workspace:^, @zjedene-medusa/api-key@workspace:packages/modules/api-key":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/api-key@workspace:packages/modules/api-key"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/auth-emailpass@2.15.5, @zjedene-medusa/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@zjedene-medusa/auth-emailpass@2.16.0, @zjedene-medusa/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     scrypt-kdf: ^2.0.1
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/auth-github@2.15.5, @zjedene-medusa/auth-github@workspace:packages/modules/providers/auth-github":
+"@zjedene-medusa/auth-github@2.16.0, @zjedene-medusa/auth-github@workspace:packages/modules/providers/auth-github":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/auth-github@workspace:packages/modules/providers/auth-github"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/auth-google@2.15.5, @zjedene-medusa/auth-google@workspace:packages/modules/providers/auth-google":
+"@zjedene-medusa/auth-google@2.16.0, @zjedene-medusa/auth-google@workspace:packages/modules/providers/auth-google":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/auth-google@workspace:packages/modules/providers/auth-google"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     jsonwebtoken: ^9.0.2
     jwks-rsa: ^3.1.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/auth@2.15.5, @zjedene-medusa/auth@workspace:*, @zjedene-medusa/auth@workspace:packages/modules/auth":
+"@zjedene-medusa/auth@2.16.0, @zjedene-medusa/auth@workspace:*, @zjedene-medusa/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/auth@workspace:packages/modules/auth"
   dependencies:
@@ -9833,84 +9833,84 @@ __metadata:
     "@otplib/plugin-crypto-node": ^13.4.0
     "@otplib/totp": ^13.4.0
     "@otplib/uri": ^13.4.0
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
     jsonwebtoken: ^9.0.2
     jwks-rsa: ^3.1.0
     scrypt-kdf: ^2.0.1
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/cache-inmemory@2.15.5, @zjedene-medusa/cache-inmemory@workspace:*, @zjedene-medusa/cache-inmemory@workspace:packages/modules/cache-inmemory":
+"@zjedene-medusa/cache-inmemory@2.16.0, @zjedene-medusa/cache-inmemory@workspace:*, @zjedene-medusa/cache-inmemory@workspace:packages/modules/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/cache-redis@2.15.5, @zjedene-medusa/cache-redis@workspace:packages/modules/cache-redis":
+"@zjedene-medusa/cache-redis@2.16.0, @zjedene-medusa/cache-redis@workspace:packages/modules/cache-redis":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/cache-redis@workspace:packages/modules/cache-redis"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     ioredis: ^5.4.1
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/caching-redis@2.15.5, @zjedene-medusa/caching-redis@workspace:packages/modules/providers/caching-redis":
+"@zjedene-medusa/caching-redis@2.16.0, @zjedene-medusa/caching-redis@workspace:packages/modules/providers/caching-redis":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/caching-redis@workspace:packages/modules/providers/caching-redis"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     ioredis: ^5.4.1
     xxhash-wasm: ^1.1.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/caching@2.15.5, @zjedene-medusa/caching@workspace:*, @zjedene-medusa/caching@workspace:packages/modules/caching":
+"@zjedene-medusa/caching@2.16.0, @zjedene-medusa/caching@workspace:*, @zjedene-medusa/caching@workspace:packages/modules/caching":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/caching@workspace:packages/modules/caching"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
     awilix: ^8.0.1
     fast-json-stable-stringify: ^2.1.0
     node-cache: ^5.1.2
     xxhash-wasm: ^1.1.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/cart@2.15.5, @zjedene-medusa/cart@workspace:packages/modules/cart":
+"@zjedene-medusa/cart@2.16.0, @zjedene-medusa/cart@workspace:packages/modules/cart":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/cart@workspace:packages/modules/cart"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/cli@2.15.5, @zjedene-medusa/cli@workspace:packages/cli/medusa-cli":
+"@zjedene-medusa/cli@2.16.0, @zjedene-medusa/cli@workspace:packages/cli/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/cli@workspace:packages/cli/medusa-cli"
   dependencies:
     "@types/express": ^4.17.21
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/telemetry": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/telemetry": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
     chalk: ^4.1.2
     configstore: ^5.0.1
     dotenv: ^16.4.5
@@ -9935,41 +9935,41 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/core-flows@2.15.5, @zjedene-medusa/core-flows@workspace:*, @zjedene-medusa/core-flows@workspace:^, @zjedene-medusa/core-flows@workspace:packages/core/core-flows":
+"@zjedene-medusa/core-flows@2.16.0, @zjedene-medusa/core-flows@workspace:*, @zjedene-medusa/core-flows@workspace:^, @zjedene-medusa/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/core-flows@workspace:packages/core/core-flows"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     csv-parse: ^5.6.0
     json-2-csv: ^5.5.4
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/currency@2.15.5, @zjedene-medusa/currency@workspace:^, @zjedene-medusa/currency@workspace:packages/modules/currency":
+"@zjedene-medusa/currency@2.16.0, @zjedene-medusa/currency@workspace:^, @zjedene-medusa/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/currency@workspace:packages/modules/currency"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/customer@2.15.5, @zjedene-medusa/customer@workspace:^, @zjedene-medusa/customer@workspace:packages/modules/customer":
+"@zjedene-medusa/customer@2.16.0, @zjedene-medusa/customer@workspace:^, @zjedene-medusa/customer@workspace:packages/modules/customer":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/customer@workspace:packages/modules/customer"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/dashboard@2.15.5, @zjedene-medusa/dashboard@workspace:packages/admin/dashboard":
+"@zjedene-medusa/dashboard@2.16.0, @zjedene-medusa/dashboard@workspace:packages/admin/dashboard":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/dashboard@workspace:packages/admin/dashboard"
   dependencies:
@@ -9988,13 +9988,13 @@ __metadata:
     "@types/qrcode": ^1.5.5
     "@typescript/native-preview": ^7.0.0-dev.20260423.1
     "@uiw/react-json-view": ^2.0.0-alpha.17
-    "@zjedene-medusa/admin-shared": 2.15.5
-    "@zjedene-medusa/admin-vite-plugin": 2.15.5
-    "@zjedene-medusa/icons": 2.15.5
-    "@zjedene-medusa/js-sdk": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/ui": 4.1.15
-    "@zjedene-medusa/ui-preset": 2.15.5
+    "@zjedene-medusa/admin-shared": 2.16.0
+    "@zjedene-medusa/admin-vite-plugin": 2.16.0
+    "@zjedene-medusa/icons": 2.16.0
+    "@zjedene-medusa/js-sdk": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/ui": 4.1.16
+    "@zjedene-medusa/ui-preset": 2.16.0
     cmdk: ^0.2.0
     copy-to-clipboard: ^3.3.3
     date-fns: ^3.6.0
@@ -10022,7 +10022,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/deps@2.15.5, @zjedene-medusa/deps@workspace:packages/deps":
+"@zjedene-medusa/deps@2.16.0, @zjedene-medusa/deps@workspace:packages/deps":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/deps@workspace:packages/deps"
   dependencies:
@@ -10042,7 +10042,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/draft-order@2.15.5, @zjedene-medusa/draft-order@workspace:packages/plugins/draft-order":
+"@zjedene-medusa/draft-order@2.16.0, @zjedene-medusa/draft-order@workspace:packages/plugins/draft-order":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/draft-order@workspace:packages/plugins/draft-order"
   dependencies:
@@ -10051,15 +10051,15 @@ __metadata:
     "@hookform/resolvers": 3.4.2
     "@tanstack/react-query": 5.64.2
     "@uiw/react-json-view": ^2.0.0-alpha.17
-    "@zjedene-medusa/admin-sdk": 2.15.5
-    "@zjedene-medusa/cli": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/icons": 2.15.5
-    "@zjedene-medusa/js-sdk": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/ui": 4.1.15
-    "@zjedene-medusa/ui-preset": 2.15.5
+    "@zjedene-medusa/admin-sdk": 2.16.0
+    "@zjedene-medusa/cli": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/icons": 2.16.0
+    "@zjedene-medusa/js-sdk": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/ui": 4.1.16
+    "@zjedene-medusa/ui-preset": 2.16.0
     date-fns: ^3.6.0
     lodash.debounce: ^4.0.8
     lodash.isequal: ^4.5.0
@@ -10067,12 +10067,12 @@ __metadata:
     radix-ui: 1.1.2
     react-hook-form: 7.49.1
   peerDependencies:
-    "@zjedene-medusa/admin-sdk": 2.15.5
-    "@zjedene-medusa/cli": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/icons": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
-    "@zjedene-medusa/ui": 4.1.15
+    "@zjedene-medusa/admin-sdk": 2.16.0
+    "@zjedene-medusa/cli": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/icons": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
+    "@zjedene-medusa/ui": 4.1.16
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: 6.30.3
@@ -10112,80 +10112,80 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/event-bus-local@2.15.5, @zjedene-medusa/event-bus-local@workspace:*, @zjedene-medusa/event-bus-local@workspace:packages/modules/event-bus-local":
+"@zjedene-medusa/event-bus-local@2.16.0, @zjedene-medusa/event-bus-local@workspace:*, @zjedene-medusa/event-bus-local@workspace:packages/modules/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/event-bus-redis@2.15.5, @zjedene-medusa/event-bus-redis@workspace:*, @zjedene-medusa/event-bus-redis@workspace:packages/modules/event-bus-redis":
+"@zjedene-medusa/event-bus-redis@2.16.0, @zjedene-medusa/event-bus-redis@workspace:*, @zjedene-medusa/event-bus-redis@workspace:packages/modules/event-bus-redis":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/event-bus-redis@workspace:packages/modules/event-bus-redis"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
     bullmq: 5.13.0
     ioredis: ^5.4.1
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/file-local@2.15.5, @zjedene-medusa/file-local@workspace:packages/modules/providers/file-local":
+"@zjedene-medusa/file-local@2.16.0, @zjedene-medusa/file-local@workspace:packages/modules/providers/file-local":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/file-local@workspace:packages/modules/providers/file-local"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/file-s3@2.15.5, @zjedene-medusa/file-s3@workspace:packages/modules/providers/file-s3":
+"@zjedene-medusa/file-s3@2.16.0, @zjedene-medusa/file-s3@workspace:packages/modules/providers/file-s3":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/file-s3@workspace:packages/modules/providers/file-s3"
   dependencies:
     "@aws-sdk/client-s3": ^3.556.0
     "@aws-sdk/lib-storage": ^3.556.0
     "@aws-sdk/s3-request-presigner": ^3.556.0
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     ulid: ^2.3.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/file@2.15.5, @zjedene-medusa/file@workspace:packages/modules/file":
+"@zjedene-medusa/file@2.16.0, @zjedene-medusa/file@workspace:packages/modules/file":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/file@workspace:packages/modules/file"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/framework@2.15.5, @zjedene-medusa/framework@workspace:*, @zjedene-medusa/framework@workspace:packages/core/framework":
+"@zjedene-medusa/framework@2.16.0, @zjedene-medusa/framework@workspace:*, @zjedene-medusa/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/framework@workspace:packages/core/framework"
   dependencies:
     "@aws-sdk/client-dynamodb": ^3.218.0
     "@jercle/yargonaut": ^1.1.5
     "@types/express": ^4.17.21
-    "@zjedene-medusa/cli": 2.15.5
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/modules-sdk": 2.15.5
-    "@zjedene-medusa/orchestration": 2.15.5
-    "@zjedene-medusa/telemetry": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
-    "@zjedene-medusa/workflows-sdk": 2.15.5
+    "@zjedene-medusa/cli": 2.16.0
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/modules-sdk": 2.16.0
+    "@zjedene-medusa/orchestration": 2.16.0
+    "@zjedene-medusa/telemetry": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
+    "@zjedene-medusa/workflows-sdk": 2.16.0
     chokidar: ^4.0.3
     compression: ^1.8.1
     connect-dynamodb: ^3.0.5
@@ -10202,7 +10202,7 @@ __metadata:
     tsconfig-paths: ^4.2.0
     zod-validation-error: 5.0.0
   peerDependencies:
-    "@zjedene-medusa/cli": 2.15.5
+    "@zjedene-medusa/cli": 2.16.0
     ioredis: ^5.4.1
   peerDependenciesMeta:
     ioredis:
@@ -10214,24 +10214,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/fulfillment-manual@2.15.5, @zjedene-medusa/fulfillment-manual@workspace:^, @zjedene-medusa/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
+"@zjedene-medusa/fulfillment-manual@2.16.0, @zjedene-medusa/fulfillment-manual@workspace:^, @zjedene-medusa/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/fulfillment@2.15.5, @zjedene-medusa/fulfillment@workspace:^, @zjedene-medusa/fulfillment@workspace:packages/modules/fulfillment":
+"@zjedene-medusa/fulfillment@2.16.0, @zjedene-medusa/fulfillment@workspace:^, @zjedene-medusa/fulfillment@workspace:packages/modules/fulfillment":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/fulfillment@workspace:packages/modules/fulfillment"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
@@ -10252,89 +10252,89 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/icons@2.15.5, @zjedene-medusa/icons@workspace:packages/design-system/icons":
+"@zjedene-medusa/icons@2.16.0, @zjedene-medusa/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/icons@workspace:packages/design-system/icons"
   dependencies:
-    "@zjedene-medusa/toolbox": 2.15.5
+    "@zjedene-medusa/toolbox": 2.16.0
     react: ^18.3.1 || ^19.0.0
   peerDependencies:
     react: ^18.3.1 || ^19.0.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/index@2.15.5, @zjedene-medusa/index@workspace:packages/modules/index":
+"@zjedene-medusa/index@2.16.0, @zjedene-medusa/index@workspace:packages/modules/index":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/index@workspace:packages/modules/index"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/inventory@2.15.5, @zjedene-medusa/inventory@workspace:^, @zjedene-medusa/inventory@workspace:packages/modules/inventory":
+"@zjedene-medusa/inventory@2.16.0, @zjedene-medusa/inventory@workspace:^, @zjedene-medusa/inventory@workspace:packages/modules/inventory":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/inventory@workspace:packages/modules/inventory"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/js-sdk@2.15.5, @zjedene-medusa/js-sdk@workspace:packages/core/js-sdk":
+"@zjedene-medusa/js-sdk@2.16.0, @zjedene-medusa/js-sdk@workspace:packages/core/js-sdk":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/js-sdk@workspace:packages/core/js-sdk"
   dependencies:
-    "@zjedene-medusa/types": 2.15.5
+    "@zjedene-medusa/types": 2.16.0
     fetch-event-stream: ^0.1.5
     qs: ^6.12.1
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/link-modules@2.15.5, @zjedene-medusa/link-modules@workspace:^, @zjedene-medusa/link-modules@workspace:packages/modules/link-modules":
+"@zjedene-medusa/link-modules@2.16.0, @zjedene-medusa/link-modules@workspace:^, @zjedene-medusa/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/link-modules@workspace:packages/modules/link-modules"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/locking-postgres@2.15.5, @zjedene-medusa/locking-postgres@workspace:packages/modules/providers/locking-postgres":
+"@zjedene-medusa/locking-postgres@2.16.0, @zjedene-medusa/locking-postgres@workspace:packages/modules/providers/locking-postgres":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/locking-postgres@workspace:packages/modules/providers/locking-postgres"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/locking-redis@2.15.5, @zjedene-medusa/locking-redis@workspace:packages/modules/providers/locking-redis":
+"@zjedene-medusa/locking-redis@2.16.0, @zjedene-medusa/locking-redis@workspace:packages/modules/providers/locking-redis":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/locking-redis@workspace:packages/modules/providers/locking-redis"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     ioredis: ^5.4.1
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/locking@2.15.5, @zjedene-medusa/locking@workspace:packages/modules/locking":
+"@zjedene-medusa/locking@2.16.0, @zjedene-medusa/locking@workspace:packages/modules/locking":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/locking@workspace:packages/modules/locking"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
@@ -10344,24 +10344,24 @@ __metadata:
   dependencies:
     "@swc/core": 1.5.7
     "@types/node": ^20.0.0
-    "@zjedene-medusa/admin-sdk": 2.15.5
-    "@zjedene-medusa/cli": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/icons": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/ui": 4.1.15
-    "@zjedene-medusa/ui-preset": 2.15.5
+    "@zjedene-medusa/admin-sdk": 2.16.0
+    "@zjedene-medusa/cli": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/icons": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/ui": 4.1.16
+    "@zjedene-medusa/ui-preset": 2.16.0
     cross-env: ^7.0.3
     ts-node: ^10.9.2
     typescript: ^5.7.3
   peerDependencies:
-    "@zjedene-medusa/admin-sdk": 2.15.5
-    "@zjedene-medusa/cli": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/icons": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
-    "@zjedene-medusa/ui": 4.1.15
+    "@zjedene-medusa/admin-sdk": 2.16.0
+    "@zjedene-medusa/cli": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/icons": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
+    "@zjedene-medusa/ui": 4.1.16
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: 6.30.3
@@ -10385,16 +10385,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/medusa-oas-cli@2.15.5, @zjedene-medusa/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
+"@zjedene-medusa/medusa-oas-cli@2.16.0, @zjedene-medusa/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli"
   dependencies:
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.25.3
-    "@zjedene-medusa/medusa": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
+    "@zjedene-medusa/medusa": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
     commander: ^11.0.0
     execa: ^5.1.1
     lodash.mergewith: ^4.6.2
@@ -10406,66 +10406,66 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/medusa@2.15.5, @zjedene-medusa/medusa@workspace:*, @zjedene-medusa/medusa@workspace:packages/medusa":
+"@zjedene-medusa/medusa@2.16.0, @zjedene-medusa/medusa@workspace:*, @zjedene-medusa/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/medusa@workspace:packages/medusa"
   dependencies:
     "@inquirer/checkbox": ^2.3.11
     "@inquirer/confirm": ^2.0.17
     "@inquirer/input": ^2.2.9
-    "@zjedene-medusa/admin-bundler": 2.15.5
-    "@zjedene-medusa/analytics": 2.15.5
-    "@zjedene-medusa/analytics-local": 2.15.5
-    "@zjedene-medusa/analytics-posthog": 2.15.5
-    "@zjedene-medusa/api-key": 2.15.5
-    "@zjedene-medusa/auth": 2.15.5
-    "@zjedene-medusa/auth-emailpass": 2.15.5
-    "@zjedene-medusa/auth-github": 2.15.5
-    "@zjedene-medusa/auth-google": 2.15.5
-    "@zjedene-medusa/cache-inmemory": 2.15.5
-    "@zjedene-medusa/cache-redis": 2.15.5
-    "@zjedene-medusa/caching": 2.15.5
-    "@zjedene-medusa/caching-redis": 2.15.5
-    "@zjedene-medusa/cart": 2.15.5
-    "@zjedene-medusa/core-flows": 2.15.5
-    "@zjedene-medusa/currency": 2.15.5
-    "@zjedene-medusa/customer": 2.15.5
-    "@zjedene-medusa/draft-order": 2.15.5
-    "@zjedene-medusa/event-bus-local": 2.15.5
-    "@zjedene-medusa/event-bus-redis": 2.15.5
-    "@zjedene-medusa/file": 2.15.5
-    "@zjedene-medusa/file-local": 2.15.5
-    "@zjedene-medusa/file-s3": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/fulfillment": 2.15.5
-    "@zjedene-medusa/fulfillment-manual": 2.15.5
-    "@zjedene-medusa/index": 2.15.5
-    "@zjedene-medusa/inventory": 2.15.5
-    "@zjedene-medusa/link-modules": 2.15.5
-    "@zjedene-medusa/locking": 2.15.5
-    "@zjedene-medusa/locking-postgres": 2.15.5
-    "@zjedene-medusa/locking-redis": 2.15.5
-    "@zjedene-medusa/notification": 2.15.5
-    "@zjedene-medusa/notification-local": 2.15.5
-    "@zjedene-medusa/notification-sendgrid": 2.15.5
-    "@zjedene-medusa/order": 2.15.5
-    "@zjedene-medusa/payment": 2.15.5
-    "@zjedene-medusa/payment-stripe": 2.15.5
-    "@zjedene-medusa/pricing": 2.15.5
-    "@zjedene-medusa/product": 2.15.5
-    "@zjedene-medusa/promotion": 2.15.5
-    "@zjedene-medusa/rbac": 2.15.5
-    "@zjedene-medusa/region": 2.15.5
-    "@zjedene-medusa/sales-channel": 2.15.5
-    "@zjedene-medusa/settings": 2.15.5
-    "@zjedene-medusa/stock-location": 2.15.5
-    "@zjedene-medusa/store": 2.15.5
-    "@zjedene-medusa/tax": 2.15.5
-    "@zjedene-medusa/telemetry": 2.15.5
-    "@zjedene-medusa/translation": 2.15.5
-    "@zjedene-medusa/user": 2.15.5
-    "@zjedene-medusa/workflow-engine-inmemory": 2.15.5
-    "@zjedene-medusa/workflow-engine-redis": 2.15.5
+    "@zjedene-medusa/admin-bundler": 2.16.0
+    "@zjedene-medusa/analytics": 2.16.0
+    "@zjedene-medusa/analytics-local": 2.16.0
+    "@zjedene-medusa/analytics-posthog": 2.16.0
+    "@zjedene-medusa/api-key": 2.16.0
+    "@zjedene-medusa/auth": 2.16.0
+    "@zjedene-medusa/auth-emailpass": 2.16.0
+    "@zjedene-medusa/auth-github": 2.16.0
+    "@zjedene-medusa/auth-google": 2.16.0
+    "@zjedene-medusa/cache-inmemory": 2.16.0
+    "@zjedene-medusa/cache-redis": 2.16.0
+    "@zjedene-medusa/caching": 2.16.0
+    "@zjedene-medusa/caching-redis": 2.16.0
+    "@zjedene-medusa/cart": 2.16.0
+    "@zjedene-medusa/core-flows": 2.16.0
+    "@zjedene-medusa/currency": 2.16.0
+    "@zjedene-medusa/customer": 2.16.0
+    "@zjedene-medusa/draft-order": 2.16.0
+    "@zjedene-medusa/event-bus-local": 2.16.0
+    "@zjedene-medusa/event-bus-redis": 2.16.0
+    "@zjedene-medusa/file": 2.16.0
+    "@zjedene-medusa/file-local": 2.16.0
+    "@zjedene-medusa/file-s3": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/fulfillment": 2.16.0
+    "@zjedene-medusa/fulfillment-manual": 2.16.0
+    "@zjedene-medusa/index": 2.16.0
+    "@zjedene-medusa/inventory": 2.16.0
+    "@zjedene-medusa/link-modules": 2.16.0
+    "@zjedene-medusa/locking": 2.16.0
+    "@zjedene-medusa/locking-postgres": 2.16.0
+    "@zjedene-medusa/locking-redis": 2.16.0
+    "@zjedene-medusa/notification": 2.16.0
+    "@zjedene-medusa/notification-local": 2.16.0
+    "@zjedene-medusa/notification-sendgrid": 2.16.0
+    "@zjedene-medusa/order": 2.16.0
+    "@zjedene-medusa/payment": 2.16.0
+    "@zjedene-medusa/payment-stripe": 2.16.0
+    "@zjedene-medusa/pricing": 2.16.0
+    "@zjedene-medusa/product": 2.16.0
+    "@zjedene-medusa/promotion": 2.16.0
+    "@zjedene-medusa/rbac": 2.16.0
+    "@zjedene-medusa/region": 2.16.0
+    "@zjedene-medusa/sales-channel": 2.16.0
+    "@zjedene-medusa/settings": 2.16.0
+    "@zjedene-medusa/stock-location": 2.16.0
+    "@zjedene-medusa/store": 2.16.0
+    "@zjedene-medusa/tax": 2.16.0
+    "@zjedene-medusa/telemetry": 2.16.0
+    "@zjedene-medusa/translation": 2.16.0
+    "@zjedene-medusa/user": 2.16.0
+    "@zjedene-medusa/workflow-engine-inmemory": 2.16.0
+    "@zjedene-medusa/workflow-engine-redis": 2.16.0
     boxen: ^5.0.1
     chalk: ^4.1.2
     chokidar: ^4.0.3
@@ -10481,7 +10481,7 @@ __metadata:
     uuid: ^11.1.1
   peerDependencies:
     "@swc/core": ^1.7.28
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     posthog-node: ^5.11.0
     react-dom: ^18.3.1
     yalc: ^1.0.0-pre.53
@@ -10497,46 +10497,46 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/modules-sdk@2.15.5, @zjedene-medusa/modules-sdk@workspace:^, @zjedene-medusa/modules-sdk@workspace:packages/core/modules-sdk":
+"@zjedene-medusa/modules-sdk@2.16.0, @zjedene-medusa/modules-sdk@workspace:^, @zjedene-medusa/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/orchestration": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/orchestration": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/notification-local@2.15.5, @zjedene-medusa/notification-local@workspace:packages/modules/providers/notification-local":
+"@zjedene-medusa/notification-local@2.16.0, @zjedene-medusa/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/notification-local@workspace:packages/modules/providers/notification-local"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/notification-sendgrid@2.15.5, @zjedene-medusa/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
+"@zjedene-medusa/notification-sendgrid@2.16.0, @zjedene-medusa/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid"
   dependencies:
     "@sendgrid/mail": ^8.1.6
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/notification@2.15.5, @zjedene-medusa/notification@workspace:packages/modules/notification":
+"@zjedene-medusa/notification@2.16.0, @zjedene-medusa/notification@workspace:packages/modules/notification":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/notification@workspace:packages/modules/notification"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
@@ -10544,167 +10544,167 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/oas-github-ci@workspace:packages/cli/oas/oas-github-ci"
   dependencies:
-    "@zjedene-medusa/medusa-oas-cli": 2.15.5
+    "@zjedene-medusa/medusa-oas-cli": 2.16.0
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/orchestration@2.15.5, @zjedene-medusa/orchestration@workspace:packages/core/orchestration":
+"@zjedene-medusa/orchestration@2.16.0, @zjedene-medusa/orchestration@workspace:packages/core/orchestration":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/orchestration@workspace:packages/core/orchestration"
   dependencies:
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/order@2.15.5, @zjedene-medusa/order@workspace:packages/modules/order":
+"@zjedene-medusa/order@2.16.0, @zjedene-medusa/order@workspace:packages/modules/order":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/order@workspace:packages/modules/order"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/payment-stripe@2.15.5, @zjedene-medusa/payment-stripe@workspace:packages/modules/providers/payment-stripe":
+"@zjedene-medusa/payment-stripe@2.16.0, @zjedene-medusa/payment-stripe@workspace:packages/modules/providers/payment-stripe":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
     stripe: ^15.5.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/payment@2.15.5, @zjedene-medusa/payment@workspace:^, @zjedene-medusa/payment@workspace:packages/modules/payment":
+"@zjedene-medusa/payment@2.16.0, @zjedene-medusa/payment@workspace:^, @zjedene-medusa/payment@workspace:packages/modules/payment":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/payment@workspace:packages/modules/payment"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
     stripe: 19.1.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/pricing@2.15.5, @zjedene-medusa/pricing@workspace:^, @zjedene-medusa/pricing@workspace:packages/modules/pricing":
+"@zjedene-medusa/pricing@2.16.0, @zjedene-medusa/pricing@workspace:^, @zjedene-medusa/pricing@workspace:packages/modules/pricing":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/pricing@workspace:packages/modules/pricing"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/product@2.15.5, @zjedene-medusa/product@workspace:^, @zjedene-medusa/product@workspace:packages/modules/product":
+"@zjedene-medusa/product@2.16.0, @zjedene-medusa/product@workspace:^, @zjedene-medusa/product@workspace:packages/modules/product":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/product@workspace:packages/modules/product"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/promotion@2.15.5, @zjedene-medusa/promotion@workspace:^, @zjedene-medusa/promotion@workspace:packages/modules/promotion":
+"@zjedene-medusa/promotion@2.16.0, @zjedene-medusa/promotion@workspace:^, @zjedene-medusa/promotion@workspace:packages/modules/promotion":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/promotion@workspace:packages/modules/promotion"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/rbac@2.15.5, @zjedene-medusa/rbac@workspace:packages/modules/rbac":
+"@zjedene-medusa/rbac@2.16.0, @zjedene-medusa/rbac@workspace:packages/modules/rbac":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/rbac@workspace:packages/modules/rbac"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/region@2.15.5, @zjedene-medusa/region@workspace:^, @zjedene-medusa/region@workspace:packages/modules/region":
+"@zjedene-medusa/region@2.16.0, @zjedene-medusa/region@workspace:^, @zjedene-medusa/region@workspace:packages/modules/region":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/region@workspace:packages/modules/region"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/sales-channel@2.15.5, @zjedene-medusa/sales-channel@workspace:packages/modules/sales-channel":
+"@zjedene-medusa/sales-channel@2.16.0, @zjedene-medusa/sales-channel@workspace:packages/modules/sales-channel":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/sales-channel@workspace:packages/modules/sales-channel"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/settings@2.15.5, @zjedene-medusa/settings@workspace:packages/modules/settings":
+"@zjedene-medusa/settings@2.16.0, @zjedene-medusa/settings@workspace:packages/modules/settings":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/settings@workspace:packages/modules/settings"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/stock-location@2.15.5, @zjedene-medusa/stock-location@workspace:^, @zjedene-medusa/stock-location@workspace:packages/modules/stock-location":
+"@zjedene-medusa/stock-location@2.16.0, @zjedene-medusa/stock-location@workspace:^, @zjedene-medusa/stock-location@workspace:packages/modules/stock-location":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/stock-location@workspace:packages/modules/stock-location"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/store@2.15.5, @zjedene-medusa/store@workspace:^, @zjedene-medusa/store@workspace:packages/modules/store":
+"@zjedene-medusa/store@2.16.0, @zjedene-medusa/store@workspace:^, @zjedene-medusa/store@workspace:packages/modules/store":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/store@workspace:packages/modules/store"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/tax@2.15.5, @zjedene-medusa/tax@workspace:^, @zjedene-medusa/tax@workspace:packages/modules/tax":
+"@zjedene-medusa/tax@2.16.0, @zjedene-medusa/tax@workspace:^, @zjedene-medusa/tax@workspace:packages/modules/tax":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/tax@workspace:packages/modules/tax"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/telemetry@2.15.5, @zjedene-medusa/telemetry@workspace:packages/medusa-telemetry":
+"@zjedene-medusa/telemetry@2.16.0, @zjedene-medusa/telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -10720,21 +10720,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/test-utils@2.15.5, @zjedene-medusa/test-utils@workspace:*, @zjedene-medusa/test-utils@workspace:packages/medusa-test-utils":
+"@zjedene-medusa/test-utils@2.16.0, @zjedene-medusa/test-utils@workspace:*, @zjedene-medusa/test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/test-utils@workspace:packages/medusa-test-utils"
   dependencies:
     "@types/express": ^4.17.21
-    "@zjedene-medusa/core-flows": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/core-flows": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
     axios: ^1.13.1
     express: ^4.21.0
     get-port: ^5.1.1
     ulid: ^2.3.0
   peerDependencies:
-    "@zjedene-medusa/core-flows": 2.15.5
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/medusa": 2.15.5
+    "@zjedene-medusa/core-flows": 2.16.0
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/medusa": 2.16.0
   peerDependenciesMeta:
     "@zjedene-medusa/core-flows":
       optional: true
@@ -10743,7 +10743,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/toolbox@2.15.5, @zjedene-medusa/toolbox@workspace:packages/design-system/toolbox":
+"@zjedene-medusa/toolbox@2.16.0, @zjedene-medusa/toolbox@workspace:packages/design-system/toolbox":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/toolbox@workspace:packages/design-system/toolbox"
   dependencies:
@@ -10763,22 +10763,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/translation@2.15.5, @zjedene-medusa/translation@workspace:*, @zjedene-medusa/translation@workspace:packages/modules/translation":
+"@zjedene-medusa/translation@2.16.0, @zjedene-medusa/translation@workspace:*, @zjedene-medusa/translation@workspace:packages/modules/translation":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/translation@workspace:packages/modules/translation"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/types@2.15.5, @zjedene-medusa/types@workspace:^, @zjedene-medusa/types@workspace:packages/core/types":
+"@zjedene-medusa/types@2.16.0, @zjedene-medusa/types@workspace:^, @zjedene-medusa/types@workspace:packages/core/types":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/types@workspace:packages/core/types"
   dependencies:
-    "@zjedene-medusa/deps": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
     bignumber.js: ^9.1.2
   peerDependencies:
     ioredis: ^5.4.1
@@ -10791,12 +10791,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/ui-preset@2.15.5, @zjedene-medusa/ui-preset@workspace:packages/design-system/ui-preset":
+"@zjedene-medusa/ui-preset@2.16.0, @zjedene-medusa/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/ui-preset@workspace:packages/design-system/ui-preset"
   dependencies:
     "@tailwindcss/forms": ^0.5.3
-    "@zjedene-medusa/toolbox": 2.15.5
+    "@zjedene-medusa/toolbox": 2.16.0
     tailwindcss: ^3.4.3
     tailwindcss-animate: ^1.0.6
   peerDependencies:
@@ -10804,7 +10804,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/ui@4.1.15, @zjedene-medusa/ui@workspace:packages/design-system/ui":
+"@zjedene-medusa/ui@4.1.16, @zjedene-medusa/ui@workspace:packages/design-system/ui":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/ui@workspace:packages/design-system/ui"
   dependencies:
@@ -10814,8 +10814,8 @@ __metadata:
     "@radix-ui/react-dialog": 1.1.4
     "@radix-ui/react-dismissable-layer": 1.1.4
     "@tanstack/react-table": 8.20.5
-    "@zjedene-medusa/icons": 2.15.5
-    "@zjedene-medusa/ui-preset": 2.15.5
+    "@zjedene-medusa/icons": 2.16.0
+    "@zjedene-medusa/ui-preset": 2.16.0
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.3
     cva: 1.0.0-beta.1
@@ -10836,19 +10836,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/user@2.15.5, @zjedene-medusa/user@workspace:^, @zjedene-medusa/user@workspace:packages/modules/user":
+"@zjedene-medusa/user@2.16.0, @zjedene-medusa/user@workspace:^, @zjedene-medusa/user@workspace:packages/modules/user":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/user@workspace:packages/modules/user"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
     jsonwebtoken: ^9.0.2
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/utils@2.15.5, @zjedene-medusa/utils@workspace:^, @zjedene-medusa/utils@workspace:packages/core/utils":
+"@zjedene-medusa/utils@2.16.0, @zjedene-medusa/utils@workspace:^, @zjedene-medusa/utils@workspace:packages/core/utils":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/utils@workspace:packages/core/utils"
   dependencies:
@@ -10857,8 +10857,8 @@ __metadata:
     "@graphql-tools/merge": ^9.0.7
     "@graphql-tools/schema": ^10.0.6
     "@types/pluralize": ^0.0.33
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
     bignumber.js: ^9.1.2
     dotenv: ^16.4.5
     dotenv-expand: ^11.0.6
@@ -10873,42 +10873,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/workflow-engine-inmemory@2.15.5, @zjedene-medusa/workflow-engine-inmemory@workspace:*, @zjedene-medusa/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
+"@zjedene-medusa/workflow-engine-inmemory@2.16.0, @zjedene-medusa/workflow-engine-inmemory@workspace:*, @zjedene-medusa/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
     cron-parser: ^4.9.0
     ulid: ^2.3.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/workflow-engine-redis@2.15.5, @zjedene-medusa/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
+"@zjedene-medusa/workflow-engine-redis@2.16.0, @zjedene-medusa/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis"
   dependencies:
-    "@zjedene-medusa/framework": 2.15.5
-    "@zjedene-medusa/test-utils": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
+    "@zjedene-medusa/test-utils": 2.16.0
     bullmq: 5.13.0
     ioredis: ^5.4.1
     ulid: ^2.3.0
   peerDependencies:
-    "@zjedene-medusa/framework": 2.15.5
+    "@zjedene-medusa/framework": 2.16.0
   languageName: unknown
   linkType: soft
 
-"@zjedene-medusa/workflows-sdk@2.15.5, @zjedene-medusa/workflows-sdk@workspace:packages/core/workflows-sdk":
+"@zjedene-medusa/workflows-sdk@2.16.0, @zjedene-medusa/workflows-sdk@workspace:packages/core/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@zjedene-medusa/workflows-sdk@workspace:packages/core/workflows-sdk"
   dependencies:
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/modules-sdk": 2.15.5
-    "@zjedene-medusa/orchestration": 2.15.5
-    "@zjedene-medusa/types": 2.15.5
-    "@zjedene-medusa/utils": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/modules-sdk": 2.16.0
+    "@zjedene-medusa/orchestration": 2.16.0
+    "@zjedene-medusa/types": 2.16.0
+    "@zjedene-medusa/utils": 2.16.0
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
@@ -13293,8 +13293,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/cli/create-medusa-app"
   dependencies:
-    "@zjedene-medusa/deps": 2.15.5
-    "@zjedene-medusa/telemetry": 2.15.5
+    "@zjedene-medusa/deps": 2.16.0
+    "@zjedene-medusa/telemetry": 2.16.0
     boxen: ^5.0.1
     chalk: ^4.1.2
     commander: ^11.0.0
