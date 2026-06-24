@@ -1,0 +1,337 @@
+{
+  "namespaces": [
+    "public"
+  ],
+  "name": "public",
+  "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": -1,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "workflow_id": {
+          "name": "workflow_id",
+          "type": "varchar",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": true,
+          "length": -1,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "transaction_id": {
+          "name": "transaction_id",
+          "type": "varchar",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": -1,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "execution": {
+          "name": "execution",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "context": {
+          "name": "context",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "state": {
+          "name": "state",
+          "type": "varchar",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": -1,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "retention_time": {
+          "name": "retention_time",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "run_id": {
+          "name": "run_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'01KVVQDMGAV0JKR82MKK5VN1KF'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        }
+      },
+      "name": "workflow_execution",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_deleted_at",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_deleted_at\" ON public.workflow_execution USING btree (deleted_at) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_id",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_id\" ON public.workflow_execution USING btree (id) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "retention_time",
+            "updated_at",
+            "state"
+          ],
+          "composite": true,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_retention_time_updated_at_state",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_retention_time_updated_at_state\" ON public.workflow_execution USING btree (retention_time, updated_at, state) WHERE ((deleted_at IS NULL) AND (retention_time IS NOT NULL))"
+        },
+        {
+          "columnNames": [
+            "run_id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_run_id",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_run_id\" ON public.workflow_execution USING btree (run_id) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "state"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_state",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_state\" ON public.workflow_execution USING btree (state) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "state",
+            "updated_at"
+          ],
+          "composite": true,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_state_updated_at",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_state_updated_at\" ON public.workflow_execution USING btree (state, updated_at) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "transaction_id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_transaction_id",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_transaction_id\" ON public.workflow_execution USING btree (transaction_id) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "updated_at",
+            "retention_time"
+          ],
+          "composite": true,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_updated_at_retention_time",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_updated_at_retention_time\" ON public.workflow_execution USING btree (updated_at, retention_time) WHERE ((deleted_at IS NULL) AND (retention_time IS NOT NULL) AND ((state)::text = ANY ((ARRAY['done'::character varying, 'failed'::character varying, 'reverted'::character varying])::text[])))"
+        },
+        {
+          "columnNames": [
+            "workflow_id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_workflow_id",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_workflow_id\" ON public.workflow_execution USING btree (workflow_id) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "workflow_id",
+            "transaction_id"
+          ],
+          "composite": true,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_workflow_id_transaction_id",
+          "unique": false,
+          "primary": false,
+          "expression": "CREATE INDEX \"IDX_workflow_execution_workflow_id_transaction_id\" ON public.workflow_execution USING btree (workflow_id, transaction_id) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "workflow_id",
+            "transaction_id",
+            "run_id"
+          ],
+          "composite": true,
+          "constraint": false,
+          "keyName": "IDX_workflow_execution_workflow_id_transaction_id_run_id_unique",
+          "unique": true,
+          "primary": false,
+          "expression": "CREATE UNIQUE INDEX \"IDX_workflow_execution_workflow_id_transaction_id_run_id_unique\" ON public.workflow_execution USING btree (workflow_id, transaction_id, run_id) WHERE (deleted_at IS NULL)"
+        },
+        {
+          "columnNames": [
+            "workflow_id",
+            "transaction_id",
+            "run_id"
+          ],
+          "composite": true,
+          "constraint": false,
+          "keyName": "workflow_execution_pkey",
+          "unique": true,
+          "primary": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    }
+  ],
+  "nativeEnums": {}
+}
