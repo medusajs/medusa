@@ -122,7 +122,9 @@ export async function lintProject(opts: {
  * Shared lint gate for `medusa build` and `medusa develop`. Encapsulates the
  * common flow; the only difference between the two callers is `failOnError`:
  *
- * - `--lint false`            → skipped silently (debug log).
+ * - `--lint false`            → skipped silently (debug log). On `build` and
+ *   `develop`, linting is off by default unless `@medusajs/eslint-plugin` is
+ *   installed in the project.
  * - no `eslint.config.js`     → skipped with an info log; caller continues.
  * - `eslint` not installed    → skipped with a warn log; caller continues.
  * - lint errors:
