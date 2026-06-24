@@ -3839,6 +3839,7 @@ __metadata:
     express: ^4.21.0
     express-session: ^1.17.3
     glob: 13.0.6
+    http-errors: 2.0.0
     jsonwebtoken: ^9.0.2
     lodash.memoize: ^4.1.2
     morgan: ^1.9.1
