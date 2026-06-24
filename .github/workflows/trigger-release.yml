@@ -15,7 +15,6 @@ on:
           - next
           - snapshot
           - canary
-          - options-preview
       branch:
         type: choice
         default: "develop"
@@ -23,7 +22,6 @@ on:
         required: true
         options:
           - develop
-          - chore/add-many-to-many-between-product-and-option
     branches:
       - develop
     paths-ignore:
