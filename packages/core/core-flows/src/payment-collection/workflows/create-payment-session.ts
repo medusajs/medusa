@@ -16,6 +16,7 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
   createPaymentAccountHolderStep,
   createPaymentSessionStep,
@@ -79,6 +80,18 @@ export const createPaymentSessionsWorkflow = createWorkflow(
   (
     input: WorkflowData<CreatePaymentSessionsWorkflowInput>
   ): WorkflowResponse<PaymentSessionDTO> => {
+    // Serialise concurrent (re-)initialisations for the same payment collection.
+    // The flow reads the collection's sessions, resolves one as reusable, then
+    // updates it in place — a single fail-loud operation. Without the lock a
+    // concurrent run could delete that session in the window between the read
+    // and the in-place update, making the update step fail. Holding the lock on
+    // the calling workflow keeps the read-modify-write atomic.
+    acquireLockStep({
+      key: input.payment_collection_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const paymentCollection = useRemoteQueryStep({
       entry_point: "payment_collection",
       fields: ["id", "amount", "currency_code", "payment_sessions.*"],
@@ -262,6 +275,10 @@ export const createPaymentSessionsWorkflow = createWorkflow(
 
     deletePaymentSessionsWorkflow.runAsStep({
       input: deletePaymentSessionInput,
+    })
+
+    releaseLockStep({
+      key: input.payment_collection_id,
     })
 
     return new WorkflowResponse(session)

@@ -115,6 +115,12 @@ export const updatePaymentSessionsStep = createStep(
     // delta and actually resets the provider payment.
     const reverts: RevertData[] = []
 
+    // In practice `ids` holds at most one session — a payment collection has a
+    // single active session (no split payments) — so this loop performs a
+    // single update and there is no partial-update state to unwind. If
+    // multi-session support is added, a provider failure on a later iteration
+    // would leave earlier in-place updates applied without a compensation
+    // callback (a throwing step doesn't compensate); revisit this then.
     for (const id of ids) {
       const session = sessionsById.get(id)!
 
