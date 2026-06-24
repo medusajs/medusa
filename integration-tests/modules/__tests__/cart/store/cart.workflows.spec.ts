@@ -4146,6 +4146,93 @@ medusaIntegrationTestRunner({
               })
             )
           })
+
+          it("should revert the in-place amount update of a reused session if a subsequent step fails", async () => {
+            const testCart = await cartModuleService.createCarts({
+              currency_code: "dkk",
+              region_id: defaultRegion.id,
+              items: [
+                {
+                  quantity: 1,
+                  unit_price: 5000,
+                  title: "Test item",
+                },
+              ],
+            })
+
+            const paymentCollection =
+              await paymentModule.createPaymentCollections({
+                // Differs from the cart total (5000) so the refresh executes and
+                // updates the unconfirmed session's amount in place.
+                amount: 5001,
+                currency_code: "dkk",
+              })
+
+            const paymentSession = await paymentModule.createPaymentSession(
+              paymentCollection.id,
+              {
+                amount: 5001,
+                currency_code: "dkk",
+                data: {},
+                provider_id: "pp_system_default",
+              }
+            )
+
+            await remoteLink.create([
+              {
+                [Modules.CART]: {
+                  cart_id: testCart.id,
+                },
+                [Modules.PAYMENT]: {
+                  payment_collection_id: paymentCollection.id,
+                },
+              },
+            ])
+
+            const workflow =
+              refreshPaymentCollectionForCartWorkflow(appContainer)
+
+            workflow.appendAction("throw", updatePaymentCollectionStepId, {
+              invoke: async function failStep() {
+                throw new Error(
+                  `Failed to do something after updating payment collections`
+                )
+              },
+            })
+
+            const { errors } = await workflow.run({
+              input: {
+                cart_id: testCart.id,
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({
+                  message: `Failed to do something after updating payment collections`,
+                }),
+              },
+            ])
+
+            // The reused session is kept (not deleted) and its in-place amount
+            // update is reverted to the pre-refresh value, so the provider
+            // payment is left as it was.
+            const sessions = await paymentModule.listPaymentSessions({
+              payment_collection_id: paymentCollection.id,
+            })
+
+            expect(sessions).toHaveLength(1)
+            expect(sessions[0]).toEqual(
+              expect.objectContaining({
+                id: paymentSession.id,
+                amount: 5001,
+                currency_code: "dkk",
+              })
+            )
+          })
         })
       })
 

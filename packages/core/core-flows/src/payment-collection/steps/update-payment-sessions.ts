@@ -5,6 +5,7 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   Modules,
   PaymentSessionStatus,
 } from "@medusajs/framework/utils"
@@ -15,9 +16,9 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
  */
 export interface UpdatePaymentSessionsStepInput {
   /**
-   * The IDs of the payment sessions to update. The caller is expected to only
-   * pass unconfirmed (`pending` / `requires_more`) sessions; confirmed sessions
-   * are skipped defensively.
+   * The IDs of the payment sessions to update. Every id must resolve to an
+   * existing, unconfirmed (`pending` / `requires_more`) session; the step fails
+   * otherwise.
    */
   ids: string[]
   /**
@@ -51,14 +52,13 @@ export const updatePaymentSessionsStepId = "update-payment-sessions"
  *
  * Only unconfirmed sessions (`pending` / `requires_more`) can have their amount
  * changed, so the caller is expected to filter the sessions before passing them
- * here; any other session that slips through is skipped. If a provider update
- * fails (for example the provider payment no longer exists), the session is
- * deleted as a best-effort fallback so the caller can recreate it, rather than
- * failing the whole operation.
+ * here. The step validates that every requested session exists and is
+ * unconfirmed before performing any update, and fails otherwise — so a missing
+ * or confirmed session never leaves the set partially updated. On compensation
+ * the amounts are reverted.
  *
- * Note: This step should not be used alone as it doesn't consider a revert
- * Use {@link updatePaymentSessionsWorkflow} or compose it within a workflow that
- * handles recreation of deleted sessions.
+ * Callers that need to guard against a session being deleted concurrently (e.g.
+ * a parallel refresh or re-init) should serialise those operations with a lock.
  *
  * @example
  * const data = updatePaymentSessionsStep({
@@ -71,7 +71,6 @@ export const updatePaymentSessionsStep = createStep(
   updatePaymentSessionsStepId,
   async (input: UpdatePaymentSessionsStepInput, { container }) => {
     const { ids = [], amount, currency_code } = input
-    const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
     if (!ids?.length) {
@@ -82,6 +81,33 @@ export const updatePaymentSessionsStep = createStep(
       { id: ids },
       { select: ["id", "amount", "currency_code", "status", "data"] }
     )
+    const sessionsById = new Map(sessions.map((s) => [s.id, s]))
+
+    // Validate the whole set BEFORE mutating anything: a step that throws gets
+    // no compensation callback, so a mid-loop failure would otherwise leave the
+    // earlier sessions updated with no revert. Every requested session must
+    // exist and be unconfirmed — a confirmed session's amount can't be changed
+    // (the provider would reject it).
+    for (const id of ids) {
+      const session = sessionsById.get(id)
+
+      if (!session) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Payment session ${id} was not found`
+        )
+      }
+
+      if (
+        session.status !== PaymentSessionStatus.PENDING &&
+        session.status !== PaymentSessionStatus.REQUIRES_MORE
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Payment session ${id} is ${session.status} and cannot be updated in place`
+        )
+      }
+    }
 
     // Captured for compensation: the amount we updated FROM, plus the POST-update
     // provider data. Reverting must pass the post-update data (new amount) with
@@ -89,61 +115,25 @@ export const updatePaymentSessionsStep = createStep(
     // delta and actually resets the provider payment.
     const reverts: RevertData[] = []
 
-    for (const session of sessions) {
-      // Defensive: the caller only routes unconfirmed sessions here, but never
-      // change a confirmed session's amount even if a stale id slips through —
-      // the provider would reject it.
-      if (
-        session.status !== PaymentSessionStatus.PENDING &&
-        session.status !== PaymentSessionStatus.REQUIRES_MORE
-      ) {
-        continue
-      }
+    for (const id of ids) {
+      const session = sessionsById.get(id)!
 
-      const previousAmount = session.amount
-      const previousCurrency = session.currency_code
+      const updated = await service.updatePaymentSession({
+        id: session.id,
+        amount,
+        currency_code,
+        // Pass the existing session's data so the provider targets the same
+        // underlying payment (e.g. the same Stripe PaymentIntent) instead of
+        // creating a new one.
+        data: session.data,
+      })
 
-      try {
-        const updated = await service.updatePaymentSession({
-          id: session.id,
-          amount,
-          currency_code,
-          // Pass the existing session's data so the provider targets the same
-          // underlying payment (e.g. the same Stripe PaymentIntent) instead of
-          // creating a new one.
-          data: session.data,
-        })
-
-        reverts.push({
-          id: session.id,
-          amount: previousAmount,
-          currency_code: previousCurrency,
-          data: updated.data,
-        })
-      } catch (e) {
-        // The in-place update failed (e.g. the provider payment no longer
-        // exists). Fall back to the original behaviour for this session: delete
-        // it so the caller can recreate a fresh session. Best-effort and
-        // swallowed so a single stale session can't fail the whole operation.
-        //
-        // Unlike deletePaymentSessionsStep, a fallback-deleted session is
-        // intentionally NOT recreated on compensation (it isn't added to
-        // `reverts`): it only reaches this branch because its provider payment
-        // was already gone, so there is nothing to restore — recreating would
-        // just mint a brand-new provider payment during a rollback. The next
-        // re-initialisation creates a fresh session anyway.
-        logger.warn(
-          `In-place payment session update failed for ${session.id}; deleting it so it can be recreated - ${e}`
-        )
-
-        try {
-          await service.deletePaymentSession(session.id)
-        } catch (deleteError) {
-          logger.error(
-            `Failed to delete payment session ${session.id} after a failed in-place update - ${deleteError}`
-          )
-        }
-      }
+      reverts.push({
+        id: session.id,
+        amount: session.amount,
+        currency_code: session.currency_code,
+        data: updated.data,
+      })
     }
 
     return new StepResponse(
@@ -159,9 +149,8 @@ export const updatePaymentSessionsStep = createStep(
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
-    // Best-effort revert of the in-place amount updates (mirrors
-    // deletePaymentSessionsStep's "we accept a level of risk" recreate
-    // compensation).
+    // Best-effort revert of the in-place amount updates so the provider payments
+    // are reset to their previous amounts.
     for (const revert of reverts) {
       try {
         await service.updatePaymentSession({

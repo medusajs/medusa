@@ -185,31 +185,18 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
           }
         }
 
-        return { updateIds, deleteIds }
-      })
-
-      const updatePaymentSessionInput = transform(
-        { cart, partitionedSessions },
-        ({ cart, partitionedSessions }) => {
-          return {
-            ids: partitionedSessions.updateIds,
+        return {
+          updateInput: {
+            ids: updateIds,
             // The provider path expects the major-unit total (matching
             // createPaymentSessionStep's amount input), NOT the raw amount used
             // for the DB collection update below.
             amount: cart.total,
             currency_code: cart.currency_code,
-          }
+          },
+          deleteInput: { ids: deleteIds },
         }
-      )
-
-      const deletePaymentSessionInput = transform(
-        { partitionedSessions },
-        ({ partitionedSessions }) => {
-          return {
-            ids: partitionedSessions.deleteIds,
-          }
-        }
-      )
+      })
 
       const updatePaymentCollectionInput = transform({ cart }, ({ cart }) => {
         if (!isPresent(cart.payment_collection?.id)) {
@@ -226,9 +213,9 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
       })
 
       parallelize(
-        updatePaymentSessionsStep(updatePaymentSessionInput),
+        updatePaymentSessionsStep(partitionedSessions.updateInput),
         deletePaymentSessionsWorkflow.runAsStep({
-          input: deletePaymentSessionInput,
+          input: partitionedSessions.deleteInput,
         }),
         updatePaymentCollectionStep(updatePaymentCollectionInput)
       )

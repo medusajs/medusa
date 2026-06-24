@@ -329,7 +329,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create a fresh session (without failing) when the in-place update fails for a stale provider payment", async () => {
+        it("should fail (without deleting and recreating the session) when the in-place update fails for a stale provider payment", async () => {
           const { result: first } = await createPaymentSessionsWorkflow(
             appContainer
           ).run({
@@ -342,41 +342,43 @@ medusaIntegrationTestRunner({
           })
 
           // Simulate the provider payment having vanished out-of-band: the
-          // in-place update throws, so the workflow must fall back to a fresh
-          // session instead of failing the route.
+          // in-place update throws. The step does a single update operation and
+          // fails loudly rather than deleting the session and recreating it —
+          // recreating would mint a new provider payment, the exact
+          // proliferation this flow avoids. Callers that need to tolerate this
+          // recreate a session on the next initialisation.
           const updateSpy = jest
             .spyOn(paymentModule, "updatePaymentSession")
             .mockRejectedValueOnce(new Error("No such payment_intent"))
 
-          const { result: second, errors } =
-            await createPaymentSessionsWorkflow(appContainer).run({
-              input: {
-                payment_collection_id: paymentCollection.id,
-                provider_id: "pp_system_default",
-                context: {},
-                data: {},
-              },
-              throwOnError: false,
-            })
+          const { errors } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+            throwOnError: false,
+          })
 
           expect(updateSpy).toHaveBeenCalled()
-          expect(errors).toEqual([])
+          expect(errors).not.toEqual([])
 
-          // A brand-new session replaces the stale one (no failure), and the
-          // stale session is gone.
-          expect(second.id).not.toEqual(first.id)
-
+          // The original session is untouched: neither deleted nor replaced by a
+          // fresh one (which would mean a new provider payment).
           const sessions = await paymentModule.listPaymentSessions({
             payment_collection_id: paymentCollection.id,
           })
 
           expect(sessions).toHaveLength(1)
-          expect(sessions[0].id).toEqual(second.id)
+          expect(sessions[0].id).toEqual(first.id)
 
           updateSpy.mockRestore()
         })
 
-        it("should create a fresh session (without failing) when the reused session was deleted before it could be retrieved", async () => {
+        it("should fail (without deleting and recreating the session) when the reused session was deleted before it could be retrieved", async () => {
           const { result: first } = await createPaymentSessionsWorkflow(
             appContainer
           ).run({
@@ -390,9 +392,10 @@ medusaIntegrationTestRunner({
 
           // Simulate the reusable session being deleted out-of-band between the
           // caller resolving it (from the payment-collection query) and the
-          // update step retrieving it: retrieve throws NOT_FOUND, so the
-          // workflow must fall back to a fresh session instead of failing the
-          // route.
+          // update step retrieving it: retrieve throws NOT_FOUND. The step does
+          // a single update operation and fails loudly when the session no
+          // longer exists; callers that need to guard against this race should
+          // serialise the operations with a lock.
           const retrieveSpy = jest
             .spyOn(paymentModule, "retrievePaymentSession")
             .mockRejectedValueOnce(
@@ -402,30 +405,29 @@ medusaIntegrationTestRunner({
               )
             )
 
-          const { result: second, errors } =
-            await createPaymentSessionsWorkflow(appContainer).run({
-              input: {
-                payment_collection_id: paymentCollection.id,
-                provider_id: "pp_system_default",
-                context: {},
-                data: {},
-              },
-              throwOnError: false,
-            })
+          const { errors } = await createPaymentSessionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+            throwOnError: false,
+          })
 
           expect(retrieveSpy).toHaveBeenCalled()
-          expect(errors).toEqual([])
+          expect(errors).not.toEqual([])
 
-          // A brand-new session replaces the stale one (no failure), and the
-          // stale session is gone.
-          expect(second.id).not.toEqual(first.id)
-
+          // The original session is left as-is — the failed run neither deleted
+          // it nor created a replacement.
           const sessions = await paymentModule.listPaymentSessions({
             payment_collection_id: paymentCollection.id,
           })
 
           expect(sessions).toHaveLength(1)
-          expect(sessions[0].id).toEqual(second.id)
+          expect(sessions[0].id).toEqual(first.id)
 
           retrieveSpy.mockRestore()
         })
@@ -442,10 +444,10 @@ medusaIntegrationTestRunner({
             },
           })
 
-          // A transient (non-NOT_FOUND) error on retrieve must propagate and
-          // fail the step rather than deleting the still-existing session and
-          // recreating it — recreating would spawn a new provider payment, the
-          // exact proliferation this flow avoids.
+          // A transient error on retrieve must propagate and fail the step
+          // rather than deleting the still-existing session and recreating it —
+          // recreating would spawn a new provider payment, the exact
+          // proliferation this flow avoids.
           const retrieveSpy = jest
             .spyOn(paymentModule, "retrievePaymentSession")
             .mockRejectedValueOnce(new Error("connection terminated unexpectedly"))

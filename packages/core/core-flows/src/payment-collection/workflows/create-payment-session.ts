@@ -216,7 +216,7 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       }
     )
 
-    const updateResult = when(
+    const updatedSession = when(
       { reusableSession },
       ({ reusableSession }) => !!reusableSession
     ).then(() => {
@@ -227,25 +227,22 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       })
     })
 
-    // Create a fresh session when there's no reusable one, OR when the in-place
-    // update failed (e.g. the provider payment vanished) and the stale session
-    // was deleted as a fallback — so a missing provider payment falls back to a
-    // fresh session instead of failing the route.
+    // Create a fresh session only when there's no reusable one. When a reusable
+    // session exists the in-place update either succeeds or fails the workflow,
+    // so we never need to fall back to a fresh session here.
     const createdSession = when(
-      { reusableSession, updateResult },
-      ({ reusableSession, updateResult }) =>
-        !reusableSession || !updateResult?.updated
+      { reusableSession },
+      ({ reusableSession }) => !reusableSession
     ).then(() => {
       return createPaymentSessionStep(paymentSessionInput)
     })
 
-    // Exactly one outcome is defined: the created session takes precedence (it
-    // only exists when there was no reuse or the update fell back), otherwise
-    // the in-place-updated session.
+    // Exactly one outcome is defined: the created session (when there was no
+    // reuse), otherwise the in-place-updated session.
     const session = transform(
-      { updateResult, createdSession },
-      ({ updateResult, createdSession }) =>
-        (createdSession || updateResult?.session) as PaymentSessionDTO
+      { updatedSession, createdSession },
+      ({ updatedSession, createdSession }) =>
+        (createdSession || updatedSession) as PaymentSessionDTO
     )
 
     // Note: We delete every OTHER existing session (we don't support split
