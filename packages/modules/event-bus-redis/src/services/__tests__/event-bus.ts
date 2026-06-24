@@ -970,7 +970,6 @@ describe("RedisEventBusService", () => {
             data: { test: "data" },
             metadata: {
               created_at: expect.any(Date),
-              published_at: expect.any(Date),
             },
           },
           { isGrouped: false }
@@ -1064,7 +1063,6 @@ describe("RedisEventBusService", () => {
             metadata: expect.objectContaining({
               eventGroupId: "test-group-no-sub-2",
               created_at: expect.any(String),
-              published_at: expect.any(Date),
             }),
           }),
           {

@@ -438,7 +438,6 @@ describe("LocalEventBusService", () => {
             name: "eventWithoutSubscribers",
             data: { test: "data" },
             metadata: expect.objectContaining({
-              published_at: expect.any(Date),
               created_at: expect.any(Date),
             }),
           }),
@@ -536,8 +535,7 @@ describe("LocalEventBusService", () => {
             data: { hi: "1234" },
             metadata: expect.objectContaining({
               eventGroupId: "test-group-no-sub-2",
-              published_at: expect.any(Date),
-              created_at: expect.any(Date),
+              created_at: expect.any(String),
             }),
           }),
           { isGrouped: true, eventGroupId: "test-group-no-sub-2" }

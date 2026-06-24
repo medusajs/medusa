@@ -198,12 +198,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     eventsData: Message<T> | Message<T>[],
     options: Options = {}
   ): Promise<void> {
-    let eventsDataArray = (Array.isArray(eventsData) ? eventsData : [eventsData]).map(
-      (eventData) => ({
-        ...eventData,
-        metadata: this.withCreatedAtMetadata(eventData.metadata),
-      })
-    )
+    let eventsDataArray = (
+      Array.isArray(eventsData) ? eventsData : [eventsData]
+    ).map((eventData) => ({
+      ...eventData,
+      metadata: this.withCreatedAtMetadata(eventData.metadata),
+    }))
 
     const { groupedEventsTTL = 600 } = options
     delete options.groupedEventsTTL
@@ -229,21 +229,21 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const promises: Promise<unknown>[] = []
 
     if (eventsToEmit.length) {
-      const publishedEvents = eventsToEmit.map((eventData) => ({
-        ...eventData,
-        metadata: this.withPublishedAtMetadata(eventData.metadata),
-      }))
-
-      publishedEvents.map((eventData) =>
+      eventsToEmit.forEach((eventData) =>
         this.callInterceptors(eventData, { isGrouped: false })
       )
 
-      const eventsWithSubscribers = publishedEvents.filter((eventData) => {
-        const eventSubscribers =
-          this.eventToSubscribersMap.get(eventData.name) || []
-        const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
-        return eventSubscribers.length || wildcardSubscribers.length
-      })
+      const eventsWithSubscribers = eventsToEmit
+        .filter((eventData) => {
+          const eventSubscribers =
+            this.eventToSubscribersMap.get(eventData.name) || []
+          const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
+          return eventSubscribers.length || wildcardSubscribers.length
+        })
+        .map((eventData) => ({
+          ...eventData,
+          metadata: this.withPublishedAtMetadata(eventData.metadata),
+        }))
 
       if (eventsWithSubscribers.length) {
         const emitData = this.buildEvents(eventsWithSubscribers, options)
@@ -301,16 +301,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   async releaseGroupedEvents(eventGroupId: string) {
     const groupedEvents = await this.getGroupedEvents(eventGroupId)
 
-    const publishedGroupedEvents = groupedEvents.map((jobData) => ({
-      ...jobData,
-      data: {
-        ...jobData.data,
-        metadata: this.withPublishedAtMetadata(jobData.data.metadata),
-      },
-    }))
-
     // Call interceptors before emitting grouped events
-    publishedGroupedEvents.map((jobData) => {
+    groupedEvents.map((jobData) => {
       this.callInterceptors(
         {
           name: jobData.name,
@@ -324,12 +316,20 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       )
     })
 
-    const eventsWithSubscribers = publishedGroupedEvents.filter((jobData) => {
-      const eventSubscribers =
-        this.eventToSubscribersMap.get(jobData.name) || []
-      const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
-      return eventSubscribers.length || wildcardSubscribers.length
-    })
+    const eventsWithSubscribers = groupedEvents
+      .filter((jobData) => {
+        const eventSubscribers =
+          this.eventToSubscribersMap.get(jobData.name) || []
+        const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
+        return eventSubscribers.length || wildcardSubscribers.length
+      })
+      .map((jobData) => ({
+        ...jobData,
+        data: {
+          ...jobData.data,
+          metadata: this.withPublishedAtMetadata(jobData.data.metadata),
+        },
+      }))
 
     if (eventsWithSubscribers.length) {
       await this.queue_.addBulk(eventsWithSubscribers)

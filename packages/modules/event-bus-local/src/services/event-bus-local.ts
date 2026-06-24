@@ -102,16 +102,13 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       )
 
       delay(options_?.delay).then(async () => {
+        // Call interceptors before emitting
+        void this.callInterceptors(eventData, { isGrouped: false })
+
         const publishedEventBody = {
           ...eventBody,
           metadata: this.withPublishedAtMetadata(eventBody.metadata),
         }
-
-        // Call interceptors before emitting
-        void this.callInterceptors(
-          { ...eventData, ...publishedEventBody },
-          { isGrouped: false }
-        )
 
         if (eventListenersCount) {
           this.eventEmitter_.emit(eventData.name, publishedEventBody)
@@ -155,18 +152,15 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       const delay = (ms?: number) => (ms ? setTimeout(ms) : Promise.resolve())
 
       delay(options_?.delay).then(async () => {
+        // Call interceptors before emitting grouped events
+        void this.callInterceptors(event, { isGrouped: true, eventGroupId })
+
         const publishedEventBody = {
           ...eventBody,
           metadata: this.withPublishedAtMetadata(
             this.parseEventMetadataDates(eventBody.metadata) // necessary cause JSON.parse stringified created_at
           ),
         }
-
-        // Call interceptors before emitting grouped events
-        void this.callInterceptors(
-          { ...event, ...publishedEventBody },
-          { isGrouped: true, eventGroupId }
-        )
 
         if (eventListenersCount) {
           this.eventEmitter_.emit(event.name, publishedEventBody)
