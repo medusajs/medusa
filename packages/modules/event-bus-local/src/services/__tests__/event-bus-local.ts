@@ -56,7 +56,9 @@ describe("LocalEventBusService", () => {
 
         expect(loggerMock.info).toHaveBeenCalledTimes(1)
         expect(loggerMock.info).toHaveBeenCalledWith(
-          "Processing eventName which has 1 subscribers"
+          expect.stringMatching(
+            /^Processing eventName \(created_at: .+, published_at: .+\) which has 1 subscribers$/
+          )
         )
       })
 

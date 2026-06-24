@@ -3,6 +3,7 @@ import {
   EventMetadata,
   InterceptorSubscriber,
   InternalModuleDeclaration,
+  Logger,
 } from "@medusajs/types"
 import { ulid } from "ulid"
 
@@ -215,15 +216,72 @@ export abstract class AbstractEventBusModuleService
       ...metadata,
       ...(metadata.created_at != null
         ? {
-            created_at: new Date(metadata.created_at as string | Date),
+            created_at: new Date(metadata.created_at),
           }
         : {}),
       ...(metadata.published_at != null
         ? {
-            published_at: new Date(metadata.published_at as string | Date),
+            published_at: new Date(metadata.published_at),
           }
         : {}),
     }
+  }
+
+  /**
+   * Logs when an event is being processed by subscribers.
+   */
+  protected logEventProcessing(
+    logger: Logger,
+    {
+      name,
+      metadata,
+      subscriberCount,
+      details,
+    }: {
+      name: string
+      metadata?: EventMetadata
+      subscriberCount: number
+      details?: Record<string, unknown>
+    }
+  ): void {
+    if (!subscriberCount) {
+      return
+    }
+
+    const allDetails: { key: string; value: string }[] = []
+
+    if (metadata?.created_at != null) {
+      allDetails.push({
+        key: "created_at",
+        value: new Date(metadata.created_at).toISOString(),
+      })
+    }
+
+    if (metadata?.published_at != null) {
+      allDetails.push({
+        key: "published_at",
+        value: new Date(metadata.published_at).toISOString(),
+      })
+    }
+
+    Object.entries(details ?? {}).forEach(([key, value]) => {
+      if (value != null) {
+        allDetails.push({
+          key,
+          value: value.toString(),
+        })
+      }
+    })
+
+    const detailsSegment = allDetails.length
+      ? ` (${allDetails
+          .map(({ key, value }) => `${key}: ${value}`)
+          .join(", ")})`
+      : ""
+
+    logger.info(
+      `Processing ${name}${detailsSegment} which has ${subscriberCount} subscribers`
+    )
   }
 }
 

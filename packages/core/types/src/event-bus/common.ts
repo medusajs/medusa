@@ -49,7 +49,7 @@ export type EventMetadata = Record<string, unknown> & {
    */
   created_at?: Date
   /**
-   * The date the event was published to the event bus. If part of a grouped event, this will be the date the group was released.
+   * The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
    */
   published_at?: Date
 }

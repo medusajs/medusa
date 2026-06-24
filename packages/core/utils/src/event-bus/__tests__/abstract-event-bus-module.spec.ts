@@ -32,6 +32,13 @@ class MockEventBusModuleService extends AbstractEventBusModuleService {
   public testReviveEventMetadataDates(metadata?: EventBusTypes.EventMetadata) {
     return this.reviveEventMetadataDates(metadata)
   }
+
+  public testLogEventProcessing(
+    logger: { info: jest.Mock },
+    params: Parameters<AbstractEventBusModuleService["logEventProcessing"]>[1]
+  ) {
+    return this.logEventProcessing(logger as any, params)
+  }
 }
 
 describe("AbstractEventBusModuleService", () => {
@@ -90,9 +97,7 @@ describe("AbstractEventBusModuleService", () => {
         created_at: new Date("2026-06-20T10:00:00.000Z"),
       })
 
-      expect(metadata.created_at).toEqual(
-        new Date("2026-06-20T10:00:00.000Z")
-      )
+      expect(metadata.created_at).toEqual(new Date("2026-06-20T10:00:00.000Z"))
       expect(metadata.published_at).toEqual(
         new Date("2026-06-20T11:00:00.000Z")
       )
@@ -107,12 +112,59 @@ describe("AbstractEventBusModuleService", () => {
         published_at: "2026-06-20T11:00:00.000Z" as unknown as Date,
       })
 
-      expect(metadata?.created_at).toEqual(
-        new Date("2026-06-20T10:00:00.000Z")
-      )
+      expect(metadata?.created_at).toEqual(new Date("2026-06-20T10:00:00.000Z"))
       expect(metadata?.published_at).toEqual(
         new Date("2026-06-20T11:00:00.000Z")
       )
+    })
+
+    it("should log event processing with timestamps", () => {
+      const logger = { info: jest.fn() }
+      const eventBus = new MockEventBusModuleService()
+
+      eventBus.testLogEventProcessing(logger, {
+        name: "order.placed",
+        metadata: {
+          created_at: new Date("2026-06-20T10:00:00.000Z"),
+          published_at: new Date("2026-06-20T11:00:00.000Z"),
+        },
+        subscriberCount: 1,
+      })
+
+      expect(logger.info).toHaveBeenCalledWith(
+        "Processing order.placed (created_at: 2026-06-20T10:00:00.000Z, published_at: 2026-06-20T11:00:00.000Z) which has 1 subscribers"
+      )
+    })
+
+    it("should include additional details in event processing logs", () => {
+      const logger = { info: jest.fn() }
+      const eventBus = new MockEventBusModuleService()
+
+      eventBus.testLogEventProcessing(logger, {
+        name: "order.placed",
+        metadata: {
+          created_at: new Date("2026-06-20T10:00:00.000Z"),
+          published_at: new Date("2026-06-20T11:00:00.000Z"),
+        },
+        subscriberCount: 2,
+        details: { priority: 75 },
+      })
+
+      expect(logger.info).toHaveBeenCalledWith(
+        "Processing order.placed (created_at: 2026-06-20T10:00:00.000Z, published_at: 2026-06-20T11:00:00.000Z, priority: 75) which has 2 subscribers"
+      )
+    })
+
+    it("should not log events without subscribers", () => {
+      const logger = { info: jest.fn() }
+      const eventBus = new MockEventBusModuleService()
+
+      eventBus.testLogEventProcessing(logger, {
+        name: "order.placed",
+        subscriberCount: 0,
+      })
+
+      expect(logger.info).not.toHaveBeenCalled()
     })
   })
 })
