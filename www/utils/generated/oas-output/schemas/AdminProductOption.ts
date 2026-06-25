@@ -6,6 +6,7 @@
  * required:
  *   - id
  *   - title
+ *   - is_exclusive
  * properties:
  *   id:
  *     type: string
@@ -15,12 +16,6 @@
  *     type: string
  *     title: title
  *     description: The product option's title.
- *   product:
- *     $ref: "#/components/schemas/AdminProduct"
- *   product_id:
- *     type: string
- *     title: product_id
- *     description: The ID of the product this option belongs to.
  *   values:
  *     type: array
  *     description: The product option's values.
@@ -47,6 +42,15 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the product option was deleted.
+ *   products:
+ *     type: array
+ *     description: The products that use the option.
+ *     items:
+ *       $ref: "#/components/schemas/AdminProduct"
+ *   is_exclusive:
+ *     type: boolean
+ *     title: is_exclusive
+ *     description: Whether the option is exclusive to a product.
  * 
 */
 

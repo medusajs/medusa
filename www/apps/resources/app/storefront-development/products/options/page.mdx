@@ -1,0 +1,420 @@
+---
+tags:
+  - product
+  - storefront
+products:
+  - product
+---
+
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Use Product Options in Storefront`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to list and retrieve product options in your storefront. You'll also learn how to use product options for filtering products.
+
+<Note>
+
+This feature is available since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+## What are Product Options?
+
+Product options are attributes like size or color that define the different variants of a product. For example, a t-shirt product may have a "Size" option with values like "S", "M", and "L", and a "Color" option with values like "Red", "Blue", and "Green".
+
+Product options are useful for:
+
+- Displaying filtering options in your storefront
+- Allowing customers to select product variants based on their preferences
+- Organizing product variants by their attributes
+
+---
+
+## List Product Options
+
+To retrieve a list of product options, send a request to the [List Product Options API route](!api!/store#product-options_getproductoptions):
+
+<Note title="Tip">
+
+Learn how to install and configure the JS SDK in the [JS SDK documentation](../../../js-sdk/page.mdx).
+
+</Note>
+
+<CodeTabs group="store-request">
+  <CodeTab label="React" value="react">
+
+  ```tsx highlights={{["18"], ["19"], ["20"], ["21"], ["22"]}}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+  import { sdk } from "@/lib/sdk"
+
+  export default function ProductOptions() {
+    const [loading, setLoading] = useState(true)
+    const [options, setOptions] = useState<
+      HttpTypes.StoreProductOption[]
+    >([])
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      sdk.store.productOption.list()
+      .then(({ product_options }) => {
+        setOptions(product_options)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && options.length === 0 && <span>No options found.</span>}
+        {!loading && options.length > 0 && (
+          <ul>
+            {options.map((option) => (
+              <li key={option.id}>
+                {option.title}
+                <ul>
+                  {option.values?.map((value) => (
+                    <li key={value.id}>{value.value}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="JS SDK" value="js-sdk">
+
+  ```ts
+  sdk.store.productOption.list()
+  .then(({ product_options }) => {
+    console.log(product_options)
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The response has a `product_options` field, which is an array of [product options](!api!/store#product-options_productoptionschema). Each product option has a `values` field, which is an array of the option's values.
+
+---
+
+## Paginate Product Options
+
+To paginate product options, pass the following query parameters:
+
+- `limit`: The number of product options to return in the request.
+- `offset`: The number of product options to skip before the returned options. You can calculate this by multiplying the current page with the limit.
+
+The response object returns a `count` field, which is the total count of product options. Use it to determine whether there are more options that can be loaded.
+
+For example:
+
+export const paginateHighlights = [
+  ["21", "offset", "Calculate the number of options to skip based on the current page and limit."],
+  ["27", "count", "The total number of product options in the Medusa application."],
+  ["38", "setHasMorePages", "Set whether there are more pages based on the total count."],
+  ["62", "button", "Show a button to load more options if there are more pages."]
+]
+
+```tsx highlights={paginateHighlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+import { sdk } from "@/lib/sdk"
+
+export default function ProductOptions() {
+  const [loading, setLoading] = useState(true)
+  const [options, setOptions] = useState<
+    HttpTypes.StoreProductOption[]
+  >([])
+  const limit = 20
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMorePages, setHasMorePages] = useState(false)
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const offset = (currentPage - 1) * limit
+
+    sdk.store.productOption.list({
+      limit,
+      offset,
+    })
+    .then(({ product_options, count }) => {
+      setOptions((prev) => {
+        if (prev.length > offset) {
+          // options already added because the same request has already been sent
+          return prev
+        }
+        return [
+          ...prev,
+          ...product_options,
+        ]
+      })
+      setHasMorePages(count > limit * currentPage)
+      setLoading(false)
+    })
+  }, [loading])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {!loading && options.length === 0 && <span>No options found.</span>}
+      {!loading && options.length > 0 && (
+        <ul>
+          {options.map((option) => (
+            <li key={option.id}>
+              {option.title}
+              <ul>
+                {option.values?.map((value) => (
+                  <li key={value.id}>{value.value}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      )}
+      {!loading && hasMorePages && (
+        <button 
+          onClick={() => {
+            setCurrentPage((prev) => prev + 1)
+            setLoading(true)
+          }}
+          disabled={loading}
+        >
+          Load More
+        </button>
+      )}
+    </div>
+  )
+}
+```
+
+In the example above, you add a `useEffect` hook that runs whenever the `loading` state changes. This hook fetches the product options, passing the `limit` and `offset` parameters to retrieve the paginated options.
+
+You then show a button to load more options if there are more pages.
+
+---
+
+## Retrieve a Product Option
+
+To retrieve a product option by its ID, send a request to the [Retrieve Product Option API route](!api!/store#product-options_getproductoptionsid):
+
+<CodeTabs group="store-request">
+  <CodeTab label="React" value="react">
+
+  ```tsx highlights={{["22"], ["23"], ["24"], ["25"], ["26"], ["27"]}}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+  import { sdk } from "@/lib/sdk"
+
+  type Props = {
+    id: string
+  }
+
+  export default function ProductOption({ id }: Props) {
+    const [loading, setLoading] = useState(true)
+    const [option, setOption] = useState<
+      HttpTypes.StoreProductOption | undefined
+    >()
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      sdk.store.productOption.retrieve(id)
+      .then(({ product_option }) => {
+        setOption(product_option)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {option && (
+          <>
+            <h1>{option.title}</h1>
+            {(option.values?.length || 0) > 0 && (
+              <ul>
+                {option.values!.map((value) => (
+                  <li key={value.id}>{value.value}</li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="JS SDK" value="js-sdk">
+
+export const fetchHighlights = [
+  ["1", "id", "The product option's ID."],
+]
+
+  ```ts highlights={fetchHighlights}
+  sdk.store.productOption.retrieve(id)
+  .then(({ product_option }) => {
+    console.log(product_option)
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The response has a `product_option` field, which is a [product option object](!api!/store#product-options_productoptionschema).
+
+---
+
+## Use Product Options for Filtering
+
+Product options are commonly used to add filtering functionality to your storefront. You can display the available options and their values, then allow customers to filter products by selecting specific option values.
+
+For example, you can create a `ProductFilters` component that retrieves options and allows selecting filters:
+
+export const filterHighlights = [
+  ["24", "list", "Retrieve all product options and their values."],
+  ["46", "setSelectedValues", "Update the selected option values when a checkbox is toggled."],
+  ["52", "setSelectedValues", "Remove a value from the selected values when unchecked."]
+]
+
+```tsx highlights={filterHighlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+import { sdk } from "@/lib/sdk"
+
+type ProductFiltersProps = {
+  selectedValues: string[]
+  setSelectedValues: (values: string[]) => void
+}
+
+export default function ProductFilters({
+  selectedValues,
+  setSelectedValues,
+}: ProductFiltersProps) {
+  const [isLoading, setIsLoading] = useState(true)
+  const [options, setOptions] = useState<HttpTypes.StoreProductOption[]>([])
+
+  useEffect(() => {
+    if (!isLoading) {
+      return 
+    }
+
+    sdk.store.productOption.list()
+    .then(({ product_options }) => {
+      setOptions(product_options)
+      setIsLoading(false)
+    })
+  }, [isLoading])
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {options.map((option) => (
+        <div key={option.id}>
+          <h4>{option.title}</h4>
+          <ul>
+            {option.values?.map((value) => (
+              <li key={value.id}>
+                <input
+                  type="checkbox"
+                  checked={selectedValues.includes(value.value)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      // add value
+                      setSelectedValues([
+                        ...selectedValues,
+                        value.value,
+                      ])
+                    } else {
+                      // remove value
+                      setSelectedValues(
+                        selectedValues.filter(
+                          (v) => v !== value.value
+                        )
+                      )
+                    }
+                  }}
+                />
+                <label>{value.value}</label>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+The component receives the currently selected option values and a function to update them. When a user selects a filter, such as "Blue" for the "Color" option, the selected option values are updated.
+
+Then, in the parent component that lists products, you can pass the selected option values to the `option_value_id` query parameter of the List Products API route:
+
+```ts
+sdk.store.product.list({
+  limit,
+  offset,
+  // a string or array of strings indicating
+  // option value IDs to filter by
+  option_value_id: selectedOptionValues
+})
+.then(({ products, count }) => {
+  // TODO set products...
+})
+```
+
+The returned products are filtered to only include those whose variants have the selected option values.
+
+<Note>
+
+To filter variants of the products by option values, use the [List Product Variants API route](!api!/store#product-variants_getproductvariants) with the `option_value_id` query parameter.
+
+</Note>
+
+### Filter by Option ID
+
+Alternatively, you can filter products by the options they have using the `option_id` query parameter. This allows filtering products that have a specific option, such as "Size", regardless of the option value.
+
+For example:
+
+```ts
+sdk.store.product.list({
+  limit,
+  offset,
+  // a string or array of strings indicating
+  // option IDs to filter by
+  option_id: selectedOptionIds
+})
+.then(({ products, count }) => {
+  // TODO set products...
+})
+```
+
+This returns all products that have the specified options, regardless of the option values.

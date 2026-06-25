@@ -9,13 +9,13 @@ const { medusaIntegrationTestRunner } = require("@medusajs/test-utils")
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let location1
     let location2
     let salesChannel1
     let salesChannel2
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       location1 = (
@@ -65,6 +65,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.sales_channel
+
+      await dbUtils.snapshot()
     })
 
     describe("create stock location", () => {

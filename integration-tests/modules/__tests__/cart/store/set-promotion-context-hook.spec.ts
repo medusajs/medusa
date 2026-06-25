@@ -21,7 +21,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("updateCartPromotionsWorkflow: setPromotionContext hook", () => {
       let appContainer
       let cartModuleService: ICartModuleService
@@ -49,10 +49,12 @@ medusaIntegrationTestRunner({
         )
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
+
+        await dbUtils.snapshot()
       })
 
       afterEach(() => {

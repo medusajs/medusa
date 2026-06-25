@@ -54,3 +54,14 @@ export type VariantImageInput = {
 }
 
 export type VariantImageInputArray = VariantImageInput[]
+
+export type FilterableProductOption = Omit<
+  ProductTypes.ProductOptionDTO,
+  "values"
+> & {
+  values?: ProductTypes.ProductOptionValueDTO[] | null
+}
+
+export type FilterableProduct = Omit<ProductTypes.ProductDTO, "options"> & {
+  options?: FilterableProductOption[] | null
+}

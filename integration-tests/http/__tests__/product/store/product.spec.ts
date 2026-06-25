@@ -20,7 +20,7 @@ import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let store
     let appContainer
     let collection
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
       return salesChannel
     }
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       publishableKey = await generatePublishableKey(appContainer)
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -144,6 +144,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_profile
+
+      await dbUtils.snapshot()
     })
 
     describe("Get products based on publishable key", () => {
@@ -490,6 +492,11 @@ medusaIntegrationTestRunner({
     })
 
     describe("GET /store/products", () => {
+      const getOptionValueId = (prod, optionTitle: string, value: string) =>
+        prod.options
+          ?.find((o) => o.title === optionTitle)
+          ?.values?.find((v) => v.value === value)?.id
+
       beforeEach(async () => {
         inventoryItem1 = (
           await api.post(
@@ -532,10 +539,10 @@ medusaIntegrationTestRunner({
             {
               title: "test variant 1",
               manage_inventory: true,
-              sku: 'test-sku',
-              ean: 'test-ean',
-              upc: 'test-upc',
-              barcode: 'test-barcode',
+              sku: "test-sku",
+              ean: "test-ean",
+              upc: "test-upc",
+              barcode: "test-barcode",
               options: {
                 size: "large",
                 color: "green",
@@ -600,6 +607,20 @@ medusaIntegrationTestRunner({
             { title: "test variant 4", prices: [], options: { size: "large" } },
           ],
         })
+
+        product = (
+          await api.get(
+            `/admin/products/${product.id}?fields=*options.values,*variants.options`,
+            adminHeaders
+          )
+        ).data.product
+        product2 = (
+          await api.get(
+            `/admin/products/${product2.id}?fields=*options.values,*variants.options`,
+            adminHeaders
+          )
+        ).data.product
+        variant = product.variants[0]
 
         const defaultSalesChannel = await createSalesChannel(
           { name: "default sales channel" },
@@ -868,21 +889,30 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it('returns the external_id field when requested with `fields` param', async () => {  
-        const response  = await api.get('/store/products/' + product.id, storeHeaders);
-        expect(response.status).toEqual(200);
-        expect(response.data.product.external_id).toBeUndefined();
+      it("returns the external_id field when requested with `fields` param", async () => {
+        const response = await api.get(
+          "/store/products/" + product.id,
+          storeHeaders
+        )
+        expect(response.status).toEqual(200)
+        expect(response.data.product.external_id).toBeUndefined()
 
-        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
-        expect(response2.status).toEqual(200);
-        expect(response2.data.product.external_id).toEqual(product.external_id);
-      });
+        const response2 = await api.get(
+          "/store/products/" + product.id + "?fields=+external_id",
+          storeHeaders
+        )
+        expect(response2.status).toEqual(200)
+        expect(response2.data.product.external_id).toEqual(product.external_id)
+      })
 
       it("returns a list of products with given external_id", async () => {
-        const response2  = await api.get('/store/products/' + product.id + "?fields=+external_id", storeHeaders);
-        expect(response2.status).toEqual(200);
-        expect(response2.data.product.external_id).toBeTruthy();
-        expect(response2.data.product.external_id).toEqual(product.external_id);
+        const response2 = await api.get(
+          "/store/products/" + product.id + "?fields=+external_id",
+          storeHeaders
+        )
+        expect(response2.status).toEqual(200)
+        expect(response2.data.product.external_id).toBeTruthy()
+        expect(response2.data.product.external_id).toEqual(product.external_id)
 
         const response = await api.get(
           `/store/products?external_id[]=${product.external_id}`,
@@ -895,9 +925,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: product.id }),
         ])
       })
-
-
-
 
       it("can filter products by ean", async () => {
         const response = await api.get(
@@ -937,7 +964,6 @@ medusaIntegrationTestRunner({
         ])
       })
 
-
       it("can filter products by sku", async () => {
         const response = await api.get(
           `/store/products?variants[sku]=${product.variants[0].sku}`,
@@ -950,10 +976,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ id: product.id }),
         ])
       })
-
-
-
-
 
       it("returns a list of products with one of the given handles", async () => {
         const response = await api.get(
@@ -1026,6 +1048,66 @@ medusaIntegrationTestRunner({
         expect(response.data.products).toEqual([
           expect.objectContaining({ id: product.id }),
         ])
+      })
+
+      it("should return a list of products filtered by option value ids", async () => {
+        const sizeLargeId = getOptionValueId(product, "size", "large")
+        expect(sizeLargeId).toBeDefined()
+
+        const response = await api.get(
+          `/store/products?option_value_id[]=${sizeLargeId}`,
+          storeHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("should return products that have at least one variant with the given option value combinations", async () => {
+        const sizeLargeId = getOptionValueId(product, "size", "large")
+        const sizeSmallId = getOptionValueId(product, "size", "small")
+        const colorGreenId = getOptionValueId(product, "color", "green")
+        expect(sizeLargeId).toBeDefined()
+        expect(sizeSmallId).toBeDefined()
+        expect(colorGreenId).toBeDefined()
+
+        const query = qs.stringify(
+          { option_value_id: [sizeLargeId, sizeSmallId, colorGreenId] },
+          { arrayFormat: "repeat" }
+        )
+
+        const response = await api.get(`/store/products?${query}`, storeHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("should exclude products that don't have variant with the given option value combinations", async () => {
+        const sizeLargeId = getOptionValueId(product, "size", "large")
+        const materialCottonId = getOptionValueId(
+          product2,
+          "material",
+          "cotton"
+        )
+        expect(sizeLargeId).toBeDefined()
+        expect(materialCottonId).toBeDefined()
+
+        const query = qs.stringify(
+          { option_value_id: [sizeLargeId, materialCottonId] },
+          { arrayFormat: "repeat" }
+        )
+
+        const response = await api.get(`/store/products?${query}`, storeHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(0)
+        expect(response.data.products).toEqual([])
       })
 
       describe("with publishable keys", () => {

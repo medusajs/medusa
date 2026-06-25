@@ -23,6 +23,7 @@ import { adminPriceListsRoutesMiddlewares } from "./admin/price-lists/middleware
 import { adminPricePreferencesRoutesMiddlewares } from "./admin/price-preferences/middlewares"
 import { adminProductCategoryRoutesMiddlewares } from "./admin/product-categories/middlewares"
 import { adminProductTagRoutesMiddlewares } from "./admin/product-tags/middlewares"
+import { adminProductOptionRoutesMiddlewares } from "./admin/product-options/middlewares"
 import { adminProductTypeRoutesMiddlewares } from "./admin/product-types/middlewares"
 import { adminProductVariantRoutesMiddlewares } from "./admin/product-variants/middlewares"
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
@@ -60,6 +61,7 @@ import { storeOrderRoutesMiddlewares } from "./store/orders/middlewares"
 import { storePaymentCollectionsMiddlewares } from "./store/payment-collections/middlewares"
 import { storePaymentProvidersMiddlewares } from "./store/payment-providers/middlewares"
 import { storeProductCategoryRoutesMiddlewares } from "./store/product-categories/middlewares"
+import { storeProductOptionRoutesMiddlewares } from "./store/product-options/middlewares"
 import { storeProductTagRoutesMiddlewares } from "./store/product-tags/middlewares"
 import { storeProductTypeRoutesMiddlewares } from "./store/product-types/middlewares"
 import { storeProductVariantRoutesMiddlewares } from "./store/product-variants/middlewares"
@@ -89,6 +91,7 @@ export default defineMiddlewares([
   ...storeCartRoutesMiddlewares,
   ...storeCollectionRoutesMiddlewares,
   ...storeProductCategoryRoutesMiddlewares,
+  ...storeProductOptionRoutesMiddlewares,
   ...storeProductTagRoutesMiddlewares,
   ...storeProductTypeRoutesMiddlewares,
   ...storePaymentProvidersMiddlewares,
@@ -126,6 +129,7 @@ export default defineMiddlewares([
   ...adminShippingOptionTypeRoutesMiddlewares,
   ...adminProductTypeRoutesMiddlewares,
   ...adminProductTagRoutesMiddlewares,
+  ...adminProductOptionRoutesMiddlewares,
   ...adminUploadRoutesMiddlewares,
   ...adminFulfillmentSetsRoutesMiddlewares,
   ...adminNotificationRoutesMiddlewares,

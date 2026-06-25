@@ -19,7 +19,7 @@ jest.setTimeout(60000)
 process.env.MEDUSA_FF_TRANSLATION = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer: MedusaContainer
     let order
     let product
@@ -39,7 +39,7 @@ medusaIntegrationTestRunner({
     let outboundShippingOption
     const shippingProviderId = "manual_test-provider"
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       const translationModule = appContainer.resolve(Modules.TRANSLATION)
       await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
@@ -403,6 +403,8 @@ medusaIntegrationTestRunner({
         },
         adminHeaders
       )
+
+      await dbUtils.snapshot()
     })
 
     const createOrderWithLocale = async (locale?: string) => {

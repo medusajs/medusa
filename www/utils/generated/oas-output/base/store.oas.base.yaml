@@ -152,6 +152,18 @@ tags:
       url: https://docs.medusajs.com/resources/storefront-development/products/categories/list
     x-associatedSchema:
       $ref: "#/components/schemas/StoreProductCategory"
+  - name: Product Options
+    x-associatedSchema:
+      $ref: "#/components/schemas/StoreProductOption"
+    description: >
+      A product option is a way to define different options for a product, such
+      as "Size" or "Color". Product options can be created globally and used by
+      multiple products, or they can be exclusive to a specific product.
+
+      These API routes allow customers to view product options.
+    externalDocs:
+      description: Use Product Options in a Storefront
+      url: https://docs.medusajs.com/resources/storefront-development/products/options
   - name: Product Tags
     x-associatedSchema:
       $ref: "#/components/schemas/StoreProductTag"

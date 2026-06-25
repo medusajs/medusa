@@ -1,11 +1,11 @@
 import type { AdditionalData, ProductTypes } from "@medusajs/framework/types"
 import { ProductOptionWorkflowEvents } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createProductOptionsStep } from "../steps"
@@ -22,7 +22,7 @@ export type CreateProductOptionsWorkflowInput = {
 
 export const createProductOptionsWorkflowId = "create-product-options"
 /**
- * This workflow creates one or more product options. It's used by the [Create Product Option Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsidoptions).
+ * This workflow creates one or more product options. It's used by the [Create Product Option Admin API Route](https://docs.medusajs.com/api/admin#product-options_postproductoptions).
  *
  * This workflow has a hook that allows you to perform custom actions on the created product options. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the product options.
@@ -41,6 +41,12 @@ export const createProductOptionsWorkflowId = "create-product-options"
  *       {
  *         title: "Color",
  *         values: ["Red", "Blue", "Green"]
+ *         is_exclusive: true,
+ *         ranks: {
+ *           "Red": 2,
+ *           "Blue": 1,
+ *           "Green": 3
+ *         }
  *       }
  *     ],
  *     additional_data: {
