@@ -1,5 +1,21 @@
 # @medusajs/framework
 
+## 2.17.1
+
+### Patch Changes
+
+- [#15815](https://github.com/medusajs/medusa/pull/15815) [`975313f62b22055ddaacf7852f33cf7b0f4af5df`](https://github.com/medusajs/medusa/commit/975313f62b22055ddaacf7852f33cf7b0f4af5df) Thanks [@peterlgh7](https://github.com/peterlgh7)! - pass scheduled_for to job handlers
+
+- Updated dependencies [[`4f5e1cc97f4511f43cf4790af412781dafb2ba86`](https://github.com/medusajs/medusa/commit/4f5e1cc97f4511f43cf4790af412781dafb2ba86)]:
+  - @medusajs/types@2.17.1
+  - @medusajs/utils@2.17.1
+  - @medusajs/modules-sdk@2.17.1
+  - @medusajs/orchestration@2.17.1
+  - @medusajs/workflows-sdk@2.17.1
+  - @medusajs/cli@2.17.1
+  - @medusajs/deps@2.17.1
+  - @medusajs/telemetry@2.17.1
+
 ## 2.17.0
 
 ### Patch Changes
