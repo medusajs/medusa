@@ -3,7 +3,7 @@ import {
   createFixtureWorkspace,
   createRuleTester,
 } from "../../../test-utils"
-import { rule } from "../rule"
+import { pathStaysInModule, rule } from "../rule"
 
 afterAll(cleanupFixtureWorkspaces)
 
@@ -349,4 +349,42 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
       ],
     },
   ],
+})
+
+/**
+ * `pathStaysInModule` is exercised directly because the Windows-specific
+ * backslash behavior cannot be reproduced through the rule on POSIX CI:
+ * `path.resolve` only emits backslashes on Windows.
+ */
+describe("pathStaysInModule", () => {
+  const moduleRoot = "C:/repo/src/modules/quote"
+
+  it("returns true for a Windows (backslash) path inside the module", () => {
+    const resolved = "C:\\repo\\src\\modules\\quote\\models\\quote-area.ts"
+    expect(pathStaysInModule(resolved, moduleRoot)).toBe(true)
+  })
+
+  it("returns true when the Windows path equals the module root", () => {
+    expect(pathStaysInModule("C:\\repo\\src\\modules\\quote", moduleRoot)).toBe(
+      true
+    )
+  })
+
+  it("returns false for a Windows path outside the module", () => {
+    const resolved = "C:\\repo\\src\\modules\\order\\models\\order.ts"
+    expect(pathStaysInModule(resolved, moduleRoot)).toBe(false)
+  })
+
+  it("returns true for a POSIX path inside the module", () => {
+    expect(
+      pathStaysInModule(
+        "C:/repo/src/modules/quote/models/quote-area.ts",
+        moduleRoot
+      )
+    ).toBe(true)
+  })
+
+  it("returns true when there is no module root", () => {
+    expect(pathStaysInModule("C:\\anywhere\\file.ts", null)).toBe(true)
+  })
 })

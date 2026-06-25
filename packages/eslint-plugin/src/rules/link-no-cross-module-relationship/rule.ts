@@ -59,23 +59,40 @@ function isRelativeImport(source: string): boolean {
 /**
  * Returns the absolute path of the `modules/<name>/` directory containing the
  * given file, or `null` if the file isn't under a recognizable module root.
+ *
+ * The filename is run through `path.resolve` so it is compared on equal footing
+ * with import targets (which are also resolved via `path.resolve`). On Windows
+ * `path.resolve` adds the current drive letter; resolving both sides keeps the
+ * drive prefix consistent and avoids false `crossModuleRelationship` reports.
  */
 function getModuleRoot(filename: string): string | null {
-  const norm = filename.replace(/\\/g, "/")
+  const norm = path.resolve(filename).replace(/\\/g, "/")
   const match = norm.match(/^(.*\/modules\/[^/]+)\//)
   return match ? match[1] : null
 }
 
-/** True when the absolute `resolved` path is inside (or equal to) `moduleRoot`. */
-function pathStaysInModule(
+/**
+ * True when the absolute `resolved` path is inside (or equal to) `moduleRoot`.
+ *
+ * `moduleRoot` is normalized to forward slashes by `getModuleRoot`, but
+ * `resolved` comes from `path.resolve`, which emits backslashes on Windows.
+ * Normalize `resolved` too so the comparison doesn't yield false positives on
+ * Windows for imports that actually stay within the module.
+ *
+ * Exported for unit testing the cross-platform path handling.
+ */
+export function pathStaysInModule(
   resolved: string,
   moduleRoot: string | null
 ): boolean {
   if (moduleRoot === null) {
     return true
   }
+  const normalizedResolved = resolved.replace(/\\/g, "/")
   const root = moduleRoot + "/"
-  return resolved === moduleRoot || resolved.startsWith(root)
+  return (
+    normalizedResolved === moduleRoot || normalizedResolved.startsWith(root)
+  )
 }
 
 /**
