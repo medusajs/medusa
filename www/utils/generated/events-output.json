@@ -461,6 +461,7 @@
     "description": "Emitted when products are updated.",
     "workflows": [
       "updateProductsWorkflow",
+      "createAndLinkProductOptionsToProductWorkflow",
       "batchProductsWorkflow",
       "importProductsWorkflow"
     ],
@@ -587,7 +588,10 @@
     "payload": "```ts\n{\n  id, // The ID of the product option\n}\n```",
     "description": "Emitted when product options are deleted.",
     "workflows": [
-      "deleteProductOptionsWorkflow"
+      "deleteProductOptionsWorkflow",
+      "deleteProductsWorkflow",
+      "batchProductsWorkflow",
+      "importProductsWorkflow"
     ],
     "deprecated": false
   },

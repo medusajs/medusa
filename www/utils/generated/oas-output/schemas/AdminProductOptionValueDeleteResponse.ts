@@ -1,0 +1,27 @@
+/**
+ * @schema AdminProductOptionValueDeleteResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminProductOptionValueDeleteResponse
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The product option's ID.
+ *   object:
+ *     type: string
+ *     title: object
+ *     description: The name of the deleted object.
+ *   deleted:
+ *     type: boolean
+ *     title: deleted
+ *     description: Whether the Product Option was deleted.
+ *   parent:
+ *     $ref: "#/components/schemas/AdminProductOption"
+ * 
+*/
+

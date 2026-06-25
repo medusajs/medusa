@@ -1,0 +1,16 @@
+/**
+ * @schema AdminUpdateProductOptionValue
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminUpdateProductOptionValue
+ * properties:
+ *   value:
+ *     type: string
+ *     title: value
+ *     description: The product option's value.
+ *   metadata:
+ *     type: object
+ *     description: The product option's metadata.
+ * 
+*/
+

@@ -1,0 +1,39 @@
+/**
+ * @schema AdminUpdateProductOptionValues
+ * type: object
+ * description: The update's details.
+ * x-schemaName: AdminUpdateProductOptionValues
+ * required:
+ *   - product_option_id
+ * properties:
+ *   product_option_id:
+ *     type: string
+ *     title: product_option_id
+ *     description: The update's product option id.
+ *   add:
+ *     type: array
+ *     description: The update's add.
+ *     items:
+ *       oneOf:
+ *         - type: string
+ *           title: add
+ *           description: The add's details.
+ *         - type: object
+ *           description: The add's details.
+ *           required:
+ *             - value
+ *           properties:
+ *             value:
+ *               type: string
+ *               title: value
+ *               description: The add's value.
+ *   remove:
+ *     type: array
+ *     description: The update's remove.
+ *     items:
+ *       type: string
+ *       title: remove
+ *       description: The remove's details.
+ * 
+*/
+
