@@ -108,11 +108,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   __hooks = {
     onApplicationStart: async () => {
-      // `bullWorker_.run()` returns a Promise that only resolves when the worker
-      // is closed. Awaiting it here would block `MedusaModule.onApplicationStart`
-      // (which awaits this hook), preventing the application from finishing boot.
-      // Start the worker without awaiting, and surface any worker-level errors
-      // via the logger instead of producing an unhandled rejection.
+      await this.bullWorker_?.waitUntilReady()
+      // never await run(), which resolves only on close
       this.bullWorker_?.run().catch((err) => {
         this.logger_?.error(
           `Error in event-bus-redis worker: ${err?.message ?? err}`
