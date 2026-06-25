@@ -7,6 +7,7 @@ import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   FulfillmentSetDTO,
   FulfillmentWorkflow,
+  IEventBusModuleService,
   IOrderModuleService,
   IRegionModuleService,
   IStockLocationService,
@@ -19,6 +20,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  OrderWorkflowEvents,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -489,6 +491,79 @@ medusaIntegrationTestRunner({
             ]),
           })
         )
+      })
+
+      it("should not emit RETURN_RECEIVED when receive_now is false", async () => {
+        const order = await createOrderFixture({ container, product })
+        const reasons = await orderService.listReturnReasons({})
+        const testReason = reasons.find(
+          (r) => r.value.toLowerCase() === "test child reason"
+        )!
+
+        const eventBusService = container.resolve<IEventBusModuleService>(
+          Modules.EVENT_BUS
+        )
+        const emitSpy = jest.spyOn(eventBusService, "emit")
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: {
+            order_id: order.id,
+            return_shipping: { option_id: shippingOption.id },
+            items: [
+              { id: order.items![0].id, quantity: 1, reason_id: testReason.id },
+            ],
+          },
+          throwOnError: true,
+        })
+
+        const emittedEventNames = emitSpy.mock.calls.flatMap(([events]) =>
+          (Array.isArray(events) ? events : [events]).map((e) => e.name)
+        )
+
+        expect(emittedEventNames).toContain(
+          OrderWorkflowEvents.RETURN_REQUESTED
+        )
+        expect(emittedEventNames).not.toContain(
+          OrderWorkflowEvents.RETURN_RECEIVED
+        )
+
+        emitSpy.mockRestore()
+      })
+
+      it("should emit RETURN_RECEIVED when receive_now is true", async () => {
+        const order = await createOrderFixture({ container, product })
+        const reasons = await orderService.listReturnReasons({})
+        const testReason = reasons.find(
+          (r) => r.value.toLowerCase() === "test child reason"
+        )!
+
+        const eventBusService = container.resolve<IEventBusModuleService>(
+          Modules.EVENT_BUS
+        )
+        const emitSpy = jest.spyOn(eventBusService, "emit")
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: {
+            order_id: order.id,
+            return_shipping: { option_id: shippingOption.id },
+            items: [
+              { id: order.items![0].id, quantity: 1, reason_id: testReason.id },
+            ],
+            receive_now: true,
+          },
+          throwOnError: true,
+        })
+
+        const emittedEventNames = emitSpy.mock.calls.flatMap(([events]) =>
+          (Array.isArray(events) ? events : [events]).map((e) => e.name)
+        )
+
+        expect(emittedEventNames).toContain(
+          OrderWorkflowEvents.RETURN_REQUESTED
+        )
+        expect(emittedEventNames).toContain(OrderWorkflowEvents.RETURN_RECEIVED)
+
+        emitSpy.mockRestore()
       })
 
       it("should populate delivery_address on the return fulfillment with the stock location's address", async () => {
