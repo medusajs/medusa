@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd } from "docs-ui"
+import { getOsShortcut, Kbd, Note } from "docs-ui"
 
 export const metadata = {
   title: `S3 Storage`,
@@ -23,6 +23,49 @@ So, when you create a new project, Medusa creates a production S3 bucket for the
 Medusa automatically configures your Medusa application hosted on Cloud to use the [S3 File Module Provider](!resources!/infrastructure-modules/file/s3).
 
 So, you don't need to configure the S3 File Module Provider or set up S3 manually. Also, if you have the S3 File Module Provider configured in `medusa-config.ts`, remove it to avoid conflicts.
+
+If you maintain a single `medusa-config.ts` for both Cloud and non-Cloud deployments, use the `MEDUSA_CLOUD_ENVIRONMENT_TYPE` [system environment variable](../environments/environment-variables/page.mdx#system-environment-variables) to conditionally skip the S3 module registration. Cloud automatically sets this variable in all environments:
+
+```ts title="medusa-config.ts"
+import { loadEnv, defineConfig } from "@medusajs/framework/utils"
+
+loadEnv(process.env.NODE_ENV || "development", process.cwd())
+
+const isCloud = !!process.env.MEDUSA_CLOUD_ENVIRONMENT_TYPE
+
+module.exports = defineConfig({
+  modules: [
+    ...(!isCloud
+      ? [
+          {
+            resolve: "@medusajs/medusa/file",
+            options: {
+              providers: [
+                {
+                  resolve: "@medusajs/file-s3",
+                  id: "s3",
+                  options: {
+                    file_url: process.env.S3_FILE_URL,
+                    access_key_id: process.env.S3_ACCESS_KEY_ID,
+                    secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+                    region: process.env.S3_REGION,
+                    bucket: process.env.S3_BUCKET,
+                  },
+                },
+              ],
+            },
+          },
+        ]
+      : []),
+  ],
+})
+```
+
+<Note>
+
+`MEDUSA_CLOUD_ENVIRONMENT_TYPE` is set to `production`, `preview-instance`, or `long-lived` depending on the environment. It is not set outside of Cloud, so checking for its presence is a reliable way to detect a Cloud deployment.
+
+</Note>
 
 <Note>
 
