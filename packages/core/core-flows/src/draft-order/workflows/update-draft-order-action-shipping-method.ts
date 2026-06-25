@@ -21,6 +21,7 @@ import {
   updateOrderShippingMethodsStep,
 } from "../../order"
 import { prepareShippingMethodUpdate } from "../../order/utils/prepare-shipping-method"
+import { fetchShippingOptionForDraftOrderWorkflow } from "./fetch-draft-order-shipping-option"
 import { getDraftOrderPromotionContextStep } from "../steps/get-draft-order-promotion-context"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderShippingMethodActionStep } from "../steps/validate-draft-order-shipping-method-action"
@@ -113,21 +114,17 @@ export const updateDraftOrderActionShippingMethodWorkflow = createWorkflow(
         list: false,
       }).config({ name: "fetch-shipping-method" })
 
-      return useRemoteQueryStep({
-        entry_point: "shipping_option",
-        fields: [
-          "id",
-          "name",
-          "calculated_price.calculated_amount",
-          "calculated_price.is_calculated_price_tax_inclusive",
-        ],
-        variables: {
-          id: shippingMethod.shipping_option_id,
-          calculated_price: {
-            context: { currency_code: action.currency_code },
+      const shippingOption = fetchShippingOptionForDraftOrderWorkflow.runAsStep(
+        {
+          input: {
+            order_id: input.order_id,
+            shipping_option_id: shippingMethod.shipping_option_id,
+            currency_code: action.currency_code,
           },
-        },
-      }).config({ name: "fetch-shipping-option" })
+        }
+      )
+
+      return transform(shippingOption, (shippingOption) => [shippingOption])
     })
 
     validateDraftOrderShippingMethodActionStep({
