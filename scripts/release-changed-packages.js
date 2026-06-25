@@ -13,6 +13,13 @@
 //                      v* or @zjedene-medusa/*, falling back to HEAD~1 (with warning).
 //   --include <names>  Comma-separated extra package names to force-include.
 //   --exclude <names>  Comma-separated package names to skip.
+//   --with-dependents  Expand the selection to the reverse-dependency closure:
+//                      every package that (transitively) has a runtime
+//                      `dependency` on a changed package is also released.
+//                      REQUIRED for this monorepo's exact internal pins — e.g.
+//                      a dashboard-only change must also republish admin-bundler
+//                      and medusa, or consumers behind `dashboard@<exact>` pins
+//                      never receive it. --exclude is applied AFTER expansion.
 //   --dry-run          Print the plan, make no changes, publish nothing.
 //   --skip-build       Skip `yarn build` (packages must already be built).
 //   --skip-verify      Skip post-publish npm registry verification.
@@ -23,6 +30,7 @@
 //   node scripts/release-changed-packages.js 2.12.0
 //   node scripts/release-changed-packages.js 2.12.0 --since HEAD~5
 //   node scripts/release-changed-packages.js 2.12.0-beta.1 --dry-run
+//   node scripts/release-changed-packages.js 2.16.2 --with-dependents
 
 const { execSync } = require("child_process")
 const fs = require("fs")
@@ -48,6 +56,7 @@ function parseArgs(argv) {
     since: null,
     include: [],
     exclude: [],
+    withDependents: false,
     dryRun: false,
     skipBuild: false,
     skipVerify: false,
@@ -64,6 +73,8 @@ function parseArgs(argv) {
       args.include = argv[++i].split(",").map((s) => s.trim()).filter(Boolean)
     } else if (a === "--exclude") {
       args.exclude = argv[++i].split(",").map((s) => s.trim()).filter(Boolean)
+    } else if (a === "--with-dependents") {
+      args.withDependents = true
     } else if (a === "--dry-run") {
       args.dryRun = true
     } else if (a === "--skip-build") {
@@ -209,6 +220,33 @@ function filesToChangedPackages(changedFiles, packages) {
     }
   }
   return changed
+}
+
+// Expand a set of package names to its reverse-dependency closure: every
+// package that (transitively) declares a runtime `dependency` on a member of
+// the set is added. peerDependencies/devDependencies are intentionally ignored
+// — they don't bundle the dependency into what consumers install, so they
+// don't require a republish to deliver a code change. Returns the names added.
+function expandWithDependents(selectedNames, allPackages) {
+  const set = new Set(selectedNames)
+  const added = new Set()
+  let grew = true
+  while (grew) {
+    grew = false
+    for (const pkg of allPackages) {
+      if (set.has(pkg.name)) continue
+      const deps = pkg.dependencies || {}
+      for (const dep of Object.keys(deps)) {
+        if (set.has(dep)) {
+          set.add(pkg.name)
+          added.add(pkg.name)
+          grew = true
+          break
+        }
+      }
+    }
+  }
+  return { names: set, added }
 }
 
 // ---------- Topological sort ----------
@@ -453,6 +491,19 @@ async function main() {
   const changedNames = filesToChangedPackages(changedFiles, allPackages)
 
   for (const name of args.include) changedNames.add(name)
+
+  if (args.withDependents) {
+    const { names, added } = expandWithDependents(changedNames, allPackages)
+    if (added.size) {
+      console.log(
+        `--with-dependents added ${added.size} reverse-dependent(s): ${[...added]
+          .sort()
+          .join(", ")}`
+      )
+    }
+    for (const name of names) changedNames.add(name)
+  }
+
   for (const name of args.exclude) changedNames.delete(name)
 
   const selected = allPackages.filter((p) => changedNames.has(p.name))
