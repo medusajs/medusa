@@ -67,9 +67,9 @@ export interface AdminProductVariant extends BaseProductVariant {
 }
 export interface AdminProductOption extends BaseProductOption {
   /**
-   * The associated product's details.
+   * The associated products' details.
    */
-  product?: AdminProduct | null
+  products?: AdminProduct[] | null
   /**
    * The option's values.
    */

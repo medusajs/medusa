@@ -561,7 +561,7 @@
     "js-sdk": "sdk.admin.product.batchVariantInventoryItems(\n  \"prod_123\",\n  {\n    create: [\n      {\n        inventory_item_id: \"iitem_123\",\n        variant_id: \"variant_123\",\n        required_quantity: 10\n      }\n    ],\n    update: [\n      {\n        inventory_item_id: \"iitem_1234\",\n        variant_id: \"variant_1234\",\n        required_quantity: 20\n      }\n    ],\n    delete: [\n      {\n        inventory_item_id: \"iitem_321\",\n        variant_id: \"variant_321\"\n      }\n    ]\n  }\n)\n.then(({ created, updated, deleted }) => {\n  console.log(created, updated, deleted)\n})"
   },
   "POST /admin/products/{productid}/options": {
-    "js-sdk": "sdk.admin.product.createOption(\n  \"prod_123\",\n  {\n    title: \"Color\",\n    values: [\"Green\", \"Blue\"]\n  }\n)\n.then(({ product }) => {\n  console.log(product)\n})"
+    "js-sdk": "sdk.admin.product.linkOptions(\"prod_123\", {\n  add: [\n    \"opt_123\",\n    {\n      product_option_id: \"opt_789\",\n      product_id: \"prod_123\",\n      product_option_value_ids: [\"optval_1\", \"optval_2\"]\n    }\n  ],\n  remove: [\"opt_456\"]\n})\n.then(({ product }) => {\n  console.log(product)\n})"
   },
   "POST /admin/products/{productid}/options/{id}": {
     "js-sdk": "sdk.admin.product.updateOption(\n  \"prod_123\",\n  \"prodopt_123\",\n  {\n    title: \"Color\"\n  }\n)\n.then(({ product }) => {\n  console.log(product)\n})"
@@ -616,6 +616,21 @@
   },
   "POST /admin/collections/{id}/products": {
     "js-sdk": "sdk.admin.productCollection.updateProducts(\"pcol_123\", {\n  add: [\"prod_123\"],\n  remove: [\"prod_321\"]\n})\n.then(({ collection }) => {\n  console.log(collection)\n})"
+  },
+  "POST /admin/product-options": {
+    "js-sdk": "sdk.admin.productOption.create({\n  title: \"Size\",\n  values: [\"S\", \"M\"]\n})\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
+  },
+  "POST /admin/product-options/{id}": {
+    "js-sdk": "sdk.admin.productOption.update(\"opt_123\", {\n  title: \"Size\"\n})\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
+  },
+  "GET /admin/product-options": {
+    "js-sdk": "sdk.admin.productOption.list()\n.then(({ product_options, count, limit, offset }) => {\n  console.log(product_options)\n})"
+  },
+  "GET /admin/product-options/{id}": {
+    "js-sdk": "sdk.admin.productOption.retrieve(\"opt_123\")\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
+  },
+  "DELETE /admin/product-options/{id}": {
+    "js-sdk": "sdk.admin.productOption.delete(\"opt_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "POST /admin/product-tags": {
     "js-sdk": "sdk.admin.productTag.create({\n  value: \"shirt\"\n})\n.then(({ product_tag }) => {\n  console.log(product_tag)\n})"
@@ -1111,6 +1126,12 @@
   },
   "GET /store/product-categories/{id}": {
     "js-sdk": "sdk.store.category.retrieve(\"pcat_123\")\n.then(({ product_category }) => {\n  console.log(product_category)\n})"
+  },
+  "GET /store/product-options": {
+    "js-sdk": "sdk.store.productOption.list()\n.then(({ product_options, count, offset, limit }) => {\n  console.log(product_options)\n})"
+  },
+  "GET /store/product-options/{id}": {
+    "js-sdk": "sdk.store.productOption.retrieve(\"opt_123\")\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
   },
   "GET /store/products": {
     "js-sdk": "sdk.store.product.list()\n.then(({ products, count, offset, limit }) => {\n  console.log(products)\n})"

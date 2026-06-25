@@ -42,10 +42,17 @@ describe("LocalEventBusService", () => {
         await new Promise((resolve) => setImmediate(resolve))
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
-          data: { hi: "1234" },
-          name: "eventName",
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "eventName",
+          expect.objectContaining({
+            data: { hi: "1234" },
+            name: "eventName",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
 
         expect(loggerMock.info).toHaveBeenCalledTimes(1)
         expect(loggerMock.info).toHaveBeenCalledWith(
@@ -73,10 +80,17 @@ describe("LocalEventBusService", () => {
         await new Promise((resolve) => setImmediate(resolve))
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
-          data: { hi: "1234" },
-          name: "eventName",
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "eventName",
+          expect.objectContaining({
+            data: { hi: "1234" },
+            name: "eventName",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
 
         await eventBus.emit(
           {
@@ -92,10 +106,17 @@ describe("LocalEventBusService", () => {
         await new Promise((resolve) => setImmediate(resolve))
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("eventName", {
-          data: { hi: "1234" },
-          name: "eventName",
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "eventName",
+          expect.objectContaining({
+            data: { hi: "1234" },
+            name: "eventName",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
 
         expect(loggerMock.info).toHaveBeenCalledTimes(1)
       })
@@ -118,14 +139,28 @@ describe("LocalEventBusService", () => {
         await new Promise((resolve) => setImmediate(resolve))
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("event-1", {
-          data: { hi: "1234" },
-          name: "event-1",
-        })
-        expect(eventEmitter.emit).toHaveBeenCalledWith("event-2", {
-          data: { hi: "5678" },
-          name: "event-2",
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "event-1",
+          expect.objectContaining({
+            data: { hi: "1234" },
+            name: "event-1",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "event-2",
+          expect.objectContaining({
+            data: { hi: "5678" },
+            name: "event-2",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
       })
 
       it("should group an event if data consists of eventGroupId", async () => {
@@ -146,7 +181,7 @@ describe("LocalEventBusService", () => {
         expect(groupEventFn).toHaveBeenCalledTimes(1)
         expect(groupEventFn).toHaveBeenCalledWith("test", {
           data: { test: "1234" },
-          metadata: { eventGroupId: "test" },
+          metadata: { eventGroupId: "test", created_at: expect.any(Date) },
           name: "test-event",
           options: {},
         })
@@ -223,10 +258,17 @@ describe("LocalEventBusService", () => {
         await new Promise((resolve) => setImmediate(resolve))
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("event-1", {
-          data: { test: "1" },
-          name: "event-1",
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "event-1",
+          expect.objectContaining({
+            data: { test: "1" },
+            name: "event-1",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
 
         expect((eventBus as any).groupedEventsMap_.get("group-1")).toHaveLength(
           2
@@ -250,16 +292,79 @@ describe("LocalEventBusService", () => {
         )
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("event-1", {
-          data: { test: "1" },
-          name: "event-1",
-          metadata: { eventGroupId: "group-1" },
-        })
-        expect(eventEmitter.emit).toHaveBeenCalledWith("event-2", {
-          data: { test: "2" },
-          name: "event-2",
-          metadata: { eventGroupId: "group-1" },
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "event-1",
+          expect.objectContaining({
+            data: { test: "1" },
+            name: "event-1",
+            metadata: expect.objectContaining({
+              eventGroupId: "group-1",
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "event-2",
+          expect.objectContaining({
+            data: { test: "2" },
+            name: "event-2",
+            metadata: expect.objectContaining({
+              eventGroupId: "group-1",
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
+      })
+
+      it("should set created_at at emit and published_at at release for grouped events", async () => {
+        jest.useFakeTimers()
+
+        try {
+          jest.setSystemTime(new Date("2026-06-20T10:00:00.000Z"))
+
+          eventEmitter.emit = jest.fn((data) => data)
+          eventEmitter.listenerCount = jest.fn((event) =>
+            event === "grouped-event" ? 1 : 0
+          )
+
+          await eventBus.emit({
+            name: "grouped-event",
+            data: { test: "1" },
+            metadata: { eventGroupId: "timed-group" },
+          })
+
+          const stagedEvent = (eventBus as any).groupedEventsMap_.get(
+            "timed-group"
+          )[0]
+          expect(stagedEvent.metadata.created_at).toEqual(
+            new Date("2026-06-20T10:00:00.000Z")
+          )
+          expect(stagedEvent.metadata.published_at).toBeUndefined()
+
+          jest.setSystemTime(new Date("2026-06-20T11:00:00.000Z"))
+          jest.clearAllMocks()
+          eventEmitter.emit = jest.fn((data) => data)
+          eventEmitter.listenerCount = jest.fn((event) =>
+            event === "grouped-event" ? 1 : 0
+          )
+
+          await eventBus.releaseGroupedEvents("timed-group")
+          await Promise.resolve()
+
+          expect(eventEmitter.emit).toHaveBeenCalledWith(
+            "grouped-event",
+            expect.objectContaining({
+              metadata: expect.objectContaining({
+                created_at: new Date("2026-06-20T10:00:00.000Z"),
+                published_at: new Date("2026-06-20T11:00:00.000Z"),
+              }),
+            })
+          )
+        } finally {
+          jest.useRealTimers()
+        }
       })
 
       it("should clear events from grouped events when requested with eventGroupId", async () => {
@@ -332,6 +437,9 @@ describe("LocalEventBusService", () => {
           expect.objectContaining({
             name: "eventWithoutSubscribers",
             data: { test: "data" },
+            metadata: expect.objectContaining({
+              created_at: expect.any(Date),
+            }),
           }),
           { isGrouped: false }
         )
@@ -356,10 +464,17 @@ describe("LocalEventBusService", () => {
         await new Promise((resolve) => setImmediate(resolve))
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
-        expect(eventEmitter.emit).toHaveBeenCalledWith("*", {
-          data: { test: "data" },
-          name: "anyEvent",
-        })
+        expect(eventEmitter.emit).toHaveBeenCalledWith(
+          "*",
+          expect.objectContaining({
+            data: { test: "data" },
+            name: "anyEvent",
+            metadata: expect.objectContaining({
+              published_at: expect.any(Date),
+              created_at: expect.any(Date),
+            }),
+          })
+        )
       })
 
       it("should not emit grouped events when releasing if there are no subscribers", async () => {
@@ -417,6 +532,11 @@ describe("LocalEventBusService", () => {
         expect(callInterceptorsSpy).toHaveBeenCalledWith(
           expect.objectContaining({
             name: "grouped-event-no-sub-2",
+            data: { hi: "1234" },
+            metadata: expect.objectContaining({
+              eventGroupId: "test-group-no-sub-2",
+              created_at: expect.any(String),
+            }),
           }),
           { isGrouped: true, eventGroupId: "test-group-no-sub-2" }
         )

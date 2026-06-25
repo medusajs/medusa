@@ -7,7 +7,8 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep } from "../../common/steps/emit-event"
+
+import { emitEventStep } from "../../common"
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 import { deleteProductOptionsStep } from "../steps"
 

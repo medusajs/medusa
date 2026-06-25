@@ -42,6 +42,12 @@ export const metadata = {
 
 In this tutorial, you'll learn how to localize your Medusa store's data with Contentful.
 
+<Note>
+
+This guide has been revisited to support [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0) which introduced global product options.
+
+</Note>
+
 <Note title="Tip">
 
 [Translation Module](../../../commerce-modules/translation/page.mdx) is available since [Medusa v2.12.3](https://github.com/medusajs/medusa/releases/tag/v2.12.3). It allows you to manage translations for product-related resources through Medusa's Store API routes. For general localization needs, consider using the Translation Module instead of integrating a third-party CMS.
@@ -534,7 +540,7 @@ try {
       id: "product",
       name: "Product",
       type: "Link",
-      required: true,
+      required: false,
       localized: false,
       validations: [
         {
@@ -584,7 +590,7 @@ try {
 In the above snippet, you create the `productOption` content type with the following fields:
 
 - `title`: The product option's title, which is a localized field.
-- `product`: References the `product` content type, which is the product that the option belongs to.
+- `product`: References the `product` content type. This field is optional since product options can be globally shared across multiple products.
 - `medusaId`: The product option's ID in Medusa, which is a non-localized field. You'll store in this field the ID of the option in Medusa.
 - `values`: The product option's values, which is an array that references content of the `productOptionValue` content type.
 
@@ -939,25 +945,22 @@ For each field, you specify the value for the default locale. In the Contentful 
 
 Next, add the method to create the product's options and values:
 
-export const createProductOptionHighlights = [
-  ["7", "options", "The product's options to create in Contentful."],
-  ["8", "productEntry", "The product's entry in Contentful."],
-  ["19", "createWithId", "Create a new entry in Contentful for a value of the option."],
-  ["43", "createWithId", "Create a new entry in Contentful for the option."],
-  ["65", "values", "Set the values for the option in Contentful."], 
-]
-
-```ts title="src/modules/contentful/service.ts" highlights={createProductOptionHighlights}
+```ts title="src/modules/contentful/service.ts"
 // other imports...
 import { ProductOptionDTO } from "@medusajs/framework/types"
 
 export default class ContentfulModuleService {
   // ...
-  private async createProductOption(
-    options: ProductOptionDTO[],
-    productEntry: EntryProps
-  ) {
-    for (const option of options) {
+  async createOrUpdateProductOption(option: ProductOptionDTO): Promise<EntryProps> {
+    // Check if option already exists
+    let optionEntry: EntryProps
+    try {
+      optionEntry = await this.managementClient.entry.get({
+        environmentId: this.options.environment,
+        entryId: option.id,
+      })
+      
+      // Update existing option
       const valueIds: {
         sys: {
           type: "Link",
@@ -965,7 +968,98 @@ export default class ContentfulModuleService {
           id: string
         }
       }[] = []
+      
       for (const value of option.values) {
+        // Create or get value entry
+        let valueEntry: EntryProps
+        try {
+          valueEntry = await this.managementClient.entry.get({
+            environmentId: this.options.environment,
+            entryId: value.id,
+          })
+          
+          // Update existing value
+          await this.managementClient.entry.update(
+            {
+              entryId: value.id,
+            },
+            {
+              sys: valueEntry.sys,
+              fields: {
+                ...valueEntry.fields,
+                value: {
+                  [this.options.default_locale!]: value.value
+                },
+                medusaId: {
+                  [this.options.default_locale!]: value.id
+                },
+              }
+            }
+          )
+        } catch (e) {
+          // Create new value
+          await this.managementClient.entry.createWithId(
+            {
+              contentTypeId: "productOptionValue",
+              entryId: value.id,
+            },
+            {
+              fields: {
+                value: {
+                  [this.options.default_locale!]: value.value
+                },
+                medusaId: {
+                  [this.options.default_locale!]: value.id
+                },
+              }
+            }
+          )
+        }
+        
+        valueIds.push({
+          sys: {
+            type: "Link",
+            linkType: "Entry",
+            id: value.id
+          }
+        })
+      }
+      
+      // Update option entry (without product link since it's global)
+      await this.managementClient.entry.update(
+        {
+          entryId: option.id,
+        },
+        {
+          sys: optionEntry.sys,
+          fields: {
+            ...optionEntry.fields,
+            medusaId: {
+              [this.options.default_locale!]: option.id
+            },
+            title: {
+              [this.options.default_locale!]: option.title
+            },
+            values: {
+              [this.options.default_locale!]: valueIds
+            }
+          }
+        }
+      )
+      
+      return optionEntry
+    } catch (e) {
+      // Create new option
+      const valueIds: {
+        sys: {
+          type: "Link",
+          linkType: "Entry",
+          id: string
+        }
+      }[] = []
+      
+      for (const value of option.values) {
+        // Create value entry
         await this.managementClient.entry.createWithId(
           {
             contentTypeId: "productOptionValue",
@@ -974,23 +1068,26 @@ export default class ContentfulModuleService {
           {
             fields: {
               value: {
-                [this.options.default_locale!]: value.value,
+                [this.options.default_locale!]: value.value
               },
               medusaId: {
-                [this.options.default_locale!]: value.id,
+                [this.options.default_locale!]: value.id
               },
-            },
+            }
           }
         )
+        
         valueIds.push({
           sys: {
             type: "Link",
             linkType: "Entry",
-            id: value.id,
-          },
+            id: value.id
+          }
         })
       }
-      await this.managementClient.entry.createWithId(
+      
+      // Create option entry (without product link since it's global)
+      optionEntry = await this.managementClient.entry.createWithId(
         {
           contentTypeId: "productOption",
           entryId: option.id,
@@ -998,51 +1095,123 @@ export default class ContentfulModuleService {
         {
           fields: {
             medusaId: {
-              [this.options.default_locale!]: option.id,
+              [this.options.default_locale!]: option.id
             },
             title: {
-              [this.options.default_locale!]: option.title,
-            },
-            product: {
-              [this.options.default_locale!]: {
-                sys: {
-                  type: "Link",
-                  linkType: "Entry",
-                  id: productEntry.sys.id,
-                },
-              },
+              [this.options.default_locale!]: option.title
             },
             values: {
-              [this.options.default_locale!]: valueIds,
-            },
-          },
+              [this.options.default_locale!]: valueIds
+            }
+          }
         }
+      )
+      
+      return optionEntry
+    }
+  }
+}
+```
+
+You define the method `createOrUpdateProductOption` that accepts a single product option.
+
+In the method, you:
+
+1. Check that the option exists in Contentful.
+2. If so, you update the option and its values.
+3. Otherwise, you create a new option entry.
+4. You return the option entry.
+
+Next, add a method to retrieve Medusa options from Contentful:
+
+```ts title="src/modules/contentful/service.ts"
+export default class ContentfulModuleService {
+  // ...
+  async getOptions(optionIds: string[]): Promise<EntryProps[]> {
+    const options: EntryProps[] = []
+    
+    for (const optionId of optionIds) {
+      try {
+        const option = await this.managementClient.entry.get({
+          environmentId: this.options.environment,
+          entryId: optionId,
+        })
+        options.push(option)
+      } catch (error) {
+        // Option entry doesn't exist, skip it
+        continue
+      }
+    }
+    
+    return options
+  }
+}
+```
+
+This method retrieves Contentful option entries by their entry IDs. It's useful to retrieve existing options from Contentful.
+
+Next, add a method to delete a product option:
+
+```ts title="src/modules/contentful/service.ts"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export default class ContentfulModuleService {
+  // ...
+  async deleteProductOption(optionId: string) {
+    try {
+      // Get the option entry
+      const optionEntry = await this.managementClient.entry.get({
+        environmentId: this.options.environment,
+        entryId: optionId,
+      })
+
+      if (!optionEntry) {
+        return
+      }
+
+      // Delete option values first
+      const values = optionEntry.fields.values?.[this.options.default_locale!] || []
+      for (const value of values) {
+        try {
+          await this.managementClient.entry.unpublish({
+            environmentId: this.options.environment,
+            entryId: value.sys.id,
+          })
+
+          await this.managementClient.entry.delete({
+            environmentId: this.options.environment,
+            entryId: value.sys.id,
+          })
+        } catch (error) {
+          // Value might not exist or already deleted, continue
+        }
+      }
+
+      // Delete the option entry
+      await this.managementClient.entry.unpublish({
+        environmentId: this.options.environment,
+        entryId: optionId,
+      })
+
+      await this.managementClient.entry.delete({
+        environmentId: this.options.environment,
+        entryId: optionId,
+      })
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Failed to delete product option from Contentful: ${error.message}`
       )
     }
   }
 }
 ```
 
-You define a private method `createProductOption` that accepts two parameters:
-
-1. The product's options, which is an array of objects.
-2. The product's entry in Contentful, which is an object.
-
-In the method, you iterate over the product's options and create entries for each of its values. Then, you create an entry for the option, and reference the values you created in Contentful. You set the fields based on the option and value content types you created earlier.
+This method deletes a product option and all its associated values from Contentful.
 
 Finally, add the method to create the product:
 
-export const createProductHighlights = [
-  ["7", "product", "The product to create in Contentful."],
-  ["11", "get", "Try to retrieve the existing product entry in Contentful."],
-  ["16", "productEntry", "Return the existing product entry."],
-  ["20", "createWithId", "Create a new entry in Contentful for the product."],
-  ["65", "createProductOption", "Create the product's options in Contentful."],
-  ["70", "createProductVariant", "Create the product's variants in Contentful."],
-  ["74", "update", "Update the product entry with the variants and options you created."],
-]
-
-```ts title="src/modules/contentful/service.ts" highlights={createProductHighlights}
+```ts title="src/modules/contentful/service.ts"
 // other imports...
 import { ProductDTO } from "@medusajs/framework/types"
 
@@ -1105,9 +1274,35 @@ export default class ContentfulModuleService {
       }
     )
 
-    // Create options if they exist
+    // Reference existing options (options are now global and created separately)
+    // We just link to them if they exist
+    const optionLinks: {
+      sys: {
+        type: "Link",
+        linkType: "Entry",
+        id: string
+      }
+    }[] = []
+    
     if (product.options?.length) {
-      await this.createProductOption(product.options, productEntry)
+      for (const option of product.options) {
+        try {
+          // Check if option exists in Contentful
+          await this.managementClient.entry.get({
+            environmentId: this.options.environment,
+            entryId: option.id,
+          })
+          optionLinks.push({
+            sys: {
+              type: "Link",
+              linkType: "Entry",
+              id: option.id
+            }
+          })
+        } catch (e) {
+          // Option doesn't exist yet, skip it (should be created separately)
+        }
+      }
     }
 
     // Create variants if they exist
@@ -1134,13 +1329,7 @@ export default class ContentfulModuleService {
             })),
           },
           productOptions: {
-            [this.options.default_locale!]: product.options?.map((option) => ({
-              sys: {
-                type: "Link",
-                linkType: "Entry",
-                id: option.id,
-              },
-            })),
+            [this.options.default_locale!]: optionLinks
           },
         },
       }
@@ -1153,11 +1342,13 @@ export default class ContentfulModuleService {
 
 You define a public method `createProduct` that accepts a product object as a parameter.
 
-In the method, you first check if the product already exists in Contentful. If it does, you return the existing product entry. Otherwise, you create a new product entry with the fields based on the product content type you created earlier.
+In the method, you first check that the product exists in Contentful. If so, you return the existing product entry. Otherwise, you create a new product entry with the fields based on the product content type you created earlier.
 
-Next, you create entries for the product's options and variants using the methods you created earlier.
+Then, you reference existing product options by linking to them if they exist in Contentful.
 
-Finally, you update the product entry to reference the variants and options you created.
+Finally, you create entries for the product's variants using the method you created earlier and update the product entry with the variant and option links.
+
+Finally, you update the product entry to reference the variants and options in Contentful.
 
 You now have all the methods to create products in Contentful. You'll also need one last method to delete a product in Contentful. This is useful when you implement the rollback mechanism in the flow that creates the products.
 
@@ -1216,31 +1407,6 @@ export default class ContentfulModuleService {
           entryId: variant.sys.id,
         })
       }
-
-      // Delete the product options entries and values
-      for (const option of productEntry.fields.productOptions[this.options.default_locale!]) {
-        for (const value of option.fields.values[this.options.default_locale!]) {
-          await this.managementClient.entry.unpublish({
-            environmentId: this.options.environment,
-            entryId: value.sys.id,
-        })
-
-        await this.managementClient.entry.delete({
-          environmentId: this.options.environment,
-            entryId: value.sys.id,
-          })
-        }
-
-        await this.managementClient.entry.unpublish({
-          environmentId: this.options.environment,
-          entryId: option.sys.id,
-        })
-
-        await this.managementClient.entry.delete({
-          environmentId: this.options.environment,
-          entryId: option.sys.id,
-        })
-      }
     } catch (error) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -1253,7 +1419,7 @@ export default class ContentfulModuleService {
 
 You define a public method `deleteProduct` that accepts a product ID as a parameter.
 
-In the method, you retrieve the product entry from Contentful with its variants, options, and values. For each entry, you must unpublish and delete it.
+In the method, you retrieve the product entry from Contentful and delete it along with its variant entries.
 
 You now have all the methods necessary to build the creation flow.
 
@@ -1286,20 +1452,157 @@ The workflow has the following steps:
       },
       {
         type: "step",
+        name: "getOptionsContentfulStep",
+        description: "Get the existing options in Contentful.",
+        depth: 2
+      },
+      {
+        type: "when",
+        condition: "data.newOptions.length > 0",
+        steps: [
+          {
+            type: "step",
+            name: "createProductOptionsContentfulStep",
+            description: "Create new product options in Contentful.",
+            depth: 1
+          }
+        ],
+        depth: 3
+      },
+      {
+        type: "step",
         name: "createProductsContentfulStep",
         description: "Create the products in Contentful.",
-        depth: 1
+        depth: 4
       }
     ]
   }}
   hideLegend
 />
 
-Medusa provides the `useQueryGraphStep` in its `@medusajs/medusa/core-flows` package. So, you only need to implement the second step.
+Medusa provides the `useQueryGraphStep` in its `@medusajs/medusa/core-flows` package. You need to implement the steps to create options and products.
+
+#### getOptionsContentfulStep
+
+The first step is to get the existing options in Contentful.
+
+To create the step, create the file `src/workflows/steps/get-options-contentful.ts` with the following content:
+
+```ts title="src/workflows/steps/get-options-contentful.ts"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import ContentfulModuleService from "../../modules/contentful/service"
+import { CONTENTFUL_MODULE } from "../../modules/contentful"
+
+type StepInput = {
+  option_ids: string[]
+}
+
+export const getOptionsContentfulStep = createStep(
+  "get-options-contentful-step",
+  async (input: StepInput, { container }) => {
+    const contentfulModuleService: ContentfulModuleService = 
+      container.resolve(CONTENTFUL_MODULE)
+
+    const options = await contentfulModuleService.getOptions(input.option_ids)
+    
+    return new StepResponse(options)
+  }
+)
+```
+
+You create a step with `createStep` from the Workflows SDK. It accepts three parameters:
+
+1. The step's unique name, which is `get-options-contentful-step`.
+2. An async function that receives two parameters:
+    - The step's input, which is in this case an object holding an array of option IDs to retrieve from Contentful.
+    - An object that has properties including the [Medusa container](!docs!/learn/fundamentals/medusa-container), which is a registry of Framework and commerce tools that you can access in the step.
+
+<Note>
+
+The Medusa container is different from the module's container. Since modules are isolated, they each have a container with their resources. Refer to the [Module Container](!docs!/learn/fundamentals/modules/container) documentation for more information.
+
+</Note>
+
+In the step function, you resolve the Contentful Module's service from the Medusa container using the name you exported in the module definition's file.
+
+Then, you retrieve the options from Contentful using the `getOptions` method you created earlier.
+
+A step function must return a `StepResponse` instance that accepts the step's output, which are the options retrieved from Contentful.
+
+#### createProductOptionsContentfulStep
+
+Next, you'll create a step to create product options in Contentful.
+
+To create the step, create the file `src/workflows/steps/create-product-options-contentful.ts` with the following content:
+
+```ts title="src/workflows/steps/create-product-options-contentful.ts"
+import { ProductOptionDTO } from "@medusajs/framework/types"
+import { CONTENTFUL_MODULE } from "../../modules/contentful"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import ContentfulModuleService from "../../modules/contentful/service"
+import { EntryProps } from "contentful-management"
+
+type StepInput = {
+  options: ProductOptionDTO[]
+}
+
+export const createProductOptionsContentfulStep = createStep(
+  "create-product-options-contentful-step",
+  async (input: StepInput, { container }) => {
+    const contentfulModuleService: ContentfulModuleService = 
+      container.resolve(CONTENTFUL_MODULE)
+
+    const options: EntryProps[] = []
+
+    try {
+      for (const option of input.options) {
+        options.push(await contentfulModuleService.createOrUpdateProductOption(option))
+      }
+    } catch(e) {
+      return StepResponse.permanentFailure(
+        `Error creating product options in Contentful: ${e.message}`,
+        options
+      )
+    }
+
+    return new StepResponse(
+      options,
+      options
+    )
+  },
+  async (options, { container }) => {
+    if (!options) {
+      return
+    }
+
+    const contentfulModuleService: ContentfulModuleService = 
+      container.resolve(CONTENTFUL_MODULE)
+
+    // Delete options that were created during this step
+    for (const option of options) {
+      try {
+        await contentfulModuleService.deleteProductOption(option.sys.id)
+      } catch (error) {
+        // Option might not exist or already deleted, continue
+      }
+    }
+  }
+)
+```
+
+This step creates or updates product options in Contentful using the `createOrUpdateProductOption` method.
+
+You also pass a compensation function as a third parameter to `createStep`. It receives the created options as a parameter and deletes them from Contentful using the `deleteProductOption` method you created earlier.
+
+<Note>
+
+Learn more about compensation functions in the [Workflows documentation](!docs!/learn/fundamentals/workflows/compensation-function).
+
+</Note>
 
 #### createProductsContentfulStep
 
-In the second step, you create the retrieved products in Contentful.
+Next, you'll create the step to create products in Contentful.
 
 To create the step, create the file `src/workflows/steps/create-products-contentful.ts` with the following content:
 
@@ -1371,30 +1674,9 @@ export const createProductsContentfulStep = createStep(
 )
 ```
 
-You create a step with `createStep` from the Workflows SDK. It accepts three parameters:
+This step receives the products to create in Contentful and creates a new entry in Contentful for each product using the `createProduct` method you created earlier. If the creation of any product fails, you fail the step and pass the created products to the compensation function.
 
-1. The step's unique name, which is `create-products-contentful-step`.
-2. An async function that receives two parameters:
-    - The step's input, which is in this case an object holding an array of products to create in Contentful.
-    - An object that has properties including the [Medusa container](!docs!/learn/fundamentals/medusa-container), which is a registry of Framework and commerce tools that you can access in the step.
-3. An optional compensation function that undoes the actions performed in the step if an error occurs in the workflow's execution. This mechanism ensures data consistency in your application, especially as you integrate external systems.
-
-<Note>
-
-The Medusa container is different from the module's container. Since modules are isolated, they each have a container with their resources. Refer to the [Module Container](!docs!/learn/fundamentals/modules/container) documentation for more information.
-
-</Note>
-
-In the step function, you resolve the Contentful Module's service from the Medusa container using the name you exported in the module definition's file.
-
-Then, you iterate over the products and create a new entry in Contentful for each product using the `createProduct` method you created earlier. If the creation of any product fails, you fail the step and pass the created products to the compensation function.
-
-A step function must return a `StepResponse` instance. The `StepResponse` constructor accepts two parameters:
-
-1. The step's output, which is the product entries created in Contentful.
-2. Data to pass to the step's compensation function.
-
-The compensation function accepts as a parameter the data passed from the step, and an object containing the Medusa container.
+The compensation function accepts as a parameter the created product entries.
 
 In the compensation function, you iterate over the created product entries and delete them from Contentful using the `deleteProduct` method you created earlier.
 
@@ -1405,10 +1687,12 @@ Now that you have all the necessary steps, you can create the workflow.
 To create the workflow, create the file `src/workflows/create-products-contentful.ts` with the following content:
 
 ```ts title="src/workflows/create-products-contentful.ts"
-import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+import { createWorkflow, WorkflowResponse, transform, when } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 import { createProductsContentfulStep } from "./steps/create-products-contentful"
-import { ProductDTO } from "@medusajs/framework/types"
+import { createProductOptionsContentfulStep } from "./steps/create-product-options-contentful"
+import { getOptionsContentfulStep } from "./steps/get-options-contentful"
+import { ProductDTO, ProductOptionDTO } from "@medusajs/framework/types"
 
 type WorkflowInput = {
   product_ids: string[]
@@ -1417,27 +1701,81 @@ type WorkflowInput = {
 export const createProductsContentfulWorkflow = createWorkflow(
   { name: "create-products-contentful-workflow" },
   (input: WorkflowInput) => {
-    const { data } = useQueryGraphStep({
+    const { data: products } = useQueryGraphStep({
       entity: "product",
       fields: [
         "id",
         "title",
         "description",
         "subtitle",
-        "status",
         "handle",
-        "variants.*",
-        "variants.options.*",
-        "options.*",
-        "options.values.*",
+        "variants.id",
+        "variants.title",
+        "variants.options.id",
+        "variants.options.value",
+        "variants.options.option_id",
+        "options.id",
+        "options.title",
+        "options.product_id",
+        "options.values.id",
+        "options.values.value",
       ],
       filters: {
         id: input.product_ids,
       },
     })
     
+    // Extract unique options from products using transform
+    const uniqueOptions = transform(
+      { products },
+      (data): ProductOptionDTO[] => {
+        const productData = data.products as unknown as ProductDTO[]
+        const optionsMap = new Map<string, ProductOptionDTO>()
+        
+        productData.forEach((product) => {
+          product.options?.forEach((option) => {
+            if (!optionsMap.has(option.id)) {
+              optionsMap.set(option.id, option)
+            }
+          })
+        })
+        
+        return Array.from(optionsMap.values())
+      }
+    )
+
+    // Get existing options from Contentful
+    const optionIds = transform(
+      { uniqueOptions },
+      (data) => data.uniqueOptions.map((option) => option.id)
+    )
+
+    const existingOptions = getOptionsContentfulStep({
+      option_ids: optionIds,
+    })
+
+    // Filter out existing options and only create new ones
+    const newOptions = transform(
+      { uniqueOptions, existingOptions },
+      (data) => {
+        const existingIdsSet = new Set(data.existingOptions.map(option => option.sys.id))
+        return data.uniqueOptions.filter(
+          (option) => !existingIdsSet.has(option.id)
+        )
+      }
+    )
+
+    // Only create options that don't already exist in Contentful
+    when({ newOptions }, (data) => data.newOptions.length > 0)
+      .then(() => {
+        createProductOptionsContentfulStep({
+          options: newOptions,
+        })
+      })
+    
+    // Then sync products (which will reference the options)
     const contentfulProducts = createProductsContentfulStep({
-      products: data as unknown as ProductDTO[],
+      products: products as unknown as ProductDTO[],
     })
 
     return new WorkflowResponse(contentfulProducts)
@@ -1452,9 +1790,14 @@ It accepts as a second parameter a constructor function, which is the workflow's
 In the workflow's constructor function, you:
 
 1. Retrieve the Medusa products using the `useQueryGraphStep` helper step. This step uses Medusa's [Query](!docs!/learn/fundamentals/module-links/query) tool to retrieve data across modules. You pass it the product IDs to retrieve.
-2. Create the product entries in Contentful using the `createProductsContentfulStep` step.
+2. Extract unique options from all products using `transform`.
+3. Extract option IDs from the unique options using `transform`.
+4. Get the existing options from Contentful using the `getOptionsContentfulStep` step.
+5. Filter out the existing options and only create new ones using `transform`.
+6. Create the new options in Contentful using the `createProductOptionsContentfulStep` step (conditionally with `when`).
+7. Create the product entries in Contentful using the `createProductsContentfulStep` step.
 
-A workflow must return an instance of `WorkflowResponse`. The `WorkflowResponse` constructor accepts the workflow's output as a parameter, which is an object of the product entries created in Contentful.
+A workflow must return an instance of `WorkflowResponse`. The `WorkflowResponse` constructor accepts the workflow's output as a parameter, which is the product entries created in Contentful.
 
 You now have the workflow that you can execute when a product is created in Medusa, or when the admin user triggers a sync manually.
 
@@ -2883,15 +3226,7 @@ The first step receives the webhook data payload and, based on the entry type, r
 
 To create the step, create the file `src/workflows/steps/prepare-update-data.ts` with the following content:
 
-export const prepareUpdateDataStepHighlights = [
-  ["12", "entry", "Receive the webhook data payload as an input."],
-  ["13", "contentfulModuleService", "Resolve the Contentful Module's service from the Medusa container."],
-  ["16", "defaultLocale", "Retrieve the default locale code from the Contentful Module's service."],
-  ["18", "data", "Prepare the data to return based on the entry type."],
-  ["20", "switch", "Set the data based on the entry type."]
-]
-
-```ts title="src/workflows/steps/prepare-update-data.ts" highlights={prepareUpdateDataStepHighlights}
+```ts title="src/workflows/steps/prepare-update-data.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { EntryProps } from "contentful-management"
 import ContentfulModuleService from "../../modules/contentful/service"
@@ -2913,11 +3248,21 @@ export const prepareUpdateDataStep = createStep(
 
     switch (entry.sys.contentType.sys.id) {
       case "product":
+        // Extract Medusa option IDs from productOptions field
+        // We need to fetch the option entries to get their medusaId values
+        const optionLinks = entry.fields.productOptions?.[defaultLocale!] || []
+        const optionEntryIds = optionLinks.map(
+          (optionLink: { sys: { id: string } }) => optionLink.sys.id
+        )
+        const options = await contentfulModuleService.getOptions(optionEntryIds)
+        const optionsMedusaIds = options.map(option => option.fields.medusaId[defaultLocale!])
+        
         data = {
           id: entry.fields.medusaId[defaultLocale!],
           title: entry.fields.title[defaultLocale!],
           subtitle: entry.fields.subtitle?.[defaultLocale!] || undefined,
           handle: entry.fields.handle[defaultLocale!],
+          option_ids: optionsMedusaIds,
         }
         break
       case "productVariant":
@@ -2949,7 +3294,7 @@ In the step, you resolve the Contentful Module's service and use it to retrieve 
 
 Next, you prepare the data to return based on the entry type:
 
-- `product`: The product's ID, title, subtitle, and handle.
+- `product`: The product's ID, title, subtitle, handle, and option IDs.
 - `productVariant`: The product variant's ID and title.
 - `productOption`: The product option's ID and title.
 

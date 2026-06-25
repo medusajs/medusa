@@ -42,6 +42,10 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the value was deleted.
+ *   rank:
+ *     type: number
+ *     title: rank
+ *     description: The rank of the value among other option values.
  * 
 */
 

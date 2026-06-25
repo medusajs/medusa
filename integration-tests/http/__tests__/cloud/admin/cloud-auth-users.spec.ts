@@ -14,13 +14,13 @@ import {
 jest.setTimeout(100000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ getContainer, api, dbConnection }) => {
+  testSuite: ({ getContainer, api, dbConnection, dbUtils }) => {
     let authModule: IAuthModuleService
     let jwtSecret: string
     let existingUser: UserDTO
     let existingAuthIdentity: AuthIdentityDTO
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       authModule = container.resolve(Modules.AUTH)
 
@@ -34,6 +34,8 @@ medusaIntegrationTestRunner({
       )
       existingUser = adminUser.user
       existingAuthIdentity = adminUser.authIdentity
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /cloud/auth/users", () => {
