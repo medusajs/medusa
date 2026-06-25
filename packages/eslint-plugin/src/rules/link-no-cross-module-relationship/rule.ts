@@ -74,8 +74,12 @@ function pathStaysInModule(
   if (moduleRoot === null) {
     return true
   }
+  // `getModuleRoot` normalizes to forward slashes, but `resolved` may use the
+  // platform separator (backslashes on Windows). Normalize before comparing so
+  // in-module imports aren't misclassified as cross-module on Windows.
+  const normalized = resolved.replace(/\\/g, "/")
   const root = moduleRoot + "/"
-  return resolved === moduleRoot || resolved.startsWith(root)
+  return normalized === moduleRoot || normalized.startsWith(root)
 }
 
 /**
