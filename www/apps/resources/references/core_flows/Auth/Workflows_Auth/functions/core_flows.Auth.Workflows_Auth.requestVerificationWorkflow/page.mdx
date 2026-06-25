@@ -22,7 +22,7 @@ This is available starting from [Medusa v2.15.5](https://github.com/medusajs/med
 
 :::
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/core-flows/src/auth/workflows/request-verification.ts#L24" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/9aadd07b63d005d57b912b202144ef3f96bf2c90/packages/core/core-flows/src/auth/workflows/request-verification.ts#L24" />
 
 ## Examples
 
@@ -43,8 +43,10 @@ export async function POST(
   const { result } = await requestVerificationWorkflow(req.scope)
     .run({
       input: {
-        "provider": "{value}",
-        "entity_id": "{value}"
+        "entity_id": "{value}",
+        "auth_identity_id": "{value}",
+        "entity_type": "{value}",
+        "code_provider": "{value}"
       }
     })
 
@@ -69,8 +71,10 @@ export default async function handleOrderPlaced({
   const { result } = await requestVerificationWorkflow(container)
     .run({
       input: {
-        "provider": "{value}",
-        "entity_id": "{value}"
+        "entity_id": "{value}",
+        "auth_identity_id": "{value}",
+        "entity_type": "{value}",
+        "code_provider": "{value}"
       }
     })
 
@@ -95,8 +99,10 @@ export default async function myCustomJob(
   const { result } = await requestVerificationWorkflow(container)
     .run({
       input: {
-        "provider": "{value}",
-        "entity_id": "{value}"
+        "entity_id": "{value}",
+        "auth_identity_id": "{value}",
+        "entity_type": "{value}",
+        "code_provider": "{value}"
       }
     })
 
@@ -122,8 +128,10 @@ const myWorkflow = createWorkflow(
     const result = requestVerificationWorkflow
       .runAsStep({
         input: {
-          "provider": "{value}",
-          "entity_id": "{value}"
+          "entity_id": "{value}",
+          "auth_identity_id": "{value}",
+          "entity_type": "{value}",
+          "code_provider": "{value}"
         }
       })
   }
@@ -139,11 +147,11 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"RequestAuthVerificationDTO","type":"[RequestAuthVerificationDTO](../../../../../auth/types/auth.RequestAuthVerificationDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actor_type","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ttl_seconds","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="requestVerificationWorkflow"/>
+<TypeList types={[{"name":"RequestAuthVerificationDTO","type":"[RequestAuthVerificationDTO](../../../../../auth/types/auth.RequestAuthVerificationDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code_provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="requestVerificationWorkflow"/>
 
 ## Output
 
-<TypeList types={[{"name":"AuthVerification & object","type":"[AuthVerification](../../../../../auth/types/auth.AuthVerification/page.mdx) & `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AuthVerification","type":"[AuthVerification](../../../../../auth/types/auth.AuthVerification/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actor_type","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expires_at","type":"`Date` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"auth_identity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="requestVerificationWorkflow"/>
+<TypeList types={[{"name":"AuthVerificationDTO","type":"[AuthVerificationDTO](../../../../../auth/types/auth.AuthVerificationDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code_provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"requested_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"verified_at","type":"`Date` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="requestVerificationWorkflow"/>
 
 ## Emitted Events
 
@@ -183,8 +191,8 @@ Action
 
 </Table.Cell>
       <Table.Cell>
-Emitted when a verification token is generated. You can listen to
-this event and decide how to deliver the token to the user or customer.
+Emitted when a verification code is generated. You can listen to
+this event and decide how to deliver the code to the user or customer.
 </Table.Cell>
       <Table.Cell>
 ```ts blockStyle="inline"
@@ -194,8 +202,8 @@ this event and decide how to deliver the token to the user or customer.
   provider, // The auth provider that requested verification.
   auth_identity_id, // The ID of the auth identity being verified.
   provider_identity_id, // The ID of the provider identity being verified.
-  token, // The generated token.
-  expires_at, // The token expiry date.
+  code, // The generated verification code.
+  expires_at, // The code expiry date.
   metadata, // Optional custom metadata passed from the request.
 }
 ```
@@ -210,8 +218,8 @@ this event and decide how to deliver the token to the user or customer.
   provider, // The auth provider that requested verification.
   auth_identity_id, // The ID of the auth identity being verified.
   provider_identity_id, // The ID of the provider identity being verified.
-  token, // The generated token.
-  expires_at, // The token expiry date.
+  code, // The generated verification code.
+  expires_at, // The code expiry date.
   metadata, // Optional custom metadata passed from the request.
 }
 \`\`\``

@@ -172,7 +172,7 @@ const generatedgeneratedToolsSidebarSidebar = {
       "type": "category",
       "title": "Developer Tools",
       "initialOpen": true,
-      "description": "Developer tools facilitate the development of your Medusa application by providing utilities for testing, linting, and more.",
+      "description": "Developer tools facilitate the development of your Medusa application by providing utilities for linting and other uses.",
       "children": [
         {
           "loaded": true,
@@ -200,6 +200,7 @@ const generatedgeneratedToolsSidebarSidebar = {
               "type": "category",
               "title": "Rules",
               "autogenerate_path": "lint/rules",
+              "initialOpen": true,
               "children": [
                 {
                   "loaded": true,
@@ -1028,6 +1029,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/js-sdk/store/productOption",
+                  "title": "productOption",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/js-sdk/store/region",
                   "title": "region",
                   "description": "",
@@ -1264,6 +1274,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/productCollection",
                   "title": "productCollection",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/productOption",
+                  "title": "productOption",
                   "description": "",
                   "children": []
                 },
