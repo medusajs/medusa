@@ -1271,4 +1271,53 @@ describe("RedisEventBusService", () => {
       })
     })
   })
+
+  describe("__hooks.onApplicationStart", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+      eventBus = new RedisEventBusService(moduleDeps, {}, moduleDeclaration)
+    })
+
+    it("should not block when bullWorker_.run() does not resolve", async () => {
+      // bullmq's Worker.run() resolves only when the worker is closed.
+      // Awaiting it inside the hook would deadlock
+      // MedusaModule.onApplicationStart (which awaits each module's hook).
+      ;(eventBus as any).bullWorker_.run = jest.fn(
+        () => new Promise<void>(() => {})
+      )
+
+      let timeoutId: ReturnType<typeof setTimeout> | undefined
+      const timeoutPromise = new Promise<void>((_, reject) => {
+        timeoutId = setTimeout(
+          () => reject(new Error("onApplicationStart did not resolve")),
+          100
+        )
+      })
+
+      try {
+        await Promise.race([
+          eventBus.__hooks.onApplicationStart(),
+          timeoutPromise,
+        ])
+      } finally {
+        if (timeoutId) clearTimeout(timeoutId)
+      }
+
+      expect((eventBus as any).bullWorker_.run).toHaveBeenCalledTimes(1)
+    })
+
+    it("should log worker errors instead of producing an unhandled rejection", async () => {
+      ;(eventBus as any).bullWorker_.run = jest.fn(() =>
+        Promise.reject(new Error("worker boom"))
+      )
+
+      await eventBus.__hooks.onApplicationStart()
+      // Allow the .catch handler attached to bullWorker_.run() to run.
+      await new Promise((resolve) => setImmediate(resolve))
+
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        "Error in event-bus-redis worker: worker boom"
+      )
+    })
+  })
 })
