@@ -270,6 +270,17 @@ const GIFT_CARD_PRODUCT_INJECTION_ZONES = [
 ] as const
 
 /**
+ * Injection zones for the global topbar, located in the top right corner next
+ * to the notifications bell. Widgets injected here can either render inline
+ * (a `div` directly in the topbar) or as an icon that opens a side drawer,
+ * depending on the `type` property of the widget config.
+ */
+const TOPBAR_INJECTION_ZONES = [
+  "topbar.before",
+  "topbar.after",
+] as const
+
+/**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
  */
@@ -310,4 +321,10 @@ export const INJECTION_ZONES = [
   ...STORE_CREDIT_ACCOUNT_INJECTION_ZONES,
   ...GIFT_CARD_INJECTION_ZONES,
   ...GIFT_CARD_PRODUCT_INJECTION_ZONES,
+  ...TOPBAR_INJECTION_ZONES,
 ] as const
+
+/**
+ * The subset of injection zones that target the global topbar.
+ */
+export const TOPBAR_INJECTION_ZONE_LIST = TOPBAR_INJECTION_ZONES

@@ -35,6 +35,19 @@ export type MenuItemExtension = {
 export type WidgetExtension = {
   Component: ComponentType
   zone: InjectionZone[]
+  /**
+   * How a topbar widget should be rendered. Defaults to `"inline"`.
+   */
+  type?: "inline" | "icon"
+  /**
+   * The icon used as the trigger when `type` is `"icon"`.
+   */
+  icon?: ComponentType
+  /**
+   * The label of the topbar widget, used as the drawer title when `type` is
+   * `"icon"`.
+   */
+  label?: string
 }
 
 export type DisplayExtension = {
@@ -151,6 +164,7 @@ export type DashboardPlugin = {
 export type ExtensionApi = {
   getMenu: (path: MenuItemKey) => INavItem[]
   getWidgets: (zone: InjectionZone) => ComponentType[]
+  getTopbarWidgets: (zone: InjectionZone) => WidgetExtension[]
   getLayout: (layoutId: string) => LayoutDefinition | undefined
   getWidgetsForSections: (route: string, sections: string[]) => SectionWidgetMap
   getFormFields: (

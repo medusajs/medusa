@@ -4,6 +4,8 @@ import outdent from "outdent"
 import {
   File,
   isArrayExpression,
+  isIdentifier,
+  isObjectProperty,
   isStringLiteral,
   isTemplateLiteral,
   Node,
@@ -12,12 +14,25 @@ import {
   traverse,
 } from "../babel"
 import { logger } from "../logger"
-import { getParserOptions, hasDefaultExport, normalizePath } from "../utils"
+import {
+  getConfigObjectProperties,
+  getParserOptions,
+  hasDefaultExport,
+  normalizePath,
+} from "../utils"
 import { getWidgetFilesFromSources } from "./helpers"
 
 type WidgetConfig = {
   Component: string
   zone: InjectionZone[]
+  /**
+   * Runtime config reference (e.g. `WidgetConfig0`) used to forward optional
+   * topbar metadata (`icon`, `type`, `label`) from the widget config object.
+   */
+  configName?: string
+  hasIcon?: boolean
+  hasType?: boolean
+  hasLabel?: boolean
 }
 
 type ParsedWidgetConfig = {
@@ -55,10 +70,26 @@ function generateCode(results: ParsedWidgetConfig[]): string {
 }
 
 function formatWidget(widget: WidgetConfig): string {
+  const lines = [
+    `Component: ${widget.Component}`,
+    `zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}]`,
+  ]
+
+  if (widget.configName) {
+    if (widget.hasType) {
+      lines.push(`type: ${widget.configName}?.type`)
+    }
+    if (widget.hasIcon) {
+      lines.push(`icon: ${widget.configName}?.icon`)
+    }
+    if (widget.hasLabel) {
+      lines.push(`label: ${widget.configName}?.label`)
+    }
+  }
+
   return outdent`
     {
-        Component: ${widget.Component},
-        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}]
+        ${lines.join(",\n        ")}
     }
   `
 }
@@ -113,8 +144,19 @@ async function parseFile(
     return null
   }
 
+  let meta: WidgetConfigMeta = {}
+
+  try {
+    meta = getWidgetConfigMeta(ast)
+  } catch (e) {
+    logger.error(`An error occurred while reading the widget config metadata.`, {
+      file,
+      error: e,
+    })
+  }
+
   const import_ = generateImport(file, index)
-  const widget = generateWidget(zone, index)
+  const widget = generateWidget(zone, index, meta)
 
   return {
     widget,
@@ -137,10 +179,64 @@ function generateImport(file: string, index: number): string {
   )}, { config as ${generateWidgetConfigName(index)} } from "${path}"`
 }
 
-function generateWidget(zone: InjectionZone[], index: number): WidgetConfig {
+function generateWidget(
+  zone: InjectionZone[],
+  index: number,
+  meta: WidgetConfigMeta
+): WidgetConfig {
   return {
     Component: generateWidgetComponentName(index),
     zone: zone,
+    configName: generateWidgetConfigName(index),
+    hasIcon: meta.hasIcon,
+    hasType: meta.hasType,
+    hasLabel: meta.hasLabel,
+  }
+}
+
+type WidgetConfigMeta = {
+  hasIcon?: boolean
+  hasType?: boolean
+  hasLabel?: boolean
+}
+
+/**
+ * Reads optional metadata properties (`icon`, `type`, `label`) from the widget
+ * `config` object. These are used by topbar widgets to control how they are
+ * rendered. The values are forwarded as runtime references to the imported
+ * config, so components (like the icon) are preserved as-is.
+ */
+function getWidgetConfigMeta(ast: ParseResult<File>): WidgetConfigMeta {
+  let properties: Node[] | null = null
+
+  traverse(ast, {
+    VariableDeclarator(path) {
+      if (properties) {
+        return
+      }
+      properties = getConfigObjectProperties(path)
+    },
+    ExportNamedDeclaration(path) {
+      if (properties) {
+        return
+      }
+      properties = getConfigObjectProperties(path)
+    },
+  })
+
+  if (!properties) {
+    return {}
+  }
+
+  const hasProperty = (name: string) =>
+    (properties as Node[]).some(
+      (prop) => isObjectProperty(prop) && isIdentifier(prop.key, { name })
+    )
+
+  return {
+    hasIcon: hasProperty("icon"),
+    hasType: hasProperty("type"),
+    hasLabel: hasProperty("label"),
   }
 }
 

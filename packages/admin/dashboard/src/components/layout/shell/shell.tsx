@@ -17,6 +17,7 @@ import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { ProgressBar } from "../../common/progress-bar"
 import { Notifications } from "../notifications"
+import { TopbarWidgets } from "../topbar-widgets"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -199,7 +200,9 @@ const Topbar = () => {
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-end gap-x-3">
+        <TopbarWidgets zone="topbar.before" />
         <Notifications />
+        <TopbarWidgets zone="topbar.after" />
       </div>
     </div>
   )

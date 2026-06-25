@@ -465,6 +465,14 @@ export class DashboardApp {
     return (this.widgets.get(zone) || []).map((w) => w.Component)
   }
 
+  /**
+   * Returns the full widget extensions for a topbar zone, including the
+   * metadata (`type`, `icon`, `label`) needed to render them in the topbar.
+   */
+  private getTopbarWidgets(zone: InjectionZone): WidgetExtension[] {
+    return this.widgets.get(zone) || []
+  }
+
   private getLayout(layoutId: string): LayoutDefinition | undefined {
     return this.layouts.get(layoutId)
   }
@@ -561,6 +569,7 @@ export class DashboardApp {
     return {
       getMenu: this.getMenu.bind(this),
       getWidgets: this.getWidgets.bind(this),
+      getTopbarWidgets: this.getTopbarWidgets.bind(this),
       getLayout: this.getLayout.bind(this),
       getWidgetsForSections: this.getWidgetsForSections.bind(this),
       getFormFields: this.getFormFields.bind(this),

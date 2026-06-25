@@ -80,4 +80,50 @@ describe("generateWidgets", () => {
       utils.normalizeString(expectedWidgets)
     )
   })
+
+  it("should forward topbar metadata (type, icon, label) from the config", async () => {
+    const mockFiles = ["Users/user/medusa/src/admin/widgets/topbar-widget.tsx"]
+    const fileContents = `
+      import { defineWidgetConfig } from "@medusajs/admin-sdk"
+      import { Cog } from "@medusajs/icons"
+
+      const Widget = () => {
+          return <div>Topbar widget</div>
+      }
+
+      export const config = defineWidgetConfig({
+          zone: "topbar.after",
+          type: "icon",
+          icon: Cog,
+          label: "My widget",
+      })
+
+      export default Widget
+    `
+
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+    vi.mocked(fs.readFile).mockImplementation(async () =>
+      Promise.resolve(fileContents)
+    )
+
+    const result = await generateWidgets(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    const expected = `
+      widgets: [
+          {
+              Component: WidgetComponent0,
+              zone: ["topbar.after"],
+              type: WidgetConfig0?.type,
+              icon: WidgetConfig0?.icon,
+              label: WidgetConfig0?.label
+          }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expected)
+    )
+  })
 })

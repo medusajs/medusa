@@ -14,6 +14,33 @@ export interface WidgetConfig {
    * The injection zone or zones that the widget should be injected into.
    */
   zone: InjectionZone | InjectionZone[]
+  /**
+   * How a topbar widget (injected into `topbar.before` or `topbar.after`)
+   * should be rendered.
+   *
+   * - `"inline"` (default): the widget component is rendered directly in the
+   *   topbar, next to the notifications bell.
+   * - `"icon"`: an icon button is rendered in the topbar. Clicking it opens a
+   *   side drawer (like the notifications bell) in which the widget component is
+   *   rendered.
+   *
+   * This property is ignored for non-topbar injection zones.
+   */
+  type?: "inline" | "icon"
+  /**
+   * The icon used as the trigger when `type` is `"icon"`. If not provided, a
+   * default icon is used.
+   *
+   * This property is ignored for non-topbar injection zones.
+   */
+  icon?: ComponentType
+  /**
+   * The label of the topbar widget. When `type` is `"icon"`, it is used as the
+   * drawer title and the icon button tooltip.
+   *
+   * This property is ignored for non-topbar injection zones.
+   */
+  label?: string
 }
 
 export interface RouteConfig {
