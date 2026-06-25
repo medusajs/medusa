@@ -265,7 +265,10 @@ export interface AdminCreateProduct {
   /**
    * The product's options.
    */
-  options?: AdminCreateProductOption[]
+  options?: (
+    | AdminCreateProductOption
+    | AdminProductCreateLinkProductOption
+  )[]
   /**
    * The product's variants.
    */
@@ -491,9 +494,11 @@ export interface AdminUpdateProduct {
     id: string
   }[]
   /**
-   * The product's options.
+   * The IDs of the associated product options.
+   *
+   * @since 2.16.0
    */
-  options?: AdminUpdateProductOption[]
+  option_ids?: string[]
   /**
    * The product's variants.
    */
@@ -558,6 +563,38 @@ export interface AdminCreateProductOption {
    * The option's values.
    */
   values: string[]
+  /**
+   * The rank for each option value. The keys are the option values,
+   * and the values are their respective ranks.
+   *
+   * @since 2.16.0
+   *
+   * @example
+   * {
+   *   "Small": 1,
+   *   "Medium": 2,
+   *   "Large": 3
+   * }
+   */
+  ranks?: Record<string, number>
+  /**
+   * Whether the option is exclusive to a specific product,
+   * or can be shared across multiple products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive?: boolean
+}
+
+export interface AdminProductCreateLinkProductOption {
+  /**
+   * The ID of the product option to link.
+   */
+  id: string
+  /**
+   * The IDs of specific option values to link. If undefined, every value will be linked by default.
+   */
+  value_ids?: string[]
 }
 
 export interface AdminUpdateProductOption {
@@ -573,6 +610,42 @@ export interface AdminUpdateProductOption {
    * The option's values.
    */
   values?: string[]
+  /**
+   * The rank for each option value. The keys are the option values,
+   * and the values are their respective ranks.
+   *
+   * @since 2.16.0
+   *
+   * @example
+   * {
+   *   "Small": 1,
+   *   "Medium": 2,
+   *   "Large": 3
+   * }
+   */
+  ranks?: Record<string, number>
+  /**
+   * Whether the option is exclusive to a specific product,
+   * or can be shared across multiple products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive?: boolean
+  /**
+   * Key-value pairs of custom data.
+   */
+  metadata?: Record<string, unknown> | null
+}
+
+export interface AdminUpdateProductOptionValue {
+  /**
+   * The option value's value.
+   */
+  value?: string
+  /**
+   * Key-value pairs of custom data.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -677,6 +750,53 @@ export interface AdminImportProductsRequest {
    * The file's mime type.
    */
   mime_type: string
+}
+
+export interface AdminLinkProductOptionWithValues {
+  /**
+   * The ID of the product option to add.
+   */
+  id: string
+  /**
+   * The IDs of specific option values to add to the product.
+   * This is useful when you want to associate only specific values of an option to the product.
+   */
+  value_ids: string[]
+}
+
+export interface AdminUpdateProductOptionValues {
+  /**
+   * The ID of the product option to update values for.
+   */
+  product_option_id: string
+  /**
+   * The IDs of specific option values to add or new values to create.
+   */
+  add?: (string | { value: string })[]
+  /**
+   * The IDs of specific option values to remove.
+   */
+  remove?: string[]
+}
+
+export interface AdminLinkProductOptions {
+  /**
+   * The list of options to add to the product. You can pass either:
+   *
+   * 1. The ID of an existing product option as a string.
+   * 2. An object with `id` and `value_ids` to add an existing product option with specific values. This
+   * is useful when you want to associate only specific option values of an option to the product.
+   * 3. An object to create a new product option.
+   */
+  add?: (string | AdminCreateProductOption | AdminLinkProductOptionWithValues)[]
+  /**
+   * The list of options to remove from the product.
+   */
+  remove?: string[]
+  /**
+   * The list of product option value updates for existing product options.
+   */
+  update?: AdminUpdateProductOptionValues[]
 }
 
 export interface AdminUpdateVariantPrice {

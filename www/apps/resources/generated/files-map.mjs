@@ -484,6 +484,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product/extend"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/guides/filter-products/page.mdx",
+    "pathname": "/commerce-modules/product/guides/filter-products"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/guides/price/page.mdx",
     "pathname": "/commerce-modules/product/guides/price"
   },
@@ -1774,6 +1778,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/products/list/page.mdx",
     "pathname": "/storefront-development/products/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/options/page.mdx",
+    "pathname": "/storefront-development/products/options"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/products/price/examples/sale-price/page.mdx",

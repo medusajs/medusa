@@ -14,7 +14,7 @@ import {
 } from "../../common"
 import { deleteInventoryItemWorkflow } from "../../inventory"
 import { deleteProductsStep } from "../steps/delete-products"
-import { getProductsStep } from "../steps/get-products"
+import { deleteProductOptionsWorkflow } from "./delete-product-options"
 
 /**
  * The data to delete one or more products.
@@ -53,46 +53,75 @@ export const deleteProductsWorkflowId = "delete-products"
 export const deleteProductsWorkflow = createWorkflow(
   deleteProductsWorkflowId,
   (input: WorkflowData<DeleteProductsWorkflowInput>) => {
-    const productsToDelete = getProductsStep({ ids: input.ids })
-    const variantsToBeDeleted = transform({ productsToDelete }, (data) => {
-      return data.productsToDelete
-        .flatMap((product) => product.variants)
-        .map((variant) => variant.id)
-    })
-
-    const variantsWithInventoryStepResponse = useQueryGraphStep({
-      entity: "variants",
+    const productsToDeleteResponse = useQueryGraphStep({
+      entity: "product",
       fields: [
         "id",
-        "manage_inventory",
-        "inventory.id",
-        "inventory.variants.id",
+        "variants.id",
+        "variants.manage_inventory",
+        "variants.inventory.id",
+        "variants.inventory.variants.id",
+        "options.id",
+        "options.is_exclusive",
       ],
       filters: {
-        id: variantsToBeDeleted,
+        id: input.ids,
       },
+    }).config({ name: "query-products-with-options-step" })
+
+    const productsToDelete = transform({ productsToDeleteResponse }, (data) => {
+      return data.productsToDeleteResponse.data
     })
 
-    const toDeleteInventoryItemIds = transform(
-      { variants: variantsWithInventoryStepResponse.data },
+    const exclusiveOptionsToDelete = transform(
+      { products: productsToDelete },
       (data) => {
-        const variants = data.variants || []
+        const products = data.products || []
+        const exclusiveOptionIds = new Set<string>()
 
-        const variantsMap = new Map(variants.map((v) => [v.id, true]))
+        products.forEach((product) => {
+          const productOptions = product.options || []
+          productOptions.forEach((option) => {
+            if (option.is_exclusive) {
+              exclusiveOptionIds.add(option.id)
+            }
+          })
+        })
+
+        return Array.from(exclusiveOptionIds)
+      }
+    )
+
+    const { variantsToBeDeleted, allVariantsIds } = transform(
+      { productsToDelete },
+      (data) => {
+        const allVariants = data.productsToDelete.flatMap(
+          (product) => product.variants || []
+        )
+
+        const allVariantsIds = allVariants.map((variant) => variant.id)
+
+        return { variantsToBeDeleted: allVariants, allVariantsIds }
+      }
+    )
+
+    const toDeleteInventoryItemIds = transform(
+      { variants: variantsToBeDeleted },
+      (data) => {
+        const variantsMap = new Map(
+          data.variants.map((variant) => [variant.id, variant])
+        )
+
         const toDeleteIds: Set<string> = new Set()
 
-        variants.forEach((variant) => {
-          if (!variant.manage_inventory) {
-            return
-          }
-
-          for (const inventoryItem of variant.inventory) {
-            if (
-              !!inventoryItem &&
-              inventoryItem.variants.every((v) => variantsMap.has(v.id))
-            ) {
-              toDeleteIds.add(inventoryItem.id)
-            }
+        data.variants.forEach((variant) => {
+          if (variant.manage_inventory) {
+            variant.inventory.forEach((inventoryItem) => {
+              // only if every variant that is linked to the inventory item is being deleted, we can remove the item
+              if (!!inventoryItem && inventoryItem.variants.every((v) => variantsMap.has(v.id))) {
+                toDeleteIds.add(inventoryItem.id)
+              }
+            })
           }
         })
 
@@ -107,12 +136,18 @@ export const deleteProductsWorkflow = createWorkflow(
     const [, deletedProduct] = parallelize(
       removeRemoteLinkStep({
         [Modules.PRODUCT]: {
-          variant_id: variantsToBeDeleted,
+          variant_id: allVariantsIds,
           product_id: input.ids,
         },
       }).config({ name: "remove-product-variant-link-step" }),
       deleteProductsStep(input.ids)
     )
+
+    deleteProductOptionsWorkflow.runAsStep({
+      input: {
+        ids: exclusiveOptionsToDelete,
+      },
+    })
 
     const productIdEvents = transform({ input }, ({ input }) => {
       return input.ids?.map((id) => {

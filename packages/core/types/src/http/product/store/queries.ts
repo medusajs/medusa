@@ -1,9 +1,13 @@
 import { SelectParams } from "../../common"
 import {
   BaseProductListParams,
+  BaseProductOptionListParams,
   BaseProductOptionParams,
   BaseProductVariantParams,
 } from "../common"
+
+export interface StoreProductOptionListParams
+  extends BaseProductOptionListParams {}
 
 /**
  * The product option's details.
@@ -99,4 +103,10 @@ export interface StoreProductListParams
    * "en-US"
    */
   locale?: string
+  /**
+   * Filter by the product's option values. Variants must include one of the provided values per option.
+   * 
+   * @since 2.16.0
+   */
+  option_value_id?: string | string[]
 }

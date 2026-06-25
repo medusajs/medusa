@@ -4,6 +4,7 @@ import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductImage from "./product-image"
 import ProductOption from "./product-option"
+import ProductProductOption from "./product-product-option"
 import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
@@ -111,10 +112,13 @@ const Product = model
       mappedBy: "products",
       pivotTable: "product_tags",
     }),
+    options: model.manyToMany(() => ProductOption, {
+      pivotEntity: () => ProductProductOption,
+    }),
     /**
-     * The product's options.
+     * @since 2.16.0
      */
-    options: model.hasMany(() => ProductOption, {
+    product_options: model.hasMany(() => ProductProductOption, {
       mappedBy: "product",
     }),
     /**
@@ -140,7 +144,8 @@ const Product = model
     }),
   })
   .cascades({
-    delete: ["variants", "options", "images"],
+    delete: ["variants", "images"],
+    detach: ["options"],
   })
   .indexes([
     {

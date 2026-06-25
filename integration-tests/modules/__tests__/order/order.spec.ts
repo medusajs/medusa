@@ -20,7 +20,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer
     let orderModule: IOrderModuleService
 
@@ -29,8 +29,10 @@ medusaIntegrationTestRunner({
       orderModule = appContainer.resolve(Modules.ORDER)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("CreateOrderWorkflow", () => {
@@ -280,7 +282,7 @@ medusaIntegrationTestRunner({
           id: expect.any(String),
           status: "pending",
           version: 1,
-          display_id: 2,
+          display_id: created.display_id,
           custom_display_id: null,
           payment_collections: [],
           payment_status: "not_paid",

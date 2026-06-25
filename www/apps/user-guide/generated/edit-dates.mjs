@@ -18,7 +18,7 @@ export const generatedEditDates = {
   "app/products/categories/page.mdx": "2026-04-10T10:20:02.394Z",
   "app/inventory/reservations/page.mdx": "2025-05-30T13:27:25.559Z",
   "app/discounts/manage/page.mdx": "2024-05-03T17:36:38+03:00",
-  "app/products/page.mdx": "2025-05-30T13:29:49.292Z",
+  "app/products/page.mdx": "2025-12-12T08:57:46.224Z",
   "app/inventory/inventory/page.mdx": "2025-05-30T13:27:17.017Z",
   "app/customers/groups/page.mdx": "2025-05-30T13:26:56.820Z",
   "app/orders/manage/page.mdx": "2026-04-10T06:16:09.853Z",
@@ -34,8 +34,8 @@ export const generatedEditDates = {
   "app/orders/payments/page.mdx": "2026-04-20T10:33:51.360Z",
   "app/discounts/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/orders/exchanges/page.mdx": "2025-12-01T09:27:18.971Z",
-  "app/products/create/page.mdx": "2025-05-30T13:29:24.876Z",
-  "app/products/edit/page.mdx": "2025-12-16T12:59:39.608Z",
+  "app/products/create/page.mdx": "2026-01-21T07:54:24.381Z",
+  "app/products/edit/page.mdx": "2026-06-04T06:35:04.744Z",
   "app/products/variants/page.mdx": "2025-12-16T13:01:11.706Z",
   "app/products/create/bundle/page.mdx": "2025-05-30T13:29:15.958Z",
   "app/products/create/multi-part/page.mdx": "2025-11-27T08:28:54.245Z",
@@ -69,5 +69,6 @@ export const generatedEditDates = {
   "app/loyalty/gift-cards/page.mdx": "2026-04-20T08:45:05.777Z",
   "app/loyalty/page.mdx": "2026-04-20T08:43:37.383Z",
   "app/loyalty/store-credits/manage/page.mdx": "2026-04-20T10:38:06.046Z",
-  "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z"
+  "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
+  "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z"
 }

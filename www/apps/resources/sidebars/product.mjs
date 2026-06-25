@@ -52,6 +52,11 @@ export const productSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/product/guides/filter-products",
+            title: "Filter Products",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/product/guides/price",
             title: "Get Variant Prices",
           },
