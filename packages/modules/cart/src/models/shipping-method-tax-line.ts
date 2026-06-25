@@ -15,6 +15,7 @@ const ShippingMethodTaxLine = model
       provider_id: model.text().nullable(),
       tax_rate_id: model.text().nullable(),
       metadata: model.json().nullable(),
+      data: model.json().nullable(),
       shipping_method: model.belongsTo(() => ShippingMethod, {
         mappedBy: "tax_lines",
       }),
