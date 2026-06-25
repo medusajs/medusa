@@ -108,7 +108,20 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   __hooks = {
     onApplicationStart: async () => {
-      await this.bullWorker_?.run()
+      if (!this.bullWorker_) {
+        return
+      }
+
+      // `run()` only resolves when the worker is closed and must not be awaited
+      // during application startup. See https://github.com/taskforcesh/bullmq/issues/2128
+      void this.bullWorker_.run().catch((error) => {
+        this.logger_.error(
+          `Error running event bus worker: ${error.message}`,
+          error
+        )
+      })
+
+      await this.bullWorker_.waitUntilReady()
     },
     onApplicationShutdown: async () => {
       await this.queue_.close()
