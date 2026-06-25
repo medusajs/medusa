@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/caching",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "Caching Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -28,12 +28,12 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@zjedene-medusa/framework": "2.16.0",
-    "@zjedene-medusa/test-utils": "2.16.0",
+    "@zjedene-medusa/framework": "2.16.1",
+    "@zjedene-medusa/test-utils": "2.16.1",
     "awilix": "^8.0.1"
   },
   "peerDependencies": {
-    "@zjedene-medusa/framework": "2.16.0",
+    "@zjedene-medusa/framework": "2.16.1",
     "awilix": "^8.0.1"
   },
   "dependencies": {

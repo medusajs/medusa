@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/medusa-oas-cli",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "OAS CLI",
   "main": "dist/index.js",
   "bin": {
@@ -21,7 +21,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@zjedene-medusa/types": "2.16.0"
+    "@zjedene-medusa/types": "2.16.1"
   },
   "scripts": {
     "build": "yarn run -T tsc --build",
@@ -31,8 +31,8 @@
     "@readme/json-schema-ref-parser": "^1.2.0",
     "@readme/openapi-parser": "^2.4.0",
     "@redocly/cli": "1.25.3",
-    "@zjedene-medusa/medusa": "2.16.0",
-    "@zjedene-medusa/utils": "2.16.0",
+    "@zjedene-medusa/medusa": "2.16.1",
+    "@zjedene-medusa/utils": "2.16.1",
     "commander": "^11.0.0",
     "execa": "^5.1.1",
     "lodash.mergewith": "^4.6.2",

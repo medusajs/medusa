@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/stock-location",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "Stock Location Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -23,11 +23,11 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@zjedene-medusa/framework": "2.16.0",
-    "@zjedene-medusa/test-utils": "2.16.0"
+    "@zjedene-medusa/framework": "2.16.1",
+    "@zjedene-medusa/test-utils": "2.16.1"
   },
   "peerDependencies": {
-    "@zjedene-medusa/framework": "2.16.0"
+    "@zjedene-medusa/framework": "2.16.1"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",

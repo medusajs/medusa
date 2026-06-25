@@ -21,7 +21,7 @@
     "test": "../../../../node_modules/.bin/jest --passWithNoTests"
   },
   "dependencies": {
-    "@zjedene-medusa/medusa-oas-cli": "2.16.0",
+    "@zjedene-medusa/medusa-oas-cli": "2.16.1",
     "execa": "^5.1.1"
   }
 }

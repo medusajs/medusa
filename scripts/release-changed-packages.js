@@ -226,9 +226,13 @@ function topoSortForPublish(selected, allPackages) {
   }
 
   for (const pkg of selected) {
+    // Only runtime dependencies determine publish order: a package's deps must
+    // already exist on the registry before it is published. peerDependencies are
+    // satisfied by the consumer (not the publisher), so they must NOT be treated
+    // as publish-order edges — doing so creates false cycles, e.g.
+    // medusa -> draft-order (dep) -> test-utils (peer) -> medusa (peer).
     const allDeps = {
       ...pkg.dependencies,
-      ...pkg.peerDependencies,
     }
     for (const depName of Object.keys(allDeps)) {
       if (inSet.has(depName) && depName !== pkg.name) {

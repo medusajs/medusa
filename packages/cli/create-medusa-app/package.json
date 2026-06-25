@@ -14,8 +14,8 @@
     "test": "../../../node_modules/.bin/jest --passWithNoTests src"
   },
   "dependencies": {
-    "@zjedene-medusa/deps": "2.16.0",
-    "@zjedene-medusa/telemetry": "2.16.0",
+    "@zjedene-medusa/deps": "2.16.1",
+    "@zjedene-medusa/telemetry": "2.16.1",
     "boxen": "^5.0.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/modules-sdk",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "export": {
@@ -31,11 +31,11 @@
     "watch": "yarn run -T tsc --build --watch"
   },
   "devDependencies": {
-    "@zjedene-medusa/types": "2.16.0"
+    "@zjedene-medusa/types": "2.16.1"
   },
   "dependencies": {
-    "@zjedene-medusa/deps": "2.16.0",
-    "@zjedene-medusa/orchestration": "2.16.0",
-    "@zjedene-medusa/utils": "2.16.0"
+    "@zjedene-medusa/deps": "2.16.1",
+    "@zjedene-medusa/orchestration": "2.16.1",
+    "@zjedene-medusa/utils": "2.16.1"
   }
 }

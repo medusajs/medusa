@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/cli",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -33,9 +33,9 @@
   "license": "MIT",
   "dependencies": {
     "@types/express": "^4.17.21",
-    "@zjedene-medusa/deps": "2.16.0",
-    "@zjedene-medusa/telemetry": "2.16.0",
-    "@zjedene-medusa/utils": "2.16.0",
+    "@zjedene-medusa/deps": "2.16.1",
+    "@zjedene-medusa/telemetry": "2.16.1",
+    "@zjedene-medusa/utils": "2.16.1",
     "chalk": "^4.1.2",
     "configstore": "^5.0.1",
     "dotenv": "^16.4.5",

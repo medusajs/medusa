@@ -1,6 +1,6 @@
 {
   "name": "@zjedene-medusa/utils",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "exports": {
@@ -26,7 +26,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@zjedene-medusa/types": "2.16.0",
+    "@zjedene-medusa/types": "2.16.1",
     "express": "^4.21.0"
   },
   "dependencies": {
@@ -35,7 +35,7 @@
     "@graphql-tools/merge": "^9.0.7",
     "@graphql-tools/schema": "^10.0.6",
     "@types/pluralize": "^0.0.33",
-    "@zjedene-medusa/deps": "2.16.0",
+    "@zjedene-medusa/deps": "2.16.1",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
