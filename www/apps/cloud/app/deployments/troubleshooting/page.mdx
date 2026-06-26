@@ -95,6 +95,52 @@ To resolve this, ensure that your project's dependencies are compatible with tho
 
 ---
 
+## Missing yarn.lock in Build Context
+
+If your Yarn berry monorepo build fails with the following error, the `yarn.lock` file is not included in the Docker build context:
+
+```bash
+failed to calculate checksum of ref: "/yarn.lock": not found
+```
+
+This is different from an outdated lockfile — the lockfile is entirely absent from the build context. Cloud cannot install dependencies without it.
+
+### Diagnose the Missing Lockfile
+
+Check for these indicators in your build logs:
+
+- The error message references `/yarn.lock: not found`
+- The build fails early during the dependency installation step
+- No other lockfile errors are shown
+
+The most common cause is that `yarn.lock` is listed in `.gitignore` or was never committed to the repository.
+
+### Fix a Missing yarn.lock
+
+1. Run `yarn install` locally to generate the lockfile:
+
+```bash
+yarn install
+```
+
+2. Commit the `yarn.lock` file to your repository:
+
+```bash
+git add yarn.lock
+git commit -m "Add yarn.lock"
+git push
+```
+
+3. Push the changes to trigger a new deployment.
+
+### Prevent Missing Lockfile Issues
+
+Always commit your lockfile to version control. Cloud requires the lockfile to install dependencies with a frozen install, ensuring reproducible builds. Add the following to your `.gitignore` to make sure the lockfile is not accidentally excluded:
+
+Remove any line in your `.gitignore` that matches `yarn.lock` or `*.lock`.
+
+---
+
 ## Outdated pnpm Lockfile
 
 If your build fails with the following error, your `pnpm-lock.yaml` file is out of sync with `package.json`:
