@@ -74,8 +74,9 @@ function pathStaysInModule(
   if (moduleRoot === null) {
     return true
   }
+  const normResolved = resolved.replace(/\\/g, "/")
   const root = moduleRoot + "/"
-  return resolved === moduleRoot || resolved.startsWith(root)
+  return normResolved === moduleRoot || normResolved.startsWith(root)
 }
 
 /**
