@@ -66,8 +66,11 @@ function getModuleRoot(filename: string): string | null {
   return match ? match[1] : null
 }
 
-/** True when the absolute `resolved` path is inside (or equal to) `moduleRoot`. */
-function pathStaysInModule(
+/**
+ * True when the absolute `resolved` path is inside (or equal to) `moduleRoot`.
+ * Exported for unit testing (not re-exported by the package `index.ts`).
+ */
+export function pathStaysInModule(
   resolved: string,
   moduleRoot: string | null
 ): boolean {

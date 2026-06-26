@@ -3,7 +3,7 @@ import {
   createFixtureWorkspace,
   createRuleTester,
 } from "../../../test-utils"
-import { rule } from "../rule"
+import { pathStaysInModule, rule } from "../rule"
 
 afterAll(cleanupFixtureWorkspaces)
 
@@ -349,4 +349,36 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
       ],
     },
   ],
+})
+
+/**
+ * Regression test for the Windows path-separator bug (#15782): `getModuleRoot`
+ * yields a forward-slash module root, but `resolved` may use the platform
+ * separator (backslashes on Windows). `pathStaysInModule` must normalize before
+ * comparing so a same-module import isn't misclassified as cross-module.
+ */
+describe("pathStaysInModule", () => {
+  const moduleRoot = "/repo/src/modules/quote"
+
+  it("treats a forward-slash in-module path as inside the module", () => {
+    expect(
+      pathStaysInModule("/repo/src/modules/quote/models/area", moduleRoot)
+    ).toBe(true)
+  })
+
+  it("treats a backslash (Windows) in-module path as inside the module", () => {
+    expect(
+      pathStaysInModule("\\repo\\src\\modules\\quote\\models\\area", moduleRoot)
+    ).toBe(true)
+  })
+
+  it("flags a path outside the module regardless of separator", () => {
+    expect(
+      pathStaysInModule("\\repo\\src\\modules\\other\\models\\foo", moduleRoot)
+    ).toBe(false)
+  })
+
+  it("allows any path when the module root is unknown", () => {
+    expect(pathStaysInModule("\\anywhere\\foo", null)).toBe(true)
+  })
 })
