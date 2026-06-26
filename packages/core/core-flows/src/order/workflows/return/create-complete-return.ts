@@ -458,7 +458,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     )
     receiveReturnStep(receiveItems)
 
-    parallelize(
+    const eventsToEmit = [
       emitEventStep({
         eventName: OrderWorkflowEvents.RETURN_REQUESTED,
         data: {
@@ -466,14 +466,21 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
           return_id: returnCreated.id,
         },
       }).config({ name: "emit-return-requested-event" }),
-      emitEventStep({
-        eventName: OrderWorkflowEvents.RETURN_RECEIVED,
-        data: {
-          order_id: order.id,
-          return_id: returnCreated.id,
-        },
-      }).config({ name: "emit-return-received-event" })
-    )
+    ]
+
+    if (input.receive_now) {
+      eventsToEmit.push(
+        emitEventStep({
+          eventName: OrderWorkflowEvents.RETURN_RECEIVED,
+          data: {
+            order_id: order.id,
+            return_id: returnCreated.id,
+          },
+        }).config({ name: "emit-return-received-event" })
+      )
+    }
+
+    parallelize(...eventsToEmit)
 
     return new WorkflowResponse(returnCreated as ReturnDTO, {
       hooks: [setPricingContext] as const,
