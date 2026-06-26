@@ -19,6 +19,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  OrderWorkflowEvents,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -616,6 +617,108 @@ medusaIntegrationTestRunner({
 
         expect(errors[0].error.message).toBe(
           `Cannot apply return reason with id ${testReason.id} to order with id ${order.id}. Return reason has nested reasons.`
+        )
+      })
+
+      it("should emit RETURN_REQUESTED and RETURN_RECEIVED when receive_now is true", async () => {
+        const order = await createOrderFixture({ container, product })
+
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const requestedSubscriber = jest.fn()
+        const receivedSubscriber = jest.fn()
+
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
+        )
+
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            receive_now: true,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+          }
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: true,
+        })
+
+        await new Promise((resolve) => setTimeout(resolve, 100))
+
+        expect(requestedSubscriber).toHaveBeenCalledTimes(1)
+        expect(receivedSubscriber).toHaveBeenCalledTimes(1)
+
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
+        )
+      })
+
+      it("should emit only RETURN_REQUESTED when receive_now is false", async () => {
+        const order = await createOrderFixture({ container, product })
+
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const requestedSubscriber = jest.fn()
+        const receivedSubscriber = jest.fn()
+
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
+        )
+
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            receive_now: false,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+          }
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: true,
+        })
+
+        await new Promise((resolve) => setTimeout(resolve, 100))
+
+        expect(requestedSubscriber).toHaveBeenCalledTimes(1)
+        expect(receivedSubscriber).not.toHaveBeenCalled()
+
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
         )
       })
     })

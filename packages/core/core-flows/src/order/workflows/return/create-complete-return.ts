@@ -24,6 +24,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { pricingContextResult } from "../../../cart/utils/schemas"
 import {
@@ -458,7 +459,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     )
     receiveReturnStep(receiveItems)
 
-    const eventsToEmit = [
+    parallelize(
       emitEventStep({
         eventName: OrderWorkflowEvents.RETURN_REQUESTED,
         data: {
@@ -466,10 +467,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
           return_id: returnCreated.id,
         },
       }).config({ name: "emit-return-requested-event" }),
-    ]
-
-    if (input.receive_now) {
-      eventsToEmit.push(
+      when({ input }, ({ input }) => !!input.receive_now).then(() =>
         emitEventStep({
           eventName: OrderWorkflowEvents.RETURN_RECEIVED,
           data: {
@@ -478,9 +476,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
           },
         }).config({ name: "emit-return-received-event" })
       )
-    }
-
-    parallelize(...eventsToEmit)
+    )
 
     return new WorkflowResponse(returnCreated as ReturnDTO, {
       hooks: [setPricingContext] as const,
