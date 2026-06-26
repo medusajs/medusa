@@ -1,10 +1,16 @@
-const ORDER_INJECTION_ZONES = [
+const LEGACY_ORDER_INJECTION_ZONES = [
   "order.details.before",
   "order.details.after",
   "order.details.side.before",
   "order.details.side.after",
   "order.list.before",
   "order.list.after",
+] as const
+
+const ORDER_INJECTION_ZONES = [
+  "order.details",
+  "order.details.side",
+  "order.list",
 ] as const
 
 const CUSTOMER_INJECTION_ZONES = [
@@ -23,13 +29,19 @@ const CUSTOMER_GROUP_INJECTION_ZONES = [
   "customer_group.list.after",
 ] as const
 
-const PRODUCT_INJECTION_ZONES = [
+const LEGACY_PRODUCT_INJECTION_ZONES = [
   "product.details.before",
   "product.details.after",
   "product.list.before",
   "product.list.after",
   "product.details.side.before",
   "product.details.side.after",
+] as const
+
+const PRODUCT_INJECTION_ZONES = [
+  "product.details",
+  "product.list",
+  "product.details.side",
 ] as const
 
 const PRODUCT_VARIANT_INJECTION_ZONES = [
@@ -231,7 +243,7 @@ const POLICY_INJECTION_ZONES = [
   "policy.list.after",
 ] as const
 
-const DRAFT_ORDER_INJECTION_ZONES = [
+const LEGACY_DRAFT_ORDER_INJECTION_ZONES = [
   "draft_order.details.before",
   "draft_order.details.after",
   "draft_order.details.side.before",
@@ -240,7 +252,13 @@ const DRAFT_ORDER_INJECTION_ZONES = [
   "draft_order.list.after",
 ] as const
 
-const STORE_CREDIT_ACCOUNT_INJECTION_ZONES = [
+const DRAFT_ORDER_INJECTION_ZONES = [
+  "draft_order.details",
+  "draft_order.details.side",
+  "draft_order.list",
+] as const
+
+const LEGACY_STORE_CREDIT_ACCOUNT_INJECTION_ZONES = [
   "store_credit_account.details.before",
   "store_credit_account.details.after",
   "store_credit_account.details.side.before",
@@ -249,7 +267,13 @@ const STORE_CREDIT_ACCOUNT_INJECTION_ZONES = [
   "store_credit_account.list.after",
 ] as const
 
-const GIFT_CARD_INJECTION_ZONES = [
+const STORE_CREDIT_ACCOUNT_INJECTION_ZONES = [
+  "store_credit_account.details",
+  "store_credit_account.details.side",
+  "store_credit_account.list",
+] as const
+
+const LEGACY_GIFT_CARD_INJECTION_ZONES = [
   "gift_card.details.before",
   "gift_card.details.after",
   "gift_card.details.side.before",
@@ -260,7 +284,13 @@ const GIFT_CARD_INJECTION_ZONES = [
   "gift_card.list.side.after",
 ] as const
 
-const GIFT_CARD_PRODUCT_INJECTION_ZONES = [
+const GIFT_CARD_INJECTION_ZONES = [
+  "gift_card.details",
+  "gift_card.details.side",
+  "gift_card.list",
+] as const
+
+const LEGACY_GIFT_CARD_PRODUCT_INJECTION_ZONES = [
   "gift_card_product.details.before",
   "gift_card_product.details.after",
   "gift_card_product.details.side.before",
@@ -269,14 +299,22 @@ const GIFT_CARD_PRODUCT_INJECTION_ZONES = [
   "gift_card_product.list.after",
 ] as const
 
+const GIFT_CARD_PRODUCT_INJECTION_ZONES = [
+  "gift_card_product.details",
+  "gift_card_product.details.side",
+  "gift_card_product.list",
+] as const
+
 /**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
  */
 export const INJECTION_ZONES = [
+  ...LEGACY_ORDER_INJECTION_ZONES,
   ...ORDER_INJECTION_ZONES,
   ...CUSTOMER_INJECTION_ZONES,
   ...CUSTOMER_GROUP_INJECTION_ZONES,
+  ...LEGACY_PRODUCT_INJECTION_ZONES,
   ...PRODUCT_INJECTION_ZONES,
   ...PRODUCT_VARIANT_INJECTION_ZONES,
   ...PRODUCT_COLLECTION_INJECTION_ZONES,
@@ -306,8 +344,12 @@ export const INJECTION_ZONES = [
   ...INVENTORY_ITEM_INJECTION_ZONES,
   ...ROLE_INJECTION_ZONES,
   ...POLICY_INJECTION_ZONES,
+  ...LEGACY_DRAFT_ORDER_INJECTION_ZONES,
   ...DRAFT_ORDER_INJECTION_ZONES,
+  ...LEGACY_STORE_CREDIT_ACCOUNT_INJECTION_ZONES,
   ...STORE_CREDIT_ACCOUNT_INJECTION_ZONES,
+  ...LEGACY_GIFT_CARD_INJECTION_ZONES,
   ...GIFT_CARD_INJECTION_ZONES,
+  ...LEGACY_GIFT_CARD_PRODUCT_INJECTION_ZONES,
   ...GIFT_CARD_PRODUCT_INJECTION_ZONES,
 ] as const

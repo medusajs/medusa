@@ -3,3 +3,4 @@
  */
 
 export { LayoutComposer } from "../components/layout-composer"
+export type { LayoutComponentProps } from "../components/layout-composer/types"

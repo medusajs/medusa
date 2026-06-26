@@ -587,6 +587,9 @@
         "logout": {
           "type": "string"
         },
+        "show": {
+          "type": "string"
+        },
         "hide": {
           "type": "string"
         },
@@ -649,6 +652,7 @@
         "select",
         "browse",
         "logout",
+        "show",
         "hide",
         "export",
         "import",
@@ -1120,6 +1124,54 @@
         }
       },
       "required": ["search", "keyboardShortcuts", "menus", "nav"],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "customizeWidgets": {
+          "type": "string"
+        },
+        "personalView": {
+          "type": "string"
+        },
+        "defaultView": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "dropToSectionEnd": {
+          "type": "string"
+        },
+        "dragToReorder": {
+          "type": "string"
+        },
+        "saveForEveryone": {
+          "type": "string"
+        },
+        "saveForEveryoneTitle": {
+          "type": "string"
+        },
+        "saveForEveryoneDescription": {
+          "type": "string"
+        },
+        "saveSuccess": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "customizeWidgets",
+        "personalView",
+        "defaultView",
+        "empty",
+        "dropToSectionEnd",
+        "dragToReorder",
+        "saveForEveryone",
+        "saveForEveryoneTitle",
+        "saveForEveryoneDescription",
+        "saveSuccess"
+      ],
       "additionalProperties": false
     },
     "dataGrid": {
@@ -13990,6 +14042,7 @@
     "actions",
     "operators",
     "app",
+    "layout",
     "dataGrid",
     "filters",
     "errorBoundary",

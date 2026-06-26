@@ -16,6 +16,10 @@ import { KeybindProvider } from "../../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { ProgressBar } from "../../common/progress-bar"
+import {
+  LayoutCustomizerHostProvider,
+  LayoutCustomizerSlot,
+} from "../../../providers/customizer-host-provider/customizer-host-provider"
 import { Notifications } from "../notifications"
 
 export const Shell = ({ children }: PropsWithChildren) => {
@@ -26,28 +30,30 @@ export const Shell = ({ children }: PropsWithChildren) => {
 
   return (
     <KeybindProvider shortcuts={globalShortcuts}>
-      <div className="relative flex h-screen flex-col items-start overflow-hidden lg:flex-row">
-        <NavigationBar loading={loading} />
-        <div>
-          <MobileSidebarContainer>{children}</MobileSidebarContainer>
-          <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
+      <LayoutCustomizerHostProvider>
+        <div className="relative flex h-screen flex-col items-start overflow-hidden lg:flex-row">
+          <NavigationBar loading={loading} />
+          <div>
+            <MobileSidebarContainer>{children}</MobileSidebarContainer>
+            <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
+          </div>
+          <div className="flex h-screen w-full flex-col overflow-auto">
+            <Topbar />
+            <main
+              className={clx(
+                "flex h-full w-full flex-col items-center overflow-y-auto transition-opacity delay-200 duration-200",
+                {
+                  "opacity-25": loading,
+                }
+              )}
+            >
+              <Gutter>
+                <Outlet />
+              </Gutter>
+            </main>
+          </div>
         </div>
-        <div className="flex h-screen w-full flex-col overflow-auto">
-          <Topbar />
-          <main
-            className={clx(
-              "flex h-full w-full flex-col items-center overflow-y-auto transition-opacity delay-200 duration-200",
-              {
-                "opacity-25": loading,
-              }
-            )}
-          >
-            <Gutter>
-              <Outlet />
-            </Gutter>
-          </main>
-        </div>
-      </div>
+      </LayoutCustomizerHostProvider>
     </KeybindProvider>
   )
 }
@@ -199,6 +205,7 @@ const Topbar = () => {
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-end gap-x-3">
+        <LayoutCustomizerSlot />
         <Notifications />
       </div>
     </div>
