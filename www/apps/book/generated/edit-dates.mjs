@@ -19,7 +19,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/modules/container/page.mdx": "2025-07-31T14:24:04.087Z",
   "app/learn/fundamentals/workflows/execute-another-workflow/page.mdx": "2025-08-01T07:28:51.036Z",
   "app/learn/fundamentals/modules/loaders/page.mdx": "2025-10-09T11:41:31.724Z",
-  "app/learn/fundamentals/admin/widgets/page.mdx": "2026-06-15T15:12:57.042Z",
+  "app/learn/fundamentals/admin/widgets/page.mdx": "2026-06-26T11:39:06.974Z",
   "app/learn/fundamentals/data-models/page.mdx": "2025-10-28T16:01:48.099Z",
   "app/learn/fundamentals/modules/remote-link/page.mdx": "2024-09-30T08:43:53.127Z",
   "app/learn/fundamentals/api-routes/protected-routes/page.mdx": "2026-06-09T08:27:50.661Z",
@@ -147,5 +147,6 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-06-09T08:01:44.517Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
-  "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T10:39:20.544Z"
+  "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T10:39:20.544Z",
+  "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-06-26T11:39:47.155Z"
 }

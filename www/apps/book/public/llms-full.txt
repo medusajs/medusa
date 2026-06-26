@@ -8620,12 +8620,11 @@ const BrandListPage = () => {
 export default BrandListPage
 ```
 
-Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zone:
 
-- `brand.list.before`: Widgets rendered before the main content of the brand list page.
-- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+- `brand.list`: Widgets rendered in the main section of the brand list page.
 
-Widgets injected into these zones are rendered around the page's sections.
+Widgets injected into this zone appear inside the main section and can be reordered by admin users.
 
 Refer to the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
 
@@ -8660,12 +8659,10 @@ export default BrandDetailsPage
 
 Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
 
-- `brand.details.before`: Widgets rendered before the main content of the brand details page.
-- `brand.details.after`: Widgets rendered after the main content of the brand details page.
-- `brand.details.side.before` (since layout is two-column): Widgets rendered before the side content of the brand details page.
-- `brand.details.side.after` (since layout is two-column): Widgets rendered after the side content of the brand details page.
+- `brand.details`: Widgets rendered in the main section of the brand details page.
+- `brand.details.side`: Widgets rendered in the side section of the brand details page.
 
-Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `brand` object is passed as data, so widgets can access it through their props.
+Widgets injected into these zones appear inside the respective sections and can be reordered by admin users. The `data` prop is passed to the widgets, allowing them to access the page's main data. In this example, widgets can access the `brand` object through their `data` prop.
 
 Refer to the [LayoutComposer](undefined/resources/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
 
@@ -10321,7 +10318,10 @@ In the example above, the widget is injected at the top of a product’s details
 
 You export the `ProductWidget` component, which displays the heading `Product Widget`. In the widget, you use [Medusa UI](undefined/ui) to customize the dashboard with the same components used to build it.
 
-To export the widget's configuration, you use `defineWidgetConfig` from the Admin Extension SDK. It accepts an object as a parameter with the `zone` property, whose value is a string or an array of strings, each being the name of the zone to inject the widget into.
+To export the widget's configuration, you use `defineWidgetConfig` from the Admin Extension SDK. It accepts an object as a parameter with the following properties:
+
+- `zone`: A string or array of strings indicating the injection zone(s) to inject the widget into.
+- `id` (optional): A stable string identifier for the widget. When omitted, Medusa derives an ID from the widget file's path at build time. You can set this explicitly to keep layout customizations working if you rename or move the file. Plugin authors should prefix the ID to avoid collisions — for example, `"my-plugin:brand-widget"`.
 
 The widget component must be created as an arrow function.
 
@@ -132715,12 +132715,10 @@ const BrandDetailsPage = () => {
 }
 ```
 
-The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+The `widgetsZonePrefix` prop determines the widget injection zones for the page. In this example, the UI route exposes the following zones:
 
-- `brand.details.before`: Widgets rendered before the main content of the brand details page.
-- `brand.details.after`: Widgets rendered after the main content of the brand details page.
-- `brand.details.side.before`: Widgets rendered before the side content of the brand details page.
-- `brand.details.side.after`: Widgets rendered after the side content of the brand details page.
+- `brand.details`: Widgets rendered in the main section of the brand details page.
+- `brand.details.side`: Widgets rendered in the side section of the brand details page.
 
 ### Single Column Layout
 
@@ -132734,7 +132732,6 @@ const BrandListPage = () => {
     <LayoutComposer
       widgetsZonePrefix="brand.list"
       preferredLayoutId="core:single-column"
-      data={brand}
       sections={{
         main: (
           <BrandListSection />
@@ -132745,10 +132742,9 @@ const BrandListPage = () => {
 }
 ```
 
-The `widgetsZonePrefix` prop is used to determine the widget injection zones for the page. In this example, the UI route exposes the following zones:
+The `widgetsZonePrefix` prop determines the widget injection zones for the page. In this example, the UI route exposes the following zone:
 
-- `brand.list.before`: Widgets rendered before the main content of the brand list page.
-- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+- `brand.list`: Widgets rendered in the main section of the brand list page.
 
 ***
 
@@ -132756,39 +132752,45 @@ The `widgetsZonePrefix` prop is used to determine the widget injection zones for
 
 |Prop|Type|Description|
 |---|---|---|
-|\`widgetsZonePrefix\`|\`string\`|The prefix used to determine widget injection zones for the page. The component automatically appends |
+|\`widgetsZonePrefix\`|\`string\`|The prefix used to determine widget injection zones for the page. For a two-column layout, the component exposes |
 |\`preferredLayoutId\`|\`string\`|The ID of the preferred layout to use. By default, accepted values are |
 |\`sections\`|\`Record\<string, ReactNode>\`|Object mapping section names to their content. The key is the name of the section, and the value is a |
 |\`data\`|\`unknown\`|Data passed from the UI route to the |
 
 ## Custom Layouts
 
-You can create custom layouts by registering them with the dashboard extension system. Custom layouts must implement the `LayoutDefinition` interface:
+You can create custom layouts by adding a layout file under `src/admin/layouts/` in your plugin. A layout file must have a default export (the React component) and a named `config` export created with `defineLayoutConfig`.
 
-```tsx
-import type { LayoutDefinition } from "@medusajs/dashboard/components"
+For example, create `src/admin/layouts/three-column.tsx`:
 
-const customLayout: LayoutDefinition = {
+```tsx title="src/admin/layouts/three-column.tsx"
+import { defineLayoutConfig } from "@medusajs/admin-sdk"
+import type { LayoutComponentProps } from "@medusajs/dashboard/components"
+
+const ThreeColumnLayout = ({ sections }: LayoutComponentProps) => (
+  <div className="grid grid-cols-3 gap-4">
+    <div>{sections.main}</div>
+    <div>{sections.side}</div>
+    <div>{sections.extra}</div>
+  </div>
+)
+
+export const config = defineLayoutConfig({
   id: "my-plugin:three-column",
   sections: [
-    { id: "main" },
-    { id: "side" },
-    { id: "extra" },
+    { id: "main", ordering: "list" },
+    { id: "side", ordering: "list" },
+    { id: "extra", ordering: "list" },
   ],
-  Component: ({ sections, data }) => (
-    <div className="grid grid-cols-3 gap-4">
-      <div>{sections.main}</div>
-      <div>{sections.side}</div>
-      <div>{sections.extra}</div>
-    </div>
-  ),
-}
+})
+
+export default ThreeColumnLayout
 ```
 
-Then augment the `LayoutSectionRegistry` interface to add type safety:
+To get type-safe section names when using your custom layout, augment the `LayoutSectionRegistry` interface in `@medusajs/admin-shared`:
 
-```ts
-declare module "@medusajs/dashboard/components" {
+```ts title="index.d.ts"
+declare module "@medusajs/admin-shared" {
   interface LayoutSectionRegistry {
     "my-plugin:three-column": "main" | "side" | "extra"
   }
