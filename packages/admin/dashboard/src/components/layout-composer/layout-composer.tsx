@@ -25,6 +25,7 @@ import { SectionDropzone } from "./section-dropzone"
 import { EntryContent, SortableEntry } from "./sortable-entry"
 import type {
   LayoutPreference,
+  LayoutControlSize,
   SectionNameFor,
   Layouts,
   WidgetPreference,
@@ -34,8 +35,9 @@ import {
   useLayoutPreference,
   type LayoutScope,
 } from "../../hooks/use-layout-preference"
+import { LAYOUT_TRIGGER_LOCATIONS } from "./constants"
 
-type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
+export type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   /**
    * The prefix used to derive widget injection zones, typically corresponds to the page.
    * E.g. `"login"`, `"product.list"`, `"product.details"` etc.
@@ -60,6 +62,29 @@ type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
    * @default true
    */
   hasOutlet?: boolean
+  /**
+   * The named location whose `LayoutCustomizerSlot` this composer portals its
+   * trigger controls into. Lets several composers on the same screen
+   * (e.g. a page layout and the top-bar layout) target distinct slots instead
+   * of contending for one.
+   *
+   * @default LAYOUT_TRIGGER_LOCATIONS.TOPBAR
+   */
+  triggerLocation?: string
+  /**
+   * The named location the edit-mode controls (Cancel/Save and the scope
+   * badges) portal into. Lets the idle trigger and the active edit controls
+   * live in different slots — e.g. a trigger in the sidebar dropdown with the
+   * controls surfacing in the top bar.
+   *
+   * @default triggerLocation
+   */
+  controlsLocation?: string
+  /**
+   * Visual density of each entry's edit-mode overlay.
+   * @default "default"
+   */
+  controlSize?: LayoutControlSize
 }
 
 /**
@@ -92,6 +117,9 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   sections,
   data,
   hasOutlet = true,
+  triggerLocation = LAYOUT_TRIGGER_LOCATIONS.TOPBAR,
+  controlsLocation = triggerLocation,
+  controlSize = "default",
 }: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
   const {
@@ -101,7 +129,8 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     setPreference,
     isSaving,
   } = useLayoutPreference(widgetsZonePrefix)
-  const triggerHost = useLayoutCustomizerTriggerHost()
+  const triggerHost = useLayoutCustomizerTriggerHost(triggerLocation)
+  const controlsHost = useLayoutCustomizerTriggerHost(controlsLocation)
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -235,12 +264,13 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           order={entry.order}
           hidden={entry.hidden}
           onToggleHidden={() => toggleHidden(entry.widgetId)}
+          controlSize={controlSize}
         >
           {content}
         </SortableEntry>
       )
     },
-    [data, editMode]
+    [data, editMode, controlSize]
   )
 
   function toggleHidden(widgetId: string) {
@@ -341,11 +371,22 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     return null
   }
 
-  // Customizer controls — all live in the single top-bar portal slot.
-  // Idle: the trigger icon. Editing: Personal/Default badges to switch which
-  // configuration is being edited (active one highlighted), Cancel, and a Save
-  // button that targets the active scope ("Save for everyone" for the default).
-  const controls = editMode ? (
+  // Customizer controls are split across two portal slots so the idle trigger
+  // and the edit-mode controls can live in different places (e.g. a trigger
+  // in the sidebar dropdown, with the edit controls in the top bar).
+  const idleTrigger = (
+    <IconButton
+      size="small"
+      variant="transparent"
+      onClick={enterEdit}
+      aria-label={t("layout.customizeWidgets")}
+      className="text-ui-fg-muted hover:text-ui-fg-subtle"
+    >
+      <AdjustmentsDone />
+    </IconButton>
+  )
+
+  const editControls = (
     <div className="flex items-center gap-x-2">
       <div className="flex items-center gap-x-1">
         <Badge
@@ -384,23 +425,19 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
           : t("actions.save")}
       </Button>
     </div>
-  ) : (
-    <IconButton
-      size="small"
-      variant="transparent"
-      onClick={enterEdit}
-      aria-label={t("layout.customizeWidgets")}
-      className="text-ui-fg-muted hover:text-ui-fg-subtle"
-    >
-      <AdjustmentsDone />
-    </IconButton>
   )
+  const customizerControls = editMode ? editControls : idleTrigger
+  const customizerHost = editMode ? controlsHost : triggerHost
 
   const layoutNode = <LayoutComponent sections={renderedSections} data={data} />
 
   return (
     <>
-      {triggerHost ? createPortal(controls, triggerHost) : null}
+      {/* Portal the controls into host. I.e:
+       * - in idle mode: show idleTrigger inside triggerHost(topbar or sidebar)
+       * - in edit mode: show editControls inside controlHost(topbar), idleTrigger disappears
+       */}
+      {customizerHost ? createPortal(customizerControls, customizerHost) : null}
       {editMode ? (
         <DndContext
           sensors={sensors}

@@ -28,9 +28,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useLogout } from "../../../hooks/api"
 import { queryClient } from "../../../lib/query-client"
 import { useExtension } from "../../../providers/extension-provider"
+import { LayoutCustomizerSlot } from "../../../providers/customizer-host-provider/customizer-host-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
+import { LAYOUT_TRIGGER_LOCATIONS } from "../../layout-composer/constants"
 
 export const MainLayout = () => {
   return (
@@ -170,6 +172,19 @@ const Header = () => {
                 {t("app.nav.main.storeSettings")}
               </Link>
             </DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
+                {t("layout.customizeTopbar")}
+              </Text>
+              <LayoutCustomizerSlot
+                location={LAYOUT_TRIGGER_LOCATIONS.SIDEBAR_HEADER}
+              />
+            </div>
             <DropdownMenu.Separator />
             <Logout />
           </DropdownMenu.Content>

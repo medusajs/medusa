@@ -282,6 +282,7 @@
   },
   "layout": {
     "customizeWidgets": "Customize widgets",
+    "customizeTopbar": "Customize top bar",
     "personalView": "Personal",
     "defaultView": "Default",
     "empty": "Empty",

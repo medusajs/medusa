@@ -21,6 +21,8 @@ import {
   LayoutCustomizerSlot,
 } from "../../../providers/customizer-host-provider/customizer-host-provider"
 import { Notifications } from "../notifications"
+import { LayoutComposer } from "../../layout-composer"
+import { LAYOUT_TRIGGER_LOCATIONS } from "../../layout-composer/constants"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -205,8 +207,19 @@ const Topbar = () => {
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-end gap-x-3">
-        <LayoutCustomizerSlot />
-        <Notifications />
+        <LayoutCustomizerSlot
+          location={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
+        />
+        <LayoutCustomizerSlot location={LAYOUT_TRIGGER_LOCATIONS.TOPBAR} />
+        <LayoutComposer
+          widgetsZonePrefix="topbar"
+          preferredLayoutId="core:single-row"
+          sections={{ main: <Notifications /> }}
+          hasOutlet={false}
+          triggerLocation={LAYOUT_TRIGGER_LOCATIONS.SIDEBAR_HEADER}
+          controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
+          controlSize="xsmall"
+        />
       </div>
     </div>
   )

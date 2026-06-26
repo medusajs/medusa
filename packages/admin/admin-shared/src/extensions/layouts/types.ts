@@ -2,7 +2,7 @@ import type { CORE_LAYOUT_IDS } from "./constants"
 
 export type LayoutSection = {
   id: string
-  ordering: "list" | "grid" | "horizontal"
+  ordering: "list" | "grid" | "horizontal-stretched" | "horizontal-list"
 }
 
 /**
@@ -30,6 +30,7 @@ export type LayoutSection = {
  */
 export interface LayoutSectionRegistry {
   [CORE_LAYOUT_IDS.SINGLE_COLUMN]: "main"
+  [CORE_LAYOUT_IDS.SINGLE_ROW]: "main"
   [CORE_LAYOUT_IDS.TWO_COLUMN]: "main" | "side"
 }
 
