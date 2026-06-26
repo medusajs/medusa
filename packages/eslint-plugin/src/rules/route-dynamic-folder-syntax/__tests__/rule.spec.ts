@@ -45,6 +45,29 @@ ruleTester.run("route-dynamic-folder-syntax", rule, {
       code: `export const GET = (req, res) => {}`,
       filename: "api/admin/orders/[id]/route.ts",
     },
+    // A dynamic segment directly under the `auth` group is valid — `auth` is the
+    // static first segment after /api (real Medusa core route).
+    {
+      code: `export const GET = (req, res) => {}`,
+      filename:
+        "src/api/auth/[actor_type]/[auth_provider]/callback/route.ts",
+    },
+    // Same for the `store` group.
+    {
+      code: `export const GET = (req, res) => {}`,
+      filename: "src/api/store/[param]/route.ts",
+    },
+    // Same for the `admin` group.
+    {
+      code: `export const GET = (req, res) => {}`,
+      filename: "src/api/admin/[id]/route.ts",
+    },
+    // Works for any first segment, not just store/admin/auth — a custom group
+    // is also a valid static prefix.
+    {
+      code: `export const GET = (req, res) => {}`,
+      filename: "src/api/custom/[id]/route.ts",
+    },
   ],
   invalid: [
     // Optional-catch-all `[[id]]`.
@@ -75,9 +98,7 @@ ruleTester.run("route-dynamic-folder-syntax", rule, {
     {
       code: `export const GET = (req, res) => {}`,
       filename: "src/api/store/things/[]/route.ts",
-      errors: [
-        { messageId: "invalidDynamicFolder", data: { segment: "[]" } },
-      ],
+      errors: [{ messageId: "invalidDynamicFolder", data: { segment: "[]" } }],
     },
     // Multiple invalid segments — one error per segment.
     {
@@ -104,31 +125,8 @@ ruleTester.run("route-dynamic-folder-syntax", rule, {
         { messageId: "invalidDynamicFolder", data: { segment: "[my-id]" } },
       ],
     },
-    // Leading dynamic segment immediately under store/ — route must have a static prefix.
-    {
-      code: `export const GET = (req, res) => {}`,
-      filename: "src/api/store/[param]/route.ts",
-      errors: [
-        { messageId: "leadingDynamicFolder", data: { segment: "[param]" } },
-      ],
-    },
-    // Leading dynamic segment immediately under admin/.
-    {
-      code: `export const GET = (req, res) => {}`,
-      filename: "src/api/admin/[id]/route.ts",
-      errors: [
-        { messageId: "leadingDynamicFolder", data: { segment: "[id]" } },
-      ],
-    },
-    // Leading dynamic segment immediately under auth/.
-    {
-      code: `export const GET = (req, res) => {}`,
-      filename: "src/api/auth/[provider]/route.ts",
-      errors: [
-        { messageId: "leadingDynamicFolder", data: { segment: "[provider]" } },
-      ],
-    },
-    // Leading dynamic segment directly under src/api/ (no group prefix).
+    // Leading dynamic segment directly under src/api/ (the first segment after
+    // /api is a parameter).
     {
       code: `export const GET = (req, res) => {}`,
       filename: "src/api/[foo]/route.ts",
@@ -144,12 +142,12 @@ ruleTester.run("route-dynamic-folder-syntax", rule, {
         { messageId: "leadingDynamicFolder", data: { segment: "[id]" } },
       ],
     },
-    // Leading dynamic + a deeper invalid segment — both reported.
+    // A deeper invalid segment is reported; `[id]` directly under the `store`
+    // group is a valid dynamic segment (not leading).
     {
       code: `export const GET = (req, res) => {}`,
       filename: "src/api/store/[id]/sub/[...rest]/route.ts",
       errors: [
-        { messageId: "leadingDynamicFolder", data: { segment: "[id]" } },
         { messageId: "invalidDynamicFolder", data: { segment: "[...rest]" } },
       ],
     },

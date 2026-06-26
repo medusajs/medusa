@@ -140,7 +140,16 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
           "type": "link",
           "path": "/storefront-development/products/list",
           "title": "List Products",
-          "children": []
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/storefront-development/products/options",
+              "title": "Filter by Options",
+              "children": []
+            }
+          ]
         },
         {
           "loaded": true,

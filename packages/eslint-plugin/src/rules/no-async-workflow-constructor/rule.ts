@@ -60,9 +60,13 @@ export const rule = createRule<[], MessageIds>({
           fix(fixer) {
             const sourceCode = context.sourceCode ?? context.getSourceCode()
             const asyncToken = sourceCode.getFirstToken(fn)
-            if (!asyncToken || asyncToken.value !== "async") return null
+            if (!asyncToken || asyncToken.value !== "async") {
+              return null
+            }
             const nextToken = sourceCode.getTokenAfter(asyncToken)
-            if (!nextToken) return null
+            if (!nextToken) {
+              return null
+            }
             return fixer.removeRange([asyncToken.range[0], nextToken.range[0]])
           },
         })

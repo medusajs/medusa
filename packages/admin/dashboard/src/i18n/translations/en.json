@@ -40,9 +40,12 @@
     "remaining": "Left",
     "admin": "Admin",
     "store": "Store",
+    "rank": "Rank",
     "details": "Details",
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
+    "values_one": "{{count}} value",
+    "values_other": "{{count}} values",
     "countSelected": "{{count}} selected",
     "countOfTotalSelected": "{{count}} of {{total}} selected",
     "plusCount": "+ {{count}}",
@@ -62,7 +65,9 @@
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you exit this form.",
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
     "excludesTaxTooltip": "Prices in this column are tax exclusive.",
-    "noMoreData": "No more data"
+    "noMoreData": "No more data",
+    "exclusive": "Product-specific",
+    "global": "Global"
   },
   "json": {
     "header": "JSON",
@@ -148,7 +153,9 @@
     "hide": "Hide",
     "export": "Export",
     "import": "Import",
-    "cannotUndo": "This action cannot be undone"
+    "cannotUndo": "This action cannot be undone",
+    "manage": "Manage",
+    "goToProductOption": "Go to product option"
   },
   "operators": {
     "in": "In"
@@ -458,7 +465,8 @@
         "productOptions": {
           "label": "Product options",
           "hint": "Define the options for the product, e.g. color, size, etc."
-        }
+        },
+        "selectValuesHint": "Select which values to use for each option"
       },
       "successToast": "Product {{title}} was successfully created."
     },
@@ -715,6 +723,16 @@
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
       },
+      "manage": {
+        "header": "Manage Product Options",
+        "description": "Associate or disassociate product options from this product.",
+        "label": "Product Options",
+        "hint": "Select which options should be associated to this product.",
+        "placeholder": "Select options",
+        "error": {
+          "noValues": "Please select at least one value for the added option(s)."
+        }
+      },
       "deleteWarning": "You are about to delete the product option: {{title}}. This action cannot be undone."
     },
     "organization": {
@@ -848,6 +866,56 @@
       },
       "new": {
         "label": "New"
+      }
+    }
+  },
+  "productOptions": {
+    "domain": "Options",
+    "subtitle": "Manage product options and their associated values.",
+    "values": {
+      "header": "Values",
+      "list": {
+        "noRecords": "There are no values for this option."
+      },
+      "delete": {
+        "confirmation": "You are about to delete the option value \"{{value}}\". This action cannot be undone.",
+        "successToast": "Option value was successfully deleted."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "There are no products with this option."
+      }
+    },
+    "create": {
+      "header": "Create Product Option",
+      "hint": "Create a new product option and manage its values.",
+      "successToast": "Product option \"{{title}}\" was successfully created.",
+      "tabs": {
+        "details": "Details",
+        "organize": "Organize rankings"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Product exclusive option"
+    },
+    "edit": {
+      "header": "Edit Product Option",
+      "description": "Edit the product option to update its details and associated values.",
+      "successToast": "Product option \"{{title}}\" was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product option \"{{title}}\". This action cannot be undone.",
+      "successToast": "Product option was successfully deleted."
+    },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "placeholder": "Size"
+      },
+      "values": {
+        "label": "Values",
+        "placeholder": "S, M, L"
       }
     }
   },

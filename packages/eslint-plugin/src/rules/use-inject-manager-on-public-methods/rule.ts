@@ -5,7 +5,7 @@ import {
   createMedusaServiceBindings,
   hasContextParam,
   hasDecoratorWithLocalName,
-  isServiceClass,
+  isMedusaServiceSuper,
   trackFrameworkUtilsImports,
   trackMedusaServiceImports,
 } from "../../util/service-scope"
@@ -41,22 +41,34 @@ export const rule = createRule<[], MessageIds>({
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, serviceBindings)) return
+      if (!isMedusaServiceSuper(node.superClass, serviceBindings)) {
+        return
+      }
 
       for (const member of node.body.body) {
-        if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-        if (member.kind === "constructor") continue
-        if (member.kind !== "method") continue
-        if (member.computed) continue
+        if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+          continue
+        }
+        if (member.kind === "constructor") {
+          continue
+        }
+        if (member.kind !== "method") {
+          continue
+        }
+        if (member.computed) {
+          continue
+        }
         const value = member.value
-        if (
-          value.type !== AST_NODE_TYPES.FunctionExpression &&
-          value.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-        ) {
+        // Skip TypeScript overload signatures (bodyless declarations): the
+        // decorator can only live on the implementation, which is the method
+        // that carries a function body and is checked on its own.
+        if (value.type !== AST_NODE_TYPES.FunctionExpression) {
           continue
         }
 
-        if (!hasContextParam(value)) continue
+        if (!hasContextParam(value)) {
+          continue
+        }
 
         const isInternal =
           member.accessibility === "protected" ||

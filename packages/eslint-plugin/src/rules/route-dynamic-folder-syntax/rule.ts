@@ -7,19 +7,20 @@ type MessageIds = "invalidDynamicFolder" | "leadingDynamicFolder"
 const VALID_PARAM_FOLDER = /^\[[a-zA-Z_][a-zA-Z0-9_]*\]$/
 const BRACKETED_FOLDER = /^\[.*\]$/
 
-const API_ROUTE_GROUPS = new Set(["store", "admin", "auth"])
-
-type RouteInfo = {
-  segments: string[]
-  routeStartIndex: number
-}
-
-function getRouteInfo(filename: string): RouteInfo | null {
+/**
+ * Returns the route's path segments (excluding the `route.ts` / `page.tsx`
+ * file), relative to the route root — `src/api/` for API routes (so the first
+ * segment is the first path part after `/api`, regardless of any group such as
+ * `store`/`admin`/`auth`/custom), or `src/admin/routes/` for admin UI routes.
+ * Returns `null` when the file isn't a route.
+ *
+ * A dynamic segment at index 0 therefore means the route starts with a
+ * parameter, which Medusa doesn't allow.
+ */
+function getRouteSegments(filename: string): string[] | null {
   const apiSegments = getApiRouteSegments(filename)
   if (apiSegments) {
-    const routeStartIndex =
-      apiSegments.length > 0 && API_ROUTE_GROUPS.has(apiSegments[0]) ? 1 : 0
-    return { segments: apiSegments, routeStartIndex }
+    return apiSegments
   }
 
   const posix = toPosix(filename)
@@ -30,7 +31,7 @@ function getRouteInfo(filename: string): RouteInfo | null {
   if (adminMatch) {
     const segments = adminMatch[1].split("/")
     segments.pop()
-    return { segments, routeStartIndex: 0 }
+    return segments
   }
 
   return null
@@ -55,17 +56,22 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
 
-    const info = getRouteInfo(filename)
-    if (!info) return {}
+    const segments = getRouteSegments(filename)
+    if (!segments) {
+      return {}
+    }
 
     return {
       Program(node) {
-        const { segments, routeStartIndex } = info
         for (let i = 0; i < segments.length; i++) {
           const segment = segments[i]
-          if (!BRACKETED_FOLDER.test(segment)) continue
+          if (!BRACKETED_FOLDER.test(segment)) {
+            continue
+          }
 
           if (!VALID_PARAM_FOLDER.test(segment)) {
             context.report({
@@ -76,7 +82,7 @@ export const rule = createRule<[], MessageIds>({
             continue
           }
 
-          if (i === routeStartIndex) {
+          if (i === 0) {
             context.report({
               node,
               messageId: "leadingDynamicFolder",

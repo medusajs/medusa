@@ -225,6 +225,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/createPasswordResetTokenStep",
+                  "title": "createPasswordResetTokenStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/requestVerificationStep",
                   "title": "requestVerificationStep",
                   "description": "",
@@ -468,6 +477,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/updateTaxLinesWorkflow",
                   "title": "updateTaxLinesWorkflow",
+                  "description": "Update a cart's tax lines.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/upsertTaxLinesWorkflow",
+                  "title": "upsertTaxLinesWorkflow",
                   "description": "Update a cart's tax lines.",
                   "children": []
                 }

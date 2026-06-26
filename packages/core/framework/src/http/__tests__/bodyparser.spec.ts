@@ -1,8 +1,9 @@
 import express from "express"
 import supertest from "supertest"
 import { createBodyParserMiddlewaresStack } from "../middlewares/bodyparser"
-import type { BodyParserConfigRoute } from "../types"
+import { errorHandler } from "../middlewares/error-handler"
 import type { RoutesFinder } from "../routes-finder"
+import type { BodyParserConfigRoute } from "../types"
 
 function createMockRoutesFinder(
   config: BodyParserConfigRoute["config"]
@@ -29,6 +30,7 @@ function createTestApp(routesFinder: RoutesFinder<BodyParserConfigRoute>) {
       rawBodyString: req.rawBody ? req.rawBody.toString("utf-8") : null,
     })
   })
+  app.use(errorHandler())
 
   return supertest(app)
 }
@@ -76,9 +78,7 @@ describe("bodyparser preserveRawBody", () => {
         .expect(200)
 
       expect(res.body.hasRawBody).toBe(true)
-      expect(res.body.rawBodyString).toBe(
-        "event=payment.completed&amount=1000"
-      )
+      expect(res.body.rawBodyString).toBe("event=payment.completed&amount=1000")
     })
   })
 
@@ -118,6 +118,29 @@ describe("bodyparser preserveRawBody", () => {
         .expect(200)
 
       expect(res.body.hasRawBody).toBe(false)
+    })
+  })
+
+  describe("errors", () => {
+    let request: supertest.Agent
+
+    beforeAll(() => {
+      const finder = createMockRoutesFinder({})
+      request = createTestApp(finder)
+    })
+
+    it("returns 400 for malformed JSON bodies", async () => {
+      const res = await request
+        .post("/webhook")
+        .set("Content-Type", "application/json")
+        .send(`{"value":"C:\\Users"}`)
+        .expect(400)
+
+      expect(res.body).toEqual({
+        message:
+          "Bad escaped character in JSON at position 13 (line 1 column 14)",
+        type: "invalid_data",
+      })
     })
   })
 })

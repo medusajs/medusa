@@ -85,6 +85,12 @@ export const exchangeAddNewItemValidationStep = createStep(
   }
 )
 
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "canceled_at",
+]
+
 export const orderExchangeAddNewItemWorkflowId = "exchange-add-new-item"
 /**
  * This workflow adds new or outbound items to an exchange. It's used by the
@@ -126,11 +132,7 @@ export const orderExchangeAddNewItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "status",
-        "canceled_at",
-      ],
+      fields: orderFields,
       variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,

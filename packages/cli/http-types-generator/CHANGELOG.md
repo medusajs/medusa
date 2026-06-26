@@ -1,5 +1,15 @@
 # @medusajs/http-types-generator
 
+## 2.17.1
+
+## 2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- [`b74b5b19569534412a67835ffae8fb3afbf6f5c5`](undefined) - fix(http-types-generator, types): correctly generate types for OperatorMap
+
 ## 2.15.5
 
 ## 2.15.4

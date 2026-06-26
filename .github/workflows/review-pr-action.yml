@@ -65,6 +65,7 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           github_token: ${{ github.token }}
+          model: claude-sonnet-4-6
           # Safe in this job because the job genuinely has no write power.
           allowed_bots: "*"
           allowed_non_write_users: "*"

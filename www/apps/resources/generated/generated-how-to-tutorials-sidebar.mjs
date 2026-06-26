@@ -98,6 +98,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Notification Provider",
               "path": "https://docs.medusajs.com/resources/references/notification-provider-module",
               "children": []
@@ -114,8 +122,24 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Tax Provider",
               "path": "https://docs.medusajs.com/resources/references/tax/provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Filter Products",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products",
               "children": []
             },
             {
@@ -369,6 +393,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                       "type": "link",
                       "path": "/admin-components/components/json-view-section",
                       "title": "JSON View",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/admin-components/components/layout-composer",
+                      "title": "LayoutComposer",
                       "description": "",
                       "children": []
                     },

@@ -12,7 +12,7 @@ jest.setTimeout(300000)
 process.env.MEDUSA_FF_TRANSLATION = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Draft Order Translation API", () => {
       let appContainer: MedusaContainer
       let region: { id: string }
@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const taxStructure = await setupTaxStructure(
           appContainer.resolve(Modules.TAX)
         )
@@ -258,6 +258,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
+        await dbUtils.snapshot()
       })
 
       describe("POST /admin/draft-orders/:id/edit/items (add items to draft order)", () => {

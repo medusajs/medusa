@@ -1,14 +1,14 @@
 /**
  * @oas [get] /admin/price-lists/{id}/prices
  * operationId: GetPriceListsIdPrices
- * summary: List Prices in a Price List
+ * summary: List Prices for a Price List
  * x-sidebar-summary: List Prices
- * description: Retrieve a list of prices in a price list. The prices can also be paginated.
+ * description: Retrieve a list of prices in a price list. The prices can be filtered by fields like FILTER FIELDS. The prices can also be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The ID of the price list to retrieve prices from.
+ *     description: The price list's ID.
  *     required: true
  *     schema:
  *       type: string

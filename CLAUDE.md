@@ -104,6 +104,9 @@ yarn test:integration:modules
 - Barrel exports via `export * from`
 - Named re-exports for specific items
 
+**General Conventions:**
+- NEVER use emojos.
+
 ### 5. Architecture Patterns
 
 #### 5.1 Module Pattern - Services with Decorators

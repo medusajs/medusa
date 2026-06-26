@@ -124,7 +124,10 @@ ruleTester.run("no-workflow-call-without-container", rule, {
         }
       `,
       errors: [
-        { messageId: "missingContainer", data: { name: "createCustomerWorkflow" } },
+        {
+          messageId: "missingContainer",
+          data: { name: "createCustomerWorkflow" },
+        },
       ],
     },
     // Member-expression .run on member-accessed workflow value.
@@ -137,7 +140,10 @@ ruleTester.run("no-workflow-call-without-container", rule, {
         }
       `,
       errors: [
-        { messageId: "missingContainer", data: { name: "createCustomerWorkflow" } },
+        {
+          messageId: "missingContainer",
+          data: { name: "createCustomerWorkflow" },
+        },
       ],
     },
   ],

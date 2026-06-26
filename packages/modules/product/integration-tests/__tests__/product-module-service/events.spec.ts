@@ -76,8 +76,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
           // 3. Product option values created (5 values total: 3 sizes + 2 colors)
           // 4. Product variants created (2 variants)
           // 5. Product images created (2 images)
+          // 6. Product product options created (pivot table) (2 product-productOption links)
+          // 7. Product product option values created (pivot table) (5 product-productOptionValue links)
 
-          const expectedEventsCount = 1 + 2 + 5 + 2 + 2 // 12 total events
+          const expectedEventsCount = 1 + 2 + 5 + 2 + 2 + 2 + 5 // 19 total events
           expect(emittedEvents).toHaveLength(expectedEventsCount)
 
           // Verify product created event
@@ -183,6 +185,16 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should emit cascade events when updating product with relations", async () => {
+          const newOption = (
+            await service.createProductOptions([
+              {
+                title: "new-size-option",
+                values: ["small", "large"],
+              },
+            ])
+          )[0]
+          eventBusSpy.mockClear()
+
           const existingOption = existingProduct.options.find(
             (option: any) => option.title === "existing-option"
           )! as InferEntityType<typeof ProductOption>
@@ -196,31 +208,21 @@ moduleIntegrationTestRunner<IProductModuleService>({
             id: existingProduct.id,
             title: "Updated Product",
             images: [{ url: "new-image-1.jpg" }, { url: "new-image-2.jpg" }],
-            options: [
-              {
-                title: "new-size-option",
-                values: ["small", "large"],
-              },
-              {
-                id: existingOption.id,
-                title: "updated-existing-option",
-                values: ["value-1"],
-              },
-            ],
+            option_ids: [newOption.id, existingOption.id],
             variants: [
               {
                 id: existingVariant.id,
                 title: "updated-existing-variant",
                 options: {
                   "new-size-option": "small",
-                  "updated-existing-option": "value-1",
+                  "existing-option": "value-1",
                 },
               },
               {
                 title: "New Variant",
                 options: {
                   "new-size-option": "large",
-                  "updated-existing-option": "value-1",
+                  "existing-option": "value-1",
                 },
               },
             ],
@@ -243,8 +245,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           const emittedEvents = eventBusSpy.mock.calls[0][0]
 
-          // Total count should include: 1 product update + 1 option created + 2 option values created + 1 option update + 1 option deleted + 1 option value deleted + 1 variant created + 1 variant updated + 2 images created + 1 image deleted = 12 events
-          expect(emittedEvents).toHaveLength(12)
+          // Total count should include: 1 product update + 1 option linked + 2 option values linked + 1 option unlinked + 1 option value unlinked + 1 variant created + 1 variant updated + 2 images created + 1 image deleted = 11 events
+          expect(emittedEvents).toHaveLength(11)
 
           // Should emit product update event
           expect(emittedEvents).toEqual(
@@ -258,71 +260,58 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ])
           )
 
-          // Should emit option created event for new option
+          // Should emit option link event for new option
           expect(emittedEvents).toEqual(
             expect.arrayContaining([
-              composeMessage(ProductEvents.PRODUCT_OPTION_CREATED, {
+              composeMessage(ProductEvents.PRODUCT_PRODUCT_OPTION_CREATED, {
                 data: expect.objectContaining({ id: expect.any(String) }),
-                object: "product_option",
+                object: "product_product_option",
                 source: Modules.PRODUCT,
                 action: CommonEvents.CREATED,
               }),
             ])
           )
 
-          // Should emit option value created events for new option values
-          const newOptionValues = updatedProduct.options.find(
-            (option) => option.title === "new-size-option"
-          )!.values
-
-          newOptionValues.forEach((value) => {
-            expect(emittedEvents).toEqual(
-              expect.arrayContaining([
-                composeMessage(ProductEvents.PRODUCT_OPTION_VALUE_CREATED, {
-                  data: expect.objectContaining({ id: value.id }),
-                  object: "product_option_value",
+          // Should emit option values link event for new option
+          expect(emittedEvents.filter(e => e.name === ProductEvents.PRODUCT_PRODUCT_OPTION_VALUE_CREATED).length).toEqual(2)
+          expect(emittedEvents).toEqual(
+            expect.arrayContaining([
+              composeMessage(
+                ProductEvents.PRODUCT_PRODUCT_OPTION_VALUE_CREATED,
+                {
+                  data: expect.objectContaining({ id: expect.any(String) }),
+                  object: "product_product_option_value",
                   source: Modules.PRODUCT,
                   action: CommonEvents.CREATED,
-                }),
-              ])
-            )
-          })
-
-          // should emit option updated event for updated option
-          expect(emittedEvents).toEqual(
-            expect.arrayContaining([
-              composeMessage(ProductEvents.PRODUCT_OPTION_UPDATED, {
-                data: expect.objectContaining({ id: existingOption.id }),
-                object: "product_option",
-                source: Modules.PRODUCT,
-                action: CommonEvents.UPDATED,
-              }),
+                }
+              ),
             ])
           )
 
-          // Should emit option deleted event for deleted option
+          // Should emit option unlink event for new option
           expect(emittedEvents).toEqual(
             expect.arrayContaining([
-              composeMessage(ProductEvents.PRODUCT_OPTION_DELETED, {
-                data: expect.objectContaining({ id: expectedDeletedOption.id }),
-                object: "product_option",
+              composeMessage(ProductEvents.PRODUCT_PRODUCT_OPTION_DELETED, {
+                data: expect.objectContaining({ id: expect.any(String) }),
+                object: "product_product_option",
                 source: Modules.PRODUCT,
                 action: CommonEvents.DELETED,
               }),
             ])
           )
 
-          // Should emit option value event for deleted option value
+          // Should emit option value unlink event for new option
           expect(emittedEvents).toEqual(
             expect.arrayContaining([
-              composeMessage(ProductEvents.PRODUCT_OPTION_VALUE_DELETED, {
-                data: expect.objectContaining({
-                  id: expectedDeletedOption.values[0].id,
-                }),
-                object: "product_option_value",
-                source: Modules.PRODUCT,
-                action: CommonEvents.DELETED,
-              }),
+              composeMessage(
+                ProductEvents.PRODUCT_PRODUCT_OPTION_VALUE_DELETED,
+                {
+                  data: expect.objectContaining({ id: expect.any(String) }),
+                  object: "product_product_option_value",
+                  source: Modules.PRODUCT,
+                  action: CommonEvents.DELETED,
+                }
+              ),
             ])
           )
 
@@ -409,8 +398,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           const emittedEvents = eventBusSpy.mock.calls[0][0]
 
-          // Total count should include: 1 product deleted + 1 variant deleted + 1 option deleted + 2 option values deleted + 2 images deleted = 7 events
-          expect(emittedEvents).toHaveLength(7)
+          // Total count should include: 1 product deleted + 1 variant deleted + 2 images deleted = 4 events
+          expect(emittedEvents).toHaveLength(4)
 
           // Should emit delete events for product and all its relations
           expect(emittedEvents).toEqual(
@@ -435,34 +424,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
               }),
             ])
           )
-
-          // Should emit delete events for options
-          expect(emittedEvents).toEqual(
-            expect.arrayContaining([
-              composeMessage(ProductEvents.PRODUCT_OPTION_DELETED, {
-                data: { id: createdProduct.options[0].id },
-                object: "product_option",
-                source: Modules.PRODUCT,
-                action: CommonEvents.DELETED,
-              }),
-            ])
-          )
-
-          // Should emit delete events for option values
-          createdProduct.options[0].values.forEach((value) => {
-            expect(emittedEvents).toEqual(
-              expect.arrayContaining([
-                composeMessage(ProductEvents.PRODUCT_OPTION_VALUE_DELETED, {
-                  data: {
-                    id: value.id,
-                  },
-                  object: "product_option_value",
-                  source: Modules.PRODUCT,
-                  action: CommonEvents.DELETED,
-                }),
-              ])
-            )
-          })
 
           // Should emit delete events for images
           createdProduct.images.forEach((image) => {

@@ -204,11 +204,11 @@ import { cache } from "react"
 // Server-side region retrieval
 const getRegionByCountryCode = cache(async (countryCode: string) => {
   const { regions } = await sdk.store.region.list({
-    fields: "*countries"
+    fields: "*countries",
   })
   
-  return regions.find(region => 
-    region.countries?.some(country => 
+  return regions.find((region) => 
+    region.countries?.some((country) => 
       country.iso_2.toLowerCase() === countryCode.toLowerCase()
     )
   )
@@ -255,7 +255,7 @@ export async function getServerRegion() {
   if (!regionId) {
     // Return default region
     const { regions } = await sdk.store.region.list({
-      limit: 1
+      limit: 1,
     })
     return regions[0]
   }
@@ -266,7 +266,7 @@ export async function getServerRegion() {
   } catch {
     // Fallback to default if region not found
     const { regions } = await sdk.store.region.list({
-      limit: 1
+      limit: 1,
     })
     return regions[0]
   }
@@ -289,7 +289,7 @@ export default async function ServerProductList() {
   return (
     <div>
       {/* Server-rendered products with region-specific pricing */}
-      {products.map(product => (
+      {products.map((product) => (
         <div key={product.id}>
           <h3>{product.title}</h3>
           {/* Display prices in region currency */}

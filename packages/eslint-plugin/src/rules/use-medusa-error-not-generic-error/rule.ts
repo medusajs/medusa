@@ -61,7 +61,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         utilsImportNode = node
         for (const specifier of node.specifiers) {
           if (
@@ -118,9 +120,7 @@ export const rule = createRule<[], MessageIds>({
       },
     }
 
-    function addMedusaErrorImport(
-      fixer: TSESLint.RuleFixer
-    ): TSESLint.RuleFix {
+    function addMedusaErrorImport(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
       if (utilsImportNode) {
         const namedSpecifiers = utilsImportNode.specifiers.filter(
           (s): s is TSESTree.ImportSpecifier =>
