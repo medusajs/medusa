@@ -1,9 +1,12 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
+import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useCustomer } from "../../../hooks/api/customers"
-import { useExtension } from "../../../providers/extension-provider"
 import { PermissionsRequirementsProvider } from "../../../providers/permissions-provider"
 import { CustomerAddressSection } from "./components/customer-address-section/customer-address-section"
 import { CustomerGeneralSection } from "./components/customer-general-section"
@@ -23,8 +26,6 @@ export const CustomerDetail = () => {
     { initialData }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !customer) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -35,27 +36,28 @@ export const CustomerDetail = () => {
 
   return (
     <PermissionsRequirementsProvider>
-      <TwoColumnPage
-        widgets={{
-          before: getWidgets("customer.details.before"),
-          after: getWidgets("customer.details.after"),
-          sideAfter: getWidgets("customer.details.side.after"),
-          sideBefore: getWidgets("customer.details.side.before"),
-        }}
+      <LayoutComposer
+        widgetsZonePrefix="customer.details"
+        preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
         data={customer}
-        hasOutlet
-        showJSON
-        showMetadata
-      >
-        <TwoColumnPage.Main>
-          <CustomerGeneralSection customer={customer} />
-          <CustomerOrderSection customer={customer} />
-          <CustomerGroupSection customer={customer} />
-        </TwoColumnPage.Main>
-        <TwoColumnPage.Sidebar>
-          <CustomerAddressSection customer={customer} />
-        </TwoColumnPage.Sidebar>
-      </TwoColumnPage>
+        sections={{
+          main: (
+            <>
+              <CustomerGeneralSection customer={customer} />
+              <CustomerOrderSection customer={customer} />
+              <CustomerGroupSection customer={customer} />
+              <MetadataSection data={customer} />
+              <JsonViewSection data={customer} />
+              <RequiredPermissionsSection />
+            </>
+          ),
+          side: (
+            <>
+              <CustomerAddressSection customer={customer} />
+            </>
+          ),
+        }}
+      />
     </PermissionsRequirementsProvider>
   )
 }

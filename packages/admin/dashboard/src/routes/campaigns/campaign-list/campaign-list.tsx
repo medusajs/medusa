@@ -1,19 +1,16 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { CampaignListTable } from "./components/campaign-list-table"
 
 export const CampaignList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("campaign.list.after"),
-        before: getWidgets("campaign.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="campaign.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: <CampaignListTable />,
       }}
-      hasOutlet
-    >
-      <CampaignListTable />
-    </SingleColumnPage>
+    />
   )
 }

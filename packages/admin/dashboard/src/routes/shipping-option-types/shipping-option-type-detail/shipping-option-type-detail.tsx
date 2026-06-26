@@ -1,9 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useShippingOptionType } from "../../../hooks/api"
-import { useExtension } from "../../../providers/extension-provider"
 import { ShippingOptionTypeGeneralSection } from "./components/shipping-option-type-general-section"
 import { shippingOptionTypeLoader } from "./loader"
 
@@ -18,8 +20,6 @@ export const ShippingOptionTypeDetail = () => {
       initialData,
     })
 
-  const { getWidgets } = useExtension()
-
   if (isPending || !shipping_option_type) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -29,18 +29,21 @@ export const ShippingOptionTypeDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("shipping_option_type.details.after"),
-        before: getWidgets("shipping_option_type.details.before"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="shipping_option_type.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={shipping_option_type}
-    >
-      <ShippingOptionTypeGeneralSection
-        shippingOptionType={shipping_option_type}
-      />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <ShippingOptionTypeGeneralSection
+              shippingOptionType={shipping_option_type}
+            />
+            <MetadataSection data={shipping_option_type} />
+            <JsonViewSection data={shipping_option_type} />
+          </>
+        ),
+      }}
+    />
   )
 }

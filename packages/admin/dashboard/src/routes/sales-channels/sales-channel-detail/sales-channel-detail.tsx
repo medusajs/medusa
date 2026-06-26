@@ -1,9 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useSalesChannel } from "../../../hooks/api/sales-channels"
-import { useExtension } from "../../../providers/extension-provider"
 import { SalesChannelGeneralSection } from "./components/sales-channel-general-section"
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
 import { salesChannelLoader } from "./loader"
@@ -18,24 +20,25 @@ export const SalesChannelDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !sales_channel) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("sales_channel.details.before"),
-        after: getWidgets("sales_channel.details.after"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="sales_channel.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={sales_channel}
-    >
-      <SalesChannelGeneralSection salesChannel={sales_channel} />
-      <SalesChannelProductSection salesChannel={sales_channel} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <SalesChannelGeneralSection salesChannel={sales_channel} />
+            <SalesChannelProductSection salesChannel={sales_channel} />
+            <MetadataSection data={sales_channel} />
+            <JsonViewSection data={sales_channel} />
+          </>
+        ),
+      }}
+    />
   )
 }

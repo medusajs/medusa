@@ -1,14 +1,15 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useCustomerGroup } from "../../../hooks/api/customer-groups"
 import { CustomerGroupCustomerSection } from "./components/customer-group-customer-section"
 import { CustomerGroupGeneralSection } from "./components/customer-group-general-section"
-import { customerGroupLoader } from "./loader"
-
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { useExtension } from "../../../providers/extension-provider"
 import { CUSTOMER_GROUP_DETAIL_FIELDS } from "./constants"
+import { customerGroupLoader } from "./loader"
 
 export const CustomerGroupDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -24,8 +25,6 @@ export const CustomerGroupDetail = () => {
     { initialData }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !customer_group) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -35,17 +34,20 @@ export const CustomerGroupDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("customer_group.details.before"),
-        after: getWidgets("customer_group.details.after"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="customer_group.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={customer_group}
-    >
-      <CustomerGroupGeneralSection group={customer_group} />
-      <CustomerGroupCustomerSection group={customer_group} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <CustomerGroupGeneralSection group={customer_group} />
+            <CustomerGroupCustomerSection group={customer_group} />
+            <MetadataSection data={customer_group} />
+            <JsonViewSection data={customer_group} />
+          </>
+        ),
+      }}
+    />
   )
 }

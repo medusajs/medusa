@@ -1,3 +1,4 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { PermissionGuard } from "../../../components/common/permission-guard"
@@ -7,15 +8,15 @@ import { RoleGeneralSection } from "./components/role-general-section"
 import { RoleUsersSection } from "./components/role-users-section"
 import { roleLoader } from "./loader"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { ROLE_DETAIL_FIELDS } from "./constants"
 
 export const RoleDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof roleLoader>>
   const { id } = useParams()
-  const { getWidgets } = useExtension()
   const isRbacEnabled = useRequireRbacFeature()
 
   const {
@@ -45,19 +46,22 @@ export const RoleDetail = () => {
   }
 
   return (
-    <SingleColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="role.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={role}
-      showJSON
-      showMetadata
-      widgets={{
-        before: getWidgets("role.details.before"),
-        after: getWidgets("role.details.after"),
+      sections={{
+        main: (
+          <>
+            <RoleGeneralSection role={role} />
+            <PermissionGuard permission="user:read">
+              <RoleUsersSection role={role} />
+            </PermissionGuard>
+            <MetadataSection data={role} />
+            <JsonViewSection data={role} />
+          </>
+        ),
       }}
-    >
-      <RoleGeneralSection role={role} />
-      <PermissionGuard permission="user:read">
-        <RoleUsersSection role={role} />
-      </PermissionGuard>
-    </SingleColumnPage>
+    />
   )
 }

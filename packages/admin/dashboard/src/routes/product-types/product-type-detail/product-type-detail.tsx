@@ -1,9 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useProductType } from "../../../hooks/api/product-types"
-import { useExtension } from "../../../providers/extension-provider"
 import { ProductTypeGeneralSection } from "./components/product-type-general-section"
 import { ProductTypeProductSection } from "./components/product-type-product-section"
 import { productTypeLoader } from "./loader"
@@ -22,8 +24,6 @@ export const ProductTypeDetail = () => {
     }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isPending || !product_type) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -33,17 +33,20 @@ export const ProductTypeDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("product_type.details.after"),
-        before: getWidgets("product_type.details.before"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="product_type.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={product_type}
-    >
-      <ProductTypeGeneralSection productType={product_type} />
-      <ProductTypeProductSection productType={product_type} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <ProductTypeGeneralSection productType={product_type} />
+            <ProductTypeProductSection productType={product_type} />
+            <MetadataSection data={product_type} />
+            <JsonViewSection data={product_type} />
+          </>
+        ),
+      }}
+    />
   )
 }

@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom"
 
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+import { JsonViewSection } from "../../../components/common/json-view-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useWorkflowExecution } from "../../../hooks/api/workflow-executions"
-import { useExtension } from "../../../providers/extension-provider"
 import { WorkflowExecutionGeneralSection } from "./components/workflow-execution-general-section"
 import { WorkflowExecutionHistorySection } from "./components/workflow-execution-history-section"
 import { WorkflowExecutionPayloadSection } from "./components/workflow-execution-payload-section"
@@ -15,8 +16,6 @@ export const ExecutionDetail = () => {
   const { workflow_execution, isLoading, isError, error } =
     useWorkflowExecution(id!)
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !workflow_execution) {
     return <SingleColumnPageSkeleton sections={4} showJSON />
   }
@@ -26,18 +25,21 @@ export const ExecutionDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("workflow.details.after"),
-        before: getWidgets("workflow.details.before"),
-      }}
+    <LayoutComposer
+      widgetsZonePrefix="workflow.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={workflow_execution}
-      showJSON
-    >
-      <WorkflowExecutionGeneralSection execution={workflow_execution} />
-      <WorkflowExecutionTimelineSection execution={workflow_execution} />
-      <WorkflowExecutionPayloadSection execution={workflow_execution} />
-      <WorkflowExecutionHistorySection execution={workflow_execution} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <WorkflowExecutionGeneralSection execution={workflow_execution} />
+            <WorkflowExecutionTimelineSection execution={workflow_execution} />
+            <WorkflowExecutionPayloadSection execution={workflow_execution} />
+            <WorkflowExecutionHistorySection execution={workflow_execution} />
+            <JsonViewSection data={workflow_execution} />
+          </>
+        ),
+      }}
+    />
   )
 }

@@ -1,15 +1,17 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData } from "react-router-dom"
 
 import { useStore } from "../../../hooks/api/store"
 import { StoreGeneralSection } from "./components/store-general-section"
 import { storeLoader } from "./loader"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { StoreCurrencySection } from "./components/store-currency-section"
 import { StoreLocaleSection } from "./components/store-locale-section"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
@@ -18,8 +20,6 @@ export const StoreDetail = () => {
   const { store, isPending, isError, error } = useStore(undefined, {
     initialData,
   })
-
-  const { getWidgets } = useExtension()
 
   if (isPending || !store) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
@@ -30,19 +30,21 @@ export const StoreDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("store.details.before"),
-        after: getWidgets("store.details.after"),
-      }}
+    <LayoutComposer
+      widgetsZonePrefix="store.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={store}
-      hasOutlet
-      showMetadata
-      showJSON
-    >
-      <StoreGeneralSection store={store} />
-      <StoreCurrencySection store={store} />
-      {isTranslationsEnabled && <StoreLocaleSection store={store} />}
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <StoreGeneralSection store={store} />
+            <StoreCurrencySection store={store} />
+            {isTranslationsEnabled && <StoreLocaleSection store={store} />}
+            <MetadataSection data={store} />
+            <JsonViewSection data={store} />
+          </>
+        ),
+      }}
+    />
   )
 }

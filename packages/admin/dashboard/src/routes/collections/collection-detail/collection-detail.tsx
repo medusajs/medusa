@@ -1,9 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useCollection } from "../../../hooks/api/collections"
-import { useExtension } from "../../../providers/extension-provider"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
 import { collectionLoader } from "./loader"
@@ -18,8 +20,6 @@ export const CollectionDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !collection) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -29,17 +29,20 @@ export const CollectionDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("product_collection.details.after"),
-        before: getWidgets("product_collection.details.before"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="product_collection.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={collection}
-    >
-      <CollectionGeneralSection collection={collection} />
-      <CollectionProductSection collection={collection} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <CollectionGeneralSection collection={collection} />
+            <CollectionProductSection collection={collection} />
+            <MetadataSection data={collection} />
+            <JsonViewSection data={collection} />
+          </>
+        ),
+      }}
+    />
   )
 }

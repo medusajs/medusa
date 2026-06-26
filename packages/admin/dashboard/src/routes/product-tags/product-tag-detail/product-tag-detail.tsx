@@ -1,9 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useProductTag } from "../../../hooks/api"
-import { useExtension } from "../../../providers/extension-provider"
 import { ProductTagGeneralSection } from "./components/product-tag-general-section"
 import { ProductTagProductSection } from "./components/product-tag-product-section"
 import { productTagLoader } from "./loader"
@@ -14,8 +16,6 @@ export const ProductTagDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof productTagLoader>
   >
-
-  const { getWidgets } = useExtension()
 
   const { product_tag, isPending, isError, error } = useProductTag(
     id!,
@@ -34,17 +34,20 @@ export const ProductTagDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("product_tag.details.after"),
-        before: getWidgets("product_tag.details.before"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="product_tag.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={product_tag}
-    >
-      <ProductTagGeneralSection productTag={product_tag} />
-      <ProductTagProductSection productTag={product_tag} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <ProductTagGeneralSection productTag={product_tag} />
+            <ProductTagProductSection productTag={product_tag} />
+            <MetadataSection data={product_tag} />
+            <JsonViewSection data={product_tag} />
+          </>
+        ),
+      }}
+    />
   )
 }

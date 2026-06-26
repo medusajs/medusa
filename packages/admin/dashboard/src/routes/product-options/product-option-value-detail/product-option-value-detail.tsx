@@ -1,8 +1,10 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useProductOptionValue } from "../../../hooks/api"
 import { productOptionValueLoader } from "./loader.ts"
 import { ProductOptionValueGeneralSection } from "./components/product-option-value-general-section"
@@ -13,8 +15,6 @@ export const ProductOptionValueDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof productOptionValueLoader>
   >
-
-  const { getWidgets } = useExtension()
 
   const { product_option_value, isLoading, isError, error } =
     useProductOptionValue(id!, value_id!, undefined, {
@@ -30,19 +30,22 @@ export const ProductOptionValueDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("product_option_value.details.after"),
-        before: getWidgets("product_option_value.details.before"),
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="product_option_value.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={product_option_value}
-    >
-      <ProductOptionValueGeneralSection
-        optionId={id!}
-        productOptionValue={product_option_value}
-      />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <ProductOptionValueGeneralSection
+              optionId={id!}
+              productOptionValue={product_option_value}
+            />
+            <MetadataSection data={product_option_value} />
+            <JsonViewSection data={product_option_value} />
+          </>
+        ),
+      }}
+    />
   )
 }

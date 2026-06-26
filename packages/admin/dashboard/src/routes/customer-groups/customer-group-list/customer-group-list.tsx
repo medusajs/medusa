@@ -1,18 +1,16 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { CustomerGroupListTable } from "./components/customer-group-list-table"
 
 export const CustomerGroupsList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("customer_group.list.after"),
-        before: getWidgets("customer_group.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="customer_group.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: <CustomerGroupListTable />,
       }}
-    >
-      <CustomerGroupListTable />
-    </SingleColumnPage>
+    />
   )
 }

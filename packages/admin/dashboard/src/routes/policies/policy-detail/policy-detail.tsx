@@ -1,10 +1,12 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useRbacPolicy } from "../../../hooks/api/rbac-policies"
 import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
-import { useExtension } from "../../../providers/extension-provider"
 import { usePermissions } from "../../../providers/permissions-provider"
 import { PolicyGeneralSection } from "./components/policy-general-section"
 import { PolicyRolesSection } from "./components/policy-roles-section"
@@ -16,7 +18,6 @@ export const PolicyDetail = () => {
     ReturnType<typeof policyLoader>
   >
   const { id } = useParams()
-  const { getWidgets } = useExtension()
   const isRbacEnabled = useRequireRbacFeature()
   const { hasPermission } = usePermissions()
 
@@ -43,19 +44,22 @@ export const PolicyDetail = () => {
   }
 
   return (
-    <SingleColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="policy.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={policy}
-      showJSON
-      showMetadata
-      widgets={{
-        before: getWidgets("policy.details.before"),
-        after: getWidgets("policy.details.after"),
+      sections={{
+        main: (
+          <>
+            <PolicyGeneralSection policy={policy} />
+            {hasPermission("rbac_role:read") && (
+              <PolicyRolesSection policy={policy} />
+            )}
+            <MetadataSection data={policy} />
+            <JsonViewSection data={policy} />
+          </>
+        ),
       }}
-    >
-      <PolicyGeneralSection policy={policy} />
-      {hasPermission("rbac_role:read") && (
-        <PolicyRolesSection policy={policy} />
-      )}
-    </SingleColumnPage>
+    />
   )
 }
