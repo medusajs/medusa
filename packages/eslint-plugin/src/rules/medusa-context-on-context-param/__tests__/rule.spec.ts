@@ -69,12 +69,25 @@ ruleTester.run("medusa-context-on-context-param", rule, {
         }
       `,
     },
-    // Service-suffixed class with decorated Context param (no MedusaService extension).
+    // A `*Service`-named class that doesn't extend `MedusaService` is not a
+    // service class — its bare `Context` param is not flagged.
     {
       code: `
         import { MedusaContext } from "@medusajs/framework/utils"
         class OrderService {
-          async list(@MedusaContext() sharedContext: Context = {}) {}
+          async list(sharedContext: Context = {}) {}
+        }
+      `,
+    },
+    // Overload signatures (bodyless) with a bare Context param are ignored —
+    // the decorator lives on the implementation, which carries it here.
+    {
+      code: `
+        import { MedusaService, MedusaContext } from "@medusajs/framework/utils"
+        class FooService extends MedusaService({}) {
+          list(id: string, sharedContext?: Context): Promise<string>
+          list(id: number, sharedContext?: Context): Promise<number>
+          async list(id: any, @MedusaContext() sharedContext: Context = {}): Promise<any> {}
         }
       `,
     },
@@ -151,22 +164,6 @@ ruleTester.run("medusa-context-on-context-param", rule, {
         import { MedusaService, MedusaContext } from "@medusajs/framework/utils"
         class FooService extends MedusaService({}) {
           protected async list_(@MedusaContext() sharedContext: Context = {}) {}
-        }
-      `,
-      errors: [{ messageId: "missingMedusaContext" }],
-    },
-    // Service-suffix-only detection.
-    {
-      code: `
-        import { MedusaContext } from "@medusajs/framework/utils"
-        class OrderService {
-          async list(sharedContext: Context = {}) {}
-        }
-      `,
-      output: `
-        import { MedusaContext } from "@medusajs/framework/utils"
-        class OrderService {
-          async list(@MedusaContext() sharedContext: Context = {}) {}
         }
       `,
       errors: [{ messageId: "missingMedusaContext" }],

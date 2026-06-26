@@ -5,7 +5,6 @@ import { MedusaAppOutput } from "@medusajs/framework/modules-sdk"
 import { MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
   getResolvedPlugins,
   mergePluginModules,
 } from "@medusajs/framework/utils"
@@ -13,7 +12,9 @@ import { dbTestUtilFactory, getDatabaseURL } from "./database"
 import {
   applyEnvVarsToProcess,
   clearInstances,
+  closeWaitingroomClient,
   configLoaderOverride,
+  formatError,
   initDb,
   migrateDatabase,
   startApp,
@@ -21,7 +22,6 @@ import {
 } from "./medusa-test-runner-utils"
 import { waitWorkflowExecutions } from "./medusa-test-runner-utils/wait-workflow-executions"
 import { ulid } from "ulid"
-import { createDefaultsWorkflow } from "@medusajs/core-flows"
 
 export interface MedusaSuiteOptions {
   dbConnection: any // knex instance
@@ -29,6 +29,8 @@ export interface MedusaSuiteOptions {
   api: any
   dbUtils: {
     create: (dbName: string) => Promise<void>
+    snapshot: (options?: { templateName?: string }) => Promise<void>
+    restore: (options?: { templateName?: string }) => Promise<void>
     teardown: (options: { schema?: string }) => Promise<void>
     shutdown: (dbName: string) => Promise<void>
   }
@@ -48,7 +50,6 @@ interface TestRunnerConfig {
   env?: Record<string, any>
   dbName?: string
   medusaConfigFile?: string
-  disableAutoTeardown?: boolean
   schema?: string
   debug?: boolean
   inApp?: boolean
@@ -60,9 +61,9 @@ interface TestRunnerConfig {
 
 class MedusaTestRunner {
   private dbName: string
+  private dbTemplateName: string
   private schema: string
   private modulesConfigPath: string
-  private disableAutoTeardown: boolean
   private cwd: string
   private env: Record<string, any>
   private debug: boolean
@@ -81,8 +82,9 @@ class MedusaTestRunner {
   private apiUtils: any = null
   private loadedApplication: any = null
   private shutdown: () => Promise<void> = async () => void 0
-  private isFirstTime = true
   private hooks: TestRunnerConfig["hooks"] = {}
+  private databaseTemplateReady = false
+  private skipNextRestore = false
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -90,13 +92,13 @@ class MedusaTestRunner {
     this.dbName =
       config.dbName ??
       `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
+    this.dbTemplateName = `${this.dbName}-template`
     this.schema = config.schema ?? "public"
     this.cwd = config.cwd ?? config.medusaConfigFile ?? process.cwd()
     this.modulesConfigPath = config.medusaConfigFile ?? this.cwd
     this.env = config.env ?? {}
     this.debug = config.debug ?? false
     this.inApp = config.inApp ?? false
-    this.disableAutoTeardown = config?.disableAutoTeardown ?? false
 
     this.dbUtils = dbTestUtilFactory()
     this.dbConfig = {
@@ -221,6 +223,8 @@ class MedusaTestRunner {
       })
 
       this.apiUtils.cancelToken = { source: cancelTokenSource }
+
+      await waitWorkflowExecutions(this.globalContainer as MedusaContainer)
     } catch (error) {
       logger.error(`Error starting the app: ${error?.message}`)
       await this.cleanup()
@@ -233,7 +237,6 @@ class MedusaTestRunner {
       process.removeAllListeners("SIGTERM")
       process.removeAllListeners("SIGINT")
 
-      await this.dbUtils.shutdown(this.dbName)
       await this.shutdown()
       await clearInstances()
 
@@ -245,6 +248,15 @@ class MedusaTestRunner {
         await this.globalContainer.dispose()
       }
 
+      if (this.databaseTemplateReady) {
+        await this.dbUtils.dropTemplate(this.dbTemplateName)
+      }
+
+      await this.dbUtils.shutdown(this.dbName)
+      await closeWaitingroomClient()
+
+      this.databaseTemplateReady = false
+      this.skipNextRestore = false
       this.apiUtils = null
       this.loadedApplication = null
       this.globalContainer = null
@@ -269,44 +281,51 @@ class MedusaTestRunner {
     }
   }
 
+  private async snapshotDatabase(): Promise<void> {
+    await this.dbUtils.snapshot({
+      databaseName: this.dbName,
+      templateName: this.dbTemplateName,
+    })
+    this.databaseTemplateReady = true
+  }
+
   public async beforeEach(): Promise<void> {
-    if (this.isFirstTime) {
-      this.isFirstTime = false
-      return
-    }
-
-    await this.afterEach()
-
-    const container = this.globalContainer as MedusaContainer
-    const copiedContainer = createMedusaContainer({}, container)
-
     try {
-      const { MedusaAppLoader } = await import("@medusajs/framework")
-      const medusaAppLoader = new MedusaAppLoader({
-        container: copiedContainer,
-        medusaConfigPath: this.modulesConfigPath,
-        cwd: this.cwd,
-      })
-      await medusaAppLoader.runModulesLoader()
+      if (!this.databaseTemplateReady) {
+        // Snapshot after the suite's own beforeAll hooks so custom schema changes
+        // (for example ad-hoc link tables) are included in the restore template.
+        await this.snapshotDatabase()
+        return
+      }
 
-      await createDefaultsWorkflow(copiedContainer).run()
+      if (this.skipNextRestore) {
+        this.skipNextRestore = false
+        return
+      }
+
+      await this.dbUtils.restore({
+        databaseName: this.dbName,
+        templateName: this.dbTemplateName,
+      })
     } catch (error) {
-      await copiedContainer.dispose?.()
-      logger.error("Error running modules loaders:", error?.message)
+      logger.error("Error restoring database:", error?.message)
       throw error
     }
   }
 
   public async afterEach(): Promise<void> {
-    try {
-      await waitWorkflowExecutions(this.globalContainer as MedusaContainer)
+    if (!this.globalContainer) {
+      return
+    }
 
-      if (!this.disableAutoTeardown) {
-        // Perform automatic teardown
-        await this.dbUtils.teardown({ schema: this.schema })
-      }
+    try {
+      await waitWorkflowExecutions(this.globalContainer)
     } catch (error) {
-      logger.error("Error tearing down database:", error?.message)
+      logger.error(
+        `Error waiting for workflow executions to finish:\n${formatError(
+          error
+        )}`
+      )
       throw error
     }
   }
@@ -322,7 +341,22 @@ class MedusaTestRunner {
         schema: this.schema,
         clientUrl: this.dbConfig.clientUrl,
       },
-      dbUtils: this.dbUtils,
+      dbUtils: {
+        ...this.dbUtils,
+        snapshot: async (options) => {
+          await this.dbUtils.snapshot({
+            databaseName: this.dbName,
+            templateName: options?.templateName ?? this.dbTemplateName,
+          })
+          this.databaseTemplateReady = true
+          this.skipNextRestore = true
+        },
+        restore: (options) =>
+          this.dbUtils.restore({
+            databaseName: this.dbName,
+            templateName: options?.templateName ?? this.dbTemplateName,
+          }),
+      },
       utils: {
         waitWorkflowExecutions: () =>
           waitWorkflowExecutions(this.globalContainer as MedusaContainer),
@@ -342,7 +376,6 @@ export function medusaIntegrationTestRunner({
   testSuite,
   hooks,
   cwd,
-  disableAutoTeardown,
 }: {
   moduleName?: string
   env?: Record<string, any>
@@ -354,7 +387,6 @@ export function medusaIntegrationTestRunner({
   testSuite: (options: MedusaSuiteOptions) => void
   hooks?: TestRunnerConfig["hooks"]
   cwd?: string
-  disableAutoTeardown?: boolean
 }) {
   const runner = new MedusaTestRunner({
     moduleName,
@@ -366,7 +398,6 @@ export function medusaIntegrationTestRunner({
     inApp,
     hooks,
     cwd,
-    disableAutoTeardown,
   })
 
   return describe("", () => {

@@ -1,0 +1,80 @@
+---
+sidebar_label: "ui-route-config-via-define-route-config"
+---
+
+export const metadata = {
+  title: `ui-route-config-via-define-route-config - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires a UI route `config` export to be initialized with `defineRouteConfig`.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `page.tsx` files in your project's `src/admin/routes` directory. It reports a `config` export that isn't initialized with `defineRouteConfig` from `@medusajs/admin-sdk`.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+const CustomPage = () => <>Custom</>
+
+export const config = {
+  label: "Custom",
+}
+
+export default CustomPage
+```
+
+Instead, initialize `config` with `defineRouteConfig`:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+const CustomPage = () => <>Custom</>
+
+export const config = defineRouteConfig({
+  label: "Custom",
+})
+
+export default CustomPage
+```
+
+## Why it's Important
+
+The `defineRouteConfig` helper provides the expected type and structure for a route's sidebar configuration, so Medusa can register the route correctly.
+
+Learn more in the [UI Routes documentation](!docs!/learn/fundamentals/admin/ui-routes).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/ui-route-config-via-define-route-config": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```tsx
+// eslint-disable-next-line @medusajs/ui-route-config-via-define-route-config
+export const config = {
+```

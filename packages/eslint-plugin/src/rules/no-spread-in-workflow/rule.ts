@@ -33,8 +33,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       SpreadElement(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "spreadInWorkflow",
@@ -42,8 +46,12 @@ export const rule = createRule<[], MessageIds>({
       },
 
       RestElement(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({
           node,
           messageId: "restInWorkflow",

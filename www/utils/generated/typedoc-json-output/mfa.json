@@ -1,0 +1,1909 @@
+{
+	"id": 0,
+	"name": "mfa",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 16,
+			"name": "AuthMfaProvider",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the provider's options using the second parameter.\n\nThe Auth Module injects "
+					},
+					{
+						"kind": "code",
+						"text": "`authMfaFactorService`"
+					},
+					{
+						"kind": "text",
+						"text": " into your provider's container. This is the\ndata service for the "
+					},
+					{
+						"kind": "code",
+						"text": "`AuthMfaFactor`"
+					},
+					{
+						"kind": "text",
+						"text": " model, and you should store it as a class property so\nthe rest of the provider's methods can use it to retrieve and manage MFA factors (for\nexample, to look up enabled factors for an auth identity, or to create a pending factor\nduring setup).\n\nIf you're creating a client or establishing a connection with a third-party service, do it in the constructor.\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { AuthMfaProvider } from \"@medusajs/framework/types\"\nimport { Logger, ModulesSdkTypes } from \"@medusajs/framework/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n  authMfaFactorService: ModulesSdkTypes.IMedusaInternalService<any>\n}\n\ntype Options = {\n  issuer?: string\n}\n\nclass MyAuthMfaProviderService implements AuthMfaProvider {\n  static identifier = \"my-mfa\"\n  readonly method = MyAuthMfaProviderService.identifier\n\n  protected logger_: Logger\n  protected authMfaFactorService_: ModulesSdkTypes.IMedusaInternalService<any>\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger, authMfaFactorService }: InjectedDependencies,\n    options: Options\n  ) {\n    this.logger_ = logger\n    this.authMfaFactorService_ = authMfaFactorService\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n\nexport default MyAuthMfaProviderService\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n### Identifier\n\nEvery MFA auth module provider must have an "
+					},
+					{
+						"kind": "code",
+						"text": "`identifier`"
+					},
+					{
+						"kind": "text",
+						"text": " static property. The provider's ID\nwill be stored as "
+					},
+					{
+						"kind": "code",
+						"text": "`mfa_{identifier}`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\nFor example:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nclass MyAuthMfaProviderService implements AuthMfaProvider {\n  static identifier = \"my-mfa\"\n  // ...\n}\n```"
+					}
+				],
+				"blockTags": [
+					{
+						"tag": "@since",
+						"content": [
+							{
+								"kind": "text",
+								"text": "2.15.6"
+							}
+						]
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 17,
+					"name": "method",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The MFA method that the provider implements. For example, "
+							},
+							{
+								"kind": "code",
+								"text": "`totp`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 114,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L114"
+						}
+					],
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/auth/common/mfa.ts",
+							"qualifiedName": "AuthMfaProviderMethod"
+						},
+						"name": "AuthMfaProviderMethod",
+						"package": "@medusajs/types"
+					},
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthMfaProvider.method"
+					}
+				},
+				{
+					"id": 18,
+					"name": "canVerifyForAuthIdentity",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 149,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L149"
+						}
+					],
+					"signatures": [
+						{
+							"id": 19,
+							"name": "canVerifyForAuthIdentity",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method checks whether the auth identity has an enabled factor managed by this\nprovider. The Auth Module uses it to determine whether a verification attempt should\nbe routed to the provider.\n\nUse the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaFactorService`"
+									},
+									{
+										"kind": "text",
+										"text": " to look up factors for the auth identity,\nscoped to this provider's "
+									},
+									{
+										"kind": "code",
+										"text": "`method`"
+									},
+									{
+										"kind": "text",
+										"text": ". You can alternatively check with third-party services if the provider manages factors remotely."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Whether the provider has an enabled factor for the auth identity."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuthMfaProvider implements AuthMfaProvider {\n  // ...\n  async canVerifyForAuthIdentity(\n    data: { auth_identity_id: string },\n    sharedContext?: Context\n  ): Promise<boolean> {\n    const [factor] = await this.authMfaFactorService_.list(\n      {\n        auth_identity_id: data.auth_identity_id,\n        provider: this.method,\n        status: \"enabled\",\n      },\n      { select: [\"id\"] },\n      sharedContext\n    )\n\n    return !!factor\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 149,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L149"
+								}
+							],
+							"parameters": [
+								{
+									"id": 20,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The auth identity to check."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 21,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 22,
+													"name": "auth_identity_id",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The ID of the auth identity to check."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 154,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L154"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														22
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "mfa-provider.ts",
+													"line": 150,
+													"character": 10,
+													"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L150"
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 23,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthMfaProvider.canVerifyForAuthIdentity"
+							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthMfaProvider.canVerifyForAuthIdentity"
+					}
+				},
+				{
+					"id": 24,
+					"name": "verify",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 195,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L195"
+						}
+					],
+					"signatures": [
+						{
+							"id": 25,
+							"name": "verify",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method verifies a code submitted during an MFA challenge against the auth identity's\nenabled factor for this provider (for example, by checking a TOTP code against the secret\nstored on the factor).\n\nUse the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaFactorService`"
+									},
+									{
+										"kind": "text",
+										"text": " to retrieve the enabled factor for the auth identity,\nthen validate the code against the factor's provider-specific metadata.\n\nYou can alternatively verify the code with third-party services if the provider manages factors remotely."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Whether the code was successfully verified."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuthMfaProvider implements AuthMfaProvider {\n  // ...\n  async verify(\n    data: { auth_identity_id: string; code: string },\n    sharedContext?: Context\n  ): Promise<boolean> {\n    const [factor] = await this.authMfaFactorService_.list(\n      {\n        auth_identity_id: data.auth_identity_id,\n        provider: this.method,\n        status: \"enabled\",\n      },\n      {},\n      sharedContext\n    )\n\n    // assuming you have a `verifyCode_` method that verifies the code\n    return factor ? this.verifyCode_(factor, data.code) : false\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 195,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L195"
+								}
+							],
+							"parameters": [
+								{
+									"id": 26,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The auth identity and code to verify."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 27,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 28,
+													"name": "auth_identity_id",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The ID of the auth identity to verify the code for."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 200,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L200"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 29,
+													"name": "code",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The MFA code to verify."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 204,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L204"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														28,
+														29
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "mfa-provider.ts",
+													"line": 196,
+													"character": 10,
+													"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L196"
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 30,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthMfaProvider.verify"
+							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthMfaProvider.verify"
+					}
+				},
+				{
+					"id": 31,
+					"name": "start",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 255,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L255"
+						}
+					],
+					"signatures": [
+						{
+							"id": 32,
+							"name": "start",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method initiates the MFA setup flow for an auth identity. It typically creates a\npending factor and returns the data the user needs in order to complete the setup, such\nas a TOTP secret and "
+									},
+									{
+										"kind": "code",
+										"text": "`otpauth_url`"
+									},
+									{
+										"kind": "text",
+										"text": " that can be rendered as a QR code.\n\nThe Auth Module uses this method when an auth identity starts enrolling into MFA with\nthe provider.\n\nTo create the factor in a pending state within Medusa, use the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaFactorService`"
+									},
+									{
+										"kind": "text",
+										"text": " and\nset the "
+									},
+									{
+										"kind": "code",
+										"text": "`status`"
+									},
+									{
+										"kind": "text",
+										"text": " of the factor to "
+									},
+									{
+										"kind": "code",
+										"text": "`\"pending\"`"
+									},
+									{
+										"kind": "text",
+										"text": " when creating it. You can store any provider-specific data \nneeded for the setup in the factor's "
+									},
+									{
+										"kind": "code",
+										"text": "`provider_metadata`"
+									},
+									{
+										"kind": "text",
+										"text": ".\n\nAlternatively, you can manage the entire setup flow with third-party services if the provider manages factors remotely.\nIn that case, make sure to return any data needed to complete the setup in the response, and to create a pending factor \nin Medusa once the setup is verified in "
+									},
+									{
+										"kind": "code",
+										"text": "`verifySetup`"
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The data required to complete the MFA setup, including the pending factor."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuthMfaProvider implements AuthMfaProvider {\n  // ...\n  async start(\n    data: AuthTypes.AuthMfaStartDTO,\n    sharedContext?: Context\n  ): Promise<AuthTypes.AuthMfaStartResponse> {\n    const secret = this.generateSecret_()\n    const factor = await this.authMfaFactorService_.create(\n      {\n        auth_identity_id: data.auth_identity_id,\n        provider: this.method,\n        status: \"pending\",\n        provider_metadata: { secret },\n      },\n      sharedContext\n    )\n\n    return {\n      mfa: await this.serializeFactor_(factor),\n      secret,\n      otpauth_url: this.buildOtpAuthUrl_(secret, data),\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 255,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L255"
+								}
+							],
+							"parameters": [
+								{
+									"id": 33,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the MFA factor to set up."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/mfa.ts",
+											"qualifiedName": "AuthMfaStartDTO"
+										},
+										"name": "AuthMfaStartDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 34,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/mfa.ts",
+											"qualifiedName": "AuthMfaStartResponse"
+										},
+										"name": "AuthMfaStartResponse",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 35,
+					"name": "verifySetup",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 305,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L305"
+						}
+					],
+					"signatures": [
+						{
+							"id": 36,
+							"name": "verifySetup",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method verifies a code submitted during the MFA setup flow and, if valid, activates\nthe pending factor.\n\nThe Auth Module uses this method after "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "start",
+										"target": 31
+									},
+									{
+										"kind": "text",
+										"text": " to confirm that the user has correctly\nconfigured their authenticator before the factor is enabled.\n\nYou can retrieve the pending factor created in "
+									},
+									{
+										"kind": "code",
+										"text": "`start`"
+									},
+									{
+										"kind": "text",
+										"text": " using the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaFactorService`"
+									},
+									{
+										"kind": "text",
+										"text": ", \nverify the submitted code against the provider-specific metadata stored on the factor, and \nthen update the factor's status to "
+									},
+									{
+										"kind": "code",
+										"text": "`\"enabled\"`"
+									},
+									{
+										"kind": "text",
+										"text": " if the verification is successful.\n\nAlternatively, you can manage the entire setup flow with third-party services if the provider manages factors remotely.\nIn that case, make sure to verify the setup with the third-party service in this method, and to update the factor's status \nto "
+									},
+									{
+										"kind": "code",
+										"text": "`\"enabled\"`"
+									},
+									{
+										"kind": "text",
+										"text": " in Medusa once the setup is verified."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The verified (and now enabled) MFA factor."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuthMfaProvider implements AuthMfaProvider {\n  // ...\n  async verifySetup(\n    data: AuthTypes.AuthMfaVerifyDTO,\n    sharedContext?: Context\n  ): Promise<AuthTypes.AuthMfaDTO> {\n    const factor = await this.authMfaFactorService_.retrieve(\n      data.id,\n      {},\n      sharedContext\n    )\n\n    if (!this.verifyCode_(factor, data.code)) {\n      throw new Error(\"Invalid MFA code\")\n    }\n\n    const enabled = await this.authMfaFactorService_.update(\n      { id: factor.id, status: \"enabled\" },\n      sharedContext\n    )\n\n    return await this.serializeFactor_(enabled)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 305,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L305"
+								}
+							],
+							"parameters": [
+								{
+									"id": 37,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the factor and the code to verify."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/mfa.ts",
+											"qualifiedName": "AuthMfaVerifyDTO"
+										},
+										"name": "AuthMfaVerifyDTO",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 38,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/auth/common/mfa.ts",
+											"qualifiedName": "AuthMfaDTO"
+										},
+										"name": "AuthMfaDTO",
+										"package": "@medusajs/types"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						17
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						18,
+						24,
+						31,
+						35
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mfa-provider.ts",
+					"line": 110,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L110"
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": -1,
+					"name": "IAuthMfaProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 39,
+			"name": "RecoveryCodeAuthMfaProvider",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the provider's options using the second parameter.\n\nIf you're creating a client or establishing a connection with a third-party service, do it in the constructor.\n\n#### Example\n\nThe Auth Module injects "
+					},
+					{
+						"kind": "code",
+						"text": "`authMfaRecoveryCodeService`"
+					},
+					{
+						"kind": "text",
+						"text": " into your provider's container. This\nis the data service for the "
+					},
+					{
+						"kind": "code",
+						"text": "`AuthMfaRecoveryCode`"
+					},
+					{
+						"kind": "text",
+						"text": " model, and you should store it as a class\nproperty so the rest of the provider's methods can use it to retrieve and manage the\nstored recovery codes for an auth identity (for example, when generating, verifying, or\ninvalidating codes).\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { RecoveryCodeAuthMfaProvider } from \"@medusajs/framework/types\"\nimport { Logger, ModulesSdkTypes } from \"@medusajs/framework/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n  authMfaRecoveryCodeService: ModulesSdkTypes.IMedusaInternalService<any>\n}\n\nclass MyRecoveryCodeProviderService implements RecoveryCodeAuthMfaProvider {\n  static identifier = \"recovery_code\"\n  readonly method = \"recovery_code\" as const\n\n  protected logger_: Logger\n  protected authMfaRecoveryCodeService_: ModulesSdkTypes.IMedusaInternalService<any>\n\n  constructor ({\n    logger,\n    authMfaRecoveryCodeService,\n  }: InjectedDependencies) {\n    this.logger_ = logger\n    this.authMfaRecoveryCodeService_ = authMfaRecoveryCodeService\n  }\n\n  // ...\n}\n\nexport default MyRecoveryCodeProviderService\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n### Identifier\n\nEvery Recovery Code MFA auth module provider must have an "
+					},
+					{
+						"kind": "code",
+						"text": "`identifier`"
+					},
+					{
+						"kind": "text",
+						"text": " static property set to "
+					},
+					{
+						"kind": "code",
+						"text": "`recovery_code`"
+					},
+					{
+						"kind": "text",
+						"text": ".\nThe provider's ID will be stored as "
+					},
+					{
+						"kind": "code",
+						"text": "`mfa_{identifier}`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\nFor example:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nclass MyRecoveryCodeProviderService implements RecoveryCodeAuthMfaProvider {\n  static identifier = \"recovery_code\"\n  // ...\n}\n```"
+					}
+				],
+				"blockTags": [
+					{
+						"tag": "@since",
+						"content": [
+							{
+								"kind": "text",
+								"text": "2.15.6"
+							}
+						]
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 40,
+					"name": "method",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The identifier of the MFA method that the provider implements. For recovery code providers,\nthis is always "
+							},
+							{
+								"kind": "code",
+								"text": "`recovery_code`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 379,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L379"
+						}
+					],
+					"type": {
+						"type": "literal",
+						"value": "recovery_code"
+					},
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthMfaProvider.method"
+					}
+				},
+				{
+					"id": 41,
+					"name": "canVerifyForAuthIdentity",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 411,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L411"
+						}
+					],
+					"signatures": [
+						{
+							"id": 42,
+							"name": "canVerifyForAuthIdentity",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method checks whether the auth identity has any recovery codes stored with this\nprovider. The Auth Module uses it to determine whether the auth identity can fall back\nto recovery code verification.\n\nUse the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaRecoveryCodeService`"
+									},
+									{
+										"kind": "text",
+										"text": " to look up stored recovery codes for the\nauth identity. Alternatively, you can check with third-party services if the provider manages \nrecovery codes remotely."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Whether the auth identity has at least one recovery code stored."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyRecoveryCodeProvider implements RecoveryCodeAuthMfaProvider {\n  // ...\n  async canVerifyForAuthIdentity(\n    data: { auth_identity_id: string },\n    sharedContext?: Context\n  ): Promise<boolean> {\n    const [code] = await this.authMfaRecoveryCodeService_.list(\n      { auth_identity_id: data.auth_identity_id },\n      { select: [\"id\"] },\n      sharedContext\n    )\n\n    return !!code\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 411,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L411"
+								}
+							],
+							"parameters": [
+								{
+									"id": 43,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The auth identity to check."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 44,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 45,
+													"name": "auth_identity_id",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The ID of the auth identity to check."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 416,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L416"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														45
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "mfa-provider.ts",
+													"line": 412,
+													"character": 10,
+													"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L412"
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 46,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthMfaProvider.canVerifyForAuthIdentity"
+							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthMfaProvider.canVerifyForAuthIdentity"
+					}
+				},
+				{
+					"id": 47,
+					"name": "verify",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 467,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L467"
+						}
+					],
+					"signatures": [
+						{
+							"id": 48,
+							"name": "verify",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method verifies a recovery code submitted by the user. It looks up the stored hashes\nfor the auth identity, finds the one matching the submitted code, and consumes that code\nby deleting it so it can only be used once.\n\nUse the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaRecoveryCodeService`"
+									},
+									{
+										"kind": "text",
+										"text": " to retrieve and delete the matching recovery\ncode. Alternatively, you can verify and consume the code with third-party services if the provider manages\nrecovery codes remotely."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Whether the recovery code was matched and consumed."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyRecoveryCodeProvider implements RecoveryCodeAuthMfaProvider {\n  // ...\n  async verify(\n    data: { auth_identity_id: string; code: string },\n    sharedContext?: Context\n  ): Promise<boolean> {\n    const recoveryCodes = await this.authMfaRecoveryCodeService_.list(\n      { auth_identity_id: data.auth_identity_id },\n      { select: [\"id\", \"code_hash\"] },\n      sharedContext\n    )\n\n    let match: (typeof recoveryCodes)[number] | undefined\n\n    for (const candidate of recoveryCodes) {\n      if (await this.verifyHash_(candidate.code_hash, data.code)) {\n        match = candidate\n        break\n      }\n    }\n\n    if (!match) {\n      return false\n    }\n\n    // consume the code so it can't be reused\n    await this.authMfaRecoveryCodeService_.delete(match.id, sharedContext)\n\n    return true\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 467,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L467"
+								}
+							],
+							"parameters": [
+								{
+									"id": 49,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The auth identity and recovery code to verify."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 50,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 51,
+													"name": "auth_identity_id",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The ID of the auth identity to verify the code for."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 472,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L472"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 52,
+													"name": "code",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The recovery code submitted by the user."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 476,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L476"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														51,
+														52
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "mfa-provider.ts",
+													"line": 468,
+													"character": 10,
+													"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L468"
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 53,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"overwrites": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuthMfaProvider.verify"
+							}
+						}
+					],
+					"overwrites": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuthMfaProvider.verify"
+					}
+				},
+				{
+					"id": 54,
+					"name": "generateCodes",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mfa-provider.ts",
+							"line": 533,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L533"
+						}
+					],
+					"signatures": [
+						{
+							"id": 55,
+							"name": "generateCodes",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method generates a new batch of recovery codes for the given auth identity. Any\npreviously generated codes for the auth identity should be invalidated, so that only the\nlatest batch can be used.\n\nThe Auth Module uses this method when an auth identity enrolls into recovery codes, or when\nthe user requests a fresh set of codes.\n\nYou can use the injected "
+									},
+									{
+										"kind": "code",
+										"text": "`authMfaRecoveryCodeService`"
+									},
+									{
+										"kind": "text",
+										"text": " to store the generated codes as hashes, and \nto invalidate existing codes by deleting them. Alternatively, you can manage recovery codes remotely."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The generated recovery codes in plain text. These should be shown to the user only once."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyRecoveryCodeProvider implements RecoveryCodeAuthMfaProvider {\n  // ...\n  async generateCodes(\n    data: { auth_identity_id: string; count: number },\n    sharedContext?: Context\n  ): Promise<string[]> {\n    // invalidate any previously generated codes\n    const existing = await this.authMfaRecoveryCodeService_.list(\n      { auth_identity_id: data.auth_identity_id },\n      { select: [\"id\"] },\n      sharedContext\n    )\n\n    if (existing.length) {\n      await this.authMfaRecoveryCodeService_.delete(\n        existing.map((c) => c.id),\n        sharedContext\n      )\n    }\n\n    const codes = Array.from({ length: data.count }, () => this.generateCode_())\n\n    await this.authMfaRecoveryCodeService_.create(\n      await Promise.all(\n        codes.map(async (code) => ({\n          auth_identity_id: data.auth_identity_id,\n          code_hash: await this.hashCode_(code),\n        }))\n      ),\n      sharedContext\n    )\n\n    return codes\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "mfa-provider.ts",
+									"line": 533,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L533"
+								}
+							],
+							"parameters": [
+								{
+									"id": 56,
+									"name": "data",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The auth identity and the number of codes to generate."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 57,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 58,
+													"name": "auth_identity_id",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The ID of the auth identity to generate the codes for."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 538,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L538"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 59,
+													"name": "count",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The number of recovery codes to generate."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "mfa-provider.ts",
+															"line": 542,
+															"character": 6,
+															"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L542"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "number"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														58,
+														59
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "mfa-provider.ts",
+													"line": 534,
+													"character": 10,
+													"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L534"
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 60,
+									"name": "sharedContext",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "A context used to share resources, such as transaction manager, between the application and the module."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"qualifiedName": "Context"
+										},
+										"name": "Context",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						40
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						41,
+						47,
+						54
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mfa-provider.ts",
+					"line": 374,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/5a43c0a76fa6ecbf69bd309205a097d54399ef39/packages/core/types/src/auth/mfa-provider.ts#L374"
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": -1,
+					"name": "IAuthMfaProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				16,
+				39
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": ""
+		},
+		"16": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider"
+		},
+		"17": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.method"
+		},
+		"18": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.canVerifyForAuthIdentity"
+		},
+		"19": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.canVerifyForAuthIdentity"
+		},
+		"20": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"21": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"22": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.auth_identity_id"
+		},
+		"23": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"24": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.verify"
+		},
+		"25": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.verify"
+		},
+		"26": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"27": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"28": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.auth_identity_id"
+		},
+		"29": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.code"
+		},
+		"30": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"31": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.start"
+		},
+		"32": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.start"
+		},
+		"33": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"34": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"35": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.verifySetup"
+		},
+		"36": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "AuthMfaProvider.verifySetup"
+		},
+		"37": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"38": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"39": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider"
+		},
+		"40": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.method"
+		},
+		"41": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.canVerifyForAuthIdentity"
+		},
+		"42": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.canVerifyForAuthIdentity"
+		},
+		"43": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"44": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"45": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.auth_identity_id"
+		},
+		"46": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"47": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.verify"
+		},
+		"48": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.verify"
+		},
+		"49": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"50": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"51": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.auth_identity_id"
+		},
+		"52": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.code"
+		},
+		"53": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"54": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.generateCodes"
+		},
+		"55": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "RecoveryCodeAuthMfaProvider.generateCodes"
+		},
+		"56": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "data"
+		},
+		"57": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type"
+		},
+		"58": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.auth_identity_id"
+		},
+		"59": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "__type.count"
+		},
+		"60": {
+			"sourceFileName": "../../../../packages/core/types/src/auth/mfa-provider.ts",
+			"qualifiedName": "sharedContext"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/types/src/auth/mfa-provider.ts"
+		},
+		"reflections": {
+			"1": 0
+		}
+	}
+}

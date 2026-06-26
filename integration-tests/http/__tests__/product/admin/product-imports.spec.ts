@@ -4,8 +4,8 @@ import { csv2json, json2csv } from "json-2-csv"
 import { CommonEvents, Modules } from "@medusajs/utils"
 import { IEventBusModuleService, IFileModuleService } from "@medusajs/types"
 import {
-  TestEventUtils,
   medusaIntegrationTestRunner,
+  TestEventUtils,
 } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -57,7 +57,7 @@ function prepareCSVForImport(fileContents: string, delimiter: string = ",") {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseCollection
     let baseType
     let baseProduct
@@ -76,7 +76,7 @@ medusaIntegrationTestRunner({
       fileModule = getContainer().resolve(Modules.FILE)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       baseCollection = (
         await api.post(
@@ -164,6 +164,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product_category
+
+      await dbUtils.snapshot()
     })
 
     afterEach(() => {

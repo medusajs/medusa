@@ -86,6 +86,19 @@ const modules = {
     resolve: "@medusajs/rbac",
     disable: process.env.MEDUSA_FF_RBAC !== "true",
   },
+  [Modules.AUTH]: {
+    options: {
+      mfa: {
+        encryption_key: "test-mfa-encryption-key",
+      },
+      providers: [
+        {
+          resolve: "@medusajs/medusa/auth-emailpass",
+          id: "emailpass",
+        },
+      ],
+    },
+  },
 }
 
 if (process.env.MEDUSA_FF_TRANSLATION === "true") {

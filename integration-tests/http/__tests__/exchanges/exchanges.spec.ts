@@ -17,7 +17,7 @@ import { setupTaxStructure } from "../../../modules/__tests__/fixtures/tax"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order, order2
     let returnShippingOption
     let outboundShippingOption
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
     let productExtra2
     const shippingProviderId = "manual_test-provider"
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -492,6 +492,8 @@ medusaIntegrationTestRunner({
       )
 
       await setupTaxStructure(container.resolve(Modules.TAX))
+
+      await dbUtils.snapshot()
     })
 
     describe("Exchanges lifecycle", () => {

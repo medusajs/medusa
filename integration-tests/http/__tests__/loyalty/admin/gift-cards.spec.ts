@@ -24,9 +24,11 @@ const giftCardResponse = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
-    beforeEach(async () => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/gift-cards", () => {
@@ -37,7 +39,11 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        await api.post(`/admin/gift-cards`, { ...giftCardPayload }, adminHeaders)
+        await api.post(
+          `/admin/gift-cards`,
+          { ...giftCardPayload },
+          adminHeaders
+        )
       })
 
       it("successfully returns all gift cards", async () => {

@@ -14,10 +14,6 @@
  *     description: The option's title.
  *   product:
  *     $ref: "#/components/schemas/StoreProduct"
- *   product_id:
- *     type: string
- *     title: product_id
- *     description: The ID of the product this option belongs to.
  *   values:
  *     type: array
  *     description: The option's values.
@@ -44,9 +40,19 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the product option was deleted.
+ *   products:
+ *     type: array
+ *     description: The products that use the option.
+ *     items:
+ *       $ref: "#/components/schemas/BaseProduct"
+ *   is_exclusive:
+ *     type: boolean
+ *     title: is_exclusive
+ *     description: Whether the option is exclusive to a product.
  * required:
  *   - title
  *   - id
+ *   - is_exclusive
  * 
 */
 

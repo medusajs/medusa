@@ -1,0 +1,73 @@
+---
+sidebar_label: "read-only-link-requires-field"
+---
+
+export const metadata = {
+  title: `read-only-link-requires-field - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires read-only `defineLink` calls to specify a `field` on the first linkable, and a `primaryKey` on the inverse form.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/links` directory. It reports read-only `defineLink` calls (calls whose options object sets `readOnly: true`) whose first argument is missing a `field` property. For the inverse form, where the second argument spreads `<Module>.linkable.<dataModel>.id`, it also requires a `primaryKey` property.
+
+The following code is reported by the rule:
+
+```ts title="src/links/post-product.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import BlogModule from "../modules/blog"
+import ProductModule from "@medusajs/medusa/product"
+
+export default defineLink(
+  BlogModule.linkable.post,
+  ProductModule.linkable.product,
+  { readOnly: true }
+)
+```
+
+Instead, specify the `field` that stores the linked record's ID on the first argument:
+
+```ts title="src/links/post-product.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import BlogModule from "../modules/blog"
+import ProductModule from "@medusajs/medusa/product"
+
+export default defineLink(
+  {
+    linkable: BlogModule.linkable.post,
+    field: "product_id",
+  },
+  ProductModule.linkable.product,
+  { readOnly: true }
+)
+```
+
+For the inverse form, include a `primaryKey` on the second argument:
+
+```ts title="src/links/post-product.ts"
+export default defineLink(
+  { linkable: ProductModule.linkable.product, field: "id" },
+  {
+    ...BlogModule.linkable.post.id,
+    primaryKey: "product_id",
+  },
+  { readOnly: true }
+)
+```
+
+## Why it's Important
+
+A read-only link doesn't store its own data, so Medusa needs the `field` to know where the linked record's ID lives. Without it, the link can't resolve the related records.
+
+Learn more in the [Read-Only Module Links documentation](!docs!/learn/fundamentals/module-links/read-only).
+
+## Fixable
+
+This rule isn't auto-fixable.

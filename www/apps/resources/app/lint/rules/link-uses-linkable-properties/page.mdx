@@ -1,0 +1,87 @@
+---
+sidebar_label: "link-uses-linkable-properties"
+---
+
+export const metadata = {
+  title: `link-uses-linkable-properties - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires arguments to `defineLink` to be of the form `Module.linkable.<dataModel>` or an object with a `linkable: Module.linkable.<dataModel>` property.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/links` directory. It reports `defineLink` arguments that don't reference a module's `linkable` property.
+
+The following code is reported by the rule:
+
+```ts title="src/links/product-post.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import ProductModule from "@medusajs/medusa/product"
+
+export default defineLink(ProductModule, {
+  foo: "bar",
+})
+```
+
+Instead, reference each module's `linkable` property:
+
+```ts title="src/links/product-post.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import ProductModule from "@medusajs/medusa/product"
+import BlogModule from "../modules/blog"
+
+export default defineLink(
+  ProductModule.linkable.product,
+  BlogModule.linkable.post
+)
+```
+
+You can also pass an object with a `linkable` property to set options such as `isList`:
+
+```ts title="src/links/product-post.ts"
+export default defineLink(
+  ProductModule.linkable.product,
+  { linkable: BlogModule.linkable.post, isList: true }
+)
+```
+
+## Why it's Important
+
+A module's `linkable` property exposes the data models that can participate in a link. Referencing it ensures Medusa can resolve the linked records correctly at runtime.
+
+Learn more in the [Module Links documentation](!docs!/learn/fundamentals/module-links).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/link-uses-linkable-properties": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/link-uses-linkable-properties
+export default defineLink(ProductModule, { foo: "bar" })
+```

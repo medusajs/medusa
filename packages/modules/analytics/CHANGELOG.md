@@ -1,5 +1,26 @@
 # @medusajs/analytics
 
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies [[`975313f62b22055ddaacf7852f33cf7b0f4af5df`](https://github.com/medusajs/medusa/commit/975313f62b22055ddaacf7852f33cf7b0f4af5df)]:
+  - @medusajs/framework@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies [[`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a)]:
+  - @medusajs/framework@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`20352f4fa2f31e5b491c8b1b244c407392939fbf`](https://github.com/medusajs/medusa/commit/20352f4fa2f31e5b491c8b1b244c407392939fbf), [`90af038c95c835dee5168ffd19cda5182d81b904`](https://github.com/medusajs/medusa/commit/90af038c95c835dee5168ffd19cda5182d81b904), [`66610b87efb112e37b78c7c9536d95070b8d6b11`](https://github.com/medusajs/medusa/commit/66610b87efb112e37b78c7c9536d95070b8d6b11)]:
+  - @medusajs/framework@2.16.0
+
 ## 2.15.5
 
 ### Patch Changes

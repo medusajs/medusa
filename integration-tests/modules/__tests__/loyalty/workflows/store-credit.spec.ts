@@ -15,10 +15,10 @@ import { createAuthenticatedCustomer } from "../../../helpers/create-authenticat
 jest.setTimeout(60 * 1000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer, storeCreditAccount, storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       const publishableKey = await generatePublishableKey(getContainer())
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -41,6 +41,8 @@ medusaIntegrationTestRunner({
         })
 
       storeCreditAccount = storeCreditAccounts[0]
+
+      await dbUtils.snapshot()
     })
 
     describe("debitAccountsWorkflow", () => {

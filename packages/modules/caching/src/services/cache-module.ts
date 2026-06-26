@@ -68,17 +68,17 @@ export default class CachingModuleService implements ICachingModuleService {
 
   __hooks = {
     onApplicationStart: async () => {
-      this.onApplicationStart()
+      await this.onApplicationStart()
     },
     onApplicationShutdown: async () => {
-      this.onApplicationShutdown()
+      await this.onApplicationShutdown()
     },
     onApplicationPrepareShutdown: async () => {
-      this.onApplicationPrepareShutdown()
+      await this.onApplicationPrepareShutdown()
     },
   }
 
-  protected onApplicationStart() {
+  protected async onApplicationStart() {
     const loadedSchema = MedusaModule.getAllJoinerConfigs()
       .map((joinerConfig) => joinerConfig?.schema ?? "")
       .join("\n")
@@ -97,18 +97,18 @@ export default class CachingModuleService implements ICachingModuleService {
       typeDefs: mergedSchema,
     })
 
-    this.strategy.onApplicationStart?.(
+    await this.strategy.onApplicationStart?.(
       schema,
       MedusaModule.getAllJoinerConfigs()
     )
   }
 
-  protected onApplicationShutdown() {
-    this.strategy.onApplicationShutdown?.()
+  protected async onApplicationShutdown() {
+    await this.strategy.onApplicationShutdown?.()
   }
 
-  protected onApplicationPrepareShutdown() {
-    this.strategy.onApplicationPrepareShutdown?.()
+  protected async onApplicationPrepareShutdown() {
+    await this.strategy.onApplicationPrepareShutdown?.()
   }
 
   protected static normalizeProviders(
