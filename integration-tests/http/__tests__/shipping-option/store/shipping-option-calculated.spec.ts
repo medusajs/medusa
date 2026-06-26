@@ -13,7 +13,7 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Store: Shipping Option API", () => {
       let appContainer
       let salesChannel
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -226,6 +226,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_option
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /store/shipping-options?cart_id=", () => {

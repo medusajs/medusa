@@ -62,7 +62,7 @@ const standardPromotionPayload = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer
     beforeAll(async () => {
       appContainer = getContainer()
@@ -79,7 +79,7 @@ medusaIntegrationTestRunner({
         values: ["old value"],
       }
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         await setupTaxStructure(appContainer.resolve(Modules.TAX))
@@ -112,6 +112,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_profile
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /admin/promotions/:id", () => {

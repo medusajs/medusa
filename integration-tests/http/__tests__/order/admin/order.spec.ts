@@ -23,7 +23,7 @@ import {
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order,
       seeder,
       inventoryItemOverride3,
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
       productOverride4,
       container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
@@ -45,6 +45,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_profile
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/orders", () => {

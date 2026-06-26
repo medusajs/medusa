@@ -10,10 +10,16 @@ jest.setTimeout(50000)
 
 const env = {}
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
+const adminTemplateName = "shipping-option-admin-template"
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    beforeAll(async () => {
+      await createAdminUser(dbConnection, adminHeaders, getContainer())
+      await dbUtils.snapshot({ templateName: adminTemplateName })
+    })
+
     describe("Store: Shipping Option API", () => {
       let appContainer
       let salesChannel
@@ -29,13 +35,9 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
 
-      beforeEach(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
-
-        await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         region = (
           await api.post(
@@ -199,6 +201,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_option
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /store/shipping-options?cart_id=", () => {
@@ -345,14 +349,11 @@ medusaIntegrationTestRunner({
       let storeHeaders
 
       beforeAll(async () => {
+        await dbUtils.restore({ templateName: adminTemplateName })
         appContainer = getContainer()
-      })
 
-      beforeEach(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
-
-        await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         region = (
           await api.post(
@@ -672,6 +673,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.product
+
+        await dbUtils.snapshot()
       })
 
       it("should get shipping options for a cart with insufficient inventory flag set correctly", async () => {

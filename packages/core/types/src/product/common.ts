@@ -565,15 +565,17 @@ export interface ProductOptionDTO {
    */
   title: string
   /**
-   * The associated product.
+   * Whether the product option is exclusive to a product or shared across products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive: boolean
+  /**
+   * The associated products.
    *
    * @expandable
    */
-  product?: ProductDTO | null
-  /**
-   * The associated product id.
-   */
-  product_id?: string | null
+  products?: ProductDTO[] | null
   /**
    * The associated product option values.
    *
@@ -596,6 +598,26 @@ export interface ProductOptionDTO {
    * When the product option was deleted.
    */
   deleted_at?: string | Date
+}
+
+/**
+ * @interface
+ *
+ * The product <> product option link's data.
+ */
+export interface ProductProductOptionDTO {
+  /**
+   * The ID of the product product option link.
+   */
+  id: string
+  /**
+   * The associated product.
+   */
+  product_id: string
+  /**
+   * The associated product option.
+   */
+  product_option_id: string
 }
 
 /**
@@ -747,6 +769,18 @@ export interface FilterableProductProps
      */
     id?: string[]
   }
+
+  /**
+   * Filters on a product's options.
+   *
+   * @since 2.16.0
+   */
+  options?: {
+    /**
+     * Filter a product by the IDs of their associated options.
+     */
+    id?: string[]
+  }
   /**
    * Filters on a product's variant properties.
    */
@@ -768,6 +802,18 @@ export interface FilterableProductProps
    * Filter a product by the ID of the associated type
    */
   type_id?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * Filter a product by the ID of the associated option
+   *
+   * @since 2.16.0
+   */
+  option_id?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * Filter a product by the IDs of the associated option values.
+   *
+   * @since 2.16.0
+   */
+  option_value_id?: string | string[]
   /**
    * Filter a product by the IDs of their associated categories.
    */
@@ -862,9 +908,11 @@ export interface FilterableProductOptionProps
    */
   title?: string | string[]
   /**
-   * Filter the product options by their associated products' IDs.
+   * Filter the product options by whether they are exclusive to a product or shared across products.
+   *
+   * @since 2.16.0
    */
-  product_id?: string | string[]
+  is_exclusive?: boolean
 }
 
 /**
@@ -1253,9 +1301,23 @@ export interface CreateProductOptionDTO {
    */
   values: string[]
   /**
-   * The ID of the associated product.
+   * The rank for each option value. The key is the option value, and the value is the rank.
+   *
+   * @since 2.16.0
    */
-  product_id?: string
+  ranks?: Record<string, number>
+  /**
+   * Whether the product option is exclusive to a product or shared across products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive?: boolean
+  /**
+   * The metadata of the product option.
+   *
+   * @since 2.16.0
+   */
+  metadata?: MetadataType
 }
 
 export interface CreateProductOptionValueDTO {
@@ -1263,6 +1325,12 @@ export interface CreateProductOptionValueDTO {
    * The value of the product option value.
    */
   value: string
+  /**
+   * The rank of the product option value among other option values.
+   *
+   * @since 2.16.0
+   */
+  rank?: number
   /**
    * The metadata of the product option value.
    */
@@ -1293,9 +1361,30 @@ export interface UpdateProductOptionDTO {
    */
   values?: string[]
   /**
-   * The ID of the associated product.
+   * The rank for each option value. The key is the option value, and the value is the rank.
+   *
+   * @since 2.16.0
+   *
+   * @example
+   * {
+   *   "Small": 1,
+   *   "Medium": 2,
+   *   "Large": 3
+   * }
    */
-  product_id?: string
+  ranks?: Record<string, number>
+  /**
+   * Whether the product option is exclusive to a product or shared across products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive?: boolean
+  /**
+   * The metadata of the product option.
+   *
+   * @since 2.16.0
+   */
+  metadata?: MetadataType
 }
 
 export interface UpdateProductOptionValueDTO {
@@ -1573,9 +1662,21 @@ export interface CreateProductDTO {
    */
   category_ids?: string[]
   /**
-   * The product options to be created and associated with the product.
+   * The product options to be created and/or associated with the product.
    */
-  options?: CreateProductOptionDTO[]
+  options?: (
+    | CreateProductOptionDTO
+    | {
+        /**
+         * The ID of the product option to link.
+         */
+        id: string
+        /**
+         * The IDs of specific option values to link. If undefined, every value will be added to the product by default.
+         */
+        value_ids?: string[]
+      }
+  )[]
   /**
    * The product variants to be created and associated with the product.
    */
@@ -1693,9 +1794,9 @@ export interface UpdateProductDTO {
    */
   category_ids?: string[]
   /**
-   * The associated options to create or update.
+   * The product options to associate with the product.
    */
-  options?: UpsertProductOptionDTO[]
+  option_ids?: string[]
   /**
    * The product variants to be created and associated with the product.
    * You can also update existing product variants associated with the product.
@@ -1737,4 +1838,54 @@ export interface UpdateProductDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: MetadataType
+}
+
+/**
+ * @interface
+ *
+ * The details of a product option and product pair.
+ */
+export type ProductOptionProductPair = {
+  /**
+   * The product option's ID.
+   */
+  product_option_id: string
+
+  /**
+   * The product's ID.
+   */
+  product_id: string
+
+  /**
+   * The IDs of specific option values to link. If not provided, all values will be linked.
+   */
+  product_option_value_ids?: string[]
+}
+
+/**
+ * @interface
+ *
+ * The details to update option values linked to a product's option.
+ */
+export type ProductOptionProductValueUpdate = {
+  /**
+   * The product option's ID.
+   */
+  product_option_id: string
+
+  /**
+   * The product's ID.
+   */
+  product_id: string
+
+  /**
+   * The IDs of specific option values to add to the product option, or value
+   * objects to create and link.
+   */
+  add?: (string | { value: string })[]
+
+  /**
+   * The IDs of specific option values to remove from the product option.
+   */
+  remove?: string[]
 }

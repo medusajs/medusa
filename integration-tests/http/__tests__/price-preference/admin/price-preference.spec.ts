@@ -8,11 +8,11 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let pricePreference1
     let pricePreference2
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -39,6 +39,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.price_preference
+
+      await dbUtils.snapshot()
     })
 
     describe("/admin/price-preferences", () => {

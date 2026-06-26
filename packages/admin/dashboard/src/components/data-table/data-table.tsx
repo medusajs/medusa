@@ -475,11 +475,24 @@ function parseFilterState(
     const filterValue = value[id]
 
     if (filterValue !== undefined) {
-      filters[id] = JSON.parse(filterValue)
+      filters[id] = parseFilterValue(filterValue)
     }
   }
 
   return filters
+}
+
+// Radio/select filters use string option values, but a URL written by hand
+// (e.g. `?is_exclusive=false`) JSON-parses to a boolean and no longer matches
+// those values, leaving the filter chip unhighlighted. Fall back to the raw
+// string in that case so manual URLs still highlight correctly.
+function parseFilterValue(raw: string): unknown {
+  try {
+    const parsed = JSON.parse(raw)
+    return typeof parsed === "boolean" ? raw : parsed
+  } catch {
+    return raw
+  }
 }
 
 function getQueryParamKey(key: string, prefix?: string) {

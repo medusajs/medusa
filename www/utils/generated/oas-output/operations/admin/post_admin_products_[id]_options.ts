@@ -3,7 +3,7 @@
  * operationId: PostProductsIdOptions
  * summary: Create a Product Option
  * x-sidebar-summary: Create Option
- * description: Create an option for a product.
+ * description: Create an option exclusive for a product.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -12,18 +12,6 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
- *       fields. without prefix it will replace the entire default fields.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
- *         fields. without prefix it will replace the entire default fields.
- *       externalDocs:
- *         url: "#select-fields-and-relations"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -32,15 +20,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         allOf:
- *           - $ref: "#/components/schemas/AdminCreateProductOption"
- *           - type: object
- *             description: The product option's details.
- *             properties:
- *               additional_data:
- *                 type: object
- *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: The product option's details.
+ *         $ref: "#/components/schemas/AdminLinkProductOptions"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -55,13 +35,17 @@
  *         },
  *       })
  * 
- *       sdk.admin.product.createOption(
- *         "prod_123",
- *         {
- *           title: "Color",
- *           values: ["Green", "Blue"]
- *         }
- *       )
+ *       sdk.admin.product.linkOptions("prod_123", {
+ *         add: [
+ *           "opt_123",
+ *           {
+ *             product_option_id: "opt_789",
+ *             product_id: "prod_123",
+ *             product_option_value_ids: ["optval_1", "optval_2"]
+ *           }
+ *         ],
+ *         remove: ["opt_456"]
+ *       })
  *       .then(({ product }) => {
  *         console.log(product)
  *       })
@@ -98,17 +82,8 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-workflow: createProductOptionsWorkflow
- * x-events:
- *   - name: product-option.created
- *     payload: |-
- *       ```ts
- *       {
- *         id, // The ID of the product option
- *       }
- *       ```
- *     description: Emitted when product options are created.
- *     deprecated: false
+ * x-workflow: createAndLinkProductOptionsToProductWorkflow
+ * x-events: []
  * 
 */
 

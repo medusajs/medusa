@@ -176,7 +176,13 @@ export function generateHash(content: string) {
   return crypto.createHash("md5").update(content).digest("hex")
 }
 
-const ADMIN_SUBDIRECTORIES = ["routes", "custom-fields", "widgets", "i18n"] as const
+const ADMIN_SUBDIRECTORIES = [
+  "routes",
+  "custom-fields",
+  "widgets",
+  "i18n",
+  "layouts",
+] as const
 
 export type AdminSubdirectory = (typeof ADMIN_SUBDIRECTORIES)[number]
 

@@ -6,16 +6,17 @@ import {
   UpdateProductWorkflowInputDTO,
 } from "@medusajs/framework/types"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
   when,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { createProductsWorkflow } from "./create-products"
 import { deleteProductsWorkflow } from "./delete-products"
 import { updateProductsWorkflow } from "./update-products"
+import { processProductOptionsForImportStep } from "../steps/process-product-options-for-import"
 
 /**
  * The products to manage.
@@ -25,21 +26,6 @@ export interface BatchProductWorkflowInput
     CreateProductWorkflowInputDTO,
     UpdateProductWorkflowInputDTO
   > {}
-
-const conditionallyCreateProducts = (input: BatchProductWorkflowInput) =>
-  when({ input }, ({ input }) => !!input.create?.length).then(() =>
-    createProductsWorkflow.runAsStep({ input: { products: input.create! } })
-  )
-
-const conditionallyUpdateProducts = (input: BatchProductWorkflowInput) =>
-  when({ input }, ({ input }) => !!input.update?.length).then(() =>
-    updateProductsWorkflow.runAsStep({ input: { products: input.update! } })
-  )
-
-const conditionallyDeleteProducts = (input: BatchProductWorkflowInput) =>
-  when({ input }, ({ input }) => !!input.delete?.length).then(() =>
-    deleteProductsWorkflow.runAsStep({ input: { ids: input.delete! } })
-  )
 
 export const batchProductsWorkflowId = "batch-products"
 /**
@@ -97,10 +83,32 @@ export const batchProductsWorkflow = createWorkflow(
   (
     input: WorkflowData<BatchProductWorkflowInput>
   ): WorkflowResponse<BatchWorkflowOutput<ProductTypes.ProductDTO>> => {
+    const productsToUpdate = transform({ input }, ({ input }) => {
+      return input.update ?? []
+    })
+
+    const processedProductsToUpdate = processProductOptionsForImportStep({
+      products: productsToUpdate as unknown as (Omit<
+        UpdateProductWorkflowInputDTO,
+        "option_ids"
+      > & { options: ProductTypes.CreateProductOptionDTO[] })[],
+    })
+
     const res = parallelize(
-      conditionallyCreateProducts(input),
-      conditionallyUpdateProducts(input),
-      conditionallyDeleteProducts(input)
+      when({ input }, ({ input }) => !!input.create?.length).then(() =>
+        createProductsWorkflow.runAsStep({ input: { products: input.create! } })
+      ),
+      when(
+        { processedProductsToUpdate },
+        ({ processedProductsToUpdate }) => !!processedProductsToUpdate.length
+      ).then(() =>
+        updateProductsWorkflow.runAsStep({
+          input: { products: processedProductsToUpdate },
+        })
+      ),
+      when({ input }, ({ input }) => !!input.delete?.length).then(() =>
+        deleteProductsWorkflow.runAsStep({ input: { ids: input.delete! } })
+      )
     )
 
     return new WorkflowResponse(

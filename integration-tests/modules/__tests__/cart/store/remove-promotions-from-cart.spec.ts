@@ -20,7 +20,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Store Carts API: Remove promotions from cart", () => {
       let appContainer
       let cartModuleService: ICartModuleService
@@ -37,10 +37,12 @@ medusaIntegrationTestRunner({
         promotionModuleService = appContainer.resolve(Modules.PROMOTION)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
+
+        await dbUtils.snapshot()
       })
 
       describe("DELETE /store/carts/:id/promotions", () => {

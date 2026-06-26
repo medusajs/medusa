@@ -19,6 +19,12 @@ export const metadata = {
 
 In this tutorial, you'll learn how to integrate [Payload](https://payloadcms.com/) with Medusa.
 
+<Note>
+
+This guide has been revisited to support [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0) which introduced global product options.
+
+</Note>
+
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa also facilitates integrating third-party services that enrich your application with features specific to your unique business use case.
 
 By integrating Payload, you can manage your products' content with powerful content management capabilities, such as managing custom fields, media, localization, and more.
@@ -251,6 +257,8 @@ Now that Payload is set up in your storefront, you'll create the following [coll
 - `User`: A Payload user with API key authentication, allowing you later to sync product data from Medusa to Payload.
 - `Media`: A collection for media files, allowing you to manage product images and other media.
 - `Product`: A collection for products, which will be synced with Medusa's product data.
+- `ProductOptions`: A collection for product options (for example, Size, Color), which are global entities that can be shared across multiple products.
+- `OptionValues`: A collection for option values (for example, Small, Medium, Large for Size), which belong to product options.
 
 Once you're done, you'll add the collections to `src/payload.config.ts`.
 
@@ -350,6 +358,121 @@ The `Media` collection will store media files, such as product images. You can u
 
 Note that you allow pasting URLs from specific sources, such as the Medusa public images S3 bucket. This allows you to paste Medusa's stock image URLs in the Payload admin.
 
+#### Product Options Collection
+
+First, you'll create the `ProductOptions` collection for product options (for example, "Size" or "Color"), which are global entities that can be shared across multiple products.
+
+Create the file `src/collections/ProductOptions.ts` with the following content:
+
+```ts title="src/collections/ProductOptions.ts" badgeLabel="Storefront" badgeColor="blue"
+import { CollectionConfig } from 'payload'
+
+export const ProductOptions: CollectionConfig = {
+  slug: 'product-options',
+  admin: {
+    useAsTitle: 'title',
+  },
+  fields: [
+    {
+      name: 'medusa_id',
+      type: 'text',
+      label: 'Medusa Option ID',
+      required: true,
+      unique: true,
+      admin: {
+        description: 'The unique identifier from Medusa',
+        hidden: true,
+      },
+      access: {
+        update: ({ req }) => !!req.query.is_from_medusa,
+      },
+    },
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      required: true,
+      admin: {
+        description: 'The option title (e.g., Size, Color)',
+      },
+    },
+    {
+      name: 'values',
+      type: 'relationship',
+      relationTo: 'option-values' as any,
+      hasMany: true,
+      required: false,
+      admin: {
+        description: 'Option values (e.g., Small, Medium, Large)',
+      },
+    },
+  ],
+  access: {
+    create: ({ req }) => !!req.query.is_from_medusa,
+    delete: ({ req }) => !!req.query.is_from_medusa,
+  },
+}
+```
+
+This collection stores product options. The `values` field references option values from the `OptionValues` collection that you'll create next.
+
+#### Option Values Collection
+
+Next, you'll create the `OptionValues` collection for option values (for example, "Small", "Medium", "Large" for "Size"), which belong to product options.
+
+Create the file `src/collections/OptionValues.ts` with the following content:
+
+```ts title="src/collections/OptionValues.ts" badgeLabel="Storefront" badgeColor="blue"
+import { CollectionConfig } from 'payload'
+
+export const OptionValues: CollectionConfig = {
+  slug: 'option-values',
+  admin: {
+    useAsTitle: 'value',
+  },
+  fields: [
+    {
+      name: 'medusa_id',
+      type: 'text',
+      label: 'Medusa Option Value ID',
+      required: true,
+      unique: true,
+      admin: {
+        description: 'The unique identifier from Medusa',
+        hidden: true,
+      },
+      access: {
+        update: ({ req }) => !!req.query.is_from_medusa,
+      },
+    },
+    {
+      name: 'value',
+      type: 'text',
+      label: 'Value',
+      required: true,
+      admin: {
+        description: 'The option value (e.g., Small, Red)',
+      },
+    },
+    {
+      name: 'option',
+      type: 'relationship',
+      relationTo: 'product-options' as any,
+      required: true,
+      admin: {
+        description: 'The product option this value belongs to',
+      },
+    },
+  ],
+  access: {
+    create: ({ req }) => !!req.query.is_from_medusa,
+    delete: ({ req }) => !!req.query.is_from_medusa,
+  },
+}
+```
+
+This collection stores option values and references the product option they belong to.
+
 #### Product Collection
 
 Finally, you'll add the `Product` collection, which will be synced with Medusa's product data.
@@ -358,12 +481,9 @@ Create the file `src/collections/Products.ts` with the following content:
 
 export const productCollectionHighlights = [
   ["20", "update", "Only allow updating from Medusa"],
-  ["144", "update", "Only allow updating from Medusa"],
-  ["172", "update", "Only allow updating from Medusa"],
-  ["189", "update", "Only allow updating from Medusa"],
-  ["202", "update", "Only allow updating from Medusa"],
-  ["223", "create", "Only allow creating from Medusa"],
-  ["224", "delete", "Only allow deleting from Medusa"]
+  ["154", "update", "Only allow updating from Medusa"],
+  ["177", "create", "Only allow creating from Medusa"],
+  ["178", "delete", "Only allow deleting from Medusa"]
 ]
 
 ```ts title="src/collections/Products.ts" badgeLabel="Storefront" badgeColor="blue" highlights={productCollectionHighlights}
@@ -492,30 +612,12 @@ export const Products: CollectionConfig = {
     },
     {
       name: "options",
-      type: "array",
-      fields: [
-        {
-          name: "title",
-          type: "text",
-          label: "Option Title",
-          required: true,
-        },
-        {
-          name: "medusa_id",
-          type: "text",
-          label: "Medusa Option ID",
-          required: true,
-          admin: {
-            description: "The unique identifier for the option from Medusa",
-            hidden: true, // Hide this field in the admin UI
-          },
-          access: {
-            update: ({ req }) => !!req.query.is_from_medusa,
-          },
-        },
-      ],
-      validate: (value: any, { req, previousValue }) => {
-        // TODO add validation to ensure that the number of options cannot be changed
+      type: "relationship",
+      relationTo: "product-options" as any,
+      hasMany: true,
+      required: false,
+      admin: {
+        description: 'Product options (e.g., Size, Color)',
       },
     },
     {
@@ -543,41 +645,13 @@ export const Products: CollectionConfig = {
         },
         {
           name: "option_values",
-          type: "array",
-          fields: [
-            {
-              name: "medusa_id",
-              type: "text",
-              label: "Medusa Option Value ID",
-              required: true,
-              admin: {
-                description: "The unique identifier for the option value from Medusa",
-                hidden: true, // Hide this field in the admin UI
-              },
-              access: {
-                update: ({ req }) => !!req.query.is_from_medusa,
-              },
-            },
-            {
-              name: "medusa_option_id",
-              type: "text",
-              label: "Medusa Option ID",
-              required: true,
-              admin: {
-                description: "The unique identifier for the option from Medusa",
-                hidden: true, // Hide this field in the admin UI
-              },
-              access: {
-                update: ({ req }) => !!req.query.is_from_medusa,
-              },
-            },
-            {
-              name: "value",
-              type: "text",
-              label: "Value",
-              required: true,
-            },
-          ],
+          type: "relationship",
+          relationTo: "option-values" as any,
+          hasMany: true,
+          required: false,
+          admin: {
+            description: 'Option values for this variant',
+          },
         },
       ],
       validate: (value: any, { req, previousValue }) => {
@@ -605,8 +679,8 @@ You create a `Products` collection having the following fields:
 - `thumbnail`: An optional thumbnail image for the product.
 - `images`: An array of images for the product.
 - `seo`: A group of fields for SEO-related information, such as meta title, description, and keywords.
-- `options`: An array of product options, such as size or color.
-- `variants`: An array of product variants, each with its own title and option values.
+- `options`: An array of references to product options (by ID).
+- `variants`: An array of product variants, each with its own title and option value references (by ID).
 
 All of these fields will be filled from Medusa.
 
@@ -615,50 +689,13 @@ In addition, you also add the following [access-control](https://payloadcms.com/
 - You disallow creating or deleting products from the Payload admin, as these actions should only be performed from Medusa.
 - You disallow updating the `medusa_id` fields from the Payload admin, as these fields are managed by Medusa.
 
-#### Add Validation for Options and Variants
+#### Add Validation for Variants
 
-Payload admin users can only manage the content of product options and variants, but they shouldn't be able to remove or add new options or variants.
+Payload admin users can only manage the content of product variants, but they shouldn't be able to remove or add new variants.
 
-To ensure this behavior, you'll add validation to the `options` and `variants` fields in the `Products` collection.
+To ensure this behavior, you'll add validation to the `variants` field in the `Products` collection.
 
-First, replace the `validate` function in the `options` field with the following:
-
-```ts title="src/collections/Products.ts" badgeLabel="Storefront" badgeColor="blue"
-export const Products: CollectionConfig = {
-  // other configurations...
-  fields: [
-    // other fields...
-    {
-      name: "options",
-      // other configurations...
-      validate: (value: any, { req, previousValue }) => {
-        if (req.query.is_from_medusa) {
-          return true // Skip validation if the request is from Medusa
-        }
-        
-        if (!Array.isArray(value)) {
-          return "Options must be an array"
-        }
-
-        const optionsChanged = value.length !== previousValue?.length || value.some((option) => {
-          return !option.medusa_id || !previousValue?.some(
-            (prevOption) => (prevOption as any).medusa_id === option.medusa_id
-          )
-        })
-
-        // Prevent update if the number of options is changed
-        return !optionsChanged || "Options cannot be changed in number"
-      },
-    },
-  ],
-}
-```
-
-If the request is from Medusa (which is indicated by the `is_from_medusa` query parameter), the validation is skipped.
-
-Otherwise, you only allow updating the options if the number of options remains the same and each option has a `medusa_id` that matches an existing option in the previous value.
-
-Next, replace the `validate` function in the `variants` field with the following:
+Replace the `validate` function in the `variants` field with the following:
 
 ```ts title="src/collections/Products.ts" badgeLabel="Storefront" badgeColor="blue"
 export const Products: CollectionConfig = {
@@ -769,6 +806,8 @@ In `src/payload.config.ts`, add the following imports at the top of the file:
 import { Users } from "./collections/Users"
 import { Products } from "./collections/Products"
 import { Media } from "./collections/Media"
+import { ProductOptions } from "./collections/ProductOptions"
+import { OptionValues } from "./collections/OptionValues"
 ```
 
 Then, add the collections to the `collections` array of the `buildConfig` function:
@@ -780,6 +819,8 @@ export default buildConfig({
     Users,
     Products,
     Media,
+    ProductOptions,
+    OptionValues,
   ],
   // ...
 })
@@ -811,9 +852,9 @@ Then, open the Payload admin in your browser at `http://localhost:8000/admin`. T
 
 Then, you'll see a form to create a new admin user. Enter the user's credentials and submit the form.
 
-Once you're logged in, you can see the `Products`, `Users`, and `Media` collections in the Payload admin.
+Once you're logged in, you can see the `Products`, `Users`, `Media`, `ProductOptions`, and `OptionValues` collections in the Payload admin.
 
-![Payload Admin Dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1754477731/Medusa%20Resources/CleanShot_2025-08-06_at_13.55.06_2x_bhdkkd.png)
+![Payload Admin Dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1765808022/Medusa%20Resources/CleanShot_2025-12-15_at_16.12.59_2x_h7zxys.png)
 
 ---
 
@@ -1411,9 +1452,13 @@ The `list` method is implemented to be re-usable with different collections and 
 
 ---
 
-## Step 5: Create Payload Product Workflow
+## Step 5: Create Product Options in Payload
 
-In this step, you'll create the functionality to create a Medusa product in Payload. You'll later execute that functionality either when triggered by an admin user, or automatically when a product is created in Medusa.
+In Medusa, product options are shared globally across projects. So, you'll create a workflow that creates product options in Payload when a product option is created in Medusa.
+
+Then, you'll execute the workflow in a subscriber that is triggered whenever an option is created.
+
+### Create Product Options Workflow
 
 You create custom commerce features in [workflows](!docs!/learn/fundamentals/workflows). A workflow is a series of queries and actions, called steps, that complete a task. A workflow is similar to a function, but it allows you to track its executions' progress, define roll-back logic, and configure other advanced features.
 
@@ -1423,42 +1468,47 @@ Refer to the [Workflows documentation](!docs!/learn/fundamentals/workflows) to l
 
 </Note>
 
-The workflow to create a Payload product will have the following steps:
+The workflow to create product options in Payload will have the following steps:
 
 <WorkflowDiagram
   workflow={{
-    name: "createPayloadProductsWorkflow",
+    name: "createPayloadProductOptionsWorkflow",
     steps: [
       {
         type: "step",
         name: "useQueryGraphStep",
-        description: "Retrieve the product data from Medusa",
+        description: "Retrieve the product options from Medusa",
         link: "/references/helper-steps/useQueryGraphStep",
         depth: 1
       },
       {
         type: "step",
         name: "createPayloadItemsStep",
-        description: "Create the product in Payload",
-        depth: 2,
+        description: "Create the product options in Payload",
+        depth: 1
       },
       {
-        type: "workflow",
-        name: "updateProductsWorkflow",
-        description: "Store the Payload product ID in Medusa",
-        link: "/references/medusa-workflows/updateProductsWorkflow",
-        depth: 3,
+        type: "step",
+        name: "createPayloadItemsStep",
+        description: "Create the option values in Payload",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "updatePayloadItemsStep",
+        description: "Update product options to reference the values",
+        depth: 1
       }
     ]
   }}
   hideLegend
 />
 
-You only need to create the `createPayloadItemsStep`, as the other two steps are already available in Medusa.
+Medusa provides the `useQueryGraphStep` out of the box, so you'll create the rest of the steps yourself.
 
-### createPayloadItemsStep
+#### createPayloadItemsStep
 
-The `createPayloadItemsStep` will create an item in a Payload collection, such as `Products`.
+The `createPayloadItemsStep` will create an item in a Payload collection, such as `ProductOptions`, `OptionValues`, or `Products`.
 
 To create the step, create the file `src/workflows/steps/create-payload-items.ts` with the following content:
 
@@ -1544,23 +1594,401 @@ A step function must return a `StepResponse` instance. The `StepResponse` constr
 
 In the compensation function, you again resolve the Payload Module's service from the Medusa container, then delete the created items from Payload.
 
+#### updatePayloadItemsStep
+
+The `updatePayloadItemsStep` will update an item in a Payload collection, such as `ProductOptions` or `Products`.
+
+To create the step, create the file `src/workflows/steps/update-payload-items.ts` with the following content:
+
+```ts title="src/workflows/steps/update-payload-items.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { PayloadItemResult, PayloadUpsertData } from "../../modules/payload/types"
+import { PAYLOAD_MODULE } from "../../modules/payload"
+
+type StepInput = {
+  collection: string;
+  items: PayloadUpsertData[];
+}
+
+export const updatePayloadItemsStep = createStep(
+  "update-payload-items",
+  async ({ items, collection }: StepInput, { container }) => {
+    const payloadModuleService = container.resolve(PAYLOAD_MODULE)
+    const ids: string[] = items.map((item) => item.id)
+
+    const prevData = await payloadModuleService.find(collection, {
+      where: {
+        id: {
+          in: ids.join(","),
+        },
+      },
+    })
+
+    const updatedItems: PayloadItemResult[] = []
+
+    for (const item of items) {
+      const { id, ...data } = item
+      updatedItems.push(
+        await payloadModuleService.update(
+          collection,
+          data,
+          {
+            where: {
+              id: {
+                equals: id,
+              },
+            },
+          }
+        )
+      )
+    }
+
+    return new StepResponse({
+      items: updatedItems.map((item) => item.doc),
+    }, {
+      prevData,
+      collection,
+    })
+  },
+  async (data, { container }) => {
+    if (!data) {
+      return
+    }
+    const { prevData, collection } = data
+
+    const payloadModuleService = container.resolve(PAYLOAD_MODULE)
+
+    await Promise.all(
+      prevData.docs.map(async ({
+        id,
+        ...item
+      }) => {
+        await payloadModuleService.update(
+          collection,
+          item,
+          {
+            where: {
+              id: {
+                equals: id,
+              },
+            },
+          }
+        )
+      })
+    )
+  }
+)
+```
+
+In the step function, you retrieve the existing data from Payload to pass it to the compensation function. Then, you update the items in Payload.
+
+In the compensation function, you revert the changes made in the step function if an error occurs.
+
+#### Create Payload Product Options Workflow
+
+You already have the necessary steps, so you only need to create the workflow that uses these steps.
+
+Create the file `src/workflows/create-payload-product-options.ts` with the following content:
+
+```ts title="src/workflows/create-payload-product-options.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createWorkflow, transform, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+import { createPayloadItemsStep } from "./steps/create-payload-items";
+import { updatePayloadItemsStep } from "./steps/update-payload-items";
+import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types";
+
+type WorkflowInput = {
+  option_ids: string[]; 
+}
+
+export const createPayloadProductOptionsWorkflow = createWorkflow(
+  "create-payload-product-options",
+  ({ option_ids }: WorkflowInput) => {
+    const { data: productOptions } = useQueryGraphStep({
+      entity: "product_option",
+      fields: [
+        "id",
+        "title",
+        "values.id",
+        "values.value"
+      ],
+      filters: {
+        id: option_ids,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      }
+    })
+
+    // Create ProductOptions (without values initially)
+    const createOptionsData = transform({
+      productOptions
+    }, (data) => {
+      return {
+        collection: "product-options",
+        items: data.productOptions.map((option) => ({
+          medusa_id: option.id,
+          title: option.title,
+          values: [], // Will be populated after values are created
+        }))
+      }
+    })
+
+    const { items: createdOptions } = createPayloadItemsStep(createOptionsData)
+
+    // Create option values with option references
+    const createValuesData = transform({
+      productOptions,
+      createdOptions
+    }, (data) => {
+      const optionMap = new Map<string, PayloadCollectionItem>()
+      data.createdOptions.forEach((opt) => {
+        optionMap.set(opt.medusa_id, opt)
+      })
+
+      const valuesToCreate: PayloadUpsertData[] = []
+      data.productOptions.forEach((option) => {
+        const optionPayload = optionMap.get(option.id)
+        if (!optionPayload) return
+
+        option.values.forEach((value) => {
+          valuesToCreate.push({
+            medusa_id: value.id,
+            value: value.value,
+            option: optionPayload.id,
+          })
+        })
+      })
+
+      return {
+        collection: "option-values",
+        items: valuesToCreate
+      }
+    })
+
+    const { items: createdValues } = createPayloadItemsStep(createValuesData)
+      .config({ name: "create-payload-product-options-values" })
+
+    // Update ProductOptions with value references
+    const updateOptionsWithValues = transform({
+      productOptions,
+      createdOptions,
+      createdValues
+    }, (data) => {
+      const optionMap = new Map<string, PayloadCollectionItem>()
+      data.createdOptions.forEach((opt) => {
+        optionMap.set(opt.medusa_id, opt)
+      })
+
+      const valuesMap = new Map<string, PayloadCollectionItem>()
+      data.createdValues.forEach((v) => {
+        valuesMap.set(v.medusa_id, v)
+      })
+
+      const items: PayloadUpsertData[] = []
+      data.productOptions.forEach((option) => {
+        const payloadOption = optionMap.get(option.id)
+        if (!payloadOption) return
+
+        const valuePayloadIds = option.values
+          .map((value) => valuesMap.get(value.id)?.id)
+          .filter(Boolean) as string[]
+
+        items.push({
+          id: payloadOption.id,
+          values: valuePayloadIds,
+        })
+      })
+
+      return {
+        collection: "product-options",
+        items
+      }
+    })
+
+    updatePayloadItemsStep(updateOptionsWithValues)
+
+    return new WorkflowResponse({
+      items: createdOptions
+    })
+  }
+)
+```
+
+This workflow receives the IDs of the product options to create in Payload.
+
+In the workflow, you:
+
+1. Retrieve the product option details from Medusa using the `useQueryGraphStep`, including the option values.
+2. Create product options entries in Payload without values initially.
+3. Create option values entries in Payload, referencing the product options they belong to.
+4. Update the product options entries to reference their option values.
+5. Return the created product options from the workflow.
+
+### Product Option Created Subscriber
+
+To handle product option creation, you'll create a subscriber that executes the `createPayloadProductOptionsWorkflow` when the `product-option.created` event is emitted.
+
+A subscriber is an asynchronous function that is executed whenever its associated event is emitted.
+
+<Note>
+
+Refer to the [Subscribers documentation](!docs!/learn/fundamentals/events-and-subscribers) to learn more about subscribers.
+
+</Note>
+
+To create a subscriber, create the file `src/subscribers/product-option-created.ts` with the following content:
+
+```ts title="src/subscribers/product-option-created.ts" badgeLabel="Medusa application" badgeColor="green"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import { createPayloadProductOptionsWorkflow } from "../workflows/create-payload-product-options"
+
+export default async function productOptionCreatedHandler({ event: { data }, container }: SubscriberArgs<{ id: string }>) {
+  await createPayloadProductOptionsWorkflow(container)
+    .run({
+      input: {
+        option_ids: [data.id],
+      },
+    })
+}
+
+export const config: SubscriberConfig = {
+  event: "product-option.created",
+}
+```
+
+A subscriber file must export:
+
+- An asynchronous function, which is the subscriber function that is executed when the event is emitted.
+- A configuration object that defines the event the subscriber listens to.
+
+In the subscriber, you execute the `createPayloadProductOptionsWorkflow` with the created option's ID.
+
+#### Test Product Option Creation Handling
+
+To test the product option creation handling, make sure that both the Medusa application and the Next.js Starter Storefront are running.
+
+Then:
+
+1. Go to `localhost:9000/app` and log in.
+2. Go to Products -> Options.
+3. Create a product option, such as Size with values Small, Medium, Large.
+
+If you check the `ProductOptions` collection in Payload, you should see that the new option and its values have been created.
+
+
+---
+
+## Step 6: Create Payload Product Workflow
+
+In this step, you'll create the functionality to create a Medusa product in Payload. You'll later execute that functionality either when triggered by an admin user, or automatically when a product is created in Medusa.
+
+The workflow to create a Payload product will have the following steps:
+
+<WorkflowDiagram
+  workflow={{
+    name: "createPayloadProductsWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve the product data from Medusa",
+        link: "/references/helper-steps/useQueryGraphStep",
+        depth: 1
+      },
+      {
+        type: "step",
+        name: "retrievePayloadItemsStep",
+        description: "Retrieve the product options from Payload",
+        depth: 2,
+      },
+      {
+        type: "when",
+        condition: "createOptionIds.length > 0",
+        steps: [
+          {
+            type: "workflow",
+            name: "createPayloadProductOptionsWorkflow",
+            description: "Create new product options in Payload",
+            depth: 1,
+          }
+        ],
+        depth: 3,
+      },
+      {
+        type: "step",
+        name: "retrievePayloadItemsStep",
+        description: "Retrieve the option values from Payload to reference them in variants",
+        depth: 4,
+      },
+      {
+        type: "step",
+        name: "createPayloadItemsStep",
+        description: "Create the product in Payload",
+        depth: 5,
+      },
+      {
+        type: "workflow",
+        name: "updateProductsWorkflow",
+        description: "Store the Payload product ID in Medusa",
+        link: "/references/medusa-workflows/updateProductsWorkflow",
+        depth: 6,
+      }
+    ]
+  }}
+  hideLegend
+/>
+
+Medusa provides the `useQueryGraphStep` and `updateProductsWorkflow` out of the box. You'll implement the rest of the steps.
+
+#### retrievePayloadItemsStep
+
+The `retrievePayloadItemsStep` will retrieve items from a Payload collection, such as `ProductOptions` or `OptionValues`.
+
+To create the step, create the file `src/workflows/steps/retrieve-payload-items.ts` with the following content:
+
+```ts title="src/workflows/steps/retrieve-payload-items.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { PAYLOAD_MODULE } from "../../modules/payload"
+
+type StepInput = {
+  collection: string;
+  where: Record<string, any>;
+}
+
+export const retrievePayloadItemsStep = createStep(
+  "retrieve-payload-items",
+  async ({ where, collection }: StepInput, { container }) => {
+    const payloadModuleService = container.resolve(PAYLOAD_MODULE)
+
+    const items = await payloadModuleService.find(collection, {
+      where,
+    })
+
+    return new StepResponse({
+      items: items.docs,
+    })
+  }
+)
+```
+
+The step receives the collection slug and a `where` condition to specify which items to retrieve from Payload.
+
+You retrieve the items from Payload and return them as the step's output.
+
 ### Create Payload Product Workflow
 
 You can now create the workflow that creates products in Payload.
 
 To create the workflow, create the file `src/workflows/create-payload-products.ts` with the following content:
 
-export const createPayloadProductsWorkflowHighlights = [
-  ["12", "useQueryGraphStep", "Retrieve the products from Medusa using Query."],
-  ["36", "createData", "Prepare the data to create the products in Payload."],
-  ["66", "createPayloadItemsStep", "Create the products in Payload."],
-  ["81", "updateProductsWorkflow", "Update the products in Medusa with the Payload product IDs."],
-]
-
-```ts title="src/workflows/create-payload-products.ts" badgeLabel="Medusa application" badgeColor="green" highlights={createPayloadProductsWorkflowHighlights}
-import { createWorkflow, transform, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { createPayloadItemsStep } from "./steps/create-payload-items"
-import { updateProductsWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows"
+```ts title="src/workflows/create-payload-products.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { createPayloadItemsStep } from "./steps/create-payload-items";
+import { updateProductsWorkflow, useQueryGraphStep } from "@medusajs/medusa/core-flows";
+import { retrievePayloadItemsStep } from "./steps/retrieve-payload-items";
+import { createPayloadProductOptionsWorkflow } from "./create-payload-product-options";
+import { PayloadCollectionItem } from "../modules/payload/types";
 
 type WorkflowInput = {
   product_ids: string[]
@@ -1579,73 +2007,188 @@ export const createPayloadProductsWorkflow = createWorkflow(
         "description",
         "created_at",
         "updated_at",
-        "options.*",
-        "variants.*",
-        "variants.options.*",
-        "thumbnail",
-        "images.*",
+        "options.id",
+        "options.title",
+        "options.values.id",
+        "options.values.value",
+        "variants.title",
+        "variants.id",
+        "variants.options.id",
+        "variants.options.option.id",
+        "variants.options.option.value",
+        "thumbnail"
       ],
       filters: {
         id: input.product_ids,
       },
       options: {
         throwIfKeyNotFound: true,
-      },
-    })
-
-    const createData = transform({
-      products,
-    }, (data) => {
-      return {
-        collection: "products",
-        items: data.products.map((product) => ({
-          medusa_id: product.id,
-          createdAt: product.created_at as string,
-          updatedAt: product.updated_at as string,
-          title: product.title,
-          handle: product.handle,
-          subtitle: product.subtitle,
-          description: product.description || "",
-          options: product.options.map((option) => ({
-            title: option.title,
-            medusa_id: option.id,
-          })),
-          variants: product.variants.map((variant) => ({
-            title: variant.title,
-            medusa_id: variant.id,
-            option_values: variant.options.map((option) => ({
-              medusa_id: option.id,
-              medusa_option_id: option.option?.id,
-              value: option.value,
-            })),
-          })),
-        })),
       }
     })
 
-    const { items } = createPayloadItemsStep(
+    // Check which options already exist in Payload
+    const {
+      retrieve_data: retrieveOptionsData,
+      option_ids: allOptionIds
+    } = transform({
+      products
+    }, (data) => {
+      const optionIds = new Set<string>()
+      data.products.forEach((product) => {
+        product.options.forEach((option) => {
+          if (option.id) {
+            optionIds.add(option.id)
+          }
+        })
+      })
+      const allOptionIds = Array.from(optionIds)
+      return {
+        retrieve_data: {
+          collection: "product-options",
+          where: {
+            medusa_id: {
+              in: allOptionIds.join(",")
+            }
+          }
+        },
+        option_ids: allOptionIds
+      }
+    })
+
+    const { items: existingOptions } = retrievePayloadItemsStep(retrieveOptionsData)
+
+    // Create missing options
+    const createOptionIds = transform({
+      allOptionIds,
+      existingOptions
+    }, (data) => {
+      const existingMedusaIds = new Set(
+        (data.existingOptions || []).map((o) => o.medusa_id)
+      )
+
+      const optionIdsToCreate = data.allOptionIds.filter(
+        (optionId: string) => !existingMedusaIds.has(optionId)
+      )
+
+      return optionIdsToCreate
+    })
+
+    const createdOptionsResult = when({ createOptionIds }, (data) => data.createOptionIds.length > 0)
+      .then(() => {
+        return createPayloadProductOptionsWorkflow.runAsStep({
+          input: {
+            option_ids: createOptionIds
+          }
+        })
+      })
+
+    // Combine existing and created options
+    const allPayloadOptions = transform({
+      existingOptions,
+      createdOptionsResult
+    }, (data) => {
+      return [
+        ...(data.existingOptions || []),
+        ...(data.createdOptionsResult?.items || [])
+      ]
+    })
+
+    // Retrieve existing option values and create products
+    const retrieveValuesData = transform({
+      products
+    }, (data) => {
+      const valueIds = new Set<string>()
+      data.products.forEach((product) => {
+        product.variants.forEach((variant) => {
+          variant.options.forEach((opt) => {
+            valueIds.add(opt.id)
+          })
+        })
+      })
+      return {
+        collection: "option-values",
+        where: {
+          medusa_id: {
+            in: Array.from(valueIds).join(",")
+          }
+        }
+      }
+    })
+
+    const { items: existingValues } = retrievePayloadItemsStep(retrieveValuesData)
+      .config({ name: "retrieve-payload-option-values" })
+
+    // Create products with option references
+    const createData = transform({
+      products,
+      allPayloadOptions,
+      existingValues
+    }, (data) => {
+      const optionMap = new Map<string, PayloadCollectionItem>()
+      data.allPayloadOptions.forEach((option) => {
+        optionMap.set(option.medusa_id, option)
+      })
+
+      const valuesMap = new Map<string, string>()
+      ;(data.existingValues || []).forEach((v) => {
+        valuesMap.set(v.medusa_id, v.id)
+      })
+
+      return {
+        collection: "products",
+        items: data.products.map((product) => {
+          const productOptionIds = (product.options || [])
+            .map((option) => optionMap.get(option.id)?.id)
+            .filter(Boolean) as string[]
+
+          return {
+            medusa_id: product.id,
+            createdAt: product.created_at as string,
+            updatedAt: product.updated_at as string,
+            title: product.title,
+            subtitle: product.subtitle,
+            description: product.description || "",
+            options: productOptionIds,
+            variants: product.variants.map((variant) => {
+              const optionValueIds = (variant.options || [])
+                .map((opt) => valuesMap.get(opt.id))
+                .filter(Boolean) as string[]
+
+              return {
+                title: variant.title,
+                medusa_id: variant.id,
+                option_values: optionValueIds,
+              }
+            }),
+          }
+        })
+      }
+    })
+
+    const { items: createdProducts } = createPayloadItemsStep(
       createData
     )
 
+    // Store payload_id in metadata
     const updateData = transform({
-      items,
+      createdProducts
     }, (data) => {
-      return data.items.map((item) => ({
+      return data.createdProducts.map((item) => ({
         id: item.medusa_id,
         metadata: {
           payload_id: item.id,
-        },
+        }
       }))
     })
 
     updateProductsWorkflow.runAsStep({
       input: {
-        products: updateData,
-      },
+        products: updateData
+      }
     })
 
     return new WorkflowResponse({
-      items,
+      items: createdProducts
     })
   }
 )
@@ -1659,12 +2202,16 @@ In the workflow, you:
 
 1. Retrieve the products from Medusa using the `useQueryGraphStep`.
     - This step uses [Query](!docs!/learn/fundamentals/module-links/query) to retrieve data across modules.
-2. Prepare the data to create the products in Payload.
+2. Check which product options already exist in Payload by retrieving them using `retrievePayloadItemsStep`.
     - To manipulate data in a workflow, you need to use the `transform` function. Learn more in the [Data Manipulation](!docs!/learn/fundamentals/workflows/variable-manipulation) documentation.
-3. Create the products in Payload using the `createPayloadItemsStep` you created earlier.
-4. Prepare the data to update the products in Medusa with the Payload product IDs.
+3. Create missing product options using the `createPayloadProductOptionsWorkflow` if any options don't exist yet.
+    - To run steps based on a condition, you need to use the `when` function. Learn more in the [Conditions in Workflows](!docs!/learn/fundamentals/workflows/conditions) documentation.
+4. Retrieve existing option values from Payload.
+5. Prepare the data to create the products in Payload, referencing options and option values by their Payload IDs.
+6. Create the products in Payload using the `createPayloadItemsStep` you created earlier.
+7. Prepare the data to update the products in Medusa with the Payload product IDs.
     - You store the payload ID in the `metadata` field of the Medusa product.
-5. Update the products in Medusa using the `updateProductsWorkflow`.
+8. Update the products in Medusa using the `updateProductsWorkflow`.
 
 A workflow must return an instance of `WorkflowResponse` that accepts the data to return to the workflow's executor.
 
@@ -1932,7 +2479,7 @@ If you click on a product, you can edit its details, such as its title or descri
 
 ---
 
-## Step 7: Automatically Create Product in Payload
+## Step 8: Automatically Create Product in Payload
 
 In this step, you'll handle the `product.created` event to automatically create a product in Payload whenever a product is created in Medusa.
 
@@ -1973,7 +2520,7 @@ Then, create a product in Medusa using the Medusa Admin. If you check the Produc
 
 ---
 
-## Step 8: Customize Storefront to Display Payload Products
+## Step 9: Customize Storefront to Display Payload Products
 
 Now that you've integrated Payload with Medusa, you can customize the Next.js Starter Storefront to display product content from Payload. By doing so, you can show product content and assets that are optimized for the storefront.
 
@@ -2429,7 +2976,7 @@ If you click on a product, you'll see the product details page with the product 
 
 ---
 
-## Step 9: Handle Medusa Product Events
+## Step 10: Handle Medusa Product Events
 
 In this step, you'll create subscribers and workflows to handle the following Medusa product events:
 
@@ -2437,8 +2984,9 @@ In this step, you'll create subscribers and workflows to handle the following Me
 - [product-variant.created](#b-handle-product-variant-creation): Add a product variant to a product in Payload when a product variant is created in Medusa.
 - [product-variant.updated](#c-handle-product-variant-updates): Update a product variant's option values in Payload when a product variant is updated in Medusa.
 - [product-variant.deleted](#d-handle-product-variant-deletions): Remove a product's variant in Payload when a product variant is deleted in Medusa.
-- [product-option.created](#e-handle-product-option-creation): Add a product option to a product in Payload when a product option is created in Medusa.
-- [product-option.deleted](#f-handle-product-option-deletions): Remove a product's option in Payload when a product option is deleted in Medusa.
+- [product-option.deleted](#e-handle-product-option-deletions): Remove a product option from Payload when a product option is deleted in Medusa.
+- [product-option.updated](#f-handle-product-option-updates): Update a product option and its values in Payload when a product option is updated in Medusa.
+- [product.updated](#g-handle-product-updates): Update a product's option references in Payload when a product is updated in Medusa.
 
 ### a. Handle Product Deletions
 
@@ -2614,6 +3162,12 @@ The workflow will have the following steps:
         depth: 1
       },
       {
+        type: "step",
+        name: "retrievePayloadItemsStep",
+        description: "Retrieve the option values from Payload to reference them in the variant",
+        depth: 2
+      },
+      {
         type: "when",
         steps: [
           {
@@ -2623,113 +3177,24 @@ The workflow will have the following steps:
             depth: 1
           }
         ],
-        depth: 2,
+        depth: 3,
       }
     ]
   }}
 />
 
-You only need to create the `updatePayloadItemsStep` step.
-
-#### updatePayloadItemsStep
-
-The `updatePayloadItemsStep` will update an item in a Payload collection, such as `Products`.
-
-To create the step, create the file `src/workflows/steps/update-payload-items.ts` with the following content:
-
-```ts title="src/workflows/steps/update-payload-items.ts" badgeLabel="Medusa application" badgeColor="green"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { PayloadItemResult, PayloadUpsertData } from "../../modules/payload/types"
-import { PAYLOAD_MODULE } from "../../modules/payload"
-
-type StepInput = {
-  collection: string;
-  items: PayloadUpsertData[];
-}
-
-export const updatePayloadItemsStep = createStep(
-  "update-payload-items",
-  async ({ items, collection }: StepInput, { container }) => {
-    const payloadModuleService = container.resolve(PAYLOAD_MODULE)
-    const ids: string[] = items.map((item) => item.id)
-
-    const prevData = await payloadModuleService.find(collection, {
-      where: {
-        id: {
-          in: ids.join(","),
-        },
-      },
-    })
-
-    const updatedItems: PayloadItemResult[] = []
-
-    for (const item of items) {
-      const { id, ...data } = item
-      updatedItems.push(
-        await payloadModuleService.update(
-          collection,
-          data,
-          {
-            where: {
-              id: {
-                equals: id,
-              },
-            },
-          }
-        )
-      )
-    }
-
-    return new StepResponse({
-      items: updatedItems.map((item) => item.doc),
-    }, {
-      prevData,
-      collection,
-    })
-  },
-  async (data, { container }) => {
-    if (!data) {
-      return
-    }
-    const { prevData, collection } = data
-
-    const payloadModuleService = container.resolve(PAYLOAD_MODULE)
-
-    await Promise.all(
-      prevData.docs.map(async ({
-        id,
-        ...item
-      }) => {
-        await payloadModuleService.update(
-          collection,
-          item,
-          {
-            where: {
-              id: {
-                equals: id,
-              },
-            },
-          }
-        )
-      })
-    )
-  }
-)
-```
-
-In the step function, you retrieve the existing data from Payload to pass it to the compensation function. Then, you update the items in Payload.
-
-In the compensation function, you revert the changes made in the step function if an error occurs.
+You already have the necessary steps, so you only need to create the workflow that uses these steps.
 
 #### Create Payload Product Variant Workflow
 
 Create the file `src/workflows/create-payload-product-variant.ts` with the following content:
 
 ```ts title="src/workflows/create-payload-product-variant.ts" badgeLabel="Medusa application" badgeColor="green"
-import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
-import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types"
-import { updatePayloadItemsStep } from "./steps/update-payload-items"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types";
+import { retrievePayloadItemsStep } from "./steps/retrieve-payload-items";
+import { updatePayloadItemsStep } from "./steps/update-payload-items";
 
 type WorkflowInput = {
   variant_ids: string[]; 
@@ -2743,41 +3208,66 @@ export const createPayloadProductVariantWorkflow = createWorkflow(
       fields: [
         "id",
         "title",
-        "options.*",
-        "options.option.*",
-        "product.payload_product.*",
+        "options.id",
+        "options.option.id",
+        "product.payload_product.*"
       ],
       filters: {
         id: variant_ids,
       },
       options: {
         throwIfKeyNotFound: true,
-      },
+      }
     })
+
+    // Retrieve existing option values
+    const retrieveValuesData = transform({
+      productVariants
+    }, (data) => {
+      const valueIds = new Set<string>()
+      data.productVariants.forEach((variant) => {
+        variant.options.forEach((opt) => valueIds.add(opt.id))
+      })
+      return {
+        collection: "option-values",
+        where: { 
+          medusa_id: { 
+            in: Array.from(valueIds).join(",")
+          }
+        }
+      }
+    })
+
+    const { items: existingValues } = retrievePayloadItemsStep(retrieveValuesData)
 
     const updateData = transform({
       productVariants,
+      existingValues
     }, (data) => {
-      const items: Record<string, PayloadUpsertData> = {}
+      const valuesMap = new Map<string, string>()
+      ;(data.existingValues || []).forEach((v) => {
+        valuesMap.set(v.medusa_id, v.id)
+      })
 
+      const items: Record<string, PayloadUpsertData> = {}
       data.productVariants.forEach((variant) => {
-        // @ts-expect-error
-        const payloadProduct = variant.product?.payload_product as PayloadCollectionItem
-        if (!payloadProduct) {return}
+        const payloadProduct = (variant.product as any)?.payload_product as PayloadCollectionItem
+        if (!payloadProduct) return
+        
         if (!items[payloadProduct.id]) {
           items[payloadProduct.id] = {
             variants: payloadProduct.variants || [],
           }
         }
 
+        const optionValueIds = (variant.options || [])
+          .map((opt) => valuesMap.get(opt.id))
+          .filter(Boolean) as string[]
+
         items[payloadProduct.id].variants.push({
           title: variant.title,
           medusa_id: variant.id,
-          option_values: variant.options.map((option) => ({
-            medusa_id: option.id,
-            medusa_option_id: option.option?.id,
-            value: option.value,
-          })),
+          option_values: optionValueIds,
         })
       })
       
@@ -2798,7 +3288,7 @@ export const createPayloadProductVariantWorkflow = createWorkflow(
     const items = transform({ result }, (data) => data.result?.items || [])
 
     return new WorkflowResponse({
-      items,
+      items
     })
   }
 )
@@ -2809,9 +3299,10 @@ This workflow receives the IDs of the product variants to add to Payload.
 In the workflow, you:
 
 1. Retrieve the product variant details from Medusa using the `useQueryGraphStep`, including the linked product data from Payload.
-2. Prepare the data to update the product in Payload by adding the new variant to the existing variants array.
-3. Update the product in Payload using the `updatePayloadItemsStep` if there are any items to update.
-4. Return the updated items from the workflow.
+2. Retrieve existing option values from Payload using `retrievePayloadItemsStep` to reference them in the variant.
+3. Prepare the data to update the product in Payload by adding the new variant to the existing variants array, referencing option values by their Payload IDs.
+4. Update the product in Payload using the `updatePayloadItemsStep` if there are any items to update.
+5. Return the updated items from the workflow.
 
 #### Product Variant Created Subscriber
 
@@ -2870,6 +3361,12 @@ The workflow will have the following steps:
         depth: 1
       },
       {
+        type: "step",
+        name: "retrievePayloadItemsStep",
+        description: "Retrieve the option values from Payload to reference them in the variant",
+        depth: 2
+      },
+      {
         type: "when",
         steps: [{
           type: "step",
@@ -2877,7 +3374,7 @@ The workflow will have the following steps:
           description: "Update the variant in the product in Payload",
           depth: 1
         }],
-        depth: 2,
+        depth: 3,
       }
     ]
   }}
@@ -2885,15 +3382,16 @@ The workflow will have the following steps:
 
 #### Update Payload Product Variants Workflow
 
-Since you already have the necessary steps, you only need to create the workflow that uses these steps.
+You already have the necessary steps, so you only need to create the workflow that uses these steps.
 
 Create the file `src/workflows/update-payload-product-variants.ts` with the following content:
 
 ```ts title="src/workflows/update-payload-product-variants.ts" badgeLabel="Medusa application" badgeColor="green"
-import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
-import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types"
-import { updatePayloadItemsStep } from "./steps/update-payload-items"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types";
+import { retrievePayloadItemsStep } from "./steps/retrieve-payload-items";
+import { updatePayloadItemsStep } from "./steps/update-payload-items";
 
 type WorkflowInput = {
   variant_ids: string[]; 
@@ -2907,27 +3405,51 @@ export const updatePayloadProductVariantsWorkflow = createWorkflow(
       fields: [
         "id",
         "title",
-        "options.*",
-        "options.option.*",
-        "product.payload_product.*",
+        "options.id",
+        "options.option.id",
+        "product.payload_product.*"
       ],
       filters: {
         id: variant_ids,
       },
       options: {
         throwIfKeyNotFound: true,
-      },
+      }
     })
+
+    // Retrieve existing option values
+    const retrieveValuesData = transform({
+      productVariants
+    }, (data) => {
+      const valueIds = new Set<string>()
+      data.productVariants.forEach((variant) => {
+        variant.options.forEach((opt) => valueIds.add(opt.id))
+      })
+      return {
+        collection: "option-values",
+        where: {
+          medusa_id: {
+            in: Array.from(valueIds).join(",")
+          }
+        }
+      }
+    })
+
+    const { items: existingValues } = retrievePayloadItemsStep(retrieveValuesData)
 
     const updateData = transform({
       productVariants,
+      existingValues
     }, (data) => {
-      const items: Record<string, PayloadUpsertData> = {}
+      const valuesMap = new Map<string, string>()
+      ;(data.existingValues || []).forEach((v) => {
+        valuesMap.set(v.medusa_id, v.id)
+      })
 
+      const items: Record<string, PayloadUpsertData> = {}
       data.productVariants.forEach((variant) => {
-        // @ts-expect-error
-        const payloadProduct = variant.product?.payload_product as PayloadCollectionItem
-        if (!payloadProduct) {return}
+        const payloadProduct = (variant.product as any)?.payload_product as PayloadCollectionItem | undefined
+        if (!payloadProduct) return
         
         if (!items[payloadProduct.id]) {
           items[payloadProduct.id] = {
@@ -2935,35 +3457,25 @@ export const updatePayloadProductVariantsWorkflow = createWorkflow(
           }
         }
 
-        // Find and update the existing variant in the payload product
+        const optionValueIds = (variant.options || [])
+          .map((opt) => valuesMap.get(opt.id))
+          .filter(Boolean) as string[]
+
         const existingVariantIndex = items[payloadProduct.id].variants.findIndex(
-          (v: any) => v.medusa_id === variant.id
+          (v) => v.medusa_id === variant.id
         )
 
         if (existingVariantIndex >= 0) {
-          // check if option values need to be updated
-          const existingVariant = items[payloadProduct.id].variants[existingVariantIndex]
-          const updatedOptionValues = variant.options.map((option) => ({
-            medusa_id: option.id,
-            medusa_option_id: option.option?.id,
-            value: existingVariant.option_values.find((ov: any) => ov.medusa_id === option.id)?.value || 
-              option.value,
-          }))
-
           items[payloadProduct.id].variants[existingVariantIndex] = {
-            ...existingVariant,
-            option_values: updatedOptionValues,
+            ...items[payloadProduct.id].variants[existingVariantIndex],
+            title: variant.title,
+            option_values: optionValueIds,
           }
         } else {
-          // Add the new variant to the payload product
           items[payloadProduct.id].variants.push({
             title: variant.title,
             medusa_id: variant.id,
-            option_values: variant.options.map((option) => ({
-              medusa_id: option.id,
-              medusa_option_id: option.option?.id,
-              value: option.value,
-            })),
+            option_values: optionValueIds,
           })
         }
       })
@@ -2985,7 +3497,7 @@ export const updatePayloadProductVariantsWorkflow = createWorkflow(
     const items = transform({ result }, (data) => data.result?.items || [])
 
     return new WorkflowResponse({
-      items,
+      items
     })
   }
 )
@@ -2996,9 +3508,10 @@ This workflow receives the IDs of the product variants to update in Payload.
 In the workflow, you:
 
 1. Retrieve the product variant details from Medusa using the `useQueryGraphStep`, including the linked product data from Payload.
-2. Prepare the data to update the product in Payload by finding and updating the existing variant in the variants array. You only update the variant's option values, in case a new one is added.
-3. Update the product in Payload using the `updatePayloadItemsStep` if there are any items to update.
-4. Return the updated items from the workflow.
+2. Retrieve existing option values from Payload using `retrievePayloadItemsStep` to reference them in the variant.
+3. Prepare the data to update the product in Payload by finding and updating the existing variant in the variants array, referencing option values by their Payload IDs.
+4. Update the product in Payload using the `updatePayloadItemsStep` if there are any items to update.
+5. Return the updated items from the workflow.
 
 #### Product Variant Updated Subscriber
 
@@ -3070,41 +3583,6 @@ The workflow will have the following steps:
     ]
   }}
 />
-
-#### retrievePayloadItemsStep
-
-Since the `deletePayloadProductVariantsWorkflow` is executed after a product variant is deleted, you can't retrieve the product variant data from Medusa.
-
-Instead, you'll create a step that retrieves the products containing the variants from Payload. You'll then use this data to update the products in Payload.
-
-To create the step, create the file `src/workflows/steps/retrieve-payload-items.ts` with the following content:
-
-```ts title="src/workflows/steps/retrieve-payload-items.ts" badgeLabel="Medusa application" badgeColor="green"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { PAYLOAD_MODULE } from "../../modules/payload"
-
-type StepInput = {
-  collection: string;
-  where: Record<string, any>;
-}
-
-export const retrievePayloadItemsStep = createStep(
-  "retrieve-payload-items",
-  async ({ where, collection }: StepInput, { container }) => {
-    const payloadModuleService = container.resolve(PAYLOAD_MODULE)
-
-    const items = await payloadModuleService.find(collection, {
-      where,
-    })
-
-    return new StepResponse({
-      items: items.docs,
-    })
-  }
-)
-```
-
-This step accepts a collection slug and a `where` condition to specify which items to retrieve from Payload, then returns the found items.
 
 #### Delete Payload Product Variants Workflow
 
@@ -3215,179 +3693,15 @@ Then, open the Medusa Admin at `localhost:9000/app` and open a product's details
 
 If you check the product in Payload, you should see that the variant has been removed from the product's variants array.
 
-### e. Handle Product Option Creation
+### e. Handle Product Option Deletions
 
-To handle the `product-option.created` event, you'll create a workflow that adds the new option to the corresponding product in Payload.
+<Note title="Tip">
 
-The workflow will have the following steps:
+Product option creation is handled in [Step 5](#step-5-create-product-options-in-payload), where you created the `createPayloadProductOptionsWorkflow` and its subscriber.
 
-<WorkflowDiagram
-  workflow={{
-    name: "createPayloadProductOptionsWorkflow",
-    steps: [
-      {
-        type: "step",
-        name: "useQueryGraphStep",
-        description: "Retrieve the product option from Medusa",
-        link: "/references/helper-steps/useQueryGraphStep",
-        depth: 1
-      },
-      {
-        type: "when",
-        steps: [
-          {
-            type: "step",
-            name: "updatePayloadItemsStep",
-            description: "Add the option to the product in Payload",
-            depth: 1
-          }
-        ],
-        depth: 2
-      }
-    ]
-  }}
-/>
+</Note>
 
-#### Create Payload Product Options Workflow
-
-You already have the necessary steps, so you only need to create the workflow that uses these steps.
-
-Create the file `src/workflows/create-payload-product-options.ts` with the following content:
-
-```ts title="src/workflows/create-payload-product-options.ts" badgeLabel="Medusa application" badgeColor="green"
-import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
-import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types"
-import { updatePayloadItemsStep } from "./steps/update-payload-items"
-
-type WorkflowInput = {
-  option_ids: string[]; 
-}
-
-export const createPayloadProductOptionsWorkflow = createWorkflow(
-  "create-payload-product-options",
-  ({ option_ids }: WorkflowInput) => {
-    const { data: productOptions } = useQueryGraphStep({
-      entity: "product_option",
-      fields: [
-        "id",
-        "title",
-        "product.payload_product.*",
-      ],
-      filters: {
-        id: option_ids,
-      },
-      options: {
-        throwIfKeyNotFound: true,
-      },
-    })
-
-    const updateData = transform({
-      productOptions,
-    }, (data) => {
-      const items: Record<string, PayloadUpsertData> = {}
-
-      data.productOptions.forEach((option) => {
-        // @ts-expect-error
-        const payloadProduct = option.product?.payload_product as PayloadCollectionItem
-        if (!payloadProduct) {return}
-        
-        if (!items[payloadProduct.id]) {
-          items[payloadProduct.id] = {
-            options: payloadProduct.options || [],
-          }
-        }
-
-        // Add the new option to the payload product
-        const newOption = {
-          title: option.title,
-          medusa_id: option.id,
-        }
-
-        // Check if option already exists, if not add it
-        const existingOptionIndex = items[payloadProduct.id].options.findIndex(
-          (o: any) => o.medusa_id === option.id
-        )
-        
-        if (existingOptionIndex === -1) {
-          items[payloadProduct.id].options.push(newOption)
-        }
-      })
-      
-      return {
-        collection: "products",
-        items: Object.keys(items).map((id) => ({
-          id,
-          ...items[id],
-        })),
-      }
-    })
-
-    const result = when({ updateData }, (data) => data.updateData.items.length > 0)
-      .then(() => {
-        return updatePayloadItemsStep(updateData)
-      })
-
-    const items = transform({ result }, (data) => data.result?.items || [])
-
-    return new WorkflowResponse({
-      items,
-    })
-  }
-)
-```
-
-This workflow receives the IDs of the product options to add to Payload.
-
-In the workflow, you:
-
-1. Retrieve the product option details from Medusa using the `useQueryGraphStep`, including the linked product data from Payload.
-2. Prepare the data to update the product in Payload by adding the new option to the existing options array, checking if it doesn't already exist.
-3. Update the product in Payload using the `updatePayloadItemsStep` if there are any items to update.
-4. Return the updated items from the workflow.
-
-#### Product Option Created Subscriber
-
-Finally, you'll create the subscriber that executes the workflow when the `product-option.created` event is emitted.
-
-Create the file `src/subscribers/option-created.ts` with the following content:
-
-```ts title="src/subscribers/option-created.ts" badgeLabel="Medusa application" badgeColor="green"
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
-import { createPayloadProductOptionsWorkflow } from "../workflows/create-payload-product-options"
-
-export default async function productOptionCreatedHandler({
-  event: { data },
-  container,
-}: SubscriberArgs<{
-  id: string
-}>) {
-  await createPayloadProductOptionsWorkflow(container)
-    .run({
-      input: {
-        option_ids: [data.id],
-      },
-    })
-}
-
-export const config: SubscriberConfig = {
-  event: "product-option.created",
-}
-```
-
-This subscriber listens to the `product-option.created` event and executes the `createPayloadProductOptionsWorkflow` with the created option's ID.
-
-#### Test Product Option Creation Handling
-
-To test the product option creation handling, make sure that both the Medusa application and the Next.js Starter Storefront are running.
-
-Then, open the Medusa Admin at `localhost:9000/app` and open a product's details page. Add a new option to the product and save the changes.
-
-If you check the product in Payload, you should see that the new option has been added to the product's options array.
-
-### f. Handle Product Option Deletions
-
-To handle the `product-option.deleted` event, you'll create a workflow that removes the option from the corresponding product in Payload.
+To handle the `product-option.deleted` event, you'll create a workflow that deletes the product option and its values from Payload.
 
 The workflow will have the following steps:
 
@@ -3398,7 +3712,7 @@ The workflow will have the following steps:
       {
         type: "step",
         name: "retrievePayloadItemsStep",
-        description: "Retrieve the products containing the option from Payload",
+        description: "Retrieve the product options to delete from Payload",
         depth: 1
       },
       {
@@ -3406,12 +3720,18 @@ The workflow will have the following steps:
         steps: [
           {
             type: "step",
-            name: "updatePayloadItemsStep",
-            description: "Remove the option from the product in Payload",
+            name: "deletePayloadItemsStep",
+            description: "Delete the option values from Payload",
             depth: 1
           }
         ],
         depth: 2
+      },
+      {
+        type: "step",
+        name: "deletePayloadItemsStep",
+        description: "Delete the option from Payload",
+        depth: 3
       }
     ]
   }}
@@ -3425,8 +3745,8 @@ Create the file `src/workflows/delete-payload-product-options.ts` with the follo
 
 ```ts title="src/workflows/delete-payload-product-options.ts" badgeLabel="Medusa application" badgeColor="green"
 import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
-import { updatePayloadItemsStep } from "./steps/update-payload-items"
 import { retrievePayloadItemsStep } from "./steps/retrieve-payload-items"
+import { deletePayloadItemsStep } from "./steps/delete-payload-items"
 
 type WorkflowInput = {
   option_ids: string[]
@@ -3435,50 +3755,69 @@ type WorkflowInput = {
 export const deletePayloadProductOptionsWorkflow = createWorkflow(
   "delete-payload-product-options",
   ({ option_ids }: WorkflowInput) => {
-    const retrieveData = transform({
-      option_ids,
+    // Retrieve the options to get their Payload IDs
+    const retrieveOptionsData = transform({
+      option_ids
     }, (data) => {
       return {
-        collection: "products",
+        collection: "product-options",
         where: {
-          "options.medusa_id": {
-            in: data.option_ids.join(","),
-          },
-        },
+          medusa_id: {
+            in: data.option_ids.join(",")
+          }
+        }
       }
     })
 
-    const { items: payloadProducts } = retrievePayloadItemsStep(retrieveData)
+    const { items: payloadOptions } = retrievePayloadItemsStep(retrieveOptionsData)
 
-    const updateData = transform({
-      payloadProducts,
-      option_ids,
+    // Step 2: Delete OptionValues (after products are updated, if any)
+    const deleteValuesData = transform({
+      payloadOptions,
     }, (data) => {
-      const items = data.payloadProducts.map((payloadProducts) => ({
-        id: payloadProducts.id,
-        options: payloadProducts.options.filter((o: any) => !data.option_ids.includes(o.medusa_id)),
-        variants: payloadProducts.variants.map((variant: any) => ({
-          ...variant,
-          option_values: variant.option_values.filter((ov: any) => !data.option_ids.includes(ov.medusa_option_id)),
-        })),
-      }))
-      
+      if (!data.payloadOptions || data.payloadOptions.length === 0) {
+        return null
+      }
+      const valueIds: string[] = []
+      data.payloadOptions.forEach((option) => {
+        option.values.forEach((value) => {
+          valueIds.push(value.id)
+        })
+      })
       return {
-        collection: "products",
-        items,
+        collection: "option-values",
+        where: {
+          id: {
+            in: valueIds.join(",")
+          }
+        }
       }
     })
 
-    const result = when({ updateData }, (data) => data.updateData.items.length > 0)
+    const deleteValuesResult = when({ deleteValuesData }, (data) => data.deleteValuesData !== null)
       .then(() => {
-        return updatePayloadItemsStep(updateData)
+        return deletePayloadItemsStep(deleteValuesData).config({ name: "delete-payload-option-values" })
       })
 
-    const items = transform({ result }, (data) => data.result?.items || [])
-
-    return new WorkflowResponse({
-      items,
+    // Step 3: Delete ProductOptions (after values are deleted, if any)
+    // This step always runs, ensuring sequential execution
+    const deleteOptionsData = transform({
+      payloadOptions,
+      deleteValuesResult
+    }, (data) => {
+      return {
+        collection: "product-options",
+        where: {
+          id: {
+            in: data.payloadOptions.map((opt: any) => opt.id).join(",")
+          }
+        }
+      }
     })
+
+    deletePayloadItemsStep(deleteOptionsData)
+
+    return new WorkflowResponse(void 0)
   }
 )
 ```
@@ -3487,10 +3826,11 @@ This workflow receives the IDs of the product options to delete from Payload.
 
 In the workflow, you:
 
-1. Retrieve the products that contain the options to be deleted using the `retrievePayloadItemsStep`.
-2. Prepare the data to update the products in Payload by filtering out the options that should be deleted.
-3. Update the products in Payload using the `updatePayloadItemsStep` if there are any items to update.
-4. Return the updated items from the workflow.
+1. Retrieve the product option entries from Payload using the `retrievePayloadItemsStep`.
+2. Delete the option values that belong to these options using the `deletePayloadItemsStep`.
+3. Delete the product options entries using the `deletePayloadItemsStep`.
+
+The workflow ensures that option values are deleted before product options to maintain referential integrity and avoid errors when deleting product options.
 
 #### Product Option Deleted Subscriber
 
@@ -3512,7 +3852,7 @@ export default async function productOptionDeletedHandler({
     .run({
       input: {
         option_ids: [data.id],
-      },
+      }
     })
 }
 
@@ -3527,9 +3867,457 @@ This subscriber listens to the `product-option.deleted` event and executes the `
 
 To test the product option deletion handling, make sure that both the Medusa application and the Next.js Starter Storefront are running.
 
-Then, open the Medusa Admin at `localhost:9000/app` and open a product's details page. Delete an existing option from the product.
+Then:
 
-If you check the product in Payload, you should see that the option has been removed from the product's options array.
+1. Go to `localhost:9000/app` and log in.
+2. Go to Products -> Options.
+3. Delete an existing option that isn't used by products.
+
+If you check the `ProductOptions` collection in Payload, you should see that the option has been removed.
+
+### f. Handle Product Option Updates
+
+To handle the `product-option.updated` event, you'll create a workflow that updates the product option and its values in Payload.
+
+Create the file `src/workflows/update-payload-product-options.ts` with the following content:
+
+```ts title="src/workflows/update-payload-product-options.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+import { retrievePayloadItemsStep } from "./steps/retrieve-payload-items";
+import { createPayloadItemsStep } from "./steps/create-payload-items";
+import { updatePayloadItemsStep } from "./steps/update-payload-items";
+import { deletePayloadItemsStep } from "./steps/delete-payload-items";
+import { PayloadCollectionItem, PayloadUpsertData } from "../modules/payload/types";
+
+type WorkflowInput = {
+  option_ids: string[]; 
+}
+
+export const updatePayloadProductOptionsWorkflow = createWorkflow(
+  "update-payload-product-options",
+  ({ option_ids }: WorkflowInput) => {
+    const { data: productOptions } = useQueryGraphStep({
+      entity: "product_option",
+      fields: [
+        "id",
+        "title",
+        "values.id",
+        "values.value"
+      ],
+      filters: {
+        id: option_ids,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      }
+    })
+
+    // Retrieve existing options from Payload
+    const retrieveOptionsData = transform({
+      productOptions
+    }, (data) => {
+      return {
+        collection: "product-options",
+        where: {
+          medusa_id: {
+            in: data.productOptions.map((o: any) => o.id).join(",")
+          }
+        }
+      }
+    })
+
+    const { items: existingOptions } = retrievePayloadItemsStep(retrieveOptionsData)
+
+    // Retrieve existing option values for these options
+    const retrieveValuesData = transform({
+      existingOptions
+    }, (data) => {
+      if (data.existingOptions.length === 0) {
+        return null
+      }
+      const optionPayloadIds = data.existingOptions.map((opt: any) => opt.id)
+      return {
+        collection: "option-values",
+        where: {
+          option: {
+            in: optionPayloadIds.join(",")
+          }
+        }
+      }
+    })
+
+    const { items: existingValues } = retrievePayloadItemsStep(retrieveValuesData)
+      .config({ name: "retrieve-payload-option-values" })
+
+    // Create new OptionValues and identify values to delete
+    const { createValuesData, deleteValuesData } = transform({
+      productOptions,
+      existingOptions,
+      existingValues
+    }, (data) => {
+      const existingValueIds = new Set(
+        (data.existingValues || []).map((v) => v.medusa_id)
+      )
+      const optionToPayloadId = new Map<string, string>()
+      data.existingOptions.forEach((opt) => {
+        optionToPayloadId.set(opt.medusa_id, opt.id)
+      })
+
+      const valuesToCreate: PayloadUpsertData[] = []
+      const currentValueIds = new Set<string>()
+
+      data.productOptions.forEach((option) => {
+        const optionPayloadId = optionToPayloadId.get(option.id)
+        if (!optionPayloadId) return
+
+        option.values.forEach((value) => {
+          currentValueIds.add(value.id)
+          
+          // Only create if it doesn't exist
+          if (!existingValueIds.has(value.id)) {
+            valuesToCreate.push({
+              medusa_id: value.id,
+              value: value.value,
+              option: optionPayloadId,
+            })
+          }
+        })
+      })
+
+      // Find values to delete (exist in Payload but not in current Medusa option values)
+      const valuesToDelete = (data.existingValues || []).filter((v) => {
+        return !currentValueIds.has(v.medusa_id)
+      })
+
+      const deletedMedusaIdsSet = new Set(valuesToDelete.map((v) => v.medusa_id))
+
+      return {
+        createValuesData: {
+          collection: "option-values",
+          items: valuesToCreate
+        },
+        deleteValuesData: {
+          collection: "option-values",
+          where: {
+            medusa_id: {
+              in: Array.from(deletedMedusaIdsSet).join(",")
+            }
+          }
+        },
+      }
+    })
+
+    const createdValuesResult = when({ createValuesData }, (data) => data.createValuesData.items.length > 0)
+      .then(() => {
+        return createPayloadItemsStep(createValuesData)
+      })
+
+    when({ deleteValuesData }, (data) => data.deleteValuesData.where.medusa_id.in.length > 0)
+      .then(() => {
+        return deletePayloadItemsStep(deleteValuesData)
+      })
+
+    // Update ProductOptions with value references
+    const updateOptionsData = transform({
+      productOptions,
+      existingOptions,
+      createdValuesResult,
+      existingValues,
+      deleteValuesData
+    }, (data) => {
+      const deletedMedusaIds = new Set(
+        data.deleteValuesData.where.medusa_id.in.split(",")
+      )
+      
+      const allValues = [
+        ...(data.createdValuesResult?.items || []), 
+        ...(data.existingValues || [])
+      ].filter((v) => !deletedMedusaIds.has(v.medusa_id))
+
+      const optionMap = new Map<string, PayloadCollectionItem>()
+      data.existingOptions.forEach((opt) => {
+        optionMap.set(opt.medusa_id, opt)
+      })
+
+      const items = data.productOptions
+        .map((option) => {
+          const existing = optionMap.get(option.id)
+          if (!existing) return null
+
+          const valueIds = allValues
+            .filter((v) => v.option?.id === existing.id)
+            .map((v) => v.id)
+
+          return {
+            id: existing.id,
+            values: valueIds,
+          }
+        })
+        .filter((item): item is NonNullable<typeof item> => item !== null)
+      
+      return {
+        collection: "product-options",
+        items,
+      }
+    })
+
+    const result = when({ updateOptionsData }, (data) => data.updateOptionsData.items.length > 0)
+      .then(() => {
+        return updatePayloadItemsStep(updateOptionsData)
+      })
+
+    const items = transform({ result }, (data) => data.result?.items || [])
+
+    return new WorkflowResponse({
+      items
+    })
+  }
+)
+```
+
+This workflow updates product options and their values in Payload when they are updated in Medusa. It handles creating new option values, updating existing ones, and deleting values that are no longer present.
+
+#### Product Option Updated Subscriber
+
+To handle product option updates, you'll create a subscriber that executes the `updatePayloadProductOptionsWorkflow` when the `product-option.updated` event is emitted.
+
+Create the file `src/subscribers/option-updated.ts` with the following content:
+
+```ts title="src/subscribers/option-updated.ts" badgeLabel="Medusa application" badgeColor="green"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import { updatePayloadProductOptionsWorkflow } from "../workflows/update-payload-product-options"
+
+export default async function productOptionUpdatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{
+  id: string
+}>) {
+  await updatePayloadProductOptionsWorkflow(container)
+    .run({
+      input: {
+        option_ids: [data.id],
+      }
+    })
+}
+
+export const config: SubscriberConfig = {
+  event: "product-option.updated",
+}
+```
+
+This subscriber listens to the `product-option.updated` event and executes the `updatePayloadProductOptionsWorkflow` with the updated option's ID.
+
+#### Test Product Option Update Handling
+
+To test the product option update handling, make sure that both the Medusa application and the Next.js Starter Storefront are running.
+
+Then:
+
+1. Go to `localhost:9000/app` and log in.
+2. Go to Products -> Options.
+3. Update an existing option's values. For example, add or remove a value.
+
+If you check the `ProductOptions` collection in Payload, you should see that the option values have been updated.
+
+### g. Handle Product Updates
+
+To handle the `product.updated` event, you'll create a workflow that updates the product's option references in Payload.
+
+Create the file `src/workflows/update-payload-products.ts` with the following content:
+
+```ts title="src/workflows/update-payload-products.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
+import { retrievePayloadItemsStep } from "./steps/retrieve-payload-items";
+import { updatePayloadItemsStep } from "./steps/update-payload-items";
+import { PayloadUpsertData } from "../modules/payload/types";
+import { createPayloadProductOptionsWorkflow } from "./create-payload-product-options";
+
+type WorkflowInput = {
+  product_ids: string[]
+}
+
+export const updatePayloadProductsWorkflow = createWorkflow(
+  "update-payload-products",
+  (input: WorkflowInput) => {
+    const { data: products } = useQueryGraphStep({
+      entity: "product",
+      fields: [
+        "id",
+        "title",
+        "handle",
+        "subtitle",
+        "description",
+        "updated_at",
+        "options.id",
+        "options.title",
+        "options.values.id",
+        "options.values.value",
+        "metadata.payload_id",
+      ],
+      filters: {
+        id: input.product_ids,
+      },
+      options: {
+        throwIfKeyNotFound: true,
+      }
+    })
+    
+    // Check which options already exist in Payload
+    const retrieveOptionsData = transform({
+      products
+    }, (data) => {
+      const optionIds = new Set<string>()
+      data.products.forEach((product) => {
+        product.options.forEach((option) => {
+          optionIds.add(option.id)
+        })
+      })
+      return {
+        collection: "product-options",
+        where: {
+          medusa_id: {
+            in: Array.from(optionIds).join(",")
+          }
+        }
+      }
+    })
+
+    const { items: existingOptions } = retrievePayloadItemsStep(retrieveOptionsData)
+
+    // Create missing options
+    const optionsToCreate = transform({
+      products,
+      existingOptions
+    }, (data) => {
+      const existingMedusaIds = new Set(
+        (data.existingOptions || []).map((o) => o.medusa_id)
+      )
+
+      const optionsToCreate: Set<string> = new Set()
+      data.products.forEach((product) => {
+        product.options.forEach((option) => {
+          if (!existingMedusaIds.has(option.id)) {
+            optionsToCreate.add(option.id)
+          }
+        })
+      })
+
+      return Array.from(optionsToCreate)
+    })
+
+    const createdOptionsResult = when({ optionsToCreate }, (data) => data.optionsToCreate.length > 0)
+      .then(() => {
+        return createPayloadProductOptionsWorkflow.runAsStep({
+          input: {
+            option_ids: optionsToCreate
+          }
+        })
+      })
+
+    // Combine existing and created options
+    const allPayloadOptions = transform({
+      existingOptions,
+      createdOptionsResult
+    }, (data) => {
+      return [
+        ...(data.existingOptions || []),
+        ...(data.createdOptionsResult?.items || [])
+      ]
+    })
+
+    // Update products with option references
+    const updateData = transform({
+      products,
+      allPayloadOptions
+    }, (data) => {
+      const optionMap = new Map<string, string>()
+      data.allPayloadOptions.forEach((option: any) => {
+        optionMap.set(option.medusa_id, option.id)
+      })
+
+      const items = data.products
+        .map((product) => {
+          const payloadProductId = product.metadata?.payload_id
+          if (!payloadProductId) return null
+
+          const productOptionIds = (product.options || [])
+            .map((option) => optionMap.get(option.id))
+            .filter(Boolean) as string[]
+
+          return {
+            id: payloadProductId,
+            options: productOptionIds,
+          }
+        })
+        .filter((item): item is NonNullable<typeof item> => item !== null)
+      
+      return {
+        collection: "products",
+        items: items as PayloadUpsertData[],
+      }
+    })
+
+    const { items: updatedProducts } = updatePayloadItemsStep(updateData)
+
+    return new WorkflowResponse({
+      items: updatedProducts
+    })
+  }
+)
+```
+
+In the workflow, you:
+
+1. Retrieve the products from Medusa using the `useQueryGraphStep`.
+2. Check which product options already exist in Payload by retrieving them using `retrievePayloadItemsStep`.
+3. Create missing product options using the `createPayloadProductOptionsWorkflow` if any options don't exist yet.
+4. Update the products in Payload with the option references using the `updatePayloadItemsStep`.
+
+#### Product Updated Subscriber
+
+To handle the `product.updated` event, you'll create a subscriber that executes the `updatePayloadProductsWorkflow` when the `product.updated` event is emitted.
+
+Create the file `src/subscribers/product-updated.ts` with the following content:
+
+```ts title="src/subscribers/product-updated.ts" badgeLabel="Medusa application" badgeColor="green"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
+import { updatePayloadProductsWorkflow } from "../workflows/update-payload-products"
+
+export default async function productUpdatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{
+  id: string
+}>) {
+  await updatePayloadProductsWorkflow(container)
+    .run({
+      input: {
+        product_ids: [data.id],
+      }
+    })
+}
+
+export const config: SubscriberConfig = {
+  event: "product.updated",
+}
+```
+
+This subscriber listens to the `product.updated` event and executes the `updatePayloadProductsWorkflow` with the updated product's ID.
+
+#### Test Product Update Handling
+
+To test the product update handling, make sure that both the Medusa application and the Next.js Starter Storefront are running.
+
+Then:
+
+1. Go to `localhost:9000/app` and log in.
+2. Go to Products -> Products.
+3. Update an existing product's options. For example, add or remove an option.
+
+If you check the `Products` collection in Payload, you should see that the product options have been updated.
 
 ---
 
