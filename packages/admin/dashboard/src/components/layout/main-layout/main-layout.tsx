@@ -173,19 +173,6 @@ const Header = () => {
               </Link>
             </DropdownMenu.Item>
             <DropdownMenu.Separator />
-            <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
-              <Text
-                size="small"
-                leading="compact"
-                className="text-ui-fg-subtle"
-              >
-                {t("layout.customizeTopbar")}
-              </Text>
-              <LayoutCustomizerSlot
-                location={LAYOUT_TRIGGER_LOCATIONS.SIDEBAR_HEADER}
-              />
-            </div>
-            <DropdownMenu.Separator />
             <Logout />
           </DropdownMenu.Content>
         )}
@@ -399,9 +386,18 @@ const UtilitySection = () => {
 }
 
 const UserSection = () => {
+  const { t } = useTranslation()
   return (
     <div>
       <div className="px-3">
+        <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
+          <Text size="small" leading="compact" className="text-ui-fg-subtle">
+            {t("layout.customizeTopbar")}
+          </Text>
+          <LayoutCustomizerSlot
+            location={LAYOUT_TRIGGER_LOCATIONS.SIDEBAR_HEADER}
+          />
+        </div>
         <Divider variant="dashed" />
       </div>
       <UserMenu />
