@@ -17,6 +17,8 @@ import {
   parallelize,
   StepResponse,
   transform,
+  useQueryGraphStep,
+  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -215,11 +217,38 @@ export const createCartWorkflow = createWorkflow(
     )
     const setPricingContextResult = setPricingContext.getResult()
 
+    /**
+     * Load the customer together with their groups so that customer-group-scoped
+     * price lists are matched when pricing the initial line items. The
+     * find-or-create-customer step does not load groups, so without this the
+     * pricing context would be missing `customer.groups.id`.
+     */
+    const customerId = transform(
+      { customerData },
+      (data) => data.customerData.customer?.id
+    )
+
+    const customerForPricing = when(
+      "fetch-customer-groups",
+      { customerId },
+      ({ customerId }) => !!customerId
+    ).then(() => {
+      const { data: customer } = useQueryGraphStep({
+        entity: "customer",
+        fields: ["id", "groups.id"],
+        filters: { id: customerId },
+        options: { isList: false },
+      }).config({ name: "customer-groups-query" })
+
+      return customer
+    })
+
     const getVariantsAndItemsWithPricesInput = transform(
       {
         input,
         region,
         customerData,
+        customerForPricing,
         setPricingContextResult,
         variantIds,
         productVariantsFields,
@@ -232,6 +261,7 @@ export const createCartWorkflow = createWorkflow(
             region: data.region,
             region_id: data.region?.id,
             customer_id: data.customerData.customer?.id,
+            customer: data.customerForPricing,
           },
           items: data.input.items,
           setPricingContextResult: data.setPricingContextResult!,
