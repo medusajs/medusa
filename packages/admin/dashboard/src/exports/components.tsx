@@ -19,6 +19,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   sections,
   data,
   hasOutlet = true,
+  disableWidgets = false,
 }: LayoutComposerProps<TLayoutId, TData>) => {
   return (
     <LayoutComposerImpl
@@ -30,6 +31,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       triggerLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR}
       controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
       controlSize="default"
+      disableWidgets={disableWidgets}
     />
   )
 }
