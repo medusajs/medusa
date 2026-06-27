@@ -6,6 +6,11 @@ export type LayoutCustomizerHostValue = {
   /** DOM node registered for each location, or `null` when unmounted. */
   hosts: Record<string, HTMLElement | null>
   setHost: (location: string, node: HTMLElement | null) => void
+  /**
+   * Id of the composer currently in edit mode, or `null` when none is.
+   */
+  activeEditor: string | null
+  setActiveEditor: (id: string | null) => void
 }
 
 /**
@@ -20,6 +25,7 @@ export const LayoutCustomizerHostProvider = ({
   children: ReactNode
 }) => {
   const [hosts, setHosts] = useState<Record<string, HTMLElement | null>>({})
+  const [activeEditor, setActiveEditor] = useState<string | null>(null)
 
   const setHost = useCallback((location: string, node: HTMLElement | null) => {
     setHosts((prev) => {
@@ -30,7 +36,10 @@ export const LayoutCustomizerHostProvider = ({
     })
   }, [])
 
-  const value = useMemo(() => ({ hosts, setHost }), [hosts, setHost])
+  const value = useMemo(
+    () => ({ hosts, setHost, activeEditor, setActiveEditor }),
+    [hosts, setHost, activeEditor, setActiveEditor]
+  )
 
   return (
     <LayoutCustomizerHostContext.Provider value={value}>

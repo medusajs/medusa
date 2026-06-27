@@ -1135,6 +1135,9 @@
         "customizeTopbar": {
           "type": "string"
         },
+        "customizeSidebar": {
+          "type": "string"
+        },
         "personalView": {
           "type": "string"
         },
@@ -1166,6 +1169,7 @@
       "required": [
         "customizeWidgets",
         "customizeTopbar",
+        "customizeSidebar",
         "personalView",
         "defaultView",
         "empty",

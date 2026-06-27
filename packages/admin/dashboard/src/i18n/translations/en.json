@@ -283,6 +283,7 @@
   "layout": {
     "customizeWidgets": "Customize widgets",
     "customizeTopbar": "Customize top bar",
+    "customizeSidebar": "Customize sidebar",
     "personalView": "Personal",
     "defaultView": "Default",
     "empty": "Empty",

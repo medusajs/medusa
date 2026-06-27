@@ -12,3 +12,18 @@ export const useLayoutCustomizerTriggerHost = (
 ): HTMLElement | null => {
   return useContext(LayoutCustomizerHostContext)?.hosts[location] ?? null
 }
+
+/**
+ * Shared single-edit-session registry. Composers register their id while
+ * editing so others can lock their trigger to avoid multiple edits at once.
+ */
+export const useLayoutCustomizerActiveEditor = (): {
+  activeEditor: string | null
+  setActiveEditor: (id: string | null) => void
+} => {
+  const ctx = useContext(LayoutCustomizerHostContext)
+  return {
+    activeEditor: ctx?.activeEditor ?? null,
+    setActiveEditor: ctx?.setActiveEditor ?? (() => {}),
+  }
+}

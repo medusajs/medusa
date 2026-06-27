@@ -216,7 +216,7 @@ const Topbar = () => {
           preferredLayoutId="core:single-row"
           sections={{ main: <Notifications /> }}
           hasOutlet={false}
-          triggerLocation={LAYOUT_TRIGGER_LOCATIONS.SIDEBAR_HEADER}
+          triggerLocation={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_TOPBAR}
           controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
           controlSize="xsmall"
         />

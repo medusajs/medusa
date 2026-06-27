@@ -4,7 +4,8 @@
  * the shell.
  */
 export const LAYOUT_TRIGGER_LOCATIONS = {
-  /** The icon button slot in the app shell's top bar (default). */
+  /** The icon button slot in the app shell's top bar — the page layout's
+   * trigger (default). */
   TOPBAR: "topbar",
   /**
    * A dedicated top-bar slot for edit-mode controls (Cancel/Save), kept
@@ -12,6 +13,8 @@ export const LAYOUT_TRIGGER_LOCATIONS = {
    * controls in the top bar without colliding with another composer's trigger.
    */
   TOPBAR_CONTROLS: "topbar-controls",
-  /** A row inside the dropdown of the main sidebar's header. */
-  SIDEBAR_HEADER: "sidebar-header",
+  /** "Customize top bar" row in the user dropdown. */
+  CUSTOMIZE_TOPBAR: "customize-topbar",
+  /** "Customize sidebar" row in the user dropdown. */
+  CUSTOMIZE_SIDEBAR: "customize-sidebar",
 } as const

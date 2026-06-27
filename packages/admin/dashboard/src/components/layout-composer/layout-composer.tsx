@@ -6,6 +6,7 @@ import {
   Fragment,
   ReactNode,
   useCallback,
+  useId,
   useMemo,
   useState,
 } from "react"
@@ -13,7 +14,10 @@ import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
 import { useExtension } from "../../providers/extension-provider/use-extension"
-import { useLayoutCustomizerTriggerHost } from "../../hooks/use-layout-customizer-trigger-host"
+import {
+  useLayoutCustomizerActiveEditor,
+  useLayoutCustomizerTriggerHost,
+} from "../../hooks/use-layout-customizer-trigger-host"
 import {
   DisplayEntry,
   RawEntry,
@@ -21,6 +25,8 @@ import {
   buildDisplayEntries,
   extractSectionElements,
 } from "./entries"
+import { type LayoutEditContextValue } from "../../providers/layout-edit-provider/layout-edit-context"
+import { LayoutEditProvider } from "../../providers/layout-edit-provider/layout-edit-provider"
 import { SectionDropzone } from "./section-dropzone"
 import { EntryContent, SortableEntry } from "./sortable-entry"
 import type {
@@ -85,6 +91,15 @@ export type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
    * @default "default"
    */
   controlSize?: LayoutControlSize
+  /**
+   * Skip widget injection zones entirely: no registered widgets are resolved
+   * for `widgetsZonePrefix`, so only the core `sections` entries are composed.
+   * Used by surfaces that are purely reorderable nav (e.g. the sidebars) where
+   * extensions shouldn't inject content.
+   *
+   * @default false
+   */
+  disableWidgets?: boolean
 }
 
 /**
@@ -120,6 +135,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   triggerLocation = LAYOUT_TRIGGER_LOCATIONS.TOPBAR,
   controlsLocation = triggerLocation,
   controlSize = "default",
+  disableWidgets = false,
 }: LayoutComposerProps<TLayoutId, TData>) => {
   const { getWidgetsForSections, getLayout } = useExtension()
   const {
@@ -131,8 +147,14 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   } = useLayoutPreference(widgetsZonePrefix)
   const triggerHost = useLayoutCustomizerTriggerHost(triggerLocation)
   const controlsHost = useLayoutCustomizerTriggerHost(controlsLocation)
+  const { activeEditor, setActiveEditor } = useLayoutCustomizerActiveEditor()
+  const editorId = useId()
   const { t } = useTranslation()
   const prompt = usePrompt()
+
+  // Another composer is mid-edit; lock this one's trigger so the two don't both
+  // try to drive the shared top-bar controls slot at once.
+  const locked = activeEditor !== null && activeEditor !== editorId
 
   const [editMode, setEditMode] = useState(false)
   const [draft, setDraft] = useState<LayoutPreference | null>(null)
@@ -174,10 +196,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       const coreElementsBySection = extractSectionElements(
         sections as Record<string, ReactNode>
       )
-      const naturalWidgets = getWidgetsForSections(
-        widgetsZonePrefix,
-        layout?.sections?.map((s) => s.id) ?? []
-      )
+      const naturalWidgets = disableWidgets
+        ? {}
+        : getWidgetsForSections(
+            widgetsZonePrefix,
+            layout?.sections?.map((s) => s.id) ?? []
+          )
 
       // Build raw entries (core + widgets) at their natural sections. Relative
       // placement before any user preference comes purely from the order they
@@ -231,6 +255,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       layout,
       activePreference,
       getWidgetsForSections,
+      disableWidgets,
     ])
 
   const {
@@ -246,6 +271,28 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     validSectionIds,
     setDraft,
   })
+
+  const isHidden = useCallback(
+    (id: string): boolean => activePreference.widgets[id]?.hidden ?? false,
+    [activePreference]
+  )
+
+  const toggleHidden = useCallback((widgetId: string) => {
+    setDraft((prev) => {
+      if (!prev) {
+        return prev
+      }
+      const current = prev.widgets[widgetId] ?? {}
+      const nextWidget: WidgetPreference = {
+        ...current,
+        hidden: !current.hidden,
+      }
+      return {
+        ...prev,
+        widgets: { ...prev.widgets, [widgetId]: nextWidget },
+      }
+    })
+  }, [])
 
   // Renders a single entry for the current mode: plain content at idle, a
   // sortable wrapper with chrome in edit mode. An entry that currently renders
@@ -270,30 +317,54 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         </SortableEntry>
       )
     },
-    [data, editMode, controlSize]
+    [data, editMode, controlSize, toggleHidden]
   )
 
-  function toggleHidden(widgetId: string) {
+  // Nested-children ordering shared with entries via `LayoutEditContext`. Reads
+  // order from the active preference (draft while editing, persisted otherwise)
+  // and writes into the draft so nested moves ride the same save/cancel flow.
+  const orderChildren = useCallback(
+    <T,>(children: T[], getId: (child: T) => string): T[] =>
+      [...children].sort(
+        (a, b) =>
+          (activePreference.widgets[getId(a)]?.order ?? 0) -
+          (activePreference.widgets[getId(b)]?.order ?? 0)
+      ),
+    [activePreference]
+  )
+
+  const setChildrenOrder = useCallback((orderedIds: string[]) => {
     setDraft((prev) => {
       if (!prev) {
         return prev
       }
-      const current = prev.widgets[widgetId] ?? {}
-      const nextWidget: WidgetPreference = {
-        ...current,
-        hidden: !current.hidden,
-      }
-      return {
-        ...prev,
-        widgets: { ...prev.widgets, [widgetId]: nextWidget },
-      }
+      const widgets = { ...prev.widgets }
+      orderedIds.forEach((id, index) => {
+        widgets[id] = { ...(widgets[id] ?? {}), order: index }
+      })
+      return { ...prev, widgets }
     })
-  }
+  }, [])
+
+  const editContextValue = useMemo<LayoutEditContextValue>(
+    () => ({
+      editMode,
+      orderChildren,
+      setChildrenOrder,
+      isHidden,
+      toggleHidden,
+    }),
+    [editMode, orderChildren, setChildrenOrder, isHidden, toggleHidden]
+  )
 
   function enterEdit() {
+    if (locked) {
+      return
+    }
     setEditScope(activeScope)
     setDraft(preferenceForScope(activeScope))
     setEditMode(true)
+    setActiveEditor(editorId)
   }
 
   // When the user clicks a scope badge while editing:
@@ -323,6 +394,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
 
     if (!draft) {
       setEditMode(false)
+      setActiveEditor(null)
       return
     }
 
@@ -333,6 +405,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         onSuccess: () => {
           setEditMode(false)
           setDraft(null)
+          setActiveEditor(null)
         },
       }
     )
@@ -341,6 +414,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   function cancelEdit() {
     setEditMode(false)
     setDraft(null)
+    setActiveEditor(null)
   }
 
   const renderedSections: Record<string, ReactNode> = useMemo(() => {
@@ -379,6 +453,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       size="small"
       variant="transparent"
       onClick={enterEdit}
+      disabled={locked}
       aria-label={t("layout.customizeWidgets")}
       className="text-ui-fg-muted hover:text-ui-fg-subtle"
     >
@@ -432,7 +507,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   const layoutNode = <LayoutComponent sections={renderedSections} data={data} />
 
   return (
-    <>
+    <LayoutEditProvider value={editContextValue}>
       {/* Portal the controls into host. I.e:
        * - in idle mode: show idleTrigger inside triggerHost(topbar or sidebar)
        * - in edit mode: show editControls inside controlHost(topbar), idleTrigger disappears
@@ -459,6 +534,6 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         layoutNode
       )}
       {hasOutlet && <Outlet />}
-    </>
+    </LayoutEditProvider>
   )
 }

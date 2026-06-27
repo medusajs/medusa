@@ -12,7 +12,7 @@ export type LayoutComponentProps = {
   data?: unknown
 }
 
-export type LayoutControlSize = "default" | "xsmall"
+export type LayoutControlSize = "default" | "small" | "xsmall"
 
 export type LayoutDefinition = {
   id: string

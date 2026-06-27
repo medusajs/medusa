@@ -83,6 +83,8 @@ export function SortableEntry({
   }
 
   const xsmall = controlSize === "xsmall"
+  const small = controlSize === "small"
+  const showLabel = controlSize === "default"
 
   return (
     <div
@@ -123,12 +125,12 @@ export function SortableEntry({
       <div
         className={clx(
           "bg-ui-bg-base shadow-elevation-card-rest absolute flex items-center rounded-md",
-          xsmall
-            ? "right-0 top-0 flex-col gap-y-0.5 p-0 opacity-50"
-            : "right-2 top-2 gap-x-1 p-1"
+          xsmall && "right-0 top-0 flex-col gap-y-0.5 p-0 opacity-50",
+          small && "right-1.5 top-1.5 gap-x-0.5 p-0.5",
+          showLabel && "right-2 top-2 gap-x-1 p-1"
         )}
       >
-        {!xsmall && (
+        {showLabel && (
           <span className="text-ui-fg-muted px-1 font-mono text-xs">
             {widgetId} ({order})
           </span>
@@ -138,7 +140,7 @@ export function SortableEntry({
           variant="transparent"
           onClick={onToggleHidden}
           aria-label={hidden ? t("actions.show") : t("actions.hide")}
-          className={clx(xsmall && "h-3 w-3 p-0")}
+          className={clx(xsmall && "h-3 w-3 p-0", small && "h-3.5 w-3.5 p-0.5")}
         >
           {hidden ? <EyeSlash /> : <Eye />}
         </IconButton>
@@ -146,7 +148,9 @@ export function SortableEntry({
           type="button"
           className={clx(
             "text-ui-fg-muted cursor-grab touch-none rounded focus:outline-none",
-            xsmall ? "p-0" : "p-1"
+            xsmall && "p-0",
+            small && "p-0.5",
+            showLabel && "p-1"
           )}
           {...attributes}
           {...listeners}
