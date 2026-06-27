@@ -10,16 +10,15 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Payment Providers", () => {
       let appContainer
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
-
-      beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should list payment providers", async () => {

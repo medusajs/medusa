@@ -13,6 +13,8 @@ export const normalizeProductFormValues = (
     ?.filter((media) => !media.isThumbnail)
     .map((media) => ({ url: media.url }))
 
+  const options = values.options.filter((o) => o.title) // clean temp. values
+
   return {
     status: values.status,
     is_giftcard: false,
@@ -41,7 +43,10 @@ export const normalizeProductFormValues = (
     length: values.length ? parseFloat(values.length) : undefined,
     height: values.height ? parseFloat(values.height) : undefined,
     weight: values.weight ? parseFloat(values.weight) : undefined,
-    options: values.options.filter((o) => o.title), // clean temp. values
+    options: options.map((option) => {
+      const { id, value_ids, ...rest } = option
+      return id ? { id, value_ids } : { ...rest, is_exclusive: true }
+    }),
     variants: normalizeVariants(
       values.variants.filter((variant) => variant.should_create),
       values.regionsCurrencyMap

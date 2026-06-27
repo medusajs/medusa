@@ -1,14 +1,16 @@
 import type { ComponentType, ReactNode } from "react"
-import type { CORE_LAYOUT_IDS } from "./constants"
+import type {
+  LayoutSection,
+  Layouts,
+  SectionNameFor,
+} from "@medusajs/admin-shared"
 
-export type CoreLayoutId =
-  (typeof CORE_LAYOUT_IDS)[keyof typeof CORE_LAYOUT_IDS]
+export type { LayoutSection, Layouts, SectionNameFor }
 
-export type WidgetRenderEntry = {
-  order: number
-  Component: ComponentType
+export type LayoutComponentProps = {
+  sections: Record<string, ReactNode>
+  data?: unknown
 }
-export type SectionWidgetMap = Record<string, WidgetRenderEntry[]>
 
 export type LayoutDefinition = {
   id: string
@@ -16,30 +18,21 @@ export type LayoutDefinition = {
   Component: ComponentType<LayoutComponentProps>
 }
 
-export type LayoutSection = {
-  id: string
+export type WidgetPreference = {
+  hidden?: boolean
+  /** Override which section this widget appears in */
+  section?: string
+  /** Override sort order within the section */
+  order?: number
 }
 
-export type LayoutComponentProps = {
-  sections: Record<string, ReactNode>
-  data?: unknown
+/** Per-zone user preferences for widget placement and visibility. */
+export type LayoutPreference = {
+  widgets: Record<string, WidgetPreference>
 }
 
-/**
- * Registry mapping each known layout id to the union of valid section names
- * for that layout. Plugins can augment this interface to add type-safe section
- * names for their custom layouts.
- *
- * @example
- * ```ts
- * declare module "@medusajs/dashboard/components" {
- *   interface LayoutSectionRegistry {
- *     "my-plugin:three-column": "main" | "left" | "right"
- *   }
- * }
- * ```
- */
-export interface LayoutSectionRegistry {
-  [CORE_LAYOUT_IDS.SINGLE_COLUMN]: "main"
-  [CORE_LAYOUT_IDS.TWO_COLUMN]: "main" | "side"
+export type WidgetRenderEntry = {
+  Component: ComponentType
+  widgetId: string
 }
+export type SectionWidgetMap = Record<string, WidgetRenderEntry[]>

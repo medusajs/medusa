@@ -19,7 +19,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe.skip("GET /store/products/:id", () => {
       let appContainer
       let product
@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
         appContainer = getContainer()
         const publishableKey = await generatePublishableKey(appContainer)
@@ -71,6 +71,8 @@ medusaIntegrationTestRunner({
         ).data.product
 
         variant = product.variants[0]
+
+        await dbUtils.snapshot()
       })
 
       it("should get product and its prices from price-list created through the price list workflow", async () => {

@@ -18,7 +18,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Remote Query", () => {
       let appContainer
       let regionModule: IRegionModuleService
@@ -34,8 +34,10 @@ medusaIntegrationTestRunner({
         remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should fail to retrieve a single non-existing id", async () => {

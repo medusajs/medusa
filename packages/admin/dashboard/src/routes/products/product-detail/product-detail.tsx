@@ -1,7 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { JsonViewSection } from "../../../components/common/json-view-section"
+import { MetadataSection } from "../../../components/common/metadata-section"
+import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
 import { ProductGeneralSection } from "./components/product-general-section"
@@ -13,7 +17,6 @@ import { ProductVariantSection } from "./components/product-variant-section"
 import { ExtendedProduct, PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
-import { useExtension } from "../../../providers/extension-provider"
 import { ProductShippingProfileSection } from "./components/product-shipping-profile-section"
 
 export const ProductDetail = () => {
@@ -29,13 +32,6 @@ export const ProductDetail = () => {
       initialData: initialData,
     }
   )
-
-  const { getWidgets } = useExtension()
-
-  const after = getWidgets("product.details.after")
-  const before = getWidgets("product.details.before")
-  const sideAfter = getWidgets("product.details.side.after")
-  const sideBefore = getWidgets("product.details.side.before")
 
   if (isLoading || !product) {
     return (
@@ -53,29 +49,33 @@ export const ProductDetail = () => {
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        after,
-        before,
-        sideAfter,
-        sideBefore,
-      }}
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="product.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={product}
-    >
-      <TwoColumnPage.Main>
-        <ProductGeneralSection product={product} />
-        <ProductMediaSection product={product} />
-        <ProductOptionSection product={product} />
-        <ProductVariantSection product={product} />
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <ProductSalesChannelSection product={product} />
-        <ProductShippingProfileSection product={product as ExtendedProduct} />
-        <ProductOrganizationSection product={product} />
-        <ProductAttributeSection product={product} />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+      sections={{
+        main: (
+          <>
+            <ProductGeneralSection product={product} />
+            <ProductMediaSection product={product} />
+            <ProductOptionSection product={product} />
+            <ProductVariantSection product={product} />
+            <MetadataSection data={product} />
+            <JsonViewSection data={product} />
+            <RequiredPermissionsSection />
+          </>
+        ),
+        side: (
+          <>
+            <ProductSalesChannelSection product={product} />
+            <ProductShippingProfileSection
+              product={product as ExtendedProduct}
+            />
+            <ProductOrganizationSection product={product} />
+            <ProductAttributeSection product={product} />
+          </>
+        ),
+      }}
+    />
   )
 }

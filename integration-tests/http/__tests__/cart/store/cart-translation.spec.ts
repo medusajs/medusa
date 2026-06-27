@@ -23,7 +23,7 @@ const shippingAddressData = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Store Cart Translation API", () => {
       let appContainer: MedusaContainer
       let storeHeaders: { headers: { [key: string]: string } }
@@ -42,7 +42,7 @@ medusaIntegrationTestRunner({
         delete process.env.MEDUSA_FF_TRANSLATION
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         const translationModule = appContainer.resolve(Modules.TRANSLATION)
@@ -245,6 +245,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
+        await dbUtils.snapshot()
       })
 
       describe("POST /store/carts (create cart with locale)", () => {

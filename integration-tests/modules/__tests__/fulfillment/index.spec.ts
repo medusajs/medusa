@@ -18,7 +18,7 @@ const providerId = "manual_test-provider"
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ getContainer, api, dbConnection }) => {
+  testSuite: ({ getContainer, api, dbConnection, dbUtils }) => {
     let service: IFulfillmentModuleService
     let container
     let location: StockLocationDTO
@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
       service = container.resolve(Modules.FULFILLMENT)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, container)
       const stockLocationService = container.resolve(Modules.STOCK_LOCATION)
 
@@ -44,6 +44,8 @@ medusaIntegrationTestRunner({
         },
         metadata: { custom_location: "yes" },
       })
+
+      await dbUtils.snapshot()
     })
 
     /**

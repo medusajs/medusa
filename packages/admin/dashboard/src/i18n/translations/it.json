@@ -135,6 +135,7 @@
     "browse": "Sfoglia",
     "logout": "Disconnetti",
     "hide": "Nascondi",
+    "show": "Mostra",
     "export": "Esporta",
     "import": "Importa",
     "cannotUndo": "Questa azione non può essere annullata"
@@ -260,6 +261,17 @@
         "myAccount": "Il mio account"
       }
     }
+  },
+  "layout": {
+    "customizeWidgets": "Personalizza i widget",
+    "personalView": "Personale",
+    "defaultView": "Default",
+    "empty": "Vuoto",
+    "dropToSectionEnd": "Rilascia qui per spostare alla fine",
+    "dragToReorder": "Trascina per riordinare",
+    "saveForEveryone": "Salva per tutti",
+    "saveForEveryoneTitle": "Salva il layout per tutti",
+    "saveForEveryoneDescription": "Questo aggiorna il layout predefinito di questa pagina per tutti gli utenti che non lo hanno ancora personalizzato. Sei sicuro?"
   },
   "dataGrid": {
     "columns": {
