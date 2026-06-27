@@ -438,5 +438,419 @@ describe("RoutesLoader", function () {
       })
       expect(productRes.status).toBe(200)
     })
+
+    it("should disable sub-paths when using wildcard pattern (Branch B: startsWith)", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*"],
+          },
+        },
+      } as any)
+
+      // Sub-path should also be disabled (Branch B: startsWith prefix)
+      const subPathRes = await request("GET", "/admin/products/some-id", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(subPathRes.status).toBe(404)
+
+      // Parent exact match also disabled (Branch A: matcher === prefix)
+      const parentRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(parentRes.status).toBe(404)
+    })
+
+    it("should NOT disable sub-paths when using exact pattern (no wildcard)", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/orders"],
+          },
+        },
+      } as any)
+
+      // Exact match should be disabled
+      const exactRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(exactRes.status).toBe(404)
+
+      // Sub-path should still work (exact does NOT disable children)
+      const subRes = await request("GET", "/admin/orders/1000", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(subRes.status).toBe(200)
+      expect(subRes.text).toBe("GET order 1000")
+
+      // Different method on sub-path also works
+      const postSubRes = await request("POST", "/admin/orders/1000", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(postSubRes.status).toBe(200)
+      expect(postSubRes.text).toBe("POST order 1000")
+    })
+
+    it("should support multiple mixed patterns (wildcard + exact)", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*", "/admin/orders"],
+          },
+        },
+      } as any)
+
+      // Wildcard: parent disabled
+      const productsRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productsRes.status).toBe(404)
+
+      // Wildcard: sub-path disabled
+      const productIdRes = await request("GET", "/admin/products/some-id", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productIdRes.status).toBe(404)
+
+      // Exact: disabled
+      const ordersRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(ordersRes.status).toBe(404)
+
+      // Exact: sub-path NOT disabled
+      const orderIdRes = await request("GET", "/admin/orders/1000", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(orderIdRes.status).toBe(200)
+      expect(orderIdRes.text).toBe("GET order 1000")
+    })
+
+    it("should not disable any routes when disabledRoutes is an empty array", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: [],
+          },
+        },
+      } as any)
+
+      const ordersRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(ordersRes.status).toBe(200)
+
+      const productsRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productsRes.status).not.toBe(404)
+    })
+
+    it("should not disable any routes when disabledRoutes is not configured", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir)
+
+      const ordersRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(ordersRes.status).toBe(200)
+
+      const productsRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productsRes.status).not.toBe(404)
+    })
+
+    it("should not invoke middlewares for disabled routes", async function () {
+      const rootDir = resolve(
+        __dirname,
+        "../__fixtures__/routers-middleware"
+      )
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/customers"],
+          },
+        },
+      } as any)
+
+      // GET /customers should be disabled
+      const getRes = await request("GET", "/customers")
+      expect(getRes.status).toBe(404)
+      expect(customersGlobalMiddlewareMock).not.toHaveBeenCalled()
+
+      // POST /customers should also be disabled
+      const postRes = await request("POST", "/customers")
+      expect(postRes.status).toBe(404)
+      expect(customersCreateMiddlewareMock).not.toHaveBeenCalled()
+      expect(customersCreateMiddlewareValidatorMock).not.toHaveBeenCalled()
+    })
+
+    it("should return 404 for all HTTP methods on disabled routes", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*"],
+          },
+        },
+      } as any)
+
+      const adminSession = { jwt: { userId: "admin_user" } }
+
+      // POST
+      const postRes = await request("POST", "/admin/products", {
+        adminSession,
+      })
+      expect(postRes.status).toBe(404)
+
+      // DELETE on sub-path
+      const deleteRes = await request("DELETE", "/admin/products/some-id", {
+        adminSession,
+      })
+      expect(deleteRes.status).toBe(404)
+
+      // PATCH
+      const patchRes = await request("PATCH", "/admin/products", {
+        adminSession,
+      })
+      expect(patchRes.status).toBe(404)
+
+      // PUT
+      const putRes = await request("PUT", "/admin/products", {
+        adminSession,
+      })
+      expect(putRes.status).toBe(404)
+    })
+
+    it("should disable store routes", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/store/custom"],
+          },
+        },
+      } as any)
+
+      const storeRes = await request("GET", "/store/custom")
+      expect(storeRes.status).toBe(404)
+    })
+
+    it("should disable non-prefixed routes (not admin/store)", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/customers*"],
+          },
+        },
+      } as any)
+
+      // Non-prefixed route should be disabled
+      const custRes = await request(
+        "GET",
+        "/customers/test-customer/orders/test"
+      )
+      expect(custRes.status).toBe(404)
+
+      // Admin routes should still work
+      const adminRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(adminRes.status).toBe(200)
+    })
+
+    it("should NOT disable routes when matcher is shorter than or diverges from wildcard prefix", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*"],
+          },
+        },
+      } as any)
+
+      // /admin/orders diverges from /admin/products prefix
+      const ordersRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(ordersRes.status).toBe(200)
+
+      // /admin is shorter than /admin/products prefix
+      const adminRes = await request("GET", "/admin", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(adminRes.status).not.toBe(404)
+    })
+
+    it("should match by string prefix, not path segment boundary (BVA)", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/prod*"],
+          },
+        },
+      } as any)
+
+      // /admin/products starts with /admin/prod — matches even without / separator
+      const productsRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productsRes.status).toBe(404)
+
+      // Sub-path also matches
+      const productIdRes = await request("GET", "/admin/products/some-id", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productIdRes.status).toBe(404)
+    })
+
+    it("should not register CORS for disabled admin routes", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin/products*"],
+          },
+        },
+      } as any)
+
+      // CORS preflight for disabled route should not have CORS headers
+      const corsRes = await request("OPTIONS", "/admin/products", {
+        headers: {
+          origin: "http://localhost:7001",
+          "access-control-request-method": "GET",
+        },
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+
+      expect(corsRes.headers["access-control-allow-origin"]).not.toBeTruthy()
+    })
+
+    it("should handle overlapping patterns without errors", async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers")
+
+      const { request } = await createServer(rootDir, {
+        projectConfig: {
+          http: {
+            disabledRoutes: ["/admin*", "/admin/products*"],
+          },
+        },
+      } as any)
+
+      // Both patterns match /admin/products
+      const productsRes = await request("GET", "/admin/products", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(productsRes.status).toBe(404)
+
+      // Broader /admin* also covers /admin/orders
+      const ordersRes = await request("GET", "/admin/orders", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+      expect(ordersRes.status).toBe(404)
+    })
   })
 })
