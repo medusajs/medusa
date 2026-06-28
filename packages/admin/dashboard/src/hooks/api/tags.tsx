@@ -158,3 +158,36 @@ export const useDeleteProductTag = (
     ...options,
   })
 }
+
+export const useDeleteProductTags = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductTagDeleteResponse[],
+    FetchError,
+    string[]
+  >
+) => {
+  return useMutation({
+    mutationFn: (ids: string[]) =>
+      Promise.all(ids.map(async (id) => {
+        try {
+          return await sdk.admin.productTag.delete(id)
+        } catch (err: any) {
+          if (err.status === 404) return undefined as any
+          throw err
+        }
+      })),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: productTagsQueryKeys.lists(),
+      })
+      variables.forEach((id: string) => {
+        queryClient.invalidateQueries({
+          queryKey: productTagsQueryKeys.detail(id),
+        })
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}

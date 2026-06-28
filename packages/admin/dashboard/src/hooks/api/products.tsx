@@ -212,6 +212,43 @@ export const useDeleteVariantLazy = (
   })
 }
 
+export const useDeleteVariants = (
+  productId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductVariantDeleteResponse[],
+    FetchError,
+    string[]
+  >
+) => {
+  return useMutation({
+    mutationFn: (ids: string[]) =>
+      Promise.all(
+        ids.map(async (id) => {
+          try {
+            return await sdk.admin.product.deleteVariant(productId, id)
+          } catch (err: any) {
+            if (err.status === 404) return undefined as any
+            throw err
+          }
+        })
+      ),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      variables.forEach((id: string) => {
+        queryClient.invalidateQueries({
+          queryKey: variantsQueryKeys.detail(id),
+        })
+      })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useProduct = (
   id: string,
   query?: Record<string, any>,
@@ -349,6 +386,39 @@ export const useDeleteProduct = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.detail(id) })
+
+      queryClient.invalidateQueries({
+        queryKey: productOptionsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDeleteProducts = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductDeleteResponse[],
+    FetchError,
+    string[]
+  >
+) => {
+  return useMutation({
+    mutationFn: (ids: string[]) =>
+      Promise.all(ids.map(async (id) => {
+        try {
+          return await sdk.admin.product.delete(id)
+        } catch (err: any) {
+          if (err.status === 404) return undefined as any
+          throw err
+        }
+      })),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
+      variables.forEach((id: string) => {
+        queryClient.invalidateQueries({ queryKey: productsQueryKeys.detail(id) })
+      })
 
       queryClient.invalidateQueries({
         queryKey: productOptionsQueryKeys.lists(),

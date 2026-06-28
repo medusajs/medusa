@@ -162,6 +162,33 @@ export const useDeleteProductOptionLazy = (
   })
 }
 
+export const useDeleteProductOptions = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductOptionDeleteResponse[],
+    FetchError,
+    string[]
+  >
+) => {
+  return useMutation({
+    mutationFn: (ids: string[]) =>
+      Promise.all(
+        ids.map(async (id) => {
+          try {
+            return await sdk.admin.productOption.delete(id)
+          } catch (err: any) {
+            if (err.status === 404) return undefined as any
+            throw err
+          }
+        })
+      ),
+    onSuccess: (data, variables, context) => {
+      invalidateProductOptionQueries()
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useProductOptionValues = (
   optionId: string,
   query?: HttpTypes.AdminProductOptionValueListParams,

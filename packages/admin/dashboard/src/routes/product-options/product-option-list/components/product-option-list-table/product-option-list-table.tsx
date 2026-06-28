@@ -3,6 +3,7 @@ import {
   createDataTableColumnHelper,
   toast,
   usePrompt,
+  Checkbox,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -14,6 +15,7 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import {
   useDeleteProductOptionLazy,
   useProductOptions,
+  useDeleteProductOptions,
 } from "../../../../../hooks/api/product-options"
 import { useProductOptionTableColumns } from "../../../../../hooks/table/columns/use-product-option-table-columns"
 import { useProductOptionTableQuery } from "../../../../../hooks/table/query/use-product-option-table-query"
@@ -29,6 +31,7 @@ export const ProductOptionListTable = () => {
   const navigate = useNavigate()
   const hasExclusiveFilter = urlSearchParams.has("is_exclusive")
   const [hasInitialized, setHasInitialized] = useState(hasExclusiveFilter)
+  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     if (hasInitialized) {
@@ -57,6 +60,7 @@ export const ProductOptionListTable = () => {
 
   const filters = useProductOptionTableFilters()
   const columns = useColumns()
+  const commands = useCommands(setRowSelection)
   const handleCreate = useCallback(() => {
     const params = urlSearchParams.toString()
     navigate("create", {
@@ -97,10 +101,84 @@ export const ProductOptionListTable = () => {
         ]}
         isLoading={isLoading}
         enableSearch={true}
+        rowSelection={{
+          state: rowSelection,
+          onRowSelectionChange: setRowSelection,
+          enableRowSelection: true,
+        }}
+        commands={commands}
         rowHref={(row) => `/product-options/${row.id}`}
       />
     </Container>
   )
+}
+
+const useCommands = (
+  setRowSelection: (value: Record<string, boolean>) => void
+) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+  const { mutateAsync } = useDeleteProductOptions()
+
+  const handleDelete = async (selection: Record<string, boolean>) => {
+    const keys = Object.keys(selection)
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("productOptions.deleteWarningBatch", {
+        count: keys.length,
+        defaultValue: keys.length === 1 
+          ? `You are about to delete 1 product option. This action cannot be undone.`
+          : `You are about to delete ${keys.length} product options. This action cannot be undone.`,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(keys, {
+      onSuccess: () => {
+        toast.success(
+          t("productOptions.toasts.delete.success.header", {
+            defaultValue: "Product options deleted",
+          }),
+          {
+            description: t(
+              "productOptions.toasts.delete.success.descriptionBatch",
+              {
+                count: keys.length,
+                defaultValue: keys.length === 1 
+                  ? `Successfully deleted 1 product option.`
+                  : `Successfully deleted ${keys.length} product options.`,
+              }
+            ),
+          }
+        )
+        setRowSelection({})
+      },
+      onError: (e) => {
+        toast.error(
+          t("productOptions.toasts.delete.error.header", {
+            defaultValue: "Failed to delete product options",
+          }),
+          {
+            description: e.message,
+          }
+        )
+      },
+    })
+  }
+
+  return [
+    {
+      action: handleDelete,
+      shortcut: "d",
+      label: t("actions.delete"),
+      icon: <Trash />,
+    },
+  ]
 }
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProductOption>()
@@ -142,6 +220,34 @@ const useColumns = () => {
 
   return useMemo(
     () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          return (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
+      }),
       ...base,
       columnHelper.action({
         actions: (ctx) => [

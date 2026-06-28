@@ -1,8 +1,8 @@
 import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
-import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { Button, Container, Heading, toast, usePrompt, Checkbox } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData, useLocation } from "react-router-dom"
 
@@ -11,6 +11,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import {
   useDeleteProduct,
+  useDeleteProducts,
   useProducts,
 } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
@@ -19,12 +20,15 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { RowSelectionState } from "@tanstack/react-table"
+import { DataTableRowSelectionState } from "@medusajs/ui"
 
 const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof productsLoader>>
@@ -44,6 +48,7 @@ export const ProductListTable = () => {
 
   const filters = useProductTableFilters()
   const columns = useColumns()
+  const commands = useCommands(setRowSelection)
 
   const { table } = useDataTable({
     data: (products ?? []) as HttpTypes.AdminProduct[],
@@ -52,6 +57,11 @@ export const ProductListTable = () => {
     enablePagination: true,
     pageSize: PAGE_SIZE,
     getRowId: (row) => row.id,
+    enableRowSelection: true,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
   })
 
   if (isError) {
@@ -79,6 +89,7 @@ export const ProductListTable = () => {
         columns={columns}
         count={count}
         pageSize={PAGE_SIZE}
+        commands={commands}
         filters={filters}
         search
         pagination
@@ -181,6 +192,34 @@ const useColumns = () => {
 
   const columns = useMemo(
     () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          return (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
+      }),
       ...base,
       columnHelper.display({
         id: "actions",
@@ -193,4 +232,68 @@ const useColumns = () => {
   )
 
   return columns
+}
+
+const useCommands = (
+  setRowSelection: (state: DataTableRowSelectionState) => void
+) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+  const { mutateAsync } = useDeleteProducts()
+
+  const handleDelete = useCallback(
+    async (rowSelection: DataTableRowSelectionState) => {
+      const keys = Object.keys(rowSelection)
+
+      const res = await prompt({
+        title: t("general.areYouSure"),
+        description: t("products.deleteWarningBatch" as any, {
+          count: keys.length,
+          defaultValue: keys.length === 1
+            ? `You are about to delete 1 product. This action cannot be undone.`
+            : `You are about to delete ${keys.length} products. This action cannot be undone.`,
+        }),
+        confirmText: t("actions.delete"),
+        cancelText: t("actions.cancel"),
+      })
+
+      if (!res) {
+        return Promise.resolve()
+      }
+
+      await mutateAsync(keys, {
+        onSuccess: () => {
+          toast.success(t("products.toasts.delete.success.header" as any), {
+            description: t(
+              "products.toasts.delete.success.descriptionBatch" as any,
+              {
+                count: keys.length,
+                defaultValue: keys.length === 1
+                  ? `Successfully deleted 1 product.`
+                  : `Successfully deleted ${keys.length} products.`,
+              }
+            ),
+          })
+          setRowSelection({})
+        },
+        onError: (err) => {
+          toast.error(t("products.toasts.delete.error.header" as any), {
+            description: err.message,
+          })
+        },
+      })
+    },
+    [mutateAsync, prompt, t, setRowSelection]
+  )
+
+  return useMemo(
+    () => [
+      {
+        action: handleDelete,
+        label: t("actions.delete"),
+        shortcut: "d",
+      },
+    ],
+    [handleDelete, t]
+  )
 }

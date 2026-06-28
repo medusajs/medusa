@@ -783,14 +783,17 @@
     "toasts": {
       "delete": {
         "success": {
-          "header": "Product deleted",
-          "description": "{{title}} was successfully deleted."
+          "header": "Products deleted",
+          "descriptionBatch_one": "Successfully deleted {{count}} product.",
+          "descriptionBatch_other": "Successfully deleted {{count}} products."
         },
         "error": {
-          "header": "Failed to delete product"
+          "header": "Failed to delete products"
         }
       }
-    }
+    },
+    "deleteWarningBatch_one": "You are about to delete {{count}} product. This action cannot be undone.",
+    "deleteWarningBatch_other": "You are about to delete {{count}} products. This action cannot be undone."
   },
   "collections": {
     "domain": "Collections",
@@ -816,6 +819,20 @@
         "successToast_one": "Product was successfully removed from the collection.",
         "successToast_other": "Products were successfully removed from the collection."
       }
+    },
+    "deleteWarningBatch_one": "You are about to delete {{count}} collection. This action cannot be undone.",
+    "deleteWarningBatch_other": "You are about to delete {{count}} collections. This action cannot be undone.",
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Collections deleted",
+          "descriptionBatch_one": "Successfully deleted {{count}} collection.",
+          "descriptionBatch_other": "Successfully deleted {{count}} collections."
+        },
+        "error": {
+          "header": "Failed to delete collections"
+        }
+      }
     }
   },
   "categories": {
@@ -837,7 +854,9 @@
     },
     "delete": {
       "confirmation": "You are about to delete the category {{name}}. This action cannot be undone.",
-      "successToast": "Category {{name}} was successfully deleted."
+      "successToast": "Category {{name}} was successfully deleted.",
+      "deleteWarningBatch_one": "You are about to delete {{count}} category. This action cannot be undone.",
+      "deleteWarningBatch_other": "You are about to delete {{count}} categories. This action cannot be undone."
     },
     "products": {
       "add": {
@@ -879,6 +898,18 @@
       },
       "new": {
         "label": "New"
+      }
+    },
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Categories deleted",
+          "descriptionBatch_one": "Successfully deleted {{count}} category.",
+          "descriptionBatch_other": "Successfully deleted {{count}} categories."
+        },
+        "error": {
+          "header": "Failed to delete categories"
+        }
       }
     }
   },
@@ -3321,22 +3352,19 @@
   },
   "productTags": {
     "domain": "Product Tags",
-    "create": {
-      "header": "Create Product Tag",
-      "subtitle": "Create a new product tag to categorize your products.",
-      "successToast": "Product tag {{value}} was successfully created."
-    },
-    "edit": {
-      "header": "Edit Product Tag",
-      "subtitle": "Edit the value of the product tag.",
-      "successToast": "Product tag {{value}} was successfully updated."
-    },
-    "delete": {
-      "confirmation": "You are about to delete the product tag {{value}}. This action cannot be undone.",
-      "successToast": "Product tag {{value}} was successfully deleted."
-    },
-    "fields": {
-      "value": "Value"
+    "deleteWarningBatch_one": "You are about to delete {{count}} product tag. This action cannot be undone.",
+    "deleteWarningBatch_other": "You are about to delete {{count}} product tags. This action cannot be undone.",
+    "toasts": {
+      "delete": {
+        "success": {
+          "header": "Product tags deleted",
+          "descriptionBatch_one": "Successfully deleted {{count}} product tag.",
+          "descriptionBatch_other": "Successfully deleted {{count}} product tags."
+        },
+        "error": {
+          "header": "Failed to delete product tags"
+        }
+      }
     }
   },
   "notifications": {

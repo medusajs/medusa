@@ -152,6 +152,39 @@ export const useDeleteProductCategory = (
   })
 }
 
+export const useDeleteProductCategories = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductCategoryDeleteResponse[],
+    FetchError,
+    string[]
+  >
+) => {
+  return useMutation({
+    mutationFn: (ids: string[]) =>
+      Promise.all(ids.map(async (id) => {
+        try {
+          return await sdk.admin.productCategory.delete(id)
+        } catch (err: any) {
+          if (err.status === 404) {
+            return undefined as any
+          }
+          throw err
+        }
+      })),
+    onSuccess: (data, variables, context) => {
+      variables.forEach((id: string) => {
+        queryClient.invalidateQueries({
+          queryKey: categoriesQueryKeys.detail(id),
+        })
+      })
+      queryClient.invalidateQueries({ queryKey: categoriesQueryKeys.lists() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateProductCategoryProducts = (
   id: string,
   options?: UseMutationOptions<

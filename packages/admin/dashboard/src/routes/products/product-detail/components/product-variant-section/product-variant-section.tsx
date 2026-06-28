@@ -16,6 +16,7 @@ import {
   DataTableAction,
   Tooltip,
   usePrompt,
+  Checkbox,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCallback, useMemo } from "react"
@@ -28,6 +29,7 @@ import { useDataTableDateFilters } from "../../../../../components/data-table/he
 import {
   useDeleteVariantLazy,
   useProductVariants,
+  useDeleteVariants,
 } from "../../../../../hooks/api/products"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { PRODUCT_VARIANT_IDS_KEY } from "../../../common/constants"
@@ -55,7 +57,7 @@ export const ProductVariantSection = ({
 
   const columns = useColumns(product)
   const filters = useFilters()
-  const commands = useCommands()
+  const commands = useCommands(product)
 
   const { variants, count, isPending, isError, error } = useProductVariants(
     product.id,
@@ -143,6 +145,11 @@ export const ProductVariantSection = ({
         }}
         commands={commands}
         prefix={PREFIX}
+        rowSelection={{
+          state: {}, // handled internally by DataTable if empty
+          onRowSelectionChange: () => {},
+          enableRowSelection: true,
+        }}
       />
     </Container>
   )
@@ -361,6 +368,34 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
 
   return useMemo(() => {
     return [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          return (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
+      }),
       columnHelper.accessor("thumbnail", {
         header: "",
         headerAlign: "center",
@@ -450,9 +485,61 @@ const useFilters = () => {
 
 const commandHelper = createDataTableCommandHelper()
 
-const useCommands = () => {
+const useCommands = (product: HttpTypes.AdminProduct) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const prompt = usePrompt()
+  const { mutateAsync } = useDeleteVariants(product.id)
+
+  const handleDelete = async (selection: Record<string, boolean>) => {
+    const keys = Object.keys(selection)
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("products.deleteWarningBatch", {
+        count: keys.length,
+        defaultValue: keys.length === 1
+          ? `You are about to delete 1 variant. This action cannot be undone.`
+          : `You are about to delete ${keys.length} variants. This action cannot be undone.`,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(keys, {
+      onSuccess: () => {
+        toast.success(
+          t("products.toasts.delete.success.header", {
+            defaultValue: "Variants deleted",
+          }),
+          {
+            description: t(
+              "products.toasts.delete.success.descriptionBatch",
+              {
+                count: keys.length,
+                defaultValue: keys.length === 1
+                  ? `Successfully deleted 1 variant.`
+                  : `Successfully deleted ${keys.length} variants.`,
+              }
+            ),
+          }
+        )
+      },
+      onError: (e) => {
+        toast.error(
+          t("products.toasts.delete.error.header", {
+            defaultValue: "Failed to delete variants",
+          }),
+          {
+            description: e.message,
+          }
+        )
+      },
+    })
+  }
 
   return [
     commandHelper.command({
@@ -463,6 +550,12 @@ const useCommands = () => {
           `stock?${PRODUCT_VARIANT_IDS_KEY}=${Object.keys(selection).join(",")}`
         )
       },
+    }),
+    commandHelper.command({
+      label: t("actions.delete"),
+      shortcut: "d",
+      action: handleDelete,
+      icon: <Trash />,
     }),
   ]
 }
