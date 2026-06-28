@@ -13,7 +13,16 @@ export default async function PricingPage() {
     process.env.CLOUDFLARE_ENV !== "production"
   ) {
     return (
-      <div>Pricing page is not available in the CI / Preview environment.</div>
+      <div>
+        <p>
+          Pricing details are available on the{" "}
+          <a href="https://medusajs.com/pricing">Medusa pricing page</a>.
+        </p>
+        <p>
+          To discuss a plan that fits your needs,{" "}
+          <a href="https://medusajs.com/contact">contact the sales team</a>.
+        </p>
+      </div>
     )
   }
   const data = await loadPricingData()
