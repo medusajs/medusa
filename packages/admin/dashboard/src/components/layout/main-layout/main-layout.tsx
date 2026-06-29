@@ -326,23 +326,22 @@ const SidebarRoutes = () => {
             main: (
               <>
                 {coreRoutes.map((route) => (
-                  <NavItem
-                    key={route.to}
-                    layoutId={`nav:${route.to}`}
-                    {...route}
-                  />
+                  <LayoutComposer.Entry id={`nav:${route.to}`} key={route.to}>
+                    <NavItem key={route.to} {...route} />
+                  </LayoutComposer.Entry>
                 ))}
                 {extensionItems.map((item) => (
-                  <NavItem
-                    key={item.to}
-                    layoutId={`nav:${item.to}`}
-                    to={item.to}
-                    label={item.label}
-                    icon={item.icon ? item.icon : <SquaresPlus />}
-                    items={item.items}
-                    translationNs={item.translationNs}
-                    type="extension"
-                  />
+                  <LayoutComposer.Entry id={`nav:${item.to}`} key={item.to}>
+                    <NavItem
+                      key={item.to}
+                      to={item.to}
+                      label={item.label}
+                      icon={item.icon ? item.icon : <SquaresPlus />}
+                      items={item.items}
+                      translationNs={item.translationNs}
+                      type="extension"
+                    />
+                  </LayoutComposer.Entry>
                 ))}
               </>
             ),

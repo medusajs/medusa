@@ -152,12 +152,9 @@ const getSafeFromValue = (from: string) => {
 
 const toNavEntries = (items: INavItem[]) =>
   items.map((item) => (
-    <NavItem
-      key={item.to}
-      layoutId={`settings-nav:${item.to}`}
-      type="setting"
-      {...item}
-    />
+    <LayoutComposer.Entry id={`settings-nav:${item.to}`} key={item.to}>
+      <NavItem key={item.to} type="setting" {...item} />
+    </LayoutComposer.Entry>
   ))
 
 const SettingsSidebar = () => {

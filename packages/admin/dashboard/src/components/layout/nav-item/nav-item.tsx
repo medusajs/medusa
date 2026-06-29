@@ -46,12 +46,6 @@ export type INavItem = {
   from?: string
   nested?: string
   translationNs?: string
-  /**
-   * Stable identity for the layout composer when this item is rendered as a
-   * customizer entry. Read off the element's props by the composer; ignored by
-   * `NavItem` itself. Baseon on the `to` prop.
-   */
-  layoutId?: string
 }
 
 const BASE_NAV_LINK_CLASSES =

@@ -215,7 +215,13 @@ const Topbar = () => {
         <LayoutComposer
           widgetsZonePrefix="topbar"
           preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_ROW}
-          sections={{ main: <Notifications layoutId="Notifications" /> }}
+          sections={{
+            main: (
+              <LayoutComposer.Entry id="Notifications">
+                <Notifications />
+              </LayoutComposer.Entry>
+            ),
+          }}
           hasOutlet={false}
           triggerLocation={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_TOPBAR}
           controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
