@@ -19,6 +19,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  OrderWorkflowEvents,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -354,6 +355,90 @@ async function createOrderFixture({ container, product }) {
   return order
 }
 
+async function createSimpleOrderFixture({ container, product }) {
+  const orderService: IOrderModuleService = container.resolve(Modules.ORDER)
+  let order = await orderService.createOrders({
+    region_id: "test_region_id",
+    email: "foo@bar.com",
+    items: [
+      {
+        title: "Custom Item 2",
+        variant_sku: product.variants[0].sku,
+        variant_title: product.variants[0].title,
+        quantity: 1,
+        unit_price: 50,
+      } as any,
+    ],
+    transactions: [
+      {
+        amount: 50,
+        currency_code: "usd",
+      },
+    ],
+    sales_channel_id: "test",
+    shipping_address: {
+      first_name: "Test",
+      last_name: "Test",
+      address_1: "Test",
+      city: "Test",
+      country_code: "US",
+      postal_code: "12345",
+      phone: "12345",
+    },
+    billing_address: {
+      first_name: "Test",
+      last_name: "Test",
+      address_1: "Test",
+      city: "Test",
+      country_code: "US",
+      postal_code: "12345",
+    },
+    shipping_methods: [
+      {
+        name: "Test shipping method",
+        amount: 10,
+        data: {},
+      },
+    ],
+    currency_code: "usd",
+    customer_id: "joe",
+  })
+
+  await orderService.addOrderAction([
+    {
+      action: "FULFILL_ITEM",
+      order_id: order.id,
+      version: order.version,
+      reference: "fullfilment",
+      reference_id: "fulfill_123",
+      details: {
+        reference_id: order.items![0].id,
+        quantity: 1,
+      },
+    },
+    {
+      action: "SHIP_ITEM",
+      order_id: order.id,
+      version: order.version,
+      reference: "fullfilment",
+      reference_id: "fulfill_123",
+      details: {
+        reference_id: order.items![0].id,
+        quantity: 1,
+      },
+    },
+  ])
+
+  await orderService.applyPendingOrderActions(order.id)
+
+  order = await orderService.retrieveOrder(order.id, {
+    relations: ["items"],
+  })
+
+  return order
+}
+
+
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ getContainer }) => {
@@ -616,6 +701,108 @@ medusaIntegrationTestRunner({
 
         expect(errors[0].error.message).toBe(
           `Cannot apply return reason with id ${testReason.id} to order with id ${order.id}. Return reason has nested reasons.`
+        )
+      })
+
+      it("should emit RETURN_REQUESTED and RETURN_RECEIVED when receive_now is true", async () => {
+        const order = await createSimpleOrderFixture({ container, product })
+
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const requestedSubscriber = jest.fn()
+        const receivedSubscriber = jest.fn()
+
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
+        )
+
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            receive_now: true,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+          }
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: true,
+        })
+
+        await new Promise((resolve) => setTimeout(resolve, 100))
+
+        expect(requestedSubscriber).toHaveBeenCalledTimes(1)
+        expect(receivedSubscriber).toHaveBeenCalledTimes(1)
+
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
+        )
+      })
+
+      it("should emit only RETURN_REQUESTED when receive_now is false", async () => {
+        const order = await createSimpleOrderFixture({ container, product })
+
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const requestedSubscriber = jest.fn()
+        const receivedSubscriber = jest.fn()
+
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.subscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
+        )
+
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            receive_now: false,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+          }
+
+        await createAndCompleteReturnOrderWorkflow(container).run({
+          input: createReturnOrderData,
+          throwOnError: true,
+        })
+
+        await new Promise((resolve) => setTimeout(resolve, 100))
+
+        expect(requestedSubscriber).toHaveBeenCalledTimes(1)
+        expect(receivedSubscriber).not.toHaveBeenCalled()
+
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_REQUESTED,
+          requestedSubscriber
+        )
+        eventBus.unsubscribe(
+          OrderWorkflowEvents.RETURN_RECEIVED,
+          receivedSubscriber
         )
       })
     })
