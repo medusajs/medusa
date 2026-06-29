@@ -1,5 +1,9 @@
 import { ApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  FeatureFlag,
+  Modules,
+} from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import type {
   JwtPayload,
@@ -57,7 +61,7 @@ export const authenticate = (
           actor_id: apiKey.id,
           actor_type: "api-key",
           auth_identity_id: "",
-          app_metadata: {},
+          app_metadata: await getApiKeyAppMetadata(req, apiKey),
           user_metadata: {},
         }
 
@@ -115,6 +119,47 @@ export const authenticate = (
   }
 
   return authenticateMiddleware as unknown as RequestHandler
+}
+
+/**
+ * Builds the `app_metadata` for a secret API key auth context.
+ *
+ * When the `rbac` feature flag is enabled, policy-protected admin routes read
+ * `auth_context.app_metadata.roles`. A secret API key acts as the admin user it
+ * was created for, so we load that user's RBAC roles here — mirroring how user
+ * tokens receive their roles in `generateJwtTokenForAuthIdentity`. Without this,
+ * api-key actors carry no roles and are rejected (403) on every policy-protected
+ * route, even though the key is valid.
+ *
+ * The lookup is skipped when RBAC is disabled or the key has no creator, and any
+ * failure falls back to empty metadata (the previous behaviour).
+ */
+const getApiKeyAppMetadata = async (
+  req: MedusaRequest,
+  apiKey: ApiKeyDTO
+): Promise<Record<string, unknown>> => {
+  if (!FeatureFlag.isFeatureEnabled("rbac") || !apiKey.created_by) {
+    return {}
+  }
+
+  try {
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    const {
+      data: [user],
+    } = await query.graph({
+      entity: "user",
+      fields: ["rbac_roles.id"],
+      filters: { id: apiKey.created_by },
+    })
+
+    const roles = (user?.rbac_roles ?? [])
+      .map((role: { id?: string } | null | undefined) => role?.id)
+      .filter((id: string | undefined): id is string => Boolean(id))
+
+    return roles.length ? { roles } : {}
+  } catch {
+    return {}
+  }
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
