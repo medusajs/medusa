@@ -454,23 +454,6 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
     return null
   }
 
-  // Customizer controls are split across two portal slots so the idle trigger
-  // and the edit-mode controls can live in different places (e.g. a trigger
-  // in the sidebar dropdown, with the edit controls in the top bar).
-  const idleTrigger = (
-    <IconButton
-      size="small"
-      variant="transparent"
-      onClick={enterEdit}
-      disabled={locked}
-      aria-label={t("layout.customizeWidgets")}
-      className="text-ui-fg-muted hover:text-ui-fg-subtle"
-    >
-      <AdjustmentsDone />
-    </IconButton>
-  )
-
-  const editControls = (
   // Idle trigger tooltip: always explains the action, and when a layout has
   // been defined for this zone, adds whose layout the user is currently seeing.
   const triggerTooltip = definedScope ? (
@@ -488,11 +471,31 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
     t("layout.customizeLayout")
   )
 
+  // Customizer controls are split across two portal slots so the idle trigger
+  // and the edit-mode controls can live in different places (e.g. a trigger
+  // in the sidebar dropdown, with the edit controls in the top bar).
+  const idleTrigger = (
+    <Tooltip content={triggerTooltip}>
+      <IconButton
+        size="small"
+        variant="transparent"
+        onClick={enterEdit}
+        disabled={locked}
+        aria-label={t("layout.customizeLayout")}
+        className="text-ui-fg-muted hover:text-ui-fg-subtle"
+      >
+        {/* The "done" icon carries a blue accent dot — reserve it for zones
+            that have a saved layout, otherwise show the plain icon. */}
+        {definedScope ? <AdjustmentsDone /> : <Adjustments />}
+      </IconButton>
+    </Tooltip>
+  )
+
   // Customizer controls — all live in the single top-bar portal slot.
   // Idle: the trigger icon. Editing: Personal/Default badges to switch which
   // configuration is being edited (active one highlighted), Cancel, and a Save
   // button that targets the active scope ("Save for everyone" for the default).
-  const controls = editMode ? (
+  const editControls = (
     <div className="flex items-center gap-x-2">
       <div className="flex items-center gap-x-1">
         <Badge
@@ -531,22 +534,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
           : t("actions.save")}
       </Button>
     </div>
-  ) : (
-    <Tooltip content={triggerTooltip}>
-      <IconButton
-        size="small"
-        variant="transparent"
-        onClick={enterEdit}
-        aria-label={t("layout.customizeLayout")}
-        className="text-ui-fg-muted hover:text-ui-fg-subtle"
-      >
-        {/* The "done" icon carries a blue accent dot — reserve it for zones
-            that actually have a saved layout, otherwise show the plain icon. */}
-        {definedScope ? <AdjustmentsDone /> : <Adjustments />}
-      </IconButton>
-    </Tooltip>
   )
-      
   const customizerControls = editMode ? editControls : idleTrigger
   const customizerHost = editMode ? controlsHost : triggerHost
 
