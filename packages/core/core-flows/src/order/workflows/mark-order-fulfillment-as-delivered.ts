@@ -123,7 +123,7 @@ export const orderFulfillmentDeliverablilityValidationStep = createStep(
   }
 )
 
-function prepareRegisterDeliveryData({
+export function prepareRegisterDeliveryData({
   fulfillment,
   order,
 }: {
@@ -165,7 +165,12 @@ function prepareRegisterDeliveryData({
       //   If we allow to cancel partial fulfillments for an order item, we need to change this.
       //
 
-      if (iitems?.length) {
+      if (fitem.required_quantity != null) {
+        // Fulfillments created after the required_quantity snapshot landed
+        // carry their own divisor, so the delivered line quantity stays correct
+        // even if the variant's inventory kit changed after fulfillment.
+        quantity = MathBN.div(quantity, fitem.required_quantity)
+      } else if (iitems?.length) {
         const iitem = iitems.find(
           (i) => i.inventory.id === fitem.inventory_item_id
         )
@@ -248,6 +253,7 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
         "fulfillments.items.quantity",
         "fulfillments.items.line_item_id",
         "fulfillments.items.inventory_item_id",
+        "fulfillments.items.required_quantity",
         "items.id",
         "items.quantity",
         "items.variant.manage_inventory",

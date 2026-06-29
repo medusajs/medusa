@@ -1692,6 +1692,15 @@
           "nullable": false,
           "mappedType": "decimal"
         },
+        "required_quantity": {
+          "name": "required_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
         "line_item_id": {
           "name": "line_item_id",
           "type": "text",
@@ -1726,6 +1735,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "json"
+        },
+        "raw_required_quantity": {
+          "name": "raw_required_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "json"
         },
         "created_at": {

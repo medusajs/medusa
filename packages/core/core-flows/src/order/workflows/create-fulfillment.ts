@@ -214,6 +214,7 @@ function prepareFulfillmentData({
         return {
           line_item_id: i.id,
           inventory_item_id: r.inventory_item_id,
+          required_quantity: (iItem?.required_quantity ?? 1) as BigNumberInput,
           quantity: MathBN.mult(
             iItem?.required_quantity ?? 1,
             i.quantity

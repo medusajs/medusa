@@ -20,6 +20,13 @@ export interface FulfillmentItemDTO {
   quantity: number
 
   /**
+   * The required quantity of the inventory item backing this fulfillment item,
+   * snapshotted when the fulfillment was created. Used to derive the delivered
+   * line item quantity even if the variant's inventory kit later changes.
+   */
+  required_quantity: number | null
+
+  /**
    * The sku of the fulfillment item.
    */
   sku: string

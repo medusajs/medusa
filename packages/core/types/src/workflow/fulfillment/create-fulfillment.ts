@@ -78,6 +78,13 @@ export type CreateFulfillmentItemWorkflowDTO = {
   quantity: number
 
   /**
+   * The required quantity of the inventory item backing this fulfillment item.
+   * Snapshotted at creation so the delivered line item quantity can be derived
+   * even if the variant's inventory kit later changes.
+   */
+  required_quantity?: number | null
+
+  /**
    * The barcode of the fulfillment item.
    */
   barcode: string

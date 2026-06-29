@@ -9,6 +9,7 @@ export const FulfillmentItem = model
     sku: model.text(),
     barcode: model.text(),
     quantity: model.bigNumber(),
+    required_quantity: model.bigNumber().nullable(),
     line_item_id: model.text().nullable(),
     inventory_item_id: model.text().nullable(),
     fulfillment: model.belongsTo(() => Fulfillment, {

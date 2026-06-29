@@ -178,12 +178,16 @@ function prepareCancelOrderFulfillmentData({
       //   NOTE: for now we only need to find one inventory item of a line item to compute this since when a fulfillment is created all inventory items are fulfilled together.
       //   If we allow to cancel partial fulfillments for an order item, we need to change this.
 
-      if (iitems?.length) {
+      if (fitem.required_quantity != null) {
+        // Fulfillments created after the required_quantity snapshot landed
+        // carry their own divisor, so the canceled line quantity stays correct
+        // even if the variant's inventory kit changed after fulfillment.
+        quantity = MathBN.div(quantity, fitem.required_quantity)
+      } else if (iitems?.length) {
         const iitem = iitems.find(
           (i) => i.inventory.id === fitem.inventory_item_id
         )
-
-        quantity = MathBN.div(quantity, iitem!.required_quantity)
+        if (iitem) quantity = MathBN.div(quantity, iitem.required_quantity)
       }
 
       return {
@@ -335,6 +339,7 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
         "fulfillments.items.quantity",
         "fulfillments.items.line_item_id",
         "fulfillments.items.inventory_item_id",
+        "fulfillments.items.required_quantity",
       ],
       options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "get-order" })
