@@ -7,13 +7,14 @@ import {
   LAYOUT_TRIGGER_LOCATIONS,
   LayoutComposer as LayoutComposerImpl,
   LayoutComposerProps as LayoutComposerPropsImpl,
+  LayoutEntry,
 } from "../components/layout-composer"
 
 type LayoutComposerProps<TLayoutId extends Layouts, TData> = Omit<
   LayoutComposerPropsImpl<TLayoutId, TData>,
   "triggerLocation" | "controlsLocation" | "controlSize"
 >
-export const LayoutComposer = <TLayoutId extends Layouts, TData>({
+const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
   preferredLayoutId,
   sections,
@@ -36,5 +37,8 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   )
 }
 
-export type { LayoutComponentProps } from "../components/layout-composer/types"
+export const LayoutComposer = Object.assign(LayoutComposerRoot, {
+  Entry: LayoutEntry,
+})
 
+export type { LayoutComponentProps } from "../components/layout-composer/types"
