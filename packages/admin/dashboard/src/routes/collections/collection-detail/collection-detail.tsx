@@ -34,8 +34,12 @@ export const CollectionDetail = () => {
       sections={{
         main: (
           <>
-            <CollectionGeneralSection collection={collection} />
-            <CollectionProductSection collection={collection} />
+            <LayoutComposer.Entry id="CollectionGeneralSection">
+              <CollectionGeneralSection collection={collection} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CollectionProductSection">
+              <CollectionProductSection collection={collection} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(collection, { permissions: false })}
           </>
         ),

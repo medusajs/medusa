@@ -38,8 +38,14 @@ export const ApiKeyManagementDetail = () => {
       sections={{
         main: (
           <>
-            <ApiKeyGeneralSection apiKey={api_key} />
-            {isPublishable && <ApiKeySalesChannelSection apiKey={api_key} />}
+            <LayoutComposer.Entry id="ApiKeyGeneralSection">
+              <ApiKeyGeneralSection apiKey={api_key} />
+            </LayoutComposer.Entry>
+            {isPublishable && (
+              <LayoutComposer.Entry id="ApiKeySalesChannelSection">
+                <ApiKeySalesChannelSection apiKey={api_key} />
+              </LayoutComposer.Entry>
+            )}
             {detailPageDefaultEntries(api_key, { metadata: false, permissions: false })}
           </>
         ),

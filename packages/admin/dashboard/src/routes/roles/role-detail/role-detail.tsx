@@ -51,10 +51,14 @@ export const RoleDetail = () => {
       sections={{
         main: (
           <>
-            <RoleGeneralSection role={role} />
-            <PermissionGuard permission="user:read">
-              <RoleUsersSection role={role} />
-            </PermissionGuard>
+            <LayoutComposer.Entry id="RoleGeneralSection">
+              <RoleGeneralSection role={role} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="RoleUsersSection">
+              <PermissionGuard permission="user:read">
+                <RoleUsersSection role={role} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(role, { permissions: false })}
           </>
         ),

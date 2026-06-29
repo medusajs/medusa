@@ -11,7 +11,9 @@ export const InventoryItemListTable = () => {
       sections={{
         main: (
           <>
-            <InventoryListTable />
+            <LayoutComposer.Entry id="InventoryListTable">
+              <InventoryListTable />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

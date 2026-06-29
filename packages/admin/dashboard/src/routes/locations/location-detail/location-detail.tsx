@@ -46,14 +46,20 @@ export const LocationDetail = () => {
       sections={{
         main: (
           <>
-            <LocationGeneralSection location={location} />
+            <LayoutComposer.Entry id="LocationGeneralSection">
+              <LocationGeneralSection location={location} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(location)}
           </>
         ),
         side: (
           <>
-            <LocationsSalesChannelsSection location={location} />
-            <LocationsFulfillmentProvidersSection location={location} />
+            <LayoutComposer.Entry id="LocationsSalesChannelsSection">
+              <LocationsSalesChannelsSection location={location} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="LocationsFulfillmentProvidersSection">
+              <LocationsFulfillmentProvidersSection location={location} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

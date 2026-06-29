@@ -9,7 +9,11 @@ export const SalesChannelList = () => {
       widgetsZonePrefix="sales_channel.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <SalesChannelListTable />,
+        main: (
+          <LayoutComposer.Entry id="SalesChannelListTable">
+            <SalesChannelListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

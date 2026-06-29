@@ -35,9 +35,17 @@ export const StoreDetail = () => {
       sections={{
         main: (
           <>
-            <StoreGeneralSection store={store} />
-            <StoreCurrencySection store={store} />
-            {isTranslationsEnabled && <StoreLocaleSection store={store} />}
+            <LayoutComposer.Entry id="StoreGeneralSection">
+              <StoreGeneralSection store={store} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="StoreCurrencySection">
+              <StoreCurrencySection store={store} />
+            </LayoutComposer.Entry>
+            {isTranslationsEnabled && (
+              <LayoutComposer.Entry id="StoreLocaleSection">
+                <StoreLocaleSection store={store} />
+              </LayoutComposer.Entry>
+            )}
             {detailPageDefaultEntries(store, { permissions: false })}
           </>
         ),

@@ -10,7 +10,11 @@ export const WorkflowExcecutionList = () => {
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       hasOutlet={false}
       sections={{
-        main: <WorkflowExecutionListTable />,
+        main: (
+          <LayoutComposer.Entry id="WorkflowExecutionListTable">
+            <WorkflowExecutionListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

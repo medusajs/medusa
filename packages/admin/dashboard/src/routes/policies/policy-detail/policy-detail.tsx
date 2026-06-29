@@ -49,9 +49,13 @@ export const PolicyDetail = () => {
       sections={{
         main: (
           <>
-            <PolicyGeneralSection policy={policy} />
+            <LayoutComposer.Entry id="PolicyGeneralSection">
+              <PolicyGeneralSection policy={policy} />
+            </LayoutComposer.Entry>
             {hasPermission("rbac_role:read") && (
-              <PolicyRolesSection policy={policy} />
+              <LayoutComposer.Entry id="PolicyRolesSection">
+                <PolicyRolesSection policy={policy} />
+              </LayoutComposer.Entry>
             )}
             {detailPageDefaultEntries(policy, { permissions: false })}
           </>

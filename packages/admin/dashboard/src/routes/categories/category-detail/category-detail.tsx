@@ -47,14 +47,20 @@ export const CategoryDetail = () => {
       sections={{
         main: (
           <>
-            <CategoryGeneralSection category={product_category} />
-            <CategoryProductSection category={product_category} />
+            <LayoutComposer.Entry id="CategoryGeneralSection">
+              <CategoryGeneralSection category={product_category} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CategoryProductSection">
+              <CategoryProductSection category={product_category} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_category)}
           </>
         ),
         side: (
           <>
-            <CategoryOrganizeSection category={product_category} />
+            <LayoutComposer.Entry id="CategoryOrganizeSection">
+              <CategoryOrganizeSection category={product_category} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

@@ -122,68 +122,78 @@ export const TranslationList = () => {
       sections={{
         main: (
           <>
-            <Container className="flex items-center justify-between px-6 py-4">
-              <div className="flex flex-col">
-                <Heading>Manage {t("translations.domain")}</Heading>
-                <Text className="text-ui-fg-subtle" size="small">
-                  {t("translations.subtitle")}
-                </Text>
-              </div>
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={handleManageEntities}
-              >
-                <ListCheckbox className="text-ui-fg-subtle" />
-                <Text className="txt-compact-small-plus text-ui-fg-base">
-                  {t("translations.actions.manageEntities")}
-                </Text>
-              </Button>
-            </Container>
+            <LayoutComposer.Entry id="translations-header">
+              <Container className="flex items-center justify-between px-6 py-4">
+                <div className="flex flex-col">
+                  <Heading>Manage {t("translations.domain")}</Heading>
+                  <Text className="text-ui-fg-subtle" size="small">
+                    {t("translations.subtitle")}
+                  </Text>
+                </div>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={handleManageEntities}
+                >
+                  <ListCheckbox className="text-ui-fg-subtle" />
+                  <Text className="txt-compact-small-plus text-ui-fg-base">
+                    {t("translations.actions.manageEntities")}
+                  </Text>
+                </Button>
+              </Container>
+            </LayoutComposer.Entry>
 
             {!hasLocales && (
-              <Alert
-                variant="info"
-                className="bg-ui-bg-base flex items-center px-6 py-4"
-              >
-                <div className="flex items-center justify-between gap-x-2">
-                  <p>{t("translations.activeLocales.noLocalesTip")}.</p>
-                  <Button
-                    onClick={handleManageLocales}
-                    size="small"
-                    variant="secondary"
-                  >
-                    {t(
-                      "translations.activeLocales.noLocalesTipConfigureAction"
-                    )}
-                  </Button>
-                </div>
-              </Alert>
+              <LayoutComposer.Entry id="no-locales-alert">
+                <Alert
+                  variant="info"
+                  className="bg-ui-bg-base flex items-center px-6 py-4"
+                >
+                  <div className="flex items-center justify-between gap-x-2">
+                    <p>{t("translations.activeLocales.noLocalesTip")}.</p>
+                    <Button
+                      onClick={handleManageLocales}
+                      size="small"
+                      variant="secondary"
+                    >
+                      {t(
+                        "translations.activeLocales.noLocalesTipConfigureAction"
+                      )}
+                    </Button>
+                  </div>
+                </Alert>
+              </LayoutComposer.Entry>
             )}
 
-            <TranslationListSection
-              entities={translatableEntities}
-              hasLocales={hasLocales}
-            />
+            <LayoutComposer.Entry id="TranslationListSection">
+              <TranslationListSection
+                entities={translatableEntities}
+                hasLocales={hasLocales}
+              />
+            </LayoutComposer.Entry>
           </>
         ),
         side: (
           <>
-            <ActiveLocalesSection
-              locales={
-                store?.supported_locales?.map(
-                  (suportedLocale) => suportedLocale.locale
-                ) ?? []
-              }
-            ></ActiveLocalesSection>
-            <TranslationsCompletionSection
-              statistics={statistics ?? {}}
-              locales={
-                store?.supported_locales?.map(
-                  (supportedLocale) => supportedLocale.locale
-                ) ?? []
-              }
-            />
+            <LayoutComposer.Entry id="ActiveLocalesSection">
+              <ActiveLocalesSection
+                locales={
+                  store?.supported_locales?.map(
+                    (suportedLocale) => suportedLocale.locale
+                  ) ?? []
+                }
+              ></ActiveLocalesSection>
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TranslationsCompletionSection">
+              <TranslationsCompletionSection
+                statistics={statistics ?? {}}
+                locales={
+                  store?.supported_locales?.map(
+                    (supportedLocale) => supportedLocale.locale
+                  ) ?? []
+                }
+              />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

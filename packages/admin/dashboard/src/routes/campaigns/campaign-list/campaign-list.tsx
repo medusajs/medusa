@@ -9,7 +9,11 @@ export const CampaignList = () => {
       widgetsZonePrefix="campaign.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <CampaignListTable />,
+        main: (
+          <LayoutComposer.Entry id="CampaignListTable">
+            <CampaignListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

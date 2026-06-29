@@ -25,8 +25,12 @@ export const ProfileDetail = () => {
       sections={{
         main: (
           <>
-            <ProfileGeneralSection user={user} />
-            <ProfileMfaSection />
+            <LayoutComposer.Entry id="ProfileGeneralSection">
+              <ProfileGeneralSection user={user} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProfileMfaSection">
+              <ProfileMfaSection />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

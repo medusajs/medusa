@@ -71,24 +71,44 @@ export const OrderDetail = () => {
       sections={{
         main: (
           <>
-            <OrderActiveEditSection order={order} />
-            <ActiveOrderClaimSection orderPreview={orderPreview!} />
-            <ActiveOrderExchangeSection orderPreview={orderPreview!} />
-            <ActiveOrderReturnSection orderPreview={orderPreview!} />
-            <OrderGeneralSection order={order as ExtendedOrder} />
-            <OrderSummarySection order={order} plugins={plugins} />
-            <OrderPaymentSection
-              order={order as ExtendedOrder}
-              plugins={plugins}
-            />
-            <OrderFulfillmentSection order={order as ExtendedOrder} />
+            <LayoutComposer.Entry id="OrderActiveEditSection">
+              <OrderActiveEditSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActiveOrderClaimSection">
+              <ActiveOrderClaimSection orderPreview={orderPreview!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActiveOrderExchangeSection">
+              <ActiveOrderExchangeSection orderPreview={orderPreview!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActiveOrderReturnSection">
+              <ActiveOrderReturnSection orderPreview={orderPreview!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderGeneralSection">
+              <OrderGeneralSection order={order as ExtendedOrder} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderSummarySection">
+              <OrderSummarySection order={order} plugins={plugins} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderPaymentSection">
+              <OrderPaymentSection
+                order={order as ExtendedOrder}
+                plugins={plugins}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderFulfillmentSection">
+              <OrderFulfillmentSection order={order as ExtendedOrder} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(order)}
           </>
         ),
         side: (
           <>
-            <OrderCustomerSection order={order} />
-            <OrderActivitySection order={order as ExtendedOrder} />
+            <LayoutComposer.Entry id="OrderCustomerSection">
+              <OrderCustomerSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderActivitySection">
+              <OrderActivitySection order={order as ExtendedOrder} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

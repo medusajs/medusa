@@ -34,9 +34,11 @@ export const ShippingOptionTypeDetail = () => {
       sections={{
         main: (
           <>
-            <ShippingOptionTypeGeneralSection
-              shippingOptionType={shipping_option_type}
-            />
+            <LayoutComposer.Entry id="ShippingOptionTypeGeneralSection">
+              <ShippingOptionTypeGeneralSection
+                shippingOptionType={shipping_option_type}
+              />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(shipping_option_type, { permissions: false })}
           </>
         ),

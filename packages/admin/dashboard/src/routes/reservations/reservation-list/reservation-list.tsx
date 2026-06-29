@@ -11,7 +11,9 @@ export const ReservationList = () => {
       sections={{
         main: (
           <>
-            <ReservationListTable />
+            <LayoutComposer.Entry id="ReservationListTable">
+              <ReservationListTable />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

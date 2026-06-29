@@ -9,7 +9,11 @@ export const RegionList = () => {
       widgetsZonePrefix="region.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <RegionListTable />,
+        main: (
+          <LayoutComposer.Entry id="RegionListTable">
+            <RegionListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

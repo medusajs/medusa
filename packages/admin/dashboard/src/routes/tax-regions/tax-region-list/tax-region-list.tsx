@@ -9,7 +9,11 @@ export const TaxRegionsList = () => {
       widgetsZonePrefix="tax.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <TaxRegionListView />,
+        main: (
+          <LayoutComposer.Entry id="TaxRegionListView">
+            <TaxRegionListView />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

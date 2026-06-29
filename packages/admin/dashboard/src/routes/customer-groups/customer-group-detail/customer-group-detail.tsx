@@ -39,8 +39,12 @@ export const CustomerGroupDetail = () => {
       sections={{
         main: (
           <>
-            <CustomerGroupGeneralSection group={customer_group} />
-            <CustomerGroupCustomerSection group={customer_group} />
+            <LayoutComposer.Entry id="CustomerGroupGeneralSection">
+              <CustomerGroupGeneralSection group={customer_group} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CustomerGroupCustomerSection">
+              <CustomerGroupCustomerSection group={customer_group} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(customer_group, { permissions: false })}
           </>
         ),

@@ -9,7 +9,11 @@ export const PromotionsList = () => {
       widgetsZonePrefix="promotion.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <PromotionListTable />,
+        main: (
+          <LayoutComposer.Entry id="PromotionListTable">
+            <PromotionListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

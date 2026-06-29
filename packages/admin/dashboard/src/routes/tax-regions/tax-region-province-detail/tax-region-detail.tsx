@@ -39,8 +39,12 @@ export const TaxRegionDetail = () => {
       sections={{
         main: (
           <>
-            <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
-            <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+            <LayoutComposer.Entry id="TaxRegionProvinceDetailSection">
+              <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionProvinceOverrideSection">
+              <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
           </>
         ),

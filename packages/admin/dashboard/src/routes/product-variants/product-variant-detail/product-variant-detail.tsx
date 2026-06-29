@@ -53,29 +53,37 @@ export const ProductVariantDetail = () => {
       sections={{
         main: (
           <>
-            <VariantGeneralSection variant={variant as ExtendedVariant} />
-            <VariantMediaSection variant={variant as ExtendedVariant} />
-            {!variant.manage_inventory ? (
-              <InventorySectionPlaceholder />
-            ) : (
-              <VariantInventorySection
-                inventoryItems={(variant.inventory_items ?? [])
-                  .filter((i) => i.inventory)
-                  .map((i) => {
-                    return {
-                      ...i.inventory!,
-                      required_quantity: i.required_quantity,
-                      variant,
-                    }
-                  })}
-              />
-            )}
+            <LayoutComposer.Entry id="VariantGeneralSection">
+              <VariantGeneralSection variant={variant as ExtendedVariant} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="VariantMediaSection">
+              <VariantMediaSection variant={variant as ExtendedVariant} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="VariantInventorySection">
+              {!variant.manage_inventory ? (
+                <InventorySectionPlaceholder />
+              ) : (
+                <VariantInventorySection
+                  inventoryItems={(variant.inventory_items ?? [])
+                    .filter((i) => i.inventory)
+                    .map((i) => {
+                      return {
+                        ...i.inventory!,
+                        required_quantity: i.required_quantity,
+                        variant,
+                      }
+                    })}
+                />
+              )}
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(variant)}
           </>
         ),
         side: (
           <>
-            <VariantPricesSection variant={variant as ExtendedVariant} />
+            <LayoutComposer.Entry id="VariantPricesSection">
+              <VariantPricesSection variant={variant as ExtendedVariant} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

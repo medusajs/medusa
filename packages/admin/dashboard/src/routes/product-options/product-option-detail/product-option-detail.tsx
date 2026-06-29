@@ -40,9 +40,15 @@ export const ProductOptionDetail = () => {
       sections={{
         main: (
           <>
-            <ProductOptionGeneralSection productOption={product_option} />
-            <ProductOptionValuesSection productOption={product_option} />
-            <ProductOptionProductSection productOptionId={product_option.id} />
+            <LayoutComposer.Entry id="ProductOptionGeneralSection">
+              <ProductOptionGeneralSection productOption={product_option} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductOptionValuesSection">
+              <ProductOptionValuesSection productOption={product_option} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductOptionProductSection">
+              <ProductOptionProductSection productOptionId={product_option.id} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_option, { permissions: false })}
           </>
         ),

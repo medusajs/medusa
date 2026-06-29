@@ -48,16 +48,26 @@ export const CampaignDetail = () => {
       sections={{
         main: (
           <>
-            <CampaignGeneralSection campaign={campaign} />
-            <CampaignPromotionSection campaign={campaign} />
+            <LayoutComposer.Entry id="CampaignGeneralSection">
+              <CampaignGeneralSection campaign={campaign} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CampaignPromotionSection">
+              <CampaignPromotionSection campaign={campaign} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(campaign)}
           </>
         ),
         side: (
           <>
-            <CampaignConfigurationSection campaign={campaign} />
-            <CampaignSpend campaign={campaign} />
-            <CampaignBudget campaign={campaign} />
+            <LayoutComposer.Entry id="CampaignConfigurationSection">
+              <CampaignConfigurationSection campaign={campaign} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CampaignSpend">
+              <CampaignSpend campaign={campaign} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CampaignBudget">
+              <CampaignBudget campaign={campaign} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

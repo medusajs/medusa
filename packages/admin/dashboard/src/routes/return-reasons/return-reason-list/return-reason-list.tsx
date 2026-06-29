@@ -9,7 +9,11 @@ export const ReturnReasonList = () => {
       widgetsZonePrefix="return_reason.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <ReturnReasonListTable />,
+        main: (
+          <LayoutComposer.Entry id="ReturnReasonListTable">
+            <ReturnReasonListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

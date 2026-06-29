@@ -15,7 +15,11 @@ export const ApiKeyManagementList = () => {
       widgetsZonePrefix="api_key.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <ApiKeyManagementListTable keyType={keyType} />,
+        main: (
+          <LayoutComposer.Entry id="ApiKeyManagementListTable">
+            <ApiKeyManagementListTable keyType={keyType} />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

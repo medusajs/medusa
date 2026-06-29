@@ -9,7 +9,11 @@ export const ShippingOptionTypeList = () => {
       widgetsZonePrefix="shipping_option_type.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <ShippingOptionTypeListTable />,
+        main: (
+          <LayoutComposer.Entry id="ShippingOptionTypeListTable">
+            <ShippingOptionTypeListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

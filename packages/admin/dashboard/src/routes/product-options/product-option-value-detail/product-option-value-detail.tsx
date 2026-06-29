@@ -35,10 +35,12 @@ export const ProductOptionValueDetail = () => {
       sections={{
         main: (
           <>
-            <ProductOptionValueGeneralSection
-              optionId={id!}
-              productOptionValue={product_option_value}
-            />
+            <LayoutComposer.Entry id="ProductOptionValueGeneralSection">
+              <ProductOptionValueGeneralSection
+                optionId={id!}
+                productOptionValue={product_option_value}
+              />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_option_value, { permissions: false })}
           </>
         ),

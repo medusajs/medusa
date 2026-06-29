@@ -40,15 +40,23 @@ export const CustomerDetail = () => {
         sections={{
           main: (
             <>
-              <CustomerGeneralSection customer={customer} />
-              <CustomerOrderSection customer={customer} />
-              <CustomerGroupSection customer={customer} />
+              <LayoutComposer.Entry id="CustomerGeneralSection">
+                <CustomerGeneralSection customer={customer} />
+              </LayoutComposer.Entry>
+              <LayoutComposer.Entry id="CustomerOrderSection">
+                <CustomerOrderSection customer={customer} />
+              </LayoutComposer.Entry>
+              <LayoutComposer.Entry id="CustomerGroupSection">
+                <CustomerGroupSection customer={customer} />
+              </LayoutComposer.Entry>
               {detailPageDefaultEntries(customer)}
             </>
           ),
           side: (
             <>
-              <CustomerAddressSection customer={customer} />
+              <LayoutComposer.Entry id="CustomerAddressSection">
+                <CustomerAddressSection customer={customer} />
+              </LayoutComposer.Entry>
             </>
           ),
         }}

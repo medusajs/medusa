@@ -63,11 +63,15 @@ export const RegionDetail = () => {
       sections={{
         main: (
           <>
-            <RegionGeneralSection
-              region={region}
-              pricePreferences={pricePreferences ?? []}
-            />
-            <RegionCountrySection region={region} />
+            <LayoutComposer.Entry id="RegionGeneralSection">
+              <RegionGeneralSection
+                region={region}
+                pricePreferences={pricePreferences ?? []}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="RegionCountrySection">
+              <RegionCountrySection region={region} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(region, { permissions: false })}
           </>
         ),

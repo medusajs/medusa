@@ -54,14 +54,18 @@ export const ReservationDetail = () => {
       sections={{
         main: (
           <>
-            <ReservationGeneralSection reservation={reservation} />
+            <LayoutComposer.Entry id="ReservationGeneralSection">
+              <ReservationGeneralSection reservation={reservation} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(reservation)}
           </>
         ),
         side: (
           <>
             {inventory_item && (
-              <InventoryItemGeneralSection inventoryItem={inventory_item} />
+              <LayoutComposer.Entry id="InventoryItemGeneralSection">
+                <InventoryItemGeneralSection inventoryItem={inventory_item} />
+              </LayoutComposer.Entry>
             )}
           </>
         ),

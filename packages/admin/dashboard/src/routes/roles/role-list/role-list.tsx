@@ -16,7 +16,11 @@ export const RoleList = () => {
       widgetsZonePrefix="role.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <RoleListTable />,
+        main: (
+          <LayoutComposer.Entry id="RoleListTable">
+            <RoleListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

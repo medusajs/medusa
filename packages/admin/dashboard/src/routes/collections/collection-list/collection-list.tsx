@@ -9,7 +9,11 @@ export const CollectionList = () => {
       widgetsZonePrefix="product_collection.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <CollectionListTable />,
+        main: (
+          <LayoutComposer.Entry id="CollectionListTable">
+            <CollectionListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

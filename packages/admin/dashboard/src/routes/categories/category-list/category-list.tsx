@@ -11,7 +11,9 @@ export const CategoryList = () => {
       sections={{
         main: (
           <>
-            <CategoryListTable />
+            <LayoutComposer.Entry id="CategoryListTable">
+              <CategoryListTable />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

@@ -9,7 +9,11 @@ export const UserList = () => {
       widgetsZonePrefix="user.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <UserListTable />,
+        main: (
+          <LayoutComposer.Entry id="UserListTable">
+            <UserListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

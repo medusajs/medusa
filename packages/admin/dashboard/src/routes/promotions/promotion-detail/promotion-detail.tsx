@@ -61,31 +61,41 @@ export const PromotionDetail = () => {
       sections={{
         main: (
           <>
-            <PromotionGeneralSection promotion={promotion} />
-            <PromotionConditionsSection
-              rules={rules || []}
-              ruleType={"rules"}
-            />
-            <PromotionConditionsSection
-              rules={targetRules || []}
-              ruleType={"target-rules"}
-              applicationMethodTargetType={
-                promotion.application_method?.target_type || "items"
-              }
-            />
-            {promotion.type === "buyget" && (
+            <LayoutComposer.Entry id="PromotionGeneralSection">
+              <PromotionGeneralSection promotion={promotion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="PromotionConditionsSection:rules">
               <PromotionConditionsSection
-                rules={buyRules || []}
-                ruleType={"buy-rules"}
-                applicationMethodTargetType={"items"}
+                rules={rules || []}
+                ruleType={"rules"}
               />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="PromotionConditionsSection:target-rules">
+              <PromotionConditionsSection
+                rules={targetRules || []}
+                ruleType={"target-rules"}
+                applicationMethodTargetType={
+                  promotion.application_method?.target_type || "items"
+                }
+              />
+            </LayoutComposer.Entry>
+            {promotion.type === "buyget" && (
+              <LayoutComposer.Entry id="PromotionConditionsSection:buy-rules">
+                <PromotionConditionsSection
+                  rules={buyRules || []}
+                  ruleType={"buy-rules"}
+                  applicationMethodTargetType={"items"}
+                />
+              </LayoutComposer.Entry>
             )}
             {detailPageDefaultEntries(promotion, { metadata: false })}
           </>
         ),
         side: (
           <>
-            <CampaignSection campaign={promotion.campaign!} />
+            <LayoutComposer.Entry id="CampaignSection">
+              <CampaignSection campaign={promotion.campaign!} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

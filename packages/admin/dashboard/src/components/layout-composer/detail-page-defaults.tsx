@@ -38,17 +38,17 @@ export function detailPageDefaultEntries(
   return (
     <>
       {metadata && (
-        <LayoutComposer.Entry id="metadata">
+        <LayoutComposer.Entry id="MetadataSection">
           <MetadataSection data={data} />
         </LayoutComposer.Entry>
       )}
       {jsonView && (
-        <LayoutComposer.Entry id="json-view">
+        <LayoutComposer.Entry id="JsonViewSection">
           <JsonViewSection data={data} />
         </LayoutComposer.Entry>
       )}
       {permissions && (
-        <LayoutComposer.Entry id="permissions">
+        <LayoutComposer.Entry id="RequiredPermissionsSection">
           <RequiredPermissionsSection />
         </LayoutComposer.Entry>
       )}

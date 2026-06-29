@@ -44,18 +44,28 @@ export const TaxRegionDetail = () => {
       sections={{
         main: (
           <>
-            <TaxRegionSublevelAlert
-              taxRegion={taxRegion}
-              showSublevelRegions={showSublevelRegions}
-              setShowSublevelRegions={setShowSublevelRegions}
-            />
-            <TaxRegionDetailSection taxRegion={taxRegion} />
-            <TaxRegionProvinceSection
-              taxRegion={taxRegion}
-              showSublevelRegions={showSublevelRegions}
-            />
-            <TaxRegionOverrideSection taxRegion={taxRegion} />
-            <TaxRegionProviderSection taxRegion={taxRegion} />
+            <LayoutComposer.Entry id="TaxRegionSublevelAlert">
+              <TaxRegionSublevelAlert
+                taxRegion={taxRegion}
+                showSublevelRegions={showSublevelRegions}
+                setShowSublevelRegions={setShowSublevelRegions}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionDetailSection">
+              <TaxRegionDetailSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionProvinceSection">
+              <TaxRegionProvinceSection
+                taxRegion={taxRegion}
+                showSublevelRegions={showSublevelRegions}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionOverrideSection">
+              <TaxRegionOverrideSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionProviderSection">
+              <TaxRegionProviderSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
           </>
         ),

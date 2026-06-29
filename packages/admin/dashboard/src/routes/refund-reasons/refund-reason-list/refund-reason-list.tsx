@@ -9,7 +9,11 @@ export const RefundReasonList = () => {
       widgetsZonePrefix="refund_reason.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <RefundReasonListTable />,
+        main: (
+          <LayoutComposer.Entry id="RefundReasonListTable">
+            <RefundReasonListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

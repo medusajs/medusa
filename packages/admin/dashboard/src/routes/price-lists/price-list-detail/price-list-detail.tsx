@@ -37,14 +37,20 @@ export const PriceListDetails = () => {
       sections={{
         main: (
           <>
-            <PriceListGeneralSection priceList={price_list} />
-            <PriceListProductSection priceList={price_list} />
+            <LayoutComposer.Entry id="PriceListGeneralSection">
+              <PriceListGeneralSection priceList={price_list} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="PriceListProductSection">
+              <PriceListProductSection priceList={price_list} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(price_list)}
           </>
         ),
         side: (
           <>
-            <PriceListConfigurationSection priceList={price_list} />
+            <LayoutComposer.Entry id="PriceListConfigurationSection">
+              <PriceListConfigurationSection priceList={price_list} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

@@ -53,45 +53,51 @@ export function LocationList() {
       sections={{
         main: (
           <>
-            <Container className="flex flex-col divide-y p-0">
-              <DataTable
-                data={stockLocations}
-                columns={columns}
-                rowCount={count}
-                pageSize={PAGE_SIZE}
-                getRowId={(row) => row.id}
-                heading={t("stockLocations.domain")}
-                subHeading={t("stockLocations.list.description")}
-                emptyState={{
-                  empty: {
-                    heading: t("stockLocations.list.noRecordsMessage"),
-                    description: t("stockLocations.list.noRecordsMessageEmpty"),
-                  },
-                  filtered: {
-                    heading: t("stockLocations.list.noRecordsMessage"),
-                    description: t(
-                      "stockLocations.list.noRecordsMessageFiltered"
-                    ),
-                  },
-                }}
-                actions={[
-                  {
-                    label: t("actions.create"),
-                    to: "create",
-                  },
-                ]}
-                isLoading={isLoading}
-                rowHref={(row) => `/settings/locations/${row.id}`}
-                enableSearch={true}
-                prefix={PREFIX}
-                layout="fill"
-              />
-            </Container>
+            <LayoutComposer.Entry id="stock-locations-table">
+              <Container className="flex flex-col divide-y p-0">
+                <DataTable
+                  data={stockLocations}
+                  columns={columns}
+                  rowCount={count}
+                  pageSize={PAGE_SIZE}
+                  getRowId={(row) => row.id}
+                  heading={t("stockLocations.domain")}
+                  subHeading={t("stockLocations.list.description")}
+                  emptyState={{
+                    empty: {
+                      heading: t("stockLocations.list.noRecordsMessage"),
+                      description: t(
+                        "stockLocations.list.noRecordsMessageEmpty"
+                      ),
+                    },
+                    filtered: {
+                      heading: t("stockLocations.list.noRecordsMessage"),
+                      description: t(
+                        "stockLocations.list.noRecordsMessageFiltered"
+                      ),
+                    },
+                  }}
+                  actions={[
+                    {
+                      label: t("actions.create"),
+                      to: "create",
+                    },
+                  ]}
+                  isLoading={isLoading}
+                  rowHref={(row) => `/settings/locations/${row.id}`}
+                  enableSearch={true}
+                  prefix={PREFIX}
+                  layout="fill"
+                />
+              </Container>
+            </LayoutComposer.Entry>
           </>
         ),
         side: (
           <>
-            <LinksSection />
+            <LayoutComposer.Entry id="LinksSection">
+              <LinksSection />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

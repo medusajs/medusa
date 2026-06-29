@@ -39,8 +39,12 @@ export const ProductTagDetail = () => {
       sections={{
         main: (
           <>
-            <ProductTagGeneralSection productTag={product_tag} />
-            <ProductTagProductSection productTag={product_tag} />
+            <LayoutComposer.Entry id="ProductTagGeneralSection">
+              <ProductTagGeneralSection productTag={product_tag} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductTagProductSection">
+              <ProductTagProductSection productTag={product_tag} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_tag, { permissions: false })}
           </>
         ),

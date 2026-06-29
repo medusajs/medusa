@@ -9,7 +9,11 @@ export const ShippingProfileList = () => {
       widgetsZonePrefix="shipping_profile.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <ShippingProfileListTable />,
+        main: (
+          <LayoutComposer.Entry id="ShippingProfileListTable">
+            <ShippingProfileListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

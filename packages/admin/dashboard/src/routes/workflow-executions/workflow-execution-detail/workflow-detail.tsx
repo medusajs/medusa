@@ -31,10 +31,18 @@ export const ExecutionDetail = () => {
       sections={{
         main: (
           <>
-            <WorkflowExecutionGeneralSection execution={workflow_execution} />
-            <WorkflowExecutionTimelineSection execution={workflow_execution} />
-            <WorkflowExecutionPayloadSection execution={workflow_execution} />
-            <WorkflowExecutionHistorySection execution={workflow_execution} />
+            <LayoutComposer.Entry id="WorkflowExecutionGeneralSection">
+              <WorkflowExecutionGeneralSection execution={workflow_execution} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="WorkflowExecutionTimelineSection">
+              <WorkflowExecutionTimelineSection execution={workflow_execution} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="WorkflowExecutionPayloadSection">
+              <WorkflowExecutionPayloadSection execution={workflow_execution} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="WorkflowExecutionHistorySection">
+              <WorkflowExecutionHistorySection execution={workflow_execution} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(workflow_execution, { metadata: false, permissions: false })}
           </>
         ),

@@ -16,7 +16,11 @@ export const PolicyList = () => {
       widgetsZonePrefix="policy.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: <PolicyListTable />,
+        main: (
+          <LayoutComposer.Entry id="PolicyListTable">
+            <PolicyListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
     />
   )

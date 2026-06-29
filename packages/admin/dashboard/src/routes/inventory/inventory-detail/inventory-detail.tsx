@@ -58,22 +58,32 @@ export const InventoryDetail = () => {
       sections={{
         main: (
           <>
-            <InventoryItemGeneralSection inventoryItem={inventory_item} />
-            <InventoryItemLocationLevelsSection
-              inventoryItem={inventory_item}
-            />
-            <InventoryItemReservationsSection inventoryItem={inventory_item} />
+            <LayoutComposer.Entry id="InventoryItemGeneralSection">
+              <InventoryItemGeneralSection inventoryItem={inventory_item} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="InventoryItemLocationLevelsSection">
+              <InventoryItemLocationLevelsSection
+                inventoryItem={inventory_item}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="InventoryItemReservationsSection">
+              <InventoryItemReservationsSection inventoryItem={inventory_item} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(inventory_item)}
           </>
         ),
         side: (
           <>
-            <InventoryItemVariantsSection
-              variants={(inventory_item as any).variants}
-            />
-            <InventoryItemAttributeSection
-              inventoryItem={inventory_item as any}
-            />
+            <LayoutComposer.Entry id="InventoryItemVariantsSection">
+              <InventoryItemVariantsSection
+                variants={(inventory_item as any).variants}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="InventoryItemAttributeSection">
+              <InventoryItemAttributeSection
+                inventoryItem={inventory_item as any}
+              />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

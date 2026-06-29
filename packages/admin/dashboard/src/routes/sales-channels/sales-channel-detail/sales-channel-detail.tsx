@@ -30,8 +30,12 @@ export const SalesChannelDetail = () => {
       sections={{
         main: (
           <>
-            <SalesChannelGeneralSection salesChannel={sales_channel} />
-            <SalesChannelProductSection salesChannel={sales_channel} />
+            <LayoutComposer.Entry id="SalesChannelGeneralSection">
+              <SalesChannelGeneralSection salesChannel={sales_channel} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="SalesChannelProductSection">
+              <SalesChannelProductSection salesChannel={sales_channel} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(sales_channel, { permissions: false })}
           </>
         ),

@@ -37,7 +37,9 @@ export const ShippingProfileDetail = () => {
       sections={{
         main: (
           <>
-            <ShippingProfileGeneralSection profile={shipping_profile} />
+            <LayoutComposer.Entry id="ShippingProfileGeneralSection">
+              <ShippingProfileGeneralSection profile={shipping_profile} />
+            </LayoutComposer.Entry>
             {detailPageDefaultEntries(shipping_profile, { permissions: false })}
           </>
         ),

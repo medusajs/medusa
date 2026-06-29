@@ -50,17 +50,13 @@ function isLayoutEntry(
 }
 
 /**
- * Resolves the identity segment for a core element. Checks for a
- * `LayoutComposer.Entry` wrapper first, then a `layoutId` prop,
- * then falls back to the component's display/function name.
+ * Resolves the identity segment for a core element. Prefers an explicit
+ * `LayoutComposer.Entry` wrapper id (stable across renames and minification);
+ * otherwise falls back to the component's display/function name.
  */
 function getCoreEntryKey(element: ReactElement): string {
   if (isLayoutEntry(element)) {
     return element.props.id
-  }
-  const explicit = (element.props as { layoutId?: unknown } | null)?.layoutId
-  if (typeof explicit === "string" && explicit.length > 0) {
-    return explicit
   }
   return getElementName(element)
 }
