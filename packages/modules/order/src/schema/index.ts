@@ -241,6 +241,7 @@ type OrderItem {
   raw_delivered_quantity: JSON
   item_id: String!
   item: OrderLineItem!
+  order_id: String!
   quantity: Int!
   raw_quantity: JSON
   fulfilled_quantity: Int!

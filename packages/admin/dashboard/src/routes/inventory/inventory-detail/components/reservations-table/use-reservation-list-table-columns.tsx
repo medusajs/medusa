@@ -14,7 +14,7 @@ import { ReservationActions } from "./reservation-actions"
  * Adds missing properties to the InventoryItemDTO type.
  */
 export interface ExtendedReservationItem extends HttpTypes.AdminReservation {
-  line_item?: { order_id: string }
+  order_item?: { order_id: string }
   location?: HttpTypes.AdminStockLocation
 }
 
@@ -32,7 +32,7 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
           return <TextCell text={sku} />
         },
       }),
-      columnHelper.accessor("line_item.order_id", {
+      columnHelper.accessor("order_item.order_id", {
         header: () => <TextHeader text={t("inventory.reservation.orderID")} />,
         cell: ({ getValue }) => {
           const orderId = getValue()

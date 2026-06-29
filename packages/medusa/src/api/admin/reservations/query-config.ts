@@ -10,6 +10,7 @@ export const defaultAdminReservationFields = [
   "inventory_item_id",
   "quantity",
   "line_item_id",
+  "order_item.order_id",
   "description",
   "metadata",
   "created_at",
