@@ -886,10 +886,11 @@ export default class PromotionModuleService
         const attributeValue = budgetUsageContext[attribute]
 
         if (!attributeValue) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Attribute value for "${attribute}" is required by promotion campaing budget`
-          )
+          // The compute context has no value for the budget attribute (e.g. a
+          // guest cart with no email). The per-attribute budget can't be
+          // evaluated yet, so the promotion isn't applicable - skip it instead
+          // of throwing, which would 500 automatic promotions on guest carts.
+          continue
         }
 
         const [campaignBudgetUsagePerAttribute] =
