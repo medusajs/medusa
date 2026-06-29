@@ -182,16 +182,34 @@ authorizePaymentSessionStep({
   <CodeTab label="Using Service" value="service">
 
 ```ts
-const payment = authorizePaymentSessionStep({
-  id: "payses_123",
-  context: {},
-})
+const payment = await paymentModuleService.authorizePaymentSession(
+  "payses_123",
+  {}
+)
 ```
 
   </CodeTab>
 </CodeTabs>
 
 When the payment authorization is successful, a payment is created and returned.
+
+#### Handling Deferred Authorization
+
+Some payment methods (for example, bank transfers, payment links, or vouchers like OXXO or boleto) don't authorize immediately. For these methods, the payment provider returns a `pending_authorization` status instead of `authorized`.
+
+When this happens:
+
+- `authorizePaymentSession` returns `null` instead of a payment object.
+- The payment session's `status` is updated to `pending_authorization`.
+- The cart can still be completed and an order is created with an "awaiting" payment status.
+- Medusa will re-attempt authorization automatically when it receives a webhook event from the payment provider confirming the payment.
+- Admins can also manually trigger a re-check from the order details page in the Medusa Admin.
+
+<Note>
+
+Support for `pending_authorization` is available since Medusa [v2.17.0](https://github.com/medusajs/medusa/releases/tag/v2.17.0).
+
+</Note>
 
 #### Handling Additional Action
 
@@ -201,7 +219,7 @@ If you used the `authorizePaymentSessionStep`, you don't need to implement this 
 
 </Note>
 
-If the payment authorization isn’t successful, whether because it requires additional action or for another reason, the method updates the payment session with the new status and throws an error.
+If the payment authorization isn't successful, whether because it requires additional action or for another reason, the method updates the payment session with the new status and throws an error.
 
 In that case, you can catch that error and, if the session's `status` property is `requires_more`, handle the additional action, then retry the authorization.
 
