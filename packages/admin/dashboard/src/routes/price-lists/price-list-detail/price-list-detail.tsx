@@ -1,3 +1,4 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useParams } from "react-router-dom"
 
 import { usePriceList } from "../../../hooks/api/price-lists"
@@ -6,14 +7,12 @@ import { PriceListGeneralSection } from "./components/price-list-general-section
 import { PriceListProductSection } from "./components/price-list-product-section"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 
 export const PriceListDetails = () => {
   const { id } = useParams()
 
   const { price_list, isLoading, isError, error } = usePriceList(id!)
-  const { getWidgets } = useExtension()
 
   if (isLoading || !price_list) {
     return (
@@ -31,24 +30,30 @@ export const PriceListDetails = () => {
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        after: getWidgets("price_list.details.after"),
-        before: getWidgets("price_list.details.before"),
-        sideAfter: getWidgets("price_list.details.side.after"),
-        sideBefore: getWidgets("price_list.details.side.before"),
-      }}
+    <LayoutComposer
+      widgetsZonePrefix="price_list.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={price_list}
-      showJSON
-      showMetadata
-    >
-      <TwoColumnPage.Main>
-        <PriceListGeneralSection priceList={price_list} />
-        <PriceListProductSection priceList={price_list} />
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <PriceListConfigurationSection priceList={price_list} />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="PriceListGeneralSection">
+              <PriceListGeneralSection priceList={price_list} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="PriceListProductSection">
+              <PriceListProductSection priceList={price_list} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(price_list)}
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="PriceListConfigurationSection">
+              <PriceListConfigurationSection priceList={price_list} />
+            </LayoutComposer.Entry>
+          </>
+        ),
+      }}
+    />
   )
 }

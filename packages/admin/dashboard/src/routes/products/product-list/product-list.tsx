@@ -13,10 +13,14 @@ export const ProductList = () => {
       widgetsZonePrefix="product.list"
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       sections={{
-        main: isViewConfigEnabled ? (
-          <ConfigurableProductListTable />
-        ) : (
-          <ProductListTable />
+        main: (
+          <LayoutComposer.Entry id="ProductListTable">
+            {isViewConfigEnabled ? (
+              <ConfigurableProductListTable />
+            ) : (
+              <ProductListTable />
+            )}
+          </LayoutComposer.Entry>
         ),
       }}
     />

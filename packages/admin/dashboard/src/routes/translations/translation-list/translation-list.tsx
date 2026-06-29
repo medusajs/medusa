@@ -1,9 +1,10 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { Alert, Button, Container, Heading, Text } from "@medusajs/ui"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer } from "../../../components/layout-composer"
 import {
   useStore,
   useTranslationSettings,
@@ -115,74 +116,87 @@ export const TranslationList = () => {
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        before: [],
-        after: [],
-        sideBefore: [],
-        sideAfter: [],
+    <LayoutComposer
+      widgetsZonePrefix="translation.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="translations-header">
+              <Container className="flex items-center justify-between px-6 py-4">
+                <div className="flex flex-col">
+                  <Heading>Manage {t("translations.domain")}</Heading>
+                  <Text className="text-ui-fg-subtle" size="small">
+                    {t("translations.subtitle")}
+                  </Text>
+                </div>
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={handleManageEntities}
+                >
+                  <ListCheckbox className="text-ui-fg-subtle" />
+                  <Text className="txt-compact-small-plus text-ui-fg-base">
+                    {t("translations.actions.manageEntities")}
+                  </Text>
+                </Button>
+              </Container>
+            </LayoutComposer.Entry>
+
+            {!hasLocales && (
+              <LayoutComposer.Entry id="no-locales-alert">
+                <Alert
+                  variant="info"
+                  className="bg-ui-bg-base flex items-center px-6 py-4"
+                >
+                  <div className="flex items-center justify-between gap-x-2">
+                    <p>{t("translations.activeLocales.noLocalesTip")}.</p>
+                    <Button
+                      onClick={handleManageLocales}
+                      size="small"
+                      variant="secondary"
+                    >
+                      {t(
+                        "translations.activeLocales.noLocalesTipConfigureAction"
+                      )}
+                    </Button>
+                  </div>
+                </Alert>
+              </LayoutComposer.Entry>
+            )}
+
+            <LayoutComposer.Entry id="TranslationListSection">
+              <TranslationListSection
+                entities={translatableEntities}
+                hasLocales={hasLocales}
+              />
+            </LayoutComposer.Entry>
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="ActiveLocalesSection">
+              <ActiveLocalesSection
+                locales={
+                  store?.supported_locales?.map(
+                    (suportedLocale) => suportedLocale.locale
+                  ) ?? []
+                }
+              ></ActiveLocalesSection>
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TranslationsCompletionSection">
+              <TranslationsCompletionSection
+                statistics={statistics ?? {}}
+                locales={
+                  store?.supported_locales?.map(
+                    (supportedLocale) => supportedLocale.locale
+                  ) ?? []
+                }
+              />
+            </LayoutComposer.Entry>
+          </>
+        ),
       }}
-    >
-      <TwoColumnPage.Main>
-        <Container className="flex items-center justify-between px-6 py-4">
-          <div className="flex flex-col">
-            <Heading>Manage {t("translations.domain")}</Heading>
-            <Text className="text-ui-fg-subtle" size="small">
-              {t("translations.subtitle")}
-            </Text>
-          </div>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={handleManageEntities}
-          >
-            <ListCheckbox className="text-ui-fg-subtle" />
-            <Text className="txt-compact-small-plus text-ui-fg-base">
-              {t("translations.actions.manageEntities")}
-            </Text>
-          </Button>
-        </Container>
-
-        {!hasLocales && (
-          <Alert
-            variant="info"
-            className="bg-ui-bg-base flex items-center px-6 py-4"
-          >
-            <div className="flex items-center justify-between gap-x-2">
-              <p>{t("translations.activeLocales.noLocalesTip")}.</p>
-              <Button
-                onClick={handleManageLocales}
-                size="small"
-                variant="secondary"
-              >
-                {t("translations.activeLocales.noLocalesTipConfigureAction")}
-              </Button>
-            </div>
-          </Alert>
-        )}
-
-        <TranslationListSection
-          entities={translatableEntities}
-          hasLocales={hasLocales}
-        />
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <ActiveLocalesSection
-          locales={
-            store?.supported_locales?.map(
-              (suportedLocale) => suportedLocale.locale
-            ) ?? []
-          }
-        ></ActiveLocalesSection>
-        <TranslationsCompletionSection
-          statistics={statistics ?? {}}
-          locales={
-            store?.supported_locales?.map(
-              (supportedLocale) => supportedLocale.locale
-            ) ?? []
-          }
-        />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+    />
   )
 }
