@@ -2238,6 +2238,14 @@
         "title": "Zahŕňa promócia dane?",
         "description": "Povoľte toto pole na aplikovanie promócie po zdanení"
       },
+      "exclusive": {
+        "title": "Exclusive",
+        "description": "When enabled, this promotion cannot be combined with other promotions."
+      },
+      "maxValue": {
+        "title": "Maximum discount amount",
+        "description": "Cap the total discount this promotion can apply."
+      },
       "status": {
         "label": "Stav",
         "draft": {

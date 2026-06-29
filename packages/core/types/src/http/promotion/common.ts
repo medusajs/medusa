@@ -48,6 +48,7 @@ export interface BaseApplicationMethod {
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: number
+  max_value?: number | null
   currency_code?: string
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null
@@ -63,6 +64,7 @@ export interface BasePromotion {
   type?: PromotionTypeValues
   is_automatic?: boolean
   is_tax_inclusive?: boolean
+  is_exclusive?: boolean
   limit?: number | null
   used?: number
   application_method?: BaseApplicationMethod

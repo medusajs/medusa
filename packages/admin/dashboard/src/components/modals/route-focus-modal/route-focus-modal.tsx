@@ -1,4 +1,4 @@
-import { FocusModal, clx } from "@zjedene-medusa/ui"
+import { FocusModal, TooltipProvider, clx } from "@zjedene-medusa/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Path, useNavigate } from "react-router-dom"
 import { useStateAwareTo } from "../hooks/use-state-aware-to"
@@ -80,7 +80,7 @@ const Content = ({ stackedModalOpen, children }: ContentProps) => {
         "!bg-ui-bg-disabled !inset-x-5 !inset-y-3": stackedModalOpen,
       })}
     >
-      {children}
+      <TooltipProvider>{children}</TooltipProvider>
     </FocusModal.Content>
   )
 }

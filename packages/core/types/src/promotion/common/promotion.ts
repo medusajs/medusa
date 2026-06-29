@@ -66,6 +66,12 @@ export interface PromotionDTO {
   is_tax_inclusive?: boolean
 
   /**
+   * Whether the promotion is exclusive. When an exclusive promotion applies to
+   * a cart, it cannot be combined with other promotions.
+   */
+  is_exclusive?: boolean
+
+  /**
    * The maximum number of times this promotion can be used across all orders.
    */
   limit?: number | null
@@ -134,6 +140,12 @@ export interface CreatePromotionDTO {
   is_tax_inclusive?: boolean
 
   /**
+   * Whether the promotion is exclusive. When an exclusive promotion applies to
+   * a cart, it cannot be combined with other promotions.
+   */
+  is_exclusive?: boolean
+
+  /**
    * The maximum number of times this promotion can be used.
    */
   limit?: number | null
@@ -187,6 +199,12 @@ export interface UpdatePromotionDTO {
    * Whether the promotion is tax inclusive.
    */
   is_tax_inclusive?: boolean
+
+  /**
+   * Whether the promotion is exclusive. When an exclusive promotion applies to
+   * a cart, it cannot be combined with other promotions.
+   */
+  is_exclusive?: boolean
 
   /**
    * The maximum number of times this promotion can be used.

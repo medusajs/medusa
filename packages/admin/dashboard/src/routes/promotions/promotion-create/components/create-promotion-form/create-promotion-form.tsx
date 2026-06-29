@@ -57,12 +57,14 @@ const defaultValues = {
   status: "draft" as PromotionStatusValues,
   rules: [],
   is_tax_inclusive: false,
+  is_exclusive: false,
   limit: undefined,
   application_method: {
     allocation: "each" as ApplicationMethodAllocationValues,
     type: "fixed" as ApplicationMethodTypeValues,
     target_type: "items" as ApplicationMethodTargetTypeValues,
     max_quantity: 1,
+    max_value: null,
     target_rules: [],
     buy_rules: [],
   },
@@ -96,6 +98,7 @@ export const CreatePromotionForm = () => {
         campaign_choice: _campaignChoice,
         is_automatic,
         is_tax_inclusive,
+        is_exclusive,
         template_id: _templateId,
         application_method,
         rules,
@@ -104,8 +107,16 @@ export const CreatePromotionForm = () => {
       const {
         target_rules: targetRulesData = [],
         buy_rules: buyRulesData = [],
+        max_value: maxValueData,
         ...applicationMethodData
       } = application_method
+
+      const parsedMaxValue =
+        maxValueData === null ||
+        maxValueData === undefined ||
+        maxValueData === ""
+          ? null
+          : parseFloat(maxValueData as string)
 
       const disguisedRules = [
         ...targetRulesData.filter((r) => !!r.disguised),
@@ -154,10 +165,16 @@ export const CreatePromotionForm = () => {
             ...applicationMethodData,
             ...applicationMethodRuleData,
             value: parseFloat(applicationMethodData.value as string) as number,
+            // `max_value` is accepted by the admin API but not yet part of the
+            // generated HTTP types, so it is cast in here.
+            ...({ max_value: parsedMaxValue } as Record<string, unknown>),
             target_rules: buildRulesData(targetRulesData),
             buy_rules: buildRulesData(buyRulesData),
           },
           is_tax_inclusive,
+          // `is_exclusive` is accepted by the admin API but not yet part of the
+          // generated HTTP types, so it is cast in here.
+          ...({ is_exclusive } as Record<string, unknown>),
           is_automatic: is_automatic === "true",
         },
         {
@@ -643,6 +660,40 @@ export const CreatePromotionForm = () => {
                     </>
                   )}
 
+                  <Divider />
+                  <div className="flex gap-x-2 gap-y-4">
+                    <Form.Field
+                      control={form.control}
+                      name="is_exclusive"
+                      render={({ field: { onChange, value, ...field } }) => {
+                        return (
+                          <Form.Item className="basis-full">
+                            <div className="flex items-center justify-between">
+                              <div className="block">
+                                <Form.Label>
+                                  {t("promotions.form.exclusive.title")}
+                                </Form.Label>
+                                <Form.Hint className="!mt-1">
+                                  {t("promotions.form.exclusive.description")}
+                                </Form.Hint>
+                              </div>
+                              <Form.Control className="mr-2 self-center">
+                                <Switch
+                                  dir="ltr"
+                                  className="mt-[2px] rtl:rotate-180"
+                                  checked={!!value}
+                                  onCheckedChange={onChange}
+                                  {...field}
+                                />
+                              </Form.Control>
+                            </div>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+
                   {!currentTemplate?.hiddenFields?.includes("type") && (
                     <Form.Field
                       control={form.control}
@@ -824,6 +875,47 @@ export const CreatePromotionForm = () => {
                                       ? "promotions.form.value_type.fixed.description"
                                       : "promotions.form.value_type.percentage.description"
                                   }
+                                  components={[<br key="break" />]}
+                                />
+                              </Text>
+                              <Form.ErrorMessage />
+                            </Form.Item>
+                          )
+                        }}
+                      />
+
+                      <Form.Field
+                        control={form.control}
+                        name="application_method.max_value"
+                        render={({ field: { onChange, value, ...field } }) => {
+                          return (
+                            <Form.Item className="basis-1/2">
+                              <Form.Label optional>
+                                {t("promotions.form.maxValue.title")}
+                              </Form.Label>
+                              <Form.Control>
+                                <Input
+                                  {...field}
+                                  type="number"
+                                  min={0}
+                                  value={value ?? ""}
+                                  onChange={(e) =>
+                                    onChange(
+                                      e.target.value === ""
+                                        ? null
+                                        : parseFloat(e.target.value)
+                                    )
+                                  }
+                                />
+                              </Form.Control>
+                              <Text
+                                size="small"
+                                leading="compact"
+                                className="text-ui-fg-subtle"
+                              >
+                                <Trans
+                                  t={t}
+                                  i18nKey="promotions.form.maxValue.description"
                                   components={[<br key="break" />]}
                                 />
                               </Text>

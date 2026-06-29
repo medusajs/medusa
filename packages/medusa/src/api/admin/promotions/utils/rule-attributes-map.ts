@@ -4,7 +4,7 @@ import {
   PromotionType,
   RuleOperator,
 } from "@zjedene-medusa/framework/utils"
-import { operatorsMap } from "./operators-map"
+import { numericOperatorsMap, operatorsMap } from "./operators-map"
 import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
@@ -50,6 +50,54 @@ const ruleAttributes = [
     field_type: "multiselect",
     operators: Object.values(operatorsMap),
   },
+  {
+    id: "total",
+    value: "total",
+    label: "Cart Total",
+    required: false,
+    field_type: "number",
+    operators: Object.values(numericOperatorsMap),
+  },
+  {
+    id: "city",
+    value: "shipping_address.city",
+    label: "Shipping City",
+    required: false,
+    field_type: "text",
+    operators: Object.values(operatorsMap),
+  },
+  {
+    id: "customer_order_count",
+    value: "customer_order_count",
+    label: "Customer Order Count",
+    required: false,
+    field_type: "number",
+    operators: Object.values(numericOperatorsMap),
+  },
+  {
+    id: "is_logged_in",
+    value: "is_logged_in",
+    label: "Customer Logged In",
+    required: false,
+    field_type: "select",
+    operators: [operatorsMap[RuleOperator.EQ]],
+  },
+  {
+    id: "current_day_of_week",
+    value: "current_day_of_week",
+    label: "Day of Week",
+    required: false,
+    field_type: "multiselect",
+    operators: [operatorsMap[RuleOperator.IN]],
+  },
+  {
+    id: "current_minutes",
+    value: "current_minutes",
+    label: "Time of Day (minutes since midnight)",
+    required: false,
+    field_type: "number",
+    operators: Object.values(numericOperatorsMap),
+  },
 ]
 
 const itemsAttributes = [
@@ -91,6 +139,14 @@ const itemsAttributes = [
     label: "Product Tag",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
+  },
+  {
+    id: "box_type",
+    value: "items.product.metadata.box_type",
+    label: "Box Type",
+    required: false,
+    field_type: "text",
     operators: Object.values(operatorsMap),
   },
 ]

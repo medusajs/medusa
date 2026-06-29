@@ -28,10 +28,12 @@ export const CreatePromotionSchema = z
     status: z.enum(["draft", "active", "inactive"]),
     rules: RuleSchema,
     is_tax_inclusive: z.boolean().optional(),
+    is_exclusive: z.boolean().optional(),
     limit: z.number().int().min(1).nullable().optional(),
     application_method: z.object({
       allocation: z.enum(["each", "across", "once"]),
       value: z.number().min(0).or(z.string().min(1)),
+      max_value: z.number().min(0).or(z.string()).optional().nullable(),
       currency_code: z.string().optional(),
       max_quantity: z.number().optional().nullable(),
       target_rules: RuleSchema,

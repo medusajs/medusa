@@ -54,6 +54,13 @@ export interface ApplicationMethodDTO {
   value?: number
 
   /**
+   * An optional cap on the total discount the associated promotion may apply.
+   * When set, the cumulative discount across all applicable items will not
+   * exceed this amount.
+   */
+  max_value?: number | null
+
+  /**
    * The currency code of the application method
    */
   currency_code?: string
@@ -120,6 +127,13 @@ export interface CreateApplicationMethodDTO {
    * The discounted amount applied by the associated promotion based on the `type`.
    */
   value?: number
+
+  /**
+   * An optional cap on the total discount the associated promotion may apply.
+   * When set, the cumulative discount across all applicable items will not
+   * exceed this amount.
+   */
+  max_value?: number | null
 
   /**
    * Currency of the value to apply.
@@ -193,6 +207,13 @@ export interface UpdateApplicationMethodDTO {
    * The discounted amount applied by the associated promotion based on the `type`.
    */
   value?: number
+
+  /**
+   * An optional cap on the total discount the associated promotion may apply.
+   * When set, the cumulative discount across all applicable items will not
+   * exceed this amount.
+   */
+  max_value?: number | null
 
   /**
    * The currency code of the promotions application

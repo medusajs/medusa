@@ -243,6 +243,12 @@ export interface ComputeActionItemLine extends Record<string, unknown> {
     }[]
 
     type_id?: string
+
+    /**
+     * The product's metadata. Used by the `items.product.metadata.box_type`
+     * rule attribute.
+     */
+    metadata?: Record<string, unknown> | null
   }
 }
 
@@ -315,6 +321,12 @@ export interface ComputeActionContext extends Record<string, unknown> {
    */
   shipping_address?: {
     country_code: string
+
+    /**
+     * The shipping address' city. Used by the `shipping_address.city` rule
+     * attribute.
+     */
+    city?: string | null
   }
 
   sales_channel_id?: string
@@ -325,6 +337,39 @@ export interface ComputeActionContext extends Record<string, unknown> {
    * @since 2.11.0
    */
   email?: string
+
+  /**
+   * The cart's total. Used by the `total` (min/max order) rule attribute.
+   */
+  total?: BigNumberInput
+
+  /**
+   * Whether the cart belongs to a logged-in customer. Populated natively by
+   * the `updateCartPromotionsWorkflow`. Used by the `is_logged_in` rule
+   * attribute.
+   */
+  is_logged_in?: boolean
+
+  /**
+   * The number of orders the cart's customer has placed. Populated natively by
+   * the `updateCartPromotionsWorkflow`. Used by the `customer_order_count`
+   * (first-order / new-vs-existing) rule attribute.
+   */
+  customer_order_count?: number
+
+  /**
+   * The store-local day of week (0 = Sunday .. 6 = Saturday). Populated
+   * natively by the `updateCartPromotionsWorkflow`. Used by the
+   * `current_day_of_week` rule attribute.
+   */
+  current_day_of_week?: number
+
+  /**
+   * The store-local minutes since midnight (0 .. 1439). Populated natively by
+   * the `updateCartPromotionsWorkflow`. Used by the `current_minutes`
+   * (time-of-day window) rule attribute.
+   */
+  current_minutes?: number
 
   /**
    * The cart's line items.

@@ -9,6 +9,7 @@ const Promotion = model
     code: model.text().searchable(),
     is_automatic: model.boolean().default(false),
     is_tax_inclusive: model.boolean().default(false),
+    is_exclusive: model.boolean().default(false),
     /**
      * @since 2.12.0
      */

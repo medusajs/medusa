@@ -8,6 +8,7 @@ const ApplicationMethod = model
     {
       id: model.id({ prefix: "proappmet" }).primaryKey(),
       value: model.bigNumber().nullable(),
+      max_value: model.bigNumber().nullable(),
       currency_code: model.text().nullable(),
       max_quantity: model.number().nullable(),
       apply_to_quantity: model.number().nullable(),

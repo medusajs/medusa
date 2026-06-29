@@ -117,6 +117,7 @@ export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().nullish(),
     value: z.number(),
+    max_value: z.number().nullish(),
     currency_code: z.string().nullish(),
     max_quantity: z.number().nullish(),
     type: z.nativeEnum(ApplicationMethodType),
@@ -136,6 +137,7 @@ export const AdminUpdateApplicationMethod = z
   .object({
     description: z.string().nullish(),
     value: z.number().optional(),
+    max_value: z.number().nullish(),
     max_quantity: z.number().nullish(),
     currency_code: z.string().nullish(),
     type: z.nativeEnum(ApplicationMethodType).optional(),
@@ -170,6 +172,7 @@ export const CreatePromotion = z
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType),
     is_tax_inclusive: z.boolean().optional(),
+    is_exclusive: z.boolean().optional(),
     status: z.nativeEnum(PromotionStatus).default(PromotionStatus.DRAFT),
     campaign_id: z.string().nullish(),
     campaign: CreateCampaign.optional(),
@@ -213,6 +216,7 @@ export const UpdatePromotion = z
     code: z.string().optional(),
     is_automatic: z.boolean().optional(),
     is_tax_inclusive: z.boolean().optional(),
+    is_exclusive: z.boolean().optional(),
     type: z.nativeEnum(PromotionType).optional(),
     status: z.nativeEnum(PromotionStatus).optional(),
     campaign_id: z.string().nullish(),

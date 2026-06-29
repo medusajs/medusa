@@ -8416,6 +8416,32 @@
               "required": ["title", "description"],
               "additionalProperties": false
             },
+            "exclusive": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "maxValue": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
             "status": {
               "type": "object",
               "properties": {
@@ -8672,6 +8698,8 @@
             "selectAttribute",
             "campaign",
             "taxInclusive",
+            "exclusive",
+            "maxValue",
             "status",
             "method",
             "max_quantity",
@@ -10050,7 +10078,19 @@
             "add": {
               "type": "object",
               "properties": {
+                "successToast_zero": {
+                  "type": "string"
+                },
                 "successToast_one": {
+                  "type": "string"
+                },
+                "successToast_two": {
+                  "type": "string"
+                },
+                "successToast_few": {
+                  "type": "string"
+                },
+                "successToast_many": {
                   "type": "string"
                 },
                 "successToast_other": {
@@ -10067,31 +10107,50 @@
                   "additionalProperties": false
                 }
               },
-              "required": ["successToast_one", "successToast_other", "list"],
+              "required": ["list"],
               "additionalProperties": false
             },
             "remove": {
               "type": "object",
               "properties": {
+                "title_zero": {
+                  "type": "string"
+                },
                 "title_one": {
+                  "type": "string"
+                },
+                "title_two": {
+                  "type": "string"
+                },
+                "title_few": {
+                  "type": "string"
+                },
+                "title_many": {
                   "type": "string"
                 },
                 "title_other": {
                   "type": "string"
                 },
+                "description_zero": {
+                  "type": "string"
+                },
                 "description_one": {
+                  "type": "string"
+                },
+                "description_two": {
+                  "type": "string"
+                },
+                "description_few": {
+                  "type": "string"
+                },
+                "description_many": {
                   "type": "string"
                 },
                 "description_other": {
                   "type": "string"
                 }
               },
-              "required": [
-                "title_one",
-                "title_other",
-                "description_one",
-                "description_other"
-              ],
+              "required": [],
               "additionalProperties": false
             },
             "list": {
@@ -13525,14 +13584,14 @@
             "description": {
               "type": "string"
             },
-            "action": {
+            "requiredPermission": {
               "type": "string"
             },
-            "requiredPermission": {
+            "action": {
               "type": "string"
             }
           },
-          "required": ["title", "description", "requiredPermission"],
+          "required": ["title", "description", "requiredPermission", "action"],
           "additionalProperties": false
         },
         "requiredPermissions": {
@@ -13740,6 +13799,7 @@
     "profile",
     "users",
     "roles",
+    "policies",
     "translations",
     "store",
     "regions",

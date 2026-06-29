@@ -589,6 +589,16 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "is_exclusive": {
+          "name": "is_exclusive",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
         }
       },
       "name": "promotion",
@@ -823,6 +833,24 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "max_value": {
+          "name": "max_value",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_max_value": {
+          "name": "raw_max_value",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         }
       },
       "name": "promotion_application_method",

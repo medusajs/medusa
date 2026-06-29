@@ -32,6 +32,7 @@ export const cartFieldsForRefreshSteps = [
   "items.product.tags.id",
   "items.product.type_id",
   "items.product.weight",
+  "items.product.metadata",
   "items.variant.id",
   "items.variant.product.id",
   "items.variant.product.shipping_profile.id",

@@ -86,6 +86,12 @@ function applyPromotionToItems(
   const maxQuantity = applicationMethod?.max_quantity!
   let remainingQuota = maxQuantity ?? 0
 
+  // Optional cap on the total discount this promotion may apply across all of
+  // its applicable items. `null`/`undefined` means uncapped.
+  const maxValue = applicationMethod?.max_value
+  const hasMaxValue = maxValue !== null && maxValue !== undefined
+  let promotionAppliedTotal = MathBN.convert(0)
+
   let lineItemsAmount = MathBN.convert(0)
   if (allocation === ApplicationMethodAllocation.ACROSS) {
     lineItemsAmount = applicableItems.reduce(
@@ -151,9 +157,27 @@ function applyPromotionToItems(
       continue
     }
 
+    // Clamp the adjustment so the promotion's cumulative discount never
+    // exceeds the configured `max_value`. Once the cap is exhausted, stop
+    // applying the promotion to any remaining items.
+    let finalAmount = amount
+    if (hasMaxValue) {
+      const remainingCap = MathBN.sub(maxValue, promotionAppliedTotal)
+
+      if (MathBN.lte(remainingCap, 0)) {
+        break
+      }
+
+      finalAmount = MathBN.min(amount, remainingCap)
+
+      if (MathBN.lte(finalAmount, 0)) {
+        break
+      }
+    }
+
     const budgetExceededAction = computeActionForBudgetExceeded(
       promotion,
-      amount
+      finalAmount
     )
 
     if (budgetExceededAction) {
@@ -161,7 +185,8 @@ function applyPromotionToItems(
       continue
     }
 
-    appliedPromotionsMap.set(item.id, MathBN.add(appliedPromoValue, amount))
+    appliedPromotionsMap.set(item.id, MathBN.add(appliedPromoValue, finalAmount))
+    promotionAppliedTotal = MathBN.add(promotionAppliedTotal, finalAmount)
 
     if (allocation === ApplicationMethodAllocation.ONCE) {
       // We already know exactly how many units we applied via effectiveMaxQuantity
@@ -176,7 +201,7 @@ function applyPromotionToItems(
       computedActions.push({
         action: ComputedActions.ADD_ITEM_ADJUSTMENT,
         item_id: item.id,
-        amount,
+        amount: finalAmount,
         code: promotion.code!,
         is_tax_inclusive: promotion.is_tax_inclusive,
       })

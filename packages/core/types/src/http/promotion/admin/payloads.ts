@@ -53,6 +53,10 @@ export interface AdminCreateApplicationMethod {
    */
   value: number
   /**
+   * An optional cap on the total discount the associated promotion may apply.
+   */
+  max_value?: number | null
+  /**
    * The currency code of the application method.
    *
    * @example
@@ -106,6 +110,10 @@ export interface AdminUpdateApplicationMethod {
    */
   value?: number
   /**
+   * An optional cap on the total discount the associated promotion may apply.
+   */
+  max_value?: number | null
+  /**
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
@@ -157,6 +165,11 @@ export interface AdminCreatePromotion {
    */
   is_tax_inclusive?: boolean
   /**
+   * Whether the promotion is exclusive. An exclusive promotion cannot be
+   * combined with other promotions on the same cart.
+   */
+  is_exclusive?: boolean
+  /**
    * The type of promotion.
    */
   type: PromotionTypeValues
@@ -201,6 +214,11 @@ export interface AdminUpdatePromotion {
    * Whether the promotion is tax inclusive.
    */
   is_tax_inclusive?: boolean
+  /**
+   * Whether the promotion is exclusive. An exclusive promotion cannot be
+   * combined with other promotions on the same cart.
+   */
+  is_exclusive?: boolean
   /**
    * The type of promotion.
    */

@@ -13,7 +13,9 @@ import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
   createLineItemAdjustmentsStep,
   createShippingMethodAdjustmentsStep,
+  filterExclusivePromotionActionsStep,
   getActionsToComputeFromPromotionsStep,
+  getNativePromotionContextStep,
   getPromotionCodesToApply,
   prepareAdjustmentsFromPromotionActionsStep,
   removeLineItemAdjustmentsStep,
@@ -143,6 +145,19 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     )
     const setPromotionContextResult = setPromotionContext.getResult()
 
+    const nativePromotionContext = getNativePromotionContextStep({ cart })
+
+    // The native, core-computed attributes (login state, customer order count,
+    // store-local day/time) are applied first; the `setPromotionContext` hook
+    // result is merged on top so consumers can still override them.
+    const additionalPromotionContext = transform(
+      { nativePromotionContext, setPromotionContextResult },
+      ({ nativePromotionContext, setPromotionContextResult }) => ({
+        ...(nativePromotionContext ?? {}),
+        ...(setPromotionContextResult ?? {}),
+      })
+    )
+
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: cart,
       promo_codes,
@@ -152,7 +167,13 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     const actions = getActionsToComputeFromPromotionsStep({
       computeActionContext: cart,
       promotionCodesToApply,
-      additional_promotion_context: setPromotionContextResult,
+      additional_promotion_context: additionalPromotionContext,
+    })
+
+    // Enforce promotion exclusivity: if an applied promotion is exclusive, drop
+    // the adjustments of every other promotion, keeping only the most valuable.
+    const exclusiveFilteredActions = filterExclusivePromotionActionsStep({
+      actions,
     })
 
     const {
@@ -162,7 +183,9 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       shippingMethodAdjustmentIdsToRemove,
       computedPromotionCodes,
       skippedPromoCodes,
-    } = prepareAdjustmentsFromPromotionActionsStep({ actions })
+    } = prepareAdjustmentsFromPromotionActionsStep({
+      actions: exclusiveFilteredActions,
+    })
 
     parallelize(
       removeLineItemAdjustmentsStep({ lineItemAdjustmentIdsToRemove }),

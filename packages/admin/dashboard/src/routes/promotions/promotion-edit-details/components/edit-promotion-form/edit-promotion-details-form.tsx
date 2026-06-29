@@ -26,9 +26,11 @@ const EditPromotionSchema = zod.object({
   is_automatic: zod.string().toLowerCase(),
   code: zod.string().min(1),
   is_tax_inclusive: zod.boolean().optional(),
+  is_exclusive: zod.boolean().optional(),
   status: zod.enum(["active", "inactive", "draft"]),
   value_type: zod.enum(["fixed", "percentage"]),
   value: zod.number().min(0).or(zod.string().min(1)),
+  max_value: zod.number().min(0).or(zod.string()).optional().nullable(),
   allocation: zod.enum(["each", "across", "once"]),
   target_type: zod.enum(["order", "shipping_methods", "items"]),
   max_quantity: zod.number().min(1).optional().nullable(),
@@ -44,9 +46,11 @@ export const EditPromotionDetailsForm = ({
     defaultValues: {
       is_automatic: promotion.is_automatic!.toString(),
       is_tax_inclusive: promotion.is_tax_inclusive,
+      is_exclusive: (promotion as any).is_exclusive ?? false,
       code: promotion.code,
       status: promotion.status,
       value: promotion.application_method!.value,
+      max_value: (promotion.application_method as any)?.max_value ?? null,
       allocation: promotion.application_method!.allocation,
       value_type: promotion.application_method!.type,
       target_type: promotion.application_method!.target_type,
@@ -78,17 +82,30 @@ export const EditPromotionDetailsForm = ({
       return
     }
 
+    const parsedMaxValue =
+      data.max_value === null ||
+      data.max_value === undefined ||
+      data.max_value === ""
+        ? null
+        : parseFloat(String(data.max_value))
+
     await mutateAsync(
       {
         is_automatic: data.is_automatic === "true",
         code: data.code,
         status: data.status,
         is_tax_inclusive: data.is_tax_inclusive,
+        // `is_exclusive` is accepted by the admin API but not yet part of the
+        // generated HTTP types, so it is cast in here.
+        ...({ is_exclusive: data.is_exclusive } as Record<string, unknown>),
         application_method: {
           value: parseFloat(String(data.value)),
           type: data.value_type as any,
           allocation: data.allocation as any,
           max_quantity: data.max_quantity,
+          // `max_value` is accepted by the admin API but not yet part of the
+          // generated HTTP types, so it is cast in here.
+          ...({ max_value: parsedMaxValue } as Record<string, unknown>),
         },
       },
       {
@@ -210,6 +227,13 @@ export const EditPromotionDetailsForm = ({
                   description={t("promotions.form.taxInclusive.description")}
                 />
               )}
+
+            <SwitchBox
+              control={form.control}
+              name="is_exclusive"
+              label={t("promotions.form.exclusive.title")}
+              description={t("promotions.form.exclusive.description")}
+            />
 
             <div className="flex flex-col gap-y-4">
               <Form.Field
@@ -333,6 +357,46 @@ export const EditPromotionDetailsForm = ({
                             />
                           )}
                         </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="max_value"
+                  render={({ field: { onChange, value, ...field } }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label optional>
+                          {t("promotions.form.maxValue.title")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Input
+                            {...field}
+                            type="number"
+                            min={0}
+                            value={value ?? ""}
+                            onChange={(e) =>
+                              onChange(
+                                e.target.value === ""
+                                  ? null
+                                  : parseFloat(e.target.value)
+                              )
+                            }
+                          />
+                        </Form.Control>
+                        <Text
+                          size="small"
+                          leading="compact"
+                          className="text-ui-fg-subtle"
+                        >
+                          <Trans
+                            t={t}
+                            i18nKey="promotions.form.maxValue.description"
+                            components={[<br key="break" />]}
+                          />
+                        </Text>
                         <Form.ErrorMessage />
                       </Form.Item>
                     )
