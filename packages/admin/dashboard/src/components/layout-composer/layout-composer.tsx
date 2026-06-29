@@ -346,7 +346,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   // been defined for this zone, adds whose layout the user is currently seeing.
   const triggerTooltip = definedScope ? (
     <div className="flex flex-col gap-y-0.5">
-      <span>{t("layout.customizeWidgets")}</span>
+      <span>{t("layout.customizeLayout")}</span>
       <span className="text-ui-fg-subtle">
         {t(
           definedScope === "personal"
@@ -356,7 +356,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       </span>
     </div>
   ) : (
-    t("layout.customizeWidgets")
+    t("layout.customizeLayout")
   )
 
   // Customizer controls — all live in the single top-bar portal slot.
@@ -408,7 +408,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
         size="small"
         variant="transparent"
         onClick={enterEdit}
-        aria-label={t("layout.customizeWidgets")}
+        aria-label={t("layout.customizeLayout")}
         className="text-ui-fg-muted hover:text-ui-fg-subtle"
       >
         {/* The "done" icon carries a blue accent dot — reserve it for zones

@@ -263,7 +263,7 @@
     }
   },
   "layout": {
-    "customizeWidgets": "Personalizza i widget",
+    "customizeLayout": "Personalizza layout",
     "personalView": "Personale",
     "defaultView": "Default",
     "empty": "Vuoto",
