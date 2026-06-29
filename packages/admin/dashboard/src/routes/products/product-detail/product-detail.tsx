@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
 import { ProductGeneralSection } from "./components/product-general-section"
@@ -60,9 +57,7 @@ export const ProductDetail = () => {
             <ProductMediaSection product={product} />
             <ProductOptionSection product={product} />
             <ProductVariantSection product={product} />
-            <MetadataSection data={product} />
-            <JsonViewSection data={product} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(product)}
           </>
         ),
         side: (

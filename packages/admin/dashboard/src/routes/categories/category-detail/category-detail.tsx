@@ -6,11 +6,8 @@ import { CategoryOrganizeSection } from "./components/category-organize-section"
 import { CategoryProductSection } from "./components/category-product-section"
 import { categoryLoader } from "./loader"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 
 export const CategoryDetail = () => {
   const { id } = useParams()
@@ -52,9 +49,7 @@ export const CategoryDetail = () => {
           <>
             <CategoryGeneralSection category={product_category} />
             <CategoryProductSection category={product_category} />
-            <MetadataSection data={product_category} />
-            <JsonViewSection data={product_category} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(product_category)}
           </>
         ),
         side: (

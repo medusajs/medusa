@@ -4,9 +4,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionProvinceDetailSection } from "./components/tax-region-province-detail-section"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { TaxRegionProvinceOverrideSection } from "./components/tax-region-province-override-section"
 import { taxRegionLoader } from "./loader"
 
@@ -42,7 +41,7 @@ export const TaxRegionDetail = () => {
           <>
             <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
             <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
-            <JsonViewSection data={taxRegion} />
+            {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
           </>
         ),
       }}

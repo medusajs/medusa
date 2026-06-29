@@ -6,10 +6,8 @@ import { RegionCountrySection } from "./components/region-country-section"
 import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
 import { REGION_DETAIL_FIELDS } from "./constants"
 
@@ -70,8 +68,7 @@ export const RegionDetail = () => {
               pricePreferences={pricePreferences ?? []}
             />
             <RegionCountrySection region={region} />
-            <MetadataSection data={region} />
-            <JsonViewSection data={region} />
+            {detailPageDefaultEntries(region, { permissions: false })}
           </>
         ),
       }}

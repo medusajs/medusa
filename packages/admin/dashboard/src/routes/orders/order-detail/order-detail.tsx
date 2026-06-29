@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
 import { usePlugins } from "../../../hooks/api/plugins"
 import { ActiveOrderClaimSection } from "./components/active-order-claim-section"
@@ -85,9 +82,7 @@ export const OrderDetail = () => {
               plugins={plugins}
             />
             <OrderFulfillmentSection order={order as ExtendedOrder} />
-            <MetadataSection data={order} />
-            <JsonViewSection data={order} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(order)}
           </>
         ),
         side: (

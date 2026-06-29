@@ -8,10 +8,8 @@ import { RoleGeneralSection } from "./components/role-general-section"
 import { RoleUsersSection } from "./components/role-users-section"
 import { roleLoader } from "./loader"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { ROLE_DETAIL_FIELDS } from "./constants"
 
 export const RoleDetail = () => {
@@ -57,8 +55,7 @@ export const RoleDetail = () => {
             <PermissionGuard permission="user:read">
               <RoleUsersSection role={role} />
             </PermissionGuard>
-            <MetadataSection data={role} />
-            <JsonViewSection data={role} />
+            {detailPageDefaultEntries(role, { permissions: false })}
           </>
         ),
       }}

@@ -21,6 +21,7 @@ import {
   buildDisplayEntries,
   extractSectionElements,
 } from "./entries"
+import { LayoutEntry } from "./entry"
 import { SectionDropzone } from "./section-dropzone"
 import { EntryContent, SortableEntry } from "./sortable-entry"
 import type {
@@ -86,7 +87,7 @@ function isSamePreference(a: LayoutPreference, b: LayoutPreference): boolean {
   return true
 }
 
-export const LayoutComposer = <TLayoutId extends Layouts, TData>({
+const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
   preferredLayoutId,
   sections,
@@ -447,3 +448,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     </>
   )
 }
+
+export const LayoutComposer = Object.assign(LayoutComposerRoot, {
+  Entry: LayoutEntry,
+})

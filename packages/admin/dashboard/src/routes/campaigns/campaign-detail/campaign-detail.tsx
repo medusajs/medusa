@@ -8,11 +8,8 @@ import { CampaignPromotionSection } from "./components/campaign-promotion-sectio
 import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { CampaignConfigurationSection } from "./components/campaign-configuration-section"
 import { CAMPAIGN_DETAIL_FIELDS } from "./constants"
 
@@ -53,9 +50,7 @@ export const CampaignDetail = () => {
           <>
             <CampaignGeneralSection campaign={campaign} />
             <CampaignPromotionSection campaign={campaign} />
-            <MetadataSection data={campaign} />
-            <JsonViewSection data={campaign} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(campaign)}
           </>
         ),
         side: (

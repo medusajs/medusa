@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useInventoryItem } from "../../../hooks/api/inventory"
 import { InventoryItemAttributeSection } from "./components/inventory-item-attributes/attributes-section"
 import { InventoryItemGeneralSection } from "./components/inventory-item-general-section"
@@ -66,9 +63,7 @@ export const InventoryDetail = () => {
               inventoryItem={inventory_item}
             />
             <InventoryItemReservationsSection inventoryItem={inventory_item} />
-            <MetadataSection data={inventory_item} />
-            <JsonViewSection data={inventory_item} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(inventory_item)}
           </>
         ),
         side: (

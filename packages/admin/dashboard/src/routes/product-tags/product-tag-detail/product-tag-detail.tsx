@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useProductTag } from "../../../hooks/api"
 import { ProductTagGeneralSection } from "./components/product-tag-general-section"
 import { ProductTagProductSection } from "./components/product-tag-product-section"
@@ -43,8 +41,7 @@ export const ProductTagDetail = () => {
           <>
             <ProductTagGeneralSection productTag={product_tag} />
             <ProductTagProductSection productTag={product_tag} />
-            <MetadataSection data={product_tag} />
-            <JsonViewSection data={product_tag} />
+            {detailPageDefaultEntries(product_tag, { permissions: false })}
           </>
         ),
       }}

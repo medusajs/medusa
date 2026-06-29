@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useCustomerGroup } from "../../../hooks/api/customer-groups"
 import { CustomerGroupCustomerSection } from "./components/customer-group-customer-section"
 import { CustomerGroupGeneralSection } from "./components/customer-group-general-section"
@@ -43,8 +41,7 @@ export const CustomerGroupDetail = () => {
           <>
             <CustomerGroupGeneralSection group={customer_group} />
             <CustomerGroupCustomerSection group={customer_group} />
-            <MetadataSection data={customer_group} />
-            <JsonViewSection data={customer_group} />
+            {detailPageDefaultEntries(customer_group, { permissions: false })}
           </>
         ),
       }}

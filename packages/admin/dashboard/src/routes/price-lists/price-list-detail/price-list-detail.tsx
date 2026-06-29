@@ -6,11 +6,8 @@ import { PriceListConfigurationSection } from "./components/price-list-configura
 import { PriceListGeneralSection } from "./components/price-list-general-section"
 import { PriceListProductSection } from "./components/price-list-product-section"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 
 export const PriceListDetails = () => {
   const { id } = useParams()
@@ -42,9 +39,7 @@ export const PriceListDetails = () => {
           <>
             <PriceListGeneralSection priceList={price_list} />
             <PriceListProductSection priceList={price_list} />
-            <MetadataSection data={price_list} />
-            <JsonViewSection data={price_list} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(price_list)}
           </>
         ),
         side: (

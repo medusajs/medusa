@@ -3,11 +3,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { useProductVariant } from "../../../hooks/api/products"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { VariantGeneralSection } from "./components/variant-general-section"
 import {
   InventorySectionPlaceholder,
@@ -73,9 +70,7 @@ export const ProductVariantDetail = () => {
                   })}
               />
             )}
-            <MetadataSection data={variant} />
-            <JsonViewSection data={variant} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(variant)}
           </>
         ),
         side: (

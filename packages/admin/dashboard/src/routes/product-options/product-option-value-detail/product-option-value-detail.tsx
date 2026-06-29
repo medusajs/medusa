@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useProductOptionValue } from "../../../hooks/api"
 import { productOptionValueLoader } from "./loader.ts"
 import { ProductOptionValueGeneralSection } from "./components/product-option-value-general-section"
@@ -41,8 +39,7 @@ export const ProductOptionValueDetail = () => {
               optionId={id!}
               productOptionValue={product_option_value}
             />
-            <MetadataSection data={product_option_value} />
-            <JsonViewSection data={product_option_value} />
+            {detailPageDefaultEntries(product_option_value, { permissions: false })}
           </>
         ),
       }}

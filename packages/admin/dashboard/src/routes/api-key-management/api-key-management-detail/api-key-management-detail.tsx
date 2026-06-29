@@ -1,9 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useApiKey } from "../../../hooks/api/api-keys"
 import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
@@ -41,7 +40,7 @@ export const ApiKeyManagementDetail = () => {
           <>
             <ApiKeyGeneralSection apiKey={api_key} />
             {isPublishable && <ApiKeySalesChannelSection apiKey={api_key} />}
-            <JsonViewSection data={api_key} />
+            {detailPageDefaultEntries(api_key, { metadata: false, permissions: false })}
           </>
         ),
       }}

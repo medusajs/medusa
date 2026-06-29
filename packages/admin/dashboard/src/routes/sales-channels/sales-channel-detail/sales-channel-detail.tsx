@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useSalesChannel } from "../../../hooks/api/sales-channels"
 import { SalesChannelGeneralSection } from "./components/sales-channel-general-section"
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
@@ -34,8 +32,7 @@ export const SalesChannelDetail = () => {
           <>
             <SalesChannelGeneralSection salesChannel={sales_channel} />
             <SalesChannelProductSection salesChannel={sales_channel} />
-            <MetadataSection data={sales_channel} />
-            <JsonViewSection data={sales_channel} />
+            {detailPageDefaultEntries(sales_channel, { permissions: false })}
           </>
         ),
       }}

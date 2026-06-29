@@ -5,10 +5,8 @@ import { useStore } from "../../../hooks/api/store"
 import { StoreGeneralSection } from "./components/store-general-section"
 import { storeLoader } from "./loader"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { StoreCurrencySection } from "./components/store-currency-section"
 import { StoreLocaleSection } from "./components/store-locale-section"
@@ -40,8 +38,7 @@ export const StoreDetail = () => {
             <StoreGeneralSection store={store} />
             <StoreCurrencySection store={store} />
             {isTranslationsEnabled && <StoreLocaleSection store={store} />}
-            <MetadataSection data={store} />
-            <JsonViewSection data={store} />
+            {detailPageDefaultEntries(store, { permissions: false })}
           </>
         ),
       }}

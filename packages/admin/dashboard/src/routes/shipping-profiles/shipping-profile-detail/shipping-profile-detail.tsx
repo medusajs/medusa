@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useShippingProfile } from "../../../hooks/api/shipping-profiles"
 import { ShippingProfileGeneralSection } from "./components/shipping-profile-general-section"
 
@@ -40,8 +38,7 @@ export const ShippingProfileDetail = () => {
         main: (
           <>
             <ShippingProfileGeneralSection profile={shipping_profile} />
-            <MetadataSection data={shipping_profile} />
-            <JsonViewSection data={shipping_profile} />
+            {detailPageDefaultEntries(shipping_profile, { permissions: false })}
           </>
         ),
       }}

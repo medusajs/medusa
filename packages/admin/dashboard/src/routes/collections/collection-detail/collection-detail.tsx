@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useCollection } from "../../../hooks/api/collections"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
@@ -38,8 +36,7 @@ export const CollectionDetail = () => {
           <>
             <CollectionGeneralSection collection={collection} />
             <CollectionProductSection collection={collection} />
-            <MetadataSection data={collection} />
-            <JsonViewSection data={collection} />
+            {detailPageDefaultEntries(collection, { permissions: false })}
           </>
         ),
       }}

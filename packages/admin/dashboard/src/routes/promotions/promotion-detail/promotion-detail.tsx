@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { usePromotion, usePromotionRules } from "../../../hooks/api/promotions"
 import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
@@ -82,8 +80,7 @@ export const PromotionDetail = () => {
                 applicationMethodTargetType={"items"}
               />
             )}
-            <JsonViewSection data={promotion} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(promotion, { metadata: false })}
           </>
         ),
         side: (

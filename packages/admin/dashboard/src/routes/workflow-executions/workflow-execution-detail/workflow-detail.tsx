@@ -1,9 +1,8 @@
 import { useParams } from "react-router-dom"
 
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
-import { JsonViewSection } from "../../../components/common/json-view-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useWorkflowExecution } from "../../../hooks/api/workflow-executions"
 import { WorkflowExecutionGeneralSection } from "./components/workflow-execution-general-section"
 import { WorkflowExecutionHistorySection } from "./components/workflow-execution-history-section"
@@ -36,7 +35,7 @@ export const ExecutionDetail = () => {
             <WorkflowExecutionTimelineSection execution={workflow_execution} />
             <WorkflowExecutionPayloadSection execution={workflow_execution} />
             <WorkflowExecutionHistorySection execution={workflow_execution} />
-            <JsonViewSection data={workflow_execution} />
+            {detailPageDefaultEntries(workflow_execution, { metadata: false, permissions: false })}
           </>
         ),
       }}

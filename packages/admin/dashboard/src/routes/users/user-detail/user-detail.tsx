@@ -5,10 +5,8 @@ import { useUser } from "../../../hooks/api/users"
 import { UserGeneralSection } from "./components/user-general-section"
 import { userLoader } from "./loader"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 
 export const UserDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof userLoader>>
@@ -40,8 +38,7 @@ export const UserDetail = () => {
         main: (
           <>
             <UserGeneralSection user={user} />
-            <MetadataSection data={user} />
-            <JsonViewSection data={user} />
+            {detailPageDefaultEntries(user, { permissions: false })}
           </>
         ),
       }}

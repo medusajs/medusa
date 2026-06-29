@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useInventoryItem } from "../../../hooks/api"
 import { useReservationItem } from "../../../hooks/api/reservations"
 import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
@@ -58,9 +55,7 @@ export const ReservationDetail = () => {
         main: (
           <>
             <ReservationGeneralSection reservation={reservation} />
-            <MetadataSection data={reservation} />
-            <JsonViewSection data={reservation} />
-            <RequiredPermissionsSection />
+            {detailPageDefaultEntries(reservation)}
           </>
         ),
         side: (

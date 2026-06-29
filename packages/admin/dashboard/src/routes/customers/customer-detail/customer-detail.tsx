@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useCustomer } from "../../../hooks/api/customers"
 import { PermissionsRequirementsProvider } from "../../../providers/permissions-provider"
 import { CustomerAddressSection } from "./components/customer-address-section/customer-address-section"
@@ -46,9 +43,7 @@ export const CustomerDetail = () => {
               <CustomerGeneralSection customer={customer} />
               <CustomerOrderSection customer={customer} />
               <CustomerGroupSection customer={customer} />
-              <MetadataSection data={customer} />
-              <JsonViewSection data={customer} />
-              <RequiredPermissionsSection />
+              {detailPageDefaultEntries(customer)}
             </>
           ),
           side: (

@@ -1,10 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useRbacPolicy } from "../../../hooks/api/rbac-policies"
 import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
 import { usePermissions } from "../../../providers/permissions-provider"
@@ -55,8 +53,7 @@ export const PolicyDetail = () => {
             {hasPermission("rbac_role:read") && (
               <PolicyRolesSection policy={policy} />
             )}
-            <MetadataSection data={policy} />
-            <JsonViewSection data={policy} />
+            {detailPageDefaultEntries(policy, { permissions: false })}
           </>
         ),
       }}
