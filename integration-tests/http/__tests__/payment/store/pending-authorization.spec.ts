@@ -274,7 +274,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("POST /admin/payment-collections/:id/payment-sessions/:session_id/authorize", () => {
+    describe("POST /admin/orders/:id/payment-sessions/authorize", () => {
       it("should authorize a pending payment session when provider confirms payment", async () => {
         // Complete cart with pending_authorization
         const paymentCollection = (
@@ -308,7 +308,6 @@ medusaIntegrationTestRunner({
 
         const sessionId =
           orderBefore.payment_collections[0].payment_sessions[0].id
-        const pcId = orderBefore.payment_collections[0].id
 
         // Simulate payment arriving by updating session data
         const paymentModule = appContainer.resolve(Modules.PAYMENT)
@@ -322,16 +321,17 @@ medusaIntegrationTestRunner({
         // Admin triggers authorization
         const authResult = (
           await api.post(
-            `/admin/payment-collections/${pcId}/payment-sessions/${sessionId}/authorize`,
-            {},
+            `/admin/orders/${orderId}/payment-sessions/authorize?fields=+payment_status`,
+            { payment_session_id: sessionId },
             adminHeaders
           )
         ).data
 
-        expect(authResult.payment_collection).toEqual(
+        expect(authResult.is_authorized).toBe(true)
+        expect(authResult.order).toEqual(
           expect.objectContaining({
-            id: pcId,
-            status: "authorized",
+            id: orderId,
+            payment_status: "authorized",
           })
         )
 
@@ -378,23 +378,23 @@ medusaIntegrationTestRunner({
         ).data.order
 
         const sessionId = order.payment_collections[0].payment_sessions[0].id
-        const pcId = order.payment_collections[0].id
 
         // Admin triggers authorization — payment NOT received yet
         // The provider will return pending_authorization again
         const authResult = (
           await api.post(
-            `/admin/payment-collections/${pcId}/payment-sessions/${sessionId}/authorize`,
-            {},
+            `/admin/orders/${orderId}/payment-sessions/authorize?fields=+payment_status`,
+            { payment_session_id: sessionId },
             adminHeaders
           )
         ).data
 
-        // Collection should still be awaiting
-        expect(authResult.payment_collection).toEqual(
+        // Order should still be awaiting
+        expect(authResult.is_authorized).toBe(false)
+        expect(authResult.order).toEqual(
           expect.objectContaining({
-            id: pcId,
-            status: "awaiting",
+            id: orderId,
+            payment_status: "awaiting",
           })
         )
 

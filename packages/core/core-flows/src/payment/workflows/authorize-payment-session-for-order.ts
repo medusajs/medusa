@@ -20,10 +20,6 @@ export type AuthorizePaymentSessionForOrderInput = {
    * The ID of the payment session to authorize.
    */
   payment_session_id: string
-  /**
-   * The ID of the payment collection the session belongs to.
-   */
-  payment_collection_id: string
 }
 
 const validatePendingAuthorizationStepId = "validate-pending-authorization-step"
@@ -64,7 +60,7 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
   (input: WorkflowData<AuthorizePaymentSessionForOrderInput>) => {
     const { data: paymentSession } = useQueryGraphStep({
       entity: "payment_session",
-      fields: ["id", "status"],
+      fields: ["id", "status", "payment_collection_id"],
       filters: { id: input.payment_session_id },
       options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "get-payment-session" })
@@ -82,7 +78,7 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
       entity: "order_payment_collection",
       fields: ["order.id"],
       filters: {
-        payment_collection_id: input.payment_collection_id,
+        payment_collection_id: paymentSession.payment_collection_id,
       },
       options: { isList: false },
     }).config({ name: "get-order-payment-collection" })

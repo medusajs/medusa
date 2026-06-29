@@ -351,31 +351,28 @@ const CreditLine = ({
 
 const PendingAuthorizationBanner = ({
   order,
-  paymentCollectionId,
   sessionId,
 }: {
   order: HttpTypes.AdminOrder
-  paymentCollectionId: string
   sessionId: string
 }) => {
   const { t } = useTranslation()
   const { mutateAsync, isPending } = useAuthorizePaymentSession(
     order.id,
-    paymentCollectionId,
     sessionId
   )
 
   const handleCheckStatus = async () => {
     await mutateAsync(undefined, {
-      onSuccess: () => {
-        toast.success(t("orders.payment.checkStatusSuccess"))
+      onSuccess: ({ is_authorized }) => {
+        if (is_authorized) {
+          toast.success(t("orders.payment.checkStatusSuccess"))
+        } else {
+          toast.info(t("orders.payment.stillPending"))
+        }
       },
       onError: (error) => {
-        if (error.message?.includes("not in pending_authorization")) {
-          toast.info(t("orders.payment.stillPending"))
-        } else {
-          toast.error(error.message)
-        }
+        toast.error(error.message)
       },
     })
   }
@@ -418,10 +415,7 @@ const PaymentBreakdown = ({
   const pendingAuthSessions = (order.payment_collections ?? []).flatMap((pc) =>
     ((pc as any).payment_sessions ?? [])
       .filter((s: any) => s.status === "pending_authorization")
-      .map((s: any) => ({
-        session_id: s.id,
-        payment_collection_id: pc.id,
-      }))
+      .map((s: any) => ({ session_id: s.id }))
   )
 
   /**
@@ -459,11 +453,10 @@ const PaymentBreakdown = ({
 
   return (
     <div className="flex flex-col divide-y divide-dashed">
-      {pendingAuthSessions.map(({ session_id, payment_collection_id }) => (
+      {pendingAuthSessions.map(({ session_id }) => (
         <PendingAuthorizationBanner
           key={session_id}
           order={order}
-          paymentCollectionId={payment_collection_id}
           sessionId={session_id}
         />
       ))}

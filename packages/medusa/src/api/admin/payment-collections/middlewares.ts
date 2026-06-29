@@ -59,17 +59,6 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher:
-      "/admin/payment-collections/:id/payment-sessions/:session_id/authorize",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetPaymentCollectionParams,
-        queryConfig.retrievePaymentCollectionTransformQueryConfig
-      ),
-    ]
-  },
-  {
-    method: ["POST"],
     matcher: "/admin/payment-collections/:id/payment-sessions",
     middlewares: [
       validateAndTransformBody(AdminInitializePaymentSession),
