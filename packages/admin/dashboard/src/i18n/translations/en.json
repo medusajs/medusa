@@ -281,7 +281,9 @@
     }
   },
   "layout": {
-    "customizeWidgets": "Customize widgets",
+    "customizeLayout": "Customize layout",
+    "viewingPersonalLayout": "You're seeing a personal layout",
+    "viewingSystemLayout": "You're seeing a system layout",
     "personalView": "Personal",
     "defaultView": "Default",
     "empty": "Empty",

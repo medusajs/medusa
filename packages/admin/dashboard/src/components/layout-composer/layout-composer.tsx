@@ -1,6 +1,6 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core"
-import { AdjustmentsDone } from "@medusajs/icons"
-import { Badge, Button, IconButton, usePrompt } from "@medusajs/ui"
+import { Adjustments, AdjustmentsDone } from "@medusajs/icons"
+import { Badge, Button, IconButton, Tooltip, usePrompt } from "@medusajs/ui"
 import {
   ComponentType,
   Fragment,
@@ -21,6 +21,7 @@ import {
   buildDisplayEntries,
   extractSectionElements,
 } from "./entries"
+import { LayoutEntry } from "./entry"
 import { SectionDropzone } from "./section-dropzone"
 import { EntryContent, SortableEntry } from "./sortable-entry"
 import type {
@@ -86,7 +87,7 @@ function isSamePreference(a: LayoutPreference, b: LayoutPreference): boolean {
   return true
 }
 
-export const LayoutComposer = <TLayoutId extends Layouts, TData>({
+const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
   preferredLayoutId,
   sections,
@@ -98,6 +99,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     personalPreference,
     defaultPreference,
     activeScope,
+    definedScope,
     setPreference,
     isSaving,
   } = useLayoutPreference(widgetsZonePrefix)
@@ -341,6 +343,23 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     return null
   }
 
+  // Idle trigger tooltip: always explains the action, and when a layout has
+  // been defined for this zone, adds whose layout the user is currently seeing.
+  const triggerTooltip = definedScope ? (
+    <div className="flex flex-col gap-y-0.5">
+      <span>{t("layout.customizeLayout")}</span>
+      <span className="text-ui-fg-subtle">
+        {t(
+          definedScope === "personal"
+            ? "layout.viewingPersonalLayout"
+            : "layout.viewingSystemLayout"
+        )}
+      </span>
+    </div>
+  ) : (
+    t("layout.customizeLayout")
+  )
+
   // Customizer controls — all live in the single top-bar portal slot.
   // Idle: the trigger icon. Editing: Personal/Default badges to switch which
   // configuration is being edited (active one highlighted), Cancel, and a Save
@@ -385,15 +404,19 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
       </Button>
     </div>
   ) : (
-    <IconButton
-      size="small"
-      variant="transparent"
-      onClick={enterEdit}
-      aria-label={t("layout.customizeWidgets")}
-      className="text-ui-fg-muted hover:text-ui-fg-subtle"
-    >
-      <AdjustmentsDone />
-    </IconButton>
+    <Tooltip content={triggerTooltip}>
+      <IconButton
+        size="small"
+        variant="transparent"
+        onClick={enterEdit}
+        aria-label={t("layout.customizeLayout")}
+        className="text-ui-fg-muted hover:text-ui-fg-subtle"
+      >
+        {/* The "done" icon carries a blue accent dot — reserve it for zones
+            that actually have a saved layout, otherwise show the plain icon. */}
+        {definedScope ? <AdjustmentsDone /> : <Adjustments />}
+      </IconButton>
+    </Tooltip>
   )
 
   const layoutNode = <LayoutComponent sections={renderedSections} data={data} />
@@ -425,3 +448,7 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
     </>
   )
 }
+
+export const LayoutComposer = Object.assign(LayoutComposerRoot, {
+  Entry: LayoutEntry,
+})

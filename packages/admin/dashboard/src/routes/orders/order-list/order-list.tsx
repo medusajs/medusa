@@ -15,10 +15,14 @@ export const OrderList = () => {
       preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       hasOutlet={false}
       sections={{
-        main: isViewConfigEnabled ? (
-          <ConfigurableOrderListTable />
-        ) : (
-          <OrderListTable />
+        main: (
+          <LayoutComposer.Entry id="OrderListTable">
+            {isViewConfigEnabled ? (
+              <ConfigurableOrderListTable />
+            ) : (
+              <OrderListTable />
+            )}
+          </LayoutComposer.Entry>
         ),
       }}
     />

@@ -6,6 +6,8 @@ import {
   ReactNode,
   isValidElement,
 } from "react"
+import { LayoutEntry } from "./entry"
+import type { LayoutEntryProps } from "./entry"
 import { LayoutPreference } from "./types"
 
 // Both core entries and widgets carry a `render` thunk so the rest of the
@@ -41,16 +43,20 @@ function getElementName(element: ReactElement): string {
   )
 }
 
+function isLayoutEntry(
+  element: ReactElement
+): element is ReactElement<LayoutEntryProps> {
+  return element.type === LayoutEntry
+}
+
 /**
  * Resolves the identity segment for a core element. Prefers an explicit
- * `layoutId` prop so an entry's id can survive component renames and
- * production minification (which mangles `Component.name`); otherwise falls
- * back to the component's display/function name.
+ * `LayoutComposer.Entry` wrapper id (stable across renames and minification);
+ * otherwise falls back to the component's display/function name.
  */
 function getCoreEntryKey(element: ReactElement): string {
-  const explicit = (element.props as { layoutId?: unknown } | null)?.layoutId
-  if (typeof explicit === "string" && explicit.length > 0) {
-    return explicit
+  if (isLayoutEntry(element)) {
+    return element.props.id
   }
   return getElementName(element)
 }

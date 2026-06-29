@@ -40,6 +40,12 @@ export type UseLayoutPreferenceReturn = {
   defaultPreference: LayoutPreference
   /** The persisted scope the user is actively viewing for this zone. */
   activeScope: LayoutScope
+  /**
+   * Which scope actually has a saved configuration for this zone, or `null`
+   * when neither the user nor the system has defined one. Personal takes
+   * precedence since it overrides the system default for the current user.
+   */
+  definedScope: LayoutScope | null
   setPreference: (
     next: LayoutPreference,
     options?: SetPreferenceOptions,
@@ -81,6 +87,15 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
 
   const activeScope: LayoutScope = active_scope ?? "personal"
 
+  // A configuration record only exists once a user or admin has saved one, so
+  // its presence is the signal that a layout has been deliberately defined.
+  // Personal wins over default since it's what the current user actually sees.
+  const definedScope: LayoutScope | null = personal_configuration
+    ? "personal"
+    : default_configuration
+    ? "default"
+    : null
+
   const setPreference = useCallback(
     (
       next: LayoutPreference,
@@ -102,6 +117,7 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
     personalPreference,
     defaultPreference,
     activeScope,
+    definedScope,
     setPreference,
     isSaving,
   }
