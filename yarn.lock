@@ -19391,35 +19391,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"integration-tests-api@workspace:integration-tests/api":
-  version: 0.0.0-use.local
-  resolution: "integration-tests-api@workspace:integration-tests/api"
-  dependencies:
-    "@medusajs/api-key": "workspace:^"
-    "@medusajs/auth": "workspace:*"
-    "@medusajs/cache-inmemory": "workspace:*"
-    "@medusajs/customer": "workspace:^"
-    "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/medusa": "workspace:*"
-    "@medusajs/modules-sdk": "workspace:^"
-    "@medusajs/payment": "workspace:^"
-    "@medusajs/pricing": "workspace:^"
-    "@medusajs/product": "workspace:^"
-    "@medusajs/promotion": "workspace:^"
-    "@medusajs/region": "workspace:^"
-    "@medusajs/store": "workspace:^"
-    "@medusajs/tax": "workspace:^"
-    "@medusajs/user": "workspace:^"
-    "@medusajs/utils": "workspace:^"
-    "@medusajs/workflow-engine-inmemory": "workspace:*"
-    "@swc/core": ^1.7.28
-    "@swc/jest": ^0.2.36
-    jest: ^29.7.0
-    pg: ^8.11.3
-    typescript: ^5.6.2
-  languageName: unknown
-  linkType: soft
-
 "integration-tests-http@workspace:integration-tests/http":
   version: 0.0.0-use.local
   resolution: "integration-tests-http@workspace:integration-tests/http"
