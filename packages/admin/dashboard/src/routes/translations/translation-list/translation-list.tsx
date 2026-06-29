@@ -70,10 +70,6 @@ export const TranslationList = () => {
 
     return (
       Object.entries(translation_settings)
-        .filter(
-          ([entity]) =>
-            !["product_option", "product_option_value"].includes(entity)
-        )
         .map(([entity, setting]) => {
           const entityStatistics = statistics?.[entity] ?? {
             translated: 0,
