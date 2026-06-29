@@ -6,6 +6,7 @@ import {
   Fragment,
   ReactNode,
   useCallback,
+  useEffect,
   useId,
   useMemo,
   useState,
@@ -157,6 +158,12 @@ export const LayoutComposer = <TLayoutId extends Layouts, TData>({
   const locked = activeEditor !== null && activeEditor !== editorId
 
   const [editMode, setEditMode] = useState(false)
+  useEffect(() => {
+    return () => {
+      setActiveEditor(null)
+    }
+  }, [setActiveEditor])
+
   const [draft, setDraft] = useState<LayoutPreference | null>(null)
   // Which configuration the current edit session is targeting: the user's
   // personal layout or the zone's shared default.

@@ -26,7 +26,8 @@ interface NotificationData {
 
 const LAST_READ_NOTIFICATION_KEY = "notificationsLastReadAt"
 
-export const Notifications = () => {
+type NotificationProps = { layoutId: string }
+export const Notifications = (_: NotificationProps) => {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [hasUnread, setHasUnread] = useUnreadNotifications()

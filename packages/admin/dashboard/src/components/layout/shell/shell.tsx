@@ -23,6 +23,7 @@ import {
 import { Notifications } from "../notifications"
 import { LayoutComposer } from "../../layout-composer"
 import { LAYOUT_TRIGGER_LOCATIONS } from "../../layout-composer/constants"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -213,8 +214,8 @@ const Topbar = () => {
         <LayoutCustomizerSlot location={LAYOUT_TRIGGER_LOCATIONS.TOPBAR} />
         <LayoutComposer
           widgetsZonePrefix="topbar"
-          preferredLayoutId="core:single-row"
-          sections={{ main: <Notifications /> }}
+          preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_ROW}
+          sections={{ main: <Notifications layoutId="Notifications" /> }}
           hasOutlet={false}
           triggerLocation={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_TOPBAR}
           controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
