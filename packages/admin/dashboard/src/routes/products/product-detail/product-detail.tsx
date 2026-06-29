@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
 import { ProductGeneralSection } from "./components/product-general-section"
@@ -56,23 +53,37 @@ export const ProductDetail = () => {
       sections={{
         main: (
           <>
-            <ProductGeneralSection product={product} />
-            <ProductMediaSection product={product} />
-            <ProductOptionSection product={product} />
-            <ProductVariantSection product={product} />
-            <MetadataSection data={product} />
-            <JsonViewSection data={product} />
-            <RequiredPermissionsSection />
+            <LayoutComposer.Entry id="ProductGeneralSection">
+              <ProductGeneralSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductMediaSection">
+              <ProductMediaSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductOptionSection">
+              <ProductOptionSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductVariantSection">
+              <ProductVariantSection product={product} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(product)}
           </>
         ),
         side: (
           <>
-            <ProductSalesChannelSection product={product} />
-            <ProductShippingProfileSection
-              product={product as ExtendedProduct}
-            />
-            <ProductOrganizationSection product={product} />
-            <ProductAttributeSection product={product} />
+            <LayoutComposer.Entry id="ProductSalesChannelSection">
+              <ProductSalesChannelSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductShippingProfileSection">
+              <ProductShippingProfileSection
+                product={product as ExtendedProduct}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductOrganizationSection">
+              <ProductOrganizationSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductAttributeSection">
+              <ProductAttributeSection product={product} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

@@ -1129,7 +1129,7 @@
     "layout": {
       "type": "object",
       "properties": {
-        "customizeWidgets": {
+        "customizeLayout": {
           "type": "string"
         },
         "customizeTopbar": {
@@ -1164,12 +1164,18 @@
         },
         "saveSuccess": {
           "type": "string"
+        },
+        "viewingPersonalLayout": {
+          "type": "string"
+        },
+        "viewingSystemLayout": {
+          "type": "string"
         }
       },
       "required": [
-        "customizeWidgets",
         "customizeTopbar",
         "customizeSidebar",
+        "customizeLayout",
         "personalView",
         "defaultView",
         "empty",
@@ -1178,7 +1184,9 @@
         "saveForEveryone",
         "saveForEveryoneTitle",
         "saveForEveryoneDescription",
-        "saveSuccess"
+        "saveSuccess",
+        "viewingPersonalLayout",
+        "viewingSystemLayout"
       ],
       "additionalProperties": false
     },
@@ -10700,17 +10708,17 @@
           "additionalProperties": false
         },
         "settings": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "type": "string"
-                },
-                "successToast": {
-                    "type": "string"
-                }
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
             },
-            "required": ["header", "successToast"],
-            "additionalProperties": false
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
         },
         "actions": {
           "type": "object",

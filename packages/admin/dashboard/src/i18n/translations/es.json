@@ -291,6 +291,20 @@
       }
     }
   },
+  "layout": {
+    "customizeLayout": "Personalizar layout",
+    "viewingPersonalLayout": "Estás viendo un layout personal",
+    "viewingSystemLayout": "Estás viendo un layout predeterminado",
+    "personalView": "Personal",
+    "defaultView": "Predeterminado",
+    "empty": "Vacio",
+    "dropToSectionEnd": "Suelta aquí para mover al final",
+    "dragToReorder": "Arrastra para reordenar",
+    "saveForEveryone": "Guardar para todos",
+    "saveForEveryoneTitle": "Guardar layout para todos",
+    "saveForEveryoneDescription": "Esto actualiza el layout predeterminado para esta página para todos los usuarios que no lo han personalizado. ¿Deseas continuar?",
+    "saveSuccess": "Layout guardado"
+  },
   "dataGrid": {
     "columns": {
       "view": "Ver",
