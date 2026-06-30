@@ -52,6 +52,11 @@ function classifyIdentifier(
   return { kind: "local" }
 }
 
+/** Normalize path separators to forward slashes for cross-platform comparison. */
+function normalizeSlashes(p: string): string {
+  return p.replace(/\\/g, "/")
+}
+
 function isRelativeImport(source: string): boolean {
   return source.startsWith("./") || source.startsWith("../") || source === "."
 }
@@ -92,7 +97,7 @@ function relativeImportStaysInModule(
     return true
   }
   return pathStaysInModule(
-    path.resolve(path.dirname(filename), source),
+    normalizeSlashes(path.resolve(path.dirname(filename), source)),
     moduleRoot
   )
 }
@@ -226,7 +231,9 @@ function aliasStaysInModule(
     return false
   }
   const resolved = resolveTsconfigAlias(source, cfg)
-  return resolved !== null && pathStaysInModule(resolved, moduleRoot)
+  return (
+    resolved !== null && pathStaysInModule(normalizeSlashes(resolved), moduleRoot)
+  )
 }
 
 export const rule = createRule<[], MessageIds>({
