@@ -423,8 +423,8 @@ export function sortPrices(
 export function formatQuantityPrices(
   prices: {
     amount?: string
-    min_quantity?: string
-    max_quantity?: string
+    min_quantity?: string | null
+    max_quantity?: string | null
     id?: string
   }[]
 ): PriceListUpdateCurrencyPrice[] {

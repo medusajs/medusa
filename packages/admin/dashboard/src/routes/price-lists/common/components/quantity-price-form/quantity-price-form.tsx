@@ -1,9 +1,9 @@
+import { ReactNode } from "react"
 import { Control, useWatch } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import { z } from "zod"
-import { CurrencyInput, Divider } from "@medusajs/ui"
+import { Badge, CurrencyInput, Divider, Text } from "@medusajs/ui"
 import { CubeSolid } from "@medusajs/icons"
-import { Text } from "@medusajs/ui"
 import { i18n } from "../../../../../components/utilities/i18n"
 import { CurrencyInfo } from "../../../../../lib/data/currencies"
 import { PriceListUpdateCurrencyPrice } from "../../schemas"
@@ -16,8 +16,8 @@ import { TieredPriceForm } from "../../../../../common/components/tiered-price-f
 const QuantityPriceRuleSchema = z
   .object({
     amount: z.string().optional(),
-    min_quantity: z.string().optional(),
-    max_quantity: z.string().optional(),
+    min_quantity: z.string().nullish(),
+    max_quantity: z.string().nullish(),
     id: z.string().optional(),
   })
   .refine(
@@ -48,6 +48,12 @@ interface QuantityPriceFormProps {
   onSave: (prices: PriceListUpdateCurrencyPrice[]) => void
 }
 
+const ConditionContainer = ({ children }: { children: ReactNode }) => (
+  <div className="text-ui-fg-subtle txt-small flex flex-wrap items-center gap-1.5">
+    {children}
+  </div>
+)
+
 const QuantityConditionTrigger = ({
   index,
   control,
@@ -55,6 +61,8 @@ const QuantityConditionTrigger = ({
   index: number
   control: Control<QuantityPriceFormSchemaType>
 }) => {
+  const { t } = useTranslation()
+
   const minQuantity = useWatch({
     control,
     name: `prices.${index}.min_quantity`,
@@ -64,21 +72,60 @@ const QuantityConditionTrigger = ({
     name: `prices.${index}.max_quantity`,
   })
 
+  const min = minQuantity || undefined
+  const max = maxQuantity || undefined
+
+  if (!min && !max) {
+    return null
+  }
+
+  const attribute = t("priceLists.quantityPricing.attributes.quantity")
+
+  if (min && !max) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="priceLists.quantityPricing.summaries.greaterThan"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="min" />,
+          ]}
+          values={{ attribute, min }}
+        />
+      </ConditionContainer>
+    )
+  }
+
+  if (!min && max) {
+    return (
+      <ConditionContainer>
+        <Trans
+          i18n={i18n}
+          i18nKey="priceLists.quantityPricing.summaries.lessThan"
+          components={[
+            <Badge size="2xsmall" key="attribute" />,
+            <Badge size="2xsmall" key="max" />,
+          ]}
+          values={{ attribute, max }}
+        />
+      </ConditionContainer>
+    )
+  }
+
   return (
-    <div className="flex min-h-7 items-center gap-x-1">
-      {minQuantity && (
-        <Text size="small" weight="plus">
-          {minQuantity}+
-        </Text>
-      )}
-      {minQuantity && maxQuantity && <span>to</span>}
-      {maxQuantity && (
-        <Text size="small" weight="plus">
-          {maxQuantity}
-        </Text>
-      )}
-      {!minQuantity && !maxQuantity && "—"}
-    </div>
+    <ConditionContainer>
+      <Trans
+        i18n={i18n}
+        i18nKey="priceLists.quantityPricing.summaries.range"
+        components={[
+          <Badge size="2xsmall" key="attribute" />,
+          <Badge size="2xsmall" key="min" />,
+          <Badge size="2xsmall" key="max" />,
+        ]}
+        values={{ attribute, min, max }}
+      />
+    </ConditionContainer>
   )
 }
 
@@ -140,11 +187,10 @@ const QuantityConditionItem = ({
           <TieredPriceInput
             field={field}
             label={t("priceLists.quantityPricing.rules.minQuantity")}
-            toggleValues={{ active: "1", inactive: "" }}
+            toggleValues={{ active: "", inactive: null }}
             renderInput={({ field: { onChange, ...fieldProps }, value }) => (
               <div className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-within:bg-ui-bg-field-component-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg focus-within:shadow-borders-interactive-with-active relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md">
                 <span className="flex w-fit min-w-[48px] items-center gap-x-1 border-r px-2 py-[9px]">
-                  <CubeSolid className="text-ui-fg-muted" />
                   <Text
                     size="small"
                     leading="compact"
@@ -170,13 +216,7 @@ const QuantityConditionItem = ({
                   {...fieldProps}
                 />
                 <span className="flex w-fit min-w-[32px] items-center justify-center border-l px-2 py-[9px] text-right">
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-muted pointer-events-none select-none"
-                  >
-                    {t("priceLists.quantityPricing.rules.pcs")}
-                  </Text>
+                  <CubeSolid className="text-ui-fg-muted" />
                 </span>
               </div>
             )}
@@ -191,11 +231,10 @@ const QuantityConditionItem = ({
           <TieredPriceInput
             field={field}
             label={t("priceLists.quantityPricing.rules.maxQuantity")}
-            toggleValues={{ active: "1", inactive: "" }}
+            toggleValues={{ active: "", inactive: null }}
             renderInput={({ field: { onChange, ...fieldProps }, value }) => (
               <div className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-within:bg-ui-bg-field-component-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg focus-within:shadow-borders-interactive-with-active relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md">
                 <span className="flex w-fit min-w-[48px] items-center gap-x-1 border-r px-2 py-[9px]">
-                  <CubeSolid className="text-ui-fg-muted" />
                   <Text
                     size="small"
                     leading="compact"
@@ -221,13 +260,7 @@ const QuantityConditionItem = ({
                   {...fieldProps}
                 />
                 <span className="flex w-fit min-w-[32px] items-center justify-center border-l px-2 py-[9px] text-right">
-                  <Text
-                    size="small"
-                    leading="compact"
-                    className="text-ui-fg-muted pointer-events-none select-none"
-                  >
-                    {t("priceLists.quantityPricing.rules.pcs")}
-                  </Text>
+                  <CubeSolid className="text-ui-fg-muted" />
                 </span>
               </div>
             )}
@@ -249,15 +282,15 @@ export const QuantityPriceForm = ({
   return (
     <TieredPriceForm
       schema={QuantityPriceFormSchema}
-      initialValues={(Array.isArray(initialPrices) && initialPrices.length > 0
-        ? initialPrices
-        : [{ amount: "", min_quantity: "", max_quantity: "" }]
-      ).map((p) => ({
-        amount: p.amount?.toString() || "",
-        min_quantity: p.min_quantity?.toString() || "",
-        max_quantity: p.max_quantity?.toString() || "",
-        id: p.id ?? undefined,
-      }))}
+      initialValues={(Array.isArray(initialPrices) ? initialPrices : []).map(
+        (p) => ({
+          amount: p.amount?.toString() || "",
+          min_quantity: p.min_quantity?.toString() ?? null,
+          max_quantity: p.max_quantity?.toString() ?? null,
+          id: p.id ?? undefined,
+        })
+      )}
+      defaultRow={{ amount: "", min_quantity: "", max_quantity: null }}
       onSubmit={(values) => onSave(formatQuantityPrices(values.prices))}
       onClose={onClose}
       currency={currency}

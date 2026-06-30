@@ -22,18 +22,20 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
   description,
   addPriceLabel,
   fieldConfig,
+  defaultRow,
   renderConditionItem,
   renderConditionTrigger,
 }: TieredPriceFormProps<T>) => {
   const { t } = useTranslation()
   const [value, setValue] = useState<string[]>([getRuleValue(0)])
 
+  const emptyRow =
+    defaultRow ??
+    ({ amount: "", [fieldConfig.min]: "", [fieldConfig.max]: null } as any)
+
   const form = useForm<z.infer<T>>({
     defaultValues: {
-      prices:
-        initialValues.length > 0
-          ? initialValues
-          : [{ amount: "", [fieldConfig.min]: "", [fieldConfig.max]: null }],
+      prices: initialValues.length > 0 ? initialValues : [emptyRow],
     } as any,
     resolver: zodResolver(schema),
   })
@@ -44,11 +46,7 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
   })
 
   const handleAdd = () => {
-    append({
-      amount: "",
-      [fieldConfig.min]: "",
-      [fieldConfig.max]: null,
-    } as any)
+    append(emptyRow as any)
 
     setValue([...value, getRuleValue(fields.length)])
   }

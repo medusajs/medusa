@@ -82,6 +82,10 @@ export const QuantityPriceModal = ({
       )
     : undefined
 
+  const editingVariant = editingProduct?.variants?.find(
+    (v) => v.id === editingCell?.variantId
+  )
+
   const conditionalPath = editingCell
     ? `products.${editingCell.productId}.variants.${editingCell.variantId}.${
         editingCell.regionId
@@ -97,9 +101,12 @@ export const QuantityPriceModal = ({
       : editingCell.currencyCode.toUpperCase()
     : ""
 
-  const name = editingProduct
-    ? `${editingProduct.title} (${columnLabel})`
-    : "Product"
+  const entityLabel =
+    [editingProduct?.title, editingVariant?.title]
+      .filter(Boolean)
+      .join(" - ") || "Product"
+
+  const name = editingCell ? `${entityLabel} (${columnLabel})` : "Product"
 
   return (
     <QuantityPriceProvider
