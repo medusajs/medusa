@@ -264,7 +264,7 @@ const Searchbar = () => {
   const { toggleSearch } = useSearch()
 
   return (
-    <div className="px-3">
+    <div>
       <button
         onClick={toggleSearch}
         className={clx(
@@ -311,8 +311,7 @@ const SidebarRoutes = () => {
   const extensionItems = menuItems.filter((item) => !item.nested)
 
   return (
-    <nav className="flex flex-col gap-y-1 py-3">
-      <Searchbar />
+    <nav className="py-3">
       <div className="px-3">
         <LayoutComposer
           widgetsZonePrefix="sidebar"
@@ -325,11 +324,19 @@ const SidebarRoutes = () => {
           sections={{
             main: (
               <>
+                <LayoutComposer.Entry id="Searchbar">
+                  <Searchbar />
+                </LayoutComposer.Entry>
                 {coreRoutes.map((route) => (
                   <LayoutComposer.Entry id={`nav:${route.to}`} key={route.to}>
                     <NavItem key={route.to} {...route} />
                   </LayoutComposer.Entry>
                 ))}
+                {extensionItems.length > 0 && (
+                  <LayoutComposer.Entry id="Divider">
+                    <Divider variant="dashed" />
+                  </LayoutComposer.Entry>
+                )}
                 {extensionItems.map((item) => (
                   <LayoutComposer.Entry id={`nav:${item.to}`} key={item.to}>
                     <NavItem
