@@ -14,7 +14,7 @@ class LoyaltyModuleService extends MedusaService({
     super(dependencies, options)
     this.options_ = options
   }
-  getOptions(): LoyaltyPluginOptions {
+  async getOptions(): Promise<LoyaltyPluginOptions> {
     return this.options_
   }
 }
