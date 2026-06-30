@@ -12,6 +12,7 @@ import {
   useNavigation,
 } from "react-router-dom"
 
+import { DocumentTitle } from "../../../hooks/use-document-title"
 import { KeybindProvider } from "../../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSidebar } from "../../../providers/sidebar-provider"
@@ -30,6 +31,7 @@ export const Shell = ({ children }: PropsWithChildren) => {
 
   return (
     <KeybindProvider shortcuts={globalShortcuts}>
+      <DocumentTitle />
       <LayoutCustomizerHostProvider>
         <div className="relative flex h-screen flex-col items-start overflow-hidden lg:flex-row">
           <NavigationBar loading={loading} />
