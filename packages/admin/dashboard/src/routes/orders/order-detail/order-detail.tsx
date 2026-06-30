@@ -1,11 +1,8 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { MetadataSection } from "../../../components/common/metadata-section"
-import { RequiredPermissionsSection } from "../../../components/common/required-permissions-section"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer } from "../../../components/layout-composer"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
 import { usePlugins } from "../../../hooks/api/plugins"
 import { ActiveOrderClaimSection } from "./components/active-order-claim-section"
@@ -74,26 +71,44 @@ export const OrderDetail = () => {
       sections={{
         main: (
           <>
-            <OrderActiveEditSection order={order} />
-            <ActiveOrderClaimSection orderPreview={orderPreview!} />
-            <ActiveOrderExchangeSection orderPreview={orderPreview!} />
-            <ActiveOrderReturnSection orderPreview={orderPreview!} />
-            <OrderGeneralSection order={order as ExtendedOrder} />
-            <OrderSummarySection order={order} plugins={plugins} />
-            <OrderPaymentSection
-              order={order as ExtendedOrder}
-              plugins={plugins}
-            />
-            <OrderFulfillmentSection order={order as ExtendedOrder} />
-            <MetadataSection data={order} />
-            <JsonViewSection data={order} />
-            <RequiredPermissionsSection />
+            <LayoutComposer.Entry id="OrderActiveEditSection">
+              <OrderActiveEditSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActiveOrderClaimSection">
+              <ActiveOrderClaimSection orderPreview={orderPreview!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActiveOrderExchangeSection">
+              <ActiveOrderExchangeSection orderPreview={orderPreview!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActiveOrderReturnSection">
+              <ActiveOrderReturnSection orderPreview={orderPreview!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderGeneralSection">
+              <OrderGeneralSection order={order as ExtendedOrder} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderSummarySection">
+              <OrderSummarySection order={order} plugins={plugins} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderPaymentSection">
+              <OrderPaymentSection
+                order={order as ExtendedOrder}
+                plugins={plugins}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderFulfillmentSection">
+              <OrderFulfillmentSection order={order as ExtendedOrder} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(order)}
           </>
         ),
         side: (
           <>
-            <OrderCustomerSection order={order} />
-            <OrderActivitySection order={order as ExtendedOrder} />
+            <LayoutComposer.Entry id="OrderCustomerSection">
+              <OrderCustomerSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="OrderActivitySection">
+              <OrderActivitySection order={order as ExtendedOrder} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

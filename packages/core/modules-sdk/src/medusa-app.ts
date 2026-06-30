@@ -1,5 +1,5 @@
 import { asValue } from "@medusajs/deps/awilix"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
+import { RemoteFetchDataCallback } from "./joiner"
 import {
   ConfigModule,
   ExternalModuleDeclaration,

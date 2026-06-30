@@ -7,6 +7,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/eslint-plugin"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

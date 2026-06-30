@@ -1129,7 +1129,19 @@
     "layout": {
       "type": "object",
       "properties": {
-        "customizeWidgets": {
+        "customizeLayout": {
+          "type": "string"
+        },
+        "customizeSettingsSidebar": {
+          "type": "string"
+        },
+        "customizePage": {
+          "type": "string"
+        },
+        "customizeTopbar": {
+          "type": "string"
+        },
+        "customizeSidebar": {
           "type": "string"
         },
         "personalView": {
@@ -1158,10 +1170,20 @@
         },
         "saveSuccess": {
           "type": "string"
+        },
+        "viewingPersonalLayout": {
+          "type": "string"
+        },
+        "viewingSystemLayout": {
+          "type": "string"
         }
       },
       "required": [
-        "customizeWidgets",
+        "customizeTopbar",
+        "customizeSidebar",
+        "customizeSettingsSidebar",
+        "customizePage",
+        "customizeLayout",
         "personalView",
         "defaultView",
         "empty",
@@ -1170,7 +1192,9 @@
         "saveForEveryone",
         "saveForEveryoneTitle",
         "saveForEveryoneDescription",
-        "saveSuccess"
+        "saveSuccess",
+        "viewingPersonalLayout",
+        "viewingSystemLayout"
       ],
       "additionalProperties": false
     },
@@ -4863,6 +4887,18 @@
             },
             "selectPaymentToRefund": {
               "type": "string"
+            },
+            "pendingAuthorization": {
+              "type": "string"
+            },
+            "checkStatus": {
+              "type": "string"
+            },
+            "checkStatusSuccess": {
+              "type": "string"
+            },
+            "stillPending": {
+              "type": "string"
             }
           },
           "required": [
@@ -4886,7 +4922,11 @@
             "createRefundWrongQuantity",
             "refundAmount",
             "paymentLink",
-            "selectPaymentToRefund"
+            "selectPaymentToRefund",
+            "pendingAuthorization",
+            "checkStatus",
+            "checkStatusSuccess",
+            "stillPending"
           ],
           "additionalProperties": false
         },
@@ -10692,17 +10732,17 @@
           "additionalProperties": false
         },
         "settings": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "type": "string"
-                },
-                "successToast": {
-                    "type": "string"
-                }
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
             },
-            "required": ["header", "successToast"],
-            "additionalProperties": false
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
         },
         "actions": {
           "type": "object",

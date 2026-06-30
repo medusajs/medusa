@@ -38,6 +38,21 @@ export class Layouts {
   }
 
   /**
+   * List the layout configurations that apply to the current user — their own
+   * personal configurations plus any system defaults.
+   */
+  async listConfigurations(
+    query?: HttpTypes.AdminGetLayoutConfigurationsParams,
+    headers?: ClientHeaders
+  ): Promise<HttpTypes.AdminLayoutConfigurationListResponse> {
+    return await this.client.fetch(`/admin/layouts/configurations`, {
+      method: "GET",
+      headers,
+      query,
+    })
+  }
+
+  /**
    * Remove the current user's personal layout configuration for a zone,
    * falling back to the zone's system default.
    */

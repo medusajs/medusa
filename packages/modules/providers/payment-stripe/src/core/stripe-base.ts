@@ -247,7 +247,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       )
     }
 
-    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id)
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id, {
+      expand: ["payment_method"],
+    })
     const statusResponse = this.getStatus(paymentIntent)
 
     return statusResponse as unknown as GetPaymentStatusOutput
@@ -269,6 +271,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         session_id: data?.session_id as string,
       },
       ...additionalParameters,
+      expand: ["payment_method"],
     }
 
     intentRequest.customer = context?.account_holder?.data?.id as
@@ -412,6 +415,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         id,
         {
           amount: amountNumeric,
+          expand: ["payment_method"],
         },
         {
           idempotencyKey: context?.idempotency_key,
@@ -645,7 +649,18 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         }
         return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
       case "requires_confirmation":
+        return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
       case "processing":
+        if (
+          this.isAsyncPaymentMethod(
+            paymentIntent.payment_method as Stripe.PaymentMethod
+          )
+        ) {
+          return {
+            status: PaymentSessionStatus.PENDING_AUTHORIZATION,
+            data: paymentIntent,
+          }
+        }
         return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
       case "requires_action":
         return {
@@ -683,8 +698,18 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     switch (event.type) {
       case "payment_intent.created":
       case "payment_intent.processing":
+        const webhookPaymentMethod = intent.payment_method
+        const paymentMethod =
+          typeof webhookPaymentMethod === "object"
+            ? (intent.payment_method as Stripe.PaymentMethod)
+            : await this.stripe_.paymentMethods.retrieve(
+                webhookPaymentMethod as string
+              )
+
         return {
-          action: PaymentActions.PENDING,
+          action: this.isAsyncPaymentMethod(paymentMethod)
+            ? PaymentActions.PENDING_AUTHORIZATION
+            : PaymentActions.PENDING,
           data: {
             session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount, currency),
@@ -749,6 +774,13 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       default:
         return { action: PaymentActions.NOT_SUPPORTED }
     }
+  }
+
+  private isAsyncPaymentMethod(paymentMethod: Stripe.PaymentMethod): boolean {
+    return (
+      this.options_.asyncPaymentMethodTypes?.includes(paymentMethod.type) ??
+      false
+    )
   }
 
   /**

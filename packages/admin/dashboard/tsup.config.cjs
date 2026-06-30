@@ -5,7 +5,7 @@ export default defineConfig({
     // `@medusajs/dashboard`
     app: "./src/app.tsx",
     // `@medusajs/dashboard/components`
-    components: "./src/exports/components.ts",
+    components: "./src/exports/components.tsx",
     // `@medusajs/dashboard/hooks`
     hooks: "./src/exports/hooks.ts",
   },
@@ -24,7 +24,7 @@ export default defineConfig({
   dts: {
     entry: {
       index: "./src/index.ts",
-      components: "./src/exports/components.ts",
+      components: "./src/exports/components.tsx",
       hooks: "./src/exports/hooks.ts",
     },
   },
