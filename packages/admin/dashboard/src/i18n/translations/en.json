@@ -66,6 +66,7 @@
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
     "excludesTaxTooltip": "Prices in this column are tax exclusive.",
     "noMoreData": "No more data",
+    "quantityPrice": "Quantity Price",
     "exclusive": "Product-specific",
     "global": "Global"
   },
@@ -2545,6 +2546,34 @@
       },
       "edit": {
         "successToast": "Prices were successfully updated."
+      }
+    },
+    "quantityPricing": {
+      "header": "Conditional Prices for {{name}}",
+      "description": "Manage the conditional prices for this product variant based on its cart quantities.",
+      "actions": {
+        "addPrice": "Add price"
+      },
+      "rules": {
+        "amount": "Product variant price",
+        "minQuantity": "Minimum cart quantity",
+        "maxQuantity": "Maximum cart quantity",
+        "qty": "QTY",
+        "allQuantities": "All quantities",
+        "min": "Min",
+        "max": "Max"
+      },
+      "attributes": {
+        "quantity": "Cart quantity"
+      },
+      "summaries": {
+        "range": "If <0>{{attribute}}</0> is between <1>{{min}}</1> and <2>{{max}}</2>",
+        "greaterThan": "If <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "If <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "Minimum quantity cannot be greater than maximum quantity",
+        "mustBePositive": "Quantity must be at least 1"
       }
     },
     "fields": {

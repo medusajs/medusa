@@ -215,6 +215,9 @@
         "noMoreData": {
           "type": "string"
         },
+        "quantityPrice": {
+          "type": "string"
+        },
         "exclusive": {
           "type": "string"
         },
@@ -289,7 +292,8 @@
         "excludesTaxTooltip",
         "noMoreData",
         "exclusive",
-        "global"
+        "global",
+        "quantityPrice"
       ],
       "additionalProperties": false
     },
@@ -9781,6 +9785,112 @@
           "required": ["header", "actions", "delete", "add", "edit"],
           "additionalProperties": false
         },
+        "quantityPricing": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "actions": {
+              "type": "object",
+              "properties": {
+                "addPrice": {
+                  "type": "string"
+                }
+              },
+              "required": ["addPrice"],
+              "additionalProperties": false
+            },
+            "rules": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "minQuantity": {
+                  "type": "string"
+                },
+                "maxQuantity": {
+                  "type": "string"
+                },
+                "qty": {
+                  "type": "string"
+                },
+                "allQuantities": {
+                  "type": "string"
+                },
+                "min": {
+                  "type": "string"
+                },
+                "max": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "minQuantity",
+                "maxQuantity",
+                "qty",
+                "allQuantities",
+                "min",
+                "max"
+              ],
+              "additionalProperties": false
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "quantity": {
+                  "type": "string"
+                }
+              },
+              "required": ["quantity"],
+              "additionalProperties": false
+            },
+            "summaries": {
+              "type": "object",
+              "properties": {
+                "range": {
+                  "type": "string"
+                },
+                "greaterThan": {
+                  "type": "string"
+                },
+                "lessThan": {
+                  "type": "string"
+                }
+              },
+              "required": ["range", "greaterThan", "lessThan"],
+              "additionalProperties": false
+            },
+            "errors": {
+              "type": "object",
+              "properties": {
+                "minGreaterThanMax": {
+                  "type": "string"
+                },
+                "mustBePositive": {
+                  "type": "string"
+                }
+              },
+              "required": ["minGreaterThanMax", "mustBePositive"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "header",
+            "description",
+            "actions",
+            "rules",
+            "attributes",
+            "summaries",
+            "errors"
+          ],
+          "additionalProperties": false
+        },
         "fields": {
           "type": "object",
           "properties": {
@@ -9946,6 +10056,7 @@
         "edit",
         "configuration",
         "products",
+        "quantityPricing",
         "fields"
       ],
       "additionalProperties": false
@@ -10730,34 +10841,6 @@
           },
           "required": ["metrics"],
           "additionalProperties": false
-        },
-        "settings": {
-          "type": "object",
-          "properties": {
-            "header": {
-              "type": "string"
-            },
-            "successToast": {
-              "type": "string"
-            }
-          },
-          "required": ["header", "successToast"],
-          "additionalProperties": false
-        },
-        "actions": {
-          "type": "object",
-          "properties": {
-            "manageLocales": {
-              "type": "string"
-            },
-            "manageEntities": {
-              "type": "string"
-            },
-            "manage": {
-              "type": "string"
-            }
-          },
-          "required": ["manageLocales", "manageEntities", "manage"]
         },
         "edit": {
           "type": "object",
