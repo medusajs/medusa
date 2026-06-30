@@ -4151,7 +4151,6 @@ __metadata:
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
     "@medusajs/deps": 2.17.1
-    "@medusajs/orchestration": 2.17.1
     "@medusajs/types": 2.17.1
     "@medusajs/utils": 2.17.1
   languageName: unknown
