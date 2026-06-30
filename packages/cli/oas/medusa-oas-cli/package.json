@@ -15,6 +15,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/oas/medusa-oas-cli"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "publishConfig": {
     "access": "public"
   },

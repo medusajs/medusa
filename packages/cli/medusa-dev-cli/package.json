@@ -47,6 +47,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/medusa-dev-cli"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "scripts": {
     "test": "../../../node_modules/.bin/jest --passWithNoTests --testPathPattern=src",
     "build": "tsc",

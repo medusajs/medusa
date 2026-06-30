@@ -18,6 +18,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/modules/product"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "publishConfig": {
     "access": "public"
   },

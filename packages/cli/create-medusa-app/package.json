@@ -41,6 +41,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/create-medusa-app"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "author": "Medusa",
   "publishConfig": {
     "access": "public"
