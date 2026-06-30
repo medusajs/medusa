@@ -44,6 +44,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/admin/dashboard"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "files": [
     "package.json",
     "src",

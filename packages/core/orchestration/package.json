@@ -11,6 +11,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/core/orchestration"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "engines": {
     "node": ">=20"
   },
