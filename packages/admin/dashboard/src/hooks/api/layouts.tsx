@@ -17,13 +17,57 @@ const _layoutsKeys = queryKeysFactory(
   LAYOUTS_QUERY_KEY
 ) as TQueryKey<"layouts"> & {
   configuration: (zone: string) => QueryKey
+  configurations: (
+    query?: HttpTypes.AdminGetLayoutConfigurationsParams
+  ) => QueryKey
 }
 
 _layoutsKeys.configuration = function (zone: string) {
   return [this.all, "configuration", zone]
 }
 
+_layoutsKeys.configurations = function (
+  query?: HttpTypes.AdminGetLayoutConfigurationsParams
+) {
+  return [this.all, "configurations", query]
+}
+
 export const layoutsQueryKeys = _layoutsKeys
+
+export const useLayoutConfigurations = (
+  query?: HttpTypes.AdminGetLayoutConfigurationsParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminLayoutConfigurationListResponse,
+      FetchError,
+      HttpTypes.AdminLayoutConfigurationListResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.layouts.listConfigurations(query),
+    queryKey: layoutsQueryKeys.configurations(query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+/**
+ * Whether the current user has any layout customization in effect across all
+ * zones. Implemented as a `limit: 1` existence check against the list endpoint
+ * so it stays cheap regardless of how many configurations exist.
+ */
+export const useHasLayoutCustomizations = () => {
+  const { count, ...rest } = useLayoutConfigurations({
+    limit: 1,
+    fields: "id",
+  })
+
+  return { has_customizations: (count ?? 0) > 0, ...rest }
+}
 
 export const useLayoutConfiguration = (
   zone: string,
@@ -61,6 +105,9 @@ export const useSetLayoutConfiguration = (
     onSuccess: async (data, variables, context) => {
       await queryClient.invalidateQueries({
         queryKey: layoutsQueryKeys.configuration(zone),
+      })
+      await queryClient.invalidateQueries({
+        queryKey: [layoutsQueryKeys.all, "configurations"],
       })
       options?.onSuccess?.(data, variables, context)
     },

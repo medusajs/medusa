@@ -281,6 +281,10 @@
     }
   },
   "layout": {
+    "customizeTopbar": "Customize top bar",
+    "customizeSidebar": "Customize sidebar",
+    "customizeSettingsSidebar": "Customize settings sidebar",
+    "customizePage": "Customize page",
     "customizeLayout": "Customize layout",
     "viewingPersonalLayout": "You're seeing a personal layout",
     "viewingSystemLayout": "You're seeing a system layout",

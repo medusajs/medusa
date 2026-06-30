@@ -22,6 +22,12 @@ import {
   LayoutCustomizerSlot,
 } from "../../../providers/customizer-host-provider/customizer-host-provider"
 import { Notifications } from "../notifications"
+import { CustomizerMenu, LayoutComposer } from "../../layout-composer"
+import {
+  CUSTOMIZE_IDS,
+  LAYOUT_CONTROLS_LOCATION,
+} from "../../layout-composer/constants"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -207,8 +213,24 @@ const Topbar = () => {
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-end gap-x-3">
-        <LayoutCustomizerSlot />
-        <Notifications />
+        {/* Single trigger for every host; while editing, the active composer's
+            controls portal into the adjacent slot in its place. */}
+        <CustomizerMenu />
+        <LayoutCustomizerSlot location={LAYOUT_CONTROLS_LOCATION} />
+        <LayoutComposer
+          widgetsZonePrefix="topbar"
+          preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_ROW}
+          sections={{
+            main: (
+              <LayoutComposer.Entry id="Notifications">
+                <Notifications />
+              </LayoutComposer.Entry>
+            ),
+          }}
+          hasOutlet={false}
+          customizeId={CUSTOMIZE_IDS.TOPBAR}
+          controlSize="xsmall"
+        />
       </div>
     </div>
   )
