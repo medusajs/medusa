@@ -138,6 +138,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Filter Products",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Get Variant Inventory",
               "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory",
               "children": []

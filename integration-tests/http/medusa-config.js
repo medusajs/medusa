@@ -21,6 +21,12 @@ const customFulfillmentProviderCalculated = {
   id: "test-provider-calculated",
 }
 
+const customPendingAuthPaymentProvider = {
+  resolve: require("./dist/utils/providers/payment-pending-authorization")
+    .default,
+  id: "pending-auth",
+}
+
 // A second instance of the built-in system payment provider, registered under a
 // distinct id (`pp_system_default_2`) so tests can assert a non-default provider
 // is honored. The always-present `pp_system_default` is unaffected.
@@ -41,7 +47,9 @@ const modules = {
     resolve: "@medusajs/payment",
     /** @type {import('@medusajs/payment').PaymentModuleOptions} */
     options: {
-      providers: [customPaymentProvider, customPaymentProviderAccountHolder],
+      providers: [customPaymentProvider, customPaymentProviderAccountHolder, customPendingAuthPaymentProvider],
+      webhook_delay: 0,
+      webhook_retries: 0,
     },
   },
   [Modules.FULFILLMENT]: {

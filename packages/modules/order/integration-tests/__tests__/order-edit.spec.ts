@@ -1232,6 +1232,48 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(v1AdjustmentsAfterRevert).toHaveLength(1)
         expect(v1AdjustmentsAfterRevert[0].code).toBe("VIP_10")
       })
+
+      it("should correctly preview an order change when unit_price is set to 0", async function () {
+        const createdOrder = await service.createOrders({
+          email: "foo@bar.com",
+          items: [
+            {
+              title: "Item 1",
+              quantity: 1,
+              unit_price: 10,
+            },
+          ],
+          sales_channel_id: "test",
+          currency_code: "usd",
+          customer_id: "joe",
+        } as CreateOrderDTO)
+
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.ITEM_UPDATE,
+              details: {
+                reference_id: createdOrder.items![0].id,
+                quantity: 1,
+                unit_price: 0,
+              },
+            },
+          ],
+        })
+
+        const preview = await service.previewOrderChange(createdOrder.id)
+
+        const item = preview.items?.find(
+          (i) => i.id === createdOrder.items![0].id
+        )
+
+        expect(Number(item?.unit_price)).toEqual(0)
+        // @ts-ignore
+        expect(Number(preview.total)).toEqual(0)
+
+        await service.deleteOrderChanges([orderChange.id])
+      })
     })
   },
 })

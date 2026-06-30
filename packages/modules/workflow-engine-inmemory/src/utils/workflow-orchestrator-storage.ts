@@ -653,7 +653,6 @@ export class InMemoryDistributedTransactionStorage
     await this.remove(jobId)
 
     let expression: CronExpression | number
-    let nextExecution = parseNextExecution(schedulerOptions)
 
     if ("cron" in schedulerOptions) {
       // Cache the parsed expression to avoid repeated parsing
@@ -667,9 +666,12 @@ export class InMemoryDistributedTransactionStorage
       )
     }
 
+    const delay = parseNextExecution(schedulerOptions)
+    const scheduledFor = new Date(Date.now() + delay)
+
     const timer = setTimeout(async () => {
-      this.jobHandler(jobId)
-    }, nextExecution)
+      await this.jobHandler(jobId, scheduledFor)
+    }, delay)
 
     // Set the timer's unref to prevent it from keeping the process alive
     timer.unref()
@@ -698,7 +700,7 @@ export class InMemoryDistributedTransactionStorage
     }
   }
 
-  async jobHandler(jobId: string) {
+  async jobHandler(jobId: string, scheduledFor: Date = new Date()) {
     const job = this.scheduled.get(jobId)
     if (!job) {
       return
@@ -713,15 +715,19 @@ export class InMemoryDistributedTransactionStorage
     }
 
     const nextExecution = parseNextExecution(job.expression)
+    const nextScheduledFor = new Date(Date.now() + nextExecution)
 
     try {
       await this.workflowOrchestratorService_.run(jobId, {
         logOnError: true,
         throwOnError: false,
+        input: {
+          scheduledFor: scheduledFor.toISOString(),
+        },
       })
 
       const timer = this.createManagedTimer(() => {
-        this.jobHandler(jobId)
+        void this.jobHandler(jobId, nextScheduledFor)
       }, nextExecution)
 
       // Prevent timer from keeping the process alive

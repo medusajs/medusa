@@ -125,6 +125,9 @@
         "store": {
           "type": "string"
         },
+        "rank": {
+          "type": "string"
+        },
         "details": {
           "type": "string"
         },
@@ -144,6 +147,12 @@
           "type": "string"
         },
         "items_other": {
+          "type": "string"
+        },
+        "values_one": {
+          "type": "string"
+        },
+        "values_other": {
           "type": "string"
         },
         "countSelected": {
@@ -205,6 +214,12 @@
         },
         "noMoreData": {
           "type": "string"
+        },
+        "exclusive": {
+          "type": "string"
+        },
+        "global": {
+          "type": "string"
         }
       },
       "required": [
@@ -247,7 +262,12 @@
         "remaining",
         "admin",
         "store",
+        "rank",
         "details",
+        "items_one",
+        "items_other",
+        "values_one",
+        "values_other",
         "countSelected",
         "countOfTotalSelected",
         "plusCount",
@@ -267,7 +287,9 @@
         "unsavedChangesDescription",
         "includesTaxTooltip",
         "excludesTaxTooltip",
-        "noMoreData"
+        "noMoreData",
+        "exclusive",
+        "global"
       ],
       "additionalProperties": false
     },
@@ -565,6 +587,9 @@
         "logout": {
           "type": "string"
         },
+        "show": {
+          "type": "string"
+        },
         "hide": {
           "type": "string"
         },
@@ -575,6 +600,12 @@
           "type": "string"
         },
         "cannotUndo": {
+          "type": "string"
+        },
+        "manage": {
+          "type": "string"
+        },
+        "goToProductOption": {
           "type": "string"
         }
       },
@@ -621,10 +652,13 @@
         "select",
         "browse",
         "logout",
+        "show",
         "hide",
         "export",
         "import",
-        "cannotUndo"
+        "cannotUndo",
+        "manage",
+        "goToProductOption"
       ],
       "additionalProperties": false
     },
@@ -1090,6 +1124,62 @@
         }
       },
       "required": ["search", "keyboardShortcuts", "menus", "nav"],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "customizeLayout": {
+          "type": "string"
+        },
+        "personalView": {
+          "type": "string"
+        },
+        "defaultView": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "dropToSectionEnd": {
+          "type": "string"
+        },
+        "dragToReorder": {
+          "type": "string"
+        },
+        "saveForEveryone": {
+          "type": "string"
+        },
+        "saveForEveryoneTitle": {
+          "type": "string"
+        },
+        "saveForEveryoneDescription": {
+          "type": "string"
+        },
+        "saveSuccess": {
+          "type": "string"
+        },
+        "viewingPersonalLayout": {
+          "type": "string"
+        },
+        "viewingSystemLayout": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "customizeLayout",
+        "personalView",
+        "defaultView",
+        "empty",
+        "dropToSectionEnd",
+        "dragToReorder",
+        "saveForEveryone",
+        "saveForEveryoneTitle",
+        "saveForEveryoneDescription",
+        "saveSuccess",
+        "viewingPersonalLayout",
+        "viewingSystemLayout"
+      ],
       "additionalProperties": false
     },
     "dataGrid": {
@@ -1784,6 +1874,9 @@
                   },
                   "required": ["label", "hint"],
                   "additionalProperties": false
+                },
+                "selectValuesHint": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -1793,7 +1886,8 @@
                 "optionTitle",
                 "optionValues",
                 "productVariants",
-                "productOptions"
+                "productOptions",
+                "selectValuesHint"
               ],
               "additionalProperties": false
             },
@@ -2786,11 +2880,50 @@
               "required": ["header", "successToast"],
               "additionalProperties": false
             },
+            "manage": {
+              "type": "object",
+              "properties": {
+                "header": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "hint": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "noValues": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["noValues"],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "header",
+                "description",
+                "label",
+                "hint",
+                "placeholder",
+                "error"
+              ],
+              "additionalProperties": false
+            },
             "deleteWarning": {
               "type": "string"
             }
           },
-          "required": ["header", "edit", "create", "deleteWarning"],
+          "required": ["header", "edit", "create", "manage", "deleteWarning"],
           "additionalProperties": false
         },
         "organization": {
@@ -3346,6 +3479,180 @@
         "delete",
         "products",
         "organize",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "productOptions": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "values": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "list": {
+              "type": "object",
+              "properties": {
+                "noRecords": {
+                  "type": "string"
+                }
+              },
+              "required": ["noRecords"],
+              "additionalProperties": false
+            },
+            "delete": {
+              "type": "object",
+              "properties": {
+                "confirmation": {
+                  "type": "string"
+                },
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["confirmation", "successToast"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "list", "delete"],
+          "additionalProperties": false
+        },
+        "products": {
+          "type": "object",
+          "properties": {
+            "list": {
+              "type": "object",
+              "properties": {
+                "noRecords": {
+                  "type": "string"
+                }
+              },
+              "required": ["noRecords"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["list"],
+          "additionalProperties": false
+        },
+        "create": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            },
+            "tabs": {
+              "type": "object",
+              "properties": {
+                "details": {
+                  "type": "string"
+                },
+                "organize": {
+                  "type": "string"
+                }
+              },
+              "required": ["details", "organize"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "hint", "successToast", "tabs"],
+          "additionalProperties": false
+        },
+        "manage": {
+          "type": "object",
+          "properties": {
+            "exclusiveOption": {
+              "type": "string"
+            }
+          },
+          "required": ["exclusiveOption"],
+          "additionalProperties": false
+        },
+        "edit": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "description", "successToast"],
+          "additionalProperties": false
+        },
+        "delete": {
+          "type": "object",
+          "properties": {
+            "confirmation": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["confirmation", "successToast"],
+          "additionalProperties": false
+        },
+        "fields": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                }
+              },
+              "required": ["label", "placeholder"],
+              "additionalProperties": false
+            },
+            "values": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                }
+              },
+              "required": ["label", "placeholder"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["title", "values"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "values",
+        "products",
+        "create",
+        "manage",
+        "edit",
+        "delete",
         "fields"
       ],
       "additionalProperties": false
@@ -4564,6 +4871,18 @@
             },
             "selectPaymentToRefund": {
               "type": "string"
+            },
+            "pendingAuthorization": {
+              "type": "string"
+            },
+            "checkStatus": {
+              "type": "string"
+            },
+            "checkStatusSuccess": {
+              "type": "string"
+            },
+            "stillPending": {
+              "type": "string"
             }
           },
           "required": [
@@ -4587,7 +4906,11 @@
             "createRefundWrongQuantity",
             "refundAmount",
             "paymentLink",
-            "selectPaymentToRefund"
+            "selectPaymentToRefund",
+            "pendingAuthorization",
+            "checkStatus",
+            "checkStatusSuccess",
+            "stillPending"
           ],
           "additionalProperties": false
         },
@@ -10392,6 +10715,34 @@
           "required": ["metrics"],
           "additionalProperties": false
         },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
+        },
+        "actions": {
+          "type": "object",
+          "properties": {
+            "manageLocales": {
+              "type": "string"
+            },
+            "manageEntities": {
+              "type": "string"
+            },
+            "manage": {
+              "type": "string"
+            }
+          },
+          "required": ["manageLocales", "manageEntities", "manage"]
+        },
         "edit": {
           "type": "object",
           "properties": {
@@ -13715,6 +14066,7 @@
     "actions",
     "operators",
     "app",
+    "layout",
     "dataGrid",
     "filters",
     "errorBoundary",
@@ -13725,6 +14077,7 @@
     "products",
     "collections",
     "categories",
+    "productOptions",
     "inventory",
     "giftCards",
     "customers",

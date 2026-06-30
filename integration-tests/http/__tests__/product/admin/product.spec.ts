@@ -673,7 +673,6 @@ medusaIntegrationTestRunner({
                       expect.objectContaining({ value: "100" }),
                     ]),
                     id: expect.stringMatching(/^opt_*/),
-                    product_id: expect.stringMatching(/^prod_*/),
                     created_at: expect.any(String),
                     updated_at: expect.any(String),
                   }),
@@ -713,17 +712,10 @@ medusaIntegrationTestRunner({
         it("returns a list of products not containing a giftcard in list", async () => {
           const payload = {
             title: "Test Giftcard",
+            options: [{ title: "Denominations", values: ["100"] }],
             is_giftcard: true,
             description: "test-giftcard-description",
-            options: [{ title: "size", values: ["x", "l"] }],
             shipping_profile_id: shippingProfile.id,
-            variants: [
-              {
-                title: "Test variant",
-                prices: [{ currency_code: "usd", amount: 100 }],
-                options: { size: "x" },
-              },
-            ],
           }
 
           await api
@@ -761,7 +753,6 @@ medusaIntegrationTestRunner({
                 options: expect.arrayContaining([
                   expect.objectContaining({
                     id: expect.stringMatching(/^opt_*/),
-                    product_id: expect.stringMatching(/^prod_*/),
                     created_at: expect.any(String),
                     updated_at: expect.any(String),
                   }),
@@ -1652,7 +1643,6 @@ medusaIntegrationTestRunner({
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.stringMatching(/^opt_*/),
-                  product_id: expect.stringMatching(/^prod_*/),
                   title: "size",
                   values: expect.arrayContaining([
                     expect.objectContaining({ value: "large" }),
@@ -1662,7 +1652,6 @@ medusaIntegrationTestRunner({
                 }),
                 expect.objectContaining({
                   id: expect.stringMatching(/^opt_*/),
-                  product_id: expect.stringMatching(/^prod_*/),
                   title: "color",
                   values: expect.arrayContaining([
                     expect.objectContaining({ value: "green" }),
@@ -2114,7 +2103,6 @@ medusaIntegrationTestRunner({
                 expect.objectContaining({
                   created_at: expect.any(String),
                   id: expect.stringMatching(/^opt_*/),
-                  product_id: baseProduct.id,
                   title: "size",
                   values: expect.arrayContaining([
                     expect.objectContaining({ value: "large" }),
@@ -2856,39 +2844,6 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("add option", async () => {
-          const payload = {
-            title: "should_add",
-            values: ["100"],
-          }
-
-          const response = await api
-            .post(
-              `/admin/products/${baseProduct.id}/options`,
-              payload,
-              adminHeaders
-            )
-            .catch((err) => {
-              console.log(err)
-            })
-
-          expect(response.status).toEqual(200)
-
-          expect(response.data.product).toEqual(
-            expect.objectContaining({
-              options: expect.arrayContaining([
-                expect.objectContaining({
-                  title: "should_add",
-                  product_id: baseProduct.id,
-                  values: expect.arrayContaining([
-                    expect.objectContaining({ value: "100" }),
-                  ]),
-                }),
-              ]),
-            })
-          )
-        })
-
         it("creates product with variant inventory kits", async () => {
           const inventoryItem1 = (
             await api.post(
@@ -3115,45 +3070,121 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/products/:id/options/:option_id", () => {
-        it("deletes a product option", async () => {
-          const response = await api
-            .delete(
-              `/admin/products/${baseProduct.id}/options/${baseProduct.options[0].id}`,
+      describe("POST /admin/products/:id/options/batch", () => {
+        let colorOption
+        let sizeOption
+
+        beforeEach(async () => {
+          colorOption = (
+            await api.post(
+              "/admin/product-options",
+              { title: "Color", values: ["Red", "Blue"] },
               adminHeaders
             )
-            .catch((err) => {
-              console.log(err)
-            })
+          ).data.product_option
+
+          sizeOption = (
+            await api.post(
+              "/admin/product-options",
+              { title: "Size", values: ["L", "M"] },
+              adminHeaders
+            )
+          ).data.product_option
+        })
+
+        it("should link existing options to product", async () => {
+          const payload = {
+            add: [colorOption.id, sizeOption.id],
+          }
+
+          const response = await api.post(
+            `/admin/products/${baseProduct.id}/options/batch`,
+            payload,
+            adminHeaders
+          )
 
           expect(response.status).toEqual(200)
-          // BREAKING: Delete response changed from returning the deleted product to the current DeleteResponse model
-          expect(response.data).toEqual(
-            expect.objectContaining({
-              id: baseProduct.options[0].id,
-              object: "product_option",
-              parent: expect.objectContaining({
-                id: baseProduct.id,
+          expect(response.data.product.options.length).toEqual(4) // 2 new ones and 2 it already had
+          expect(response.data.product.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: baseProduct.options[0].id,
               }),
-            })
+              expect.objectContaining({
+                id: baseProduct.options[1].id,
+              }),
+              expect.objectContaining({
+                id: colorOption.id,
+              }),
+              expect.objectContaining({
+                id: sizeOption.id,
+              }),
+            ])
           )
         })
 
-        // TODO: This is failing, investigate
-        it.skip("deletes a values associated with deleted option", async () => {
-          await api.delete(
-            `/admin/products/${baseProduct.id}/options/${baseProduct.options[0].id}`,
+        it("should unlink existing options from product", async () => {
+          let response = await api.post(
+            `/admin/products/${baseProduct.id}/options/batch`,
+            {
+              add: [colorOption.id, sizeOption.id],
+            },
             adminHeaders
           )
 
-          const optionsRes = await api.get(
-            `/admin/products/${baseProduct.id}/options?deleted_at[$gt]=01-26-1990`,
+          expect(response.status).toEqual(200)
+          expect(response.data.product.options.length).toEqual(4) // 2 new ones and 2 it already had
+
+          const payload = {
+            remove: [colorOption.id, sizeOption.id],
+          }
+
+          response = await api.post(
+            `/admin/products/${baseProduct.id}/options/batch`,
+            payload,
             adminHeaders
           )
 
-          expect(optionsRes.data.product_options).toEqual([
-            expect.objectContaining({ deleted_at: expect.any(Date) }),
-          ])
+          expect(response.status).toEqual(200)
+          expect(response.data.product.options.length).toEqual(2)
+        })
+
+        it("should link a new options to product", async () => {
+          const payload = {
+            add: [
+              colorOption.id,
+              sizeOption.id,
+              { title: "new", values: ["A", "B"] },
+            ],
+          }
+
+          const response = await api.post(
+            `/admin/products/${baseProduct.id}/options/batch`,
+            payload,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product.options.length).toEqual(5) // 3 new ones and 2 it already had
+          expect(response.data.product.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: colorOption.id,
+              }),
+              expect.objectContaining({
+                id: sizeOption.id,
+              }),
+              expect.objectContaining({
+                title: "new",
+              }),
+              expect.objectContaining({
+                id: baseProduct.options[0].id,
+              }),
+              expect.objectContaining({
+                id: baseProduct.options[1].id,
+              }),
+            ])
+          )
         })
       })
 
