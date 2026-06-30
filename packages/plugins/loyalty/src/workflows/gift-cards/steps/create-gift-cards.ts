@@ -1,11 +1,11 @@
-import { isPresent } from "@medusajs/framework/utils";
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
+import { isPresent } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   ILoyaltyModuleService,
   ModuleCreateGiftCard,
   PluginModule,
-} from "../../../types";
-import { generateCode } from "../../../utils/code-generator";
+} from "../../../types"
+import { generateCode } from "../../../utils/code-generator"
 
 /**
  * Data for creating one or more gift cards in the Loyalty module.
@@ -31,9 +31,9 @@ export const createGiftCardsStep = createStep(
   async (input: CreateGiftCardsStepInput, { container }) => {
     const module = container.resolve<ILoyaltyModuleService>(
       PluginModule.LOYALTY
-    );
+    )
 
-    const { prefix, sections } = module.getOptions();
+    const { prefix, sections } = await module.getOptions()
 
     for (const giftCard of input) {
       if (!isPresent(giftCard.code)) {
@@ -41,22 +41,22 @@ export const createGiftCardsStep = createStep(
       }
     }
 
-    const giftCards = await module.createGiftCards(input);
+    const giftCards = await module.createGiftCards(input)
 
     return new StepResponse(
       giftCards,
       giftCards.map((gc) => gc.id)
-    );
+    )
   },
   async (ids, { container }) => {
     if (!ids?.length) {
-      return;
+      return
     }
 
     const module = container.resolve<ILoyaltyModuleService>(
       PluginModule.LOYALTY
-    );
+    )
 
-    await module.deleteGiftCards(ids);
+    await module.deleteGiftCards(ids)
   }
-);
+)
