@@ -12,6 +12,8 @@ export type LayoutComponentProps = {
   data?: unknown
 }
 
+export type LayoutControlSize = "default" | "small" | "xsmall"
+
 export type LayoutDefinition = {
   id: string
   sections: LayoutSection[]

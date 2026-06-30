@@ -292,6 +292,10 @@
     }
   },
   "layout": {
+    "customizeTopbar": "Personalizar barra superior",
+    "customizeSidebar": "Personalizar barra lateral",
+    "customizeSettingsSidebar": "Personalizar barra de configuración",
+    "customizePage": "Personalizar página",
     "customizeLayout": "Personalizar layout",
     "viewingPersonalLayout": "Estás viendo un layout personal",
     "viewingSystemLayout": "Estás viendo un layout predeterminado",

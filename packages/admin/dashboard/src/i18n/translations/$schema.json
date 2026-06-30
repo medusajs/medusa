@@ -1132,6 +1132,18 @@
         "customizeLayout": {
           "type": "string"
         },
+        "customizeSettingsSidebar": {
+          "type": "string"
+        },
+        "customizePage": {
+          "type": "string"
+        },
+        "customizeTopbar": {
+          "type": "string"
+        },
+        "customizeSidebar": {
+          "type": "string"
+        },
         "personalView": {
           "type": "string"
         },
@@ -1167,6 +1179,10 @@
         }
       },
       "required": [
+        "customizeTopbar",
+        "customizeSidebar",
+        "customizeSettingsSidebar",
+        "customizePage",
         "customizeLayout",
         "personalView",
         "defaultView",

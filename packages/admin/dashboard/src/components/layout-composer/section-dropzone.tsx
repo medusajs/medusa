@@ -71,15 +71,17 @@ type SectionDropzoneProps = {
  *   of assuming a single vertical axis. When the section is empty there's no
  *   element to anchor the droppable to, so we render a full-width placeholder
  *   box instead.
- * - `"horizontal"`: owns a single, non-wrapping flex row (like `"list"` owns a
- *   column), sorted with `horizontalListSortingStrategy`. `[&>*]:flex-1` gives
- *   each entry an equal share of the width and `[&>*]:min-w-0` lets them shrink
- *   so wide content truncates instead of forcing unequal widths. Owning the
- *   container (rather than delegating via `display: contents` like `"grid"`)
- *   is deliberate: the `[&>*]` utilities are applied by the entries' direct
- *   parent, so they actually reach them in edit mode. No `SectionTail` — a
- *   width-filling row has no end gap; reordering past the last item covers end
- *   placement.
+ * - `"horizontal-stretched"`: owns a single, non-wrapping flex row (like
+ *   `"list"` owns a column), sorted with `horizontalListSortingStrategy`.
+ *   `[&>*]:flex-1` gives each entry an equal share of the width and
+ *   `[&>*]:min-w-0` lets them shrink so wide content truncates instead of
+ *   forcing unequal widths. Owning the container (rather than delegating via
+ *   `display: contents` like `"grid"`) is deliberate: the `[&>*]` utilities are
+ *   applied by the entries' direct parent, so they actually reach them in edit
+ *   mode. No `SectionTail` — a width-filling row has no end gap; reordering past
+ *   the last item covers end placement.
+ * - `"horizontal-list"`: like `"horizontal-stretched"` but entries keep their
+ *   natural size and are vertically centered (`items-center`)
  *
  * `"list"` and `"grid"` render a `SectionTail` last as a generous
  * end-of-section drop target.
@@ -113,13 +115,29 @@ export function SectionDropzone({
     )
   }
 
-  if (section.ordering === "horizontal") {
+  if (section.ordering === "horizontal-stretched") {
     return (
       <SortableContext items={items} strategy={horizontalListSortingStrategy}>
         <div
           ref={setNodeRef}
           className={clx(
             "flex min-h-10 flex-row items-stretch gap-x-3 rounded-md transition-colors [&>*]:min-w-0 [&>*]:flex-1",
+            isOver && items.length === 0 && "bg-ui-bg-highlight"
+          )}
+        >
+          {children}
+        </div>
+      </SortableContext>
+    )
+  }
+
+  if (section.ordering === "horizontal-list") {
+    return (
+      <SortableContext items={items} strategy={horizontalListSortingStrategy}>
+        <div
+          ref={setNodeRef}
+          className={clx(
+            "flex min-h-10 flex-row items-center gap-x-3 rounded-md transition-colors",
             isOver && items.length === 0 && "bg-ui-bg-highlight"
           )}
         >

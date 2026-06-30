@@ -1,3 +1,5 @@
+import { PaginatedResponse } from "../../common"
+
 export interface AdminLayoutWidgetPreference {
   /**
    * Whether the widget is hidden.
@@ -50,6 +52,13 @@ export interface AdminLayoutConfiguration {
 }
 
 export type AdminLayoutScope = "personal" | "default"
+
+export type AdminLayoutConfigurationListResponse = PaginatedResponse<{
+  /**
+   * The list of layout configurations.
+   */
+  layout_configurations: AdminLayoutConfiguration[]
+}>
 
 export interface AdminLayoutConfigurationResponse {
   /**
