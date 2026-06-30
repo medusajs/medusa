@@ -5,6 +5,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 
 jest.setTimeout(60 * 1000)
 
@@ -43,10 +44,7 @@ medusaIntegrationTestRunner({
 
         const {
           data: { gift_card },
-        } = await api.get(
-          `/store/gift-cards/${created.code}`,
-          storeHeaders
-        )
+        } = await api.get(`/store/gift-cards/${created.code}`, storeHeaders)
 
         expect(gift_card).toEqual(
           expect.objectContaining({
