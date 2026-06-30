@@ -1,4 +1,4 @@
-import { RemoteJoiner } from "@medusajs/framework/orchestration"
+import { RemoteJoiner } from "@medusajs/framework/modules-sdk"
 import CustomerModule from "@medusajs/medusa/customer"
 import RegionModule from "@medusajs/medusa/region"
 import { MedusaModule } from "@medusajs/modules-sdk"

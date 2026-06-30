@@ -60,6 +60,7 @@ export type PaymentActions =
   | "requires_more"
   | "canceled"
   | "not_supported"
+  | "pending_authorization"
 
 /**
  * @interface

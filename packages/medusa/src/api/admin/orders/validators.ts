@@ -85,6 +85,13 @@ export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
 export const AdminCompleteOrder = WithAdditionalData(z.object({}))
 
+export type AdminAuthorizeOrderPaymentSessionType = z.infer<
+  typeof AdminAuthorizeOrderPaymentSession
+>
+export const AdminAuthorizeOrderPaymentSession = z.object({
+  payment_session_id: z.string(),
+})
+
 const Item = z.object({
   id: z.string(),
   quantity: z.number(),

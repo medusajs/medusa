@@ -8,6 +8,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/design-system/ui-preset"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "exports": {
     ".": {
