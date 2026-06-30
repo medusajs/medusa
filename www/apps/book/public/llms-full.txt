@@ -37413,6 +37413,35 @@ createRemoteLinkStep({
 ```
 
 
+# Loyalty Plugin Options
+
+In this guide, you'll learn about the options you can pass to the Loyalty Plugin.
+
+## Options Example
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  plugins: [
+    {
+      resolve: "@medusajs/loyalty-plugin",
+      options: {
+        prefix: "GC",
+        sections: 3,
+      },
+    },
+  ],
+})
+```
+
+### All Options
+
+|Option|Description|Required|Default|
+|---|---|---|---|---|---|---|
+|\`prefix\`|A string indicating the prefix added to auto-generated gift card codes. For example, setting |No|\`GIFT\`|
+|\`sections\`|A number indicating how many 4-character sections the generated gift card code contains. For example, setting |No|\`4\`|
+
+
 # Loyalty Module
 
 In this section of the documentation, you will find resources to learn more about the Loyalty Module and how to use it in your application.
@@ -37457,6 +37486,8 @@ module.exports = defineConfig({
   ],
 })
 ```
+
+Refer to the [Plugin Options](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/loyalty/module-options) guide for a full list of options you can pass to the Loyalty Plugin.
 
 ### 2. Run Migrations
 

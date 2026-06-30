@@ -7626,5 +7626,7 @@ export const generatedEditDates = {
   "app/lint/page.mdx": "2026-06-19T09:20:37.112Z",
   "app/medusa-cli/commands/lint/page.mdx": "2026-06-19T09:20:30.518Z",
   "app/infrastructure-modules/caching/concepts/page.mdx": "2026-06-19T13:06:59.981Z",
-  "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z"
+  "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z",
+  "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
+  "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z"
 }
