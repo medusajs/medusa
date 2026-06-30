@@ -9,6 +9,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/plugins/draft-order"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "files": [
     ".medusa/server"
   ],

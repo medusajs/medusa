@@ -10,14 +10,24 @@ import {
   parse,
   ParseResult,
   traverse,
+  type ExportNamedDeclaration,
+  type NodePath,
+  type VariableDeclarator,
 } from "../babel"
 import { logger } from "../logger"
-import { getParserOptions, hasDefaultExport, normalizePath } from "../utils"
+import {
+  generateHash,
+  getConfigObjectProperties,
+  getParserOptions,
+  hasDefaultExport,
+  normalizePath,
+} from "../utils"
 import { getWidgetFilesFromSources } from "./helpers"
 
 type WidgetConfig = {
   Component: string
   zone: InjectionZone[]
+  widgetId: string
 }
 
 type ParsedWidgetConfig = {
@@ -58,9 +68,33 @@ function formatWidget(widget: WidgetConfig): string {
   return outdent`
     {
         Component: ${widget.Component},
-        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}]
+        zone: [${widget.zone.map((z) => `"${z}"`).join(", ")}],
+        widgetId: "${widget.widgetId}"
     }
   `
+}
+
+/**
+ * Derives a stable, machine-independent identifier for a widget.
+ *
+ * Prefers an explicit `id` from the widget config. Otherwise falls back to a
+ * `Widget-<short hash>` id, where the hash is derived from the file's path
+ * relative to the admin source root (the segment from `widgets/` onward) so the
+ * id is unaffected by where the project lives on disk or which machine builds
+ * it, and only changes if the file itself is renamed.
+ */
+function getWidgetId(idOverride: string | null, file: string): string {
+  if (idOverride) {
+    return idOverride
+  }
+
+  const normalized = normalizePath(file)
+  const marker = "/widgets/"
+  const markerIndex = normalized.lastIndexOf(marker)
+  const relative =
+    markerIndex >= 0 ? normalized.slice(markerIndex + 1) : normalized
+
+  return `Widget-${generateHash(relative).slice(0, 4)}`
 }
 
 async function parseFile(
@@ -113,8 +147,19 @@ async function parseFile(
     return null
   }
 
+  let idOverride: string | null = null
+
+  try {
+    idOverride = getWidgetIdOverride(ast)
+  } catch (e) {
+    logger.error(`An error occurred while reading the widget id.`, {
+      file,
+      error: e,
+    })
+  }
+
   const import_ = generateImport(file, index)
-  const widget = generateWidget(zone, index)
+  const widget = generateWidget(zone, index, getWidgetId(idOverride, file))
 
   return {
     widget,
@@ -137,11 +182,52 @@ function generateImport(file: string, index: number): string {
   )}, { config as ${generateWidgetConfigName(index)} } from "${path}"`
 }
 
-function generateWidget(zone: InjectionZone[], index: number): WidgetConfig {
+function generateWidget(
+  zone: InjectionZone[],
+  index: number,
+  widgetId: string
+): WidgetConfig {
   return {
     Component: generateWidgetComponentName(index),
     zone: zone,
+    widgetId,
   }
+}
+
+/**
+ * Extracts an explicit string `id` from the widget config, if present. Uses the
+ * shared `getConfigObjectProperties` helper so it works for both bundled
+ * (`VariableDeclarator`) and unbundled (`ExportNamedDeclaration`) files.
+ */
+function getWidgetIdOverride(ast: ParseResult<File>): string | null {
+  let id: string | null = null
+  let found = false
+
+  const readId = (path: NodePath<VariableDeclarator | ExportNamedDeclaration>) => {
+    if (found) {
+      return
+    }
+    const properties = getConfigObjectProperties(path)
+    if (!properties) {
+      return
+    }
+    const idProperty = properties.find(
+      (p: any) => p.type === "ObjectProperty" && p.key.name === "id"
+    )
+    if (idProperty?.type === "ObjectProperty") {
+      if (idProperty.value.type === "StringLiteral") {
+        id = idProperty.value.value
+      }
+      found = true
+    }
+  }
+
+  traverse(ast, {
+    VariableDeclarator: readId,
+    ExportNamedDeclaration: readId,
+  })
+
+  return id
 }
 
 async function getWidgetZone(

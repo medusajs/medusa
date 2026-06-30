@@ -587,6 +587,9 @@
         "logout": {
           "type": "string"
         },
+        "show": {
+          "type": "string"
+        },
         "hide": {
           "type": "string"
         },
@@ -649,6 +652,7 @@
         "select",
         "browse",
         "logout",
+        "show",
         "hide",
         "export",
         "import",
@@ -1120,6 +1124,62 @@
         }
       },
       "required": ["search", "keyboardShortcuts", "menus", "nav"],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "customizeLayout": {
+          "type": "string"
+        },
+        "personalView": {
+          "type": "string"
+        },
+        "defaultView": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "dropToSectionEnd": {
+          "type": "string"
+        },
+        "dragToReorder": {
+          "type": "string"
+        },
+        "saveForEveryone": {
+          "type": "string"
+        },
+        "saveForEveryoneTitle": {
+          "type": "string"
+        },
+        "saveForEveryoneDescription": {
+          "type": "string"
+        },
+        "saveSuccess": {
+          "type": "string"
+        },
+        "viewingPersonalLayout": {
+          "type": "string"
+        },
+        "viewingSystemLayout": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "customizeLayout",
+        "personalView",
+        "defaultView",
+        "empty",
+        "dropToSectionEnd",
+        "dragToReorder",
+        "saveForEveryone",
+        "saveForEveryoneTitle",
+        "saveForEveryoneDescription",
+        "saveSuccess",
+        "viewingPersonalLayout",
+        "viewingSystemLayout"
+      ],
       "additionalProperties": false
     },
     "dataGrid": {
@@ -4811,6 +4871,18 @@
             },
             "selectPaymentToRefund": {
               "type": "string"
+            },
+            "pendingAuthorization": {
+              "type": "string"
+            },
+            "checkStatus": {
+              "type": "string"
+            },
+            "checkStatusSuccess": {
+              "type": "string"
+            },
+            "stillPending": {
+              "type": "string"
             }
           },
           "required": [
@@ -4834,7 +4906,11 @@
             "createRefundWrongQuantity",
             "refundAmount",
             "paymentLink",
-            "selectPaymentToRefund"
+            "selectPaymentToRefund",
+            "pendingAuthorization",
+            "checkStatus",
+            "checkStatusSuccess",
+            "stillPending"
           ],
           "additionalProperties": false
         },
@@ -10640,17 +10716,17 @@
           "additionalProperties": false
         },
         "settings": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "type": "string"
-                },
-                "successToast": {
-                    "type": "string"
-                }
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
             },
-            "required": ["header", "successToast"],
-            "additionalProperties": false
+            "successToast": {
+              "type": "string"
+            }
+          },
+          "required": ["header", "successToast"],
+          "additionalProperties": false
         },
         "actions": {
           "type": "object",
@@ -13990,6 +14066,7 @@
     "actions",
     "operators",
     "app",
+    "layout",
     "dataGrid",
     "filters",
     "errorBoundary",

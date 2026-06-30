@@ -29,3 +29,7 @@ export const CustomerGroupDetailBreadcrumb = (
 
   return <span>{customer_group.name}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminCustomerGroupResponse>) => ({
+  title: match.data?.customer_group?.name,
+})

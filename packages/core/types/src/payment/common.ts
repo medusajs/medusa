@@ -21,6 +21,7 @@ export type PaymentSessionStatus =
   | "requires_more"
   | "error"
   | "canceled"
+  | "pending_authorization"
 
 /**
  * The payment collection details.

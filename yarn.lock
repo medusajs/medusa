@@ -4151,7 +4151,6 @@ __metadata:
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
     "@medusajs/deps": 2.17.1
-    "@medusajs/orchestration": 2.17.1
     "@medusajs/types": 2.17.1
     "@medusajs/utils": 2.17.1
   languageName: unknown
@@ -19390,35 +19389,6 @@ __metadata:
   checksum: 75aa594231769d292102615da3199320359bfb566e96dae0f89a5773a18e21c676709d9f5a9fb1372f7d2cf25c551a4efe53691ff436d941f95336931777c15d
   languageName: node
   linkType: hard
-
-"integration-tests-api@workspace:integration-tests/api":
-  version: 0.0.0-use.local
-  resolution: "integration-tests-api@workspace:integration-tests/api"
-  dependencies:
-    "@medusajs/api-key": "workspace:^"
-    "@medusajs/auth": "workspace:*"
-    "@medusajs/cache-inmemory": "workspace:*"
-    "@medusajs/customer": "workspace:^"
-    "@medusajs/event-bus-local": "workspace:*"
-    "@medusajs/medusa": "workspace:*"
-    "@medusajs/modules-sdk": "workspace:^"
-    "@medusajs/payment": "workspace:^"
-    "@medusajs/pricing": "workspace:^"
-    "@medusajs/product": "workspace:^"
-    "@medusajs/promotion": "workspace:^"
-    "@medusajs/region": "workspace:^"
-    "@medusajs/store": "workspace:^"
-    "@medusajs/tax": "workspace:^"
-    "@medusajs/user": "workspace:^"
-    "@medusajs/utils": "workspace:^"
-    "@medusajs/workflow-engine-inmemory": "workspace:*"
-    "@swc/core": ^1.7.28
-    "@swc/jest": ^0.2.36
-    jest: ^29.7.0
-    pg: ^8.11.3
-    typescript: ^5.6.2
-  languageName: unknown
-  linkType: soft
 
 "integration-tests-http@workspace:integration-tests/http":
   version: 0.0.0-use.local
