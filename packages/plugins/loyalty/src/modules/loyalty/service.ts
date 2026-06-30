@@ -9,7 +9,7 @@ class LoyaltyModuleService extends MedusaService({
 
   constructor(
     dependencies: Record<string, unknown>,
-    options: LoyaltyPluginOptions
+    options: LoyaltyPluginOptions = {}
   ) {
     super(dependencies, options)
     this.options_ = options
