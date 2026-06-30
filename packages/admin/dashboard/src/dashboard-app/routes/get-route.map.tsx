@@ -7,8 +7,6 @@ import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-import { TaxRegionDetailBreadcrumb, seo as taxRegionSeo } from "../../routes/tax-regions/tax-region-detail/breadcrumb"
-import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/loader"
 
 export function getRouteMap({
   settingsRoutes,
@@ -167,9 +165,10 @@ export function getRouteMap({
                     {
                       path: "variants/:variant_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader, seo } = await import(
-                          "../../routes/product-variants/product-variant-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/product-variants/product-variant-detail"
+                          )
 
                         return {
                           Component,
@@ -1485,9 +1484,10 @@ export function getRouteMap({
                     {
                       path: ":shipping_profile_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader, seo } = await import(
-                          "../../routes/shipping-profiles/shipping-profile-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/shipping-profiles/shipping-profile-detail"
+                          )
 
                         return {
                           Component,
@@ -1540,9 +1540,10 @@ export function getRouteMap({
                     {
                       path: ":id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader, seo } = await import(
-                          "../../routes/shipping-option-types/shipping-option-type-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/shipping-option-types/shipping-option-type-detail"
+                          )
 
                         return {
                           Component,
@@ -1972,13 +1973,22 @@ export function getRouteMap({
                 },
                 {
                   path: ":id",
-                  Component: Outlet,
-                  loader: taxRegionLoader,
-                  handle: {
-                    breadcrumb: (
-                      match: UIMatch<HttpTypes.AdminTaxRegionResponse>
-                    ) => <TaxRegionDetailBreadcrumb {...match} />,
-                    seo: taxRegionSeo,
+                  errorElement: <ErrorBoundary />,
+                  lazy: async () => {
+                    const { Breadcrumb, loader, seo } = await import(
+                      "../../routes/tax-regions/tax-region-detail"
+                    )
+
+                    return {
+                      Component: Outlet,
+                      loader,
+                      handle: {
+                        breadcrumb: (
+                          match: UIMatch<HttpTypes.AdminTaxRegionResponse>
+                        ) => <Breadcrumb {...match} />,
+                        seo,
+                      },
+                    }
                   },
                   children: [
                     {
@@ -2038,9 +2048,10 @@ export function getRouteMap({
                     {
                       path: "provinces/:province_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader, seo } = await import(
-                          "../../routes/tax-regions/tax-region-province-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/tax-regions/tax-region-province-detail"
+                          )
 
                         return {
                           Component,

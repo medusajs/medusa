@@ -69,10 +69,16 @@ export function useDocumentTitle() {
   const matches = useMatches() as UIMatch<unknown, RouteHandle>[]
 
   const title = useMemo(() => {
-    const pageTitle = matches
-      .map((match) => getTitleFromMatch(match))
-      .filter((value): value is string => value !== null)
-      .at(-1)
+    let pageTitle = ""
+
+    for (let indx = matches.length - 1; indx >= 0; indx--) {
+      const resolvedTitle = getTitleFromMatch(matches[indx])
+
+      if (resolvedTitle) {
+        pageTitle = resolvedTitle
+        break
+      }
+    }
 
     if (!pageTitle) {
       return DEFAULT_TITLE
