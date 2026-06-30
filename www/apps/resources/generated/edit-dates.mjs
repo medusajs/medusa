@@ -213,7 +213,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/file/page.mdx": "2025-04-17T08:29:00.672Z",
   "app/infrastructure-modules/event/page.mdx": "2025-12-04T13:39:18.058Z",
   "app/infrastructure-modules/cache/create/page.mdx": "2025-03-27T14:53:13.309Z",
-  "app/admin-widget-injection-zones/page.mdx": "2026-06-15T15:11:53.236Z",
+  "app/admin-widget-injection-zones/page.mdx": "2026-06-30T17:39:20.694Z",
   "app/infrastructure-modules/notification/page.mdx": "2025-06-25T10:48:23.838Z",
   "app/infrastructure-modules/event/create/page.mdx": "2025-03-27T14:53:13.309Z",
   "references/core_flows/Order/functions/core_flows.Order.orderEditUpdateItemQuantityValidationStep/page.mdx": "2024-08-20T00:10:58.913Z",
@@ -7626,5 +7626,5 @@ export const generatedEditDates = {
   "app/lint/page.mdx": "2026-06-19T09:20:37.112Z",
   "app/medusa-cli/commands/lint/page.mdx": "2026-06-19T09:20:30.518Z",
   "app/infrastructure-modules/caching/concepts/page.mdx": "2026-06-19T13:06:59.981Z",
-  "app/admin-components/components/layout-composer/page.mdx": "2026-06-26T11:38:52.453Z"
+  "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z"
 }

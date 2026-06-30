@@ -129,7 +129,7 @@ The `widgetsZonePrefix` prop determines the widget injection zones for the page.
       </Table.Cell>
       <Table.Cell>
 
-        The ID of the preferred layout to use. By default, accepted values are `"core:single-column"` and `"core:two-column"`.
+        The ID of the preferred layout to use. By default, accepted values are `"core:single-column"`, `"core:single-row"`, `"core:two-column"`, and `"core:settings-sidebar"`.
 
       </Table.Cell>
     </Table.Row>
@@ -149,7 +149,9 @@ The `widgetsZonePrefix` prop determines the widget injection zones for the page.
         Object mapping section names to their content. The key is the name of the section, and the value is a `ReactNode`. Available sections depend on the chosen layout:
 
         - `core:single-column`: `main`
+        - `core:single-row`: `main`
         - `core:two-column`: `main`, `side`
+        - `core:settings-sidebar`: `general`, `developer`, `myAccount`, `extensions`
 
       </Table.Cell>
     </Table.Row>
