@@ -79,8 +79,6 @@ export const UserMenu = () => {
           </DropdownMenu.Item>
           <ThemeToggle />
           <DropdownMenu.Separator />
-          <Logout />
-          <DropdownMenu.Separator />
           <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
             <Text size="small" leading="compact" className="text-ui-fg-subtle">
               {t("layout.customizeTopbar")}
@@ -89,7 +87,6 @@ export const UserMenu = () => {
               location={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_TOPBAR}
             />
           </div>
-          <DropdownMenu.Separator />
           <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
             <Text size="small" leading="compact" className="text-ui-fg-subtle">
               {t("layout.customizeSidebar")}
@@ -98,6 +95,8 @@ export const UserMenu = () => {
               location={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_SIDEBAR}
             />
           </div>
+          <DropdownMenu.Separator />
+          <Logout />
         </DropdownMenu.Content>
       </DropdownMenu>
       <GlobalKeybindsModal open={openModal} onOpenChange={setOpenModal} />
