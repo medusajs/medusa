@@ -4,15 +4,15 @@ import { useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "@zjedene-medusa/framework/zod"
 
-import { AdminStoreCreditAccount } from "../../../../../types"
-import { Form } from "../../../../components/form"
-import { KeyboundForm } from "../../../../components/keybound-form"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
+import { AdminStoreCreditAccount } from "../../../../../../types"
+import { Form } from "../../../../../components/form"
+import { KeyboundForm } from "../../../../../components/keybound-form"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import {
   useCreditStoreCreditAccount,
   useStoreCreditAccount,
-} from "../../../../hooks/api/store-credit-accounts"
-import { currencies } from "../../../../lib/currencies"
+} from "../../../../../hooks/api/store-credit-accounts"
+import { currencies } from "../../../../../lib/currencies"
 
 const Note = () => {
   const { id } = useParams()

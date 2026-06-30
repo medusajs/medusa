@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminPromotion } from "@zjedene-medusa/types"
 import { Button, CurrencyInput, Input, RadioGroup, Text } from "@zjedene-medusa/ui"
 import { useForm, useWatch } from "react-hook-form"
@@ -7,6 +6,7 @@ import { useEffect } from "react"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import { zodV4Resolver } from "../../../../../lib/zod-v4-resolver"
 import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
@@ -56,7 +56,7 @@ export const EditPromotionDetailsForm = ({
       target_type: promotion.application_method!.target_type,
       max_quantity: promotion.application_method!.max_quantity,
     },
-    resolver: zodResolver(EditPromotionSchema),
+    resolver: zodV4Resolver(EditPromotionSchema),
   })
 
   const watchValueType = useWatch({

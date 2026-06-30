@@ -203,9 +203,18 @@ export const RulesFormField = ({
 
                     const existingAttributes =
                       fields?.map((field: any) => field.attribute) || []
+                    // Numeric / time attributes may be used more than once so a
+                    // range can be expressed (e.g. Cart Total ≥ 30 AND ≤ 100,
+                    // or a lunch time window). Set-membership attributes still
+                    // de-duplicate.
+                    const rangeFieldTypes = ["number", "time"]
                     const attributeOptions =
                       attributes?.filter((attr) => {
                         if (attr.value === fieldRule.attribute) {
+                          return true
+                        }
+
+                        if (rangeFieldTypes.includes(attr.field_type)) {
                           return true
                         }
 

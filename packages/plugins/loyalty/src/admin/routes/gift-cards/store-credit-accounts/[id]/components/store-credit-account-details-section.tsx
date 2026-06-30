@@ -1,10 +1,10 @@
 import { Container, Text } from "@zjedene-medusa/ui";
 import { CreditCard } from "@zjedene-medusa/icons";
 
-import { AdminStoreCreditAccount } from "../../../../../types";
-import DisplayId from "../../../../components/display-id";
+import { AdminStoreCreditAccount } from "../../../../../../types";
+import DisplayId from "../../../../../components/display-id";
 import CreditCardIcon from "./credit-card-icon";
-import { ActionMenu } from "../../../../components/action-menu";
+import { ActionMenu } from "../../../../../components/action-menu";
 
 const StoreCreditAccountDetailsSection = ({
   storeCreditAccount,

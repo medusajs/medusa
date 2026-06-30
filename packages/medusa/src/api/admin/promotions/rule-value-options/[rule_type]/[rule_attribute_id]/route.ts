@@ -9,6 +9,7 @@ import {
 } from "@zjedene-medusa/framework/utils"
 import {
   ruleQueryConfigurations,
+  ruleValueStaticOptions,
   validateRuleAttribute,
   validateRuleType,
 } from "../../../utils"
@@ -43,12 +44,6 @@ export const GET = async (
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
   const filterableFields = req.filterableFields
 
-  if (filterableFields.value) {
-    filterableFields[queryConfig.valueAttr] = filterableFields.value
-
-    delete filterableFields.value
-  }
-
   validateRuleType(ruleType)
   validateRuleAttribute({
     ruleType: ruleType as RuleTypeValues,
@@ -60,6 +55,36 @@ export const GET = async (
         | ApplicationMethodTargetTypeValues
         | undefined,
   })
+
+  // Attributes with a fixed value set (e.g. is_logged_in, current_day_of_week)
+  // have no query configuration. Serve their static options directly so the
+  // dashboard renders a value picker instead of the endpoint throwing.
+  const staticOptions = ruleValueStaticOptions[ruleAttributeId]
+  if (staticOptions || !queryConfig) {
+    const options = staticOptions ?? []
+    const q =
+      typeof filterableFields.value === "string"
+        ? (filterableFields.value as string).toLowerCase()
+        : typeof filterableFields.q === "string"
+        ? (filterableFields.q as string).toLowerCase()
+        : undefined
+    const values = q
+      ? options.filter((o) => o.label.toLowerCase().includes(q))
+      : options
+    res.json({
+      values,
+      count: values.length,
+      offset: 0,
+      limit: values.length,
+    })
+    return
+  }
+
+  if (filterableFields.value) {
+    filterableFields[queryConfig.valueAttr] = filterableFields.value
+
+    delete filterableFields.value
+  }
 
   if (filterableFields.application_method_target_type) {
     delete filterableFields.application_method_target_type

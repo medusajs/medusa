@@ -1,9 +1,9 @@
 import { Container } from "@zjedene-medusa/ui";
 import { User } from "@zjedene-medusa/icons";
 
-import { SidebarLink } from "../../../../components/sidebar-link";
-import { useCustomer } from "../../../../hooks/api/customers";
-import { Header } from "../../../../components/header";
+import { SidebarLink } from "../../../../../components/sidebar-link";
+import { useCustomer } from "../../../../../hooks/api/customers";
+import { Header } from "../../../../../components/header";
 
 function StoreCreditAccountCustomerSection({
   customerId,

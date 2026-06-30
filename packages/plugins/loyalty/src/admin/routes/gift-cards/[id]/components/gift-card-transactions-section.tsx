@@ -1,6 +1,6 @@
 import { Container } from "@zjedene-medusa/ui";
 import { ModuleStoreCreditAccount } from "../../../../../types";
-import { TransactionsTable } from "../../../store-credit-accounts/[id]/components/transactions-table/table";
+import { TransactionsTable } from "../../store-credit-accounts/[id]/components/transactions-table/table";
 
 const GiftCardTransactionsSection = ({
   storeCreditAccount,

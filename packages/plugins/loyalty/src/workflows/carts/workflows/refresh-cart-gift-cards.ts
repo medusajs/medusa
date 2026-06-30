@@ -15,6 +15,7 @@ import {
 import { PluginModule } from "../../../types";
 import { retrieveGiftCardsBalanceStep } from "../../gift-cards/steps/retrieve-gift-card-balance";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
+import { isGiftCardExpired } from "../../../utils/gift-card-expiry";
 
 /**
  * Data to refresh the gift card credit lines on a cart.
@@ -109,11 +110,14 @@ export const refreshCartGiftCardsWorkflow = createWorkflow(
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
       filters: { code: giftCardCodes },
-      fields: ["id", "code", "status", "currency_code"],
+      fields: ["id", "code", "status", "currency_code", "expires_at"],
     }).config({ name: "get-gift-card-query" });
 
+    // Drop expired gift cards: their credit lines were already removed above, so
+    // not re-creating them means an expired card silently stops discounting the
+    // cart (no throw — refresh runs on every cart mutation).
     const giftCards = transform({ giftCardQuery }, ({ giftCardQuery }) => {
-      return giftCardQuery.data;
+      return giftCardQuery.data.filter((gc) => !isGiftCardExpired(gc));
     });
 
     const giftCardsIds = transform({ giftCards }, ({ giftCards }) => {

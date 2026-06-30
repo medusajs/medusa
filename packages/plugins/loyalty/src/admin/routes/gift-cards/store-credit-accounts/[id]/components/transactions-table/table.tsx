@@ -2,9 +2,9 @@ import { Container } from "@zjedene-medusa/ui";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 
-import { AdminTransaction } from "../../../../../../types";
-import { DataTable } from "../../../../../components/data-table";
-import { useStoreCreditAccountTransactions } from "../../../../../hooks/api/transactions";
+import { AdminTransaction } from "../../../../../../../types";
+import { DataTable } from "../../../../../../components/data-table";
+import { useStoreCreditAccountTransactions } from "../../../../../../hooks/api/transactions";
 import { useTransactionsTableColumns } from "./columns";
 import { useTransactionsTableFilters } from "./filters";
 import { useTransactionsTableQuery } from "./query";

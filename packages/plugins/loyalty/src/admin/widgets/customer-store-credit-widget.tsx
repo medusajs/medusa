@@ -5,7 +5,7 @@ import { Header } from "../components/header";
 import { NoRecords } from "../components/no-records";
 import { SidebarLink } from "../components/sidebar-link";
 import { useStoreCreditAccounts } from "../hooks/api/store-credit-accounts";
-import CreditCardIcon from "../routes/store-credit-accounts/[id]/components/credit-card-icon";
+import CreditCardIcon from "../routes/gift-cards/store-credit-accounts/[id]/components/credit-card-icon";
 import { formatAmount } from "../utils/format-amount";
 
 const CustomerStoreCreditWidget = () => {
@@ -42,7 +42,7 @@ const CustomerStoreCreditWidget = () => {
             (storeCreditAccount.balance as number) ?? 0,
             storeCreditAccount.currency_code
           )}
-          to={`/store-credit-accounts/${storeCreditAccount.id}`}
+          to={`/gift-cards/store-credit-accounts/${storeCreditAccount.id}`}
         />
       ))}
     </Container>

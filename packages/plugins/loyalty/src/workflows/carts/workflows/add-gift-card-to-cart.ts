@@ -22,6 +22,7 @@ import {
   ModuleStoreCreditAccount,
 } from "../../../types/store-credit";
 import { validateGiftCardBalancesStep } from "../steps/validate-gift-card-balances";
+import { isGiftCardExpired } from "../../../utils/gift-card-expiry";
 
 /**
  * Input to retrieve the balance of a single gift card from its associated store credit account.
@@ -162,6 +163,13 @@ export const validateCartGiftCardStep = createStep(
         );
       }
 
+      if (isGiftCardExpired(giftCard)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Gift card (${giftCard.code}) has expired`
+        );
+      }
+
       if (giftCard.currency_code !== cart.currency_code) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -223,7 +231,7 @@ export const addGiftCardToCartWorkflow = createWorkflow(
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
       filters: { code: input.code },
-      fields: ["id", "code", "status", "currency_code"],
+      fields: ["id", "code", "status", "currency_code", "expires_at"],
     }).config({ name: "get-gift-card-query" });
 
     const giftCard = transform({ giftCardQuery }, ({ giftCardQuery }) => {

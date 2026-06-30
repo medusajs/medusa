@@ -29,10 +29,10 @@ describe("getRuleAttributesMap - native filter attributes", () => {
       )
     })
 
-    it("exposes a text `shipping_address.city` attribute with set operators", () => {
+    it("exposes a `shipping_address.city` value-picker attribute with set operators", () => {
       const attr = findAttr(rules, "shipping_address.city")
       expect(attr).toBeDefined()
-      expect(attr.field_type).toEqual("text")
+      expect(attr.field_type).toEqual("multiselect")
       expect(operatorValues(attr)).toEqual(
         expect.arrayContaining([
           RuleOperator.IN,
@@ -69,27 +69,12 @@ describe("getRuleAttributesMap - native filter attributes", () => {
       )
     })
 
-    it("exposes a numeric `current_minutes` attribute", () => {
+    it("exposes a `current_minutes` time attribute with numeric operators", () => {
       const attr = findAttr(rules, "current_minutes")
       expect(attr).toBeDefined()
-      expect(attr.field_type).toEqual("number")
+      expect(attr.field_type).toEqual("time")
       expect(operatorValues(attr)).toEqual(
         expect.arrayContaining([RuleOperator.GTE, RuleOperator.LTE])
-      )
-    })
-  })
-
-  describe("item (target/buy) rules", () => {
-    it("exposes a `box_type` attribute reading product metadata", () => {
-      const targetRules = getRuleAttributesMap({})["target-rules"]
-      const attr = findAttr(targetRules, "items.product.metadata.box_type")
-      expect(attr).toBeDefined()
-      expect(operatorValues(attr)).toEqual(
-        expect.arrayContaining([
-          RuleOperator.IN,
-          RuleOperator.EQ,
-          RuleOperator.NE,
-        ])
       )
     })
   })

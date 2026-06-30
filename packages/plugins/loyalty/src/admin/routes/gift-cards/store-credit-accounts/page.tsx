@@ -1,6 +1,6 @@
 import { defineRouteConfig } from "@zjedene-medusa/admin-sdk";
+import { CurrencyDollar } from "@zjedene-medusa/icons";
 import { Toaster } from "@zjedene-medusa/ui";
-import StoreCreditIcon from "../../components/icons/store-credit-icon";
 import { StoreCreditAccountsTable } from "./components/store-credit-accounts-table/table";
 
 const StoreCreditAccountsPage = () => {
@@ -15,7 +15,7 @@ const StoreCreditAccountsPage = () => {
 
 export const config = defineRouteConfig({
   label: "Store Credits",
-  icon: StoreCreditIcon,
+  icon: CurrencyDollar,
 });
 
 export default StoreCreditAccountsPage;

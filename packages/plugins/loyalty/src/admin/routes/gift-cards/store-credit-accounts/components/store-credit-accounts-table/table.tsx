@@ -2,9 +2,9 @@ import { Container } from "@zjedene-medusa/ui";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
 
-import { AdminStoreCreditAccount } from "../../../../../types";
-import { DataTable } from "../../../../components/data-table";
-import { useStoreCreditAccounts } from "../../../../hooks/api/store-credit-accounts";
+import { AdminStoreCreditAccount } from "../../../../../../types";
+import { DataTable } from "../../../../../components/data-table";
+import { useStoreCreditAccounts } from "../../../../../hooks/api/store-credit-accounts";
 import { useStoreCreditAccountTableColumns } from "./columns";
 import { useStoreCreditAccountFilters } from "./filters";
 import { useStoreCreditAccountsTableQuery } from "./query";
@@ -56,7 +56,7 @@ export function StoreCreditAccountsTable() {
           actions={[
             {
               label: "Create",
-              to: "/store-credit-accounts/create",
+              to: "/gift-cards/store-credit-accounts/create",
             },
           ]}
         />

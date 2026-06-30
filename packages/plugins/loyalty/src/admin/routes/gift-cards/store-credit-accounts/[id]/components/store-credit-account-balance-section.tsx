@@ -1,6 +1,6 @@
 import { Container, Text } from "@zjedene-medusa/ui";
-import { AdminStoreCreditAccount } from "../../../../../types";
-import { formatAmount } from "../../../../utils/format-amount";
+import { AdminStoreCreditAccount } from "../../../../../../types";
+import { formatAmount } from "../../../../../utils/format-amount";
 
 const StoreCreditAccountBalanceSection = ({
   storeCreditAccount,

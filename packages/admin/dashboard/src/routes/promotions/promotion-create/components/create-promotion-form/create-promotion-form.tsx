@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import {
   ApplicationMethodAllocationValues,
   ApplicationMethodTargetTypeValues,
@@ -34,6 +33,7 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
+import { zodV4Resolver } from "../../../../../lib/zod-v4-resolver"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import {
   currencies,
@@ -86,7 +86,7 @@ export const CreatePromotionForm = () => {
   const direction = useDocumentDirection()
   const form = useForm<z.infer<typeof CreatePromotionSchema>>({
     defaultValues,
-    resolver: zodResolver(CreatePromotionSchema),
+    resolver: zodV4Resolver(CreatePromotionSchema),
   })
   const { setValue, reset, getValues } = form
 

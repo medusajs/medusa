@@ -63,13 +63,24 @@ const ruleAttributes = [
     value: "shipping_address.city",
     label: "Shipping City",
     required: false,
-    field_type: "text",
+    // Rendered as a value picker so deployments can serve a curated set of
+    // cities (e.g. the deliverable towns) from a `rule-value-options/.../city`
+    // route. Falls back to an empty picker when no such route is provided.
+    field_type: "multiselect",
     operators: Object.values(operatorsMap),
   },
   {
     id: "customer_order_count",
     value: "customer_order_count",
     label: "Customer Order Count",
+    required: false,
+    field_type: "number",
+    operators: Object.values(numericOperatorsMap),
+  },
+  {
+    id: "customer_account_age_days",
+    value: "customer_account_age_days",
+    label: "Customer Account Age (days since registration)",
     required: false,
     field_type: "number",
     operators: Object.values(numericOperatorsMap),
@@ -93,9 +104,9 @@ const ruleAttributes = [
   {
     id: "current_minutes",
     value: "current_minutes",
-    label: "Time of Day (minutes since midnight)",
+    label: "Time of Day",
     required: false,
-    field_type: "number",
+    field_type: "time",
     operators: Object.values(numericOperatorsMap),
   },
 ]
@@ -139,14 +150,6 @@ const itemsAttributes = [
     label: "Product Tag",
     required: false,
     field_type: "multiselect",
-    operators: Object.values(operatorsMap),
-  },
-  {
-    id: "box_type",
-    value: "items.product.metadata.box_type",
-    label: "Box Type",
-    required: false,
-    field_type: "text",
     operators: Object.values(operatorsMap),
   },
 ]

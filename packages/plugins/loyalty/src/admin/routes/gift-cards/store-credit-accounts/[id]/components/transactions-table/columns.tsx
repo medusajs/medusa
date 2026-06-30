@@ -1,9 +1,9 @@
 import { createDataTableColumnHelper, Text } from "@zjedene-medusa/ui";
 import { useMemo } from "react";
-import { AdminTransaction } from "../../../../../../types";
-import DisplayId from "../../../../../components/display-id";
-import { formatAmount } from "../../../../../utils/format-amount";
-import { formatDate } from "../../../../../utils/format-date";
+import { AdminTransaction } from "../../../../../../../types";
+import DisplayId from "../../../../../../components/display-id";
+import { formatAmount } from "../../../../../../utils/format-amount";
+import { formatDate } from "../../../../../../utils/format-date";
 
 const columnHelper = createDataTableColumnHelper<AdminTransaction>();
 

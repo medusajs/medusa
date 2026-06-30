@@ -1,10 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminPromotion, AdminPromotionRule } from "@zjedene-medusa/types"
 import { Button } from "@zjedene-medusa/ui"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { RouteDrawer } from "../../../../../../components/modals"
+import { zodV4Resolver } from "../../../../../../lib/zod-v4-resolver"
 import { KeyboundForm } from "../../../../../../components/utilities/keybound-form"
 import { RuleTypeValues } from "../../edit-rules"
 import { RulesFormField } from "../rules-form-field"
@@ -35,7 +35,7 @@ export const EditRulesForm = ({
         target_type: promotion.application_method?.target_type,
       },
     },
-    resolver: zodResolver(EditRules),
+    resolver: zodV4Resolver(EditRules),
   })
 
   const handleFormSubmit = form.handleSubmit(handleSubmit(rulesToRemove))

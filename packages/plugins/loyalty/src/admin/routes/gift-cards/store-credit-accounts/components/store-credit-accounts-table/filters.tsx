@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useDataTableDateFilters } from "../../../../hooks/common/use-data-table-date-filters";
-import { useCustomerFilters } from "../../../../hooks/query/use-customers-filters";
+import { useDataTableDateFilters } from "../../../../../hooks/common/use-data-table-date-filters";
+import { useCustomerFilters } from "../../../../../hooks/query/use-customers-filters";
 
 export const useStoreCreditAccountFilters = () => {
   const dateFilterOptions = useDataTableDateFilters();

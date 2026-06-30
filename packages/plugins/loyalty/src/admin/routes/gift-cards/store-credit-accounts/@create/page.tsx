@@ -1,4 +1,4 @@
-import { RouteFocusModal } from "../../../components/modals";
+import { RouteFocusModal } from "../../../../components/modals";
 import { StoreCreditAccountCreateForm } from "./components/store-credit-account-create-form/store-credit-account-create-form";
 
 const StoreCreditAccountCreate = () => {

@@ -1,7 +1,7 @@
 import { Container } from "@zjedene-medusa/ui";
 
 import { Share } from "@zjedene-medusa/icons";
-import { Header } from "../../../../components/header";
+import { Header } from "../../../../../components/header";
 
 function StoreCreditAccountCodeSection({ code }: { code?: string }) {
   if (!code) {

@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCampaign, AdminPromotion } from "@zjedene-medusa/types"
 import { Button, RadioGroup, toast } from "@zjedene-medusa/ui"
 import { useEffect } from "react"
@@ -7,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { zodV4Resolver } from "../../../../../lib/zod-v4-resolver"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { CreateCampaignFormFields } from "../../../../campaigns/common/components/create-campaign-form-fields"
@@ -175,7 +175,7 @@ export const AddCampaignPromotionForm = ({
       campaign_id: campaign?.id,
       campaign_choice: campaign?.id ? "existing" : "none",
     },
-    resolver: zodResolver(EditPromotionSchema),
+    resolver: zodV4Resolver(EditPromotionSchema),
   })
 
   const { setValue } = form

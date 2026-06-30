@@ -131,6 +131,38 @@ export const RuleValueFormField = ({
               <Form.ErrorMessage />
             </Form.Item>
           )
+        } else if (attribute?.field_type === "time") {
+          // `current_minutes` rules store minutes since midnight, but we show a
+          // friendly HH:MM time picker and convert on the way in/out.
+          const minutesToTime = (v: unknown) => {
+            if (v === "" || v === null || v === undefined) return ""
+            const n = Number(v)
+            if (Number.isNaN(n)) return ""
+            const h = Math.floor(n / 60) % 24
+            const m = ((n % 60) + 60) % 60
+            return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`
+          }
+          const timeToMinutes = (s: string) => {
+            if (!s) return ""
+            const [h, m] = s.split(":").map((p) => Number(p))
+            return String((h || 0) * 60 + (m || 0))
+          }
+          return (
+            <Form.Item className="basis-1/2">
+              <Form.Control>
+                <Input
+                  {...field}
+                  type="time"
+                  value={minutesToTime(field.value)}
+                  onChange={(e) => onChange(timeToMinutes(e.target.value))}
+                  className="bg-ui-bg-base"
+                  ref={ref}
+                  disabled={!fieldRule.attribute}
+                />
+              </Form.Control>
+              <Form.ErrorMessage />
+            </Form.Item>
+          )
         } else if (attribute?.field_type === "text") {
           return (
             <Form.Item className="basis-1/2">

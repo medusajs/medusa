@@ -1,5 +1,5 @@
-import { AdminGetStoreCreditAccountsParams } from "../../../../../types";
-import { useQueryParams } from "../../../../hooks/common/use-query-params";
+import { AdminGetStoreCreditAccountsParams } from "../../../../../../types";
+import { useQueryParams } from "../../../../../hooks/common/use-query-params";
 
 type UseStoreCreditAccountsTableQueryProps = {
   prefix?: string;

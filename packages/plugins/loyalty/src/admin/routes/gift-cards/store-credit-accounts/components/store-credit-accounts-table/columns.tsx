@@ -1,8 +1,8 @@
 import { Badge, createDataTableColumnHelper } from "@zjedene-medusa/ui";
 import { useMemo } from "react";
-import { AdminStoreCreditAccount } from "../../../../../types";
-import { formatAmount } from "../../../../utils/format-amount";
-import { getRelativeDate } from "../../../../utils/format-date";
+import { AdminStoreCreditAccount } from "../../../../../../types";
+import { formatAmount } from "../../../../../utils/format-amount";
+import { getRelativeDate } from "../../../../../utils/format-date";
 
 const columnHelper = createDataTableColumnHelper<AdminStoreCreditAccount>();
 
