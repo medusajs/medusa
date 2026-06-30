@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom"
 
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
-import { LAYOUT_TRIGGER_LOCATIONS } from "../../layout-composer/constants"
+import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
@@ -180,8 +180,7 @@ const SettingsSidebar = () => {
             preferredLayoutId={CORE_LAYOUT_IDS.SETTINGS_SIDEBAR}
             hasOutlet={false}
             disableWidgets
-            triggerLocation={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_SIDEBAR}
-            controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
+            customizeId={CUSTOMIZE_IDS.SETTINGS_SIDEBAR}
             controlSize="small"
             sections={{
               general: toNavEntries(routes),

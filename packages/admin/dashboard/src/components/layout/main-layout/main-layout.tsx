@@ -30,7 +30,7 @@ import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
-import { LAYOUT_TRIGGER_LOCATIONS } from "../../layout-composer/constants"
+import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 
 export const MainLayout = () => {
   return (
@@ -318,8 +318,7 @@ const SidebarRoutes = () => {
           preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
           hasOutlet={false}
           disableWidgets
-          triggerLocation={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_SIDEBAR}
-          controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
+          customizeId={CUSTOMIZE_IDS.MAIN_SIDEBAR}
           controlSize="small"
           sections={{
             main: (

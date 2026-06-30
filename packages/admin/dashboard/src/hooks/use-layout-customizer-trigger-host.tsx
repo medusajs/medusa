@@ -27,3 +27,19 @@ export const useLayoutCustomizerActiveEditor = (): {
     setActiveEditor: ctx?.setActiveEditor ?? (() => {}),
   }
 }
+
+/**
+ * One-shot command bus connecting the central `CustomizerMenu` to the
+ * composers. The menu sets a host's `customizeId` as the request; the matching
+ * composer reads it, enters edit mode, and clears it.
+ */
+export const useLayoutEditRequest = (): {
+  editRequest: string | null
+  requestEdit: (id: string | null) => void
+} => {
+  const ctx = useContext(LayoutCustomizerHostContext)
+  return {
+    editRequest: ctx?.editRequest ?? null,
+    requestEdit: ctx?.requestEdit ?? (() => {}),
+  }
+}

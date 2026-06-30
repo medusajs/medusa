@@ -30,8 +30,6 @@ import { queryClient } from "../../../lib/query-client"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useTheme } from "../../../providers/theme-provider"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
-import { LayoutCustomizerSlot } from "../../../providers/customizer-host-provider/customizer-host-provider"
-import { LAYOUT_TRIGGER_LOCATIONS } from "../../layout-composer"
 
 export const UserMenu = () => {
   const { t } = useTranslation()
@@ -78,23 +76,6 @@ export const UserMenu = () => {
             {t("app.menus.user.shortcuts")}
           </DropdownMenu.Item>
           <ThemeToggle />
-          <DropdownMenu.Separator />
-          <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              {t("layout.customizeTopbar")}
-            </Text>
-            <LayoutCustomizerSlot
-              location={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_TOPBAR}
-            />
-          </div>
-          <div className="flex items-center justify-between gap-x-2 px-2 py-1.5">
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              {t("layout.customizeSidebar")}
-            </Text>
-            <LayoutCustomizerSlot
-              location={LAYOUT_TRIGGER_LOCATIONS.CUSTOMIZE_SIDEBAR}
-            />
-          </div>
           <DropdownMenu.Separator />
           <Logout />
         </DropdownMenu.Content>

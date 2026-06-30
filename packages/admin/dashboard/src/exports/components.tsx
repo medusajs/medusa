@@ -4,7 +4,7 @@
 
 import {
   Layouts,
-  LAYOUT_TRIGGER_LOCATIONS,
+  CUSTOMIZE_IDS,
   LayoutComposer as LayoutComposerImpl,
   LayoutComposerProps as LayoutComposerPropsImpl,
   LayoutEntry,
@@ -12,7 +12,7 @@ import {
 
 type LayoutComposerProps<TLayoutId extends Layouts, TData> = Omit<
   LayoutComposerPropsImpl<TLayoutId, TData>,
-  "triggerLocation" | "controlsLocation" | "controlSize"
+  "customizeId" | "controlSize"
 >
 const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   widgetsZonePrefix,
@@ -29,8 +29,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
       sections={sections}
       data={data}
       hasOutlet={hasOutlet}
-      triggerLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR}
-      controlsLocation={LAYOUT_TRIGGER_LOCATIONS.TOPBAR_CONTROLS}
+      customizeId={CUSTOMIZE_IDS.PAGE}
       controlSize="default"
       disableWidgets={disableWidgets}
     />

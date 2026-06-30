@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
 import { LayoutCustomizerHostContext } from "./customizer-host-context"
-import { LAYOUT_TRIGGER_LOCATIONS } from "../../components/layout-composer/constants"
+import { LAYOUT_CONTROLS_LOCATION } from "../../components/layout-composer/constants"
 
 export type LayoutCustomizerHostValue = {
   /** DOM node registered for each location, or `null` when unmounted. */
@@ -11,6 +11,14 @@ export type LayoutCustomizerHostValue = {
    */
   activeEditor: string | null
   setActiveEditor: (id: string | null) => void
+  /**
+   * `customizeId` of the host the `CustomizerMenu` has asked to enter edit
+   * mode, or `null`. The matching composer consumes this (and clears it) on its
+   * next render. Acts as a one-shot command bus so the single, central trigger
+   * can drive any composer without owning a button inside it.
+   */
+  editRequest: string | null
+  requestEdit: (id: string | null) => void
 }
 
 /**
@@ -26,6 +34,7 @@ export const LayoutCustomizerHostProvider = ({
 }) => {
   const [hosts, setHosts] = useState<Record<string, HTMLElement | null>>({})
   const [activeEditor, setActiveEditor] = useState<string | null>(null)
+  const [editRequest, setEditRequest] = useState<string | null>(null)
 
   const setHost = useCallback((location: string, node: HTMLElement | null) => {
     setHosts((prev) => {
@@ -37,8 +46,15 @@ export const LayoutCustomizerHostProvider = ({
   }, [])
 
   const value = useMemo(
-    () => ({ hosts, setHost, activeEditor, setActiveEditor }),
-    [hosts, setHost, activeEditor, setActiveEditor]
+    () => ({
+      hosts,
+      setHost,
+      activeEditor,
+      setActiveEditor,
+      editRequest,
+      requestEdit: setEditRequest,
+    }),
+    [hosts, setHost, activeEditor, editRequest]
   )
 
   return (
@@ -54,7 +70,7 @@ export const LayoutCustomizerHostProvider = ({
  * matching `triggerLocation` portals its controls here.
  */
 export const LayoutCustomizerSlot = ({
-  location = LAYOUT_TRIGGER_LOCATIONS.TOPBAR,
+  location = LAYOUT_CONTROLS_LOCATION,
   className = "contents",
 }: {
   location?: string

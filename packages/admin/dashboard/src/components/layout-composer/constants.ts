@@ -1,20 +1,21 @@
 /**
- * Named locations a `LayoutComposer` can portal its customizer controls into.
- * Each location corresponds to a `LayoutCustomizerSlot` mounted somewhere in
- * the shell.
+ * The single top-bar slot a `LayoutComposer` portals its edit controls into
+ * while editing. The matching `LayoutCustomizerSlot` is mounted in the shell's
+ * top bar, next to the `CustomizerMenu` (the one trigger for every host).
  */
-export const LAYOUT_TRIGGER_LOCATIONS = {
-  /** The icon button slot in the app shell's top bar — the page layout's
-   * trigger (default). */
+export const LAYOUT_CONTROLS_LOCATION = "topbar-controls"
+
+/**
+ * Stable identifier for each customizable host. The `CustomizerMenu` lists
+ * these, and each `LayoutComposer` claims one via its `customizeId` prop so the
+ * menu can drive it into edit mode. Add a new host by adding an id here, an
+ * entry in the menu's host list, and a composer that claims it.
+ */
+export const CUSTOMIZE_IDS = {
+  PAGE: "page",
   TOPBAR: "topbar",
-  /**
-   * A dedicated top-bar slot for edit-mode controls (Cancel/Save), kept
-   * separate from `TOPBAR` so a composer triggered elsewhere can surface its
-   * controls in the top bar without colliding with another composer's trigger.
-   */
-  TOPBAR_CONTROLS: "topbar-controls",
-  /** "Customize top bar" row in the user dropdown. */
-  CUSTOMIZE_TOPBAR: "customize-topbar",
-  /** "Customize sidebar" row in the user dropdown. */
-  CUSTOMIZE_SIDEBAR: "customize-sidebar",
+  MAIN_SIDEBAR: "main-sidebar",
+  SETTINGS_SIDEBAR: "settings-sidebar",
 } as const
+
+export type CustomizeId = (typeof CUSTOMIZE_IDS)[keyof typeof CUSTOMIZE_IDS]

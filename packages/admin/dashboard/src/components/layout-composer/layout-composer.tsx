@@ -1,6 +1,5 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core"
-import { Adjustments, AdjustmentsDone } from "@medusajs/icons"
-import { Badge, Button, IconButton, Tooltip, usePrompt } from "@medusajs/ui"
+import { Badge, Button, usePrompt } from "@medusajs/ui"
 import {
   ComponentType,
   Fragment,
@@ -18,6 +17,7 @@ import { useExtension } from "../../providers/extension-provider/use-extension"
 import {
   useLayoutCustomizerActiveEditor,
   useLayoutCustomizerTriggerHost,
+  useLayoutEditRequest,
 } from "../../hooks/use-layout-customizer-trigger-host"
 import {
   DisplayEntry,
@@ -43,7 +43,7 @@ import {
   useLayoutPreference,
   type LayoutScope,
 } from "../../hooks/use-layout-preference"
-import { LAYOUT_TRIGGER_LOCATIONS } from "./constants"
+import { CUSTOMIZE_IDS, LAYOUT_CONTROLS_LOCATION } from "./constants"
 
 export type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
   /**
@@ -71,23 +71,14 @@ export type LayoutComposerProps<TLayoutId extends Layouts, TData> = {
    */
   hasOutlet?: boolean
   /**
-   * The named location whose `LayoutCustomizerSlot` this composer portals its
-   * trigger controls into. Lets several composers on the same screen
-   * (e.g. a page layout and the top-bar layout) target distinct slots instead
-   * of contending for one.
+   * Stable id of the host this composer customizes (see `CUSTOMIZE_IDS`). The
+   * central `CustomizerMenu` lists it and, when chosen, drives this composer
+   * into edit mode. Composers for different hosts must use distinct ids; only
+   * one composer per id is mounted at a time.
    *
-   * @default LAYOUT_TRIGGER_LOCATIONS.TOPBAR
+   * @default CUSTOMIZE_IDS.PAGE
    */
-  triggerLocation?: string
-  /**
-   * The named location the edit-mode controls (Cancel/Save and the scope
-   * badges) portal into. Lets the idle trigger and the active edit controls
-   * live in different slots — e.g. a trigger in the sidebar dropdown with the
-   * controls surfacing in the top bar.
-   *
-   * @default triggerLocation
-   */
-  controlsLocation?: string
+  customizeId?: string
   /**
    * Visual density of each entry's edit-mode overlay.
    * @default "default"
@@ -134,8 +125,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   sections,
   data,
   hasOutlet = true,
-  triggerLocation = LAYOUT_TRIGGER_LOCATIONS.TOPBAR,
-  controlsLocation = triggerLocation,
+  customizeId = CUSTOMIZE_IDS.PAGE,
   controlSize = "default",
   disableWidgets = false,
 }: LayoutComposerProps<TLayoutId, TData>) => {
@@ -144,13 +134,12 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
     personalPreference,
     defaultPreference,
     activeScope,
-    definedScope,
     setPreference,
     isSaving,
   } = useLayoutPreference(widgetsZonePrefix)
-  const triggerHost = useLayoutCustomizerTriggerHost(triggerLocation)
-  const controlsHost = useLayoutCustomizerTriggerHost(controlsLocation)
+  const controlsHost = useLayoutCustomizerTriggerHost(LAYOUT_CONTROLS_LOCATION)
   const { activeEditor, setActiveEditor } = useLayoutCustomizerActiveEditor()
+  const { editRequest, requestEdit } = useLayoutEditRequest()
   const editorId = useId()
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -165,6 +154,18 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
       setActiveEditor(null)
     }
   }, [setActiveEditor])
+
+  // Consume an edit request aimed at this host. Clearing it first makes this a
+  // one-shot: it won't re-fire on later renders. `enterEdit` no-ops while
+  // another composer is editing (`locked`), so a stray request is safely
+  // dropped rather than queued.
+  useEffect(() => {
+    if (editRequest === customizeId && !editMode) {
+      requestEdit(null)
+      enterEdit()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editRequest, customizeId, editMode])
 
   const [draft, setDraft] = useState<LayoutPreference | null>(null)
   // Which configuration the current edit session is targeting: the user's
@@ -454,47 +455,11 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
     return null
   }
 
-  // Idle trigger tooltip: always explains the action, and when a layout has
-  // been defined for this zone, adds whose layout the user is currently seeing.
-  const triggerTooltip = definedScope ? (
-    <div className="flex flex-col gap-y-0.5">
-      <span>{t("layout.customizeLayout")}</span>
-      <span className="text-ui-fg-subtle">
-        {t(
-          definedScope === "personal"
-            ? "layout.viewingPersonalLayout"
-            : "layout.viewingSystemLayout"
-        )}
-      </span>
-    </div>
-  ) : (
-    t("layout.customizeLayout")
-  )
-
-  // Customizer controls are split across two portal slots so the idle trigger
-  // and the edit-mode controls can live in different places (e.g. a trigger
-  // in the sidebar dropdown, with the edit controls in the top bar).
-  const idleTrigger = (
-    <Tooltip content={triggerTooltip}>
-      <IconButton
-        size="small"
-        variant="transparent"
-        onClick={enterEdit}
-        disabled={locked}
-        aria-label={t("layout.customizeLayout")}
-        className="text-ui-fg-muted hover:text-ui-fg-subtle"
-      >
-        {/* The "done" icon carries a blue accent dot — reserve it for zones
-            that have a saved layout, otherwise show the plain icon. */}
-        {definedScope ? <AdjustmentsDone /> : <Adjustments />}
-      </IconButton>
-    </Tooltip>
-  )
-
-  // Customizer controls — all live in the single top-bar portal slot.
-  // Idle: the trigger icon. Editing: Personal/Default badges to switch which
-  // configuration is being edited (active one highlighted), Cancel, and a Save
-  // button that targets the active scope ("Save for everyone" for the default).
+  // Edit-mode controls, portaled into the single top-bar slot while this
+  // composer is editing: Personal/Default badges to switch which configuration
+  // is being edited (active one highlighted), Cancel, and a Save button that
+  // targets the active scope ("Save for everyone" for the default). At idle the
+  // composer renders no controls — the central `CustomizerMenu` is the trigger.
   const editControls = (
     <div className="flex items-center gap-x-2">
       <div className="flex items-center gap-x-1">
@@ -535,18 +500,16 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
       </Button>
     </div>
   )
-  const customizerControls = editMode ? editControls : idleTrigger
-  const customizerHost = editMode ? controlsHost : triggerHost
-
   const layoutNode = <LayoutComponent sections={renderedSections} data={data} />
 
   return (
     <LayoutEditProvider value={editContextValue}>
-      {/* Portal the controls into host. I.e:
-       * - in idle mode: show idleTrigger inside triggerHost(topbar or sidebar)
-       * - in edit mode: show editControls inside controlHost(topbar), idleTrigger disappears
-       */}
-      {customizerHost ? createPortal(customizerControls, customizerHost) : null}
+      {/* While editing, portal the Cancel/Save controls into the shared top-bar
+       * slot — they take the place of the central trigger menu, which hides
+       * itself for the duration. */}
+      {editMode && controlsHost
+        ? createPortal(editControls, controlsHost)
+        : null}
       {editMode ? (
         <DndContext
           sensors={sensors}
