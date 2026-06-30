@@ -49,7 +49,7 @@ const HomepageBloom = () => {
   ]
 
   return (
-    <div className="w-full flex gap-0 items-center border-y border-medusa-border-base flex-col lg:flex-row lg:h-[480px]">
+    <div className="w-full flex gap-0 items-center border-b border-medusa-border-base flex-col lg:flex-row lg:h-[480px]">
       {/* Chat area */}
       <div
         className={clsx(

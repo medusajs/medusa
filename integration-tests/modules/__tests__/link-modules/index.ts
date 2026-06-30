@@ -6,7 +6,7 @@ import { ModuleJoinerConfig } from "@medusajs/types"
 jest.setTimeout(5000000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConfig: { clientUrl } }) => {
+  testSuite: ({ dbConfig: { clientUrl }, dbUtils }) => {
     let DB_URL
     let links
 
@@ -76,6 +76,7 @@ medusaIntegrationTestRunner({
       await planner.executePlan(await planner.createPlan())
 
       links = await initialize(dbConfig, linkDefinition)
+      await dbUtils.snapshot()
     })
 
     afterAll(async () => {

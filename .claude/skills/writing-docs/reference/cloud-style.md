@@ -193,6 +193,97 @@ Pages live at `www/apps/cloud/app/<path>/page.mdx`. Match the sidebar path exact
 | `/environments/long-lived` | `www/apps/cloud/app/environments/long-lived/page.mdx` |
 | `/billing/plans` | `www/apps/cloud/app/billing/plans/page.mdx` |
 
+## CLI Documentation
+
+The Cloud CLI (`mcloud`) docs live under `www/apps/cloud/app/cli/`. Each command topic has its own page at `www/apps/cloud/app/cli/commands/<topic>/page.mdx`.
+
+### CLI Page Structure
+
+Each command page documents all subcommands for that topic. For example, the `deployments` page covers `deployments list`, `deployments get`, and `deployments build-logs`.
+
+```mdx
+import { Table, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `<topic> Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to <what the commands do>.
+
+## <topic> <subcommand>
+
+Description of what the subcommand does.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud <topic> <subcommand> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud <topic> <subcommand>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>`-o <id>`, `--organization <id>`</Table.Cell>
+      <Table.Cell>The organization ID.</Table.Cell>
+      <Table.Cell>Yes</Table.Cell>
+      <Table.Cell>Falls back to the [active context](../use/page.mdx).</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+### CLI Writing Rules
+
+- **Command syntax**: Always show the full command (e.g. `mcloud deployments list`), not just the subcommand
+- **Flag format**: Show both short and long forms where available (e.g. `` `-o <id>`, `--organization <id>` ``)
+- **CodeTabs for auth**: Use `<CodeTabs group="cli-auth">` with "With Flags" and "Using mcloud use" tabs to show both explicit and context-based usage
+- **Arguments section**: Add an Arguments table (Option, Description, Required) for positional arguments
+- **Options section**: Use a four-column Table (Option, Description, Required, Default)
+- **Subcommand separation**: Separate subcommand sections with `---` dividers
+- **Cross-references**: Link to related command pages using relative paths (e.g. `[active context](../use/page.mdx)`)
+- **JSON flag**: If a command supports `--json`, include it in the Options table
+- **New commands**: When adding a command page, also add it to the CLI category in `www/apps/cloud/sidebar.mjs`
+
+### When to Update CLI Docs
+
+Update CLI docs when a Cloud CLI change:
+
+- Adds a new command or subcommand
+- Removes an existing command or subcommand
+- Adds, changes, or removes a flag or positional argument
+- Changes a command's description or help text
+- Changes the output format (table columns, JSON structure)
+- Changes shared flags that affect multiple commands
+
+Do not update CLI docs for internal refactors that don't change the CLI's external behavior.
+
+---
+
 ## When to Update Cloud Docs
 
 Update or create cloud docs when a dashboard change:
@@ -203,6 +294,8 @@ Update or create cloud docs when a dashboard change:
 - Adds a new environment type, resource, or configuration option
 - Changes billing plans, limits, or pricing visible to users
 - Adds a new monitoring or notification option
+
+Or when a CLI change adds, modifies, or removes commands, flags, or output formats (see the [CLI Documentation](#cli-documentation) section above).
 
 ## Example Page
 

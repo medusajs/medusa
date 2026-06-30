@@ -1,0 +1,22 @@
+/**
+ * @schema AdminInitializePaymentSession
+ * type: object
+ * description: The details of the payment session to initialize in the payment collection.
+ * x-schemaName: AdminInitializePaymentSession
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     type: string
+ *     title: provider_id
+ *     description: The ID of the payment provider to initialize the session with.
+ *     example: pp_stripe_stripe
+ *   data:
+ *     type: object
+ *     description: Any data necessary for the payment provider to process the payment.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/resources/commerce-modules/payment/payment-session#data-property
+ *       description: Learn more about the payment session's data property
+ * 
+*/
+

@@ -4,7 +4,6 @@
  * summary: List Views
  * description: Retrieve a list of views. The views can be filtered by fields such as `id`. The views can also be sorted or paginated.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

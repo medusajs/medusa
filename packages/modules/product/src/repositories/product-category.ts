@@ -78,6 +78,11 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const manager = super.getActiveManager<SqlEntityManager>(context)
     const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
+    DALUtils.pruneFindOptionsAgainstMetadata(
+      manager.getDriver().getMetadata().get(ProductCategory.name),
+      findOptions_.options as { fields?: unknown; populate?: unknown }
+    )
+
     const productCategories = await manager.find<
       InferEntityType<typeof ProductCategory>
     >(
@@ -248,6 +253,11 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   ): Promise<[InferEntityType<typeof ProductCategory>[], number]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
     const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
+
+    DALUtils.pruneFindOptionsAgainstMetadata(
+      manager.getDriver().getMetadata().get(ProductCategory.name),
+      findOptions_.options as { fields?: unknown; populate?: unknown }
+    )
 
     const [productCategories, count] = (await manager.findAndCount(
       ProductCategory.name,

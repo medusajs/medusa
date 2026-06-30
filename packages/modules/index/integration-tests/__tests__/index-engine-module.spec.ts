@@ -1,32 +1,11 @@
-import {
-  configLoader,
-  container,
-  logger,
-  MedusaAppLoader,
-  Migrator,
-} from "@medusajs/framework"
-import { asValue } from "@medusajs/framework/awilix"
-import { EntityManager } from "@medusajs/framework/mikro-orm/postgresql"
-import { MedusaAppOutput, MedusaModule } from "@medusajs/framework/modules-sdk"
-import { EventBusTypes, IndexTypes } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-  Modules,
-  toMikroORMEntity,
-} from "@medusajs/framework/utils"
-import { initDb, TestDatabaseUtils } from "@medusajs/test-utils"
+import { EventBusTypes, InferEntityType } from "@medusajs/framework/types"
+import { toMikroORMEntity } from "@medusajs/framework/utils"
 import { IndexData, IndexRelation } from "@models"
-import * as path from "path"
-import { setTimeout } from "timers/promises"
-import { EventBusServiceMock } from "../__fixtures__"
-import { dbName } from "../__fixtures__/medusa-config"
-
-const eventBusMock = new EventBusServiceMock()
-const queryMock = {
-  graph: jest.fn(),
-}
-
-const dbUtils = TestDatabaseUtils.dbTestUtilFactory()
+import {
+  createIndexTestBed,
+  IndexModuleTestBed,
+  schema,
+} from "../__fixtures__"
 
 jest.setTimeout(300000)
 
@@ -38,174 +17,73 @@ const priceSetId = "price_set_1"
 const priceId = "money_amount_1"
 const linkId = "link_id_1"
 
-const sendEvents = async (eventDataToEmit) => {
-  let productCounter = 0
-  let variantCounter = 0
-
-  queryMock.graph = jest.fn().mockImplementation((query) => {
-    const entity = query.entity
-    if (entity === "product") {
-      return {
-        data: {
-          id: productCounter++ > 0 ? productId2 : productId,
-          title: "Test Product " + productCounter,
-        },
-      }
-    } else if (entity === "product_variant") {
-      const counter = variantCounter++
-      return {
-        data: {
-          id: counter > 0 ? variantId2 : variantId,
-          sku: "aaa test aaa",
-          product: {
-            id: counter > 0 ? productId2 : productId,
-          },
-        },
-      }
-    } else if (entity === "price_set") {
-      return {
-        data: {
-          id: priceSetId,
-        },
-      }
-    } else if (entity === "price") {
-      return {
-        data: {
-          id: priceId,
-          amount: 100,
-          price_set: [
-            {
-              id: priceSetId,
-            },
-          ],
-        },
-      }
-    } else if (entity === "product_variant_price_set") {
-      return {
-        data: {
-          id: linkId,
-          variant_id: variantId,
-          price_set_id: priceSetId,
-          variant: [
-            {
-              id: variantId,
-            },
-          ],
-        },
-      }
-    }
-
-    return {}
-  })
-
-  await eventBusMock.emit(eventDataToEmit)
+const seedQueryData = (testBed: IndexModuleTestBed) => {
+  testBed.query
+    .seed("product", [
+      { id: productId, title: "Test Product 1" },
+      { id: productId2, title: "Test Product 2" },
+    ])
+    .seed("product_variant", [
+      {
+        id: variantId,
+        sku: "aaa test aaa",
+        product: { id: productId },
+      },
+      {
+        id: variantId2,
+        sku: "sku 123",
+        product: { id: productId2 },
+      },
+    ])
+    .seed("price_set", [{ id: priceSetId }])
+    .seed("price", [
+      {
+        id: priceId,
+        amount: 100,
+        price_set: [{ id: priceSetId }],
+      },
+    ])
+    .seed("product_variant_price_set", [
+      {
+        id: linkId,
+        variant_id: variantId,
+        price_set_id: priceSetId,
+        variant: [{ id: variantId }],
+      },
+    ])
 }
 
-let isFirstTime = true
-let medusaAppLoader!: MedusaAppLoader
-let index!: IndexTypes.IIndexService
+const findIndexEntries = async (testBed: IndexModuleTestBed) => {
+  const manager = testBed.forkManager()
 
-const beforeAll_ = async () => {
-  try {
-    await configLoader(
-      path.join(__dirname, "./../__fixtures__"),
-      "medusa-config"
-    )
+  const indexEntries: InferEntityType<typeof IndexData>[] = await manager.find(
+    toMikroORMEntity(IndexData),
+    {}
+  )
+  const indexRelationEntries: InferEntityType<typeof IndexRelation>[] =
+    await manager.find(toMikroORMEntity(IndexRelation), {})
 
-    console.log(`Creating database ${dbName}`)
-    await dbUtils.create(dbName)
-    dbUtils.pgConnection_ = await initDb()
-
-    container.register({
-      [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-      [ContainerRegistrationKeys.QUERY]: asValue(null),
-      [ContainerRegistrationKeys.PG_CONNECTION]: asValue(dbUtils.pgConnection_),
-    })
-
-    medusaAppLoader = new MedusaAppLoader(container as any)
-
-    // Migrations
-    const migrator = new Migrator({ container })
-    await migrator.ensureMigrationsTable()
-
-    await medusaAppLoader.runModulesMigrations()
-    const linkPlanner = await medusaAppLoader.getLinksExecutionPlanner()
-    const plan = await linkPlanner.createPlan()
-    await linkPlanner.executePlan(plan)
-
-    // Clear partially loaded instances
-    MedusaModule.clearInstances()
-
-    // Bootstrap modules
-    const globalApp = await medusaAppLoader.load()
-
-    index = container.resolve(Modules.INDEX)
-
-    // Mock event bus  the index module
-    ;(index as any).eventBusModuleService_ = eventBusMock
-
-    await globalApp.onApplicationStart()
-    await setTimeout(3000)
-    ;(index as any).storageProvider_.query_ = queryMock
-
-    return globalApp
-  } catch (error) {
-    console.error("Error initializing", error?.message)
-    throw error
-  }
-}
-
-const beforeEach_ = async (eventDataToEmit) => {
-  jest.clearAllMocks()
-
-  if (isFirstTime) {
-    isFirstTime = false
-    await sendEvents(eventDataToEmit)
-
-    return
-  }
-
-  try {
-    await medusaAppLoader.runModulesLoader()
-
-    await sendEvents(eventDataToEmit)
-  } catch (error) {
-    console.error("Error runner modules loaders", error?.message)
-    throw error
-  }
-}
-
-const afterEach_ = async () => {
-  try {
-    await dbUtils.teardown({ schema: "public" })
-  } catch (error) {
-    console.error("Error tearing down database:", error?.message)
-    throw error
-  }
+  return { indexEntries, indexRelationEntries }
 }
 
 describe("IndexModuleService", function () {
-  let medusaApp: MedusaAppOutput
-  let onApplicationPrepareShutdown!: () => Promise<void>
-  let onApplicationShutdown!: () => Promise<void>
+  let testBed: IndexModuleTestBed
 
   beforeAll(async () => {
-    medusaApp = await beforeAll_()
-    onApplicationPrepareShutdown = medusaApp.onApplicationPrepareShutdown
-    onApplicationShutdown = medusaApp.onApplicationShutdown
+    testBed = await createIndexTestBed({ schema })
   })
 
   afterAll(async () => {
-    await onApplicationPrepareShutdown()
-    await onApplicationShutdown()
-    await dbUtils.shutdown(dbName)
+    await testBed.teardown()
   })
 
-  afterEach(afterEach_)
+  beforeEach(async () => {
+    await testBed.truncateTables()
+    testBed.query.reset()
+    seedQueryData(testBed)
+  })
 
   describe("on created or attached events", function () {
-    let manager
-
     const eventDataToEmit: EventBusTypes.Event[] = [
       {
         name: "product.created",
@@ -216,7 +94,7 @@ describe("IndexModuleService", function () {
       {
         name: "product.created",
         data: {
-          id: "PRODUCTASDASDAS",
+          id: productId2,
         },
       },
       {
@@ -253,23 +131,11 @@ describe("IndexModuleService", function () {
       },
     ]
 
-    beforeEach(async () => {
-      await beforeEach_(eventDataToEmit)
-
-      manager = (medusaApp.sharedContainer!.resolve(Modules.INDEX) as any)
-        .container_.manager as EntityManager
-    })
-
-    afterEach(afterEach_)
-
     it("should create the corresponding index entries and index relation entries", async function () {
-      /**
-       * Validate all index entries and index relation entries
-       */
+      await testBed.eventBus.emit(eventDataToEmit)
 
-      const indexEntries: IndexData[] = await manager.find(
-        toMikroORMEntity(IndexData),
-        {}
+      const { indexEntries, indexRelationEntries } = await findIndexEntries(
+        testBed
       )
 
       const productIndexEntries = indexEntries.filter((entry) => {
@@ -301,11 +167,6 @@ describe("IndexModuleService", function () {
       })
 
       expect(linkIndexEntries).toHaveLength(1)
-
-      const indexRelationEntries: IndexRelation[] = await manager.find(
-        IndexRelation,
-        {}
-      )
 
       expect(indexRelationEntries).toHaveLength(4)
 
@@ -361,11 +222,27 @@ describe("IndexModuleService", function () {
 
       expect(priceSetPriceIndexRelationEntries).toHaveLength(1)
     })
+
+    it("should not create index entries for events whose data cannot be resolved from the query", async function () {
+      await testBed.eventBus.emit([
+        {
+          name: "product.created",
+          data: {
+            id: "prod_does_not_exist",
+          },
+        },
+      ])
+
+      const { indexEntries, indexRelationEntries } = await findIndexEntries(
+        testBed
+      )
+
+      expect(indexEntries).toHaveLength(0)
+      expect(indexRelationEntries).toHaveLength(0)
+    })
   })
 
   describe("on unordered created or attached events", function () {
-    let manager
-
     const eventDataToEmit: EventBusTypes.Event[] = [
       {
         name: "variant.created",
@@ -422,23 +299,11 @@ describe("IndexModuleService", function () {
       },
     ]
 
-    beforeEach(async () => {
-      await beforeEach_(eventDataToEmit)
-
-      manager = (medusaApp.sharedContainer!.resolve(Modules.INDEX) as any)
-        .container_.manager as EntityManager
-    })
-
-    afterEach(afterEach_)
-
     it("should create the corresponding index entries and index relation entries", async function () {
-      /**
-       * Validate all index entries and index relation entries
-       */
+      await testBed.eventBus.emit(eventDataToEmit)
 
-      const indexEntries: IndexData[] = await manager.find(
-        toMikroORMEntity(IndexData),
-        {}
+      const { indexEntries, indexRelationEntries } = await findIndexEntries(
+        testBed
       )
 
       const productIndexEntries = indexEntries.filter((entry) => {
@@ -508,11 +373,6 @@ describe("IndexModuleService", function () {
       expect(linkIndexEntries).toHaveLength(1)
       expect(linkIndexEntries[0].id).toEqual(linkId)
 
-      const indexRelationEntries: IndexRelation[] = await manager.find(
-        IndexRelation,
-        {}
-      )
-
       expect(indexRelationEntries).toHaveLength(5)
 
       const productVariantIndexRelationEntries = indexRelationEntries.filter(
@@ -527,6 +387,19 @@ describe("IndexModuleService", function () {
       )
 
       expect(productVariantIndexRelationEntries).toHaveLength(1)
+
+      const productVariant2IndexRelationEntries = indexRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === productId2 &&
+            entry.parent_name === "Product" &&
+            entry.child_id === variantId2 &&
+            entry.child_name === "ProductVariant"
+          )
+        }
+      )
+
+      expect(productVariant2IndexRelationEntries).toHaveLength(1)
 
       const variantLinkIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
@@ -570,10 +443,10 @@ describe("IndexModuleService", function () {
   })
 
   describe("on updated events", function () {
-    let manager
+    beforeEach(async () => {
+      const manager = testBed.forkManager()
+      const indexRepository = manager.getRepository(toMikroORMEntity(IndexData))
 
-    const updateData = async (manager) => {
-      const indexRepository = manager.getRepository(IndexData)
       await indexRepository.upsertMany([
         {
           id: productId,
@@ -594,69 +467,39 @@ describe("IndexModuleService", function () {
           },
         },
       ])
-    }
 
-    const eventDataToEmit: EventBusTypes.Event[] = [
-      {
-        name: "product.updated",
-        data: {
-          id: productId,
-        },
-      },
-      {
-        name: "variant.updated",
-        data: {
-          id: variantId,
-          product: {
+      testBed.query
+        .seed("product", [{ id: productId, title: "updated Title" }])
+        .seed("product_variant", [
+          {
+            id: variantId,
+            sku: "updated sku",
+            product: [{ id: productId }],
+          },
+        ])
+
+      await testBed.eventBus.emit([
+        {
+          name: "product.updated",
+          data: {
             id: productId,
           },
         },
-      },
-    ]
-
-    beforeEach(async () => {
-      await beforeEach_(eventDataToEmit)
-
-      manager = (medusaApp.sharedContainer!.resolve(Modules.INDEX) as any)
-        .container_.manager as EntityManager
-
-      await updateData(manager)
-
-      queryMock.graph = jest.fn().mockImplementation((query) => {
-        const entity = query.entity
-        if (entity === "product") {
-          return {
-            data: {
+        {
+          name: "variant.updated",
+          data: {
+            id: variantId,
+            product: {
               id: productId,
-              title: "updated Title",
             },
-          }
-        } else if (entity === "product_variant") {
-          return {
-            data: {
-              id: variantId,
-              sku: "updated sku",
-              product: [
-                {
-                  id: productId,
-                },
-              ],
-            },
-          }
-        }
-
-        return {}
-      })
-
-      await eventBusMock.emit(eventDataToEmit)
+          },
+        },
+      ])
     })
 
-    afterEach(afterEach_)
-
     it("should update the corresponding index entries", async () => {
-      const updatedIndexEntries = await manager.find(
-        toMikroORMEntity(IndexData),
-        {}
+      const { indexEntries: updatedIndexEntries } = await findIndexEntries(
+        testBed
       )
 
       expect(updatedIndexEntries).toHaveLength(2)
@@ -665,19 +508,17 @@ describe("IndexModuleService", function () {
         return entry.name === "Product" && entry.id === productId
       })
 
-      expect(productEntry?.data?.title).toEqual("updated Title")
+      expect((productEntry?.data as any)?.title).toEqual("updated Title")
 
       const variantEntry = updatedIndexEntries.find((entry) => {
         return entry.name === "ProductVariant" && entry.id === variantId
       })
 
-      expect(variantEntry?.data?.sku).toEqual("updated sku")
+      expect((variantEntry?.data as any)?.sku).toEqual("updated sku")
     })
   })
 
   describe("on deleted events", function () {
-    let manager
-
     const eventDataToEmit: EventBusTypes.Event[] = [
       {
         name: "product.created",
@@ -735,42 +576,13 @@ describe("IndexModuleService", function () {
     ]
 
     beforeEach(async () => {
-      await beforeEach_(eventDataToEmit)
-
-      manager = (medusaApp.sharedContainer!.resolve(Modules.INDEX) as any)
-        .container_.manager as EntityManager
-
-      queryMock.graph = jest.fn().mockImplementation((query) => {
-        const entity = query.entity
-        if (entity === "product") {
-          return {
-            data: {
-              id: productId,
-            },
-          }
-        } else if (entity === "product_variant") {
-          return {
-            data: {
-              id: variantId,
-              product: [
-                {
-                  id: productId,
-                },
-              ],
-            },
-          }
-        }
-
-        return {}
-      })
-
-      await eventBusMock.emit(deleteEventDataToEmit)
+      await testBed.eventBus.emit(eventDataToEmit)
+      await testBed.eventBus.emit(deleteEventDataToEmit)
     })
 
     it("should consume all deleted events and delete the index entries", async () => {
-      const indexEntries = await manager.find(toMikroORMEntity(IndexData), {})
-      const indexRelationEntries = await manager.find(
-        toMikroORMEntity(IndexRelation)
+      const { indexEntries, indexRelationEntries } = await findIndexEntries(
+        testBed
       )
 
       expect(indexEntries).toHaveLength(3)

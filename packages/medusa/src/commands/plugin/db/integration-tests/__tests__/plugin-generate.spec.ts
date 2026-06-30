@@ -70,6 +70,19 @@ describe("plugin-generate", () => {
       )
     )
     await emptyModule.remove("migrations")
+
+    const module1WithEnum = new FileSystem(
+      join(
+        __dirname,
+        "..",
+        "__fixtures__",
+        "plugins-1-with-enum",
+        "src",
+        "modules",
+        "module-1"
+      )
+    )
+    await module1WithEnum.remove("migrations")
   })
 
   describe("main function", () => {
@@ -185,6 +198,24 @@ describe("plugin-generate", () => {
       expect(logger.info).toHaveBeenNthCalledWith(
         3,
         "No entities found for module moduleEmpty, skipping..."
+      )
+      expect(logger.info).toHaveBeenNthCalledWith(4, "Migrations generated")
+      expect(process.exit).toHaveBeenCalledWith()
+    })
+
+    it("should successfully generate migrations when model files export enums alongside entities", async () => {
+      await main({
+        directory: join(__dirname, "..", "__fixtures__", "plugins-1-with-enum"),
+      })
+
+      expect(logger.info).toHaveBeenNthCalledWith(1, "Generating migrations...")
+      expect(logger.info).toHaveBeenNthCalledWith(
+        2,
+        "Generating migrations for module module1_with_enum..."
+      )
+      expect(logger.info).toHaveBeenNthCalledWith(
+        3,
+        expect.stringContaining("Migration created")
       )
       expect(logger.info).toHaveBeenNthCalledWith(4, "Migrations generated")
       expect(process.exit).toHaveBeenCalledWith()

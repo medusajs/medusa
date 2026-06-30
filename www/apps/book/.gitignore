@@ -28,6 +28,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.dev.vars
 
 # vercel
 .vercel
@@ -37,3 +38,8 @@ yarn-error.log*
 next-env.d.ts
 
 sidebar.full.mjs
+
+# cloudflare
+.open-next
+.wrangler
+public/raw-mdx

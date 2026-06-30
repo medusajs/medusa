@@ -21,6 +21,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "/first-project",
+            title: "Create First Project",
+          },
+          {
+            type: "link",
             path: "/faq",
             title: "FAQ",
           },
@@ -34,6 +39,11 @@ export const sidebar = [
             title: "Command Palette",
             path: "/command-palette",
           },
+          {
+            type: "link",
+            title: "Navigation Styles",
+            path: "/navigation",
+          }
         ],
       },
       {
@@ -97,7 +107,7 @@ export const sidebar = [
                 type: "ref",
                 title: "Monitoring",
                 path: "/monitoring",
-              }
+              },
             ],
           },
           {
@@ -112,6 +122,11 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Fix with AI",
+                path: "/deployments/fix-with-ai",
+              },
+              {
+                type: "link",
                 title: "Troubleshooting",
                 path: "/deployments/troubleshooting",
               },
@@ -119,8 +134,91 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Access Keys",
+            path: "/access-keys",
+          },
+          {
+            type: "link",
             title: "Account",
             path: "/user",
+          }
+        ],
+      },
+      {
+        type: "category",
+        title: "CLI",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Installation",
+            path: "/cli",
+            hideFromChildItems: true,
+          },
+          {
+            type: "link",
+            title: "For Agents",
+            path: "/cli/agents",
+          },
+          {
+            type: "link",
+            title: "login",
+            path: "/cli/commands/login",
+          },
+          {
+            type: "link",
+            title: "signup",
+            path: "/cli/commands/signup",
+          },
+          {
+            type: "link",
+            title: "use",
+            path: "/cli/commands/use",
+          },
+          {
+            type: "link",
+            title: "whoami",
+            path: "/cli/commands/whoami",
+          },
+          {
+            type: "link",
+            title: "organizations",
+            path: "/cli/commands/organizations",
+          },
+          {
+            type: "link",
+            title: "projects",
+            path: "/cli/commands/projects",
+          },
+          {
+            type: "link",
+            title: "environments",
+            path: "/cli/commands/environments",
+          },
+          {
+            type: "link",
+            title: "deployments",
+            path: "/cli/commands/deployments",
+          },
+          {
+            type: "link",
+            title: "variables",
+            path: "/cli/commands/variables",
+          },
+          {
+            type: "link",
+            title: "logs",
+            path: "/cli/commands/logs",
+          },
+          {
+            type: "link",
+            title: "version",
+            path: "/cli/commands/version",
+          },
+          {
+            type: "link",
+            title: "logout",
+            path: "/cli/commands/logout",
           },
         ],
       },

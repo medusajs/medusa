@@ -91,11 +91,6 @@
  *           type: string
  *           title: id
  *           description: The tag's ID.
- *   options:
- *     type: array
- *     description: The product's options.
- *     items:
- *       $ref: "#/components/schemas/AdminUpdateProductOption"
  *   variants:
  *     type: array
  *     description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
@@ -166,6 +161,13 @@
  *     type: string
  *     title: shipping_profile_id
  *     description: The ID of the product's shipping profile.
+ *   option_ids:
+ *     type: array
+ *     description: The ID of the product's options.
+ *     items:
+ *       type: string
+ *       title: option_ids
+ *       description: The product option's ID.
  * required:
  *   - id
  * 

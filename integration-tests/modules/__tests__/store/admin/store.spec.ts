@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Store - Admin", () => {
       let appContainer
       let service: IStoreModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         service = appContainer.resolve(Modules.STORE)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should correctly implement the entire lifecycle of a store", async () => {

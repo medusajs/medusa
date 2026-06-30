@@ -24,7 +24,9 @@ export const GET = async (
     if (
       Object.keys(req.filterableFields).length === 0 ||
       isPresent(req.filterableFields.tags) ||
-      isPresent(req.filterableFields.categories)
+      isPresent(req.filterableFields.categories) ||
+      isPresent(req.filterableFields.option_value_id) ||
+      isPresent(req.filterableFields.options)
     ) {
       return await getProducts(req, res)
     }
@@ -82,6 +84,11 @@ async function getProductsWithIndexEngine(
     filters["variants"]["prices"]["price_list_id"] = priceListIds
 
     delete filters.price_list_id
+  }
+
+  // TODO: Remove once we implement search by relations in a similar way to query.graph
+  if (isPresent(filters.q)) {
+    filters["variants"] ??= {}
   }
 
   const { data: products, metadata } = await query.index({

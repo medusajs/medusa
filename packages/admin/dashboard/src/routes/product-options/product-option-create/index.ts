@@ -1,0 +1,1 @@
+export { ProductOptionCreate as Component } from "./product-option-create"

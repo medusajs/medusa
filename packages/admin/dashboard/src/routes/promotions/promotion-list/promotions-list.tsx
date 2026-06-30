@@ -1,18 +1,20 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { PromotionListTable } from "./components/promotion-list-table"
 
 export const PromotionsList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("promotion.list.before"),
-        after: getWidgets("promotion.list.after"),
+    <LayoutComposer
+      widgetsZonePrefix="promotion.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="PromotionListTable">
+            <PromotionListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <PromotionListTable />
-    </SingleColumnPage>
+    />
   )
 }

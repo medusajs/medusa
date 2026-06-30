@@ -43,7 +43,7 @@ const getCSVContents = async (filePath: string) => {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseProduct
     let proposedProduct
 
@@ -63,7 +63,7 @@ medusaIntegrationTestRunner({
       eventBus = getContainer().resolve(Modules.EVENT_BUS)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       baseRegion = (
@@ -214,6 +214,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product
+
+      await dbUtils.snapshot()
     })
 
     afterEach(() => {

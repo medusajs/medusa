@@ -77,7 +77,7 @@ export const AddCurrenciesForm = ({
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const { setValue, watch } = form
+  const { setValue, watch, getValues } = form
   const pricePreferenceValues = watch("pricePreferences")
 
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
@@ -102,7 +102,23 @@ export const AddCurrenciesForm = ({
     [setValue]
   )
 
-  const columns = useColumns(pricePreferenceValues, setPricePreferences)
+  const selectRow = useCallback(
+    (code: string) => {
+      const current = getValues("currencies") ?? []
+      if (!current.includes(code)) {
+        setValue("currencies", [...current, code], {
+          shouldDirty: true,
+          shouldTouch: true,
+        })
+      }
+      setRowSelection((prev) =>
+        prev[code] ? prev : { ...prev, [code]: true }
+      )
+    },
+    [getValues, setValue]
+  )
+
+  const columns = useColumns(pricePreferenceValues, setPricePreferences, selectRow)
 
   const { table } = useDataTable({
     data: currencies ?? [],
@@ -221,7 +237,8 @@ const columnHelper = createColumnHelper<HttpTypes.AdminCurrency>()
 
 const useColumns = (
   pricePreferences: Record<string, boolean>,
-  setPricePreferences: any
+  setPricePreferences: any,
+  selectRow: (code: string) => void
 ) => {
   const { t } = useTranslation()
   const base = useCurrenciesTableColumns()
@@ -293,6 +310,9 @@ const useColumns = (
                     ...pricePreferences,
                     [row.original.code]: val,
                   })
+                  if (val && !row.getIsSelected()) {
+                    selectRow(row.original.code)
+                  }
                 }}
               />
             </div>
@@ -300,6 +320,6 @@ const useColumns = (
         },
       }),
     ],
-    [t, base, pricePreferences, setPricePreferences]
+    [t, base, pricePreferences, setPricePreferences, selectRow]
   )
 }

@@ -27,6 +27,7 @@ yarn-error.log*
 # local env files
 .env*.local
 .env.test
+.dev.vars
 
 # vercel
 .vercel
@@ -41,3 +42,7 @@ specs/store.oas.json
 
 # analyzer
 analyze
+
+# cloudflare
+.open-next
+.wrangler

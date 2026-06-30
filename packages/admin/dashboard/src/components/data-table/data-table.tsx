@@ -13,6 +13,7 @@ import {
   DataTableFilteringState,
   DataTablePaginationState,
   DataTableSortingState,
+  Tooltip,
 } from "@medusajs/ui"
 import React, { ReactNode, useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -30,6 +31,7 @@ type ColumnOrderState = string[]
 type DataTableActionProps = {
   label: string
   disabled?: boolean
+  tooltip?: ReactNode
 } & (
   | {
       to: string
@@ -473,11 +475,24 @@ function parseFilterState(
     const filterValue = value[id]
 
     if (filterValue !== undefined) {
-      filters[id] = JSON.parse(filterValue)
+      filters[id] = parseFilterValue(filterValue)
     }
   }
 
   return filters
+}
+
+// Radio/select filters use string option values, but a URL written by hand
+// (e.g. `?is_exclusive=false`) JSON-parses to a boolean and no longer matches
+// those values, leaving the filter chip unhighlighted. Fall back to the raw
+// string in that case so manual URLs still highlight correctly.
+function parseFilterValue(raw: string): unknown {
+  try {
+    const parsed = JSON.parse(raw)
+    return typeof parsed === "boolean" ? raw : parsed
+  } catch {
+    return raw
+  }
 }
 
 function getQueryParamKey(key: string, prefix?: string) {
@@ -510,6 +525,7 @@ const useDataTableTranslations = () => {
 const DataTableAction = ({
   label,
   disabled,
+  tooltip,
   ...props
 }: DataTableActionProps) => {
   const buttonProps = {
@@ -520,14 +536,28 @@ const DataTableAction = ({
   }
 
   if ("to" in props) {
-    return (
+    const linkButton = disabled ? (
+      <Button {...buttonProps}>{label}</Button>
+    ) : (
       <Button {...buttonProps} asChild>
         <Link to={props.to}>{label}</Link>
       </Button>
     )
+
+    return tooltip ? (
+      <Tooltip content={tooltip}>{linkButton}</Tooltip>
+    ) : (
+      linkButton
+    )
   }
 
-  return (
+  return tooltip ? (
+    <Tooltip content={tooltip}>
+      <Button {...buttonProps} onClick={props.onClick}>
+        {label}
+      </Button>
+    </Tooltip>
+  ) : (
     <Button {...buttonProps} onClick={props.onClick}>
       {label}
     </Button>

@@ -43,14 +43,12 @@ export const deleteStoresWorkflowId = "delete-stores"
 export const deleteStoresWorkflow = createWorkflow(
   deleteStoresWorkflowId,
   (input: WorkflowData<DeleteStoresWorkflowInput>): WorkflowData<void> => {
-    const deletedStores = deleteStoresStep(input.ids)
+    deleteStoresStep(input.ids)
 
     removeRemoteLinkStep({
       [Modules.STORE]: {
         store_id: input.ids,
       },
     })
-
-    return deletedStores
   }
 )

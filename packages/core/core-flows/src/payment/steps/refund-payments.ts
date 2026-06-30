@@ -32,6 +32,10 @@ export type RefundPaymentsStepInput = {
    * The note to attach to the refund.
    */
   note?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown>
 }[]
 
 export const refundPaymentsStepId = "refund-payments-step"

@@ -119,22 +119,26 @@ class MedusaModule {
     })
   }
 
-  public static onApplicationStart(onApplicationStartCb?: () => void): void {
-    for (const instances of MedusaModule.instances_.values()) {
-      for (const instance of Object.values(instances) as IModuleService[]) {
-        if (instance?.__hooks) {
-          instance.__hooks?.onApplicationStart
-            ?.bind(instance)()
-            .then(() => {
-              onApplicationStartCb?.()
-            })
-            .catch(() => {
-              // The module should handle this and log it
-              return void 0
-            })
-        }
-      }
-    }
+  public static async onApplicationStart(
+    onApplicationStartCb?: () => void
+  ): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationStart
+              ?.bind(instance)()
+              .then(() => {
+                onApplicationStartCb?.()
+              })
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
   }
   public static async onApplicationShutdown(): Promise<void> {
     await promiseAll(

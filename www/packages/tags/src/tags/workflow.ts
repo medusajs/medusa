@@ -28,6 +28,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow"
   },
   {
+    "title": "requestVerificationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestVerificationWorkflow"
+  },
+  {
     "title": "setAuthAppMetadataWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow"
   },

@@ -7,7 +7,7 @@ import {
   productValidators,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { MedusaErrorTypes } from "@medusajs/utils"
+import { MedusaErrorTypes } from "@medusajs/framework/utils"
 
 /**
  * The CSV file content to parse.
@@ -177,9 +177,10 @@ async function createChunks(
     }
 
     /**
-     * Cleanup in case of an error
+     * Cleanup in case of an error. Only delete chunk files that this step
+     * created; never the user-supplied `fileKey`, which is unvalidated input.
      */
-    await file.deleteFiles(chunks.map((chunk) => chunk.id).concat(fileKey))
+    await file.deleteFiles(chunks.map((chunk) => chunk.id))
     throw error
   }
 
@@ -196,6 +197,7 @@ async function createChunks(
 export const normalizeCsvToChunksStep = createStep(
   normalizeCsvToChunksStepId,
   async (fileKey: NormalizeProductCsvV1StepInput, { container }) => {
+    // eslint-disable-next-line @medusajs/step-must-return-step-response
     return new Promise<
       StepResponse<{
         chunks: Chunk[]
@@ -228,10 +230,6 @@ export const normalizeCsvToChunksStep = createStep(
           { toCreate: 0, toUpdate: 0 }
         )
 
-        /**
-         * Delete CSV file once we have the chunks
-         */
-        await file.deleteFiles(fileKey)
 
         resolve(
           new StepResponse({

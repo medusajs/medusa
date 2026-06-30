@@ -1,0 +1,179 @@
+import { Table, Note } from "docs-ui"
+
+export const metadata = {
+  title: `use Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Select the active organization, project, and environment, and persist the selection in a context configuration file. Subsequent CLI commands read this configuration so you don't need to repeat `--organization`, `--project`, and `--environment` on every command.
+
+```bash
+mcloud use
+```
+
+When run without flags, the command launches an interactive picker for each value. Pass any of `--organization`, `--project`, or `--environment` to set them non-interactively.
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to set as active. Skips the interactive organization picker.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) to set as active. Skips the interactive project picker.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [handle of the environment](../environments/page.mdx#find-environment-handles) to set as active. Skips the interactive environment picker.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--clear`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Remove the persisted organization, project, and environment selection. Run before switching accounts or to reset the context.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Set the Active Context
+
+### Interactively
+
+Run `mcloud use` without flags to pick each value from a list. The CLI prompts you to select an organization (if you're in more than one), a project, and an environment from the active project:
+
+```bash
+mcloud use
+```
+
+After saving, every subsequent command operates on the selected organization, project, and environment by default.
+
+<Note>
+
+In non-interactive environments like CI runners, pass `--organization`, `--project`, and `--environment` directly. See [Set the Active Context Non-Interactively](#non-interactively) below.
+
+</Note>
+
+### Non-Interactively
+
+When working with AI agents, scripts, or CI/CD pipelines, you can set the active context non-interactively by passing any of `--organization`, `--project`, or `--environment` directly. For example:
+
+```bash
+mcloud use \
+  --organization org_123 \
+  --project proj_123 \
+  --environment production
+```
+
+You can also switch the active environment without changing the organization or project:
+
+```bash
+mcloud use --environment staging
+```
+
+---
+
+## Inspect the Active Context
+
+Use [`mcloud whoami`](../whoami/page.mdx) to see the active organization, project, and environment along with the authenticated user and CLI metadata:
+
+```bash
+mcloud whoami
+```
+
+---
+
+## Clear the Active Context
+
+To clear the persisted organization, project, and environment, pass `--clear`:
+
+```bash
+mcloud use --clear
+```
+
+After clearing, commands that require these values will prompt for them or fail unless you pass them as flags or run `mcloud use` again.

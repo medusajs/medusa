@@ -19,10 +19,10 @@ const ProductCreateVariantSchema = z.object({
   barcode: z.string().optional(),
   mid_code: z.string().optional(),
   hs_code: z.string().optional(),
-  width: optionalInt,
-  height: optionalInt,
-  length: optionalInt,
-  weight: optionalInt,
+  width: optionalFloat,
+  height: optionalFloat,
+  length: optionalFloat,
+  weight: optionalFloat,
   material: z.string().optional(),
   origin_country: z.string().optional(),
   sku: z.string().optional(),
@@ -47,8 +47,10 @@ export type ProductCreateVariantSchema = z.infer<
 >
 
 const ProductCreateOptionSchema = z.object({
+  id: z.string().optional(),
   title: z.string(),
   values: z.array(z.string()).min(1),
+  value_ids: z.array(z.string()).optional(),
 })
 
 export type ProductCreateOptionSchema = z.infer<

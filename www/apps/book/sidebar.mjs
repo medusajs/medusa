@@ -43,8 +43,8 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "Bloom",
-            path: "/learn/introduction/build-with-llms-ai/bloom",
+            title: "Cloud CLI",
+            path: "/learn/introduction/build-with-llms-ai/cloud-cli",
           },
           {
             type: "link",
@@ -58,10 +58,15 @@ export const sidebars = [
           },
           {
             type: "link",
+            title: "Bloom",
+            path: "/learn/introduction/build-with-llms-ai/bloom",
+          },
+          {
+            type: "link",
             title: "AI-Friendly Docs",
             path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
-          }
-        ]
+          },
+        ],
       },
       {
         type: "category",
@@ -569,6 +574,11 @@ export const sidebars = [
             type: "link",
             path: "/learn/fundamentals/admin/widgets",
             title: "Admin Widgets",
+          },
+          {
+            type: "link",
+            path: "/learn/fundamentals/admin/custom-injection-zones",
+            title: "Custom Injection Zones",
           },
           {
             type: "link",

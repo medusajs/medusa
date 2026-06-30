@@ -15,7 +15,7 @@ import {
   transformNullableFormData,
   transformNullableFormNumber,
 } from "../../../../../lib/form-helpers"
-import { optionalInt } from "../../../../../lib/validation"
+import { optionalFloat } from "../../../../../lib/validation"
 
 type ProductEditVariantFormProps = {
   product: HttpTypes.AdminProduct
@@ -31,10 +31,10 @@ const ProductEditVariantSchema = z.object({
   barcode: z.string().optional(),
   manage_inventory: z.boolean(),
   allow_backorder: z.boolean(),
-  weight: optionalInt,
-  height: optionalInt,
-  width: optionalInt,
-  length: optionalInt,
+  weight: optionalFloat,
+  height: optionalFloat,
+  width: optionalFloat,
+  length: optionalFloat,
   mid_code: z.string().optional(),
   hs_code: z.string().optional(),
   origin_country: z.string().optional(),

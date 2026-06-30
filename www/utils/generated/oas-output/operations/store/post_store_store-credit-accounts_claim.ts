@@ -2,7 +2,8 @@
  * @oas [post] /store/store-credit-accounts/claim
  * operationId: PostStoreCreditAccountsClaim
  * summary: Claim a Store Credit Account
- * description: Claim a store credit account as the logged-in customer. The store credit account must not belong to another customer, and it must have amount available to claim. This is typically used to claim anonymous store credit accounts, such as those created for guest users or through gift cards.
+ * description: Claim a store credit account as the logged-in customer. The store credit account must not belong to another customer, and it must have amount available to claim. This is typically used to
+ *   claim anonymous store credit accounts, such as those created for guest users or through gift cards.
  * x-sidebar-summary: Claim Store Credit Account
  * x-authenticated: true
  * parameters:

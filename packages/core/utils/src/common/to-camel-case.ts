@@ -1,5 +1,5 @@
 export function toCamelCase(str: string): string {
-  return /^([a-zA-Z]+)(([A-Z]([a-z]+))+)$/.test(str)
+  return /^([a-zA-Z][a-zA-Z0-9]*)(([A-Z][a-z0-9]+)+)$/.test(str)
     ? str
     : str
         .toLowerCase()

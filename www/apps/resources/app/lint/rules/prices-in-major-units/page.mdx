@@ -1,0 +1,64 @@
+---
+sidebar_label: "prices-in-major-units"
+---
+
+export const metadata = {
+  title: `prices-in-major-units - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows price values that look like they're in the smallest currency unit, since Medusa stores prices in major units.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets price-like properties, such as `amount`, `unit_price`, or `total`. It reports values that look like cents, such as a value multiplied by `100`, an identifier named with a `cents` suffix, or a large integer literal.
+
+The following code is reported by the rule:
+
+```ts title="src/api/store/custom/route.ts"
+const item = { amount: price * 100 }
+```
+
+Instead, use the value in major units:
+
+```ts title="src/api/store/custom/route.ts"
+const item = { amount: price }
+```
+
+## Why it's Important
+
+Medusa expects prices in major units, such as `19.99` rather than `1999`. Passing a value in the smallest currency unit results in prices that are inflated by a factor of the currency's minor units.
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/prices-in-major-units": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/prices-in-major-units
+const item = { amount: price * 100 }
+```

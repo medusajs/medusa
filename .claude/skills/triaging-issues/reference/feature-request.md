@@ -40,9 +40,9 @@ Some feature requests are scoped, well-understood additions that don't require a
 
 | Example | Label | Notes |
 |---------|-------|-------|
-| Add a new admin dashboard language/translation | `good-first-issue` | Link to [admin translations guide](https://docs.medusajs.com/learn/resources/contribution-guidelines/admin-translations) |
-| Add support for a new currency | `good-first-issue` | Typically a data addition |
-| Emit a missing event in a workflow or service | `good-first-issue` or `help-wanted` | Depends on how many touchpoints are involved |
+| Add a new admin dashboard language/translation | `good first issue` | Link to [admin translations guide](https://docs.medusajs.com/learn/resources/contribution-guidelines/admin-translations) |
+| Add support for a new currency | `good first issue` | Typically a data addition |
+| Emit a missing event in a workflow or service | `good first issue` or `help-wanted` | Depends on how many touchpoints are involved |
 
 **General signals that a feature is contribution-ready:**
 - No architectural decisions needed — the pattern already exists elsewhere in the codebase
@@ -63,7 +63,7 @@ We'd welcome a PR for this! Check out our [contribution guidelines](https://gith
 For admin translation requests specifically, also link to: https://docs.medusajs.com/learn/resources/contribution-guidelines/admin-translations
 
 ```bash
-bash scripts/labels.sh <issue_number> add good-first-issue
+bash scripts/labels.sh <issue_number> add good first issue
 # or
 bash scripts/labels.sh <issue_number> add help-wanted
 ```

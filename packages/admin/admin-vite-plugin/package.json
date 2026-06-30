@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-vite-plugin",
-  "version": "2.14.2",
+  "version": "2.17.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -13,8 +13,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/admin/admin-vite-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "files": [
     "dist",
@@ -36,7 +39,7 @@
     "@babel/parser": "7.25.6",
     "@babel/traverse": "7.25.6",
     "@babel/types": "7.25.6",
-    "@medusajs/admin-shared": "2.14.2",
+    "@medusajs/admin-shared": "2.17.1",
     "chokidar": "^3.5.3",
     "fdir": "6.1.1",
     "magic-string": "0.30.5",

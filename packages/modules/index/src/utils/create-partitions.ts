@@ -101,7 +101,7 @@ export async function createPartitions(
   }
 
   // Create count estimate function
-  partitions.push(`
+  await manager.execute(`
     CREATE OR REPLACE FUNCTION count_estimate(query text) RETURNS bigint AS $$
     DECLARE
         plan jsonb;
@@ -111,6 +111,4 @@ export async function createPartitions(
     END;
     $$ LANGUAGE plpgsql;
   `)
-
-  await manager.execute(partitions.join("; "))
 }

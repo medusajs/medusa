@@ -73,60 +73,6 @@
  *             type: string
  *             title: status
  *             description: A return status.
- *   - name: $and
- *     in: query
- *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
- *     required: false
- *     schema:
- *       type: array
- *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
- *       items:
- *         type: object
- *       title: $and
- *   - name: $or
- *     in: query
- *     description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
- *     required: false
- *     schema:
- *       type: array
- *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
- *       items:
- *         type: object
- *       title: $or
- *   - name: sales_channel_id
- *     in: query
- *     description: Filter by sales channel IDs to retrieve their associated returns.
- *     required: false
- *     schema:
- *       type: array
- *       description: Filter by sales channel IDs to retrieve their associated returns.
- *       items:
- *         type: string
- *         title: sales_channel_id
- *         description: A sales channel's ID.
- *   - name: region_id
- *     in: query
- *     description: Filter by region IDs to retrieve their associated returns.
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: region_id
- *           description: The return's region id.
- *         - type: array
- *           description: The return's region id.
- *           items:
- *             type: string
- *             title: region_id
- *             description: The region id's details.
- *   - name: q
- *     in: query
- *     description: Search term to filter the return's searchable properties.
- *     required: false
- *     schema:
- *       type: string
- *       title: q
- *       description: Search term to filter the return's searchable properties.
  *   - name: created_at
  *     in: query
  *     description: Filter by the return's creation date.
@@ -591,20 +537,6 @@
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
  *       title: updated_at
- *   - name: customer_id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: customer_id
- *           description: The return's customer id.
- *         - type: array
- *           description: The return's customer id.
- *           items:
- *             type: string
- *             title: customer_id
- *             description: The customer id's details.
  *   - name: with_deleted
  *     in: query
  *     description: Whether to include deleted records in the result.
@@ -613,6 +545,127 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: order_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: order_id
+ *           description: Filter by the return's order ID.
+ *         - type: array
+ *           description: Filter by return order IDs.
+ *           items:
+ *             type: string
+ *             title: order_id
+ *             description: The return's order ID.
+ *         - type: object
+ *           properties:
+ *             $and:
+ *               type: array
+ *               description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *               items:
+ *                 type: object
+ *             $or:
+ *               type: array
+ *               description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *               items:
+ *                 type: object
+ *             $eq:
+ *               oneOf:
+ *                 - type: string
+ *                   title: $eq
+ *                   description: Filter by exact value.
+ *                 - type: array
+ *                   title: $eq
+ *                   description: Filter by exact value.
+ *                   items:
+ *                     type: string
+ *             $ne:
+ *               type: string
+ *               title: $ne
+ *               description: Filter by not equal to the given value.
+ *             $in:
+ *               type: array
+ *               title: $in
+ *               description: Filter by values included in the given array.
+ *               items:
+ *                 type: string
+ *             $nin:
+ *               type: array
+ *               title: $nin
+ *               description: Filter by values not included in the given array.
+ *               items:
+ *                 type: string
+ *             $not:
+ *               oneOf:
+ *                 - type: string
+ *                   title: $not
+ *                   description: Filter by not equal to the given value.
+ *                 - type: object
+ *                   title: $not
+ *                   description: Filter by values not matching the conditions in this parameter.
+ *                 - type: array
+ *                   title: $not
+ *                   description: Filter by values not matching the conditions in this parameter.
+ *                   items:
+ *                     type: string
+ *             $gt:
+ *               type: string
+ *               title: $gt
+ *               description: Filter by values greater than the given value.
+ *             $gte:
+ *               type: string
+ *               title: $gte
+ *               description: Filter by values greater than or equal to the given value.
+ *             $lt:
+ *               type: string
+ *               title: $lt
+ *               description: Filter by values less than the given value.
+ *             $lte:
+ *               type: string
+ *               title: $lte
+ *               description: Filter by values less than or equal to the given value.
+ *             $like:
+ *               type: string
+ *               title: $like
+ *               description: Apply a `like` filter. Useful for strings only.
+ *             $re:
+ *               type: string
+ *               title: $re
+ *               description: Apply a regex filter. Useful for strings only.
+ *             $ilike:
+ *               type: string
+ *               title: $ilike
+ *               description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *             $fulltext:
+ *               type: string
+ *               title: $fulltext
+ *               description: Filter to apply on full-text properties.
+ *             $overlap:
+ *               type: array
+ *               title: $overlap
+ *               description: Filter to apply on array properties to find overlapping values.
+ *               items:
+ *                 type: string
+ *             $contains:
+ *               type: array
+ *               title: $contains
+ *               description: Filter to apply on array properties to find contained values.
+ *               items:
+ *                 type: string
+ *             $contained:
+ *               type: array
+ *               title: $contained
+ *               description: Filter to apply on array properties to find contained values.
+ *               items:
+ *                 type: string
+ *             $exists:
+ *               type: boolean
+ *               title: $exists
+ *               description: Filter by whether a value exists or not.
+ *           title: order_id
+ *           description: The return's order id.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

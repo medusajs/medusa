@@ -24,12 +24,20 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateSalesChannelsExistStep"
   },
   {
+    "title": "requestVerificationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
+  },
+  {
     "title": "setAuthAppMetadataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
   },
   {
     "title": "addShippingMethodToCartStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addShippingMethodToCartStep"
+  },
+  {
+    "title": "compensatePaymentIfNeededStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/compensatePaymentIfNeededStep"
   },
   {
     "title": "confirmInventoryStep",
@@ -126,6 +134,10 @@ export const step = [
   {
     "title": "validateAndReturnShippingMethodsDataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAndReturnShippingMethodsDataStep"
+  },
+  {
+    "title": "validateCartItemsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartItemsStep"
   },
   {
     "title": "validateCartPaymentsStep",
@@ -1402,6 +1414,10 @@ export const step = [
   {
     "title": "validateClaimStoreCreditAccountInputStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateClaimStoreCreditAccountInputStep"
+  },
+  {
+    "title": "validateSourceStoreCreditAccountsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateSourceStoreCreditAccountsStep"
   },
   {
     "title": "validateStoreCreditAccountInputStep",

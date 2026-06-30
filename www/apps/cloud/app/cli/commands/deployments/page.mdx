@@ -1,0 +1,766 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `deployments Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to inspect Cloud deployments and their build logs using the CLI.
+
+## deployments list
+
+List recent deployments for a project. By default, the command returns the 20 most recent deployments across all environments in the project, ordered by creation time (newest first).
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud deployments list --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud deployments list
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the project belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) to list deployments from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter deployments to a specific environment by [handle](../environments/page.mdx#find-environment-handles). If not provided, and not set in the [active context](../use/page.mdx#set-the-active-context), deployments from all environments in the project will be returned.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--environment-type <type>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter deployments by environment type. One of `production`, `long-lived`, or `preview`. If you set the environment using its flag or in the active context, this filter is applied to the specified environment.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--commit <sha>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter deployments by Git commit SHA. Accepts a full SHA or a prefix.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--limit <number>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Maximum number of deployments to return. Minimum: `1`, maximum: `200`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `20`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--offset <number>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The number of deployments to skip before retrieving the deployments. Useful for pagination.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `0`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## deployments get
+
+Retrieve a single deployment by its ID. Returns the deployment's status, commit details, environment, and timestamps.
+
+<Note>
+
+This only retrieves the deployment's details. If you want to view its build logs, use [`mcloud deployments build-logs`](#deployments-build-logs) instead.
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud deployments get <deployment> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud deployments get <deployment>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `deployment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID of the deployment to retrieve.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the project belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the deployment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## deployments build-logs
+
+Fetch the build logs for a deployment. Use this to debug build failures or to inspect the build output for a specific deployment.
+
+<Note title="Tip">
+
+To fetch the runtime logs for a deployment after it is live, use [`mcloud logs --deployment <id>`](../logs/page.mdx#fetch-logs-for-a-specific-deployment) instead.
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud deployments build-logs <deployment> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud deployments build-logs <deployment>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `deployment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID of the deployment to retrieve the build logs for.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the project belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the deployment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--type <backend|storefront>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Which build log stream to read.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Investigate a Failed Deployment
+
+When a deployment fails, combine `deployments list`, `deployments get`, and `deployments build-logs` to find the deployment, inspect its status, and read the build output.
+
+### Check Build Logs for a Failed Deployment
+
+If the build itself failed (status `build-failed`), use `deployments build-logs` to read the build output:
+
+```bash
+# Assuming context is set with mcloud use. Otherwise, add the necessary flags to each command as shown in previous sections.
+
+# Find the most recent build-failed deployment and store its ID in a variable
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '.[] | select(.backend_status == "build-failed") | .id' \
+    | head -n 1
+)
+
+# Get deployment details
+mcloud deployments get "$DEPLOYMENT_ID"
+
+# Fetch its backend build logs
+mcloud deployments build-logs "$DEPLOYMENT_ID"
+
+# Or fetch the storefront build logs
+mcloud deployments build-logs "$DEPLOYMENT_ID" --type storefront
+```
+
+### Check Runtime Logs for a Failed Deployment
+
+If the build succeeded but the rollout failed (status `deployment-failed`), the build logs won't show the cause. Use [`mcloud logs`](../logs/page.mdx) with `--deployment` to read the runtime logs for that specific deployment:
+
+```bash
+# Assuming context is set with mcloud use. Otherwise, add the necessary flags to each command as shown in previous sections.
+
+# Find the most recent deployment-failed deployment and store its ID in a variable
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '.[] | select(.backend_status == "deployment-failed") | .id' \
+    | head -n 1
+)
+
+# Get deployment details
+mcloud deployments get "$DEPLOYMENT_ID"
+
+# Fetch the runtime logs scoped to that deployment
+mcloud logs --deployment "$DEPLOYMENT_ID" --limit 1000
+
+# Or filter to error-level lines only
+mcloud logs --deployment "$DEPLOYMENT_ID" --search error --limit 1000
+```
+
+To redeploy after fixing the underlying issue, use [`mcloud environments redeploy`](../environments/page.mdx#environments-redeploy). To start a fresh build from the tracked branch, use [`mcloud environments trigger-build`](../environments/page.mdx#environments-trigger-build).
+
+---
+
+## Backend and Storefront Statuses
+
+When retrieving the details of a deployment, you can see the backend and storefront statuses through the `backend_status` and `storefront_status` fields when using the `--json` flag.
+
+Possible backend and storefront statuses are:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `created`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The deployment record exists but the build has not started yet.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `building`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build is running. Use [`mcloud deployments build-logs`](#deployments-build-logs) to follow the output.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `built`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build finished successfully but the deployment to the environment hasn't started yet.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `deploying`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The built artifact is being rolled out to the environment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `deployed`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The deployment is live and serving traffic. The current active deployment for an environment is marked `(active)` in the formatted table. You can get the active deployment logs using [`mcloud logs --deployment <id>`](../logs/page.mdx#fetch-logs-for-a-specific-deployment).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `build-failed`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build step failed before any code was deployed. Use [`mcloud deployments build-logs`](#deployments-build-logs) to find the build error.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `deployment-failed`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build succeeded but the rollout to the environment failed. Use [`mcloud logs`](../logs/page.mdx) to fetch the logs for the affected deployment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `timed-out`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build or deployment exceeded the maximum allowed duration and was terminated. This status applies to backend deployments only.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `canceled`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The build or deployment was canceled, usually because a newer deployment superseded it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `idle`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The deployment is no longer the active one for its environment. Idle deployments can be re-activated with [`mcloud environments redeploy`](../environments/page.mdx#environments-redeploy).
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

@@ -1,0 +1,45 @@
+---
+sidebar_label: "route-handler-exports-uppercase"
+---
+
+export const metadata = {
+  title: `route-handler-exports-uppercase - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires API route handler exports to use uppercase HTTP method names, such as `GET` or `POST`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets `route.ts` and `route.js` files in your project's `src/api` directory. It reports handler exports that use a lowercase HTTP method name, which Medusa ignores.
+
+The following code is reported by the rule:
+
+```ts title="src/api/store/products/route.ts"
+export const get = async (req, res) => {
+  res.json({})
+}
+```
+
+Instead, use the uppercase method name:
+
+```ts title="src/api/store/products/route.ts"
+export const GET = async (req, res) => {
+  res.json({})
+}
+```
+
+## Why it's Important
+
+Medusa only registers handlers exported with uppercase HTTP method names. A lowercase export is ignored, so the route's handler is never reached.
+
+Learn more in the [HTTP Methods documentation](!docs!/learn/fundamentals/api-routes/http-methods).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

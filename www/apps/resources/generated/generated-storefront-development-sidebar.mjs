@@ -140,7 +140,16 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
           "type": "link",
           "path": "/storefront-development/products/list",
           "title": "List Products",
-          "children": []
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/storefront-development/products/options",
+              "title": "Filter by Options",
+              "children": []
+            }
+          ]
         },
         {
           "loaded": true,
@@ -438,6 +447,14 @@ const generatedgeneratedStorefrontDevelopmentSidebarSidebar = {
               "type": "link",
               "path": "/storefront-development/customers/register",
               "title": "Register Customer",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/storefront-development/customers/verify-account",
+              "title": "Register Customer with Email Verification",
               "children": []
             },
             {

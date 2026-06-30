@@ -30,6 +30,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/first-project",
+            "title": "Create First Project",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/faq",
             "title": "FAQ",
             "children": []
@@ -48,6 +56,14 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Command Palette",
             "path": "/command-palette",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Navigation Styles",
+            "path": "/navigation",
             "children": []
           }
         ]
@@ -168,6 +184,14 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "title": "Fix with AI",
+                "path": "/deployments/fix-with-ai",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "title": "Troubleshooting",
                 "path": "/deployments/troubleshooting",
                 "children": []
@@ -178,8 +202,138 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Access Keys",
+            "path": "/access-keys",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Account",
             "path": "/user",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "category",
+        "title": "CLI",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Installation",
+            "path": "/cli",
+            "hideFromChildItems": true,
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "For Agents",
+            "path": "/cli/agents",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "login",
+            "path": "/cli/commands/login",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "signup",
+            "path": "/cli/commands/signup",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "use",
+            "path": "/cli/commands/use",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "whoami",
+            "path": "/cli/commands/whoami",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "organizations",
+            "path": "/cli/commands/organizations",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "projects",
+            "path": "/cli/commands/projects",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "environments",
+            "path": "/cli/commands/environments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "deployments",
+            "path": "/cli/commands/deployments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "variables",
+            "path": "/cli/commands/variables",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "logs",
+            "path": "/cli/commands/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "version",
+            "path": "/cli/commands/version",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "logout",
+            "path": "/cli/commands/logout",
             "children": []
           }
         ]

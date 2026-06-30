@@ -134,12 +134,12 @@ export async function initializeContainer(
   rootDirectory: string,
   options?: {
     skipDbConnection?: boolean
-    throwOnError?: boolean
+    throwOnValidationError?: boolean
   }
 ): Promise<MedusaContainer> {
   await featureFlagsLoader(rootDirectory)
   const configDir = await configLoader(rootDirectory, "medusa-config", {
-    throwOnError: options?.throwOnError,
+    throwOnValidationError: options?.throwOnValidationError,
   })
   await featureFlagsLoader(join(__dirname, ".."))
 

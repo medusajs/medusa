@@ -1,0 +1,704 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `logs Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Fetch runtime logs for a Cloud environment's backend or storefront.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs --organization org_123 --project proj_123 --environment env_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+By default, the command retrieves the last 500 log lines from the past 15
+minutes and prints them to the terminal. You can narrow the output with
+filters for time range, deployment, source, metadata, and search terms, or
+stream new log lines continuously with `--follow`.
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Required when authenticated without an organization access key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [The ID of the project](../projects/page.mdx#find-project-ids-and-handles) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-e <handle>`, `--environment <handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [The handle of the environment](../environments/page.mdx#find-environment-handles) to fetch logs for.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the environment in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-f`, `--follow`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Poll for new log lines continuously instead of fetching a bounded time
+      window. The command runs until you stop it with <Kbd>CTRL</Kbd>+<Kbd>C</Kbd>.
+      Incompatible with `--json`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false` (the command exits after fetching a recent time window)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--limit <number>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Maximum number of log lines to retrieve. Only used in non-follow mode.
+      Minimum: `1`, maximum: `5000`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `500`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--from <ISO8601>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Start of the time range as an ISO 8601 timestamp. Only used in
+      non-follow mode. For example, `2026-04-22T10:00:00Z` for April 22, 2026 at 10:00am UTC.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      15 minutes ago
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--to <ISO8601>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      End of the time range as an ISO 8601 timestamp. Only used in
+      non-follow mode; ignored with `--follow`. Must be later than
+      `--from`. If `--to` is before 15 minutes ago, you must also specify `--from` to define a valid time window.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      now
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--search <string>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter log lines by a substring. Behaves the same as the search bar
+      in the Cloud dashboard logs view.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--deployment <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter log lines by deployment or build ID. When a build ID is passed, the CLI resolves it to that build's latest deployment.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--source <string>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter log lines by source. Repeatable. Pass the flag multiple times
+      to include logs from multiple sources.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--metadata <key=value>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Filter log lines by a metadata field using an "in" filter. Repeatable.
+      Pass the flag multiple times. Repeating the same key merges the
+      values into a single filter.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--type <backend|storefront>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Log stream type to query.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `backend`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text. Not available with
+      `--follow`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Process Logs in an Agentic Workflow
+
+{/* TODO revisit once we have skills */}
+
+Use `--json` to get machine-readable output that you can pass to `jq` or
+other tools for filtering and analysis:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs \
+    --project proj_123 \
+    --environment production \
+    --search "500" \
+    --json | jq '.[] | .message'
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --project proj_123 --environment production
+
+  mcloud logs --search "500" --json | jq '.[] | .message'
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Set the active context once with [`mcloud use`](../use/page.mdx) to avoid repeating project and environment flags across multiple commands:
+
+```bash
+mcloud use --project proj_123 --environment production
+
+mcloud logs --search error --limit 500 --json
+mcloud logs --follow
+```
+
+---
+
+## Stream Live Logs
+
+Use `--follow` to tail an environment's logs continuously. This is useful
+when monitoring a deployment in progress or watching for errors in real time:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --follow
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --follow
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The command polls for new lines until you stop it with `Ctrl+C`.
+
+<Note>
+
+`--follow` is incompatible with `--json`. To process logs programmatically
+in a script, use a bounded time-window fetch instead.
+
+</Note>
+
+---
+
+## Search for Errors
+
+If you're looking for errors in the logs, use `--search` to filter log lines by a substring. This works the same
+as the search bar in the Cloud dashboard logs view:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --search error \
+    --limit 1000
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --search error --limit 1000
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Alternatively, if you're looking for HTTP calls that resulted in 500 or other error status codes, use the `--metadata` filter to find log lines with `status_code=500`:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --metadata status=500 \
+    --limit 1000
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --metadata status=500 --limit 1000
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Fetch Logs for a Specific Deployment
+
+When a deployment fails, query the logs for that deployment directly using
+its ID. Find the build or deployment ID from [`mcloud deployments list`](../deployments/page.mdx#deployments-list) or the Cloud
+dashboard. Pass a build ID and the CLI resolves it to that build's latest deployment automatically.
+
+<Note title="Tip">
+
+To fetch the build logs for a deployment instead of its runtime logs, use [`mcloud deployments build-logs`](../deployments/page.mdx#deployments-build-logs).
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --deployment bld_01ABC123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --deployment bld_01ABC123
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Specify Logs Time Range
+
+You can use the `--from` and `--to` flags to specify a time range for fetching logs instead of the default "last 15 minutes".
+
+Both flags accept ISO 8601 timestamps. When either or both are passed, the command retrieves all log lines within the time range, up to the maximum specified by `--limit` (default 500).
+
+### Example: Fetch Logs within a Time Range
+
+For example, to fetch logs from April 22, 2026 between 10:00am and 11:00am UTC:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash title="Fetch logs within an hour time range"
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --to 2026-04-22T11:00:00Z
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash title="Fetch logs within an hour time range"
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --to 2026-04-22T11:00:00Z
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To increase the limit to 1000 log lines in that time range:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash title="Fetch logs within an hour time range with a higher limit"
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --to 2026-04-22T11:00:00Z \
+    --limit 1000
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash title="Fetch logs within an hour time range with a higher limit"
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --to 2026-04-22T11:00:00Z --limit 1000
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Example: Fetch Logs Starting from a Time Until Now
+
+To fetch logs starting from a specific time until now, pass `--from` without `--to`:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash title="Fetch logs starting from a specific time until now"
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --from 2026-04-22T10:00:00Z
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash title="Fetch logs starting from a specific time until now"
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --from 2026-04-22T10:00:00Z
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Example: Fetch Logs Until a Time in the Past
+
+To fetch logs until a certain time, pass `--to`. If that time is more than 15 minutes ago, you must also pass `--from` to define a valid time window.
+
+For example, to pass logs until 5 minutes ago, you don't need to specify `--from`:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash title="Fetch logs until a time that's within the last 15 minutes"
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --to 2026-04-22T10:55:00Z # assuming now is 2026-04-22T11:00:00Z
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash title="Fetch logs until a time that's within the last 15 minutes"
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --to 2026-04-22T10:55:00Z # assuming now is 2026-04-22T11:00:00Z
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+However, if you want to fetch logs until 20 minutes ago, you must also specify `--from` to define a valid time window:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash title="Fetch logs until a time that's more than 15 minutes ago, with a valid time window"
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --from 2026-04-22T10:00:00Z \
+    --to 2026-04-22T10:40:00Z # assuming now is 2026-04-22T11:00:00Z
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash title="Fetch logs until a time that's more than 15 minutes ago, with a valid time window"
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs \
+    --from 2026-04-22T10:00:00Z \
+    --to 2026-04-22T10:40:00Z # assuming now is 2026-04-22T11:00:00Z
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Filter Storefront Logs
+
+By default, `mcloud logs` fetches backend logs. To query storefront logs,
+pass `--type storefront`:
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud logs \
+    --organization org_123 \
+    --project proj_123 \
+    --environment env_123 \
+    --type storefront
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123 --environment env_123
+
+  mcloud logs --type storefront
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+You can also specify any of the other filters and options with storefront logs, such as `--follow` or `--search`.

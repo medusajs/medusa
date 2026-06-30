@@ -1,6 +1,7 @@
 import { MedusaAppLoader } from "@medusajs/framework"
 import { LinkLoader } from "@medusajs/framework/links"
 import { MigrationScriptsMigrator } from "@medusajs/framework/migrations"
+import { WorkflowLoader } from "@medusajs/framework/workflows"
 import {
   ContainerRegistrationKeys,
   getResolvedPlugins,
@@ -115,6 +116,16 @@ async function loadResources(
   const onApplicationShutdown = medusaAppResources.onApplicationShutdown
   await medusaAppResources.onApplicationStart()
 
+  // Load workflow hooks from all plugins (including the app directory,
+  // which getResolvedPlugins already includes as a plugin entry).
+  // Without this, workflow hooks defined in src/workflows/ are never
+  // registered during `medusa db:migrate`, causing them to silently
+  // skip execution even though the workflows themselves run successfully.
+  const workflowsSourcePaths = plugins.map((plugin) =>
+    join(plugin.resolve, "workflows")
+  )
+  await new WorkflowLoader(workflowsSourcePaths, container).load()
+
   return {
     onApplicationPrepareShutdown,
     onApplicationShutdown,
@@ -128,10 +139,12 @@ const main = async function ({
   container?: MedusaContainer
 }) {
   process.env.MEDUSA_WORKER_MODE = "server"
-  const container = await initializeContainer(directory)
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  let logger: Logger | undefined
 
   try {
+    const container = await initializeContainer(directory)
+    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
     const migrated = await runMigrationScripts({
       directory,
       container: container,
@@ -139,7 +152,11 @@ const main = async function ({
     })
     process.exit(migrated ? 0 : 1)
   } catch (error) {
-    logger.error(error)
+    if (logger) {
+      logger.error(error)
+    } else {
+      console.error(error)
+    }
     process.exit(1)
   }
 }
