@@ -1,6 +1,10 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { createGiftCardsWorkflow } from "@medusajs/loyalty-plugin/workflows"
 import {
+  ILoyaltyModuleService,
+  PluginModule,
+} from "@medusajs/loyalty-plugin/types"
+import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
@@ -224,6 +228,30 @@ medusaIntegrationTestRunner({
         expect(parts[0]).toBe("GIFT")
         expect(parts.length - 1).toBe(4)
         parts.slice(1).forEach((section) => expect(section).toHaveLength(4))
+      })
+
+      it("should auto-generate a code using configured prefix and sections when plugin options are set", async () => {
+        const loyaltyModule = getContainer().resolve<ILoyaltyModuleService>(
+          PluginModule.LOYALTY
+        )
+        const spy = jest
+          .spyOn(loyaltyModule, "getOptions")
+          .mockResolvedValue({ prefix: "GC", sections: 3 })
+
+        try {
+          const { result } = await createGiftCardsWorkflow(getContainer()).run({
+            input: [{ currency_code: "USD", value: 300 }],
+          })
+
+          const [giftCard] = result
+          const parts = giftCard.code.split("-")
+
+          expect(parts[0]).toBe("GC")
+          expect(parts.length - 1).toBe(3)
+          parts.slice(1).forEach((section) => expect(section).toHaveLength(4))
+        } finally {
+          spy.mockRestore()
+        }
       })
     })
   },
