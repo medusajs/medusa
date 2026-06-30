@@ -167,6 +167,86 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## ERR_PNPM_IGNORED_BUILDS Error in Deployments
+
+When using pnpm 11.9.0 or later in a monorepo deployment, you may encounter the following error:
+
+```bash
+ERR_PNPM_IGNORED_BUILDS Some builds are ignored.
+This may cause issues with optional packages like workerd@1.20260329.1.
+```
+
+This error occurs because pnpm 11.9.0 changed how it handles optional build scripts. Packages like `workerd` require their build scripts to run, but pnpm now ignores them by default unless explicitly allowed.
+
+This commonly causes subsequent failures, such as a missing `opennextjs-cloudflare` binary during storefront builds.
+
+### Resolve ERR_PNPM_IGNORED_BUILDS
+
+Add the affected packages to the `pnpm.onlyBuiltDependencies` list in your `package.json` to allow their build scripts to run:
+
+```json title="package.json"
+{
+  "pnpm": {
+    "onlyBuiltDependencies": ["workerd"]
+  }
+}
+```
+
+After adding this configuration:
+
+1. Run `pnpm install` locally to update the lockfile.
+2. Commit both the updated `package.json` and `pnpm-lock.yaml`.
+3. Push the changes to trigger a new deployment.
+
+---
+
+## pnpm Install Frozen Lockfile Failures
+
+If your Cloud build fails with exit code 1 during the `pnpm install` step and the error message only says "process did not complete successfully", the cause is often a lockfile or dependency issue that is hidden in pnpm's full output.
+
+Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducible builds. This means your `pnpm-lock.yaml` must be committed and kept in sync with `package.json`.
+
+### Common Causes
+
+- **Lockfile drift**: The `pnpm-lock.yaml` file was not committed after updating `package.json`.
+- **pnpm version mismatch**: The version of pnpm used locally differs from the one used in Cloud builds.
+- **Native build dependencies**: A package with native binaries fails to build in the Cloud environment.
+- **Registry connectivity issues**: A package registry is unreachable during the build.
+
+### Retrieve Full Build Logs
+
+The Cloud dashboard may truncate build output. Use the Cloud CLI to retrieve the full pnpm install logs:
+
+```bash
+# Install the CLI
+npm install @medusajs/mcloud -g
+
+# Login
+mcloud login
+
+# List recent deployments to find the failed deployment ID
+mcloud deployments list \
+  --organization org_123 \
+  --project proj_123
+
+# Fetch the full build logs
+mcloud deployments build-logs deploy_123 \
+  --organization org_123 \
+  --project proj_123
+```
+
+Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs.
+
+### Fix a Lockfile Mismatch
+
+If the logs show a lockfile error, regenerate the lockfile locally:
+
+1. Run `pnpm install` locally to update the lockfile.
+2. Commit the updated `pnpm-lock.yaml`.
+3. Push the changes to trigger a new deployment.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
