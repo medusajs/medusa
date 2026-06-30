@@ -65,7 +65,30 @@ Once you're done, click the Continue button to go to the next step.
 
 In the last step, you'll use the [Bulk Editor](../../tips/bulk-editor/page.mdx) to enter the new prices for the variants of each product you selected. You can set the prices for every currency and region in your store.
 
-Once you're done, click the Save button to create the price list.
+### Set Quantity-Based Prices
+
+<Note>
+
+Quantity-based pricing is available since [Medusa v2.17.0](https://github.com/medusajs/medusa/releases/tag/v2.17.0).
+
+</Note>
+
+For each currency or region column in the Bulk Editor, you can set prices that apply only when a customer orders a specific quantity range. For example, you can offer a lower price when a customer orders 10 or more units.
+
+To set quantity-based prices for a variant:
+
+1. Click the arrow icon next to a price cell in the Bulk Editor.
+2. In the side window that opens, click the **Add price** button to add a price tier.
+3. For each price tier, enter:
+    - **Amount**: The price for this quantity range.
+    - **Min Qty**: The minimum order quantity for this price to apply. Leave empty for no minimum.
+    - **Max Qty**: The maximum order quantity for this price to apply. Leave empty for no maximum.
+4. Add as many price tiers as needed for different quantity ranges.
+5. Once you're done, click the **Save** button to apply the quantity-based prices.
+
+<!-- TODO: add screenshot of quantity-based pricing modal -->
+
+Once you're done setting all prices, click the Save button to create the price list.
 
 ![Create Price List Pricing Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739959865/User%20Guide/Screenshot_2025-02-19_at_12.10.10_PM_aaxecg.png)
 
