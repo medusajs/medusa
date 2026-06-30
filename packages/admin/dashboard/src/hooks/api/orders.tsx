@@ -415,17 +415,45 @@ export const useCreateOrderCreditLine = (
   })
 }
 
+export const useAuthorizePaymentSession = (
+  orderId: string,
+  sessionId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminAuthorizeOrderPaymentSessionResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () =>
+      sdk.admin.order.authorizePaymentSession(orderId, sessionId),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.detail(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateOrderChange = (
   orderChangeId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderChangeResponse,
     FetchError,
-    { carry_over_promotions: boolean }
+    { carry_over_promotions?: boolean; internal_note?: string | null }
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: { carry_over_promotions: boolean }) =>
-      sdk.admin.order.updateOrderChange(orderChangeId, payload),
+    mutationFn: (
+      payload: { carry_over_promotions?: boolean; internal_note?: string | null }
+    ) => sdk.admin.order.updateOrderChange(orderChangeId, payload),
     onSuccess: (data, variables, context) => {
       const orderId = data.order_change.order_id
 

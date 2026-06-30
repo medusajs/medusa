@@ -1,9 +1,11 @@
 import { Spinner } from "@medusajs/icons"
+import type { AuthTypes } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { decodeToken } from "react-jwt"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import { callbackWithCloudAuth } from "../../../hooks/api"
 import {
   useCloudAuthEnabled,
   useCreateCloudAuthUser,
@@ -12,7 +14,14 @@ import { sdk } from "../../../lib/client"
 
 const CLOUD_AUTH_PROVIDER = "cloud"
 
-export const CloudAuthLogin = () => {
+type CloudAuthLoginProps = {
+  onMfaChallenge?: (
+    challenge: AuthTypes.AuthMfaChallengeDTO,
+    onSuccess: (token: string) => void | Promise<void>
+  ) => void
+}
+
+export const CloudAuthLogin = ({ onMfaChallenge }: CloudAuthLoginProps) => {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const { data: cloudAuth } = useCloudAuthEnabled()
@@ -26,7 +35,10 @@ export const CloudAuthLogin = () => {
     (searchParams.has("code") || searchParams.has("error"))
 
   const { handleLogin, isLoginPending } = useHandleLogin(isAutoLogin)
-  const { handleCallback, isCallbackPending } = useAuthCallback(searchParams)
+  const { handleCallback, isCallbackPending } = useAuthCallback(
+    searchParams,
+    onMfaChallenge
+  )
 
   const actionInitiated = useRef(false) // ref to prevent duplicate calls in React strict mode and other unmounting+mounting scenarios
   useEffect(() => {
@@ -90,7 +102,7 @@ const useHandleLogin = (isAutoLogin: boolean) => {
         callback_url: `${window.location.origin}${window.location.pathname}?auth_provider=${CLOUD_AUTH_PROVIDER}`,
       })
 
-      if (typeof result === "object" && result.location) {
+      if (typeof result === "object" && "location" in result) {
         // Redirect to Medusa Cloud for authentication
         window.location.href = result.location
         return
@@ -112,27 +124,20 @@ const useHandleLogin = (isAutoLogin: boolean) => {
   return { handleLogin, isLoginPending: isPending }
 }
 
-const useAuthCallback = (searchParams: URLSearchParams) => {
+const useAuthCallback = (
+  searchParams: URLSearchParams,
+  onMfaChallenge?: (
+    challenge: AuthTypes.AuthMfaChallengeDTO,
+    onSuccess: (token: string) => void | Promise<void>
+  ) => void
+) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { mutateAsync: createCloudAuthUser } = useCreateCloudAuthUser()
   const [isPending, setIsPending] = useState(false)
 
-  // Not using useMutation from @tanstack/react-query because it doesn't play well with strict mode when invoked only once from a useEffect.
-  // The issue is that the first instance of the mutation is invoked but quickly canceled upon the second mounting of the component, and its status gets stuck at pending.
-  const handleCallback = useCallback(async () => {
-    setIsPending(true)
-    try {
-      let token: string
-      try {
-        const query = Object.fromEntries(searchParams)
-        delete query.auth_provider // BE doesn't need this
-
-        token = await sdk.auth.callback("user", CLOUD_AUTH_PROVIDER, query)
-      } catch (error) {
-        throw new Error("Authentication callback failed")
-      }
-
+  const ensureCloudAuthUser = useCallback(
+    async (token: string) => {
       const decodedToken = decodeToken(token) as {
         actor_id: string
         user_metadata: Record<string, unknown>
@@ -150,6 +155,44 @@ const useAuthCallback = (searchParams: URLSearchParams) => {
           throw new Error("Failed to refresh token after user creation")
         }
       }
+    },
+    [createCloudAuthUser]
+  )
+
+  // Not using useMutation from @tanstack/react-query because it doesn't play well with strict mode when invoked only once from a useEffect.
+  // The issue is that the first instance of the mutation is invoked but quickly canceled upon the second mounting of the component, and its status gets stuck at pending.
+  const handleCallback = useCallback(async () => {
+    setIsPending(true)
+    try {
+      let token: string
+      try {
+        const query = Object.fromEntries(searchParams)
+        delete query.auth_provider // BE doesn't need this
+
+        const result = await callbackWithCloudAuth(query)
+
+        if (typeof result === "object" && "mfa_challenge" in result) {
+          if (!onMfaChallenge) {
+            throw new Error("MFA challenge handler is missing")
+          }
+
+          onMfaChallenge?.(result.mfa_challenge, async (verifiedToken) => {
+            await ensureCloudAuthUser(verifiedToken)
+            navigate("/")
+          })
+          return
+        }
+
+        if (typeof result === "object" && "verification_required" in result) {
+          throw new Error("Verification required but not implemented yet")
+        }
+
+        token = result
+      } catch (error) {
+        throw new Error("Authentication callback failed")
+      }
+
+      await ensureCloudAuthUser(token)
 
       navigate("/")
     } catch (error) {
@@ -160,7 +203,7 @@ const useAuthCallback = (searchParams: URLSearchParams) => {
     }
 
     setIsPending(false)
-  }, [searchParams, t, createCloudAuthUser, navigate])
+  }, [searchParams, t, onMfaChallenge, ensureCloudAuthUser, navigate])
 
   return { handleCallback, isCallbackPending: isPending }
 }

@@ -1,0 +1,1150 @@
+import { Table, Note, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `environments Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage your Cloud environments using the CLI.
+
+## environments list
+
+List all environments in a project.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud environments list --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud environments list
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the project belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) to list environments from.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## environments get
+
+Retrieve a single environment by its handle. This is useful if you want to retrieve the environment's details, such as its status or tracked branch.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud environments get <environment> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud environments get <environment>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Returns the following information:
+
+<CodeTabs group="cli-output">
+  <CodeTab label="Plaintext" value="plaintext">
+
+  ```bash
+  ID:                 <environment-id>
+  Name:               Production
+  Handle:             <environment-handle>
+  Type:               production / long-lived / preview
+  Status:             ready
+  Default subdomain:  trusting-soft-form
+  Custom subdomain:   acme
+  Custom domain:      acme.com
+  Tracked branch:     main
+  Project:            <project-id>
+  Created at:         2024-10-10T08:24:32.382Z
+  ```
+
+  </CodeTab>
+  <CodeTab label="JSON (--json)" value="json">
+
+  ```json
+  {
+    "id": "<environment-id>",
+    "project_id": "<project-id>",
+    "handle": "<environment-handle>",
+    "name": "Production",
+    "type": "production",
+    "default_subdomain": "trusting-soft-form",
+    "custom_subdomain": "acme",
+    "default_domain": "trusting-soft-form.medusajs.app",
+    "custom_domain": "acme.com",
+    "created_at": "2024-10-10T08:24:32.382Z",
+    "updated_at": "2024-10-10T08:24:32.382Z",
+    "external_id": "main",
+    "status": "ready",
+    "metadata": null,
+    "project": {
+      "id": "<project-id>",
+      "name": "My Store",
+      "handle": "<project-handle>",
+      "region": "us-east-1",
+      "organization_id": "<organization-id>",
+      "repository": "myuser/my-repo",
+      "root_path": "/apps/backend",
+      "status": "ready",
+      "created_by": "<user-id>",
+      "created_at": "2024-10-10T08:24:32.382Z",
+      "updated_at": "2024-10-10T08:24:32.382Z",
+      "deleted_at": null,
+      "metadata": {
+        "arch": "arm64"
+      },
+      "builds": [],
+      "environments": []
+    },
+    "builds": [],
+    "deployments": [],
+    "variables": [],
+    "configuration": {
+      "read_replica_database_url": "postgresql://<user>:<password>@<host>/<database>?channel_binding=require&sslmode=require",
+      "tent_handle": "<tent-handle>",
+      "s3_file_url": "https://s3.us-east-1.amazonaws.com/<bucket>",
+      "s3_endpoint": "https://s3.us-east-1.amazonaws.com",
+      "upstash_external_id": "<upstash-id>"
+    },
+    "rules": null,
+    "active_deployment": null
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `environment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The handle of the environment to retrieve.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## environments create
+
+Create a new [long-lived environment](../../../environments/long-lived/page.mdx) for a project. You must already have a branch in your repository to track. The environment will be deployed and updated with every push to the tracked branch.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud environments create \
+    --organization org_123 \
+    --project proj_123 \
+    --name "Staging" \
+    --branch develop
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud environments create \
+    --name "Staging" \
+    --branch develop
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) to create the environment in.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) to create the environment in.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-n <name>`, `--name <name>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Display name for the new environment.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-b <branch>`, `--branch <branch>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The Git branch this environment tracks. Pushes to this branch trigger
+      new deployments.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--custom-subdomain <subdomain>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [Custom subdomain](../../../environments/subdomains/page.mdx) for the environment's URL.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## environments delete
+
+Delete an environment by its handle.
+
+<Note type="warning">
+
+Deleting an environment is irreversible and removes all associated
+deployments and resources. Production environments cannot be deleted.
+
+</Note>
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud environments delete <environment> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud environments delete <environment>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `environment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The handle of the environment to delete.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-y`, `--yes`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip the confirmation prompt. Use this in scripts and pipelines where
+      interactive input is not possible.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## environments redeploy
+
+Redeploy an environment using its current active deployment build. This is useful when you want to roll back to a previous deployment or re-run the active deployment without triggering a new build.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud environments redeploy <environment> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud environments redeploy <environment>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The environment must already have an active deployment. If it doesn't, run [`mcloud environments trigger-build`](#environments-trigger-build) first to create one.
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `environment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The handle of the environment to redeploy.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## environments trigger-build
+
+Start a new build for an environment from its tracked branch. This is the equivalent of pushing a commit to the tracked branch but without requiring a Git push.
+
+<CodeTabs group="cli-auth">
+  <CodeTab label="With Flags" value="flags">
+
+  ```bash
+  mcloud environments trigger-build <environment> --organization org_123 --project proj_123
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using mcloud use" value="use">
+
+  ```bash
+  # Run once: mcloud use --organization org_123 --project proj_123
+
+  mcloud environments trigger-build <environment>
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `environment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The handle of the environment to build.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-o <id>`, `--organization <id>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID of the organization](../organizations/page.mdx#find-organization-id) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-or-handle>`, `--project <id-or-handle>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The [ID or handle of the project](../projects/page.mdx#find-project-ids-and-handles) that the environment belongs to.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Find Environment Handles
+
+Commands that operate on environments require an environment handle. You can either:
+
+- Use the interactive selector in [mcloud use](../use/page.mdx#set-the-active-context) to set an active environment for the current context. Once set, you can omit the `--environment` flag from all subsequent commands;
+- Or use `environments list --json` to get machine-readable environment data. Pipe the output to `jq` to extract handles for use in subsequent commands. This is useful if you want to set the active environment through an AI agent, script, or CI/CD pipeline.
+
+For example, to set the first environment in the list as the active environment:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  ENVIRONMENT_HANDLE=$(
+    mcloud environments list --json \
+      | jq -r '.[0].handle'
+  )
+  mcloud use --environment "$ENVIRONMENT_HANDLE"
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $ENVIRONMENT_HANDLE = (
+    mcloud environments list --json |
+    jq -r '.[0].handle'
+  )
+  mcloud use --environment $ENVIRONMENT_HANDLE
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+To set an environment by name as the active environment:
+
+<CodeTabs group="os">
+  <CodeTab label="macOS / Linux" value="unix">
+
+  ```bash
+  ENVIRONMENT_HANDLE=$(
+    mcloud environments list --json \
+      | jq -r '.[] | select(.name == "Staging") | .handle'
+  )
+  mcloud use --environment "$ENVIRONMENT_HANDLE"
+  ```
+
+  </CodeTab>
+  <CodeTab label="Windows (PowerShell)" value="powershell">
+
+  ```powershell
+  $ENVIRONMENT_HANDLE = (
+    mcloud environments list --json |
+    jq -r '.[] | select(.name == "Staging") | .handle'
+  )
+  mcloud use --environment $ENVIRONMENT_HANDLE
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Once set, you can omit the `--environment` flag from all subsequent commands.
+
+---
+
+## Manage Environments in a CI/CD Pipeline
+
+You can provision and tear down environments automatically as branches are
+created and deleted in your repository. This is useful for staging
+environments that mirror production, or for short-lived feature-branch
+environments used for testing and review.
+
+For example, the following GitHub Actions workflow:
+
+- Creates a Cloud environment when a branch is pushed
+- Deletes it when the branch is removed.
+
+```yaml title=".github/workflows/cloud-environments.yml"
+name: Cloud Environments
+
+on:
+  create:
+    branches-ignore:
+      - main
+  delete:
+    branches-ignore:
+      - main
+
+env:
+  MCLOUD_TOKEN: ${{ secrets.MCLOUD_TOKEN }}
+
+jobs:
+  create-environment:
+    if: github.event_name == 'create' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install the Cloud CLI
+        run: npm install @medusajs/mcloud -g
+
+      - name: Create Cloud environment
+        run: |
+          mcloud environments create \
+            --organization org_123 \
+            --project proj_123 \
+            --name "${{ github.event.ref }}" \
+            --branch "${{ github.event.ref }}" \
+            --custom-subdomain "my-store-${{ github.event.ref }}"
+
+  delete-environment:
+    if: github.event_name == 'delete' && github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install the Cloud CLI
+        run: npm install @medusajs/mcloud -g
+
+      - name: Delete Cloud environment
+        run: |
+          mcloud environments delete "${{ github.event.ref }}" \
+            --organization org_123 \
+            --project proj_123 \
+            --yes
+```
+
+The `create-environment` job runs `mcloud environments create` with the
+branch name as both the environment name and tracked branch. The
+`delete-environment` job runs `mcloud environments delete` with `--yes` to
+skip the confirmation prompt, which is required for non-interactive
+environments like CI runners.

@@ -21,7 +21,7 @@ import {
 import { refetchOrder } from "./helpers"
 
 export const GET = async (
-  req: MedusaRequest<HttpTypes.AdminOrderFilters>,
+  req: MedusaRequest<HttpTypes.AdminDraftOrderListParams>,
   res: MedusaResponse<HttpTypes.AdminDraftOrderListResponse>
 ) => {
   const variables = {

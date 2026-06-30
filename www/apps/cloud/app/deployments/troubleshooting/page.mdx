@@ -1,3 +1,5 @@
+import { Note } from "docs-ui"
+
 export const metadata = {
   title: `Troubleshooting Cloud Deployments`,
 }
@@ -5,6 +7,40 @@ export const metadata = {
 # {metadata.title}
 
 In this guide, you'll find solutions to common issues that may arise when deploying your Medusa applications on Cloud.
+
+## Troubleshooting Build and Deployment Issues with AI
+
+When your build or deployment fails on Cloud, you can use the "Fix with AI" feature to troubleshoot and resolve the issue with the help of Cloud's support agent. The AI agent will analyze the deployment and build logs, identify the root cause of the issue, and provide you with actionable steps to resolve it.
+
+Learn more in the [Fix Deployment and Build Issues with AI](../fix-with-ai/page.mdx) guide.
+
+---
+
+## Access Logs
+
+When a deployment fails, you can see the [build](../../logs/page.mdx#view-build-logs-on-cloud) and [runtime logs](../../logs/page.mdx#view-runtime-logs-on-cloud) of your deployment to understand the cause of the failure.
+
+Alternatively, you can install the [Cloud CLI](../../cli/page.mdx) and use it to check logs from your terminal or with the help of AI agents like Claude Code.
+
+For example:
+
+```bash
+# Install the CLI
+npm install @medusajs/mcloud -g
+
+# Login
+mcloud login
+
+# Check logs of the latest deployment in the environment
+mcloud logs --organization org_123 --project proj_123 --environment env_123
+
+# Check logs of a specific deployment
+mcloud logs --organization org_123 --project proj_123 --environment env_123 --deployment-id deploy_123
+```
+
+See the [Cloud CLI](../../cli/page.mdx) guide for more details on how to use the CLI to manage your Cloud resources and deployments.
+
+---
 
 ## Files Not Found After Deployment
 
@@ -37,10 +73,103 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 ---
 
+## Out of Memory (OOM) Build Failures
+
+Exit code 137 indicates that your build process was killed by the system due to memory exhaustion. This commonly occurs with TypeScript-heavy monorepos during compilation.
+
+### Diagnosing Exit Code 137
+
+Check your build logs for these indicators:
+
+- **Exit code 137** at the end of the build process
+- **"Killed"** message during TypeScript compilation
+- Build terminating unexpectedly without clear error messages
+
+### Resolve OOM Build Failures
+
+OOM Build failures typically occur when the TypeScript compiler faces complex types in your project. This commonly happens when there's mismatch between dependencies in your project.
+
+For example, Medusa supports Zod v4.2.0. If you install a different version of Zod in your project, it can lead to complex type issues during compilation, causing OOM failures.
+
+To resolve this, ensure that your project's dependencies are compatible with those used by Medusa or other dependencies.
+
+---
+
+## Outdated pnpm Lockfile
+
+If your build fails with the following error, your `pnpm-lock.yaml` file is out of sync with `package.json`:
+
+```bash
+ERR_PNPM_OUTDATED_LOCKFILE Cannot install with 'frozen-lockfile' because
+pnpm-lock.yaml is not up to date with package.json
+```
+
+Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducible builds. This means the lockfile must be committed and kept up to date with `package.json`.
+
+To fix this error:
+
+1. Run `pnpm install` locally to update the lockfile.
+2. Commit the updated `pnpm-lock.yaml` file.
+3. Push the changes to trigger a new deployment.
+
+---
+
+## Storefront Build Failed with Empty Logs
+
+If your storefront build fails with a `build-failed` status but the build logs are empty or show minimal output, the cause is usually one of the following:
+
+- An outdated lockfile that is out of sync with `package.json`
+- Incompatible or missing dependencies in the monorepo
+
+### Check for Lockfile Mismatches
+
+Cloud installs dependencies with a frozen lockfile to ensure reproducible builds. If your lockfile is out of sync with `package.json`, the dependency installation step may fail silently.
+
+To check and fix a lockfile mismatch:
+
+1. Run your package manager's install command locally to regenerate the lockfile:
+
+```bash npm2yarn
+npm install
+```
+
+2. Commit the updated lockfile.
+3. Push the changes to trigger a new deployment.
+
+### Retrieve Detailed Build Logs with the CLI
+
+When the Cloud dashboard shows minimal or empty build logs, use the Cloud CLI to retrieve the full output:
+
+```bash
+# Install the CLI
+npm install @medusajs/mcloud -g
+
+# Login
+mcloud login
+
+# List recent deployments to find the failed deployment's ID
+mcloud deployments list \
+  --organization org_123 \
+  --project proj_123
+
+# Fetch the storefront build logs for a specific deployment
+mcloud deployments build-logs deploy_123 \
+  --organization org_123 \
+  --project proj_123 \
+  --type storefront
+```
+
+Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs. You can find the deployment ID in the output of `mcloud deployments list` or in the Cloud dashboard's deployment details page.
+
+### Contact Support
+
+If neither of the steps above resolves the issue and the storefront build logs remain empty, contact support and include the deployment ID so the team can investigate at the platform level.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
 
-- [Check the build and runtime logs of your deployment](../../logs/page.mdx).
 - [Refer to Medusa's troubleshooting guides](!resources!/troubleshooting).
 - Contact support for help.

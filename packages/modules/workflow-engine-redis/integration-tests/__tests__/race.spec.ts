@@ -16,12 +16,20 @@ import { TestDatabase } from "../utils/database"
 
 jest.setTimeout(20000)
 
+const testRunId = ulid()
+
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
   resolve: __dirname + "/../..",
   moduleOptions: {
     redis: {
       url: "localhost:6379",
+      queueName: `medusa-workflows-${
+        process.env.JEST_WORKER_ID ?? "1"
+      }-${testRunId}`,
+      jobQueueName: `medusa-workflows-jobs-${
+        process.env.JEST_WORKER_ID ?? "1"
+      }-${testRunId}`,
     },
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {

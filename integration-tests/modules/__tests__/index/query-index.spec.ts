@@ -109,20 +109,18 @@ medusaIntegrationTestRunner({
       })
     },
   },
-  testSuite: ({ getContainer, dbConnection, api, dbConfig }) => {
+  testSuite: ({ getContainer, dbConnection, api, dbUtils, utils }) => {
     let appContainer
 
     describe("Index engine - Query.index", () => {
-      beforeAll(() => {
+      beforeAll(async () => {
         appContainer = getContainer()
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+        await dbUtils.snapshot()
       })
 
       afterAll(() => {
         process.env.ENABLE_INDEX_MODULE = "false"
-      })
-
-      beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       it("should use query.index to query the index module and hydrate the data", async () => {

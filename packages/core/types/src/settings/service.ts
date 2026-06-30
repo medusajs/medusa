@@ -6,13 +6,17 @@ import {
   ViewConfigurationDTO,
   UserPreferenceDTO,
   PropertyLabelDTO,
+  LayoutConfigurationDTO,
+  LayoutConfigurationData,
   FilterableViewConfigurationProps,
   FilterableUserPreferenceProps,
+  FilterableLayoutConfigurationProps,
   PropertyLabelFilterableFields,
 } from "./common"
 import {
   CreateViewConfigurationDTO,
   UpdateViewConfigurationDTO,
+  CreateLayoutConfigurationDTO,
   CreatePropertyLabelDTO,
   UpdatePropertyLabelDTO,
   UpsertPropertyLabelDTO,
@@ -139,6 +143,100 @@ export interface ISettingsModuleService extends IModuleService {
   clearActiveViewConfiguration(
     entity: string,
     userId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  // Layout Configuration methods
+  retrieveLayoutConfiguration(
+    id: string,
+    config?: FindConfig<LayoutConfigurationDTO>,
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO>
+
+  listLayoutConfigurations(
+    filters?: FilterableLayoutConfigurationProps,
+    config?: FindConfig<LayoutConfigurationDTO>,
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO[]>
+
+  listAndCountLayoutConfigurations(
+    filters?: FilterableLayoutConfigurationProps,
+    config?: FindConfig<LayoutConfigurationDTO>,
+    sharedContext?: Context
+  ): Promise<[LayoutConfigurationDTO[], number]>
+
+  createLayoutConfigurations(
+    data: CreateLayoutConfigurationDTO[],
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO[]>
+
+  createLayoutConfigurations(
+    data: CreateLayoutConfigurationDTO,
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO>
+
+  deleteLayoutConfigurations(
+    ids: string | string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * Retrieve the system default layout configuration for a zone, if any.
+   */
+  getSystemDefaultLayoutConfiguration(
+    zone: string,
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO | null>
+
+  /**
+   * Create or replace the single layout configuration for a `(zone, user)`
+   * pair. The configuration JSON is replaced, not merged.
+   */
+  setLayoutConfiguration(
+    zone: string,
+    userId: string,
+    data: LayoutConfigurationData,
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO>
+
+  /**
+   * Create or replace the single system default layout configuration for a
+   * zone. The configuration JSON is replaced, not merged.
+   */
+  setSystemDefaultLayoutConfiguration(
+    zone: string,
+    data: LayoutConfigurationData,
+    sharedContext?: Context
+  ): Promise<LayoutConfigurationDTO>
+
+  /**
+   * Remove a user's personal layout configuration for a zone, falling back to
+   * the system default.
+   */
+  clearLayoutConfiguration(
+    zone: string,
+    userId: string,
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * Retrieve the scope a user is actively viewing for a zone, as persisted via
+   * their preferences. Returns null when they have made no explicit choice.
+   */
+  getActiveLayoutScope(
+    zone: string,
+    userId: string,
+    sharedContext?: Context
+  ): Promise<"personal" | "default" | null>
+
+  /**
+   * Persist the scope a user is actively viewing for a zone. Pass null to
+   * clear an explicit choice and fall back to the natural resolution.
+   */
+  setActiveLayoutScope(
+    zone: string,
+    userId: string,
+    scope: "personal" | "default" | null,
     sharedContext?: Context
   ): Promise<void>
 

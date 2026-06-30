@@ -62,11 +62,10 @@ export const POST = async (
     },
   })
 
-  // Get the created role-policy association
   const { data } = await query.graph({
     entity: "rbac_role_policy",
     fields: req.queryConfig?.fields,
-    filters: { id: result[0].id },
+    filters: { id: result.map((r) => r.id) },
   })
 
   res.status(200).json({ policies: data })

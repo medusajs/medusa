@@ -28,6 +28,9 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/auth",
       dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
       options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+        },
         providers: [
           // other providers...
           {
@@ -45,6 +48,12 @@ module.exports = defineConfig({
 ```
 
 ### Module Options
+
+<Note>
+
+The `require_verification` option was removed since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). Use the [authVerificationsPerActor configuration](!docs!/learn/configurations/medusa-config#httpauthVerificationsPerActor) instead.
+
+</Note>
 
 <Table>
   <Table.Header>
@@ -94,3 +103,4 @@ module.exports = defineConfig({
 ## Related Guides
 
 - [How to register a customer using email and password](../../../../storefront-development/customers/register/page.mdx)
+- [Implement email verification](../../email-verification/page.mdx)

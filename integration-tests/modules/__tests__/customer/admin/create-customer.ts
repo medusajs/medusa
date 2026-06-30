@@ -10,15 +10,14 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /admin/customers", () => {
       let appContainer
       beforeAll(async () => {
         appContainer = getContainer()
-      })
-
-      beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should create a customer", async () => {

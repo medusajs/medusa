@@ -15,13 +15,8 @@ if [[ $# -eq 0 || -z "${1:-}" ]]; then
 fi
 
 QUERY="$1"
-REPO="${GITHUB_REPOSITORY:-}"
-
-if [[ -n "$REPO" ]]; then
-  SEARCH_QUERY="repo:${REPO} is:issue ${QUERY}"
-else
-  SEARCH_QUERY="is:issue ${QUERY}"
-fi
+REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY not set}"
+SEARCH_QUERY="repo:${REPO} is:issue ${QUERY}"
 
 gh search issues "$SEARCH_QUERY" --limit 10 --json number,title,state,url,createdAt \
   --jq '.[] | {number: .number, title: .title, state: .state, url: .url, createdAt: .createdAt}'

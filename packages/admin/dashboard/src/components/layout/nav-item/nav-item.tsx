@@ -8,7 +8,7 @@ import {
   useState,
 } from "react"
 import { useTranslation } from "react-i18next"
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink, To, useLocation } from "react-router-dom"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { ConditionalTooltip } from "../../common/conditional-tooltip"
 
@@ -85,6 +85,51 @@ const NavItemTooltip = ({
   )
 }
 
+const NavItemSubItem = ({
+  item,
+  isSetting,
+  navLinkClassNames,
+  getLinkTarget,
+}: {
+  item: NestedItemProps
+  isSetting: boolean
+  navLinkClassNames: (props: {
+    to: string
+    isActive: boolean
+    isNested?: boolean
+    isSetting?: boolean
+  }) => string
+  getLinkTarget: (target: string) => To
+}) => {
+  const { t } = useTranslation(item.translationNs as any)
+  const itemLabel: string = item.translationNs ? t(item.label) : item.label
+
+  return (
+    <li className="flex h-7 items-center">
+      <NavItemTooltip to={item.to}>
+        <NavLink
+          to={getLinkTarget(item.to)}
+          end
+          className={({ isActive }) => {
+            return clx(
+              navLinkClassNames({
+                to: item.to,
+                isActive,
+                isSetting,
+                isNested: true,
+              })
+            )
+          }}
+        >
+          <Text size="small" weight="plus" leading="compact">
+            {itemLabel}
+          </Text>
+        </NavLink>
+      </NavItemTooltip>
+    </li>
+  )
+}
+
 export const NavItem = ({
   icon,
   label,
@@ -95,7 +140,7 @@ export const NavItem = ({
   translationNs,
 }: INavItem) => {
   const { t } = useTranslation(translationNs as any)
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const [open, setOpen] = useState(getIsOpen(to, items, pathname))
 
   // Use translation if translationNs is provided, otherwise use label as-is
@@ -130,13 +175,24 @@ export const NavItem = ({
     [type, pathname]
   )
 
+  const getLinkTarget = useCallback(
+    (target: string) => {
+      if (pathname === target && search) {
+        return { pathname: target, search }
+      }
+
+      return target
+    },
+    [pathname, search]
+  )
+
   const isSetting = type === "setting"
 
   return (
     <div className="px-3">
       <NavItemTooltip to={to}>
         <NavLink
-          to={to}
+          to={getLinkTarget(to)}
           end={items?.some((i) => i.to === pathname)}
           state={
             from
@@ -182,7 +238,7 @@ export const NavItem = ({
                 <li className="flex w-full items-center gap-x-1 lg:hidden">
                   <NavItemTooltip to={to}>
                     <NavLink
-                      to={to}
+                      to={getLinkTarget(to)}
                       end
                       className={({ isActive }) => {
                         return clx(
@@ -201,38 +257,15 @@ export const NavItem = ({
                     </NavLink>
                   </NavItemTooltip>
                 </li>
-                {items.map((item) => {
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  const { t: itemT } = useTranslation(item.translationNs as any)
-                  const itemLabel: string = item.translationNs
-                    ? itemT(item.label)
-                    : item.label
-
-                  return (
-                    <li key={item.to} className="flex h-7 items-center">
-                      <NavItemTooltip to={item.to}>
-                        <NavLink
-                          to={item.to}
-                          end
-                          className={({ isActive }) => {
-                            return clx(
-                              navLinkClassNames({
-                                to: item.to,
-                                isActive,
-                                isSetting,
-                                isNested: true,
-                              })
-                            )
-                          }}
-                        >
-                          <Text size="small" weight="plus" leading="compact">
-                            {itemLabel}
-                          </Text>
-                        </NavLink>
-                      </NavItemTooltip>
-                    </li>
-                  )
-                })}
+                {items.map((item) => (
+                  <NavItemSubItem
+                    key={item.to}
+                    item={item}
+                    isSetting={isSetting}
+                    navLinkClassNames={navLinkClassNames}
+                    getLinkTarget={getLinkTarget}
+                  />
+                ))}
               </ul>
             </div>
           </RadixCollapsible.Content>

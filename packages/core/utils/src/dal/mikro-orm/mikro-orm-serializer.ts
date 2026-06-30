@@ -442,6 +442,46 @@ export class EntitySerializer {
       return property.customType.toJSON(propValue, wrapped.__platform)
     }
 
+    /**
+     * Live entities can end up in plain arrays instead of collections, either
+     * assigned to a property that is not part of the entity metadata, or
+     * overwriting a declared relation's Collection (e.g. the product module
+     * computes ProductVariant.images at runtime and assigns it as an array).
+     * Such arrays match none of the relation branches above, so without this
+     * check they would fall through to the primary key normalization below
+     * and leak live ORM entities into the serialized output.
+     */
+    if (Array.isArray(propValue)) {
+      let hasEntities = false
+      for (let i = 0; i < propValue.length; i++) {
+        if (Utils.isEntity(propValue[i], true)) {
+          hasEntities = true
+          break
+        }
+      }
+
+      if (hasEntities) {
+        const childOptions = this.createChildOptions(
+          populate,
+          exclude,
+          skipNull,
+          preventCircularRef,
+          ignoreSerializers,
+          forceObject,
+          prop
+        )
+
+        const result = new Array(propValue.length)
+        for (let i = 0; i < propValue.length; i++) {
+          const item = propValue[i]
+          result[i] = Utils.isEntity(item, true)
+            ? this.serialize(item, childOptions, newParents, ctx)
+            : item
+        }
+        return result as T[keyof T]
+      }
+    }
+
     return wrapped.__platform.normalizePrimaryKey(
       propValue as unknown as IPrimaryKey
     ) as unknown as T[keyof T]

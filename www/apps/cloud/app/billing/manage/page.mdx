@@ -105,6 +105,33 @@ To change the default payment method:
 
 The next time Cloud captures the subscription payment for your organization, it will use this payment method first.
 
+### Delete Payment Method
+
+You can delete payment methods that your organization no longer needs.
+
+<Note>
+
+You cannot delete:
+- The default payment method for your organization
+- Bank transfer payment methods
+
+If you need to delete the default payment method, first [set another payment method as the default](#set-payment-method-as-default), then delete the previous one.
+
+</Note>
+
+To delete a payment method:
+
+1. Make sure you're viewing the [correct organization's dashboard in Cloud](../../organizations/page.mdx#switch-organization).
+2. Click on the <InlineIcon Icon={ChevronUpDown} alt="switch organization" /> icon in the [organization switcher](../../organizations/page.mdx#switch-organization) at the top left of the Cloud dashboard.
+3. Choose "Organization Settings" from the dropdown.
+4. Change to the "Details" settings under Billing from the sidebar.
+5. In the "Payment methods" section, find the payment method you want to delete.
+6. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the payment method.
+7. Choose "Delete" from the dropdown.
+8. Confirm the deletion in the confirmation dialog that appears.
+
+After confirming the deletion, the payment method will be permanently removed from your organization and can no longer be used for future payments.
+
 ---
 
 ## Change Concurrent Previews Limit

@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import type { AuthTypes } from "@medusajs/types"
 import { Alert, Button, Heading, Hint, Input, Text } from "@medusajs/ui"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -11,6 +13,7 @@ import { useSignInWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
 import { useExtension } from "../../providers/extension-provider"
 import { CloudAuthLogin } from "./components/cloud-auth-login"
+import { MfaChallengeCard } from "./components/mfa-challenge-card"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -22,6 +25,11 @@ export const Login = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const { getWidgets } = useExtension()
+  const [mfaChallenge, setMfaChallenge] =
+    useState<AuthTypes.AuthMfaChallengeDTO | null>(null)
+  const [mfaSuccessHandler, setMfaSuccessHandler] = useState<
+    ((token: string) => void | Promise<void>) | null
+  >(null)
 
   const from = location.state?.from?.pathname || "/orders"
 
@@ -59,7 +67,15 @@ export const Login = () => {
             message: error.message,
           })
         },
-        onSuccess: () => {
+        onSuccess: (result) => {
+          if (typeof result === "object" && "mfa_challenge" in result) {
+            setMfaChallenge(result.mfa_challenge)
+            setMfaSuccessHandler(() => () => {
+              navigate(from, { replace: true })
+            })
+            return
+          }
+
           navigate(from, { replace: true })
         },
       }
@@ -70,6 +86,27 @@ export const Login = () => {
   const validationError =
     form.formState.errors.email?.message ||
     form.formState.errors.password?.message
+
+  if (mfaChallenge) {
+    return (
+      <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
+        <MfaChallengeCard
+          challenge={mfaChallenge}
+          onSuccess={(token) => {
+            if (mfaSuccessHandler) {
+              return mfaSuccessHandler(token)
+            }
+
+            navigate(from, { replace: true })
+          }}
+          onBack={() => {
+            setMfaChallenge(null)
+            setMfaSuccessHandler(null)
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
@@ -151,11 +188,15 @@ export const Login = () => {
               </Button>
             </form>
           </Form>
-          {[...getWidgets("login.after"), CloudAuthLogin].map(
-            (Component, i) => {
-              return <Component key={i} />
-            }
-          )}
+          {getWidgets("login.after").map((Component, i) => {
+            return <Component key={i} />
+          })}
+          <CloudAuthLogin
+            onMfaChallenge={(challenge, onSuccess) => {
+              setMfaChallenge(challenge)
+              setMfaSuccessHandler(() => onSuccess)
+            }}
+          />
         </div>
         <span className="text-ui-fg-muted txt-small my-6">
           <Trans

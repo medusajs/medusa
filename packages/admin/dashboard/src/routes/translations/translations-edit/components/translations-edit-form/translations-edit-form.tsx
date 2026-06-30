@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminStoreLocale, HttpTypes } from "@medusajs/types"
-import { Button, Prompt, Select, toast, Text } from "@medusajs/ui"
+import { Button, Copy, Prompt, Select, toast, Text } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -59,9 +59,14 @@ type LocaleSnapshot = {
   entities: Record<string, EntityTranslationsSchemaType>
 }
 
+type TranslationReference = {
+  id: string
+  [key: string]: unknown
+}
+
 function buildLocaleSnapshot(
   translations: HttpTypes.AdminTranslation[],
-  references: { id: string; [key: string]: string }[],
+  references: TranslationReference[],
   localeCode: string,
   translatableFields: string[]
 ): LocaleSnapshot {
@@ -93,7 +98,7 @@ function buildLocaleSnapshot(
 function extendSnapshot(
   snapshot: LocaleSnapshot,
   translations: HttpTypes.AdminTranslation[],
-  newReferences: { id: string; [key: string]: string }[],
+  newReferences: TranslationReference[],
   translatableFields: string[]
 ): LocaleSnapshot {
   const referenceTranslations = new Map<string, HttpTypes.AdminTranslation>()
@@ -125,9 +130,7 @@ function extendSnapshot(
   return { ...snapshot, entities: extendedEntities }
 }
 
-function snapshotToFormValues(
-  snapshot: LocaleSnapshot
-): TranslationsFormSchema {
+function snapshotToFormValues(snapshot: LocaleSnapshot): TranslationsFormSchema {
   return { entities: snapshot.entities }
 }
 
@@ -189,15 +192,12 @@ function computeChanges(
   return { hasChanges, payload }
 }
 
-const columnHelper = createDataGridHelper<
-  TranslationRow,
-  TranslationsFormSchema
->()
+const columnHelper = createDataGridHelper<TranslationRow, TranslationsFormSchema>()
 
 const FIELD_COLUMN_WIDTH = 350
 
 function buildTranslationRows(
-  references: { id: string; [key: string]: string }[],
+  references: TranslationReference[],
   translatableFields: string[]
 ): TranslationRow[] {
   return references.map((reference) => ({
@@ -217,7 +217,7 @@ function useTranslationsGridColumns({
   selectedLocale,
   dynamicColumnWidth,
 }: {
-  entities: { id: string; [key: string]: string }[]
+  entities: TranslationReference[]
   availableLocales: AdminStoreLocale[]
   selectedLocale: string
   dynamicColumnWidth: number
@@ -282,11 +282,24 @@ function useTranslationsGridColumns({
             return null
           }
 
+          const rawOriginalValue = entity[row.field_name]
+          const originalValue =
+            typeof rawOriginalValue === "string" ? rawOriginalValue : ""
+
           return (
             <DataGrid.ReadonlyCell color="normal" context={context} isMultiLine>
-              <Text className="text-ui-fg-subtle" weight="plus" size="small">
-                {entity[row.field_name]}
-              </Text>
+              <div className="flex w-full items-start justify-between gap-x-2">
+                <Text className="text-ui-fg-subtle" weight="plus" size="small">
+                  {originalValue}
+                </Text>
+                {originalValue.trim() && (
+                  <Copy
+                    content={originalValue}
+                    variant="mini"
+                    className="cursor-pointer"
+                  />
+                )}
+              </div>
             </DataGrid.ReadonlyCell>
           )
         },
@@ -333,7 +346,7 @@ function useTranslationsGridColumns({
 
 type TranslationsEditFormProps = {
   translations: HttpTypes.AdminTranslation[]
-  references: { id: string; [key: string]: string }[]
+  references: TranslationReference[]
   entityType: string
   availableLocales: AdminStoreLocale[]
   translatableFields: string[]

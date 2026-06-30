@@ -368,3 +368,39 @@ const Product = model.define("product", {
 The `cascades` method accepts an object. Its key is the operation’s name, such as `delete`. The value is an array of relationship property names that the operation is cascaded to.
 
 In the example above, when a store is deleted, its associated products are also deleted.
+
+---
+
+## Searchable Relationships
+
+You can make relationship properties searchable by adding the `searchable` method to any relationship definition (`hasMany`, `hasOne`, `belongsTo`, or `manyToMany`).
+
+When a relationship property is marked as searchable, the related records' searchable text properties can be queried when using the `q` filter in service methods like `list{ModelName}s`.
+
+For example:
+
+export const searchableRelationshipHighlights = [
+  ["7", "searchable", "Make the products relationship searchable."],
+  ["12", "searchable", "Make the title property of the product searchable."]
+]
+
+```ts highlights={searchableRelationshipHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Store = model.define("store", {
+  id: model.id().primaryKey(),
+  products: model.hasMany(() => Product, {
+    mappedBy: "store",
+  }).searchable(),
+})
+
+const Product = model.define("product", {
+  id: model.id().primaryKey(),
+  title: model.text().searchable(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+In this example, when you search for stores using the `q` filter, the search will include matching product titles from the related products.

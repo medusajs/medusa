@@ -34,6 +34,7 @@ import { authorizePaymentSessionStep } from "../../payment/steps/authorize-payme
 import { registerUsageStep } from "../../promotion/steps/register-usage"
 import {
   updateCartsStep,
+  validateCartItemsStep,
   validateCartPaymentsStep,
   validateShippingStep,
 } from "../steps"
@@ -337,6 +338,8 @@ export const completeCartWorkflow = createWorkflow(
     const orderId = transform({ orderCart }, ({ orderCart }) => {
       return orderCart?.data?.order_id
     })
+
+    validateCartItemsStep({ cart: cartData.data })
 
     // this needs to be before the validation step
     const paymentSessions = validateCartPaymentsStep({ cart: cartData.data })

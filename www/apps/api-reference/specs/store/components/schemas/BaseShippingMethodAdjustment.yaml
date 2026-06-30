@@ -12,10 +12,8 @@ required:
 properties:
   shipping_method:
     type: object
-  shipping_method_id:
-    type: string
-    title: shipping_method_id
-    description: The ID of the shipping method the adjustment is applied on.
+    title: shipping_method
+    description: The details of the method that the adjustment belongs to.
   id:
     type: string
     title: id
@@ -39,7 +37,7 @@ properties:
   promotion_id:
     type: string
     title: promotion_id
-    description: The ID of the promotion applied by this adjustment.
+    description: The ID of the applied promotion.
   provider_id:
     type: string
     title: provider_id

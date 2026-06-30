@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("GET /admin/invites/:id", () => {
       let appContainer
       let userModuleService: IUserModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         userModuleService = appContainer.resolve(Modules.USER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should fail to accept an invite with an invalid invite token", async () => {
@@ -82,6 +84,48 @@ medusaIntegrationTestRunner({
         expect(acceptResponse.data.user).toEqual(
           expect.objectContaining({
             email: "potential_member@test.com",
+            first_name: "John",
+          })
+        )
+      })
+
+      it("should reject an invite token that has been rotated by a resend", async () => {
+        const invite = await userModuleService.createInvites({
+          email: "rotated_invite@test.com",
+        })
+        const originalToken = invite.token
+
+        const [refreshed] = await userModuleService.refreshInviteTokens([
+          invite.id,
+        ])
+        expect(refreshed.token).not.toEqual(originalToken)
+
+        const authResponse = await api.post(`/auth/user/emailpass/register`, {
+          email: "rotated_invite@test.com",
+          password: "supersecret",
+        })
+        const token = authResponse.data.token
+
+        const replayAttempt = await api
+          .post(
+            `/admin/invites/accept?token=${originalToken}`,
+            { first_name: "Attacker" },
+            { headers: { Authorization: `Bearer ${token}` } }
+          )
+          .catch((e) => e)
+
+        expect(replayAttempt.response.status).toEqual(401)
+
+        const legitAccept = await api.post(
+          `/admin/invites/accept?token=${refreshed.token}`,
+          { first_name: "John" },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+
+        expect(legitAccept.status).toEqual(200)
+        expect(legitAccept.data.user).toEqual(
+          expect.objectContaining({
+            email: "rotated_invite@test.com",
             first_name: "John",
           })
         )

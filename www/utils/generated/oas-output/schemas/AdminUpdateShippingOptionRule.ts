@@ -2,6 +2,7 @@
  * @schema AdminUpdateShippingOptionRule
  * type: object
  * description: The properties to update in the shipping option rule.
+ * x-schemaName: AdminUpdateShippingOptionRule
  * required:
  *   - id
  *   - operator
@@ -16,13 +17,13 @@
  *     type: string
  *     description: The operator used to check whether a rule applies.
  *     enum:
- *       - in
+ *       - gt
+ *       - lt
  *       - eq
  *       - ne
- *       - gt
- *       - gte
- *       - lt
+ *       - in
  *       - lte
+ *       - gte
  *       - nin
  *   attribute:
  *     type: string
@@ -42,7 +43,6 @@
  *           title: value
  *           description: A value of the attribute that enables this rule.
  *           example: cusgroup_123
- * x-schemaName: AdminUpdateShippingOptionRule
  * 
 */
 

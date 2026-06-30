@@ -12,7 +12,7 @@ import {
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer1
     let customer2
     let customer3
@@ -21,7 +21,7 @@ medusaIntegrationTestRunner({
     let container
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
       const publishableKey = await generatePublishableKey(container)
@@ -66,6 +66,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.customer
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/customers", () => {

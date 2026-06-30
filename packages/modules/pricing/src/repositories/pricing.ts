@@ -281,10 +281,10 @@ export class PricingRepository
       })
     } else {
       query.where(function (this: Knex.QueryBuilder) {
-        this.where("price.rules_count", 0).orWhere(function (
-          this: Knex.QueryBuilder
-        ) {
-          this.whereNotNull("price.price_list_id").where("pl.rules_count", 0)
+        this.where(function (this: Knex.QueryBuilder) {
+          this.whereNull("price.price_list_id").where("price.rules_count", 0)
+        }).orWhere(function (this: Knex.QueryBuilder) {
+          this.whereNotNull("price.price_list_id").where("price.rules_count", 0).where("pl.rules_count", 0)
         })
       })
     }

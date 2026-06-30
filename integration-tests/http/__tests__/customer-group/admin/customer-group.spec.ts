@@ -7,11 +7,11 @@ import {
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer1
     let group
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
@@ -37,6 +37,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.customer
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/customer-groups", () => {

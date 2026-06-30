@@ -1,0 +1,65 @@
+---
+sidebar_label: "step-must-return-step-response"
+---
+
+export const metadata = {
+  title: `step-must-return-step-response - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires a `createStep` callback that returns a value to wrap it in `new StepResponse(...)`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/workflows` directory. It reports a `createStep` function that returns a value not wrapped in `new StepResponse(...)`.
+
+The following code is reported by the rule:
+
+```ts title="src/workflows/example.ts"
+import { createStep } from "@medusajs/framework/workflows-sdk"
+
+createStep("s", (input) => {
+  return { ok: true }
+})
+```
+
+Instead, wrap the return value in `new StepResponse(...)`:
+
+```ts title="src/workflows/example.ts"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createStep("s", (input) => {
+  return new StepResponse({ ok: true })
+})
+```
+
+The rule also allows returning `StepResponse.skip()`, which skips the step's execution:
+
+```ts title="src/workflows/example.ts"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createStep("s", (input) => {
+  return StepResponse.skip()
+})
+```
+
+## Why it's Important
+
+A step's return value must be a `StepResponse` so the workflow engine can pass it to the next step and store the compensation data. Returning a plain value breaks this contract.
+
+Learn more in the [Workflows documentation](!docs!/learn/fundamentals/workflows).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

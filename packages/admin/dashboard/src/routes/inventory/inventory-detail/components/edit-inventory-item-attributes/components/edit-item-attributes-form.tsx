@@ -56,13 +56,19 @@ export const EditInventoryItemAttributesForm = ({
   const { mutateAsync, isPending: isLoading } = useUpdateInventoryItem(item.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(values, {
-      onSuccess: () => {
-        toast.success(t("inventory.toast.updateItem"))
-        handleSuccess()
+    await mutateAsync(
+      {
+        ...values,
+        origin_country: values.origin_country || null,
       },
-      onError: (error) => toast.error(error.message),
-    })
+      {
+        onSuccess: () => {
+          toast.success(t("inventory.toast.updateItem"))
+          handleSuccess()
+        },
+        onError: (error) => toast.error(error.message),
+      }
+    )
   })
 
   return (
@@ -244,7 +250,7 @@ export const EditInventoryItemAttributesForm = ({
                     {t("fields.countryOfOrigin")}
                   </Form.Label>
                   <Form.Control>
-                    <CountrySelect {...field} />
+                    <CountrySelect {...field} allowClear />
                   </Form.Control>
                   <Form.ErrorMessage />
                 </Form.Item>

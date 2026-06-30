@@ -13,7 +13,9 @@
  *   - updated_at
  * properties:
  *   item:
- *     $ref: "#/components/schemas/BaseCartLineItem"
+ *     type: object
+ *     title: item
+ *     description: The details of the item that the adjustment belongs to.
  *   item_id:
  *     type: string
  *     title: item_id

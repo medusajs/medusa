@@ -12,7 +12,7 @@ import {
 } from "@medusajs/framework/http"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminOrderFilters>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminReturnFilters>,
   res: MedusaResponse<HttpTypes.AdminReturnsResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

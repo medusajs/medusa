@@ -1,4 +1,4 @@
-import { promiseAll } from "@medusajs/framework/utils"
+import { MedusaError, promiseAll } from "@medusajs/framework/utils"
 import { ILockingProvider } from "@medusajs/types"
 import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
@@ -177,7 +177,7 @@ export class RedisLockingProvider implements ILockingProvider {
       const acquireLock = async () => {
         while (true) {
           if (cancellationToken?.cancelled) {
-            throw new Error(errMessage)
+            throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
           }
 
           const result = await this.redisClient.acquireLock(
@@ -191,15 +191,16 @@ export class RedisLockingProvider implements ILockingProvider {
             break
           } else {
             if (awaitQueue) {
-              // Wait before retrying with exponential backoff
-              await setTimeout(retryDelay)
+              // Wait before retrying with exponential backoff and jitter
+              const jitteredDelay = retryDelay * (0.5 + Math.random() * 0.5)
+              await setTimeout(jitteredDelay)
 
               retryDelay = Math.min(
                 retryDelay * this.backoffFactor,
                 this.maximumRetryInterval
               )
             } else {
-              throw new Error(errMessage)
+              throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
             }
           }
         }
@@ -278,7 +279,7 @@ export class RedisLockingProvider implements ILockingProvider {
     return new Promise(async (_, reject) => {
       await setTimeout(seconds * 1000)
       cancellationToken.cancelled = true
-      reject(new Error("Timed-out acquiring lock."))
+      reject(new MedusaError(MedusaError.Types.CONFLICT, "Timed-out acquiring lock."))
     })
   }
 }

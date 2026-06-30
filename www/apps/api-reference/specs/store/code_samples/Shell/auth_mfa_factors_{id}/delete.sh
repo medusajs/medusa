@@ -1,0 +1,1 @@
+curl -X DELETE '{backend_url}/auth/mfa/factors/{id}'

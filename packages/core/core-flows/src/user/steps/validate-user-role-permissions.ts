@@ -1,3 +1,4 @@
+import { hasPermission } from "@medusajs/framework"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -38,51 +39,49 @@ export const validateUserRolePermissionsStep = createStep(
 
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const { data: roles } = await query.graph({
+    const { data: targetRoles } = await query.graph({
       entity: "rbac_role",
-      fields: ["id", "policies.id"],
+      fields: ["id", "policies.resource", "policies.operation"],
       filters: { id: role_ids },
     })
 
-    const targetPolicyIds = new Set<string>()
-    roles.forEach((role: any) => {
-      role.policies?.forEach((policy: any) => {
-        targetPolicyIds.add(policy.id)
-      })
-    })
+    const actionsToCheck: { resource: string; operation: string }[] = []
+    for (const role of targetRoles) {
+      for (const policy of role.policies ?? []) {
+        actionsToCheck.push({
+          resource: policy.resource,
+          operation: policy.operation,
+        })
+      }
+    }
 
-    if (targetPolicyIds.size === 0) {
+    if (!actionsToCheck.length) {
       return new StepResponse(void 0)
     }
 
     const { data: actors } = await query.graph({
       entity: actor ?? "user",
-      fields: ["rbac_roles.id", "rbac_roles.policies.id"],
+      fields: ["rbac_roles.id"],
       filters: { id: actor_id },
     })
 
-    if (!actors?.[0]?.rbac_roles?.length) {
+    const actorRoleIds: string[] =
+      actors?.[0]?.rbac_roles?.map((r: any) => r.id).filter(Boolean) ?? []
+
+    if (!actorRoleIds.length) {
       throw new MedusaError(
         MedusaError.Types.FORBIDDEN,
         "You do not have permission to assign these roles"
       )
     }
 
-    const actorPolicyIds = new Set<string>()
-    actors[0].rbac_roles.forEach((role: any) => {
-      role.policies?.forEach((policy: any) => {
-        actorPolicyIds.add(policy.id)
-      })
+    const allowed = await hasPermission({
+      roles: actorRoleIds,
+      actions: actionsToCheck,
+      container,
     })
 
-    const missingPolicies: string[] = []
-    targetPolicyIds.forEach((policyId) => {
-      if (!actorPolicyIds.has(policyId)) {
-        missingPolicies.push(policyId)
-      }
-    })
-
-    if (missingPolicies.length > 0) {
+    if (!allowed) {
       throw new MedusaError(
         MedusaError.Types.FORBIDDEN,
         "You do not have permission to assign these roles"

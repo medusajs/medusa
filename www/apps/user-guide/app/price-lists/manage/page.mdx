@@ -8,8 +8,8 @@ products:
   - pricing
 ---
 
-import { EllipsisHorizontal } from "@medusajs/icons"
-import { Table } from "docs-ui"
+import { EllipsisHorizontal, ArrowUpRightOnBox, EllipsisVertical } from "@medusajs/icons"
+import { Table, InlineIcon } from "docs-ui"
 
 export const metadata = {
   title: `Manage Price Lists in Medusa Admin`,
@@ -141,6 +141,31 @@ To edit the prices of the products in the price list:
 5. Once you're done, click the Save button.
 
 ![Edit prices in price list](https://res.cloudinary.com/dza7lstvk/image/upload/v1739961309/User%20Guide/Screenshot_2025-02-19_at_12.35.00_PM_kvpnss.png)
+
+---
+
+## Manage Price List Metadata
+
+<Note>
+
+The Metadata section is available since [Medusa v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0). If you don't see the Metadata section in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+Metadata is custom data that can be associated with the price list in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the price list.
+
+To edit the price list's metadata:
+
+1. Click the <InlineIcon Icon={ArrowUpRightOnBox} alt="arrow" /> icon in the "Metadata" section.
+2. In the side window that opens:
+    - Manage the key-value pairs in the table.
+    - To add a new row of key-value pairs before or after a row:
+        - Hover over the row and click the <InlineIcon Icon={EllipsisVertical} alt="three-dots" /> icon at its end.
+        - Choose "Insert row above" or "Insert row below" from the dropdown.
+    - To delete a row of key-value pairs:
+        - Hover over the row and click the <InlineIcon Icon={EllipsisVertical} alt="three-dots" /> icon at its end.
+        - Choose "Delete row" from the dropdown.
+3. Once you're done, click the Save button.
 
 ---
 

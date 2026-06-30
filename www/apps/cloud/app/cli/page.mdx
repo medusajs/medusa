@@ -1,0 +1,137 @@
+---
+generate_toc: true
+---
+
+import { Prerequisites, ChildDocs, Table, Note } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Cloud CLI`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the Cloud CLI, how to install it, and how to use it to manage your Cloud resources from the terminal.
+
+<Note title="AI Agents">
+
+If you're an AI agent, or you want to manage Cloud resources through an AI agent, see [Cloud CLI for AI Agents](./agents/page.mdx) instead.
+
+</Note>
+
+## What is the Cloud CLI?
+
+The Cloud CLI (`mcloud`) is a command-line tool for managing your Cloud resources (organizations, projects, environments, logs, and more) directly from your terminal. It provides the same capabilities as the Cloud dashboard but in a scriptable, AI-friendly form.
+
+Use the CLI when you want to:
+
+- Debug and manage your Cloud resources with AI-agents like Claude Code.
+- Automate tasks in CI/CD pipelines, such as fetching logs or managing environments.
+- Integrate Cloud management into your existing terminal workflows.
+
+---
+
+## Install the Cloud CLI
+
+<Prerequisites items={[
+  {
+    text: "Node.js v22+",
+    link: "https://nodejs.org/en/download"
+  }
+]} />
+
+Install the CLI globally using npm or your preferred package manager:
+
+```bash npm2yarn
+npm install @medusajs/mcloud -g
+```
+
+After installation, verify it is available by checking its version:
+
+```bash
+mcloud --version
+```
+
+---
+
+## Authenticate
+
+Before running any command that accesses Cloud resources, authenticate with your Cloud account:
+
+```bash
+mcloud login
+```
+
+This opens a browser window where you complete the login flow. Your credentials are stored locally and reused on subsequent commands.
+
+### Non-Interactive Authentication
+
+For CI/CD pipelines and automated environments where a browser is not available, either set the `MCLOUD_TOKEN` environment variable to your access key or pass the key directly to `mcloud login`:
+
+```bash
+# Method 1: Set environment variable
+export MCLOUD_TOKEN=sk_123ABC
+
+# Method 2: pass directly to login command
+mcloud login --token sk_123ABC
+```
+
+See the [login command](./commands/login/page.mdx) for more details on access keys and non-interactive authentication.
+
+### Sign Up
+
+If you don't have a Cloud account yet, sign up directly from the CLI:
+
+```bash
+mcloud signup
+```
+
+This will open a browser window where you can create your account. After signing up, return to the terminal and run `mcloud login` to authenticate.
+
+---
+
+## Set the Active Context
+
+Most commands operate on a specific organization, project, and environment.
+
+Instead of passing `--organization`, `--project`, and `--environment` on every command, use [`mcloud use`](./commands/use/page.mdx) to persist your selection in a context configuration file. The CLI reads this context for every command that accepts these flags.
+
+```bash
+# Interactive: select organization, project, and environment from prompts
+mcloud use
+
+# Non-interactive: pass values directly
+mcloud use --organization org_123 --project my-store --environment production
+```
+
+Once set, you can omit these flags from subsequent commands:
+
+```bash
+mcloud environments list
+mcloud logs --follow
+mcloud variables list
+```
+
+To check the current active context, run `mcloud whoami`:
+
+```bash
+mcloud whoami
+```
+
+See [`mcloud whoami`](./commands/whoami/page.mdx) and [`mcloud use`](./commands/use/page.mdx) for more details.
+
+---
+
+## JSON Output
+
+Most commands accept a `--json` flag that prints the result as machine-readable
+JSON instead of formatted text. Use this when piping output to other tools:
+
+```bash
+mcloud organizations list --json
+```
+
+---
+
+## Commands
+
+<ChildDocs showItems={["CLI"]} hideTitle itemsPerRow={2} />

@@ -5,7 +5,9 @@ import {
   PaymentCollectionStatus,
 } from "@medusajs/framework/utils"
 import {
+  createStep,
   createWorkflow,
+  StepResponse,
   transform,
   when,
   WorkflowData,
@@ -32,6 +34,34 @@ export type CreateOrUpdateOrderPaymentCollectionInput = {
    */
   amount?: number
 }
+
+interface GetOrderPendingAmountStepInput {
+  order: { summary: { raw_pending_difference?: any; pending_difference: any } }
+  input: { amount?: number }
+}
+
+/**
+ * This step resolves an order's pending amount and validates the requested
+ * charge against it. It throws an error if the amount to charge is greater than
+ * the order's pending amount.
+ */
+export const getOrderPendingAmountStep = createStep(
+  "get-order-pending-amount",
+  async ({ order, input }: GetOrderPendingAmountStepInput) => {
+    const amountToCharge = input.amount ?? 0
+    const amountPending =
+      order.summary.raw_pending_difference ?? order.summary.pending_difference
+
+    if (amountToCharge > 0 && MathBN.gt(amountToCharge, amountPending)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Amount cannot be greater than ${amountPending}`
+      )
+    }
+
+    return new StepResponse(amountPending)
+  }
+)
 
 export const createOrUpdateOrderPaymentCollectionWorkflowId =
   "create-or-update-order-payment-collection"
@@ -108,20 +138,7 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
           PaymentCollectionStatus.PARTIALLY_AUTHORIZED
     )
 
-    const amountPending = transform({ order, input }, ({ order, input }) => {
-      const amountToCharge = input.amount ?? 0
-      const amountPending =
-        order.summary.raw_pending_difference ?? order.summary.pending_difference
-
-      if (amountToCharge > 0 && MathBN.gt(amountToCharge, amountPending)) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Amount cannot be greater than ${amountPending}`
-        )
-      }
-
-      return amountPending
-    })
+    const amountPending = getOrderPendingAmountStep({ order, input })
 
     const updatedPaymentCollections = when(
       { existingPaymentCollection, amountPending, shouldRecreate },

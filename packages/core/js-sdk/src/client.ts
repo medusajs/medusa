@@ -9,7 +9,13 @@ import {
   Logger,
 } from "./types.js"
 
+/**
+ * The header name used for the publishable API key.
+ */
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
+/**
+ * The storage key used for storing the locale in localStorage.
+ */
 export const LOCALE_STORAGE_KEY = "medusa_locale"
 
 // We want to explicitly retrieve the base URL instead of relying on relative paths that differ in behavior between browsers.
@@ -94,6 +100,9 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
   return isJsonRequest ? await resp.json() : resp
 }
 
+/**
+ * Error class for HTTP fetch operations that includes status information.
+ */
 export class FetchError extends Error {
   status: number | undefined
   statusText: string | undefined
@@ -105,6 +114,9 @@ export class FetchError extends Error {
   }
 }
 
+/**
+ * The main HTTP client for the Medusa JS SDK.
+ */
 export class Client {
   public fetch_: ClientFetch
   private config: Config
@@ -194,17 +206,26 @@ export class Client {
     const abortController = new AbortController()
     const abortFunc = abortController.abort.bind(abortController)
 
-    let res = await this.fetch_(input, {
+    const fetchPromise = this.fetch_(input, {
       ...init,
       signal: abortController.signal,
       headers: { ...init?.headers, accept: "text/event-stream" },
     })
 
-    if (res.ok) {
-      return { stream: events(res, abortController.signal), abort: abortFunc }
-    }
+    return {
+      stream: (async function* () {
+        const res = await fetchPromise
 
-    return { stream: null, abort: abortFunc }
+        if (!res.ok) {
+          const error = new Error(`Stream failed with status ${res.status}`)
+          error.name = "HttpError"
+          throw error
+        }
+
+        yield* events(res, abortController.signal)
+      })(),
+      abort: abortFunc
+    }
   }
 
   async setToken(token: string) {

@@ -206,6 +206,9 @@
  *     type: boolean
  *     title: is_giftcard
  *     description: Whether the item is a gift card.
+ *   line_item_metadata:
+ *     type: object
+ *     description: Custom key-value pairs on the order's line items.
  * 
 */
 

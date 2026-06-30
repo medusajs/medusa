@@ -10,6 +10,7 @@ import { CodeBlockCopyAction } from "./Copy"
 import { CodeBlockAskAiAction } from "./AskAi"
 import { useSiteConfig } from "../../../providers/SiteConfig"
 import { CodeBlockBloomAction } from "./Bloom"
+import { CodeBlockStyle } from ".."
 
 export type CodeBlockActionsProps = {
   source: string
@@ -23,6 +24,7 @@ export type CodeBlockActionsProps = {
   noReport?: boolean
   noCopy?: boolean
   noAskAi?: boolean
+  codeBlockStyle?: CodeBlockStyle
 }
 
 export const CodeBlockActions = ({
@@ -37,6 +39,7 @@ export const CodeBlockActions = ({
   noReport = false,
   noCopy = false,
   noAskAi = false,
+  codeBlockStyle = "loud",
 }: CodeBlockActionsProps) => {
   const { productView } = useSiteConfig()
 
@@ -136,7 +139,7 @@ export const CodeBlockActions = ({
           </Tooltip>
         )}
         {!noCopy && productView !== "bloom" && (
-          <CodeBlockCopyAction source={source} inHeader={inHeader} />
+          <CodeBlockCopyAction source={source} inHeader={inHeader} codeBlockStyle={codeBlockStyle} />
         )}
         {productView === "bloom" && (
           <CodeBlockBloomAction source={source} inHeader={inHeader} />

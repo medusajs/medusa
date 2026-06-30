@@ -91,6 +91,12 @@ When deploying your storefront to Cloud, you don't need to add any specific conf
 
 Medusa automatically injects the necessary configurations during the deployment process to ensure your storefront is correctly set up on Cloud.
 
+### Next.js Image Optimization
+
+Cloud currently does not support Next.js image optimization for storefronts. The image optimization feature that uses the Next.js Image component's automatic optimization capabilities will not function as expected when deployed on Cloud.
+
+If your storefront relies on Next.js image optimization, you should configure an external image optimization service or disable the feature in your Next.js configuration.
+
 ### Injected Environment Variables
 
 When deploying your storefront to Cloud, Medusa automatically injects the following environment variables into your storefront's build and runtime process:

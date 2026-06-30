@@ -290,11 +290,11 @@ export const getProductFeedItemsHighlights3 = [
   ["2", "", "Skip products without variants"],
   ["3", "salesChannel", "Retrieve the product's sales channel with stock locations in the requested country code"],
   ["9", "availability", "Retrieve inventory availability for the product's variants."],
-  ["17", "hasOriginalPrice", "Check if the product variant is on sale."],
-  ["18", "originalPrice", "The regular price of the product variant."],
-  ["20", "salePrice", "The sale price of the product variant."],
-  ["22", "stockStatus", "The stock status of the product variant."],
-  ["38", "item_group_id", "Group the variants by their product."]
+  ["17", "hasOriginalPrice", "Check if the product variant is on sale by comparing original and calculated amounts."],
+  ["19", "originalPrice", "The regular price of the product variant."],
+  ["21", "salePrice", "The sale price of the product variant."],
+  ["23", "stockStatus", "The stock status of the product variant."],
+  ["39", "item_group_id", "Group the variants by their product."]
 ]
 
 ```ts title="src/workflows/steps/get-product-feed-items.ts" highlights={getProductFeedItemsHighlights3}
@@ -314,7 +314,8 @@ for (const product of products) {
   for (const variant of product.variants) {
     // @ts-ignore
     const calculatedPrice = variant.calculated_price as CalculatedPriceSet
-    const hasOriginalPrice = calculatedPrice?.original_amount
+    const hasOriginalPrice = calculatedPrice?.original_amount && 
+      calculatedPrice.original_amount !== calculatedPrice.calculated_amount
     const originalPrice = hasOriginalPrice ? calculatedPrice.original_amount : 
     calculatedPrice.calculated_amount
     const salePrice = hasOriginalPrice ? calculatedPrice.calculated_amount : 

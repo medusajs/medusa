@@ -31,11 +31,6 @@ export const CodeBlockHeaderWrapper = React.forwardRef<
       className={clsx(
         "py-docs_0.5 px-docs_1 mb-0",
         "rounded-t-docs_lg relative flex justify-between items-center",
-        blockStyle === "subtle" && [
-          "border border-solid border-b-0",
-          colorMode === "light" && "border-medusa-border-base",
-          colorMode === "dark" && "border-medusa-code-border",
-        ],
         bgColor
       )}
       ref={ref}

@@ -1,4 +1,4 @@
-import { InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
 import { ArrowDownTray, ArrowPath, Brackets } from "@medusajs/icons"
 
 export const metadata = {
@@ -34,10 +34,31 @@ You can view the build logs for any deployment in your environment, including ol
 
 To view the build logs for a deployment:
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Click on the project that the deployment belongs to.
-3. Click on the environment that the deployment belongs to, such as "Production".
-4. In the "Deployments" table, find the deployment you want to view the build logs for and click on it.
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on the project that the deployment belongs to.
+    3. Click on the environment that the deployment belongs to, such as "Production".
+    4. In the "Deployments" table, find the deployment you want to view the build logs for and click on it.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on "Deployments" in the sidebar under the project.
+    3. In the search bar, search for the project you want to view its deployments, then click on it.
+    4. In the Deployments list, change the **All environments** filter to the environment that the deployment belongs to, such as "Production".
+    5. Find the deployment you want to view the build logs for and click on it.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 This will open the deployment details page, where you can see the deployment's activity:
 
@@ -109,10 +130,29 @@ You can also navigate to an environment's runtime logs from the [command palette
 
 </Note>
 
-1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
-2. Click on the project that the environment belongs to.
-3. Click on the environment, such as "Production".
-4. Click the "Logs" tab at the top of the environment's dashboard.
+<Tabs defaultValue="classic">
+  <TabsList>
+    <TabsTrigger value="classic">Classic Navigation</TabsTrigger>
+    <TabsTrigger value="global-sidebar">Global Sidebar</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="classic">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on the project that the environment belongs to.
+    3. Click on the environment, such as "Production".
+    4. Click the "Logs" tab at the top of the environment's dashboard.
+
+    </TabsContent>
+    <TabsContent value="global-sidebar">
+
+    1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
+    2. Click on "Logs" in the sidebar under the environment.
+    3. In the search bar, search for the project you want to view its logs, then click on it.
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
 
 This will open the runtime logs page, where you can see the logs for the live deployment of the environment.
 

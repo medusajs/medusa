@@ -1,0 +1,61 @@
+post:
+  operationId: PostMfaRecoveryCodes
+  summary: Generate Multi-Factor Authentication (MFA) Recovery Codes
+  x-sidebar-summary: Generate MFA Recovery Codes
+  description: >
+    Generate a new set of single-use recovery codes for the authenticated user.
+    Recovery codes can
+
+    be used to verify MFA challenges when the user does not have access to their
+    primary MFA
+
+    factor. Generating new codes replaces any previously issued codes, so they
+    should be stored in
+
+    a safe place. At least one enabled MFA factor is required to generate
+    recovery codes.
+  x-authenticated: true
+  externalDocs:
+    description: Learn more about MFA in Medusa
+    url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
+  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          description: The options to use when generating recovery codes.
+          properties:
+            count:
+              type: number
+              title: count
+              description: >-
+                The number of recovery codes to generate. Must be between 1 and
+                50. Defaults to the provider's configured value when omitted.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/auth_mfa_recovery-codes/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/auth_mfa_recovery-codes/post.sh
+  tags:
+    - Multi-Factor Authentication (MFA) Factors
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.15.3

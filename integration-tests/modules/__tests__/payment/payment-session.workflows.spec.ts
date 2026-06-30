@@ -129,6 +129,55 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create payment sessions when customer has no account_holder links)", async () => {
+          const {
+            data: [customerBefore],
+          } = await query.graph({
+            entity: "customer",
+            filters: { id: customer.id },
+            fields: ["id", "account_holders.*"],
+          })
+
+          expect(
+            customerBefore.account_holders === undefined ||
+              customerBefore.account_holders?.length === 0
+          ).toBe(true)
+
+          await createPaymentSessionsWorkflow(appContainer).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              customer_id: customer.id,
+            },
+          })
+
+          const {
+            data: [updatedPaymentCollection],
+          } = await query.graph({
+            entity: "payment_collection",
+            filters: { id: paymentCollection.id },
+            fields: ["id", "payment_sessions.*"],
+          })
+
+          expect(updatedPaymentCollection.payment_sessions).toHaveLength(1)
+
+          const {
+            data: [customerAfter],
+          } = await query.graph({
+            entity: "customer",
+            filters: { id: customer.id },
+            fields: ["id", "account_holders.*"],
+          })
+
+          expect(customerAfter.account_holders).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                email: customer.email,
+              }),
+            ])
+          )
+        })
+
         it("should delete existing sessions when create payment sessions", async () => {
           await createPaymentSessionsWorkflow(appContainer).run({
             input: {

@@ -23,7 +23,7 @@ const shippingAddressData = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Order Translation API", () => {
       let appContainer: MedusaContainer
       let storeHeaders: { headers: { [key: string]: string } }
@@ -42,7 +42,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const taxStructure = await setupTaxStructure(
           appContainer.resolve(Modules.TAX)
         )
@@ -354,6 +354,8 @@ medusaIntegrationTestRunner({
           },
           adminHeaders
         )
+
+        await dbUtils.snapshot()
       })
 
       const createOrderFromCart = async (locale?: string) => {

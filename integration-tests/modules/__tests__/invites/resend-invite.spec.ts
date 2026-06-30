@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /admin/invites/:id/resend", () => {
       let appContainer
       let userModuleService: IUserModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         userModuleService = appContainer.resolve(Modules.USER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should resend a single invite", async () => {

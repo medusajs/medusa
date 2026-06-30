@@ -31,8 +31,15 @@ Refer to the [Build Medusa Application](!docs!/learn/build) guide for next steps
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -46,6 +53,62 @@ Refer to the [Build Medusa Application](!docs!/learn/build) guide for next steps
 
       Whether to build only the admin to host it separately. If this option is not passed, the admin is built to the `.medusa/server/public/admin` directory. When this option is passed, the admin is built to the `.medusa/admin` directory instead.
       
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--lint` / `--no-lint` (v2.16.0+)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Run the Medusa linter before building. Pass `--no-lint` to skip linting. Linting is skipped automatically when no `eslint.config.js` is found in the project root.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `true`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--fix` (v2.16.0+)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Auto-fix lint issues where possible before building.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--quiet` (v2.16.0+)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Report lint errors only, suppressing warnings.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
       </Table.Cell>
     </Table.Row>
   </Table.Body>

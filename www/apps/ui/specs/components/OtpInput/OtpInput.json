@@ -1,0 +1,134 @@
+{
+  "description": "A controlled segmented input for one-time passwords, PINs, and short numeric verification codes.",
+  "methods": [],
+  "displayName": "OtpInput",
+  "props": {
+    "autoFocus": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the inputs should focus the first field on mount."
+    },
+    "disabled": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the inputs are disabled."
+    },
+    "groupSize": {
+      "required": false,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "How many digits to show before rendering a separator.",
+      "defaultValue": {
+        "value": "3",
+        "computed": false
+      }
+    },
+    "inputClassName": {
+      "required": false,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "Additional class name for each input."
+    },
+    "length": {
+      "required": false,
+      "tsType": {
+        "name": "number"
+      },
+      "description": "The number of digits in the code.",
+      "defaultValue": {
+        "value": "6",
+        "computed": false
+      }
+    },
+    "onChange": {
+      "required": true,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(value: string) => void",
+        "signature": {
+          "arguments": [
+            {
+              "type": {
+                "name": "string"
+              },
+              "name": "value"
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      },
+      "description": "Called with the sanitized code whenever it changes."
+    },
+    "onComplete": {
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(value: string) => void",
+        "signature": {
+          "arguments": [
+            {
+              "type": {
+                "name": "string"
+              },
+              "name": "value"
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      },
+      "description": "Called when the sanitized code reaches the configured length."
+    },
+    "readOnly": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": "Whether the inputs are read-only."
+    },
+    "separator": {
+      "required": false,
+      "tsType": {
+        "name": "ReactReactNode",
+        "raw": "React.ReactNode"
+      },
+      "description": "The separator rendered between groups.",
+      "defaultValue": {
+        "value": "\"-\"",
+        "computed": false
+      }
+    },
+    "value": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": "The controlled code value."
+    },
+    "aria-label": {
+      "defaultValue": {
+        "value": "\"One-time password\"",
+        "computed": false
+      },
+      "description": "Defines a string value that labels the current element.",
+      "tsType": {
+        "name": "string"
+      },
+      "required": false
+    }
+  },
+  "composes": [
+    "Omit"
+  ]
+}

@@ -16,7 +16,7 @@ jobs:
           args: "**Help Wanted** issue: [${{ github.event.issue.title }}](<${{ github.event.issue.html_url }}>)"
 
   notify-good-first-issue:
-    if: github.event.label.name == 'good-first-issue'
+    if: github.event.label.name == 'good first issue'
     runs-on: ubuntu-latest
     steps:
       - name: Discord Notification

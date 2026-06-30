@@ -1,6 +1,6 @@
 import {
-  BuildingStorefront,
   Buildings,
+  BuildingStorefront,
   ChevronDownMini,
   CogSixTooth,
   CurrencyDollar,
@@ -14,11 +14,12 @@ import {
   Tag,
   Users,
 } from "@medusajs/icons"
-import { Avatar, Divider, DropdownMenu, Text, clx } from "@medusajs/ui"
+import { Avatar, clx, Divider, DropdownMenu, Text } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
+import { PermissionGuard } from "../../common/permission-guard"
 import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
@@ -43,12 +44,14 @@ const MainSidebar = () => {
   return (
     <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
       <div className="flex flex-1 flex-col">
-        <div className="bg-ui-bg-subtle sticky top-0">
-          <Header />
-          <div className="px-3">
-            <Divider variant="dashed" />
+        <PermissionGuard resource="store" operation="read">
+          <div className="bg-ui-bg-subtle sticky top-0">
+            <Header />
+            <div className="px-3">
+              <Divider variant="dashed" />
+            </div>
           </div>
-        </div>
+        </PermissionGuard>
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <CoreRouteSection />
@@ -204,6 +207,10 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
         {
           label: t("categories.domain"),
           to: "/categories",
+        },
+        {
+          label: t("productOptions.domain"),
+          to: "/product-options",
         },
         // TODO: Enable when domin is introduced
         // {

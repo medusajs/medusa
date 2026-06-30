@@ -9,9 +9,9 @@ jest.setTimeout(30000)
 process.env.MEDUSA_FF_RBAC = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let invite
-    beforeEach(async () => {
+    beforeAll(async () => {
       const appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
@@ -24,6 +24,12 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.invite
+
+      await dbUtils.snapshot()
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
     })
 
     describe("Admin invites", () => {
@@ -160,15 +166,15 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to accept with an expired token", async () => {
-        jest.useFakeTimers()
-
         const signup = await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
           password: "secret_password",
         })
 
-        // Advance time by 25 hours
-        jest.advanceTimersByTime(25 * 60 * 60 * 1000)
+        await dbConnection.raw(
+          `UPDATE "invite" SET expires_at = NOW() - INTERVAL '1 day' WHERE id = ?`,
+          [invite.id]
+        )
 
         const error = await api
           .post(
@@ -185,8 +191,6 @@ medusaIntegrationTestRunner({
 
         expect(error.status).toEqual(401)
         expect(error.data.message).toEqual("Unauthorized")
-
-        jest.useRealTimers()
       })
 
       it("should resend an invite", async () => {

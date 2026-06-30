@@ -38,6 +38,9 @@
  *     example:
  *       customer_group_id:
  *         - cusgrp_123
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs of custom data.
  * 
 */
 

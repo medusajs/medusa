@@ -1,0 +1,51 @@
+get:
+  operationId: GetWorkflowsExecutionsWorkflow_idTransaction_idSubscribe
+  summary: Subscribe to Workflow Execution Events
+  description: >-
+    Subscribe to workflow execution events for a specific workflow and
+    transaction. This endpoint establishes a Server-Sent Events (SSE)
+    connection, allowing clients to receive real-time updates about the workflow
+    execution. The events include details such as the event type, workflow ID,
+    transaction ID, step information, response, result, and any errors that
+    occur during the execution.
+  x-authenticated: true
+  parameters:
+    - name: workflow_id
+      in: path
+      description: The ID of the workflow to subscribe to.
+      required: true
+      schema:
+        type: string
+    - name: transaction_id
+      in: path
+      description: The ID of the workflow execution transaction to subscribe to.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_workflows-executions_{workflow_id}_{transaction_id}_subscribe/get.sh
+  tags:
+    - Workflows Executions
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

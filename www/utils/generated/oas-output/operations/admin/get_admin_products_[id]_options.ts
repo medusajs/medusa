@@ -116,6 +116,14 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: is_exclusive
+ *     in: query
+ *     description: Filter by whether the product option is global or exclusive to a product.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: is_exclusive
+ *       description: Filter by whether the product option is global or exclusive to a product.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
