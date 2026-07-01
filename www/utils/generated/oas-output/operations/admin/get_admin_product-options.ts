@@ -138,6 +138,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by the product option's update date.
@@ -257,6 +258,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: Filter by the product option's deletion date.
@@ -376,6 +378,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: order
  *     in: query
  *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
@@ -462,6 +465,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: The product option's ID.
+ *         - type: array
+ *           description: The product option's ID.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: The id's ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -544,7 +561,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.13.0
+ * x-since: 2.16.0
  * 
 */
 

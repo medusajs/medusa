@@ -17,3 +17,13 @@ properties:
     type: string
     title: id
     description: The option's ID.
+  ranks:
+    type: object
+    description: The product option's ranks.
+  is_exclusive:
+    type: boolean
+    title: is_exclusive
+    description: The product option's is exclusive.
+  metadata:
+    type: object
+    description: The product option's metadata.

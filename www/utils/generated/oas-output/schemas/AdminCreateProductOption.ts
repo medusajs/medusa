@@ -18,7 +18,7 @@
  *       type: string
  *       title: values
  *       description: An option value.
- *       example: "Red"
+ *       example: Red
  *   ranks:
  *     type: object
  *     description: The ranking of the option's values. The keys are the value names and the values are their respective ranks.

@@ -1,0 +1,146 @@
+get:
+  operationId: GetLayoutsZoneConfiguration
+  summary: List Configurations
+  description: >-
+    Retrieve a list of configurations in a layout. The configurations can be
+    filtered by fields like FILTER FIELDS. The configurations can also be
+    paginated.
+  x-authenticated: true
+  parameters:
+    - name: zone
+      in: path
+      description: The layout's zone.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_layouts_{zone}_configuration/get.sh
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminLayoutConfigurationResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostLayoutsZoneConfiguration
+  summary: Add Configuration to Layout
+  description: Add a Configuration to a layout
+  x-authenticated: true
+  parameters:
+    - name: zone
+      in: path
+      description: The layout's zone.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminSetLayoutConfiguration.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_layouts_{zone}_configuration/post.sh
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminLayoutConfigurationResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: setLayoutConfigurationWorkflow
+  x-events: []
+delete:
+  operationId: DeleteLayoutsZoneConfiguration
+  summary: Remove Configuration from Layout
+  description: Remove a Configuration from a layout.
+  x-authenticated: true
+  parameters:
+    - name: zone
+      in: path
+      description: The layout's zone.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_layouts_{zone}_configuration/delete.sh
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: SUMMARY
+            required:
+              - success
+            properties:
+              success:
+                type: boolean
+                title: success
+                description: The layout's success.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: clearLayoutConfigurationWorkflow
+  x-events: []

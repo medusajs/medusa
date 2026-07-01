@@ -1276,6 +1276,34 @@ post:
               type: string
               title: tag_id
               description: The tag ID.
+    - name: option_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: option_id
+            description: The product's option id.
+          - type: array
+            description: The product's option id.
+            items:
+              type: string
+              title: option_id
+              description: The option id's details.
+    - name: option_value_id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: option_value_id
+            description: The product's option value id.
+          - type: array
+            description: The product's option value id.
+            items:
+              type: string
+              title: option_value_id
+              description: The option value id's details.
   security:
     - api_token: []
     - cookie_auth: []

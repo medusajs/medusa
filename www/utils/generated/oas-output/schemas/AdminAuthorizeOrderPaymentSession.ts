@@ -1,0 +1,15 @@
+/**
+ * @schema AdminAuthorizeOrderPaymentSession
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminAuthorizeOrderPaymentSession
+ * required:
+ *   - payment_session_id
+ * properties:
+ *   payment_session_id:
+ *     type: string
+ *     title: payment_session_id
+ *     description: The order's payment session id.
+ * 
+*/
+

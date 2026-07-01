@@ -261,6 +261,24 @@ const generatedgeneratedStoreSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Product Options",
+      "children": [
+        {
+          "type": "link",
+          "path": "product-options_productoption_schema",
+          "title": "ProductOption Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Product Tags",
       "children": [
         {
@@ -285,6 +303,24 @@ const generatedgeneratedStoreSidebarSidebar = {
           "type": "link",
           "path": "product-types_producttype_schema",
           "title": "ProductType Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
+      "title": "Product Variants",
+      "children": [
+        {
+          "type": "link",
+          "path": "product-variants_productvariant_schema",
+          "title": "ProductVariant Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",

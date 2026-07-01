@@ -1,0 +1,13 @@
+/**
+ * @schema AdminProductOptionValueResponse
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminProductOptionValueResponse
+ * required:
+ *   - product_option_value
+ * properties:
+ *   product_option_value:
+ *     $ref: "#/components/schemas/AdminProductOptionValue"
+ * 
+*/
+

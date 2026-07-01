@@ -1,28 +1,26 @@
 /**
  * @oas [get] /admin/translations/settings
  * operationId: GetTranslationsSettings
- * summary: List Translation Settings
- * x-sidebar-summary: List Settings
- * description: Retrieve the list of translatable fields for all entities, such as products and collections. You can also filter the results by entity type or active entities.
+ * summary: List Translations
+ * description: Retrieve a list of translations. The translations can be filtered by fields such as `id`. The translations can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: entity_type
  *     in: query
- *     description: The entity to retrieve translation settings for.
+ *     description: The translation's entity type.
  *     required: false
  *     schema:
  *       type: string
  *       title: entity_type
- *       description: The entity to retrieve translation settings for.
- *       example: product
+ *       description: The translation's entity type.
  *   - name: is_active
  *     in: query
- *     description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
+ *     description: The translation's is active.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: is_active
- *       description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
+ *       description: The translation's is active.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -32,7 +30,7 @@
  *     label: JS SDK
  *     source: |-
  *       import Medusa from "@medusajs/js-sdk"
- *
+ * 
  *       export const sdk = new Medusa({
  *         baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
  *         debug: import.meta.env.DEV,
@@ -40,7 +38,7 @@
  *           type: "session",
  *         },
  *       })
- *
+ * 
  *       sdk.admin.translation.settings({
  *         entity_type: "product"
  *       })

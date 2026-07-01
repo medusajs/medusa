@@ -1,0 +1,39 @@
+/**
+ * @schema AdminSetLayoutConfiguration
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: AdminSetLayoutConfiguration
+ * required:
+ *   - configuration
+ * properties:
+ *   is_default:
+ *     type: boolean
+ *     title: is_default
+ *     description: The layout's is default.
+ *   configuration:
+ *     type: object
+ *     description: The layout's configuration.
+ *     required:
+ *       - widgets
+ *     properties:
+ *       widgets:
+ *         type: object
+ *         description: The configuration's widgets.
+ *         additionalProperties:
+ *           type: object
+ *           properties:
+ *             hidden:
+ *               type: boolean
+ *               title: hidden
+ *               description: The widget's hidden.
+ *             section:
+ *               type: string
+ *               title: section
+ *               description: The widget's section.
+ *             order:
+ *               type: number
+ *               title: order
+ *               description: The widget's order.
+ * 
+*/
+
