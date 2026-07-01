@@ -1,1 +1,1 @@
-export { RemoteJoiner, toRemoteJoinerQuery } from "@medusajs/query"
+export { RemoteJoiner } from "@medusajs/query"
