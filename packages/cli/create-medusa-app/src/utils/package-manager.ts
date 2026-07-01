@@ -5,7 +5,7 @@ import ProcessManager from "./process-manager.js"
 import { existsSync, readFileSync, rmSync, writeFileSync } from "fs"
 import { parse as parseYaml } from "yaml"
 
-export type PackageManagerType = "npm" | "yarn" | "pnpm"
+export type PackageManagerType = "npm" | "yarn" | "pnpm" | "nub"
 
 type PackageManagerOptions = {
   verbose?: boolean
@@ -48,7 +48,7 @@ export default class PackageManager {
     }
 
     // Extract package manager and version (e.g., "yarn/4.9.0" -> ["yarn", "4.9.0"])
-    const match = userAgent.match(/(pnpm|pnpx|yarn|npm)\/(\d+\.\d+\.\d+)/)
+    const match = userAgent.match(/(pnpm|pnpx|yarn|npm|nub)\/(\d+\.\d+\.\d+)/)
     if (match) {
       const [, manager, version] = match
 
@@ -74,6 +74,9 @@ export default class PackageManager {
     if (userAgent.includes("yarn")) {
       return { manager: "yarn" }
     }
+    if (userAgent.includes("nub")) {
+      return { manager: "nub" }
+    }
 
     return { manager: "npm" }
   }
@@ -86,6 +89,7 @@ export default class PackageManager {
       yarn: "yarn -v",
       pnpm: "pnpm -v",
       npm: "npm -v",
+      nub: "nub -v",
     }
 
     try {
@@ -236,6 +240,7 @@ export default class PackageManager {
       npm: ["yarn.lock", "pnpm-lock.yaml", ".yarn"],
       yarn: ["package-lock.json", "pnpm-lock.yaml"],
       pnpm: ["yarn.lock", "package-lock.json", ".yarn"],
+      nub: ["yarn.lock", "package-lock.json", "pnpm-lock.yaml", ".yarn"],
     }
 
     if (!this.packageManager) {
@@ -275,6 +280,7 @@ export default class PackageManager {
       npm: `npm install${
         installOptions?.installLegacyPeerDeps ? " --legacy-peer-deps" : ""
       }`,
+      nub: "nub install",
     }
 
     const command = commands[this.packageManager || "npm"]
@@ -363,6 +369,7 @@ export default class PackageManager {
       yarn: `yarn medusa ${command}`,
       pnpm: `pnpm medusa ${command}`,
       npm: `npx medusa ${command}`,
+      nub: `nubx medusa ${command}`,
     }
 
     const commandStr = formats[this.packageManager || "npm"]
@@ -387,6 +394,7 @@ export default class PackageManager {
       yarn: `yarn ${command}`,
       pnpm: `pnpm ${command}`,
       npm: `npm run ${command}`,
+      nub: `nub run ${command}`,
     }
 
     return formats[this.packageManager]
