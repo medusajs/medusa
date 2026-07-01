@@ -9,8 +9,9 @@ import {
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-import { isPresent, isString, toPascalCase } from "@medusajs/utils"
-import { GraphQLRelationMap, RemoteJoiner, toRemoteJoinerQuery } from "../joiner"
+import { isPresent, isString, toPascalCase, GraphQLUtils } from "@medusajs/utils"
+import { RelationMap, RemoteJoiner } from "../joiner"
+import { toRemoteJoinerQuery } from "./to-remote-joiner-query"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
@@ -27,12 +28,20 @@ export class RemoteQuery {
     options: { select?: string[]; relations: string[] }
   ) => Promise<any>
 
+  static parseQuery(
+    graphqlQuery: string,
+    variables?: Record<string, unknown>
+  ): RemoteJoinerQuery {
+    const parser = new GraphQLUtils.GraphQLParser(graphqlQuery, variables)
+    return parser.parseQuery()
+  }
+
   constructor({
     modulesLoaded,
     relationMap,
   }: {
     modulesLoaded: LoadedModule[]
-    relationMap?: GraphQLRelationMap
+    relationMap?: RelationMap
   }) {
     const joinerConfigs: ModuleJoinerConfig[] = []
 
@@ -413,7 +422,7 @@ export class RemoteQuery {
     let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
 
     if (isString(query)) {
-      finalQuery = RemoteJoiner.parseQuery(query, variables)
+      finalQuery = RemoteQuery.parseQuery(query, variables)
     } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
       finalQuery = toRemoteJoinerQuery(query, variables)
     }

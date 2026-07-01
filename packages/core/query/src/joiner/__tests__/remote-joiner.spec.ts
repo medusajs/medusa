@@ -154,7 +154,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (RemoteJoiner as any).filterFields(
+    const filteredFields = (joiner as any).filterFields(
       data,
       fields,
       expands
@@ -297,7 +297,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (RemoteJoiner as any).filterFields(
+    const filteredFields = (joiner as any).filterFields(
       data,
       fields,
       expands

@@ -125,14 +125,11 @@ describe("RemoteJoiner", () => {
   })
 
   it("Simple query of a service where the returned data contains multiple properties", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        product {
-          id
-          name
-        }
-      }
-    `)
+    const query = {
+      alias: "product",
+      fields: ["id", "name"],
+      expands: [],
+    }
     const data = await joiner.query(query)
 
     expect(data).toEqual({
@@ -318,28 +315,32 @@ describe("RemoteJoiner", () => {
   })
 
   it("Query a service expanding an inverse relation", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        variant {
-          id
-          name
-          orders {
-            order {
-              number
-              products {
-                quantity
-                product {
-                  name
-                }
-                variant {
-                  name
-                }
-              }
-            }
-          }
-        }
-      }
-    `)
+    const query = {
+      alias: "variant",
+      fields: ["id", "name", "orders"],
+      expands: [
+        {
+          property: "orders",
+          fields: ["order"],
+        },
+        {
+          property: "orders.order",
+          fields: ["number", "products"],
+        },
+        {
+          property: "orders.order.products",
+          fields: ["quantity", "product", "variant"],
+        },
+        {
+          property: "orders.order.products.product",
+          fields: ["name"],
+        },
+        {
+          property: "orders.order.products.variant",
+          fields: ["name"],
+        },
+      ],
+    }
     const data = await joiner.query(query)
 
     expect(data).toEqual([
@@ -485,15 +486,16 @@ describe("RemoteJoiner", () => {
   })
 
   it("Should query an field alias and cleanup unused nested levels", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        order {
-          product_user_alias {
-            email
-          }
-        }
-      }
-    `)
+    const query = {
+      alias: "order",
+      fields: ["product_user_alias"],
+      expands: [
+        {
+          property: "product_user_alias",
+          fields: ["email"],
+        },
+      ],
+    }
     const data = await joiner.query(query)
 
     expect(data).toEqual([
@@ -520,20 +522,24 @@ describe("RemoteJoiner", () => {
   })
 
   it("Should query an field alias and keep queried nested levels", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        order {
-          product_user_alias {
-            email
-          }
-          products {
-            product {
-              name
-            }
-          }
-        }
-      }
-    `)
+    const query = {
+      alias: "order",
+      fields: ["product_user_alias", "products"],
+      expands: [
+        {
+          property: "product_user_alias",
+          fields: ["email"],
+        },
+        {
+          property: "products",
+          fields: ["product"],
+        },
+        {
+          property: "products.product",
+          fields: ["name"],
+        },
+      ],
+    }
     const data = await joiner.query(query)
 
     expect(data).toEqual([
@@ -565,22 +571,28 @@ describe("RemoteJoiner", () => {
   })
 
   it("Should query an field alias and merge requested fields on alias and on the relationship", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        order {
-          product_user_alias {
-            email
-          }
-          products {
-            product {
-              user {
-                name
-              }
-            }
-          }
-        }
-      }
-    `)
+    const query = {
+      alias: "order",
+      fields: ["product_user_alias", "products"],
+      expands: [
+        {
+          property: "product_user_alias",
+          fields: ["email"],
+        },
+        {
+          property: "products",
+          fields: ["product"],
+        },
+        {
+          property: "products.product",
+          fields: ["user"],
+        },
+        {
+          property: "products.product.user",
+          fields: ["name"],
+        },
+      ],
+    }
     const data = await joiner.query(query)
 
     expect(data).toEqual([
@@ -618,29 +630,50 @@ describe("RemoteJoiner", () => {
   })
 
   it("Should query multiple aliases and pass the arguments where defined on 'forwardArgumentsOnPath'", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        order {
-          id
-          product_user_alias (arg: { random: 123 }) {
-            name
-          }
-          products {
-            variant {
-              user_shortcut(arg: 123) {
-                name
-                email
-                products {
-                  product {
-                    handler
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `)
+    const query = {
+      alias: "order",
+      fields: ["id", "product_user_alias", "products"],
+      expands: [
+        {
+          property: "product_user_alias",
+          fields: ["name"],
+          args: [
+            {
+              name: "arg",
+              value: {
+                random: 123,
+              },
+            },
+          ],
+        },
+        {
+          property: "products",
+          fields: ["variant"],
+        },
+        {
+          property: "products.variant",
+          fields: ["user_shortcut"],
+        },
+        {
+          property: "products.variant.user_shortcut",
+          fields: ["name", "email", "products"],
+          args: [
+            {
+              name: "arg",
+              value: 123,
+            },
+          ],
+        },
+        {
+          property: "products.variant.user_shortcut.products",
+          fields: ["product"],
+        },
+        {
+          property: "products.variant.user_shortcut.products.product",
+          fields: ["handler"],
+        },
+      ],
+    }
     const data = await joiner.query(query)
 
     expect(callbacks.mock.calls).toEqual([
@@ -771,28 +804,34 @@ describe("RemoteJoiner", () => {
   })
 
   it("Should throw when any key of the entrypoint isn't found", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        order (id: 201) {
-          id
-          number
-        }
-      }
-    `)
+    const query = {
+      alias: "order",
+      fields: ["id", "number"],
+      expands: [],
+      args: [
+        {
+          name: "id",
+          value: 201,
+        },
+      ],
+    }
     const data = await joiner.query(query, {
       throwIfKeyNotFound: true,
     })
 
     expect(data.length).toEqual(1)
 
-    const queryNotFound = RemoteJoiner.parseQuery(`
-      query {
-        order (id: "ord_1234556") {
-          id
-          number
-        }
-      }
-    `)
+    const queryNotFound = {
+      alias: "order",
+      fields: ["id", "number"],
+      expands: [],
+      args: [
+        {
+          name: "id",
+          value: "ord_1234556",
+        },
+      ],
+    }
     const dataNotFound = joiner.query(queryNotFound, {
       throwIfKeyNotFound: true,
     })
@@ -801,14 +840,11 @@ describe("RemoteJoiner", () => {
       "order id not found: ord_1234556"
     )
 
-    const queryNotFoundNoParam = RemoteJoiner.parseQuery(`
-      query {
-        order {
-          id
-          number
-        }
-      }
-    `)
+    const queryNotFoundNoParam = {
+      alias: "order",
+      fields: ["id", "number"],
+      expands: [],
+    }
     const dataNotFoundNoPK = joiner.query(queryNotFoundNoParam, {
       throwIfKeyNotFound: true,
     })
@@ -837,23 +873,19 @@ describe("RemoteJoiner", () => {
     let compositeJoiner: RemoteJoiner
 
     beforeAll(() => {
-      compositeJoiner = new RemoteJoiner(
-        compositeConfigs,
-        async () => ({ data: [] })
-      )
+      compositeJoiner = new RemoteJoiner(compositeConfigs, async () => ({
+        data: [],
+      }))
     })
 
     it("should fail when primary keys are not passed in filters", async () => {
       await expect(
         compositeJoiner.query(
-          RemoteJoiner.parseQuery(`
-            query {
-              region {
-                id
-                currency_code
-              }
-            }
-          `),
+          {
+            alias: "region",
+            fields: ["id", "currency_code"],
+            expands: [],
+          },
           { throwIfKeyNotFound: true }
         )
       ).rejects.toThrow(
@@ -862,13 +894,11 @@ describe("RemoteJoiner", () => {
 
       await expect(
         compositeJoiner.query(
-          RemoteJoiner.parseQuery(`
-            query {
-              country {
-                id
-              }
-            }
-          `),
+          {
+            alias: "country",
+            fields: ["id"],
+            expands: [],
+          },
           { throwIfKeyNotFound: true }
         )
       ).rejects.toThrow(
@@ -877,14 +907,20 @@ describe("RemoteJoiner", () => {
 
       await expect(
         compositeJoiner.query(
-          RemoteJoiner.parseQuery(`
-            query {
-              country (iso_2: null) {
-                id
-              }
-            }
-          `),
-          { throwIfKeyNotFound: true }
+          {
+            alias: "country",
+            fields: ["id"],
+            expands: [],
+            args: [
+              {
+                name: "iso_2",
+                value: null,
+              },
+            ],
+          },
+          {
+            throwIfKeyNotFound: true,
+          }
         )
       ).rejects.toThrow(
         "country: Value for primary key iso_2 not found in filters"
@@ -892,29 +928,37 @@ describe("RemoteJoiner", () => {
 
       await expect(
         compositeJoiner.query(
-          RemoteJoiner.parseQuery(`
-            query {
-              region (id: null) {
-                id
-                currency_code
-              }
-            }
-          `),
+          {
+            alias: "region",
+            fields: ["id", "currency_code"],
+            expands: [],
+            args: [
+              {
+                name: "id",
+                value: null,
+              },
+            ],
+          },
           { throwIfKeyNotFound: true }
         )
       ).rejects.toThrow("region: Value for primary key id not found in filters")
 
       await expect(
         compositeJoiner.query(
-          RemoteJoiner.parseQuery(`
-            query {
-              region (currency_code: "EUR") {
-                id
-                currency_code
-              }
-            }
-          `),
-          { throwIfKeyNotFound: true }
+          {
+            alias: "region",
+            fields: ["id", "currency_code"],
+            expands: [],
+            args: [
+              {
+                name: "currency_code",
+                value: "EUR",
+              },
+            ],
+          },
+          {
+            throwIfKeyNotFound: true,
+          }
         )
       ).rejects.toThrow(
         "region: Primary key(s) [id, iso_2] not found in filters"
@@ -923,25 +967,28 @@ describe("RemoteJoiner", () => {
   })
 
   it("Should merge initial data with data fetched", async () => {
-    const query = RemoteJoiner.parseQuery(`
-      query {
-        order {
-          id
-          number
-          products {
-            variant {
-              name
-              product {
-                handler
-                user {
-                  name
-                }
-              }
-            }
-          }
-        }
-      }
-    `)
+    const query = {
+      alias: "order",
+      fields: ["id", "number", "products"],
+      expands: [
+        {
+          property: "products",
+          fields: ["variant"],
+        },
+        {
+          property: "products.variant",
+          fields: ["name", "product"],
+        },
+        {
+          property: "products.variant.product",
+          fields: ["handler", "user"],
+        },
+        {
+          property: "products.variant.product.user",
+          fields: ["name"],
+        },
+      ],
+    }
 
     const initialData = [
       {
