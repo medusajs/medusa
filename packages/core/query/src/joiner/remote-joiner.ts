@@ -22,6 +22,8 @@ import {
 
 const BASE_PATH = "_root"
 
+export type GraphQLRelationMap = Map<string, Map<string, string>>
+
 export type RemoteFetchDataCallback = (
   expand: RemoteExpandProperty,
   keyField: string,
@@ -54,7 +56,7 @@ export class RemoteJoiner {
   private serviceConfigCache: Map<string, InternalJoinerServiceConfig> =
     new Map()
 
-  private entityMap: Map<string, Map<string, string>> = new Map()
+  private relationMap: GraphQLRelationMap = new Map()
 
   private static filterFields(
     data: any,
@@ -262,14 +264,12 @@ export class RemoteJoiner {
     private remoteFetchData: RemoteFetchDataCallback,
     private options: {
       autoCreateServiceNameAlias?: boolean
-      entitiesMap?: Map<string, any>
+      relationMap?: GraphQLRelationMap
     } = {}
   ) {
     this.options.autoCreateServiceNameAlias ??= true
-    if (this.options.entitiesMap) {
-      this.entityMap = GraphQLUtils.extractRelationsFromGQL(
-        this.options.entitiesMap
-      )
+    if (this.options.relationMap) {
+      this.relationMap = this.options.relationMap
     }
 
     this.buildReferences(
@@ -1300,7 +1300,7 @@ export class RemoteJoiner {
   }
 
   private getEntity({ entity, prop }: { entity: string; prop: string }) {
-    return this.entityMap.get(entity)?.get(prop)
+    return this.relationMap.get(entity)?.get(prop)
   }
 
   private parseAlias({

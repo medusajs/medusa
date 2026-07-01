@@ -12,7 +12,6 @@ const mockApplyTranslations = utils.applyTranslations as jest.Mock
 function createMockRemoteQuery(queryResult: any = []) {
   return {
     query: jest.fn().mockResolvedValue(queryResult),
-    getEntitiesMap: jest.fn().mockReturnValue(new Map()),
     getJoinerConfigs: jest.fn().mockReturnValue([]),
   }
 }

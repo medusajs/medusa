@@ -492,6 +492,7 @@ async function MedusaApp_({
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
   const entitiesMap = schema.getTypeMap() as unknown as Map<string, any>
+  const relationMap = GraphQLUtils.extractRelationsFromGQL(entitiesMap)
 
   const modulesLoaded = MedusaModule.getLoadedModules().map(
     (mod) => Object.values(mod)[0]
@@ -499,7 +500,7 @@ async function MedusaApp_({
 
   const remoteQuery = new RemoteQuery({
     modulesLoaded,
-    entitiesMap,
+    relationMap,
   })
 
   const applyMigration = async ({

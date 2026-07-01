@@ -1,15 +1,13 @@
 import { JoinerServiceConfig, ModuleJoinerConfig } from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
 
-const joinerConfigMapCache = new Map()
+type JoinerConfigLookupResult = {
+  joinerConfig?: ModuleJoinerConfig
+  alias?: any
+}
 
 /**
  * Parse and assign filters to remote query object to the corresponding relation level
- * @param entryPoint
- * @param filters
- * @param remoteQueryObject
- * @param isFieldAliasNestedRelation
- * @param entitiesMap
  */
 export function parseAndAssignFilters(
   {
@@ -23,29 +21,17 @@ export function parseAndAssignFilters(
     filters: object
     isFieldAliasNestedRelation?: boolean
   },
-  entitiesMap: Map<string, any>,
   joinerConfigs: ModuleJoinerConfig[]
 ) {
   for (const [filterKey, filterValue] of Object.entries(filters)) {
-    /*let entryAlias!: JoinerServiceConfigAlias*/
     let entryJoinerConfig!: JoinerServiceConfig
 
-    const { joinerConfig /*alias*/ } = retrieveJoinerConfigFromPropertyName({
+    const { joinerConfig } = retrieveJoinerConfigFromPropertyName({
       entryPoint: entryPoint,
       joinerConfigs,
     })
 
-    /*JoinerServiceConfigentryAlias = alias!*/
-    entryJoinerConfig = joinerConfig
-
-    // TODO: This check is not used further than to validate the entity is part of the graphql schema
-    // This can't be used right now as we have not migrated the entire code base to DML from which the graphql schema is generated
-    /*const entryEntity = entitiesMap[entryAlias.entity!]
-    if (!entryEntity) {
-      throw new Error(
-        `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
-      )
-    }*/
+    entryJoinerConfig = joinerConfig as JoinerServiceConfig
 
     if (isObject(filterValue)) {
       for (const [nestedFilterKey, nestedFilterValue] of Object.entries(
@@ -86,7 +72,6 @@ export function parseAndAssignFilters(
               remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
               isFieldAliasNestedRelation: isFieldAliasNestedRelation_,
             },
-            entitiesMap,
             joinerConfigs
           )
         }
@@ -113,7 +98,7 @@ function retrieveJoinerConfigFromPropertyName({
   entryPoint: string
   parentJoinerConfig?: ModuleJoinerConfig
   joinerConfigs: ModuleJoinerConfig[]
-}) {
+}): JoinerConfigLookupResult {
   if (parentJoinerConfig) {
     const res = findAliasFromJoinerConfig({
       joinerConfig: parentJoinerConfig,
@@ -122,10 +107,6 @@ function retrieveJoinerConfigFromPropertyName({
     if (res) {
       return res
     }
-  }
-
-  if (joinerConfigMapCache.has(entryPoint)) {
-    return joinerConfigMapCache.get(entryPoint)!
   }
 
   for (const joinerConfig of joinerConfigs) {
@@ -140,11 +121,6 @@ function retrieveJoinerConfigFromPropertyName({
     })
 
     if (entryPointAlias) {
-      joinerConfigMapCache.set(entryPoint, {
-        joinerConfig,
-        alias: entryPointAlias,
-      })
-
       return { joinerConfig, alias: entryPointAlias }
     }
   }
@@ -158,7 +134,7 @@ function findAliasFromJoinerConfig({
 }: {
   joinerConfig: ModuleJoinerConfig
   entryPoint: string
-}) {
+}): JoinerConfigLookupResult | undefined {
   const joinerConfigAlias = joinerConfig.alias ?? []
   const aliases = Array.isArray(joinerConfigAlias)
     ? joinerConfigAlias
@@ -170,11 +146,6 @@ function findAliasFromJoinerConfig({
   })
 
   if (entryPointAlias) {
-    joinerConfigMapCache.set(entryPoint, {
-      joinerConfig,
-      alias: entryPointAlias,
-    })
-
     return { joinerConfig, alias: entryPointAlias }
   }
 

@@ -10,7 +10,7 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 import { isPresent, isString, toPascalCase } from "@medusajs/utils"
-import { RemoteJoiner, toRemoteJoinerQuery } from "../joiner"
+import { GraphQLRelationMap, RemoteJoiner, toRemoteJoinerQuery } from "../joiner"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
@@ -18,7 +18,6 @@ const MAX_CONCURRENT_REQUESTS = 10
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
   private modulesMap: Map<string, LoadedModule> = new Map()
-  private entitiesMap: Map<string, any> = new Map()
   private joinerConfigs: ModuleJoinerConfig[] = []
 
   static traceFetchRemoteData?: (
@@ -30,13 +29,12 @@ export class RemoteQuery {
 
   constructor({
     modulesLoaded,
-    entitiesMap,
+    relationMap,
   }: {
     modulesLoaded: LoadedModule[]
-    entitiesMap: Map<string, any>
+    relationMap?: GraphQLRelationMap
   }) {
     const joinerConfigs: ModuleJoinerConfig[] = []
-    this.entitiesMap = entitiesMap
 
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
@@ -62,13 +60,9 @@ export class RemoteQuery {
       this.remoteFetchData.bind(this),
       {
         autoCreateServiceNameAlias: false,
-        entitiesMap,
+        relationMap,
       }
     )
-  }
-
-  public getEntitiesMap() {
-    return this.entitiesMap
   }
 
   public getJoinerConfigs() {

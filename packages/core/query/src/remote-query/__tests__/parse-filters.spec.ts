@@ -1,10 +1,5 @@
-import { getEntitiesMap } from "../__fixtures__/get-entities-map"
 import { parseFiltersJoinerConfigs } from "../__fixtures__/parse-filters"
 import { parseAndAssignFilters } from "../parse-filters"
-
-const entitiesMap = getEntitiesMap(
-  parseFiltersJoinerConfigs.map((m) => m.schema).join("\n")
-)
 
 describe("parse-filters", () => {
   describe("Without operator map usage", () => {
@@ -28,7 +23,6 @@ describe("parse-filters", () => {
           entryPoint: "custom_product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -64,7 +58,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -120,7 +113,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -194,7 +186,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -272,7 +263,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -334,7 +324,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -392,7 +381,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -470,7 +458,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 
@@ -547,7 +534,6 @@ describe("parse-filters", () => {
           entryPoint: "product",
           filters,
         },
-        entitiesMap,
         parseFiltersJoinerConfigs
       )
 

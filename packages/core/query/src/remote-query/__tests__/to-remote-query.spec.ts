@@ -1,12 +1,7 @@
 import { QueryContext } from "@medusajs/utils"
-import { getEntitiesMap } from "../__fixtures__/get-entities-map"
 import { parseFiltersJoinerConfigs } from "../__fixtures__/parse-filters"
 import "../__fixtures__/remote-query-type"
 import { toRemoteQuery } from "../to-remote-query"
-
-const entitiesMap = getEntitiesMap(
-  parseFiltersJoinerConfigs.map((m) => m.schema).join("\n")
-)
 
 describe("toRemoteQuery", () => {
   it("should transform a query with top level filtering", () => {
@@ -20,7 +15,6 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
@@ -45,7 +39,6 @@ describe("toRemoteQuery", () => {
         fields: ["id", "handle", "description"],
         strategy: "select-in",
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
@@ -71,7 +64,6 @@ describe("toRemoteQuery", () => {
           take: 10,
         },
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
@@ -101,7 +93,6 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
@@ -147,7 +138,6 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
@@ -211,7 +201,6 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
@@ -297,7 +286,6 @@ describe("toRemoteQuery", () => {
         },
         withDeleted: true,
       },
-      entitiesMap,
       parseFiltersJoinerConfigs
     )
 
