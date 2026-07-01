@@ -35,11 +35,18 @@ export class Product {
    *   console.log(transaction_id)
    * })
    */
-  async import(
+  // NOTE: Declared as a class-field arrow function rather than a method
+  // (`async import(...) {}`). Bundlers like Vite scan compiled output for the
+  // literal token sequence `import(` to detect dynamic imports. A method
+  // named `import` compiles to that same sequence and gets corrupted by
+  // Vite's import-analysis rewrite. An arrow function field instead compiles
+  // to `this.import = async (...) => {...}` in the constructor, which avoids
+  // the false positive. See: https://github.com/medusajs/medusa/issues/15892
+  import = async (
     body: HttpTypes.AdminImportProductRequest,
     query?: {},
     headers?: ClientHeaders
-  ) {
+  ) => {
     const form = new FormData()
     form.append("file", body.file)
 
