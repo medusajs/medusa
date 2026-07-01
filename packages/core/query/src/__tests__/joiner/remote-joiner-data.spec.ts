@@ -818,6 +818,110 @@ describe("RemoteJoiner", () => {
     )
   })
 
+  describe("with composite primary keys", () => {
+    const compositeConfigs = [
+      {
+        serviceName: "region",
+        entity: "Region",
+        primaryKeys: ["id", "iso_2"],
+        alias: [{ name: "region", args: { entity: "Region" } }],
+      },
+      {
+        serviceName: "country",
+        entity: "Country",
+        primaryKeys: ["id", "iso_2"],
+        alias: [{ name: "country", args: { entity: "Country" } }],
+      },
+    ]
+
+    let compositeJoiner: RemoteJoiner
+
+    beforeAll(() => {
+      compositeJoiner = new RemoteJoiner(
+        compositeConfigs,
+        async () => ({ data: [] })
+      )
+    })
+
+    it("should fail when primary keys are not passed in filters", async () => {
+      await expect(
+        compositeJoiner.query(
+          RemoteJoiner.parseQuery(`
+            query {
+              region {
+                id
+                currency_code
+              }
+            }
+          `),
+          { throwIfKeyNotFound: true }
+        )
+      ).rejects.toThrow(
+        "region: Primary key(s) [id, iso_2] not found in filters"
+      )
+
+      await expect(
+        compositeJoiner.query(
+          RemoteJoiner.parseQuery(`
+            query {
+              country {
+                id
+              }
+            }
+          `),
+          { throwIfKeyNotFound: true }
+        )
+      ).rejects.toThrow(
+        "country: Primary key(s) [id, iso_2] not found in filters"
+      )
+
+      await expect(
+        compositeJoiner.query(
+          RemoteJoiner.parseQuery(`
+            query {
+              country (iso_2: null) {
+                id
+              }
+            }
+          `),
+          { throwIfKeyNotFound: true }
+        )
+      ).rejects.toThrow(
+        "country: Value for primary key iso_2 not found in filters"
+      )
+
+      await expect(
+        compositeJoiner.query(
+          RemoteJoiner.parseQuery(`
+            query {
+              region (id: null) {
+                id
+                currency_code
+              }
+            }
+          `),
+          { throwIfKeyNotFound: true }
+        )
+      ).rejects.toThrow("region: Value for primary key id not found in filters")
+
+      await expect(
+        compositeJoiner.query(
+          RemoteJoiner.parseQuery(`
+            query {
+              region (currency_code: "EUR") {
+                id
+                currency_code
+              }
+            }
+          `),
+          { throwIfKeyNotFound: true }
+        )
+      ).rejects.toThrow(
+        "region: Primary key(s) [id, iso_2] not found in filters"
+      )
+    })
+  })
+
   it("Should merge initial data with data fetched", async () => {
     const query = RemoteJoiner.parseQuery(`
       query {
