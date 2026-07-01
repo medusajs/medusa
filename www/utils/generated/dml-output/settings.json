@@ -37,5 +37,18 @@
 		"deprecated": {
 			"is_deprecated": false
 		}
+	},
+	"LayoutConfiguration": {
+		"filePath": "packages/modules/settings/src/models/layout-configuration.ts",
+		"properties": {
+			"id": "The ID of the layout configuration.",
+			"zone": "The zone of the layout configuration",
+			"user_id": "The user id of the layout configuration",
+			"is_system_default": "Whether the layout configuration is system default.",
+			"configuration": "The configuration of the layout configuration"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
 	}
 }

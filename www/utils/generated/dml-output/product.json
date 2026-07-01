@@ -46,7 +46,9 @@
 			"value": "The value of the product option.",
 			"metadata": "Holds custom data in key-value pairs.",
 			"option": "The associated option.\n\n@expandable",
-			"variants": "The associated variants.\n\n@expandable"
+			"variants": "The associated variants.\n\n@expandable",
+			"rank": "The rank of the product option value\n\n@since 2.16.0",
+			"product_options": "The associated product_options.\n\n@expandable\n\n@since 2.16.0"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -58,8 +60,9 @@
 			"id": "The ID of the product option.",
 			"title": "The title of the product option.",
 			"metadata": "Holds custom data in key-value pairs.",
-			"product": "The associated product.\n\n@expandable",
-			"values": "The associated values.\n\n@expandable"
+			"values": "The associated values.\n\n@expandable",
+			"is_exclusive": "Whether the product option is exclusive.\n\n@since 2.16.0",
+			"products": "The associated products.\n\n@expandable\n\n@since 2.16.0"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -158,7 +161,8 @@
 			"options": "The associated options.\n\n@expandable",
 			"images": "The associated images.\n\n@expandable",
 			"collection": "The associated collection.\n\n@expandable",
-			"categories": "The associated categories.\n\n@expandable"
+			"categories": "The associated categories.\n\n@expandable",
+			"product_options": "The associated product_options.\n\n@expandable\n\n@since 2.16.0"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -172,6 +176,31 @@
 			"image": "The associated image.\n\n@expandable"
 		},
 		"since": "2.11.2",
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"ProductProductOptionValue": {
+		"filePath": "packages/modules/product/src/models/product-product-option-value.ts",
+		"properties": {
+			"id": "The ID of the product product option value.",
+			"product_product_option": "The associated product_product_option.\n\n@expandable",
+			"product_option_value": "The associated product_option_value.\n\n@expandable"
+		},
+		"since": "2.16.0",
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"ProductProductOption": {
+		"filePath": "packages/modules/product/src/models/product-product-option.ts",
+		"properties": {
+			"id": "The ID of the product product option.",
+			"product": "The associated product.\n\n@expandable",
+			"product_option": "The associated product_option.\n\n@expandable",
+			"values": "The associated values.\n\n@expandable"
+		},
+		"since": "2.16.0",
 		"deprecated": {
 			"is_deprecated": false
 		}
