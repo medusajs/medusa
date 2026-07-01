@@ -11,6 +11,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/admin/admin-sdk"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "files": [
     "dist",
     "package.json"

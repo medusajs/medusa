@@ -5,6 +5,7 @@ export const ROUTE_VIRTUAL_MODULE = `virtual:medusa/routes`
 export const MENU_ITEM_VIRTUAL_MODULE = `virtual:medusa/menu-items`
 export const WIDGET_VIRTUAL_MODULE = `virtual:medusa/widgets`
 export const I18N_VIRTUAL_MODULE = `virtual:medusa/i18n`
+export const LAYOUT_VIRTUAL_MODULE = `virtual:medusa/layouts`
 
 export const VIRTUAL_MODULES = [
   LINK_VIRTUAL_MODULE,
@@ -14,4 +15,5 @@ export const VIRTUAL_MODULES = [
   MENU_ITEM_VIRTUAL_MODULE,
   WIDGET_VIRTUAL_MODULE,
   I18N_VIRTUAL_MODULE,
+  LAYOUT_VIRTUAL_MODULE,
 ] as const

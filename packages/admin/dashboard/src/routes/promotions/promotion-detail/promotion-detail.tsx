@@ -1,9 +1,9 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { usePromotion, usePromotionRules } from "../../../hooks/api/promotions"
-import { useExtension } from "../../../providers/extension-provider"
 import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
@@ -47,8 +47,6 @@ export const PromotionDetail = () => {
     rules: ExtendedPromotionRule[]
   }
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !promotion) {
     return (
       <TwoColumnPageSkeleton mainSections={3} sidebarSections={1} showJSON />
@@ -56,38 +54,51 @@ export const PromotionDetail = () => {
   }
 
   return (
-    <TwoColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="promotion.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={promotion}
-      widgets={{
-        after: getWidgets("promotion.details.after"),
-        before: getWidgets("promotion.details.before"),
-        sideAfter: getWidgets("promotion.details.side.after"),
-        sideBefore: getWidgets("promotion.details.side.before"),
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="PromotionGeneralSection">
+              <PromotionGeneralSection promotion={promotion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="PromotionConditionsSection:rules">
+              <PromotionConditionsSection
+                rules={rules || []}
+                ruleType={"rules"}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="PromotionConditionsSection:target-rules">
+              <PromotionConditionsSection
+                rules={targetRules || []}
+                ruleType={"target-rules"}
+                applicationMethodTargetType={
+                  promotion.application_method?.target_type || "items"
+                }
+              />
+            </LayoutComposer.Entry>
+            {promotion.type === "buyget" && (
+              <LayoutComposer.Entry id="PromotionConditionsSection:buy-rules">
+                <PromotionConditionsSection
+                  rules={buyRules || []}
+                  ruleType={"buy-rules"}
+                  applicationMethodTargetType={"items"}
+                />
+              </LayoutComposer.Entry>
+            )}
+            {detailPageDefaultEntries(promotion, { metadata: false })}
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="CampaignSection">
+              <CampaignSection campaign={promotion.campaign!} />
+            </LayoutComposer.Entry>
+          </>
+        ),
       }}
-      hasOutlet
-      showJSON
-    >
-      <TwoColumnPage.Main>
-        <PromotionGeneralSection promotion={promotion} />
-        <PromotionConditionsSection rules={rules || []} ruleType={"rules"} />
-        <PromotionConditionsSection
-          rules={targetRules || []}
-          ruleType={"target-rules"}
-          applicationMethodTargetType={
-            promotion.application_method?.target_type || "items"
-          }
-        />
-        {promotion.type === "buyget" && (
-          <PromotionConditionsSection
-            rules={buyRules || []}
-            ruleType={"buy-rules"}
-            applicationMethodTargetType={"items"}
-          />
-        )}
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <CampaignSection campaign={promotion.campaign!} />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+    />
   )
 }

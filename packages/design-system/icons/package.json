@@ -9,6 +9,9 @@
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/design-system/icons"
   },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
   "main": "dist/cjs/medusa-icons.js",
   "main:umd": "dist/umd/medusa-icons.js",
   "module": "dist/esm/index.js",

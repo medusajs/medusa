@@ -756,3 +756,7 @@ export const currencies: Record<string, CurrencyInfo> = {
 export function getCurrencySymbol(code: string) {
   return currencies[code.toUpperCase()].symbol_native
 }
+
+export function getCurrencyDecimalDigits(code: string) {
+  return currencies[code.toUpperCase()].decimal_digits
+}

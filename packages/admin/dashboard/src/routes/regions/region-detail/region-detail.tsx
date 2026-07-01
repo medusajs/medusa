@@ -1,3 +1,4 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { useRegion } from "../../../hooks/api/regions"
@@ -6,9 +7,8 @@ import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
-import { useExtension } from "../../../providers/extension-provider"
 import { REGION_DETAIL_FIELDS } from "./constants"
 
 export const RegionDetail = () => {
@@ -43,8 +43,6 @@ export const RegionDetail = () => {
     { enabled: !!region }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || isLoadingPreferences || !region) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -58,20 +56,26 @@ export const RegionDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("region.details.before"),
-        after: getWidgets("region.details.after"),
-      }}
+    <LayoutComposer
+      widgetsZonePrefix="region.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={region}
-      showMetadata
-      showJSON
-    >
-      <RegionGeneralSection
-        region={region}
-        pricePreferences={pricePreferences ?? []}
-      />
-      <RegionCountrySection region={region} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="RegionGeneralSection">
+              <RegionGeneralSection
+                region={region}
+                pricePreferences={pricePreferences ?? []}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="RegionCountrySection">
+              <RegionCountrySection region={region} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(region, { permissions: false })}
+          </>
+        ),
+      }}
+    />
   )
 }

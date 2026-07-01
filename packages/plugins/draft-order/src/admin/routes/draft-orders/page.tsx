@@ -57,33 +57,35 @@ const List = () => {
       preferredLayoutId="core:single-column"
       sections={{
         main: (
-          <Container className="p-0">
-            <DataTable
-              data={draft_orders}
-              getRowId={(row) => row.id}
-              columns={columns}
-              filters={filters}
-              isLoading={isPending}
-              pageSize={PAGE_SIZE}
-              rowCount={count}
-              heading={t("draftOrders.domain")}
-              action={{
-                label: t("actions.create"),
-                to: "create",
-              }}
-              rowHref={(row) => `${row.id}`}
-              emptyState={{
-                empty: {
-                  heading: t("draftOrders.list.noRecordsMessage"),
-                  description: t("draftOrders.list.description"),
-                },
-                filtered: {
-                  heading: t("draftOrders.list.filtered.heading"),
-                  description: t("draftOrders.list.filtered.description"),
-                },
-              }}
-            />
-          </Container>
+          <LayoutComposer.Entry id="DraftOrderListTable">
+            <Container className="p-0">
+              <DataTable
+                data={draft_orders}
+                getRowId={(row) => row.id}
+                columns={columns}
+                filters={filters}
+                isLoading={isPending}
+                pageSize={PAGE_SIZE}
+                rowCount={count}
+                heading={t("draftOrders.domain")}
+                action={{
+                  label: t("actions.create"),
+                  to: "create",
+                }}
+                rowHref={(row) => `${row.id}`}
+                emptyState={{
+                  empty: {
+                    heading: t("draftOrders.list.noRecordsMessage"),
+                    description: t("draftOrders.list.description"),
+                  },
+                  filtered: {
+                    heading: t("draftOrders.list.filtered.heading"),
+                    description: t("draftOrders.list.filtered.description"),
+                  },
+                }}
+              />
+            </Container>
+          </LayoutComposer.Entry>
         ),
       }}
     />

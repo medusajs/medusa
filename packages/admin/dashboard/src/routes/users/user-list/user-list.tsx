@@ -1,18 +1,20 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { UserListTable } from "./components/user-list-table"
 
 export const UserList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("user.list.after"),
-        before: getWidgets("user.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="user.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="UserListTable">
+            <UserListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <UserListTable />
-    </SingleColumnPage>
+    />
   )
 }

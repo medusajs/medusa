@@ -541,12 +541,16 @@ export interface IPaymentModuleService extends IModuleService {
   /**
    * This method authorizes a payment session using its associated payment provider. This creates a payment that can later be captured.
    *
+   * When the provider returns a `pending_authorization` status (for async payment methods like bank transfers or payment links),
+   * this method returns `null` instead of creating a payment. The session status is updated to `pending_authorization` and the
+   * method can be called again later (via webhook or manual action) to complete authorization.
+   *
    * Learn more about the payment flow in [this guide](https://docs.medusajs.com/resources/commerce-modules/payment/payment-flow)
    *
    * @param {string} id - The payment session's ID.
    * @param {Record<string, unknown>} context - Context data to pass to the associated payment provider.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PaymentDTO>} The created payment.
+   * @returns {Promise<PaymentDTO | null>} The created payment, or `null` if the payment authorization is pending.
    *
    * @example
    * const payment =
@@ -559,7 +563,7 @@ export interface IPaymentModuleService extends IModuleService {
     id: string,
     context: Record<string, unknown>,
     sharedContext?: Context
-  ): Promise<PaymentDTO>
+  ): Promise<PaymentDTO | null>
 
   /**
    * This method retrieves a paginated list of payment sessions based on optional filters and configuration.
