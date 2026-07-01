@@ -1,3 +1,4 @@
+import "../../testing/medusa-module-mock"
 import { MedusaContainer } from "@medusajs/types"
 import * as utils from "@medusajs/utils"
 import { Query } from "../query"
