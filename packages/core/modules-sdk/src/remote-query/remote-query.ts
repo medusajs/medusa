@@ -1,9 +1,4 @@
 import {
-  RemoteFetchDataCallback,
-  RemoteJoiner,
-  toRemoteJoinerQuery,
-} from "@medusajs/orchestration"
-import {
   JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
@@ -16,6 +11,11 @@ import {
 } from "@medusajs/types"
 import { isPresent, isString, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "../medusa-module"
+import {
+  RemoteFetchDataCallback,
+  RemoteJoiner,
+  toRemoteJoinerQuery,
+} from "../joiner"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000

@@ -1,36 +1,50 @@
-import { XMarkMini } from "@medusajs/icons"
 import {
   Alert,
-  Button,
   Checkbox,
   clx,
   Heading,
   Hint,
-  IconButton,
   InlineTip,
-  Input,
   Label,
   Text,
 } from "@medusajs/ui"
 import {
-  Controller,
   FieldArrayWithId,
   useFieldArray,
   UseFormReturn,
   useWatch,
 } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { useEffect, useMemo, useState } from "react"
 
 import { Form } from "../../../../../../../components/common/form"
 import { SortableList } from "../../../../../../../components/common/sortable-list"
 import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { ChipInput } from "../../../../../../../components/inputs/chip-input"
+import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { ProductCreateSchemaType } from "../../../../types"
 import { decorateVariantsWithDefaultValues } from "../../../../utils"
+import { productOptionsQueryKeys } from "../../../../../../../hooks/api"
+import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
+import { sdk } from "../../../../../../../lib/client"
+import { AdminProductOption, HttpTypes } from "@medusajs/types"
 
 type ProductCreateVariantsSectionProps = {
   form: UseFormReturn<ProductCreateSchemaType>
 }
+
+type ProductOptionFormValue = {
+  title: string
+  values: string[]
+  id?: string
+  value_ids?: string[]
+}
+
+// An option being assigned during create: either an existing option (full
+// detail) or a brand-new option captured as a title + value names.
+type SelectedOptionInput =
+  | Pick<AdminProductOption, "id" | "title" | "values">
+  | { title: string; values: string[] }
 
 const getPermutations = (
   data: { title: string; values: string[] }[]
@@ -65,11 +79,6 @@ export const ProductCreateVariantsSection = ({
 }: ProductCreateVariantsSectionProps) => {
   const { t } = useTranslation()
 
-  const options = useFieldArray({
-    control: form.control,
-    name: "options",
-  })
-
   const variants = useFieldArray({
     control: form.control,
     name: "variants",
@@ -97,92 +106,244 @@ export const ProductCreateVariantsSection = ({
   const showInvalidVariantsMessage =
     form.formState.errors.variants?.root?.message === "invalid_length"
 
-  const handleOptionValueUpdate = (index: number, value: string[]) => {
-    const { isTouched: hasUserSelectedVariants } =
-      form.getFieldState("variants")
+  const selectedExistingOptionIds = useMemo(
+    () =>
+      watchedOptions.map((opt) => opt.id).filter((id): id is string => !!id),
+    [watchedOptions]
+  )
 
-    const newOptions = [...watchedOptions]
-    newOptions[index].values = value
+  const productOptionsCombobox = useComboboxData({
+    queryKey: productOptionsQueryKeys.list({ is_exclusive: false }),
+    queryFn: (params) =>
+      sdk.admin.productOption.list({
+        ...params,
+        is_exclusive: false,
+        fields: "id,title,values.id,values.value,values.rank",
+      } as HttpTypes.AdminProductOptionListParams),
+    getOptions: (data) =>
+      data.product_options.map((option) => ({
+        label: option.title,
+        value: option.id,
+        option,
+      })),
+  })
 
-    const permutations = getPermutations(
-      newOptions.filter(({ values }) => values.length)
-    )
-    const oldVariants = [...watchedVariants]
+  // Accumulate the full option details as they appear in the picker pages.
+  // Accumulating (rather than reading only the current page) keeps a selected
+  // option's values available even if a later search filters it out of the
+  // current results.
+  const [optionDetailsById, setOptionDetailsById] = useState(
+    () => new Map<string, AdminProductOption>()
+  )
 
-    const findMatchingPermutation = (options: Record<string, string>) => {
-      return permutations.find((permutation) =>
-        Object.keys(options).every((key) => options[key] === permutation[key])
-      )
-    }
+  useEffect(() => {
+    setOptionDetailsById((prev) => {
+      let next: Map<string, AdminProductOption> | undefined
 
-    const newVariants = oldVariants.reduce((variants, variant) => {
-      const match = findMatchingPermutation(variant.options)
-
-      if (match) {
-        variants.push({
-          ...variant,
-          title: getVariantName(match),
-          options: match,
-        })
+      for (const choice of productOptionsCombobox.options) {
+        if (choice.option && prev.get(choice.value) !== choice.option) {
+          next ??= new Map(prev)
+          next.set(choice.value, choice.option)
+        }
       }
 
-      return variants
-    }, [] as typeof oldVariants)
-
-    const usedPermutations = new Set(
-      newVariants.map((variant) => variant.options)
-    )
-    const unusedPermutations = permutations.filter(
-      (permutation) => !usedPermutations.has(permutation)
-    )
-
-    unusedPermutations.forEach((permutation) => {
-      newVariants.push({
-        title: getVariantName(permutation),
-        options: permutation,
-        should_create: hasUserSelectedVariants ? false : true,
-        variant_rank: newVariants.length,
-        // NOTE - prepare inventory array here for now so we prevent rendering issue if we append the items later
-        inventory: [{ inventory_item_id: "", required_quantity: "" }],
-      })
+      return next ?? prev
     })
+  }, [productOptionsCombobox.options])
+
+  const knownOptionIds = useMemo(() => {
+    const ids = new Set<string>(selectedExistingOptionIds)
+    productOptionsCombobox.options.forEach((option) => ids.add(option.value))
+    return ids
+  }, [selectedExistingOptionIds, productOptionsCombobox.options])
+
+  const productOptionChoices = useMemo(() => {
+    const merged = new Map<string, { label: string; value: string }>()
+    productOptionsCombobox.options.forEach((option) =>
+      merged.set(option.value, option)
+    )
+
+    // Make sure every selected option (existing or newly typed) has a label
+    // entry, even when it isn't on the current page / search result — otherwise
+    // its chip can't resolve. Existing options are keyed by id, new ones by
+    // title.
+    watchedOptions.forEach((opt) => {
+      const value = opt.id || opt.title
+      if (value && !merged.has(value)) {
+        merged.set(value, { value, label: opt.title || value })
+      }
+    })
+
+    return [...merged.values()]
+  }, [productOptionsCombobox.options, watchedOptions])
+
+  const selectedOptionValues = useMemo(() => {
+    return watchedOptions.map((opt) => opt.id || opt.title)
+  }, [watchedOptions])
+
+  const handleProductOptionSelect = (optionValues: string[]) => {
+    const existingOptionIds = optionValues.filter((val) =>
+      knownOptionIds.has(val)
+    )
+    const newOptionTitles = optionValues.filter(
+      (val) => !knownOptionIds.has(val)
+    )
+
+    const allSelectedOptions: SelectedOptionInput[] = []
+
+    const watchedOptions = form.getValues("options")
+
+    existingOptionIds.forEach((id) => {
+      const details = optionDetailsById.get(id)
+      if (details) {
+        allSelectedOptions.push(details)
+      }
+    })
+
+    watchedOptions.forEach((opt) => {
+      if (!opt.id && opt.title && newOptionTitles.includes(opt.title)) {
+        allSelectedOptions.push({
+          title: opt.title,
+          values: opt.values || [],
+        })
+      }
+    })
+
+    const newSelectedValues: Record<string, string[]> = {}
+
+    allSelectedOptions.forEach((option) => {
+      if ("id" in option && option.id) {
+        const currentOption = watchedOptions.find((opt) => opt.id === option.id)
+        if (currentOption?.value_ids) {
+          newSelectedValues[option.id] = currentOption.value_ids
+        } else {
+          newSelectedValues[option.id] = option.values?.map((v) => v.id) || []
+        }
+      }
+    })
+
+    updateFormWithSelectedValues(allSelectedOptions, newSelectedValues)
+  }
+
+  const generateAndSetVariants = (options: ProductOptionFormValue[]) => {
+    const permutations = getPermutations(
+      options.filter(({ values }) => values && values.length > 0)
+    )
+
+    const newVariants = permutations.map((permutation, index) => ({
+      title: getVariantName(permutation),
+      options: permutation,
+      should_create: true,
+      variant_rank: index,
+      inventory: [{ inventory_item_id: "", required_quantity: "" }],
+    }))
 
     form.setValue("variants", newVariants)
   }
 
-  const handleRemoveOption = (index: number) => {
-    if (index === 0) {
+  const handleValueChange = (optionId: string, valueIds: string[]) => {
+    if (valueIds.length === 0) {
       return
     }
 
-    options.remove(index)
+    const currentOption = watchedOptions.find((opt) => opt.id === optionId)
+    if (!currentOption) {
+      return
+    }
 
-    const newOptions = [...watchedOptions]
-    newOptions.splice(index, 1)
-    const validOptionTitles = new Set(newOptions.map((option) => option.title))
+    const productOption = optionDetailsById.get(optionId)
+    const existingValueIds = new Set(
+      productOption?.values?.map((v) => v.id) || []
+    )
 
-    const permutations = getPermutations(newOptions)
-    const oldVariants = [...watchedVariants]
+    const validValueIds: string[] = []
+    const newValueNames: string[] = []
 
-    const newVariants = permutations.reduce((variants, permutation) => {
-      const variant = oldVariants.find(({ options }) =>
-        Object.keys(options)
-          .filter((option) => validOptionTitles.has(option))
-          .every((key) => options[key] === permutation[key])
-      )
-
-      if (variant) {
-        variants.push({
-          ...variant,
-          title: variant.title,
-          options: permutation,
-        })
+    valueIds.forEach((id) => {
+      if (existingValueIds.has(id)) {
+        validValueIds.push(id)
+      } else {
+        newValueNames.push(id)
       }
+    })
 
-      return variants
-    }, [] as typeof oldVariants)
+    const updatedOptions = watchedOptions.map((opt) => {
+      if (opt.id === optionId) {
+        const selectedExistingValues =
+          productOption?.values
+            ?.filter((v) => validValueIds.includes(v.id))
+            .map((v) => v.value) || []
 
-    form.setValue("variants", newVariants)
+        return {
+          ...opt,
+          value_ids: valueIds,
+          values: [...selectedExistingValues, ...newValueNames],
+        }
+      }
+      return opt
+    })
+
+    form.setValue("options", updatedOptions)
+    generateAndSetVariants(updatedOptions)
+  }
+
+  const handleNewOptionValueChange = (
+    optionTitle: string,
+    valueNames: string[]
+  ) => {
+    const updatedOptions = watchedOptions.map((opt) => {
+      if (!opt.id && opt.title === optionTitle) {
+        return {
+          ...opt,
+          values: valueNames,
+        }
+      }
+      return opt
+    })
+
+    form.setValue("options", updatedOptions)
+    generateAndSetVariants(updatedOptions)
+  }
+
+  const updateFormWithSelectedValues = (
+    selectedProductOptions: SelectedOptionInput[],
+    valueSelections: Record<string, string[]>
+  ) => {
+    const newOptions: ProductOptionFormValue[] = selectedProductOptions.map(
+      (option) => {
+        if ("id" in option && option.id !== undefined) {
+          const existingOption = option
+          const selectedValueIds = valueSelections[existingOption.id] || []
+          const allValues = option.values || []
+
+          const selectedValues = allValues
+            .filter((v) => selectedValueIds.includes(v.id))
+            .sort((a, b) => {
+              const rankA = a.rank ?? Number.MAX_VALUE
+              const rankB = b.rank ?? Number.MAX_VALUE
+              return rankA - rankB
+            })
+            .map((v) => v.value)
+
+          return {
+            id: existingOption.id,
+            title: existingOption.title,
+            values: selectedValues,
+            value_ids:
+              selectedValueIds.length > 0 ? selectedValueIds : undefined,
+          }
+        } else {
+          const newOption = option as { title: string; values: string[] }
+          return {
+            title: newOption.title,
+            values: newOption.values,
+          }
+        }
+      }
+    )
+
+    form.setValue("options", newOptions)
+    generateAndSetVariants(newOptions)
   }
 
   const handleRankChange = (
@@ -295,132 +456,161 @@ export const ProductCreateVariantsSection = ({
       {watchedAreVariantsEnabled && (
         <>
           <div className="flex flex-col gap-y-6">
-            <Form.Field
-              control={form.control}
-              name="options"
-              render={() => {
-                return (
-                  <Form.Item>
-                    <div className="flex flex-col gap-y-6">
-                      <div className="flex items-start justify-between gap-x-4">
-                        <div className="flex flex-col">
-                          <Form.Label>
-                            {t("products.create.variants.productOptions.label")}
-                          </Form.Label>
-                          <Form.Hint>
-                            {t("products.create.variants.productOptions.hint")}
-                          </Form.Hint>
-                        </div>
-                        <Button
-                          size="small"
-                          variant="secondary"
-                          type="button"
-                          onClick={() => {
-                            options.append({
-                              title: "",
-                              values: [],
-                            })
-                          }}
-                        >
-                          {t("actions.add")}
-                        </Button>
-                      </div>
-                      {showInvalidOptionsMessage && (
-                        <Alert dismissible variant="error">
-                          {t("products.create.errors.options")}
-                        </Alert>
-                      )}
-                      <ul className="flex flex-col gap-y-4">
-                        {options.fields.map((option, index) => {
-                          const hasError =
-                            !!form.formState.errors.options?.[index]
-                          return (
-                            <li
-                              key={option.id}
-                              className={clx(
-                                "bg-ui-bg-component shadow-elevation-card-rest grid grid-cols-[1fr_28px] items-center gap-1.5 rounded-xl p-1.5",
-                                {
-                                  "border-ui-border-error shadow-borders-error":
-                                    hasError,
-                                }
-                              )}
-                            >
-                              <div className="grid grid-cols-[min-content,1fr] items-center gap-1.5">
-                                <div className="flex items-center px-2 py-1.5">
-                                  <Label
-                                    size="xsmall"
-                                    weight="plus"
-                                    className="text-ui-fg-subtle"
-                                    htmlFor={`options.${index}.title`}
-                                  >
-                                    {t("fields.title")}
-                                  </Label>
-                                </div>
-                                <Input
-                                  className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
-                                  {...form.register(
-                                    `options.${index}.title` as const
-                                  )}
-                                  placeholder={t(
-                                    "products.fields.options.optionTitlePlaceholder"
-                                  )}
-                                />
-                                <div className="flex items-center px-2 py-1.5">
-                                  <Label
-                                    size="xsmall"
-                                    weight="plus"
-                                    className="text-ui-fg-subtle"
-                                    htmlFor={`options.${index}.values`}
-                                  >
-                                    {t("fields.values")}
-                                  </Label>
-                                </div>
-                                <Controller
-                                  control={form.control}
-                                  name={`options.${index}.values` as const}
-                                  render={({
-                                    field: { onChange, ...field },
-                                  }) => {
-                                    const handleValueChange = (
-                                      value: string[]
-                                    ) => {
-                                      handleOptionValueUpdate(index, value)
-                                      onChange(value)
-                                    }
+            <div className="flex flex-col">
+              <Label weight="plus">
+                {t("products.create.variants.productOptions.label")}
+              </Label>
+              <Hint>{t("products.create.variants.productOptions.hint")}</Hint>
+            </div>
+            {showInvalidOptionsMessage && (
+              <Alert dismissible variant="error">
+                {t("products.create.errors.options")}
+              </Alert>
+            )}
+            <Combobox
+              value={selectedOptionValues}
+              onChange={(value) => handleProductOptionSelect(value as string[])}
+              options={productOptionChoices}
+              searchValue={productOptionsCombobox.searchValue}
+              onSearchValueChange={productOptionsCombobox.onSearchValueChange}
+              fetchNextPage={productOptionsCombobox.fetchNextPage}
+              isFetchingNextPage={productOptionsCombobox.isFetchingNextPage}
+              shouldAlwaysShowCreateOption
+              onCreateOption={async (options) => {
+                const optionTitle = options[options.length - 1]?.trim()
 
-                                    return (
-                                      <ChipInput
-                                        {...field}
-                                        variant="contrast"
-                                        onChange={handleValueChange}
-                                        placeholder={t(
-                                          "products.fields.options.variantionsPlaceholder"
-                                        )}
-                                      />
-                                    )
-                                  }}
-                                />
-                              </div>
-                              <IconButton
-                                type="button"
-                                size="small"
-                                variant="transparent"
-                                className="text-ui-fg-muted"
-                                disabled={index === 0}
-                                onClick={() => handleRemoveOption(index)}
-                              >
-                                <XMarkMini />
-                              </IconButton>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    </div>
-                  </Form.Item>
+                if (!optionTitle) {
+                  return
+                }
+
+                const allSelectedOptions: SelectedOptionInput[] = []
+
+                const valueSelections: Record<string, string[]> = {}
+
+                watchedOptions.forEach((opt) => {
+                  if (opt.id) {
+                    const productOption = optionDetailsById.get(opt.id)
+                    if (productOption) {
+                      allSelectedOptions.push(productOption)
+                      if (opt.value_ids) {
+                        valueSelections[opt.id] = opt.value_ids
+                      }
+                    }
+                  } else {
+                    allSelectedOptions.push({
+                      title: opt.title,
+                      values: opt.values || [],
+                    })
+                  }
+                })
+
+                const newOption = {
+                  title: optionTitle,
+                  is_exclusive: true,
+                  values: [],
+                }
+
+                allSelectedOptions.push(newOption)
+
+                updateFormWithSelectedValues(
+                  allSelectedOptions,
+                  valueSelections
                 )
               }}
+              placeholder={t("products.fields.options.optionTitlePlaceholder")}
+              disabled={productOptionsCombobox.isLoading}
+              displayMode="chips"
             />
           </div>
+          {watchedOptions.length > 0 && (
+            <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col">
+                <Label weight="plus">{t("fields.values")}</Label>
+                <Hint>{t("products.create.variants.selectValuesHint")}</Hint>
+              </div>
+              <div className="flex flex-col gap-y-3">
+                {watchedOptions.map((opt, index) => {
+                  if (opt.id) {
+                    const productOption = optionDetailsById.get(opt.id)
+
+                    const existingValues = productOption?.values || []
+                    const customValueNames =
+                      opt.values?.filter(
+                        (v) => !existingValues.some((ev) => ev.value === v)
+                      ) || []
+
+                    const existingValueOptions = [...existingValues]
+                      .sort((a, b) => {
+                        const rankA = a.rank ?? Number.MAX_VALUE
+                        const rankB = b.rank ?? Number.MAX_VALUE
+                        return rankA - rankB
+                      })
+                      .map((v) => ({
+                        value: v.id,
+                        label: v.value,
+                      }))
+
+                    const customValueOptions = customValueNames.map((v) => ({
+                      value: v,
+                      label: v,
+                    }))
+
+                    const valueOptions = [
+                      ...existingValueOptions,
+                      ...customValueOptions,
+                    ]
+
+                    return (
+                      <div key={opt.id} className="flex flex-col gap-y-2">
+                        <Label size="small" weight="plus">
+                          {opt.title}
+                        </Label>
+                        <Combobox
+                          value={opt.value_ids ?? []}
+                          onChange={(value) =>
+                            handleValueChange(opt.id!, value as string[])
+                          }
+                          // onCreateOption={async (values) => {
+                          //   const newValueName =
+                          //     values[values.length - 1]?.trim()
+                          //   if (newValueName && opt.id) {
+                          //     const currentValueIds = opt.value_ids || []
+                          //     handleValueChange(opt.id, [
+                          //       ...currentValueIds,
+                          //       newValueName,
+                          //     ])
+                          //   }
+                          // }}
+                          options={valueOptions}
+                          placeholder={t(
+                            "products.fields.options.variantionsPlaceholder"
+                          )}
+                          displayMode="chips"
+                        />
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <div key={index} className="flex flex-col gap-y-2">
+                        <Label size="small" weight="plus">
+                          {opt.title}
+                        </Label>
+                        <ChipInput
+                          value={opt.values ?? []}
+                          onChange={(value) =>
+                            handleNewOptionValueChange(opt.title, value)
+                          }
+                          placeholder={t(
+                            "products.fields.options.variantionsPlaceholder"
+                          )}
+                        />
+                      </div>
+                    )
+                  }
+                })}
+              </div>
+            </div>
+          )}
           <div className="grid grid-cols-1 gap-x-4 gap-y-8">
             <div className="flex flex-col gap-y-6">
               <div className="flex flex-col">

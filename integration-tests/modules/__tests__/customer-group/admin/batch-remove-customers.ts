@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /admin/customer-groups/:id/customers", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should batch delete customers from a group", async () => {

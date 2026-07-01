@@ -161,7 +161,9 @@ export const createPaymentSessionsWorkflow = createWorkflow(
             account_holder_id: accountHolder.id,
           },
         },
-      ])
+      ]).config({
+        noCompensation: true,
+      })
     })
 
     const paymentSessionInput = transform(

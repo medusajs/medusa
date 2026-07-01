@@ -28,7 +28,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer
     let regionModuleService: IRegionModuleService
     let scModuleService: ISalesChannelModuleService
@@ -51,8 +51,10 @@ medusaIntegrationTestRunner({
       remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("Draft Orders - Admin", () => {

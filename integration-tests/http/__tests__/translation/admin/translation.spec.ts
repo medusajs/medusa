@@ -11,7 +11,7 @@ jest.setTimeout(100000)
 process.env.MEDUSA_FF_TRANSLATION = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Translation API", () => {
       let appContainer: MedusaContainer
 
@@ -19,7 +19,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
 
         const translationModule = appContainer.resolve(Modules.TRANSLATION)
@@ -40,6 +40,8 @@ medusaIntegrationTestRunner({
             { locale_code: "de-DE" },
           ],
         })
+
+        await dbUtils.snapshot()
       })
 
       afterAll(async () => {

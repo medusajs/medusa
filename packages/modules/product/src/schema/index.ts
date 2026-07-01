@@ -123,8 +123,8 @@ type ProductType {
 type ProductOption {
   id: ID!
   title: String!
-  product: Product
-  product_id: String
+  is_exclusive: Boolean!
+  products: [Product!]!
   values: [ProductOptionValue!]!
   metadata: JSON
   created_at: DateTime!

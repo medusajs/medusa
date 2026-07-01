@@ -17,7 +17,7 @@ import {
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Workflow Engine API", () => {
       let medusaContainer
 
@@ -25,8 +25,10 @@ medusaIntegrationTestRunner({
         medusaContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, medusaContainer)
+
+        await dbUtils.snapshot()
       })
 
       describe("Testing WorkflowEngine.run", () => {

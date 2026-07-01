@@ -63,6 +63,7 @@ export const validateCartPaymentsStep = createStep(
       PaymentSessionStatus.REQUIRES_MORE,
       PaymentSessionStatus.AUTHORIZED, // E.g. payment was authorized, but the cart was not completed
       PaymentSessionStatus.CAPTURED, // E.g. payment was captured, but the cart was not completed
+      PaymentSessionStatus.PENDING_AUTHORIZATION, // E.g. async payment method, authorization is deferred
     ]
 
     const paymentsToProcess = paymentCollection.payment_sessions?.filter((ps) =>

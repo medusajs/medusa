@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "2.16.0",
+  "version": "2.17.1",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "export": {
@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/core/modules-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
     "node": ">=20"
@@ -31,11 +34,10 @@
     "watch": "yarn run -T tsc --build --watch"
   },
   "devDependencies": {
-    "@medusajs/types": "2.16.0"
+    "@medusajs/types": "2.17.1"
   },
   "dependencies": {
-    "@medusajs/deps": "2.16.0",
-    "@medusajs/orchestration": "2.16.0",
-    "@medusajs/utils": "2.16.0"
+    "@medusajs/deps": "2.17.1",
+    "@medusajs/utils": "2.17.1"
   }
 }
