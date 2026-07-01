@@ -4,9 +4,9 @@ sidebar_label: deleteProductsWorkflow
 sidebar_description: Delete one or more products.
 tags:
   - product
-  - query
   - event bus
   - workflow
+  - query
   - inventory
   - link
 ---
@@ -25,7 +25,7 @@ you can delete custom records linked to the products.
 
 You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around product deletion.
 
-<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/core-flows/src/product/workflows/delete-products.ts#L53" />
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/b67dcab7477cea6b362dcf5e946e6e642d508409/packages/core/core-flows/src/product/workflows/delete-products.ts#L53" />
 
 ## Examples
 
@@ -134,7 +134,7 @@ const myWorkflow = createWorkflow(
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteProductsWorkflow","steps":[{"type":"step","name":"getProductsStep","description":"This step retrieves products, with ability to filter by product IDs.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.getProductsStep/page.mdx","depth":1},{"type":"step","name":"useQueryGraphStep","description":"This step fetches data across modules using the Query.\n\nLearn more in the [Query documentation](https://docs.medusajs.com/learn/fundamentals/module-links/query).","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.useQueryGraphStep/page.mdx","depth":2},{"type":"workflow","name":"deleteInventoryItemWorkflow","description":"Delete one or more inventory items.","link":"../../../../Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.deleteInventoryItemWorkflow/page.mdx","depth":3},{"type":"step","name":"deleteProductsStep","description":"This step deletes one or more products.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.deleteProductsStep/page.mdx","depth":4},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":5},{"type":"hook","name":"productsDeleted","description":"This hook is executed after the products are deleted. You can consume this hook to perform custom actions on the deleted products.","link":"#productsDeleted","depth":6}]}} />
+<WorkflowDiagram workflow={{"name":"deleteProductsWorkflow","steps":[{"type":"workflow","name":"deleteInventoryItemWorkflow","description":"Delete one or more inventory items.","link":"../../../../Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.deleteInventoryItemWorkflow/page.mdx","depth":1},{"type":"step","name":"deleteProductsStep","description":"This step deletes one or more products.","link":"../../../Steps_Product/functions/core_flows.Product.Steps_Product.deleteProductsStep/page.mdx","depth":2},{"type":"workflow","name":"deleteProductOptionsWorkflow","description":"Delete one or more product option.","link":"../core_flows.Product.Workflows_Product.deleteProductOptionsWorkflow/page.mdx","depth":3},{"type":"step","name":"emitEventStep","description":"This step emits an event, which you can listen to in a [subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers). You can pass data to the\nsubscriber by including it in the `data` property.\n\nThe event is only emitted after the workflow has finished successfully. So, even if it's executed in the middle of the workflow, it won't actually emit the event until the workflow has completed successfully. \nIf the workflow fails, it won't emit the event at all.","link":"../../../../Common/Steps_Common/functions/core_flows.Common.Steps_Common.emitEventStep/page.mdx","depth":4},{"type":"hook","name":"productsDeleted","description":"This hook is executed after the products are deleted. You can consume this hook to perform custom actions on the deleted products.","link":"#productsDeleted","depth":5}]}} />
 
 ## Input
 
@@ -218,6 +218,31 @@ Emitted when products are deleted.
         payload: `\`\`\`ts
 {
   id, // The ID of the product
+}
+\`\`\``
+        }}/>
+</Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+`product-option.deleted`
+</Table.Cell>
+      <Table.Cell>
+Emitted when product options are deleted.
+</Table.Cell>
+      <Table.Cell>
+```ts blockStyle="inline"
+{
+  id, // The ID of the product option
+}
+```
+</Table.Cell>
+      <Table.Cell>
+<CopyGeneratedSnippetButton tooltipText="Copy subscriber for event" type="subscriber" options={{
+        event: "product-option.deleted",
+        payload: `\`\`\`ts
+{
+  id, // The ID of the product option
 }
 \`\`\``
         }}/>
