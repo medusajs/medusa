@@ -67,15 +67,23 @@ function getModuleRoot(filename: string): string | null {
 }
 
 /** True when the absolute `resolved` path is inside (or equal to) `moduleRoot`. */
-function pathStaysInModule(
+export function pathStaysInModule(
   resolved: string,
   moduleRoot: string | null
 ): boolean {
   if (moduleRoot === null) {
     return true
   }
+  // `resolved` comes from `path.resolve()`, which returns platform-native
+  // separators (backslashes on Windows). `moduleRoot` is always forward-slash
+  // normalized by `getModuleRoot()`. Without normalizing here too, every
+  // relative-import and tsconfig-alias check produces a false positive on
+  // Windows: `resolved` never starts with `moduleRoot + "/"` because the
+  // separators don't match, so an in-module reference gets flagged as a
+  // cross-module violation.
+  const normalizedResolved = resolved.replace(/\\/g, "/")
   const root = moduleRoot + "/"
-  return resolved === moduleRoot || resolved.startsWith(root)
+  return normalizedResolved === moduleRoot || normalizedResolved.startsWith(root)
 }
 
 /**

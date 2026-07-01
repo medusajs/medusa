@@ -3,7 +3,7 @@ import {
   createFixtureWorkspace,
   createRuleTester,
 } from "../../../test-utils"
-import { rule } from "../rule"
+import { pathStaysInModule, rule } from "../rule"
 
 afterAll(cleanupFixtureWorkspaces)
 
@@ -349,4 +349,65 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
       ],
     },
   ],
+})
+
+describe("pathStaysInModule", () => {
+  const moduleRoot = "/repo/packages/modules/widget/src/models"
+
+  // Regression coverage for #15782: on Windows, path.resolve() returns
+  // backslash-separated paths, while moduleRoot (from getModuleRoot) is
+  // always forward-slash normalized. Before the fix, a resolved path using
+  // backslashes never matched moduleRoot + "/", so every in-module relative
+  // import and tsconfig alias on Windows was incorrectly flagged as
+  // cross-module.
+  it("recognizes an in-module path using Windows-style backslashes", () => {
+    const windowsResolved =
+      "C:\\repo\\packages\\modules\\widget\\src\\models\\part.ts".replace(
+        "/repo",
+        "C:\\repo"
+      )
+    // moduleRoot itself must be comparable — simulate the Windows equivalent
+    // exactly as getModuleRoot() would normalize it (forward slashes).
+    const winModuleRoot = "C:/repo/packages/modules/widget/src/models"
+    const winResolved = "C:\\repo\\packages\\modules\\widget\\src\\models\\part.ts"
+    expect(pathStaysInModule(winResolved, winModuleRoot)).toBe(true)
+  })
+
+  it("still flags a Windows-style path that resolves outside the module", () => {
+    const winModuleRoot = "C:/repo/packages/modules/widget/src/models"
+    const winResolvedOutside =
+      "C:\\repo\\packages\\modules\\other-widget\\src\\models\\part.ts"
+    expect(pathStaysInModule(winResolvedOutside, winModuleRoot)).toBe(false)
+  })
+
+  it("still works with POSIX-style paths (no regression on Linux/macOS)", () => {
+    expect(
+      pathStaysInModule(`${moduleRoot}/part.ts`, moduleRoot)
+    ).toBe(true)
+    expect(
+      pathStaysInModule(
+        "/repo/packages/modules/other-widget/src/models/part.ts",
+        moduleRoot
+      )
+    ).toBe(false)
+  })
+
+  it("treats a path equal to moduleRoot itself as in-module", () => {
+    expect(pathStaysInModule(moduleRoot, moduleRoot)).toBe(true)
+  })
+
+  it("returns true (permissive default) when moduleRoot is null", () => {
+    expect(pathStaysInModule("C:\\anything\\at\\all.ts", null)).toBe(true)
+  })
+
+  it("does not false-positive on a sibling directory with a matching prefix", () => {
+    // "widget-extra" starts with "widget" as a string, but is not inside
+    // the "widget" module directory — must not match.
+    expect(
+      pathStaysInModule(
+        "/repo/packages/modules/widget-extra/src/models/part.ts",
+        "/repo/packages/modules/widget"
+      )
+    ).toBe(false)
+  })
 })
