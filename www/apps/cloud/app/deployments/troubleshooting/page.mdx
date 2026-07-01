@@ -167,6 +167,43 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## Private npm Registry Authentication Failures
+
+If your storefront or backend build fails with an authentication error like the following, your private npm registry credentials are not available during the build:
+
+```bash
+ERR_PNPM_FETCH_401  GET https://registry.example.com/my-package:
+  Response was 401 Unauthorized
+```
+
+This occurs when packages are hosted on a private registry (for example, a company Artifactory instance or a scoped registry) and the build environment does not have the credentials to fetch them.
+
+### Configure Registry Credentials as Environment Variables
+
+To provide registry credentials to Cloud builds:
+
+1. Add your registry auth token as an environment variable in your Cloud project. For example, add a variable named `NPM_TOKEN` with your token value.
+2. In your project's `.npmrc` file, reference the environment variable:
+
+```bash title=".npmrc"
+//registry.example.com/:_authToken=${NPM_TOKEN}
+```
+
+3. Commit the updated `.npmrc` file to your repository.
+4. Push the changes to trigger a new deployment.
+
+<Note>
+
+The `.npmrc` file must be committed to your repository for Cloud to use it during builds. The environment variable is injected at build time.
+
+</Note>
+
+### Secondary Failures from Failed Dependency Installation
+
+If the private registry authentication fails, `pnpm install` may fail silently or produce cryptic secondary errors such as missing binaries or missing modules. If you see unexpected errors after a build, check the build logs for `401 Unauthorized` or `ERR_PNPM_FETCH_401` errors earlier in the output — these are the root cause.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:

@@ -66,6 +66,11 @@ export const troubleshootingSidebar = [
             title: "Middleware Registration",
             path: "/troubleshooting/api-routes/middleware-registration",
           },
+          {
+            type: "link",
+            title: "Route Registration Error",
+            path: "/troubleshooting/api-routes/route-registration-error",
+          },
         ],
       },
       {
