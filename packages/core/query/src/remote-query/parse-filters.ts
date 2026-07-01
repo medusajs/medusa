@@ -1,6 +1,5 @@
 import { JoinerServiceConfig, ModuleJoinerConfig } from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
-import { MedusaModule } from "../medusa-module"
 
 const joinerConfigMapCache = new Map()
 
@@ -24,10 +23,9 @@ export function parseAndAssignFilters(
     filters: object
     isFieldAliasNestedRelation?: boolean
   },
-  entitiesMap: Map<string, any>
+  entitiesMap: Map<string, any>,
+  joinerConfigs: ModuleJoinerConfig[]
 ) {
-  const joinerConfigs = MedusaModule.getAllJoinerConfigs()
-
   for (const [filterKey, filterValue] of Object.entries(filters)) {
     /*let entryAlias!: JoinerServiceConfigAlias*/
     let entryJoinerConfig!: JoinerServiceConfig
@@ -88,7 +86,8 @@ export function parseAndAssignFilters(
               remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
               isFieldAliasNestedRelation: isFieldAliasNestedRelation_,
             },
-            entitiesMap
+            entitiesMap,
+            joinerConfigs
           )
         }
       }

@@ -10,12 +10,7 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 import { isPresent, isString, toPascalCase } from "@medusajs/utils"
-import {
-  RemoteFetchDataCallback,
-  RemoteJoiner,
-  toRemoteJoinerQuery,
-} from "../joiner"
-import { MedusaModule } from "../medusa-module"
+import { RemoteJoiner, toRemoteJoinerQuery } from "../joiner"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
@@ -23,8 +18,8 @@ const MAX_CONCURRENT_REQUESTS = 10
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
   private modulesMap: Map<string, LoadedModule> = new Map()
-  private customRemoteFetchData?: RemoteFetchDataCallback
   private entitiesMap: Map<string, any> = new Map()
+  private joinerConfigs: ModuleJoinerConfig[] = []
 
   static traceFetchRemoteData?: (
     fetcher: () => Promise<any>,
@@ -35,25 +30,15 @@ export class RemoteQuery {
 
   constructor({
     modulesLoaded,
-    customRemoteFetchData,
-    servicesConfig = [],
     entitiesMap,
   }: {
-    modulesLoaded?: LoadedModule[]
-    customRemoteFetchData?: RemoteFetchDataCallback
-    servicesConfig?: ModuleJoinerConfig[]
+    modulesLoaded: LoadedModule[]
     entitiesMap: Map<string, any>
   }) {
-    const servicesConfig_ = [...servicesConfig]
+    const joinerConfigs: ModuleJoinerConfig[] = []
     this.entitiesMap = entitiesMap
 
-    if (!modulesLoaded?.length) {
-      modulesLoaded = MedusaModule.getLoadedModules().map(
-        (mod) => Object.values(mod)[0]
-      )
-    }
-
-    for (const mod of modulesLoaded || []) {
+    for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
       }
@@ -67,13 +52,13 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-      servicesConfig_!.push(mod.__joinerConfig)
+      joinerConfigs.push(mod.__joinerConfig)
     }
 
-    this.customRemoteFetchData = customRemoteFetchData
+    this.joinerConfigs = joinerConfigs
 
     this.remoteJoiner = new RemoteJoiner(
-      servicesConfig_ as JoinerServiceConfig[],
+      joinerConfigs as JoinerServiceConfig[],
       this.remoteFetchData.bind(this),
       {
         autoCreateServiceNameAlias: false,
@@ -86,18 +71,8 @@ export class RemoteQuery {
     return this.entitiesMap
   }
 
-  public setFetchDataCallback(
-    remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown[] }
-      path?: string
-    }>
-  ): void {
-    this.remoteJoiner.setFetchDataCallback(remoteFetchData)
+  public getJoinerConfigs() {
+    return this.joinerConfigs
   }
 
   public static getAllFieldsAndRelations(
@@ -289,13 +264,6 @@ export class RemoteQuery {
     data: unknown[] | { [path: string]: unknown }
     path?: string
   }> {
-    if (this.customRemoteFetchData) {
-      const resp = await this.customRemoteFetchData(expand, keyField, ids)
-      if (resp !== undefined) {
-        return resp
-      }
-    }
-
     return this.executeFetchRequest({
       expand,
       keyField,

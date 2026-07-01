@@ -282,10 +282,6 @@ export class RemoteJoiner {
     )
   }
 
-  public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
-    this.remoteFetchData = remoteFetchData
-  }
-
   private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
     const expandedRelationships: Map<
       string,

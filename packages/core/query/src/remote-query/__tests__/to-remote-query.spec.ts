@@ -1,15 +1,11 @@
 import { QueryContext } from "@medusajs/utils"
-import "../../testing/medusa-module-mock"
-import { MedusaModule } from "../../medusa-module"
 import { getEntitiesMap } from "../__fixtures__/get-entities-map"
-import "../__fixtures__/parse-filters"
+import { parseFiltersJoinerConfigs } from "../__fixtures__/parse-filters"
 import "../__fixtures__/remote-query-type"
 import { toRemoteQuery } from "../to-remote-query"
 
 const entitiesMap = getEntitiesMap(
-  MedusaModule.getAllJoinerConfigs()
-    .map((m) => m.schema)
-    .join("\n")
+  parseFiltersJoinerConfigs.map((m) => m.schema).join("\n")
 )
 
 describe("toRemoteQuery", () => {
@@ -24,7 +20,8 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
@@ -48,7 +45,8 @@ describe("toRemoteQuery", () => {
         fields: ["id", "handle", "description"],
         strategy: "select-in",
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
@@ -73,7 +71,8 @@ describe("toRemoteQuery", () => {
           take: 10,
         },
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
@@ -102,7 +101,8 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
@@ -147,7 +147,8 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
@@ -210,7 +211,8 @@ describe("toRemoteQuery", () => {
           },
         },
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
@@ -295,7 +297,8 @@ describe("toRemoteQuery", () => {
         },
         withDeleted: true,
       },
-      entitiesMap
+      entitiesMap,
+      parseFiltersJoinerConfigs
     )
 
     expect(format).toEqual({
