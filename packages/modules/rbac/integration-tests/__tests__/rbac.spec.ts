@@ -5,6 +5,8 @@ import {
   moduleIntegrationTestRunner,
 } from "@medusajs/test-utils"
 import { RbacModuleService } from "@services"
+import initialDataLoader from "../../src/loaders/initial-data"
+        
 
 jest.setTimeout(30000)
 
@@ -15,7 +17,7 @@ moduleIntegrationTestRunner<IRbacModuleService>({
   injectedDependencies: {
     [Modules.EVENT_BUS]: new MockEventBusService(),
   },
-  testSuite: ({ service, medusaApp }) => {
+  testSuite: ({ service }) => {
     it.skip(`should export the appropriate linkable configuration`, () => {
       const linkable = Module(Modules.RBAC, {
         service: RbacModuleService,
@@ -301,8 +303,25 @@ moduleIntegrationTestRunner<IRbacModuleService>({
       })
 
       it("should be idempotent across repeated runs", async () => {
-        // Seed data was already created by the initial-data loader during module init
-        // Verify retrieving them works (no duplicate-key crash)
+
+        await expect(
+          service.listRbacRoles({ id: "role_super_admin" })
+        ).resolves.toHaveLength(1)
+
+        await expect(
+          service.listRbacPolicies({ id: "rpol_super_admin" })
+        ).resolves.toHaveLength(1)
+
+        await expect(
+          initialDataLoader({
+            container: {
+              resolve: (key: string) => (service as any).__container__[key],
+            } as any,
+            options: {},
+          })
+        ).resolves.toBeUndefined()
+
+        // Verify still only one role and one policy (no duplicates)
         await expect(
           service.listRbacRoles({ id: "role_super_admin" })
         ).resolves.toHaveLength(1)
