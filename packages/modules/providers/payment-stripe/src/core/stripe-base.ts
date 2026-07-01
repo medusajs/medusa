@@ -702,14 +702,15 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         const paymentMethod =
           typeof webhookPaymentMethod === "object"
             ? (intent.payment_method as Stripe.PaymentMethod)
-            : await this.stripe_.paymentMethods.retrieve(
-                webhookPaymentMethod as string
-              )
+            : typeof webhookPaymentMethod === "string"
+            ? await this.stripe_.paymentMethods.retrieve(webhookPaymentMethod)
+            : null
 
         return {
-          action: this.isAsyncPaymentMethod(paymentMethod)
-            ? PaymentActions.PENDING_AUTHORIZATION
-            : PaymentActions.PENDING,
+          action:
+            paymentMethod && this.isAsyncPaymentMethod(paymentMethod)
+              ? PaymentActions.PENDING_AUTHORIZATION
+              : PaymentActions.PENDING,
           data: {
             session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount, currency),
