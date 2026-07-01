@@ -4,9 +4,9 @@ import {
   RemoteExpandProperty,
 } from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
-import { remoteJoinerData } from "../../__fixtures__/joiner/data"
-import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
-import { RemoteJoiner } from "../../joiner"
+import { remoteJoinerData } from "../__fixtures__/data"
+import { serviceConfigs, serviceMock } from "../__mocks__/mock_data"
+import { RemoteJoiner } from ".."
 
 const container = {
   resolve: (serviceName) => {
