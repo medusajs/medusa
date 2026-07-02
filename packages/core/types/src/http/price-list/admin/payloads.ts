@@ -66,7 +66,14 @@ export interface AdminCreatePriceList {
    */
   type?: PriceListType
   /**
-   * The price list's rules.
+   * The price list's rules. Each value is either an array of values (treated
+   * as the `in` operator) or an object that specifies the operator explicitly.
+   *
+   * @example
+   * // include customers in a group:
+   * { "customer.groups.id": ["cusgroup_123"] }
+   * // exclude customers in a group:
+   * { "customer.groups.id": { operator: "nin", value: ["cusgroup_123"] } }
    */
   rules?: Record<string, PriceListRuleValue>
   /**
@@ -146,7 +153,14 @@ export interface AdminUpdatePriceList {
    */
   type?: PriceListType
   /**
-   * The price list's rules.
+   * The price list's rules. Each value is either an array of values (treated
+   * as the `in` operator) or an object that specifies the operator explicitly.
+   *
+   * @example
+   * // include customers in a group:
+   * { "customer.groups.id": ["cusgroup_123"] }
+   * // exclude customers in a group:
+   * { "customer.groups.id": { operator: "nin", value: ["cusgroup_123"] } }
    */
   rules?: Record<string, PriceListRuleValue>
   /**
