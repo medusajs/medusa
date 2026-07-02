@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
+import compression from "compression"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
@@ -10,6 +11,10 @@ import morgan from "morgan"
 import path from "path"
 import { configManager } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
+import {
+  compressionOptions,
+  shouldCompressResponse,
+} from "./utils/http-compression"
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
@@ -168,7 +173,18 @@ export async function expressLoader({
     )
   }
 
+  const { enabled: shouldEnableCompression, ...responseCompressionOptions } =
+    compressionOptions(configModule.projectConfig)
+
   app.use(loggingMiddleware)
+  if (shouldEnableCompression) {
+    app.use(
+      compression({
+        ...responseCompressionOptions,
+        filter: shouldCompressResponse,
+      })
+    )
+  }
   app.use(cookieParser())
   app.use(session(sessionOpts))
 

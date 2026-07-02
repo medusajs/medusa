@@ -1,4 +1,49 @@
-import { resolveSessionCookieSecurity } from "../express-loader"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
+import express from "express"
+import { asValue } from "../../deps/awilix"
+import { configManager } from "../../config"
+import { expressLoader, resolveSessionCookieSecurity } from "../express-loader"
+
+const logger = {
+  shouldLog: jest.fn(() => false),
+  http: jest.fn(),
+}
+
+describe("expressLoader", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("registers response compression when project config enables it", async () => {
+    configManager.loadConfig({
+      baseDir: process.cwd(),
+      throwOnValidationError: false,
+      projectConfig: {
+        http: {
+          compression: {
+            enabled: true,
+          },
+        },
+      },
+    })
+
+    const app = express()
+    const useSpy = jest.spyOn(app, "use")
+    const container = createMedusaContainer()
+    container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+
+    await expressLoader({ app, container })
+
+    expect(
+      useSpy.mock.calls.some(
+        ([middleware]) => middleware?.name === "compression"
+      )
+    ).toBe(true)
+  })
+})
 
 describe("resolveSessionCookieSecurity", () => {
   it("returns insecure, no SameSite outside of production/staging", () => {
