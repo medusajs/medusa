@@ -24,6 +24,23 @@ export type PriceListStatus = "active" | "draft"
 export type PriceListType = "sale" | "override"
 
 /**
+ * @enum
+ *
+ * A price list rule's operator.
+ * "in" - the rule matches customers that are in the listed values.
+ * "nin" - the rule matches customers that are NOT in the listed values.
+ */
+export type PriceListRuleOperatorValue = "in" | "nin"
+
+/**
+ * The value of a price list rule. A bare array is treated as the "in" operator.
+ * An object form carries an explicit operator.
+ */
+export type PriceListRuleValue =
+  | string[]
+  | { operator: PriceListRuleOperatorValue; value: string[] }
+
+/**
  * @interface
  *
  * A price list's details.
@@ -134,7 +151,7 @@ export interface CreatePriceListPriceRules extends Record<string, string> {}
  * The price list's rules to be set. Each key of the object the attribute, and its value
  * is the values of the rule.
  */
-export interface CreatePriceListRules extends Record<string, string[]> {}
+export interface CreatePriceListRules extends Record<string, PriceListRuleValue> {}
 
 /**
  * @interface
@@ -297,6 +314,10 @@ export interface PriceListRuleDTO {
    */
   value: string | string[]
   /**
+   * The operator of the rule. Defaults to "in".
+   */
+  operator: PriceListRuleOperatorValue
+  /**
    * The associated price list.
    *
    * @expandable
@@ -366,7 +387,10 @@ export interface SetPriceListRulesDTO {
    * The rules to add to the price list. Each key of the object is the attribute, and its value
    * is the value(s) of the rule.
    */
-  rules: Record<string, string | string[]>
+  rules: Record<
+    string,
+    string | string[] | { operator: PriceListRuleOperatorValue; value: string[] }
+  >
 }
 
 /**
