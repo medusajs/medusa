@@ -812,6 +812,11 @@ export const sidebars = [
             children: [
               {
                 type: "link",
+                path: "/learn/resources/contribution-guidelines/code",
+                title: "Code",
+              },
+              {
+                type: "link",
                 path: "/learn/resources/contribution-guidelines/docs",
                 title: "Docs",
               },
