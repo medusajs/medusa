@@ -2621,6 +2621,11 @@ moduleIntegrationTestRunner<IPricingModuleService>({
         })
 
         it("should apply a nin price list to a customer with NO groups", async () => {
+          // Note: An empty groups.id array is filtered out upstream (the presence filter
+          // drops empty arrays before hasComplexContext is computed), so this test exercises
+          // the same empty-context else branch as the adjacent "guest" test below. This test
+          // documents the valid scenario where a logged-in customer has zero groups but should
+          // still receive a nin price list.
           await createPriceLists(
             service,
             { type: "override" },
