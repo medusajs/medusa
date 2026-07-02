@@ -160,7 +160,8 @@
     "goToProductOption": "Go to product option"
   },
   "operators": {
-    "in": "In"
+    "in": "In",
+    "nin": "Not in"
   },
   "app": {
     "search": {
