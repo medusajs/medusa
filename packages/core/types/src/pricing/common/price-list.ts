@@ -148,8 +148,15 @@ export interface CreatePriceListPriceRules extends Record<string, string> {}
 /**
  * @interface
  *
- * The price list's rules to be set. Each key of the object the attribute, and its value
- * is the values of the rule.
+ * The price list's rules to be set. Each key is an attribute, and its value is
+ * either an array of values (treated as the `in` operator) or an object that
+ * specifies the operator explicitly.
+ *
+ * @example
+ * // include customers in a group:
+ * { "customer.groups.id": ["cusgroup_123"] }
+ * // exclude customers in a group:
+ * { "customer.groups.id": { operator: "nin", value: ["cusgroup_123"] } }
  */
 export interface CreatePriceListRules extends Record<string, PriceListRuleValue> {}
 
@@ -384,8 +391,9 @@ export interface SetPriceListRulesDTO {
    */
   price_list_id: string
   /**
-   * The rules to add to the price list. Each key of the object is the attribute, and its value
-   * is the value(s) of the rule.
+   * The rules to add to the price list. Each key is an attribute, and its value
+   * is a single value, an array of values (treated as the `in` operator), or an
+   * object that specifies the operator explicitly.
    */
   rules: Record<
     string,
