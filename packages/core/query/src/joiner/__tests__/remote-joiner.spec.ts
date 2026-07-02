@@ -4,8 +4,8 @@ import {
   RemoteExpandProperty,
 } from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
-import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
-import { RemoteJoiner } from "../../joiner"
+import { serviceConfigs, serviceMock } from "../__mocks__/mock_data"
+import { RemoteJoiner } from ".."
 
 const container = {
   resolve: (serviceName) => {
@@ -154,7 +154,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (RemoteJoiner as any).filterFields(
+    const filteredFields = (joiner as any).filterFields(
       data,
       fields,
       expands
@@ -297,7 +297,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (RemoteJoiner as any).filterFields(
+    const filteredFields = (joiner as any).filterFields(
       data,
       fields,
       expands

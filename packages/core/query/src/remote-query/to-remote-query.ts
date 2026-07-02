@@ -2,6 +2,7 @@ import {
   RemoteQueryFilters,
   RemoteQueryGraph,
   RemoteQueryInput,
+  ModuleJoinerConfig,
 } from "@medusajs/types"
 import { isObject, QueryContext } from "@medusajs/utils"
 import { parseAndAssignFilters } from "./parse-filters"
@@ -13,7 +14,7 @@ const ARGUMENTS = "__args"
  * convert a specific API configuration to a remote query object
  *
  * @param config
- * @param entitiesMap
+ * @param joinerConfigs
  *
  * @example
  * const remoteQueryObject = toRemoteQuery({
@@ -38,7 +39,7 @@ export function toRemoteQuery<const TEntity extends string>(
     withDeleted?: boolean
     strategy?: "joined" | "select-in" | "balanced"
   },
-  entitiesMap: Map<string, any>
+  joinerConfigs: ModuleJoinerConfig[]
 ): RemoteQueryGraph<TEntity> {
   const {
     entity,
@@ -147,7 +148,7 @@ export function toRemoteQuery<const TEntity extends string>(
       filters: filters,
       remoteQueryObject: joinerQuery,
     },
-    entitiesMap
+    joinerConfigs
   )
 
   return joinerQuery as RemoteQueryGraph<TEntity>
