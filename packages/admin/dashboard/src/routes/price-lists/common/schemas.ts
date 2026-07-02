@@ -9,8 +9,15 @@ export type PriceListCustomerGroup = z.infer<
   typeof PriceListCustomerGroupSchema
 >
 
+export const PriceListRuleOperatorSchema = z.enum(["in", "nin"])
+
+export type PriceListRuleOperatorType = z.infer<
+  typeof PriceListRuleOperatorSchema
+>
+
 export const PriceListRulesSchema = z.object({
   customer_group_id: z.array(PriceListCustomerGroupSchema).nullish(),
+  customer_group_operator: PriceListRuleOperatorSchema.default("in"),
 })
 
 export const PriceListCreateCurrencyPriceSchema = z.object({

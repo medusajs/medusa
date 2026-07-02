@@ -1,4 +1,8 @@
-import { PriceListStatus, PriceListType } from "../../../pricing"
+import {
+  PriceListRuleValue,
+  PriceListStatus,
+  PriceListType,
+} from "../../../pricing"
 
 /**
  * The details of a price to create and add to a price list.
@@ -64,7 +68,7 @@ export interface AdminCreatePriceList {
   /**
    * The price list's rules.
    */
-  rules?: Record<string, string[]>
+  rules?: Record<string, PriceListRuleValue>
   /**
    * The price list's prices.
    */
@@ -144,7 +148,7 @@ export interface AdminUpdatePriceList {
   /**
    * The price list's rules.
    */
-  rules?: Record<string, string[]>
+  rules?: Record<string, PriceListRuleValue>
   /**
    * Holds custom data in key-value pairs.
    * @since 2.14.2
