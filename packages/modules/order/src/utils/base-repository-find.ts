@@ -303,6 +303,37 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
     }
 
+    let shouldLoadShippingAdjustments = false
+    if (
+      config.options.populate.includes(
+        "shipping_methods.shipping_method.adjustments"
+      )
+    ) {
+      shouldLoadShippingAdjustments = true
+      config.options.populate.splice(
+        config.options.populate.indexOf(
+          "shipping_methods.shipping_method.adjustments"
+        ),
+        1
+      )
+
+      config.options.populate.push("shipping_methods")
+      config.options.populate.push("shipping_methods.shipping_method")
+
+      // make sure version is loaded if adjustments are requested
+      if (
+        config.options.fields?.some((f) =>
+          f.includes("shipping_methods.shipping_method.")
+        )
+      ) {
+        config.options.fields.push(
+          isRelatedEntity
+            ? "order.shipping_methods.version"
+            : "shipping_methods.version"
+        )
+      }
+    }
+
     configurePopulateWhere(
       config,
       isRelatedEntity,
@@ -333,12 +364,17 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       manager.count(this.entity, config.where, countOptions),
     ])
 
-    if (loadAdjustments) {
+    if (loadAdjustments || shouldLoadShippingAdjustments) {
       const orders = !isRelatedEntity
         ? [...result]
         : [...result].map((r) => r.order).filter(Boolean)
 
-      await loadItemAdjustments(manager, orders)
+      if (loadAdjustments) {
+        await loadItemAdjustments(manager, orders)
+      }
+      if (shouldLoadShippingAdjustments) {
+        await loadShippingAdjustments(manager, orders)
+      }
     }
 
     return [result, count]
