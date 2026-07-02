@@ -1,4 +1,8 @@
-import { PriceListStatus, PriceListType } from "@medusajs/framework/utils"
+import {
+  PriceListRuleOperator,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/framework/utils"
 import { z } from "@medusajs/framework/zod"
 import {
   createFindParams,
@@ -31,6 +35,17 @@ export const AdminGetPriceListsParams = createFindParams({
   .merge(applyAndAndOrOperators(AdminGetPriceListsParamsFields))
 
 export const AdminGetPriceListParams = createSelectParams()
+
+export const AdminPriceListRules = z.record(
+  z.string(),
+  z.union([
+    z.array(z.string()),
+    z.object({
+      operator: z.nativeEnum(PriceListRuleOperator),
+      value: z.array(z.string()),
+    }),
+  ])
+)
 
 export const AdminCreatePriceListPrice = z.object({
   currency_code: z.string(),
@@ -66,7 +81,7 @@ export const AdminCreatePriceList = z.object({
   ends_at: z.string().nullish(),
   status: z.nativeEnum(PriceListStatus).optional(),
   type: z.nativeEnum(PriceListType).optional(),
-  rules: z.record(z.string(), z.array(z.string())).optional(),
+  rules: AdminPriceListRules.optional(),
   prices: z.array(AdminCreatePriceListPrice).optional(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
@@ -80,7 +95,7 @@ export const AdminUpdatePriceList = z.object({
   ends_at: z.string().nullish(),
   status: z.nativeEnum(PriceListStatus).optional(),
   type: z.nativeEnum(PriceListType).optional(),
-  rules: z.record(z.string(), z.array(z.string())).optional(),
+  rules: AdminPriceListRules.optional(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
