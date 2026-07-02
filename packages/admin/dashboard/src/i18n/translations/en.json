@@ -1218,10 +1218,18 @@
     "transfer": {
       "title": "Transfer ownership",
       "requestSuccess": "Order transfer request sent to: {{email}}.",
+      "guestSuccess": "Order transferred to guest customer: {{email}}.",
+      "ownerType": "Account type",
+      "registered": "Registered",
+      "registeredDescription": "Transfer to a registered customer, who must accept the request.",
+      "guest": "Guest",
+      "guestDescription": "Transfer to a guest customer by email. Applied immediately.",
       "currentOwner": "Current owner",
       "newOwner": "New owner",
+      "newGuestOwner": "New owner email",
       "currentOwnerDescription": "The customer currently related to this order.",
-      "newOwnerDescription": "The customer to transfer this order to."
+      "newOwnerDescription": "The customer to transfer this order to.",
+      "newGuestOwnerDescription": "The email of the guest customer to transfer this order to. A guest customer is created if none exists."
     },
     "payment": {
       "title": "Payments",

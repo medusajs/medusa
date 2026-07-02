@@ -4758,10 +4758,31 @@
             "requestSuccess": {
               "type": "string"
             },
+            "guestSuccess": {
+              "type": "string"
+            },
+            "ownerType": {
+              "type": "string"
+            },
+            "registered": {
+              "type": "string"
+            },
+            "registeredDescription": {
+              "type": "string"
+            },
+            "guest": {
+              "type": "string"
+            },
+            "guestDescription": {
+              "type": "string"
+            },
             "currentOwner": {
               "type": "string"
             },
             "newOwner": {
+              "type": "string"
+            },
+            "newGuestOwner": {
               "type": "string"
             },
             "currentOwnerDescription": {
@@ -4769,15 +4790,26 @@
             },
             "newOwnerDescription": {
               "type": "string"
+            },
+            "newGuestOwnerDescription": {
+              "type": "string"
             }
           },
           "required": [
             "title",
             "requestSuccess",
+            "guestSuccess",
+            "ownerType",
+            "registered",
+            "registeredDescription",
+            "guest",
+            "guestDescription",
             "currentOwner",
             "newOwner",
+            "newGuestOwner",
             "currentOwnerDescription",
-            "newOwnerDescription"
+            "newOwnerDescription",
+            "newGuestOwnerDescription"
           ],
           "additionalProperties": false
         },
