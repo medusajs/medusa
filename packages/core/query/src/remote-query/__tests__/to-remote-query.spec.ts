@@ -1,4 +1,5 @@
 import { QueryContext } from "@medusajs/utils"
+import "../../testing/medusa-module-mock"
 import { MedusaModule } from "../../medusa-module"
 import { getEntitiesMap } from "../__fixtures__/get-entities-map"
 import "../__fixtures__/parse-filters"

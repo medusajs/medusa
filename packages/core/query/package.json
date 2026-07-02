@@ -1,15 +1,15 @@
 {
-  "name": "@medusajs/modules-sdk",
+  "name": "@medusajs/query",
   "version": "2.17.2",
-  "description": "SDK for medusa modules",
+  "description": "Medusa remote query and joiner",
   "main": "dist/index.js",
-  "export": {
+  "exports": {
     ".": "./dist/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
-    "directory": "packages/core/modules-sdk"
+    "directory": "packages/core/query"
   },
   "bugs": {
     "url": "https://github.com/medusajs/medusa/issues"
@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@medusajs/deps": "2.17.2",
-    "@medusajs/query": "2.17.2",
     "@medusajs/utils": "2.17.2"
   }
 }

@@ -1,2 +1,2 @@
-export * from "./helpers"
-export * from "./remote-joiner"
+export { RemoteJoiner, toRemoteJoinerQuery } from "@medusajs/query"
+export type { RemoteFetchDataCallback } from "@medusajs/query"
