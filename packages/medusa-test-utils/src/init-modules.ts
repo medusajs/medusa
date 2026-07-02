@@ -2,7 +2,6 @@ import { logger } from "@medusajs/framework/logger"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -22,7 +21,6 @@ export interface InitModulesOptions {
       | boolean
       | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
   }
-  joinerConfig?: ModuleJoinerConfig[]
   preventConnectionDestroyWarning?: boolean
   cwd?: string
 }
@@ -31,7 +29,6 @@ export async function initModules({
   injectedDependencies,
   databaseConfig,
   modulesConfig,
-  joinerConfig,
   preventConnectionDestroyWarning = false,
   cwd,
 }: InitModulesOptions) {
@@ -55,7 +52,6 @@ export async function initModules({
 
   const medusaApp = await moduleSdkImports.MedusaApp({
     modulesConfig,
-    servicesConfig: joinerConfig,
     injectedDependencies,
     cwd,
   })

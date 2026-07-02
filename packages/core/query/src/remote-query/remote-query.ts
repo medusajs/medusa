@@ -9,13 +9,9 @@ import {
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-import { isPresent, isString, toPascalCase } from "@medusajs/utils"
-import {
-  RemoteFetchDataCallback,
-  RemoteJoiner,
-  toRemoteJoinerQuery,
-} from "../joiner"
-import { MedusaModule } from "../medusa-module"
+import { isPresent, isString, toPascalCase, GraphQLUtils } from "@medusajs/utils"
+import { RelationMap, RemoteJoiner } from "../joiner"
+import { toRemoteJoinerQuery } from "./to-remote-joiner-query"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
@@ -23,8 +19,7 @@ const MAX_CONCURRENT_REQUESTS = 10
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
   private modulesMap: Map<string, LoadedModule> = new Map()
-  private customRemoteFetchData?: RemoteFetchDataCallback
-  private entitiesMap: Map<string, any> = new Map()
+  private joinerConfigs: ModuleJoinerConfig[] = []
 
   static traceFetchRemoteData?: (
     fetcher: () => Promise<any>,
@@ -33,27 +28,24 @@ export class RemoteQuery {
     options: { select?: string[]; relations: string[] }
   ) => Promise<any>
 
+  static parseQuery(
+    graphqlQuery: string,
+    variables?: Record<string, unknown>
+  ): RemoteJoinerQuery {
+    const parser = new GraphQLUtils.GraphQLParser(graphqlQuery, variables)
+    return parser.parseQuery()
+  }
+
   constructor({
     modulesLoaded,
-    customRemoteFetchData,
-    servicesConfig = [],
-    entitiesMap,
+    relationMap,
   }: {
-    modulesLoaded?: LoadedModule[]
-    customRemoteFetchData?: RemoteFetchDataCallback
-    servicesConfig?: ModuleJoinerConfig[]
-    entitiesMap: Map<string, any>
+    modulesLoaded: LoadedModule[]
+    relationMap?: RelationMap
   }) {
-    const servicesConfig_ = [...servicesConfig]
-    this.entitiesMap = entitiesMap
+    const joinerConfigs: ModuleJoinerConfig[] = []
 
-    if (!modulesLoaded?.length) {
-      modulesLoaded = MedusaModule.getLoadedModules().map(
-        (mod) => Object.values(mod)[0]
-      )
-    }
-
-    for (const mod of modulesLoaded || []) {
+    for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
       }
@@ -67,37 +59,23 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-      servicesConfig_!.push(mod.__joinerConfig)
+      joinerConfigs.push(mod.__joinerConfig)
     }
 
-    this.customRemoteFetchData = customRemoteFetchData
+    this.joinerConfigs = joinerConfigs
 
     this.remoteJoiner = new RemoteJoiner(
-      servicesConfig_ as JoinerServiceConfig[],
+      joinerConfigs as JoinerServiceConfig[],
       this.remoteFetchData.bind(this),
       {
         autoCreateServiceNameAlias: false,
-        entitiesMap,
+        relationMap,
       }
     )
   }
 
-  public getEntitiesMap() {
-    return this.entitiesMap
-  }
-
-  public setFetchDataCallback(
-    remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown[] }
-      path?: string
-    }>
-  ): void {
-    this.remoteJoiner.setFetchDataCallback(remoteFetchData)
+  public getJoinerConfigs() {
+    return this.joinerConfigs
   }
 
   public static getAllFieldsAndRelations(
@@ -289,13 +267,6 @@ export class RemoteQuery {
     data: unknown[] | { [path: string]: unknown }
     path?: string
   }> {
-    if (this.customRemoteFetchData) {
-      const resp = await this.customRemoteFetchData(expand, keyField, ids)
-      if (resp !== undefined) {
-        return resp
-      }
-    }
-
     return this.executeFetchRequest({
       expand,
       keyField,
@@ -451,7 +422,7 @@ export class RemoteQuery {
     let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
 
     if (isString(query)) {
-      finalQuery = RemoteJoiner.parseQuery(query, variables)
+      finalQuery = RemoteQuery.parseQuery(query, variables)
     } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
       finalQuery = toRemoteJoinerQuery(query, variables)
     }

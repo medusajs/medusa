@@ -1,6 +1,5 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { defineJoinerConfig } from "@medusajs/utils"
-import "../../testing/medusa-module-mock"
 
 const customModuleJoinerConfig = defineJoinerConfig("custom_user", {
   schema: `
@@ -173,10 +172,9 @@ const linkProductVariantPriceSet = {
   ],
 } as ModuleJoinerConfig
 
-global.MedusaModule.setJoinerConfig("product", productJoinerConfig)
-global.MedusaModule.setJoinerConfig("pricing", pricingJoinerConfig)
-global.MedusaModule.setJoinerConfig("customProduct", customModuleJoinerConfig)
-global.MedusaModule.setJoinerConfig(
-  "link-product-variant-price-set",
-  linkProductVariantPriceSet
-)
+export const parseFiltersJoinerConfigs = [
+  productJoinerConfig,
+  pricingJoinerConfig,
+  customModuleJoinerConfig,
+  linkProductVariantPriceSet,
+]

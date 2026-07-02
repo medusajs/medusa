@@ -13,7 +13,6 @@ import {
 import {
   deduplicate,
   FilterOperatorMap,
-  GraphQLUtils,
   isDefined,
   isObject,
   isString,
@@ -21,6 +20,8 @@ import {
 } from "@medusajs/utils"
 
 const BASE_PATH = "_root"
+
+export type RelationMap = Map<string, Map<string, string>>
 
 export type RemoteFetchDataCallback = (
   expand: RemoteExpandProperty,
@@ -54,9 +55,9 @@ export class RemoteJoiner {
   private serviceConfigCache: Map<string, InternalJoinerServiceConfig> =
     new Map()
 
-  private entityMap: Map<string, Map<string, string>> = new Map()
+  private relationMap: RelationMap = new Map()
 
-  private static filterFields(
+  private filterFields(
     data: any,
     fields?: string[],
     expands?: RemoteNestedExpands
@@ -88,17 +89,17 @@ export class RemoteJoiner {
         if (expand) {
           if (Array.isArray(data[key])) {
             filteredData[key] = data[key].map((item: any) =>
-              RemoteJoiner.filterFields(item, expand.fields, expand.expands)
+              this.filterFields(item, expand.fields, expand.expands)
             )
           } else {
-            const filteredFields = RemoteJoiner.filterFields(
+            const filteredFields = this.filterFields(
               data[key],
               expand.fields,
               expand.expands
             )
 
             if (isDefined(filteredFields)) {
-              filteredData[key] = RemoteJoiner.filterFields(
+              filteredData[key] = this.filterFields(
                 data[key],
                 expand.fields,
                 expand.expands
@@ -112,7 +113,7 @@ export class RemoteJoiner {
     return (Object.keys(filteredData).length && filteredData) || undefined
   }
 
-  private static getNestedItems(items: any[], property: string): any[] {
+  private getNestedItems(items: any[], property: string): any[] {
     const result: unknown[] = []
     for (const item of items) {
       const allValues = item?.[property] ?? []
@@ -127,7 +128,7 @@ export class RemoteJoiner {
     return result
   }
 
-  private static createRelatedDataMap(
+  private createRelatedDataMap(
     relatedDataArray: any[],
     joinFields: string[]
   ): Map<string, any> {
@@ -249,27 +250,17 @@ export class RemoteJoiner {
     })
   }
 
-  static parseQuery(
-    graphqlQuery: string,
-    variables?: Record<string, unknown>
-  ): RemoteJoinerQuery {
-    const parser = new GraphQLUtils.GraphQLParser(graphqlQuery, variables)
-    return parser.parseQuery()
-  }
-
   constructor(
     serviceConfigs: ModuleJoinerConfig[],
     private remoteFetchData: RemoteFetchDataCallback,
     private options: {
       autoCreateServiceNameAlias?: boolean
-      entitiesMap?: Map<string, any>
+      relationMap?: RelationMap
     } = {}
   ) {
     this.options.autoCreateServiceNameAlias ??= true
-    if (this.options.entitiesMap) {
-      this.entityMap = GraphQLUtils.extractRelationsFromGQL(
-        this.options.entitiesMap
-      )
+    if (this.options.relationMap) {
+      this.relationMap = this.options.relationMap
     }
 
     this.buildReferences(
@@ -280,10 +271,6 @@ export class RemoteJoiner {
         return value
       })
     )
-  }
-
-  public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
-    this.remoteFetchData = remoteFetchData
   }
 
   private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
@@ -673,7 +660,7 @@ export class RemoteJoiner {
     })
 
     const filteredDataArray = resData.map((data: any) =>
-      RemoteJoiner.filterFields(data, expand.fields, expand.expands)
+      this.filterFields(data, expand.fields, expand.expands)
     )
 
     if (isObj) {
@@ -770,7 +757,7 @@ export class RemoteJoiner {
       let itemsLocation = items
       for (const locationProp of alias.location) {
         propPath.shift()
-        itemsLocation = RemoteJoiner.getNestedItems(itemsLocation, locationProp)
+        itemsLocation = this.getNestedItems(itemsLocation, locationProp)
       }
 
       itemsLocation.forEach((locationItem) => {
@@ -840,7 +827,7 @@ export class RemoteJoiner {
       const expandedPathLevels = fullPath.split(".")
 
       for (let idx = 1; idx < expandedPathLevels.length - 1; idx++) {
-        nestedItems = RemoteJoiner.getNestedItems(
+        nestedItems = this.getNestedItems(
           nestedItems,
           expandedPathLevels[idx]
         )
@@ -968,7 +955,7 @@ export class RemoteJoiner {
           ? (relatedDataArray.data as any)[relatedDataArray.path!]
           : relatedDataArray.data
 
-        const relatedDataMap = RemoteJoiner.createRelatedDataMap(
+        const relatedDataMap = this.createRelatedDataMap(
           relData,
           joinFields
         )
@@ -1304,7 +1291,7 @@ export class RemoteJoiner {
   }
 
   private getEntity({ entity, prop }: { entity: string; prop: string }) {
-    return this.entityMap.get(entity)?.get(prop)
+    return this.relationMap.get(entity)?.get(prop)
   }
 
   private parseAlias({
@@ -1596,7 +1583,7 @@ export class RemoteJoiner {
         }
 
         relevantInitialData =
-          RemoteJoiner.getNestedItems(relevantInitialData, segment) ?? []
+          this.getNestedItems(relevantInitialData, segment) ?? []
 
         parsedSegment.set(pathStr, relevantInitialData)
 

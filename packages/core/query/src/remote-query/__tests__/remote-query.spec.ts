@@ -1,4 +1,4 @@
-import { RemoteQuery } from "../remote-query/remote-query"
+import { RemoteQuery } from "../remote-query"
 
 describe("Remote query", () => {
   it("should properly handle fields and relations transformation", () => {

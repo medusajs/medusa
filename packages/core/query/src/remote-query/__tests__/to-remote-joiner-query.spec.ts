@@ -1,4 +1,4 @@
-import { toRemoteJoinerQuery } from "../../joiner/helpers"
+import { toRemoteJoinerQuery } from "../to-remote-joiner-query"
 
 describe("toRemoteJoinerQuery", () => {
   beforeEach(() => {

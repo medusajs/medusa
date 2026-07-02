@@ -138,7 +138,7 @@ export class Query {
     } else if ("entity" in normalizedQuery) {
       normalizedQuery = toRemoteQuery(
         normalizedQuery,
-        this.#remoteQuery.getEntitiesMap()
+        this.#remoteQuery.getJoinerConfigs()
       )
     } else if (
       "entryPoint" in normalizedQuery ||
@@ -214,7 +214,7 @@ export class Query {
   ): Promise<GraphResultSet<TEntry>> {
     const normalizedQuery = toRemoteQuery(
       queryOptions,
-      this.#remoteQuery.getEntitiesMap()
+      this.#remoteQuery.getJoinerConfigs()
     )
 
     let response:
