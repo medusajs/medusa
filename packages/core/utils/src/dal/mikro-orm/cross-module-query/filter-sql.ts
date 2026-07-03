@@ -1,4 +1,3 @@
-import { CrossModuleJoinSpec } from "@medusajs/types"
 import { raw } from "@medusajs/deps/mikro-orm/core"
 import { Knex } from "@medusajs/deps/mikro-orm/knex"
 import { isObject, MedusaError } from "../../../common"
@@ -9,11 +8,12 @@ import {
   qualifyTable,
   quoteIdentifier,
   SqlFragment,
+  ResolvedCrossModuleJoinSpec,
 } from "./helpers"
 
 export type JoinSqlContext = {
   linkAliasCounter: { value: number }
-  childrenByParent: Map<string, CrossModuleJoinSpec[]>
+  childrenByParent: Map<string, ResolvedCrossModuleJoinSpec[]>
   defaultSchema: string
   withDeleted: boolean
 }
@@ -113,8 +113,8 @@ export function buildFilterSql(
 }
 
 export function joinRequiresFilter(
-  joinSpec: CrossModuleJoinSpec,
-  childrenByParent: Map<string, CrossModuleJoinSpec[]>
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  childrenByParent: Map<string, ResolvedCrossModuleJoinSpec[]>
 ): boolean {
   if (hasTargetFilters(joinSpec)) {
     return true
@@ -125,7 +125,7 @@ export function joinRequiresFilter(
 }
 
 export function buildExistsFilter(
-  joinSpec: CrossModuleJoinSpec,
+  joinSpec: ResolvedCrossModuleJoinSpec,
   correlateAlias: string,
   correlateKey: string,
   context: JoinSqlContext
@@ -143,7 +143,7 @@ export function buildExistsFilter(
 }
 
 function buildExistsSql(
-  joinSpec: CrossModuleJoinSpec,
+  joinSpec: ResolvedCrossModuleJoinSpec,
   correlateAlias: string,
   correlateKey: string,
   context: JoinSqlContext
@@ -213,7 +213,7 @@ function nextLinkAlias(context: JoinSqlContext): string {
   return `cm_link_${context.linkAliasCounter.value++}`
 }
 
-function hasTargetFilters(joinSpec: CrossModuleJoinSpec): boolean {
+function hasTargetFilters(joinSpec: ResolvedCrossModuleJoinSpec): boolean {
   return (
     !!joinSpec.target.filters && Object.keys(joinSpec.target.filters).length > 0
   )

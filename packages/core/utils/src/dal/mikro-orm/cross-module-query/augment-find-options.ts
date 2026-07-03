@@ -1,8 +1,8 @@
-import { CrossModuleJoinSpec, DAL, FindConfigOrder } from "@medusajs/types"
-import { isObject, MedusaError } from "../../../common"
+import { DAL, FindConfigOrder } from "@medusajs/types"
+import { isObject } from "../../../common"
 import { SoftDeletableFilterKey } from "../mikro-orm-soft-deletable-filter"
 import { buildExistsFilter, joinRequiresFilter } from "./filter-sql"
-import { DEFAULT_SCHEMA } from "./helpers"
+import { resolveCrossModuleJoins, ResolvedCrossModuleJoinSpec } from "./helpers"
 import { transformOrderByForCrossModuleJoins } from "./order-sql"
 
 export type AugmentFindOptionsWithCrossModuleJoinsArgs = {
@@ -10,6 +10,8 @@ export type AugmentFindOptionsWithCrossModuleJoinsArgs = {
   primaryKey?: string
   defaultSchema?: string
 }
+
+const DEFAULT_SCHEMA = "public"
 
 /**
  * Translates cross-module join metadata into MikroORM-compatible `where` and
@@ -29,11 +31,11 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
     return findOptions
   }
 
-  assertValidCrossModuleJoins(crossModuleJoins)
+  const resolvedJoins = resolveCrossModuleJoins(crossModuleJoins)
 
   const rootAlias = getMikroOrmRootAlias(entityName)
   const withDeleted = resolveWithDeleted(findOptions.options)
-  const childrenByParent = buildChildrenByParent(crossModuleJoins)
+  const childrenByParent = buildChildrenByParent(resolvedJoins)
   const existsContext = {
     linkAliasCounter: { value: 0 },
     childrenByParent,
@@ -50,7 +52,7 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
     delete options.__internal
   }
 
-  const existsFilters = getRootJoins(crossModuleJoins)
+  const existsFilters = getRootJoins(resolvedJoins)
     .filter((joinSpec) => joinRequiresFilter(joinSpec, childrenByParent))
     .map((joinSpec) =>
       buildExistsFilter(joinSpec, rootAlias, primaryKey, existsContext)
@@ -74,7 +76,7 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
   if (options.orderBy) {
     options.orderBy = transformOrderByForCrossModuleJoins(
       options.orderBy as FindConfigOrder | FindConfigOrder[],
-      crossModuleJoins,
+      resolvedJoins,
       primaryKey,
       rootAlias,
       defaultSchema,
@@ -85,48 +87,6 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
   return {
     where: where as DAL.FindOptions<T>["where"],
     options,
-  }
-}
-
-function assertValidCrossModuleJoins(
-  crossModuleJoins: CrossModuleJoinSpec[]
-): void {
-  assertUniqueAliases(crossModuleJoins)
-
-  const aliases = new Set(crossModuleJoins.map((join) => join.alias))
-
-  for (const join of crossModuleJoins) {
-    if (!join.parent) {
-      continue
-    }
-
-    if (join.parent === join.alias) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Cross-module join "${join.alias}" cannot be its own parent.`
-      )
-    }
-
-    if (!aliases.has(join.parent)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Cross-module join "${join.alias}" references unknown parent "${join.parent}".`
-      )
-    }
-  }
-}
-
-function assertUniqueAliases(crossModuleJoins: CrossModuleJoinSpec[]): void {
-  const seen = new Set<string>()
-
-  for (const join of crossModuleJoins) {
-    if (seen.has(join.alias)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Duplicate cross-module join alias "${join.alias}". Each cross-module join must use a unique alias.`
-      )
-    }
-    seen.add(join.alias)
   }
 }
 
@@ -162,25 +122,33 @@ function resolveWithDeleted(
 }
 
 function buildChildrenByParent(
-  crossModuleJoins: CrossModuleJoinSpec[]
-): Map<string, CrossModuleJoinSpec[]> {
-  const childrenByParent = new Map<string, CrossModuleJoinSpec[]>()
+  crossModuleJoins: ResolvedCrossModuleJoinSpec[]
+): Map<string, ResolvedCrossModuleJoinSpec[]> {
+  const tableToAlias = new Map(
+    crossModuleJoins.map((join) => [join.target.table, join.alias])
+  )
+  const childrenByParent = new Map<string, ResolvedCrossModuleJoinSpec[]>()
 
   for (const join of crossModuleJoins) {
     if (!join.parent) {
       continue
     }
 
-    const siblings = childrenByParent.get(join.parent) ?? []
+    const parentAlias = tableToAlias.get(join.parent)
+    if (!parentAlias) {
+      continue
+    }
+
+    const siblings = childrenByParent.get(parentAlias) ?? []
     siblings.push(join)
-    childrenByParent.set(join.parent, siblings)
+    childrenByParent.set(parentAlias, siblings)
   }
 
   return childrenByParent
 }
 
 function getRootJoins(
-  crossModuleJoins: CrossModuleJoinSpec[]
-): CrossModuleJoinSpec[] {
+  crossModuleJoins: ResolvedCrossModuleJoinSpec[]
+): ResolvedCrossModuleJoinSpec[] {
   return crossModuleJoins.filter((join) => !join.parent)
 }

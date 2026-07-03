@@ -56,6 +56,9 @@ export type CrossModuleJoinTarget = {
  * and/or a correlated scalar subquery (for sorting) against the root query,
  * so the root rows are never multiplied and counts stay accurate.
  *
+ * Target table aliases match `target.table` directly (e.g. `product.handle`
+ * for `target.table: "product"`).
+ *
  * Behaviour callers should know about:
  * - Filtering/sorting is executed as hand-built SQL against the target table.
  *   Beyond the soft-delete guards below, no other MikroORM global filters
@@ -69,14 +72,15 @@ export type CrossModuleJoinTarget = {
  *   top-level join specs (each without a `parent`).
  * - Multi-hop filters chain joins through `parent`, correlating a join to a
  *   parent target row rather than the root entity (e.g. customer -> tier ->
- *   functionality). Chains can nest recursively to any depth.
+ *   functionality). Chains can nest recursively to any depth. `parent` must
+ *   reference the parent join's `target.table`.
+ * - Each join must target a unique table within a single query.
  * - Correlation uses a single primary key column; composite keys are not
  *   supported.
  *
  * @example
  * ```ts
  * {
- *   alias: "customer",
  *   link: {
  *     table: "customer_api_key",
  *     sourceKey: "api_key_id",
@@ -93,14 +97,10 @@ export type CrossModuleJoinTarget = {
  */
 export type CrossModuleJoinSpec = {
   /**
-   * Alias used to reference the external table in order keys (e.g. `customer.email`).
-   * Must be unique across the join specs of a single query.
-   */
-  alias: string
-  /**
-   * When set, this join is correlated to the target row of the named parent
-   * join instead of the root entity. Used for multi-hop filters such as
-   * filtering orders by a product's sales channel.
+   * When set, this join is correlated to the target row of the parent join
+   * instead of the root entity. The value must match the parent join's
+   * `target.table`. Used for multi-hop filters such as filtering orders by a
+   * product's sales channel.
    */
   parent?: string
   link: CrossModuleJoinLink

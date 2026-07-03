@@ -26,7 +26,7 @@ jest.setTimeout(300000)
 
 const dbName = "mikroorm-cross-module-order-product"
 
-@Entity()
+@Entity({ tableName: "order" })
 class OrderEntity {
   @PrimaryKey()
   id: string
@@ -46,7 +46,7 @@ class OrderEntity {
   }
 }
 
-@Entity()
+@Entity({ tableName: "product" })
 class ProductEntity {
   @PrimaryKey()
   id: string
@@ -126,7 +126,7 @@ async function createLinkTable(manager: SqlEntityManager) {
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
 
-  await knex.schema.createTable("region_entity", (table) => {
+  await knex.schema.createTable("region", (table) => {
     table.text("id").primary()
     table.text("code").notNullable()
     table.timestamps(true, true)
@@ -141,7 +141,7 @@ async function createLinkTable(manager: SqlEntityManager) {
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
 
-  await knex.schema.createTable("sales_channel_entity", (table) => {
+  await knex.schema.createTable("sales_channel", (table) => {
     table.text("id").primary()
     table.text("name").notNullable()
     table.timestamps(true, true)
@@ -170,7 +170,7 @@ async function seedLinkTable(manager: SqlEntityManager) {
     }))
   )
 
-  await knex("region_entity").insert(
+  await knex("region").insert(
     regionsSeed.map((region) => ({
       ...region,
       created_at: now,
@@ -188,7 +188,7 @@ async function seedLinkTable(manager: SqlEntityManager) {
     }))
   )
 
-  await knex("sales_channel_entity").insert(
+  await knex("sales_channel").insert(
     salesChannelsSeed.map((salesChannel) => ({
       ...salesChannel,
       created_at: now,
@@ -209,14 +209,13 @@ async function seedLinkTable(manager: SqlEntityManager) {
 
 function buildRegionJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "region",
     link: {
       table: "order_region_link",
       sourceKey: "order_id",
       targetKey: "region_id",
     },
     target: {
-      table: "region_entity",
+      table: "region",
       filters,
     },
   }
@@ -224,14 +223,13 @@ function buildRegionJoinMetadata(filters?: Record<string, unknown>) {
 
 function buildProductJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "product",
     link: {
       table: "order_product_link",
       sourceKey: "order_id",
       targetKey: "product_id",
     },
     target: {
-      table: "product_entity",
+      table: "product",
       filters,
     },
   }
@@ -239,7 +237,6 @@ function buildProductJoinMetadata(filters?: Record<string, unknown>) {
 
 function buildSalesChannelJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "sales_channel",
     parent: "product",
     link: {
       table: "product_sales_channel",
@@ -247,7 +244,7 @@ function buildSalesChannelJoinMetadata(filters?: Record<string, unknown>) {
       targetKey: "sales_channel_id",
     },
     target: {
-      table: "sales_channel_entity",
+      table: "sales_channel",
       filters,
     },
   }
@@ -255,14 +252,13 @@ function buildSalesChannelJoinMetadata(filters?: Record<string, unknown>) {
 
 function buildOrderJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "order",
     link: {
       table: "order_product_link",
       sourceKey: "product_id",
       targetKey: "order_id",
     },
     target: {
-      table: "order_entity",
+      table: "order",
       filters,
     },
   }
@@ -353,9 +349,9 @@ describe("cross-module query integration", () => {
   afterEach(async () => {
     const knex = manager.getKnex()
     await knex.schema.dropTableIfExists("product_sales_channel")
-    await knex.schema.dropTableIfExists("sales_channel_entity")
+    await knex.schema.dropTableIfExists("sales_channel")
     await knex.schema.dropTableIfExists("order_region_link")
-    await knex.schema.dropTableIfExists("region_entity")
+    await knex.schema.dropTableIfExists("region")
     await knex.schema.dropTableIfExists("order_product_link")
 
     const generator = orm.getSchemaGenerator()
@@ -378,11 +374,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -409,12 +405,12 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where "o0"."display_id" = '1002'
             and exists (
               select 1
               from "public"."order_product_link" as "cm_link_0"
-              inner join "public"."product_entity" as "product" on true
+              inner join "public"."product" as "product" on true
               where "cm_link_0"."order_id" = "o0"."id"
                 and "cm_link_0"."product_id" = "product"."id"
                 and "cm_link_0"."deleted_at" is null
@@ -444,11 +440,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           order by (
             select "product"."handle"
             from "public"."order_product_link" as "cm_order_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_order_link_0"."order_id" = "o0"."id"
               and "cm_order_link_0"."product_id" = "product"."id"
               and "cm_order_link_0"."deleted_at" is null
@@ -473,11 +469,11 @@ describe("cross-module query integration", () => {
       expectCapturedQueries(orm, sqlCapture, [
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -487,11 +483,11 @@ describe("cross-module query integration", () => {
         `,
         `
           select count(*) as "count"
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -534,11 +530,11 @@ describe("cross-module query integration", () => {
       expectCapturedQueries(orm, sqlCapture, [
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -548,11 +544,11 @@ describe("cross-module query integration", () => {
         `,
         `
           select count(*) as "count"
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -581,11 +577,11 @@ describe("cross-module query integration", () => {
       expectCapturedQueries(orm, sqlCapture, [
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -597,11 +593,11 @@ describe("cross-module query integration", () => {
         `,
         `
           select count(*) as "count"
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -634,11 +630,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -652,7 +648,7 @@ describe("cross-module query integration", () => {
 
     it("should exclude rows whose target row is soft-deleted", async () => {
       const knex = manager.getKnex()
-      await knex("product_entity")
+      await knex("product")
         .where({ id: "prod_premium" })
         .update({ deleted_at: new Date() })
 
@@ -670,11 +666,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -718,11 +714,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "product"."handle" = 'premium'
@@ -734,7 +730,7 @@ describe("cross-module query integration", () => {
 
     it("should include soft-deleted targets when the query uses withDeleted", async () => {
       const knex = manager.getKnex()
-      await knex("product_entity")
+      await knex("product")
         .where({ id: "prod_premium" })
         .update({ deleted_at: new Date() })
 
@@ -753,11 +749,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "product"."handle" = 'premium'
@@ -786,11 +782,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -800,7 +796,7 @@ describe("cross-module query integration", () => {
             and exists (
               select 1
               from "public"."order_region_link" as "cm_link_1"
-              inner join "public"."region_entity" as "region" on true
+              inner join "public"."region" as "region" on true
               where "cm_link_1"."order_id" = "o0"."id"
                 and "cm_link_1"."region_id" = "region"."id"
                 and "cm_link_1"."deleted_at" is null
@@ -829,11 +825,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -841,7 +837,7 @@ describe("cross-module query integration", () => {
               and exists (
                 select 1
                 from "public"."product_sales_channel" as "cm_link_1"
-                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                inner join "public"."sales_channel" as "sales_channel" on true
                 where "cm_link_1"."product_id" = "product"."id"
                   and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
@@ -871,11 +867,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -884,7 +880,7 @@ describe("cross-module query integration", () => {
               and exists (
                 select 1
                 from "public"."product_sales_channel" as "cm_link_1"
-                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                inner join "public"."sales_channel" as "sales_channel" on true
                 where "cm_link_1"."product_id" = "product"."id"
                   and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
@@ -915,11 +911,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -928,7 +924,7 @@ describe("cross-module query integration", () => {
               and exists (
                 select 1
                 from "public"."product_sales_channel" as "cm_link_1"
-                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                inner join "public"."sales_channel" as "sales_channel" on true
                 where "cm_link_1"."product_id" = "product"."id"
                   and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
@@ -939,7 +935,7 @@ describe("cross-module query integration", () => {
             and exists (
               select 1
               from "public"."order_region_link" as "cm_link_2"
-              inner join "public"."region_entity" as "region" on true
+              inner join "public"."region" as "region" on true
               where "cm_link_2"."order_id" = "o0"."id"
                 and "cm_link_2"."region_id" = "region"."id"
                 and "cm_link_2"."deleted_at" is null
@@ -974,11 +970,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "o0".*
-          from "order_entity" as "o0"
+          from "order" as "o0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."product_entity" as "product" on true
+            inner join "public"."product" as "product" on true
             where "cm_link_0"."order_id" = "o0"."id"
               and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
@@ -986,7 +982,7 @@ describe("cross-module query integration", () => {
               and exists (
                 select 1
                 from "public"."product_sales_channel" as "cm_link_1"
-                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                inner join "public"."sales_channel" as "sales_channel" on true
                 where "cm_link_1"."product_id" = "product"."id"
                   and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
@@ -1017,11 +1013,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "product_entity" as "p0"
+          from "product" as "p0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."order_entity" as "order" on true
+            inner join "public"."order" as "order" on true
             where "cm_link_0"."product_id" = "p0"."id"
               and "cm_link_0"."order_id" = "order"."id"
               and "cm_link_0"."deleted_at" is null
@@ -1052,12 +1048,12 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "product_entity" as "p0"
+          from "product" as "p0"
           where "p0"."handle" = 'premium'
             and exists (
               select 1
               from "public"."order_product_link" as "cm_link_0"
-              inner join "public"."order_entity" as "order" on true
+              inner join "public"."order" as "order" on true
               where "cm_link_0"."product_id" = "p0"."id"
                 and "cm_link_0"."order_id" = "order"."id"
                 and "cm_link_0"."deleted_at" is null
@@ -1089,11 +1085,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "product_entity" as "p0"
+          from "product" as "p0"
           where exists (
             select 1
             from "public"."order_product_link" as "cm_link_0"
-            inner join "public"."order_entity" as "order" on true
+            inner join "public"."order" as "order" on true
             where "cm_link_0"."product_id" = "p0"."id"
               and "cm_link_0"."order_id" = "order"."id"
               and "cm_link_0"."deleted_at" is null
@@ -1126,11 +1122,11 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "product_entity" as "p0"
+          from "product" as "p0"
           order by (
             select "order"."display_id"
             from "public"."order_product_link" as "cm_order_link_0"
-            inner join "public"."order_entity" as "order" on true
+            inner join "public"."order" as "order" on true
             where "cm_order_link_0"."product_id" = "p0"."id"
               and "cm_order_link_0"."order_id" = "order"."id"
               and "cm_order_link_0"."deleted_at" is null

@@ -1,4 +1,4 @@
-import { CrossModuleJoinSpec, FindConfigOrder } from "@medusajs/types"
+import { FindConfigOrder } from "@medusajs/types"
 import { raw } from "@medusajs/deps/mikro-orm/core"
 import { isObject } from "../../../common"
 import {
@@ -7,11 +7,12 @@ import {
   buildLinkToTargetJoinSql,
   qualifyTable,
   quoteIdentifier,
+  ResolvedCrossModuleJoinSpec,
 } from "./helpers"
 
 export function transformOrderByForCrossModuleJoins(
   orderBy: FindConfigOrder | FindConfigOrder[] | undefined,
-  crossModuleJoins: CrossModuleJoinSpec[],
+  crossModuleJoins: ResolvedCrossModuleJoinSpec[],
   primaryKey: string,
   rootAlias: string,
   defaultSchema: string,
@@ -46,7 +47,7 @@ export function transformOrderByForCrossModuleJoins(
 
 function transformOrderByObject(
   orderBy: FindConfigOrder,
-  crossModuleJoins: CrossModuleJoinSpec[],
+  crossModuleJoins: ResolvedCrossModuleJoinSpec[],
   primaryKey: string,
   rootAlias: string,
   defaultSchema: string,
@@ -96,7 +97,7 @@ function transformOrderByObject(
 }
 
 function buildOrderByScalarSubquery(
-  joinSpec: CrossModuleJoinSpec,
+  joinSpec: ResolvedCrossModuleJoinSpec,
   index: number,
   field: string,
   primaryKey: string,
@@ -129,9 +130,11 @@ function buildOrderByScalarSubquery(
     buildJoinSoftDeleteSql(linkAlias, targetAlias, withDeleted),
   ].filter(Boolean)
 
-  // For to-many links more than one target row can match. Order by the
-  // target primary key so the single picked value is deterministic across
-  // executions instead of relying on the storage engine's row order.
+  /*
+   * Currently links always use a pivot table, even for 1-to-1 relationships, and the checks
+   * on them are done in the application layer. Because of that, we essentially suport a to-many
+   * sorting behavior, which is not ideal.
+   */
   const sql = `(select ${quoteIdentifier(targetAlias)}.${quoteIdentifier(
     field
   )} from ${linkTable} as ${quoteIdentifier(
@@ -146,9 +149,9 @@ function buildOrderByScalarSubquery(
 }
 
 function getJoinSpecByAlias(
-  crossModuleJoins: CrossModuleJoinSpec[],
+  crossModuleJoins: ResolvedCrossModuleJoinSpec[],
   alias: string
-): { joinSpec: CrossModuleJoinSpec; index: number } | undefined {
+): { joinSpec: ResolvedCrossModuleJoinSpec; index: number } | undefined {
   const index = crossModuleJoins.findIndex((join) => join.alias === alias)
   if (index === -1) {
     return undefined

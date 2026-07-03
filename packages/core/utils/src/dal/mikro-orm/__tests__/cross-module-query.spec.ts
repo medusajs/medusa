@@ -203,14 +203,13 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
@@ -244,19 +243,17 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
               {
-                alias: "group",
                 link: {
                   table: "customer_group_link",
                   sourceKey: "customer_id",
@@ -278,7 +275,7 @@ describe("cross-module-query", () => {
       const keys = (result.where?.$and as Record<string, unknown>[]).map(
         (clause) => Object.keys(clause)[0]
       )
-      expect(keys[0]).toContain("pricing_tier_entity")
+      expect(keys[0]).toContain("pricing_tier")
       expect(keys[1]).toContain("customer_group")
     })
 
@@ -289,26 +286,24 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
               {
-                alias: "region",
                 link: {
                   table: "customer_region_link",
                   sourceKey: "customer_id",
                   targetKey: "region_id",
                 },
                 target: {
-                  table: "region_entity",
+                  table: "region",
                   filters: { code: "eu" },
                 },
               },
@@ -323,9 +318,9 @@ describe("cross-module-query", () => {
       const keys = (result.where?.$and as Record<string, unknown>[]).map(
         (clause) => Object.keys(clause)[0]
       )
-      expect(keys[0]).toContain("pricing_tier_entity")
+      expect(keys[0]).toContain("pricing_tier")
       expect(keys[0]).toMatch(/"pricing_tier"\."handle" = \?/)
-      expect(keys[1]).toContain("region_entity")
+      expect(keys[1]).toContain("region")
       expect(keys[1]).toMatch(/"region"\."code" = \?/)
     })
 
@@ -336,18 +331,16 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                 },
               },
               {
-                alias: "functionality",
                 parent: "pricing_tier",
                 link: {
                   table: "tier_functionality_link",
@@ -355,7 +348,7 @@ describe("cross-module-query", () => {
                   targetKey: "functionality_id",
                 },
                 target: {
-                  table: "functionality_entity",
+                  table: "functionality",
                   filters: { handle: "billing" },
                 },
               },
@@ -392,19 +385,17 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
               {
-                alias: "functionality",
                 parent: "pricing_tier",
                 link: {
                   table: "tier_functionality_link",
@@ -412,7 +403,7 @@ describe("cross-module-query", () => {
                   targetKey: "functionality_id",
                 },
                 target: {
-                  table: "functionality_entity",
+                  table: "functionality",
                   filters: { handle: "billing" },
                 },
               },
@@ -443,18 +434,16 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                 },
               },
               {
-                alias: "functionality",
                 parent: "pricing_tier",
                 link: {
                   table: "tier_functionality_link",
@@ -462,11 +451,10 @@ describe("cross-module-query", () => {
                   targetKey: "functionality_id",
                 },
                 target: {
-                  table: "functionality_entity",
+                  table: "functionality",
                 },
               },
               {
-                alias: "permission",
                 parent: "functionality",
                 link: {
                   table: "functionality_permission_link",
@@ -474,7 +462,7 @@ describe("cross-module-query", () => {
                   targetKey: "permission_id",
                 },
                 target: {
-                  table: "permission_entity",
+                  table: "permission",
                   filters: { code: "billing:write" },
                 },
               },
@@ -508,18 +496,16 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                 },
               },
               {
-                alias: "functionality",
                 parent: "pricing_tier",
                 link: {
                   table: "tier_functionality_link",
@@ -527,7 +513,7 @@ describe("cross-module-query", () => {
                   targetKey: "functionality_id",
                 },
                 target: {
-                  table: "functionality_entity",
+                  table: "functionality",
                   filters: { handle: "billing" },
                 },
               },
@@ -549,15 +535,14 @@ describe("cross-module-query", () => {
             options: {
               __internal: { crossModuleJoins:[
                 {
-                  alias: "functionality",
-                  parent: "missing_parent",
+                  parent: "missing",
                   link: {
                     table: "tier_functionality_link",
                     sourceKey: "pricing_tier_id",
                     targetKey: "functionality_id",
                   },
                   target: {
-                    table: "functionality_entity",
+                    table: "functionality",
                     filters: { handle: "billing" },
                   },
                 },
@@ -567,7 +552,7 @@ describe("cross-module-query", () => {
           },
           { primaryKey: "id", entityName: "CustomerEntity" }
         )
-      ).toThrow(/unknown parent/)
+      ).toThrow(/unknown parent target table/)
     })
 
     it("should not add a where clause for joins without target filters", () => {
@@ -577,14 +562,13 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                 },
               },
             ],
@@ -605,14 +589,13 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
@@ -639,14 +622,13 @@ describe("cross-module-query", () => {
             filters: { softDeletable: { withDeleted: true } },
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
@@ -674,14 +656,13 @@ describe("cross-module-query", () => {
             filters: { softDeletable: true },
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                   filters: { handle: "premium" },
                 },
               },
@@ -706,14 +687,13 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "customer",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "pricing_tier_id",
                   targetKey: "customer_id",
                 },
                 target: {
-                  table: "customer_entity",
+                  table: "customer",
                   filters: { email: "a@example.com" },
                 },
               },
@@ -734,14 +714,13 @@ describe("cross-module-query", () => {
     it("should not mutate the caller's find options", () => {
       const crossModuleJoins = [
         {
-          alias: "pricing_tier",
           link: {
             table: "customer_pricing_tier_link",
             sourceKey: "customer_id",
             targetKey: "pricing_tier_id",
           },
           target: {
-            table: "pricing_tier_entity",
+            table: "pricing_tier",
             filters: { handle: "premium" },
           },
         },
@@ -768,14 +747,13 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                 },
               },
             ],
@@ -802,7 +780,7 @@ describe("cross-module-query", () => {
       expect(orderSql).toMatch(/order by "pricing_tier"\."id" limit 1\)/)
     })
 
-    it("should throw on duplicate join aliases", () => {
+    it("should throw on duplicate join target tables", () => {
       expect(() =>
         augmentFindOptionsWithCrossModuleJoins(
           {
@@ -810,22 +788,20 @@ describe("cross-module-query", () => {
             options: {
               __internal: { crossModuleJoins:[
                 {
-                  alias: "pricing_tier",
                   link: {
                     table: "customer_pricing_tier_link",
                     sourceKey: "customer_id",
                     targetKey: "pricing_tier_id",
                   },
-                  target: { table: "pricing_tier_entity" },
+                  target: { table: "pricing_tier" },
                 },
                 {
-                  alias: "pricing_tier",
                   link: {
                     table: "customer_pricing_tier_link_2",
                     sourceKey: "customer_id",
                     targetKey: "pricing_tier_id",
                   },
-                  target: { table: "pricing_tier_entity_2" },
+                  target: { table: "pricing_tier" },
                 },
               ],
 },
@@ -833,7 +809,7 @@ describe("cross-module-query", () => {
           },
           { primaryKey: "id", entityName: "CustomerEntity" }
         )
-      ).toThrow(/Duplicate cross-module join alias/)
+      ).toThrow(/Duplicate cross-module join target table/)
     })
 
     it("should leave non-cross-module order keys untouched", () => {
@@ -843,14 +819,13 @@ describe("cross-module-query", () => {
           options: {
             __internal: { crossModuleJoins:[
               {
-                alias: "pricing_tier",
                 link: {
                   table: "customer_pricing_tier_link",
                   sourceKey: "customer_id",
                   targetKey: "pricing_tier_id",
                 },
                 target: {
-                  table: "pricing_tier_entity",
+                  table: "pricing_tier",
                 },
               },
             ],
