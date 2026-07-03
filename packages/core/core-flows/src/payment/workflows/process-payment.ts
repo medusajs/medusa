@@ -211,10 +211,15 @@ export const processPaymentWorkflow = createWorkflow(
     when(
       { input, cartPaymentCollection, order },
       ({ input, cartPaymentCollection, order }) => {
+        const isDefinitiveAction =
+          input.action === PaymentActions.AUTHORIZED ||
+          input.action === PaymentActions.SUCCESSFUL
+
         return (
           !!input.data?.session_id &&
           !!cartPaymentCollection.data.length &&
-          !order
+          !order &&
+          isDefinitiveAction
         )
       }
     ).then(() => {
