@@ -1,5 +1,5 @@
 ---
-"@medusajs/query": patch
+"@medusajs/core-flows": patch
 ---
 
-Refactor query logic in a dedicated package
+Return an invalid data error when adding a cart line item for a variant without a price
