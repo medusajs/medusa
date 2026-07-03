@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
+import compression from "compression"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
@@ -10,6 +11,10 @@ import morgan from "morgan"
 import path from "path"
 import { configManager } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
+import {
+  compressionOptions,
+  shouldCompressResponse,
+} from "./utils/http-compression"
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
@@ -84,6 +89,25 @@ export async function expressLoader({
 
   app.set("trust proxy", 1)
 
+  /**
+   * Response compression. Off by default; enabled via
+   * `projectConfig.http.compression.enabled`. Registered early so it can
+   * wrap the response of every downstream handler, including static files.
+   */
+  const { enabled: compressionEnabled, ...compressionOpts } =
+    compressionOptions(configModule.projectConfig)
+  if (compressionEnabled) {
+    app.use(
+      compression({
+        ...compressionOpts,
+        filter: (req, res) =>
+          shouldCompressResponse(
+            req as unknown as MedusaRequest,
+            res as unknown as MedusaResponse
+          ),
+      }) as unknown as RequestHandler
+    )
+  }
   /**
    * Method to skip logging HTTP requests. We skip in test environment
    * and also exclude files served by vite during development
