@@ -170,6 +170,9 @@ export type RequestQueryFields = {
 export interface EmptyQueryParams {}
 
 // TODO: Build a tree repository options from this
+/**
+ * @ignore
+ */
 export interface RepositoryTransformOptions {}
 
 /**
@@ -419,6 +422,9 @@ export type Pluralize<Singular extends string> =
     ? `${R}ieux`
     : `${Singular}s`
 
+/**
+ * Converts a camelCase or PascalCase string type to snake_case.
+ */
 export type SnakeCase<S extends string> =
   S extends `${infer T}${infer U}${infer V}`
     ? U extends Uppercase<U>
@@ -426,6 +432,9 @@ export type SnakeCase<S extends string> =
       : `${T}${SnakeCase<`${U}${V}`>}`
     : S
 
+/**
+ * Converts a camelCase or PascalCase string type to kebab-case.
+ */
 export type KebabCase<S extends string> =
   S extends `${infer T}${infer U}${infer V}`
     ? U extends Uppercase<U>
@@ -433,10 +442,22 @@ export type KebabCase<S extends string> =
       : `${T}${KebabCase<`${U}${V}`>}`
     : S
 
+/**
+ * The type for a record's metadata field.
+ */
 export type MetadataType = Record<string, unknown> | null
 
+/**
+ * Represents a raw rounding configuration with a value and precision.
+ */
 export type RawRounding = {
+  /**
+   * The raw rounding value as a string.
+   */
   value: string
+  /**
+   * The number of decimal places to round to.
+   */
   precision: number
 }
 
@@ -468,6 +489,9 @@ export type QueryConfig<TEntity> = {
   isList?: boolean
 }
 
+/**
+ * Transforms all methods of an object type to return a `Promise`.
+ */
 export type TransformObjectMethodToAsync<T extends object> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
     ? (...args: A) => Promise<Awaited<R>>
@@ -476,6 +500,12 @@ export type TransformObjectMethodToAsync<T extends object> = {
     : T[K]
 }
 
+/**
+ * The type of a query context object passed to query operations.
+ */
 export type QueryContextType = Record<string, any> & {
+  /**
+   * @internal
+   */
   __type?: "QueryContext"
 }

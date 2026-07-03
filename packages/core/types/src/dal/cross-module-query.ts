@@ -4,6 +4,7 @@ import { FilterQuery } from "./utils"
  * Describes a link table connecting the queried root entity to an external table.
  *
  * @internal
+ * @since 2.17.3
  */
 export type CrossModuleJoinLink = {
   /**
@@ -29,6 +30,7 @@ export type CrossModuleJoinLink = {
  * Describes an external table that can be filtered or sorted against.
  *
  * @internal
+ * @since 2.17.3
  */
 export type CrossModuleJoinTarget = {
   /**
@@ -94,6 +96,7 @@ export type CrossModuleJoinTarget = {
  * ```
  *
  * @internal
+ * @since 2.17.3
  */
 export type CrossModuleJoinSpec = {
   /**
@@ -103,7 +106,13 @@ export type CrossModuleJoinSpec = {
    * product's sales channel.
    */
   parent?: string
+  /**
+   * The link table connecting the root entity to the external target table.
+   */
   link: CrossModuleJoinLink
+  /**
+   * The external table to filter or sort against.
+   */
   target: CrossModuleJoinTarget
 }
 
@@ -111,6 +120,7 @@ export type CrossModuleJoinSpec = {
  * Internal-only query options passed through the DAL layer.
  *
  * @internal
+ * @since 2.17.3
  */
 export type InternalQueryOptions = {
   /**
