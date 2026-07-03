@@ -103,8 +103,7 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         calculatedPriceSet = calculatedPriceSets[item_.variant_id!]
       }
 
-      const isCustomPrice =
-        item_.is_custom_price ?? isDefined(item?.unit_price)
+      const isCustomPrice = item_.is_custom_price ?? isDefined(item?.unit_price)
 
       if (!calculatedPriceSet && item_.variant_id && !isCustomPrice) {
         priceNotFound.push(item_.variant_id)
@@ -135,7 +134,7 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         isCustomPrice: isCustomPrice,
       }
 
-      if (variant && !isCustomPrice) {
+      if (variant && !isCustomPrice && calculatedPriceSet) {
         input.unitPrice = calculatedPriceSet.calculated_amount
         input.isTaxInclusive =
           calculatedPriceSet.is_calculated_price_tax_inclusive
@@ -179,20 +178,19 @@ export const getVariantsAndItemsWithPrices = createWorkflow(
   (
     input: WorkflowData<GetVariantsAndItemsWithPricesWorkflowInput>
   ): WorkflowResponse<GetVariantsAndItemsWithPricesWorkflowOutput> => {
-    const variantIds = transform(
-      { input },
-      (data): string[] => {
-        if (data.input.variants?.id) {
-          return data.input.variants.id
-        }
-
-        return Array.from(
-          new Set(
-            (data.input.cart.items ?? data.input.items ?? []).map((i) => i.variant_id)
-          )
-        ).filter((v): v is string => !!v)
+    const variantIds = transform({ input }, (data): string[] => {
+      if (data.input.variants?.id) {
+        return data.input.variants.id
       }
-    )
+
+      return Array.from(
+        new Set(
+          (data.input.cart.items ?? data.input.items ?? []).map(
+            (i) => i.variant_id
+          )
+        )
+      ).filter((v): v is string => !!v)
+    })
 
     const cartPricingContext = transform(
       {

@@ -1123,6 +1123,8 @@ medusaIntegrationTestRunner({
             })
           )
 
+
+
           /**
            * update item quantity to 5
            * in order to have the price calculated based on the price rule
@@ -1176,6 +1178,61 @@ medusaIntegrationTestRunner({
               tax_total: 285.7142857142857,
               total: 6000,
             })
+          )
+        })
+
+        it("should throw a 400 error instead of a 500 when adding a variant that has no price in the cart's currency", async () => {
+          const productWithoutEurPrice = (
+            await api.post(
+              `/admin/products`,
+              {
+                title: "No EUR Price Product",
+                status: ProductStatus.PUBLISHED,
+                options: [{ title: "Size", values: ["S"] }],
+                variants: [
+                  {
+                    title: "S",
+                    sku: "no-eur-price",
+                    options: { Size: "S" },
+                    manage_inventory: false,
+                    prices: [
+                      { amount: 1500, currency_code: "usd" }, // deliberately no EUR price
+                    ],
+                  },
+                ],
+                shipping_profile_id: shippingProfile.id,
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const eurCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "eur",
+                sales_channel_id: salesChannel.id,
+                region_id: noAutomaticRegion.id,
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const error = await api
+            .post(
+              `/store/carts/${eurCart.id}/line-items`,
+              {
+                variant_id: productWithoutEurPrice.variants[0].id,
+                quantity: 1,
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.type).toEqual("invalid_data")
+          expect(error.response.data.message).toContain(
+            productWithoutEurPrice.variants[0].id
           )
         })
 
