@@ -1,4 +1,5 @@
 import { InferEntityType } from "../dml"
+import { InternalQueryOptions } from "./cross-module-query"
 import { Dictionary, FilterQuery, Order } from "./utils"
 
 export { FilterQuery, OperatorMap } from "./utils"
@@ -56,6 +57,12 @@ export interface OptionsQuery<T> {
    * Load strategy (e.g for mikro orm it accept select-in or joined)
    */
   strategy?: "select-in" | "joined" | "balanced" | (string & {})
+  /**
+   * Internal-only query options not exposed in public APIs.
+   *
+   * @internal
+   */
+  __internal?: InternalQueryOptions
 }
 
 /**
@@ -88,5 +95,6 @@ export type UpsertWithReplaceConfig<T> = {
   relations?: (keyof T)[]
 }
 
+export * from "./cross-module-query"
 export * from "./repository-service"
 export * from "./entity"

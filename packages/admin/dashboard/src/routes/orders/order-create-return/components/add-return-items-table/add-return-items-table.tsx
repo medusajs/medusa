@@ -41,12 +41,16 @@ export const AddReturnItemsTable = ({
     }, {} as RowSelectionState)
   )
 
+  const alreadyAdded = useMemo(() => new Set(selectedItems), [selectedItems])
+
   const updater: OnChangeFn<RowSelectionState> = (fn) => {
     const newState: RowSelectionState =
       typeof fn === "function" ? fn(rowSelection) : fn
 
     setRowSelection(newState)
-    onSelectionChange(Object.keys(newState))
+    onSelectionChange(
+      Object.keys(newState).filter((id) => !alreadyAdded.has(id))
+    )
   }
 
   const { searchParams, raw } = useReturnItemTableQuery({
@@ -125,7 +129,10 @@ export const AddReturnItemsTable = ({
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
     enableRowSelection: (row) => {
-      return getReturnableQuantity(row.original) > 0
+      return (
+        getReturnableQuantity(row.original) > 0 &&
+        !alreadyAdded.has(row.original.id)
+      )
     },
     rowSelection: {
       state: rowSelection,

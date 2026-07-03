@@ -10,19 +10,28 @@ import { createOrderSeeder } from "../../fixtures/order"
 
 jest.setTimeout(300000)
 
+const adminTemplateName = "transfer-flow-admin-template"
+
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    let user
+
+    beforeAll(async () => {
+      user = (
+        await createAdminUser(dbConnection, adminHeaders, getContainer())
+      ).user
+
+      await dbUtils.snapshot({ templateName: adminTemplateName })
+    })
+
     describe("Transfer Order flow (Admin)", () => {
       let order
       let customer
-      let user
       let storeHeaders
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const container = getContainer()
 
-        user = (await createAdminUser(dbConnection, adminHeaders, container))
-          .user
         const publishableKey = await generatePublishableKey(container)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -51,6 +60,8 @@ medusaIntegrationTestRunner({
         ).data.customer
 
         order = seeders.order
+
+        await dbUtils.snapshot()
       })
 
       it("should pass order transfer flow from admin successfully", async () => {
@@ -288,7 +299,9 @@ medusaIntegrationTestRunner({
       let storeHeaders
       let signInToken
 
-      beforeEach(async () => {
+      beforeAll(async () => {
+        await dbUtils.restore({ templateName: adminTemplateName })
+
         const container = getContainer()
 
         const publishableKey = await generatePublishableKey(container)
@@ -326,6 +339,8 @@ medusaIntegrationTestRunner({
         ).data.token
 
         order = seeders.order
+
+        await dbUtils.snapshot()
       })
 
       it("should pass order transfer flow from storefront successfully", async () => {

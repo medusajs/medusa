@@ -216,9 +216,20 @@ export interface AdminCreateOrderCreditLine {
   metadata?: Record<string, unknown> | null
 }
 
+export interface AdminAuthorizeOrderPaymentSession {
+  /**
+   * The ID of the payment session to authorize.
+   */
+  payment_session_id: string
+}
+
 export interface AdminUpdateOrderChange {
   /**
    * Whether to carry over promotions to outbound exchange items.
    */
   carry_over_promotions?: boolean
+  /**
+   * An internal note viewed by admin users only.
+   */
+  internal_note?: string | null
 }

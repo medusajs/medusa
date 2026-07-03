@@ -2,8 +2,9 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
+  createStep,
   createWorkflow,
-  transform,
+  StepResponse,
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
@@ -13,6 +14,31 @@ import { deleteCustomersWorkflow } from "./delete-customers"
 export type RemoveCustomerAccountWorkflowInput = {
   customerId: string
 }
+
+interface GetCustomerAuthIdentityStepInput {
+  authIdentities: { id: string }[]
+}
+
+/**
+ * This step returns the customer's auth identity from a queried list. It throws
+ * an error if no auth identity is found.
+ */
+export const getCustomerAuthIdentityStep = createStep(
+  "get-customer-auth-identity",
+  async ({ authIdentities }: GetCustomerAuthIdentityStepInput) => {
+    const authIdentity = authIdentities[0]
+
+    if (!authIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Auth identity not found"
+      )
+    }
+
+    return new StepResponse(authIdentity)
+  }
+)
+
 export const removeCustomerAccountWorkflowId = "remove-customer-account"
 /**
  * This workflow deletes a customer and remove its association to its auth identity. It's used by the
@@ -74,21 +100,7 @@ export const removeCustomerAccountWorkflow = createWorkflow(
         },
       })
 
-      const authIdentity = transform(
-        { authIdentities },
-        ({ authIdentities }) => {
-          const authIdentity = authIdentities[0]
-
-          if (!authIdentity) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_FOUND,
-              "Auth identity not found"
-            )
-          }
-
-          return authIdentity
-        }
-      )
+      const authIdentity = getCustomerAuthIdentityStep({ authIdentities })
 
       setAuthAppMetadataStep({
         authIdentityId: authIdentity.id,

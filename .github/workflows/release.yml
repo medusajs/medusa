@@ -4,8 +4,20 @@ on:
   push:
     branches:
       - develop
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit SHA or ref to release from (defaults to the triggering branch tip)"
+        required: false
+        type: string
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+  actions: write # required to createWorkflowDispatch the draft-release workflow
 
 jobs:
   release:
@@ -14,19 +26,16 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.ref || github.sha }}
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Creating .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Ensure npm 11.5.1+ for OIDC
+        run: npm install -g npm@latest
 
       - name: Install Dependencies
         run: yarn

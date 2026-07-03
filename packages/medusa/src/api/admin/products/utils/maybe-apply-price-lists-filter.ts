@@ -14,8 +14,11 @@ export function maybeApplyPriceListsFilter() {
     _,
     next: NextFunction
   ) {
-    const filterableFields: HttpTypes.AdminProductListParams =
-      req.filterableFields
+    const filterableFields: HttpTypes.AdminProductListParams & {
+      // these are available through the Zod transformation
+      tags?: string | string[]
+      categories?: string | string[]
+    } = req.filterableFields
 
     if (!filterableFields.price_list_id) {
       return next()
@@ -28,8 +31,8 @@ export function maybeApplyPriceListsFilter() {
     // variant id expansion in that case.
     if (
       FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&
-      !filterableFields.tag_id &&
-      !filterableFields.category_id
+      !filterableFields.tags &&
+      !filterableFields.categories
     ) {
       return next()
     }

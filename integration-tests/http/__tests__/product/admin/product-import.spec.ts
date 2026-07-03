@@ -55,7 +55,7 @@ function prepareCSVForImport(fileContents: string, delimiter: string = ",") {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseCollection
     let baseType
     let baseProduct
@@ -72,7 +72,7 @@ medusaIntegrationTestRunner({
       eventBus = getContainer().resolve(Modules.EVENT_BUS)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       baseCollection = (
         await api.post(
@@ -160,6 +160,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product_category
+
+      await dbUtils.snapshot()
     })
 
     afterEach(() => {

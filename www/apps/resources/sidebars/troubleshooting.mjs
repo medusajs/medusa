@@ -84,6 +84,11 @@ export const troubleshootingSidebar = [
         title: "Importing from /dist",
       },
       {
+        type: "link",
+        path: "/troubleshooting/modules/resolve-path",
+        title: "Module Provider Resolve Path Error",
+      },
+      {
         type: "sub-category",
         title: "Query",
         children: [
@@ -96,6 +101,11 @@ export const troubleshootingSidebar = [
             type: "link",
             path: "/troubleshooting/query/filter-linked",
             title: "Not Existing Property",
+          },
+          {
+            type: "link",
+            path: "/troubleshooting/query/metadata-filtering",
+            title: "Metadata Filtering",
           },
           {
             type: "link",

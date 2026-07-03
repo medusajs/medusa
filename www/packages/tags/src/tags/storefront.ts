@@ -100,6 +100,10 @@ export const storefront = [
     "path": "https://docs.medusajs.com/resources/storefront-development/customers/third-party-login"
   },
   {
+    "title": "Register Customer with Email Verification in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account"
+  },
+  {
     "title": "Implement Express Checkout with Medusa",
     "path": "https://docs.medusajs.com/resources/storefront-development/guides/express-checkout"
   },
@@ -150,6 +154,10 @@ export const storefront = [
   {
     "title": "Show Products in Storefront",
     "path": "https://docs.medusajs.com/resources/storefront-development/products/list"
+  },
+  {
+    "title": "Use Product Options in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/products/options"
   },
   {
     "title": "Example: Show Sale Price",

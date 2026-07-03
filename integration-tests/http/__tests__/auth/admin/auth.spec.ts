@@ -11,15 +11,13 @@ import {
 jest.setTimeout(100000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
-    })
 
-    afterEach(() => {
-      jest.useRealTimers()
+      await dbUtils.snapshot()
     })
 
     describe("Full authentication lifecycle", () => {
@@ -100,6 +98,13 @@ medusaIntegrationTestRunner({
         // Sign out
         const signOutRequest = await api.delete("/auth/session", cookieHeader)
         expect(signOutRequest.status).toEqual(200)
+
+        // Regression: DELETE /auth/session must clear the session cookie on
+        // the client. See https://github.com/medusajs/medusa/issues/15508
+        const signOutSetCookie = signOutRequest.headers["set-cookie"]
+        expect(signOutSetCookie).toBeDefined()
+        expect(signOutSetCookie[0]).toMatch(/^connect\.sid=;/)
+        expect(signOutSetCookie[0]).toContain("Expires=")
 
         // Attempt to perform authenticated request
         const unAuthedRequest = await api
@@ -230,6 +235,124 @@ medusaIntegrationTestRunner({
         expect(login.data).toEqual({ token: expect.any(String) })
       })
 
+      it("should reject replaying a reset token after a successful password update", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "replay@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const { result: resetToken } = await generateResetPasswordTokenWorkflow(
+          container
+        ).run({
+          input: {
+            entityId: "replay@medusa-commerce.com",
+            actorType: "user",
+            provider: "emailpass",
+            secret: "test",
+          },
+        })
+
+        const firstUse = await api.post(
+          `/auth/user/emailpass/update`,
+          { password: "first_new_password" },
+          { headers: { authorization: `Bearer ${resetToken}` } }
+        )
+        expect(firstUse.status).toEqual(200)
+
+        const replay = await api
+          .post(
+            `/auth/user/emailpass/update`,
+            { password: "attacker_password" },
+            { headers: { authorization: `Bearer ${resetToken}` } }
+          )
+          .catch((e) => e)
+
+        expect(replay.response.status).toEqual(401)
+        expect(replay.response.data.message).toEqual("Invalid token")
+
+        const attackerLogin = await api
+          .post("/auth/user/emailpass", {
+            email: "replay@medusa-commerce.com",
+            password: "attacker_password",
+          })
+          .catch((e) => e)
+        expect(attackerLogin.response.status).toEqual(401)
+
+        const legitLogin = await api.post("/auth/user/emailpass", {
+          email: "replay@medusa-commerce.com",
+          password: "first_new_password",
+        })
+        expect(legitLogin.status).toEqual(200)
+      })
+
+      it("should invalidate previously issued reset tokens when a new one is generated", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "reissue@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const { result: firstToken } = await generateResetPasswordTokenWorkflow(
+          container
+        ).run({
+          input: {
+            entityId: "reissue@medusa-commerce.com",
+            actorType: "user",
+            provider: "emailpass",
+            secret: "test",
+          },
+        })
+
+        const { result: secondToken } =
+          await generateResetPasswordTokenWorkflow(container).run({
+            input: {
+              entityId: "reissue@medusa-commerce.com",
+              actorType: "user",
+              provider: "emailpass",
+              secret: "test",
+            },
+          })
+
+        const oldTokenAttempt = await api
+          .post(
+            `/auth/user/emailpass/update`,
+            { password: "attacker_password" },
+            { headers: { authorization: `Bearer ${firstToken}` } }
+          )
+          .catch((e) => e)
+        expect(oldTokenAttempt.response.status).toEqual(401)
+        expect(oldTokenAttempt.response.data.message).toEqual("Invalid token")
+
+        const newTokenUse = await api.post(
+          `/auth/user/emailpass/update`,
+          { password: "new_password" },
+          { headers: { authorization: `Bearer ${secondToken}` } }
+        )
+        expect(newTokenUse.status).toEqual(200)
+      })
+
+      it("should reject session bearer tokens on the password update endpoint", async () => {
+        await api.post("/auth/user/emailpass/register", {
+          email: "session@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const login = await api.post("/auth/user/emailpass", {
+          email: "session@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const attempt = await api
+          .post(
+            `/auth/user/emailpass/update`,
+            { password: "new_password" },
+            { headers: { authorization: `Bearer ${login.data.token}` } }
+          )
+          .catch((e) => e)
+
+        expect(attempt.response.status).toEqual(401)
+        expect(attempt.response.data.message).toEqual("Invalid token")
+      })
+
       it("should ensure you can only update password", async () => {
         // Register user
         await api.post("/auth/user/emailpass/register", {
@@ -287,8 +410,6 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail if token has expired", async () => {
-        jest.useFakeTimers()
-
         // Register user
         await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
@@ -307,8 +428,10 @@ medusaIntegrationTestRunner({
           },
         })
 
-        // Advance time by 15 minutes
-        jest.advanceTimersByTime(15 * 60 * 1000)
+        await dbConnection.raw(
+          `UPDATE "auth_password_reset_token" SET expires_at = NOW() - INTERVAL '1 day' WHERE entity_id = ? AND deleted_at IS NULL`,
+          ["test@medusa-commerce.com"]
+        )
 
         const response = await api
           .post(
@@ -329,16 +452,11 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail if no token is passed", async () => {
-        jest.useFakeTimers()
-
         // Register user
         await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
           password: "secret_password",
         })
-
-        // Advance time by 15 minutes
-        jest.advanceTimersByTime(15 * 60 * 1000)
 
         const response = await api
           .post(`/auth/user/emailpass/update`, {
@@ -351,8 +469,6 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail if update is attempted on different actor type", async () => {
-        jest.useFakeTimers()
-
         // Register user
         await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
@@ -370,9 +486,6 @@ medusaIntegrationTestRunner({
             secret: "test",
           },
         })
-
-        // Advance time by 15 minutes
-        jest.advanceTimersByTime(15 * 60 * 1000)
 
         const response = await api
           .post(
@@ -393,8 +506,6 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail if token secret is incorrect", async () => {
-        jest.useFakeTimers()
-
         // Register user
         await api.post("/auth/user/emailpass/register", {
           email: "test@medusa-commerce.com",
@@ -412,9 +523,6 @@ medusaIntegrationTestRunner({
             secret: "incorrect_secret",
           },
         })
-
-        // Advance time by 15 minutes
-        jest.advanceTimersByTime(15 * 60 * 1000)
 
         const response = await api
           .post(
@@ -477,8 +585,7 @@ medusaIntegrationTestRunner({
 
     it("should refresh the token successfully", async () => {
       // Make sure issue date is later than the admin one
-      jest.useFakeTimers()
-      jest.advanceTimersByTime(2000)
+      await new Promise((resolve) => setTimeout(resolve, 100))
 
       const resp = await api.post("/auth/token/refresh", {}, adminHeaders)
       const decodedOriginalToken = jwt.decode(

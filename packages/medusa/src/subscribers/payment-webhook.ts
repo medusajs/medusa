@@ -35,7 +35,12 @@ export default async function paymentWebhookhandler({
 
   const processedEvent = await paymentService.getWebhookActionAndData(input)
 
-  if (!processedEvent.data) {
+  // Without a payment session id we cannot associate the event with a specific
+  // payment session (and therefore cart). Processing it would let the workflow
+  // resolve to an arbitrary, unrelated payment session/cart, so we ignore it.
+  // This guards against e.g. foreign events delivered by a provider account
+  // shared with another integration.
+  if (!processedEvent.data?.session_id) {
     return
   }
 
@@ -44,7 +49,8 @@ export default async function paymentWebhookhandler({
     // We currently don't handle these payment statuses in the processPayment function.
     processedEvent?.action === PaymentActions.CANCELED ||
     processedEvent?.action === PaymentActions.FAILED ||
-    processedEvent?.action === PaymentActions.REQUIRES_MORE
+    processedEvent?.action === PaymentActions.REQUIRES_MORE ||
+    processedEvent?.action === PaymentActions.PENDING_AUTHORIZATION
   ) {
     return
   }

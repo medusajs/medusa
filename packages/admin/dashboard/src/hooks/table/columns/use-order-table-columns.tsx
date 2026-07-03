@@ -118,7 +118,7 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
         },
       }),
       columnHelper.display({
-        id: "actions",
+        id: "country",
         cell: ({ row }) => {
           const countryCode = row.original.shipping_address?.country_code
           const country = countries.find((c) => c.iso_2 === countryCode)

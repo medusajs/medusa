@@ -233,6 +233,17 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: "#/components/schemas/AdminLocale"
+  - name: Multi-Factor Authentication
+    description: >
+      Multi-factor authentication (MFA) adds an extra layer of security to admin
+      accounts by requiring additional verification factors during login, such
+      as a TOTP code or a recovery code.
+
+      These API routes allow admin users to manage their MFA factors, challenges,
+      and recovery codes.
+    externalDocs:
+      description: Learn more about MFA in Medusa
+      url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
   - name: Notifications
     description: >
       A notification informs an admin user of store changes or status changes of
@@ -379,6 +390,18 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/product
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProductCategory"
+  - name: Product Options
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductOption"
+    description: >
+      A product option is a way to define different options for a product, such
+      as "Size" or "Color". Product options can be created globally and used by
+      multiple products, or they can be exclusive to a specific product.
+
+      These API routes allow admin users to manage product options.
+    externalDocs:
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/resources/commerce-modules/product
   - name: Product Tags
     description: >
       A tag is another way of organizing a product. Each tag has a name and a
@@ -624,7 +647,7 @@ tags:
       <Note>
 
       Store Credit Account routes are only available for Cloud users using the
-      [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:

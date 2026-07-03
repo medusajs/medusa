@@ -11,6 +11,8 @@ import {
   CreateAccountHolderOutput,
   DeleteAccountHolderInput,
   DeleteAccountHolderOutput,
+  DeletePaymentMethodInput,
+  DeletePaymentMethodOutput,
   DeletePaymentInput,
   DeletePaymentOutput,
   GetPaymentStatusInput,
@@ -64,9 +66,23 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected stripe_: Stripe
   protected container_: Record<string, unknown>
 
+  // All Stripe provider variants share the same options, so warn only once
+  // even though the loader validates each registered service.
+  protected static hasWarnedMissingWebhookSecret = false
+
   static validateOptions(options: StripeOptions): void {
     if (!isDefined(options.apiKey)) {
       throw new Error("Required option `apiKey` is missing in Stripe plugin")
+    }
+
+    if (
+      !isDefined(options.webhookSecret) &&
+      !StripeBase.hasWarnedMissingWebhookSecret
+    ) {
+      StripeBase.hasWarnedMissingWebhookSecret = true
+      console.warn(
+        "Option `webhookSecret` is missing in Stripe plugin. Webhook signature verification will fail, so webhook-dependent payment flows (e.g. 3D Secure, Klarna/Affirm redirects, async capture) will not be able to update orders, leaving them pending after successful charges. Set `webhookSecret` if you rely on Stripe webhooks."
+      )
     }
   }
 
@@ -231,7 +247,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       )
     }
 
-    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id)
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id, {
+      expand: ["payment_method"],
+    })
     const statusResponse = this.getStatus(paymentIntent)
 
     return statusResponse as unknown as GetPaymentStatusOutput
@@ -253,6 +271,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         session_id: data?.session_id as string,
       },
       ...additionalParameters,
+      expand: ["payment_method"],
     }
 
     intentRequest.customer = context?.account_holder?.data?.id as
@@ -396,6 +415,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         id,
         {
           amount: amountNumeric,
+          expand: ["payment_method"],
         },
         {
           idempotencyKey: context?.idempotency_key,
@@ -598,6 +618,26 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     return { id: resp.id, data: resp as unknown as Record<string, unknown> }
   }
 
+  async deletePaymentMethod({
+    context,
+    data,
+  }: DeletePaymentMethodInput): Promise<DeletePaymentMethodOutput> {
+    const paymentMethodId = data?.id as string | undefined
+
+    if (!paymentMethodId) {
+      throw this.buildError(
+        "Payment method ID not set while deleting a payment method",
+        new Error("Missing payment method ID")
+      )
+    }
+
+    await this.stripe_.paymentMethods.detach(paymentMethodId, {
+      idempotencyKey: context?.idempotency_key,
+    })
+
+    return {}
+  }
+
   private getStatus(paymentIntent: Stripe.PaymentIntent): {
     data: Stripe.PaymentIntent
     status: PaymentSessionStatus
@@ -609,7 +649,18 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         }
         return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
       case "requires_confirmation":
+        return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
       case "processing":
+        if (
+          this.isAsyncPaymentMethod(
+            paymentIntent.payment_method as Stripe.PaymentMethod
+          )
+        ) {
+          return {
+            status: PaymentSessionStatus.PENDING_AUTHORIZATION,
+            data: paymentIntent,
+          }
+        }
         return { status: PaymentSessionStatus.PENDING, data: paymentIntent }
       case "requires_action":
         return {
@@ -635,11 +686,31 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
     const { currency } = intent
 
+    // Payment intents created by Medusa always carry the originating payment
+    // session id in their metadata (see `initiatePayment`). An intent without
+    // one did not originate from this Medusa instance - e.g. an event from
+    // another integration sharing the same Stripe account - and must not be
+    // acted upon, so we treat it as an unsupported event.
+    if (!intent.metadata?.session_id) {
+      return { action: PaymentActions.NOT_SUPPORTED }
+    }
+
     switch (event.type) {
       case "payment_intent.created":
       case "payment_intent.processing":
+        const webhookPaymentMethod = intent.payment_method
+        const paymentMethod =
+          typeof webhookPaymentMethod === "object"
+            ? (intent.payment_method as Stripe.PaymentMethod)
+            : typeof webhookPaymentMethod === "string"
+            ? await this.stripe_.paymentMethods.retrieve(webhookPaymentMethod)
+            : null
+
         return {
-          action: PaymentActions.PENDING,
+          action:
+            paymentMethod && this.isAsyncPaymentMethod(paymentMethod)
+              ? PaymentActions.PENDING_AUTHORIZATION
+              : PaymentActions.PENDING,
           data: {
             session_id: intent.metadata.session_id,
             amount: getAmountFromSmallestUnit(intent.amount, currency),
@@ -704,6 +775,13 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       default:
         return { action: PaymentActions.NOT_SUPPORTED }
     }
+  }
+
+  private isAsyncPaymentMethod(paymentMethod: Stripe.PaymentMethod): boolean {
+    return (
+      this.options_.asyncPaymentMethodTypes?.includes(paymentMethod.type) ??
+      false
+    )
   }
 
   /**

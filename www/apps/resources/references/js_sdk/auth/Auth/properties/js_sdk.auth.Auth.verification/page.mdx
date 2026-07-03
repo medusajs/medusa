@@ -1,0 +1,63 @@
+import { TypeList } from "docs-ui"
+
+# verification
+
+Methods for requesting and confirming verification.
+
+:::note
+
+This is available starting from [Medusa v2.15.5](https://github.com/medusajs/medusa/releases/tag/v2.15.5).
+
+:::
+
+## request
+
+This method requests a verification token for an auth identity.
+
+### Parameters
+
+<TypeList types={[{"name":"actor","type":"`string`","description":"The actor type. For example, `user` for admin user, or `customer` for customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"The authentication provider to use. For example, `emailpass`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthVerificationRequestPayload](../../../types/js_sdk.auth.AuthVerificationRequestPayload/page.mdx)","description":"The verification request details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"entity_id","type":"`string`","description":"The provider identity to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Optional metadata to include in the verification request event.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthVerificationRequestResponse](../../../types/js_sdk.auth.AuthVerificationRequestResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"verification","type":"[AuthVerification](../../../../../auth/types/auth.AuthVerification/page.mdx)","description":"The verification state.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actor_type","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expires_at","type":"`Date` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## confirm
+
+This method confirms a verification token.
+
+### Parameters
+
+<TypeList types={[{"name":"actor","type":"`string`","description":"The actor type. For example, `user` for admin user, or `customer` for customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"The authentication provider to use. For example, `emailpass`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthVerificationConfirmPayload](../../../types/js_sdk.auth.AuthVerificationConfirmPayload/page.mdx)","description":"The verification token details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"token","type":"`string`","description":"The verification token delivered to the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthVerificationConfirmResponse](../../../types/js_sdk.auth.AuthVerificationConfirmResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"entity_id","type":"`string`","description":"The verified provider identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"verified","type":"`true`","description":"Indicates the identity was verified.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+## request
+
+This method requests a verification token for an auth identity.
+
+### Parameters
+
+<TypeList types={[{"name":"actor","type":"`string`","description":"The actor type. For example, `user` for admin user, or `customer` for customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"The authentication provider to use. For example, `emailpass`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthVerificationRequestPayload](../../../types/js_sdk.auth.AuthVerificationRequestPayload/page.mdx)","description":"The verification request details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"entity_id","type":"`string`","description":"The provider identity to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Optional metadata to include in the verification request event.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthVerificationRequestResponse](../../../types/js_sdk.auth.AuthVerificationRequestResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"verification","type":"[AuthVerification](../../../../../auth/types/auth.AuthVerification/page.mdx)","description":"The verification state.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"entity_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"actor_type","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expires_at","type":"`Date` \\| `string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+___
+
+## confirm
+
+This method confirms a verification token.
+
+### Parameters
+
+<TypeList types={[{"name":"actor","type":"`string`","description":"The actor type. For example, `user` for admin user, or `customer` for customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"`string`","description":"The authentication provider to use. For example, `emailpass`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AuthVerificationConfirmPayload](../../../types/js_sdk.auth.AuthVerificationConfirmPayload/page.mdx)","description":"The verification token details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"token","type":"`string`","description":"The verification token delivered to the user.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../../admin/types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthVerificationConfirmResponse](../../../types/js_sdk.auth.AuthVerificationConfirmResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"entity_id","type":"`string`","description":"The verified provider identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"verified","type":"`true`","description":"Indicates the identity was verified.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="__type"/>

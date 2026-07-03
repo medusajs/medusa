@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom"
 import { JsonViewSection } from "../../../common/json-view-section"
 import { MetadataSection } from "../../../common/metadata-section"
 import { PageProps, WidgetProps } from "../types"
+import { RequiredPermissionsSection } from "../../../common/required-permissions-section"
 
 interface TwoColumnWidgetProps extends WidgetProps {
   sideBefore: ComponentType<any>[]
@@ -12,6 +13,10 @@ interface TwoColumnWidgetProps extends WidgetProps {
 
 interface TwoColumnPageProps<TData> extends PageProps<TData> {
   widgets: TwoColumnWidgetProps
+  /**
+   * Optional section rendered under the JSON section.
+   */
+  requiredPermissionsSection?: ComponentPropsWithoutRef<"div">["children"]
 }
 
 const Root = <TData,>({
@@ -32,6 +37,10 @@ const Root = <TData,>({
    * Whether to show metadata view of the data. Defaults to false.
    */
   showMetadata = false,
+  /**
+   * Optional section rendered under the JSON section.
+   */
+  requiredPermissionsSection = <RequiredPermissionsSection />,
   /**
    * Whether to render an outlet for children routes. Defaults to true.
    */
@@ -84,6 +93,7 @@ const Root = <TData,>({
             <div className="hidden flex-col gap-y-3 xl:flex">
               {showMetadata && <MetadataSection data={data!} />}
               {showJSON && <JsonViewSection data={data!} />}
+              {showJSON && requiredPermissionsSection}
             </div>
           )}
         </div>
@@ -99,6 +109,7 @@ const Root = <TData,>({
             <div className="flex flex-col gap-y-3 xl:hidden">
               {showMetadata && <MetadataSection data={data!} />}
               {showJSON && <JsonViewSection data={data!} />}
+              {showJSON && requiredPermissionsSection}
             </div>
           )}
         </div>

@@ -6,6 +6,7 @@ import {
   MedusaError,
   mergePluginModules,
 } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/types"
 import { join } from "path"
 import { initializeContainer } from "../../loaders"
 import { ensureDbExists } from "../utils"
@@ -13,13 +14,14 @@ import { ensureDbExists } from "../utils"
 const TERMINAL_SIZE = process.stdout.columns
 
 const main = async function ({ directory, modules }) {
-  const container = await initializeContainer(directory)
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+  let logger: Logger | undefined
 
   try {
     /**
      * Setup
      */
+    const container = await initializeContainer(directory)
+    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
     await ensureDbExists(container)
 
@@ -54,6 +56,10 @@ const main = async function ({ directory, modules }) {
 
     process.exit()
   } catch (error) {
+    if (!logger) {
+      console.error(error)
+      process.exit(1)
+    }
     logger.log(new Array(TERMINAL_SIZE).join("-"))
     if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
       logger.error(error.message)

@@ -1,0 +1,41 @@
+---
+sidebar_label: "subscriber-default-export-must-be-async"
+---
+
+export const metadata = {
+  title: `subscriber-default-export-must-be-async - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires the default-exported subscriber handler function to be async.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/subscribers` directory. It reports a default-exported subscriber handler that isn't an async function.
+
+The following code is reported by the rule:
+
+```ts title="src/subscribers/order-placed.ts"
+export default function orderPlacedHandler() {}
+```
+
+Instead, make the handler async:
+
+```ts title="src/subscribers/order-placed.ts"
+export default async function orderPlacedHandler() {}
+```
+
+## Why it's Important
+
+Subscribers receive an event and are always awaited by Medusa. Making the handler async ensures Medusa can wait for its work to finish before continuing.
+
+Learn more in the [Subscribers documentation](!docs!/learn/fundamentals/events-and-subscribers).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

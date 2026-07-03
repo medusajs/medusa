@@ -59,7 +59,7 @@ export const useInventoryItem = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.inventoryItem.retrieve(id, query),
-    queryKey: inventoryItemsQueryKeys.detail(id),
+    queryKey: inventoryItemsQueryKeys.detail(id, query),
     ...options,
   })
 

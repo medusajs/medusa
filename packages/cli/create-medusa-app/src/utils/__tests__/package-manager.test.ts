@@ -316,7 +316,7 @@ describe("PackageManager", () => {
     const makePackageJson = (extra: Record<string, unknown> = {}) =>
       JSON.stringify({
         name: "test",
-        scripts: { dev: "pnpm dev", build: "pnpm build" },
+        scripts: { dev: "pnpm -r dev", build: "pnpm -r build", start: "pnpm start" },
         ...extra,
       })
 
@@ -368,26 +368,66 @@ describe("PackageManager", () => {
       expect(written.workspaces).toEqual(["apps/*", "apps/storefront"])
     })
 
-    it("should replace pnpm references in scripts", async () => {
+    it("should replace pnpm -r scripts with turbo", async () => {
       const pm = new PackageManager(processManager)
       pm["packageManager"] = "yarn"
 
       await pm.transformWorkspaceConfig("/test/path")
 
       const written = getWrittenPackageJson()
-      expect(written.scripts.dev).toBe("yarn dev")
-      expect(written.scripts.build).toBe("yarn build")
+      expect(written.scripts.dev).toBe("turbo dev")
+      expect(written.scripts.build).toBe("turbo build")
     })
 
-    it("should replace pnpm references in scripts with npm when using npm", async () => {
+    it("should replace non-recursive pnpm scripts with the package manager", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "yarn"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      const written = getWrittenPackageJson()
+      expect(written.scripts.start).toBe("yarn start")
+    })
+
+    it("should replace pnpm -r scripts with turbo when using npm", async () => {
       const pm = new PackageManager(processManager)
       pm["packageManager"] = "npm"
 
       await pm.transformWorkspaceConfig("/test/path")
 
       const written = getWrittenPackageJson()
-      expect(written.scripts.dev).toBe("npm dev")
-      expect(written.scripts.build).toBe("npm build")
+      expect(written.scripts.dev).toBe("turbo dev")
+      expect(written.scripts.build).toBe("turbo build")
+    })
+
+    it("should replace non-recursive pnpm scripts with npm when using npm", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "npm"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      const written = getWrittenPackageJson()
+      expect(written.scripts.start).toBe("npm start")
+    })
+
+    it("should handle mixed pnpm -r and plain pnpm in the same script", async () => {
+      mockReadFileSync
+        .mockReset()
+        .mockReturnValueOnce(YAML_CONTENT)
+        .mockReturnValueOnce(
+          JSON.stringify({
+            name: "test",
+            scripts: { all: "pnpm -r build && pnpm start" },
+          })
+        )
+
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "yarn"
+
+      await pm.transformWorkspaceConfig("/test/path")
+
+      const written = getWrittenPackageJson()
+      expect(written.scripts.all).toBe("turbo build && yarn start")
     })
 
     it("should delete pnpm-workspace.yaml", async () => {

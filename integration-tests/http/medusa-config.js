@@ -21,7 +21,37 @@ const customFulfillmentProviderCalculated = {
   id: "test-provider-calculated",
 }
 
+const customPendingAuthPaymentProvider = {
+  resolve: require("./dist/utils/providers/payment-pending-authorization")
+    .default,
+  id: "pending-auth",
+}
+
+// A second instance of the built-in system payment provider, registered under a
+// distinct id (`pp_system_default_2`) so tests can assert a non-default provider
+// is honored. The always-present `pp_system_default` is unaffected.
+const customPaymentProvider = {
+  resolve: {
+    services: [require("@medusajs/payment/dist/providers/system").default],
+  },
+  id: "default_2",
+}
+
+const customPaymentProviderAccountHolder = {
+  resolve: require("./dist/utils/providers/payment-account-holder").default,
+  id: "test",
+}
+
 const modules = {
+  [Modules.PAYMENT]: {
+    resolve: "@medusajs/payment",
+    /** @type {import('@medusajs/payment').PaymentModuleOptions} */
+    options: {
+      providers: [customPaymentProvider, customPaymentProviderAccountHolder, customPendingAuthPaymentProvider],
+      webhook_delay: 0,
+      webhook_retries: 0,
+    },
+  },
   [Modules.FULFILLMENT]: {
     /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
     options: {
@@ -69,6 +99,19 @@ const modules = {
   [Modules.RBAC]: {
     resolve: "@medusajs/rbac",
     disable: process.env.MEDUSA_FF_RBAC !== "true",
+  },
+  [Modules.AUTH]: {
+    options: {
+      mfa: {
+        encryption_key: "test-mfa-encryption-key",
+      },
+      providers: [
+        {
+          resolve: "@medusajs/medusa/auth-emailpass",
+          id: "emailpass",
+        },
+      ],
+    },
   },
 }
 

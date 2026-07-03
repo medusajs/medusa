@@ -1,13 +1,16 @@
 {
   "name": "@medusajs/icons",
-  "version": "2.15.2",
+  "version": "2.17.2",
   "description": "Medusa UI React icon library",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/design-system/icons"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "main": "dist/cjs/medusa-icons.js",
   "main:umd": "dist/umd/medusa-icons.js",
@@ -28,11 +31,11 @@
     "generate": "yarn run -T rimraf ./src/components && toolbox icons -o './src/components'"
   },
   "devDependencies": {
-    "@medusajs/toolbox": "2.15.2",
-    "react": "^19.2.5"
+    "@medusajs/toolbox": "2.17.2",
+    "react": "^18.3.1 || ^19.0.0"
   },
   "peerDependencies": {
-    "react": "^19.2.5"
+    "react": "^18.3.1 || ^19.0.0"
   },
   "packageManager": "yarn@3.2.1",
   "publishConfig": {

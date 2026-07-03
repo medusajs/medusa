@@ -3,7 +3,7 @@ import { FileType, FileUpload } from "../../../../components/common/file-upload"
 import { Hint } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-const SUPPORTED_FORMATS = ["text/csv"]
+const SUPPORTED_FORMATS = ["text/csv", "application/vnd.ms-excel"]
 const SUPPORTED_FORMATS_FILE_EXTENSIONS = [".csv"]
 
 export const UploadImport = ({

@@ -94,6 +94,11 @@ export const storeCreditSidebar = [
             ],
           },
           {
+            type: "link",
+            path: "/commerce-modules/store-credit/admin-widget-zones",
+            title: "Admin Widget Zones",
+          },
+          {
             type: "sidebar",
             sidebar_id: "store-credit-service-reference",
             title: "Main Service Reference",

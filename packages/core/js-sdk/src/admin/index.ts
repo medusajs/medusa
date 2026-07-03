@@ -43,11 +43,18 @@ import { TaxRegion } from "./tax-region.js"
 import { Upload } from "./upload.js"
 import { User } from "./user.js"
 import { Views } from "./views.js"
+import { Layouts } from "./layouts.js"
 import { WorkflowExecution } from "./workflow-execution.js"
 import { ShippingOptionType } from "./shipping-option-type.js"
 import { Locale } from "./locale.js"
 import { Translation } from "./translation.js"
+import { ProductOption } from "./product-option.js"
+import { RbacRole } from "./rbac-role.js"
+import { RbacPolicy } from "./rbac-policy.js"
 
+/**
+ * The admin client provides access to admin-related resources.
+ */
 export class Admin {
   /**
    * @tags user
@@ -65,6 +72,11 @@ export class Admin {
    * @tags product
    */
   public productCategory: ProductCategory
+  /**
+   * @tags product
+   * @since 2.16.0
+   */
+  public productOption: ProductOption
   /**
    * @tags pricing
    */
@@ -243,12 +255,27 @@ export class Admin {
    * @featureFlag view_configurations
    */
   public views: Views
+  /**
+   * @tags layouts
+   */
+  public layouts: Layouts
+  /**
+   * @tags rbac
+   * @since 2.15.5
+   */
+  public rbacRole: RbacRole
+  /**
+   * @tags rbac
+   * @since 2.15.5
+   */
+  public rbacPolicy: RbacPolicy
 
   constructor(client: Client) {
     this.invite = new Invite(client)
     this.customer = new Customer(client)
     this.productCollection = new ProductCollection(client)
     this.productCategory = new ProductCategory(client)
+    this.productOption = new ProductOption(client)
     this.priceList = new PriceList(client)
     this.pricePreference = new PricePreference(client)
     this.product = new Product(client)
@@ -293,5 +320,8 @@ export class Admin {
     this.plugin = new Plugin(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
+    this.layouts = new Layouts(client)
+    this.rbacRole = new RbacRole(client)
+    this.rbacPolicy = new RbacPolicy(client)
   }
 }

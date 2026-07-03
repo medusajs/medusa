@@ -60,6 +60,7 @@ export const ComponentSpecsIndex = {
   "Kbd": ["Kbd.json"],
   "Label": ["Label.json"],
   "OptionButton": ["OptionButton.json"],
+  "OtpInput": ["OtpInput.json"],
   "Popover": ["Popover.Anchor.json", "Popover.Close.json", "Popover.Content.json", "Popover.Seperator.json", "Popover.Trigger.json", "Popover.json"],
   "ProgressAccordion": ["ProgressAccordion.Content.json", "ProgressAccordion.Header.json", "ProgressAccordion.Item.json", "ProgressAccordion.ProgressIndicator.json", "ProgressAccordion.json"],
   "ProgressTabs": ["ProgressTabs.Content.json", "ProgressTabs.List.json", "ProgressTabs.ProgressIndicator.json", "ProgressTabs.Trigger.json", "ProgressTabs.json"],

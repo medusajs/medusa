@@ -210,7 +210,12 @@ export default class PackageManager {
       const pm = this.packageManager!
       packageJson.scripts = Object.fromEntries(
         Object.entries(packageJson.scripts as Record<string, string>).map(
-          ([key, value]) => [key, value.replace(/\bpnpm\b/g, pm)]
+          ([key, value]) => [
+            key,
+            value
+              .replace(/\bpnpm\s+-r\s+(\S+)/g, "turbo $1")
+              .replace(/\bpnpm\b/g, pm),
+          ]
         )
       )
     }

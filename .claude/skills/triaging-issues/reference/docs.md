@@ -40,7 +40,7 @@ Always look at the underlying source code (under `packages/`) when the generated
 
 ### Issue is VALID
 
-Add a comment confirming the issue and indicating where the fix should go. Then add the `good-first-issue` label.
+Add a comment confirming the issue and indicating where the fix should go. Then add the `good first issue` label.
 
 **Comment template — valid doc issue:**
 
@@ -61,7 +61,7 @@ This is a great opportunity for a community contribution — we'd welcome a PR! 
 - **General MDX docs:** No special routing needed.
 
 ```bash
-bash scripts/labels.sh <issue_number> add good-first-issue
+bash scripts/labels.sh <issue_number> add good first issue
 ```
 
 ---

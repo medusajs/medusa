@@ -8,9 +8,12 @@ import {
 } from "@medusajs/framework/http"
 import {
   ContainerRegistrationKeys,
+  defineFileConfig,
+  FeatureFlag,
   MedusaError,
 } from "@medusajs/framework/utils"
 
+import RbacFeatureFlag from "../../../../../feature-flags/rbac"
 import { AdminUpdateRbacPolicyType } from "../validators"
 
 /**
@@ -101,3 +104,7 @@ export const DELETE = async (
     deleted: true,
   })
 }
+
+defineFileConfig({
+  isDisabled: () => !FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key),
+})

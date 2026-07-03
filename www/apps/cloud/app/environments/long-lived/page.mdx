@@ -223,6 +223,31 @@ This will change the view to the selected environment, and you'll see its detail
 
 ---
 
+## Promote Environment to Production
+
+You can promote a long-lived environment to Production in Cloud. This is useful when you want to make the environment's deployment the live application for your users, or when you want to switch the Production environment to a different branch.
+
+<Note title="Caution" type="warning">
+
+Before promoting an environment to Production, consider the following:
+
+- By promoting a long-lived environment to Production, the Production environment will become a long-lived environment, and the promoted environment will become the new Production environment. The previous Production environment will no longer be the live application for your users, and its name will be changed to the name of the promoted environment.
+- Promoting the environment doesn't retain the Production environment's settings or custom domain. If you want to keep certain settings the same, such as the same custom domain, make sure to set them up again after promotion.
+
+</Note>
+
+For example, if you have a Staging environment and you want to promote it to Production, the Staging environment will become the new Production environment, and the previous Production environment will be renamed to "Staging".
+
+To promote a long-lived environment to Production:
+
+1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), find the long-lived environment you want to promote to Production.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the bottom right of the environment's card.
+3. Choose "Promote to Production" from the dropdown menu.
+
+This will promote the environment's deployment to Production, making it the live application for your users.
+
+---
+
 ## View Environment Logs
 
 You can view build and runtime logs for an environment in the "Logs" section of the environment's dashboard. These logs help you debug issues in your Medusa application and storefront.

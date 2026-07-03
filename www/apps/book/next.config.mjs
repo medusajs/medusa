@@ -225,6 +225,20 @@ const nextConfig = {
           basePath: false,
         },
         {
+          source: "/v1/api",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
+          }/v1/api`,
+          basePath: false,
+        },
+        {
+          source: "/v1/api/:path*",
+          destination: `${
+            process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
+          }/v1/api/:path*`,
+          basePath: false,
+        },
+        {
           source: "/v1",
           destination: `${
             process.env.NEXT_PUBLIC_DOCS_V1_URL || "https://localhost:3001"

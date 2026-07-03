@@ -9,13 +9,23 @@ process.env.ENABLE_INDEX_MODULE = "true"
 
 jest.setTimeout(300000)
 
+const truncateIndexTables = async (dbConnection: {
+  raw: (sql: string) => Promise<unknown>
+}) => {
+  await dbConnection.raw(
+    `TRUNCATE TABLE "index_data", "index_relation", "index_metadata", "index_sync" RESTART IDENTITY CASCADE`
+  )
+}
+
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     afterAll(() => {
@@ -115,6 +125,8 @@ medusaIntegrationTestRunner({
           })
 
           it("should sync and reflect in metadata status", async () => {
+            await truncateIndexTables(dbConnection)
+
             const syncResponsePromise = api.post(
               `/admin/index/sync`,
               { strategy: "full" },
@@ -139,6 +151,8 @@ medusaIntegrationTestRunner({
           })
 
           it("should reset index and clear all data", async () => {
+            await truncateIndexTables(dbConnection)
+
             const syncResponsePromise = api.post(
               `/admin/index/sync`,
               { strategy: "reset" },
