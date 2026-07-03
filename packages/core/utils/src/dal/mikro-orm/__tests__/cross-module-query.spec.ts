@@ -37,23 +37,23 @@ describe("cross-module-query", () => {
     it("should apply simple equality filters", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", { email: "test@example.com" })
+      applyFiltersToKnex(qb, "product", { handle: "premium" })
 
-      expect(qb.whereRaw).toHaveBeenCalledWith('"customer"."email" = ?', [
-        "test@example.com",
+      expect(qb.whereRaw).toHaveBeenCalledWith('"product"."handle" = ?', [
+        "premium",
       ])
     })
 
     it("should apply operator filters", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
-        email: { $in: ["a@example.com", "b@example.com"] },
+      applyFiltersToKnex(qb, "product", {
+        handle: { $in: ["premium", "standard"] },
       })
 
       expect(qb.whereRaw).toHaveBeenCalledWith(
-        '"customer"."email" = any(array[?, ?])',
-        ["a@example.com", "b@example.com"]
+        '"product"."handle" = any(array[?, ?])',
+        ["premium", "standard"]
       )
     })
 
@@ -61,33 +61,33 @@ describe("cross-module-query", () => {
       const qb = buildMockQueryBuilder()
       const ids = Array.from({ length: 500 }, (_, index) => `id_${index}`)
 
-      applyFiltersToKnex(qb, "customer", { id: { $in: ids } })
+      applyFiltersToKnex(qb, "product", { id: { $in: ids } })
 
       const [sql, bindings] = qb.calls[0].slice(1)
-      expect(sql).toBe(`"customer"."id" = any(array[${ids.map(() => "?").join(", ")}])`)
+      expect(sql).toBe(`"product"."id" = any(array[${ids.map(() => "?").join(", ")}])`)
       expect(bindings).toEqual(ids)
     })
 
     it("should use any(array[...]) for $nin", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
-        id: { $nin: ["a", "b"] },
+      applyFiltersToKnex(qb, "product", {
+        id: { $nin: ["prod_a", "prod_b"] },
       })
 
       expect(qb.whereRaw).toHaveBeenCalledWith(
-        'not ("customer"."id" = any(array[?, ?]))',
-        ["a", "b"]
+        'not ("product"."id" = any(array[?, ?]))',
+        ["prod_a", "prod_b"]
       )
     })
 
     it("should apply null filters", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", { deleted_at: null })
+      applyFiltersToKnex(qb, "product", { deleted_at: null })
 
       expect(qb.whereRaw).toHaveBeenCalledWith(
-        '"customer"."deleted_at" is null',
+        '"product"."deleted_at" is null',
         []
       )
     })
@@ -95,12 +95,12 @@ describe("cross-module-query", () => {
     it("should translate comparison operators", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
+      applyFiltersToKnex(qb, "product", {
         created_at: { $gt: 1, $lte: 10 },
       })
 
       expect(qb.whereRaw).toHaveBeenCalledWith(
-        '"customer"."created_at" > ? and "customer"."created_at" <= ?',
+        '"product"."created_at" > ? and "product"."created_at" <= ?',
         [1, 10]
       )
     })
@@ -108,10 +108,10 @@ describe("cross-module-query", () => {
     it("should translate $ne null to is not null", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", { email: { $ne: null } })
+      applyFiltersToKnex(qb, "product", { handle: { $ne: null } })
 
       expect(qb.whereRaw).toHaveBeenCalledWith(
-        '"customer"."email" is not null',
+        '"product"."handle" is not null',
         []
       )
     })
@@ -119,7 +119,7 @@ describe("cross-module-query", () => {
     it("should translate empty $in to an always-false clause", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", { id: { $in: [] } })
+      applyFiltersToKnex(qb, "product", { id: { $in: [] } })
 
       expect(qb.whereRaw).toHaveBeenCalledWith("1 = 0", [])
     })
@@ -127,7 +127,7 @@ describe("cross-module-query", () => {
     it("should drop empty $nin (matches everything)", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", { id: { $nin: [] } })
+      applyFiltersToKnex(qb, "product", { id: { $nin: [] } })
 
       // Nothing to constrain -> whereRaw should not be invoked
       expect(qb.whereRaw).not.toHaveBeenCalled()
@@ -136,34 +136,34 @@ describe("cross-module-query", () => {
     it("should translate $or into a grouped clause", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
-        $or: [{ email: "a@example.com" }, { email: "b@example.com" }],
+      applyFiltersToKnex(qb, "product", {
+        $or: [{ handle: "premium" }, { handle: "standard" }],
       })
 
       expect(qb.whereRaw).toHaveBeenCalledWith(
-        '(("customer"."email" = ?) or ("customer"."email" = ?))',
-        ["a@example.com", "b@example.com"]
+        '(("product"."handle" = ?) or ("product"."handle" = ?))',
+        ["premium", "standard"]
       )
     })
 
     it("should combine sibling keys with AND alongside $or", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
-        $or: [{ email: "a@example.com" }],
+      applyFiltersToKnex(qb, "product", {
+        $or: [{ handle: "premium" }],
         deleted_at: null,
       })
 
       const [sql, bindings] = qb.calls[0].slice(1)
       expect(sql).toContain(" and ")
-      expect(sql).toContain('"customer"."deleted_at" is null')
-      expect(bindings).toEqual(["a@example.com"])
+      expect(sql).toContain('"product"."deleted_at" is null')
+      expect(bindings).toEqual(["premium"])
     })
 
     it("should drop an empty $or instead of emitting an invalid group", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", { $or: [] })
+      applyFiltersToKnex(qb, "product", { $or: [] })
 
       // No constraint -> whereRaw must not be invoked with `()`.
       expect(qb.whereRaw).not.toHaveBeenCalled()
@@ -172,67 +172,94 @@ describe("cross-module-query", () => {
     it("should drop $or branches that resolve to nothing", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
-        $or: [{ email: undefined }, { email: "a@example.com" }],
+      applyFiltersToKnex(qb, "product", {
+        $or: [{ handle: undefined }, { handle: "premium" }],
       })
 
-      // The undefined branch is skipped, leaving a single-branch group.
-      expect(qb.whereRaw).toHaveBeenCalledWith('(("customer"."email" = ?))', [
-        "a@example.com",
+      expect(qb.whereRaw).toHaveBeenCalledWith('(("product"."handle" = ?))', [
+        "premium",
       ])
     })
 
     it("should drop $and branches that resolve to nothing", () => {
       const qb = buildMockQueryBuilder()
 
-      applyFiltersToKnex(qb, "customer", {
-        $and: [{ email: undefined }, { email: "a@example.com" }],
+      applyFiltersToKnex(qb, "product", {
+        $and: [{ handle: undefined }, { handle: "premium" }],
       })
 
-      expect(qb.whereRaw).toHaveBeenCalledWith('("customer"."email" = ?)', [
-        "a@example.com",
+      expect(qb.whereRaw).toHaveBeenCalledWith('("product"."handle" = ?)', [
+        "premium",
       ])
     })
   })
 
   describe("augmentFindOptionsWithCrossModuleJoins", () => {
+    const buildProductJoinMetadata = (filters?: Record<string, unknown>) => ({
+      link: {
+        table: "order_product_link",
+        sourceKey: "order_id",
+        targetKey: "product_id",
+      },
+      target: {
+        table: "product",
+        filters,
+      },
+    })
+
+    const buildRegionJoinMetadata = (filters?: Record<string, unknown>) => ({
+      link: {
+        table: "order_region_link",
+        sourceKey: "order_id",
+        targetKey: "region_id",
+      },
+      target: {
+        table: "region",
+        filters,
+      },
+    })
+
+    const buildSalesChannelJoinMetadata = (
+      filters?: Record<string, unknown>
+    ) => ({
+      parent: "product",
+      link: {
+        table: "product_sales_channel",
+        sourceKey: "product_id",
+        targetKey: "sales_channel_id",
+      },
+      target: {
+        table: "sales_channel",
+        filters,
+      },
+    })
+
     it("should translate cross-module filters into where clauses", () => {
       const result = augmentFindOptionsWithCrossModuleJoins(
         {
-          where: { email: "alice@example.com" } as any,
+          where: { display_id: "1001" } as any,
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.options?.__internal?.crossModuleJoins).toBeUndefined()
       expect(result.where?.$and).toHaveLength(2)
-      expect(result.where?.$and?.[0]).toEqual({ email: "alice@example.com" })
+      expect(result.where?.$and?.[0]).toEqual({ display_id: "1001" })
 
       const existsSql = Object.keys(
         (result.where?.$and as Record<string, unknown>[])[1]
       )[0]
 
-      expect(existsSql).toMatch(
-        /exists \(select 1 from "public"\."customer_pricing_tier_link"/
-      )
-      expect(existsSql).toMatch(/"cm_link_0"\."customer_id" = "c0"\."id"/)
-      expect(existsSql).toMatch(/"pricing_tier"\."handle" = \?/)
+      expect(existsSql).toMatch(/exists \(select 1 from "public"\."order_product_link"/)
+      expect(existsSql).toMatch(/"cm_link_0"\."order_id" = "o0"\."id"/)
+      expect(existsSql).toMatch(/"product"\."handle" = \?/)
       expect(existsSql).toMatch(/"deleted_at" is null/)
     })
 
@@ -241,42 +268,23 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-              {
-                link: {
-                  table: "customer_group_link",
-                  sourceKey: "customer_id",
-                  targetKey: "group_id",
-                },
-                target: {
-                  table: "customer_group",
-                  filters: { name: "vip" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+                buildRegionJoinMetadata({ code: "eu" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toHaveLength(2)
       const keys = (result.where?.$and as Record<string, unknown>[]).map(
         (clause) => Object.keys(clause)[0]
       )
-      expect(keys[0]).toContain("pricing_tier")
-      expect(keys[1]).toContain("customer_group")
+      expect(keys[0]).toContain("product")
+      expect(keys[1]).toContain("region")
     })
 
     it("should combine multiple root target filters with AND semantics", () => {
@@ -284,42 +292,23 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-              {
-                link: {
-                  table: "customer_region_link",
-                  sourceKey: "customer_id",
-                  targetKey: "region_id",
-                },
-                target: {
-                  table: "region",
-                  filters: { code: "eu" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+                buildRegionJoinMetadata({ code: "eu" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toHaveLength(2)
       const keys = (result.where?.$and as Record<string, unknown>[]).map(
         (clause) => Object.keys(clause)[0]
       )
-      expect(keys[0]).toContain("pricing_tier")
-      expect(keys[0]).toMatch(/"pricing_tier"\."handle" = \?/)
+      expect(keys[0]).toContain("product")
+      expect(keys[0]).toMatch(/"product"\."handle" = \?/)
       expect(keys[1]).toContain("region")
       expect(keys[1]).toMatch(/"region"\."code" = \?/)
     })
@@ -329,34 +318,15 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                },
-              },
-              {
-                parent: "pricing_tier",
-                link: {
-                  table: "tier_functionality_link",
-                  sourceKey: "pricing_tier_id",
-                  targetKey: "functionality_id",
-                },
-                target: {
-                  table: "functionality",
-                  filters: { handle: "billing" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata(),
+                buildSalesChannelJoinMetadata({ name: "web-store" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -365,17 +335,15 @@ describe("cross-module-query", () => {
         (result.where?.$and as Record<string, unknown>[])[0]
       )[0]
 
+      expect(existsSql).toMatch(/exists \(select 1 from "public"\."order_product_link"/)
+      expect(existsSql).toMatch(/"cm_link_0"\."order_id" = "o0"\."id"/)
       expect(existsSql).toMatch(
-        /exists \(select 1 from "public"\."customer_pricing_tier_link"/
-      )
-      expect(existsSql).toMatch(/"cm_link_0"\."customer_id" = "c0"\."id"/)
-      expect(existsSql).toMatch(
-        /exists \(select 1 from "public"\."tier_functionality_link"/
+        /exists \(select 1 from "public"\."product_sales_channel"/
       )
       expect(existsSql).toMatch(
-        /"cm_link_1"\."pricing_tier_id" = "pricing_tier"\."id"/
+        /"cm_link_1"\."product_id" = "product"\."id"/
       )
-      expect(existsSql).toMatch(/"functionality"\."handle" = \?/)
+      expect(existsSql).toMatch(/"sales_channel"\."name" = \?/)
     })
 
     it("should combine parent target filters with nested child filters", () => {
@@ -383,35 +351,15 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-              {
-                parent: "pricing_tier",
-                link: {
-                  table: "tier_functionality_link",
-                  sourceKey: "pricing_tier_id",
-                  targetKey: "functionality_id",
-                },
-                target: {
-                  table: "functionality",
-                  filters: { handle: "billing" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+                buildSalesChannelJoinMetadata({ name: "web-store" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -420,10 +368,10 @@ describe("cross-module-query", () => {
         (result.where?.$and as Record<string, unknown>[])[0]
       )[0]
 
-      expect(existsSql).toMatch(/"pricing_tier"\."handle" = \?/)
-      expect(existsSql).toMatch(/"functionality"\."handle" = \?/)
+      expect(existsSql).toMatch(/"product"\."handle" = \?/)
+      expect(existsSql).toMatch(/"sales_channel"\."name" = \?/)
       expect(existsSql).toMatch(
-        /"cm_link_1"\."pricing_tier_id" = "pricing_tier"\."id"/
+        /"cm_link_1"\."product_id" = "product"\."id"/
       )
     })
 
@@ -432,45 +380,27 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata(),
+                buildSalesChannelJoinMetadata(),
+                {
+                  parent: "sales_channel",
+                  link: {
+                    table: "sales_channel_region_link",
+                    sourceKey: "sales_channel_id",
+                    targetKey: "region_id",
+                  },
+                  target: {
+                    table: "region",
+                    filters: { code: "eu" },
+                  },
                 },
-                target: {
-                  table: "pricing_tier",
-                },
-              },
-              {
-                parent: "pricing_tier",
-                link: {
-                  table: "tier_functionality_link",
-                  sourceKey: "pricing_tier_id",
-                  targetKey: "functionality_id",
-                },
-                target: {
-                  table: "functionality",
-                },
-              },
-              {
-                parent: "functionality",
-                link: {
-                  table: "functionality_permission_link",
-                  sourceKey: "functionality_id",
-                  targetKey: "permission_id",
-                },
-                target: {
-                  table: "permission",
-                  filters: { code: "billing:write" },
-                },
-              },
-            ],
-},
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -480,12 +410,12 @@ describe("cross-module-query", () => {
       )[0]
 
       expect(existsSql).toMatch(
-        /"cm_link_1"\."pricing_tier_id" = "pricing_tier"\."id"/
+        /"cm_link_1"\."product_id" = "product"\."id"/
       )
       expect(existsSql).toMatch(
-        /"cm_link_2"\."functionality_id" = "functionality"\."id"/
+        /"cm_link_2"\."sales_channel_id" = "sales_channel"\."id"/
       )
-      expect(existsSql).toMatch(/"permission"\."code" = \?/)
+      expect(existsSql).toMatch(/"region"\."code" = \?/)
       expect(existsSql.match(/exists \(select 1 from/g)?.length).toBe(3)
     })
 
@@ -494,34 +424,15 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                },
-              },
-              {
-                parent: "pricing_tier",
-                link: {
-                  table: "tier_functionality_link",
-                  sourceKey: "pricing_tier_id",
-                  targetKey: "functionality_id",
-                },
-                target: {
-                  table: "functionality",
-                  filters: { handle: "billing" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata(),
+                buildSalesChannelJoinMetadata({ name: "web-store" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toHaveLength(1)
@@ -533,24 +444,25 @@ describe("cross-module-query", () => {
           {
             where: {},
             options: {
-              __internal: { crossModuleJoins:[
-                {
-                  parent: "missing",
-                  link: {
-                    table: "tier_functionality_link",
-                    sourceKey: "pricing_tier_id",
-                    targetKey: "functionality_id",
+              __internal: {
+                crossModuleJoins: [
+                  {
+                    parent: "missing",
+                    link: {
+                      table: "product_sales_channel",
+                      sourceKey: "product_id",
+                      targetKey: "sales_channel_id",
+                    },
+                    target: {
+                      table: "sales_channel",
+                      filters: { name: "web-store" },
+                    },
                   },
-                  target: {
-                    table: "functionality",
-                    filters: { handle: "billing" },
-                  },
-                },
-              ],
-},
+                ],
+              },
             },
           },
-          { primaryKey: "id", entityName: "CustomerEntity" }
+          { primaryKey: "id", entityName: "OrderEntity" }
         )
       ).toThrow(/unknown parent target table/)
     })
@@ -558,28 +470,18 @@ describe("cross-module-query", () => {
     it("should not add a where clause for joins without target filters", () => {
       const result = augmentFindOptionsWithCrossModuleJoins(
         {
-          where: { email: "alice@example.com" } as any,
+          where: { display_id: "1001" } as any,
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [buildProductJoinMetadata()],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       expect(result.where?.$and).toBeUndefined()
-      expect(result.where).toEqual({ email: "alice@example.com" })
+      expect(result.where).toEqual({ display_id: "1001" })
     })
 
     it("should apply soft-delete guards by default", () => {
@@ -587,23 +489,14 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       const existsSql = Object.keys(
@@ -611,7 +504,7 @@ describe("cross-module-query", () => {
       )[0]
 
       expect(existsSql).toMatch(/"deleted_at" is null/)
-      expect(existsSql).toMatch(/"pricing_tier"\."handle" = \?/)
+      expect(existsSql).toMatch(/"product"\."handle" = \?/)
     })
 
     it("should drop soft-delete guards when the query runs with withDeleted", () => {
@@ -620,23 +513,14 @@ describe("cross-module-query", () => {
           where: {},
           options: {
             filters: { softDeletable: { withDeleted: true } },
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       const existsSql = Object.keys(
@@ -644,7 +528,7 @@ describe("cross-module-query", () => {
       )[0]
 
       expect(existsSql).not.toMatch(/deleted_at/)
-      expect(existsSql).toMatch(/"pricing_tier"\."handle" = \?/)
+      expect(existsSql).toMatch(/"product"\."handle" = \?/)
     })
 
     it("should still guard soft-deletes when withDeleted is not requested", () => {
@@ -652,25 +536,15 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            // softDeletable enabled but without withDeleted -> guards stay on.
             filters: { softDeletable: true },
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                  filters: { handle: "premium" },
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ handle: "premium" }),
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       const existsSql = Object.keys(
@@ -685,23 +559,24 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "pricing_tier_id",
-                  targetKey: "customer_id",
+            __internal: {
+              crossModuleJoins: [
+                {
+                  link: {
+                    table: "order_product_link",
+                    sourceKey: "product_id",
+                    targetKey: "order_id",
+                  },
+                  target: {
+                    table: "order",
+                    filters: { display_id: "1001" },
+                  },
                 },
-                target: {
-                  table: "customer",
-                  filters: { email: "a@example.com" },
-                },
-              },
-            ],
-},
+              ],
+            },
           },
         },
-        { primaryKey: "id", entityName: "PricingTierEntity" }
+        { primaryKey: "id", entityName: "ProductEntity" }
       )
 
       const existsSql = Object.keys(
@@ -713,31 +588,20 @@ describe("cross-module-query", () => {
 
     it("should not mutate the caller's find options", () => {
       const crossModuleJoins = [
-        {
-          link: {
-            table: "customer_pricing_tier_link",
-            sourceKey: "customer_id",
-            targetKey: "pricing_tier_id",
-          },
-          target: {
-            table: "pricing_tier",
-            filters: { handle: "premium" },
-          },
-        },
+        buildProductJoinMetadata({ handle: "premium" }),
       ]
       const input = {
-        where: { email: "alice@example.com" } as any,
+        where: { display_id: "1001" } as any,
         options: { __internal: { crossModuleJoins } },
       }
 
       augmentFindOptionsWithCrossModuleJoins(input, {
         primaryKey: "id",
-        entityName: "CustomerEntity",
+        entityName: "OrderEntity",
       })
 
-      // Original input must remain untouched so retries/re-use are safe.
       expect(input.options.__internal?.crossModuleJoins).toBe(crossModuleJoins)
-      expect(input.where).toEqual({ email: "alice@example.com" })
+      expect(input.where).toEqual({ display_id: "1001" })
     })
 
     it("should translate cross-module order keys into scalar subqueries", () => {
@@ -745,39 +609,29 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [buildProductJoinMetadata()],
+            },
             orderBy: {
-              "pricing_tier.handle": "ASC",
+              "product.handle": "ASC",
             },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       const orderBy = result.options?.orderBy as Record<string, unknown>
-      expect(orderBy["pricing_tier.handle"]).toBeUndefined()
+      expect(orderBy["product.handle"]).toBeUndefined()
       expect(Object.keys(orderBy)).toHaveLength(1)
       expect(Object.values(orderBy)[0]).toBe("ASC")
 
       const orderSql = Object.keys(orderBy)[0]
 
       expect(orderSql).toMatch(
-        /\(select "pricing_tier"\."handle" from "public"\."customer_pricing_tier_link"/
+        /\(select "product"\."handle" from "public"\."order_product_link"/
       )
-      expect(orderSql).toMatch(/"cm_order_link_0"\."customer_id" = "c0"\."id"/)
-      expect(orderSql).toMatch(/order by "pricing_tier"\."id" limit 1\)/)
+      expect(orderSql).toMatch(/"cm_order_link_0"\."order_id" = "o0"\."id"/)
+      expect(orderSql).toMatch(/order by "product"\."id" limit 1\)/)
     })
 
     it("should throw on duplicate join target tables", () => {
@@ -786,28 +640,22 @@ describe("cross-module-query", () => {
           {
             where: {},
             options: {
-              __internal: { crossModuleJoins:[
-                {
-                  link: {
-                    table: "customer_pricing_tier_link",
-                    sourceKey: "customer_id",
-                    targetKey: "pricing_tier_id",
+              __internal: {
+                crossModuleJoins: [
+                  buildProductJoinMetadata(),
+                  {
+                    link: {
+                      table: "order_product_link_2",
+                      sourceKey: "order_id",
+                      targetKey: "product_id",
+                    },
+                    target: { table: "product" },
                   },
-                  target: { table: "pricing_tier" },
-                },
-                {
-                  link: {
-                    table: "customer_pricing_tier_link_2",
-                    sourceKey: "customer_id",
-                    targetKey: "pricing_tier_id",
-                  },
-                  target: { table: "pricing_tier" },
-                },
-              ],
-},
+                ],
+              },
             },
           },
-          { primaryKey: "id", entityName: "CustomerEntity" }
+          { primaryKey: "id", entityName: "OrderEntity" }
         )
       ).toThrow(/Duplicate cross-module join target table/)
     })
@@ -817,30 +665,20 @@ describe("cross-module-query", () => {
         {
           where: {},
           options: {
-            __internal: { crossModuleJoins:[
-              {
-                link: {
-                  table: "customer_pricing_tier_link",
-                  sourceKey: "customer_id",
-                  targetKey: "pricing_tier_id",
-                },
-                target: {
-                  table: "pricing_tier",
-                },
-              },
-            ],
-},
+            __internal: {
+              crossModuleJoins: [buildProductJoinMetadata()],
+            },
             orderBy: {
-              created_at: "DESC",
-              "pricing_tier.handle": "ASC",
+              display_id: "DESC",
+              "product.handle": "ASC",
             },
           },
         },
-        { primaryKey: "id", entityName: "CustomerEntity" }
+        { primaryKey: "id", entityName: "OrderEntity" }
       )
 
       const orderBy = result.options?.orderBy as Record<string, unknown>
-      expect(orderBy["created_at"]).toBe("DESC")
+      expect(orderBy["display_id"]).toBe("DESC")
       expect(Object.keys(orderBy)).toHaveLength(2)
     })
   })
