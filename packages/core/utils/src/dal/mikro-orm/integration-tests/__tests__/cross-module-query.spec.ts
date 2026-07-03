@@ -24,15 +24,15 @@ import {
 
 jest.setTimeout(300000)
 
-const dbName = "mikroorm-cross-module-customer-pricing-tier"
+const dbName = "mikroorm-cross-module-order-product"
 
 @Entity()
-class CustomerEntity {
+class OrderEntity {
   @PrimaryKey()
   id: string
 
   @Property()
-  email: string
+  display_id: string
 
   @Property({ nullable: true })
   deleted_at: Date | null
@@ -47,7 +47,7 @@ class CustomerEntity {
 }
 
 @Entity()
-class PricingTierEntity {
+class ProductEntity {
   @PrimaryKey()
   id: string
 
@@ -66,25 +66,24 @@ class PricingTierEntity {
   }
 }
 
-const CustomerEntityRepository = mikroOrmBaseRepositoryFactory(CustomerEntity)
-const PricingTierEntityRepository =
-  mikroOrmBaseRepositoryFactory(PricingTierEntity)
+const OrderEntityRepository = mikroOrmBaseRepositoryFactory(OrderEntity)
+const ProductEntityRepository = mikroOrmBaseRepositoryFactory(ProductEntity)
 
-const customersSeed = [
-  { id: "cust_a", email: "alice@example.com" },
-  { id: "cust_b", email: "bob@example.com" },
-  { id: "cust_c", email: "charlie@example.com" },
+const ordersSeed = [
+  { id: "order_a", display_id: "1001" },
+  { id: "order_b", display_id: "1002" },
+  { id: "order_c", display_id: "1003" },
 ]
 
-const pricingTiersSeed = [
-  { id: "tier_standard", handle: "standard" },
-  { id: "tier_premium", handle: "premium" },
+const productsSeed = [
+  { id: "prod_standard", handle: "standard" },
+  { id: "prod_premium", handle: "premium" },
 ]
 
-const customerPricingTierLinksSeed = [
-  { id: "link_1", customer_id: "cust_a", pricing_tier_id: "tier_premium" },
-  { id: "link_2", customer_id: "cust_b", pricing_tier_id: "tier_standard" },
-  { id: "link_3", customer_id: "cust_c", pricing_tier_id: "tier_premium" },
+const orderProductLinksSeed = [
+  { id: "link_1", order_id: "order_a", product_id: "prod_premium" },
+  { id: "link_2", order_id: "order_b", product_id: "prod_standard" },
+  { id: "link_3", order_id: "order_c", product_id: "prod_premium" },
 ]
 
 const regionsSeed = [
@@ -92,37 +91,37 @@ const regionsSeed = [
   { id: "reg_us", code: "us" },
 ]
 
-const customerRegionLinksSeed = [
-  { id: "region_link_1", customer_id: "cust_a", region_id: "reg_eu" },
-  { id: "region_link_2", customer_id: "cust_b", region_id: "reg_eu" },
-  { id: "region_link_3", customer_id: "cust_c", region_id: "reg_us" },
+const orderRegionLinksSeed = [
+  { id: "region_link_1", order_id: "order_a", region_id: "reg_eu" },
+  { id: "region_link_2", order_id: "order_b", region_id: "reg_eu" },
+  { id: "region_link_3", order_id: "order_c", region_id: "reg_us" },
 ]
 
-const functionalitiesSeed = [
-  { id: "func_billing", handle: "billing", enabled: true },
-  { id: "func_analytics", handle: "analytics", enabled: true },
+const salesChannelsSeed = [
+  { id: "sc_web", name: "web-store" },
+  { id: "sc_wholesale", name: "wholesale" },
 ]
 
-const tierFunctionalityLinksSeed = [
+const productSalesChannelLinksSeed = [
   {
-    id: "func_link_1",
-    pricing_tier_id: "tier_premium",
-    functionality_id: "func_billing",
+    id: "psc_link_1",
+    product_id: "prod_premium",
+    sales_channel_id: "sc_web",
   },
   {
-    id: "func_link_2",
-    pricing_tier_id: "tier_standard",
-    functionality_id: "func_analytics",
+    id: "psc_link_2",
+    product_id: "prod_standard",
+    sales_channel_id: "sc_wholesale",
   },
 ]
 
 async function createLinkTable(manager: SqlEntityManager) {
   const knex = manager.getKnex()
 
-  await knex.schema.createTable("customer_pricing_tier_link", (table) => {
+  await knex.schema.createTable("order_product_link", (table) => {
     table.text("id").primary()
-    table.text("customer_id").notNullable()
-    table.text("pricing_tier_id").notNullable()
+    table.text("order_id").notNullable()
+    table.text("product_id").notNullable()
     table.timestamps(true, true)
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
@@ -134,26 +133,25 @@ async function createLinkTable(manager: SqlEntityManager) {
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
 
-  await knex.schema.createTable("customer_region_link", (table) => {
+  await knex.schema.createTable("order_region_link", (table) => {
     table.text("id").primary()
-    table.text("customer_id").notNullable()
+    table.text("order_id").notNullable()
     table.text("region_id").notNullable()
     table.timestamps(true, true)
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
 
-  await knex.schema.createTable("functionality_entity", (table) => {
+  await knex.schema.createTable("sales_channel_entity", (table) => {
     table.text("id").primary()
-    table.text("handle").notNullable()
-    table.boolean("enabled").notNullable()
+    table.text("name").notNullable()
     table.timestamps(true, true)
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
 
-  await knex.schema.createTable("tier_functionality_link", (table) => {
+  await knex.schema.createTable("product_sales_channel", (table) => {
     table.text("id").primary()
-    table.text("pricing_tier_id").notNullable()
-    table.text("functionality_id").notNullable()
+    table.text("product_id").notNullable()
+    table.text("sales_channel_id").notNullable()
     table.timestamps(true, true)
     table.timestamp("deleted_at", { useTz: true }).nullable()
   })
@@ -163,8 +161,8 @@ async function seedLinkTable(manager: SqlEntityManager) {
   const knex = manager.getKnex()
   const now = new Date()
 
-  await knex("customer_pricing_tier_link").insert(
-    customerPricingTierLinksSeed.map((link) => ({
+  await knex("order_product_link").insert(
+    orderProductLinksSeed.map((link) => ({
       ...link,
       created_at: now,
       updated_at: now,
@@ -181,8 +179,8 @@ async function seedLinkTable(manager: SqlEntityManager) {
     }))
   )
 
-  await knex("customer_region_link").insert(
-    customerRegionLinksSeed.map((link) => ({
+  await knex("order_region_link").insert(
+    orderRegionLinksSeed.map((link) => ({
       ...link,
       created_at: now,
       updated_at: now,
@@ -190,17 +188,17 @@ async function seedLinkTable(manager: SqlEntityManager) {
     }))
   )
 
-  await knex("functionality_entity").insert(
-    functionalitiesSeed.map((functionality) => ({
-      ...functionality,
+  await knex("sales_channel_entity").insert(
+    salesChannelsSeed.map((salesChannel) => ({
+      ...salesChannel,
       created_at: now,
       updated_at: now,
       deleted_at: null,
     }))
   )
 
-  await knex("tier_functionality_link").insert(
-    tierFunctionalityLinksSeed.map((link) => ({
+  await knex("product_sales_channel").insert(
+    productSalesChannelLinksSeed.map((link) => ({
       ...link,
       created_at: now,
       updated_at: now,
@@ -213,8 +211,8 @@ function buildRegionJoinMetadata(filters?: Record<string, unknown>) {
   return {
     alias: "region",
     link: {
-      table: "customer_region_link",
-      sourceKey: "customer_id",
+      table: "order_region_link",
+      sourceKey: "order_id",
       targetKey: "region_id",
     },
     target: {
@@ -224,57 +222,57 @@ function buildRegionJoinMetadata(filters?: Record<string, unknown>) {
   }
 }
 
-function buildPricingTierJoinMetadata(filters?: Record<string, unknown>) {
+function buildProductJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "pricing_tier",
+    alias: "product",
     link: {
-      table: "customer_pricing_tier_link",
-      sourceKey: "customer_id",
-      targetKey: "pricing_tier_id",
+      table: "order_product_link",
+      sourceKey: "order_id",
+      targetKey: "product_id",
     },
     target: {
-      table: "pricing_tier_entity",
+      table: "product_entity",
       filters,
     },
   }
 }
 
-function buildFunctionalityJoinMetadata(filters?: Record<string, unknown>) {
+function buildSalesChannelJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "functionality",
-    parent: "pricing_tier",
+    alias: "sales_channel",
+    parent: "product",
     link: {
-      table: "tier_functionality_link",
-      sourceKey: "pricing_tier_id",
-      targetKey: "functionality_id",
+      table: "product_sales_channel",
+      sourceKey: "product_id",
+      targetKey: "sales_channel_id",
     },
     target: {
-      table: "functionality_entity",
+      table: "sales_channel_entity",
       filters,
     },
   }
 }
 
-function buildCustomerJoinMetadata(filters?: Record<string, unknown>) {
+function buildOrderJoinMetadata(filters?: Record<string, unknown>) {
   return {
-    alias: "customer",
+    alias: "order",
     link: {
-      table: "customer_pricing_tier_link",
-      sourceKey: "pricing_tier_id",
-      targetKey: "customer_id",
+      table: "order_product_link",
+      sourceKey: "product_id",
+      targetKey: "order_id",
     },
     target: {
-      table: "customer_entity",
+      table: "order_entity",
       filters,
     },
   }
 }
 
-function customerIds(results: CustomerEntity[]): string[] {
+function orderIds(results: OrderEntity[]): string[] {
   return results.map((row) => row.id)
 }
 
-function pricingTierIds(results: PricingTierEntity[]): string[] {
+function productIds(results: ProductEntity[]): string[] {
   return results.map((row) => row.id)
 }
 
@@ -283,45 +281,43 @@ describe("cross-module query integration", () => {
   let manager!: SqlEntityManager
   let sqlCapture!: SqlCapture
 
-  const getCustomerRepository = () => {
-    return new CustomerEntityRepository({ manager: manager.fork() })
+  const getOrderRepository = () => {
+    return new OrderEntityRepository({ manager: manager.fork() })
   }
 
-  const getPricingTierRepository = () => {
-    return new PricingTierEntityRepository({ manager: manager.fork() })
+  const getProductRepository = () => {
+    return new ProductEntityRepository({ manager: manager.fork() })
   }
 
-  const findCustomers = async (
+  const findOrders = async (
     filters: Record<string, unknown> = {},
     config: FindConfig<any> = {}
   ) => {
     sqlCapture.clear()
-    return getCustomerRepository().find(
-      buildQuery(filters, config) as any,
-      { manager }
-    ) as Promise<CustomerEntity[]>
+    return getOrderRepository().find(buildQuery(filters, config) as any, {
+      manager,
+    }) as Promise<OrderEntity[]>
   }
 
-  const findCustomersAndCount = async (
+  const findOrdersAndCount = async (
     filters: Record<string, unknown> = {},
     config: FindConfig<any> = {}
   ) => {
     sqlCapture.clear()
-    return getCustomerRepository().findAndCount(
+    return getOrderRepository().findAndCount(
       buildQuery(filters, config) as any,
       { manager }
-    ) as Promise<[CustomerEntity[], number]>
+    ) as Promise<[OrderEntity[], number]>
   }
 
-  const findPricingTiers = async (
+  const findProducts = async (
     filters: Record<string, unknown> = {},
     config: FindConfig<any> = {}
   ) => {
     sqlCapture.clear()
-    return getPricingTierRepository().find(
-      buildQuery(filters, config) as any,
-      { manager }
-    ) as Promise<PricingTierEntity[]>
+    return getProductRepository().find(buildQuery(filters, config) as any, {
+      manager,
+    }) as Promise<ProductEntity[]>
   }
 
   beforeEach(async () => {
@@ -334,7 +330,7 @@ describe("cross-module query integration", () => {
 
     orm = await MikroORM.init(
       defineConfig({
-        entities: [CustomerEntity, PricingTierEntity],
+        entities: [OrderEntity, ProductEntity],
         clientUrl: getDatabaseURL(dbName),
         onQuery: sqlCapture.onQuery,
       })
@@ -349,65 +345,61 @@ describe("cross-module query integration", () => {
     await createLinkTable(manager)
     await seedLinkTable(manager)
 
-    await getCustomerRepository().create(customersSeed, { manager })
-    await getPricingTierRepository().create(pricingTiersSeed, { manager })
+    await getOrderRepository().create(ordersSeed, { manager })
+    await getProductRepository().create(productsSeed, { manager })
     await manager.flush()
   })
 
   afterEach(async () => {
     const knex = manager.getKnex()
-    await knex.schema.dropTableIfExists("tier_functionality_link")
-    await knex.schema.dropTableIfExists("functionality_entity")
-    await knex.schema.dropTableIfExists("customer_region_link")
+    await knex.schema.dropTableIfExists("product_sales_channel")
+    await knex.schema.dropTableIfExists("sales_channel_entity")
+    await knex.schema.dropTableIfExists("order_region_link")
     await knex.schema.dropTableIfExists("region_entity")
-    await knex.schema.dropTableIfExists("customer_pricing_tier_link")
+    await knex.schema.dropTableIfExists("order_product_link")
 
     const generator = orm.getSchemaGenerator()
     await generator.dropSchema()
     await orm.close(true)
   })
 
-  describe("listing customers filtered by pricing tier", () => {
-    it("should filter customers by linked pricing tier handle", async () => {
+  describe("listing orders filtered by product", () => {
+    it("should filter orders by linked product handle", async () => {
       const config = {
         __internal: {
-          crossModuleJoins: [
-            buildPricingTierJoinMetadata({ handle: "premium" }),
-          ],
+          crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
         },
       }
 
-      const results = await findCustomers({}, config)
+      const results = await findOrders({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `
       )
-      expect(customerIds(results).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
-    it("should combine customer filters with pricing tier filters", async () => {
-      const results = await findCustomers(
-        { email: "bob@example.com" },
+    it("should combine order filters with product filters", async () => {
+      const results = await findOrders(
+        { display_id: "1002" },
         {
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "standard" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "standard" })],
           },
         }
       )
@@ -416,175 +408,169 @@ describe("cross-module query integration", () => {
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
-          where "c0"."email" = 'bob@example.com'
+          select "o0".*
+          from "order_entity" as "o0"
+          where "o0"."display_id" = '1002'
             and exists (
               select 1
-              from "public"."customer_pricing_tier_link" as "cm_link_0"
-              inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-              where "cm_link_0"."customer_id" = "c0"."id"
-                and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+              from "public"."order_product_link" as "cm_link_0"
+              inner join "public"."product_entity" as "product" on true
+              where "cm_link_0"."order_id" = "o0"."id"
+                and "cm_link_0"."product_id" = "product"."id"
                 and "cm_link_0"."deleted_at" is null
-                and "pricing_tier"."deleted_at" is null
-                and "pricing_tier"."handle" = 'standard'
+                and "product"."deleted_at" is null
+                and "product"."handle" = 'standard'
             )
         `
       )
       expect(results).toHaveLength(1)
-      expect(results[0].id).toBe("cust_b")
+      expect(results[0].id).toBe("order_b")
     })
 
-    it("should sort customers by linked pricing tier handle", async () => {
+    it("should sort orders by linked product handle", async () => {
       const config = {
         __internal: {
-          crossModuleJoins: [buildPricingTierJoinMetadata()],
+          crossModuleJoins: [buildProductJoinMetadata()],
         },
         order: {
-          "pricing_tier.handle": "ASC",
+          "product.handle": "ASC",
         },
       }
 
-      const results = await findCustomers({}, config)
+      const results = await findOrders({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           order by (
-            select "pricing_tier"."handle"
-            from "public"."customer_pricing_tier_link" as "cm_order_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_order_link_0"."customer_id" = "c0"."id"
-              and "cm_order_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            select "product"."handle"
+            from "public"."order_product_link" as "cm_order_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_order_link_0"."order_id" = "o0"."id"
+              and "cm_order_link_0"."product_id" = "product"."id"
               and "cm_order_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-            order by "pricing_tier"."id"
+              and "product"."deleted_at" is null
+            order by "product"."id"
             limit 1
           ) asc
         `
       )
-      expect(customerIds(results)).toEqual(["cust_a", "cust_c", "cust_b"])
+      expect(orderIds(results)).toEqual(["order_a", "order_c", "order_b"])
     })
 
     it("should return a correct count via findAndCount", async () => {
       const config = {
         __internal: {
-          crossModuleJoins: [
-            buildPricingTierJoinMetadata({ handle: "premium" }),
-          ],
+          crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
         },
       }
 
-      const [results, count] = await findCustomersAndCount({}, config)
+      const [results, count] = await findOrdersAndCount({}, config)
 
       expectCapturedQueries(orm, sqlCapture, [
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `,
         `
           select count(*) as "count"
-          from "customer_entity" as "c0"
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `,
       ])
       expect(count).toBe(2)
-      expect(customerIds(results).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
     it("should not multiply rows when multiple links match (exists semantics)", async () => {
       const knex = manager.getKnex()
       const now = new Date()
 
-      await getPricingTierRepository().create(
-        [{ id: "tier_premium_2", handle: "premium" }],
+      await getProductRepository().create(
+        [{ id: "prod_premium_2", handle: "premium" }],
         { manager }
       )
       await manager.flush()
-      await knex("customer_pricing_tier_link").insert({
+      await knex("order_product_link").insert({
         id: "link_dup",
-        customer_id: "cust_a",
-        pricing_tier_id: "tier_premium_2",
+        order_id: "order_a",
+        product_id: "prod_premium_2",
         created_at: now,
         updated_at: now,
         deleted_at: null,
       })
 
-      const [results, count] = await findCustomersAndCount(
+      const [results, count] = await findOrdersAndCount(
         {},
         {
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
         }
       )
 
       expectCapturedQueries(orm, sqlCapture, [
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `,
         `
           select count(*) as "count"
-          from "customer_entity" as "c0"
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `,
       ])
       expect(count).toBe(2)
-      expect(customerIds(results).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
     it("should honor pagination together with a cross-module filter", async () => {
-      const [results, count] = await findCustomersAndCount(
+      const [results, count] = await findOrdersAndCount(
         {},
         {
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
           order: { id: "ASC" },
           take: 1,
@@ -594,53 +580,51 @@ describe("cross-module query integration", () => {
 
       expectCapturedQueries(orm, sqlCapture, [
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
-          order by "c0"."id" asc
+          order by "o0"."id" asc
           limit 1 offset 1
         `,
         `
           select count(*) as "count"
-          from "customer_entity" as "c0"
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `,
       ])
       expect(count).toBe(2)
-      expect(customerIds(results)).toEqual(["cust_c"])
+      expect(orderIds(results)).toEqual(["order_c"])
     })
 
     it("should exclude rows whose link row is soft-deleted", async () => {
       const knex = manager.getKnex()
-      await knex("customer_pricing_tier_link")
+      await knex("order_product_link")
         .where({ id: "link_1" })
         .update({ deleted_at: new Date() })
 
-      const results = await findCustomers(
+      const results = await findOrders(
         {},
         {
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
         }
       )
@@ -649,36 +633,34 @@ describe("cross-module query integration", () => {
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `
       )
-      expect(customerIds(results)).toEqual(["cust_c"])
+      expect(orderIds(results)).toEqual(["order_c"])
     })
 
     it("should exclude rows whose target row is soft-deleted", async () => {
       const knex = manager.getKnex()
-      await knex("pricing_tier_entity")
-        .where({ id: "tier_premium" })
+      await knex("product_entity")
+        .where({ id: "prod_premium" })
         .update({ deleted_at: new Date() })
 
-      const results = await findCustomers(
+      const results = await findOrders(
         {},
         {
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
         }
       )
@@ -687,17 +669,17 @@ describe("cross-module query integration", () => {
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
         `
       )
@@ -706,31 +688,27 @@ describe("cross-module query integration", () => {
 
     it("should include soft-deleted links when the query uses withDeleted", async () => {
       const knex = manager.getKnex()
-      await knex("customer_pricing_tier_link")
+      await knex("order_product_link")
         .where({ id: "link_1" })
         .update({ deleted_at: new Date() })
 
       sqlCapture.clear()
-      const withoutDeleted = await findCustomers(
+      const withoutDeleted = await findOrders(
         {},
         {
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
         }
       )
-      expect(customerIds(withoutDeleted)).toEqual(["cust_c"])
+      expect(orderIds(withoutDeleted)).toEqual(["order_c"])
 
-      const withDeleted = await findCustomers(
+      const withDeleted = await findOrders(
         {},
         {
           withDeleted: true,
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
         }
       )
@@ -739,35 +717,33 @@ describe("cross-module query integration", () => {
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
-              and "pricing_tier"."handle" = 'premium'
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
+              and "product"."handle" = 'premium'
           )
         `
       )
-      expect(customerIds(withDeleted).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(withDeleted).sort()).toEqual(["order_a", "order_c"])
     })
 
     it("should include soft-deleted targets when the query uses withDeleted", async () => {
       const knex = manager.getKnex()
-      await knex("pricing_tier_entity")
-        .where({ id: "tier_premium" })
+      await knex("product_entity")
+        .where({ id: "prod_premium" })
         .update({ deleted_at: new Date() })
 
-      const withDeleted = await findCustomers(
+      const withDeleted = await findOrders(
         {},
         {
           withDeleted: true,
           __internal: {
-            crossModuleJoins: [
-              buildPricingTierJoinMetadata({ handle: "premium" }),
-            ],
+            crossModuleJoins: [buildProductJoinMetadata({ handle: "premium" })],
           },
         }
       )
@@ -776,56 +752,56 @@ describe("cross-module query integration", () => {
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
-              and "pricing_tier"."handle" = 'premium'
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
+              and "product"."handle" = 'premium'
           )
         `
       )
-      expect(customerIds(withDeleted).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(withDeleted).sort()).toEqual(["order_a", "order_c"])
     })
   })
 
   describe("multi-target and nested cross-module filters", () => {
-    it("should filter customers by multiple independent targets with AND semantics", async () => {
+    it("should filter orders by multiple independent targets with AND semantics", async () => {
       const config = {
         __internal: {
           crossModuleJoins: [
-            buildPricingTierJoinMetadata({ handle: "premium" }),
+            buildProductJoinMetadata({ handle: "premium" }),
             buildRegionJoinMetadata({ code: "eu" }),
           ],
         },
       }
 
-      const results = await findCustomers({}, config)
+      const results = await findOrders({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
           )
             and exists (
               select 1
-              from "public"."customer_region_link" as "cm_link_1"
+              from "public"."order_region_link" as "cm_link_1"
               inner join "public"."region_entity" as "region" on true
-              where "cm_link_1"."customer_id" = "c0"."id"
+              where "cm_link_1"."order_id" = "o0"."id"
                 and "cm_link_1"."region_id" = "region"."id"
                 and "cm_link_1"."deleted_at" is null
                 and "region"."deleted_at" is null
@@ -833,138 +809,138 @@ describe("cross-module query integration", () => {
             )
         `
       )
-      expect(customerIds(results)).toEqual(["cust_a"])
+      expect(orderIds(results)).toEqual(["order_a"])
     })
 
-    it("should filter customers by a nested target through a parent join", async () => {
+    it("should filter orders by a nested sales channel through a parent product join", async () => {
       const config = {
         __internal: {
           crossModuleJoins: [
-            buildPricingTierJoinMetadata(),
-            buildFunctionalityJoinMetadata({ handle: "billing" }),
+            buildProductJoinMetadata(),
+            buildSalesChannelJoinMetadata({ name: "web-store" }),
           ],
         },
       }
 
-      const results = await findCustomers({}, config)
+      const results = await findOrders({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
+              and "product"."deleted_at" is null
               and exists (
                 select 1
-                from "public"."tier_functionality_link" as "cm_link_1"
-                inner join "public"."functionality_entity" as "functionality" on true
-                where "cm_link_1"."pricing_tier_id" = "pricing_tier"."id"
-                  and "cm_link_1"."functionality_id" = "functionality"."id"
+                from "public"."product_sales_channel" as "cm_link_1"
+                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                where "cm_link_1"."product_id" = "product"."id"
+                  and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
-                  and "functionality"."deleted_at" is null
-                  and "functionality"."handle" = 'billing'
+                  and "sales_channel"."deleted_at" is null
+                  and "sales_channel"."name" = 'web-store'
               )
           )
         `
       )
-      expect(customerIds(results).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
     it("should combine parent and nested target filters in a single exists clause", async () => {
       const config = {
         __internal: {
           crossModuleJoins: [
-            buildPricingTierJoinMetadata({ handle: "premium" }),
-            buildFunctionalityJoinMetadata({ handle: "billing" }),
+            buildProductJoinMetadata({ handle: "premium" }),
+            buildSalesChannelJoinMetadata({ name: "web-store" }),
           ],
         },
       }
 
-      const results = await findCustomers({}, config)
+      const results = await findOrders({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
               and exists (
                 select 1
-                from "public"."tier_functionality_link" as "cm_link_1"
-                inner join "public"."functionality_entity" as "functionality" on true
-                where "cm_link_1"."pricing_tier_id" = "pricing_tier"."id"
-                  and "cm_link_1"."functionality_id" = "functionality"."id"
+                from "public"."product_sales_channel" as "cm_link_1"
+                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                where "cm_link_1"."product_id" = "product"."id"
+                  and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
-                  and "functionality"."deleted_at" is null
-                  and "functionality"."handle" = 'billing'
+                  and "sales_channel"."deleted_at" is null
+                  and "sales_channel"."name" = 'web-store'
               )
           )
         `
       )
-      expect(customerIds(results).sort()).toEqual(["cust_a", "cust_c"])
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
-    it("should combine multiple root filters with a nested filter", async () => {
+    it("should combine product, region, and nested sales channel filters", async () => {
       const config = {
         __internal: {
           crossModuleJoins: [
-            buildPricingTierJoinMetadata({ handle: "premium" }),
+            buildProductJoinMetadata({ handle: "premium" }),
             buildRegionJoinMetadata({ code: "eu" }),
-            buildFunctionalityJoinMetadata({ handle: "billing" }),
+            buildSalesChannelJoinMetadata({ name: "web-store" }),
           ],
         },
       }
 
-      const results = await findCustomers({}, config)
+      const results = await findOrders({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
-              and "pricing_tier"."handle" = 'premium'
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
               and exists (
                 select 1
-                from "public"."tier_functionality_link" as "cm_link_1"
-                inner join "public"."functionality_entity" as "functionality" on true
-                where "cm_link_1"."pricing_tier_id" = "pricing_tier"."id"
-                  and "cm_link_1"."functionality_id" = "functionality"."id"
+                from "public"."product_sales_channel" as "cm_link_1"
+                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                where "cm_link_1"."product_id" = "product"."id"
+                  and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
-                  and "functionality"."deleted_at" is null
-                  and "functionality"."handle" = 'billing'
+                  and "sales_channel"."deleted_at" is null
+                  and "sales_channel"."name" = 'web-store'
               )
           )
             and exists (
               select 1
-              from "public"."customer_region_link" as "cm_link_2"
+              from "public"."order_region_link" as "cm_link_2"
               inner join "public"."region_entity" as "region" on true
-              where "cm_link_2"."customer_id" = "c0"."id"
+              where "cm_link_2"."order_id" = "o0"."id"
                 and "cm_link_2"."region_id" = "region"."id"
                 and "cm_link_2"."deleted_at" is null
                 and "region"."deleted_at" is null
@@ -972,22 +948,22 @@ describe("cross-module query integration", () => {
             )
         `
       )
-      expect(customerIds(results)).toEqual(["cust_a"])
+      expect(orderIds(results)).toEqual(["order_a"])
     })
 
-    it("should exclude customers when a nested functionality link is soft-deleted", async () => {
+    it("should exclude orders when a nested product sales channel link is soft-deleted", async () => {
       const knex = manager.getKnex()
-      await knex("tier_functionality_link")
-        .where({ id: "func_link_1" })
+      await knex("product_sales_channel")
+        .where({ id: "psc_link_1" })
         .update({ deleted_at: new Date() })
 
-      const results = await findCustomers(
+      const results = await findOrders(
         {},
         {
           __internal: {
             crossModuleJoins: [
-              buildPricingTierJoinMetadata(),
-              buildFunctionalityJoinMetadata({ handle: "billing" }),
+              buildProductJoinMetadata(),
+              buildSalesChannelJoinMetadata({ name: "web-store" }),
             ],
           },
         }
@@ -997,25 +973,25 @@ describe("cross-module query integration", () => {
         orm,
         sqlCapture,
         `
-          select "c0".*
-          from "customer_entity" as "c0"
+          select "o0".*
+          from "order_entity" as "o0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."pricing_tier_entity" as "pricing_tier" on true
-            where "cm_link_0"."customer_id" = "c0"."id"
-              and "cm_link_0"."pricing_tier_id" = "pricing_tier"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."product_entity" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
               and "cm_link_0"."deleted_at" is null
-              and "pricing_tier"."deleted_at" is null
+              and "product"."deleted_at" is null
               and exists (
                 select 1
-                from "public"."tier_functionality_link" as "cm_link_1"
-                inner join "public"."functionality_entity" as "functionality" on true
-                where "cm_link_1"."pricing_tier_id" = "pricing_tier"."id"
-                  and "cm_link_1"."functionality_id" = "functionality"."id"
+                from "public"."product_sales_channel" as "cm_link_1"
+                inner join "public"."sales_channel_entity" as "sales_channel" on true
+                where "cm_link_1"."product_id" = "product"."id"
+                  and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
                   and "cm_link_1"."deleted_at" is null
-                  and "functionality"."deleted_at" is null
-                  and "functionality"."handle" = 'billing'
+                  and "sales_channel"."deleted_at" is null
+                  and "sales_channel"."name" = 'web-store'
               )
           )
         `
@@ -1024,48 +1000,48 @@ describe("cross-module query integration", () => {
     })
   })
 
-  describe("listing pricing tiers filtered by customer", () => {
-    it("should filter pricing tiers by linked customer email", async () => {
+  describe("listing products filtered by order", () => {
+    it("should filter products by linked order display_id", async () => {
       const config = {
         __internal: {
           crossModuleJoins: [
-            buildCustomerJoinMetadata({ email: "alice@example.com" }),
+            buildOrderJoinMetadata({ display_id: "1001" }),
           ],
         },
       }
 
-      const results = await findPricingTiers({}, config)
+      const results = await findProducts({}, config)
 
       expectCapturedQueries(
         orm,
         sqlCapture,
         `
           select "p0".*
-          from "pricing_tier_entity" as "p0"
+          from "product_entity" as "p0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."customer_entity" as "customer" on true
-            where "cm_link_0"."pricing_tier_id" = "p0"."id"
-              and "cm_link_0"."customer_id" = "customer"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."order_entity" as "order" on true
+            where "cm_link_0"."product_id" = "p0"."id"
+              and "cm_link_0"."order_id" = "order"."id"
               and "cm_link_0"."deleted_at" is null
-              and "customer"."deleted_at" is null
-              and "customer"."email" = 'alice@example.com'
+              and "order"."deleted_at" is null
+              and "order"."display_id" = '1001'
           )
         `
       )
       expect(results).toHaveLength(1)
-      expect(results[0].id).toBe("tier_premium")
+      expect(results[0].id).toBe("prod_premium")
       expect(results[0].handle).toBe("premium")
     })
 
-    it("should combine pricing tier filters with customer filters", async () => {
-      const results = await findPricingTiers(
+    it("should combine product filters with order filters", async () => {
+      const results = await findProducts(
         { handle: "premium" },
         {
           __internal: {
             crossModuleJoins: [
-              buildCustomerJoinMetadata({ email: "charlie@example.com" }),
+              buildOrderJoinMetadata({ display_id: "1003" }),
             ],
           },
         }
@@ -1076,32 +1052,32 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "pricing_tier_entity" as "p0"
+          from "product_entity" as "p0"
           where "p0"."handle" = 'premium'
             and exists (
               select 1
-              from "public"."customer_pricing_tier_link" as "cm_link_0"
-              inner join "public"."customer_entity" as "customer" on true
-              where "cm_link_0"."pricing_tier_id" = "p0"."id"
-                and "cm_link_0"."customer_id" = "customer"."id"
+              from "public"."order_product_link" as "cm_link_0"
+              inner join "public"."order_entity" as "order" on true
+              where "cm_link_0"."product_id" = "p0"."id"
+                and "cm_link_0"."order_id" = "order"."id"
                 and "cm_link_0"."deleted_at" is null
-                and "customer"."deleted_at" is null
-                and "customer"."email" = 'charlie@example.com'
+                and "order"."deleted_at" is null
+                and "order"."display_id" = '1003'
             )
         `
       )
       expect(results).toHaveLength(1)
-      expect(results[0].id).toBe("tier_premium")
+      expect(results[0].id).toBe("prod_premium")
     })
 
-    it("should return pricing tiers linked to any of the given customers", async () => {
-      const results = await findPricingTiers(
+    it("should return products linked to any of the given orders", async () => {
+      const results = await findProducts(
         {},
         {
           __internal: {
             crossModuleJoins: [
-              buildCustomerJoinMetadata({
-                email: { $in: ["alice@example.com", "bob@example.com"] },
+              buildOrderJoinMetadata({
+                display_id: { $in: ["1001", "1002"] },
               }),
             ],
           },
@@ -1113,16 +1089,16 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "pricing_tier_entity" as "p0"
+          from "product_entity" as "p0"
           where exists (
             select 1
-            from "public"."customer_pricing_tier_link" as "cm_link_0"
-            inner join "public"."customer_entity" as "customer" on true
-            where "cm_link_0"."pricing_tier_id" = "p0"."id"
-              and "cm_link_0"."customer_id" = "customer"."id"
+            from "public"."order_product_link" as "cm_link_0"
+            inner join "public"."order_entity" as "order" on true
+            where "cm_link_0"."product_id" = "p0"."id"
+              and "cm_link_0"."order_id" = "order"."id"
               and "cm_link_0"."deleted_at" is null
-              and "customer"."deleted_at" is null
-              and "customer"."email" in ('alice@example.com', 'bob@example.com')
+              and "order"."deleted_at" is null
+              and "order"."display_id" in ('1001', '1002')
           )
         `
       )
@@ -1132,15 +1108,15 @@ describe("cross-module query integration", () => {
       ])
     })
 
-    it("should sort pricing tiers by linked customer email", async () => {
-      const results = await findPricingTiers(
+    it("should sort products by linked order display_id", async () => {
+      const results = await findProducts(
         {},
         {
           __internal: {
-            crossModuleJoins: [buildCustomerJoinMetadata()],
+            crossModuleJoins: [buildOrderJoinMetadata()],
           },
           order: {
-            "customer.email": "ASC",
+            "order.display_id": "ASC",
           },
         }
       )
@@ -1150,21 +1126,21 @@ describe("cross-module query integration", () => {
         sqlCapture,
         `
           select "p0".*
-          from "pricing_tier_entity" as "p0"
+          from "product_entity" as "p0"
           order by (
-            select "customer"."email"
-            from "public"."customer_pricing_tier_link" as "cm_order_link_0"
-            inner join "public"."customer_entity" as "customer" on true
-            where "cm_order_link_0"."pricing_tier_id" = "p0"."id"
-              and "cm_order_link_0"."customer_id" = "customer"."id"
+            select "order"."display_id"
+            from "public"."order_product_link" as "cm_order_link_0"
+            inner join "public"."order_entity" as "order" on true
+            where "cm_order_link_0"."product_id" = "p0"."id"
+              and "cm_order_link_0"."order_id" = "order"."id"
               and "cm_order_link_0"."deleted_at" is null
-              and "customer"."deleted_at" is null
-            order by "customer"."id"
+              and "order"."deleted_at" is null
+            order by "order"."id"
             limit 1
           ) asc
         `
       )
-      expect(pricingTierIds(results)).toEqual(["tier_premium", "tier_standard"])
+      expect(productIds(results)).toEqual(["prod_premium", "prod_standard"])
     })
   })
 })

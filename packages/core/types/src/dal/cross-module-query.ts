@@ -100,8 +100,7 @@ export type CrossModuleJoinSpec = {
   /**
    * When set, this join is correlated to the target row of the named parent
    * join instead of the root entity. Used for multi-hop filters such as
-   * filtering customers by a property of their linked pricing tier's
-   * functionality.
+   * filtering orders by a product's sales channel.
    */
   parent?: string
   link: CrossModuleJoinLink
