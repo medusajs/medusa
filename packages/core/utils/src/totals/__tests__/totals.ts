@@ -1304,4 +1304,39 @@ describe("Total calculation", function () {
     expect(serializedTaxInclusive.items[0].refundable_total).toBe(188)
     expect(serializedTaxInclusive.items[0].refundable_total_per_unit).toBe(94)
   })
+
+  it("should calculate refundable_total for non-tax-inclusive items without double-counting discount tax", function () {
+    const cart = {
+      items: [
+        {
+          unit_price: 100,
+          quantity: 2,
+          is_tax_inclusive: false,
+          detail: {
+            fulfilled_quantity: 2,
+            shipped_quantity: 2,
+            return_requested_quantity: 1,
+            return_received_quantity: 0,
+            return_dismissed_quantity: 0,
+            written_off_quantity: 0,
+          },
+          tax_lines: [
+            {
+              rate: 10,
+            },
+          ],
+          adjustments: [
+            {
+              amount: 20,
+            },
+          ],
+        },
+      ],
+    }
+
+    const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+    expect(serialized.items[0].refundable_total).toBe(99)
+    expect(serialized.items[0].refundable_total_per_unit).toBe(99)
+  })
 })

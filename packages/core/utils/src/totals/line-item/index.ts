@@ -76,8 +76,9 @@ export function getLineItemsTotals(
 
 function setRefundableTotal(
   item: GetItemTotalInput,
-  discountsTotal: BigNumberInput,
-  totals: GetItemTotalOutput
+  discountTotal: BigNumberInput,
+  totals: GetItemTotalOutput,
+  isTaxInclusive: boolean
 ) {
   const itemDetail = item.detail!
   const totalReturnedQuantity = MathBN.sum(
@@ -86,7 +87,7 @@ function setRefundableTotal(
     itemDetail.return_dismissed_quantity ?? 0
   )
   const currentQuantity = MathBN.sub(item.quantity, totalReturnedQuantity)
-  const discountPerUnit = MathBN.div(discountsTotal, item.quantity)
+  const discountPerUnit = MathBN.div(discountTotal, item.quantity)
 
   const refundableSubTotal = MathBN.sub(
     MathBN.mult(currentQuantity, item.unit_price),
@@ -94,7 +95,7 @@ function setRefundableTotal(
   )
 
   const taxTotal = calculateTaxTotal({
-    isTaxInclusive: item.is_tax_inclusive,
+    isTaxInclusive,
     taxLines: item.tax_lines || [],
     taxableAmount: refundableSubTotal,
   })
@@ -112,7 +113,7 @@ export function getLineItemTotals(
   item: GetItemTotalInput,
   context: GetLineItemsTotalsContext
 ) {
-  const isTaxInclusive = item.is_tax_inclusive ?? context.includeTax
+  const isTaxInclusive = item.is_tax_inclusive ?? context.includeTax ?? false
   const sumTax = MathBN.sum(
     ...((item.tax_lines ?? []).map((taxLine) => taxLine.rate) ?? [])
   )
@@ -223,7 +224,12 @@ export function getLineItemTotals(
     isDefined(item.detail?.return_received_quantity) ||
     isDefined(item.detail?.return_dismissed_quantity)
   ) {
-    setRefundableTotal(item, discountsTotal, totals)
+    setRefundableTotal(
+      item,
+      isTaxInclusive ? discountsTotal : discountsSubtotalFull,
+      totals,
+      isTaxInclusive
+    )
   }
 
   // Per-unit total should be based on full-quantity net total to support lifecycle totals consistently
