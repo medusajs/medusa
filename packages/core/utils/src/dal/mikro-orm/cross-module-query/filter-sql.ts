@@ -1,7 +1,7 @@
 import { CrossModuleJoinSpec } from "@medusajs/types"
 import { raw } from "@medusajs/deps/mikro-orm/core"
 import { Knex } from "@medusajs/deps/mikro-orm/knex"
-import { isObject } from "../../../common"
+import { isObject, MedusaError } from "../../../common"
 import {
   buildJoinCorrelationSql,
   buildJoinSoftDeleteSql,
@@ -73,9 +73,11 @@ export function buildFilterSql(
     }
 
     if (Array.isArray(value)) {
-      const placeholders = value.map(() => "?").join(", ")
-      clauses.push(`${column} in (${placeholders})`)
-      bindings.push(...value)
+      const inArraySql = buildInArraySql(column, value, false)
+      if (inArraySql) {
+        clauses.push(inArraySql.sql)
+        bindings.push(...inArraySql.bindings)
+      }
       continue
     }
 
@@ -238,21 +240,21 @@ function buildOperatorSql(
       return `${column} <> ?`
     case "$in": {
       const values = (value as Knex.RawBinding[]) ?? []
-      if (!values.length) {
+      const inArraySql = buildInArraySql(column, values, false)
+      if (!inArraySql) {
         return "1 = 0"
       }
-      const placeholders = values.map(() => "?").join(", ")
-      bindings.push(...values)
-      return `${column} in (${placeholders})`
+      bindings.push(...inArraySql.bindings)
+      return inArraySql.sql
     }
     case "$nin": {
       const values = (value as Knex.RawBinding[]) ?? []
-      if (!values.length) {
+      const inArraySql = buildInArraySql(column, values, true)
+      if (!inArraySql) {
         return undefined
       }
-      const placeholders = values.map(() => "?").join(", ")
-      bindings.push(...values)
-      return `${column} not in (${placeholders})`
+      bindings.push(...inArraySql.bindings)
+      return inArraySql.sql
     }
     case "$gt":
       bindings.push(value as Knex.RawBinding)
@@ -279,24 +281,33 @@ function buildOperatorSql(
       bindings.push(value as Knex.RawBinding)
       return `${column} is ?`
     default:
-      if (OPERATOR_MAP[operator]) {
-        bindings.push(value as Knex.RawBinding)
-        return `${column} ${OPERATOR_MAP[operator]} ?`
-      }
-      return undefined
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid operator: ${operator}`
+      )
   }
 }
 
-const OPERATOR_MAP: Record<string, string> = {
-  $eq: "=",
-  $ne: "!=",
-  $in: "in",
-  $nin: "not in",
-  $gt: ">",
-  $gte: ">=",
-  $lt: "<",
-  $lte: "<=",
-  $like: "like",
-  $ilike: "ilike",
-  $is: "is",
+function buildInArraySql(
+  column: string,
+  values: Knex.RawBinding[],
+  negated: boolean
+): SqlFragment | undefined {
+  if (!values.length) {
+    return negated ? undefined : { sql: "1 = 0", bindings: [] }
+  }
+
+  // Use `any(array[...])` so MikroORM's formatQuery inlines values as
+  // `array['a','b']` instead of the invalid `any('a','b')` from a single array
+  // binding with `any(?)`.
+  const placeholders = values.map(() => "?").join(", ")
+  const arraySql = `array[${placeholders}]`
+  const sql = negated
+    ? `not (${column} = any(${arraySql}))`
+    : `${column} = any(${arraySql})`
+
+  return {
+    sql,
+    bindings: values,
+  }
 }

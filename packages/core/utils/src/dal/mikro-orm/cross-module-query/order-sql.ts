@@ -56,15 +56,13 @@ function transformOrderByObject(
 
   for (const [key, direction] of Object.entries(orderBy)) {
     if (direction === "ASC" || direction === "DESC") {
-      if (!key.includes(".")) {
-        transformed[key] = direction
-        continue
-      }
-
       const [alias, ...rest] = key.split(".")
-      const join = getJoinSpecByAlias(crossModuleJoins, alias)
+      const join =
+        rest.length > 0
+          ? getJoinSpecByAlias(crossModuleJoins, alias)
+          : undefined
 
-      if (join && rest.length) {
+      if (join) {
         transformed[
           buildOrderByScalarSubquery(
             join.joinSpec,
@@ -76,10 +74,9 @@ function transformOrderByObject(
             withDeleted
           ) as unknown as string
         ] = direction
-        continue
+      } else {
+        transformed[key] = direction
       }
-
-      transformed[key] = direction
       continue
     }
 

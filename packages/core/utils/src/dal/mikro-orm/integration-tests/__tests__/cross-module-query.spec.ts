@@ -1098,7 +1098,7 @@ describe("cross-module query integration", () => {
               and "cm_link_0"."order_id" = "order"."id"
               and "cm_link_0"."deleted_at" is null
               and "order"."deleted_at" is null
-              and "order"."display_id" in ('1001', '1002')
+              and "order"."display_id" = any(array['1001', '1002'])
           )
         `
       )

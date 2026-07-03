@@ -51,10 +51,34 @@ describe("cross-module-query", () => {
         email: { $in: ["a@example.com", "b@example.com"] },
       })
 
-      expect(qb.whereRaw).toHaveBeenCalledWith('"customer"."email" in (?, ?)', [
-        "a@example.com",
-        "b@example.com",
-      ])
+      expect(qb.whereRaw).toHaveBeenCalledWith(
+        '"customer"."email" = any(array[?, ?])',
+        ["a@example.com", "b@example.com"]
+      )
+    })
+
+    it("should use any(array[...]) for large $in lists", () => {
+      const qb = buildMockQueryBuilder()
+      const ids = Array.from({ length: 500 }, (_, index) => `id_${index}`)
+
+      applyFiltersToKnex(qb, "customer", { id: { $in: ids } })
+
+      const [sql, bindings] = qb.calls[0].slice(1)
+      expect(sql).toBe(`"customer"."id" = any(array[${ids.map(() => "?").join(", ")}])`)
+      expect(bindings).toEqual(ids)
+    })
+
+    it("should use any(array[...]) for $nin", () => {
+      const qb = buildMockQueryBuilder()
+
+      applyFiltersToKnex(qb, "customer", {
+        id: { $nin: ["a", "b"] },
+      })
+
+      expect(qb.whereRaw).toHaveBeenCalledWith(
+        'not ("customer"."id" = any(array[?, ?]))',
+        ["a", "b"]
+      )
     })
 
     it("should apply null filters", () => {

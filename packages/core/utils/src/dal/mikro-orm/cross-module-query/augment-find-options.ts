@@ -23,7 +23,8 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
     defaultSchema = DEFAULT_SCHEMA,
   }: AugmentFindOptionsWithCrossModuleJoinsArgs
 ): DAL.FindOptions<T> {
-  const crossModuleJoins = findOptions.options?.__internal?.crossModuleJoins
+  const { crossModuleJoins, ...remainingInternal } =
+    findOptions.options?.__internal ?? {}
   if (!crossModuleJoins?.length) {
     return findOptions
   }
@@ -41,18 +42,12 @@ export function augmentFindOptionsWithCrossModuleJoins<const T>(
   }
 
   const options = {
-    ...(findOptions.options ?? {}),
+    ...findOptions.options,
   }
-
-  if (options.__internal) {
-    const internal = { ...options.__internal }
-    delete internal.crossModuleJoins
-
-    if (Object.keys(internal).length) {
-      options.__internal = internal
-    } else {
-      delete options.__internal
-    }
+  if (Object.keys(remainingInternal).length) {
+    options.__internal = remainingInternal
+  } else {
+    delete options.__internal
   }
 
   const existsFilters = getRootJoins(crossModuleJoins)
@@ -135,6 +130,8 @@ function assertUniqueAliases(crossModuleJoins: CrossModuleJoinSpec[]): void {
   }
 }
 
+// TODO: What happens if two entities have the same first character?
+// See if we can use their actual naming alias generation here
 /**
  * MikroORM's default naming strategy uses the first character of the entity
  * class name plus the alias counter. The root entity in `find()` always uses
