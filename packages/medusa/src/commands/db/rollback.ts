@@ -19,8 +19,6 @@ const main = async function ({ directory, modules }) {
   let logger: Logger | undefined
 
   try {
-    const container = await initializeContainer(directory)
-    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
     /**
      * Setup
      */
