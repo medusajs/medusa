@@ -1021,6 +1021,11 @@ export interface BaseOrderChange {
   actions: BaseOrderChangeAction[]
 
   /**
+   * An internal note viewed by admin users only.
+   */
+  internal_note: string | null
+
+  /**
    * Whether to carry over promotions (apply promotions to outbound exchange items).
    */
   carry_over_promotions?: boolean | null

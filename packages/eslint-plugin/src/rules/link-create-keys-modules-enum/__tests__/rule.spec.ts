@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("link-create-keys-modules-enum", rule, {
   valid: [
@@ -181,8 +176,14 @@ await link.create({ [Modules.PRODUCT]: { product_id: "1" } })`,
         })
       `,
       errors: [
-        { messageId: "preferEnumKey", data: { key: "product", enumMember: "PRODUCT" } },
-        { messageId: "preferEnumKey", data: { key: "order", enumMember: "ORDER" } },
+        {
+          messageId: "preferEnumKey",
+          data: { key: "product", enumMember: "PRODUCT" },
+        },
+        {
+          messageId: "preferEnumKey",
+          data: { key: "order", enumMember: "ORDER" },
+        },
       ],
       output: `
         import { Modules } from "@medusajs/framework/utils"

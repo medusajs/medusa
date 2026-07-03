@@ -18,7 +18,7 @@ const giftCardPayload = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer
     let giftCard, largeGiftCard
     let product
@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
     let cheapVariant, expensiveVariant
     let region, salesChannel
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       const publishableKey = await generatePublishableKey(getContainer())
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -80,7 +80,11 @@ medusaIntegrationTestRunner({
       customer = user.customer
 
       giftCard = (
-        await api.post(`/admin/gift-cards`, { ...giftCardPayload }, adminHeaders)
+        await api.post(
+          `/admin/gift-cards`,
+          { ...giftCardPayload },
+          adminHeaders
+        )
       ).data.gift_card
 
       largeGiftCard = (
@@ -153,6 +157,8 @@ medusaIntegrationTestRunner({
         { provider_id: "pp_system_default" },
         storeHeaders
       )
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /store/orders/:id/credit-lines", () => {
@@ -262,11 +268,7 @@ medusaIntegrationTestRunner({
 
         const {
           data: { order },
-        } = await api.post(
-          `/store/carts/${cart.id}/complete`,
-          {},
-          storeHeaders
-        )
+        } = await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
 
         expect(order).toEqual(
           expect.objectContaining({

@@ -53,7 +53,7 @@ export const POST = async (
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
   await updateAddresses.run({
     input: {
-      selector: { id: req.params.address_id, customer_id: req.params.id },
+      selector: { id: req.params.address_id, customer_id: id },
       update: req.validatedBody,
     },
   })

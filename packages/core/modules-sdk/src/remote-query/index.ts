@@ -1,2 +1,1 @@
-export * from "./query"
-export * from "./remote-query"
+export { createQuery, Query, RemoteQuery } from "@medusajs/query"

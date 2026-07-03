@@ -1,13 +1,8 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import * as path from "path"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester({
+const ruleTester = createRuleTester({
   languageOptions: {
     parserOptions: {
       projectService: {
@@ -129,7 +124,10 @@ ruleTester.run("no-workflow-call-without-container", rule, {
         }
       `,
       errors: [
-        { messageId: "missingContainer", data: { name: "createCustomerWorkflow" } },
+        {
+          messageId: "missingContainer",
+          data: { name: "createCustomerWorkflow" },
+        },
       ],
     },
     // Member-expression .run on member-accessed workflow value.
@@ -142,7 +140,10 @@ ruleTester.run("no-workflow-call-without-container", rule, {
         }
       `,
       errors: [
-        { messageId: "missingContainer", data: { name: "createCustomerWorkflow" } },
+        {
+          messageId: "missingContainer",
+          data: { name: "createCustomerWorkflow" },
+        },
       ],
     },
   ],

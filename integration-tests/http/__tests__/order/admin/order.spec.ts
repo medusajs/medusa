@@ -23,7 +23,7 @@ import {
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order,
       seeder,
       inventoryItemOverride3,
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
       productOverride4,
       container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
@@ -45,6 +45,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_profile
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/orders", () => {
@@ -82,6 +84,26 @@ medusaIntegrationTestRunner({
 
         expect(response.data.orders).toHaveLength(0)
         expect(response.data.orders).toEqual([])
+      })
+
+      it("should search orders by custom_display_id", async () => {
+        const customDisplayId = "custom-display-id-1234"
+        await dbConnection.raw(
+          `UPDATE "order" SET custom_display_id = ? WHERE id = ?`,
+          [customDisplayId, order.id]
+        )
+
+        const response = await api.get(
+          `/admin/orders?q=${customDisplayId}`,
+          adminHeaders
+        )
+
+        expect(response.data.orders).toHaveLength(1)
+        expect(response.data.orders).toEqual([
+          expect.objectContaining({
+            id: order.id,
+          }),
+        ])
       })
 
       it("should search orders by shipping address", async () => {

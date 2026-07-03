@@ -44,6 +44,14 @@ export type EventMetadata = Record<string, unknown> & {
    * When set, you must release the grouped events using the Event Module's `releaseGroupedEvents` method to emit the events.
    */
   eventGroupId?: string
+  /**
+   * The date the event was emitted.
+   */
+  created_at?: Date
+  /**
+   * The date the event was published to the event bus. If it's a grouped event, this will be the date the group was released.
+   */
+  published_at?: Date
 }
 
 export type Event<TData = unknown> = {

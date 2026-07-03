@@ -1,21 +1,20 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { ProductTagListTable } from "./components/product-tag-list-table"
 
 export const ProductTagList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      showMetadata={false}
-      showJSON={false}
-      hasOutlet
-      widgets={{
-        after: getWidgets("product_tag.list.after"),
-        before: getWidgets("product_tag.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="product_tag.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="ProductTagListTable">
+            <ProductTagListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <ProductTagListTable />
-    </SingleColumnPage>
+    />
   )
 }

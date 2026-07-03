@@ -13,7 +13,7 @@ export const generatedEditDates = {
   "app/update-medusa/page.mdx": "2026-01-08T08:54:50.149Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-06-09T12:12:26.314Z",
-  "app/environments/long-lived/page.mdx": "2026-05-15T09:27:32.034Z",
+  "app/environments/long-lived/page.mdx": "2026-06-18T13:40:26.814Z",
   "app/environments/preview/page.mdx": "2026-05-20T13:20:57.494Z",
   "app/faq/page.mdx": "2026-04-14T10:44:08.191Z",
   "app/billing/page.mdx": "2025-12-17T12:39:37.397Z",

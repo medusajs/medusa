@@ -1,38 +1,16 @@
-import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
+import { ArrowRight, PencilSquare } from "@medusajs/icons"
+import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
-import { useDeleteProductOption } from "../../../../../hooks/api/products"
 import { HttpTypes } from "@medusajs/types"
 
 const OptionActions = ({
-  product,
   option,
 }: {
-  product: HttpTypes.AdminProduct
   option: HttpTypes.AdminProductOption
 }) => {
   const { t } = useTranslation()
-  const { mutateAsync } = useDeleteProductOption(product.id, option.id)
-  const prompt = usePrompt()
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("products.options.deleteWarning", {
-        title: option.title,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync()
-  }
 
   return (
     <ActionMenu
@@ -40,18 +18,9 @@ const OptionActions = ({
         {
           actions: [
             {
-              label: t("actions.edit"),
-              to: `options/${option.id}/edit`,
-              icon: <PencilSquare />,
-            },
-          ],
-        },
-        {
-          actions: [
-            {
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              icon: <Trash />,
+              label: t("actions.goToProductOption"),
+              to: `/product-options/${option.id}`,
+              icon: <ArrowRight />,
             },
           ],
         },
@@ -78,9 +47,9 @@ export const ProductOptionSection = ({
             {
               actions: [
                 {
-                  label: t("actions.create"),
-                  to: "options/create",
-                  icon: <Plus />,
+                  label: t("actions.manage"),
+                  to: "options/manage",
+                  icon: <PencilSquare />,
                 },
               ],
             },
@@ -93,18 +62,31 @@ export const ProductOptionSection = ({
           <SectionRow
             title={option.title}
             key={option.id}
-            value={option.values?.map((val) => {
-              return (
-                <Badge
-                  key={val.value}
-                  size="2xsmall"
-                  className="flex min-w-[20px] items-center justify-center"
-                >
-                  {val.value}
-                </Badge>
-              )
-            })}
-            actions={<OptionActions product={product} option={option} />}
+            value={[...(option.values ?? [])]
+              .sort((a, b) => {
+                if (a.rank == null && b.rank == null) {
+                  return 0
+                }
+                if (a.rank == null) {
+                  return 1
+                }
+                if (b.rank == null) {
+                  return -1
+                }
+                return a.rank - b.rank
+              })
+              .map((val) => {
+                return (
+                  <Badge
+                    key={val.value}
+                    size="2xsmall"
+                    className="flex min-w-[20px] items-center justify-center"
+                  >
+                    {val.value}
+                  </Badge>
+                )
+              })}
+            actions={<OptionActions option={option} />}
           />
         )
       })}

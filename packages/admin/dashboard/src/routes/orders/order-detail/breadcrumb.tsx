@@ -25,3 +25,7 @@ export const OrderDetailBreadcrumb = (props: OrderDetailBreadcrumbProps) => {
 
   return <span>#{order.display_id}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminOrderResponse>) => ({
+  title: match.data?.order ? `#${match.data.order.display_id}` : undefined,
+})

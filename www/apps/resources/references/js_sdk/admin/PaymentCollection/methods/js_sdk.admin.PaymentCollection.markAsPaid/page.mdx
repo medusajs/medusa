@@ -6,14 +6,17 @@ This method marks a payment collection as paid. It sends a request to the
 [Mark as Paid](https://docs.medusajs.com/api/admin#payment-collections\_postpaymentcollectionsidmarkaspaid)
 API route.
 
-The API route creates and authorizes a payment session, then capture its payment, 
-using the manual payment provider.
+The API route creates and authorizes a payment session, then capture its payment.
+It uses the manual payment provider by default, or the provider passed in
+`provider_id` to record the captured payment under a specific provider.
 
 ## Example
 
 ```ts
 sdk.admin.paymentCollection.markAsPaid("paycol_123", {
-  order_id: "order_123"
+  order_id: "order_123",
+  // optional: record the payment under a specific provider
+  provider_id: "pp_system_default"
 })
 .then(({ payment_collection }) => {
   console.log(payment_collection)
@@ -22,7 +25,7 @@ sdk.admin.paymentCollection.markAsPaid("paycol_123", {
 
 ## Parameters
 
-<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection to mark as paid.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminMarkPaymentCollectionAsPaid](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminMarkPaymentCollectionAsPaid/page.mdx)","description":"The details to mark the payment collection as paid.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the order this payment collection belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the payment collection.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="markAsPaid"/>
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection to mark as paid.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"[AdminMarkPaymentCollectionAsPaid](../../../../../types/HttpTypes/interfaces/types.HttpTypes.AdminMarkPaymentCollectionAsPaid/page.mdx)","description":"The details to mark the payment collection as paid.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the order this payment collection belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The ID of the payment provider to record the captured payment under.\nDefaults to the system (manual) payment provider when omitted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[SelectParams](../../../../../types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx)","description":"Configure the fields to retrieve in the payment collection.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"fields","type":"`string`","description":"The fields and relations to retrieve separated by commas.\n\nLearn more in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"headers","type":"[ClientHeaders](../../../types/js_sdk.admin.ClientHeaders/page.mdx)","description":"Headers to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"tags","type":"`string`[]","description":"Tags to cache data under for Next.js applications.\n\nLearn more in [Next.js's documentation](https://nextjs.org/docs/app/building-your-application/caching#fetch-optionsnexttags-and-revalidatetag).","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="markAsPaid"/>
 
 ## Returns
 

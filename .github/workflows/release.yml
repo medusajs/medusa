@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - develop
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit SHA or ref to release from (defaults to the triggering branch tip)"
+        required: false
+        type: string
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -11,6 +17,7 @@ permissions:
   contents: write
   pull-requests: write
   id-token: write
+  actions: write # required to createWorkflowDispatch the draft-release workflow
 
 jobs:
   release:
@@ -19,6 +26,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.ref || github.sha }}
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -43,6 +52,7 @@ jobs:
           createGithubReleases: false
           publish: yarn changeset publish
         env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Trigger draft release generation

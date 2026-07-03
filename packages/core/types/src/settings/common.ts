@@ -77,6 +77,126 @@ export interface ViewConfigurationDTO {
 }
 
 /**
+ * The placement preference for a single widget within a layout zone.
+ */
+export interface LayoutWidgetPreference {
+  /**
+   * Whether the widget is hidden.
+   */
+  hidden?: boolean
+
+  /**
+   * Override which section this widget appears in.
+   */
+  section?: string
+
+  /**
+   * Override the sort order of the widget within its section.
+   */
+  order?: number
+}
+
+/**
+ * The serialized layout preference for a zone.
+ */
+export interface LayoutConfigurationData {
+  /**
+   * Per-widget placement and visibility preferences, keyed by widget ID.
+   */
+  widgets: Record<string, LayoutWidgetPreference>
+}
+
+/**
+ * The layout configuration data model.
+ *
+ * Unlike view configurations, there is at most one layout configuration per
+ * `(zone, user_id)` pair, plus an optional single system default per zone.
+ */
+export interface LayoutConfigurationDTO {
+  /**
+   * The ID of the configuration.
+   */
+  id: string
+
+  /**
+   * The zone (page) this configuration is for, e.g. "product.details".
+   */
+  zone: string
+
+  /**
+   * The user ID this configuration belongs to, or null for the system default.
+   */
+  user_id: string | null
+
+  /**
+   * Whether this is the system default configuration for the zone.
+   */
+  is_system_default: boolean
+
+  /**
+   * The layout configuration data.
+   */
+  configuration: LayoutConfigurationData
+
+  /**
+   * The date the configuration was created.
+   */
+  created_at: Date
+
+  /**
+   * The date the configuration was last updated.
+   */
+  updated_at: Date
+}
+
+/**
+ * Partial filters for layout configuration fields.
+ */
+export interface LayoutConfigurationFilterableFields {
+  /**
+   * The IDs to filter by.
+   */
+  id?: string | string[]
+
+  /**
+   * Filter by zone.
+   */
+  zone?: string | string[]
+
+  /**
+   * Filter by user ID.
+   */
+  user_id?: string | string[] | null
+
+  /**
+   * Filter by system default flag.
+   */
+  is_system_default?: boolean
+}
+
+/**
+ * The filters to apply on the retrieved layout configurations.
+ */
+export interface FilterableLayoutConfigurationProps
+  extends LayoutConfigurationFilterableFields {
+  /**
+   * An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+   */
+  $and?: (
+    | LayoutConfigurationFilterableFields
+    | FilterableLayoutConfigurationProps
+  )[]
+
+  /**
+   * An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+   */
+  $or?: (
+    | LayoutConfigurationFilterableFields
+    | FilterableLayoutConfigurationProps
+  )[]
+}
+
+/**
  * The user preference data model.
  */
 export interface UserPreferenceDTO {

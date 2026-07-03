@@ -24,6 +24,8 @@ const main = async function ({ directory, modules }) {
     /**
      * Setup
      */
+    const container = await initializeContainer(directory)
+    logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
     await ensureDbExists(container)
 

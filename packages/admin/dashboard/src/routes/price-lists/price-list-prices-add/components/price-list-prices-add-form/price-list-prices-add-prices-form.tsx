@@ -8,6 +8,7 @@ import { useProducts } from "../../../../../hooks/api/products"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import { PriceListCreateProductVariantsSchema } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
+import { QuantityPriceModal } from "../../../common/components/quantity-price-modal/quantity-price-modal"
 import { PriceListPricesAddSchema } from "./schema"
 
 type PriceListPricesAddPricesFormProps = {
@@ -51,7 +52,7 @@ export const PriceListPricesAddPricesForm = ({
         /**
          * If the product already exists in the form, we don't want to overwrite it.
          */
-        if (existingProducts[product.id] || !product.variants) {
+        if (existingProducts?.[product.id] || !product.variants) {
           return
         }
 
@@ -79,19 +80,24 @@ export const PriceListPricesAddPricesForm = ({
   }
 
   return (
-    <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGrid
-        isLoading={isLoading}
-        columns={columns}
-        data={products}
-        getSubRows={(row) => {
-          if (isProductRow(row) && row.variants) {
-            return row.variants
-          }
-        }}
-        state={form}
-        onEditingChange={(editing) => setCloseOnEscape(!editing)}
-      />
-    </div>
+    <QuantityPriceModal form={form} products={products} regions={regions}>
+      {({ isModalOpen }) => (
+        <div className="flex size-full flex-col divide-y overflow-hidden">
+          <DataGrid
+            isLoading={isLoading}
+            columns={columns}
+            data={products}
+            getSubRows={(row) => {
+              if (isProductRow(row) && row.variants) {
+                return row.variants
+              }
+            }}
+            state={form}
+            onEditingChange={(editing) => setCloseOnEscape(!editing)}
+            disableInteractions={isModalOpen}
+          />
+        </div>
+      )}
+    </QuantityPriceModal>
   )
 }

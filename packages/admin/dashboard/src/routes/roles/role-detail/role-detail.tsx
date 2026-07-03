@@ -1,3 +1,4 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { PermissionGuard } from "../../../components/common/permission-guard"
@@ -8,14 +9,12 @@ import { RoleUsersSection } from "./components/role-users-section"
 import { roleLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { ROLE_DETAIL_FIELDS } from "./constants"
 
 export const RoleDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof roleLoader>>
   const { id } = useParams()
-  const { getWidgets } = useExtension()
   const isRbacEnabled = useRequireRbacFeature()
 
   const {
@@ -45,19 +44,25 @@ export const RoleDetail = () => {
   }
 
   return (
-    <SingleColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="role.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={role}
-      showJSON
-      showMetadata
-      widgets={{
-        before: getWidgets("role.details.before"),
-        after: getWidgets("role.details.after"),
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="RoleGeneralSection">
+              <RoleGeneralSection role={role} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="RoleUsersSection">
+              <PermissionGuard permission="user:read">
+                <RoleUsersSection role={role} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(role, { permissions: false })}
+          </>
+        ),
       }}
-    >
-      <RoleGeneralSection role={role} />
-      <PermissionGuard permission="user:read">
-        <RoleUsersSection role={role} />
-      </PermissionGuard>
-    </SingleColumnPage>
+    />
   )
 }

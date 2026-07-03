@@ -418,6 +418,396 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
           expect(updatedConfig.configuration.search).toBe("")
         })
       })
+
+      describe("LayoutConfiguration", function () {
+        it("should create a user layout configuration via setLayoutConfiguration", async () => {
+          const result = await service.setLayoutConfiguration(
+            "product.details",
+            "user_123",
+            {
+              widgets: {
+                "widget-general": { hidden: false, section: "main", order: 0 },
+                "widget-pricing": { hidden: true },
+              },
+            }
+          )
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              zone: "product.details",
+              user_id: "user_123",
+              is_system_default: false,
+              configuration: {
+                widgets: {
+                  "widget-general": {
+                    hidden: false,
+                    section: "main",
+                    order: 0,
+                  },
+                  "widget-pricing": { hidden: true },
+                },
+              },
+            })
+          )
+        })
+
+        it("should upsert user layout configuration replacing widgets wholesale", async () => {
+          await service.setLayoutConfiguration("product.details", "user_123", {
+            widgets: {
+              "widget-general": { hidden: false },
+              "widget-pricing": { hidden: true },
+              "widget-media": { order: 2 },
+            },
+          })
+
+          // Second call should replace, not merge
+          const updated = await service.setLayoutConfiguration(
+            "product.details",
+            "user_123",
+            {
+              widgets: {
+                "widget-general": { hidden: true },
+                // widget-pricing and widget-media intentionally omitted
+              },
+            }
+          )
+
+          expect(updated.configuration.widgets).toEqual({
+            "widget-general": { hidden: true },
+          })
+          // Removed widgets must not survive the replacement
+          expect(
+            updated.configuration.widgets["widget-pricing"]
+          ).toBeUndefined()
+          expect(updated.configuration.widgets["widget-media"]).toBeUndefined()
+        })
+
+        it("should keep one record per user per zone after multiple upserts", async () => {
+          await service.setLayoutConfiguration("order.details", "user_abc", {
+            widgets: { "widget-a": { hidden: false } },
+          })
+          await service.setLayoutConfiguration("order.details", "user_abc", {
+            widgets: { "widget-b": { hidden: true } },
+          })
+
+          const configs = await service.listLayoutConfigurations({
+            zone: "order.details",
+            user_id: "user_abc",
+          })
+
+          expect(configs).toHaveLength(1)
+          expect(configs[0].configuration.widgets).toEqual({
+            "widget-b": { hidden: true },
+          })
+        })
+
+        it("should create a system default layout configuration", async () => {
+          const result = await service.setSystemDefaultLayoutConfiguration(
+            "customer.details",
+            {
+              widgets: {
+                "widget-info": { hidden: false, order: 0 },
+              },
+            }
+          )
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              zone: "customer.details",
+              user_id: null,
+              is_system_default: true,
+              configuration: {
+                widgets: {
+                  "widget-info": { hidden: false, order: 0 },
+                },
+              },
+            })
+          )
+        })
+
+        it("should upsert system default layout configuration replacing widgets wholesale", async () => {
+          await service.setSystemDefaultLayoutConfiguration("order.list", {
+            widgets: {
+              "widget-filters": { hidden: false },
+              "widget-table": { order: 1 },
+            },
+          })
+
+          const updated = await service.setSystemDefaultLayoutConfiguration(
+            "order.list",
+            {
+              widgets: {
+                "widget-filters": { hidden: true },
+                // widget-table intentionally omitted
+              },
+            }
+          )
+
+          expect(updated.configuration.widgets).toEqual({
+            "widget-filters": { hidden: true },
+          })
+          expect(updated.configuration.widgets["widget-table"]).toBeUndefined()
+
+          // Still only one system default record
+          const configs = await service.listLayoutConfigurations({
+            zone: "order.list",
+            is_system_default: true,
+          })
+          expect(configs).toHaveLength(1)
+        })
+
+        it("should return null from getSystemDefaultLayoutConfiguration when none exists", async () => {
+          const result = await service.getSystemDefaultLayoutConfiguration(
+            "zone.without.default"
+          )
+
+          expect(result).toBeNull()
+        })
+
+        it("should return the system default from getSystemDefaultLayoutConfiguration", async () => {
+          await service.setSystemDefaultLayoutConfiguration("product.list", {
+            widgets: { "widget-header": { order: 0 } },
+          })
+
+          const result =
+            await service.getSystemDefaultLayoutConfiguration("product.list")
+
+          expect(result).not.toBeNull()
+          expect(result!.zone).toBe("product.list")
+          expect(result!.is_system_default).toBe(true)
+          expect(result!.configuration.widgets).toEqual({
+            "widget-header": { order: 0 },
+          })
+        })
+
+        it("should clear user layout configuration", async () => {
+          await service.setLayoutConfiguration("product.details", "user_del", {
+            widgets: { "widget-x": { hidden: false } },
+          })
+
+          await service.clearLayoutConfiguration("product.details", "user_del")
+
+          const configs = await service.listLayoutConfigurations({
+            zone: "product.details",
+            user_id: "user_del",
+          })
+          expect(configs).toHaveLength(0)
+        })
+
+        it("should no-op clearLayoutConfiguration when no config exists", async () => {
+          await expect(
+            service.clearLayoutConfiguration(
+              "zone.nothing.here",
+              "user_nonexistent"
+            )
+          ).resolves.not.toThrow()
+        })
+
+        it("should not affect system default when clearing user config", async () => {
+          await service.setSystemDefaultLayoutConfiguration("product.details", {
+            widgets: { "widget-default": { order: 0 } },
+          })
+          await service.setLayoutConfiguration("product.details", "user_999", {
+            widgets: { "widget-personal": { hidden: false } },
+          })
+
+          await service.clearLayoutConfiguration("product.details", "user_999")
+
+          const systemDefault =
+            await service.getSystemDefaultLayoutConfiguration("product.details")
+          expect(systemDefault).not.toBeNull()
+          expect(systemDefault!.configuration.widgets).toEqual({
+            "widget-default": { order: 0 },
+          })
+        })
+
+        it("should isolate layout configurations across zones", async () => {
+          await service.setLayoutConfiguration("zone.a", "user_123", {
+            widgets: { "widget-a1": { hidden: false } },
+          })
+          await service.setLayoutConfiguration("zone.b", "user_123", {
+            widgets: { "widget-b1": { hidden: true } },
+          })
+
+          const zoneA = await service.listLayoutConfigurations({
+            zone: "zone.a",
+            user_id: "user_123",
+          })
+          const zoneB = await service.listLayoutConfigurations({
+            zone: "zone.b",
+            user_id: "user_123",
+          })
+
+          expect(zoneA).toHaveLength(1)
+          expect(zoneA[0].configuration.widgets["widget-a1"]).toBeDefined()
+          expect(zoneB).toHaveLength(1)
+          expect(zoneB[0].configuration.widgets["widget-b1"]).toBeDefined()
+        })
+
+        it("should isolate layout configurations across users", async () => {
+          await service.setLayoutConfiguration("shared.zone", "user_A", {
+            widgets: { "widget-x": { hidden: false } },
+          })
+          await service.setLayoutConfiguration("shared.zone", "user_B", {
+            widgets: { "widget-x": { hidden: true } },
+          })
+
+          const userAConfigs = await service.listLayoutConfigurations({
+            zone: "shared.zone",
+            user_id: "user_A",
+          })
+          const userBConfigs = await service.listLayoutConfigurations({
+            zone: "shared.zone",
+            user_id: "user_B",
+          })
+
+          expect(userAConfigs[0].configuration.widgets["widget-x"]).toEqual({
+            hidden: false,
+          })
+          expect(userBConfigs[0].configuration.widgets["widget-x"]).toEqual({
+            hidden: true,
+          })
+        })
+
+        it("should handle empty widgets object", async () => {
+          const result = await service.setLayoutConfiguration(
+            "product.details",
+            "user_empty",
+            { widgets: {} }
+          )
+
+          expect(result.configuration.widgets).toEqual({})
+        })
+
+        describe("getActiveLayoutScope / setActiveLayoutScope", function () {
+          it("should return null when no scope preference exists", async () => {
+            const scope = await service.getActiveLayoutScope(
+              "product.details",
+              "user_new"
+            )
+
+            expect(scope).toBeNull()
+          })
+
+          it("should set and retrieve personal scope", async () => {
+            await service.setActiveLayoutScope(
+              "product.details",
+              "user_123",
+              "personal"
+            )
+
+            const scope = await service.getActiveLayoutScope(
+              "product.details",
+              "user_123"
+            )
+
+            expect(scope).toBe("personal")
+          })
+
+          it("should set and retrieve default scope", async () => {
+            await service.setActiveLayoutScope(
+              "order.details",
+              "user_456",
+              "default"
+            )
+
+            const scope = await service.getActiveLayoutScope(
+              "order.details",
+              "user_456"
+            )
+
+            expect(scope).toBe("default")
+          })
+
+          it("should update scope from personal to default", async () => {
+            await service.setActiveLayoutScope(
+              "product.details",
+              "user_789",
+              "personal"
+            )
+            await service.setActiveLayoutScope(
+              "product.details",
+              "user_789",
+              "default"
+            )
+
+            const scope = await service.getActiveLayoutScope(
+              "product.details",
+              "user_789"
+            )
+
+            expect(scope).toBe("default")
+          })
+
+          it("should clear scope by setting it to null", async () => {
+            await service.setActiveLayoutScope(
+              "product.details",
+              "user_321",
+              "personal"
+            )
+            await service.setActiveLayoutScope(
+              "product.details",
+              "user_321",
+              null
+            )
+
+            const scope = await service.getActiveLayoutScope(
+              "product.details",
+              "user_321"
+            )
+
+            expect(scope).toBeNull()
+          })
+
+          it("should isolate scope preferences across zones", async () => {
+            await service.setActiveLayoutScope(
+              "zone.a",
+              "user_iso",
+              "personal"
+            )
+            await service.setActiveLayoutScope("zone.b", "user_iso", "default")
+
+            const scopeA = await service.getActiveLayoutScope(
+              "zone.a",
+              "user_iso"
+            )
+            const scopeB = await service.getActiveLayoutScope(
+              "zone.b",
+              "user_iso"
+            )
+
+            expect(scopeA).toBe("personal")
+            expect(scopeB).toBe("default")
+          })
+
+          it("should isolate scope preferences across users", async () => {
+            await service.setActiveLayoutScope(
+              "shared.zone",
+              "user_X",
+              "personal"
+            )
+            await service.setActiveLayoutScope(
+              "shared.zone",
+              "user_Y",
+              "default"
+            )
+
+            const scopeX = await service.getActiveLayoutScope(
+              "shared.zone",
+              "user_X"
+            )
+            const scopeY = await service.getActiveLayoutScope(
+              "shared.zone",
+              "user_Y"
+            )
+
+            expect(scopeX).toBe("personal")
+            expect(scopeY).toBe("default")
+          })
+        })
+      })
     })
   },
 })

@@ -94,6 +94,11 @@ export const loyaltySidebar = [
             ],
           },
           {
+            type: "link",
+            path: "/commerce-modules/loyalty/admin-widget-zones",
+            title: "Admin Widget Zones",
+          },
+          {
             type: "sidebar",
             sidebar_id: "loyalty-service-reference",
             title: "Main Service Reference",

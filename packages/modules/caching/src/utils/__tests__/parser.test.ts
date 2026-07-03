@@ -292,7 +292,7 @@ describe("CacheInvalidationParser", () => {
         relatedEntities: [],
       })
 
-      expect(events[0].cacheKeys).toEqual(["Product:prod_123"])
+      expect(events[0].cacheKeys).toEqual(["Product:prod_123", "Product:list:*"])
     })
 
     it("should build invalidation events with related entities", () => {
@@ -309,7 +309,10 @@ describe("CacheInvalidationParser", () => {
       const productEvent = events.find((e) => e.entityType === "Product")
       expect(productEvent).toBeDefined()
       expect(productEvent!.relatedEntities).toHaveLength(2)
-      expect(productEvent!.cacheKeys).toEqual(["Product:prod_123"])
+      expect(productEvent!.cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
     })
 
     it("should avoid duplicate entities in events", () => {
@@ -337,7 +340,10 @@ describe("CacheInvalidationParser", () => {
       const events = parser.buildInvalidationEvents(entities)
       const productEvent = events.find((e) => e.entityType === "Product")!
 
-      expect(productEvent.cacheKeys).toEqual(["Product:prod_123"])
+      expect(productEvent.cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
     })
   })
 
@@ -374,12 +380,18 @@ describe("CacheInvalidationParser", () => {
 
       // Validate cache keys for each entity type
       const productEvent = events.find((e) => e.entityType === "Product")!
-      expect(productEvent.cacheKeys).toEqual(["Product:prod_123"])
+      expect(productEvent.cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
 
       const collectionEvent = events.find(
         (e) => e.entityType === "ProductCollection"
       )!
-      expect(collectionEvent.cacheKeys).toEqual(["ProductCollection:col_456"])
+      expect(collectionEvent.cacheKeys).toEqual([
+        "ProductCollection:col_456",
+        "ProductCollection:list:*",
+      ])
 
       const categoryEvents = events.filter(
         (e) => e.entityType === "ProductCategory"
@@ -434,10 +446,13 @@ describe("CacheInvalidationParser", () => {
 
       // Validate cache keys for each entity type
       const orderEvent = events.find((e) => e.entityType === "Order")!
-      expect(orderEvent.cacheKeys).toEqual(["Order:order_123"])
+      expect(orderEvent.cacheKeys).toEqual(["Order:order_123", "Order:list:*"])
 
       const customerEvent = events.find((e) => e.entityType === "Customer")!
-      expect(customerEvent.cacheKeys).toEqual(["Customer:cus_456"])
+      expect(customerEvent.cacheKeys).toEqual([
+        "Customer:cus_456",
+        "Customer:list:*",
+      ])
 
       const itemEvent = events.find((e) => e.entityType === "OrderItem")!
       expect(itemEvent.cacheKeys).toEqual([
@@ -448,7 +463,10 @@ describe("CacheInvalidationParser", () => {
       const variantEvent = events.find(
         (e) => e.entityType === "ProductVariant"
       )!
-      expect(variantEvent.cacheKeys).toEqual(["ProductVariant:var_111"])
+      expect(variantEvent.cacheKeys).toEqual([
+        "ProductVariant:var_111",
+        "ProductVariant:list:*",
+      ])
     })
 
     it("should include simplified cache keys for created operation", () => {
@@ -475,13 +493,16 @@ describe("CacheInvalidationParser", () => {
       ])
     })
 
-    it("should include simplified cache keys for updated operation", () => {
+    it("should invalidate list caches for updated operation", () => {
       const entities: EntityReference[] = [{ type: "Product", id: "prod_123" }]
 
       const events = parser.buildInvalidationEvents(entities, "updated")
 
       const productEvent = events[0]
-      expect(productEvent.cacheKeys).toEqual(["Product:prod_123"])
+      expect(productEvent.cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
     })
   })
 })

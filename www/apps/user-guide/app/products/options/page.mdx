@@ -1,0 +1,122 @@
+---
+sidebar_position: 6
+sidebar_label: "Manage Product Options"
+tags:
+    - user guide
+    - product
+products:
+    - product
+---
+
+import { EllipsisHorizontal, TaxExclusive, TaxInclusive, ArrowUpRightOnBox } from "@medusajs/icons"
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Product Options in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to create and manage product options.
+
+<Note>
+
+As of [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), product options can be managed globally and reused across products. If you don't see the Product → Options page in the sidebar, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+## What are Product Options?
+
+A product option is a customizable attribute that provides variations or choices for customers. Common examples include size, color, material, and style.
+
+In the Medusa Admin, you can create and manage product options, then associate them with products when creating or editing a product. This allows you to define variations that customers can choose from.
+
+To view all product options, go to the Product → Options page. You can see a list of global options by default. To view all options, clear the "Type is Global" filter.
+
+![Product Options List in the Medusa Admin dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1765527807/User%20Guide/CleanShot_2025-12-12_at_10.22.21_2x_wysuv2.png)
+
+### Option Statuses
+
+You can see the status of each product option in the list page and in the option's details page. The status can be either:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Global
+      </Table.Cell>
+      <Table.Cell>
+        The option can be used by multiple products. You created this option from the Product → Options page.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Product-specific
+      </Table.Cell>
+      <Table.Cell>
+        The option is specific to a single product. You created this option when creating a product.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Create a Product Option
+
+To create a product option:
+
+1. Go to Product → Options.
+2. Click the **Create** button at the top end of the main section.
+3. In the form that opens, enter the following details:
+    - **Title**: The name of the option (for example, "Size" or "Color").
+    - **Values**: Comma-separated values for the option (for example, "Small, Medium, Large").
+    - **Organize rankings**: Reorder the option values by dragging and dropping them.
+4. Click the **Save** button.
+
+You can then use the new product option when [creating a product](../create/page.mdx#1-details-step) or [editing a product's options](../edit/page.mdx#edit-option).
+
+![Create Product Option form in the Medusa Admin dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1765528360/User%20Guide/CleanShot_2025-12-12_at_10.25.40_2x_t7fndd.png)
+
+---
+
+## Edit a Product Option
+
+To edit a product option:
+
+1. Go to Product → Options.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the row of the option you want to edit.
+3. Click **Edit** from the dropdown menu.
+4. In the side window that opens, you can edit the option's title, values, and the order of the values.
+5. Once you're done, click the **Save** button.
+
+![Edit Product Option form in the Medusa Admin dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1765530115/User%20Guide/CleanShot_2025-12-12_at_11.01.44_2x_sh9bvw.png)
+
+---
+
+## Delete a Product Option
+
+<Note type="warning">
+
+Deleting a product option is irreversible.
+
+</Note>
+
+You can delete a product option if it's not used by any products.
+
+To delete a product option:
+
+1. Go to Product → Options.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the row of the option you want to delete.
+3. Click **Delete** from the dropdown menu.
+4. Confirm the action by clicking the "Delete" button in the pop-up.
