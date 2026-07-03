@@ -31,6 +31,7 @@ import {
 } from "../../common"
 import { toMikroORMEntity } from "../../dml"
 import { buildQuery } from "../../modules-sdk/build-query"
+import { augmentFindOptionsWithCrossModuleJoins } from "./cross-module-query"
 import { transactionWrapper } from "../utils"
 import { dbErrorMapper } from "./db-error-mapper"
 import { mikroOrmSerializer } from "./mikro-orm-serializer"
@@ -461,27 +462,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       context?: Context
     ): Promise<InferRepositoryReturnType<T>[]> {
       const manager = this.getActiveManager<EntityManager>(context)
-
-      const findOptions_ = { ...options }
-      findOptions_.options ??= {}
-
-      if (!("strategy" in findOptions_.options)) {
-        if (findOptions_.options.limit != null || findOptions_.options.offset) {
-          // TODO: from 7+ it will be the default strategy
-          Object.assign(findOptions_.options, {
-            strategy: LoadStrategy.SELECT_IN,
-          })
-        }
-      }
-
-      pruneFindOptionsAgainstMetadata(
-        manager.getDriver().getMetadata().get(this.entity.name),
-        findOptions_.options
-      )
-
-      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
-        findOptions: findOptions_,
-      })
+      const findOptions_ = this.prepareFindOptions(options, manager)
 
       return (await manager.find(
         this.entity as EntityName<T>,
@@ -495,27 +476,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       context: Context = {}
     ): Promise<[InferRepositoryReturnType<T>[], number]> {
       const manager = this.getActiveManager<EntityManager>(context)
-
-      const findOptions_ = { ...findOptions }
-      findOptions_.options ??= {}
-
-      if (!("strategy" in findOptions_.options)) {
-        if (findOptions_.options.limit != null || findOptions_.options.offset) {
-          // TODO: from 7+ it will be the default strategy
-          Object.assign(findOptions_.options, {
-            strategy: LoadStrategy.SELECT_IN,
-          })
-        }
-      }
-
-      pruneFindOptionsAgainstMetadata(
-        manager.getDriver().getMetadata().get(this.entity.name),
-        findOptions_.options
-      )
-
-      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
-        findOptions: findOptions_,
-      })
+      const findOptions_ = this.prepareFindOptions(findOptions, manager)
 
       return (await manager.findAndCount(
         this.entity,
@@ -928,7 +889,9 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           .onConflict()
           .ignore()
 
-        const deleteQuery = (manager.getTransactionContext() ?? manager.getKnex())
+        const deleteQuery = (
+          manager.getTransactionContext() ?? manager.getKnex()
+        )
           .queryBuilder()
           .from(pivotMeta!.tableName)
           .delete()
@@ -963,10 +926,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
             )
           }
         } else {
-          await promiseAll([
-            insertQuery.execute("all", true),
-            deleteQuery,
-          ])
+          await promiseAll([insertQuery.execute("all", true), deleteQuery])
         }
       }
     }
@@ -1129,7 +1089,9 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           .onConflict()
           .ignore()
 
-        const deleteQuery = (manager.getTransactionContext() ?? manager.getKnex())
+        const deleteQuery = (
+          manager.getTransactionContext() ?? manager.getKnex()
+        )
           .queryBuilder()
           .from(pivotMeta!.tableName)
           .delete()
@@ -1164,10 +1126,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
             )
           }
         } else {
-          await promiseAll([
-            insertQuery.execute("all", true),
-            deleteQuery,
-          ])
+          await promiseAll([insertQuery.execute("all", true), deleteQuery])
         }
 
         return { entities: normalizedData, performedActions }
@@ -1483,6 +1442,73 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       const normalizedFilters = this.normalizeFilters(filters)
 
       return await super.softDelete(normalizedFilters, sharedContext)
+    }
+
+    private getEntityName(): string {
+      return (
+        (this.entity as EntityClass<any>).name ??
+        (this.entity as unknown as EntitySchema).meta.className
+      )
+    }
+
+    private getPrimaryKeyField(): string {
+      return MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(this.entity)[0]
+    }
+
+    /**
+     * Resolve the schema the current connection operates on so cross-module
+     * joins can qualify link/target tables correctly on non-public schemas.
+     */
+    private getConnectionSchema(manager: EntityManager): string | undefined {
+      const em = manager as unknown as {
+        schema?: string
+        config?: { get?: (key: string) => unknown }
+      }
+
+      return em.schema ?? (em.config?.get?.("schema") as string) ?? undefined
+    }
+
+    private prepareFindOptions(
+      options: DAL.FindOptions<T>,
+      manager: EntityManager
+    ): DAL.FindOptions<T> {
+      let findOptions_: DAL.FindOptions<T> = {
+        where: { ...(options.where ?? {}) } as DAL.FindOptions<T>["where"],
+        options: {
+          ...(options.options ?? {}),
+        },
+      }
+
+      findOptions_ = augmentFindOptionsWithCrossModuleJoins(findOptions_, {
+        entityName: this.getEntityName(),
+        primaryKey: this.getPrimaryKeyField(),
+        defaultSchema: this.getConnectionSchema(manager),
+      })
+      findOptions_.options ??= {}
+
+      if (findOptions_.options?.__internal) {
+        delete findOptions_.options.__internal
+      }
+
+      if (!("strategy" in findOptions_.options)) {
+        if (findOptions_.options.limit != null || findOptions_.options.offset) {
+          // TODO: from 7+ it will be the default strategy
+          Object.assign(findOptions_.options, {
+            strategy: LoadStrategy.SELECT_IN,
+          })
+        }
+      }
+
+      pruneFindOptionsAgainstMetadata(
+        manager.getDriver().getMetadata().get(this.entity.name),
+        findOptions_.options
+      )
+
+      MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
+        findOptions: findOptions_,
+      })
+
+      return findOptions_
     }
 
     private normalizeFilters(
