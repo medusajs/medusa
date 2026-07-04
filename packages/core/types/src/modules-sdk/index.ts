@@ -18,6 +18,9 @@ export {
   RemoteQueryObjectFromStringResult,
 }
 
+/**
+ * A constructor type for a class.
+ */
 export type Constructor<T> = new (...args: any[]) => T | (new () => T)
 
 export * from "../common/medusa-container"
@@ -27,6 +30,9 @@ export * from "./remote-query"
 export * from "./remote-query-entry-points"
 export * from "./to-remote-query"
 
+/**
+ * The log level for the database logger.
+ */
 export type LogLevel =
   | "query"
   | "schema"
@@ -35,8 +41,14 @@ export type LogLevel =
   | "info"
   | "log"
   | "migration"
+/**
+ * The logger options for the database connection.
+ */
 export type LoggerOptions = boolean | "all" | LogLevel[]
 
+/**
+ * A custom module definition used when registering a module that isn't part of Medusa's default modules.
+ */
 export type CustomModuleDefinition = {
   key?: string
   label?: string
@@ -44,6 +56,9 @@ export type CustomModuleDefinition = {
   dependencies?: string[]
 }
 
+/**
+ * The declaration for a module resolved internally within the Medusa application.
+ */
 export type InternalModuleDeclaration = {
   scope: "internal"
   dependencies?: string[]
@@ -61,6 +76,9 @@ export type InternalModuleDeclaration = {
   worker_mode?: "shared" | "worker" | "server"
 }
 
+/**
+ * The declaration for a module resolved from an external server.
+ */
 export type ExternalModuleDeclaration = {
   scope: "external"
   definition?: CustomModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
@@ -80,6 +98,9 @@ export type ExternalModuleDeclaration = {
   main?: boolean
 }
 
+/**
+ * The resolved configuration for a module, including its path and declaration details.
+ */
 export type ModuleResolution = {
   resolutionPath: string | false
   definition: ModuleDefinition
@@ -89,6 +110,9 @@ export type ModuleResolution = {
   moduleExports?: ModuleExports | ModuleProviderExports
 }
 
+/**
+ * The definition of a Medusa module, including its key, label, and default declaration.
+ */
 export type ModuleDefinition = {
   key: string
   defaultPackage: string | false
@@ -104,6 +128,9 @@ export type ModuleDefinition = {
     | ExternalModuleDeclaration
 }
 
+/**
+ * The definition of a link module that creates a pivot table between two modules.
+ */
 export type LinkModuleDefinition = {
   key: string
   label: string
@@ -112,17 +139,26 @@ export type LinkModuleDefinition = {
 }
 
 type ModuleDeclaration = ExternalModuleDeclaration | InternalModuleDeclaration
+/**
+ * The full configuration for a module, combining its declaration with its resolved path and definition.
+ */
 export type ModuleConfig = ModuleDeclaration & {
   module: string
   path: string
   definition: ModuleDefinition
 }
 
+/**
+ * A loaded module instance with its joiner configuration and definition attached.
+ */
 export type LoadedModule = unknown & {
   __joinerConfig: ModuleJoinerConfig
   __definition: ModuleDefinition
 }
 
+/**
+ * The options passed to a module's loader function.
+ */
 export type LoaderOptions<TOptions = Record<string, unknown>> = {
   container: MedusaContainer
   options?: TOptions
@@ -130,16 +166,25 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
   dataLoaderOnly?: boolean
 }
 
+/**
+ * A function that initializes a module's resources, such as its database connection.
+ */
 export type ModuleLoaderFunction = (
   options: LoaderOptions<any>,
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
+/**
+ * The response returned when listing registered modules and their resolution paths.
+ */
 export type ModulesResponse = {
   module: string
   resolution: string | false
 }[]
 
+/**
+ * Extra fields to be added to a link module's pivot table.
+ */
 export type LinkModulesExtraFields = Record<
   string,
   {
@@ -188,6 +233,9 @@ export type LinkDefinition = {
   data?: Record<string, unknown>
 }
 
+/**
+ * The joiner configuration for a module, used to set up relationships between modules via the Remote Joiner.
+ */
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"
@@ -244,6 +292,9 @@ export type ModuleJoinerConfig = Omit<
   }
 }
 
+/**
+ * A relationship configuration for a module in the Remote Joiner, extending the base joiner relationship.
+ */
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
   /**
    * If true, the link joiner will cascade deleting the relationship
@@ -261,6 +312,9 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
   hasMany?: boolean
 }
 
+/**
+ * The exports of a module, including its service class and optional loader and migration functions.
+ */
 export type ModuleExports<T = Constructor<any>> = {
   service: T
   loaders?: ModuleLoaderFunction[]
@@ -284,6 +338,9 @@ export type ModuleExports<T = Constructor<any>> = {
   discoveryPath?: string
 }
 
+/**
+ * The options used to initialize a module's database connection.
+ */
 export interface ModuleServiceInitializeOptions {
   database: {
     /**
@@ -309,6 +366,9 @@ export interface ModuleServiceInitializeOptions {
   }
 }
 
+/**
+ * The options used to initialize a module with a custom data layer, such as custom repositories.
+ */
 export type ModuleServiceInitializeCustomDataLayerOptions = {
   manager?: any
   repositories?: {
