@@ -3,7 +3,7 @@ import * as path from "path"
 import { parse } from "@typescript-eslint/typescript-estree"
 import { createRule } from "../../create-rule"
 import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
-import { toPosix } from "../../util/filename"
+import { normalizePathForComparison } from "../../util/filename"
 
 type MessageIds = "loaderNotRegistered"
 
@@ -26,7 +26,7 @@ function locateModuleIndex(filename: string): {
   indexPath: string
   loaderKey: string
 } | null {
-  const posix = toPosix(filename)
+  const posix = normalizePathForComparison(filename)
   const match = posix.match(/^(.*\/modules\/[^/]+)\/loaders\/(.+)$/)
   if (!match) {
     return null
@@ -46,7 +46,7 @@ function resolveImportSource(source: string, fromDir: string): string | null {
   if (!source.startsWith(".")) {
     return null
   }
-  const resolved = toPosix(path.resolve(fromDir, source))
+  const resolved = normalizePathForComparison(path.resolve(fromDir, source))
   return stripExt(resolved)
 }
 
