@@ -288,6 +288,152 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create a cart with items using customer-group price list", async () => {
+          const region = await regionModuleService.createRegions({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const customer = await customerModule.createCustomers({
+            first_name: "Test",
+            last_name: "Test",
+          })
+
+          const customer_group = await customerModule.createCustomerGroups({
+            name: "Test Group",
+          })
+
+          await customerModule.addCustomerToGroup({
+            customer_id: customer.id,
+            customer_group_id: customer_group.id,
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.createInventoryItems({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
+
+          await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+              prices: [
+                {
+                  amount: 1500,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                },
+              ],
+              rules: {
+                "customer.groups.id": [customer_group.id],
+              },
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          const { result } = await createCartWorkflow(appContainer).run({
+            input: {
+              currency_code: "usd",
+              region_id: region.id,
+              customer_id: customer.id,
+              sales_channel_id: salesChannel.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+
+          const cart = await cartModuleService.retrieveCart(result.id, {
+            relations: ["items"],
+          })
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 1500,
+                  is_tax_inclusive: true,
+                  quantity: 1,
+                }),
+              ]),
+            })
+          )
+        })
+
         it("should revert if the cart creation fails", async () => {
           const region = await regionModuleService.createRegions({
             name: "US",
