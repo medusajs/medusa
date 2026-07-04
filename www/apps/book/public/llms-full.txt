@@ -24659,7 +24659,7 @@ export async function GET(
 
 You disable throwing errors in the workflow by setting the `throwOnError` property to `false` in the `run` method of the workflow.
 
-The object returned by the `run` method contains an `errors` property. This property is an array of errors that occured during the workflow's execution. You can check this array to see if any errors occurred and handle them accordingly.
+The object returned by the `run` method contains an `errors` property. This property is an array of errors that occurred during the workflow's execution. You can check this array to see if any errors occurred and handle them accordingly.
 
 An error object has the following properties:
 
