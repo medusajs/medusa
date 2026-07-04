@@ -41,6 +41,16 @@ class Entity1 {
   @Property({ nullable: true })
   deleted_at: Date | null
 
+  @Property({
+    columnType: "timestamptz",
+    type: "date",
+    nullable: false,
+    defaultRaw: "now()",
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+  })
+  updated_at: Date
+
   @OneToMany(() => Entity2, (entity2) => entity2.entity1)
   entity2 = new Collection<Entity2>(this)
 
@@ -461,6 +471,44 @@ describe("mikroOrmRepository", () => {
           id: "1",
           title: "en1",
         })
+      )
+    })
+
+    it("should apply onUpdate hooks when batch updating entities", async () => {
+      const entity1 = { id: "1", title: "en1" }
+      const originalUpdatedAt = new Date("2020-01-01T00:00:00.000Z")
+
+      await manager1().upsertWithReplace([
+        { ...entity1, updated_at: originalUpdatedAt },
+      ])
+
+      const [createdEntity] = await manager1().find({
+        where: { id: "1" },
+      })
+
+      expect(createdEntity.updated_at.getTime()).toEqual(
+        originalUpdatedAt.getTime()
+      )
+
+      entity1.title = "en1-update"
+
+      const { performedActions } = await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions).toEqual({
+        created: {},
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        deleted: {},
+      })
+
+      const [updatedEntity] = await manager1().find({
+        where: { id: "1" },
+      })
+
+      expect(updatedEntity.title).toBe("en1-update")
+      expect(updatedEntity.updated_at.getTime()).toBeGreaterThan(
+        createdEntity.updated_at.getTime()
       )
     })
 
