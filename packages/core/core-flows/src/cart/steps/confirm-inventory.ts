@@ -6,7 +6,6 @@ import {
   MathBN,
   MedusaError,
   Modules,
-  promiseAll,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -40,6 +39,26 @@ export interface ConfirmVariantInventoryStepInput {
      */
     location_ids: string[]
   }[]
+}
+
+type InventoryLevelAvailability = {
+  inventory_item_id: string
+  location_id: string
+  stocked_quantity?: BigNumberInput
+  reserved_quantity?: BigNumberInput
+  raw_stocked_quantity?: BigNumberInput
+  raw_reserved_quantity?: BigNumberInput
+}
+
+/**
+ * Mirrors the availability calculation in prepare-confirm-inventory-input and
+ * inventoryLevelRepository.getAvailableQuantity (raw fields preferred).
+ */
+function getLevelAvailableQuantity(level: InventoryLevelAvailability) {
+  return MathBN.sub(
+    level.raw_stocked_quantity ?? level.stocked_quantity ?? 0,
+    level.raw_reserved_quantity ?? level.reserved_quantity ?? 0
+  )
 }
 
 export const confirmInventoryStepId = "confirm-inventory-step"
@@ -82,10 +101,18 @@ export const confirmInventoryStep = createStep(
         },
         {
           take: null,
+          select: [
+            "inventory_item_id",
+            "location_id",
+            "stocked_quantity",
+            "reserved_quantity",
+            "raw_stocked_quantity",
+            "raw_reserved_quantity",
+          ],
         }
       )
 
-      const levelMap = new Map<string, any[]>()
+      const levelMap = new Map<string, InventoryLevelAvailability[]>()
       inventoryLevels.forEach((level) => {
         const levels = levelMap.get(level.inventory_item_id) || []
         levels.push(level)
@@ -96,12 +123,10 @@ export const confirmInventoryStep = createStep(
         const levels = levelMap.get(item.inventory_item_id) || []
         const availableQuantity = levels
           .filter((level) => item.location_ids.includes(level.location_id))
-          .reduce((acc, level) => {
-            return MathBN.add(
-              acc,
-              MathBN.sub(level.stocked_quantity, level.reserved_quantity)
-            )
-          }, MathBN.convert(0))
+          .reduce(
+            (acc, level) => MathBN.add(acc, getLevelAvailableQuantity(level)),
+            MathBN.convert(0)
+          )
 
         const itemQuantity = MathBN.mult(item.quantity, item.required_quantity)
         return MathBN.gte(availableQuantity, itemQuantity)
