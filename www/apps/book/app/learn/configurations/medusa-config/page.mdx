@@ -177,6 +177,25 @@ When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable`
 
 </Note>
 
+To use a dynamic password — for example, with AWS RDS IAM authentication — pass a `dynamicPassword` function that returns a fresh token for each new connection:
+
+```ts title="medusa-config.ts"
+import { generateAuthToken } from "./src/utils/rds-auth"
+
+module.exports = defineConfig({
+  projectConfig: {
+    databaseDriverOptions: {
+      dynamicPassword: async () => generateAuthToken(),
+      expirationChecker: () => {
+        return tokenHasExpired()
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
 #### Properties
 
 <TypeList
@@ -238,6 +257,16 @@ When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable`
           ]
         }
       ]
+    },
+    {
+      name: "dynamicPassword",
+      type: "`() => string` \| `() => Promise<string>`",
+      description: `A function that returns a password (or a promise resolving to a password) called for each new database connection. Use this for short-lived credentials, such as AWS RDS IAM authentication tokens, that must be refreshed per connection. Available since v2.17.0.`
+    },
+    {
+      name: "expirationChecker",
+      type: "`() => boolean`",
+      description: `A function that returns \`true\` when a connection's credentials have expired. When this returns \`true\`, the connection pool creates a new connection and calls \`dynamicPassword\` to obtain fresh credentials. Available since v2.17.0.`
     },
     {
       name: "idle_in_transaction_session_timeout",
