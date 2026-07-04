@@ -4,7 +4,7 @@ import {
   ICustomerModuleService,
   UpdateCustomerAddressDTO,
 } from "@medusajs/framework/types"
-import { Modules, isDefined } from "@medusajs/framework/utils"
+import { Modules, isDefined, MedusaError } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { unsetForCreate, unsetForUpdate } from "./utils"
 
@@ -71,6 +71,7 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
       Modules.CUSTOMER
     )
     if (isDefined(data.create)) {
+      // eslint-disable-next-line @medusajs/step-must-return-step-response
       return unsetForCreate(
         data.create,
         customerModuleService,
@@ -79,6 +80,7 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
     }
 
     if (isDefined(data.update)) {
+      // eslint-disable-next-line @medusajs/step-must-return-step-response
       return unsetForUpdate(
         data.update,
         customerModuleService,
@@ -86,7 +88,10 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
       )
     }
 
-    throw new Error("Invalid step input")
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA, 
+      "Invalid step input"
+    )
   },
   async (addressesToSet, { container }) => {
     if (!addressesToSet?.length) {

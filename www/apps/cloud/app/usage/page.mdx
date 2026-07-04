@@ -36,6 +36,19 @@ In the Usage settings, you'll find a table with the list of resources your organ
 
 ![Usage table in the Usage settings](https://res.cloudinary.com/dza7lstvk/image/upload/v1755264824/Cloud/CleanShot_2025-08-15_at_16.33.30_2x_cbkure.png)
 
+### Usage Metrics Definitions
+
+The following metrics are tracked and billed as part of your Cloud usage:
+
+- **Data Transfer**: The data that flows in and out of your Medusa server each month, including API responses to your storefront, Admin Dashboard traffic, webhook calls, and external service communications.
+- **Compute**: The CPU and memory resources used to run your Medusa applications and background processes, measured in compute units per hour.
+- **Object Storage**: The amount of file storage space used for assets like product images, documents, and other media files, measured in gigabytes (GB).
+- **Database Storage**: The disk space used by your database to store your commerce data, including products, orders, customers, and other business data, measured in gigabytes (GB).
+- **Redis Storage**: The disk space used by Redis to store your application's cache and session data, measured in gigabytes (GB).
+- **Build Minutes**: The time taken to build your Medusa applications during deployments, measured in minutes.
+- **Emails**: The number of emails sent from your Medusa applications, including order confirmations, password resets, and marketing emails.
+- **Storefront Requests**: The number of requests made to your storefront. Every page load or API call to your storefront counts as a request.
+
 ---
 
 ## What is Flex Usage?
@@ -57,11 +70,11 @@ If you have Flex Usage, you can also see the flex charges visualized in the char
 
 ### Usage Chart Per Resource
 
-In the "Billable metrics" section of the Usage settings, you can view a chart for each resource showing your usage over time with forcasted usage. For example, you can view the usage chart for data transfer, Compute, object storage, etc...
+In the "Billable metrics" section of the Usage settings, you can view a chart for each resource showing your usage over time with forecasted usage. For example, you can view the usage chart for data transfer, Compute, object storage, etc...
 
 #### Usage Chart Types
 
-At the type of the "Billable metrics" section, you can find a "Cumulative" toggle. When enabled, the charts will display cumulative usage over time. When disabled, the charts will show daily usage.
+At the top of the "Billable metrics" section, you can find a "Cumulative" toggle. When enabled, the charts will display cumulative usage over time. When disabled, the charts will show daily usage.
 
 Cumulative usage helps you understand the total usage up to a specific date, while daily usage provides insights into your usage patterns on a day-to-day basis.
 

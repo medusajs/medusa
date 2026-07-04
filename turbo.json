@@ -5,6 +5,10 @@
       "dependsOn": ["^build"],
       "outputs": ["!node_modules/**", "!src/**", "*/**", ".medusa/**"]
     },
+    "build:plugin": {
+      "dependsOn": ["^build", "@medusajs/medusa#build"],
+      "outputs": ["!node_modules/**", "!src/**", ".medusa/**"]
+    },
     "test": {
       "outputs": []
     },

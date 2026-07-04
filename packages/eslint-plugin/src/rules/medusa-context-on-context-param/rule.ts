@@ -7,7 +7,7 @@ import {
   getParamIdentifier,
   hasDecoratorWithLocalName,
   isContextTypedIdentifier,
-  isServiceClass,
+  isMedusaServiceSuper,
   trackFrameworkUtilsImports,
   trackMedusaServiceImports,
 } from "../../util/service-scope"
@@ -39,24 +39,37 @@ export const rule = createRule<[], MessageIds>({
     function checkClass(
       node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
     ) {
-      if (!isServiceClass(node, serviceBindings)) return
+      if (!isMedusaServiceSuper(node.superClass, serviceBindings)) {
+        return
+      }
 
       for (const member of node.body.body) {
-        if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-        if (member.kind === "constructor") continue
-        if (member.computed) continue
+        if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+          continue
+        }
+        if (member.kind === "constructor") {
+          continue
+        }
+        if (member.computed) {
+          continue
+        }
         const value = member.value
-        if (
-          value.type !== AST_NODE_TYPES.FunctionExpression &&
-          value.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-        ) {
+        // Skip TypeScript overload signatures (bodyless declarations): the
+        // `@MedusaContext()` decorator can only live on the implementation,
+        // which is the method that carries a function body and is checked on
+        // its own.
+        if (value.type !== AST_NODE_TYPES.FunctionExpression) {
           continue
         }
 
         for (const param of value.params) {
           const id = getParamIdentifier(param)
-          if (!id) continue
-          if (!isContextTypedIdentifier(id)) continue
+          if (!id) {
+            continue
+          }
+          if (!isContextTypedIdentifier(id)) {
+            continue
+          }
 
           if (
             hasDecoratorWithLocalName(
@@ -75,8 +88,7 @@ export const rule = createRule<[], MessageIds>({
             node: param,
             messageId: "missingMedusaContext",
             fix: canAutofix
-              ? (fixer) =>
-                  fixer.insertTextBefore(param, `@${localName}() `)
+              ? (fixer) => fixer.insertTextBefore(param, `@${localName}() `)
               : undefined,
           })
         }

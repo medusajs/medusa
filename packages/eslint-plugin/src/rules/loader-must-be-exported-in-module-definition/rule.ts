@@ -3,16 +3,19 @@ import * as path from "path"
 import { parse } from "@typescript-eslint/typescript-estree"
 import { createRule } from "../../create-rule"
 import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
+import { toPosix } from "../../util/filename"
 
 type MessageIds = "loaderNotRegistered"
 
 const MODULE_NAME = "Module"
-const INDEX_CANDIDATES = ["index.ts", "index.tsx", "index.js", "index.mjs", "index.cjs"]
+const INDEX_CANDIDATES = [
+  "index.ts",
+  "index.tsx",
+  "index.js",
+  "index.mjs",
+  "index.cjs",
+]
 const SUPPORTED_EXTENSIONS = [".ts", ".tsx", ".js", ".mjs", ".cjs"]
-
-function toPosix(p: string): string {
-  return p.replace(/\\/g, "/")
-}
 
 function stripExt(p: string): string {
   const ext = path.extname(p)
@@ -25,7 +28,9 @@ function locateModuleIndex(filename: string): {
 } | null {
   const posix = toPosix(filename)
   const match = posix.match(/^(.*\/modules\/[^/]+)\/loaders\/(.+)$/)
-  if (!match) return null
+  if (!match) {
+    return null
+  }
   const moduleDir = match[1]
   const loaderAbs = stripExt(posix)
   for (const candidate of INDEX_CANDIDATES) {
@@ -37,11 +42,10 @@ function locateModuleIndex(filename: string): {
   return null
 }
 
-function resolveImportSource(
-  source: string,
-  fromDir: string
-): string | null {
-  if (!source.startsWith(".")) return null
+function resolveImportSource(source: string, fromDir: string): string | null {
+  if (!source.startsWith(".")) {
+    return null
+  }
   const resolved = toPosix(path.resolve(fromDir, source))
   return stripExt(resolved)
 }
@@ -56,7 +60,11 @@ function collectRegisteredLoaders(indexPath: string): Set<string> | null {
 
   let ast: ReturnType<typeof parse>
   try {
-    ast = parse(source, { jsx: indexPath.endsWith("x"), loc: false, range: false })
+    ast = parse(source, {
+      jsx: indexPath.endsWith("x"),
+      loc: false,
+      range: false,
+    })
   } catch {
     return null
   }
@@ -66,7 +74,9 @@ function collectRegisteredLoaders(indexPath: string): Set<string> | null {
   const indexDir = path.dirname(indexPath)
 
   for (const node of ast.body) {
-    if (node.type !== "ImportDeclaration") continue
+    if (node.type !== "ImportDeclaration") {
+      continue
+    }
     const src = typeof node.source.value === "string" ? node.source.value : ""
     if (src === FRAMEWORK_UTILS_SOURCE) {
       for (const spec of node.specifiers) {
@@ -80,7 +90,9 @@ function collectRegisteredLoaders(indexPath: string): Set<string> | null {
       }
     }
     const resolved = resolveImportSource(src, indexDir)
-    if (!resolved) continue
+    if (!resolved) {
+      continue
+    }
     for (const spec of node.specifiers) {
       importLocalToSource.set(spec.local.name, resolved)
     }
@@ -89,9 +101,13 @@ function collectRegisteredLoaders(indexPath: string): Set<string> | null {
   const registered = new Set<string>()
 
   const walk = (node: unknown): void => {
-    if (!node || typeof node !== "object") return
+    if (!node || typeof node !== "object") {
+      return
+    }
     if (Array.isArray(node)) {
-      for (const child of node) walk(child)
+      for (const child of node) {
+        walk(child)
+      }
       return
     }
     const n = node as { type?: string; [k: string]: unknown }
@@ -114,18 +130,24 @@ function collectRegisteredLoaders(indexPath: string): Set<string> | null {
           ) {
             continue
           }
-          if (prop.value.type !== "ArrayExpression") continue
+          if (prop.value.type !== "ArrayExpression") {
+            continue
+          }
           for (const el of prop.value.elements) {
             if (el && el.type === "Identifier") {
               const src = importLocalToSource.get(el.name)
-              if (src) registered.add(src)
+              if (src) {
+                registered.add(src)
+              }
             }
           }
         }
       }
     }
     for (const key of Object.keys(n)) {
-      if (key === "parent" || key === "loc" || key === "range") continue
+      if (key === "parent" || key === "loc" || key === "range") {
+        continue
+      }
       walk(n[key])
     }
   }
@@ -153,14 +175,22 @@ export const rule = createRule<[], MessageIds>({
     return {
       "Program:exit"(node) {
         const filename = context.filename
-        if (!filename || filename === "<input>" || filename === "<text>") return
+        if (!filename || filename === "<input>" || filename === "<text>") {
+          return
+        }
         const located = locateModuleIndex(filename)
-        if (!located) return
+        if (!located) {
+          return
+        }
 
         const registered = collectRegisteredLoaders(located.indexPath)
-        if (!registered) return
+        if (!registered) {
+          return
+        }
 
-        if (registered.has(located.loaderKey)) return
+        if (registered.has(located.loaderKey)) {
+          return
+        }
 
         context.report({
           node,

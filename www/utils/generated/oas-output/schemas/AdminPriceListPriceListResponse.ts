@@ -1,7 +1,7 @@
 /**
  * @schema AdminPriceListPriceListResponse
  * type: object
- * description: The list of prices.
+ * description: The list of prices associated with a price list.
  * x-schemaName: AdminPriceListPriceListResponse
  * required:
  *   - limit
@@ -12,7 +12,7 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The maximum number of prices returned.
+ *     description: The maximum number of prices to return.
  *   offset:
  *     type: number
  *     title: offset
@@ -20,7 +20,7 @@
  *   count:
  *     type: number
  *     title: count
- *     description: The total number of prices.
+ *     description: The maximum number of prices available.
  *   estimate_count:
  *     type: number
  *     title: estimate_count
@@ -28,7 +28,7 @@
  *     x-featureFlag: index_engine
  *   prices:
  *     type: array
- *     description: The list of prices.
+ *     description: The list of prices associated with the price list.
  *     items:
  *       $ref: "#/components/schemas/AdminPrice"
  * 

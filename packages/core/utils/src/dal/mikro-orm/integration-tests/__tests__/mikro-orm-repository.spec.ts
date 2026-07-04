@@ -295,9 +295,16 @@ describe("mikroOrmRepository", () => {
   })
 
   afterEach(async () => {
-    const generator = orm.getSchemaGenerator()
-    await generator.dropSchema()
-    await orm.close(true)
+    if (orm) {
+      const generator = orm.getSchemaGenerator()
+      await generator.dropSchema()
+      await orm.close(true)
+    }
+
+    await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
   })
 
   it("should successfully update a many to many collection providing an empty array", async () => {

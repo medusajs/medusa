@@ -1,13 +1,13 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 import { useState } from "react"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionDetailSection } from "./components/tax-region-detail-section"
 import { TaxRegionProvinceSection } from "./components/tax-region-province-section"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { TaxRegionOverrideSection } from "./components/tax-region-override-section"
 import { TaxRegionSublevelAlert } from "./components/tax-region-sublevel-alert"
 import { TaxRegionProviderSection } from "./tax-region-provider-section"
@@ -28,8 +28,6 @@ export const TaxRegionDetail = () => {
     error,
   } = useTaxRegion(id!, undefined, { initialData })
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !taxRegion) {
     return <SingleColumnPageSkeleton sections={4} showJSON />
   }
@@ -39,27 +37,39 @@ export const TaxRegionDetail = () => {
   }
 
   return (
-    <SingleColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="tax.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={taxRegion}
-      showJSON
-      // showMetadata // TOOD -> enable tax region metadata
-      widgets={{
-        after: getWidgets("tax.details.after"),
-        before: getWidgets("tax.details.before"),
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="TaxRegionSublevelAlert">
+              <TaxRegionSublevelAlert
+                taxRegion={taxRegion}
+                showSublevelRegions={showSublevelRegions}
+                setShowSublevelRegions={setShowSublevelRegions}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionDetailSection">
+              <TaxRegionDetailSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionProvinceSection">
+              <TaxRegionProvinceSection
+                taxRegion={taxRegion}
+                showSublevelRegions={showSublevelRegions}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionOverrideSection">
+              <TaxRegionOverrideSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionProviderSection">
+              <TaxRegionProviderSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
+          </>
+        ),
       }}
-    >
-      <TaxRegionSublevelAlert
-        taxRegion={taxRegion}
-        showSublevelRegions={showSublevelRegions}
-        setShowSublevelRegions={setShowSublevelRegions}
-      />
-      <TaxRegionDetailSection taxRegion={taxRegion} />
-      <TaxRegionProvinceSection
-        taxRegion={taxRegion}
-        showSublevelRegions={showSublevelRegions}
-      />
-      <TaxRegionOverrideSection taxRegion={taxRegion} />
-      <TaxRegionProviderSection taxRegion={taxRegion} />
-    </SingleColumnPage>
+    />
   )
 }

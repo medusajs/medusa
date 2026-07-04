@@ -1,22 +1,13 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import {
   AuthenticationInput,
-  ConfigModule,
   IAuthModuleService,
 } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  Modules,
-} from "@medusajs/framework/utils"
-import { generateJwtTokenForAuthIdentity } from "../../utils/generate-jwt-token"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { generateJwtTokenWithChecks } from "../../utils/generate-jwt-token"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
-  const config: ConfigModule = req.scope.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
-
   const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authData = {
@@ -28,51 +19,22 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const {
-    success,
-    error,
-    authIdentity,
-    location,
-    mfa_challenge,
-    verification,
-  } = await service.authenticate(auth_provider, authData)
+  const { success, error, authIdentity, location, mfaChallenge } =
+    await service.authenticate(auth_provider, authData)
 
   if (location) {
     return res.status(200).json({ location })
   }
 
-  if (success && verification) {
-    return res.status(200).json({
-      verification_required: true,
-      verification,
-    })
-  }
-
-  if (success && mfa_challenge) {
-    return res.status(200).json({
-      mfa_required: true,
-      mfa_challenge,
-    })
-  }
-
   if (success && authIdentity) {
-    const { http } = config.projectConfig
+    const result = await generateJwtTokenWithChecks(req.scope, {
+      authIdentity,
+      mfaChallenge,
+      actorType: actor_type,
+      authProvider: auth_provider,
+    })
 
-    const token = await generateJwtTokenForAuthIdentity(
-      {
-        authIdentity,
-        actorType: actor_type,
-        authProvider: auth_provider,
-        container: req.scope,
-      },
-      {
-        secret: http.jwtSecret!,
-        expiresIn: http.jwtExpiresIn,
-        options: http.jwtOptions,
-      }
-    )
-
-    return res.status(200).json({ token })
+    return res.status(200).json(result)
   }
 
   throw new MedusaError(

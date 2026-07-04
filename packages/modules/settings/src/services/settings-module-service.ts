@@ -16,7 +16,12 @@ import {
   MedusaService,
 } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { ViewConfiguration, UserPreference, PropertyLabel } from "@/models"
+import {
+  ViewConfiguration,
+  UserPreference,
+  PropertyLabel,
+  LayoutConfiguration,
+} from "@/models"
 import {
   EntityDiscoveryService,
   generateEntityColumns,
@@ -28,6 +33,7 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   viewConfigurationService: ModulesSdkTypes.IMedusaInternalService<any>
   propertyLabelService: ModulesSdkTypes.IMedusaInternalService<any>
+  layoutConfigurationService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class SettingsModuleService
@@ -35,7 +41,8 @@ export default class SettingsModuleService
     ViewConfiguration: { dto: SettingsTypes.ViewConfigurationDTO }
     UserPreference: { dto: SettingsTypes.UserPreferenceDTO }
     PropertyLabel: { dto: SettingsTypes.PropertyLabelDTO }
-  }>({ ViewConfiguration, UserPreference, PropertyLabel })
+    LayoutConfiguration: { dto: SettingsTypes.LayoutConfigurationDTO }
+  }>({ ViewConfiguration, UserPreference, PropertyLabel, LayoutConfiguration })
   implements SettingsTypes.ISettingsModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -46,6 +53,10 @@ export default class SettingsModuleService
   protected readonly propertyLabelService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof PropertyLabel>
   >
+  // layoutConfigurationService_ is needed for special JSON update handling (upsertWithReplace)
+  protected readonly layoutConfigurationService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof LayoutConfiguration>
+  >
   protected entityDiscoveryService_: EntityDiscoveryService
 
   constructor(
@@ -53,6 +64,7 @@ export default class SettingsModuleService
       baseRepository,
       viewConfigurationService,
       propertyLabelService,
+      layoutConfigurationService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -60,6 +72,7 @@ export default class SettingsModuleService
     this.baseRepository_ = baseRepository
     this.viewConfigurationService_ = viewConfigurationService
     this.propertyLabelService_ = propertyLabelService
+    this.layoutConfigurationService_ = layoutConfigurationService
     this.entityDiscoveryService_ = new EntityDiscoveryService()
   }
 
@@ -382,6 +395,152 @@ export default class SettingsModuleService
       userId,
       `active_view.${entity}`,
       { viewConfigurationId: null },
+      sharedContext
+    )
+  }
+
+  @InjectManager()
+  async getSystemDefaultLayoutConfiguration(
+    zone: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<SettingsTypes.LayoutConfigurationDTO | null> {
+    const [systemDefault] = await this.listLayoutConfigurations(
+      { zone, is_system_default: true },
+      { take: 1 },
+      sharedContext
+    )
+
+    return systemDefault ?? null
+  }
+
+  @InjectManager()
+  @EmitEvents()
+  async setLayoutConfiguration(
+    zone: string,
+    userId: string,
+    configuration: SettingsTypes.LayoutConfigurationData,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<SettingsTypes.LayoutConfigurationDTO> {
+    const upserted = await this.upsertLayoutConfiguration_(
+      { zone, user_id: userId, is_system_default: false },
+      configuration,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<SettingsTypes.LayoutConfigurationDTO>(
+      upserted
+    )
+  }
+
+  @InjectManager()
+  @EmitEvents()
+  async setSystemDefaultLayoutConfiguration(
+    zone: string,
+    configuration: SettingsTypes.LayoutConfigurationData,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<SettingsTypes.LayoutConfigurationDTO> {
+    const upserted = await this.upsertLayoutConfiguration_(
+      { zone, user_id: null, is_system_default: true },
+      configuration,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<SettingsTypes.LayoutConfigurationDTO>(
+      upserted
+    )
+  }
+
+  @InjectTransactionManager()
+  protected async upsertLayoutConfiguration_(
+    selector: {
+      zone: string
+      user_id: string | null
+      is_system_default: boolean
+    },
+    configuration: SettingsTypes.LayoutConfigurationData,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<InferEntityType<typeof LayoutConfiguration>> {
+    const [existing] = await this.layoutConfigurationService_.list(
+      { zone: selector.zone, user_id: selector.user_id },
+      { select: ["id"], take: 1 },
+      sharedContext
+    )
+
+    // Replace the configuration JSON wholesale rather than merging, so removing
+    // a widget override actually drops it.
+    const normalized = { widgets: configuration?.widgets ?? {} }
+
+    const payload = existing
+      ? { id: existing.id, configuration: normalized }
+      : {
+          zone: selector.zone,
+          user_id: selector.user_id,
+          is_system_default: selector.is_system_default,
+          configuration: normalized,
+        }
+
+    const { entities } =
+      await this.layoutConfigurationService_.upsertWithReplace(
+        [payload],
+        { relations: [] },
+        sharedContext
+      )
+
+    return entities[0]
+  }
+
+  @InjectManager()
+  @EmitEvents()
+  async clearLayoutConfiguration(
+    zone: string,
+    userId: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const existing = await this.layoutConfigurationService_.list(
+      { zone, user_id: userId },
+      { select: ["id"] },
+      sharedContext
+    )
+
+    if (existing.length) {
+      await this.deleteLayoutConfigurations(
+        existing.map((c) => c.id),
+        sharedContext
+      )
+    }
+  }
+
+  protected getActiveLayoutScopeKey(zone: string): string {
+    return `active_layout.${zone}`
+  }
+
+  @InjectManager()
+  async getActiveLayoutScope(
+    zone: string,
+    userId: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<"personal" | "default" | null> {
+    const pref = await this.getUserPreference(
+      userId,
+      this.getActiveLayoutScopeKey(zone),
+      sharedContext
+    )
+
+    const scope = pref?.value?.scope
+    return scope === "personal" || scope === "default" ? scope : null
+  }
+
+  @InjectManager()
+  async setActiveLayoutScope(
+    zone: string,
+    userId: string,
+    scope: "personal" | "default" | null,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.setUserPreference(
+      userId,
+      this.getActiveLayoutScopeKey(zone),
+      { scope },
       sharedContext
     )
   }

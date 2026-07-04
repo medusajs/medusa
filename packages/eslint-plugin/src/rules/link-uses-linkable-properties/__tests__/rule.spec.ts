@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("link-uses-linkable-properties", rule, {
   valid: [
@@ -104,6 +99,19 @@ ruleTester.run("link-uses-linkable-properties", rule, {
             },
           },
           { readOnly: true }
+        )
+      `,
+    },
+    // Object form whose `linkable` value references a data model by id
+    // (e.g. the only way to link to draft orders, via `order.id`).
+    {
+      code: `
+        import { defineLink } from "@medusajs/framework/utils"
+        import MarketplaceModule from "../modules/marketplace"
+        import OrderModule from "@medusajs/medusa/order"
+        export default defineLink(
+          MarketplaceModule.linkable.vendor,
+          { linkable: OrderModule.linkable.order.id, isList: true }
         )
       `,
     },

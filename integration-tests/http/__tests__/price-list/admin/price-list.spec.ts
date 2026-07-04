@@ -12,7 +12,7 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let pricelist1
     let pricelist1Prices
     let pricelist2
@@ -21,7 +21,7 @@ medusaIntegrationTestRunner({
     let customerGroup1
     let shippingProfile
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -109,6 +109,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.price_list
+
+      await dbUtils.snapshot()
     })
 
     describe("/admin/price-lists", () => {

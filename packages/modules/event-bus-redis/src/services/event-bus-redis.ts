@@ -108,7 +108,18 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   __hooks = {
     onApplicationStart: async () => {
-      await this.bullWorker_?.run()
+      if (!this.bullWorker_) {
+        return
+      }
+
+      // `run()` only resolves when the worker is closed and must not be awaited
+      // during application startup. See https://github.com/taskforcesh/bullmq/issues/2128
+      void this.bullWorker_.run().catch((error) => {
+        this.logger_.error(
+          `Error running event bus worker: ${error.message}`,
+          error
+        )
+      })
     },
     onApplicationShutdown: async () => {
       await this.queue_.close()
@@ -198,7 +209,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     eventsData: Message<T> | Message<T>[],
     options: Options = {}
   ): Promise<void> {
-    let eventsDataArray = Array.isArray(eventsData) ? eventsData : [eventsData]
+    let eventsDataArray = (
+      Array.isArray(eventsData) ? eventsData : [eventsData]
+    ).map((eventData) => ({
+      ...eventData,
+      metadata: this.withCreatedAtMetadata(eventData.metadata),
+    }))
 
     const { groupedEventsTTL = 600 } = options
     delete options.groupedEventsTTL
@@ -224,16 +240,21 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const promises: Promise<unknown>[] = []
 
     if (eventsToEmit.length) {
-      eventsToEmit.map((eventData) =>
+      eventsToEmit.forEach((eventData) =>
         this.callInterceptors(eventData, { isGrouped: false })
       )
 
-      const eventsWithSubscribers = eventsToEmit.filter((eventData) => {
-        const eventSubscribers =
-          this.eventToSubscribersMap.get(eventData.name) || []
-        const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
-        return eventSubscribers.length || wildcardSubscribers.length
-      })
+      const eventsWithSubscribers = eventsToEmit
+        .filter((eventData) => {
+          const eventSubscribers =
+            this.eventToSubscribersMap.get(eventData.name) || []
+          const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
+          return eventSubscribers.length || wildcardSubscribers.length
+        })
+        .map((eventData) => ({
+          ...eventData,
+          metadata: this.withPublishedAtMetadata(eventData.metadata),
+        }))
 
       if (eventsWithSubscribers.length) {
         const emitData = this.buildEvents(eventsWithSubscribers, options)
@@ -292,25 +313,34 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const groupedEvents = await this.getGroupedEvents(eventGroupId)
 
     // Call interceptors before emitting grouped events
-    // Extract the original messages from the job data structure
     groupedEvents.map((jobData) => {
-      const message = {
-        name: jobData.name,
-        data: jobData.data,
-        metadata: jobData.data.metadata,
-      }
-      this.callInterceptors(message as any, {
-        isGrouped: true,
-        eventGroupId,
-      })
+      this.callInterceptors(
+        {
+          name: jobData.name,
+          data: jobData.data.data,
+          metadata: jobData.data.metadata,
+        },
+        {
+          isGrouped: true,
+          eventGroupId,
+        }
+      )
     })
 
-    const eventsWithSubscribers = groupedEvents.filter((jobData) => {
-      const eventSubscribers =
-        this.eventToSubscribersMap.get(jobData.name) || []
-      const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
-      return eventSubscribers.length || wildcardSubscribers.length
-    })
+    const eventsWithSubscribers = groupedEvents
+      .filter((jobData) => {
+        const eventSubscribers =
+          this.eventToSubscribersMap.get(jobData.name) || []
+        const wildcardSubscribers = this.eventToSubscribersMap.get("*") || []
+        return eventSubscribers.length || wildcardSubscribers.length
+      })
+      .map((jobData) => ({
+        ...jobData,
+        data: {
+          ...jobData.data,
+          metadata: this.withPublishedAtMetadata(jobData.data.metadata),
+        },
+      }))
 
     if (eventsWithSubscribers.length) {
       await this.queue_.addBulk(eventsWithSubscribers)
@@ -412,13 +442,15 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const completedSubscribersInCurrentAttempt: string[] = []
 
+    const metadata = this.parseEventMetadataDates(data.metadata)
+
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
         // De-serialize the event data and metadata from a single field into the original format expected by the subscribers
         const event = {
           name,
           data: data.data,
-          metadata: data.metadata,
+          metadata,
         }
 
         try {

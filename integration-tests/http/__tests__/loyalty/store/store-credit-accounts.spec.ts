@@ -10,14 +10,14 @@ import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-
 jest.setTimeout(60 * 1000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let customer
     let customer2
     let storeCreditAccount, storeCreditAccount2
     let storeHeaders, storeHeaders2
     let currencyCode = "usd"
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       const publishableKey = await generatePublishableKey(getContainer())
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -51,6 +51,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.store_credit_account
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /store/store-credit-accounts", () => {
@@ -87,12 +89,15 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw error when customer is not authenticated", async () => {
-        delete storeHeaders.headers["Authorization"]
+        const unauthenticatedHeaders = {
+          headers: { ...storeHeaders.headers },
+        }
+        delete unauthenticatedHeaders.headers["Authorization"]
 
         const { response } = await api
           .get(
             `/store/store-credit-accounts?currency_code=${currencyCode}`,
-            storeHeaders
+            unauthenticatedHeaders
           )
           .catch((e) => e)
 
@@ -133,12 +138,15 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw error when customer is not authenticated", async () => {
-        delete storeHeaders.headers["Authorization"]
+        const unauthenticatedHeaders = {
+          headers: { ...storeHeaders.headers },
+        }
+        delete unauthenticatedHeaders.headers["Authorization"]
 
         const { response } = await api
           .get(
             `/store/store-credit-accounts/${storeCreditAccount.id}`,
-            storeHeaders
+            unauthenticatedHeaders
           )
           .catch((e) => e)
 

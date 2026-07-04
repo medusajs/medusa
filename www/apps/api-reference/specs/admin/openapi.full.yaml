@@ -479,7 +479,7 @@ tags:
       Store credit accounts allow you to build features that let customers pay for items using their store credit balance, such as gift cards or loyalty points.
       These API routes allow admin users to manage store credit accounts, their transactions, and more.
       <Note>
-      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/cloud/loyalty-plugin).
+      Store Credit Account routes are only available for Cloud users using the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
       </Note>
     x-associatedSchema:
       $ref: '#/components/schemas/AdminStoreCreditAccount'
@@ -22913,9 +22913,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/gift-cards/{id}:
     get:
       operationId: GetGiftCardsId
@@ -23014,9 +23014,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/gift-cards/{id}/orders:
     get:
       operationId: GetGiftCardsIdOrders
@@ -31501,7 +31501,9 @@ paths:
             })
 
             sdk.admin.paymentCollection.markAsPaid("paycol_123", {
-              order_id: "order_123"
+              order_id: "order_123",
+              // optional: record the payment under a specific provider
+              provider_id: "pp_system_default"
             })
             .then(({ payment_collection }) => {
               console.log(payment_collection)
@@ -60383,9 +60385,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-badges:
-        - text: Cloud
+        - text: Plugin
           description: |
-            This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+            This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
   /admin/store-credit-accounts/{id}:
     get:
       operationId: GetStoreCreditAccountsId
@@ -75951,6 +75953,10 @@ components:
           type: string
           title: order_id
           description: The ID of the order associated with the payment collection.
+        provider_id:
+          type: string
+          title: provider_id
+          description: The ID of the payment provider to use for marking the payment collection as paid. If not provided, the `system` provider will be used.
       x-schemaName: AdminMarkPaymentCollectionAsPaid
     AdminNotification:
       type: object
@@ -76432,6 +76438,7 @@ components:
         - created_at
         - updated_at
         - order_id
+        - internal_note
         - return_id
         - exchange_id
         - claim_id
@@ -76564,6 +76571,10 @@ components:
           type: string
           title: created_by
           description: The ID of the user that created the order change.
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order change's internal note.
     AdminOrderChangeAction:
       type: object
       description: The order change action's details.
@@ -83055,6 +83066,10 @@ components:
           type: boolean
           title: carry_over_promotions
           description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+        internal_note:
+          type: string
+          title: internal_note
+          description: The order change's internal note.
     AdminUpdatePriceList:
       type: object
       description: the details to update in a price list.
@@ -89910,6 +89925,9 @@ components:
           type: boolean
           title: is_giftcard
           description: Whether the item is a gift card.
+        line_item_metadata:
+          type: object
+          description: Custom key-value pairs on the order's line items.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -90603,6 +90621,23 @@ components:
           type: string
           title: token
           description: The order transfer's token issued when the transfer was requested.
+    StoreAddCartShippingMethodsBase:
+      type: object
+      description: The shipping method's details.
+      x-schemaName: StoreAddCartShippingMethodsBase
+      required:
+        - option_id
+      properties:
+        option_id:
+          type: string
+          title: option_id
+          description: The ID of the shipping option to add to the cart.
+        data:
+          type: object
+          description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping#data-request-body-parameter
+            description: Learn more about the data parameter.
     StoreAddGiftCardToCart:
       type: object
       description: The details to add a gift card to the cart.

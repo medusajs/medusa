@@ -4,7 +4,7 @@ import { createRule } from "../../create-rule"
 import { returnTypeIsPromise } from "../../util/ast"
 import {
   createMedusaServiceBindings,
-  isServiceClass,
+  isMedusaServiceSuper,
   trackMedusaServiceImports,
 } from "../../util/service-scope"
 
@@ -16,7 +16,7 @@ export const rule = createRule<[], MessageIds>({
     type: "problem",
     docs: {
       description:
-        "All public methods on a service class (extends `MedusaService(...)` or class name ends with `Service`) must be `async` (or return a `Promise`). Medusa always awaits service method calls.",
+        "All public methods on a service class that extends `MedusaService(...)` must be `async` (or return a `Promise`). Medusa always awaits service method calls.",
     },
     fixable: "code",
     messages: {
@@ -29,19 +29,37 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     const bindings = createMedusaServiceBindings()
 
-    function checkClass(node: TSESTree.ClassDeclaration | TSESTree.ClassExpression) {
-      if (!isServiceClass(node, bindings)) return
+    function checkClass(
+      node: TSESTree.ClassDeclaration | TSESTree.ClassExpression
+    ) {
+      // Only check classes that extend `MedusaService(...)`. Avoids false
+      // positives on unrelated classes (including `*Service`-named helpers)
+      // that don't expose awaitable service methods.
+      if (!isMedusaServiceSuper(node.superClass, bindings)) {
+        return
+      }
 
       for (const member of node.body.body) {
-        if (member.type !== AST_NODE_TYPES.MethodDefinition) continue
-        if (member.kind === "constructor") continue
+        if (member.type !== AST_NODE_TYPES.MethodDefinition) {
+          continue
+        }
+        if (member.kind === "constructor") {
+          continue
+        }
+        // Getters and setters can't be `async` and aren't invoked like service
+        // methods (the caller reads/writes a property), so they're exempt.
+        if (member.kind === "get" || member.kind === "set") {
+          continue
+        }
         if (
           member.accessibility === "private" ||
           member.accessibility === "protected"
         ) {
           continue
         }
-        if (member.computed) continue
+        if (member.computed) {
+          continue
+        }
 
         const value = member.value
         if (
@@ -51,17 +69,17 @@ export const rule = createRule<[], MessageIds>({
           continue
         }
 
-        if ((value as TSESTree.FunctionExpression).async) continue
-        if (returnTypeIsPromise(value)) continue
-
-        const canAutofix = member.kind === "method"
+        if ((value as TSESTree.FunctionExpression).async) {
+          continue
+        }
+        if (returnTypeIsPromise(value)) {
+          continue
+        }
 
         context.report({
           node: member.key,
           messageId: "methodMustBeAsync",
-          fix: canAutofix
-            ? (fixer) => fixer.insertTextBefore(member.key, "async ")
-            : undefined,
+          fix: (fixer) => fixer.insertTextBefore(member.key, "async "),
         })
       }
     }

@@ -14,6 +14,12 @@ export const metadata = {
 
 In this tutorial, you'll learn how to build a [plugin](!docs!/learn/fundamentals/plugins) that migrates data, such as products, from Magento to Medusa.
 
+<Note>
+
+This guide has been revisited to support [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0) which introduced global product options.
+
+</Note>
+
 Magento is known for its customization capabilities. However, its monolithic architecture imposes limitations on business requirements, often forcing development teams to implement hacky workarounds. Over time, these customizations become challenging to maintain, especially as the business scales, leading to increased technical debt and slower feature delivery.
 
 Medusa's modular architecture allows you to build a custom digital commerce platform that meets your business requirements without the limitations of a monolithic system. By migrating from Magento to Medusa, you can take advantage of Medusa's modern technology stack to build a scalable and flexible commerce platform that grows with your business.
@@ -709,6 +715,20 @@ The workflow you'll create will have the following steps:
         link: "/references/helper-steps/useQueryGraphStep"
       },
       {
+        type: "step",
+        name: "useQueryGraphStep",
+        description: "Retrieve existing product options from Medusa.",
+        depth: 1,
+        link: "/references/helper-steps/useQueryGraphStep"
+      },
+      {
+        type: "workflow",
+        name: "createProductOptionsWorkflow",
+        description: "Create missing product options in Medusa.",
+        depth: 1,
+        link: "/references/medusa-workflows/createProductOptionsWorkflow"
+      },
+      {
         type: "workflow",
         name: "createProductsWorkflow",
         description: "Create products in the Medusa application.",
@@ -788,19 +808,23 @@ In your plugin, create the file `src/workflows/migrate-products-from-magento.ts`
 
 ![Diagram showcasing the migrate-products-from-magento file to create](https://res.cloudinary.com/dza7lstvk/image/upload/v1739349820/Medusa%20Resources/magento-6_jjdaxj.jpg)
 
-```ts title="src/workflows/migrate-products-from-magento.ts"
+```ts title="src/workflows/migrate-products-from-magento.ts" collapsibleLines="1-17" expandButtonLabel="Show Imports"
 import { 
   createWorkflow, transform, WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
-  CreateProductWorkflowInputDTO, UpsertProductDTO,
+  CreateProductWorkflowInputDTO, 
+  CreateProductOptionDTO, 
+  UpsertProductDTO,
 } from "@medusajs/framework/types"
 import { 
   createProductsWorkflow, 
+  createProductOptionsWorkflow,
   updateProductsWorkflow, 
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 import { getMagentoProductsStep } from "./steps/get-magento-products"
+import { MagentoAttribute } from "../modules/magento/types"
 
 type MigrateProductsFromMagentoWorkflowInput = {
   currentPage: number
@@ -879,7 +903,7 @@ const { data: existingProducts } = useQueryGraphStep({
   },
 }).config({ name: "get-existing-products" })
 
-// TODO prepare products to create or update
+// TODO create Magento attributes as product options
 ```
 
 Since the Medusa application creates an internal representation of the workflow's constructor function, you can't manipulate data directly, as variables have no value while creating the internal representation.
@@ -896,6 +920,86 @@ Instead, you can manipulate data in a workflow's constructor function using `tra
 - A function that transforms the data. The function receives the data passed in the first parameter and returns the transformed data.
 
 In the transformation function, you return the IDs of the Magento products. Then, you use the `useQueryGraphStep` to retrieve products in the Medusa application that have an `external_id` property matching the IDs of the Magento products. You'll use this property to store the IDs of the products in Magento.
+
+Next, you'll create the Magento attributes as product options. Replace the `TODO` with the following:
+
+```ts title="src/workflows/migrate-products-from-magento.ts"
+const attributeExternalIds = transform({
+  attributes
+}, (data) => {
+  return data.attributes.map((attr) => attr.attribute_id.toString())
+})
+
+const { data: existingOptions } = useQueryGraphStep({
+  entity: "product_option",
+  fields: ["id", "title", "metadata", "values.id", "values.value"],
+  filters: {
+    metadata: {
+      external_id: attributeExternalIds
+    }
+  }
+}).config({ name: "get-existing-options" })
+
+const { optionsToCreate } = transform({
+  attributes,
+  existingOptions
+}, (data) => {
+  const optionsToCreate = new Map<
+    string, 
+    CreateProductOptionDTO & { metadata?: Record<string, unknown> }
+  >()
+
+  data.attributes.forEach((attr: MagentoAttribute) => {
+    const existingOption = data.existingOptions.find(
+      (option) => option.metadata?.external_id === attr.attribute_id.toString()
+    )
+
+    // If option already exists, skip it
+    if (existingOption) {
+      return
+    }
+
+    const optionData: CreateProductOptionDTO & { metadata?: Record<string, unknown> } = {
+      title: attr.default_frontend_label,
+      values: attr.options.map((opt) => opt.label),
+      metadata: {
+        external_id: attr.attribute_id.toString()
+      }
+    }
+
+    optionsToCreate.set(attr.attribute_id.toString(), optionData)
+  })
+
+  return {
+    optionsToCreate: Array.from(optionsToCreate.values())
+  }
+})
+
+// Create missing options if any
+const newOptions = createProductOptionsWorkflow.runAsStep({
+  input: {
+    product_options: optionsToCreate
+  }
+})
+
+// Merge existing and newly created options
+const allOptions = transform({
+  existingOptions,
+  newOptions
+}, (data) => {
+  return [...(data.existingOptions || []), ...(data.newOptions || [])]
+})
+
+// TODO prepare products to create or update
+```
+
+You:
+
+1. Extract attribute external IDs using `transform`.
+2. Retrieve existing options from the Medusa application using `useQueryGraphStep`.
+3. Check which attributes don't exist in Medusa and prepare to create them as options using `transform`.
+4. Create the missing options in Medusa using `createProductOptionsWorkflow`.
+5. Combine the existing and newly created options using `transform`.
 
 Next, you'll prepare the data to create and update the products. Replace the `TODO` in the workflow function with the following:
 
@@ -932,6 +1036,7 @@ const {
   stores,
   shippingProfiles,
   existingProducts,
+  allOptions
 }, (data) => {
   const productsToCreate = new Map<string, CreateProductWorkflowInputDTO>()
   const productsToUpdate = new Map<string, UpsertProductDTO>()
@@ -961,15 +1066,42 @@ const {
       productData.id = existingProduct.id
     }
 
-    productData.options = magentoProduct.extension_attributes.configurable_product_options?.map((option) => {
-      const attribute = data.attributes.find((attr) => attr.attribute_id === parseInt(option.attribute_id))
-      return {
-        title: option.label,
-        values: attribute?.options.filter((opt) => {
-          return option.values.find((v) => v.value_index === parseInt(opt.value))
-        }).map((opt) => opt.label) || [],
-      }
-    }) || []
+    productData.options = magentoProduct.extension_attributes.configurable_product_options
+      ?.map((option) => {
+        const attribute = data.attributes.find(
+          (attr) => attr.attribute_id === parseInt(option.attribute_id)
+        )
+        const existingOption = data.allOptions.find(
+          (opt) => opt.metadata?.external_id === option.attribute_id
+        )
+
+        if (!existingOption || !attribute) {
+          return null
+        }
+
+        // Map option values to their IDs
+        const valueIds = option.values
+          .map((v) => {
+            const attributeOption = attribute.options.find(
+              (opt) => parseInt(opt.value) === v.value_index
+            )
+            if (!attributeOption) {
+              return null
+            }
+
+            const optionValue = existingOption.values.find(
+              (val) => val.value === attributeOption.label
+            )
+            return optionValue?.id
+          })
+          .filter((id): id is string => Boolean(id))
+
+        return {
+          id: existingOption.id,
+          value_ids: valueIds
+        }
+      })
+      .filter((opt): opt is { id: string; value_ids: string[] } => opt !== null) || []
 
     productData.variants = magentoProduct.children?.map((child) => {
       const childOptions: Record<string, string> = {}
@@ -1032,7 +1164,7 @@ You use `transform` again to prepare the data to create and update the products 
 
 - You set the product's general details, such as the title, description, status, handle, external ID, and thumbnail using the Magento product's data and custom attributes.
 - You associate the product with the default sales channel and shipping profile retrieved previously.
-- You map the Magento product's configurable product options to Medusa product options. In Medusa, a product's option has a label, such as "Color", and values, such as "Red". To map the option values, you use the attributes retrieved from Magento.
+- You map the Magento product's configurable product options to Medusa product options by referencing the options created earlier (or existing ones). You map the option values to their IDs using the `attribute.options` and `existingOption.values` properties.
 - You map the Magento product's children to Medusa product variants. For the variant options, you pass an object whose keys is the option's label, such as "Color", and values is the option's value, such as "Red". For the prices, you set the variant's price based on the Magento child's price for every supported currency in the Medusa store. Also, you set the Magento child product's ID in the Medusa variant's `metadata.external_id` property.
 - You map the Magento product's media gallery entries to Medusa product images. You filter out the thumbnail image and set the URL and the Magento image's ID in the Medusa image's `metadata.external_id` property.
 
@@ -1058,7 +1190,7 @@ updateProductsWorkflow.runAsStep({
 return new WorkflowResponse(pagination)
 ```
 
-You use the `createProductsWorkflow` and `updateProductsWorkflow` workflows from Medusa's `@medusajs/medusa/core-flows` package to create and update the products in the Medusa application.
+You use the `createProductsWorkflow` and `updateProductsWorkflow` workflows from Medusa's `@medusajs/medusa/core-flows` package to create and update products in the Medusa application.
 
 Workflows must return an instance of `WorkflowResponse`, passing as a parameter the data to return to the workflow's executor. This workflow returns the pagination parameters, allowing you to paginate the product migration process.
 
