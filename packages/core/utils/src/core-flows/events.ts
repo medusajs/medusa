@@ -1007,6 +1007,179 @@ export const TranslationWorkflowEvents = {
   DELETED: "translation.deleted",
 } as const
 
+/**
+ * @category Price List
+ * @customNamespace Pricing
+ */
+export const PriceListWorkflowEvents = {
+  /**
+   * Emitted when price lists are created.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   * }
+   * ```
+   */
+  CREATED: "price-list.created",
+  /**
+   * Emitted when price lists are updated.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   * }
+   * ```
+   */
+  UPDATED: "price-list.updated",
+  /**
+   * Emitted when price lists are deleted.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   * }
+   * ```
+   */
+  DELETED: "price-list.deleted",
+  /**
+   * Emitted when prices in a price list are batch created, updated, or deleted.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   price_list_id, // The ID of the price list
+   *   created, // The created prices
+   *   updated, // The updated prices
+   *   deleted, // The deleted price IDs
+   * }
+   * ```
+   */
+  PRICES_BATCH_UPDATED: "price-list-prices.batch-updated",
+} as const
+
+/**
+ * @category Promotion
+ * @customNamespace Promotion
+ */
+export const PromotionWorkflowEvents = {
+  /**
+   * Emitted when promotions are created.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  CREATED: "promotion.created",
+  /**
+   * Emitted when promotions are updated.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  UPDATED: "promotion.updated",
+  /**
+   * Emitted when promotions are deleted.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  DELETED: "promotion.deleted",
+  /**
+   * Emitted when a promotion's status is updated.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  STATUS_UPDATED: "promotion.status-updated",
+  /**
+   * Emitted when a promotion's rules are batch created, updated, or deleted.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   promotion_id, // The ID of the promotion
+   *   rule_type, // The type of rule (e.g. "rules", "target-rules", "buy-rules")
+   *   created, // The created rules
+   *   updated, // The updated rules
+   *   deleted, // The deleted rule IDs
+   * }
+   * ```
+   */
+  RULES_BATCH_UPDATED: "promotion-rules.batch-updated",
+} as const
+
+/**
+ * @category Campaign
+ * @customNamespace Promotion
+ */
+export const CampaignWorkflowEvents = {
+  /**
+   * Emitted when campaigns are created.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  CREATED: "campaign.created",
+  /**
+   * Emitted when campaigns are updated.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  UPDATED: "campaign.updated",
+  /**
+   * Emitted when campaigns are deleted.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  DELETED: "campaign.deleted",
+  /**
+   * Emitted when promotions are added to or removed from a campaign.
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   campaign_id, // The ID of the campaign
+   *   add, // The IDs of promotions added to the campaign
+   *   remove, // The IDs of promotions removed from the campaign
+   * }
+   * ```
+   */
+  PROMOTIONS_UPDATED: "campaign.promotions-updated",
+} as const
+
 // TODO: Comment temporarely and we will re enable it in the near future #14478
 // declare module "@medusajs/types" {
 //   export interface EventBusEventsOptions {

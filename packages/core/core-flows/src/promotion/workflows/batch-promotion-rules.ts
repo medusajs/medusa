@@ -5,7 +5,7 @@ import {
   PromotionRuleDTO,
   UpdatePromotionRuleDTO,
 } from "@medusajs/framework/types"
-import { RuleType } from "@medusajs/framework/utils"
+import { PromotionWorkflowEvents, RuleType } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -13,6 +13,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { deletePromotionRulesWorkflowStep } from "../steps/delete-promotion-rules-workflow"
 import { createPromotionRulesWorkflow } from "./create-promotion-rules"
 import { updatePromotionRulesWorkflow } from "./update-promotion-rules"
@@ -109,6 +110,22 @@ export const batchPromotionRulesWorkflow = createWorkflow(
       }),
       deletePromotionRulesWorkflowStep(deleteInput)
     )
+
+    const batchUpdatedEventPayload = transform(
+      { input, created, updated, deleted },
+      ({ input, created, updated, deleted }) => ({
+        promotion_id: input.id,
+        rule_type: input.rule_type,
+        created,
+        updated,
+        deleted: input.delete ?? [],
+      })
+    )
+
+    emitEventStep({
+      eventName: PromotionWorkflowEvents.RULES_BATCH_UPDATED,
+      data: batchUpdatedEventPayload,
+    })
 
     return new WorkflowResponse(
       transform({ created, updated, deleted }, (data) => data)

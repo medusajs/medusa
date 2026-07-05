@@ -1,4 +1,5 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { Modules, PriceListWorkflowEvents } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -760,6 +761,164 @@ medusaIntegrationTestRunner({
       // BREAKING: There is no longer a GET /admin/price-lists/:id/products endpoint. Get products through `/admin/products` endpoint instead
       // BREAKING: There is no longer a DELETE /admin/price-lists/test-list/products/${product.id}/prices endpoint
       // BREAKING: There is no longer a DELETE /admin/price-lists/test-list/variants/${variant.id}/prices endpoint
+
+      describe("Workflow events", () => {
+        const waitForEvent = () =>
+          new Promise((resolve) => setTimeout(resolve, 100))
+
+        it("should emit price-list.created when creating a price list", async () => {
+          const eventBus = getContainer().resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          eventBus.subscribe(PriceListWorkflowEvents.CREATED, subscriber)
+
+          const response = await api.post(
+            "/admin/price-lists",
+            getPricelistFixture({ title: "Event test sale" }),
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: response.data.price_list.id,
+          })
+
+          eventBus.unsubscribe(PriceListWorkflowEvents.CREATED, subscriber)
+        })
+
+        it("should emit price-list.updated when updating a price list", async () => {
+          const eventBus = getContainer().resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const priceList = (
+            await api.post(
+              "/admin/price-lists",
+              getPricelistFixture({ title: "Event update sale" }),
+              adminHeaders
+            )
+          ).data.price_list
+
+          eventBus.subscribe(PriceListWorkflowEvents.UPDATED, subscriber)
+
+          const response = await api.post(
+            `/admin/price-lists/${priceList.id}`,
+            { title: "Updated event sale" },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: priceList.id,
+          })
+
+          eventBus.unsubscribe(PriceListWorkflowEvents.UPDATED, subscriber)
+        })
+
+        it("should emit price-list.deleted when deleting a price list", async () => {
+          const eventBus = getContainer().resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const priceList = (
+            await api.post(
+              "/admin/price-lists",
+              getPricelistFixture({ title: "Event delete sale" }),
+              adminHeaders
+            )
+          ).data.price_list
+
+          eventBus.subscribe(PriceListWorkflowEvents.DELETED, subscriber)
+
+          const response = await api.delete(
+            `/admin/price-lists/${priceList.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: priceList.id,
+          })
+
+          eventBus.unsubscribe(PriceListWorkflowEvents.DELETED, subscriber)
+        })
+
+        it("should emit price-list-prices.batch-updated when batch updating prices", async () => {
+          const eventBus = getContainer().resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const priceList = (
+            await api.post(
+              "/admin/price-lists",
+              getPricelistFixture({
+                title: "Event batch sale",
+                prices: [
+                  {
+                    amount: 50,
+                    currency_code: "usd",
+                    variant_id: product1.variants[0].id,
+                  },
+                ],
+              }),
+              adminHeaders
+            )
+          ).data.price_list
+
+          const prices = (
+            await api.get(
+              `/admin/price-lists/${priceList.id}/prices`,
+              adminHeaders
+            )
+          ).data.prices
+
+          eventBus.subscribe(
+            PriceListWorkflowEvents.PRICES_BATCH_UPDATED,
+            subscriber
+          )
+
+          const response = await api.post(
+            `/admin/price-lists/${priceList.id}/prices/batch`,
+            {
+              update: [
+                {
+                  id: prices[0].id,
+                  amount: 60,
+                  currency_code: "usd",
+                  variant_id: product1.variants[0].id,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            price_list_id: priceList.id,
+            created: expect.anything(),
+            updated: expect.anything(),
+            deleted: expect.anything(),
+          })
+
+          eventBus.unsubscribe(
+            PriceListWorkflowEvents.PRICES_BATCH_UPDATED,
+            subscriber
+          )
+        })
+      })
     })
   },
 })

@@ -2,6 +2,7 @@ import {
   BatchPriceListPricesWorkflowDTO,
   BatchPriceListPricesWorkflowResult,
 } from "@medusajs/framework/types"
+import { PriceListWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -9,6 +10,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { createPriceListPricesWorkflow } from "./create-price-list-prices"
 import { removePriceListPricesWorkflow } from "./remove-price-list-prices"
 import { updatePriceListPricesWorkflow } from "./update-price-list-prices"
@@ -91,6 +93,21 @@ export const batchPriceListPricesWorkflow = createWorkflow(
         },
       })
     )
+
+    const batchUpdatedEventPayload = transform(
+      { input: input.data, created, updated, deleted },
+      ({ input, created, updated, deleted }) => ({
+        price_list_id: input.id,
+        created,
+        updated,
+        deleted,
+      })
+    )
+
+    emitEventStep({
+      eventName: PriceListWorkflowEvents.PRICES_BATCH_UPDATED,
+      data: batchUpdatedEventPayload,
+    })
 
     return new WorkflowResponse(
       transform({ created, updated, deleted }, (data) => data)

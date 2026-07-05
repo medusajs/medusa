@@ -1,6 +1,11 @@
-import { Modules } from "@medusajs/framework/utils"
-import { createWorkflow, WorkflowData } from "@medusajs/framework/workflows-sdk"
-import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
+import { Modules, PriceListWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  createWorkflow,
+  parallelize,
+  transform,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep, removeRemoteLinkStep } from "../../common"
 import { deletePriceListsStep } from "../steps"
 
 /**
@@ -38,10 +43,20 @@ export const deletePriceListsWorkflow = createWorkflow(
   (input: WorkflowData<DeletePriceListsWorkflowInput>): WorkflowData<void> => {
     deletePriceListsStep(input.ids)
 
-    removeRemoteLinkStep({
-      [Modules.PRICING]: {
-        price_list_id: input.ids,
-      },
-    })
+    const priceListIdEvents = transform({ input }, ({ input }) =>
+      input.ids?.map((id) => ({ id }))
+    )
+
+    parallelize(
+      removeRemoteLinkStep({
+        [Modules.PRICING]: {
+          price_list_id: input.ids,
+        },
+      }),
+      emitEventStep({
+        eventName: PriceListWorkflowEvents.DELETED,
+        data: priceListIdEvents,
+      })
+    )
   }
 )

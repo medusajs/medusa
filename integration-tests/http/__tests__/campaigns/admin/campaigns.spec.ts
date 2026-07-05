@@ -1,6 +1,8 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   CampaignBudgetType,
+  CampaignWorkflowEvents,
+  Modules,
   PromotionStatus,
   PromotionType,
 } from "@medusajs/utils"
@@ -406,6 +408,147 @@ medusaIntegrationTestRunner({
                 id: promotion.id,
               }),
             ])
+          )
+        })
+      })
+
+      describe("Workflow events", () => {
+        const waitForEvent = () =>
+          new Promise((resolve) => setTimeout(resolve, 100))
+
+        it("should emit campaign.created when creating a campaign", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          eventBus.subscribe(CampaignWorkflowEvents.CREATED, subscriber)
+
+          const response = await api.post(
+            `/admin/campaigns`,
+            {
+              ...campaignData,
+              campaign_identifier: `event-create-${Date.now()}`,
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: response.data.campaign.id,
+          })
+
+          eventBus.unsubscribe(CampaignWorkflowEvents.CREATED, subscriber)
+        })
+
+        it("should emit campaign.updated when updating a campaign", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const campaign = (
+            await api.post(
+              `/admin/campaigns`,
+              {
+                ...campaignData,
+                campaign_identifier: `event-update-${Date.now()}`,
+              },
+              adminHeaders
+            )
+          ).data.campaign
+
+          eventBus.subscribe(CampaignWorkflowEvents.UPDATED, subscriber)
+
+          const response = await api.post(
+            `/admin/campaigns/${campaign.id}`,
+            { name: "event-updated-campaign" },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: campaign.id,
+          })
+
+          eventBus.unsubscribe(CampaignWorkflowEvents.UPDATED, subscriber)
+        })
+
+        it("should emit campaign.deleted when deleting a campaign", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const campaign = (
+            await api.post(
+              `/admin/campaigns`,
+              {
+                ...campaignData,
+                campaign_identifier: `event-delete-${Date.now()}`,
+              },
+              adminHeaders
+            )
+          ).data.campaign
+
+          eventBus.subscribe(CampaignWorkflowEvents.DELETED, subscriber)
+
+          const response = await api.delete(
+            `/admin/campaigns/${campaign.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: campaign.id,
+          })
+
+          eventBus.unsubscribe(CampaignWorkflowEvents.DELETED, subscriber)
+        })
+
+        it("should emit campaign.promotions-updated when managing campaign promotions", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const promotionToAdd = (
+            await api.post(
+              `/admin/promotions`,
+              generatePromotionData(),
+              adminHeaders
+            )
+          ).data.promotion
+
+          eventBus.subscribe(
+            CampaignWorkflowEvents.PROMOTIONS_UPDATED,
+            subscriber
+          )
+
+          const response = await api.post(
+            `/admin/campaigns/${campaign2.id}/promotions`,
+            { add: [promotionToAdd.id] },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            campaign_id: campaign2.id,
+            add: [promotionToAdd.id],
+            remove: [],
+          })
+
+          eventBus.unsubscribe(
+            CampaignWorkflowEvents.PROMOTIONS_UPDATED,
+            subscriber
           )
         })
       })

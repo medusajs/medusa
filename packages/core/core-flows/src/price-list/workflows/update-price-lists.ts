@@ -1,5 +1,12 @@
 import type { UpdatePriceListWorkflowInputDTO } from "@medusajs/framework/types"
-import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { PriceListWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { updatePriceListsStep, validatePriceListsStep } from "../steps"
 
 /**
@@ -41,9 +48,27 @@ export const updatePriceListsWorkflow = createWorkflow(
   updatePriceListsWorkflowId,
   (
     input: WorkflowData<{ price_lists_data: UpdatePriceListWorkflowInputDTO[] }>
-  ): WorkflowData<void> => {
+  ) => {
     validatePriceListsStep(input.price_lists_data)
 
-    updatePriceListsStep(input.price_lists_data)
+    const updatedPriceLists = updatePriceListsStep(input.price_lists_data)
+
+    const priceListIdEvents = transform(
+      { updatedPriceLists },
+      ({ updatedPriceLists }) => {
+        const arr = Array.isArray(updatedPriceLists)
+          ? updatedPriceLists
+          : [updatedPriceLists]
+
+        return arr?.map((pl) => ({ id: pl.id }))
+      }
+    )
+
+    emitEventStep({
+      eventName: PriceListWorkflowEvents.UPDATED,
+      data: priceListIdEvents,
+    })
+
+    return new WorkflowResponse(updatedPriceLists)
   }
 )

@@ -2,11 +2,14 @@ import {
   CreatePriceListWorkflowInputDTO,
   PriceListDTO,
 } from "@medusajs/framework/types"
+import { PriceListWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { createPriceListsStep, validateVariantPriceLinksStep } from "../steps"
 
 /**
@@ -58,11 +61,22 @@ export const createPriceListsWorkflow = createWorkflow(
       input.price_lists_data
     )
 
-    return new WorkflowResponse(
-      createPriceListsStep({
-        data: input.price_lists_data,
-        variant_price_map: variantPriceMap,
-      })
+    const createdPriceLists = createPriceListsStep({
+      data: input.price_lists_data,
+      variant_price_map: variantPriceMap,
+    })
+
+    const priceListIdEvents = transform(
+      { createdPriceLists },
+      ({ createdPriceLists }) =>
+        createdPriceLists.map((pl) => ({ id: pl.id }))
     )
+
+    emitEventStep({
+      eventName: PriceListWorkflowEvents.CREATED,
+      data: priceListIdEvents,
+    })
+
+    return new WorkflowResponse(createdPriceLists)
   }
 )

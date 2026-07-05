@@ -4,6 +4,7 @@ import {
   ProductStatus,
   PromotionStatus,
   PromotionType,
+  PromotionWorkflowEvents,
 } from "@medusajs/utils"
 import {
   createAdminUser,
@@ -4169,6 +4170,173 @@ medusaIntegrationTestRunner({
               { label: "Test 1", value: soType1.id },
               { label: "Test 2", value: soType2.id },
             ])
+          )
+        })
+      })
+
+      describe("Workflow events", () => {
+        const waitForEvent = () =>
+          new Promise((resolve) => setTimeout(resolve, 100))
+
+        const createPromotion = (code: string) =>
+          api.post(
+            `/admin/promotions`,
+            { ...standardPromotionPayload, code },
+            adminHeaders
+          )
+
+        it("should emit promotion.created when creating a promotion", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          eventBus.subscribe(PromotionWorkflowEvents.CREATED, subscriber)
+
+          const response = await createPromotion(`EVENT_CREATE_${Date.now()}`)
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: response.data.promotion.id,
+          })
+
+          eventBus.unsubscribe(PromotionWorkflowEvents.CREATED, subscriber)
+        })
+
+        it("should emit promotion.updated when updating a promotion", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const promo = (
+            await createPromotion(`EVENT_UPDATE_${Date.now()}`)
+          ).data.promotion
+
+          eventBus.subscribe(PromotionWorkflowEvents.UPDATED, subscriber)
+
+          const response = await api.post(
+            `/admin/promotions/${promo.id}`,
+            { code: `EVENT_UPDATED_${Date.now()}` },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: promo.id,
+          })
+
+          eventBus.unsubscribe(PromotionWorkflowEvents.UPDATED, subscriber)
+        })
+
+        it("should emit promotion.deleted when deleting a promotion", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const promo = (
+            await createPromotion(`EVENT_DELETE_${Date.now()}`)
+          ).data.promotion
+
+          eventBus.subscribe(PromotionWorkflowEvents.DELETED, subscriber)
+
+          const response = await api.delete(
+            `/admin/promotions/${promo.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: promo.id,
+          })
+
+          eventBus.unsubscribe(PromotionWorkflowEvents.DELETED, subscriber)
+        })
+
+        it("should emit promotion.status-updated when updating promotion status", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const promo = (
+            await createPromotion(`EVENT_STATUS_${Date.now()}`)
+          ).data.promotion
+
+          eventBus.subscribe(
+            PromotionWorkflowEvents.STATUS_UPDATED,
+            subscriber
+          )
+
+          const response = await api.post(
+            `/admin/promotions/${promo.id}`,
+            { status: PromotionStatus.INACTIVE },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            id: promo.id,
+          })
+
+          eventBus.unsubscribe(
+            PromotionWorkflowEvents.STATUS_UPDATED,
+            subscriber
+          )
+        })
+
+        it("should emit promotion-rules.batch-updated when batch updating rules", async () => {
+          const eventBus = appContainer.resolve(Modules.EVENT_BUS)
+          const subscriber = jest.fn()
+
+          const promo = (
+            await createPromotion(`EVENT_RULES_${Date.now()}`)
+          ).data.promotion
+
+          eventBus.subscribe(
+            PromotionWorkflowEvents.RULES_BATCH_UPDATED,
+            subscriber
+          )
+
+          const response = await api.post(
+            `/admin/promotions/${promo.id}/rules/batch`,
+            {
+              create: [
+                {
+                  operator: "eq",
+                  attribute: "event_attr",
+                  values: ["event value"],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          await waitForEvent()
+
+          expect(subscriber).toHaveBeenCalledTimes(1)
+          expect(subscriber.mock.calls[0][0].data).toMatchObject({
+            promotion_id: promo.id,
+            rule_type: "rules",
+            created: expect.anything(),
+            updated: expect.anything(),
+            deleted: expect.anything(),
+          })
+
+          eventBus.unsubscribe(
+            PromotionWorkflowEvents.RULES_BATCH_UPDATED,
+            subscriber
           )
         })
       })
