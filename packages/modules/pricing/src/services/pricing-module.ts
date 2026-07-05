@@ -970,8 +970,11 @@ export default class PricingModuleService
       if (hasRulesInput) {
         entry.price_rules = rules
         entry.rules_count = rules.length
-        delete (entry as CreatePricesDTO).rules
       }
+      // Always strip the raw `rules` key (an empty object must behave like an
+      // absent one), otherwise it leaks into the repository layer as an
+      // unknown property and breaks updates of existing prices.
+      delete (entry as CreatePricesDTO).rules
 
       if (isDefined(entry.currency_code)) {
         entry.currency_code = normalizeCurrencyCode(entry.currency_code)!
