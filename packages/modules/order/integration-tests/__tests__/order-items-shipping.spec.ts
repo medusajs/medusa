@@ -2276,6 +2276,55 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           expect(order.items.length).toBe(1)
           expect(order.items[0].tax_lines.length).toBe(2)
         })
+
+        it("should persist metadata and data on line item tax lines", async () => {
+          const [createdOrder] = await service.createOrders([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [item] = await service.createOrderLineItems(createdOrder.id, [
+            {
+              quantity: 1,
+              unit_price: 100,
+              title: "test",
+            },
+          ])
+
+          const taxLines = await service.setOrderLineItemTaxLines(
+            createdOrder.id,
+            [
+              {
+                item_id: item.id,
+                rate: 8.9,
+                code: "US-GA",
+                metadata: { custom_key: "custom_value" },
+                data: {
+                  state_rate: 4.0,
+                  county_rate: 3.0,
+                  city_rate: 1.9,
+                },
+              },
+            ]
+          )
+
+          expect(taxLines).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                item_id: item.id,
+                rate: 8.9,
+                code: "US-GA",
+                metadata: { custom_key: "custom_value" },
+                data: {
+                  state_rate: 4.0,
+                  county_rate: 3.0,
+                  city_rate: 1.9,
+                },
+              }),
+            ])
+          )
+        })
       })
 
       describe("createLineItemAdjustments", () => {
