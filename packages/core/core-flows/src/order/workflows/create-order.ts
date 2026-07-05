@@ -26,7 +26,7 @@ import {
 import { pricingContextResult } from "../../cart/utils/schemas"
 import { confirmVariantInventoryWorkflow } from "../../cart/workflows/confirm-variant-inventory"
 import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants-and-items-with-prices"
-import { useQueryGraphStep } from "../../common"
+import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { refreshDraftOrderAdjustmentsWorkflow } from "../../draft-order/workflows/refresh-draft-order-adjustments"
 import { createOrdersStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
@@ -390,12 +390,21 @@ export const createOrderWorkflow = createWorkflow(
 
     validateLineItemPricesStep({ items: lineItems })
 
-    const orderToCreate = transform({ lineItems, orderInput }, (data) => {
-      return {
-        ...data.orderInput,
-        items: data.lineItems,
-      }
+    const translatedLineItems = getTranslatedLineItemsStep({
+      items: lineItems,
+      variants,
+      locale: input.locale,
     })
+
+    const orderToCreate = transform(
+      { translatedLineItems, orderInput },
+      (data) => {
+        return {
+          ...data.orderInput,
+          items: data.translatedLineItems,
+        }
+      }
+    )
 
     const orders = createOrdersStep([orderToCreate])
     const order = transform({ orders }, (data) => data.orders?.[0])
