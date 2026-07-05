@@ -12,8 +12,16 @@ const GiftCardsPage = () => {
         widgetsZonePrefix="gift_card.list"
         preferredLayoutId="core:two-column"
         sections={{
-          main: <GiftCardsTable />,
-          side: <GiftCardProductsSection />,
+          main: (
+            <LayoutComposer.Entry id="GiftCardsTable">
+              <GiftCardsTable />
+            </LayoutComposer.Entry>
+          ),
+          side: (
+            <LayoutComposer.Entry id="GiftCardProductsSection">
+              <GiftCardProductsSection />
+            </LayoutComposer.Entry>
+          ),
         }}
       />
 

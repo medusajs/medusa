@@ -17,6 +17,7 @@ permissions:
   contents: write
   pull-requests: write
   id-token: write
+  actions: write # required to createWorkflowDispatch the draft-release workflow
 
 jobs:
   release:

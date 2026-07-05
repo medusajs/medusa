@@ -1,19 +1,20 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { TaxRegionListView } from "./components/tax-region-list-view"
 
 export const TaxRegionsList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("tax.list.before"),
-        after: getWidgets("tax.list.after"),
+    <LayoutComposer
+      widgetsZonePrefix="tax.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="TaxRegionListView">
+            <TaxRegionListView />
+          </LayoutComposer.Entry>
+        ),
       }}
-      hasOutlet
-    >
-      <TaxRegionListView />
-    </SingleColumnPage>
+    />
   )
 }

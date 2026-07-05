@@ -207,6 +207,16 @@ export interface OrderTaxLineDTO {
   provider_id?: string
 
   /**
+   * Holds data returned by the tax provider in key-value pairs.
+   */
+  data?: Record<string, unknown> | null
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
    * When the tax line was created.
    */
   created_at: Date | string

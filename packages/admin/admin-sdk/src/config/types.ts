@@ -4,6 +4,7 @@ import type {
   CustomFieldModelContainerMap,
   CustomFieldModelFormTabsMap,
   InjectionZone,
+  LayoutSection,
   NestedRoutePosition,
 } from "@medusajs/admin-shared"
 import type { ComponentType } from "react"
@@ -14,6 +15,28 @@ export interface WidgetConfig {
    * The injection zone or zones that the widget should be injected into.
    */
   zone: InjectionZone | InjectionZone[]
+  /**
+   * An optional stable identifier for the widget, used to persist the user's
+   * layout customizations (ordering, section, visibility) for this widget.
+   *
+   * If omitted, a stable id is derived from the widget's source file path at
+   * build time. Provide an explicit id when you want customizations to survive
+   * the file being renamed or moved. Plugins should include a unique prefix
+   * in their widget ids to avoid collisions with other plugins.
+   */
+  id?: string
+}
+
+export interface LayoutConfig {
+  /**
+   * A unique identifier for the layout, e.g. `"my-plugin:three-column"`.
+   */
+  id: string
+  /**
+   * The sections that the layout's component exposes. Each section can be
+   * targeted by widgets and customized (reordered/hidden) by users.
+   */
+  sections: LayoutSection[]
 }
 
 export interface RouteConfig {
