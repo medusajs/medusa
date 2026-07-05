@@ -34740,7 +34740,15 @@ In this document, you’ll learn about tax lines in a cart and how to retrieve t
 
 ## What are Tax Lines?
 
-A tax line indicates the tax rate of a line item or a shipping method. The [LineItemTaxLine data model](undefined/references/cart/models/LineItemTaxLine) represents a line item’s tax line, and the [ShippingMethodTaxLine data model](undefined/references/cart/models/ShippingMethodTaxLine) represents a shipping method’s tax line.
+A tax line indicates the tax rate of a line item or a shipping method. The [LineItemTaxLine data model](undefined/references/cart/models/LineItemTaxLine) represents a line item's tax line, and the [ShippingMethodTaxLine data model](undefined/references/cart/models/ShippingMethodTaxLine) represents a shipping method's tax line.
+
+Tax lines have the following notable fields:
+
+- `code`: The tax code.
+- `rate`: The tax rate.
+- `provider_id`: The ID of the tax provider that calculated the tax line.
+- `data`: Holds additional data returned by the tax provider, such as jurisdiction-level rate breakdowns.
+- `metadata`: Holds custom key-value data.
 
 ![A diagram showcasing the relation between other data models and the tax line models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711534431/Medusa%20Resources/cart-tax-lines_oheaq6.jpg)
 
@@ -39418,7 +39426,15 @@ In this document, you’ll learn about tax lines in an order.
 
 A tax line indicates the tax rate of a line item or a shipping method.
 
-The [OrderLineItemTaxLine data model](undefined/references/order/models/OrderLineItemTaxLine) represents a line item’s tax line, and the [OrderShippingMethodTaxLine data model](undefined/references/order/models/OrderShippingMethodTaxLine) represents a shipping method’s tax line.
+The [OrderLineItemTaxLine data model](undefined/references/order/models/OrderLineItemTaxLine) represents a line item's tax line, and the [OrderShippingMethodTaxLine data model](undefined/references/order/models/OrderShippingMethodTaxLine) represents a shipping method's tax line.
+
+Tax lines have the following notable fields:
+
+- `code`: The tax code.
+- `rate`: The tax rate.
+- `provider_id`: The ID of the tax provider that calculated the tax line.
+- `data`: Holds additional data returned by the tax provider, such as jurisdiction-level rate breakdowns.
+- `metadata`: Holds custom key-value data.
 
 ![A diagram showcasing the relation between orders, items and shipping methods, and tax lines](https://res.cloudinary.com/dza7lstvk/image/upload/v1712307225/Medusa%20Resources/order-tax-lines_sixujd.jpg)
 
@@ -47124,7 +47140,12 @@ The method returns tax lines for the line item and shipping methods. For example
     "rate_id": "txr_1",
     "rate": 10,
     "code": "XXX",
-    "name": "Tax Rate 1"
+    "name": "Tax Rate 1",
+    "data": {
+      "state_rate": 6,
+      "county_rate": 2,
+      "city_rate": 2
+    }
   },
   {
     "shipping_line_id": "casm_123",
@@ -47135,6 +47156,8 @@ The method returns tax lines for the line item and shipping methods. For example
   }
 ]
 ```
+
+Each tax line can include a `data` field with additional information returned by the tax provider, such as a breakdown of rates by jurisdiction (state, county, city). This field is stored on the tax line and is useful when integrating with third-party tax services like Avalara that return granular tax details.
 
 ***
 

@@ -16,7 +16,15 @@ In this document, you’ll learn about tax lines in an order.
 
 A tax line indicates the tax rate of a line item or a shipping method.
 
-The [OrderLineItemTaxLine data model](/references/order/models/OrderLineItemTaxLine) represents a line item’s tax line, and the [OrderShippingMethodTaxLine data model](/references/order/models/OrderShippingMethodTaxLine) represents a shipping method’s tax line.
+The [OrderLineItemTaxLine data model](/references/order/models/OrderLineItemTaxLine) represents a line item's tax line, and the [OrderShippingMethodTaxLine data model](/references/order/models/OrderShippingMethodTaxLine) represents a shipping method's tax line.
+
+Tax lines have the following notable fields:
+
+- `code`: The tax code.
+- `rate`: The tax rate.
+- `provider_id`: The ID of the tax provider that calculated the tax line.
+- `data`: Holds additional data returned by the tax provider, such as jurisdiction-level rate breakdowns.
+- `metadata`: Holds custom key-value data.
 
 ![A diagram showcasing the relation between orders, items and shipping methods, and tax lines](https://res.cloudinary.com/dza7lstvk/image/upload/v1712307225/Medusa%20Resources/order-tax-lines_sixujd.jpg)
 
