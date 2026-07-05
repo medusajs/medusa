@@ -2,7 +2,11 @@ import {
   AdditionalData,
   PromotionStatusValues,
 } from "@medusajs/framework/types"
-import { MedusaError, PromotionStatus, PromotionWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  PromotionStatus,
+  PromotionWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowResponse,
   createHook,
