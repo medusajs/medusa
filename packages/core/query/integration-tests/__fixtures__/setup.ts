@@ -1,7 +1,11 @@
-import { LoadedModule, MedusaContainer, RemoteQueryFunction } from "@medusajs/types"
+import {
+  LoadedModule,
+  MedusaContainer,
+  RemoteQueryFunction,
+} from "@medusajs/types"
 import { extractRelationsFromGQL } from "@medusajs/utils"
 import { buildSchema } from "graphql"
-import { createQuery, RelationMap, RemoteQuery } from "../../src"
+import { createQuery, RelationMap } from "../../src"
 import {
   createFakeLoadedModules,
   createTestModules,
@@ -25,23 +29,18 @@ export function setup() {
   const modulesLoaded = createFakeLoadedModules(modules)
   const relationMap = createRelationMap(modulesLoaded)
 
-  const remoteQuery = new RemoteQuery({
-    modulesLoaded,
-    relationMap,
-  })
-
   const container = {
     resolve: jest.fn(),
   } as unknown as MedusaContainer
 
   const query = createQuery({
-    remoteQuery,
+    modulesLoaded,
+    relationMap,
     indexModule: null as any,
     container,
   }) as RemoteQueryFunction
 
   return {
-    remoteQuery,
     query,
     container,
     modules,

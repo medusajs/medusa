@@ -1,26 +1,25 @@
 import {
   JoinerArgument,
   JoinerRelationship,
-  JoinerServiceConfig,
   LoadedModule,
-  ModuleJoinerConfig,
   RemoteExpandProperty,
-  RemoteJoinerOptions,
-  RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-import { isPresent, isString, toPascalCase, GraphQLUtils } from "@medusajs/utils"
-import { RelationMap, RemoteJoiner } from "../joiner"
-import { toRemoteJoinerQuery } from "./to-remote-joiner-query"
+import { isPresent, toPascalCase } from "@medusajs/utils"
+import { IRemoteDataFetcher } from "../joiner/remote-data-fetcher"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
 const MAX_CONCURRENT_REQUESTS = 10
-export class RemoteQuery {
-  private remoteJoiner: RemoteJoiner
-  private modulesMap: Map<string, LoadedModule> = new Map()
-  private joinerConfigs: ModuleJoinerConfig[] = []
 
+/**
+ * Default {@link IRemoteDataFetcher} implementation.
+ *
+ * Resolves the target module from loaded services and calls its list/retrieve
+ * methods with the filters, fields, and relations requested by
+ * {@link RemoteJoiner}.
+ */
+export class ModuleDataFetcher implements IRemoteDataFetcher {
   static traceFetchRemoteData?: (
     fetcher: () => Promise<any>,
     serviceName: string,
@@ -28,119 +27,27 @@ export class RemoteQuery {
     options: { select?: string[]; relations: string[] }
   ) => Promise<any>
 
-  static parseQuery(
-    graphqlQuery: string,
-    variables?: Record<string, unknown>
-  ): RemoteJoinerQuery {
-    const parser = new GraphQLUtils.GraphQLParser(graphqlQuery, variables)
-    return parser.parseQuery()
+  private modulesMap: Map<string, LoadedModule>
+
+  constructor(modulesMap: Map<string, LoadedModule>) {
+    this.modulesMap = modulesMap
   }
 
-  constructor({
-    modulesLoaded,
-    relationMap,
-  }: {
-    modulesLoaded: LoadedModule[]
-    relationMap?: RelationMap
-  }) {
-    const joinerConfigs: ModuleJoinerConfig[] = []
-
-    for (const mod of modulesLoaded) {
-      if (!mod.__definition.isQueryable) {
-        continue
-      }
-
-      const serviceName = mod.__definition.key
-
-      if (this.modulesMap.has(serviceName)) {
-        throw new Error(
-          `Duplicated instance of module ${serviceName} is not allowed.`
-        )
-      }
-
-      this.modulesMap.set(serviceName, mod)
-      joinerConfigs.push(mod.__joinerConfig)
-    }
-
-    this.joinerConfigs = joinerConfigs
-
-    this.remoteJoiner = new RemoteJoiner(
-      joinerConfigs as JoinerServiceConfig[],
-      this.remoteFetchData.bind(this),
-      {
-        autoCreateServiceNameAlias: false,
-        relationMap,
-      }
-    )
-  }
-
-  public getJoinerConfigs() {
-    return this.joinerConfigs
-  }
-
-  public static getAllFieldsAndRelations(
-    expand: RemoteExpandProperty | RemoteNestedExpands[number],
-    prefix = BASE_PREFIX,
-    args: JoinerArgument = {} as JoinerArgument
-  ): {
-    select?: string[]
-    relations: string[]
-    args: JoinerArgument
-    take?: number | null
-  } {
-    expand = JSON.parse(JSON.stringify(expand))
-
-    let fields: Set<string> = new Set()
-    let relations: string[] = []
-
-    let shouldSelectAll = false
-
-    for (const field of expand.fields ?? []) {
-      if (field === "*") {
-        shouldSelectAll = true
-        break
-      }
-      fields.add(prefix ? `${prefix}.${field}` : field)
-    }
-
-    const filters =
-      expand.args?.find((arg) => arg.name === "filters")?.value ?? {}
-
-    if (isPresent(filters)) {
-      args[prefix] = filters
-    } else if (isPresent(expand.args)) {
-      args[prefix] = expand.args
-    }
-
-    for (const property in expand.expands ?? {}) {
-      const newPrefix = prefix ? `${prefix}.${property}` : property
-
-      relations.push(newPrefix)
-      fields.delete(newPrefix)
-
-      const result = RemoteQuery.getAllFieldsAndRelations(
-        expand.expands![property],
-        newPrefix,
-        args
-      )
-
-      result.select?.forEach(fields.add, fields)
-      relations = relations.concat(result.relations)
-    }
-
-    const allFields = Array.from(fields)
-    const select =
-      allFields.length && !shouldSelectAll
-        ? allFields
-        : shouldSelectAll
-        ? undefined
-        : []
-
-    return {
-      select,
-      relations,
-      args,
-    }
+  async fetch(
+    expand: RemoteExpandProperty,
+    keyField: string,
+    ids?: (unknown | unknown[])[],
+    relationship?: JoinerRelationship
+  ): Promise<{
+    data: unknown[] | { [path: string]: unknown }
+    path?: string
+  }> {
+    return this.executeFetchRequest({
+      expand,
+      keyField,
+      ids,
+      relationship,
+    })
   }
 
   private hasPagination(options: { [attr: string]: unknown }): boolean {
@@ -201,8 +108,8 @@ export class RemoteQuery {
       let result
 
       try {
-        if (RemoteQuery.traceFetchRemoteData) {
-          result = await RemoteQuery.traceFetchRemoteData(
+        if (ModuleDataFetcher.traceFetchRemoteData) {
+          result = await ModuleDataFetcher.traceFetchRemoteData(
             async () => service[methodName](batchFilters, options),
             serviceName,
             methodName,
@@ -258,23 +165,6 @@ export class RemoteQuery {
     return flattenedResults
   }
 
-  public async remoteFetchData(
-    expand: RemoteExpandProperty,
-    keyField: string,
-    ids?: (unknown | unknown[])[],
-    relationship?: JoinerRelationship
-  ): Promise<{
-    data: unknown[] | { [path: string]: unknown }
-    path?: string
-  }> {
-    return this.executeFetchRequest({
-      expand,
-      keyField,
-      ids,
-      relationship,
-    })
-  }
-
   private async executeFetchRequest(params: {
     expand: RemoteExpandProperty
     keyField: string
@@ -290,7 +180,7 @@ export class RemoteQuery {
 
     let filters = {}
     const options = {
-      ...RemoteQuery.getAllFieldsAndRelations(expand),
+      ...getAllFieldsAndRelations(expand),
     }
 
     const availableOptions = [
@@ -387,8 +277,8 @@ export class RemoteQuery {
     }
 
     let result: any
-    if (RemoteQuery.traceFetchRemoteData) {
-      result = await RemoteQuery.traceFetchRemoteData(
+    if (ModuleDataFetcher.traceFetchRemoteData) {
+      result = await ModuleDataFetcher.traceFetchRemoteData(
         async () => service[methodName](filters, options),
         serviceConfig.serviceName,
         methodName,
@@ -413,20 +303,69 @@ export class RemoteQuery {
       data: result,
     }
   }
+}
 
-  public async query(
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>,
-    options?: RemoteJoinerOptions
-  ): Promise<any> {
-    let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
+export function getAllFieldsAndRelations(
+  expand: RemoteExpandProperty | RemoteNestedExpands[number],
+  prefix = BASE_PREFIX,
+  args: JoinerArgument = {} as JoinerArgument
+): {
+  select?: string[]
+  relations: string[]
+  args: JoinerArgument
+  take?: number | null
+} {
+  expand = JSON.parse(JSON.stringify(expand))
 
-    if (isString(query)) {
-      finalQuery = RemoteQuery.parseQuery(query, variables)
-    } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
-      finalQuery = toRemoteJoinerQuery(query, variables)
+  let fields: Set<string> = new Set()
+  let relations: string[] = []
+
+  let shouldSelectAll = false
+
+  for (const field of expand.fields ?? []) {
+    if (field === "*") {
+      shouldSelectAll = true
+      break
     }
+    fields.add(prefix ? `${prefix}.${field}` : field)
+  }
 
-    return await this.remoteJoiner.query(finalQuery, options)
+  const filters =
+    expand.args?.find((arg) => arg.name === "filters")?.value ?? {}
+
+  if (isPresent(filters)) {
+    args[prefix] = filters
+  } else if (isPresent(expand.args)) {
+    args[prefix] = expand.args
+  }
+
+  for (const property in expand.expands ?? {}) {
+    const newPrefix = prefix ? `${prefix}.${property}` : property
+
+    relations.push(newPrefix)
+    fields.delete(newPrefix)
+
+    const result = getAllFieldsAndRelations(
+      expand.expands![property],
+      newPrefix,
+      args
+    )
+
+    result.select?.forEach(fields.add, fields)
+    relations = relations.concat(result.relations)
+  }
+
+  const allFields = Array.from(fields)
+  const select =
+    allFields.length && !shouldSelectAll
+      ? allFields
+      : shouldSelectAll
+      ? undefined
+      : []
+
+  return {
+    select,
+    relations,
+    args,
   }
 }
