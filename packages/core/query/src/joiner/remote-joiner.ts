@@ -18,20 +18,11 @@ import {
   isString,
   MedusaError,
 } from "@medusajs/utils"
+import { IRemoteDataFetcher } from "./types"
 
 const BASE_PATH = "_root"
 
 export type RelationMap = Map<string, Map<string, string>>
-
-export type RemoteFetchDataCallback = (
-  expand: RemoteExpandProperty,
-  keyField: string,
-  ids?: (unknown | unknown[])[],
-  relationship?: any
-) => Promise<{
-  data: unknown[] | { [path: string]: unknown }
-  path?: string
-}>
 
 type InternalImplodeMapping = {
   location: string[]
@@ -51,6 +42,18 @@ type InternalParseExpandsParams = {
   initialDataOnly?: boolean
 }
 
+/**
+ * Executes cross-module graph queries by resolving relationships from module
+ * joiner configs.
+ *
+ * Given a {@link RemoteJoinerQuery}, it resolves the entry service, parses
+ * requested expands into a fetch plan, loads root data, recursively fetches
+ * related entities, and joins them back onto parent records.
+ *
+ * Data loading is delegated to {@link IRemoteDataFetcher} (typically
+ * {@link ModuleDataFetcher}). {@link Query} is the public entry point that
+ * normalizes user input and invokes {@link RemoteJoiner.query}.
+ */
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, InternalJoinerServiceConfig> =
     new Map()
@@ -252,7 +255,7 @@ export class RemoteJoiner {
 
   constructor(
     serviceConfigs: ModuleJoinerConfig[],
-    private remoteFetchData: RemoteFetchDataCallback,
+    private dataFetcher: IRemoteDataFetcher,
     private options: {
       autoCreateServiceNameAlias?: boolean
       relationMap?: RelationMap
@@ -634,7 +637,7 @@ export class RemoteJoiner {
         : relationship.primaryKey
     }
 
-    const response = await this.remoteFetchData(
+    const response = await this.dataFetcher.fetch(
       expand,
       pkFieldAdjusted,
       uniqueIds,
@@ -827,10 +830,7 @@ export class RemoteJoiner {
       const expandedPathLevels = fullPath.split(".")
 
       for (let idx = 1; idx < expandedPathLevels.length - 1; idx++) {
-        nestedItems = this.getNestedItems(
-          nestedItems,
-          expandedPathLevels[idx]
-        )
+        nestedItems = this.getNestedItems(nestedItems, expandedPathLevels[idx])
       }
 
       return nestedItems
@@ -955,10 +955,7 @@ export class RemoteJoiner {
           ? (relatedDataArray.data as any)[relatedDataArray.path!]
           : relatedDataArray.data
 
-        const relatedDataMap = this.createRelatedDataMap(
-          relData,
-          joinFields
-        )
+        const relatedDataMap = this.createRelatedDataMap(relData, joinFields)
 
         for (let ci = 0; ci < ctxs.length; ci++) {
           const ctx = ctxs[ci]

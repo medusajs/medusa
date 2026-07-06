@@ -1,7 +1,9 @@
 import {
   GraphResultSet,
   IIndexService,
+  LoadedModule,
   MedusaContainer,
+  ModuleJoinerConfig,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFilters,
@@ -12,85 +14,48 @@ import {
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
-  Cached,
   MedusaError,
   applyTranslations,
+  Cached,
+  GraphQLUtils,
   isObject,
   remoteQueryObjectFromString,
   unflattenObjectKeys,
+  isString,
 } from "@medusajs/utils"
-import { RemoteQuery } from "./remote-query"
+import { RelationMap, RemoteJoiner } from "../joiner"
+import { queryCacheDecoratorOptions } from "./cache"
+import { ModuleDataFetcher } from "./module-data-fetcher"
+import { toRemoteJoinerQuery } from "./to-remote-joiner-query"
 import { toRemoteQuery } from "./to-remote-query"
 
-function extractCacheOptions(option: string) {
-  return function extractKey(args: any[]) {
-    return args[1]?.cache?.[option]
-  }
-}
-
-function isCacheEnabled(args: any[]) {
-  const isEnabled = extractCacheOptions("enable")(args)
-  if (isEnabled === false) {
-    return false
-  }
-
-  return (
-    isEnabled === true ||
-    extractCacheOptions("key")(args) ||
-    extractCacheOptions("ttl")(args) ||
-    extractCacheOptions("tags")(args) ||
-    extractCacheOptions("autoInvalidate")(args) ||
-    extractCacheOptions("providers")(args)
-  )
-}
-
-const cacheDecoratorOptions = {
-  enable: isCacheEnabled,
-  key: async (args, cachingModule) => {
-    const key = extractCacheOptions("key")(args)
-    if (key) {
-      return key
-    }
-
-    const queryOptions = args[0]
-    const remoteJoinerOptions = args[1] ?? {}
-    const { initialData, cache, ...restOptions } = remoteJoinerOptions
-
-    const keyInput = {
-      queryOptions,
-      options: restOptions,
-    }
-    return await cachingModule.computeKey(keyInput)
-  },
-  ttl: extractCacheOptions("ttl"),
-  tags: extractCacheOptions("tags"),
-  autoInvalidate: extractCacheOptions("autoInvalidate"),
-  providers: extractCacheOptions("providers"),
-  container: function (this: Query) {
-    return this.container
-  },
-}
-
 /**
- * API wrapper around the remoteQuery
+ * Public query API for Medusa's cross-module graph query system.
+ *
+ * Accepts several input shapes (graph config, legacy string config, GraphQL,
+ * or a pre-built {@link RemoteJoinerQuery}), normalizes them via
+ * {@link normalizeQuery}, and delegates execution to {@link RemoteJoiner}.
+ *
+ * {@link RemoteJoiner} resolves relationships from module joiner configs,
+ * plans nested expands, and loads data through {@link ModuleDataFetcher}
+ * ({@link IRemoteDataFetcher}). This class adds response shaping, caching,
+ * locale translation, and index-assisted querying on top of that pipeline.
+ *
+ * ```
+ * user input → normalizeQuery() → RemoteJoiner.query() → ModuleDataFetcher.fetch()
+ * ```
  */
 export class Query {
-  #remoteQuery: RemoteQuery
+  #remoteJoiner: RemoteJoiner
+  #joinerConfigs: ModuleJoinerConfig[]
   #indexModule: IIndexService
   protected container: MedusaContainer
 
-  /**
-   * Method to wrap execution of the graph query for instrumentation
-   */
   static traceGraphQuery?: (
     queryFn: () => Promise<any>,
     queryOptions: RemoteQueryInput<any>
   ) => Promise<any>
 
-  /**
-   * Method to wrap execution of the remoteQuery overload function
-   * for instrumentation
-   */
   static traceRemoteQuery?: (
     queryFn: () => Promise<any>,
     queryOptions:
@@ -106,65 +71,28 @@ export class Query {
     remoteQuery(tracer: (typeof Query)["traceRemoteQuery"]) {
       Query.traceRemoteQuery = tracer
     },
-    remoteDataFetch(tracer: (typeof RemoteQuery)["traceFetchRemoteData"]) {
-      RemoteQuery.traceFetchRemoteData = tracer
+    remoteDataFetch(
+      tracer: (typeof ModuleDataFetcher)["traceFetchRemoteData"]
+    ) {
+      ModuleDataFetcher.traceFetchRemoteData = tracer
     },
   }
 
   constructor({
-    remoteQuery,
+    remoteJoiner,
+    joinerConfigs,
     indexModule,
     container,
   }: {
-    remoteQuery: RemoteQuery
+    remoteJoiner: RemoteJoiner
+    joinerConfigs: ModuleJoinerConfig[]
     indexModule: IIndexService
     container: MedusaContainer
   }) {
-    this.#remoteQuery = remoteQuery
+    this.#remoteJoiner = remoteJoiner
+    this.#joinerConfigs = joinerConfigs
     this.#indexModule = indexModule
     this.container = container
-  }
-
-  #unwrapQueryConfig(
-    config:
-      | RemoteQueryObjectFromStringResult<any>
-      | RemoteQueryObjectConfig<any>
-      | RemoteJoinerQuery
-  ): object {
-    let normalizedQuery: any = config
-
-    if ("__value" in config) {
-      normalizedQuery = config.__value
-    } else if ("entity" in normalizedQuery) {
-      normalizedQuery = toRemoteQuery(
-        normalizedQuery,
-        this.#remoteQuery.getJoinerConfigs()
-      )
-    } else if (
-      "entryPoint" in normalizedQuery ||
-      "service" in normalizedQuery
-    ) {
-      normalizedQuery = remoteQueryObjectFromString(
-        normalizedQuery as Parameters<typeof remoteQueryObjectFromString>[0]
-      ).__value
-    }
-
-    return normalizedQuery
-  }
-
-  #unwrapRemoteQueryResponse(
-    response:
-      | any[]
-      | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
-  ): GraphResultSet<any> {
-    if (Array.isArray(response)) {
-      return { data: response, metadata: undefined }
-    }
-
-    return {
-      data: response.rows,
-      metadata: response.metadata,
-    }
   }
 
   async query(
@@ -182,64 +110,68 @@ export class Query {
       )
     }
 
-    const config = this.#unwrapQueryConfig(queryOptions)
+    let config: any = queryOptions
+
+    if ("__value" in queryOptions) {
+      config = queryOptions.__value
+    } else if ("entity" in config) {
+      config = toRemoteQuery(config, this.#joinerConfigs)
+    } else if ("entryPoint" in config || "service" in config) {
+      config = remoteQueryObjectFromString(
+        config as Parameters<typeof remoteQueryObjectFromString>[0]
+      ).__value
+    }
+
     if (Query.traceRemoteQuery) {
       return await Query.traceRemoteQuery(
-        async () => await this.#remoteQuery.query(config, undefined, options),
+        async () => await this.internalQuery(config, undefined, options),
         queryOptions
       )
     }
 
-    return await this.#remoteQuery.query(config, undefined, options)
+    return await this.internalQuery(config, undefined, options)
   }
 
-  /**
-   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
-   * @param query
-   * @param variables
-   * @param options
-   */
-  async gql(query, variables?, options?) {
-    return await this.#remoteQuery.query(query, variables, options)
+  async gql(
+    query: string,
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
+  ) {
+    const joinerQuery = parseGraphqlQuery(query, variables)
+    return await this.internalQuery(joinerQuery, undefined, options)
   }
 
-  /**
-   * Graph function uses the remoteQuery under the hood and
-   * returns a result set
-   */
-  @Cached(cacheDecoratorOptions)
+  @Cached(queryCacheDecoratorOptions)
   async graph<const TEntry extends string>(
     queryOptions: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
-    const normalizedQuery = toRemoteQuery(
-      queryOptions,
-      this.#remoteQuery.getJoinerConfigs()
-    )
+    const normalizedQuery = toRemoteQuery(queryOptions, this.#joinerConfigs)
 
     let response:
       | any[]
       | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
 
-    /**
-     * When traceGraphQuery method is defined, we will wrap the implementation
-     * inside a callback and provide the method to the traceGraphQuery
-     */
     if (Query.traceGraphQuery) {
       response = await Query.traceGraphQuery(
         async () =>
-          await this.#remoteQuery.query(normalizedQuery, undefined, options),
+          await this.internalQuery(normalizedQuery, undefined, options),
         queryOptions as RemoteQueryInput<any>
       )
     } else {
-      response = await this.#remoteQuery.query(
-        normalizedQuery,
-        undefined,
-        options
-      )
+      response = await this.internalQuery(normalizedQuery, undefined, options)
     }
 
-    const result = this.#unwrapRemoteQueryResponse(response)
+    let result: GraphResultSet<any>
+
+    if (Array.isArray(response)) {
+      result = { data: response, metadata: undefined }
+    } else {
+      result = {
+        data: response.rows,
+        metadata: response.metadata,
+      }
+    }
 
     if (options?.locale) {
       await applyTranslations({
@@ -252,11 +184,7 @@ export class Query {
     return result
   }
 
-  /**
-   * Index function uses the Index module to query and hydrates the data with query.graph
-   * returns a result set
-   */
-  @Cached(cacheDecoratorOptions)
+  @Cached(queryCacheDecoratorOptions)
   async index<const TEntry extends string>(
     queryOptions: RemoteQueryInput<TEntry> & {
       joinFilters?: RemoteQueryFilters<TEntry>
@@ -333,29 +261,73 @@ export class Query {
       metadata: indexResponse.metadata as RemoteQueryFunctionReturnPagination,
     }
   }
+
+  private async internalQuery(
+    query: RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
+  ): Promise<any> {
+    let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
+
+    if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
+      finalQuery = toRemoteJoinerQuery(query, variables)
+    }
+
+    return await this.#remoteJoiner.query(finalQuery, options)
+  }
 }
 
-/**
- * API wrapper around the remoteQuery with backward compatibility support
- * @param remoteQuery
- */
 export function createQuery({
-  remoteQuery,
+  modulesLoaded,
+  relationMap,
   indexModule,
   container,
 }: {
-  remoteQuery: RemoteQuery
+  modulesLoaded: LoadedModule[]
+  relationMap: RelationMap
   indexModule: IIndexService
   container: MedusaContainer
 }) {
+  const joinerConfigs: ModuleJoinerConfig[] = []
+  const modulesMap: Map<string, LoadedModule> = new Map()
+
+  for (const mod of modulesLoaded) {
+    if (!mod.__definition.isQueryable) {
+      continue
+    }
+
+    const serviceName = mod.__definition.key
+
+    if (modulesMap.has(serviceName)) {
+      throw new Error(
+        `Duplicated instance of module ${serviceName} is not allowed.`
+      )
+    }
+
+    modulesMap.set(serviceName, mod)
+    joinerConfigs.push(mod.__joinerConfig)
+  }
+
+  const dataFetcher = new ModuleDataFetcher(modulesMap)
+  const remoteJoiner = new RemoteJoiner(joinerConfigs, dataFetcher, {
+    autoCreateServiceNameAlias: false,
+    relationMap,
+  })
+
   const query = new Query({
-    remoteQuery,
+    remoteJoiner,
+    joinerConfigs,
     indexModule,
     container,
   })
 
   function backwardCompatibleQuery(...args: any[]) {
-    return query.query.apply(query, args)
+    return new Query({
+      remoteJoiner,
+      joinerConfigs,
+      indexModule,
+      container,
+    }).query.apply(query, args)
   }
 
   backwardCompatibleQuery.graph = query.graph.bind(query)
@@ -363,4 +335,12 @@ export function createQuery({
   backwardCompatibleQuery.index = query.index.bind(query)
 
   return backwardCompatibleQuery as Omit<RemoteQueryFunction, symbol>
+}
+
+export function parseGraphqlQuery(
+  graphqlQuery: string,
+  variables?: Record<string, unknown>
+): RemoteJoinerQuery {
+  const parser = new GraphQLUtils.GraphQLParser(graphqlQuery, variables)
+  return parser.parseQuery()
 }

@@ -9,10 +9,9 @@ jest.mock("@medusajs/utils", () => ({
 
 const mockApplyTranslations = utils.applyTranslations as jest.Mock
 
-function createMockRemoteQuery(queryResult: any = []) {
+function createMockRemoteJoiner(queryResult: any = []) {
   return {
     query: jest.fn().mockResolvedValue(queryResult),
-    getJoinerConfigs: jest.fn().mockReturnValue([]),
   }
 }
 
@@ -22,6 +21,21 @@ function createMockContainer(): MedusaContainer {
   } as unknown as MedusaContainer
 }
 
+function createQueryInstance(
+  queryResult: any = [],
+  container: MedusaContainer = createMockContainer()
+) {
+  return {
+    query: new Query({
+      remoteJoiner: createMockRemoteJoiner(queryResult) as any,
+      joinerConfigs: [],
+      indexModule: null as any,
+      container,
+    }),
+    container,
+  }
+}
+
 describe("Query.graph locale integration", () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -29,15 +43,11 @@ describe("Query.graph locale integration", () => {
 
   describe("when locale option is provided", () => {
     it("should call applyTranslations with the correct locale code", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([
-        { id: "prod_1", title: "Test" },
-      ])
       const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance(
+        [{ id: "prod_1", title: "Test" }],
+        mockContainer
+      )
 
       await query.graph(
         { entity: "product", fields: ["id", "title"] },
@@ -57,13 +67,7 @@ describe("Query.graph locale integration", () => {
         { id: "prod_1", title: "Product 1" },
         { id: "prod_2", title: "Product 2" },
       ]
-      const mockRemoteQuery = createMockRemoteQuery(resultData)
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance(resultData)
 
       await query.graph(
         { entity: "product", fields: ["id", "title"] },
@@ -78,13 +82,8 @@ describe("Query.graph locale integration", () => {
     })
 
     it("should call applyTranslations with the container instance", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([])
       const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([], mockContainer)
 
       await query.graph(
         { entity: "product", fields: ["id"] },
@@ -103,13 +102,7 @@ describe("Query.graph locale integration", () => {
         rows: [{ id: "prod_1" }, { id: "prod_2" }],
         metadata: { skip: 0, take: 10, count: 2 },
       }
-      const mockRemoteQuery = createMockRemoteQuery(paginatedResult)
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance(paginatedResult)
 
       await query.graph(
         {
@@ -130,13 +123,7 @@ describe("Query.graph locale integration", () => {
 
   describe("when locale option is NOT provided", () => {
     it("should NOT call applyTranslations when options is undefined", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([{ id: "prod_1" }])
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([{ id: "prod_1" }])
 
       await query.graph({ entity: "product", fields: ["id"] })
 
@@ -144,13 +131,7 @@ describe("Query.graph locale integration", () => {
     })
 
     it("should NOT call applyTranslations when options is an empty object", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([{ id: "prod_1" }])
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([{ id: "prod_1" }])
 
       await query.graph({ entity: "product", fields: ["id"] }, {})
 
@@ -158,13 +139,7 @@ describe("Query.graph locale integration", () => {
     })
 
     it("should NOT call applyTranslations when locale is explicitly undefined", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([{ id: "prod_1" }])
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([{ id: "prod_1" }])
 
       await query.graph(
         { entity: "product", fields: ["id"] },
@@ -175,13 +150,7 @@ describe("Query.graph locale integration", () => {
     })
 
     it("should NOT call applyTranslations when other options are provided but locale is missing", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([{ id: "prod_1" }])
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([{ id: "prod_1" }])
 
       await query.graph(
         { entity: "product", fields: ["id"] },
@@ -194,13 +163,8 @@ describe("Query.graph locale integration", () => {
 
   describe("applyTranslations parameter validation", () => {
     it("should pass empty array to applyTranslations when query returns empty array", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([])
       const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([], mockContainer)
 
       await query.graph(
         { entity: "product", fields: ["id"] },
@@ -216,13 +180,8 @@ describe("Query.graph locale integration", () => {
 
     it("should preserve all three parameters correctly", async () => {
       const resultData = [{ id: "test_1" }]
-      const mockRemoteQuery = createMockRemoteQuery(resultData)
       const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance(resultData, mockContainer)
 
       await query.graph(
         { entity: "product", fields: ["id"] },
@@ -236,13 +195,7 @@ describe("Query.graph locale integration", () => {
     })
 
     it("should work with different locale formats", async () => {
-      const mockRemoteQuery = createMockRemoteQuery([{ id: "prod_1" }])
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance([{ id: "prod_1" }])
 
       const locales = ["en", "en-US", "zh-Hans-CN", "pt-BR"]
 
@@ -260,13 +213,7 @@ describe("Query.graph locale integration", () => {
   describe("return value behavior with locale", () => {
     it("should return the result after applyTranslations is called", async () => {
       const resultData = [{ id: "prod_1", title: "Original" }]
-      const mockRemoteQuery = createMockRemoteQuery(resultData)
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance(resultData)
 
       const result = await query.graph(
         { entity: "product", fields: ["id", "title"] },
@@ -281,13 +228,7 @@ describe("Query.graph locale integration", () => {
 
     it("should return the same reference that was passed to applyTranslations", async () => {
       const resultData = [{ id: "prod_1" }]
-      const mockRemoteQuery = createMockRemoteQuery(resultData)
-      const mockContainer = createMockContainer()
-      const query = new Query({
-        remoteQuery: mockRemoteQuery as any,
-        indexModule: null as any,
-        container: mockContainer,
-      })
+      const { query } = createQueryInstance(resultData)
 
       const result = await query.graph(
         { entity: "product", fields: ["id"] },
