@@ -1,19 +1,22 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { CategoryListTable } from "./components/category-list-table"
 
 export const CategoryList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("product_category.list.after"),
-        before: getWidgets("product_category.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="product_category.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="CategoryListTable">
+              <CategoryListTable />
+            </LayoutComposer.Entry>
+          </>
+        ),
       }}
-      hasOutlet
-    >
-      <CategoryListTable />
-    </SingleColumnPage>
+    />
   )
 }

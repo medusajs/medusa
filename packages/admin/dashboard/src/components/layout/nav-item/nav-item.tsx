@@ -1,4 +1,20 @@
-import { Kbd, Text, clx } from "@medusajs/ui"
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
+import {
+  SortableContext,
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { DotsSix, Eye, EyeSlash } from "@medusajs/icons"
+import { IconButton, Kbd, Text, clx } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
 import {
   PropsWithChildren,
@@ -9,6 +25,7 @@ import {
 } from "react"
 import { useTranslation } from "react-i18next"
 import { NavLink, To, useLocation } from "react-router-dom"
+import { useLayoutEdit } from "../../../hooks/use-layout-edit"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { ConditionalTooltip } from "../../common/conditional-tooltip"
 
@@ -85,12 +102,7 @@ const NavItemTooltip = ({
   )
 }
 
-const NavItemSubItem = ({
-  item,
-  isSetting,
-  navLinkClassNames,
-  getLinkTarget,
-}: {
+type SubItemLinkProps = {
   item: NestedItemProps
   isSetting: boolean
   navLinkClassNames: (props: {
@@ -100,33 +112,186 @@ const NavItemSubItem = ({
     isSetting?: boolean
   }) => string
   getLinkTarget: (target: string) => To
-}) => {
+}
+
+const SubItemLink = ({
+  item,
+  isSetting,
+  navLinkClassNames,
+  getLinkTarget,
+}: SubItemLinkProps) => {
   const { t } = useTranslation(item.translationNs as any)
   const itemLabel: string = item.translationNs ? t(item.label) : item.label
 
   return (
+    <NavItemTooltip to={item.to}>
+      <NavLink
+        to={getLinkTarget(item.to)}
+        end
+        className={({ isActive }) => {
+          return clx(
+            navLinkClassNames({
+              to: item.to,
+              isActive,
+              isSetting,
+              isNested: true,
+            })
+          )
+        }}
+      >
+        <Text size="small" weight="plus" leading="compact">
+          {itemLabel}
+        </Text>
+      </NavLink>
+    </NavItemTooltip>
+  )
+}
+
+const NavItemSubItem = (props: SubItemLinkProps) => {
+  return (
     <li className="flex h-7 items-center">
-      <NavItemTooltip to={item.to}>
-        <NavLink
-          to={getLinkTarget(item.to)}
-          end
-          className={({ isActive }) => {
-            return clx(
-              navLinkClassNames({
-                to: item.to,
-                isActive,
-                isSetting,
-                isNested: true,
-              })
-            )
-          }}
-        >
-          <Text size="small" weight="plus" leading="compact">
-            {itemLabel}
-          </Text>
-        </NavLink>
-      </NavItemTooltip>
+      <SubItemLink {...props} />
     </li>
+  )
+}
+
+const SortableSubItem = ({
+  id,
+  hidden,
+  onToggleHidden,
+  ...props
+}: SubItemLinkProps & {
+  id: string
+  hidden: boolean
+  onToggleHidden: () => void
+}) => {
+  const { t } = useTranslation()
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id })
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  }
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      className={clx(
+        "flex h-7 items-center gap-x-1",
+        isDragging && "opacity-50"
+      )}
+    >
+      <button
+        type="button"
+        className="text-ui-fg-muted cursor-grab touch-none rounded p-0.5 focus:outline-none [&>svg]:h-3.5 [&>svg]:w-3.5"
+        {...attributes}
+        {...listeners}
+        aria-label={t("layout.dragToReorder")}
+      >
+        <DotsSix />
+      </button>
+      <IconButton
+        size="2xsmall"
+        variant="transparent"
+        onClick={onToggleHidden}
+        aria-label={hidden ? t("actions.show") : t("actions.hide")}
+        className="h-3.5 w-3.5 p-0.5"
+      >
+        {hidden ? <EyeSlash /> : <Eye />}
+      </IconButton>
+      <div className={clx("min-w-0 flex-1", hidden && "opacity-30 grayscale")}>
+        <SubItemLink {...props} />
+      </div>
+    </li>
+  )
+}
+
+/**
+ * Renders a route's nested children, applying the saved order. In layout edit
+ * mode they become a self-contained vertical sortable (its own `DndContext`, so
+ * it doesn't interfere with the composer's entry-level drag), scoped to this
+ * route — child ids embed the parent path, so moves never cross routes.
+ */
+const NavSubItems = ({
+  parentTo,
+  items,
+  isSetting,
+  navLinkClassNames,
+  getLinkTarget,
+}: {
+  parentTo: string
+  items: NestedItemProps[]
+  isSetting: boolean
+  navLinkClassNames: SubItemLinkProps["navLinkClassNames"]
+  getLinkTarget: SubItemLinkProps["getLinkTarget"]
+}) => {
+  const { editMode, orderChildren, setChildrenOrder, isHidden, toggleHidden } =
+    useLayoutEdit()
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } })
+  )
+  const childId = useCallback(
+    (to: string) => `nav-child:${parentTo}:${to}`,
+    [parentTo]
+  )
+
+  const ordered = orderChildren(items, (it) => childId(it.to))
+  const shared = { isSetting, navLinkClassNames, getLinkTarget }
+
+  if (!editMode) {
+    return (
+      <>
+        {ordered
+          .filter((item) => !isHidden(childId(item.to)))
+          .map((item) => (
+            <NavItemSubItem key={item.to} item={item} {...shared} />
+          ))}
+      </>
+    )
+  }
+
+  const ids = ordered.map((it) => childId(it.to))
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) {
+      return
+    }
+    const oldIndex = ids.indexOf(active.id as string)
+    const newIndex = ids.indexOf(over.id as string)
+    if (oldIndex < 0 || newIndex < 0) {
+      return
+    }
+    setChildrenOrder(arrayMove(ids, oldIndex, newIndex))
+  }
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+        {ordered.map((item) => (
+          <SortableSubItem
+            key={item.to}
+            id={childId(item.to)}
+            item={item}
+            hidden={isHidden(childId(item.to))}
+            onToggleHidden={() => toggleHidden(childId(item.to))}
+            {...shared}
+          />
+        ))}
+      </SortableContext>
+    </DndContext>
   )
 }
 
@@ -142,6 +307,9 @@ export const NavItem = ({
   const { t } = useTranslation(translationNs as any)
   const { pathname, search } = useLocation()
   const [open, setOpen] = useState(getIsOpen(to, items, pathname))
+  // While the layout is being edited, force the nested list open so every
+  // route's children are visible and reorderable, not just the active route's.
+  const { editMode } = useLayoutEdit()
 
   // Use translation if translationNs is provided, otherwise use label as-is
   const displayLabel: string = translationNs ? t(label) : label
@@ -189,7 +357,7 @@ export const NavItem = ({
   const isSetting = type === "setting"
 
   return (
-    <div className="px-3">
+    <div>
       <NavItemTooltip to={to}>
         <NavLink
           to={getLinkTarget(to)}
@@ -218,7 +386,7 @@ export const NavItem = ({
         </NavLink>
       </NavItemTooltip>
       {items && items.length > 0 && (
-        <RadixCollapsible.Root open={open} onOpenChange={setOpen}>
+        <RadixCollapsible.Root open={editMode || open} onOpenChange={setOpen}>
           <RadixCollapsible.Trigger
             className={clx(
               "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex w-full items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 outline-none lg:hidden",
@@ -257,15 +425,13 @@ export const NavItem = ({
                     </NavLink>
                   </NavItemTooltip>
                 </li>
-                {items.map((item) => (
-                  <NavItemSubItem
-                    key={item.to}
-                    item={item}
-                    isSetting={isSetting}
-                    navLinkClassNames={navLinkClassNames}
-                    getLinkTarget={getLinkTarget}
-                  />
-                ))}
+                <NavSubItems
+                  parentTo={to}
+                  items={items}
+                  isSetting={isSetting}
+                  navLinkClassNames={navLinkClassNames}
+                  getLinkTarget={getLinkTarget}
+                />
               </ul>
             </div>
           </RadixCollapsible.Content>

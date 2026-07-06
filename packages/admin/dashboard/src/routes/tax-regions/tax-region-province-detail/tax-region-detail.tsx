@@ -1,11 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionProvinceDetailSection } from "./components/tax-region-province-detail-section"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { TaxRegionProvinceOverrideSection } from "./components/tax-region-province-override-section"
 import { taxRegionLoader } from "./loader"
 
@@ -23,8 +23,6 @@ export const TaxRegionDetail = () => {
     error,
   } = useTaxRegion(province_id!, undefined, { initialData })
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !taxRegion) {
     return <SingleColumnPageSkeleton sections={2} showJSON />
   }
@@ -34,16 +32,23 @@ export const TaxRegionDetail = () => {
   }
 
   return (
-    <SingleColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="tax.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={taxRegion}
-      showJSON
-      widgets={{
-        after: getWidgets("tax.details.after"),
-        before: getWidgets("tax.details.before"),
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="TaxRegionProvinceDetailSection">
+              <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="TaxRegionProvinceOverrideSection">
+              <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(taxRegion, { metadata: false, permissions: false })}
+          </>
+        ),
       }}
-    >
-      <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
-      <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
-    </SingleColumnPage>
+    />
   )
 }

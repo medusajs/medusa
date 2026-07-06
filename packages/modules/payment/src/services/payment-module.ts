@@ -537,7 +537,7 @@ export default class PaymentModuleService
     id: string,
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
+  ): Promise<PaymentDTO | null> {
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
@@ -558,7 +558,7 @@ export default class PaymentModuleService
 
     // this method needs to be idempotent
     if (session.payment && session.authorized_at) {
-      return await this.baseRepository_.serialize(session.payment)
+      return await this.baseRepository_.serialize<PaymentDTO>(session.payment)
     }
 
     let { data, status } = await this.paymentProviderService_.authorizePayment(
@@ -568,6 +568,24 @@ export default class PaymentModuleService
         context: { idempotency_key: session.id, ...context },
       }
     )
+
+    if (status === PaymentSessionStatus.PENDING_AUTHORIZATION) {
+      await this.paymentSessionService_.update(
+        {
+          id: session.id,
+          status,
+          data,
+        },
+        sharedContext
+      )
+
+      await this.maybeUpdatePaymentCollection_(
+        session.payment_collection_id,
+        sharedContext
+      )
+
+      return null
+    }
 
     if (
       status !== PaymentSessionStatus.AUTHORIZED &&
@@ -612,7 +630,7 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(payment)
+    return await this.baseRepository_.serialize<PaymentDTO>(payment)
   }
 
   @InjectTransactionManager()

@@ -1,12 +1,10 @@
 import {
   Buildings,
   BuildingStorefront,
-  ChevronDownMini,
   CogSixTooth,
   CurrencyDollar,
   EllipsisHorizontal,
   MagnifyingGlass,
-  MinusMini,
   OpenRectArrowOut,
   ReceiptPercent,
   ShoppingCart,
@@ -14,11 +12,12 @@ import {
   Tag,
   Users,
 } from "@medusajs/icons"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { Avatar, clx, Divider, DropdownMenu, Text } from "@medusajs/ui"
-import { Collapsible as RadixCollapsible } from "radix-ui"
 import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
+import { LayoutComposer } from "../../layout-composer"
 import { PermissionGuard } from "../../common/permission-guard"
 import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
@@ -31,6 +30,7 @@ import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
+import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 
 export const MainLayout = () => {
   return (
@@ -54,8 +54,7 @@ const MainSidebar = () => {
         </PermissionGuard>
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
-            <CoreRouteSection />
-            <ExtensionRouteSection />
+            <SidebarRoutes />
           </div>
           <UtilitySection />
         </div>
@@ -265,7 +264,7 @@ const Searchbar = () => {
   const { toggleSearch } = useSearch()
 
   return (
-    <div className="px-3">
+    <div>
       <button
         onClick={toggleSearch}
         className={clx(
@@ -288,7 +287,12 @@ const Searchbar = () => {
   )
 }
 
-const CoreRouteSection = () => {
+/**
+ * The customizable nav. Every top-level route(core and extensions) is
+ * fed to the `LayoutComposer` as its own entry, so each can be reordered/hidden
+ * (and its children reordered) independently in edit mode.
+ */
+const SidebarRoutes = () => {
   const coreRoutes = useCoreRoutes()
 
   const { getMenu } = useExtension()
@@ -304,66 +308,53 @@ const CoreRouteSection = () => {
     }
   })
 
-  return (
-    <nav className="flex flex-col gap-y-1 py-3">
-      <Searchbar />
-      {coreRoutes.map((route) => {
-        return <NavItem key={route.to} {...route} />
-      })}
-    </nav>
-  )
-}
-
-const ExtensionRouteSection = () => {
-  const { t } = useTranslation()
-  const { getMenu } = useExtension()
-
-  const menuItems = getMenu("coreExtensions").filter((item) => !item.nested)
-
-  if (!menuItems.length) {
-    return null
-  }
+  const extensionItems = menuItems.filter((item) => !item.nested)
 
   return (
-    <div>
+    <nav className="py-3">
       <div className="px-3">
-        <Divider variant="dashed" />
+        <LayoutComposer
+          widgetsZonePrefix="sidebar"
+          preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+          hasOutlet={false}
+          disableWidgets
+          customizeId={CUSTOMIZE_IDS.MAIN_SIDEBAR}
+          controlSize="small"
+          sections={{
+            main: (
+              <>
+                <LayoutComposer.Entry id="Searchbar">
+                  <Searchbar />
+                </LayoutComposer.Entry>
+                {coreRoutes.map((route) => (
+                  <LayoutComposer.Entry id={`nav:${route.to}`} key={route.to}>
+                    <NavItem key={route.to} {...route} />
+                  </LayoutComposer.Entry>
+                ))}
+                {extensionItems.length > 0 && (
+                  <LayoutComposer.Entry id="Divider">
+                    <Divider variant="dashed" />
+                  </LayoutComposer.Entry>
+                )}
+                {extensionItems.map((item) => (
+                  <LayoutComposer.Entry id={`nav:${item.to}`} key={item.to}>
+                    <NavItem
+                      key={item.to}
+                      to={item.to}
+                      label={item.label}
+                      icon={item.icon ? item.icon : <SquaresPlus />}
+                      items={item.items}
+                      translationNs={item.translationNs}
+                      type="extension"
+                    />
+                  </LayoutComposer.Entry>
+                ))}
+              </>
+            ),
+          }}
+        />
       </div>
-      <div className="flex flex-col gap-y-1 py-3">
-        <RadixCollapsible.Root defaultOpen>
-          <div className="px-4">
-            <RadixCollapsible.Trigger asChild className="group/trigger">
-              <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2">
-                <Text size="xsmall" weight="plus" leading="compact">
-                  {t("app.nav.common.extensions")}
-                </Text>
-                <div className="text-ui-fg-muted">
-                  <ChevronDownMini className="group-data-[state=open]/trigger:hidden" />
-                  <MinusMini className="group-data-[state=closed]/trigger:hidden" />
-                </div>
-              </button>
-            </RadixCollapsible.Trigger>
-          </div>
-          <RadixCollapsible.Content>
-            <nav className="flex flex-col gap-y-0.5 py-1 pb-4">
-              {menuItems.map((item, i) => {
-                return (
-                  <NavItem
-                    key={i}
-                    to={item.to}
-                    label={item.label}
-                    icon={item.icon ? item.icon : <SquaresPlus />}
-                    items={item.items}
-                    translationNs={item.translationNs}
-                    type="extension"
-                  />
-                )
-              })}
-            </nav>
-          </RadixCollapsible.Content>
-        </RadixCollapsible.Root>
-      </div>
-    </div>
+    </nav>
   )
 }
 
@@ -372,7 +363,7 @@ const UtilitySection = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-col gap-y-0.5 py-3">
+    <div className="flex flex-col gap-y-0.5 px-3 py-3">
       <NavItem
         label={t("app.nav.settings.header")}
         to="/settings"

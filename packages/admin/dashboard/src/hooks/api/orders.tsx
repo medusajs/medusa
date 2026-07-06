@@ -415,6 +415,33 @@ export const useCreateOrderCreditLine = (
   })
 }
 
+export const useAuthorizePaymentSession = (
+  orderId: string,
+  sessionId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminAuthorizeOrderPaymentSessionResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () =>
+      sdk.admin.order.authorizePaymentSession(orderId, sessionId),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.detail(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateOrderChange = (
   orderChangeId: string,
   options?: UseMutationOptions<

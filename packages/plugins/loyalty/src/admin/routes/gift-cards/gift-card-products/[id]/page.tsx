@@ -28,16 +28,25 @@ export const ProductDetail = () => {
       sections={{
         main: (
           <>
-            <ProductGeneralSection product={product} />
-            <ProductVariantSection product={product} />
-
-            <JsonViewSection data={product} />
+            <LayoutComposer.Entry id="ProductGeneralSection">
+              <ProductGeneralSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductVariantSection">
+              <ProductVariantSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="JsonViewSection">
+              <JsonViewSection data={product} />
+            </LayoutComposer.Entry>
           </>
         ),
         side: (
           <>
-            <ProductSalesChannelSection product={product} />
-            <ProductMediaSection product={product} />
+            <LayoutComposer.Entry id="ProductSalesChannelSection">
+              <ProductSalesChannelSection product={product} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ProductMediaSection">
+              <ProductMediaSection product={product} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

@@ -29,3 +29,7 @@ export const LocationDetailBreadcrumb = (
 
   return <span>{stock_location.name}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminStockLocationResponse>) => ({
+  title: match.data?.stock_location?.name,
+})

@@ -11,7 +11,11 @@ const StoreCreditAccountsPage = () => {
         widgetsZonePrefix="store_credit_account.list"
         preferredLayoutId="core:single-column"
         sections={{
-          main: <StoreCreditAccountsTable />,
+          main: (
+            <LayoutComposer.Entry id="StoreCreditAccountsTable">
+              <StoreCreditAccountsTable />
+            </LayoutComposer.Entry>
+          ),
         }}
       />
 
