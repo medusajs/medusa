@@ -35,6 +35,9 @@ const ENTITIES_SUPPORTED_BY_INDEX_ENGINE = ["product"]
   Eg. If the rule_attribute requested is "currency_code" for "rules" rule type, we return currencies
   from the currency module.
 */
+/**
+ * @featureFlag index_engine
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetPromotionsRuleValueParams>,
   res: MedusaResponse<HttpTypes.AdminRuleValueOptionsListResponse>
