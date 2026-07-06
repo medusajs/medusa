@@ -4,9 +4,9 @@ import {
   RemoteExpandProperty,
 } from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
+import { IRemoteDataFetcher, RemoteJoiner } from ".."
 import { remoteJoinerData } from "../__fixtures__/data"
 import { serviceConfigs, serviceMock } from "../__mocks__/mock_data"
-import { RemoteJoiner } from ".."
 
 const container = {
   resolve: (serviceName) => {
@@ -77,10 +77,14 @@ const fetchServiceDataCallback = jest.fn(
   }
 )
 
+const dataFetcher: IRemoteDataFetcher = {
+  fetch: fetchServiceDataCallback,
+}
+
 describe("RemoteJoiner", () => {
   let joiner: RemoteJoiner
   beforeAll(() => {
-    joiner = new RemoteJoiner(serviceConfigs, fetchServiceDataCallback)
+    joiner = new RemoteJoiner(serviceConfigs, dataFetcher)
   })
   beforeEach(() => {
     jest.clearAllMocks()
@@ -770,11 +774,9 @@ describe("RemoteJoiner", () => {
   })
 
   it("It shouldn't register the service name as an alias if option autoCreateServiceNameAlias is false", async () => {
-    const newJoiner = new RemoteJoiner(
-      serviceConfigs,
-      fetchServiceDataCallback,
-      { autoCreateServiceNameAlias: false }
-    )
+    const newJoiner = new RemoteJoiner(serviceConfigs, dataFetcher, {
+      autoCreateServiceNameAlias: false,
+    })
 
     const query = {
       service: "user",
@@ -873,9 +875,11 @@ describe("RemoteJoiner", () => {
     let compositeJoiner: RemoteJoiner
 
     beforeAll(() => {
-      compositeJoiner = new RemoteJoiner(compositeConfigs, async () => ({
-        data: [],
-      }))
+      compositeJoiner = new RemoteJoiner(compositeConfigs, {
+        fetch: async () => ({
+          data: [],
+        }),
+      })
     })
 
     it("should fail when primary keys are not passed in filters", async () => {

@@ -1,6 +1,6 @@
-import { RemoteQuery } from "../remote-query"
+import { parseGraphqlQuery } from "../query"
 
-describe("RemoteQuery.parseQuery", () => {
+describe("parseGraphqlQuery", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -15,7 +15,7 @@ describe("RemoteQuery.parseQuery", () => {
         }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery)
+    const rjQuery = parseGraphqlQuery(graphqlQuery)
 
     expect(rjQuery).toEqual({
       alias: "order",
@@ -45,7 +45,7 @@ describe("RemoteQuery.parseQuery", () => {
           }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery)
+    const rjQuery = parseGraphqlQuery(graphqlQuery)
 
     expect(rjQuery).toEqual({
       alias: "order",
@@ -94,7 +94,7 @@ describe("RemoteQuery.parseQuery", () => {
           }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery, {})
+    const rjQuery = parseGraphqlQuery(graphqlQuery, {})
 
     expect(rjQuery).toEqual({
       alias: "order",
@@ -131,7 +131,7 @@ describe("RemoteQuery.parseQuery", () => {
         }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery)
+    const rjQuery = parseGraphqlQuery(graphqlQuery)
 
     expect(rjQuery).toEqual({
       alias: "order",
@@ -168,7 +168,7 @@ describe("RemoteQuery.parseQuery", () => {
         }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery)
+    const rjQuery = parseGraphqlQuery(graphqlQuery)
 
     expect(rjQuery).toEqual({
       alias: "order",
@@ -230,7 +230,7 @@ describe("RemoteQuery.parseQuery", () => {
         }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery, {
+    const rjQuery = parseGraphqlQuery(graphqlQuery, {
       orderId: 123,
       randomVariable: { complex: { num: 12343, str: "str_123" } },
       anotherArg: "any string",
@@ -287,7 +287,7 @@ describe("RemoteQuery.parseQuery", () => {
         }
       }
     `
-    const rjQuery = RemoteQuery.parseQuery(graphqlQuery)
+    const rjQuery = parseGraphqlQuery(graphqlQuery)
 
     expect(rjQuery).toEqual({
       alias: "order",

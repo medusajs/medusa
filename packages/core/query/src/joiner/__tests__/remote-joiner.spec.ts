@@ -4,8 +4,8 @@ import {
   RemoteExpandProperty,
 } from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
+import { IRemoteDataFetcher, RemoteJoiner } from ".."
 import { serviceConfigs, serviceMock } from "../__mocks__/mock_data"
-import { RemoteJoiner } from ".."
 
 const container = {
   resolve: (serviceName) => {
@@ -45,11 +45,15 @@ const fetchServiceDataCallback = async (
   })
 }
 
+const dataFetcher: IRemoteDataFetcher = {
+  fetch: fetchServiceDataCallback,
+}
+
 describe("RemoteJoiner", () => {
   let joiner: RemoteJoiner
 
   beforeAll(() => {
-    joiner = new RemoteJoiner(serviceConfigs, fetchServiceDataCallback)
+    joiner = new RemoteJoiner(serviceConfigs, dataFetcher)
   })
 
   beforeEach(() => {
@@ -154,11 +158,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (joiner as any).filterFields(
-      data,
-      fields,
-      expands
-    )
+    const filteredFields = (joiner as any).filterFields(data, fields, expands)
 
     expect(filteredFields).toEqual(
       expect.objectContaining({
@@ -297,11 +297,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (joiner as any).filterFields(
-      data,
-      fields,
-      expands
-    )
+    const filteredFields = (joiner as any).filterFields(data, fields, expands)
 
     expect(filteredFields).toEqual(
       expect.objectContaining({
