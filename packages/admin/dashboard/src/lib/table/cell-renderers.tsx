@@ -484,7 +484,7 @@ const AddressRenderer: CellRenderer = (value, row, column, _t) => {
     return "-"
   }
 
-  const parts = []
+  const parts: string[] = []
   if (address.address_1) {
     parts.push(address.address_1)
   }

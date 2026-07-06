@@ -80,7 +80,7 @@ export class PropertyLabel {
    * Batch create, update, or delete property labels
    */
   async batch(
-    body: HttpTypes.AdminBatchPropertyLabelRequest,
+    body: HttpTypes.AdminBatchPropertyLabels,
     headers?: ClientHeaders
   ): Promise<HttpTypes.AdminBatchPropertyLabelResponse> {
     return await this.client.fetch("/admin/property-labels/batch", {

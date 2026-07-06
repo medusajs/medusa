@@ -44,7 +44,7 @@ interface PropertyLabelSchema {
 }
 
 const propertyLabelSchema: z.ZodType<PropertyLabelSchema> = z.lazy(() =>
-  z.record(z.any()).superRefine((obj, ctx) => {
+  z.record(z.string(), z.any()).superRefine((obj, ctx) => {
     Object.entries(obj).forEach(([key, value]) => {
       if (isLeafNode(value)) {
         const result = propertyLabelValueSchema.safeParse(value)
@@ -213,7 +213,7 @@ export const PropertyLabelsEditForm = ({
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const create: HttpTypes.AdminCreatePropertyLabel[] = []
-    const update: HttpTypes.AdminUpdatePropertyLabel[] = []
+    const update: NonNullable<HttpTypes.AdminBatchPropertyLabels["update"]> = []
     const deleteIds: string[] = []
 
     const labelMap = new Map<string, HttpTypes.AdminPropertyLabel>()

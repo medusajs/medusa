@@ -127,7 +127,7 @@ export const useBatchPropertyLabels = (
   options?: UseMutationOptions<
     HttpTypes.AdminBatchPropertyLabelResponse,
     FetchError,
-    HttpTypes.AdminBatchPropertyLabelRequest
+    HttpTypes.AdminBatchPropertyLabels
   >
 ) => {
   return useMutation({

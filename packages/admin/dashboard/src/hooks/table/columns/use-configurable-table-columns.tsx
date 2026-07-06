@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { createDataTableColumnHelper } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
