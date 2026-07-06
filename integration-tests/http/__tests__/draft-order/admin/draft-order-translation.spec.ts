@@ -262,6 +262,44 @@ medusaIntegrationTestRunner({
         await dbUtils.snapshot()
       })
 
+      describe("POST /admin/draft-orders (create draft order with items)", () => {
+        it("should translate items when creating a draft order with items and locale", async () => {
+          const created = (
+            await api.post(
+              "/admin/draft-orders",
+              {
+                email: "test@test.com",
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                locale: "fr-FR",
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                shipping_address: {
+                  address_1: "123 Main St",
+                  city: "Anytown",
+                  country_code: "us",
+                  province: "ca",
+                  postal_code: "12345",
+                  first_name: "John",
+                },
+              },
+              adminHeaders
+            )
+          ).data.draft_order
+
+          const draftOrder = (
+            await api.get(`/admin/draft-orders/${created.id}`, adminHeaders)
+          ).data.draft_order
+
+          expect(draftOrder.items[0]).toEqual(
+            expect.objectContaining({
+              product_title: "T-Shirt Medusa",
+              product_description: "Un t-shirt en coton confortable",
+              variant_title: "Petit",
+            })
+          )
+        })
+      })
+
       describe("POST /admin/draft-orders/:id/edit/items (add items to draft order)", () => {
         it("should translate items when adding to draft order with locale", async () => {
           const draftOrder = (
