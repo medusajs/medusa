@@ -127,7 +127,7 @@ export const AdminCreateInventoryItem = z
     description: z.string().nullish(),
     requires_shipping: z.boolean().optional(),
     thumbnail: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     location_levels: z.array(AdminCreateInventoryLocationLevel).optional(),
   })
   .strict()
@@ -150,7 +150,7 @@ export const AdminUpdateInventoryItem = z
     description: z.string().nullish(),
     requires_shipping: z.boolean().optional(),
     thumbnail: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 

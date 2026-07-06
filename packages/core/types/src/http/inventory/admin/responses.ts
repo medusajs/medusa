@@ -3,7 +3,7 @@ import {
   DeleteResponseWithParent,
   PaginatedResponse,
 } from "../../common"
-import { AdminInventoryItem } from "./entities"
+import { AdminInventoryItem, AdminInventoryLevel } from "./entities"
 
 export interface AdminInventoryItemResponse {
   /**
@@ -25,3 +25,41 @@ export type AdminInventoryLevelDeleteResponse = DeleteResponseWithParent<
   "inventory-level",
   AdminInventoryItem
 >
+
+export interface AdminInventoryLevelResponse {
+  /**
+   * The inventory level's details.
+   */
+  inventory_level: AdminInventoryLevel
+}
+
+export type AdminInventoryLevelListResponse = PaginatedResponse<{
+  /**
+   * The list of inventory levels.
+   */
+  inventory_levels: AdminInventoryLevel[]
+}>
+
+/**
+ * The result of creating, updating or deleting inventory levels.
+ */
+export interface AdminBatchInventoryItemLocationLevelsResponse {
+  /**
+   * The created inventory levels.
+   */
+  created?: AdminInventoryLevel[]
+  /**
+   * The updated inventory levels.
+   */
+  updated?: AdminInventoryLevel[]
+  /**
+   * The IDs of the deleted inventory levels.
+   */
+  deleted?: string[]
+}
+
+/**
+ * The result of creating, updating or deleting inventory levels.
+ */
+export interface AdminBatchInventoryItemsLocationLevelsResponse
+  extends AdminBatchInventoryItemLocationLevelsResponse {}

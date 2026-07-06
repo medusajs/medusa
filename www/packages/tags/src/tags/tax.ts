@@ -16,8 +16,16 @@ export const tax = [
     "path": "https://docs.medusajs.com/resources/storefront-development/products/price/examples/tax-price"
   },
   {
+    "title": "addGiftCardToCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addGiftCardToCartWorkflow"
+  },
+  {
     "title": "addShippingMethodToCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addShippingMethodToCartWorkflow"
+  },
+  {
+    "title": "addStoreCreditsToCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addStoreCreditsToCartWorkflow"
   },
   {
     "title": "addToCartWorkflow",
@@ -30,6 +38,10 @@ export const tax = [
   {
     "title": "refreshCartItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
+  },
+  {
+    "title": "removeGiftCardFromCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow"
   },
   {
     "title": "transferCartCustomerWorkflow",

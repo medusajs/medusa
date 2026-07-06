@@ -13,16 +13,20 @@ export const PriceListRulesSchema = z.object({
   customer_group_id: z.array(PriceListCustomerGroupSchema).nullish(),
 })
 
-const PriceListCreateCurrencyPriceSchema = z.object({
+export const PriceListCreateCurrencyPriceSchema = z.object({
   amount: z.string().or(z.number()).optional(),
+  min_quantity: z.string().or(z.number()).optional(),
+  max_quantity: z.string().or(z.number()).optional(),
 })
 
 export type PriceListCreateCurrencyPrice = z.infer<
   typeof PriceListCreateCurrencyPriceSchema
 >
 
-const PriceListCreateRegionPriceSchema = z.object({
+export const PriceListCreateRegionPriceSchema = z.object({
   amount: z.string().or(z.number()).optional(),
+  min_quantity: z.string().or(z.number()).optional(),
+  max_quantity: z.string().or(z.number()).optional(),
 })
 
 export type PriceListCreateRegionPriceSchema = z.infer<
@@ -30,8 +34,20 @@ export type PriceListCreateRegionPriceSchema = z.infer<
 >
 
 const PriceListCreateProductVariantSchema = z.object({
-  currency_prices: z.record(PriceListCreateCurrencyPriceSchema.optional()),
-  region_prices: z.record(PriceListCreateRegionPriceSchema.optional()),
+  currency_prices: z.record(
+    z.string(),
+    z.array(PriceListCreateCurrencyPriceSchema).optional()
+  ),
+  region_prices: z.record(
+    z.string(),
+    z.array(PriceListCreateRegionPriceSchema).optional()
+  ),
+  conditional_currency_prices: z
+    .record(z.string(), z.array(PriceListCreateCurrencyPriceSchema).optional())
+    .optional(),
+  conditional_region_prices: z
+    .record(z.string(), z.array(PriceListCreateRegionPriceSchema).optional())
+    .optional(),
 })
 
 export type PriceListCreateProductVariantSchema = z.infer<
@@ -39,6 +55,7 @@ export type PriceListCreateProductVariantSchema = z.infer<
 >
 
 const PriceListCreateProductVariantsSchema = z.record(
+  z.string(),
   PriceListCreateProductVariantSchema
 )
 
@@ -47,6 +64,7 @@ export type PriceListCreateProductVariantsSchema = z.infer<
 >
 
 export const PriceListCreateProductsSchema = z.record(
+  z.string(),
   z.object({
     variants: PriceListCreateProductVariantsSchema,
   })
@@ -58,6 +76,8 @@ export type PriceListCreateProductsSchema = z.infer<
 
 export const PriceListUpdateCurrencyPriceSchema = z.object({
   amount: z.string().or(z.number()).optional(),
+  min_quantity: z.string().or(z.number()).optional(),
+  max_quantity: z.string().or(z.number()).optional(),
   id: z.string().nullish(),
 })
 
@@ -67,6 +87,8 @@ export type PriceListUpdateCurrencyPrice = z.infer<
 
 export const PriceListUpdateRegionPriceSchema = z.object({
   amount: z.string().or(z.number()).optional(),
+  min_quantity: z.string().or(z.number()).optional(),
+  max_quantity: z.string().or(z.number()).optional(),
   id: z.string().nullish(),
 })
 
@@ -75,9 +97,25 @@ export type PriceListUpdateRegionPrice = z.infer<
 >
 
 export const PriceListUpdateProductVariantsSchema = z.record(
+  z.string(),
   z.object({
-    currency_prices: z.record(PriceListUpdateCurrencyPriceSchema.optional()),
-    region_prices: z.record(PriceListUpdateRegionPriceSchema.optional()),
+    currency_prices: z.record(
+      z.string(),
+      z.array(PriceListUpdateCurrencyPriceSchema).optional()
+    ),
+    region_prices: z.record(
+      z.string(),
+      z.array(PriceListUpdateRegionPriceSchema).optional()
+    ),
+    conditional_currency_prices: z
+      .record(
+        z.string(),
+        z.array(PriceListUpdateCurrencyPriceSchema).optional()
+      )
+      .optional(),
+    conditional_region_prices: z
+      .record(z.string(), z.array(PriceListUpdateRegionPriceSchema).optional())
+      .optional(),
   })
 )
 
@@ -86,6 +124,7 @@ export type PriceListUpdateProductVariantsSchema = z.infer<
 >
 
 export const PriceListUpdateProductsSchema = z.record(
+  z.string(),
   z.object({
     variants: PriceListUpdateProductVariantsSchema,
   })

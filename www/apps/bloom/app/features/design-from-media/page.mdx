@@ -1,0 +1,167 @@
+import { InlineIcon } from "docs-ui"
+import { PaperClip } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Design Your Store from Media`,
+}
+
+# {metadata.title}
+
+Bloom can create designs from images, URLs, and code you provide. Use media to show your vision, reference designs you love, or fix styling issues quickly.
+
+## Why Design from Media
+
+If you have a specific design implemented or a vision of your store, it can be frustrating trying to describe it in words or implementing it yourself.
+
+Bloom is powerful at bringing design ideas to life. It provides the flexibility that designers and store owners need to create stunning stores quickly and efficiently.
+
+Using media and external sources helps you design faster and communicate better with Bloom:
+
+- **Show, Don't Tell**: Images communicate design ideas better than words alone.
+- **Save Time**: Upload a mockup instead of describing every detail.
+- **Get Inspiration**: Use designs you love as starting points.
+- **Fix Issues Fast**: Show Bloom exactly what's wrong with screenshots.
+- **Work Your Way**: Bring designs from Figma, websites, or anywhere else.
+
+The next sections cover different ways to use media for design and how to get the best results when working with Bloom.
+
+---
+
+## Upload Design Mockups
+
+Bloom can design your store based on images you upload. Upload images of your design vision to guide Bloom in creating your store.
+
+Upload design mockups when:
+
+- You have mockups or design files from Figma or other design tools.
+- You want Bloom to recreate a specific design you've created.
+- You have wireframes or hand-drawn sketches of your store.
+- You have photos of physical designs or sketches you want to implement.
+
+To upload a design mockup:
+
+1. Take a screenshot, export an image, or take a photo of your design. Make sure it's clear and high-resolution for best results.
+2. Click the <InlineIcon Icon={PaperClip} alt="attachment" /> icon in the Bloom chat to upload the image, or drop it directly into the chat.
+    - You can upload multiple images.
+    - You can upload screenshots, exported designs, or photos of hand-drawn sketches.
+3. Write a prompt like: "Create a homepage that looks like this design"
+4. Bloom analyzes the image and implements the design in your store. View the changes immediately in your store preview.
+
+<Note title="Tips for Better Results">
+
+- Use clear, high-resolution images for best results.
+- Upload multiple views or pages if your design has several sections.
+- Be specific about which page or section to apply the design to.
+
+</Note>
+
+### What Bloom Analyzes
+
+When you upload an image, Bloom identifies and extracts:
+
+- Layout structure and component placement.
+- Typography like font styles, sizes, and weights.
+- Colors and color schemes.
+- Spacing, padding, and margins.
+- Component patterns and design elements.
+
+Bloom converts these visual elements into actual code and styling for your store.
+
+---
+
+## Show Bloom Styling Issues
+
+While designing your store, Bloom may not always get the design perfect on the first try. When something doesn't look right, show Bloom exactly what's wrong with screenshots.
+
+Show Bloom styling issues when:
+
+- Colors, spacing, or layout don't look right.
+- Elements aren't aligned properly.
+- Mobile view has issues.
+- Animations or transitions aren't working correctly.
+- Something doesn't match your expectations.
+
+To show styling issues:
+
+1. Take a screenshot of the specific issue you want to fix. Focus on the problem area for clarity.
+2. Upload the screenshot to Bloom chat.
+3. Write a prompt describing what needs to change. For example: "The spacing in this section is too tight, make it more spacious"
+4. Bloom sees exactly what needs fixing and makes the changes.
+
+<Note title="Tips for Better Results">
+
+- Focus screenshots on specific problem areas, not entire pages.
+- Take screenshots in both desktop and mobile views if the issue affects both.
+- Be specific about what should change in your prompt.
+
+</Note>
+
+---
+
+## Get Inspiration from Other Websites
+
+Bloom can create designs inspired by websites you like. This is useful when you:
+
+- Find a design style you love and want something similar for your store.
+- Want specific layouts or components that you see on other websites.
+- Want to recreate a website you created outside of Bloom.
+
+You can ask Bloom to create designs inspired by other websites in two ways: by uploading screenshots of the website, or by sharing the website's URL in your prompt.
+
+### Upload Website Screenshots
+
+Take screenshots of website designs you like and upload them to Bloom. This is useful if the website isn't publicly accessible or if you want to focus on specific sections of the design.
+
+To create designs inspired by website screenshots:
+
+1. Take screenshots of sections or layouts from websites that inspire you.
+2. Upload the screenshots to Bloom.
+3. Write a prompt like: "Create a hero section similar to this"
+4. Bloom recreates the style and layout for your store.
+
+### Share Website URLs
+
+Paste a website URL directly in your prompt and Bloom will analyze its design. This is useful for public websites, as you don't have to take screenshots and can reference the entire site or specific pages.
+
+To create designs inspired by website URLs:
+
+1. Copy the URL of a website that has a design you like.
+2. Paste it in your prompt with instructions. For example: "Create a product page similar to https://example.com/products"
+3. Bloom visits the website, analyzes its design, and creates something similar for your store while adapting it to fit your products and content.
+
+<Note title="Tips for Better Results">
+
+- Be specific about which parts of the website design you like. For example: "Use the header and product layout, but not the colors"
+- Combine URLs with your own requirements: "Use this layout but with our brand colors"
+
+</Note>
+
+---
+
+## Copy Design from Figma as Code
+
+Designers often create detailed mockups in Figma. With Bloom, you can transfer those designs directly into your store by copying the code from Figma.
+
+Copy design from Figma as code when:
+
+- You have detailed Figma designs ready to implement.
+- You want precise control over spacing, colors, and typography.
+- You need to maintain strict brand guidelines.
+- You want to use specific SVG icons or graphics from Figma.
+
+To copy design from Figma into Bloom:
+
+1. Open your design in Figma.
+2. Switch to [Dev Mode](https://help.figma.com/hc/en-us/articles/15023124644247-Guide-to-Dev-Mode).
+3. Select the design or component you want to implement.
+4. Open the [Inspect tab](https://help.figma.com/hc/en-us/articles/15023124644247-Guide-to-Dev-Mode#01H8CR3K6VVXBF50T5ZD7DKNBR) in the right sidebar.
+5. Copy the CSS styles of the selected design.
+6. Ask Bloom to apply the styles with a prompt like: "Use these CSS styles to create a product card design in my store: [paste CSS here]"
+7. Bloom implements the exact styles in your store.
+
+<Note title="Tips for Better Results">
+
+- Include context about where to apply the styles in your prompt.
+- Combine CSS with prompts: "Use these button styles throughout the store"
+
+</Note>

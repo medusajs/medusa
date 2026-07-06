@@ -1,0 +1,39 @@
+---
+slug: /references/medusa-workflows/validateGiftCardInCartStep
+sidebar_label: validateGiftCardInCartStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateGiftCardInCartStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateGiftCardInCartStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a gift card is present in a cart. It throws an error
+if the gift card is not found in the cart's gift cards.
+
+## Example
+
+```ts
+const data = validateGiftCardInCartStep({
+  cart: {
+    id: "cart_123",
+    gift_cards: [
+      {
+        id: "gc_123",
+        code: "GC-XXXX",
+        // other gift card properties...
+      }
+    ],
+    // other cart properties...
+  },
+  giftCard: { code: "GC-XXXX" },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateGiftCardInCartStepInput","type":"[ValidateGiftCardInCartStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateGiftCardInCartStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateGiftCardInCartStepInput","type":"`object`","description":"Input to validate that a specific gift card is applied to a cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateGiftCardInCartStep"/>

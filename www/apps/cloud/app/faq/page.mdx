@@ -56,9 +56,9 @@ No, Medusa does not create new Medusa projects for your deployments. Instead, it
 
 ## Can I use a static IP address for my Medusa project on Cloud?
 
-No, Medusa does not provide a static IP address for your Medusa project on Cloud. However, you can use a proxy that has a static IP address to connect to your Medusa project.
+Medusa uses static IP addresses for outgoing requests from your Medusa backend to external services, and dynamic IP addresses for incoming requests to your Medusa backend. You can use the static outgoing IP addresses to whitelist them in your firewall or allowlist them in external services.
 
-Contact support for help with setting up a proxy for your Medusa project.
+You can find the list of static outgoing IP addresses in the [IP Addresses](../ip-addresses/page.mdx) guide.
 
 ---
 

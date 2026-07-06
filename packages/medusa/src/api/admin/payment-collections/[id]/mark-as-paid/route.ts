@@ -9,7 +9,7 @@ import {
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminMarkPaymentCollectionAsPaid,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetPaymentCollectionParams
   >,
   res: MedusaResponse<HttpTypes.AdminPaymentCollectionResponse>
 ) => {

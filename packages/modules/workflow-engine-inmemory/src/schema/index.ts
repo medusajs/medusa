@@ -20,5 +20,6 @@ type WorkflowExecution {
   execution: JSON
   context: JSON
   state: TransactionState
+  retention_time: Int
 }
 `

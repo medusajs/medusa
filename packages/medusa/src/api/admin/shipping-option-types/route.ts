@@ -38,7 +38,7 @@ export const GET = async (
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminCreateShippingOptionType,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetShippingOptionTypeParams
   >,
   res: MedusaResponse<HttpTypes.AdminShippingOptionTypeResponse>
 ) => {

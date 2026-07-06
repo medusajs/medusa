@@ -18,7 +18,7 @@ export type ApplicationMethodTargetTypeValues =
 /**
  * The application method's possible allocation values.
  */
-export type ApplicationMethodAllocationValues = "each" | "across"
+export type ApplicationMethodAllocationValues = "each" | "across" | "once"
 
 /**
  * The application method details.

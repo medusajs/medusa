@@ -41,10 +41,10 @@ export interface BaseReturnReason {
 export interface BaseReturnReasonListParams extends FindParams {
   q?: string
   id?: string | string[]
-  value?: string | OperatorMap<string>
-  label?: string | OperatorMap<string>
+  value?: string | string[]
+  label?: string | string[]
   description?: string | OperatorMap<string>
-  parent_return_reason_id?: string | OperatorMap<string | string[]>
+  parent_return_reason_id?: string | string[]
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
 }

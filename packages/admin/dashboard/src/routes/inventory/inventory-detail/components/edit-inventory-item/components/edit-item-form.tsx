@@ -4,7 +4,7 @@ import { Button, Input, toast } from "@medusajs/ui"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { InventoryTypes } from "@medusajs/types"
+import { AdminInventoryItem } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -13,7 +13,7 @@ import { KeyboundForm } from "../../../../../../components/utilities/keybound-fo
 import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 
 type EditInventoryItemFormProps = {
-  item: InventoryTypes.InventoryItemDTO
+  item: AdminInventoryItem
 }
 
 const EditInventoryItemSchema = z.object({
@@ -21,7 +21,7 @@ const EditInventoryItemSchema = z.object({
   sku: z.string().min(1),
 })
 
-const getDefaultValues = (item: InventoryTypes.InventoryItemDTO) => {
+const getDefaultValues = (item: AdminInventoryItem) => {
   return {
     title: item.title ?? undefined,
     sku: item.sku ?? undefined,

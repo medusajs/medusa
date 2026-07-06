@@ -14,9 +14,9 @@ type CloneRepoOptions = {
   isPlugin?: boolean
 }
 
-const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
+const DEFAULT_REPO = "https://github.com/medusajs/dtc-starter"
 const DEFAULT_PLUGIN_REPO = "https://github.com/medusajs/medusa-starter-plugin"
-const BRANCH = "master"
+const BRANCH = "main"
 const PLUGIN_BRANCH = "main"
 
 export default async function cloneRepo({

@@ -45,7 +45,7 @@ export const InventoryItemVariantsSection = ({
                     {variant.options.map((o) => o.value).join(" ⋅ ")}
                   </span>
                 </div>
-                <div className="size-7 flex items-center justify-center">
+                <div className="flex size-7 items-center justify-center">
                   <TriangleRightMini className="text-ui-fg-muted rtl:rotate-180" />
                 </div>
               </div>
@@ -60,7 +60,7 @@ export const InventoryItemVariantsSection = ({
             <Link
               to={link}
               key={variant.id}
-              className="outline-none focus-within:shadow-borders-interactive-with-focus rounded-md [&:hover>div]:bg-ui-bg-component-hover"
+              className="focus-within:shadow-borders-interactive-with-focus [&:hover>div]:bg-ui-bg-component-hover rounded-md outline-none"
             >
               {Inner}
             </Link>

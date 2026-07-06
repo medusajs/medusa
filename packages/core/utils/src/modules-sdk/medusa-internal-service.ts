@@ -55,12 +55,9 @@ export function registerInternalServiceEventSubscriber(
     context.manager) as EntityManager
   if (manager && subscriber) {
     const subscriberInstance = new subscriber(context)
-    // There is no public API to unregister subscribers or check if a subscriber is already
-    // registered. This means that we need to manually check if the subscriber is already
-    // registered, otherwise we will register the same subscriber twice.
-    const hasListeners = (manager.getEventManager() as any).subscribers.some(
-      (s) => s.constructor.name === subscriberInstance.constructor.name
-    )
+    const hasListeners = Array.from(
+      manager.getEventManager().getSubscribers()
+    ).some((s) => s.constructor.name === subscriberInstance.constructor.name)
     if (!hasListeners) {
       manager.getEventManager().registerSubscriber(subscriberInstance)
     }

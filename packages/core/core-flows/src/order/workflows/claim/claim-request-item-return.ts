@@ -4,6 +4,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
   ReturnDTO,
 } from "@medusajs/framework/types"
 import {
@@ -31,7 +32,9 @@ import {
   throwIfManagedItemsNotStockedAtReturnLocation,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 import { refreshClaimShippingWorkflow } from "./refresh-shipping"
 
 /**
@@ -98,7 +101,7 @@ export type OrderClaimRequestItemReturnValidationStepInput = {
  * })
  */
 export const orderClaimRequestItemReturnValidationStep = createStep(
-  "claim-request-item-return-validation",
+  "order-claim-request-item-return-validation",
   async function ({
     order,
     orderChange,
@@ -118,6 +121,14 @@ export const orderClaimRequestItemReturnValidationStep = createStep(
     })
   }
 )
+
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "items.variant.manage_inventory",
+  "items.variant.inventory_items.inventory_item_id",
+  "items.variant.inventory_items.inventory.location_levels.location_id",
+]
 
 export const orderClaimRequestItemReturnWorkflowId = "claim-request-item-return"
 /**
@@ -174,14 +185,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        "id",
-        "status",
-        "items.*",
-        "items.variant.manage_inventory",
-        "items.variant.inventory_items.inventory_item_id",
-        "items.variant.inventory_items.inventory.location_levels.location_id",
-      ],
+      fields: orderFields,
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -189,7 +193,16 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status", "canceled_at", "confirmed_at", "declined_at"],
+      fields: [
+        "id",
+        "status",
+        "version",
+        "claim_id",
+        "canceled_at",
+        "confirmed_at",
+        "declined_at",
+        "carry_over_promotions",
+      ],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -250,12 +263,16 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
     when({ createdReturn }, ({ createdReturn }) => {
       return !!createdReturn?.length
     }).then(() => {
-      updateOrderChangesStep([
-        {
-          id: orderChange.id,
-          return_id: createdReturn?.[0]?.id,
-        },
-      ])
+      const updateOrderChangeInput = transform(
+        { orderChange, createdReturn },
+        ({ orderChange, createdReturn }) => {
+          return [{
+            id: orderChange.id,
+            return_id: createdReturn?.[0]?.id,
+          }]
+        }
+      )
+      updateOrderChangesStep(updateOrderChangeInput)
     })
 
     orderClaimRequestItemReturnValidationStep({
@@ -269,12 +286,16 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
     when({ orderClaim }, ({ orderClaim }) => {
       return !orderClaim.return_id
     }).then(() => {
-      updateOrderClaimsStep([
-        {
-          id: orderClaim.id,
-          return: createdReturn?.[0]!.id,
-        },
-      ])
+      const updateOrderClaimsInput = transform(
+        { orderClaim, createdReturn },
+        ({ orderClaim, createdReturn }) => {
+          return [{
+            id: orderClaim.id,
+            return: createdReturn?.[0]?.id,
+          }]
+        }
+      )
+      updateOrderClaimsStep(updateOrderClaimsInput)
     })
 
     const orderChangeActionInput = transform(
@@ -302,6 +323,20 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
     })
 
     const refreshArgs = transform(

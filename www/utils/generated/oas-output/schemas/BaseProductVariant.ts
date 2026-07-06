@@ -11,7 +11,6 @@
  *   - ean
  *   - upc
  *   - thumbnail
- *   - images
  *   - allow_backorder
  *   - manage_inventory
  *   - hs_code

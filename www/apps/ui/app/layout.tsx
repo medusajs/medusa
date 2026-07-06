@@ -39,6 +39,11 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    types: {
+      "text/plain": "/llms.txt",
+    },
+  },
 }
 
 export default function RootLayout({

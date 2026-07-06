@@ -16,6 +16,8 @@
  *   - shipping_option_id
  *   - metadata
  *   - created_at
+ *   - created_by
+ *   - marked_shipped_by
  *   - updated_at
  * properties:
  *   id:
@@ -79,6 +81,14 @@
  *     type: boolean
  *     title: requires_shipping
  *     description: Whether the fulfillment requires shipping.
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The ID of the user that created the fulfillment.
+ *   marked_shipped_by:
+ *     type: string
+ *     title: marked_shipped_by
+ *     description: The ID of the user that marked the fulfillment as shipped.
  * 
 */
 

@@ -18,6 +18,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
+    "noImplicitAny": false,
     "allowJs": true,
     "skipLibCheck": true,
     "incremental": false

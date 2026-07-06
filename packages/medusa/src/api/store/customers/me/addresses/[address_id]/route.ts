@@ -13,12 +13,9 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 import { refetchCustomer } from "../../../helpers"
-import {
-  StoreGetCustomerAddressParamsType,
-} from "../../../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<StoreGetCustomerAddressParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.StoreGetCustomerAddressParams>,
   res: MedusaResponse<HttpTypes.StoreCustomerAddressResponse>
 ) => {
   const customerId = req.auth_context.actor_id
@@ -56,7 +53,7 @@ export const POST = async (
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
   await updateAddresses.run({
     input: {
-      selector: { id: req.params.address_id, customer_id: req.params.id },
+      selector: { id: req.params.address_id, customer_id: id },
       update: req.validatedBody,
     },
   })

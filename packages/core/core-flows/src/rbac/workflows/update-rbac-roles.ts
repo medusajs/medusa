@@ -11,6 +11,10 @@ import { createRbacRolePoliciesStep, setRoleParentStep } from "../steps"
 import { updateRbacRolesStep } from "../steps/update-rbac-roles"
 import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type UpdateRbacRolesWorkflowInput = {
   actor_id?: string
   actor?: string
@@ -21,8 +25,16 @@ export type UpdateRbacRolesWorkflowInput = {
   }
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const updateRbacRolesWorkflowId = "update-rbac-roles"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const updateRbacRolesWorkflow = createWorkflow(
   updateRbacRolesWorkflowId,
   (input: WorkflowData<UpdateRbacRolesWorkflowInput>) => {

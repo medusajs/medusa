@@ -8,13 +8,9 @@ import { getOsShortcut } from "../../../utils/os-browser-utils"
 import { useAiAssistant } from "../../../providers/AiAssistant"
 import { useKeyboardShortcut } from "../../../hooks"
 import { useSearch } from "../../../providers/Search"
-import { useSiteConfig } from "../../../providers/SiteConfig"
-import Image from "next/image"
-
-const AI_ASSISTANT_ICON_ACTIVE = "/images/ai-assistent.png"
+import { BloomIcon } from "../../Icons"
 
 export const AiAssistantTriggerButton = () => {
-  const { config } = useSiteConfig()
   const { setChatOpened } = useAiAssistant()
   const { setIsOpen } = useSearch()
   const osShortcut = getOsShortcut()
@@ -46,14 +42,9 @@ export const AiAssistantTriggerButton = () => {
         variant="transparent-clear"
         onClick={() => setChatOpened((prev) => !prev)}
       >
-        <Image
-          src={`${config.basePath}${AI_ASSISTANT_ICON_ACTIVE}`}
-          width={15}
-          height={15}
-          alt="AI Assistant"
-        />
+        <BloomIcon className="text-medusa-fg-subtle" />
         <span className="hidden md:inline-block text-medusa-fg-subtle">
-          Ask AI
+          Ask Bloom
         </span>
       </Button>
     </Tooltip>

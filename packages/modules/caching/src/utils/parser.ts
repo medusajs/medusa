@@ -231,9 +231,12 @@ export class CacheInvalidationParser {
 
     keys.add(`${entity.type}:${entity.id}`)
 
-    // Add list key only if entity was found in an array context or if an event of type created or
-    // deleted is triggered
-    if (entity.isInArray || ["created", "deleted"].includes(operation)) {
+    // Add the list key when the entity was found in an array context or for
+    // created/updated/deleted operations. Updates are included because a
+    // mutation can change whether an entity matches a cached list's filters
+    // (e.g. a product going from draft to published), and the cache layer has
+    // no way of knowing which fields are filter-relevant.
+    if (entity.isInArray || ["created", "updated", "deleted"].includes(operation)) {
       keys.add(`${entity.type}:list:*`)
     }
 

@@ -24,7 +24,7 @@ export const inventoryItemLevelsQueryKeys = queryKeysFactory(
 )
 
 export const useInventoryItems = (
-  query?: HttpTypes.AdminInventoryItemParams,
+  query?: HttpTypes.AdminInventoryItemsParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminInventoryItemListResponse,
@@ -59,7 +59,7 @@ export const useInventoryItem = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.inventoryItem.retrieve(id, query),
-    queryKey: inventoryItemsQueryKeys.detail(id),
+    queryKey: inventoryItemsQueryKeys.detail(id, query),
     ...options,
   })
 

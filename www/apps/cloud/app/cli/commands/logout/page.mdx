@@ -1,0 +1,50 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `logout Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Remove your stored Cloud credentials from the local machine, effectively logging you out of the Cloud CLI.
+
+```bash
+mcloud logout
+```
+
+After running this command, all subsequent CLI commands that require
+authentication will fail until you run `mcloud login` again.
+
+Use `mcloud logout` when you want to switch accounts, revoke local access on a
+shared machine, or clean up credentials at the end of a CI job.
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

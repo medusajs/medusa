@@ -4,6 +4,7 @@ import { sdk } from "../../lib/client"
 export type FeatureFlags = {
   view_configurations?: boolean
   translation?: boolean
+  rbac?: boolean
   [key: string]: boolean | undefined
 }
 
@@ -21,6 +22,6 @@ export const useFeatureFlags = () => {
       return response.feature_flags
     },
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    cacheTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
   })
 }

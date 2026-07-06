@@ -2,5 +2,8 @@
   "description": "",
   "methods": [],
   "displayName": "CalendarButton",
-  "props": {}
+  "props": {},
+  "composes": [
+    "AriaButtonProps"
+  ]
 }

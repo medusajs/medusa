@@ -1,13 +1,12 @@
 import clsx from "clsx"
 import React, { useMemo } from "react"
-import { AiAssistantIcon } from "../../Icons/AiAssistant"
 import { CodeMdx, CodeMdxProps } from "../../CodeMdx"
-import { DotsLoading } from "../../Loading/Dots"
 import { MarkdownContent } from "../../MarkdownContent"
 import { MDXComponents } from "../../MDXComponents"
 import { AiAssistantThreadItemActions } from "./Actions"
 import { AiAssistantThreadItem as AiAssistantThreadItemType } from "../../../providers/AiAssistant"
 import { useChat } from "@kapaai/react-sdk"
+import { AiAssistantLoading } from "../Loading"
 
 export type AiAssistantThreadItemProps = {
   item: AiAssistantThreadItemType
@@ -37,11 +36,6 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
         item.type === "answer" && "!pr-[20px]"
       )}
     >
-      {item.type !== "question" && (
-        <span className="w-[20px] block">
-          <AiAssistantIcon />
-        </span>
-      )}
       <div
         className={clsx(
           "txt-small text-medusa-fg-base",
@@ -103,7 +97,7 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
           )}
           {item.type === "answer" && (
             <>
-              {showLoading && <DotsLoading />}
+              {showLoading && <AiAssistantLoading />}
               <MarkdownContent
                 className="[&>*:last-child]:mb-0"
                 components={{

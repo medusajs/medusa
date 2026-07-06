@@ -16,6 +16,7 @@
  *   - created_at
  *   - updated_at
  *   - deleted_at
+ *   - metadata
  * properties:
  *   id:
  *     type: string
@@ -72,6 +73,9 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the price list was deleted.
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs of custom data.
  * 
 */
 

@@ -17,11 +17,15 @@ export const promotionStatusMap: StatusMap = {
   [PromotionStatus.DRAFT]: ["grey", i18n.t("statuses.draft")],
   [PromotionStatus.SCHEDULED]: [
     "orange",
-    `${i18n.t("promotions.fields.campaign")} ${i18n.t("statuses.scheduled").toLowerCase()}`,
+    `${i18n.t("promotions.fields.campaign")} ${i18n
+      .t("statuses.scheduled")
+      .toLowerCase()}`,
   ],
   [PromotionStatus.EXPIRED]: [
     "red",
-    `${i18n.t("promotions.fields.campaign")} ${i18n.t("statuses.expired").toLowerCase()}`,
+    `${i18n.t("promotions.fields.campaign")} ${i18n
+      .t("statuses.expired")
+      .toLowerCase()}`,
   ],
 }
 

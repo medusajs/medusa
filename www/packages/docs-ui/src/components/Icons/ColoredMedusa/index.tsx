@@ -3,11 +3,24 @@ import { IconProps } from "@medusajs/icons/dist/types"
 import clsx from "clsx"
 import React from "react"
 
-export const ColoredMedusaIcon = ({ className, ...props }: IconProps) => {
+type MedusaIconProps = IconProps & {
+  variant?: "base" | "subtle" | "muted"
+}
+
+export const ColoredMedusaIcon = ({
+  className,
+  variant = "base",
+  ...props
+}: MedusaIconProps) => {
   return (
     <Medusa
       {...props}
-      className={clsx(className, "[&_path]:fill-medusa-fg-subtle")}
+      className={clsx(
+        className,
+        variant === "base" && "[&_path]:fill-medusa-fg-base",
+        variant === "subtle" && "[&_path]:fill-medusa-fg-subtle",
+        variant === "muted" && "[&_path]:fill-medusa-fg-muted"
+      )}
     />
   )
 }

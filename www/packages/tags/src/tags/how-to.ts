@@ -4,6 +4,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
   },
   {
+    "title": "Send Email Verification",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },
@@ -14,6 +18,10 @@ export const howTo = [
   {
     "title": "Retrieve Order Totals",
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
+  },
+  {
+    "title": "Filter Products",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
   {
     "title": "Get Variant Prices",
@@ -86,6 +94,14 @@ export const howTo = [
   {
     "title": "Create Locking Provider",
     "path": "https://docs.medusajs.com/resources/references/locking-module-provider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
   },
   {
     "title": "Create Notification Provider",

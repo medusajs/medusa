@@ -37,8 +37,6 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
- * required:
- *   - code
  * 
 */
 

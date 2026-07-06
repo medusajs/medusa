@@ -1,13 +1,14 @@
 import { XMarkMini } from "@medusajs/icons"
-import { PromotionDTO } from "@medusajs/types"
+import { AdminPromotion, HttpTypes } from "@medusajs/types"
 import { Badge, Button, Heading, IconButton, Select, Text } from "@medusajs/ui"
 import { forwardRef, Fragment, useEffect, useRef } from "react"
 import {
+  Control,
   ControllerRenderProps,
   useFieldArray,
-  UseFormReturn,
   useWatch,
 } from "react-hook-form"
+import type { CreatePromotionSchemaType } from "../../../../promotion-create/components/create-promotion-form/form-schema"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../../components/common/form"
 import {
@@ -15,14 +16,24 @@ import {
   usePromotionRules,
 } from "../../../../../../hooks/api/promotions"
 import { useDocumentDirection } from "../../../../../../hooks/use-document-direction"
-import { CreatePromotionSchemaType } from "../../../../promotion-create/components/create-promotion-form/form-schema"
 import { generateRuleAttributes } from "../edit-rules-form/utils"
 import { RuleValueFormField } from "../rule-value-form-field"
 import { requiredProductRule } from "./constants"
 
+type RulesFormFieldForm = {
+  control: Control<CreatePromotionSchemaType>
+  getValues: () => CreatePromotionSchemaType
+  resetField: (
+    name:
+      | "rules"
+      | "application_method.buy_rules"
+      | "application_method.target_rules"
+  ) => void
+}
+
 type RulesFormFieldType = {
-  promotion?: PromotionDTO
-  form: UseFormReturn<CreatePromotionSchemaType>
+  promotion?: AdminPromotion
+  form: RulesFormFieldForm
   ruleType: "rules" | "target-rules" | "buy-rules"
   setRulesToRemove?: any
   rulesToRemove?: any
@@ -31,6 +42,18 @@ type RulesFormFieldType = {
     | "rules"
     | "application_method.target_rules"
   formType?: "create" | "edit"
+}
+
+export type RuleWithFormAttributes = Omit<
+  HttpTypes.AdminPromotionRule,
+  "values"
+> & {
+  values: {
+    value: string
+  }[]
+  required?: boolean
+  field_type?: string
+  disguised?: boolean
 }
 
 export const RulesFormField = ({
@@ -51,7 +74,7 @@ export const RulesFormField = ({
     ruleType,
     formData.type,
     formData.application_method?.target_type
-  )
+  ) as { attributes: HttpTypes.AdminRuleAttributeOption[] | undefined }
 
   const { fields, append, remove, update, replace } = useFieldArray({
     control: form.control,
@@ -110,7 +133,9 @@ export const RulesFormField = ({
     if (ruleType === "rules" && !fields.length) {
       form.resetField("rules")
 
-      replace(generateRuleAttributes(rules) as any)
+      replace(
+        generateRuleAttributes(rules as unknown as RuleWithFormAttributes[])
+      )
     }
 
     if (ruleType === "buy-rules" && !fields.length) {
@@ -118,9 +143,9 @@ export const RulesFormField = ({
       const rulesToAppend =
         promotion?.id || promotionType === "standard"
           ? rules
-          : [...rules, requiredProductRule]
+          : [...(rules ?? []), requiredProductRule]
 
-      replace(generateRuleAttributes(rulesToAppend) as any)
+      replace(generateRuleAttributes(rulesToAppend as RuleWithFormAttributes[]))
     }
 
     if (ruleType === "target-rules" && !fields.length) {
@@ -128,9 +153,9 @@ export const RulesFormField = ({
       const rulesToAppend =
         promotion?.id || promotionType === "standard"
           ? rules
-          : [...rules, requiredProductRule]
+          : [...(rules ?? []), requiredProductRule]
 
-      replace(generateRuleAttributes(rulesToAppend) as any)
+      replace(generateRuleAttributes(rulesToAppend as RuleWithFormAttributes[]))
     }
 
     initialRulesSet.current = true
@@ -151,16 +176,16 @@ export const RulesFormField = ({
       <Heading level="h2" className="mb-2">
         {t(
           ruleType === "target-rules"
-            ? `promotions.fields.conditions.${ruleType}.${applicationMethodTargetType}.title`
-            : `promotions.fields.conditions.${ruleType}.title`
+            ? (`promotions.fields.conditions.${ruleType}.${applicationMethodTargetType}.title` as any)
+            : (`promotions.fields.conditions.${ruleType}.title` as any)
         )}
       </Heading>
 
       <Text className="text-ui-fg-subtle txt-small mb-6">
         {t(
           ruleType === "target-rules"
-            ? `promotions.fields.conditions.${ruleType}.${applicationMethodTargetType}.description`
-            : `promotions.fields.conditions.${ruleType}.description`
+            ? (`promotions.fields.conditions.${ruleType}.${applicationMethodTargetType}.description` as any)
+            : (`promotions.fields.conditions.${ruleType}.description` as any)
         )}
       </Text>
 
@@ -297,7 +322,7 @@ export const RulesFormField = ({
                           <Form.Control>
                             {!disabled ? (
                               <Select
-                                dir= {direction}
+                                dir={direction}
                                 {...fieldProps}
                                 disabled={!fieldRule.attribute}
                                 onValueChange={onChange}
@@ -338,12 +363,12 @@ export const RulesFormField = ({
 
                   <RuleValueFormField
                     form={form}
-                    identifier={identifier}
+                    identifier={`${identifier}`}
                     scope={scope}
                     name={`${scope}.${index}.values`}
                     operator={`${scope}.${index}.operator`}
                     fieldRule={fieldRule}
-                    attributes={attributes}
+                    attributes={attributes || []}
                     ruleType={ruleType}
                     applicationMethodTargetType={applicationMethodTargetType}
                   />
@@ -409,7 +434,9 @@ export const RulesFormField = ({
             className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
             onClick={() => {
               const indicesToRemove = fields
-                .map((field: any, index) => (field.required ? null : index))
+                .map((field: any, index) => {
+                  return field.required ? null : index
+                })
                 .filter((f) => f !== null)
 
               setRulesToRemove &&

@@ -1,6 +1,6 @@
 import { BaseFilterable } from "../../../dal"
 import { OrderStatus } from "../../../order"
-import { FindParams } from "../../common"
+import { FindParams, SelectParams } from "../../common"
 
 export interface StoreOrderFilters
   extends FindParams,
@@ -14,3 +14,5 @@ export interface StoreOrderFilters
    */
   status?: OrderStatus | OrderStatus[]
 }
+
+export interface StoreGetOrderParams extends SelectParams {}

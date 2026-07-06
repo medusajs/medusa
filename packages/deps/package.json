@@ -1,12 +1,15 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.13.1",
+  "version": "2.17.2",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/deps"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
     "node": ">=20"
@@ -39,19 +42,19 @@
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build"
   },
   "dependencies": {
-    "@mikro-orm/cli": "6.4.16",
-    "@mikro-orm/core": "6.4.16",
-    "@mikro-orm/knex": "6.4.16",
-    "@mikro-orm/migrations": "6.4.16",
-    "@mikro-orm/postgresql": "6.4.16",
+    "@mikro-orm/cli": "6.6.14",
+    "@mikro-orm/core": "6.6.14",
+    "@mikro-orm/knex": "6.6.14",
+    "@mikro-orm/migrations": "6.6.14",
+    "@mikro-orm/postgresql": "6.6.14",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/instrumentation-pg": "^0.52.0",
     "@opentelemetry/resources": "^2.0.0",
-    "@opentelemetry/sdk-node": "^0.200.0",
+    "@opentelemetry/sdk-node": "^0.218.0",
     "@opentelemetry/sdk-trace-node": "^2.0.0",
     "awilix": "^8.0.1",
     "pg": "^8.16.3",
-    "zod": "3.25.76"
+    "zod": "4.2.0"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }

@@ -1,0 +1,141 @@
+get:
+  operationId: GetPropertyLabelsId
+  summary: Get a Property Label
+  description: Retrieve a property label by its ID.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The property label's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_property-labels_{id}/get.sh
+  tags:
+    - Property Labels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPropertyLabelResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.10.3
+  x-featureFlag: view_configurations
+post:
+  operationId: PostPropertyLabelsId
+  summary: Update a Property Label
+  description: Update a property label's details.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The property label's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminUpdatePropertyLabel.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_property-labels_{id}/post.sh
+  tags:
+    - Property Labels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPropertyLabelResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: updatePropertyLabelsWorkflow
+  x-events: []
+  x-since: 2.10.3
+  x-featureFlag: view_configurations
+delete:
+  operationId: DeletePropertyLabelsId
+  summary: Delete a Property Label
+  description: Delete a property label.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The property label's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_property-labels_{id}/delete.sh
+  tags:
+    - Property Labels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminPropertyLabelDeleteResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: deletePropertyLabelsWorkflow
+  x-events: []
+  x-since: 2.10.3
+  x-featureFlag: view_configurations

@@ -1,5 +1,183 @@
 # Change Log
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`8f2c71222afb2bcd1268438fc5fe9da6a63d7af2`](https://github.com/medusajs/medusa/commit/8f2c71222afb2bcd1268438fc5fe9da6a63d7af2), [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c), [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51)]:
+  - @medusajs/utils@2.17.2
+  - @medusajs/deps@2.17.2
+  - @medusajs/telemetry@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies [[`4f5e1cc97f4511f43cf4790af412781dafb2ba86`](https://github.com/medusajs/medusa/commit/4f5e1cc97f4511f43cf4790af412781dafb2ba86)]:
+  - @medusajs/utils@2.17.1
+  - @medusajs/deps@2.17.1
+  - @medusajs/telemetry@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- [#15748](https://github.com/medusajs/medusa/pull/15748) [`68b31157c3f9bbbfb970abdf58f79d4c57d792d5`](https://github.com/medusajs/medusa/commit/68b31157c3f9bbbfb970abdf58f79d4c57d792d5) Thanks [@peterlgh7](https://github.com/peterlgh7)! - Log single error log line
+
+- Updated dependencies [[`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/utils@2.17.0
+  - @medusajs/deps@2.17.0
+  - @medusajs/telemetry@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- [#15635](https://github.com/medusajs/medusa/pull/15635) [`699a9a85c795e13f9e787056e0fb65cfea0115dc`](https://github.com/medusajs/medusa/commit/699a9a85c795e13f9e787056e0fb65cfea0115dc) Thanks [@dsumeet14](https://github.com/dsumeet14)! - chore(cli): Replace the unmaintained `pg-god` dependency with a direct `pg.Pool` `CREATE DATABASE` call during `medusa new`, detecting an existing database via the Postgres `42P04` error code.
+
+- [#15719](https://github.com/medusajs/medusa/pull/15719) [`a1fd4d648b923cbd68240dba49f1c46ad0e98f39`](https://github.com/medusajs/medusa/commit/a1fd4d648b923cbd68240dba49f1c46ad0e98f39) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(cli, eslint-plugin, medusa): add linting to medusa CLI
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`34450089041ee90ebbeca40ad7977e945a53a7b7`](undefined), [`735e0aa51ef64274257057a59046776af54203f4`](https://github.com/medusajs/medusa/commit/735e0aa51ef64274257057a59046776af54203f4), [`dc3e213a3be9d5ae8637863461eab0404bbc0e16`](undefined), [`9f5194267fc5abdece31531af3822b0d05ed1fcc`](undefined), [`8b3b9f7dc97731688e4a5f1c0bb2714e00483bc6`](undefined), [`801dbdb2ae70152aaa5917590885bd36bd44efc4`](undefined), [`beb1b5e6bcbfeda02659cbaa0e04d5dbc1ba64cd`](https://github.com/medusajs/medusa/commit/beb1b5e6bcbfeda02659cbaa0e04d5dbc1ba64cd), [`1c5ce279aaf792789be371fae70ca304f710cb73`](undefined), [`456813f8b36ab1086dec09c6a89655d7ab0bae5b`](undefined), [`18474de124868370298addf195e5229ca6792f81`](undefined), [`14af163eae35be9a204f37c5a87d0b2b59b14054`](undefined), [`740132b7576d937b82e913c1ccf4cfabe56777d6`](https://github.com/medusajs/medusa/commit/740132b7576d937b82e913c1ccf4cfabe56777d6)]:
+  - @medusajs/utils@2.16.0
+  - @medusajs/deps@2.16.0
+  - @medusajs/telemetry@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995), [`c8e37903177c2551ec27ba5f881804e351e819c4`](https://github.com/medusajs/medusa/commit/c8e37903177c2551ec27ba5f881804e351e819c4), [`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`c7258f2ca2da8c09df430d81121ea8eae7f75cd9`](https://github.com/medusajs/medusa/commit/c7258f2ca2da8c09df430d81121ea8eae7f75cd9), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/utils@2.15.5
+  - @medusajs/deps@2.15.5
+  - @medusajs/telemetry@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.15.4
+  - @medusajs/deps@2.15.4
+  - @medusajs/telemetry@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`3063ea20314843c23ad8077ce5e2f5c01ce2c54c`](https://github.com/medusajs/medusa/commit/3063ea20314843c23ad8077ce5e2f5c01ce2c54c)]:
+  - @medusajs/utils@2.15.3
+  - @medusajs/deps@2.15.3
+  - @medusajs/telemetry@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`9990b69ab76f1a575c6a68875627d16764cc1564`](https://github.com/medusajs/medusa/commit/9990b69ab76f1a575c6a68875627d16764cc1564)]:
+  - @medusajs/utils@2.15.2
+  - @medusajs/deps@2.15.2
+  - @medusajs/telemetry@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.15.1
+  - @medusajs/deps@2.15.1
+  - @medusajs/telemetry@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies [[`75b23ffcdf5afeedb5321689cbd844342f218846`](https://github.com/medusajs/medusa/commit/75b23ffcdf5afeedb5321689cbd844342f218846), [`667f3e213d847e2a44ba486522f9fb7b36c69e9a`](https://github.com/medusajs/medusa/commit/667f3e213d847e2a44ba486522f9fb7b36c69e9a)]:
+  - @medusajs/utils@2.15.0
+  - @medusajs/deps@2.15.0
+  - @medusajs/telemetry@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.14.2
+  - @medusajs/deps@2.14.2
+  - @medusajs/telemetry@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.14.1
+  - @medusajs/deps@2.14.1
+  - @medusajs/telemetry@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14999](https://github.com/medusajs/medusa/pull/14999) [`eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d`](https://github.com/medusajs/medusa/commit/eeed5a11f7ab1110038fa02d0f6cb1e3ca18cf3d) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app, cli): change cloned repository to monorepo
+
+- Updated dependencies [[`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967), [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696), [`965adfe2fc15a024270ac384f819479e8b274e10`](https://github.com/medusajs/medusa/commit/965adfe2fc15a024270ac384f819479e8b274e10), [`9e145bfb27cb5792f7b8d1331f2b076fb00355d9`](https://github.com/medusajs/medusa/commit/9e145bfb27cb5792f7b8d1331f2b076fb00355d9), [`32533eb829d904d4c1a89c841f06d9c209460ac7`](https://github.com/medusajs/medusa/commit/32533eb829d904d4c1a89c841f06d9c209460ac7)]:
+  - @medusajs/utils@2.14.0
+  - @medusajs/deps@2.14.0
+  - @medusajs/telemetry@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- [#14917](https://github.com/medusajs/medusa/pull/14917) [`7c5e5e37f632716e5c6846c12d0dee7efe1e0b96`](https://github.com/medusajs/medusa/commit/7c5e5e37f632716e5c6846c12d0dee7efe1e0b96) Thanks [@buley](https://github.com/buley)! - fix(cli): close leaked file descriptor in clearProject
+
+- [#15005](https://github.com/medusajs/medusa/pull/15005) [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update glob version
+
+- Updated dependencies [[`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1)]:
+  - @medusajs/utils@2.13.6
+  - @medusajs/deps@2.13.6
+  - @medusajs/telemetry@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies [[`4eee16b932f4b532f81db2739194ed5d2b47f3ea`](https://github.com/medusajs/medusa/commit/4eee16b932f4b532f81db2739194ed5d2b47f3ea)]:
+  - @medusajs/utils@2.13.5
+  - @medusajs/deps@2.13.5
+  - @medusajs/telemetry@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.13.4
+  - @medusajs/deps@2.13.4
+  - @medusajs/telemetry@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.13.3
+  - @medusajs/deps@2.13.3
+  - @medusajs/telemetry@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14669](https://github.com/medusajs/medusa/pull/14669) [`9e6e80cd2c58b373ee5e5cbf026e3fa5a9d8b526`](https://github.com/medusajs/medusa/commit/9e6e80cd2c58b373ee5e5cbf026e3fa5a9d8b526) Thanks [@nenadfilipovic-builtt](https://github.com/nenadfilipovic-builtt)! - fix(medusa-cli): verbose log level event name typo
+
+- Updated dependencies [[`f37f029799cad7ee0337aeab625df5e272de2363`](https://github.com/medusajs/medusa/commit/f37f029799cad7ee0337aeab625df5e272de2363), [`d0e6f710c3f8305b58ac39131a125274987cae05`](https://github.com/medusajs/medusa/commit/d0e6f710c3f8305b58ac39131a125274987cae05), [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8)]:
+  - @medusajs/utils@2.13.2
+  - @medusajs/deps@2.13.2
+  - @medusajs/telemetry@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

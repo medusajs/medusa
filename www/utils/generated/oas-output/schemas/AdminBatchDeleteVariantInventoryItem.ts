@@ -1,0 +1,20 @@
+/**
+ * @schema AdminBatchDeleteVariantInventoryItem
+ * type: object
+ * description: Delete a product variant's association with an inventory item.
+ * required:
+ *   - inventory_item_id
+ *   - variant_id
+ * properties:
+ *   inventory_item_id:
+ *     type: string
+ *     title: inventory_item_id
+ *     description: The ID of the inventory item associated with the variant.
+ *   variant_id:
+ *     type: string
+ *     title: variant_id
+ *     description: The ID of the variant.
+ * x-schemaName: AdminBatchDeleteVariantInventoryItem
+ * 
+*/
+

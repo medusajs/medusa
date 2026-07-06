@@ -1,5 +1,49 @@
 # Change Log
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+## 2.17.1
+
+## 2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- [#15630](https://github.com/medusajs/medusa/pull/15630) [`740132b7576d937b82e913c1ccf4cfabe56777d6`](https://github.com/medusajs/medusa/commit/740132b7576d937b82e913c1ccf4cfabe56777d6) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(create-medusa-app, telemetry, dashboard, medusa): update react-router-dom and uuid packages
+
+## 2.15.5
+
+## 2.15.4
+
+## 2.15.3
+
+## 2.15.2
+
+## 2.15.1
+
+## 2.15.0
+
+## 2.14.2
+
+## 2.14.1
+
+## 2.14.0
+
+## 2.13.6
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
 ## 2.13.1
 
 ## 2.13.0

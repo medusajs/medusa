@@ -4,8 +4,8 @@
  * description: The store locale's details.
  * x-schemaName: StoreLocale
  * required:
- *   - code
  *   - name
+ *   - code
  * properties:
  *   code:
  *     type: string

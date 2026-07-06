@@ -34,6 +34,14 @@
  *           metadata:
  *             type: object
  *             description: The invite's metadata. Can be custom data in key-value pairs.
+ *           roles:
+ *             type: array
+ *             description: The invited user's roles.
+ *             x-featureFlag: rbac
+ *             items:
+ *               type: string
+ *               title: roles
+ *               description: The invited user's role.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

@@ -1,5 +1,163 @@
 # @medusajs/order
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15622](https://github.com/medusajs/medusa/pull/15622) [`a04f1e06fcb99373becfe705c09a85910b73cb4c`](https://github.com/medusajs/medusa/commit/a04f1e06fcb99373becfe705c09a85910b73cb4c) Thanks [@Dev-Abdullah-H](https://github.com/Dev-Abdullah-H)! - fix(order): make custom_display_id searchable
+
+- [#15863](https://github.com/medusajs/medusa/pull/15863) [`448498c1450bd75b19d00a515544db61dcdc71e1`](https://github.com/medusajs/medusa/commit/448498c1450bd75b19d00a515544db61dcdc71e1) Thanks [@Dev-Abdullah-H](https://github.com/Dev-Abdullah-H)! - fix: use isDefined check for unit_price in ITEM_UPDATE order change action so that setting an item price to 0 is correctly reflected in previewOrderChange
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/framework@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies [[`975313f62b22055ddaacf7852f33cf7b0f4af5df`](https://github.com/medusajs/medusa/commit/975313f62b22055ddaacf7852f33cf7b0f4af5df)]:
+  - @medusajs/framework@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- [#15734](https://github.com/medusajs/medusa/pull/15734) [`6617a612ef57a0fa1b5fdea72b10e78205af56e9`](https://github.com/medusajs/medusa/commit/6617a612ef57a0fa1b5fdea72b10e78205af56e9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(order): add line_item_metadata to OrderLineItem type
+
+- Updated dependencies [[`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a)]:
+  - @medusajs/framework@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- [`528b12cbd50f85079e157b920be306dec7c89938`](undefined) - feat(order,types): add line_item_metadata to order responses
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`20352f4fa2f31e5b491c8b1b244c407392939fbf`](https://github.com/medusajs/medusa/commit/20352f4fa2f31e5b491c8b1b244c407392939fbf), [`90af038c95c835dee5168ffd19cda5182d81b904`](https://github.com/medusajs/medusa/commit/90af038c95c835dee5168ffd19cda5182d81b904), [`66610b87efb112e37b78c7c9536d95070b8d6b11`](https://github.com/medusajs/medusa/commit/66610b87efb112e37b78c7c9536d95070b8d6b11)]:
+  - @medusajs/framework@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15174](https://github.com/medusajs/medusa/pull/15174) [`fdec6f0358bedfcbfe6b78fb0294b1b2c639cc02`](https://github.com/medusajs/medusa/commit/fdec6f0358bedfcbfe6b78fb0294b1b2c639cc02) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(workflows-sdk): flatten WorkflowData type to remove recursive expansion that caused TS excessive stack depth errors in large consumer codebases. Add missing fields to order schema
+
+- [#15329](https://github.com/medusajs/medusa/pull/15329) [`15c938bef93e30fe62f59a78d09cdf412fb92f5a`](https://github.com/medusajs/medusa/commit/15c938bef93e30fe62f59a78d09cdf412fb92f5a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(order): fix regression on order.items.metadata showing null when line item metadata is set
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#13975](https://github.com/medusajs/medusa/pull/13975) [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(currency,payment,pricing,region,order,store,cart,core-flows,medusa,utils): repo wide currency_code normalization
+
+- [#14801](https://github.com/medusajs/medusa/pull/14801) [`e489aebaf301ea2eb2834449af65bc3da7f7465a`](https://github.com/medusajs/medusa/commit/e489aebaf301ea2eb2834449af65bc3da7f7465a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(cart,order,product,inventory,fulfillment,stock-location,workflow-engine-redis,workflow-engine-inmemory): add missing fields for types auto-generation
+
+- [#15172](https://github.com/medusajs/medusa/pull/15172) [`41ee12ccde939a7c02360c63e725b8e4ad488c55`](https://github.com/medusajs/medusa/commit/41ee12ccde939a7c02360c63e725b8e4ad488c55) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(order): remove fields causing excessive stack depth
+
+- [#14570](https://github.com/medusajs/medusa/pull/14570) [`9e1e7082c3437ee2ae01d6752b624d4b4d905604`](https://github.com/medusajs/medusa/commit/9e1e7082c3437ee2ae01d6752b624d4b4d905604) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,order,medusa,types): update item metadata on item_update change action
+
+- [#14482](https://github.com/medusajs/medusa/pull/14482) [`d9af2f5efba391f612ea9f6183702756c3fa4732`](https://github.com/medusajs/medusa/commit/d9af2f5efba391f612ea9f6183702756c3fa4732) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,order,medusa,types): Version shipping method adjustments & implement missing creation flow for versioned adjustments
+
+- [#14234](https://github.com/medusajs/medusa/pull/14234) [`2045c776de29534b86e9c4e0438f7d29f9b79e91`](https://github.com/medusajs/medusa/commit/2045c776de29534b86e9c4e0438f7d29f9b79e91) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,order,medusa,types): allow to update the original order.email on order customer transfer requests
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/framework@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- [#14797](https://github.com/medusajs/medusa/pull/14797) [`c191ea5ede6e9b35a2764093ed00057e200e800f`](https://github.com/medusajs/medusa/commit/c191ea5ede6e9b35a2764093ed00057e200e800f) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(order,payment): make return and refund reason translatable
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies [[`dbaae9630d26a0806751d5614beadef3e0b4bf07`](https://github.com/medusajs/medusa/commit/dbaae9630d26a0806751d5614beadef3e0b4bf07)]:
+  - @medusajs/framework@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14715](https://github.com/medusajs/medusa/pull/14715) [`09a80ab97aad62b65320c745899eb8517d256b40`](https://github.com/medusajs/medusa/commit/09a80ab97aad62b65320c745899eb8517d256b40) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,order): avoid returning recreated credit lines due to version bumping as new credit lines in createOrderCreditLinesWorkflow
+
+- Updated dependencies [[`7aca778ae56069371f5d26a757d3b2276d524776`](https://github.com/medusajs/medusa/commit/7aca778ae56069371f5d26a757d3b2276d524776), [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8)]:
+  - @medusajs/framework@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

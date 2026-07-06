@@ -12,8 +12,8 @@ import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { se } from "date-fns/locale"
 import { useEffect } from "react"
+import { shippingProfileQueryKeys } from "../../../../../hooks/api/shipping-profiles"
 
 type ProductShippingProfileFormProps = {
   product: HttpTypes.AdminProduct & {
@@ -32,7 +32,7 @@ export const ProductShippingProfileForm = ({
   const { handleSuccess } = useRouteModal()
 
   const shippingProfiles = useComboboxData({
-    queryKey: ["shipping_profiles"],
+    queryKey: shippingProfileQueryKeys.lists(),
     queryFn: (params) => sdk.admin.shippingProfile.list(params),
     getOptions: (data) =>
       data.shipping_profiles.map((shippingProfile) => ({

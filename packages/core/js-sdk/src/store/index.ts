@@ -1,6 +1,6 @@
 import { FindParams, HttpTypes, SelectParams } from "@medusajs/types"
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Store {
   /**
@@ -349,6 +349,116 @@ export class Store {
     ) => {
       return this.client.fetch<HttpTypes.StoreProductCategoryResponse>(
         `/store/product-categories/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+  }
+
+  /**
+   * @tags product
+   * @since 2.16.0
+   */
+  public productOption = {
+    /**
+     * This method retrieves a paginated list of product options. It sends a request to the
+     * [List Product Options](https://docs.medusajs.com/api/store#product-options_getproductoptions) API route.
+     *
+     * @param query - Filters and pagination configurations.
+     * @param headers - Headers to pass in the request.
+     * @returns The paginated list of product options.
+     *
+     * @example
+     * To retrieve the list of product options:
+     *
+     * ```ts
+     * sdk.store.productOption.list()
+     * .then(({ product_options, count, offset, limit }) => {
+     *   console.log(product_options)
+     * })
+     * ```
+     *
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     *
+     * For example, to retrieve only 10 items and skip 10 items:
+     *
+     * ```ts
+     * sdk.store.productOption.list({
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ product_options, count, offset, limit }) => {
+     *   console.log(product_options)
+     * })
+     * ```
+     *
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each product option:
+     *
+     * ```ts
+     * sdk.store.productOption.list({
+     *   fields: "id,title"
+     * })
+     * .then(({ product_options, count, offset, limit }) => {
+     *   console.log(product_options)
+     * })
+     * ```
+     *
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+     */
+    list: async (
+      query?: FindParams & HttpTypes.StoreProductOptionListParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreProductOptionListResponse>(
+        `/store/product-options`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    /**
+     * This method retrieves a product option by its ID. It sends a request to the
+     * [Retrieve Product Option](https://docs.medusajs.com/api/store#product-options_getproductoptionsid).
+     *
+     * @param id - The product option's ID.
+     * @param query - Configure the fields to retrieve in the product option.
+     * @param headers - Headers to pass in the request.
+     * @returns The product option.
+     *
+     * @example
+     * To retrieve a product option by its ID:
+     *
+     * ```ts
+     * sdk.store.productOption.retrieve("opt_123")
+     * .then(({ product_option }) => {
+     *   console.log(product_option)
+     * })
+     * ```
+     *
+     * To specify the fields and relations to retrieve:
+     *
+     * ```ts
+     * sdk.store.productOption.retrieve("opt_123", {
+     *   fields: "id,title,values.value"
+     * })
+     * .then(({ product_option }) => {
+     *   console.log(product_option)
+     * })
+     * ```
+     *
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+     */
+    retrieve: async (
+      id: string,
+      query?: HttpTypes.StoreProductOptionParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreProductOptionResponse>(
+        `/store/product-options/${id}`,
         {
           query,
           headers,
@@ -750,6 +860,86 @@ export class Store {
         }
       )
     },
+
+
+    /**
+     * This method adds promotion codes to a cart. It sends a request to the
+     * [Add Promotion Code](https://docs.medusajs.com/api/store#carts_postcartsidpromotions) API route.
+     *
+     * Related guide: [How to apply promotions to cart in the storefront](https://docs.medusajs.com/resources/storefront-development/cart/manage-items).
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The details of the promotion codes to add.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
+     * @example
+     * sdk.store.cart.addPromotions("cart_123", {
+     *   promo_codes: ["20OFF"]
+     * })
+     * .then(({ cart }) => {
+     *   console.log(cart)
+     * })
+     *
+     * @since 2.13.7
+     */
+    addPromotions: async (
+      cartId: string,
+      body: HttpTypes.StoreCartAddPromotion,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreCartResponse>(
+        `/store/carts/${cartId}/promotions`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+
+    /**
+     * This method removes promotion codes from a cart. It sends a request to the
+     * [Remove Promotion Code](https://docs.medusajs.com/api/store#carts_deletecartsidpromotions) API route.
+     *
+     * Related guide: [How to apply promotions to cart in the storefront](https://docs.medusajs.com/resources/storefront-development/cart/manage-items).
+     *
+     * @param cartId - The cart's ID.
+     * @param body - The details of the promotion codes to remove.
+     * @param query - Configure the fields to retrieve in the cart.
+     * @param headers - Headers to pass in the request.
+     * @returns The cart's details.
+     *
+     * @example
+     * sdk.store.cart.removePromotions("cart_123", {
+     *   promo_codes: ["20OFF"]
+     * })
+     * .then(({ cart }) => {
+     *   console.log(cart)
+     * })
+     *
+     * @since 2.13.7
+     */
+    removePromotions: async (
+      cartId: string,
+      body: HttpTypes.StoreCartRemovePromotion,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreCartResponse>(
+        `/store/carts/${cartId}/promotions`,
+        {
+          method: "DELETE",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+    
     /**
      * This method completes a cart and places the order. It's the last step of the checkout flow.
      * The method sends a request to the [Complete Cart](https://docs.medusajs.com/api/store#carts_postcartsidcomplete)

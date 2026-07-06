@@ -49,7 +49,7 @@ export const useProductTableFilters = () => {
 
     if (product_tags?.length) {
       filters.push(
-        filterHelper.accessor("tag_id", {
+        filterHelper.accessor("tag_id" as any, {
           label: t("fields.tag"),
           type: "multiselect",
           options: product_tags.map((t) => ({
@@ -62,7 +62,7 @@ export const useProductTableFilters = () => {
 
     if (sales_channels?.length) {
       filters.push(
-        filterHelper.accessor("sales_channel_id", {
+        filterHelper.accessor("sales_channel_id" as any, {
           label: t("fields.salesChannel"),
           type: "multiselect",
           options: sales_channels.map((s) => ({

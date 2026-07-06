@@ -1,0 +1,41 @@
+type: object
+description: The property label's details.
+x-schemaName: AdminPropertyLabel
+required:
+  - id
+  - entity
+  - property
+  - label
+  - created_at
+  - updated_at
+properties:
+  id:
+    type: string
+    title: id
+    description: The property label's ID.
+  entity:
+    type: string
+    title: entity
+    description: The entity the property label belongs to.
+  property:
+    type: string
+    title: property
+    description: The property the label is associated with.
+  label:
+    type: string
+    title: label
+    description: The label for the property.
+  description:
+    type: string
+    title: description
+    description: The property label's description.
+  created_at:
+    type: string
+    format: date-time
+    title: created_at
+    description: The date the property label was created.
+  updated_at:
+    type: string
+    format: date-time
+    title: updated_at
+    description: The date the property label was last updated.

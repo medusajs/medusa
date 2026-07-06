@@ -4,6 +4,7 @@ export const defaults = [
   "description",
   "handle",
   "rank",
+  "external_id",
   "parent_category_id",
   "created_at",
   "updated_at",

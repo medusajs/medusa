@@ -1,12 +1,18 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BaseCollection } from "../collection/common"
 import { FindParams } from "../common"
-import { BaseCalculatedPriceSet } from "../pricing/common"
+import { BaseCalculatedPriceSet } from "../price-preference/common"
 import { BaseProductCategory } from "../product-category/common"
 import { BaseProductTag } from "../product-tag/common"
 import { BaseProductType } from "../product-type/common"
 
+/**
+ * The product's status.
+ */
 export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
+/**
+ * The product's details.
+ */
 export interface BaseProduct {
   /**
    * The product's ID.
@@ -134,6 +140,9 @@ export interface BaseProduct {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The product variant's details.
+ */
 export interface BaseProductVariant {
   /**
    * The variant's ID.
@@ -166,7 +175,7 @@ export interface BaseProductVariant {
   /**
    * The variant's images.
    */
-  images: BaseProductImage[] | null
+  images?: BaseProductImage[] | null
   /**
    * Whether the variant can be ordered even if it's out of stock.
    */
@@ -255,6 +264,9 @@ export interface BaseProductVariant {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The product option's details.
+ */
 export interface BaseProductOption {
   /**
    * The option's ID.
@@ -265,13 +277,13 @@ export interface BaseProductOption {
    */
   title: string
   /**
-   * The product that the option belongs to.
+   * Whether the option is exclusive or global.
    */
-  product?: BaseProduct | null
+  is_exclusive: boolean
   /**
-   * The ID of the product that the option belongs to.
+   * The products that the option is associated to.
    */
-  product_id?: string | null
+  products?: BaseProduct[] | null
   /**
    * The option's values.
    */
@@ -294,6 +306,9 @@ export interface BaseProductOption {
   deleted_at?: string | null
 }
 
+/**
+ * The product image's details.
+ */
 export interface BaseProductImage {
   /**
    * The image's ID.
@@ -325,6 +340,9 @@ export interface BaseProductImage {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The product option value's details.
+ */
 export interface BaseProductOptionValue {
   /**
    * The option value's ID.
@@ -335,11 +353,17 @@ export interface BaseProductOptionValue {
    */
   value: string
   /**
-   * The option's details.
+   * The value's rank among other option values.
+   *
+   * @since 2.16.0
+   */
+  rank?: number
+  /**
+   * The details of the option that the value belongs to.
    */
   option?: BaseProductOption | null
   /**
-   * The ID of the option.
+   * The ID of the option that the value belongs to.
    */
   option_id?: string | null
   /**
@@ -360,6 +384,9 @@ export interface BaseProductOptionValue {
   deleted_at?: string | null
 }
 
+/**
+ * The filters to apply on the retrieved products.
+ */
 export interface BaseProductListParams
   extends FindParams,
     BaseFilterable<BaseProductListParams> {
@@ -384,6 +411,10 @@ export interface BaseProductListParams
    */
   handle?: string | string[]
   /**
+   * Filter by the product's external ID(s).
+   */
+  external_id?: string | string[]
+  /**
    * Filter by the product's id(s).
    */
   id?: string | string[]
@@ -394,11 +425,23 @@ export interface BaseProductListParams
   /**
    * Filter by the product's tag(s).
    */
-  tags?: string | string[]
+  tag_id?: string | string[]
   /**
    * Filter by the product's type(s).
    */
   type_id?: string | string[]
+  /**
+   * Filter by the product's option(s).
+   *
+   * @since 2.16.0
+   */
+  option_id?: string | string[]
+  /**
+   * Filter by the product's option value(s).
+   *
+   * @since 2.16.0
+   */
+  option_value_id?: string | string[]
   /**
    * Filter by the product's category(s).
    */
@@ -425,25 +468,106 @@ export interface BaseProductListParams
   deleted_at?: OperatorMap<string>
 }
 
+export interface BaseProductOptionListParams
+  extends FindParams,
+    BaseFilterable<BaseProductOptionListParams> {
+  /**
+   * A query or keywords to search the searchable fields by.
+   */
+  q?: string
+  /**
+   * Filter by the option's id(s).
+   */
+  id?: string | string[]
+  /**
+   * Filter by the option's title(s).
+   */
+  title?: string | string[]
+  /**
+   * Filter by whether the option is exclusive or global.
+   */
+  is_exclusive?: boolean
+  /**
+   * Apply filers on the product's creation date.
+   */
+  created_at?: OperatorMap<string>
+  /**
+   * Apply filers on the product's update date.
+   */
+  updated_at?: OperatorMap<string>
+  /**
+   * Apply filers on the product's deletion date.
+   */
+  deleted_at?: OperatorMap<string>
+}
+
+/**
+ * The filters to apply on the retrieved product options.
+ */
 export interface BaseProductOptionParams
   extends FindParams,
     BaseFilterable<BaseProductOptionParams> {
+  /**
+   * A query or keywords to search the searchable fields by.
+   */
   q?: string
+  /**
+   * Filter by the option's id(s).
+   */
   id?: string | string[]
+  /**
+   * Filter by the option's title(s).
+   */
   title?: string | string[]
+  /**
+   * Filter by whether the option is exclusive to a product or global.
+   *
+   * @since 2.15.0
+   */
+  is_exclusive?: boolean
+  /**
+   * Filter by product ID(s).
+   */
   product_id?: string | string[]
 }
 
+/**
+ * The filters to apply on the retrieved product variants.
+ */
 export interface BaseProductVariantParams
   extends FindParams,
     BaseFilterable<BaseProductVariantParams> {
+  /**
+   * Query or keywords to filter the variant's searchable fields.
+   */
   q?: string
+  /**
+   * Filter by variant ID(s).
+   */
   id?: string | string[]
+  /**
+   * Apply filters on the variant's options.
+   */
   options?: {
-    value: string
-    option_id: string
+    /**
+     * Filter by option value.
+     */
+    value?: string
+    /**
+     * Filter by option ID.
+     */
+    option_id?: string
   }
+  /**
+   * Apply filters on the variant's creation date.
+   */
   created_at?: OperatorMap<string>
+  /**
+   * Apply filters on the variant's update date.
+   */
   updated_at?: OperatorMap<string>
+  /**
+   * Apply filters on the variant's deletion date.
+   */
   deleted_at?: OperatorMap<string>
 }

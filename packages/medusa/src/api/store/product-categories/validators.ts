@@ -26,6 +26,7 @@ export const StoreProductCategoriesParamsFields = z.object({
   description: z.union([z.string(), z.array(z.string())]).optional(),
   handle: z.union([z.string(), z.array(z.string())]).optional(),
   parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),
+  external_id: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
   include_ancestors_tree: booleanString().optional(),
   include_descendants_tree: booleanString().optional(),
   created_at: createOperatorMap().optional(),

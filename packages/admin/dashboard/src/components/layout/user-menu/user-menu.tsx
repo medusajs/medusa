@@ -95,7 +95,7 @@ const UserBadge = () => {
 
   if (isPending) {
     return (
-      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 ps-1 pe-2.5">
+      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pe-2.5 ps-1">
         <Skeleton className="h-5 w-5 rounded-full" />
         <Skeleton className="h-[9px] w-[70px]" />
       </button>
@@ -111,7 +111,7 @@ const UserBadge = () => {
       <DropdownMenu.Trigger
         disabled={!user}
         className={clx(
-          "bg-ui-bg-subtle grid w-full cursor-pointer grid-cols-[24px_1fr_15px] items-center gap-2 rounded-md py-1 ps-0.5 pe-2 outline-none",
+          "bg-ui-bg-subtle grid w-full cursor-pointer grid-cols-[24px_1fr_15px] items-center gap-2 rounded-md py-1 pe-2 ps-0.5 outline-none",
           "hover:bg-ui-bg-subtle-hover",
           "data-[state=open]:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
@@ -150,9 +150,14 @@ const ThemeToggle = () => {
 
   return (
     <DropdownMenu.SubMenu>
-      <DropdownMenu.SubMenuTrigger dir="ltr" className="rounded-md rtl:rotate-180">
+      <DropdownMenu.SubMenuTrigger
+        dir="ltr"
+        className="rounded-md rtl:rotate-180"
+      >
         <CircleHalfSolid className="text-ui-fg-subtle me-2" />
-        <span className="rtl:rotate-180">{t("app.menus.user.theme.label")}</span>
+        <span className="rtl:rotate-180">
+          {t("app.menus.user.theme.label")}
+        </span>
       </DropdownMenu.SubMenuTrigger>
       <DropdownMenu.SubMenuContent>
         <DropdownMenu.RadioGroup value={theme}>

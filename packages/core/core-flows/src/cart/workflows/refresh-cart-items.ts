@@ -66,6 +66,11 @@ export type RefreshCartItemsWorkflowInput = {
   locale?: string
 }
 
+/**
+ * The ID of the {@link refreshCartItemsWorkflow}.
+ * 
+ * @since 2.13.7
+ */
 export const refreshCartItemsWorkflowId = "refresh-cart-items"
 /**
  * This workflow refreshes a cart to ensure its prices, promotion codes, taxes, and other details are applied correctly. It's useful
@@ -237,7 +242,6 @@ export const refreshCartItemsWorkflow = createWorkflow(
     updateCartPromotionsWorkflow.runAsStep({
       input: {
         cart_id: input.cart_id,
-        cart: refetchedCart, // Pass cart to avoid refetch in updateCartPromotionsWorkflow
         promo_codes: cartPromoCodes,
         action: PromotionActions.REPLACE,
         force_refresh_payment_collection: false,

@@ -88,6 +88,8 @@ export interface DefaultPolicyResources {
   user: "user"
   api_key: "api_key"
   invite: "invite"
+
+  rbac_role: "rbac_role"
 }
 
 export type DefaultResourceKey = keyof DefaultPolicyResources

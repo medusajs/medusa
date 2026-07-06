@@ -1,0 +1,149 @@
+export const metadata = {
+  title: `Store Design Prompting`,
+}
+
+# {metadata.title}
+
+This guide teaches you how to write better prompts for store design. Good prompts get you better results, save your tokens, and ensure you have a smoother experience working with Bloom.
+
+## Build Step by Step
+
+You'll often be tempted to write one big prompt with all the changes you want in your store. However, this approach leads to messy results and wasted tokens.
+
+Bloom may miss details or get confused when you ask for too much at once. It will also be difficult to review and adjust if the result isn't what you expected.
+
+Instead, build your store design incrementally. Start with one section or area, review the results, adjust if needed, and then move on to the next section. This way, you stay in control of the design process and get better results with fewer tokens.
+
+For example, instead of asking Bloom to do everything at once:
+
+```bash title="Bad Prompt Example"
+Create complete store with header, hero section, featured products, testimonials, footer, about page, and contact form with validation
+```
+
+Try building it step by step:
+
+```bash title="Good Prompt Example"
+Create homepage with header and hero section for a jewelry store
+```
+
+Then, review the results and adjust if needed. Once that looks good, move on to the next sections.
+
+---
+
+## Use Selection Mode
+
+[Selection Mode](../../features/selection-mode/page.mdx) allows you to select specific elements in your store and then prompt Bloom to make changes to those elements. This is much more efficient than trying to describe the element in your prompt.
+
+For example, if you want to change the color of a button in your hero section, don't explain which button you mean in your prompt:
+
+```bash title="Bad Prompt Example"
+Change the background color of the button in the hero section at the top
+```
+
+If you have multiple buttons or similar elements, Bloom might make changes to the wrong one. You'll have to spend extra credits reiterating and clarifying the confusion.
+
+Instead, select the button in Selection Mode and then say:
+
+```bash title="Good Prompt Example"
+Change this button's background color to navy blue
+```
+
+This eliminates any confusion about which button you're referring to and ensures Bloom makes the change to the correct element.
+
+---
+
+## Use Screenshots for Designs
+
+If you already have a design in mind for your store, take a screenshot of it and share it with Bloom. This gives Bloom a clear visual reference to work from, which leads to better results.
+
+Consider you're creating a hero section with the following prompt:
+
+```bash title="Bad Prompt Example"
+Create a hero section with a large image on the left and text on the right, with a
+blue background and a call-to-action button below the text
+```
+
+While Bloom can understand this prompt and create the design, the result might be different from the design mockup you have.
+
+Instead, export the design mock up or take a screenshot of it, upload it in your prompt, and say:
+
+```bash title="Good Prompt Example"
+Create a hero section that looks like this design
+```
+
+Bloom will use the screenshot as a reference and create a hero section that closely matches your design. This way, you get the exact layout, colors, and style you want without needing multiple iterations to clarify your vision.
+
+You can also describe details that aren't clear in the screenshot. For example, you can specify the animation style for the hero section:
+
+```bash title="Good Prompt Example with Details"
+Create a hero section that looks like this design, with a fade-in animation for the text and
+a slide-in animation for the image
+```
+
+Bloom can also create accurate designs from URLs, code, and other media. See [Design from Media](../../features/design-from-media/page.mdx) for more details.
+
+---
+
+## Use Screenshots for Design Errors
+
+If Bloom creates something that doesn't match your expectations or prompt, you can take a screenshot of the area and share it with Bloom to clarify the issue. This is much more effective than trying to describe the problem in words.
+
+For example, if elements overlap in a section, instead of saying:
+
+```bash title="Bad Prompt Example"
+The elements in the hero section are overlapping and it looks messy
+```
+
+You can take a screenshot of the hero section, upload it in your prompt, and say:
+
+```bash title="Good Prompt Example"
+As you can see in this screenshot, the elements in the hero section are overlapping.
+Please fix the layout so that the text and image are side by side without overlapping.
+```
+
+You can also combine this with [Selection Mode](../../features/selection-mode/page.mdx) to select the section with the issue.
+
+Bloom can analyze the screenshot to understand the layout problem, identify the selected section, and make the necessary adjustments to fix the overlapping issue. This way, you get a much faster and more accurate fix without needing multiple iterations to clarify the problem.
+
+---
+
+## Check Mobile As You Build
+
+When you ask Bloom to make design changes, don't forget to check how those changes look on mobile. Use [Responsive View](../../features/responsive-view/page.mdx) to toggle between desktop and mobile views in the preview.
+
+If you wait until the end of your design process to check mobile view, you might find that many elements look broken or misaligned on mobile. This leads to a long list of issues that are harder to fix and may impact your desktop design as well.
+
+Instead, check mobile view regularly as you build your store. If you see any issues in mobile view, take a screenshot of the problem area and share it with Bloom to fix it. For example:
+
+```bash title="Good Prompt Example for Mobile Issues"
+As you can see in this screenshot of the mobile view, the product cards are too close together
+and the text is too small. Please increase the spacing between the cards to 16px and make the text larger for better readability on mobile.
+```
+
+Bloom can analyze the screenshot to understand the mobile layout issues and make the necessary adjustments to improve the spacing and text size for a better mobile experience. This way, you ensure your store looks great on both desktop and mobile without needing a long list of fixes at the end.
+
+---
+
+## Write Specific Prompts
+
+The more details you include in your prompt about your requirements and expectations, the better the results you get. If you use vague prompts, Bloom has to guess what you mean, which can lead to results that don't match your vision.
+
+For example, if you want to add a hero section with a specific layout, colors, and button style, don't say:
+
+```bash title="Bad Prompt Example"
+Add a hero section to the homepage
+```
+
+Instead, be specific about the important details:
+
+```bash title="Good Prompt Example"
+Add a hero section to the homepage with a large product image on the left and headline text on the right. Use a navy blue background and include a "Shop Now" button below the text.
+```
+
+This prompt includes key details about layout, colors, and the button without overwhelming Bloom with too many specifics at once. You can always refine the design in follow-up prompts. For example:
+
+```bash title="Follow-up Prompt for Refinement"
+Make the button background white with navy blue text, and add a subtle fade-in animation for the text
+```
+
+Being specific helps Bloom understand your vision, but remember to build incrementally. Start with the core structure and refine details in follow-up prompts.

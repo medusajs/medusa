@@ -1,5 +1,137 @@
 # @medusajs/admin-sdk
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15721](https://github.com/medusajs/medusa/pull/15721) [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9) Thanks [@leobenzol](https://github.com/leobenzol)! - feat: drag&drop LayoutComposer, settings db persistence
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c), [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9), [`9e47b94b5fb9777b06f099d270bcb95df99c3214`](https://github.com/medusajs/medusa/commit/9e47b94b5fb9777b06f099d270bcb95df99c3214), [`f79afaaecdd5aaa84b31ddcdea14a43692e33eff`](https://github.com/medusajs/medusa/commit/f79afaaecdd5aaa84b31ddcdea14a43692e33eff)]:
+  - @medusajs/admin-shared@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies [[`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/admin-shared@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- Updated dependencies [[`f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326`](https://github.com/medusajs/medusa/commit/f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326), [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44)]:
+  - @medusajs/admin-shared@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14309](https://github.com/medusajs/medusa/pull/14309) [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): upgrade zod to latest
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

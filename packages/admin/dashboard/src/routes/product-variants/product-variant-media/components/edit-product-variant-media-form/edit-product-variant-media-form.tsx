@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus, ThumbnailBadge } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, clx, CommandBar, toast, Tooltip } from "@medusajs/ui"
 import { Fragment, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -16,6 +15,7 @@ import {
   useBatchVariantImages,
   useUpdateProductVariant,
 } from "../../../../../hooks/api/products"
+import { ExtendedVariant } from "../../../product-variant-detail/constants"
 
 /**
  * Schema
@@ -31,9 +31,7 @@ type MediaSchemaType = z.infer<typeof MediaSchema>
  * Prop types
  */
 type ProductVariantMediaViewProps = {
-  variant: HttpTypes.AdminProductVariant & {
-    images: HttpTypes.AdminProductImage[]
-  }
+  variant: ExtendedVariant
 }
 
 export const EditProductVariantMediaForm = ({
@@ -44,11 +42,12 @@ export const EditProductVariantMediaForm = ({
 
   const allProductImages = variant.product?.images || []
   const allVariantImages = (variant.images || []).filter((image) =>
-    image.variants?.some((variant) => variant.id === variant.id)
+    image.variants?.some((imageVariant) => imageVariant.id === variant.id)
   )
 
   const unassociatedImages = allProductImages.filter(
-    (image) => !image.variants?.some((variant) => variant.id === variant.id)
+    (image) =>
+      !image.variants?.some((imageVariant) => imageVariant.id === variant.id)
   )
 
   const [selection, setSelection] = useState<Record<string, true>>({})
@@ -183,7 +182,7 @@ export const EditProductVariantMediaForm = ({
     variant.thumbnail &&
     Object.keys(selection).length === 1 &&
     selectedImageThumbnail ===
-      variant.images.find((image) => image.id === Object.keys(selection)[0])
+      variant.images?.find((image) => image.id === Object.keys(selection)[0])
         ?.url
 
   return (

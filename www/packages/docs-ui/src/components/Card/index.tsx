@@ -6,9 +6,10 @@ import { CardLargeLayout } from "./Layout/Large"
 import { CardFillerLayout } from "./Layout/Filler"
 import { CardLayoutMini } from "./Layout/Mini"
 import { LinkProps } from "next/link"
+import { CardBloomLayout } from "./Layout/Bloom"
 
 export type CardProps = {
-  type?: "default" | "large" | "filler" | "mini"
+  type?: "default" | "large" | "filler" | "mini" | "bloom"
   icon?: React.FC<IconProps>
   rightIcon?: React.FC<IconProps>
   image?: string
@@ -44,6 +45,8 @@ export const Card = ({ type = "default", ...props }: CardProps) => {
       return <CardFillerLayout {...props} />
     case "mini":
       return <CardLayoutMini {...props} />
+    case "bloom":
+      return <CardBloomLayout {...props} />
     default:
       return <CardDefaultLayout {...props} />
   }

@@ -1,5 +1,5 @@
 import { BaseCollection } from "../common"
-import { AdminTranslation } from "../../translations"
+import { AdminTranslation } from "../../translation"
 
 export interface AdminCollection extends BaseCollection {
   /**

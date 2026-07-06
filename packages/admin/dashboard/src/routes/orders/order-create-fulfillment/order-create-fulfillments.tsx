@@ -11,7 +11,7 @@ export function OrderCreateFulfillment() {
 
   const { order, isLoading, isError, error } = useOrder(id!, {
     fields:
-      "currency_code,*items,*items.variant,+items.variant.product.shipping_profile.id,*shipping_address,+shipping_methods.shipping_option_id",
+      "currency_code,*items,*items.variant,+items.variant.product.shipping_profile.id,*shipping_address,+shipping_methods.shipping_option_id,no_notification",
   })
 
   if (isError) {

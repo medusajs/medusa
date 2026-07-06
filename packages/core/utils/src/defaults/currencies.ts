@@ -72,6 +72,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "AMD",
     name_plural: "Armenian drams",
   },
+  AOA: {
+    symbol: "AOA",
+    name: "Angolan Kwanza",
+    symbol_native: "Kz",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "AOA",
+    name_plural: "Angolan kwanzas",
+  },
   ARS: {
     symbol: "AR$",
     name: "Argentine Peso",
@@ -368,6 +377,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     rounding: 0,
     code: "GHS",
     name_plural: "Ghanaian cedis",
+  },
+  GMD: {
+    symbol: "D",
+    name: "Gambian Dalasi",
+    symbol_native: "D",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "GMD",
+    name_plural: "Gambian dalasis",
   },
   GNF: {
     symbol: "FG",

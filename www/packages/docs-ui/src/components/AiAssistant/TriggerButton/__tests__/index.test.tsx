@@ -34,6 +34,9 @@ vi.mock("@/components/Tooltip", () => ({
 vi.mock("@/components/Kbd", () => ({
   Kbd: (props: KbdProps) => <kbd {...props} />,
 }))
+vi.mock("@/components/Icons", () => ({
+  BloomIcon: () => <span>BloomIcon</span>,
+}))
 vi.mock("@/providers/AiAssistant", () => ({
   useAiAssistant: () => AiAssistantMocks.mockUseAiAssistant(),
 }))
@@ -76,7 +79,7 @@ describe("rendering", () => {
   test("renders the trigger button", () => {
     const { container } = render(<AiAssistantTriggerButton />)
     expect(container).toBeInTheDocument()
-    expect(container).toHaveTextContent("Ask AI")
+    expect(container).toHaveTextContent("Ask Bloom")
   })
   test("renders the trigger button with correct OS shortcut", () => {
     const { container } = render(<AiAssistantTriggerButton />)

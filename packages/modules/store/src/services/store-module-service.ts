@@ -16,6 +16,7 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
+  normalizeCurrencyCode,
   promiseAll,
   removeUndefined,
 } from "@medusajs/framework/utils"
@@ -215,7 +216,7 @@ export default class StoreModuleService
         ...store,
         supported_currencies: store.supported_currencies?.map((c) => ({
           ...c,
-          currency_code: c.currency_code.toLowerCase(),
+          currency_code: normalizeCurrencyCode(c.currency_code),
         })),
         name: store.name?.trim(),
       })

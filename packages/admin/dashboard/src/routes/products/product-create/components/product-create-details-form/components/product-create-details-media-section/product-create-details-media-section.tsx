@@ -30,6 +30,7 @@ import { useState } from "react"
 import { useFieldArray, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../../../components/common/action-menu"
+import { formatFileSize } from "../../../../../../../lib/format-file-size"
 import { UploadMediaFormItem } from "../../../../../common/components/upload-media-form-item"
 import { ProductCreateSchemaType } from "../../../../types"
 
@@ -320,19 +321,5 @@ const ThumbnailPreview = ({ url }: { url?: string | null }) => {
 
   return (
     <img src={url} alt="" className="size-full object-cover object-center" />
-  )
-}
-
-function formatFileSize(bytes: number, decimalPlaces: number = 2): string {
-  if (bytes === 0) {
-    return "0 Bytes"
-  }
-
-  const k = 1024
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-  return (
-    parseFloat((bytes / Math.pow(k, i)).toFixed(decimalPlaces)) + " " + sizes[i]
   )
 }

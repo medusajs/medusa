@@ -1,6 +1,6 @@
-import { PromotionRuleResponse } from "@medusajs/types"
+import { RuleWithFormAttributes } from "../rules-form-field"
 
-export const generateRuleAttributes = (rules?: PromotionRuleResponse[]) =>
+export const generateRuleAttributes = (rules?: RuleWithFormAttributes[]) =>
   (rules || []).map((rule) => ({
     id: rule.id,
     required: rule.required,
@@ -13,5 +13,5 @@ export const generateRuleAttributes = (rules?: PromotionRuleResponse[]) =>
         ? typeof rule.values === "object"
           ? rule.values[0]?.value
           : rule.values
-        : rule?.values?.map((v: { value: string }) => v.value!),
+        : rule?.values?.map((v) => v.value!),
   }))

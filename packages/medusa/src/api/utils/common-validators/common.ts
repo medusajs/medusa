@@ -12,9 +12,29 @@ export const AddressPayload = z
     country_code: z.string().nullish(),
     province: z.string().nullish(),
     postal_code: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
+
+/**
+ * Validates that a string is either empty, the placeholder "#", or a URL using
+ * the http: or https: scheme. Rejects dangerous schemes such as javascript:,
+ * data:, and vbscript: that can lead to stored XSS when rendered in an href.
+ */
+export const safeHttpUrl = z.string().refine(
+  (value) => {
+    if (value === "" || value === "#") {
+      return true
+    }
+    try {
+      const parsed = new URL(value)
+      return parsed.protocol === "http:" || parsed.protocol === "https:"
+    } catch {
+      return false
+    }
+  },
+  { message: "URL must use http: or https: scheme" }
+)
 
 export const BigNumberInput = z.union([
   z.number(),

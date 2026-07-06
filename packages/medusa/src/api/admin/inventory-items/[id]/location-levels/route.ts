@@ -11,7 +11,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 export const POST = async (
   req: MedusaRequest<
     HttpTypes.AdminBatchCreateInventoryItemLocationLevels,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetInventoryLocationLevelParams
   >,
   res: MedusaResponse<HttpTypes.AdminInventoryItemResponse>
 ) => {

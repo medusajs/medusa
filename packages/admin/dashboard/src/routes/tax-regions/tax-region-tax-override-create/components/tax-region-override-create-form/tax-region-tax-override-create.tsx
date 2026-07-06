@@ -636,6 +636,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                                               key={field.id}
                                               index={index}
                                               label={field.label}
+                                              value={field.value}
                                               onRemove={remove}
                                             />
                                           )

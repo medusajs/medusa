@@ -34,7 +34,6 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import {
   currencies,
@@ -268,10 +267,10 @@ export const CreatePromotionForm = () => {
     for (const [key, value] of Object.entries(currentTemplate.defaults)) {
       if (typeof value === "object") {
         for (const [subKey, subValue] of Object.entries(value)) {
-          setValue(`application_method.${subKey}`, subValue)
+          setValue(`application_method.${subKey}` as any, subValue)
         }
       } else {
-        setValue(key, value)
+        setValue(key as any, value)
       }
     }
 
@@ -315,17 +314,6 @@ export const CreatePromotionForm = () => {
   })
 
   const isTargetTypeOrder = targetType === "order"
-
-  const formData = form.getValues()
-  let campaignQuery: object = {}
-
-  if (formData.application_method.currency_code) {
-    campaignQuery = {
-      budget: { currency_code: formData.application_method.currency_code },
-    }
-  }
-
-  const { campaigns } = useCampaigns(campaignQuery)
 
   const watchCampaignChoice = useWatch({
     control: form.control,
@@ -444,8 +432,8 @@ export const CreatePromotionForm = () => {
                                   <RadioGroup.ChoiceBox
                                     key={template.id}
                                     value={template.id}
-                                    label={template.title}
-                                    description={template.description}
+                                    label={t(template.title as any)}
+                                    description={t(template.description as any)}
                                   />
                                 )
                               })}
@@ -476,7 +464,7 @@ export const CreatePromotionForm = () => {
                         size="2xsmall"
                         rounded="full"
                       >
-                        {currentTemplate?.title}
+                        {t(currentTemplate.title as any)}
                       </Badge>
                     )}
                   </Heading>
@@ -860,7 +848,7 @@ export const CreatePromotionForm = () => {
                       <Form.Field
                         control={form.control}
                         name="application_method.max_quantity"
-                        render={({ field }) => {
+                        render={() => {
                           return (
                             <Form.Item className="basis-1/2">
                               <Form.Label>
@@ -1042,10 +1030,7 @@ export const CreatePromotionForm = () => {
             >
               <div className="flex flex-col items-center">
                 <div className="flex w-full max-w-[720px] flex-col gap-y-8 py-16">
-                  <AddCampaignPromotionFields
-                    form={form}
-                    campaigns={campaigns || []}
-                  />
+                  <AddCampaignPromotionFields form={form} />
                 </div>
               </div>
             </ProgressTabs.Content>

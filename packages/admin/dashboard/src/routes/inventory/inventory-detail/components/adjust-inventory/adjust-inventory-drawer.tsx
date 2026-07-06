@@ -1,4 +1,3 @@
-import { InventoryTypes } from "@medusajs/types"
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -19,8 +18,7 @@ export const AdjustInventoryDrawer = () => {
   } = useInventoryItem(id!)
 
   const inventoryLevel = inventoryItem?.location_levels!.find(
-    (level: InventoryTypes.InventoryLevelDTO) =>
-      level.location_id === location_id
+    (level) => level.location_id === location_id
   )
 
   const { stock_location, isLoading: isLoadingLocation } = useStockLocation(

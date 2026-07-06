@@ -1,5 +1,173 @@
 # @medusajs/admin-bundler
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`697fde7d4610a44b01a7c21711edacb46e7de856`](https://github.com/medusajs/medusa/commit/697fde7d4610a44b01a7c21711edacb46e7de856), [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c), [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51), [`1eb56d1111c10cbd33da578e2c45da8b21cb93d7`](https://github.com/medusajs/medusa/commit/1eb56d1111c10cbd33da578e2c45da8b21cb93d7), [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9), [`9e47b94b5fb9777b06f099d270bcb95df99c3214`](https://github.com/medusajs/medusa/commit/9e47b94b5fb9777b06f099d270bcb95df99c3214), [`92559c67035a98f5edb5159ae9da678e19edf709`](https://github.com/medusajs/medusa/commit/92559c67035a98f5edb5159ae9da678e19edf709), [`f79afaaecdd5aaa84b31ddcdea14a43692e33eff`](https://github.com/medusajs/medusa/commit/f79afaaecdd5aaa84b31ddcdea14a43692e33eff)]:
+  - @medusajs/dashboard@2.17.2
+  - @medusajs/admin-shared@2.17.2
+  - @medusajs/admin-vite-plugin@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/dashboard@2.17.1
+  - @medusajs/admin-shared@2.17.1
+  - @medusajs/admin-vite-plugin@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies [[`c11326f633e667c8bc9d33ad2cf2d84b7a9f8935`](https://github.com/medusajs/medusa/commit/c11326f633e667c8bc9d33ad2cf2d84b7a9f8935), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`213455d6c62aa005723c8d438c0cf2797b9c3743`](https://github.com/medusajs/medusa/commit/213455d6c62aa005723c8d438c0cf2797b9c3743), [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`f266d9808a36a8e28da4d7781b5e46c4b52522ef`](https://github.com/medusajs/medusa/commit/f266d9808a36a8e28da4d7781b5e46c4b52522ef)]:
+  - @medusajs/dashboard@2.17.0
+  - @medusajs/admin-shared@2.17.0
+  - @medusajs/admin-vite-plugin@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- Updated dependencies [[`f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326`](https://github.com/medusajs/medusa/commit/f2e576f895ae6579dfa4e29b75d8a0a9c9cf9326), [`96dc7727d6f8c2fe5f8a5f47b1dc4c5914d7cc1b`](https://github.com/medusajs/medusa/commit/96dc7727d6f8c2fe5f8a5f47b1dc4c5914d7cc1b), [`dcfb81436439080f682f739173f9430d0527a36f`](https://github.com/medusajs/medusa/commit/dcfb81436439080f682f739173f9430d0527a36f), [`db6f79def971d2717dc30d833b4dbb923b250e0b`](https://github.com/medusajs/medusa/commit/db6f79def971d2717dc30d833b4dbb923b250e0b), [`088b2ba826736761a19e2d00c1f14f59336d4918`](https://github.com/medusajs/medusa/commit/088b2ba826736761a19e2d00c1f14f59336d4918), [`735e0aa51ef64274257057a59046776af54203f4`](https://github.com/medusajs/medusa/commit/735e0aa51ef64274257057a59046776af54203f4), [`16894649b020b63ec0c92fe62393ed8c78c331d4`](https://github.com/medusajs/medusa/commit/16894649b020b63ec0c92fe62393ed8c78c331d4), [`a4d7db86412bd5a8302ee43d881a9c9534296c6c`](https://github.com/medusajs/medusa/commit/a4d7db86412bd5a8302ee43d881a9c9534296c6c), [`0cbecc685b06da08e297a853c098cd158978d417`](https://github.com/medusajs/medusa/commit/0cbecc685b06da08e297a853c098cd158978d417), [`9f932fc9e586ce13fe7926ffcc388a92facca0cc`](https://github.com/medusajs/medusa/commit/9f932fc9e586ce13fe7926ffcc388a92facca0cc), [`964313ffdd69c82f51b50eb76a5ff3ef1fa75d2d`](https://github.com/medusajs/medusa/commit/964313ffdd69c82f51b50eb76a5ff3ef1fa75d2d), [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44), [`a4a1dc95a60814fb6b7f8a480c38430dd166987a`](https://github.com/medusajs/medusa/commit/a4a1dc95a60814fb6b7f8a480c38430dd166987a), [`d815e81a1a4977f66d6aebb5abc742ee8780619c`](https://github.com/medusajs/medusa/commit/d815e81a1a4977f66d6aebb5abc742ee8780619c), [`5c20d034de9a0b32189963f20dd3d8e426f0e67b`](https://github.com/medusajs/medusa/commit/5c20d034de9a0b32189963f20dd3d8e426f0e67b), [`d8ec021f88bfa68a3236ce3e89f634b808228636`](https://github.com/medusajs/medusa/commit/d8ec021f88bfa68a3236ce3e89f634b808228636), [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9), [`740132b7576d937b82e913c1ccf4cfabe56777d6`](https://github.com/medusajs/medusa/commit/740132b7576d937b82e913c1ccf4cfabe56777d6), [`60d63bd2c0e400f06b985d5275b86c72681e4f62`](https://github.com/medusajs/medusa/commit/60d63bd2c0e400f06b985d5275b86c72681e4f62), [`fc92079ac843a5304d37d94663edd3a31e42de73`](https://github.com/medusajs/medusa/commit/fc92079ac843a5304d37d94663edd3a31e42de73), [`af4dc161cf3ca90f68214138212416bc7b54209b`](https://github.com/medusajs/medusa/commit/af4dc161cf3ca90f68214138212416bc7b54209b)]:
+  - @medusajs/admin-shared@2.16.0
+  - @medusajs/dashboard@2.16.0
+  - @medusajs/admin-vite-plugin@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/dashboard@2.15.5
+  - @medusajs/admin-shared@2.15.5
+  - @medusajs/admin-vite-plugin@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies [[`8a4a9c5507463dc3db5a4e122e59f80d718564d9`](https://github.com/medusajs/medusa/commit/8a4a9c5507463dc3db5a4e122e59f80d718564d9)]:
+  - @medusajs/dashboard@2.15.4
+  - @medusajs/admin-shared@2.15.4
+  - @medusajs/admin-vite-plugin@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`f2def586bb52f37752a3b06e673d69095a2551d8`](https://github.com/medusajs/medusa/commit/f2def586bb52f37752a3b06e673d69095a2551d8)]:
+  - @medusajs/dashboard@2.15.3
+  - @medusajs/admin-shared@2.15.3
+  - @medusajs/admin-vite-plugin@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.2
+  - @medusajs/admin-vite-plugin@2.15.2
+  - @medusajs/dashboard@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.15.1
+  - @medusajs/admin-vite-plugin@2.15.1
+  - @medusajs/dashboard@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies [[`e86b075cb60fe721b256c1a4921892a30c918efd`](https://github.com/medusajs/medusa/commit/e86b075cb60fe721b256c1a4921892a30c918efd), [`34f326d729aa9e1bafd6ef644ccb47621bf2a14e`](https://github.com/medusajs/medusa/commit/34f326d729aa9e1bafd6ef644ccb47621bf2a14e), [`4aa09402d73767b71c276460d64be7d3ce6281ca`](https://github.com/medusajs/medusa/commit/4aa09402d73767b71c276460d64be7d3ce6281ca), [`cf84d11241a8857efa6b284e578413e1ce8d47ef`](https://github.com/medusajs/medusa/commit/cf84d11241a8857efa6b284e578413e1ce8d47ef), [`deb8872f8bc9dc509e5233549292bcd5c80527d7`](https://github.com/medusajs/medusa/commit/deb8872f8bc9dc509e5233549292bcd5c80527d7)]:
+  - @medusajs/dashboard@2.15.0
+  - @medusajs/admin-shared@2.15.0
+  - @medusajs/admin-vite-plugin@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`411cacfdfa4db48daf1f6d38eecda04031351d5a`](https://github.com/medusajs/medusa/commit/411cacfdfa4db48daf1f6d38eecda04031351d5a), [`d29b9a1d80580d4b5dce926387c465260936e5ec`](https://github.com/medusajs/medusa/commit/d29b9a1d80580d4b5dce926387c465260936e5ec), [`ab8416d2de6eb043013d7cfbe78bb31449baf3cd`](https://github.com/medusajs/medusa/commit/ab8416d2de6eb043013d7cfbe78bb31449baf3cd), [`a3cdc47038d101b94d077fc67d18b2c0643b69b0`](https://github.com/medusajs/medusa/commit/a3cdc47038d101b94d077fc67d18b2c0643b69b0), [`a1a8c5044b8b4fddb6968579c8ceb6263c12b02c`](https://github.com/medusajs/medusa/commit/a1a8c5044b8b4fddb6968579c8ceb6263c12b02c), [`8d8a1e709a5e889dd2d2b0a895decdedbfc81595`](https://github.com/medusajs/medusa/commit/8d8a1e709a5e889dd2d2b0a895decdedbfc81595), [`e434f5f117d8a19752ff50b2f1a49a6af7164df1`](https://github.com/medusajs/medusa/commit/e434f5f117d8a19752ff50b2f1a49a6af7164df1)]:
+  - @medusajs/dashboard@2.14.2
+  - @medusajs/admin-shared@2.14.2
+  - @medusajs/admin-vite-plugin@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies [[`8797afff772b7bf8d86a1e689ef1285e51a92576`](https://github.com/medusajs/medusa/commit/8797afff772b7bf8d86a1e689ef1285e51a92576)]:
+  - @medusajs/dashboard@2.14.1
+  - @medusajs/admin-shared@2.14.1
+  - @medusajs/admin-vite-plugin@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- Updated dependencies [[`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967), [`22077f13bd4f0161697e8e9cc4b54004387778a7`](undefined), [`bfe70fe540b8f3756e9e78e479b637a86d097a45`](undefined), [`e5ad0c2302f644ee8edfadeae1c6e604ba3f437c`](undefined), [`2ae3978edb454efb0b647889071bd2b8349299f0`](https://github.com/medusajs/medusa/commit/2ae3978edb454efb0b647889071bd2b8349299f0)]:
+  - @medusajs/dashboard@2.14.0
+  - @medusajs/admin-shared@2.14.0
+  - @medusajs/admin-vite-plugin@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- [#15005](https://github.com/medusajs/medusa/pull/15005) [`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update glob version
+
+- Updated dependencies [[`5b655f6d7c24323bd84dc1b684938725873a33ac`](https://github.com/medusajs/medusa/commit/5b655f6d7c24323bd84dc1b684938725873a33ac)]:
+  - @medusajs/dashboard@2.13.6
+  - @medusajs/admin-shared@2.13.6
+  - @medusajs/admin-vite-plugin@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies [[`150e25c1e969ea2e0b00faa5d9a0eae8c49e76d0`](https://github.com/medusajs/medusa/commit/150e25c1e969ea2e0b00faa5d9a0eae8c49e76d0), [`0324e4f6254866bfac56b4a6b4938df8bef5412c`](https://github.com/medusajs/medusa/commit/0324e4f6254866bfac56b4a6b4938df8bef5412c), [`c97973e60e7a8e3961d79f483b9ef46aee8568ca`](https://github.com/medusajs/medusa/commit/c97973e60e7a8e3961d79f483b9ef46aee8568ca), [`991e61fbda7d6096e2ce1b4f713cf55aee2e9404`](https://github.com/medusajs/medusa/commit/991e61fbda7d6096e2ce1b4f713cf55aee2e9404)]:
+  - @medusajs/dashboard@2.13.5
+  - @medusajs/admin-shared@2.13.5
+  - @medusajs/admin-vite-plugin@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies [[`fc80b23c73fa856f753a3cfa469bb4081d0f61ca`](https://github.com/medusajs/medusa/commit/fc80b23c73fa856f753a3cfa469bb4081d0f61ca), [`d07f70750362e6c78298aba673de4c9db96d3ad6`](https://github.com/medusajs/medusa/commit/d07f70750362e6c78298aba673de4c9db96d3ad6)]:
+  - @medusajs/dashboard@2.13.4
+  - @medusajs/admin-shared@2.13.4
+  - @medusajs/admin-vite-plugin@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/dashboard@2.13.3
+  - @medusajs/admin-shared@2.13.3
+  - @medusajs/admin-vite-plugin@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14720](https://github.com/medusajs/medusa/pull/14720) [`f37f029799cad7ee0337aeab625df5e272de2363`](https://github.com/medusajs/medusa/commit/f37f029799cad7ee0337aeab625df5e272de2363) Thanks [@arjusmoon860](https://github.com/arjusmoon860)! - feat(dashboard, admin-bundler, utils, types): add configurable maximum file upload size
+
+- Updated dependencies [[`f37f029799cad7ee0337aeab625df5e272de2363`](https://github.com/medusajs/medusa/commit/f37f029799cad7ee0337aeab625df5e272de2363), [`d2ce360875bafc3fc0c367384b9b631e77130726`](https://github.com/medusajs/medusa/commit/d2ce360875bafc3fc0c367384b9b631e77130726), [`c1cc9a71507ec51ba5bdfecf8243d3e355c03fdc`](https://github.com/medusajs/medusa/commit/c1cc9a71507ec51ba5bdfecf8243d3e355c03fdc), [`337a7bbea3b7b0d677077f939d56afc5c3b01c22`](https://github.com/medusajs/medusa/commit/337a7bbea3b7b0d677077f939d56afc5c3b01c22), [`b87899f1121c8577757dc96236869b19f68f51f3`](https://github.com/medusajs/medusa/commit/b87899f1121c8577757dc96236869b19f68f51f3), [`bc36968049412fcec515c4141cd911a5bfb51283`](https://github.com/medusajs/medusa/commit/bc36968049412fcec515c4141cd911a5bfb51283), [`a74623de7d545205da7340ede6286853c1bcfb2d`](https://github.com/medusajs/medusa/commit/a74623de7d545205da7340ede6286853c1bcfb2d), [`08f79d7403d7f2311ee93753f2f870658b951d7b`](https://github.com/medusajs/medusa/commit/08f79d7403d7f2311ee93753f2f870658b951d7b), [`4c4d2a533c8fe11ec8bf7e0d4f7a8b4888305137`](https://github.com/medusajs/medusa/commit/4c4d2a533c8fe11ec8bf7e0d4f7a8b4888305137), [`19fdb0cf2ce9f444d80149208b2fa1d4e3e7c17c`](https://github.com/medusajs/medusa/commit/19fdb0cf2ce9f444d80149208b2fa1d4e3e7c17c), [`a4c420e75cbed3e5f618849d2622045982377c96`](https://github.com/medusajs/medusa/commit/a4c420e75cbed3e5f618849d2622045982377c96), [`da1aa3df16735460bb584be815ea27d2436942ae`](https://github.com/medusajs/medusa/commit/da1aa3df16735460bb584be815ea27d2436942ae)]:
+  - @medusajs/dashboard@2.13.2
+  - @medusajs/admin-shared@2.13.2
+  - @medusajs/admin-vite-plugin@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

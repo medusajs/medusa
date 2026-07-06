@@ -16,7 +16,7 @@ type InfiniteListProps<TResponse, TEntity, TParams> = {
 export const InfiniteList = <
   TResponse extends { count: number; offset: number; limit: number },
   TEntity extends { id: string },
-  TParams extends { offset?: number; limit?: number },
+  TParams extends { offset?: number; limit?: number }
 >({
   queryKey,
   queryFn,
@@ -119,12 +119,7 @@ export const InfiniteList = <
       startObserver.current?.disconnect()
       endObserver.current?.disconnect()
     }
-  }, [
-    hasNextPage,
-    hasPreviousPage,
-    isFetching,
-    isPending,
-  ])
+  }, [hasNextPage, hasPreviousPage, isFetching, isPending])
 
   useEffect(() => {
     if (error) {

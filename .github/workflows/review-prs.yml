@@ -1,0 +1,135 @@
+name: PR Review
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      skip_reviewed:
+        description: "Skip PRs that already have initial-approval or requires-more labels"
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  # Runs only on workflow_dispatch: collects all open non-draft PRs for the matrix below
+  get-open-prs:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      matrix: ${{ steps.get-prs.outputs.matrix }}
+    steps:
+      - name: Get open non-draft PRs
+        id: get-prs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SKIP_REVIEWED="${{ inputs.skip_reviewed }}"
+          matrix=$(gh pr list --repo ${{ github.repository }} --state open --limit 200 --json number,isDraft,author,labels \
+            --jq "[.[] | select(
+              .isDraft == false and
+              .author.is_bot == false and
+              (if \"$SKIP_REVIEWED\" == \"true\" then ([.labels[].name] | contains([\"initial-approval\"]) | not) and ([.labels[].name] | contains([\"requires-more\"]) | not) else true end)
+            ) | {number: .number}]")
+
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+  # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
+  review-all:
+    needs: get-open-prs
+    if: needs.get-open-prs.outputs.matrix != '[]' && needs.get-open-prs.outputs.matrix != ''
+    strategy:
+      matrix:
+        pr: ${{ fromJson(needs.get-open-prs.outputs.matrix) }}
+      max-parallel: 5
+      fail-fast: false
+    uses: ./.github/workflows/review-pr-action.yml
+    with:
+      pr_number: "${{ matrix.pr.number }}"
+      trigger_reason: "manual workflow dispatch"
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+
+  # Runs on pull_request_target and issue_comment (@medusajs-bot review) events: determines PR number
+  prepare:
+    if: |
+      (github.event_name == 'pull_request_target' &&
+       github.event.pull_request.draft == false &&
+       github.event.pull_request.user.login != 'github-actions[bot]') ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request.url != '' &&
+       contains(github.event.comment.body, '@medusajs-bot review'))
+    runs-on: ubuntu-latest
+    outputs:
+      pr_number: ${{ steps.set.outputs.pr_number }}
+      should_review: ${{ steps.set.outputs.should_review }}
+      trigger_reason: ${{ steps.set.outputs.trigger_reason }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set PR number and check team membership
+        id: set
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" == "issue_comment" ]; then
+            echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "should_review=true" >> $GITHUB_OUTPUT
+            echo "trigger_reason=manual review request via comment" >> $GITHUB_OUTPUT
+          else
+            echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+
+            # Skip PR description edits made by bots (e.g. Cursor)
+            if [ "${{ github.event.action }}" == "edited" ] && [ "${{ github.event.sender.type }}" == "Bot" ]; then
+              echo "should_review=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+
+            # Skip merge commits (e.g. merging base branch into the PR branch)
+            if [ "${{ github.event.action }}" == "synchronize" ]; then
+              PARENTS=$(gh api repos/${{ github.repository }}/commits/${{ github.event.pull_request.head.sha }} --jq '.parents | length')
+              if [ "$PARENTS" -gt 1 ]; then
+                echo "should_review=false" >> $GITHUB_OUTPUT
+                exit 0
+              fi
+            fi
+
+            # Determine trigger reason
+            case "${{ github.event.action }}" in
+              opened)    echo "trigger_reason=new PR opened" >> $GITHUB_OUTPUT ;;
+              reopened)  echo "trigger_reason=PR reopened" >> $GITHUB_OUTPUT ;;
+              synchronize) echo "trigger_reason=new commit pushed" >> $GITHUB_OUTPUT ;;
+              edited)    echo "trigger_reason=PR description updated" >> $GITHUB_OUTPUT ;;
+              ready_for_review) echo "trigger_reason=PR marked as ready for review" >> $GITHUB_OUTPUT ;;
+              *)         echo "trigger_reason=${{ github.event.action }}" >> $GITHUB_OUTPUT ;;
+            esac
+
+            AUTHOR="${{ github.event.pull_request.user.login }}"
+            if grep -qF "\"@${AUTHOR}\"" ./.github/teams.yml; then
+              echo "should_review=false" >> $GITHUB_OUTPUT
+            else
+              echo "should_review=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+  # Runs on pull_request_target and issue_comment: calls the reusable review workflow
+  review:
+    needs: prepare
+    if: needs.prepare.result == 'success' && needs.prepare.outputs.should_review == 'true'
+    uses: ./.github/workflows/review-pr-action.yml
+    with:
+      pr_number: ${{ needs.prepare.outputs.pr_number }}
+      trigger_reason: ${{ needs.prepare.outputs.trigger_reason }}
+    secrets:
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+      CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}

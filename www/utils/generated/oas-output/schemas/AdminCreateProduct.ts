@@ -5,7 +5,6 @@
  * x-schemaName: AdminCreateProduct
  * required:
  *   - title
- *   - options
  * properties:
  *   title:
  *     type: string
@@ -94,7 +93,54 @@
  *     type: array
  *     description: The product's options.
  *     items:
- *       $ref: "#/components/schemas/AdminCreateProductOption"
+ *       oneOf:
+ *         - type: object
+ *           description: The option to create exclusive to the product.
+ *           x-schemaName: AdminCreateProductOption
+ *           required:
+ *             - title
+ *             - values
+ *           properties:
+ *             title:
+ *               type: string
+ *               title: title
+ *               description: The option's title.
+ *             values:
+ *               type: array
+ *               description: The option's values.
+ *               items:
+ *                 type: string
+ *                 title: values
+ *                 description: An option value.
+ *                 example: "Red"
+ *             ranks:
+ *               type: object
+ *               description: The ranking of the option's values. The keys are the value names and the values are their respective ranks.
+ *               example:
+ *                 Small: 1
+ *                 Medium: 2
+ *                 Large: 3
+ *             is_exclusive:
+ *               type: boolean
+ *               title: is_exclusive
+ *               description: Whether the option is exclusive to the product.
+ *         - type: object
+ *           description: Existing global options to associate with the product.
+ *           required:
+ *             - id
+ *           properties:
+ *             id:
+ *               type: string
+ *               title: id
+ *               description: The option's ID.
+ *             value_ids:
+ *               type: array
+ *               description: The IDs of the option values to associate with the product. This is useful to associate specific values from a global option.
+ *               items:
+ *                 type: string
+ *                 title: value_ids
+ *                 description: The value's ID.
+ *       description: The product option's details.
  *   variants:
  *     type: array
  *     description: The product's variants.

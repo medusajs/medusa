@@ -1,0 +1,29 @@
+---
+slug: /references/medusa-workflows/steps/deleteGiftCardsStep
+sidebar_label: deleteGiftCardsStep
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteGiftCardsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `deleteGiftCardsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step deletes gift cards by their IDs. The step supports rollback by
+restoring the deleted gift cards.
+
+## Example
+
+```ts
+const data = deleteGiftCardsStep({ id: ["gc_123"] })
+```
+
+## Input
+
+<TypeList types={[{"name":"DeleteGiftCardsStepInput","type":"[DeleteGiftCardsStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.DeleteGiftCardsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteGiftCardsStepInput","type":"`object`","description":"Input to delete gift cards by their IDs.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteGiftCardsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteGiftCardsStep"/>

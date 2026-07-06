@@ -14,7 +14,6 @@ interface SaveViewDropdownProps {
 
 export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
   isDefaultView,
-  currentViewId,
   currentViewName,
   onSaveAsDefault,
   onUpdateExisting,
@@ -39,7 +38,9 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
   const handleUpdateExisting = async () => {
     const result = await prompt({
       title: t("views.prompts.updateView.title"),
-      description: t("views.prompts.updateView.description", { name: currentViewName }),
+      description: t("views.prompts.updateView.description", {
+        name: currentViewName,
+      }),
       confirmText: t("views.prompts.updateView.confirmText"),
       cancelText: t("views.prompts.updateView.cancelText"),
     })
@@ -52,11 +53,7 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
-        <Button
-          variant="secondary"
-          size="small"
-          type="button"
-        >
+        <Button variant="secondary" size="small" type="button">
           {t("views.save")}
           <ChevronDownMini />
         </Button>

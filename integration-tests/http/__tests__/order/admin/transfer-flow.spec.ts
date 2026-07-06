@@ -10,19 +10,28 @@ import { createOrderSeeder } from "../../fixtures/order"
 
 jest.setTimeout(300000)
 
+const adminTemplateName = "transfer-flow-admin-template"
+
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    let user
+
+    beforeAll(async () => {
+      user = (
+        await createAdminUser(dbConnection, adminHeaders, getContainer())
+      ).user
+
+      await dbUtils.snapshot({ templateName: adminTemplateName })
+    })
+
     describe("Transfer Order flow (Admin)", () => {
       let order
       let customer
-      let user
       let storeHeaders
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const container = getContainer()
 
-        user = (await createAdminUser(dbConnection, adminHeaders, container))
-          .user
         const publishableKey = await generatePublishableKey(container)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -51,6 +60,8 @@ medusaIntegrationTestRunner({
         ).data.customer
 
         order = seeders.order
+
+        await dbUtils.snapshot()
       })
 
       it("should pass order transfer flow from admin successfully", async () => {
@@ -59,6 +70,7 @@ medusaIntegrationTestRunner({
           `/admin/orders/${order.id}/transfer`,
           {
             customer_id: customer.id,
+            update_order_email: true,
           },
           adminHeaders
         )
@@ -112,6 +124,7 @@ medusaIntegrationTestRunner({
                 details: expect.objectContaining({
                   token: expect.any(String),
                   original_email: "tony@stark-industries.com",
+                  new_email: "test@email.com",
                 }),
               }),
             ]),
@@ -136,8 +149,8 @@ medusaIntegrationTestRunner({
           )
         ).data.order
 
-        expect(finalOrderResult.email).toEqual("tony@stark-industries.com")
-        // 4. Customer account is now associated with the order (email on the order is still as original, guest email)
+        // 4. Customer account is now associated with the order and email is updated to the customer's email
+        expect(finalOrderResult.email).toEqual("test@email.com")
         expect(finalOrderResult.customer_id).toEqual(customer.id)
       })
 
@@ -286,7 +299,9 @@ medusaIntegrationTestRunner({
       let storeHeaders
       let signInToken
 
-      beforeEach(async () => {
+      beforeAll(async () => {
+        await dbUtils.restore({ templateName: adminTemplateName })
+
         const container = getContainer()
 
         const publishableKey = await generatePublishableKey(container)
@@ -324,6 +339,8 @@ medusaIntegrationTestRunner({
         ).data.token
 
         order = seeders.order
+
+        await dbUtils.snapshot()
       })
 
       it("should pass order transfer flow from storefront successfully", async () => {
@@ -368,10 +385,10 @@ medusaIntegrationTestRunner({
                 action: "TRANSFER_CUSTOMER",
                 reference: "customer",
                 reference_id: customer.id,
-                details: expect.objectContaining({
+                details: {
                   token: expect.any(String),
                   original_email: "tony@stark-industries.com",
-                }),
+                },
               }),
             ]),
           })
@@ -386,8 +403,8 @@ medusaIntegrationTestRunner({
           )
         ).data.order
 
+        // 4. Customer account is now associated with the order and email is still the original email, since update_order_email is not true on the request
         expect(finalOrder.email).toEqual("tony@stark-industries.com")
-        // 4. Customer account is now associated with the order (email on the order is still as original, guest email)
         expect(finalOrder.customer_id).toEqual(customer.id)
       })
 

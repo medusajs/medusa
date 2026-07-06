@@ -21,6 +21,12 @@ The `Order` and `OrderSummary` data models have a `version` property that indica
 
 Other order-related data models, such as `OrderItem`, also have a `version` property, but it indicates the version to which the record belongs.
 
+<Note>
+
+Since [Medusa v2.14.0](https://github.com/medusajs/medusa/releases/tag/v2.14.0), adjustment data models like `OrderLineItemAdjustment` and `OrderShippingMethodAdjustment` also include a `version` property to track which version they belong to.
+
+</Note>
+
 ---
 
 ## How the Version Changes

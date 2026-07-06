@@ -151,23 +151,23 @@ export interface CustomerGroupInCustomerFilters {
   /**
    * Filter by customer group ID(s).
    */
-  id: string[] | string
+  id?: string[] | string
   /**
    * Filter by name(s).
    */
-  name: string[] | string
+  name?: string[] | string
   /**
    * Apply filters on the group's creation date.
    */
-  created_at: OperatorMap<string>
+  created_at?: OperatorMap<string>
   /**
    * Apply filters on the group's update date.
    */
-  updated_at: OperatorMap<string>
+  updated_at?: OperatorMap<string>
   /**
    * Apply filters on the group's deletion date.
    */
-  deleted_at: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
 }
 
 export interface BaseCustomerFilters
@@ -247,104 +247,108 @@ export interface BaseCreateCustomer {
   /**
    * The customer's email.
    */
-  email: string
+  email?: string | null
   /**
    * The customer's company name.
    */
-  company_name?: string
+  company_name?: string | null
   /**
    * The customer's first name.
    */
-  first_name?: string
+  first_name?: string | null
   /**
    * The customer's last name.
    */
-  last_name?: string
+  last_name?: string | null
   /**
    * The customer's phone number.
    */
-  phone?: string
+  phone?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface BaseUpdateCustomer {
   /**
+   * The customer's email.
+   */
+  email?: string | null
+  /**
    * The customer's company name.
    */
-  company_name?: string
+  company_name?: string | null
   /**
    * The customer's first name.
    */
-  first_name?: string
+  first_name?: string | null
   /**
    * The customer's last name.
    */
-  last_name?: string
+  last_name?: string | null
   /**
    * The customer's phone number.
    */
-  phone?: string
+  phone?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface BaseCreateCustomerAddress {
   /**
    * The address's first name.
    */
-  first_name?: string
+  first_name?: string | null
   /**
    * The address's last name.
    */
-  last_name?: string
+  last_name?: string | null
   /**
    * The address's phone.
    */
-  phone?: string
+  phone?: string | null
   /**
    * The address's company.
    */
-  company?: string
+  company?: string | null
   /**
    * The address's first line.
    */
-  address_1?: string
+  address_1?: string | null
   /**
    * The address's second line.
    */
-  address_2?: string
+  address_2?: string | null
   /**
    * The address's city.
    */
-  city?: string
+  city?: string | null
   /**
    * The address's country code.
-   * 
+   *
    * @example
    * us
    */
-  country_code?: string
+  country_code?: string | null
   /**
    * The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
    */
-  province?: string
+  province?: string | null
   /**
    * The address's postal code.
    */
-  postal_code?: string
+  postal_code?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
   /**
    * The address's name.
    */
-  address_name?: string
+  address_name?: string | null
   /**
    * Whether the address is used by default for shipping.
    */
@@ -359,46 +363,46 @@ export interface BaseUpdateCustomerAddress {
   /**
    * The address's first name.
    */
-  first_name?: string
+  first_name?: string | null
   /**
    * The address's last name.
    */
-  last_name?: string
+  last_name?: string | null
   /**
    * The address's phone.
    */
-  phone?: string
+  phone?: string | null
   /**
    * The address's company.
    */
-  company?: string
+  company?: string | null
   /**
    * The address's first line.
    */
-  address_1?: string
+  address_1?: string | null
   /**
    * The address's second line.
    */
-  address_2?: string
+  address_2?: string | null
   /**
    * The address's city.
    */
-  city?: string
+  city?: string | null
   /**
    * The address's country code.
-   * 
+   *
    * @example
    * us
    */
-  country_code?: string
+  country_code?: string | null
   /**
    * The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
    */
-  province?: string
+  province?: string | null
   /**
    * The address's postal code.
    */
-  postal_code?: string
+  postal_code?: string | null
   /**
    * Key-value pairs of custom data.
    */
@@ -406,7 +410,7 @@ export interface BaseUpdateCustomerAddress {
   /**
    * The address's name.
    */
-  address_name?: string
+  address_name?: string | null
   /**
    * Whether the address is used by default for shipping.
    */

@@ -1,0 +1,232 @@
+import { InProductAction } from "docs-ui"
+
+export const metadata = {
+  title: `Going Live`,
+}
+
+# {metadata.title}
+
+This guide walks you through everything you need to publish your Bloom store and start selling to customers. Follow this as a checklist to ensure your store is ready for launch, then publish your store and share it with the world.
+
+<Note title="Tip">
+
+You can continue making design and feature changes to your store with Bloom after publishing. This guide walks you through publishing your store for the first time.
+
+</Note>
+
+## 1. Before Publishing
+
+The following sections walk you through important steps to complete before publishing your store. These ensure your store is polished, functional, and ready for customers.
+
+### 1.1. Upgrade to Hobby Plan
+
+Publishing requires you to be on the [Hobby plan](../credits-and-plans/page.mdx#hobby-plan), which includes production deployment and more credits.
+
+To upgrade to the Hobby plan:
+
+1. In the [main account page](https://bloom.chat), click "Upgrade" at the top right.
+2. In the pop-up, select any plan other than the Free plan.
+3. Click **Pay and upgrade** to complete the upgrade process.
+
+You'll be charged immediately for the new plan, and your account will be upgraded. After this, you can publish your store.
+
+See [Credits and Plans](../credits-and-plans/page.mdx) for details on plans and features.
+
+{/* TODO: Add image: Upgrade pop-up showing plan options and "Pay and upgrade" button */}
+
+### 1.2. Complete Your Store Design and Features
+
+Before publishing, make sure your store's design and features are complete. This includes customizing the layout, colors, fonts, and adding any desired features.
+
+Make sure that:
+
+- All pages include correct and real content. Ask Bloom to remove any placeholder text or demo content.
+- Your branding is consistent across the store. Ask Bloom to apply your brand colors, fonts, and logo throughout the store.
+- All custom features you want to offer are implemented and working in the preview.
+
+You can continue making design and feature changes with Bloom after publishing, but it's best to have the core experience ready before going live. This way, customers see a polished store from day one.
+
+### 1.3. Add Real Products and Content
+
+Next, replace any demo or sample data with your actual products and store information.
+
+Ask Bloom to:
+
+- Remove demo products and categories.
+- Add your real products with accurate prices.
+- Upload high-quality product images.
+- Write compelling product descriptions.
+- Organize products into relevant categories.
+- Remove any sample categories you won't use.
+
+Or manage this data manually through the [preview admin dashboard](../manage-projects/page.mdx#access-preview-store-and-admin).
+
+<Note title="Important">
+
+Store data gets copied to your published store only on the first publish. After that, any new products or data changes must be made directly in the [published admin dashboard](../manage-projects/page.mdx#access-published-store-and-admin), not in Bloom's preview.
+
+</Note>
+
+### 1.4. Configure Store Settings
+
+Next, configure your store settings based on your business needs and target customers.
+
+Ask Bloom to help set up:
+
+- **Regions and currencies:** Set countries you'll sell to and their currencies.
+- **Shipping options:** Configure shipping methods and rates.
+- **Tax rates:** Set up tax regions and rates.
+
+Or manage this data manually through the [preview admin dashboard](../manage-projects/page.mdx#access-preview-store-and-admin).
+
+<Note title="Important">
+
+Store data gets copied to your published store only on the first publish. After that, any new data changes must be made directly in the [published admin dashboard](../manage-projects/page.mdx#access-published-store-and-admin), not in Bloom's preview.
+
+</Note>
+
+### 1.5. Integrate Services
+
+Bloom supports integrating services like payment providers, marketing tools, and more to enhance your store's functionality.
+
+Ask Bloom to integrate Stripe for payments, Klaviyo for email marketing, Slack for notifications, and any other services you want to use.
+
+See the [Integrations](../features/integrations/page.mdx) guide for instructions on integrating services with Bloom.
+
+### 1.6. Set Up Transactional Emails
+
+Bloom allows you to design and customize transactional emails that customers receive for important events like order confirmations and shipping notifications.
+
+Before publishing, make sure transactional emails are set up and customized to match your brand. This ensures customers receive professional and branded communications from your store.
+
+See the [Emails](../features/emails/page.mdx) guide for detailed setup instructions.
+
+### 1.7. Optimize for Search Engines
+
+Search Engine Optimization (SEO) is crucial for helping customers find your store through search engines like Google. Before publishing, optimize your store's SEO to improve visibility and attract organic traffic.
+
+Bloom has the expertise to optimize your store's SEO. So, ask Bloom to help optimize your store's SEO with a prompt like:
+
+```bash
+Improve my store for SEO. Use keywords related to my products and industry.
+```
+
+Bloom optimizes your store's SEO by:
+
+- Adding relevant meta titles and descriptions to your pages.
+- Adding structured data for better search engine understanding.
+- Creating XML sitemap to help search engines crawl your store.
+
+And more.
+
+You can also upload images and ask Bloom to use them for OpenGraph meta tags, which improve how your store looks when shared on social media.
+
+### 1.8. Test Mobile Experience
+
+Most customers shop from their phones, so it's crucial to ensure your store looks and works great on mobile devices before publishing.
+
+Use the [Responsive View](../features/responsive-view/page.mdx) feature to view and test your store's mobile experience directly within Bloom. This lets you identify issues and ask Bloom to fix them before customers see your store.
+
+See the [Responsive View](../features/responsive-view/page.mdx) guide for instructions on testing and optimizing your store for mobile devices.
+
+{/* TODO: Add image: Responsive view showing mobile preview of the store */}
+
+---
+
+## 2. Publish Store
+
+At this point, your store is ready to go live. The following sections walk you through publishing your Bloom store and accessing it.
+
+### 2.1. Publish Your Store
+
+Publishing your store takes about 10 minutes, during which Bloom sets up hosting and deploys your store to a live URL.
+
+To publish your store:
+
+1. Click on the <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "publish" }}>**Publish**</InProductAction> button in the top-right corner of the project interface.
+2. In the publish form, enter the following details:
+    - **Name of store:** The name of your store (for example, "Lumière").
+    - **Description:** (optional) A short description of your store.
+3. Click **Publish Store** to deploy your store.
+
+Bloom will show you the publishing progress, where you can see the steps being completed.
+
+{/* TODO: Add image: Bloom deploying store */}
+
+### 2.2. Access Your Live Store
+
+Once publishing completes, access your live store using the buttons below the store's image:
+
+1. **Open admin**: Opens your store's admin dashboard to manage products and orders.
+    - Bookmark your admin dashboard URL for easy access.
+2. **Visit store**: Opens your live store where customers can browse and shop.
+
+{/* TODO: Add image: Published store page showing Open admin and Visit store buttons */}
+
+### 2.3. Log In to Admin Dashboard
+
+To log into your store's admin dashboard:
+
+1. Click the **Open admin** button after publishing.
+2. On the login page, click the "Log in with Medusa Cloud" button. This logs you in with the same account you use for Bloom, so you don't need to create a separate account for the admin dashboard.
+
+After logging in, you can [manage your store's data and settings](#33-manage-your-live-stores-data) through the admin dashboard.
+
+---
+
+## 3. After Publishing
+
+Your store is now live. However, there's more work to ensure your store provides a great experience for customers and runs smoothly.
+
+The following sections cover important steps to take after publishing.
+
+### 3.1. Set Up Custom Domain
+
+By default, your store uses a `.medusajs.site` domain (for example, `your-store.medusajs.site`). This works fine for testing, but for a professional appearance, it's best to connect your own custom domain (for example, `yourstore.com`).
+
+See the [Custom Domains](../custom-domains/page.mdx) guide for setup instructions.
+
+### 3.2. Upgrade Your Hosting
+
+Bloom stores are hosted on [Medusa Cloud](https://cloud.medusajs.com), a hosting service for Medusa applications with zero configuration.
+
+Your Bloom account on the Hobby plan includes hosting for one published store on Medusa Cloud. This is sufficient for testing and small stores.
+
+However, for better performance, reliability, and features, or to publish more than one store, upgrade to the Pro or Enterprise plans on Medusa Cloud.
+
+<Note>
+
+See [Medusa Cloud Pricing](!cloud!/pricing) for details on plans and features.
+
+</Note>
+
+To upgrade the Medusa Cloud hosting plan of your Bloom stores:
+
+1. Go to [Medusa Cloud](https://cloud.medusajs.com).
+2. Log in with the same account you use for Bloom.
+    - If you log into Bloom with GitHub, use the same GitHub account to log into Cloud.
+    - If you log into Bloom with email, use the same email and password to log into Cloud.
+3. Once logged in, you'll see your Bloom store listed as a project in Cloud.
+4. See the [Medusa Cloud documentation](!cloud!/billing/plans) on how to upgrade your hosting plan.
+
+### 3.3. Manage Your Live Store's Data
+
+Once your store is live, manage its products, orders, customers, and other data only through the [published store's admin dashboard](../manage-projects/page.mdx#access-published-store-and-admin).
+
+Bloom can still customize your store's design, edit content in pages, and manage features after publishing. However, any data changes like adding products will not be reflected on the live store.
+
+See the [Medusa Admin User Guide](!user-guide!) for detailed instructions on managing your store's data through the admin dashboard.
+
+### 3.4. Invite Team Members
+
+After publishing, optionally invite team members to access the admin dashboard of your published store. This lets them help manage products, orders, customers, and other aspects of the business.
+
+See [Invite Admin Users to Published Store](../manage-projects/page.mdx#invite-admin-users-to-published-store) for detailed instructions on inviting users.
+
+### 3.5. Track Your First Orders
+
+Once your store is live, customers can start placing orders. Track and manage these orders through the published store's admin dashboard.
+
+See the [Medusa Admin User Guide](!user-guide!/orders) on how to view orders, manage their payment and fulfillment, and handle customer communications.
+
+{/* TODO: Add image: Orders list on the published store's admin dashboard */}

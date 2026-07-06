@@ -6,48 +6,45 @@ import {
 } from "react"
 import { useTranslation } from "react-i18next"
 import { countries } from "../../../lib/data/countries"
-import { Select } from "@medusajs/ui"
+import { Combobox } from "../combobox"
 
 export const CountrySelect = forwardRef<
-  HTMLButtonElement,
-  ComponentPropsWithoutRef<typeof Select> & {
+  HTMLInputElement,
+  Omit<
+    ComponentPropsWithoutRef<typeof Combobox>,
+    "options" | "multiple" | "value" | "onChange"
+  > & {
     placeholder?: string
     defaultValue?: string
-    onChange?: (value: string) => void
+    allowClear?: boolean
+    value?: string
+    onChange?: (value: string | undefined) => void
   }
->(({ disabled, placeholder, defaultValue, onChange, ...field }, ref) => {
-  const { t } = useTranslation()
-  const innerRef = useRef<HTMLButtonElement>(null)
+>(
+  (
+    { placeholder, defaultValue, allowClear, onChange, value, ...props },
+    ref
+  ) => {
+    const { t } = useTranslation()
+    const innerRef = useRef<HTMLInputElement>(null)
 
-  useImperativeHandle(ref, () => innerRef.current as HTMLButtonElement)
-  
-  return (
-    <div className="relative">
-      <Select
-        {...field}
-        value={field.value ? field.value?.toLowerCase() : undefined}
-        onValueChange={onChange}
-        defaultValue={defaultValue ? defaultValue.toLowerCase() : undefined}
-        disabled={disabled}
-      >
-        <Select.Trigger ref={innerRef} className="w-full">
-          <Select.Value
-            placeholder={placeholder || t("fields.selectCountry")}
-          />
-        </Select.Trigger>
-        <Select.Content>
-          {countries.map((country) => (
-            <Select.Item
-              key={country.iso_2}
-              value={country.iso_2.toLowerCase()}
-            >
-              {country.display_name}
-            </Select.Item>
-          ))}
-        </Select.Content>
-      </Select>
-    </div>
-  )
-})
+    useImperativeHandle(ref, () => innerRef.current as HTMLInputElement)
+
+    return (
+      <Combobox
+        {...props}
+        ref={innerRef}
+        value={value || ""}
+        onChange={(newValue) => onChange?.(newValue || "")}
+        options={countries.map((country) => ({
+          label: country.display_name,
+          value: country.iso_2.toLowerCase(),
+        }))}
+        placeholder={placeholder || t("fields.selectCountry")}
+        allowClear={allowClear}
+      />
+    )
+  }
+)
 
 CountrySelect.displayName = "CountrySelect"

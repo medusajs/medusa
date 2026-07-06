@@ -58,7 +58,7 @@ export const ProductCreateVariantsForm = ({
   })
 
   const variantData = useMemo(() => {
-    const ret = []
+    const ret: (ProductCreateVariantSchema & { originalIndex: number })[] = []
 
     variants.forEach((v, i) => {
       if (v.should_create) {
@@ -82,7 +82,7 @@ export const ProductCreateVariantsForm = ({
 }
 
 const columnHelper = createDataGridHelper<
-  ProductCreateVariantSchema,
+  ProductCreateVariantSchema & { originalIndex: number },
   ProductCreateSchemaType
 >()
 
@@ -184,7 +184,7 @@ const useColumns = ({
       }),
 
       ...createDataGridPriceColumns<
-        ProductCreateVariantSchema,
+        ProductCreateVariantSchema & { originalIndex: number },
         ProductCreateSchemaType
       >({
         currencies,

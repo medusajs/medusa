@@ -1,5 +1,57 @@
 # Change Log
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+## 2.17.1
+
+## 2.17.0
+
+## 2.16.0
+
+### Minor Changes
+
+- [`456813f8b36ab1086dec09c6a89655d7ab0bae5b`](undefined) - chore(deps): bump OpenTelemetry packages
+
+### Patch Changes
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
+## 2.15.5
+
+## 2.15.4
+
+## 2.15.3
+
+## 2.15.2
+
+## 2.15.1
+
+## 2.15.0
+
+## 2.14.2
+
+## 2.14.1
+
+## 2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- [#15018](https://github.com/medusajs/medusa/pull/15018) [`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update mikro-orm to 6.6.10
+
+## 2.13.5
+
+## 2.13.4
+
+## 2.13.3
+
+## 2.13.2
+
 ## 2.13.1
 
 ## 2.13.0

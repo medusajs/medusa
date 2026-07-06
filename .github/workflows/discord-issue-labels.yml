@@ -1,0 +1,27 @@
+name: Notify Discord on issue labels
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  notify-help-wanted:
+    if: github.event.label.name == 'help-wanted'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_HELP_WANTED_WEBHOOK }}
+        uses: Ilshidur/action-discord@0.4.0
+        with:
+          args: "**Help Wanted** issue: [${{ github.event.issue.title }}](<${{ github.event.issue.html_url }}>)"
+
+  notify-good-first-issue:
+    if: github.event.label.name == 'good first issue'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_GOOD_FIRST_ISSUE_WEBHOOK }}
+        uses: Ilshidur/action-discord@0.4.0
+        with:
+          args: "**Good First Issue**: [${{ github.event.issue.title }}](<${{ github.event.issue.html_url }}>)"

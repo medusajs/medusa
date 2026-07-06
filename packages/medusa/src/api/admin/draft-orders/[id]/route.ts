@@ -42,7 +42,7 @@ export const POST = async (
   await updateDraftOrderWorkflow(req.scope).run({
     input: {
       ...req.validatedBody,
-      user_id: req.auth_context.actor_id,
+      user_id: req.secret_key_context?.created_by ?? req.auth_context.actor_id,
       id: req.params.id,
     },
   })

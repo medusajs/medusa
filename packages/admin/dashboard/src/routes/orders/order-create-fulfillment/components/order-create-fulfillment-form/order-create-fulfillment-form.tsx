@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -7,7 +7,6 @@ import { AdminOrder, HttpTypes } from "@medusajs/types"
 import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
-import { OrderLineItemDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
@@ -29,7 +28,9 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 
 type OrderCreateFulfillmentFormProps = {
-  order: AdminOrder
+  order: AdminOrder & {
+    no_notification?: boolean
+  }
   requiresShipping: boolean
 }
 
@@ -68,13 +69,10 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce(
-        (acc, item) => {
-          acc[item.id] = getFulfillableQuantity(item)
-          return acc
-        },
-        {} as Record<string, number>
-      ),
+      quantity: fulfillableItems.reduce((acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item)
+        return acc
+      }, {} as Record<string, number>),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
@@ -155,7 +153,9 @@ export function OrderCreateFulfillmentForm({
       toast.success(t("orders.fulfillment.toast.created"))
       handleSuccess(`/orders/${order.id}`)
     } catch (e) {
-      toast.error(e.message)
+      toast.error(
+        e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+      )
     }
   })
 
@@ -208,13 +208,10 @@ export function OrderCreateFulfillmentForm({
       })
     }
 
-    const quantityMap = itemsToFulfill.reduce(
-      (acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
-        return acc
-      },
-      {} as Record<string, number>
-    )
+    const quantityMap = itemsToFulfill.reduce((acc, item) => {
+      acc[item.id] = getFulfillableQuantity(item)
+      return acc
+    }, {} as Record<string, number>)
 
     form.setValue("quantity", quantityMap)
   }, [...fulfilledQuantityArray, requiresShipping])
@@ -360,7 +357,8 @@ export function OrderCreateFulfillmentForm({
                             disabled={
                               requiresShipping && !isShippingProfileMatching
                             }
-                            reservations={reservations}
+                            reservations={reservations ?? []}
+                            currencyCode={order.currency_code}
                           />
                         )
                       })}
@@ -371,7 +369,6 @@ export function OrderCreateFulfillmentForm({
                       variant="error"
                       dismissible={false}
                       className="flex items-center"
-                      classNameInner="flex justify-between flex-1 items-center"
                     >
                       {form.formState.errors.root.message}
                     </Alert>

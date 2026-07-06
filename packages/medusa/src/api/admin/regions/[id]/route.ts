@@ -12,7 +12,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetRegionParams
   >,
   res: MedusaResponse<HttpTypes.AdminRegionResponse>
 ) => {

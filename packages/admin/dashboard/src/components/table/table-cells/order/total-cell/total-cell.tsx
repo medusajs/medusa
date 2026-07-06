@@ -8,13 +8,22 @@ type TotalCellProps = {
   className?: string
 }
 
-export const TotalCell = ({ currencyCode, total, className }: TotalCellProps) => {
+export const TotalCell = ({
+  currencyCode,
+  total,
+  className,
+}: TotalCellProps) => {
   if (!total) {
     return <PlaceholderCell />
   }
 
   return (
-    <MoneyAmountCell currencyCode={currencyCode} amount={total} className={className} align="right" />
+    <MoneyAmountCell
+      currencyCode={currencyCode}
+      amount={total}
+      className={className}
+      align="right"
+    />
   )
 }
 

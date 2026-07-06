@@ -29,7 +29,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminUpdateDraftOrderItem"
+ *         $ref: "#/components/schemas/AdminUpdateDraftOrderActionItem"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

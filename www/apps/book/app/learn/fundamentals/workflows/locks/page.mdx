@@ -122,7 +122,7 @@ In this example, the `chargeCustomerStep` step acquires a lock on the order usin
 
 <Note title="Tip">
 
-The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) will wait five seconds before timing out.
+The step will wait until the lock is acquired based on the configured Locking Module Provider's options. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) will wait five seconds before timing out by default, with exponential backoff retry intervals.
 
 </Note>
 

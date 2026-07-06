@@ -277,7 +277,7 @@ export const CategoryCombobox = forwardRef<
                 e.preventDefault()
                 onChange([])
               }}
-              className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute start-0.5 top-0.5 flex h-[28px] items-center rounded-[4px] border py-[3px] ps-1.5 pe-1 outline-none"
+              className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute start-0.5 top-0.5 flex h-[28px] items-center rounded-[4px] border py-[3px] pe-1 ps-1.5 outline-none"
             >
               <span className="tabular-nums">{value.length}</span>
               <XMarkMini className="text-ui-fg-muted" />

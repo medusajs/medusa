@@ -19,6 +19,7 @@ export const defaultAdminWorkflowExecutionsFields = [
   "workflow_id",
   "transaction_id",
   "state",
+  "execution",
   "created_at",
   "updated_at",
   "deleted_at",

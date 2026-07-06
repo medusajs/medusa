@@ -18,3 +18,11 @@ properties:
     type: string
     title: internal_note
     description: An internal note viewable only by admin users.
+  update_order_email:
+    type: boolean
+    title: update_order_email
+    default: false
+    description: >-
+      Whether to update the order's email to the email of the customer the order
+      is being transferred to. By default, the order's email will not be
+      updated.

@@ -1,4 +1,4 @@
-import { CartDTO } from "../.."
+import { CartDTO, CartLineItemDTO } from "../.."
 
 /**
  * A cart's details relevant for fulfillment.
@@ -15,7 +15,7 @@ export type CartPropsForFulfillment = {
   /**
    * The cart's items
    */
-  items: CartDTO["items"] & {
+  items: (CartLineItemDTO & {
     /**
      * The item's variant.
      */
@@ -85,5 +85,5 @@ export type CartPropsForFulfillment = {
         id: string
       }[]
     }
-  }
+  })[]
 }

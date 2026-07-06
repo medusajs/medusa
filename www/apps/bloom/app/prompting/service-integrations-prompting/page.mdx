@@ -1,0 +1,104 @@
+import { ChildDocs, Note } from "docs-ui"
+
+export const metadata = {
+  title: `Service Integration Prompting`,
+}
+
+# {metadata.title}
+
+Connect payment providers, search engines, shipping services, and more to your Bloom store.
+
+<Note title="Supported Integrations">
+
+This guide is for integrating custom services that are not supported by Bloom. Refer to the [Integrations](../../features/integrations/page.mdx) guide first to see if your service is already supported.
+
+</Note>
+
+## Why Integrate Services?
+
+Your store needs services to process payments, calculate taxes, and ship orders. These integrations can be complex and technical.
+
+With Bloom, it's simple. Tell Bloom which service you want to add, enter your login details, and start using it. Bloom handles the technical work so you can focus on your customers.
+
+---
+
+## How to Prompt for Integrations
+
+### 1. Specify Integration Details
+
+Tell Bloom exactly how you want the service to work in your store. The more specific you are, the better Bloom can set it up to match your needs.
+
+Vague prompts lead to incomplete setups that waste your credits. Be clear about which features you want and how they should work.
+
+For example, if you want to add Stripe for payment processing, don't say:
+
+```bash title="Bad Prompt Example"
+Add Stripe to my store
+```
+
+While Bloom will add Stripe, it won't fully configure it with the payment methods you want or the checkout experience you envision.
+
+Instead, specify exactly how you want Stripe to be integrated into your store:
+
+```bash title="Good Prompt Example"
+Add Stripe as a payment provider. Enable Stripe in the Europe and
+United States regions. Allow customers to pay with credit cards, Apple Pay, and Google Pay.
+Support saved payment methods for registered customers.
+```
+
+With this prompt, Bloom will set up Stripe with the features and configurations you need, matching your expectations from the start.
+
+### 2. Add Credentials Securely
+
+Bloom will ask you for secret keys like API keys to connect your store to the service. These are stored securely and never shown in your admin dashboard.
+
+When prompted, copy your API keys from the service's dashboard and paste them into Bloom.
+
+For example, when adding Stripe, you'll provide your Stripe keys. Bloom stores these safely and uses them to process payments.
+
+{/* TODO add screenshot */}
+
+<Note title="Tip">
+
+See [Environment Variables](../../developers/environment-variables/page.mdx) to learn more about managing environment variables in your Bloom store.
+
+</Note>
+
+### 3. Test Before Publishing
+
+After Bloom adds a service, test it in your preview store before going live. This way, you can make sure everything works and your customers have a smooth experience.
+
+Most services have test modes. Use test mode to try real transactions without charging real money or affecting your live store.
+
+For example, after integrating Stripe:
+
+1. Use Stripe's test API keys as environment variables to enable test mode.
+2. Place test orders using [Stripe's test card numbers](https://docs.stripe.com/testing).
+3. Verify that the checkout process works, payment confirmations appear, and orders are created in your admin dashboard.
+
+### 4. Publish Integration
+
+Once you've tested the integration and you're ready to go live, you can publish your changes.
+
+To publish the changes:
+
+1. Click on the "Publish" button at the top right.
+2. If you haven't published your store before, Bloom will ask you for some details about your store.
+3. In the "Missing production values" section, enter the live credentials for the services you integrated. For example, enter your live Stripe API keys.
+4. Click "Publish" to make your changes live.
+
+Your integration will be published to your live store.
+
+---
+
+## Integration Guides
+
+The following guides walk you through integrating popular services with your Bloom store. Each guide includes prerequisites, step-by-step setup instructions, and testing tips.
+
+<Note>
+
+Looking to integrate a service that's not listed? Share the service you would like to see a guide for in the feedback form at the end of this page.
+
+</Note>
+
+<ChildDocs type="item" onlyTopLevel />

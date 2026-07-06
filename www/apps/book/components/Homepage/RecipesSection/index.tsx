@@ -1,102 +1,162 @@
 import clsx from "clsx"
-import {
-  BundledProductIcon,
-  CalendarRefreshIcon,
-  Card,
-  CardProps,
-  ChefHatIcon,
-  ErpIcon,
-  IconHeadline,
-  ImageBinaryIcon,
-  Link,
-  ScrollTextIcon,
-  ShopIcon,
-} from "docs-ui"
+import RecipesSectionIcon from "./Icons/section"
+import { HeadlineTags } from "docs-ui"
+import RecipesMarketplaceIcon from "./Icons/marketplace"
+import RecipesErpIcon from "./Icons/erp"
+import RecipesBundledProductsIcon from "./Icons/bundled-products"
+import RecipesSubscriptionsIcon from "./Icons/subscriptions"
+import RecipesRestaurantIcon from "./Icons/restaurant"
+import RecipesDigitalProductsIcon from "./Icons/digital-products"
+import HomepageEdges from "../Edges"
+import Link from "next/link"
+
+type Card = {
+  title: string
+  description: string
+  link: string
+  icon: React.ReactNode
+}
 
 const HomepageRecipesSection = () => {
-  const cards: CardProps[] = [
+  const cards: Card[] = [
     {
-      type: "large",
       title: "Marketplace",
-      text: "Build a marketplace with multiple vendors.",
-      href: "https://docs.medusajs.com/resources/recipes/marketplace/examples/vendors",
-      icon: ShopIcon,
+      description: "Build a marketplace with multiple vendors.",
+      link: "https://docs.medusajs.com/resources/recipes/marketplace/examples/vendors",
+      icon: (
+        <RecipesMarketplaceIcon className="text-medusa-fg-subtle group-hover:text-medusa-fg-interactive" />
+      ),
     },
     {
-      type: "large",
       title: "ERP",
-      text: "Integrate an ERP system to manage custom product prices, purchase rules, syncing orders, and more.",
-      href: "https://docs.medusajs.com/resources/recipes/erp",
-      icon: ErpIcon,
+      description:
+        "Integrate an ERP system to manage custom product prices, purchase rules, syncing orders, and more.",
+      link: "https://docs.medusajs.com/resources/recipes/erp",
+      icon: (
+        <RecipesErpIcon className="text-medusa-fg-subtle group-hover:text-medusa-fg-interactive" />
+      ),
     },
     {
-      type: "large",
       title: "Bundled Products",
-      text: "Sell products as bundles with Admin and storefront customizations.",
-      href: "https://docs.medusajs.com/resources/recipes/bundled-products/examples/standard",
-      icon: BundledProductIcon,
+      description:
+        "Sell products as bundles with Admin and storefront customizations.",
+      link: "https://docs.medusajs.com/resources/recipes/bundled-products/examples/standard",
+      icon: (
+        <RecipesBundledProductsIcon className="text-medusa-fg-subtle group-hover:text-medusa-fg-interactive" />
+      ),
     },
     {
-      type: "large",
       title: "Subscriptions",
-      text: "Implement a subscription-based commerce store.",
-      href: "https://docs.medusajs.com/resources/recipes/subscriptions/examples/standard",
-      icon: CalendarRefreshIcon,
+      description: "Implement a subscription-based commerce store.",
+      link: "https://docs.medusajs.com/resources/recipes/subscriptions/examples/standard",
+      icon: (
+        <RecipesSubscriptionsIcon className="text-medusa-fg-subtle group-hover:text-medusa-fg-interactive" />
+      ),
     },
     {
-      type: "large",
       title: "Restaurant-Delivery",
-      text: "Build a restaurant marketplace inspired by UberEats, with real-time delivery handling.",
-      href: "https://docs.medusajs.com/resources/recipes/marketplace/examples/restaurant-delivery",
-      icon: ChefHatIcon,
+      description:
+        "Build a restaurant marketplace inspired by UberEats, with real-time delivery handling.",
+      link: "https://docs.medusajs.com/resources/recipes/marketplace/examples/restaurant-delivery",
+      icon: (
+        <RecipesRestaurantIcon className="text-medusa-fg-subtle group-hover:text-medusa-fg-interactive" />
+      ),
     },
     {
-      type: "large",
       title: "Digital Products",
-      text: "Sell digital products with custom fulfillment.",
-      href: "https://docs.medusajs.com/resources/recipes/digital-products/examples/standard",
-      icon: ImageBinaryIcon,
+      description: "Sell digital products with custom fulfillment.",
+      link: "https://docs.medusajs.com/resources/recipes/digital-products/examples/standard",
+      icon: (
+        <RecipesDigitalProductsIcon className="text-medusa-fg-subtle group-hover:text-medusa-fg-interactive" />
+      ),
     },
   ]
   return (
-    <div className={clsx("py-4 w-full")}>
-      <div
-        className={clsx(
-          "flex flex-col lg:flex-row",
-          "gap-2 lg:gap-4",
-          "xl:mx-auto xl:max-w-[1136px] w-full px-1 sm:px-4 xl:px-0"
-        )}
-      >
-        <div className="flex flex-col gap-1 w-full lg:w-1/3 xl:max-w-[336px]">
-          <div className="flex flex-col gap-0.5">
-            <IconHeadline title="Recipes" icon={<ScrollTextIcon />} />
-            <h2 className="text-h1 text-medusa-fg-base">
-              Medusa’s framework supports any business use case.
-            </h2>
-            <span className="text-medusa-fg-subtle text-small-plus">
-              These recipes show how you to build a use case by customizing and
-              extending existing data models and features, or creating new ones.
-            </span>
-          </div>
-          <Link
-            href={"https://docs.medusajs.com/resources/recipes"}
-            className="flex gap-0.25 items-center text-compact-small-plus"
-            withIcon
-          >
-            <span>View All Recipes</span>
-          </Link>
+    <div className="w-full border-b border-medusa-border-base">
+      <div className="flex flex-col md:flex-row gap-0 justify-center border-b border-medusa-border-base">
+        <div
+          className={clsx(
+            "w-full md:w-1/2 lg:w-1/3 bg-medusa-bg-component p-2",
+            "flex justify-center items-center",
+            "md:border-r border-medusa-border-base",
+            "border-b md:border-b-0"
+          )}
+        >
+          <RecipesSectionIcon />
         </div>
         <div
           className={clsx(
-            "grid xs:grid-cols-2 xs:grid-rows-2 lg:gap-x-4 lg:gap-y-1.5",
-            "xs:gap-x-1.5 xs:gap-y-2 grid-cols-1 gap-1.5",
-            "w-full lg:w-2/3"
+            "w-full md:w-1/2 lg:w-2/3 py-4 px-2",
+            "flex flex-col gap-0.75 justify-center"
           )}
         >
-          {cards.map((card, index) => (
-            <Card {...card} key={index} />
-          ))}
+          <HeadlineTags
+            tags={[
+              "Recipes",
+              {
+                text: "View all",
+                link: "https://docs.medusajs.com/resources/recipes",
+              },
+            ]}
+            className="!justify-start"
+          />
+          <h2 className="text-h1 text-medusa-fg-base lg:max-w-[450px]">
+            Medusa’s framework supports any business use case.
+          </h2>
+          <p className="txt-large text-medusa-fg-base">
+            These recipes show you how to build a use case by customizing and
+            extending existing data models and features, or creating new ones.
+          </p>
         </div>
+      </div>
+      <div className="flex flex-wrap gap-0 flex-col sm:flex-row">
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            className={clsx(
+              "w-full sm:w-1/2 md:w-1/3 p-2 flex gap-1 flex-col",
+              "border-b last:!border-b-0",
+              index >= 3 && "md:border-b-0",
+              index >= 4 && "sm:border-b-0",
+              index % 3 !== 2 && "border-r",
+              index === 2 && "border-r md:border-r-0",
+              "border-medusa-border-base",
+              "group relative"
+            )}
+          >
+            <div
+              className={clsx(
+                "!h-[2px] bg-medusa-fg-interactive opacity-0 group-hover:opacity-100",
+                "absolute -top-[2px] left-0 w-full transition-opacity duration-100"
+              )}
+            />
+            <div
+              className={clsx(
+                "bg-medusa-alphas-alpha-6 border border-medusa-border-base",
+                "w-3 h-3 flex justify-center items-center relative",
+                "group-hover:bg-transparent group-hover:border-transparent",
+                "transition-all duration-100"
+              )}
+            >
+              {card.icon}
+              <HomepageEdges className="group-hover:border-medusa-fg-interactive transition-colors duration-100" />
+            </div>
+            <div className="flex flex-col gap-0">
+              <h3 className="text-medium-plus text-medusa-fg-base">
+                {card.title}
+              </h3>
+              <p className="text-medium text-medusa-fg-subtle">
+                {card.description}
+              </p>
+            </div>
+            <Link
+              href={card.link}
+              className="absolute top-0 left-0 w-full h-full opacity-0"
+            >
+              Learn more
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   )

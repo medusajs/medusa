@@ -17,7 +17,7 @@ import { IFilter } from "./types"
 type NumberFilterProps = IFilter
 
 type Comparison = "exact" | "range"
-type Operator = "lt" | "gt" | "eq"
+type Operator = "$lt" | "$gt" | "$eq"
 
 export const NumberFilter = ({
   filter,
@@ -60,29 +60,29 @@ export const NumberFilter = ({
         }
 
         if (curr && !value) {
-          delete curr[operator]
+          delete curr[`${operator}`]
           selectedParams.add(JSON.stringify(curr))
           return
         }
 
         if (!curr) {
-          selectedParams.add(JSON.stringify({ [operator]: value }))
+          selectedParams.add(JSON.stringify({ [`${operator}`]: value }))
           return
         }
 
-        selectedParams.add(JSON.stringify({ ...curr, [operator]: value }))
+        selectedParams.add(JSON.stringify({ ...curr, [`${operator}`]: value }))
       }
 
       switch (operator) {
-        case "eq":
+        case "$eq":
           if (!value) {
             selectedParams.delete()
           } else {
             selectedParams.add(value)
           }
           break
-        case "lt":
-        case "gt":
+        case "$lt":
+        case "$gt":
           handleValue(operator)
           break
       }
@@ -129,8 +129,8 @@ export const NumberFilter = ({
     },
   ]
 
-  const GT_KEY = `${key}-gt`
-  const LT_KEY = `${key}-lt`
+  const GT_KEY = `${key}-$gt`
+  const LT_KEY = `${key}-$lt`
   const EQ_KEY = key
 
   const displayValue = parseDisplayValue(currentValue, t)
@@ -204,8 +204,8 @@ export const NumberFilter = ({
                       name={GT_KEY}
                       size="small"
                       type="number"
-                      defaultValue={getValue(currentValue, "gt")}
-                      onChange={(e) => debouncedOnChange(e, "gt")}
+                      defaultValue={getValue(currentValue, "$gt")}
+                      onChange={(e) => debouncedOnChange(e, "$gt")}
                     />
                   </div>
                   <div className="px-2 py-1.5">
@@ -218,8 +218,8 @@ export const NumberFilter = ({
                       name={LT_KEY}
                       size="small"
                       type="number"
-                      defaultValue={getValue(currentValue, "lt")}
-                      onChange={(e) => debouncedOnChange(e, "lt")}
+                      defaultValue={getValue(currentValue, "$lt")}
+                      onChange={(e) => debouncedOnChange(e, "$lt")}
                     />
                   </div>
                 </div>
@@ -235,8 +235,8 @@ export const NumberFilter = ({
                       name={EQ_KEY}
                       size="small"
                       type="number"
-                      defaultValue={getValue(currentValue, "eq")}
-                      onChange={(e) => debouncedOnChange(e, "eq")}
+                      defaultValue={getValue(currentValue, "$eq")}
+                      onChange={(e) => debouncedOnChange(e, "$eq")}
                     />
                   </div>
                 </div>
@@ -258,14 +258,14 @@ const parseDisplayValue = (
 
   if (typeof parsed === "object") {
     const parts = []
-    if (parsed.gt) {
-      parts.push(t("filters.compare.greaterThanLabel", { value: parsed.gt }))
+    if (parsed.$gt) {
+      parts.push(t("filters.compare.greaterThanLabel", { value: parsed.$gt }))
     }
 
-    if (parsed.lt) {
+    if (parsed.$lt) {
       parts.push(
         t("filters.compare.lessThanLabel", {
-          value: parsed.lt,
+          value: parsed.$lt,
         })
       )
     }
@@ -302,7 +302,7 @@ const getValue = (
   if (typeof parsed === "object") {
     return parsed[key]
   }
-  if (typeof parsed === "number" && key === "eq") {
+  if (typeof parsed === "number" && key === "$eq") {
     return parsed
   }
 

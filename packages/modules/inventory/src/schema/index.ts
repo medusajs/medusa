@@ -19,6 +19,9 @@ type InventoryItem {
   thumbnail: String
   metadata: JSON
   location_levels: [InventoryLevel]
+  reservation_items: [ReservationItem]
+  reserved_quantity: Int!
+  stocked_quantity: Int!
 }
 
 type InventoryLevel {
@@ -33,6 +36,7 @@ type InventoryLevel {
   reserved_quantity: Int!
   incoming_quantity: Int!
   metadata: JSON
+  available_quantity: Int!
 }
 
 type ReservationItem {
@@ -41,6 +45,7 @@ type ReservationItem {
   updated_at: DateTime!
   deleted_at: DateTime
   line_item_id: String
+  allow_backorder: Boolean!
   inventory_item_id: String!
   inventory_item: InventoryItem!
   location_id: String!

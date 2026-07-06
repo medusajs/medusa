@@ -23,7 +23,7 @@ export const ClaimCreate = () => {
 
   const { order: preview } = useOrderPreview(id!)
   const [activeClaimId, setActiveClaimId] = useState<string>()
-  const { mutateAsync: createClaim } = useCreateClaim(order.id)
+  const { mutateAsync: createClaim } = useCreateClaim(order?.id ?? "")
 
   const { claim } = useClaim(activeClaimId!, undefined, {
     enabled: !!activeClaimId,
@@ -59,7 +59,9 @@ export const ClaimCreate = () => {
 
         setActiveClaimId(createdClaim.id)
       } catch (e) {
-        toast.error(e.message)
+        toast.error(
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+        )
         navigate(`/orders/${preview.id}`, { replace: true })
       } finally {
         IS_REQUEST_RUNNING = false

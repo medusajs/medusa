@@ -53,9 +53,9 @@ export const CreateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     prices: z.array(CreateVariantPrice),
-    options: z.record(z.string()).optional(),
+    options: z.record(z.string(), z.string()).optional(),
     inventory_items: z
       .array(
         z.object({
@@ -95,7 +95,7 @@ export const CreateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -134,8 +134,8 @@ export const UpdateProductVariant = z
     width: numericString().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
-    options: z.record(z.string()).optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
+    options: z.record(z.string(), z.string()).optional(),
   })
   .strict()
 
@@ -168,6 +168,6 @@ export const UpdateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

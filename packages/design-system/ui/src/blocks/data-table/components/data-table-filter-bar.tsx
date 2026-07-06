@@ -7,8 +7,8 @@ import { DataTableFilterMenu } from "@/blocks/data-table/components/data-table-f
 import { DataTableSortingMenu } from "@/blocks/data-table/components/data-table-sorting-menu"
 import { DataTableColumnVisibilityMenu } from "@/blocks/data-table/components/data-table-column-visibility-menu"
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
-import { Button } from "@/components/button"
 import { Skeleton } from "@/components/skeleton"
+import isEqual from "lodash.isequal"
 
 interface DataTableFilterBarProps {
   clearAllFiltersLabel?: string
@@ -41,32 +41,56 @@ const DataTableFilterBar = ({
   
   // Sync parent filters with local state
   React.useEffect(() => {
-    setLocalFilters(prevLocalFilters => {
+    setLocalFilters((prevLocalFilters) => {
       const parentIds = Object.keys(parentFilterState)
-      const localIds = prevLocalFilters.map(f => f.id)
-      
-      // Remove local filters that have been removed from parent
-      const updatedLocalFilters = prevLocalFilters.filter(f => 
-        parentIds.includes(f.id) || f.isNew
-      )
-      
+      const localIds = prevLocalFilters.map((f) => f.id)
+
+      // Start with filters that exist in parent or are new (user-added)
+      const updatedLocalFilters: LocalFilter[] = prevLocalFilters
+        .filter((f) => parentIds.includes(f.id) || f.isNew)
+        .map((f) => {
+          // If filter exists in parent, it's no longer "new"
+          if (parentIds.includes(f.id)) {
+            const parentValue = parentFilterState[f.id]
+            if (!isEqual(f.value, parentValue) || f.isNew) {
+              return {
+                id: f.id,
+                value: parentValue,
+                isNew: false,
+              }
+            }
+          }
+          return f
+        })
+
       // Add parent filters that don't exist locally
-      parentIds.forEach(id => {
+      parentIds.forEach((id) => {
         if (!localIds.includes(id)) {
           updatedLocalFilters.push({
             id,
             value: parentFilterState[id],
-            isNew: false
+            isNew: false,
           })
         }
       })
-      
-      // Only update if there's an actual change
-      if (updatedLocalFilters.length !== prevLocalFilters.length ||
-          updatedLocalFilters.some((f, i) => f.id !== prevLocalFilters[i]?.id)) {
+
+      // Check if there's an actual change (length, IDs, or values)
+      if (updatedLocalFilters.length !== prevLocalFilters.length) {
         return updatedLocalFilters
       }
-      return prevLocalFilters
+
+      // Check if any filter ID changed position or if any value changed
+      const hasChanges = updatedLocalFilters.some((f, i) => {
+        const prev = prevLocalFilters[i]
+        return (
+          !prev ||
+          f.id !== prev.id ||
+          !isEqual(f.value, prev.value) ||
+          f.isNew !== prev.isNew
+        )
+      })
+
+      return hasChanges ? updatedLocalFilters : prevLocalFilters
     })
   }, [parentFilterState])
   

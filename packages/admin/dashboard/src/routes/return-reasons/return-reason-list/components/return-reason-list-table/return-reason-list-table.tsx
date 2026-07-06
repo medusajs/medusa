@@ -1,29 +1,32 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Button, Container, Heading, Text } from "@medusajs/ui"
+import {
+  Container,
+  createDataTableColumnHelper,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { createColumnHelper } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
-
-import { ActionMenu } from "../../../../../components/common/action-menu"
-import { _DataTable } from "../../../../../components/table/data-table"
-import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
+import { useNavigate } from "react-router-dom"
+import { DataTable } from "../../../../../components/data-table"
+import {
+  useDeleteReturnReason,
+  useReturnReasons,
+} from "../../../../../hooks/api/return-reasons"
 import { useReturnReasonTableColumns } from "../../../../../hooks/table/columns"
 import { useReturnReasonTableQuery } from "../../../../../hooks/table/query"
-import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useDeleteReturnReasonAction } from "../../../common/hooks/use-delete-return-reason-action"
 
 const PAGE_SIZE = 20
 
 export const ReturnReasonListTable = () => {
   const { t } = useTranslation()
-  const { searchParams, raw } = useReturnReasonTableQuery({
+  const { searchParams } = useReturnReasonTableQuery({
     pageSize: PAGE_SIZE,
   })
 
-  const { return_reasons, count, isPending, isError, error } = useReturnReasons(
+  const { return_reasons, count, isLoading, isError, error } = useReturnReasons(
     searchParams,
     {
       placeholderData: keepPreviousData,
@@ -32,97 +35,108 @@ export const ReturnReasonListTable = () => {
 
   const columns = useColumns()
 
-  const { table } = useDataTable({
-    data: return_reasons,
-    columns,
-    count,
-    getRowId: (row) => row.id,
-    pageSize: PAGE_SIZE,
-  })
-
   if (isError) {
     throw error
   }
 
   return (
     <Container className="divide-y px-0 py-0">
-      <div className="flex items-center justify-between px-6 py-4">
-        <div>
-          <Heading>{t("returnReasons.domain")}</Heading>
-          <Text className="text-ui-fg-subtle" size="small">
-            {t("returnReasons.subtitle")}
-          </Text>
-        </div>
-        <Button variant="secondary" size="small" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
-      </div>
-      <_DataTable
-        table={table}
-        queryObject={raw}
-        count={count}
-        isLoading={isPending}
+      <DataTable
+        data={return_reasons}
         columns={columns}
+        rowCount={count}
         pageSize={PAGE_SIZE}
-        noHeader={true}
-        pagination
-        search
+        getRowId={(row) => row.id}
+        heading={t("returnReasons.domain")}
+        subHeading={t("returnReasons.subtitle")}
+        emptyState={{
+          empty: {
+            heading: t("general.noRecordsMessage"),
+          },
+          filtered: {
+            heading: t("general.noRecordsMessage"),
+            description: t("general.noRecordsMessageFiltered"),
+          },
+        }}
+        actions={[
+          {
+            label: t("actions.create"),
+            to: "create",
+          },
+        ]}
+        isLoading={isLoading}
+        enableSearch={true}
       />
     </Container>
   )
 }
 
-type ReturnReasonRowActionsProps = {
-  returnReason: HttpTypes.AdminReturnReason
-}
-
-const ReturnReasonRowActions = ({
-  returnReason,
-}: ReturnReasonRowActionsProps) => {
-  const { t } = useTranslation()
-  const handleDelete = useDeleteReturnReasonAction(returnReason)
-
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `${returnReason.id}/edit`,
-            },
-          ],
-        },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
-      ]}
-    />
-  )
-}
-
-const columnHelper = createColumnHelper<HttpTypes.AdminReturnReason>()
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminReturnReason>()
 
 const useColumns = () => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+  const navigate = useNavigate()
   const base = useReturnReasonTableColumns()
+
+  const { mutateAsync } = useDeleteReturnReason()
+
+  const handleDelete = useCallback(
+    async (returnReason: HttpTypes.AdminReturnReason) => {
+      const confirm = await prompt({
+        title: t("general.areYouSure"),
+        description: t("returnReasons.delete.confirmation", {
+          label: returnReason.label,
+        }),
+        confirmText: t("actions.delete"),
+        cancelText: t("actions.cancel"),
+      })
+
+      if (!confirm) {
+        return
+      }
+
+      await mutateAsync(returnReason.id, {
+        onSuccess: () => {
+          toast.success(
+            t("returnReasons.delete.successToast", {
+              label: returnReason.label,
+            })
+          )
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      })
+    },
+    [t, prompt, mutateAsync]
+  )
 
   return useMemo(
     () => [
       ...base,
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row }) => (
-          <ReturnReasonRowActions returnReason={row.original} />
-        ),
+      columnHelper.action({
+        actions: (ctx) => [
+          [
+            {
+              icon: <PencilSquare />,
+              label: t("actions.edit"),
+              onClick: () =>
+                navigate(
+                  `/settings/return-reasons/${ctx.row.original.id}/edit`
+                ),
+            },
+          ],
+          [
+            {
+              icon: <Trash />,
+              label: t("actions.delete"),
+              onClick: () => handleDelete(ctx.row.original),
+            },
+          ],
+        ],
       }),
     ],
-    [base]
+    [base, handleDelete, navigate, t]
   )
 }

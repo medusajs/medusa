@@ -1,4 +1,7 @@
-import { createOrderShipmentWorkflow } from "@medusajs/core-flows"
+import {
+  createOrderShipmentWorkflow,
+  CreateOrderShipmentWorkflowInput,
+} from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -20,11 +23,12 @@ export const POST = async (
 
   const variables = { id: req.params.id }
 
-  const input = {
+  const input: CreateOrderShipmentWorkflowInput = {
     ...req.validatedBody,
     order_id: req.params.id,
     fulfillment_id: req.params.fulfillment_id,
     labels: req.validatedBody.labels ?? [],
+    created_by: req.auth_context.actor_id,
   }
 
   await createOrderShipmentWorkflow(req.scope).run({

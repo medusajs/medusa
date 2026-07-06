@@ -1,0 +1,44 @@
+post:
+  operationId: PostPropertyLabelsBatch
+  summary: Create Property Label
+  description: Create a property label.
+  x-authenticated: true
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminBatchPropertyLabels.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_property-labels_batch/post.sh
+  tags:
+    - Property Labels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminBatchPropertyLabelResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: batchPropertyLabelsWorkflow
+  x-events: []
+  x-since: 2.10.3
+  x-featureFlag: view_configurations

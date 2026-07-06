@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /admin/customers/:id/addresses/:address_id", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should update a customer address", async () => {

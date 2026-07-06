@@ -6,7 +6,6 @@ get:
     can be filtered by fields like FILTER FIELDS. The transactions can also be
     paginated.
   x-authenticated: true
-  x-ignoreCleanup: true
   parameters:
     - name: id
       in: path
@@ -181,6 +180,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: created_at
     - name: updated_at
       in: query
       description: Filter by a transaction's update date.
@@ -320,6 +320,7 @@ get:
             type: boolean
             title: $exists
             description: Filter by whether a value for this parameter exists (not `null`).
+        title: updated_at
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -409,6 +410,14 @@ get:
         type: string
         title: q
         description: Search query to filter the transactions by their searchable fields.
+    - name: with_deleted
+      in: query
+      description: Whether to include deleted records in the result.
+      required: false
+      schema:
+        type: boolean
+        title: with_deleted
+        description: Whether to include deleted records in the result.
   security:
     - api_token: []
     - cookie_auth: []
@@ -441,7 +450,7 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-badges:
-    - text: Cloud
+    - text: Loyalty Plugin
       description: >
-        This API route is only available in [Medusa
-        Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+        This API route is only available through the [Loyalty
+        Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).

@@ -5,7 +5,8 @@
 			"id": "The ID of the product tag.",
 			"value": "The value of the product tag",
 			"metadata": "Holds custom data in key-value pairs.",
-			"products": "The associated products.\n\n@expandable"
+			"products": "The associated products.\n\n@expandable",
+			"external_id": "The external id of the product tag"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -17,7 +18,8 @@
 			"id": "The ID of the product type.",
 			"value": "The value of the product type",
 			"metadata": "Holds custom data in key-value pairs.",
-			"products": "The associated products.\n\n@expandable"
+			"products": "The associated products.\n\n@expandable",
+			"external_id": "The external id of the product type"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -107,7 +109,8 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"parent_category": "The associated parent_category.\n\n@expandable",
 			"category_children": "The associated category_children.\n\n@expandable",
-			"products": "The associated products.\n\n@expandable"
+			"products": "The associated products.\n\n@expandable",
+			"external_id": "The external id of the product category"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -120,7 +123,8 @@
 			"title": "The title of the product collection",
 			"handle": "The unique handle of the product collection",
 			"metadata": "Holds custom data in key-value pairs.",
-			"products": "The associated products.\n\n@expandable"
+			"products": "The associated products.\n\n@expandable",
+			"external_id": "The external id of the product collection"
 		},
 		"deprecated": {
 			"is_deprecated": false

@@ -13,6 +13,10 @@ import {
 
 import { AdminUpdateRbacRoleType } from "../validators"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -36,6 +40,10 @@ export const GET = async (
   res.status(200).json({ role })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateRbacRoleType>,
   res: MedusaResponse
@@ -75,6 +83,10 @@ export const POST = async (
   res.status(200).json({ role })
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse

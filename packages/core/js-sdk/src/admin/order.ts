@@ -7,8 +7,8 @@ import {
   SelectParams,
 } from "@medusajs/types"
 
-import { Client } from "../client"
-import { ClientHeaders } from "../types"
+import { Client } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Order {
   /**
@@ -475,6 +475,7 @@ export class Order {
    *
    * @param id - The order's ID.
    * @param fulfillmentId - The fulfillment's ID.
+   * @param body - The delivery options.
    * @param query - Configure the fields to retrieve in the order.
    * @param headers - Headers to pass in the request
    * @returns The order's details.
@@ -491,6 +492,7 @@ export class Order {
   async markAsDelivered(
     id: string,
     fulfillmentId: string,
+    body?: HttpTypes.AdminMarkOrderFulfillmentAsDelivered,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
@@ -499,6 +501,7 @@ export class Order {
       {
         method: "POST",
         headers,
+        body,
         query,
       }
     )
@@ -629,6 +632,45 @@ export class Order {
         method: "POST",
         headers,
         body,
+        query,
+      }
+    )
+  }
+
+  /**
+   * This method authorizes a payment session that is in `pending_authorization` status.
+   * It sends a request to the
+   * [Authorize Payment Session](https://docs.medusajs.com/api/admin#orders_postordersidpaymentsessionsauthorize)
+   * API route.
+   *
+   * This is used for payment methods where authorization happens asynchronously
+   * (e.g., bank transfers, payment links). The method triggers a re-check with
+   * the payment provider to see if the payment has been completed.
+   *
+   * @param id - The order's ID.
+   * @param paymentSessionId - The payment session's ID.
+   * @param query - Configure the fields to retrieve in the order.
+   * @param headers - Headers to pass in the request.
+   * @returns The order's details, along with whether the session was authorized.
+   *
+   * @example
+   * sdk.admin.order.authorizePaymentSession("order_123", "payses_123")
+   * .then(({ order, is_authorized }) => {
+   *   console.log(order, is_authorized)
+   * })
+   */
+  async authorizePaymentSession(
+    id: string,
+    paymentSessionId: string,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminAuthorizeOrderPaymentSessionResponse>(
+      `/admin/orders/${id}/payment-sessions/authorize`,
+      {
+        method: "POST",
+        headers,
+        body: { payment_session_id: paymentSessionId },
         query,
       }
     )

@@ -1,0 +1,75 @@
+name: Sync Resources References to R2
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to retrieve changed files from (defaults to HEAD)"
+        required: false
+        type: string
+  push:
+    branches:
+      - develop
+    paths:
+      - "www/apps/resources/references/**"
+
+jobs:
+  sync:
+    name: Sync changed reference files to R2
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: www/apps/resources
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.commit_sha != '' && '0' || '2' }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+        working-directory: .
+
+      - name: Resolve dispatch base SHA
+        if: inputs.commit_sha != ''
+        id: dispatch_base
+        working-directory: .
+        run: echo "base_sha=$(git rev-parse ${{ inputs.commit_sha }}^)" >> "$GITHUB_OUTPUT"
+
+      - name: Get changed reference files
+        id: changed
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96
+        with:
+          files: "www/apps/resources/references/**"
+          separator: " "
+          sha: ${{ inputs.commit_sha || '' }}
+          base_sha: ${{ steps.dispatch_base.outputs.base_sha || '' }}
+
+      - name: Upload added/modified references
+        if: steps.changed.outputs.any_changed == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.all_changed_files }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET_NAME: ${{ secrets.R2_RESOURCES_BUCKET_NAME }}
+        run: |
+          STRIPPED=$(echo "$CHANGED_FILES" | tr ' ' '\n' | grep '/page\.mdx$' | sed 's|^www/apps/resources/||' | tr '\n' ' ')
+          [ -n "$STRIPPED" ] && node ./scripts/upload-references-to-r2.mjs --upload $STRIPPED || echo "No page.mdx files to upload."
+
+      - name: Remove deleted references
+        if: steps.changed.outputs.any_deleted == 'true'
+        env:
+          DELETED_FILES: ${{ steps.changed.outputs.deleted_files }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET_NAME: ${{ secrets.R2_RESOURCES_BUCKET_NAME }}
+        run: |
+          STRIPPED=$(echo "$DELETED_FILES" | tr ' ' '\n' | grep '/page\.mdx$' | sed 's|^www/apps/resources/||' | tr '\n' ' ')
+          [ -n "$STRIPPED" ] && node ./scripts/upload-references-to-r2.mjs --remove $STRIPPED || echo "No page.mdx files to remove."

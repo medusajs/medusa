@@ -24,5 +24,18 @@
 		"deprecated": {
 			"is_deprecated": false
 		}
+	},
+	"PropertyLabel": {
+		"filePath": "packages/modules/settings/src/models/property-label.ts",
+		"properties": {
+			"id": "The ID of the property label.",
+			"entity": "The entity of the property label",
+			"property": "The property of the property label",
+			"label": "The label of the property label",
+			"description": "The description of the property label"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
 	}
 }

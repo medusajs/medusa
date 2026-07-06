@@ -4,8 +4,8 @@
  * description: The product option value's details.
  * x-schemaName: StoreProductOptionValue
  * required:
- *   - value
  *   - id
+ *   - value
  * properties:
  *   id:
  *     type: string
@@ -42,6 +42,10 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the value was deleted.
+ *   rank:
+ *     type: number
+ *     title: rank
+ *     description: The rank of the value among other option values.
  * 
 */
 

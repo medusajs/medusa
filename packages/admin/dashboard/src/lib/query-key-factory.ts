@@ -42,12 +42,17 @@ export const queryKeysFactory = <
     list: (query?: TListQueryType) =>
       [...queryKeyFactory.lists(), query ? { query } : undefined].filter(
         (k) => !!k
-      ),
+      ) as unknown as readonly [T, "list", { query: TListQueryType }],
     details: () => [...queryKeyFactory.all, "detail"],
     detail: (id: TDetailQueryType, query?: TListQueryType) =>
       [...queryKeyFactory.details(), id, query ? { query } : undefined].filter(
         (k) => !!k
-      ),
+      ) as unknown as readonly [
+        T,
+        "detail",
+        TDetailQueryType,
+        { query: TListQueryType }
+      ],
   }
   return queryKeyFactory
 }

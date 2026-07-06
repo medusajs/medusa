@@ -19,7 +19,7 @@ export const AiAssistantChatWindowHeader = () => {
       )}
     >
       <div className="flex gap-[6px] items-center">
-        <span className="text-h3 text-medusa-fg-base">Ask Anything</span>
+        <span className="text-h3 text-medusa-fg-base">Ask Bloom</span>
         <Tooltip
           tooltipChildren={
             <>

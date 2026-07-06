@@ -1,0 +1,84 @@
+import { 
+  InlineIcon,
+  Tabs,
+  TabsContent,
+  TabsContentWrapper,
+  TabsList,
+  TabsTrigger,
+  Button,
+  Link,
+  Table,
+  BloomIcon,
+  Kbd
+} from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} AI-Friendly Medusa Documentation`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the AI-friendly features of the Medusa documentation, including the AI Assistant and the plain text documentation.
+
+## AI Assistant in Documentation
+
+The Medusa documentation includes an AI Assistant that answers your questions and helps you build customizations with Medusa.
+
+<Note>
+
+The AI Assistant in the docs is different from [Bloom](https://bloom.chat/), our AI-powered commerce assistant that helps you build, manage, and scale your ecommerce store. The AI Assistant in the docs is specifically designed to help you with Medusa development by providing relevant documentation links, code snippets, and explanations.
+
+</Note>
+
+### Open the AI Assistant
+
+To open the AI Assistant, either:
+
+- Use the keyboard shortcut <Kbd>Ctrl + I</Kbd> for Windows/Linux, or <Kbd>Cmd + I</Kbd> for macOS.
+- Click the <InlineIcon Icon={BloomIcon} alt="Bloom" /> icon in the top right corner of the documentation.
+
+You can then ask the AI Assistant any questions about Medusa, such as:
+
+- What is a workflow?
+- How to create a product review module?
+- How to update Medusa?
+- How to fix this error?
+
+The AI Assistant will provide you with relevant documentation links, code snippets, and explanations to help you with your development.
+
+### Ask About Code Snippets
+
+While browsing the documentation, you'll find a <InlineIcon Icon={BloomIcon} alt="Bloom" /> icon in the header of code snippets. You can click this icon to ask the AI Assistant about the code snippet.
+
+The AI Assistant will analyze the code and provide explanations, usage examples, and any additional information you need to understand how the code works.
+
+### Ask About Documentation Pages
+
+If you need more help understanding a specific documentation page, you can click the "Explain this page" link in the page's right sidebar. This will open the AI Assistant and provide context about the current page, allowing you to ask questions related to the content.
+
+### Formatting and Code Blocks
+
+In your questions to the AI Assistant, you can format code blocks by wrapping them in triple backticks (```). For example:
+
+~~~markdown
+```
+console.log("Hello, World!")
+```
+~~~
+
+You can add new lines using the `Shift + Enter` shortcut.
+
+---
+
+## Plain Text Documentation
+
+The Medusa documentation is available in plain text format, allowing LLMs and AI tools to easily parse and understand the content.
+
+You can access the following plain text documentation files:
+
+- [llms.txt](https://docs.medusajs.com/llms.txt): Contains a short structure of links to important documentation pages.
+- [llms-full.txt](https://docs.medusajs.com/llms-full.txt): Contains the full documentation content, including all pages and sections.
+- **Markdown version of any page**: Users and agents can access the Markdown version of any documentation page by either:
+    - Sending an `Accept: text/markdown` header when requesting documentation pages, which is automatically handled by agents like Claude Code. The documentation serves the Markdown version of the page when this header is present.
+    - Appending `/index.html.md` to the page URL. For example, the plain text content of the current page is available at [https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs/index.html.md](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs/index.html.md).
+    - Appending `.md` to the page URL. For example, the plain text content of the current page is also available at [https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs.md](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs.md).

@@ -6,7 +6,7 @@ import {
 } from "@medusajs/framework/utils"
 
 export const GET = async (
-  req: MedusaRequest<HttpTypes.FindParams>,
+  req: MedusaRequest<HttpTypes.StoreReturnReasonsParams>,
   res: MedusaResponse<HttpTypes.StoreReturnReasonListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

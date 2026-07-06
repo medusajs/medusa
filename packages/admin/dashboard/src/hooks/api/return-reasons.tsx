@@ -104,21 +104,20 @@ export const useUpdateReturnReason = (
 }
 
 export const useDeleteReturnReason = (
-  id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnReasonDeleteResponse,
     FetchError,
-    void
+    string
   >
 ) => {
   return useMutation({
-    mutationFn: () => sdk.admin.returnReason.delete(id),
+    mutationFn: (id: string) => sdk.admin.returnReason.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: returnReasonsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
-        queryKey: returnReasonsQueryKeys.detail(id),
+        queryKey: returnReasonsQueryKeys.detail(variables),
       })
 
       queryClient.invalidateQueries({

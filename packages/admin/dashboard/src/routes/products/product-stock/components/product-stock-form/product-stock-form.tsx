@@ -78,7 +78,7 @@ export const ProductStockForm = ({
               ]?.locations?.[location_id]?.checked
 
             if (wasChecked && !level.checked) {
-              payload.delete.push(level.id)
+              payload.delete?.push(level.id)
             } else {
               const newQuantity =
                 level.quantity !== "" ? castNumber(level.quantity) : 0
@@ -88,7 +88,7 @@ export const ProductStockForm = ({
                 ]?.locations?.[location_id]?.quantity
 
               if (newQuantity !== originalQuantity) {
-                payload.update.push({
+                payload.update?.push({
                   inventory_item_id,
                   location_id,
                   stocked_quantity: newQuantity,
@@ -98,7 +98,7 @@ export const ProductStockForm = ({
           }
 
           if (!level.id && level.quantity !== "") {
-            payload.create.push({
+            payload.create?.push({
               inventory_item_id,
               location_id,
               stocked_quantity: castNumber(level.quantity),
@@ -108,12 +108,12 @@ export const ProductStockForm = ({
       }
     }
 
-    if (payload.delete.length > 0) {
+    if ((payload.delete?.length ?? 0) > 0) {
       setIsPromptOpen(true)
       const confirm = await prompt({
         title: t("general.areYouSure"),
         description: t("inventory.stock.disablePrompt", {
-          count: payload.delete.length,
+          count: payload.delete?.length ?? 0,
         }),
         confirmText: t("actions.continue"),
         cancelText: t("actions.cancel"),

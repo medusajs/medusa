@@ -23,7 +23,12 @@ export const CreateCampaignSchema = zod.object({
   budget: zod.object({
     attribute: zod.string().nullish(),
     limit: zod.number().min(0).nullish(),
-    type: zod.enum(["spend", "usage", "use_by_attribute"]),
+    type: zod.enum([
+      "spend",
+      "usage",
+      "use_by_attribute",
+      "spend_by_attribute",
+    ]),
     currency_code: zod.string().nullish(),
   }),
 })

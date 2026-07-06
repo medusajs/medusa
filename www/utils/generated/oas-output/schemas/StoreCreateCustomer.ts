@@ -3,8 +3,6 @@
  * type: object
  * description: The details of the customer to create.
  * x-schemaName: StoreCreateCustomer
- * required:
- *   - email
  * properties:
  *   email:
  *     type: string

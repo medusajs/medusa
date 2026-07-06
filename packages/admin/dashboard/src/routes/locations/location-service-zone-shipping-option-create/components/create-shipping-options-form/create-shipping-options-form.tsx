@@ -1,5 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
+import {
+  AdminCreateShippingOptionPriceWithCurrency,
+  AdminCreateShippingOptionPriceWithRegion,
+  HttpTypes,
+} from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -84,7 +88,7 @@ export function CreateShippingOptionsForm({
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
-        if (!value) {
+        if (value === undefined || value === "") {
           return undefined
         }
 
@@ -97,7 +101,7 @@ export function CreateShippingOptionsForm({
 
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
-        if (!value) {
+        if (value === undefined || value === "") {
           return undefined
         }
 
@@ -111,12 +115,12 @@ export function CreateShippingOptionsForm({
     const conditionalRegionPrices = Object.entries(
       data.conditional_region_prices
     ).flatMap(([region_id, value]) => {
-      const prices: HttpTypes.AdminCreateShippingOptionPriceWithRegion[] =
+      const prices =
         value?.map((rule) => ({
           region_id: region_id,
           amount: castNumber(rule.amount),
           rules: buildShippingOptionPriceRules(rule),
-        })) || []
+        })) || [] as AdminCreateShippingOptionPriceWithRegion[]
 
       return prices?.filter(Boolean)
     })
@@ -124,12 +128,12 @@ export function CreateShippingOptionsForm({
     const conditionalCurrencyPrices = Object.entries(
       data.conditional_currency_prices
     ).flatMap(([currency_code, value]) => {
-      const prices: HttpTypes.AdminCreateShippingOptionPriceWithCurrency[] =
+      const prices =
         value?.map((rule) => ({
           currency_code,
           amount: castNumber(rule.amount),
           rules: buildShippingOptionPriceRules(rule),
-        })) || []
+        })) || [] as AdminCreateShippingOptionPriceWithCurrency[]
 
       return prices?.filter(Boolean)
     })
@@ -156,13 +160,11 @@ export function CreateShippingOptionsForm({
         data: fulfillmentOptionData as unknown as Record<string, unknown>,
         rules: [
           {
-            // eslint-disable-next-line
             value: isReturn ? "true" : "false",
             attribute: "is_return",
             operator: "eq",
           },
           {
-            // eslint-disable-next-line
             value: data.enabled_in_store ? "true" : "false",
             attribute: "enabled_in_store",
             operator: "eq",
@@ -198,7 +200,7 @@ export function CreateShippingOptionsForm({
       })
 
       if (!result.success) {
-        const [firstError, ...rest] = result.error.errors
+        const [firstError, ...rest] = result.error.issues
 
         for (const error of rest) {
           const _path = error.path.join(".") as keyof CreateShippingOptionSchema

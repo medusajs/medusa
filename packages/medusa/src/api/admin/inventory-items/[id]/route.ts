@@ -8,7 +8,7 @@ import { refetchInventoryItem } from "../helpers"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
-  req: MedusaRequest<HttpTypes.SelectParams>,
+  req: MedusaRequest<HttpTypes.AdminGetInventoryItemParams>,
   res: MedusaResponse<HttpTypes.AdminInventoryItemResponse>
 ) => {
   const { id } = req.params
@@ -33,7 +33,7 @@ export const GET = async (
 export const POST = async (
   req: MedusaRequest<
     HttpTypes.AdminUpdateInventoryItem,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetInventoryItemParams
   >,
   res: MedusaResponse<HttpTypes.AdminInventoryItemResponse>
 ) => {

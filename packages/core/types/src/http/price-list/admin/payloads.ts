@@ -1,9 +1,12 @@
 import { PriceListStatus, PriceListType } from "../../../pricing"
 
+/**
+ * The details of a price to create and add to a price list.
+ */
 export interface AdminCreatePriceListPrice {
   /**
    * The price's currency code.
-   * 
+   *
    * @example
    * usd
    */
@@ -30,6 +33,9 @@ export interface AdminCreatePriceListPrice {
   rules?: Record<string, string>
 }
 
+/**
+ * The details of a price list to create.
+ */
 export interface AdminCreatePriceList {
   /**
    * The price list's title.
@@ -63,8 +69,16 @@ export interface AdminCreatePriceList {
    * The price list's prices.
    */
   prices?: AdminCreatePriceListPrice[]
+  /**
+   * Holds custom data in key-value pairs.
+   * @since 2.14.2
+   */
+  metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The details of a price list price to update.
+ */
 export interface AdminUpdatePriceListPrice {
   /**
    * The ID of the price to update.
@@ -72,7 +86,7 @@ export interface AdminUpdatePriceListPrice {
   id: string
   /**
    * The price's currency code.
-   * 
+   *
    * @example
    * usd
    */
@@ -99,6 +113,9 @@ export interface AdminUpdatePriceListPrice {
   rules?: Record<string, string>
 }
 
+/**
+ * The details of a price list to update.
+ */
 export interface AdminUpdatePriceList {
   /**
    * The price list's title.
@@ -128,8 +145,16 @@ export interface AdminUpdatePriceList {
    * The price list's rules.
    */
   rules?: Record<string, string[]>
+  /**
+   * Holds custom data in key-value pairs.
+   * @since 2.14.2
+   */
+  metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The price operations to perform in a batch operation.
+ */
 export interface AdminBatchPriceListPrice {
   /**
    * The prices to create and add to the price list.
@@ -145,6 +170,9 @@ export interface AdminBatchPriceListPrice {
   delete?: string[]
 }
 
+/**
+ * The details to link or unlink products from a price list.
+ */
 export interface AdminLinkPriceListProducts {
   /**
    * The IDs of products to remove from the price list.

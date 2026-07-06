@@ -132,7 +132,7 @@ export const useChildDocs = ({
   ): Sidebar.InteractiveSidebarItem[] => {
     return (
       (items?.filter(
-        (item) => item.type !== "separator"
+        (item) => item.type !== "separator" && !item.hideFromChildItems
       ) as Sidebar.InteractiveSidebarItem[]) || []
     )
   }
@@ -144,7 +144,11 @@ export const useChildDocs = ({
     item: Sidebar.InteractiveSidebarItem
     currentLevel?: number
   }): Sidebar.InteractiveSidebarItem[] | undefined => {
-    if ((endChildLevel > 0 && currentLevel > endChildLevel) || !item.children) {
+    if (
+      (endChildLevel > 0 && currentLevel > endChildLevel) ||
+      !item.children ||
+      item.hideFromChildItems
+    ) {
       return
     }
     if (currentLevel >= startChildLevel) {

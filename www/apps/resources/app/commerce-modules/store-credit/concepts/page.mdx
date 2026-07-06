@@ -1,0 +1,115 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Store Credit Concepts`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about store credit accounts and how they work in the Loyalty Plugin.
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty Plugin Installed",
+      link: "../page.mdx",
+    }
+  ]}
+/>
+
+## What are Store Credits?
+
+Store credit provides a way to give customers account-based credit that can be used for future purchases. Store credit is tied to specific customer accounts and provides a running balance that can be credited and debited over time.
+
+For example, you can use store credit to:
+
+- Issue refunds that customers can use for future purchases
+- Reward loyal customers with account credits
+- Allow customers to accumulate credit from multiple transactions
+
+---
+
+## Store Credit Account
+
+A store credit account, represented by the `StoreCreditAccount` data model, is a customer's credit balance. Each account has:
+
+- `customer_id`: The ID of the customer associated with the account
+- `code`: A unique code for the account. This is useful when claiming the account.
+- `currency_code`: The currency for the account balance
+- `transactions`: A list of all credit and debit transactions for the account, represented by the [AccountTransaction](#account-transactions) data model.
+
+### Account Transactions
+
+All store credit activity is tracked through transactions, which are stored in the `AccountTransaction` data model.
+
+Each transaction includes:
+
+- `type`: `credit` (adding funds) or `debit` (spending funds)
+- `amount`: The transaction amount in the major currency unit (decimal).
+  - If `type` is `credit`, the amount is added to the balance.
+  - If `type` is `debit`, the amount is subtracted from the balance
+- `reference`: The name of the table that triggered the transaction (for example, `order`, `refund`, `promotion`, etc...)
+- `reference_id`: The ID of the record in the reference table that triggered the transaction (for example, `order_123`, `refund_456`, etc...)
+
+---
+
+## Store Credit Balance Calculation
+
+Store credit account balances are calculated in real-time by:
+
+1. Summing all credit transactions
+2. Subtracting all debit transactions
+
+The result is the current available store credit balance for the customer.
+
+The balance is not stored directly in the database, but is calculated on demand from the transaction history. This ensures that the balance is always accurate and reflects all account activity.
+
+---
+
+## Using Store Credit in Orders
+
+Customers can apply their available store credit during the checkout process to reduce the total amount of their order.
+
+Medusa validates that sufficient credit is available and reserves the applied credit until the order is confirmed.
+
+### During Checkout
+
+During the checkout process, customers can choose to apply their store credit to the order.
+
+Medusa will:
+
+1. Validate that the customer has sufficient available store credit balance
+2. Apply the amount as a credit line on the cart.
+
+The cart's total will be reduced by the created credit line.
+
+Once the customer places the order, the reserved store credit amount will be converted into a debit transaction on the customer's store credit account.
+
+### Refunds
+
+When an admin issues a refund for an order, the refunded amount is added as a credit transaction to the customer's store credit account.
+
+The customer can then use this store credit for future purchases.
+
+---
+
+## Claiming Store Credit Accounts
+
+Customers can claim their store credit accounts using the unique `code` associated with their account. This is useful if the customer's account was created by an admin, or if the customer was a guest at the time the store credit was issued.
+
+The claimed store credit account will be associated with the customer's account and the customer can view their available store credit balance and transaction history.
+
+{/* TODO add link to API documentation */}
+
+Medusa provides a Claim Store Credit Account API to allow customers to claim their store credit accounts.
+
+Alternatively, you can do it within your custom code. For example:
+
+```ts
+await claimStoreCreditAccountWorkflow(req.scope).run({
+  input: {
+    code: "UNIQUE_ACCOUNT_CODE",
+    // logged-in customer's ID is used to associate the claimed account with the customer's account
+    customer_id: req.auth_context.actor_id,
+  },
+})

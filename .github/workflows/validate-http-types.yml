@@ -1,0 +1,63 @@
+name: Validate HTTP Types
+
+on:
+  pull_request:
+    paths:
+      - "packages/medusa/src/api/**/validators.ts"
+      - "packages/core/types/src/http/**"
+      - "packages/cli/http-types-generator/src/**"
+
+jobs:
+  validate:
+    name: Validate HTTP Types vs Zod Schemas
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build HTTP types generator
+        run: yarn workspace @medusajs/http-types-generator build
+
+      - name: Get changed validator files
+        id: changed
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          CHANGED=$(git diff --name-only "$BASE_SHA"...HEAD \
+            | grep 'validators\.ts' \
+            | tr '\n' ',' \
+            | sed 's/,$//')
+          echo "files=$CHANGED" >> $GITHUB_OUTPUT
+          if [ -n "$CHANGED" ]; then
+            echo "Changed validator files: $CHANGED"
+          else
+            echo "No changed validator files detected — running full validation"
+          fi
+
+      - name: Validate HTTP types (changed files only)
+        if: steps.changed.outputs.files != ''
+        run: |
+          node packages/cli/http-types-generator/dist/index.js validate \
+            --ci \
+            --changed-files "$CHANGED_FILES"
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          MONOREPO_ROOT_PATH: ${{ github.workspace }}
+
+      - name: Validate HTTP types (full)
+        if: steps.changed.outputs.files == ''
+        run: |
+          node packages/cli/http-types-generator/dist/index.js validate --ci
+        env:
+          MONOREPO_ROOT_PATH: ${{ github.workspace }}

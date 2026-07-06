@@ -53,22 +53,52 @@ export interface AdminCreateProductVariantPrice {
    */
   max_quantity?: number | null
   /**
-   * The price's rules.
+   * The price's rules. Currently, only supports a `region_id` key to specify the region that the price applies to.
+   *
+   * @example
+   * {
+   *   "region_id": "region_123"
+   * }
    *
    * @privateRemarks
    * Note: Although the BE is generic, we only use region_id for price rules for now, so it's better to keep the typings stricter.
    */
-  rules?: {
-    /**
-     * The ID of the region that the price applies in.
-     */
-    region_id: string
-  } | null
+  rules?: Record<string, string>
+}
+
+export interface AdminUpdateProductVariantPrice {
+  /**
+   * The price's ID.
+   */
+  id?: string
+  /**
+   * The price's currency code.
+   *
+   * @example
+   * usd
+   */
+  currency_code?: string
+  /**
+   * The price's amount.
+   */
+  amount?: number
+  /**
+   * The minimum quantity required in the cart for the price to apply.
+   */
+  min_quantity?: number | null
+  /**
+   * The maximum quantity required in the cart for the price to apply.
+   */
+  max_quantity?: number | null
+  /**
+   * The price's rules.
+   */
+  rules?: Record<string, string>
 }
 
 export interface AdminCreateProductVariantInventoryKit {
   inventory_item_id: string
-  required_quantity?: number
+  required_quantity: number
 }
 
 export interface AdminCreateProductVariant {
@@ -79,27 +109,27 @@ export interface AdminCreateProductVariant {
   /**
    * The variant's SKU.
    */
-  sku?: string
+  sku?: string | null
   /**
    * The variant's EAN.
    */
-  ean?: string
+  ean?: string | null
   /**
    * The variant's UPC.
    */
-  upc?: string
+  upc?: string | null
   /**
    * The variant's barcode.
    */
-  barcode?: string
+  barcode?: string | null
   /**
    * The variant's HS code.
    */
-  hs_code?: string
+  hs_code?: string | null
   /**
    * The variant's MID code.
    */
-  mid_code?: string
+  mid_code?: string | null
   /**
    * Whether the variant can be ordered even if it's out of stock.
    */
@@ -116,31 +146,31 @@ export interface AdminCreateProductVariant {
   /**
    * The variant's weight.
    */
-  weight?: number
+  weight?: number | null
   /**
    * The variant's length.
    */
-  length?: number
+  length?: number | null
   /**
    * The variant's height.
    */
-  height?: number
+  height?: number | null
   /**
    * The variant's width.
    */
-  width?: number
+  width?: number | null
   /**
    * The variant's origin country.
    */
-  origin_country?: string
+  origin_country?: string | null
   /**
    * The variant's material.
    */
-  material?: string
+  material?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
   /**
    * The variant's prices.
    */
@@ -164,11 +194,11 @@ export interface AdminCreateProduct {
   /**
    * The product's subtitle.
    */
-  subtitle?: string
+  subtitle?: string | null
   /**
    * The product's description.
    */
-  description?: string
+  description?: string | null
   /**
    * Whether the product is a gift card.
    */
@@ -189,11 +219,11 @@ export interface AdminCreateProduct {
   /**
    * The product's thumbnail URL.
    */
-  thumbnail?: string
+  thumbnail?: string | null
   /**
    * The product's handle.
    */
-  handle?: string
+  handle?: string | null
   /**
    * The product's status.
    */
@@ -201,15 +231,15 @@ export interface AdminCreateProduct {
   /**
    * The ID of the product's type.
    */
-  type_id?: string
+  type_id?: string | null
   /**
    * The ID of the product in an external or third-party system.
    */
-  external_id?: string
+  external_id?: string | null
   /**
    * The ID of the product's collection.
    */
-  collection_id?: string
+  collection_id?: string | null
   /**
    * The ID of the product's shipping profile.
    */
@@ -235,7 +265,10 @@ export interface AdminCreateProduct {
   /**
    * The product's options.
    */
-  options: AdminCreateProductOption[]
+  options?: (
+    | AdminCreateProductOption
+    | AdminProductCreateLinkProductOption
+  )[]
   /**
    * The product's variants.
    */
@@ -252,42 +285,46 @@ export interface AdminCreateProduct {
   /**
    * The product's weight.
    */
-  weight?: number
+  weight?: number | null
   /**
    * The product's length.
    */
-  length?: number
+  length?: number | null
   /**
    * The product's height.
    */
-  height?: number
+  height?: number | null
   /**
    * The product's width.
    */
-  width?: number
+  width?: number | null
   /**
    * The product's HS code.
    */
-  hs_code?: string
+  hs_code?: string | null
   /**
    * The product's MID code.
    */
-  mid_code?: string
+  mid_code?: string | null
   /**
    * The product's origin country.
    */
-  origin_country?: string
+  origin_country?: string | null
   /**
    * The product's material.
    */
-  material?: string
+  material?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateProductVariant {
+  /**
+   * The variant's ID.
+   */
+  id?: string
   /**
    * The variant's title.
    */
@@ -364,7 +401,7 @@ export interface AdminUpdateProductVariant {
   /**
    * The variant's prices.
    */
-  prices?: AdminCreateProductVariantPrice[]
+  prices?: AdminUpdateProductVariantPrice[]
   /**
    * The variant's values for the associated product's options.
    */
@@ -457,9 +494,11 @@ export interface AdminUpdateProduct {
     id: string
   }[]
   /**
-   * The product's options.
+   * The IDs of the associated product options.
+   *
+   * @since 2.16.0
    */
-  options?: AdminUpdateProductOption[]
+  option_ids?: string[]
   /**
    * The product's variants.
    */
@@ -524,9 +563,45 @@ export interface AdminCreateProductOption {
    * The option's values.
    */
   values: string[]
+  /**
+   * The rank for each option value. The keys are the option values,
+   * and the values are their respective ranks.
+   *
+   * @since 2.16.0
+   *
+   * @example
+   * {
+   *   "Small": 1,
+   *   "Medium": 2,
+   *   "Large": 3
+   * }
+   */
+  ranks?: Record<string, number>
+  /**
+   * Whether the option is exclusive to a specific product,
+   * or can be shared across multiple products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive?: boolean
+}
+
+export interface AdminProductCreateLinkProductOption {
+  /**
+   * The ID of the product option to link.
+   */
+  id: string
+  /**
+   * The IDs of specific option values to link. If undefined, every value will be linked by default.
+   */
+  value_ids?: string[]
 }
 
 export interface AdminUpdateProductOption {
+  /**
+   * The option's ID.
+   */
+  id?: string
   /**
    * The option's title.
    */
@@ -535,6 +610,42 @@ export interface AdminUpdateProductOption {
    * The option's values.
    */
   values?: string[]
+  /**
+   * The rank for each option value. The keys are the option values,
+   * and the values are their respective ranks.
+   *
+   * @since 2.16.0
+   *
+   * @example
+   * {
+   *   "Small": 1,
+   *   "Medium": 2,
+   *   "Large": 3
+   * }
+   */
+  ranks?: Record<string, number>
+  /**
+   * Whether the option is exclusive to a specific product,
+   * or can be shared across multiple products.
+   *
+   * @since 2.16.0
+   */
+  is_exclusive?: boolean
+  /**
+   * Key-value pairs of custom data.
+   */
+  metadata?: Record<string, unknown> | null
+}
+
+export interface AdminUpdateProductOptionValue {
+  /**
+   * The option value's value.
+   */
+  value?: string
+  /**
+   * Key-value pairs of custom data.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -639,4 +750,92 @@ export interface AdminImportProductsRequest {
    * The file's mime type.
    */
   mime_type: string
+}
+
+export interface AdminLinkProductOptionWithValues {
+  /**
+   * The ID of the product option to add.
+   */
+  id: string
+  /**
+   * The IDs of specific option values to add to the product.
+   * This is useful when you want to associate only specific values of an option to the product.
+   */
+  value_ids: string[]
+}
+
+export interface AdminUpdateProductOptionValues {
+  /**
+   * The ID of the product option to update values for.
+   */
+  product_option_id: string
+  /**
+   * The IDs of specific option values to add or new values to create.
+   */
+  add?: (string | { value: string })[]
+  /**
+   * The IDs of specific option values to remove.
+   */
+  remove?: string[]
+}
+
+export interface AdminLinkProductOptions {
+  /**
+   * The list of options to add to the product. You can pass either:
+   *
+   * 1. The ID of an existing product option as a string.
+   * 2. An object with `id` and `value_ids` to add an existing product option with specific values. This
+   * is useful when you want to associate only specific option values of an option to the product.
+   * 3. An object to create a new product option.
+   */
+  add?: (string | AdminCreateProductOption | AdminLinkProductOptionWithValues)[]
+  /**
+   * The list of options to remove from the product.
+   */
+  remove?: string[]
+  /**
+   * The list of product option value updates for existing product options.
+   */
+  update?: AdminUpdateProductOptionValues[]
+}
+
+export interface AdminUpdateVariantPrice {
+  id?: string | undefined
+  rules?: Record<string, string> | undefined
+  currency_code?: string | undefined
+  amount?: number | undefined
+  max_quantity?: number | null | undefined
+  min_quantity?: number | null | undefined
+}
+
+export interface AdminCreateVariantInventoryItem {
+  inventory_item_id: string
+  required_quantity: number
+}
+
+export interface AdminUpdateVariantInventoryItem {
+  required_quantity: number
+}
+
+export interface AdminBatchCreateVariantInventoryItem {
+  inventory_item_id: string
+  required_quantity: number
+  variant_id: string
+}
+
+export interface AdminBatchUpdateVariantInventoryItem {
+  inventory_item_id: string
+  required_quantity: number
+  variant_id: string
+}
+
+export interface AdminBatchDeleteVariantInventoryItem {
+  inventory_item_id: string
+  variant_id: string
+}
+
+export interface AdminBatchVariantInventoryItems {
+  create?: AdminBatchCreateVariantInventoryItem[]
+  update?: AdminBatchUpdateVariantInventoryItem[]
+  delete?: AdminBatchDeleteVariantInventoryItem[]
 }

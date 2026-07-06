@@ -11,7 +11,8 @@ export const PriceListPricesEdit = () => {
   const ids = searchParams.get("ids[]")
 
   const { price_list, isLoading, isError, error } = usePriceList(id!, {
-    fields: "*prices,prices.price_set.variant.id,prices.price_rules.attribute,prices.price_rules.value",
+    fields:
+      "*prices,prices.price_set.variant.id,prices.price_rules.attribute,prices.price_rules.value",
   })
   const productIds = ids?.split(",")
 

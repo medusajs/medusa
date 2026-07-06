@@ -581,29 +581,6 @@ export class RedisCachingProvider {
             await tagCleanupPipeline.exec()
             await deletePipeline.exec()
 
-            // Clean up empty tag sets
-            const allTagKeys = await this.redisClient.keys(
-              `${this.keyNamePrefix}tag:*`
-            )
-            if (allTagKeys.length) {
-              const cardinalityPipeline = this.redisClient.pipeline()
-              allTagKeys.forEach((tagKey) => {
-                cardinalityPipeline.scard(tagKey)
-              })
-
-              const cardinalityResults = await cardinalityPipeline.exec()
-
-              // Delete empty tag keys
-              const emptyTagPipeline = this.redisClient.pipeline()
-              cardinalityResults?.forEach((result, index) => {
-                if (result && result[1] === 0) {
-                  emptyTagPipeline.unlink(allTagKeys[index])
-                }
-              })
-
-              await emptyTagPipeline.exec()
-            }
-
             return
           }
 
@@ -697,30 +674,6 @@ export class RedisCachingProvider {
               await tagCleanupPipeline.exec()
 
               await deletePipeline.exec()
-
-              // Clean up empty tag sets
-              const allTagKeys = await this.redisClient.keys(
-                `${this.keyNamePrefix}tag:*`
-              )
-              if (allTagKeys.length) {
-                const cleanupPipeline = this.redisClient.pipeline()
-
-                allTagKeys.forEach((tagKey) => {
-                  cleanupPipeline.scard(tagKey)
-                })
-
-                const cardinalityResults = await cleanupPipeline.exec()
-
-                // Delete tag keys that are now empty
-                const emptyTagDeletePipeline = this.redisClient.pipeline()
-                cardinalityResults?.forEach((result, index) => {
-                  if (result && result[1] === 0) {
-                    emptyTagDeletePipeline.unlink(allTagKeys[index])
-                  }
-                })
-
-                await emptyTagDeletePipeline.exec()
-              }
 
               return
             }

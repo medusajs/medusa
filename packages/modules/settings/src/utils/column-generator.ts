@@ -23,6 +23,7 @@ import {
   getEntityOverride,
   getFieldFilterRules,
   getFieldOrdering,
+  getNonFilterableFields,
 } from "./entity-overrides"
 import {
   buildFilterConfig,
@@ -103,6 +104,7 @@ export function generateEntityColumns(
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
   const fieldOrdering = getFieldOrdering(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
+  const nonFilterableFields = getNonFilterableFields(entity.name, override)
 
   const schemaTypeMap = entityDiscovery.getSchemaTypeMap()
   const columns: ViewConfigurationColumn[] = []
@@ -118,6 +120,7 @@ export function generateEntityColumns(
     filterRules,
     defaultVisibleFields,
     fieldOrdering,
+    nonFilterableFields,
     propertyLabels
   )
 
@@ -134,6 +137,7 @@ export function generateEntityColumns(
         filterRules,
         defaultVisibleFields,
         fieldOrdering,
+        nonFilterableFields,
         propertyLabels
       )
     }
@@ -200,6 +204,7 @@ function processEntityType(
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
   fieldOrdering: Record<string, number>,
+  nonFilterableFields: string[],
   propertyLabels?: Map<string, PropertyLabel>,
   parentPath: string = ""
 ): void {
@@ -241,6 +246,18 @@ function processEntityType(
 
       processedFields.add(fullPath)
 
+      const filter = nonFilterableFields.includes(fullPath)
+        ? { enabled: false }
+        : buildFilterConfig(
+            fieldName,
+            dataType,
+            false,
+            semanticType,
+            isEnumType(underlyingType)
+              ? underlyingType.getValues().map((v: any) => v.value)
+              : undefined
+          )
+
       // TODO: review with Adrien, expectation here is for foreign key columns not to be added, since their corresponding relationship
       // filter represents it and includes additional properties needed to construct filters in UI
       if (!processedFields.has(fullPath.replace("_", "."))) {
@@ -260,15 +277,7 @@ function processEntityType(
           category: parentPath
             ? "relationship"
             : semanticTypeToCategory(semanticType),
-          filter: buildFilterConfig(
-            fieldName,
-            dataType,
-            false,
-            semanticType,
-            isEnumType(underlyingType)
-              ? underlyingType.getValues().map((v: any) => v.value)
-              : undefined
-          ),
+          filter,
           source: { module: entity.module, entity: entity.name },
           custom_label: hasCustomLabel,
           label_id: label?.id,
@@ -313,14 +322,17 @@ function processEntityType(
 
             processedFields.add(nestedPath)
 
-            const filter = buildFilterConfig(
-              relatedFieldName,
-              dataType,
-              false,
-              semanticType
-            )
+            const filter = nonFilterableFields.includes(nestedPath)
+              ? { enabled: false }
+              : buildFilterConfig(
+                  relatedFieldName,
+                  dataType,
+                  false,
+                  semanticType
+                )
 
-            // Add relationship filter config for the id field
+            // Note: nested .id paths in nonFilterableFields produce
+            // { enabled: false, relationship: {...} }; not currently reachable.
             if (shouldIncludeRelationship && relatedFieldName === "id") {
               const relationshipFilter = getRelationshipFilterConfig(
                 entity.name,

@@ -4,6 +4,7 @@ x-schemaName: AdminStockLocation
 required:
   - id
   - name
+  - metadata
   - address_id
 properties:
   id:
@@ -35,3 +36,6 @@ properties:
     description: The fulfillment sets associated with the location.
     items:
       type: object
+  metadata:
+    type: object
+    description: Key-value pairs of custom data.

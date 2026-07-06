@@ -24,10 +24,6 @@
  *     type: boolean
  *     title: force
  *     description: Whether to delete specified inventory levels even if they have a non-zero stocked quantity.
- * required:
- *   - create
- *   - update
- *   - delete
  * x-schemaName: AdminBatchInventoryItemsLocationLevels
  * 
 */

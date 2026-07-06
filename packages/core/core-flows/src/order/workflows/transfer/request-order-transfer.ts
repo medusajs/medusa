@@ -143,8 +143,8 @@ export const requestOrderTransferWorkflow = createWorkflow(
     const change = createOrderChangeStep(orderChangeInput)
 
     const actionInput = transform(
-      { order, input, change },
-      ({ order, input, change }) => [
+      { order, input, change, customer },
+      ({ order, input, change, customer }) => [
         {
           order_change_id: change.id,
           order_id: input.order_id,
@@ -155,6 +155,7 @@ export const requestOrderTransferWorkflow = createWorkflow(
           details: {
             token: uid(),
             original_email: order.email,
+            ...(input.update_order_email ? { new_email: customer.email } : {}),
           },
         },
       ]

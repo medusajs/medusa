@@ -1,0 +1,409 @@
+---
+slug: /references/auth/mfa-module-provider
+tags:
+  - auth
+  - server
+  - how to
+sidebar_label: Create MFA Provider
+keywords:
+  - mfa
+  - provider
+  - integration
+---
+
+import { TypeList } from "docs-ui"
+
+# How to Create a Multi-Factor Authentication (MFA) Module Provider
+
+In this guide, you’ll learn how to create a Multi-Factor Authentication (MFA) Auth Module Provider and the methods you must implement in its main service.
+
+---
+
+## What is an MFA Module Provider?
+      
+An MFA Module Provider is a provider that implements the `AuthMfaProvider` interface. It allows you to integrate a new MFA provider into the Medusa Auth Module, enabling users to enroll and authenticate with MFA factors beyond the built-in TOTP provider.
+
+Medusa provides a built-in Totp MFA Module Provider that you can use out-of-the-box. You can also
+override it or create your own custom MFA Module Provider by following the instructions in this guide.
+
+<Note title="Creating a Recovery Code MFA Module Provider Instead?">
+
+Refer to the [Create a Recovery Code MFA Module Provider](/references/recovery-code-mfa-module-provider) guide instead.
+
+</Note>
+
+---
+
+## Implementation Example
+      
+As you implement your MFA Auth Module Provider, it can be useful to refer to an existing provider and how it's implemeted.
+
+If you need to refer to an existing implementation as an example, check the [Totp MFA Module Provider in the Medusa repository](https://github.com/medusajs/medusa/blob/develop/packages/modules/auth/src/providers/mfa/totp.ts).
+
+---
+
+## 1. Create Module Provider Directory
+
+Start by creating a new directory for your module provider.
+
+If you're creating the module provider in a Medusa application, create it under the `src/modules` directory. For example, `src/modules/my-mfa`.
+
+If you're creating the module provider in a plugin, create it under the `src/providers` directory. For example, `src/providers/my-mfa`.
+
+<Note>
+
+The rest of this guide always uses the `src/modules/my-mfa` directory as an example.
+
+</Note>
+
+---
+
+## 2. Create the MFA Module Provider Service
+
+Create the file `src/modules/my-mfa/service.ts` that holds the module provider's main service. It must implement the `AuthMfaProvider` interface imported from `@medusajs/framework/types`:
+
+```ts title="src/modules/my-mfa/service.ts"
+import { AuthMfaProvider } from "@medusajs/framework/types"
+
+type Options = {
+  // define any options your provider needs here
+}
+
+class MyAuthMfaProviderService implements AuthMfaProvider {
+  // TODO implement methods
+}
+
+export default MyAuthMfaProviderService
+```
+
+### constructor
+
+The constructor allows you to access resources from the module's container using the first parameter,
+and the provider's options using the second parameter.
+
+The Auth Module injects `authMfaFactorService` into your provider's container. This is the
+data service for the `AuthMfaFactor` model, and you should store it as a class property so
+the rest of the provider's methods can use it to retrieve and manage MFA factors (for
+example, to look up enabled factors for an auth identity, or to create a pending factor
+during setup).
+
+If you're creating a client or establishing a connection with a third-party service, do it in the constructor.
+
+#### Example
+
+```ts
+import { AuthMfaProvider } from "@medusajs/framework/types"
+import { Logger, ModulesSdkTypes } from "@medusajs/framework/types"
+
+type InjectedDependencies = {
+  logger: Logger
+  authMfaFactorService: ModulesSdkTypes.IMedusaInternalService<any>
+}
+
+type Options = {
+  issuer?: string
+}
+
+class MyAuthMfaProviderService implements AuthMfaProvider {
+  static identifier = "my-mfa"
+  readonly method = MyAuthMfaProviderService.identifier
+
+  protected logger_: Logger
+  protected authMfaFactorService_: ModulesSdkTypes.IMedusaInternalService<any>
+  protected options_: Options
+  // assuming you're initializing a client
+  protected client
+
+  constructor (
+    { logger, authMfaFactorService }: InjectedDependencies,
+    options: Options
+  ) {
+    this.logger_ = logger
+    this.authMfaFactorService_ = authMfaFactorService
+    this.options_ = options
+
+    // assuming you're initializing a client
+    this.client = new Client(options)
+  }
+
+  // ...
+}
+
+export default MyAuthMfaProviderService
+```
+
+### Identifier
+
+Every MFA auth module provider must have an `identifier` static property. The provider's ID
+will be stored as `mfa_{identifier}`.
+
+For example:
+
+```ts
+class MyAuthMfaProviderService implements AuthMfaProvider {
+  static identifier = "my-mfa"
+  // ...
+}
+```
+
+### method
+
+The MFA method that the provider implements. For example, `totp`.
+
+### canVerifyForAuthIdentity
+
+This method checks whether the auth identity has an enabled factor managed by this
+provider. The Auth Module uses it to determine whether a verification attempt should
+be routed to the provider.
+
+Use the injected `authMfaFactorService` to look up factors for the auth identity,
+scoped to this provider's `method`. You can alternatively check with third-party services if the provider manages factors remotely.
+
+#### Example
+
+```ts
+class MyAuthMfaProvider implements AuthMfaProvider {
+  // ...
+  async canVerifyForAuthIdentity(
+    data: { auth_identity_id: string },
+    sharedContext?: Context
+  ): Promise<boolean> {
+    const [factor] = await this.authMfaFactorService_.list(
+      {
+        auth_identity_id: data.auth_identity_id,
+        provider: this.method,
+        status: "enabled",
+      },
+      { select: ["id"] },
+      sharedContext
+    )
+
+    return !!factor
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The auth identity to check.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"auth_identity_id","type":"`string`","description":"The ID of the auth identity to check.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canVerifyForAuthIdentity"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the provider has an enabled factor for the auth identity.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="canVerifyForAuthIdentity"/>
+
+### start
+
+This method initiates the MFA setup flow for an auth identity. It typically creates a
+pending factor and returns the data the user needs in order to complete the setup, such
+as a TOTP secret and `otpauth_url` that can be rendered as a QR code.
+
+The Auth Module uses this method when an auth identity starts enrolling into MFA with
+the provider.
+
+To create the factor in a pending state within Medusa, use the injected `authMfaFactorService` and
+set the `status` of the factor to `"pending"` when creating it. You can store any provider-specific data 
+needed for the setup in the factor's `provider_metadata`.
+
+Alternatively, you can manage the entire setup flow with third-party services if the provider manages factors remotely.
+In that case, make sure to return any data needed to complete the setup in the response, and to create a pending factor 
+in Medusa once the setup is verified in `verifySetup`.
+
+#### Example
+
+```ts
+class MyAuthMfaProvider implements AuthMfaProvider {
+  // ...
+  async start(
+    data: AuthTypes.AuthMfaStartDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.AuthMfaStartResponse> {
+    const secret = this.generateSecret_()
+    const factor = await this.authMfaFactorService_.create(
+      {
+        auth_identity_id: data.auth_identity_id,
+        provider: this.method,
+        status: "pending",
+        provider_metadata: { secret },
+      },
+      sharedContext
+    )
+
+    return {
+      mfa: await this.serializeFactor_(factor),
+      secret,
+      otpauth_url: this.buildOtpAuthUrl_(secret, data),
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[AuthMfaStartDTO](../../../auth/types/auth.AuthMfaStartDTO/page.mdx)","description":"The details of the MFA factor to set up.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity to set up multi-factor authentication (MFA) for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider to use.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"label","type":"`string` \\| `null`","description":"Optional label for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"issuer","type":"`string`","description":"The issuer name for time-based one-time password (TOTP) apps.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) setup.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="start"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaStartResponse](../../../auth/types/auth.AuthMfaStartResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The data required to complete the MFA setup, including the pending factor.","expandable":false,"children":[{"name":"mfa","type":"[AuthMfaDTO](../../../auth/types/auth.AuthMfaDTO/page.mdx)","description":"The created multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"secret","type":"`string`","description":"The secret key for manual time-based one-time password (TOTP) app setup.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"otpauth_url","type":"`string`","description":"The QR code URL for easy time-based one-time password (TOTP) app setup.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="start"/>
+
+### verify
+
+This method verifies a code submitted during an MFA challenge against the auth identity's
+enabled factor for this provider (for example, by checking a TOTP code against the secret
+stored on the factor).
+
+Use the injected `authMfaFactorService` to retrieve the enabled factor for the auth identity,
+then validate the code against the factor's provider-specific metadata.
+
+You can alternatively verify the code with third-party services if the provider manages factors remotely.
+
+#### Example
+
+```ts
+class MyAuthMfaProvider implements AuthMfaProvider {
+  // ...
+  async verify(
+    data: { auth_identity_id: string; code: string },
+    sharedContext?: Context
+  ): Promise<boolean> {
+    const [factor] = await this.authMfaFactorService_.list(
+      {
+        auth_identity_id: data.auth_identity_id,
+        provider: this.method,
+        status: "enabled",
+      },
+      {},
+      sharedContext
+    )
+
+    // assuming you have a `verifyCode_` method that verifies the code
+    return factor ? this.verifyCode_(factor, data.code) : false
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The auth identity and code to verify.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"auth_identity_id","type":"`string`","description":"The ID of the auth identity to verify the code for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The MFA code to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="verify"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the code was successfully verified.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="verify"/>
+
+### verifySetup
+
+This method verifies a code submitted during the MFA setup flow and, if valid, activates
+the pending factor.
+
+The Auth Module uses this method after [start](page.mdx#start) to confirm that the user has correctly
+configured their authenticator before the factor is enabled.
+
+You can retrieve the pending factor created in `start` using the injected `authMfaFactorService`, 
+verify the submitted code against the provider-specific metadata stored on the factor, and 
+then update the factor's status to `"enabled"` if the verification is successful.
+
+Alternatively, you can manage the entire setup flow with third-party services if the provider manages factors remotely.
+In that case, make sure to verify the setup with the third-party service in this method, and to update the factor's status 
+to `"enabled"` in Medusa once the setup is verified.
+
+#### Example
+
+```ts
+class MyAuthMfaProvider implements AuthMfaProvider {
+  // ...
+  async verifySetup(
+    data: AuthTypes.AuthMfaVerifyDTO,
+    sharedContext?: Context
+  ): Promise<AuthTypes.AuthMfaDTO> {
+    const factor = await this.authMfaFactorService_.retrieve(
+      data.id,
+      {},
+      sharedContext
+    )
+
+    if (!this.verifyCode_(factor, data.code)) {
+      throw new Error("Invalid MFA code")
+    }
+
+    const enabled = await this.authMfaFactorService_.update(
+      { id: factor.id, status: "enabled" },
+      sharedContext
+    )
+
+    return await this.serializeFactor_(enabled)
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[AuthMfaVerifyDTO](../../../auth/types/auth.AuthMfaVerifyDTO/page.mdx)","description":"The details of the factor and the code to verify.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the multi-factor authentication (MFA) configuration to verify.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The verification code from the multi-factor authentication (MFA) provider.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../types/interfaces/types.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../types/interfaces/types.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="verifySetup"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthMfaDTO](../../../auth/types/auth.AuthMfaDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The verified (and now enabled) MFA factor.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The multi-factor authentication (MFA) configuration's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider","type":"[AuthMfaProvider](../../../auth/types/auth.AuthMfaProvider/page.mdx)","description":"The multi-factor authentication (MFA) provider used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[AuthMfaStatus](../../../auth/types/auth.AuthMfaStatus/page.mdx)","description":"The status of this multi-factor authentication (MFA) configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity_id","type":"`string`","description":"The ID of the authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"auth_identity","type":"[AuthIdentityDTO](../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authentication identity this multi-factor authentication (MFA) belongs to.","optional":true,"defaultValue":"","expandable":true,"children":[{"name":"id","type":"`string`","description":"The ID of the auth identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identities","type":"[ProviderIdentityDTO](../../../auth/interfaces/auth.ProviderIdentityDTO/page.mdx)[]","description":"The list of provider identities linked to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"Holds information related to the actor IDs tied to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"Additional metadata for the multi-factor authentication (MFA) configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="verifySetup"/>
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-mfa/index.ts` with the following content:
+
+```ts title="src/modules/my-mfa/index.ts"
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
+import MyAuthMfaProviderService from "./service"
+
+export default ModuleProvider(Modules.AUTH, {
+  services: [MyAuthMfaProviderService],
+})
+```
+
+This exports the module provider's definition, indicating that the `MyAuthMfaProviderService` is the module provider's service.
+
+---
+
+## 4. Use Module Provider
+
+To use your MFA Module Provider, add it to the `mfa.providers` array of the Auth Module in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [Modules.CACHE, ContainerRegistrationKeys.LOGGER],
+      options: {
+        mfa: {
+          encryption_key: process.env.AUTH_MFA_ENCRYPTION_KEY,
+          providers: [
+            {
+              // if module provider is in a plugin, use `plugin-name/providers/my-mfa`
+              resolve: "./src/modules/my-mfa",
+              // if you're overriding the totp provider, set this to "totp"
+              id: "my-mfa",
+              options: {
+                // provider options...
+              }
+            }
+          ]
+        },
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+          },
+        ],
+      },
+    },
+  ]
+})
+```
+
+---
+
+## 5. Test it Out
+
+There are two ways to test out your MFA Module Provider:
+
+1. **Custom Provider:** Use it with the MFA API routes to enroll and authenticate users with MFA. See the [MFA guide](/commerce-modules/auth/mfa) for more details.
+2. **Overriding Totp Provider:** If your provider overrides the Totp provider, you can test it out in the admin dashboard by managing your profile's [two-factor authentication settings from the admin dashboard](!user-guide!/settings/profile#manage-two-factor-authentication).

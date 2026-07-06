@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../../utils/common-validators"
 import {
   createFindParams,
@@ -25,12 +25,9 @@ export const AdminGetRbacPoliciesParamsFields = z.object({
 export type AdminGetRbacPoliciesParamsType = z.infer<
   typeof AdminGetRbacPoliciesParams
 >
-export const AdminGetRbacPoliciesParams = createFindParams({
-  limit: 50,
-  offset: 0,
-})
-  .merge(AdminGetRbacPoliciesParamsFields)
-  .merge(applyAndAndOrOperators(AdminGetRbacPoliciesParamsFields))
+export const AdminGetRbacPoliciesParams = createFindParams({})
+  .extend(AdminGetRbacPoliciesParamsFields.shape)
+  .extend(applyAndAndOrOperators(AdminGetRbacPoliciesParamsFields).shape)
 
 export type AdminCreateRbacPolicyType = z.infer<typeof AdminCreateRbacPolicy>
 export const AdminCreateRbacPolicy = z
@@ -40,7 +37,7 @@ export const AdminCreateRbacPolicy = z
     operation: z.string(),
     name: z.string().nullish(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -52,6 +49,14 @@ export const AdminUpdateRbacPolicy = z
     operation: z.string().optional(),
     name: z.string().nullish(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
+
+export type AdminGetRbacPolicyRolesParamsType = z.infer<
+  typeof AdminGetRbacPolicyRolesParams
+>
+export const AdminGetRbacPolicyRolesParams = createFindParams({
+  limit: 10,
+  offset: 0,
+})

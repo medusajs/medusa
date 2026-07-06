@@ -63,6 +63,14 @@ export interface AdminInventoryItem {
    * The item's associated inventory levels.
    */
   location_levels?: AdminInventoryLevel[]
+  /**
+   * The total quantity of the inventory item that is stocked across all locations.
+   */
+  stocked_quantity: number
+  /**
+   * The total quantity of the inventory item that is reserved across all locations.
+   */
+  reserved_quantity: number
 }
 
 export interface AdminInventoryLevel {

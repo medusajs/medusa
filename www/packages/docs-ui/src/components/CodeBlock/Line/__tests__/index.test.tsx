@@ -102,6 +102,7 @@ describe("render", () => {
         isTerminal={false}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -176,6 +177,7 @@ describe("render", () => {
         isTerminal={false}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -242,6 +244,7 @@ describe("render", () => {
         isTerminal={false}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -272,6 +275,7 @@ describe("render", () => {
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
         animateTokenHighlights={true}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -309,6 +313,7 @@ describe("render", () => {
         isTerminal={false}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -336,6 +341,7 @@ describe("render", () => {
         isTerminal={true}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -362,6 +368,7 @@ describe("render", () => {
         isTerminal={false}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()
@@ -387,6 +394,7 @@ describe("render", () => {
         isTerminal={true}
         getLineProps={mockGetLineProps}
         getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
       />
     )
     expect(container).toBeInTheDocument()

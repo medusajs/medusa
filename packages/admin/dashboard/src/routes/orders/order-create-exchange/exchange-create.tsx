@@ -23,7 +23,7 @@ export const ExchangeCreate = () => {
 
   const { order: preview } = useOrderPreview(id!)
   const [activeExchangeId, setActiveExchangeId] = useState<string>()
-  const { mutateAsync: createExchange } = useCreateExchange(order.id)
+  const { mutateAsync: createExchange } = useCreateExchange(order?.id ?? "")
 
   const { exchange } = useExchange(activeExchangeId!, undefined, {
     enabled: !!activeExchangeId,
@@ -59,7 +59,9 @@ export const ExchangeCreate = () => {
 
         setActiveExchangeId(createdExchange.id)
       } catch (e) {
-        toast.error(e.message)
+        toast.error(
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+        )
         navigate(`/orders/${preview.id}`, { replace: true })
       } finally {
         IS_REQUEST_RUNNING = false

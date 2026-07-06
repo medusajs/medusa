@@ -1,5 +1,207 @@
 # @medusajs/utils
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15701](https://github.com/medusajs/medusa/pull/15701) [`8f2c71222afb2bcd1268438fc5fe9da6a63d7af2`](https://github.com/medusajs/medusa/commit/8f2c71222afb2bcd1268438fc5fe9da6a63d7af2) Thanks [@kowalski21](https://github.com/kowalski21)! - fix(utils): add `alias` to `InputOptions` in `defineLink` so two links from the same source module to the same target module can be differentiated
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/deps@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- [#15814](https://github.com/medusajs/medusa/pull/15814) [`4f5e1cc97f4511f43cf4790af412781dafb2ba86`](https://github.com/medusajs/medusa/commit/4f5e1cc97f4511f43cf4790af412781dafb2ba86) Thanks [@peterlgh7](https://github.com/peterlgh7)! - add created_at and published_at to EventMetadata
+
+- Updated dependencies []:
+  - @medusajs/deps@2.17.1
+
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(): allow linking a subset of an option's values to the product
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- [#15600](https://github.com/medusajs/medusa/pull/15600) [`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework, utils, medusa): centralize NODE_ENV production check and tighten secret defaults
+
+- [`34450089041ee90ebbeca40ad7977e945a53a7b7`](undefined) - fix(utils): InjectManager error message shows "undefined" instead of "baseRepository\_"
+
+- [#15266](https://github.com/medusajs/medusa/pull/15266) [`735e0aa51ef64274257057a59046776af54203f4`](https://github.com/medusajs/medusa/commit/735e0aa51ef64274257057a59046776af54203f4) Thanks [@kzroo](https://github.com/kzroo)! - feat(utils, dashboard, loyalty-plugin): add GMD (Gambian Dalasi) to default currency lists
+
+  Adds a `GMD` entry to the hardcoded currency maps in `packages/core/utils/src/defaults/currencies.ts`, `packages/admin/dashboard/src/lib/data/currencies.ts`, and `packages/plugins/loyalty/src/admin/lib/currencies.ts`. Without it, admin pages that map over `store.supported_currencies` and look each one up — most notably the Regions create/edit form — crash with `TypeError: Cannot read properties of undefined (reading 'code')` when a store has GMD as a supported currency.
+
+- [`dc3e213a3be9d5ae8637863461eab0404bbc0e16`](undefined) - fix(utils): preserve Medusa context indexes on overridden service methods
+
+- [`9f5194267fc5abdece31531af3822b0d05ed1fcc`](undefined) - fix(utils, workflows-sdk, create-medusa-app): correct "occured" -> "occurred" typo in error messages and docs
+
+- [`8b3b9f7dc97731688e4a5f1c0bb2714e00483bc6`](undefined) - fix(product, utils): Support non-Latin characters in product handles
+
+- [`801dbdb2ae70152aaa5917590885bd36bd44efc4`](undefined) - fix(utils,product): handle array of mikroORM entities serialization and fix variant image assignment serialization issue
+
+- [#15595](https://github.com/medusajs/medusa/pull/15595) [`beb1b5e6bcbfeda02659cbaa0e04d5dbc1ba64cd`](https://github.com/medusajs/medusa/commit/beb1b5e6bcbfeda02659cbaa0e04d5dbc1ba64cd) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(medusa,utils): plugin type augmentations
+
+- [`1c5ce279aaf792789be371fae70ca304f710cb73`](undefined) - fix(promotion): prevent negative taxable base when stacking tax-inclusive and non-tax-inclusive promotions
+
+  The applied-promotions accumulator stored adjustment amounts in each promotion's own tax base, so a tax-inclusive promotion compared its remaining applicable amount (incl-tax) against amounts a previous non-tax-inclusive promotion recorded excl-tax. The mismatched bases let the combined discount exceed the line item value and drive the taxable base negative. Applied amounts are now tracked tax-exclusively and converted to the promotion's base before being subtracted, for both `each` and `across` allocations.
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
+- [`14af163eae35be9a204f37c5a87d0b2b59b14054`](undefined) - fix(utils): preserve auth MFA defaults when auth options are customized
+
+- Updated dependencies [[`456813f8b36ab1086dec09c6a89655d7ab0bae5b`](undefined), [`18474de124868370298addf195e5229ca6792f81`](undefined)]:
+  - @medusajs/deps@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- [#15496](https://github.com/medusajs/medusa/pull/15496) [`ace1822bccbb21afa533665937460140e36aa995`](https://github.com/medusajs/medusa/commit/ace1822bccbb21afa533665937460140e36aa995) Thanks [@christiananese](https://github.com/christiananese)! - Add auth verification primitives for emailpass.
+
+- [#15493](https://github.com/medusajs/medusa/pull/15493) [`c8e37903177c2551ec27ba5f881804e351e819c4`](https://github.com/medusajs/medusa/commit/c8e37903177c2551ec27ba5f881804e351e819c4) Thanks [@christiananese](https://github.com/christiananese)! - Prepare new Medusa apps for admin MFA
+
+- [#15495](https://github.com/medusajs/medusa/pull/15495) [`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747) Thanks [@christiananese](https://github.com/christiananese)! - feat(auth): emit MFA lifecycle events
+
+- [#15518](https://github.com/medusajs/medusa/pull/15518) [`c7258f2ca2da8c09df430d81121ea8eae7f75cd9`](https://github.com/medusajs/medusa/commit/c7258f2ca2da8c09df430d81121ea8eae7f75cd9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(utils): add mfa to inline snapshot test assertion
+
+- [#14593](https://github.com/medusajs/medusa/pull/14593) [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,framework,rbac,js-sdk,types,utils,medusa): rbac admin dashboard utils
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- [#15275](https://github.com/medusajs/medusa/pull/15275) [`3063ea20314843c23ad8077ce5e2f5c01ce2c54c`](https://github.com/medusajs/medusa/commit/3063ea20314843c23ad8077ce5e2f5c01ce2c54c) Thanks [@Suh0161](https://github.com/Suh0161)! - fix(utils): implement tokenized free text search to support multi-word queries across different columns (e.g. first + last name)
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- [#15382](https://github.com/medusajs/medusa/pull/15382) [`9990b69ab76f1a575c6a68875627d16764cc1564`](https://github.com/medusajs/medusa/commit/9990b69ab76f1a575c6a68875627d16764cc1564) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): disable generating snapshots on running migrations
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15293](https://github.com/medusajs/medusa/pull/15293) [`75b23ffcdf5afeedb5321689cbd844342f218846`](https://github.com/medusajs/medusa/commit/75b23ffcdf5afeedb5321689cbd844342f218846) Thanks [@Chicolll](https://github.com/Chicolll)! - fix(utils): preserve casing in toCamelCase for PascalCase identifiers with digits
+
+- [#15013](https://github.com/medusajs/medusa/pull/15013) [`667f3e213d847e2a44ba486522f9fb7b36c69e9a`](https://github.com/medusajs/medusa/commit/667f3e213d847e2a44ba486522f9fb7b36c69e9a) Thanks [@asynchroza](https://github.com/asynchroza)! - fix(utils): skip empty string translations when applying locale
+
+- Updated dependencies []:
+  - @medusajs/deps@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [#14309](https://github.com/medusajs/medusa/pull/14309) [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): upgrade zod to latest
+
+- [#13975](https://github.com/medusajs/medusa/pull/13975) [`67499a8aa6b3b53cbdecb5be9fcc358b4e466696`](https://github.com/medusajs/medusa/commit/67499a8aa6b3b53cbdecb5be9fcc358b4e466696) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(currency,payment,pricing,region,order,store,cart,core-flows,medusa,utils): repo wide currency_code normalization
+
+- [#14650](https://github.com/medusajs/medusa/pull/14650) [`965adfe2fc15a024270ac384f819479e8b274e10`](https://github.com/medusajs/medusa/commit/965adfe2fc15a024270ac384f819479e8b274e10) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat(view configuration): Generic introspection and generation
+
+- [#14711](https://github.com/medusajs/medusa/pull/14711) [`9e145bfb27cb5792f7b8d1331f2b076fb00355d9`](https://github.com/medusajs/medusa/commit/9e145bfb27cb5792f7b8d1331f2b076fb00355d9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(loyalty-plugin,medusa,utils): open source loyalty plugin
+
+- [#14436](https://github.com/medusajs/medusa/pull/14436) [`32533eb829d904d4c1a89c841f06d9c209460ac7`](https://github.com/medusajs/medusa/commit/32533eb829d904d4c1a89c841f06d9c209460ac7) Thanks [@bhagwatiprasad](https://github.com/bhagwatiprasad)! - fix(medusa, utils): add delay between module migrations to prevent timestamp collision
+
+- Updated dependencies []:
+  - @medusajs/deps@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- [#15018](https://github.com/medusajs/medusa/pull/15018) [`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update mikro-orm to 6.6.10
+
+- Updated dependencies [[`62e0760a2ad032c9f7ef219968d667193bf3c4a1`](https://github.com/medusajs/medusa/commit/62e0760a2ad032c9f7ef219968d667193bf3c4a1)]:
+  - @medusajs/deps@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- [#14932](https://github.com/medusajs/medusa/pull/14932) [`4eee16b932f4b532f81db2739194ed5d2b47f3ea`](https://github.com/medusajs/medusa/commit/4eee16b932f4b532f81db2739194ed5d2b47f3ea) Thanks [@peterlgh7](https://github.com/peterlgh7)! - use in-memory modules if REDIS_URL unset
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- [#14720](https://github.com/medusajs/medusa/pull/14720) [`f37f029799cad7ee0337aeab625df5e272de2363`](https://github.com/medusajs/medusa/commit/f37f029799cad7ee0337aeab625df5e272de2363) Thanks [@arjusmoon860](https://github.com/arjusmoon860)! - feat(dashboard, admin-bundler, utils, types): add configurable maximum file upload size
+
+- [#14565](https://github.com/medusajs/medusa/pull/14565) [`d0e6f710c3f8305b58ac39131a125274987cae05`](https://github.com/medusajs/medusa/commit/d0e6f710c3f8305b58ac39131a125274987cae05) Thanks [@Mohammed-AlSharafi](https://github.com/Mohammed-AlSharafi)! - fix: Prevent translation crash when entity contains arrays of primitive values (e.g. strings)
+
+- [#14665](https://github.com/medusajs/medusa/pull/14665) [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat: add forbidden error 403
+
+- Updated dependencies []:
+  - @medusajs/deps@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

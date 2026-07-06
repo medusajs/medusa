@@ -14,13 +14,20 @@ vi.mock("@/components/LinkButton", () => ({
   LinkButton: ({
     href,
     className,
+    variant,
     children,
   }: {
     href: string
     className?: string
+    variant?: string
     children: React.ReactNode
   }) => (
-    <a href={href} className={className} data-testid="link-button">
+    <a
+      href={href}
+      className={className}
+      data-testid="link-button"
+      data-variant={variant}
+    >
       {children}
     </a>
   ),
@@ -44,7 +51,7 @@ describe("rendering", () => {
       <MainNavItemLink item={item} isActive={true} />
     )
     const link = container.querySelector("[data-testid='link-button']")
-    expect(link).toHaveClass("text-medusa-fg-base")
+    expect(link).toHaveAttribute("data-variant", "base")
   })
 
   test("applies inactive styles when isActive is false", () => {
@@ -52,7 +59,7 @@ describe("rendering", () => {
       <MainNavItemLink item={item} isActive={false} />
     )
     const link = container.querySelector("[data-testid='link-button']")
-    expect(link).toHaveClass("text-medusa-fg-muted hover:text-medusa-fg-subtle")
+    expect(link).toHaveAttribute("data-variant", "subtle")
   })
 
   test("renders icon when provided", () => {

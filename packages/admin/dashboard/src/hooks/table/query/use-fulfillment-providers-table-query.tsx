@@ -17,7 +17,7 @@ export const useFulfillmentProvidersTableQuery = ({
 
   const { offset, q, stock_location_id } = queryObject
 
-  const searchParams: HttpTypes.AdminFulfillmentProviderListParams = {
+  const searchParams: HttpTypes.AdminGetFulfillmentProvidersParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     stock_location_id,

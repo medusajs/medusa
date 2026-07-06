@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { toast } from "@medusajs/ui"
 import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
 import { useFeatureFlag } from "../providers/feature-flag-provider"
 import {
   useViewConfigurations as useViewConfigurationsBase,
@@ -10,6 +11,10 @@ import {
   useDeleteViewConfiguration as useDeleteViewConfigurationBase,
   useSetActiveViewConfiguration as useSetActiveViewConfigurationBase,
 } from "./api/views"
+
+export type ViewConfiguration = NonNullable<
+  HttpTypes.AdminViewConfigurationResponse["view_configuration"]
+>
 
 // Common error handler
 const handleError = (error: Error, message?: string) => {
@@ -31,9 +36,13 @@ export const useViewConfigurations = (entity: string) => {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   // List views
-  const listViews = useViewConfigurationsBase(entity, { limit: 100 }, {
-    enabled: isViewConfigEnabled && !!entity,
-  })
+  const listViews = useViewConfigurationsBase(
+    entity,
+    { limit: 100 },
+    {
+      enabled: isViewConfigEnabled && !!entity,
+    }
+  )
 
   // Active view
   const activeView = useActiveViewConfigurationBase(entity, {
@@ -52,27 +61,23 @@ export const useViewConfigurations = (entity: string) => {
 
   // Set active view mutation
   const setActiveView = useSetActiveViewConfigurationBase(entity, {
-    onSuccess: () => {
-    },
+    onSuccess: () => {},
     onError: (error) => {
       handleError(error, "Failed to update active view")
     },
   })
 
-  return useMemo(() => ({
-    isViewConfigEnabled,
-    listViews,
-    activeView,
-    createView,
-    setActiveView,
-    isDefaultViewActive: activeView?.is_default_active ?? true,
-  }), [
-    isViewConfigEnabled,
-    listViews,
-    activeView,
-    createView,
-    setActiveView,
-  ])
+  return useMemo(
+    () => ({
+      isViewConfigEnabled,
+      listViews,
+      activeView,
+      createView,
+      setActiveView,
+      isDefaultViewActive: activeView?.is_default_active ?? true,
+    }),
+    [isViewConfigEnabled, listViews, activeView, createView, setActiveView]
+  )
 }
 
 // Hook for update/delete operations on a specific view

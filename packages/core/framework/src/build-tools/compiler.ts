@@ -4,6 +4,7 @@ import chokidar from "chokidar"
 import { access, constants, copyFile, mkdir, rm } from "fs/promises"
 import path from "path"
 import type tsStatic from "typescript"
+import { isFileIgnored } from "./compiler-utils"
 
 /**
  * The compiler exposes the opinionated APIs for compiling Medusa
@@ -190,7 +191,8 @@ export class Compiler {
   }> {
     const ts = await this.#loadTSCompiler()
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
-      return !chunksToIgnore.some((chunk) => fileName.includes(`${chunk}`))
+      const relativeFileName = path.relative(this.#projectRoot, fileName)
+      return !isFileIgnored(relativeFileName, chunksToIgnore)
     })
 
     /**
@@ -423,7 +425,7 @@ export class Compiler {
    */
   async buildPluginBackend(tsConfig: tsStatic.ParsedCommandLine) {
     const tracker = this.#trackDuration()
-    const dist = ".medusa/server"
+    const dist = this.#pluginsDistFolder
     this.#logger.info("Compiling plugin source...")
 
     /**

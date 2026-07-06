@@ -1,7 +1,9 @@
 import {
   ChangeActionType,
+  isDefined,
   MathBN,
   MedusaError,
+  mergeMetadata,
 } from "@medusajs/framework/utils"
 import { VirtualOrder } from "@types"
 import { OrderChangeProcessing } from "../calculate-order-change"
@@ -22,6 +24,19 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
         existing.detail.quantity,
         action.details.quantity
       )
+
+      if (isDefined(action.details.metadata)) {
+        const isUnset = action.details.metadata === null
+
+        if (isUnset) {
+          existing.metadata = null
+        } else {
+          existing.metadata = mergeMetadata(
+            existing.metadata ?? {},
+            action.details.metadata
+          )
+        }
+      }
     } else {
       existing = {
         id: action.details.reference_id!,
@@ -32,6 +47,9 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
         unit_price: action.details.unit_price,
         compare_at_unit_price: action.details.compare_at_unit_price,
         quantity: action.details.quantity,
+        ...(action.details.metadata !== undefined
+          ? { metadata: action.details.metadata }
+          : {}),
       } as VirtualOrder["items"][0]
 
       currentOrder.items.push(existing)

@@ -29,6 +29,11 @@ const parsers = {
   text: memoize(function textParser(options?: ParserConfigArgs) {
     return text({
       limit: options?.sizeLimit,
+      verify: options?.preserveRawBody
+        ? (req: MedusaRequest, res: MedusaResponse, buf: Buffer) => {
+            req.rawBody = buf
+          }
+        : undefined,
     })
   }),
   urlencoded: memoize(function urlencodedParserMiddleware(
@@ -37,6 +42,11 @@ const parsers = {
     return urlencoded({
       limit: options?.sizeLimit,
       extended: true,
+      verify: options?.preserveRawBody
+        ? (req: MedusaRequest, res: MedusaResponse, buf: Buffer) => {
+            req.rawBody = buf
+          }
+        : undefined,
     })
   }),
 }

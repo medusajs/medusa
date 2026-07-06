@@ -13,7 +13,6 @@ interface SaveViewDropdownProps {
 
 export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
   isDefaultView,
-  currentViewId,
   currentViewName,
   onSaveAsDefault,
   onUpdateExisting,
@@ -24,7 +23,8 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
   const handleSaveAsDefault = async () => {
     const result = await prompt({
       title: "Update default view",
-      description: "This will update the default view for all users. Are you sure?",
+      description:
+        "This will update the default view for all users. Are you sure?",
       confirmText: "Update for everyone",
       cancelText: "Cancel",
     })
@@ -68,7 +68,7 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
         ) : (
           <>
             <DropdownMenu.Item onClick={handleUpdateExisting}>
-              Update "{currentViewName}"
+              Update &ldquo;{currentViewName}&rdquo;
             </DropdownMenu.Item>
             <DropdownMenu.Item onClick={onSaveAsNew}>
               Save as new view

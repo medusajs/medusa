@@ -2,8 +2,16 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type DeleteRbacRolesStepInput = string[]
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const deleteRbacRolesStepId = "delete-rbac-roles"
 
 /**
@@ -11,6 +19,8 @@ export const deleteRbacRolesStepId = "delete-rbac-roles"
  * @param ids - The IDs of the roles to delete
  * @param container - The workflow container
  * @returns A step response with the deleted role IDs
+ * @ignore
+ * @featureFlag rbac
  */
 export const deleteRbacRolesStep = createStep(
   deleteRbacRolesStepId,

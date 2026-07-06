@@ -1,5 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes, InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
+import {
+  AdminInventoryLevel,
+  AdminStockLocation,
+  HttpTypes,
+} from "@medusajs/types"
 import { Button, Input, Text, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -13,8 +17,8 @@ import { castNumber } from "../../../../../../lib/cast-number"
 
 type AdjustInventoryFormProps = {
   item: HttpTypes.AdminInventoryItem
-  level: InventoryLevelDTO
-  location: StockLocationDTO
+  level: AdminInventoryLevel
+  location: AdminStockLocation
 }
 
 const AttributeGridRow = ({

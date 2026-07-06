@@ -25,6 +25,39 @@ These guides are for developers who want to build a storefront for their Medusa 
 
 ---
 
+## Build Storefront with AI Agents
+
+Medusa provides an [ecommerce-storefront Claude Code plugin](https://github.com/medusajs/medusa-agent-skills/blob/main/plugins/ecommerce-storefront/README.md) with skills that allow you to build storefront features using AI agents like Claude Code.
+
+To install the plugin in Claude Code, run the following commands:
+
+```bash
+claude # start claude code
+/plugin marketplace add medusajs/medusa-agent-skills
+/plugin install ecommerce-storefront@medusa
+```
+
+Alternatively, if you don't use Claude Code, you can use the `skills` command to copy the plugin's skills based on your preferred AI agent:
+
+```bash
+npx skills add medusajs/medusa-agent-skills
+```
+
+Pick the `storefront-best-practices` skill to get started with building storefront features using AI agents.
+
+### Example Skill Usage
+
+The plugin's skill includes best practices for building ecommerce homepages, product pages, cart functionality, checkout flows, and more.
+
+Some example prompts:
+
+```bash title="Claude Code Prompts"
+Build a Next.js ecommerce storefront that uses Medusa as the backend. The storefront should have product listing, product detail, cart, and checkout pages.
+Add a megamenu to the storefront's header that displays product categories and subcategories. The menu should be responsive and work well on mobile devices.
+```
+
+---
+
 ## Using the JS SDK
 
 All guides under this documentation section use the [JS SDK](../js-sdk/page.mdx) to interact with the Medusa application's Store API Routes. The JS SDK is a NPM package that facilitates interacting with the backend's REST APIs. You can use it in any JavaScript framework, such as Next.js, React, Vue, or Angular.

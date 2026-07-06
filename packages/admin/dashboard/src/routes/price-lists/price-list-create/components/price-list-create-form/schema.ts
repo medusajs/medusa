@@ -35,7 +35,7 @@ export const PricingDetailsSchema = PricingCreateSchema.pick({
   description: true,
   starts_at: true,
   ends_at: true,
-  customer_group_ids: true,
+  rules: true,
 })
 
 export const PricingDetailsFields = Object.keys(

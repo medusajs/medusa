@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { PromotionDTO } from "@medusajs/types"
+import { AdminPromotion } from "@medusajs/types"
 import { Button, Container, Heading, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -40,7 +40,7 @@ export const PromotionListTable = () => {
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (promotions ?? []) as PromotionDTO[],
+    data: (promotions ?? []) as AdminPromotion[],
     columns,
     count,
     enablePagination: true,
@@ -83,7 +83,7 @@ export const PromotionListTable = () => {
   )
 }
 
-const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
+const PromotionActions = ({ promotion }: { promotion: AdminPromotion }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
@@ -138,7 +138,7 @@ const PromotionActions = ({ promotion }: { promotion: PromotionDTO }) => {
   )
 }
 
-const columnHelper = createColumnHelper<PromotionDTO>()
+const columnHelper = createColumnHelper<AdminPromotion>()
 
 const useColumns = () => {
   const base = usePromotionTableColumns()

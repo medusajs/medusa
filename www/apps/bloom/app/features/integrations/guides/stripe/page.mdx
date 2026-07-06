@@ -1,0 +1,106 @@
+import { InProductAction, getOsShortcut } from "docs-ui"
+
+export const metadata = {
+  title: `Stripe Integration`,
+}
+
+# {metadata.title}
+
+Add [Stripe](https://stripe.com/) to accept payments in your Bloom store.
+
+Stripe lets you accept credit cards, Apple Pay, Google Pay, and more from customers worldwide. Bloom sets it up for you in minutes.
+
+{/* TODO: Add screenshot of Stripe payment checkout in store */}
+
+## Prerequisites
+
+Before adding Stripe, you need a [Stripe account](https://stripe.com/) and API keys.
+
+To get your Stripe API keys:
+
+1. Log in to your Stripe dashboard.
+2. Switch to test mode using the toggle at the top of the dashboard.
+3. Click "Developers" in the bottom toolbar, then choose "API keys."
+4. Copy your Publishable key and Secret key.
+
+Test keys start with `sk_test_` (secret) and `pk_test_` (publishable). You'll need both keys when Bloom asks for them.
+
+{/* TODO: Add screenshot of Stripe dashboard API keys page */}
+
+---
+
+## Add Stripe to Your Store
+
+To add Stripe using the <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "integrations" }}>Integrations</InProductAction> panel:
+
+1. Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> to open the preview tab switcher.
+2. Select the "Integrations" tab from the list.
+3. Find the Stripe card in the available integrations.
+4. Click "Build" on the Stripe card.
+
+Bloom will start setting up Stripe and ask you questions about how you want it configured.
+
+{/* TODO: Add screenshot of Stripe card with "Build" button highlighted */}
+
+---
+
+## Answer Bloom's Questions
+
+After you click "Build," Bloom will ask you which regions you want to enable Stripe in. Customers in those regions will see Stripe as a payment option at checkout.
+
+You can select specific regions or enable Stripe globally. Bloom will set up Stripe based on your preferences.
+
+Next, Bloom will ask for your API keys:
+
+1. **Publishable API key:** Paste the publishable key you copied from your Stripe dashboard (starts with `pk_test_`).
+2. **Secret API key:** Paste the secret key you copied from your Stripe dashboard (starts with `sk_test_`).
+
+Bloom will start the setup process and configure Stripe with the provided API keys and region settings.
+
+<Note title="Technical Information">
+
+Bloom stores your Stripe credentials as environment variables in your store. They're never exposed in your code or logs. See [Environment Variables](../../../../developers/environment-variables/page.mdx) for more details.
+
+</Note>
+
+{/* TODO: Add screenshot of Bloom asking configuration questions */}
+
+---
+
+## Test Stripe
+
+After Bloom finishes the setup, test Stripe in your preview store using [Stripe's test card numbers](https://docs.stripe.com/testing):
+
+1. Open your <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "store" }}>store</InProductAction> preview.
+2. Add a product to your cart and go to checkout.
+3. Use a test card number (like `4242 4242 4242 4242`) to place an order.
+4. Check that the order appears in your admin dashboard.
+5. Check that the payment appears in your Stripe dashboard.
+
+If both dashboards show the order and payment, Stripe is working correctly.
+
+{/* TODO: Add screenshot of successful test order in Stripe dashboard */}
+
+---
+
+## Publish Stripe Integration
+
+Once you've tested Stripe and it's working correctly, publish your store to make it live with production credentials.
+
+To publish your Stripe integration:
+
+1. Click the "Publish" button at the top right of your project.
+2. If you haven't published before, Bloom asks for details about your store.
+3. In the "Missing production values" section, enter your live Stripe API keys.
+4. To get live keys, go to your Stripe dashboard, switch to live mode, and copy your Publishable and Secret keys.
+5. Click "Publish" to make your changes live.
+
+Your Stripe integration is now active on your live store. Customers can use Stripe to make real payments.
+
+{/* TODO: Add screenshot of publish dialog with Stripe production values */}
+
+---
+
+## Need Help?
+
+If you face any issues while adding Stripe to your Bloom store, [contact support or submit feedback](../../../../help-and-feedback/page.mdx).

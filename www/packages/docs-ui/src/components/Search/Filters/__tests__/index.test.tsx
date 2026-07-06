@@ -1,7 +1,7 @@
 import React from "react"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import { fireEvent, render } from "@testing-library/react"
-import { AlgoliaIndex } from "@/providers/Search"
+import type { AlgoliaIndex } from "../../../../providers/Search"
 
 // mock hooks
 const mockSetSelectedIndex = vi.fn()
@@ -29,6 +29,24 @@ beforeEach(() => {
 })
 
 describe("rendering", () => {
+  test("does not render when only one index", () => {
+    mockUseSearch.mockReturnValue({
+      ...defaultUseSearchReturn,
+      indices: [{ value: "docs", title: "Documentation" }],
+    })
+    const { container } = render(<SearchFilters />)
+    expect(container.firstChild).toBeNull()
+  })
+
+  test("does not render when no indices", () => {
+    mockUseSearch.mockReturnValue({
+      ...defaultUseSearchReturn,
+      indices: [],
+    })
+    const { container } = render(<SearchFilters />)
+    expect(container.firstChild).toBeNull()
+  })
+
   test("renders filter buttons for each index", () => {
     const { container } = render(<SearchFilters />)
     const buttons = container.querySelectorAll("button")

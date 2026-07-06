@@ -4,11 +4,12 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { buildBatchVariantInventoryData } from "../../../../helpers"
-import { AdminBatchVariantInventoryItemsType } from "../../../../validators"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminBatchVariantInventoryItemsType>,
+  req: AuthenticatedMedusaRequest<
+    HttpTypes.AdminBatchVariantInventoryItems
+  >,
   res: MedusaResponse<HttpTypes.AdminProductVariantInventoryBatchResponse>
 ) => {
   const { create = [], update = [], delete: toDelete = [] } = req.validatedBody

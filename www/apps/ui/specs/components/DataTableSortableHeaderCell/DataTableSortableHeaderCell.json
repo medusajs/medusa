@@ -2,5 +2,28 @@
   "description": "",
   "methods": [],
   "displayName": "DataTableSortableHeaderCell",
-  "props": {}
+  "props": {
+    "id": {
+      "required": true,
+      "tsType": {
+        "name": "string"
+      },
+      "description": ""
+    },
+    "children": {
+      "required": true,
+      "tsType": {
+        "name": "ReactReactNode",
+        "raw": "React.ReactNode"
+      },
+      "description": ""
+    },
+    "isFirstColumn": {
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      },
+      "description": ""
+    }
+  }
 }

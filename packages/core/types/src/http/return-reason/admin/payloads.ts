@@ -27,7 +27,7 @@ export interface AdminCreateReturnReason extends AdminBaseReturnReasonPayload {
   /**
    * The ID of the return reason's parent.
    */
-  parent_return_reason_id?: string
+  parent_return_reason_id?: string | null
 }
 
 export interface AdminUpdateReturnReason extends AdminBaseReturnReasonPayload {}

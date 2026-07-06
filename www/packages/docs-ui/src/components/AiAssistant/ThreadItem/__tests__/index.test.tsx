@@ -32,9 +32,6 @@ const mockErrorThreadItem: AiAssistantThreadItemType = {
 vi.mock("@kapaai/react-sdk", () => ({
   useChat: () => AiAssistantMocks.mockUseChat(),
 }))
-vi.mock("@/components/Icons/AiAssistant", () => ({
-  AiAssistantIcon: () => <span>AiAssistantIcon</span>,
-}))
 vi.mock("@/components/CodeMdx", () => ({
   CodeMdx: (props: CodeMdxProps) => <code {...props} />,
 }))
@@ -53,6 +50,9 @@ vi.mock("@/components/AiAssistant/ThreadItem/Actions", () => ({
 }))
 vi.mock("@/components/Loading/Dots", () => ({
   DotsLoading: () => <div>DotsLoading</div>,
+}))
+vi.mock("@/components/AiAssistant/Loading", () => ({
+  AiAssistantLoading: () => <div>AiAssistantLoading</div>,
 }))
 
 import { AiAssistantThreadItem } from "../../ThreadItem"
@@ -75,8 +75,6 @@ describe("rendering", () => {
     expect(container).toBeInTheDocument()
     const wrapper = container.querySelector("div")
     expect(wrapper).toHaveClass("justify-end")
-    const aiAssistantIcon = container.querySelector("span")
-    expect(aiAssistantIcon).not.toBeInTheDocument()
     expect(container).toHaveTextContent(mockQuestionThreadItem.content)
     expect(container).toHaveTextContent("AiAssistantThreadItemActions")
   })
@@ -87,9 +85,6 @@ describe("rendering", () => {
     expect(container).toBeInTheDocument()
     const wrapper = container.querySelector("div")
     expect(wrapper).toHaveClass("!pr-[20px]")
-    const aiAssistantIcon = container.querySelector("span")
-    expect(aiAssistantIcon).toBeInTheDocument()
-    expect(aiAssistantIcon).toHaveTextContent("AiAssistantIcon")
     expect(container).toHaveTextContent(
       mockAnswerWithQuestionThreadItem.content
     )
@@ -107,9 +102,6 @@ describe("rendering", () => {
       <AiAssistantThreadItem item={mockErrorThreadItem} />
     )
     expect(container).toBeInTheDocument()
-    const aiAssistantIcon = container.querySelector("span")
-    expect(aiAssistantIcon).toBeInTheDocument()
-    expect(aiAssistantIcon).toHaveTextContent("AiAssistantIcon")
     const span = container.querySelector("span.text-medusa-fg-error")
     expect(span).toBeInTheDocument()
     expect(span).toHaveTextContent(mockErrorThreadItem.content)
@@ -122,7 +114,7 @@ describe("loading", () => {
       <AiAssistantThreadItem item={mockEmptyAnswerThreadItem} />
     )
     expect(container).toBeInTheDocument()
-    expect(container).toHaveTextContent("DotsLoading")
+    expect(container).toHaveTextContent("AiAssistantLoading")
   })
   test("hide loading when answer has question_id and no content", () => {
     const { container } = render(
@@ -134,20 +126,20 @@ describe("loading", () => {
       />
     )
     expect(container).toBeInTheDocument()
-    expect(container).not.toHaveTextContent("DotsLoading")
+    expect(container).not.toHaveTextContent("AiAssistantLoading")
   })
   test("hide loading when answer has content", () => {
     const { container } = render(
       <AiAssistantThreadItem item={mockAnswerWithoutQuestionThreadItem} />
     )
     expect(container).toBeInTheDocument()
-    expect(container).not.toHaveTextContent("DotsLoading")
+    expect(container).not.toHaveTextContent("AiAssistantLoading")
   })
   test("hide loading when error is not empty", () => {
     const { container } = render(
       <AiAssistantThreadItem item={mockErrorThreadItem} />
     )
     expect(container).toBeInTheDocument()
-    expect(container).not.toHaveTextContent("DotsLoading")
+    expect(container).not.toHaveTextContent("AiAssistantLoading")
   })
 })

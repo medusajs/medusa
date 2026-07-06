@@ -3,66 +3,95 @@ import { rootPathPrefix } from "../constants/general.js"
 import { NamespaceGenerateDetails } from "types"
 import { capitalize, kebabToTitle } from "utils"
 import path from "path"
+import pkg from 'pluralize'
+const { singular } = pkg
 
 export function getCoreFlowNamespaces(): NamespaceGenerateDetails[] {
   const namespaces: NamespaceGenerateDetails[] = []
-  const rootFlowsPath = path.join(
-    rootPathPrefix,
-    "packages",
-    "core",
-    "core-flows",
-    "src"
-  )
+  const rootFlowsPath: {
+    flowsPath: string
+    pattern: string
+  }[] = [
+    {
+      flowsPath: path.join(
+        rootPathPrefix,
+        "packages",
+        "core",
+        "core-flows",
+        "src"
+      ),
+      pattern: "**/packages/core/core-flows/src/",
+    },
+    {
+      flowsPath: path.join(
+        rootPathPrefix,
+        "packages",
+        "plugins",
+        "loyalty",
+        "src",
+        "workflows"
+      ),
+      pattern: "**/packages/plugins/loyalty/src/workflows/",
+    },
+  ]
 
-  // retrieve directories
-  const directories = readdirSync(rootFlowsPath, {
-    withFileTypes: true,
-  })
+  for (const { flowsPath, pattern } of rootFlowsPath) {
+    // retrieve directories
+    const directories = readdirSync(flowsPath, {
+      withFileTypes: true,
+    })
 
-  const loopDirectories = (dirs: Dirent[], parentDirs: string[] = []) => {
-    dirs.forEach((directory) => {
-      if (!directory.isDirectory()) {
-        return
-      }
-
-      const namespaceName = kebabToTitle(directory.name)
-      const pathPatternPrefix = `**/packages/core/core-flows/src/${
-        parentDirs.length ? `${parentDirs.join("/")}/` : ""
-      }${directory.name}`
-      const pathPattern = `${pathPatternPrefix}/**`
-
-      const namespace: NamespaceGenerateDetails = {
-        name: namespaceName,
-        pathPattern,
-        children: [],
-      }
-
-      const subDirs = readdirSync(
-        path.join(rootFlowsPath, ...parentDirs, directory.name),
-        {
-          withFileTypes: true,
-        }
-      )
-
-      subDirs.forEach((dir) => {
-        if (
-          !dir.isDirectory() ||
-          (dir.name !== "workflows" && dir.name !== "steps")
-        ) {
+    const loopDirectories = (dirs: Dirent[], parentDirs: string[] = []) => {
+      dirs.forEach((directory) => {
+        if (!directory.isDirectory() || directory.name === "hooks") {
           return
         }
 
-        namespace.children!.push({
-          name: `${capitalize(dir.name)}_${namespaceName}`,
-          pathPattern: `${pathPatternPrefix}/${dir.name}/**`,
+        const namespaceName = singular(kebabToTitle(directory.name))
+        const pathPatternPrefix = `${pattern}${
+          parentDirs.length ? `${parentDirs.join("/")}/` : ""
+        }${directory.name}`
+        const pathPattern = `${pathPatternPrefix}/**`
+        const existingNamespace = namespaces.find((ns) => ns.name === namespaceName)
+        if (existingNamespace) {
+          if (existingNamespace.pathPattern !== pathPattern) {
+            existingNamespace.pathPattern = `(${existingNamespace.pathPattern}|${pathPattern})`
+          }
+        }
+
+        const namespace: NamespaceGenerateDetails = {
+          name: namespaceName,
+          pathPattern,
+          children: [],
+        }
+
+        const subDirs = readdirSync(
+          path.join(flowsPath, ...parentDirs, directory.name),
+          {
+            withFileTypes: true,
+          }
+        )
+
+        subDirs.forEach((dir) => {
+          if (
+            !dir.isDirectory() ||
+            (dir.name !== "workflows" && dir.name !== "steps")
+          ) {
+            return
+          }
+
+          namespace.children!.push({
+            name: `${capitalize(dir.name)}_${namespaceName}`,
+            pathPattern: `${pathPatternPrefix}/${dir.name}/**`,
+          })
         })
+
+        namespaces.push(namespace)
       })
+    }
 
-      namespaces.push(namespace)
-    })
+    loopDirectories(directories)
   }
-
-  loopDirectories(directories)
 
   return namespaces
 }

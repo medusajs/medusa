@@ -1,0 +1,180 @@
+import { CardList, InProductAction, getOsShortcut } from "docs-ui"
+
+export const metadata = {
+  title: `Add Integrations to Your Store`,
+}
+
+# {metadata.title}
+
+Connect services like Stripe, Slack, Klaviyo, and more to add powerful features to your store. Bloom guides you through the setup with step-by-step questions.
+
+{/* TODO: Add screenshot of integrations page showing available service cards */}
+
+## Why Use Integrations
+
+Ecommerce applications rely on various services to handle payments, notifications, marketing, and more. Setting up this ecommerce ecosystem manually can be complex and requires technical knowledge.
+
+Bloom's Integrations feature allows you to add popular services to your store with simple prompts. Add integrations to:
+
+- **Accept Payments**: Add Stripe to process credit cards, Apple Pay, Google Pay, and more.
+- **Send Notifications**: Connect Slack to get alerts about new orders and events.
+- **Manage Consent**: Use Cookiebot to handle customer privacy and cookie consent.
+- **Build Email Lists**: Integrate Klaviyo to send marketing emails and newsletters.
+
+And more. Bloom handles the technical setup, so you can focus on running your store and serving customers.
+
+{/* TODO: Add screenshot showing variety of integration cards (Stripe, Slack, Cookiebot, Klaviyo) */}
+
+---
+
+## Available Integrations
+
+Bloom offers guided setup for popular services. Each integration includes step-by-step instructions to help you get started quickly:
+
+<Note title="Looking for a specific integration?">
+
+If you don't see the service you want to integrate, you can ask Bloom to add it using a custom prompt as explained [below](#custom-integrations). Consider sharing feedback at the end of this page with the service you'd like to see added next.
+
+</Note>
+
+<CardList items={[
+  {
+    href: "/features/integrations/guides/stripe",
+    title: "Stripe",
+    text: "Accept credit cards, Apple Pay, Google Pay, and more payment methods."
+  },
+  {
+    href: "/features/integrations/guides/slack",
+    title: "Slack",
+    text: "Get notifications about orders, customers, and store events."
+  },
+  {
+    href: "/features/integrations/guides/cookiebot",
+    title: "Cookiebot",
+    text: "Manage customer consent and comply with privacy regulations."
+  },
+  {
+    href: "/features/integrations/guides/klaviyo",
+    title: "Klaviyo",
+    text: "Build email lists and send marketing campaigns to customers."
+  }
+]} />
+
+---
+
+## Add an Integration
+
+### Prerequisites
+
+Before adding an integration, make sure you have the necessary accounts and credentials for the service you want to connect. For example, to add Stripe, you'll need a Stripe account and API keys.
+
+The [service-specific guides](#available-integrations) provide prerequisites and instructions for each integration.
+
+### Step 1: Open the Integrations Tab
+
+The <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "integrations" }}>Integrations</InProductAction> tab shows all the available services you can connect to your store and allows you to set up custom integrations.
+
+To open the Integrations tab:
+
+1. Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> to open the preview tab switcher.
+2. Select the "Integrations" tab from the list.
+
+{/* TODO: Add screenshot of navigation menu with "Integrations" highlighted */}
+
+### Step 2: Choose Your Service
+
+On the integrations page, you'll see cards for supported integrations like Stripe and Slack.
+
+To integrate the service, click the "Build" button on the card. This will send a prompt to Bloom to add your integration.
+
+#### Custom Integrations
+
+If you can't find the service you want to integrate, you can enter a custom prompt to integrate it in the input field at the top of the page.
+
+For example:
+
+```bash title="Custom Prompt Example"
+Add Algolia as a search provider for my store. I want customers to
+be able to search products by name, description, and categories. Add
+a search bar to the header of my store and show instant search results as customers
+type.
+```
+
+Bloom will set up the integration based on the details you provide.
+
+See [Service Integration Prompting](../../prompting/service-integrations-prompting/page.mdx) for tips on writing effective prompts to integrate custom services.
+
+{/* TODO: Add screenshot of clicking "Build" button on an integration card */}
+
+### Step 3: Answer Bloom's Questions
+
+Once Bloom starts building the integration, it will ask you questions to gather the necessary information for setup. For example:
+
+1. "Which regions do you want to enable Stripe in?"
+2. "What events do you want to receive notifications for in Slack?"
+3. "What is your Cookiebot domain group ID?"
+
+After you answer these questions and provide the required information, Bloom will complete the integration setup for you.
+
+<Note type="warning" title="Use Test Credentials">
+
+When entering API keys or credentials, use test or sandbox values. This allows you to test the integration in preview mode without affecting your live store or incurring real charges. You'll enter live credentials when you publish your store.
+
+</Note>
+
+{/* TODO: Add screenshot of Bloom asking questions (example: Slack webhook URL prompt) */}
+
+{/* TODO: Add screenshot of entering configuration details in the input field */}
+
+### Step 4: Test Your Integration
+
+After Bloom finishes setting up the integration, test it in your preview store to make sure it's working correctly.
+
+For example, if you added Stripe, place a test order using Stripe's test card numbers and verify that the order appears in your admin dashboard and Stripe dashboard.
+
+If you encounter any issues or if you want to adjust the integration, you can ask Bloom to make changes. For example:
+
+```bash
+For Stripe, enable support for saved payment methods for registered customers.
+```
+
+Bloom will update the integration to include support for saved payment methods as you requested.
+
+{/* TODO: Add screenshot of testing an integration (example: test order confirmation in Stripe dashboard) */}
+
+### Step 5: Publish Your Integration
+
+Once you've tested your integration and it's working correctly, you can publish changes to your live store.
+
+To publish your integration:
+
+1. Click the "Publish" button at the top right of your project.
+2. If you haven't published before, Bloom asks for details about your store.
+3. In the "Missing production values" section, enter your live credentials. For example, if you added Stripe, enter your live Stripe API keys here.
+4. Click "Publish" to make your changes live.
+
+Your integration is now active on your live store with production credentials. Customers can use the integrated service when they visit your store.
+
+{/* TODO: Add screenshot of publish dialog showing "Missing production values" section */}
+
+---
+
+## Customize Further
+
+<CardList items={[
+  {
+    href: "/prompting/service-integrations-prompting",
+    title: "Service Integration Prompting",
+    text: "Learn how to integrate custom services not in the available integrations list."
+  },
+  {
+    href: "/going-live",
+    title: "Publish Your Store",
+    text: "Deploy your store with all integrations configured for production."
+  },
+  {
+    href: "/help-and-feedback",
+    title: "Give Feedback and Contact Support",
+    text: "Get help if your integration isn't working as expected."
+  }
+]} itemsPerRow={1} />

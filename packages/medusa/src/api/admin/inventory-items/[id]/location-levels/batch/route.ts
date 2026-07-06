@@ -1,10 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { AdminBatchInventoryItemLocationsLevelType } from "../../../validators"
-
 import { batchInventoryItemLevelsWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: MedusaRequest<AdminBatchInventoryItemLocationsLevelType>,
+  req: MedusaRequest<HttpTypes.AdminBatchInventoryItemLocationLevels>,
   res: MedusaResponse
 ) => {
   const { id } = req.params

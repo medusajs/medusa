@@ -7,6 +7,7 @@ const AiAssistent = React.forwardRef<SVGSVGElement, IconProps>(
         xmlns="http://www.w3.org/2000/svg"
         width={15}
         height={16}
+        viewBox="0 0 15 16"
         fill="none"
         ref={ref}
         {...props}

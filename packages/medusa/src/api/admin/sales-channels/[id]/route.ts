@@ -11,7 +11,7 @@ import { refetchSalesChannel } from "../helpers"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetSalesChannelParams>,
   res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {
   const salesChannel = await refetchSalesChannel(
@@ -33,7 +33,7 @@ export const GET = async (
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminUpdateSalesChannel,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetSalesChannelParams
   >,
   res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {

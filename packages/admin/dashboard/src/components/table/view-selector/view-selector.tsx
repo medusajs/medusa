@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { 
-  Select,
-  Button,
-  Tooltip,
-  DropdownMenu,
-  Badge,
-  usePrompt,
-  toast,
-} from "@medusajs/ui"
-import { 
+import { Button, Tooltip, DropdownMenu, usePrompt } from "@medusajs/ui"
+import {
   Eye,
-  EyeSlash,
   Plus,
   Trash,
   PencilSquare,
@@ -18,7 +9,10 @@ import {
   CheckCircleSolid,
   ArrowUturnLeft,
 } from "@medusajs/icons"
-import { useViewConfigurations, useViewConfiguration } from "../../../hooks/use-view-configurations"
+import {
+  useViewConfigurations,
+  useViewConfiguration,
+} from "../../../hooks/use-view-configurations"
 import type { ViewConfiguration } from "../../../hooks/use-view-configurations"
 import { SaveViewDialog } from "../save-view-dialog"
 
@@ -36,23 +30,18 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
   onViewChange,
   currentColumns,
 }) => {
-  const {
-    listViews,
-    activeView,
-    setActiveView,
-    isDefaultViewActive,
-  } = useViewConfigurations(entity)
+  const { listViews, activeView, setActiveView } = useViewConfigurations(entity)
 
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [editingView, setEditingView] = useState<ViewConfiguration | null>(null)
   const [deletingViewId, setDeletingViewId] = useState<string | null>(null)
   const prompt = usePrompt()
 
-  const views = listViews.data?.view_configurations || []
-  const currentActiveView = activeView.data?.view_configuration || null
+  const views = (listViews as any).data?.view_configurations || []
+  const currentActiveView = (activeView as any).data?.view_configuration || null
 
   // Get delete mutation for the current deleting view
-  const { deleteView } = useViewConfiguration(entity, deletingViewId || '')
+  const { deleteView } = useViewConfiguration(entity, deletingViewId || "")
 
   // Load views and active view
   useEffect(() => {
@@ -62,7 +51,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
   }, [activeView.isSuccess, currentActiveView, onViewChange])
 
   const handleViewSelect = async (viewId: string) => {
-    const view = views.find(v => v.id === viewId)
+    const view = views.find((v: ViewConfiguration) => v.id === viewId)
     if (view) {
       await setActiveView.mutateAsync(viewId)
       if (onViewChange) {
@@ -87,18 +76,26 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
   // Handle deletion when deletingViewId is set
   useEffect(() => {
     if (deletingViewId && deleteView.mutateAsync) {
-      deleteView.mutateAsync().then(() => {
-        if (currentActiveView?.id === deletingViewId) {
-          if (onViewChange) {
-            onViewChange(null)
+      deleteView
+        .mutateAsync()
+        .then(() => {
+          if (currentActiveView?.id === deletingViewId) {
+            if (onViewChange) {
+              onViewChange(null)
+            }
           }
-        }
-        setDeletingViewId(null)
-      }).catch(() => {
-        setDeletingViewId(null)
-      })
+          setDeletingViewId(null)
+        })
+        .catch(() => {
+          setDeletingViewId(null)
+        })
     }
-  }, [deletingViewId, deleteView.mutateAsync, currentActiveView?.id, onViewChange])
+  }, [
+    deletingViewId,
+    deleteView.mutateAsync,
+    currentActiveView?.id,
+    onViewChange,
+  ])
 
   const handleSaveView = () => {
     setSaveDialogOpen(true)
@@ -110,10 +107,13 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
     setSaveDialogOpen(true)
   }
 
-  const handleResetSystemDefault = async (systemDefaultView: ViewConfiguration) => {
+  const handleResetSystemDefault = async (
+    systemDefaultView: ViewConfiguration
+  ) => {
     const result = await prompt({
       title: "Reset system default",
-      description: "This will delete the saved system default and revert to the original code-level defaults. All users will be affected. Are you sure?",
+      description:
+        "This will delete the saved system default and revert to the original code-level defaults. All users will be affected. Are you sure?",
       confirmText: "Reset",
       cancelText: "Cancel",
     })
@@ -123,8 +123,12 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
     }
   }
 
-  const systemDefaultView = views.find(v => v.is_system_default)
-  const personalViews = views.filter(v => !v.is_system_default)
+  const systemDefaultView = views.find(
+    (v: ViewConfiguration) => v.is_system_default
+  )
+  const personalViews = views.filter(
+    (v: ViewConfiguration) => !v.is_system_default
+  )
 
   return (
     <>
@@ -142,7 +146,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
                 <DropdownMenu.Label>System Default</DropdownMenu.Label>
                 <DropdownMenu.Item
                   onClick={() => handleViewSelect(systemDefaultView.id)}
-                  className="justify-between group"
+                  className="group justify-between"
                 >
                   <span className="flex items-center gap-2">
                     <Star className="h-4 w-4" />
@@ -150,7 +154,7 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
                   </span>
                   <div className="flex items-center gap-1">
                     {currentActiveView?.id === systemDefaultView.id && (
-                      <CheckCircleSolid className="h-4 w-4 text-ui-fg-positive" />
+                      <CheckCircleSolid className="text-ui-fg-positive h-4 w-4" />
                     )}
                     <div className="opacity-0 group-hover:opacity-100">
                       <Tooltip content="Reset to code defaults">
@@ -175,18 +179,18 @@ export const ViewSelector: React.FC<ViewSelectorProps> = ({
             {personalViews.length > 0 && (
               <>
                 <DropdownMenu.Label>Personal Views</DropdownMenu.Label>
-                {personalViews.map((view) => (
+                {personalViews.map((view: ViewConfiguration) => (
                   <DropdownMenu.Item
                     key={view.id}
                     onClick={() => handleViewSelect(view.id)}
-                    className="justify-between group"
+                    className="group justify-between"
                   >
                     <span className="flex-1">{view.name}</span>
                     <div className="flex items-center gap-1">
                       {currentActiveView?.id === view.id && (
-                        <CheckCircleSolid className="h-4 w-4 text-ui-fg-positive" />
+                        <CheckCircleSolid className="text-ui-fg-positive h-4 w-4" />
                       )}
-                      <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1">
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
                         <Tooltip content="Edit view">
                           <Button
                             variant="transparent"

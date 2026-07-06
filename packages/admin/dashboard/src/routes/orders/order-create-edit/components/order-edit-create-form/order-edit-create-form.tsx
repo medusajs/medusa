@@ -15,6 +15,7 @@ import {
   useCancelOrderEdit,
   useRequestOrderEdit,
 } from "../../../../../hooks/api/order-edits"
+import { useUpdateOrderChange } from "../../../../../hooks/api/orders"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { OrderEditItemsSection } from "./order-edit-items-section"
 import { CreateOrderEditSchemaType, OrderEditCreateSchema } from "./schema"
@@ -43,13 +44,17 @@ export const OrderEditCreateForm = ({
 
   const isRequestRunning = isCanceling || isRequesting
 
+  const { mutateAsync: updateOrderChange } = useUpdateOrderChange(
+    preview?.order_change?.id ?? ""
+  )
+
   /**
    * FORM
    */
   const form = useForm<CreateOrderEditSchemaType>({
     defaultValues: () => {
       return Promise.resolve({
-        note: "", // TODO: add note when update edit route is added
+        note: "",
         send_notification: false, // TODO: not supported in the API ATM
       })
     },
@@ -72,13 +77,18 @@ export const OrderEditCreateForm = ({
         return
       }
 
+      if (data.note && preview?.order_change?.id) {
+        await updateOrderChange({ internal_note: data.note })
+      }
+
       await requestOrderEdit()
 
       toast.success(t("orders.edits.createSuccessToast"))
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
-        description: e.message,
+        description:
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle"),
       })
     }
   })

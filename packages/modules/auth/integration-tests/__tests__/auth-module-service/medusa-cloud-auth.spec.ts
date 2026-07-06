@@ -1,9 +1,28 @@
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { IAuthModuleService } from "@medusajs/types"
+import crypto from "crypto"
 import jwt from "jsonwebtoken"
+import { http, HttpResponse } from "msw"
+import { setupServer } from "msw/node"
 
 jest.setTimeout(30000)
+
+const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
+  modulusLength: 2048,
+})
+
+const KID = "test-kid"
+
+const jwkPublic = {
+  ...(publicKey.export({ format: "jwk" }) as Record<string, string>),
+  kid: KID,
+  use: "sig",
+  alg: "RS256",
+}
+
+const TOKEN_ENDPOINT = "https://medusa.cloud/oauth/token"
+const JWKS_URI = "https://medusa.cloud/oauth/jwks"
 
 const createMockIdToken = (payload: Record<string, any> = {}) => {
   return jwt.sign(
@@ -14,14 +33,53 @@ const createMockIdToken = (payload: Record<string, any> = {}) => {
       name: "John Doe",
       given_name: "John",
       family_name: "Doe",
+      aud: "test-environment",
       ...payload,
     },
-    "test-secret"
+    privateKey.export({ format: "pem", type: "pkcs8" }),
+    {
+      algorithm: "RS256",
+      keyid: KID,
+      expiresIn: "1d",
+    }
   )
 }
 
-const mockTokenFetch = jest.fn()
-global.fetch = mockTokenFetch
+type TokenResponse = {
+  status?: number
+  body: Record<string, unknown>
+}
+
+let nextTokenResponse: TokenResponse | null = null
+let lastTokenRequest: {
+  url: string
+  method: string
+  headers: Record<string, string>
+  body: URLSearchParams
+} | null = null
+
+const server = setupServer(
+  http.get(JWKS_URI, () => HttpResponse.json({ keys: [jwkPublic] })),
+
+  http.post(TOKEN_ENDPOINT, async ({ request }) => {
+    const rawBody = await request.text()
+    lastTokenRequest = {
+      url: request.url,
+      method: request.method,
+      headers: Object.fromEntries(request.headers.entries()),
+      body: new URLSearchParams(rawBody),
+    }
+
+    if (!nextTokenResponse) {
+      return HttpResponse.json({}, { status: 500 })
+    }
+    const { status = 200, body } = nextTokenResponse
+    return HttpResponse.json(body, { status })
+  })
+)
+
+beforeAll(() => server.listen({ onUnhandledRequest: "warn" }))
+afterAll(() => server.close())
 
 const mockCache = new Map()
 const inMemoryCache = {
@@ -42,7 +100,9 @@ moduleIntegrationTestRunner<IAuthModuleService>({
   moduleOptions: {
     cloud: {
       oauth_authorize_endpoint: "https://medusa.cloud/oauth/authorize",
-      oauth_token_endpoint: "https://medusa.cloud/oauth/token",
+      oauth_token_endpoint: TOKEN_ENDPOINT,
+      oauth_jwks_uri: JWKS_URI,
+      oauth_audience: "test-environment",
       api_key: "test-api-key",
       callback_url: "https://store.app/oauth/callback",
       environment_handle: "test-environment",
@@ -56,7 +116,25 @@ moduleIntegrationTestRunner<IAuthModuleService>({
     describe("Medusa Cloud Auth provider", () => {
       afterEach(() => {
         mockCache.clear()
-        mockTokenFetch.mockReset()
+        nextTokenResponse = null
+        lastTokenRequest = null
+        server.resetHandlers(
+          http.get(JWKS_URI, () => HttpResponse.json({ keys: [jwkPublic] })),
+          http.post(TOKEN_ENDPOINT, async ({ request }) => {
+            const rawBody = await request.text()
+            lastTokenRequest = {
+              url: request.url,
+              method: request.method,
+              headers: Object.fromEntries(request.headers.entries()),
+              body: new URLSearchParams(rawBody),
+            }
+            if (!nextTokenResponse) {
+              return HttpResponse.json({}, { status: 500 })
+            }
+            const { status = 200, body } = nextTokenResponse
+            return HttpResponse.json(body, { status })
+          })
+        )
       })
 
       describe("authenticate", () => {
@@ -115,12 +193,9 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           const query = new URL(response.location!).searchParams
           state = query.get("state")!
 
-          mockTokenFetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({
-              id_token: createMockIdToken(),
-            }),
-          })
+          nextTokenResponse = {
+            body: { id_token: createMockIdToken() },
+          }
         })
 
         it("should validate a valid callback", async () => {
@@ -148,21 +223,21 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             },
           })
 
-          expect(mockTokenFetch.mock.calls[0][0]).toBe(
-            "https://medusa.cloud/oauth/token"
+          expect(lastTokenRequest).not.toBeNull()
+          expect(lastTokenRequest!.url).toBe(TOKEN_ENDPOINT)
+          expect(lastTokenRequest!.method).toBe("POST")
+          expect(lastTokenRequest!.headers["content-type"]).toContain(
+            "application/x-www-form-urlencoded"
           )
-          expect(mockTokenFetch.mock.calls[0][1].method).toBe("POST")
-          expect(mockTokenFetch.mock.calls[0][1].headers).toEqual({
-            "Content-Type": "application/x-www-form-urlencoded",
-          })
-          const body = mockTokenFetch.mock.calls[0][1].body as URLSearchParams
-          expect(body.get("client_id")).toBe("test-environment")
-          expect(body.get("client_secret")).toBe("test-api-key")
-          expect(body.get("code")).toBe("code1")
-          expect(body.get("redirect_uri")).toBe(
+          expect(lastTokenRequest!.body.get("client_id")).toBe("test-environment")
+          expect(lastTokenRequest!.body.get("client_secret")).toBe("test-api-key")
+          expect(lastTokenRequest!.body.get("code")).toBe("code1")
+          expect(lastTokenRequest!.body.get("redirect_uri")).toBe(
             "https://store.app/oauth/callback"
           )
-          expect(body.get("grant_type")).toBe("authorization_code")
+          expect(lastTokenRequest!.body.get("grant_type")).toBe(
+            "authorization_code"
+          )
         })
 
         it("should return an error if the code is not provided", async () => {
@@ -200,11 +275,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         })
 
         it("should return an error if the token exchange does not return an id_token", async () => {
-          mockTokenFetch.mockReset()
-          mockTokenFetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({}),
-          })
+          nextTokenResponse = { body: {} }
           const response = await service.validateCallback("cloud", {
             query: {
               code: "code1",
@@ -216,12 +287,22 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           expect(response.error).toBe("No id_token")
         })
 
-        it("should return an error if the token exchange does not return a valid JWT id_token", async () => {
-          mockTokenFetch.mockReset()
-          mockTokenFetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({ id_token: "invalid-jwt-token" }),
-          })
+        it("should reject a forged id_token whose signature does not match the JWKS", async () => {
+          nextTokenResponse = {
+            body: {
+              id_token: jwt.sign(
+                {
+                  sub: "attacker-sub",
+                  email: "attacker@example.com",
+                  email_verified: true,
+                  aud: "test-environment",
+                },
+                "attacker-secret",
+                { algorithm: "HS256", keyid: KID, expiresIn: "1d" }
+              ),
+            },
+          }
+
           const response = await service.validateCallback("cloud", {
             query: {
               code: "code1",
@@ -230,17 +311,15 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           })
 
           expect(response.success).toBe(false)
-          expect(response.error).toBe("The id_token is not a valid JWT")
+          expect(response.error).toMatch(/Could not verify id_token/i)
         })
 
         it("should return an error if the email is not verified", async () => {
-          mockTokenFetch.mockReset()
-          mockTokenFetch.mockResolvedValueOnce({
-            ok: true,
-            json: async () => ({
+          nextTokenResponse = {
+            body: {
               id_token: createMockIdToken({ email_verified: false }),
-            }),
-          })
+            },
+          }
           const response = await service.validateCallback("cloud", {
             query: {
               code: "code1",
@@ -289,7 +368,9 @@ moduleIntegrationTestRunner<IAuthModuleService>({
   moduleOptions: {
     cloud: {
       oauth_authorize_endpoint: "https://medusa.cloud/oauth/authorize",
-      oauth_token_endpoint: "https://medusa.cloud/oauth/token",
+      oauth_token_endpoint: TOKEN_ENDPOINT,
+      oauth_jwks_uri: JWKS_URI,
+      oauth_audience: "test-environment",
       api_key: "test-api-key",
       callback_url: "https://store.app/oauth/callback",
       environment_handle: "test-environment",

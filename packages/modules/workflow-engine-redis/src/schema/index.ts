@@ -14,10 +14,12 @@ type WorkflowExecution {
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
-  workflow_id: string
-  transaction_id: string
+  workflow_id: String!
+  transaction_id: String!
+  run_id: String!
   execution: JSON
   context: JSON
   state: TransactionState
+  retention_time: Int
 }
 `

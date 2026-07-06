@@ -1,0 +1,112 @@
+export const metadata = {
+  title: `Fix Errors and Issues`,
+}
+
+# {metadata.title}
+
+This guide covers how to solve issues and handle unexpected results in your Bloom store.
+
+## When Do Errors Happen?
+
+When you ask Bloom to build features, sometimes it doesn't work as expected. You may either:
+
+1. See an error that Bloom detects and offers to fix.
+2. Run into errors that Bloom doesn't automatically detect.
+3. Get results that don't match your expectations.
+
+Bloom is designed to assist you in your store-building experience, including fixing errors and improving results. This guide provides best practices for fixing issues with Bloom.
+
+---
+
+## Fix Errors
+
+Bloom may make mistakes while building new features or making design changes. You can ask Bloom to fix these errors either when it detects them or when you notice something is wrong.
+
+### Use the Fix Error Button
+
+When an error happens in your store, Bloom often detects it and shows a pop-up to fix the error.
+
+When that happens, click the "Fix error" button in the pop-up. This sends a prompt to Bloom with the error's details. Bloom will analyze and fix the error.
+
+<Note>
+
+"Fix error" prompts consume credits similar to regular prompts.
+
+</Note>
+
+{/* TODO add screenshot of error prompt with "Fix error" button */}
+
+### Errors Bloom Doesn't Detect
+
+Sometimes you may run into errors while using your store and admin dashboard that Bloom doesn't automatically detect. For example, you open a custom admin page and you see an error.
+
+When this happens, ask Bloom to fix the error. Describe:
+
+- **Context**: What you were trying to do when the error happened.
+- **What**: The error message you see or the issue you're experiencing.
+- **How**: The steps you took that caused the error.
+- **Where**: The page or feature where the error occurs.
+- **Expectation**: What you expected to happen instead.
+- **Screenshots**: If possible, include screenshots showing the error.
+
+For example:
+
+```bash title="Good Prompt Example for Undetected Errors"
+When I go to the Product Reviews page in the admin dashboard, I see an error message that says "Failed to load reviews". 
+I was trying to view customer reviews for my products. I expected to see a list of reviews, but instead I see this
+error message. Here's a screenshot of the error.
+```
+
+This prompt gives Bloom the context and details it needs to investigate and fix the error. Bloom will analyze the issue, identify the root cause, and apply a fix to resolve the error in your store.
+
+---
+
+## Fix Unexpected Results
+
+Sometimes Bloom's results don't match what you wanted. For example, you ask for a product slider, but the design looks different from what you imagined.
+
+To avoid this, give Bloom clear and specific prompts. The more specific you are, the better Bloom understands your vision and delivers results that match your expectations.
+
+<Note title="Tip">
+
+For better design results, see the [Store Design Prompting](../store-design-prompting/page.mdx) guide for tips on how to prompt for design changes and fixes effectively.
+
+</Note>
+
+However, when results don't match your expectations, ask Bloom to fix them. To help Bloom understand what's wrong:
+
+1. Show the problem with screenshots. Bloom sees exactly what you see and understands faster.
+2. Explain what you expected versus what you got. Be specific about the problem and how to fix it.
+3. Use [Selection Mode](../../features/selection-mode/page.mdx) to point to the exact element with the issue. This removes confusion about which part you mean.
+4. Fix one thing at a time if multiple things are wrong. This keeps Bloom focused and gets better results.
+
+For example, to fix the product slider issue, attach a screenshot of the slider and say:
+
+```bash title="Good Prompt Example for Unexpected Results"
+As you can see in this screenshot, the product slider is showing 3 products at a time
+but I wanted it to show 4 products. Please update the slider to show 4 products at a time.
+```
+
+---
+
+## Submit Feedback to Improve Bloom
+
+Our team is constantly working to improve Bloom's performance and accuracy so that it delivers better results for you. If Bloom isn't meeting your expectations, consider submitting feedback with the issue you faced.
+
+You can submit feedback for any Bloom response by clicking the thumbs down icon below the response. Provide details about what you expected and what you got. The more details you provide, the better our team can understand the issue and work on improving Bloom.
+
+See the [Give Feedback](../../help-and-feedback/page.mdx) guide for more details on how to submit effective feedback.
+
+---
+
+## Developers: Debug with the Code Editor
+
+Bloom's project interface includes a Code Editor that lets you inspect and edit your store's code.
+
+If you have programming knowledge, you can use the Code Editor to find implementation issues quickly. This is useful if you:
+
+1. Know what the issue is and how to quickly fix it.
+2. Want to point Bloom to the exact problem in the code so it can fix it accurately.
+3. Want to save credits, since Code Editor changes don't consume credits.
+
+See the [Code Editor](../../developers/code-editor/page.mdx) guide for tips on how to use the Code Editor of your project.

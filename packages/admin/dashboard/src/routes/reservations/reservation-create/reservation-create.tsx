@@ -10,7 +10,7 @@ export const ReservationCreate = () => {
 
   return (
     <RouteFocusModal>
-      <ReservationCreateForm inventoryItemId={inventoryItemId} />
+      <ReservationCreateForm inventoryItemId={inventoryItemId ?? undefined} />
     </RouteFocusModal>
   )
 }

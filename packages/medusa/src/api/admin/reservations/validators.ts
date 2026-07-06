@@ -39,7 +39,7 @@ export const AdminCreateReservation = z
     inventory_item_id: z.string(),
     quantity: z.number(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -49,6 +49,6 @@ export const AdminUpdateReservation = z
     location_id: z.string().optional(),
     quantity: z.number().optional(),
     description: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

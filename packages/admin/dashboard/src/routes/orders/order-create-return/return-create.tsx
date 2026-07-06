@@ -25,17 +25,17 @@ export const ReturnCreate = () => {
 
   const { order: preview } = useOrderPreview(id!, undefined, {})
 
-  const [activeReturnId, setActiveReturnId] = useState()
+  const [activeReturnId, setActiveReturnId] = useState<string>()
 
-  const { mutateAsync: initiateReturn } = useInitiateReturn(order.id)
+  const { mutateAsync: initiateReturn } = useInitiateReturn(order?.id ?? "")
 
-  const { return: activeReturn } = useReturn(activeReturnId, undefined, {
+  const { return: activeReturn } = useReturn(activeReturnId ?? "", undefined, {
     enabled: !!activeReturnId,
   })
 
   useEffect(() => {
     async function run() {
-      if (IS_REQUEST_RUNNING || !preview) {
+      if (IS_REQUEST_RUNNING || !preview || !order) {
         return
       }
 
@@ -53,11 +53,15 @@ export const ReturnCreate = () => {
       IS_REQUEST_RUNNING = true
 
       try {
-        const orderReturn = await initiateReturn({ order_id: order.id })
+        const { return: orderReturn } = await initiateReturn({
+          order_id: order.id,
+        })
         setActiveReturnId(orderReturn.id)
       } catch (e) {
         navigate(`/orders/${order.id}`, { replace: true })
-        toast.error(e.message)
+        toast.error(
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle")
+        )
       } finally {
         IS_REQUEST_RUNNING = false
       }

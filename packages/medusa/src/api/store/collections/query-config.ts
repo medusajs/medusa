@@ -2,6 +2,7 @@ export const defaultStoreCollectionFields = [
   "id",
   "title",
   "handle",
+  "external_id",
   "created_at",
   "updated_at",
 ]

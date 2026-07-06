@@ -1,0 +1,13 @@
+---
+displayed_sidebar: loyaltyReference
+---
+
+import { TypeList } from "docs-ui"
+
+# ModuleUpdateGiftCard
+
+ **ModuleUpdateGiftCard**: `Object`
+
+The data required to update a gift card.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the gift card to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`number`","description":"The updated monetary value of the gift card.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[GiftCardStatus](../../enums/loyalty.GiftCardStatus/page.mdx)","description":"The updated status of the gift card.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"PENDING","type":"`\"pending\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"REDEEMED","type":"`\"redeemed\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"note","type":"`string` \\| `null`","description":"An updated note about the gift card.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The updated three-letter ISO currency code.","optional":true,"defaultValue":"","example":"usd","expandable":false,"children":[]},{"name":"expires_at","type":"`string` \\| `null`","description":"The updated expiration date, or null to remove the expiration.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The updated ID of the customer associated with the gift card.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Updated custom key-value pairs attached to the gift card.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="ModuleUpdateGiftCard"/>

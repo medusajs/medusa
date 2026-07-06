@@ -4,7 +4,10 @@ import { IconButton, Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { Combobox } from "../../../../../components/inputs/combobox"
@@ -13,7 +16,9 @@ import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 
 type OrderEditItemProps = {
   item: AdminOrderLineItem
-  previewItem: AdminOrderLineItem
+  previewItem: AdminOrderLineItem & {
+    return_requested_total: number
+  }
   currencyCode: string
   index: number
 
@@ -124,14 +129,14 @@ function ClaimInboundItem({
                     onClick: onRemove,
                     icon: <XCircle />,
                   },
-                ].filter(Boolean),
+                ].filter(Boolean) as Action[],
               },
             ]}
           />
         </div>
       </div>
       <>
-        {/*REASON*/}
+        {/* REASON*/}
         {showReturnReason && (
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
@@ -186,7 +191,7 @@ function ClaimInboundItem({
           </div>
         )}
 
-        {/*NOTE*/}
+        {/* NOTE*/}
         {showNote && (
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>

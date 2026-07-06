@@ -1,1 +1,1 @@
-export * from "./public-layout";
+export * from "./public-layout"

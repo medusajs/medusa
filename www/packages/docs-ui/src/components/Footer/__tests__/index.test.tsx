@@ -2,6 +2,14 @@ import React from "react"
 import { describe, expect, test, vi } from "vitest"
 import { render } from "@testing-library/react"
 
+// mock providers
+vi.mock("@/providers/SiteConfig", () => ({
+  useSiteConfig: () => ({
+    isInProduct: false,
+    productView: undefined,
+  }),
+}))
+
 // mock components
 vi.mock("@/components/Pagination", () => ({
   Pagination: () => <div>Pagination</div>,

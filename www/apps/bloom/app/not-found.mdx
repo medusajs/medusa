@@ -1,0 +1,56 @@
+---
+hide_content_menu: true
+---
+
+import { CardList, H1, SimilarPages, BloomIcon } from "docs-ui"
+import {
+  InformationCircleSolid,
+  AcademicCapSolid,
+  ComputerDesktopSolid,
+  RocketLaunchSolid,
+  PuzzleSolid
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Page Not Found`,
+}
+
+# {metadata.title}
+
+The page you were looking for isn't available.
+
+If you think this is a mistake, please [report this issue on GitHub](https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml).
+
+<SimilarPages />
+
+## Other Resources
+
+<CardList
+  itemsPerRow={2}
+  items={[
+    {
+      title: "Create your first Bloom",
+      text: "Get started with Bloom",
+      icon: BloomIcon,
+      href: "/first-store"
+    },
+    {
+      title: "Going Live",
+      text: "Publish your Bloom store",
+      icon: RocketLaunchSolid,
+      href: "/going-live"
+    },
+    {
+      title: "Features",
+      text: "Explore Bloom's features",
+      icon: PuzzleSolid,
+      href: "/features/commerce-features"
+    },
+    {
+      title: "FAQ",
+      text: "Find answers to common questions",
+      icon: InformationCircleSolid,
+      href: "/faq"
+    }
+  ]}
+/>

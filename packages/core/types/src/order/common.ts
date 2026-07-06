@@ -31,7 +31,16 @@ export type ChangeActionType =
   | "PROMOTION_ADD"
   | "PROMOTION_REMOVE"
   | "ITEM_ADJUSTMENTS_REPLACE"
+  /**
+   * Replace shipping method adjustments.
+   *
+   * @since 2.13.7
+   */
+  | "SHIPPING_ADJUSTMENTS_REPLACE"
 
+/**
+ * The order change's status.
+ */
 export type OrderChangeStatus =
   | "confirmed"
   | "declined"
@@ -130,6 +139,13 @@ export interface OrderShippingMethodAdjustmentDTO
    * The ID of the associated shipping method.
    */
   shipping_method_id: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version: number
 }
 
 /**
@@ -147,6 +163,13 @@ export interface OrderLineItemAdjustmentDTO extends OrderAdjustmentLineDTO {
    * The ID of the associated line item.
    */
   item_id: string
+
+  /**
+   * The version of the adjustment.
+   *
+   * @since 2.13.7
+   */
+  version: number
 }
 
 /**
@@ -182,6 +205,16 @@ export interface OrderTaxLineDTO {
    * The ID of the associated provider.
    */
   provider_id?: string
+
+  /**
+   * Holds data returned by the tax provider in key-value pairs.
+   */
+  data?: Record<string, unknown> | null
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 
   /**
    * When the tax line was created.
@@ -869,9 +902,14 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   updated_at: Date
 
   /**
-   * Holds custom data in key-value pairs.
+   * The versioned order item metadata. Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The metadata of the line item. Holds custom data in key-value pairs.
+   */
+  line_item_metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -3027,7 +3065,10 @@ export interface OrderPreviewDTO
   /**
    * The items of the order, along with changes on the items.
    */
-  items: (OrderLineItemDTO & { actions?: OrderChangeActionDTO[] })[]
+  items: (OrderLineItemDTO & {
+    actions?: OrderChangeActionDTO[]
+    return_requested_total: number
+  })[]
   /**
    * The shipping methods of the order, along with changes on the shipping methods.
    */

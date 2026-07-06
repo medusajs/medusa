@@ -11,7 +11,7 @@ import {
 import { refetchShippingProfile } from "../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetShippingProfileParams>,
   res: MedusaResponse<HttpTypes.AdminShippingProfileResponse>
 ) => {
   const shippingProfile = await refetchShippingProfile(
@@ -50,7 +50,7 @@ export const DELETE = async (
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminUpdateShippingProfile,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetShippingProfileParams
   >,
   res: MedusaResponse<HttpTypes.AdminShippingProfileResponse>
 ) => {

@@ -2,5 +2,32 @@
   "description": "This component wraps the content of the modal.\nIt accepts props from the [Radix UI Dialog Content](https://www.radix-ui.com/primitives/docs/components/dialog#content) component.",
   "methods": [],
   "displayName": "FocusModal.Content",
-  "props": {}
+  "props": {
+    "overlayProps": {
+      "required": false,
+      "tsType": {
+        "name": "ReactComponentPropsWithoutRef",
+        "raw": "React.ComponentPropsWithoutRef<typeof FocusModalOverlay>",
+        "elements": [
+          {
+            "name": "FocusModalOverlay"
+          }
+        ]
+      },
+      "description": ""
+    },
+    "portalProps": {
+      "required": false,
+      "tsType": {
+        "name": "ReactComponentPropsWithoutRef",
+        "raw": "React.ComponentPropsWithoutRef<typeof FocusModalPortal>",
+        "elements": [
+          {
+            "name": "FocusModalPortal"
+          }
+        ]
+      },
+      "description": ""
+    }
+  }
 }

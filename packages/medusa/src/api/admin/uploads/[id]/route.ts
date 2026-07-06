@@ -11,7 +11,7 @@ import {
 } from "@medusajs/framework/utils"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.SelectParams>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetUploadParams>,
   res: MedusaResponse<HttpTypes.AdminFileResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

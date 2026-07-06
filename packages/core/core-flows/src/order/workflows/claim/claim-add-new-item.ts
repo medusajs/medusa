@@ -4,6 +4,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   OrderWorkflow,
+  PromotionDTO,
 } from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
@@ -20,8 +21,10 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
+import { computeAdjustmentsForPreviewWorkflow } from "../compute-adjustments-for-preview"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
+import { fieldsToComputeAdjustmentsForPreview } from "../order-edit/utils/fields"
 import { refreshClaimShippingWorkflow } from "./refresh-shipping"
 
 /**
@@ -70,7 +73,7 @@ export type OrderClaimAddNewItemValidationStepInput = {
  * })
  */
 export const orderClaimAddNewItemValidationStep = createStep(
-  "claim-add-new-item-validation",
+  "order-claim-add-new-item-validation",
   async function ({
     order,
     orderChange,
@@ -81,6 +84,12 @@ export const orderClaimAddNewItemValidationStep = createStep(
     throwIfOrderChangeIsNotActive({ orderChange })
   }
 )
+
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "canceled_at",
+]
 
 export const orderClaimAddNewItemWorkflowId = "claim-add-new-item"
 /**
@@ -123,7 +132,7 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "canceled_at", "items.*"],
+      fields: orderFields,
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -131,7 +140,7 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
 
     const orderChange: OrderChangeDTO = useRemoteQueryStep({
       entry_point: "order_change",
-      fields: ["id", "status"],
+      fields: ["id", "status", "version", "claim_id", "carry_over_promotions"],
       variables: {
         filters: {
           order_id: orderClaim.order_id,
@@ -190,6 +199,20 @@ export const orderClaimAddNewItemWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    const orderWithPromotions = transform({ order }, ({ order }) => {
+      return {
+        ...order,
+        promotions: (order as any).promotions ?? [],
+      } as OrderDTO & { promotions: PromotionDTO[] }
+    })
+
+    computeAdjustmentsForPreviewWorkflow.runAsStep({
+      input: {
+        order: orderWithPromotions,
+        orderChange,
+      },
     })
 
     const refreshArgs = transform(

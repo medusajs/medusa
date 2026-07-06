@@ -9,7 +9,7 @@ export const sdk = new Medusa({
 })
 
 sdk.admin.orderEdit.updateOriginalItem(
-  "order_123", 
+  "order_123",
   "orli_123",
   {
     quantity: 1

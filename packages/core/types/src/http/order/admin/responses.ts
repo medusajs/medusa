@@ -13,6 +13,19 @@ export interface AdminOrderResponse {
   order: AdminOrder
 }
 
+export interface AdminAuthorizeOrderPaymentSessionResponse {
+  /**
+   * The order's details.
+   */
+  order: AdminOrder
+  /**
+   * Whether the payment session was authorized. It's `false` when the provider
+   * still reports the session as pending authorization (e.g. the customer
+   * hasn't completed the payment yet).
+   */
+  is_authorized: boolean
+}
+
 export interface AdminOrderChangesResponse {
   /**
    * The list of order changes.

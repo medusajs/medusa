@@ -201,7 +201,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                 },
               ],
@@ -300,7 +300,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
               price_list_rules: expect.arrayContaining([
@@ -409,7 +409,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                 },
               ],
@@ -439,7 +439,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: expect.arrayContaining([
                 expect.objectContaining({
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
               price_list_rules: expect.arrayContaining([
@@ -516,7 +516,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                   rules: {
                     region_id: "DE",
@@ -524,7 +524,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 },
                 {
                   amount: 600,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                 },
               ],
@@ -568,12 +568,12 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                     }),
                   ]),
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
                 expect.objectContaining({
                   price_rules: [],
                   amount: 600,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
               price_list_rules: expect.arrayContaining([
@@ -605,7 +605,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 400,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                   rules: {
                     region_id: "DE",
@@ -613,7 +613,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 },
                 {
                   amount: 600,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                   rules: {
                     region_id: "DE",
@@ -645,7 +645,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                     }),
                   ],
                   amount: 600,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ],
             })
@@ -661,7 +661,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                 },
               ],
@@ -699,7 +699,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 expect.objectContaining({
                   rules_count: 0,
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
               price_list_rules: [],
@@ -714,7 +714,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: "price-set-1",
                   rules: {
                     region_id: "EU",
@@ -762,7 +762,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                     }),
                   ],
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
               price_list_rules: [],
@@ -798,7 +798,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           const prices = Array.from({ length: 1 }, (_, i) => ({
             id: `test-price-id-${i}`,
             amount: 123 + i,
-            currency_code: "EUR",
+            currency_code: "eur",
             price_set_id: priceSet.id,
             rules: {
               region_id: `test`,
@@ -905,7 +905,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                     }),
                   ]),
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
               price_list_rules: [],
@@ -923,7 +923,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 {
                   id: "test-price-id",
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: priceSet.id,
                   rules: {
                     region_id: "test",
@@ -940,7 +940,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                 {
                   id: "test-price-id",
                   amount: 234,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: priceSet.id,
                   rules: {
                     region_id: "test",
@@ -969,7 +969,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                     }),
                   ],
                   amount: 234,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                 }),
               ]),
             })
@@ -987,7 +987,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               prices: [
                 {
                   amount: 123,
-                  currency_code: "EUR",
+                  currency_code: "eur",
                   price_set_id: priceSet.id,
                 },
               ],

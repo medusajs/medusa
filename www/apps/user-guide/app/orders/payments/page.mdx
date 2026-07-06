@@ -116,9 +116,14 @@ To refund an order's captured payment:
 3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the end of the payment to refund.
 4. Choose "Refund" from the dropdown.
 5. In the side window that opens, fill out the following fields:
+    - **Settlement type:** If you have the [Loyalty Plugin](!resources!/commerce-modules/loyalty#1-install-the-loyalty-plugin) installed, you can choose how to refund the payment:
+        - **Payment method:** Refund the payment using the same payment method the customer used for the order. This is the default option.
+        - **Store credit:** Refund the payment to the customer's [store credit account](../../loyalty/store-credits/page.mdx). The customer can then use the store credit balance for future purchases. You can only choose this option if the customer is a registered customer.
     - **Amount**: Enter the amount to refund.
     - **Refund Reason**: Select a reason for the refund from the dropdown. You can [manage refund reasons in the settings](../../settings/refund-reasons/page.mdx).
+        - This field doesn't show if you selected to refund to store credit.
     - **Note**: Enter a note that the customer can see in the notification they receive.
+        - This field doesn't show if you selected to refund to store credit.
 6. Once you’re done, click on the Save button.
 
 Once the payment is refunded, the customer will receive a notification about the refund and you can view the refund as part of the order's activity.

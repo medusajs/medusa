@@ -1,8 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "noImplicitAny": false,
-    "composite": true
-  },
   "exclude": ["**/*.spec.ts", "**/*.spec.tsx"]
 }

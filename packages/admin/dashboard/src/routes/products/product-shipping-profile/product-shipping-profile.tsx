@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/modals"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductShippingProfileForm } from "./components/product-organization-form"
+import { ExtendedProduct } from "../product-detail/constants"
 
 export const ProductShippingProfile = () => {
   const { id } = useParams()
@@ -28,7 +29,7 @@ export const ProductShippingProfile = () => {
         </RouteDrawer.Title>
       </RouteDrawer.Header>
       {!isLoading && product && (
-        <ProductShippingProfileForm product={product} />
+        <ProductShippingProfileForm product={product as ExtendedProduct} />
       )}
     </RouteDrawer>
   )

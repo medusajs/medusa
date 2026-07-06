@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -179,9 +177,7 @@
         },
         {
           "keyName": "order_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -496,9 +492,7 @@
         },
         {
           "keyName": "order_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -509,26 +503,18 @@
       "foreignKeys": {
         "order_shipping_address_id_foreign": {
           "constraintName": "order_shipping_address_id_foreign",
-          "columnNames": [
-            "shipping_address_id"
-          ],
+          "columnNames": ["shipping_address_id"],
           "localTableName": "public.order",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_address",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "order_billing_address_id_foreign": {
           "constraintName": "order_billing_address_id_foreign",
-          "columnNames": [
-            "billing_address_id"
-          ],
+          "columnNames": ["billing_address_id"],
           "localTableName": "public.order",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_address",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -858,9 +844,7 @@
         },
         {
           "keyName": "order_change_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -871,13 +855,9 @@
       "foreignKeys": {
         "order_change_order_id_foreign": {
           "constraintName": "order_change_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_change",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "updateRule": "cascade"
         }
@@ -1142,9 +1122,7 @@
         },
         {
           "keyName": "order_change_action_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -1155,13 +1133,9 @@
       "foreignKeys": {
         "order_change_action_order_change_id_foreign": {
           "constraintName": "order_change_action_order_change_id_foreign",
-          "columnNames": [
-            "order_change_id"
-          ],
+          "columnNames": ["order_change_id"],
           "localTableName": "public.order_change_action",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_change",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1318,9 +1292,7 @@
         },
         {
           "keyName": "order_credit_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -1331,13 +1303,9 @@
       "foreignKeys": {
         "order_credit_line_order_id_foreign": {
           "constraintName": "order_credit_line_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_credit_line",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1678,9 +1646,7 @@
         },
         {
           "keyName": "order_line_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2016,9 +1982,7 @@
         },
         {
           "keyName": "order_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2029,26 +1993,18 @@
       "foreignKeys": {
         "order_item_order_id_foreign": {
           "constraintName": "order_item_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_item_item_id_foreign": {
           "constraintName": "order_item_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "updateRule": "cascade"
         }
@@ -2214,9 +2170,7 @@
         },
         {
           "keyName": "order_line_item_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2227,13 +2181,9 @@
       "foreignKeys": {
         "order_line_item_adjustment_item_id_foreign": {
           "constraintName": "order_line_item_adjustment_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_line_item_adjustment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2371,9 +2321,7 @@
         },
         {
           "keyName": "order_line_item_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2384,13 +2332,9 @@
       "foreignKeys": {
         "order_line_item_tax_line_item_id_foreign": {
           "constraintName": "order_line_item_tax_line_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_line_item_tax_line",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2548,9 +2492,7 @@
         },
         {
           "keyName": "order_shipping_method_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2571,6 +2513,16 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "1",
+          "mappedType": "integer"
         },
         "description": {
           "name": "description",
@@ -2690,10 +2642,17 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_shipping_method_adjustment_deleted_at\" ON \"order_shipping_method_adjustment\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_order_shipping_method_adjustment_version_shipping_method",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_order_shipping_method_adjustment_version_shipping_method\" ON \"order_shipping_method_adjustment\" (\"version\", \"shipping_method_id\") WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "order_shipping_method_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2704,13 +2663,9 @@
       "foreignKeys": {
         "order_shipping_method_adjustment_shipping_method_id_foreign": {
           "constraintName": "order_shipping_method_adjustment_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "localTableName": "public.order_shipping_method_adjustment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_shipping_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2848,9 +2803,7 @@
         },
         {
           "keyName": "order_shipping_method_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -2861,13 +2814,9 @@
       "foreignKeys": {
         "order_shipping_method_tax_line_shipping_method_id_foreign": {
           "constraintName": "order_shipping_method_tax_line_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "localTableName": "public.order_shipping_method_tax_line",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_shipping_method",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -2988,9 +2937,7 @@
         },
         {
           "keyName": "order_summary_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -3001,13 +2948,9 @@
       "foreignKeys": {
         "order_summary_order_id_foreign": {
           "constraintName": "order_summary_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_summary",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -3264,9 +3207,7 @@
         },
         {
           "keyName": "return_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -3277,38 +3218,26 @@
       "foreignKeys": {
         "return_order_id_foreign": {
           "constraintName": "return_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.return",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "updateRule": "cascade"
         },
         "return_exchange_id_foreign": {
           "constraintName": "return_exchange_id_foreign",
-          "columnNames": [
-            "exchange_id"
-          ],
+          "columnNames": ["exchange_id"],
           "localTableName": "public.return",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_exchange",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "return_claim_id_foreign": {
           "constraintName": "return_claim_id_foreign",
-          "columnNames": [
-            "claim_id"
-          ],
+          "columnNames": ["claim_id"],
           "localTableName": "public.return",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_claim",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -3511,9 +3440,7 @@
         },
         {
           "keyName": "order_exchange_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -3524,25 +3451,17 @@
       "foreignKeys": {
         "order_exchange_order_id_foreign": {
           "constraintName": "order_exchange_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_exchange",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "updateRule": "cascade"
         },
         "order_exchange_return_id_foreign": {
           "constraintName": "order_exchange_return_id_foreign",
-          "columnNames": [
-            "return_id"
-          ],
+          "columnNames": ["return_id"],
           "localTableName": "public.order_exchange",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -3689,9 +3608,7 @@
         },
         {
           "keyName": "order_exchange_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -3702,26 +3619,18 @@
       "foreignKeys": {
         "order_exchange_item_exchange_id_foreign": {
           "constraintName": "order_exchange_item_exchange_id_foreign",
-          "columnNames": [
-            "exchange_id"
-          ],
+          "columnNames": ["exchange_id"],
           "localTableName": "public.order_exchange_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_exchange",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_exchange_item_item_id_foreign": {
           "constraintName": "order_exchange_item_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_exchange_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "updateRule": "cascade"
         }
@@ -3764,10 +3673,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "refund",
-            "replace"
-          ],
+          "enumItems": ["refund", "replace"],
           "mappedType": "enum"
         },
         "no_notification": {
@@ -3926,9 +3832,7 @@
         },
         {
           "keyName": "order_claim_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -3939,25 +3843,17 @@
       "foreignKeys": {
         "order_claim_order_id_foreign": {
           "constraintName": "order_claim_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_claim",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "updateRule": "cascade"
         },
         "order_claim_return_id_foreign": {
           "constraintName": "order_claim_return_id_foreign",
-          "columnNames": [
-            "return_id"
-          ],
+          "columnNames": ["return_id"],
           "localTableName": "public.order_claim",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -4213,9 +4109,7 @@
         },
         {
           "keyName": "order_transaction_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -4226,52 +4120,36 @@
       "foreignKeys": {
         "order_transaction_order_id_foreign": {
           "constraintName": "order_transaction_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_transaction",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_transaction_return_id_foreign": {
           "constraintName": "order_transaction_return_id_foreign",
-          "columnNames": [
-            "return_id"
-          ],
+          "columnNames": ["return_id"],
           "localTableName": "public.order_transaction",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_transaction_exchange_id_foreign": {
           "constraintName": "order_transaction_exchange_id_foreign",
-          "columnNames": [
-            "exchange_id"
-          ],
+          "columnNames": ["exchange_id"],
           "localTableName": "public.order_transaction",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_exchange",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_transaction_claim_id_foreign": {
           "constraintName": "order_transaction_claim_id_foreign",
-          "columnNames": [
-            "claim_id"
-          ],
+          "columnNames": ["claim_id"],
           "localTableName": "public.order_transaction",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_claim",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -4482,9 +4360,7 @@
         },
         {
           "keyName": "order_shipping_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -4495,65 +4371,45 @@
       "foreignKeys": {
         "order_shipping_order_id_foreign": {
           "constraintName": "order_shipping_order_id_foreign",
-          "columnNames": [
-            "order_id"
-          ],
+          "columnNames": ["order_id"],
           "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_shipping_return_id_foreign": {
           "constraintName": "order_shipping_return_id_foreign",
-          "columnNames": [
-            "return_id"
-          ],
+          "columnNames": ["return_id"],
           "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_shipping_exchange_id_foreign": {
           "constraintName": "order_shipping_exchange_id_foreign",
-          "columnNames": [
-            "exchange_id"
-          ],
+          "columnNames": ["exchange_id"],
           "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_exchange",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "order_shipping_claim_id_foreign": {
           "constraintName": "order_shipping_claim_id_foreign",
-          "columnNames": [
-            "claim_id"
-          ],
+          "columnNames": ["claim_id"],
           "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_claim",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "order_shipping_shipping_method_id_foreign": {
           "constraintName": "order_shipping_shipping_method_id_foreign",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "localTableName": "public.order_shipping",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_shipping_method",
           "updateRule": "cascade"
         }
@@ -4724,9 +4580,7 @@
         },
         {
           "keyName": "order_claim_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -4737,26 +4591,18 @@
       "foreignKeys": {
         "order_claim_item_claim_id_foreign": {
           "constraintName": "order_claim_item_claim_id_foreign",
-          "columnNames": [
-            "claim_id"
-          ],
+          "columnNames": ["claim_id"],
           "localTableName": "public.order_claim_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_claim",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "order_claim_item_item_id_foreign": {
           "constraintName": "order_claim_item_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.order_claim_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "updateRule": "cascade"
         }
@@ -4866,9 +4712,7 @@
         },
         {
           "keyName": "order_claim_item_image_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -4879,13 +4723,9 @@
       "foreignKeys": {
         "order_claim_item_image_claim_item_id_foreign": {
           "constraintName": "order_claim_item_image_claim_item_id_foreign",
-          "columnNames": [
-            "claim_item_id"
-          ],
+          "columnNames": ["claim_item_id"],
           "localTableName": "public.order_claim_item_image",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_claim_item",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -5023,9 +4863,7 @@
         },
         {
           "keyName": "return_reason_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -5036,13 +4874,9 @@
       "foreignKeys": {
         "return_reason_parent_return_reason_id_foreign": {
           "constraintName": "return_reason_parent_return_reason_id_foreign",
-          "columnNames": [
-            "parent_return_reason_id"
-          ],
+          "columnNames": ["parent_return_reason_id"],
           "localTableName": "public.return_reason",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return_reason",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -5247,9 +5081,7 @@
         },
         {
           "keyName": "return_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "constraint": true,
           "primary": true,
@@ -5260,39 +5092,27 @@
       "foreignKeys": {
         "return_item_reason_id_foreign": {
           "constraintName": "return_item_reason_id_foreign",
-          "columnNames": [
-            "reason_id"
-          ],
+          "columnNames": ["reason_id"],
           "localTableName": "public.return_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return_reason",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "return_item_return_id_foreign": {
           "constraintName": "return_item_return_id_foreign",
-          "columnNames": [
-            "return_id"
-          ],
+          "columnNames": ["return_id"],
           "localTableName": "public.return_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.return",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "return_item_item_id_foreign": {
           "constraintName": "return_item_item_id_foreign",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "localTableName": "public.return_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.order_line_item",
           "updateRule": "cascade"
         }

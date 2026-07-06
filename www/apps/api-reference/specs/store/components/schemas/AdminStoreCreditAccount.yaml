@@ -3,9 +3,7 @@ description: The store credit account's details.
 x-schemaName: AdminStoreCreditAccount
 required:
   - customer
-  - transaction_groups
   - id
-  - customer_id
   - currency_code
   - credits
   - debits
@@ -41,11 +39,6 @@ properties:
     type: number
     title: balance
     description: The account's balance.
-  transaction_groups:
-    type: array
-    description: The store credit account's transaction groups.
-    items:
-      $ref: ./AdminTransactionGroup.yaml
   metadata:
     type: object
     description: The store credit account's metadata, can hold custom key-value pairs.
@@ -62,3 +55,7 @@ properties:
     format: date-time
     title: updated_at
     description: The date the store credit account was updated at.
+  code:
+    type: string
+    title: code
+    description: The store credit account's code.

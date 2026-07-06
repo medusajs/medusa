@@ -91,7 +91,7 @@ export default function Product({ id }: Props) {
     }
 
     return product.variants.find((variant) => variant.options?.every(
-      (optionValue) => optionValue.id === selectedOptions[optionValue.option_id!]
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
     ))
   }, [selectedOptions, product])
 

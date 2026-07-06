@@ -38,4 +38,6 @@
  *         description: The list of products.
  *         items:
  *           $ref: "#/components/schemas/StoreProduct"
+ * 
 */
+

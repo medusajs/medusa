@@ -5,13 +5,25 @@ import {
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService, UpdateRbacRoleDTO } from "@medusajs/types"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type UpdateRbacRolesStepInput = {
   selector: Record<string, any>
   update: Omit<UpdateRbacRoleDTO, "id">
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const updateRbacRolesStepId = "update-rbac-roles"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const updateRbacRolesStep = createStep(
   updateRbacRolesStepId,
   async (data: UpdateRbacRolesStepInput, { container }) => {

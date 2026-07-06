@@ -1,0 +1,109 @@
+---
+sidebar_position: 1
+sidebar_label: "Manage Store Credits"
+tags:
+  - user guide
+  - store credit
+products:
+  - store credit
+---
+
+import { Prerequisites, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Store Credits in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to create and manage store credit accounts in the Medusa Admin.
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty plugin installed",
+      link: "!resources!/commerce-modules/store-credit#1-install-the-loyalty-plugin",
+    },
+  ]}
+/>
+
+## View Store Credit Accounts
+
+To view all store credit accounts in your store, click on **Store Credits** in the sidebar.
+
+The list shows each account's currency, linked customer email, current balance, total credits, total debits, and creation date. You can filter the list by date range or customer.
+
+<Note title="Tip">
+
+When you create a [gift card](../../gift-cards/page.mdx), a store credit account that isn't linked to any customer is also created. When the gift card is redeemed on an order, the store credit account's balance will be deducted with the amount.
+
+</Note>
+
+---
+
+## Create a Store Credit Account
+
+You can create a store credit account for a customer. This is useful to credit a customer manually.
+
+To create a new store credit account:
+
+1. Go to **Store Credits**.
+2. Click the **Create** button at the top end of the table section.
+3. In the form that opens, fill in the following fields:
+    - **Currency**: Select the currency for this account.
+    - **Customer**: Select the customer to link the account to.
+4. Click the **Create** button.
+
+You'll be taken to the new account's details page where you can view and manage its details.
+
+---
+
+## View Account Details
+
+To view the details of a store credit account:
+
+1. Go to **Store Credits**.
+2. Click on the account you want to view.
+
+The details page shows the account's unique code, linked customer, and current balance.
+
+You can also see the transaction history, which lists all credit and debit transactions, including the amount, date, and any notes attached to each transaction.
+
+---
+
+## Credit an Account
+
+To add funds to a store credit account manually:
+
+1. Go to the store credit account's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top end of the first section.
+3. Choose **Credit the account** from the dropdown.
+4. In the side window that opens, enter the following:
+    - **Amount**: The amount to add to the account.
+    - **Note**: Optionally add a note describing the reason for the credit.
+5. Click the **Save** button.
+
+The credited amount will appear in the account's transaction history and the current balance will update accordingly.
+
+---
+
+## View Store Credits on a Customer
+
+You can also view all store credit accounts linked to a customer without going to the Store Credits section:
+
+1. Go to **Customers** from the sidebar.
+2. Click on the customer you want to view.
+3. In the right sidebar of the customer's details page, find the **Store Credit Accounts** section.
+
+Each account listed shows the currency and current balance. Click on an account to go to its full details page.
+
+---
+
+## Refund an Order to Store Credit
+
+When refunding an order's payment, you can choose to refund the payment to the customer's store credit account instead of their original payment method. This allows the customer to use the refunded amount for future purchases.
+
+You can only refund to store credit if the customer is a registered customer, since guest customers don't have store credit accounts.
+
+See [Refund Payment](../../../orders/payments/page.mdx#refund-payment) for more details on how to refund an order's payment to store credit.

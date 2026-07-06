@@ -45,6 +45,9 @@
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_3166-2
  *       description: Learn more about ISO 3166-2
+ *   metadata:
+ *     type: object
+ *     description: The address's metadata.
  * required:
  *   - id
  *   - address_1
@@ -55,6 +58,7 @@
  *   - phone
  *   - postal_code
  *   - province
+ *   - metadata
  * 
 */
 

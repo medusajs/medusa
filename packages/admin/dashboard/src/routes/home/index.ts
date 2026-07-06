@@ -1,1 +1,1 @@
-export { Home as Component } from "./home";
+export { Home as Component } from "./home"

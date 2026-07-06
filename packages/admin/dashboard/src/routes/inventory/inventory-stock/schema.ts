@@ -7,14 +7,14 @@ const LocationQuantitySchema = z.object({
   disabledToggle: z.boolean(),
 })
 
-const InventoryLocationsSchema = z.record(LocationQuantitySchema)
+const InventoryLocationsSchema = z.record(z.string(), LocationQuantitySchema)
 
 const InventoryItemSchema = z.object({
   locations: InventoryLocationsSchema,
 })
 
 export const InventoryStockSchema = z.object({
-  inventory_items: z.record(InventoryItemSchema),
+  inventory_items: z.record(z.string(), InventoryItemSchema),
 })
 
 export type InventoryLocationsSchema = z.infer<typeof InventoryLocationsSchema>

@@ -5,6 +5,7 @@
  * x-schemaName: AdminCreateProductVariantInventoryKit
  * required:
  *   - inventory_item_id
+ *   - required_quantity
  * properties:
  *   inventory_item_id:
  *     type: string

@@ -31,7 +31,10 @@ export const useDataGridNavigation = <TData, TFieldValues extends FieldValues>({
   setSingleRange,
 }: UseDataGridNavigationOptions<TData, TFieldValues>) => {
   const scrollToCoordinates = useCallback(
-    (coords: DataGridCoordinates, direction: "horizontal" | "vertical" | "both") => {
+    (
+      coords: DataGridCoordinates,
+      direction: "horizontal" | "vertical" | "both"
+    ) => {
       if (!anchor) {
         return
       }

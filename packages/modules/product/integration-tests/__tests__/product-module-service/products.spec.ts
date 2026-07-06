@@ -341,9 +341,22 @@ moduleIntegrationTestRunner<IProductModuleService>({
             { relations: ["*"] }
           )
 
-          expect(products).toHaveLength(2)
-          expect(products[0].title).toEqual("updated title 1")
-          expect(products[1].title).toEqual("updated title 2")
+          expect(products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productOne.id,
+                title: "updated title 1",
+              }),
+            ])
+          )
+          expect(products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productTwo.id,
+                title: "updated title 2",
+              }),
+            ])
+          )
         })
 
         it("should update a product and upsert relations that are not created yet", async () => {
@@ -382,7 +395,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
             },
             ...data.variants,
           ]
-          productBefore.options = data.options
           productBefore.images = data.images
           productBefore.thumbnail = data.thumbnail
           productBefore.tag_ids = data.tag_ids
@@ -391,6 +403,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productBefore.length = 201
           productBefore.height = 301
           productBefore.width = 401
+          productBefore.option_ids = productOne.options.map((o) => o.id)
+          delete productBefore.options
           const updatedProducts = await service.upsertProducts([productBefore])
           expect(updatedProducts).toHaveLength(1)
 
@@ -425,11 +439,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
               discountable: productBefore.discountable,
               thumbnail: images[0].url,
               status: productBefore.status,
-              // TODO: Notice how the weight/length/height/width are strings, not respecting the ProductDTO typings
-              weight: "101",
-              length: "201",
-              height: "301",
-              width: "401",
+              weight: 101,
+              length: 201,
+              height: 301,
+              width: 401,
               images: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
@@ -439,11 +452,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  title: productBefore.options?.[0].title,
+                  title: productOne.options[0].title,
                   values: expect.arrayContaining([
                     expect.objectContaining({
                       id: expect.any(String),
-                      value: data.options[0].values[0],
+                      value: productOne.options[0].values[0].value,
                     }),
                   ]),
                 }),
@@ -652,20 +665,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             {
               id: productBefore.id,
               title: "updated title",
-              options: [
-                {
-                  title: "size",
-                  values: ["large", "small"],
-                },
-                {
-                  title: "color",
-                  values: ["red"],
-                },
-                {
-                  title: "material",
-                  values: ["cotton"],
-                },
-              ],
+              option_ids: productBefore.options.map((o) => o.id),
             },
           ])
 
@@ -682,36 +682,32 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
           })
 
-          const beforeOption = productBefore.options.find(
+          const beforeOptionOne = productBefore.options.find(
             (opt) => opt.title === "size"
           )!
-          expect(product.options).toHaveLength(3)
+          const beforeOptionTwo = productBefore.options.find(
+            (opt) => opt.title === "color"
+          )!
+          expect(product.options).toHaveLength(2)
           expect(product.options).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                id: beforeOption.id,
-                title: beforeOption.title,
+                id: beforeOptionOne.id,
+                title: beforeOptionOne.title,
                 values: expect.arrayContaining([
                   expect.objectContaining({
-                    id: beforeOption.values[0].id,
-                    value: beforeOption.values[0].value,
+                    id: beforeOptionOne.values[0].id,
+                    value: beforeOptionOne.values[0].value,
                   }),
                 ]),
               }),
               expect.objectContaining({
-                title: "color",
+                id: beforeOptionTwo.id,
+                title: beforeOptionTwo.title,
                 values: expect.arrayContaining([
                   expect.objectContaining({
-                    value: "red",
-                  }),
-                ]),
-              }),
-              expect.objectContaining({
-                id: expect.any(String),
-                title: "material",
-                values: expect.arrayContaining([
-                  expect.objectContaining({
-                    value: "cotton",
+                    id: beforeOptionTwo.values[0].id,
+                    value: beforeOptionTwo.values[0].value,
                   }),
                 ]),
               }),
@@ -969,9 +965,15 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should simultaneously update options and variants", async () => {
+          const option = (
+            await service.createProductOptions([
+              { title: "material", values: ["cotton", "silk"] },
+            ])
+          )[0]
+
           const updateData = {
             id: productTwo.id,
-            options: [{ title: "material", values: ["cotton", "silk"] }],
+            option_ids: [option.id],
             variants: [{ title: "variant 1", options: { material: "cotton" } }],
           }
 
@@ -1228,11 +1230,258 @@ moduleIntegrationTestRunner<IProductModuleService>({
             `Product "Product with variants and options" has variants with missing options: [missing option]`
           )
         })
+
+        it("should throw when a variant references an option value outside the product's value_ids subset on create", async () => {
+          // Set up a shared global option with three values, then create the
+          // product linking only two of them. A variant referencing the third
+          // value (still on the option, but not on this product) must be
+          // rejected — the per-product `value_ids` subset is enforcing.
+          const sharedOption = await service.createProductOptions({
+            title: "Subset",
+            values: ["sub-a", "sub-b", "sub-c"],
+          })
+          const allowed = sharedOption.values
+            .filter((v) => v.value !== "sub-c")
+            .map((v) => v.id)
+
+          const error = await service
+            .createProducts([
+              {
+                title: "Subset violation on create",
+                options: [{ id: sharedOption.id, value_ids: allowed }],
+                variants: [
+                  {
+                    title: "out-of-subset variant",
+                    options: { Subset: "sub-c" },
+                  },
+                ],
+              },
+            ])
+            .catch((e) => e)
+
+          expect(error?.message).toEqual(
+            "Option value sub-c does not exist for option Subset"
+          )
+        })
+
+        it("should throw when updating a variant to reference a value outside the product's value_ids subset", async () => {
+          // Same fixture as above, but exercising the update path: link the
+          // option with a restricted subset, then attempt to flip a variant
+          // onto a value the product is not configured for.
+          const sharedOption = await service.createProductOptions({
+            title: "UpdateSubset",
+            values: ["u-a", "u-b", "u-c"],
+          })
+          const allowed = sharedOption.values
+            .filter((v) => v.value !== "u-c")
+            .map((v) => v.id)
+
+          const [created] = await service.createProducts([
+            {
+              title: "Subset violation on update",
+              options: [{ id: sharedOption.id, value_ids: allowed }],
+              variants: [
+                {
+                  title: "v1",
+                  options: { UpdateSubset: "u-a" },
+                },
+              ],
+            },
+          ])
+
+          const error = await service
+            .updateProducts(created.id, {
+              variants: [
+                {
+                  title: "v1",
+                  options: { UpdateSubset: "u-c" },
+                },
+              ],
+            })
+            .catch((e) => e)
+
+          expect(error?.message).toEqual(
+            "Option value u-c does not exist for option UpdateSubset"
+          )
+        })
+
+        it("should accept a variant value after that value is added to the product's value_ids subset", async () => {
+          // Set up: option has 3 values, product is linked to only 2 of them.
+          // A variant referencing the third value is initially rejected. After
+          // expanding the per-product subset to include the third value, the
+          // same variant payload must now succeed.
+          const sharedOption = await service.createProductOptions({
+            title: "ExpandSubset",
+            values: ["e-a", "e-b", "e-c"],
+          })
+          const valueA = sharedOption.values.find((v) => v.value === "e-a")!
+          const valueB = sharedOption.values.find((v) => v.value === "e-b")!
+          const valueC = sharedOption.values.find((v) => v.value === "e-c")!
+
+          const [created] = await service.createProducts([
+            {
+              title: "Expandable subset product",
+              options: [
+                { id: sharedOption.id, value_ids: [valueA.id, valueB.id] },
+              ],
+              variants: [
+                { title: "vA", options: { ExpandSubset: "e-a" } },
+              ],
+            },
+          ])
+
+          // Sanity: variant with the not-yet-allowed value is rejected.
+          const initialError = await service
+            .updateProducts(created.id, {
+              variants: [
+                {
+                  id: created.variants[0].id,
+                  title: "vA",
+                  options: { ExpandSubset: "e-c" },
+                },
+              ],
+            })
+            .catch((e) => e)
+          expect(initialError?.message).toEqual(
+            "Option value e-c does not exist for option ExpandSubset"
+          )
+
+          // Expand the product's allowed value subset to include the third value.
+          await service.updateProductOptionValuesOnProduct({
+            product_id: created.id,
+            product_option_id: sharedOption.id,
+            add: [valueC.id],
+          })
+
+          // Same variant update payload that just failed should now succeed.
+          await service.updateProducts(created.id, {
+            variants: [
+              {
+                id: created.variants[0].id,
+                title: "vA",
+                options: { ExpandSubset: "e-c" },
+              },
+            ],
+          })
+
+          const reloaded = await service.retrieveProduct(created.id, {
+            relations: ["variants.options", "options.values"],
+          })
+          const variantValues = reloaded.variants[0].options.map(
+            (o) => o.value
+          )
+          expect(variantValues).toEqual(["e-c"])
+        })
       })
 
       describe("softDelete", function () {
         let images = [{ url: "image-1" }]
         it("should soft delete a product and its cascaded relations", async () => {
+          const data = buildProductAndRelationsData({
+            images,
+            thumbnail: images[0].url,
+            options: [
+              { title: "size", values: ["large", "small"] },
+              { title: "color", values: ["red", "blue"] },
+              { title: "material", values: ["cotton", "polyester"] },
+            ],
+            variants: [
+              {
+                title: "Large Red Cotton",
+                sku: "LRG-RED-CTN",
+                options: {
+                  size: "large",
+                  color: "red",
+                  material: "cotton",
+                },
+              },
+              {
+                title: "Large Red Polyester",
+                sku: "LRG-RED-PLY",
+                options: {
+                  size: "large",
+                  color: "red",
+                  material: "polyester",
+                },
+              },
+              {
+                title: "Large Blue Cotton",
+                sku: "LRG-BLU-CTN",
+                options: {
+                  size: "large",
+                  color: "blue",
+                  material: "cotton",
+                },
+              },
+              {
+                title: "Large Blue Polyester",
+                sku: "LRG-BLU-PLY",
+                options: {
+                  size: "large",
+                  color: "blue",
+                  material: "polyester",
+                },
+              },
+              {
+                title: "Small Red Cotton",
+                sku: "SML-RED-CTN",
+                options: {
+                  size: "small",
+                  color: "red",
+                  material: "cotton",
+                },
+              },
+              {
+                title: "Small Red Polyester",
+                sku: "SML-RED-PLY",
+                options: {
+                  size: "small",
+                  color: "red",
+                  material: "polyester",
+                },
+              },
+              {
+                title: "Small Blue Cotton",
+                sku: "SML-BLU-CTN",
+                options: {
+                  size: "small",
+                  color: "blue",
+                  material: "cotton",
+                },
+              },
+              {
+                title: "Small Blue Polyester",
+                sku: "SML-BLU-PLY",
+                options: {
+                  size: "small",
+                  color: "blue",
+                  material: "polyester",
+                },
+              },
+            ],
+          })
+
+          const products = await service.createProducts([data])
+
+          await service.softDeleteProducts([products[0].id])
+
+          const deletedProducts = await service.listProducts(
+            { id: products[0].id },
+            {
+              relations: ["variants"],
+              withDeleted: true,
+            }
+          )
+
+          expect(deletedProducts).toHaveLength(1)
+          expect(deletedProducts[0].deleted_at).not.toBeNull()
+
+          for (const variant of deletedProducts[0].variants) {
+            expect(variant.deleted_at).not.toBeNull()
+          }
+        })
+
+        it("should not soft delete a product's options and option values", async () => {
           const data = buildProductAndRelationsData({
             images,
             thumbnail: images[0].url,
@@ -1334,11 +1583,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }
           )
 
-          expect(deletedProducts).toHaveLength(1)
-          expect(deletedProducts[0].deleted_at).not.toBeNull()
-
           for (const option of deletedProducts[0].options) {
-            expect(option.deleted_at).not.toBeNull()
+            expect(option.deleted_at).toBeNull()
           }
 
           const productOptionsValues = deletedProducts[0].options
@@ -1346,11 +1592,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             .flat()
 
           for (const optionValue of productOptionsValues) {
-            expect(optionValue.deleted_at).not.toBeNull()
-          }
-
-          for (const variant of deletedProducts[0].variants) {
-            expect(variant.deleted_at).not.toBeNull()
+            expect(optionValue.deleted_at).toBeNull()
           }
 
           const variantsOptions = deletedProducts[0].options
@@ -1358,7 +1600,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             .flat()
 
           for (const option of variantsOptions) {
-            expect(option.deleted_at).not.toBeNull()
+            expect(option.deleted_at).toBeNull()
           }
         })
 
@@ -1826,6 +2068,65 @@ moduleIntegrationTestRunner<IProductModuleService>({
               expect.objectContaining({ id: generalImage2.id }),
             ])
           )
+        })
+
+        it("should return variant.images as plain serialized objects, not ORM entities", async () => {
+          // variant.images is attached dynamically by buildVariantImagesFromProduct
+          // before serialization. If serialization misses it, live MikroORM
+          // entities leak out of the module and their toJSON re-serializes the
+          // entire loaded entity graph downstream (res.json, cache writes),
+          // blocking the event loop.
+          const images = [
+            { url: "general-image-1" },
+            { url: "variant-specific-image" },
+          ]
+
+          const [product] = await service.createProducts([
+            buildProductAndRelationsData({
+              images,
+              options: [{ title: "size", values: ["small"] }],
+              variants: [{ title: "Small", options: { size: "small" } }],
+            }),
+          ])
+
+          const variantSpecificImage = product.images.find(
+            (img) => img.url === "variant-specific-image"
+          )!
+
+          await service.addImageToVariant([
+            {
+              image_id: variantSpecificImage.id,
+              variant_id: product.variants[0].id,
+            },
+          ])
+
+          const assertPlainObjects = (variants: any[]) => {
+            for (const variant of variants) {
+              expect(variant.images.length).toBeGreaterThan(0)
+              for (const image of variant.images) {
+                expect(image.constructor).toBe(Object)
+                expect(image.__meta).toBeUndefined()
+                expect(image.__helper).toBeUndefined()
+              }
+            }
+          }
+
+          const retrievedProduct = await service.retrieveProduct(product.id, {
+            relations: ["variants", "variants.images", "images"],
+          })
+          assertPlainObjects(retrievedProduct.variants)
+
+          const listedProducts = await service.listProducts(
+            { id: product.id },
+            { relations: ["variants", "variants.images", "images"] }
+          )
+          assertPlainObjects(listedProducts[0].variants)
+
+          const [listedAndCountedProducts] = await service.listAndCountProducts(
+            { id: product.id },
+            { relations: ["variants", "variants.images", "images"] }
+          )
+          assertPlainObjects(listedAndCountedProducts[0].variants)
         })
       })
     })

@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PencilSquare } from "@medusajs/icons"
 import {
+  AdminInventoryLevel,
   AdminOrder,
   AdminOrderPreview,
   AdminReturn,
-  InventoryLevelDTO,
 } from "@medusajs/types"
 import {
   Alert,
@@ -51,6 +51,7 @@ import { ReturnShippingPlaceholder } from "../../../common/placeholders"
 import { AddReturnItemsTable } from "../add-return-items-table"
 import { ReturnItem } from "./return-item"
 import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
+import { ExtendedVariant } from "../../../../product-variants/product-variant-detail/constants"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -102,7 +103,7 @@ export const ReturnCreateForm = ({
     float: 0,
   })
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, InventoryLevelDTO[]>
+    Record<string, AdminInventoryLevel[]>
   >({})
 
   /**
@@ -181,9 +182,9 @@ export const ReturnCreateForm = ({
           note: i.actions?.find((a) => a.action === "RETURN_ITEM")
             ?.internal_note,
           reason_id: i.actions?.find((a) => a.action === "RETURN_ITEM")?.details
-            ?.reason_id,
+            ?.reason_id as string | undefined,
         })),
-        option_id: method ? method.shipping_option_id : "",
+        option_id: method ? method.shipping_option_id! : "",
         location_id: activeReturn?.location_id,
         send_notification: false,
       })
@@ -226,7 +227,9 @@ export const ReturnCreateForm = ({
             ...items[ind],
             quantity: i.detail.return_requested_quantity,
             note: returnItemAction?.internal_note,
-            reason_id: returnItemAction?.details?.reason_id,
+            reason_id: returnItemAction?.details?.reason_id as
+              | string
+              | undefined,
           })
         }
       } else {
@@ -277,20 +280,22 @@ export const ReturnCreateForm = ({
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
+        description: e instanceof Error ? e.message : undefined,
       })
     }
   })
 
   const onItemsSelected = () => {
-    addReturnItem({
-      items: selectedItems.map((id) => ({
-        id,
-        quantity: 1,
-      })),
-    })
+    if (selectedItems.length) {
+      addReturnItem({
+        items: selectedItems.map((id) => ({
+          id,
+          quantity: 1,
+        })),
+      })
+    }
 
+    selectedItems = []
     setIsOpen("items", false)
   }
 
@@ -304,7 +309,7 @@ export const ReturnCreateForm = ({
     const promises = preview.shipping_methods
       .map((s) => s.actions?.find((a) => a.action === "SHIPPING_ADD")?.id)
       .filter(Boolean)
-      .map(deleteReturnShipping)
+      .map((id) => deleteReturnShipping(id!))
 
     await Promise.all(promises)
 
@@ -315,7 +320,7 @@ export const ReturnCreateForm = ({
 
   useEffect(() => {
     if (isShippingPriceEdit) {
-      document.getElementById("js-shipping-input").focus()
+      document.getElementById("js-shipping-input")?.focus()
     }
   }, [isShippingPriceEdit])
 
@@ -350,7 +355,7 @@ export const ReturnCreateForm = ({
 
   useEffect(() => {
     const getInventoryMap = async () => {
-      const ret: Record<string, InventoryLevelDTO[]> = {}
+      const ret: Record<string, AdminInventoryLevel[]> = {}
 
       if (!items.length) {
         return ret
@@ -361,21 +366,21 @@ export const ReturnCreateForm = ({
           items.map(async (_i) => {
             const item = itemsMap.get(_i.item_id)
 
-            if (!item.variant_id) {
+            if (!item?.variant_id || !item?.product_id) {
               return undefined
             }
-            return await sdk.admin.product.retrieveVariant(
+            return (await sdk.admin.product.retrieveVariant(
               item.product_id,
               item.variant_id,
               { fields: "*inventory,*inventory.location_levels" }
-            )
+            )) as { variant: ExtendedVariant }
           })
         )
       )
         .filter((it) => it?.variant)
         .forEach((item) => {
-          const { variant } = item
-          const levels = variant.inventory[0]?.location_levels
+          const { variant } = item!
+          const levels = variant.inventory?.[0]?.location_levels
 
           if (!levels) {
             return
@@ -482,48 +487,57 @@ export const ReturnCreateForm = ({
             )}
             {items
               .filter((item) => !!previewItemsMap.get(item.item_id))
-              .map((item, index) => (
-                <ReturnItem
-                  key={item.id}
-                  item={itemsMap.get(item.item_id)!}
-                  previewItem={previewItemsMap.get(item.item_id)}
-                  currencyCode={order.currency_code}
-                  form={form}
-                  onRemove={() => {
-                    const actionId = previewItems
-                      .find((i) => i.id === item.item_id)
-                      ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
+              .map((item, index) => {
+                const previewItem = previewItemsMap.get(item.item_id)
+                if (!previewItem) {
+                  return null
+                }
+                return (
+                  <ReturnItem
+                    key={item.id}
+                    item={itemsMap.get(item.item_id)!}
+                    previewItem={previewItem}
+                    currencyCode={order.currency_code}
+                    form={form}
+                    onRemove={() => {
+                      const actionId = previewItems
+                        .find((i) => i.id === item.item_id)
+                        ?.actions?.find((a) => a.action === "RETURN_ITEM")?.id
 
-                    if (actionId) {
-                      removeReturnItem(actionId)
-                    }
-                  }}
-                  onUpdate={(payload) => {
-                    const action = previewItems
-                      .find((i) => i.id === item.item_id)
-                      ?.actions?.find((a) => a.action === "RETURN_ITEM")
+                      if (actionId) {
+                        removeReturnItem(actionId)
+                      }
+                    }}
+                    onUpdate={(payload) => {
+                      const action = previewItems
+                        .find((i) => i.id === item.item_id)
+                        ?.actions?.find((a) => a.action === "RETURN_ITEM")
 
-                    if (action) {
-                      updateReturnItem(
-                        { ...payload, actionId: action.id },
-                        {
-                          onError: (error) => {
-                            if (action.details?.quantity && payload.quantity) {
-                              form.setValue(
-                                `items.${index}.quantity`,
-                                action.details?.quantity as number
-                              )
-                            }
+                      if (action) {
+                        updateReturnItem(
+                          { ...payload, actionId: action.id },
+                          {
+                            onError: (error) => {
+                              if (
+                                action.details?.quantity &&
+                                payload.quantity
+                              ) {
+                                form.setValue(
+                                  `items.${index}.quantity`,
+                                  action.details?.quantity as number
+                                )
+                              }
 
-                            toast.error(error.message)
-                          },
-                        }
-                      )
-                    }
-                  }}
-                  index={index}
-                />
-              ))}
+                              toast.error(error.message)
+                            },
+                          }
+                        )
+                      }
+                    }}
+                    index={index}
+                  />
+                )
+              })}
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
                 {/* LOCATION*/}
@@ -546,7 +560,7 @@ export const ReturnCreateForm = ({
                               value={value}
                               onChange={(v) => {
                                 onChange(v)
-                                onLocationChange(v)
+                                onLocationChange(v ?? "")
                               }}
                               {...field}
                               options={(stock_locations ?? []).map(
@@ -687,7 +701,8 @@ export const ReturnCreateForm = ({
                         if (actionId) {
                           updateReturnShipping({
                             actionId,
-                            custom_amount: customShippingAmount.float,
+                            custom_amount:
+                              customShippingAmount.float ?? undefined,
                           })
                         }
                         setIsShippingPriceEdit(false)
@@ -697,7 +712,7 @@ export const ReturnCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, name, values) =>
+                      onValueChange={(_value, _name, values) =>
                         setCustomShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,

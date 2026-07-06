@@ -5,6 +5,7 @@ import { currencySidebar } from "./currency.mjs"
 import { customerSidebar } from "./customer.mjs"
 import { fulfillmentSidebar } from "./fulfillment.mjs"
 import { inventorySidebar } from "./inventory.mjs"
+import { loyaltySidebar } from "./loyalty.mjs"
 import { orderSidebar } from "./order-module.mjs"
 import { paymentSidebar } from "./payment.mjs"
 import { pricingSidebar } from "./pricing.mjs"
@@ -14,6 +15,7 @@ import { regionSidebar } from "./region.mjs"
 import { salesChannelSidebar } from "./sales-channel.mjs"
 import { stockLocationSidebar } from "./stock-location.mjs"
 import { storeSidebar } from "./store.mjs"
+import { storeCreditSidebar } from "./store-credit.mjs"
 import { taxSidebar } from "./tax.mjs"
 import { translationSidebar } from "./translation.mjs"
 import { userSidebar } from "./user.mjs"
@@ -35,6 +37,7 @@ export const commerceModulesSidebar = [
   ...customerSidebar,
   ...fulfillmentSidebar,
   ...inventorySidebar,
+  ...loyaltySidebar,
   ...orderSidebar,
   ...paymentSidebar,
   ...pricingSidebar,
@@ -44,6 +47,7 @@ export const commerceModulesSidebar = [
   ...salesChannelSidebar,
   ...stockLocationSidebar,
   ...storeSidebar,
+  ...storeCreditSidebar,
   ...taxSidebar,
   ...translationSidebar,
   ...userSidebar,

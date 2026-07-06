@@ -88,12 +88,20 @@ function times(num) {
 
 // REF:https://stackoverflow.com/questions/78028715/jest-async-test-with-event-emitter-isnt-ending
 
+const testRunId = ulid()
+
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
   resolve: __dirname + "/../..",
   moduleOptions: {
     redis: {
       url: "localhost:6379",
+      queueName: `medusa-workflows-${
+        process.env.JEST_WORKER_ID ?? "1"
+      }-${testRunId}`,
+      jobQueueName: `medusa-workflows-jobs-${
+        process.env.JEST_WORKER_ID ?? "1"
+      }-${testRunId}`,
     },
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {

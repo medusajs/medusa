@@ -131,7 +131,7 @@ function findProductsWithSalesChannels({
   updatedProducts: ProductTypes.ProductDTO[]
   input: UpdateProductWorkflowInput
 }) {
-  let productIds = updatedProducts.map((p) => p.id)
+  const productIds = updatedProducts.map((p) => p.id)
 
   if ("products" in input) {
     const discardedProductIds: string[] = input.products
@@ -150,7 +150,7 @@ function findProductsWithShippingProfiles({
   updatedProducts: ProductTypes.ProductDTO[]
   input: UpdateProductWorkflowInput
 }) {
-  let productIds = updatedProducts.map((p) => p.id)
+  const productIds = updatedProducts.map((p) => p.id)
 
   if ("products" in input) {
     const discardedProductIds: string[] = input.products
@@ -271,7 +271,7 @@ function prepareVariantPrices({
         return {
           product_id: updatedProduct.id,
           variant_id: updatedVariant.id,
-          prices: variant.prices,
+          prices: variant.prices as CreateMoneyAmountDTO[],
         }
       })
     })
@@ -282,7 +282,7 @@ function prepareVariantPrices({
       return input.update.variants!.map((variant, i) => ({
         product_id: p.id,
         variant_id: p.variants[i].id,
-        prices: variant.prices,
+        prices: variant.prices as CreateMoneyAmountDTO[],
       }))
     })
   }

@@ -9,7 +9,7 @@ import { refetchFulfillment } from "./helpers"
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminCreateFulfillment,
-    HttpTypes.SelectParams
+    HttpTypes.AdminFulfillmentParams
   >,
   res: MedusaResponse<HttpTypes.AdminFulfillmentResponse>
 ) => {

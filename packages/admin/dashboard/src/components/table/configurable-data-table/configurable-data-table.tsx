@@ -77,7 +77,7 @@ export function ConfigurableDataTable<TData>({
   const parsedQueryParams = { ...queryParams }
   filters.forEach((filter) => {
     const filterKey = filter.id
-    if (parsedQueryParams[filterKey] !== undefined) {
+    if (filterKey && parsedQueryParams[filterKey] !== undefined) {
       try {
         parsedQueryParams[filterKey] = JSON.parse(parsedQueryParams[filterKey])
       } catch {

@@ -14,7 +14,10 @@ import { useInventoryTableColumns } from "./use-inventory-table-columns"
 const PAGE_SIZE = 20
 
 type VariantInventorySectionProps = {
-  inventoryItems: HttpTypes.AdminInventoryItem[]
+  inventoryItems: (HttpTypes.AdminInventoryItem & {
+    required_quantity?: number
+    variant?: HttpTypes.AdminProductVariant
+  })[]
 }
 
 export function VariantInventorySection({

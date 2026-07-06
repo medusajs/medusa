@@ -5,9 +5,7 @@
  * x-schemaName: StoreStoreCreditAccount
  * required:
  *   - customer
- *   - transaction_groups
  *   - id
- *   - customer_id
  *   - currency_code
  *   - credits
  *   - debits
@@ -43,11 +41,6 @@
  *     type: number
  *     title: balance
  *     description: The store credit account's balance.
- *   transaction_groups:
- *     type: array
- *     description: The store credit account's transaction groups.
- *     items:
- *       $ref: "#/components/schemas/StoreTransactionGroup"
  *   metadata:
  *     type: object
  *     description: The store credit account's metadata, can hold custom key-value pairs.
@@ -64,6 +57,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the store credit account was updated.
+ *   code:
+ *     type: string
+ *     title: code
+ *     description: The store credit account's code.
  * 
 */
 

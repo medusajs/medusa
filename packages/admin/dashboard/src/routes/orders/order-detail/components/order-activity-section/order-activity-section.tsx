@@ -1,10 +1,10 @@
-import { AdminOrder } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { OrderTimeline } from "./order-timeline"
+import { ExtendedOrder } from "../../constants"
 
 type OrderActivityProps = {
-  order: AdminOrder
+  order: ExtendedOrder
 }
 
 export const OrderActivitySection = ({ order }: OrderActivityProps) => {

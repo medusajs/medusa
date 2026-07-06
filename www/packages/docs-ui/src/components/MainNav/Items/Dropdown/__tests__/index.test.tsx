@@ -161,7 +161,7 @@ describe("rendering", () => {
     )
     expect(title).toBeInTheDocument()
     expect(title).toHaveClass(
-      "text-medusa-fg-muted hover:text-medusa-fg-subtle"
+      "text-medusa-fg-subtle hover:text-medusa-fg-base"
     )
   })
 

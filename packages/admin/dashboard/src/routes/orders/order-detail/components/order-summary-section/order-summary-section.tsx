@@ -23,6 +23,8 @@ import {
   AdminPlugin,
   AdminRegion,
   AdminReturn,
+  AdminReturnItem,
+  AdminReturnReason,
 } from "@medusajs/types"
 import {
   Badge,
@@ -400,7 +402,9 @@ const Item = ({
   const hasInventoryKit =
     isInventoryManaged &&
     ((item.variant?.inventory_items?.length || 0) > 1 ||
-      item.variant?.inventory_items?.some((i) => i.required_quantity > 1))
+      item.variant?.inventory_items?.some(
+        (i) => (i.required_quantity ?? 0) > 1
+      ))
   const hasUnfulfilledItems = item.quantity - item.detail.fulfilled_quantity > 0
 
   const appliedPromoCodes = (item.adjustments || []).map((a) => a.code)
@@ -505,6 +509,12 @@ const Item = ({
   )
 }
 
+type ExtendedReturn = Omit<AdminReturn, "items"> & {
+  items: (AdminReturnItem & {
+    reason?: AdminReturnReason
+  })[]
+}
+
 const ItemBreakdown = ({
   order,
   reservations,
@@ -525,7 +535,7 @@ const ItemBreakdown = ({
   const { returns = [] } = useReturns({
     order_id: order.id,
     fields: "*items,*items.reason",
-  })
+  }) as { returns: ExtendedReturn[] | undefined }
 
   const reservationsMap = useMemo(
     () => new Map((reservations || []).map((r) => [r.line_item_id, r])),
@@ -658,7 +668,7 @@ const CostBreakdown = ({
                   <div>
                     <span className="txt-small">
                       {sm.name}
-                      {sm.detail.return_id &&
+                      {sm.detail?.return_id &&
                         ` (${t("fields.returnShipping")})`}{" "}
                       <ShippingInfoPopover key={i} shippingMethod={sm} />
                     </span>
@@ -960,17 +970,17 @@ const InventoryKitBreakdown = ({ item }: { item: AdminOrderLineItem }) => {
           {inventory.map((i) => {
             return (
               <div
-                key={i.inventory.id}
+                key={i.inventory?.id}
                 className="flex items-center justify-between gap-x-2"
               >
                 <div>
                   <span className="txt-small text-ui-fg-subtle font-medium">
-                    {i.inventory.title}
+                    {i.inventory?.title}
 
-                    {i.inventory.sku && (
+                    {i.inventory?.sku && (
                       <span className="text-ui-fg-subtle font-normal">
                         {" "}
-                        ⋅ {i.inventory.sku}
+                        ⋅ {i.inventory?.sku}
                       </span>
                     )}
                   </span>
@@ -994,7 +1004,7 @@ const ReturnBreakdownWithDamages = ({
   orderReturn,
   itemId,
 }: {
-  orderReturn: AdminReturn
+  orderReturn: ExtendedReturn
   itemId: string
 }) => {
   const { t } = useTranslation()
@@ -1049,7 +1059,7 @@ const ReturnBreakdown = ({
   orderReturn,
   itemId,
 }: {
-  orderReturn: AdminReturn
+  orderReturn: ExtendedReturn
   itemId: string
 }) => {
   const { t } = useTranslation()

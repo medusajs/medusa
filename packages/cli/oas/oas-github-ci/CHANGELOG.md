@@ -1,5 +1,133 @@
 # @medusajs/oas-github-ci
 
+## 2.17.2
+
+### Patch Changes
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/medusa-oas-cli@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- [`bbc7a77e2fcaf53d02e222ba6522bcea84388efc`](undefined) - feat(medusa-oas-cli, oas-github-ci): support versioning for outputted oas
+
+- Updated dependencies [[`bbc7a77e2fcaf53d02e222ba6522bcea84388efc`](undefined)]:
+  - @medusajs/medusa-oas-cli@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

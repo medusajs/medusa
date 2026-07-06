@@ -18,11 +18,11 @@ interface AdminCreateFulfillmentItem {
   /**
    * The ID of the associated line item in an order.
    */
-  line_item_id?: string
+  line_item_id?: string | null
   /**
    * The ID of the associated inventory item.
    */
-  inventory_item_id?: string
+  inventory_item_id?: string | null
 }
 
 interface AdminCreateFulfillmentLabel {
@@ -44,50 +44,50 @@ interface AdminFulfillmentDeliveryAddress {
   /**
    * The address's first name.
    */
-  first_name?: string
+  first_name?: string | null
   /**
    * The address's last name.
    */
-  last_name?: string
+  last_name?: string | null
   /**
    * The address's phone number.
    */
-  phone?: string
+  phone?: string | null
   /**
    * The address's company.
    */
-  company?: string
+  company?: string | null
   /**
    * The address's first line.
    */
-  address_1?: string
+  address_1?: string | null
   /**
    * The address's second line.
    */
-  address_2?: string
+  address_2?: string | null
   /**
    * The address's city.
    */
-  city?: string
+  city?: string | null
   /**
    * The address's country code.
-   * 
+   *
    * @example
    * us
    */
-  country_code?: string
+  country_code?: string | null
   /**
    * The address's lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province.
    */
-  province?: string
+  province?: string | null
   /**
    * The address's postal code.
    */
-  postal_code?: string
+  postal_code?: string | null
   /**
    * Key-value pairs of custom data.
    */
-  metadata?: Record<string, string> | null
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminCreateFulfillment {

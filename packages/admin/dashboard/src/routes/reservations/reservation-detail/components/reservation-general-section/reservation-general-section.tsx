@@ -2,13 +2,11 @@ import { AdminReservationResponse } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InventoryTypes } from "@medusajs/types"
 import { PencilSquare } from "@medusajs/icons"
 import { SectionRow } from "../../../../../components/common/section"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { useTranslation } from "react-i18next"
-import { useOrder } from "../../../../../hooks/api"
 
 type ReservationGeneralSectionProps = {
   reservation: AdminReservationResponse["reservation"]
@@ -35,8 +33,7 @@ export const ReservationGeneralSection = ({
   }
 
   const locationLevel = inventoryItem.location_levels!.find(
-    (l: InventoryTypes.InventoryLevelDTO) =>
-      l.location_id === reservation.location_id
+    (l) => l.location_id === reservation.location_id
   )
 
   return (

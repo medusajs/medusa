@@ -33,6 +33,10 @@ export interface BaseProductCategory {
    */
   rank: number | null
   /**
+   * An external identifier for the product category.
+   */
+  external_id: string | null
+  /**
    * The ID of the category's parent.
    */
   parent_category_id: string | null
@@ -93,6 +97,10 @@ export interface BaseProductCategoryListParams
    * Filter by the category's handle(s).
    */
   handle?: string | string[]
+  /**
+   * Filter by the category's external ID(s).
+   */
+  external_id?: string | string[] | null
   /**
    * Filter by whether the category is active.
    */

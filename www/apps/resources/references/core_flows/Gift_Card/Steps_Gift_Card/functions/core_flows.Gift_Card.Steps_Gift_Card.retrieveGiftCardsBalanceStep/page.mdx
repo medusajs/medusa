@@ -1,0 +1,38 @@
+---
+slug: /references/medusa-workflows/steps/retrieveGiftCardsBalanceStep
+sidebar_label: retrieveGiftCardsBalanceStep
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# retrieveGiftCardsBalanceStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `retrieveGiftCardsBalanceStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step retrieves the balance of gift cards from their associated store credit accounts.
+Returns a map of gift card codes to their account stats.
+
+## Example
+
+```ts
+const data = retrieveGiftCardsBalanceStep({
+  giftCards: [
+    {
+      id: "gc_123",
+      code: "GC-XXXX",
+      // other gift card properties...
+    }
+  ],
+  giftCardStoreCreditAccountMap: { "gc_123": "sca_456" },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"RetrieveGiftCardsBalanceStepInput","type":"[RetrieveGiftCardsBalanceStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.RetrieveGiftCardsBalanceStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"RetrieveGiftCardsBalanceStepInput","type":"`object`","description":"Input to retrieve the balance of gift cards from their associated store credit accounts.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="retrieveGiftCardsBalanceStep"/>
+
+## Output
+
+<TypeList types={[{"name":"Record","type":"`Record<string, [ModuleAccountStats](../../../../../store_credit/types/store_credit.ModuleAccountStats/page.mdx)>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"ModuleAccountStats","type":"[ModuleAccountStats](../../../../../store_credit/types/store_credit.ModuleAccountStats/page.mdx)","optional":false,"defaultValue":"","description":"Aggregated balance statistics for a store credit account.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The store credit account's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"balance","type":"[BigNumberValue](../../../../../store_credit/types/store_credit.BigNumberValue/page.mdx)","description":"The current balance of the account (credits minus debits).","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../store_credit/types/store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"credits","type":"[BigNumberValue](../../../../../store_credit/types/store_credit.BigNumberValue/page.mdx)","description":"The total amount credited to the account.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../store_credit/types/store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"debits","type":"[BigNumberValue](../../../../../store_credit/types/store_credit.BigNumberValue/page.mdx)","description":"The total amount debited from the account.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../store_credit/types/store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="retrieveGiftCardsBalanceStep"/>

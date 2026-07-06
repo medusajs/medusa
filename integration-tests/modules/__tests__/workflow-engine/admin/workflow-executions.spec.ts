@@ -53,7 +53,7 @@ const adminHeaders = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Workflow Engine API", () => {
       let medusaContainer
 
@@ -91,8 +91,10 @@ medusaIntegrationTestRunner({
         )
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, medusaContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("Should list all workflows in execution or completed and retrieve them by id", async () => {
@@ -120,6 +122,7 @@ medusaIntegrationTestRunner({
           transaction_id: expect.any(String),
           id: expect.any(String),
           state: "invoking",
+          execution: expect.anything(),
           created_at: expect.any(String),
           updated_at: expect.any(String),
           deleted_at: null,
@@ -178,6 +181,7 @@ medusaIntegrationTestRunner({
           ),
           id: expect.any(String),
           state: "invoking",
+          execution: expect.anything(),
           created_at: expect.any(String),
           updated_at: expect.any(String),
           deleted_at: null,
@@ -189,6 +193,7 @@ medusaIntegrationTestRunner({
           ),
           id: expect.any(String),
           state: "invoking",
+          execution: expect.anything(),
           created_at: expect.any(String),
           updated_at: expect.any(String),
           deleted_at: null,

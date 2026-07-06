@@ -6,6 +6,7 @@ import {
 } from "../../../../../lib/table/table-adapters"
 import { useMemo } from "react"
 
+// eslint-disable-next-line max-len
 export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct> {
   return createTableAdapter<HttpTypes.AdminProduct>({
     entity: "products",
@@ -19,10 +20,10 @@ export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct
           is_giftcard: false, // Exclude gift cards from product list
         },
         {
-          placeholderData: (previousData, previousQuery) => {
+          placeholderData: (previousData, previousQuery: any) => {
             // Only keep placeholder data if the fields haven't changed
             const prevFields =
-              previousQuery?.[previousQuery.length - 1]?.query?.fields
+              previousQuery?.[previousQuery?.length - 1]?.query?.fields
             if (prevFields && prevFields !== fields) {
               // Fields changed, don't use placeholder data
               return undefined

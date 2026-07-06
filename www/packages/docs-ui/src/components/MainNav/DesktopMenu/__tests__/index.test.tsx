@@ -1,6 +1,7 @@
 import React from "react"
 import { beforeEach, describe, expect, test, vi } from "vitest"
 import { fireEvent, render } from "@testing-library/react"
+import { MenuItem } from "types"
 import { ButtonProps } from "../../../Button"
 
 // mock functions
@@ -12,9 +13,21 @@ const defaultUseSidebarReturn = {
 }
 const mockUseSidebar = vi.fn(() => defaultUseSidebarReturn)
 
+const defaultUseMainNavReturn = {
+  additionalMenuItems: undefined as
+    | MenuItem[]
+    | undefined,
+  navItems: [],
+}
+const mockUseMainNav = vi.fn(() => defaultUseMainNavReturn)
+
 // mock components
 vi.mock("@/providers/Sidebar", () => ({
   useSidebar: () => mockUseSidebar(),
+}))
+
+vi.mock("@/providers/MainNav", () => ({
+  useMainNav: () => mockUseMainNav(),
 }))
 
 vi.mock("@/components/Button", () => ({
@@ -68,6 +81,8 @@ import { MainNavDesktopMenu } from "../../DesktopMenu"
 
 beforeEach(() => {
   vi.clearAllMocks()
+  mockUseSidebar.mockReturnValue(defaultUseSidebarReturn)
+  mockUseMainNav.mockReturnValue(defaultUseMainNavReturn)
 })
 
 describe("rendering", () => {
@@ -120,6 +135,51 @@ describe("rendering", () => {
       item.textContent?.includes("Sidebar")
     )
     expect(sidebarItem).toBeUndefined()
+  })
+
+  test("renders custom additionalMenuItems when provided", () => {
+    mockUseMainNav.mockReturnValueOnce({
+      ...defaultUseMainNavReturn,
+      additionalMenuItems: [
+        {
+          type: "link",
+          title: "Custom Link 1",
+          link: "https://example.com/1",
+        },
+        {
+          type: "link",
+          title: "Custom Link 2",
+          link: "https://example.com/2",
+        },
+      ],
+    })
+    const { container } = render(<MainNavDesktopMenu />)
+    const menuItems = container.querySelectorAll("[data-testid='menu-item']")
+    const customItem1 = Array.from(menuItems).find((item) =>
+      item.textContent?.includes("Custom Link 1")
+    )
+    const customItem2 = Array.from(menuItems).find((item) =>
+      item.textContent?.includes("Custom Link 2")
+    )
+    expect(customItem1).toBeInTheDocument()
+    expect(customItem2).toBeInTheDocument()
+  })
+
+  test("renders default menu items when additionalMenuItems not provided", () => {
+    const { container } = render(<MainNavDesktopMenu />)
+    const menuItems = container.querySelectorAll("[data-testid='menu-item']")
+    const homepageItem = Array.from(menuItems).find((item) =>
+      item.textContent?.includes("Homepage")
+    )
+    const v1Item = Array.from(menuItems).find((item) =>
+      item.textContent?.includes("Medusa v1")
+    )
+    const changelogItem = Array.from(menuItems).find((item) =>
+      item.textContent?.includes("Changelog")
+    )
+    expect(homepageItem).toBeInTheDocument()
+    expect(v1Item).toBeInTheDocument()
+    expect(changelogItem).toBeInTheDocument()
   })
 })
 

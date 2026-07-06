@@ -9,14 +9,14 @@ export interface AdminCreateSalesChannel {
   description?: string
   /**
    * Whether the sales channel is disabled.
-   * 
+   *
    * @defaultValue `false`
    */
   is_disabled?: boolean
   /**
    * Custom key-value pairs that can be added to the sales channel.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateSalesChannel {
@@ -35,7 +35,7 @@ export interface AdminUpdateSalesChannel {
   /**
    * Custom key-value pairs that can be added to the sales channel.
    */
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, unknown> | null
 }
 
 export interface AdminUpdateSalesChannelProducts {

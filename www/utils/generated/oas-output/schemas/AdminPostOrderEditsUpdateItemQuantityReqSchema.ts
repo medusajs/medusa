@@ -22,6 +22,9 @@
  *     type: number
  *     title: compare_at_unit_price
  *     description: The original price of the item before a promotion or sale.
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs of custom data.
  * 
 */
 

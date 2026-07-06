@@ -1,0 +1,27 @@
+url: http://localhost:3000
+
+checks:
+  - llms-txt-exists
+  - llms-txt-valid
+  - llms-txt-size
+  - llms-txt-links-resolve
+  - llms-txt-links-markdown
+  - llms-txt-directive
+  - markdown-url-support
+  - content-negotiation
+  - rendering-strategy
+  - page-size-markdown
+  - page-size-html
+  - content-start-position
+  - tabbed-content-serialization
+  - section-header-quality
+  - markdown-code-fence-validity
+  - http-status-codes
+  - redirect-behavior
+  - llms-txt-freshness
+  - auth-gate-detection
+  - auth-alternative-access
+
+options:
+  maxLinksToTest: 1
+  samplingStrategy: deterministic

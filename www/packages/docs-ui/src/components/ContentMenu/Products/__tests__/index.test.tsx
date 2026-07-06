@@ -28,6 +28,19 @@ vi.mock("@/components/BorderedIcon", () => ({
     <div data-testid="bordered-icon">{children}</div>
   ),
 }))
+vi.mock("@/components/ContentMenu/Section", () => ({
+  ContentMenuSection: ({
+    title,
+    children,
+  }: {
+    title: string
+    children: React.ReactNode
+  }) => (
+    <div data-testid="content-menu-section" data-title={title}>
+      {children}
+    </div>
+  ),
+}))
 
 import { ContentMenuProducts } from "../../Products"
 import { products } from "../../../../constants"
@@ -37,6 +50,15 @@ beforeEach(() => {
 })
 
 describe("render", () => {
+  test("renders inside Modules used section", () => {
+    const { container } = render(<ContentMenuProducts />)
+    const section = container.querySelector(
+      "[data-testid='content-menu-section']"
+    )
+    expect(section).toBeInTheDocument()
+    expect(section).toHaveAttribute("data-title", "Modules used")
+  })
+
   test("render product menu", () => {
     const { container } = render(<ContentMenuProducts />)
     expect(container).toBeInTheDocument()

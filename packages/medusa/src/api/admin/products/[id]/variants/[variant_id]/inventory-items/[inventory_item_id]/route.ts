@@ -5,12 +5,11 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { refetchVariant } from "../../../../../helpers"
-import { AdminUpdateVariantInventoryItemType } from "../../../../../validators"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    AdminUpdateVariantInventoryItemType,
+    HttpTypes.AdminUpdateVariantInventoryItem,
     HttpTypes.SelectParams
   >,
   res: MedusaResponse<HttpTypes.AdminProductVariantResponse>

@@ -1,0 +1,13 @@
+---
+displayed_sidebar: loyaltyReference
+---
+
+import { TypeList } from "docs-ui"
+
+# ModuleCreateGiftCard
+
+ **ModuleCreateGiftCard**: `Object`
+
+The data required to create a gift card.
+
+<TypeList types={[{"name":"code","type":"`string`","description":"The unique redemption code for the gift card. If not provided, one is auto-generated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`number`","description":"The monetary value of the gift card.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The three-letter ISO currency code for the gift card's value.","optional":false,"defaultValue":"","example":"usd","expandable":false,"children":[]},{"name":"expires_at","type":"`string` \\| `null`","description":"The expiration date of the gift card, or null if it does not expire.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string` \\| `null`","description":"The ID of the resource this gift card is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string` \\| `null`","description":"The resource type this gift card is associated with (e.g. \"order\").","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string`","description":"The ID of the line item this gift card was purchased as.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string` \\| `null`","description":"The ID of the customer to associate with the gift card.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Custom key-value pairs to attach to the gift card.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="ModuleCreateGiftCard"/>

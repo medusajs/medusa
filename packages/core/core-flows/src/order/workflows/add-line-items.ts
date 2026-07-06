@@ -24,12 +24,21 @@ import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants
 import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { createOrderLineItemsStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
+import { fieldsForPricingContext } from "../../common/utils/fields"
+
+const variantFields = deduplicate([
+  ...productVariantsFields,
+  ...requiredVariantFieldsForInventoryConfirmation,
+])
 
 /**
  * The created order line items.
  */
 export type OrderAddLineItemWorkflowOutput = OrderLineItemDTO[]
 
+/**
+ * Workflow ID for adding line items to an order
+ */
 export const addOrderLineItemsWorkflowId = "order-add-line-items"
 /**
  * This workflow adds line items to an order. This is useful when making edits to
@@ -101,15 +110,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
     const { data: order } = useQueryGraphStep({
       entity: "order",
       filters: { id: input.order_id },
-      fields: [
-        "id",
-        "sales_channel_id",
-        "region_id",
-        "customer_id",
-        "email",
-        "currency_code",
-        "locale",
-      ],
+      fields: fieldsForPricingContext,
       options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "order-query" })
 
@@ -119,6 +120,16 @@ export const addOrderLineItemsWorkflow = createWorkflow(
         .filter(Boolean) as string[]
     })
 
+    const customerInput = transform(
+      { order },
+      (data) => {
+        return {
+          customer: data.order.customer?.id,
+          email: data.order.email,
+        }
+      }
+    )
+
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
         salesChannelId: order.sales_channel_id,
@@ -126,10 +137,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
       findOneOrAnyRegionStep({
         regionId: order.region_id,
       }),
-      findOrCreateCustomerStep({
-        customerId: order.customer_id,
-        email: order.email,
-      })
+      findOrCreateCustomerStep(customerInput)
     )
 
     const setPricingContext = createHook(
@@ -154,10 +162,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
         setPricingContextResult: setPricingContextResult!,
         variants: {
           id: variantIds,
-          fields: deduplicate([
-            ...productVariantsFields,
-            ...requiredVariantFieldsForInventoryConfirmation,
-          ]),
+          fields: variantFields,
         },
       },
     })

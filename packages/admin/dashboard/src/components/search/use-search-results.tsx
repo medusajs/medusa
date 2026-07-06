@@ -426,7 +426,13 @@ const useDynamicSearchResults = (
       .map(([key, response]) => {
         const area = key as SearchArea
         if (isAreaEnabled(currentArea, area) || currentArea === "all") {
-          return transformDynamicSearchResults(area, limit, t, response)
+          return transformDynamicSearchResults(
+            area,
+            limit,
+            t,
+            // Type assertion is valid since all requests pass pagination parameters and return a response with a count property
+            response as { count: number } | undefined
+          )
         }
         return null
       })
@@ -623,7 +629,7 @@ const transformMap: TransformMap = {
       id: user.id,
       title: `${user.first_name} ${user.last_name}`,
       subtitle: user.email,
-      to: `/users/${user.id}`,
+      to: `/settings/users/${user.id}`,
       value: `user:${user.id}`,
     }),
   },
@@ -632,7 +638,7 @@ const transformMap: TransformMap = {
     transform: (region: HttpTypes.AdminRegion) => ({
       id: region.id,
       title: region.name,
-      to: `/regions/${region.id}`,
+      to: `/settings/regions/${region.id}`,
       value: `region:${region.id}`,
     }),
   },
@@ -644,7 +650,7 @@ const transformMap: TransformMap = {
         taxRegion.province_code?.toUpperCase() ??
         taxRegion.country_code!.toUpperCase(),
       subtitle: taxRegion.province_code ? taxRegion.country_code! : undefined,
-      to: `/tax-regions/${taxRegion.id}`,
+      to: `/settings/tax-regions/${taxRegion.id}`,
       value: `taxRegion:${taxRegion.id}`,
     }),
   },
@@ -654,7 +660,7 @@ const transformMap: TransformMap = {
       id: returnReason.id,
       title: returnReason.label,
       subtitle: returnReason.value,
-      to: `/return-reasons/${returnReason.id}/edit`,
+      to: `/settings/return-reasons/${returnReason.id}/edit`,
       value: `returnReason:${returnReason.id}`,
     }),
   },
@@ -663,7 +669,7 @@ const transformMap: TransformMap = {
     transform: (salesChannel: HttpTypes.AdminSalesChannel) => ({
       id: salesChannel.id,
       title: salesChannel.name,
-      to: `/sales-channels/${salesChannel.id}`,
+      to: `/settings/sales-channels/${salesChannel.id}`,
       value: `salesChannel:${salesChannel.id}`,
     }),
   },
@@ -672,7 +678,7 @@ const transformMap: TransformMap = {
     transform: (productType: HttpTypes.AdminProductType) => ({
       id: productType.id,
       title: productType.value,
-      to: `/product-types/${productType.id}`,
+      to: `/settings/product-types/${productType.id}`,
       value: `productType:${productType.id}`,
     }),
   },
@@ -681,7 +687,7 @@ const transformMap: TransformMap = {
     transform: (productTag: HttpTypes.AdminProductTag) => ({
       id: productTag.id,
       title: productTag.value,
-      to: `/product-tags/${productTag.id}`,
+      to: `/settings/product-tags/${productTag.id}`,
       value: `productTag:${productTag.id}`,
     }),
   },
@@ -690,7 +696,7 @@ const transformMap: TransformMap = {
     transform: (location: HttpTypes.AdminStockLocation) => ({
       id: location.id,
       title: location.name,
-      to: `/locations/${location.id}`,
+      to: `/settings/locations/${location.id}`,
       value: `location:${location.id}`,
     }),
   },
@@ -699,7 +705,7 @@ const transformMap: TransformMap = {
     transform: (shippingProfile: HttpTypes.AdminShippingProfile) => ({
       id: shippingProfile.id,
       title: shippingProfile.name,
-      to: `/shipping-profiles/${shippingProfile.id}`,
+      to: `/settings/locations/shipping-profiles/${shippingProfile.id}`,
       value: `shippingProfile:${shippingProfile.id}`,
     }),
   },
@@ -709,7 +715,7 @@ const transformMap: TransformMap = {
       id: apiKey.id,
       title: apiKey.title,
       subtitle: apiKey.redacted,
-      to: `/publishable-api-keys/${apiKey.id}`,
+      to: `/settings/publishable-api-keys/${apiKey.id}`,
       value: `publishableApiKey:${apiKey.id}`,
     }),
   },
@@ -719,7 +725,7 @@ const transformMap: TransformMap = {
       id: apiKey.id,
       title: apiKey.title,
       subtitle: apiKey.redacted,
-      to: `/secret-api-keys/${apiKey.id}`,
+      to: `/settings/secret-api-keys/${apiKey.id}`,
       value: `secretApiKey:${apiKey.id}`,
     }),
   },

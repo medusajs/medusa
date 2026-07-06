@@ -5,6 +5,7 @@ import {
   transform,
   when,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
 import { refundPaymentsWorkflow } from "../../../payment/workflows/refund-payments"
@@ -92,10 +93,16 @@ export const refundCapturedPaymentsWorkflow = createWorkflow(
         )
     )
 
-    when({ totalCaptured }, ({ totalCaptured }) => {
+    const refundedPayments = when({ totalCaptured }, ({ totalCaptured }) => {
       return !!MathBN.gt(totalCaptured, 0)
     }).then(() => {
-      refundPaymentsWorkflow.runAsStep({ input: refundPaymentsData })
+      return refundPaymentsWorkflow.runAsStep({ input: refundPaymentsData })
     })
+
+    const response = transform(
+      { refundedPayments },
+      ({ refundedPayments }) => refundedPayments ?? []
+    )
+    return new WorkflowResponse(response as PaymentDTO[])
   }
 )

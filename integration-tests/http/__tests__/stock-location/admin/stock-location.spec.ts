@@ -9,13 +9,13 @@ const { medusaIntegrationTestRunner } = require("@medusajs/test-utils")
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let location1
     let location2
     let salesChannel1
     let salesChannel2
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       location1 = (
@@ -65,6 +65,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.sales_channel
+
+      await dbUtils.snapshot()
     })
 
     describe("create stock location", () => {
@@ -89,6 +91,80 @@ medusaIntegrationTestRunner({
               address_1: "Test Address",
               country_code: "US",
             }),
+          })
+        )
+      })
+
+      it("should create a stock location with address metadata", async () => {
+        const response = await api.post(
+          "/admin/stock-locations",
+          {
+            name: "Metadata Test Location",
+            address: {
+              address_1: "123 Test St",
+              country_code: "US",
+              metadata: {
+                internal_id: "LOC-123",
+                gate_code: "9999",
+              },
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location).toEqual(
+          expect.objectContaining({
+            name: "Metadata Test Location",
+            address: expect.objectContaining({
+              address_1: "123 Test St",
+              country_code: "US",
+              metadata: {
+                internal_id: "LOC-123",
+                gate_code: "9999",
+              },
+            }),
+          })
+        )
+      })
+
+      it("should create and retrieve a stock location with metadata", async () => {
+        const metadata = {
+          internal_id: "LOC-789",
+          priority: "high",
+        }
+
+        const response = await api.post(
+          "/admin/stock-locations",
+          {
+            name: "Stock Location Metadata Test",
+            metadata,
+            address: {
+              address_1: "456 Test St",
+              country_code: "US",
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location).toEqual(
+          expect.objectContaining({
+            name: "Stock Location Metadata Test",
+            metadata,
+          })
+        )
+
+        const retrieveResponse = await api.get(
+          `/admin/stock-locations/${response.data.stock_location.id}`,
+          adminHeaders
+        )
+
+        expect(retrieveResponse.status).toEqual(200)
+        expect(retrieveResponse.data.stock_location).toEqual(
+          expect.objectContaining({
+            id: response.data.stock_location.id,
+            metadata,
           })
         )
       })
@@ -214,6 +290,33 @@ medusaIntegrationTestRunner({
               address_1: "test 2",
               country_code: "dk",
             }),
+          })
+        )
+      })
+
+      it("should update stock location address metadata", async () => {
+        const response = await api.post(
+          `/admin/stock-locations/${location1.id}`,
+          {
+            address: {
+              address_1: "123 Test St",
+              country_code: "US",
+              metadata: {
+                updated_id: "LOC-456",
+              },
+            },
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.stock_location.address).toEqual(
+          expect.objectContaining({
+            address_1: "123 Test St",
+            country_code: "US",
+            metadata: {
+              updated_id: "LOC-456",
+            },
           })
         )
       })

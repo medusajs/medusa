@@ -33,13 +33,19 @@ export type RedisCacheModuleOptions = {
 
   /**
    * Default retry interval (in milliseconds)
-   * @default 5
+   * @default 20
    */
   defaultRetryInterval?: number
 
   /**
    * Maximum retry interval (in milliseconds)
-   * @default 200
+   * @default 1000
    */
   maximumRetryInterval?: number
+
+  /**
+   * Backoff factor for retries
+   * @default 2
+   */
+  backoffFactor?: number
 }

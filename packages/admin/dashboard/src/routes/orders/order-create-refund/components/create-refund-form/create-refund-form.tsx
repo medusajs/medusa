@@ -20,7 +20,10 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRefundPayment, useRefundReasons } from "../../../../../hooks/api"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
-import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import {
+  getDecimalDigits,
+  getLocaleAmount,
+} from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
@@ -58,10 +61,20 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
   )
 
   const direction = useDocumentDirection()
+  const decimalDigits = getDecimalDigits(order.currency_code)
+
+  // Uses toLocaleString to match getStylizedAmount's rounding and keep the button and form in sync.
+  const getRoundedAmount = (amount: number) =>
+    amount.toLocaleString("en-US", {
+      minimumFractionDigits: decimalDigits,
+      maximumFractionDigits: decimalDigits,
+      useGrouping: false,
+    })
+
   const form = useForm<zod.infer<typeof CreateRefundSchema>>({
     defaultValues: {
       amount: {
-        value: paymentAmount.toFixed(currency.decimal_digits),
+        value: getRoundedAmount(paymentAmount),
         float: paymentAmount,
       },
     },
@@ -80,7 +93,7 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
       pendingAmount < 0 ? pendingAmount * -1 : pendingAmount
 
     form.setValue("amount", {
-      value: normalizedAmount.toFixed(currency.decimal_digits),
+      value: getRoundedAmount(normalizedAmount),
       float: normalizedAmount,
     })
   }, [payment?.id || ""])
@@ -181,7 +194,7 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
                     payment!.currency_code
                   )}
                 </span>
-                <span> - </span>
+                <span>&nbsp;-&nbsp;</span>
                 <span>(#{payment!.id.substring(23)})</span>
               </div>
             )}

@@ -1,0 +1,28 @@
+---
+slug: /references/medusa-workflows/validateCartStep
+sidebar_label: validateCartStep
+sidebar_description: ""
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateCartStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateCartStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that a cart is eligible for store credit usage. It throws an
+error if the cart is not found, does not have a customer, or does not have a
+currency set.
+
+## Example
+
+```ts
+const data = validateCartStep({
+  cart: { ...cart, customer_id: "cust_123", currency_code: "usd" },
+  input: { cart_id: "cart_123" },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateCartStepInput","type":"[ValidateCartStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateCartStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateCartStepInput","type":"`object`","description":"Input to validate that a cart is eligible for store credit usage.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateCartStep"/>

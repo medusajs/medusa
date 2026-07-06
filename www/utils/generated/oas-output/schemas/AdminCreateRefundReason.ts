@@ -19,9 +19,6 @@
  *     type: string
  *     title: code
  *     description: The refund reason's code.
- *   metadata:
- *     type: object
- *     description: The refund reason's metadata. Can hold custom key-value pairs.
  * 
 */
 

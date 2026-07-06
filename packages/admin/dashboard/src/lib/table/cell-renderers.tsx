@@ -247,7 +247,7 @@ const CustomerNameRenderer: CellRenderer = (_, row, _column, t) => {
 }
 
 const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
-  let address = null
+  let address: Record<string, string> | null = null
   if (column.field === "shipping_address_display") {
     address = row.shipping_address
   } else if (column.field === "billing_address_display") {
@@ -260,13 +260,13 @@ const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
     return "-"
   }
 
-  const parts = []
+  const parts: string[] = []
 
   if (address.address_1) {
     parts.push(address.address_1)
   }
 
-  const locationParts = []
+  const locationParts: string[] = []
   if (address.city) {
     locationParts.push(address.city)
   }

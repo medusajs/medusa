@@ -1,0 +1,72 @@
+import { Table, Note } from "docs-ui"
+
+export const metadata = {
+  title: `IP Addresses`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about outgoing (egress) and incoming (ingress) IP addresses for your Medusa project deployed on Cloud.
+
+## Outgoing or Egress IP Addresses
+
+When your Medusa backend makes requests to external services, such as calling a payment provider's API, sending webhooks to your systems, or connecting to external APIs, those requests originate from fixed IP addresses.
+
+If you need to whitelist Cloud's outgoing IP addresses in your firewall or allowlist them in external services, you can use the following static IP addresses.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Region
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        IP Addresses
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        US East (`us-east-1`)
+      </Table.Cell>
+      <Table.Cell>
+
+      - `44.218.150.233`
+      - `18.215.199.94`
+      - `23.21.63.246`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        EU Central (`eu-central-1`)
+      </Table.Cell>
+      <Table.Cell>
+
+      - `18.153.86.98`
+      - `35.157.194.186`
+      - `3.67.229.94`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Asia Pacific (`ap-southeast-1`)
+      </Table.Cell>
+      <Table.Cell>
+
+      - `13.215.170.187`
+      - `52.76.11.177`
+      - `54.255.92.36`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Incoming or Ingress IP Addresses
+
+Incoming (ingress) IP addresses are dynamic and change over time. Only outgoing (egress) IP addresses are static and suitable for allowlisting.
+
+If you need to access the incoming IP address of your Medusa project, contact support for help with setting up a proxy for your Medusa project.

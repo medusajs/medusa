@@ -9,13 +9,14 @@
  *   - return_order
  *   - exchange
  *   - actions
- *   - status
  *   - id
  *   - version
+ *   - status
  *   - metadata
  *   - created_at
  *   - updated_at
  *   - order_id
+ *   - internal_note
  *   - return_id
  *   - exchange_id
  *   - claim_id
@@ -28,6 +29,7 @@
  *   - declined_at
  *   - canceled_by
  *   - canceled_at
+ *   - created_by
  * properties:
  *   id:
  *     type: string
@@ -143,6 +145,14 @@
  *     type: boolean
  *     title: carry_over_promotions
  *     description: Whether promotions from the original order should be carried over to the order change (specifically, exchanges).
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The ID of the user that created the order change.
+ *   internal_note:
+ *     type: string
+ *     title: internal_note
+ *     description: The order change's internal note.
  * 
 */
 

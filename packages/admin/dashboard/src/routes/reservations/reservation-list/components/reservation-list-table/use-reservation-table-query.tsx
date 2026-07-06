@@ -23,7 +23,7 @@ export const useReservationTableQuery = ({
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
     order: order ?? "-created_at",
     ...rest,
-  }
+  } as HttpTypes.AdminGetReservationsParams
 
   return {
     searchParams,

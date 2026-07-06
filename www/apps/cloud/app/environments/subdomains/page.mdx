@@ -1,0 +1,34 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Update Subdomains`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to update the Medusa-provided subdomains for your backend and storefront.
+
+## What are Subdomains?
+
+Each environment gets a backend subdomain under `medusajs.app` and a storefront subdomain under `medusajs.site`. You can update these subdomains from the environment's **Domains** settings page.
+
+These are different from [custom domains](../custom-domains/page.mdx), which let you serve your backend and storefront from your own domain names.
+
+---
+
+## Update Subdomains
+
+<Note type="warning">
+
+Updating a subdomain may result in a short downtime until the change propagates.
+
+</Note>
+
+To update the backend or storefront subdomain:
+
+1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click on the "Settings" tab.
+2. Choose the "Domains" tab from the sidebar.
+3. Under the **Medusa-provided domains** section:
+   - To change the backend subdomain, update the value in the **Backend subdomain** field. The full URL will be `https://<your-subdomain>.medusajs.app`.
+   - To change the storefront subdomain, update the value in the **Storefront subdomain** field. The full URL will be `https://<your-subdomain>.medusajs.site`.
+4. Click **Save changes**.

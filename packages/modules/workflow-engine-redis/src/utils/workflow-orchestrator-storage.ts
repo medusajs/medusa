@@ -24,7 +24,13 @@ import {
   TransactionStepState,
 } from "@medusajs/framework/utils"
 import { WorkflowOrchestratorService } from "@services"
-import { Queue, QueueOptions, RepeatOptions, Worker, WorkerOptions } from "bullmq"
+import {
+  Queue,
+  QueueOptions,
+  RepeatOptions,
+  Worker,
+  WorkerOptions,
+} from "bullmq"
 import Redis from "ioredis"
 
 enum JobType {
@@ -231,9 +237,11 @@ export class RedisDistributedTransactionStorage
               job.data.schedulerOptions
             )}`
           )
+          const scheduledFor = new Date(job.timestamp)
           return await this.executeScheduledJob(
             job.data.jobId,
-            job.data.schedulerOptions
+            job.data.schedulerOptions,
+            scheduledFor
           )
         },
         jobWorkerOptions
@@ -428,13 +436,17 @@ export class RedisDistributedTransactionStorage
 
   private async executeScheduledJob(
     jobId: string,
-    schedulerOptions: SchedulerOptions
+    schedulerOptions: SchedulerOptions,
+    scheduledFor: Date
   ) {
     try {
       // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
       // of the transaction to ensure that the transaction is only executed once.
       await this.workflowOrchestratorService_.run(jobId, {
         logOnError: true,
+        input: {
+          scheduledFor: scheduledFor.toISOString(),
+        },
       })
     } catch (e) {
       if (e instanceof MedusaError && e.type === MedusaError.Types.NOT_FOUND) {
@@ -661,7 +673,10 @@ export class RedisDistributedTransactionStorage
     step: TransactionStep
   ): Promise<void> {
     // Pass retry interval to ensure we remove the correct job (with -retry suffix if interval > 0)
-    const interval = step.definition.retryInterval || 0
+    const interval =
+      step.definition.retryInterval ||
+      step.definition.retryIntervalAwaiting ||
+      0
     await this.removeJob(JobType.RETRY, transaction, step, interval)
   }
 
@@ -729,7 +744,12 @@ export class RedisDistributedTransactionStorage
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id, step.attempts + "")
+      key.push(step.id)
+
+      // Step timeout has a single job per step
+      if (type !== JobType.STEP_TIMEOUT) {
+        key.push(step.attempts + "")
+      }
 
       // Add suffix for retry scheduling (interval > 0) to avoid collision with async execution (interval = 0)
       if (type === JobType.RETRY && isDefined(interval) && interval > 0) {

@@ -8,12 +8,12 @@ import { Modules } from "@medusajs/framework/utils"
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let salesChannel1
     let salesChannel2
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -38,6 +38,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.sales_channel
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/sales-channels/:id", () => {

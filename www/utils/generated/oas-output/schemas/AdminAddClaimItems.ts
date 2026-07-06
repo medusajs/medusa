@@ -38,6 +38,9 @@
  *           type: string
  *           title: internal_note
  *           description: A note that's only viewed by admin users.
+ *         metadata:
+ *           type: object
+ *           description: Key-value pairs of custom data.
  * 
 */
 

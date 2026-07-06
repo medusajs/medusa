@@ -8,10 +8,37 @@ import { WorkflowTypes } from "@medusajs/types"
 import { normalizeForExport } from "../helpers/normalize-for-export"
 import { json2csv } from "json-2-csv"
 
+/**
+ * The step ID for exporting products.
+ */
 export const exportProductsStepId = "export-products"
 
 const DEFAULT_BATCH_SIZE = 50
 
+/**
+ * This step exports products to a CSV file based on the provided filters.
+ * 
+ * @example
+ * To export all products:
+ * 
+ * ```ts
+ * const data = exportProductsStep({
+ *   select: ["id", "title", "handle"],
+ *   batch_size: 100
+ * })
+ * ```
+ * 
+ * To export products from a specific sales channel:
+ * 
+ * ```ts
+ * const data = exportProductsStep({
+ *   select: ["id", "title", "handle"],
+ *   filter: {
+ *     sales_channel_id: "sc_123"
+ *   }
+ * })
+ * ```
+ */
 export const exportProductsStep = createStep(
   exportProductsStepId,
   async (
@@ -41,16 +68,36 @@ export const exportProductsStep = createStep(
     let hasHeader = false
 
     const fields = deduplicate(["id", "handle", ...input.select])
+    const { sales_channel_id, ..._filters } = input.filter ?? {}
 
     while (true) {
+      if (!!sales_channel_id) {
+        const { data: salesChannelProducts } = await query.graph({
+          entity: "product_sales_channel",
+          filters: {
+            sales_channel_id,
+          },
+          fields: ["product_id"],
+          pagination: {
+            skip: page * pageSize,
+            take: pageSize,
+          },
+        })
+
+        _filters.id = salesChannelProducts.map((product) => product.product_id)
+      }
+
       const { data: products } = await query.graph({
         entity: "product",
         fields,
-        filters: input.filter,
-        pagination: {
-          skip: page * pageSize,
-          take: pageSize,
-        },
+        filters: _filters,
+        // If sales channel is specified, we already paginated
+        pagination: sales_channel_id
+          ? undefined
+          : {
+              skip: page * pageSize,
+              take: pageSize,
+            },
       })
 
       if (products.length === 0) {

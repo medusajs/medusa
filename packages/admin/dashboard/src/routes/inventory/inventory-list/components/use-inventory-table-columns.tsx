@@ -1,4 +1,4 @@
-import { InventoryTypes, ProductVariantDTO } from "@medusajs/types"
+import { AdminInventoryItem } from "@medusajs/types"
 
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -7,16 +7,7 @@ import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
 import { InventoryActions } from "./inventory-actions"
 
-/**
- * Adds missing properties to the InventoryItemDTO type.
- */
-interface ExtendedInventoryItem extends InventoryTypes.InventoryItemDTO {
-  variants?: ProductVariantDTO[] | null
-  stocked_quantity?: number
-  reserved_quantity?: number
-}
-
-const columnHelper = createColumnHelper<ExtendedInventoryItem>()
+const columnHelper = createColumnHelper<AdminInventoryItem>()
 
 export const useInventoryTableColumns = () => {
   const { t } = useTranslation()

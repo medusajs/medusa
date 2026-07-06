@@ -70,6 +70,8 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the claim was updated.
+ *   item:
+ *     $ref: "#/components/schemas/AdminOrderLineItem"
  * 
 */
 

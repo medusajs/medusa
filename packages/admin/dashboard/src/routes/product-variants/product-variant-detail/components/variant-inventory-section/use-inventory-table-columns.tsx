@@ -1,4 +1,4 @@
-import { InventoryNext, ProductVariantDTO } from "@medusajs/types"
+import { AdminInventoryItem, AdminProductVariant } from "@medusajs/types"
 
 import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
@@ -6,8 +6,9 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-interface ExtendedInventoryItem extends InventoryNext.InventoryItemDTO {
-  variants: ProductVariantDTO[]
+interface ExtendedInventoryItem extends AdminInventoryItem {
+  required_quantity?: number
+  variants?: AdminProductVariant[]
 }
 
 const columnHelper = createColumnHelper<ExtendedInventoryItem>()
@@ -68,7 +69,7 @@ export const useInventoryTableColumns = () => {
       columnHelper.display({
         id: "inventory_quantity",
         header: t("fields.inventory"),
-        cell: ({ getValue, row: { original: inventory } }) => {
+        cell: ({ row: { original: inventory } }) => {
           if (!inventory.location_levels?.length) {
             return <PlaceholderCell />
           }
@@ -77,7 +78,7 @@ export const useInventoryTableColumns = () => {
           let locations = 0
 
           inventory.location_levels.forEach((level) => {
-            quantity += level.available_quantity
+            quantity += level.available_quantity ?? 0
             locations += 1
           })
 

@@ -1,0 +1,139 @@
+---
+slug: /references/medusa-workflows/redeemGiftCardWorkflow
+sidebar_label: redeemGiftCardWorkflow
+sidebar_description: Redeem a gift card and create a backing store credit account.
+tags:
+  - store credit
+  - workflow
+  - link
+  - loyalty
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# redeemGiftCardWorkflow - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `redeemGiftCardWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow redeems a gift card by creating an anonymous store credit account,
+crediting it with the gift card's value, and marking the gift card as redeemed.
+It throws an error if the gift card is already redeemed or already has an
+associated store credit account.
+
+You can use this workflow within your own customizations or custom workflows,
+allowing you to wrap custom logic around gift card redemption.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/plugins/loyalty/src/workflows/gift-cards/workflows/redeem-gift-card.ts#L103" />
+
+## Examples
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await redeemGiftCardWorkflow(req.scope)
+    .run({
+      input: {
+        gift_card_id: "gc_123",
+      },
+    })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await redeemGiftCardWorkflow(container)
+    .run({
+      input: {
+        gift_card_id: "gc_123",
+      },
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await redeemGiftCardWorkflow(container)
+    .run({
+      input: {
+        gift_card_id: "gc_123",
+      },
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { redeemGiftCardWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = redeemGiftCardWorkflow
+      .runAsStep({
+        input: {
+          gift_card_id: "gc_123",
+        },
+      })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"redeemGiftCardWorkflow","steps":[{"type":"step","name":"validateGiftCardRedeemStep","description":"This step validates that a gift card can be redeemed. It throws an error if the\ngift card is already redeemed or already has an associated store credit account.","link":"../core_flows.Gift_Card.Workflows_Gift_Card.validateGiftCardRedeemStep/page.mdx","depth":1},{"type":"step","name":"createStoreCreditAccountsStep","description":"This step creates store credit accounts. If no code is provided, a unique code\nprefixed with \"SC\" is automatically generated. The step supports rollback by\ndeleting the created accounts.","link":"../../../../Store_Credit/Steps_Store_Credit/functions/core_flows.Store_Credit.Steps_Store_Credit.createStoreCreditAccountsStep/page.mdx","depth":2},{"type":"workflow","name":"createLinksWorkflow","description":"Create links between two records of linked data models.","link":"../../../../Common/Workflows_Common/functions/core_flows.Common.Workflows_Common.createLinksWorkflow/page.mdx","depth":3},{"type":"workflow","name":"creditAccountsWorkflow","description":"Credit one or more store credit accounts.","link":"../../../../Store_Credit/Workflows_Store_Credit/functions/core_flows.Store_Credit.Workflows_Store_Credit.creditAccountsWorkflow/page.mdx","depth":4},{"type":"workflow","name":"updateGiftCardsWorkflow","description":"Update gift cards.","link":"../core_flows.Gift_Card.Workflows_Gift_Card.updateGiftCardsWorkflow/page.mdx","depth":5}]}} />
+
+## Input
+
+<TypeList types={[{"name":"RedeemGiftCardWorkflowInput","type":"`RedeemGiftCardWorkflowInput`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="redeemGiftCardWorkflow"/>

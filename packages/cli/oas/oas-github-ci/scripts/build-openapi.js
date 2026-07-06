@@ -7,6 +7,8 @@ const execa = require("execa")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const withFullFile = process.argv.indexOf("--with-full-file") !== -1
+const archiveVersionArg = process.argv.find((a) => a.startsWith("--archive-version="))
+const archiveVersion = archiveVersionArg ? archiveVersionArg.split("=")[1] : undefined
 const basePath = path.resolve(__dirname, `../`)
 const repoRootPath = path.resolve(basePath, `../../../../`)
 const docsApiPath = path.resolve(repoRootPath, "www/apps/api-reference/specs")
@@ -17,7 +19,7 @@ const run = async () => {
     await generateOASSource(oasOutDir, apiType)
     const oasSrcFile = path.resolve(oasOutDir, `${apiType}.oas.json`)
     const docsOutDir = path.resolve(oasOutDir, apiType)
-    await generateDocs(oasSrcFile, docsOutDir, isDryRun)
+    await generateDocs(oasSrcFile, docsOutDir, apiType, isDryRun)
   }
 }
 
@@ -31,7 +33,7 @@ const generateOASSource = async (outDir, apiType) => {
   console.log(logs)
 }
 
-const generateDocs = async (srcFile, outDir, isDryRun) => {
+const generateDocs = async (srcFile, outDir, apiType, isDryRun) => {
   let params = [
     "docs",
     `--src-file=${srcFile}`,
@@ -51,6 +53,17 @@ const generateDocs = async (srcFile, outDir, isDryRun) => {
       `--out-dir=${outDir}`,
       `--main-file-name=openapi.full.yaml`
     ]
+    if (archiveVersion) {
+      const archiveOutFile = path.resolve(
+        docsApiPath,
+        "versions",
+        archiveVersion,
+        apiType,
+        "openapi.full.yaml"
+      )
+      params.push(`--archive-out-file=${archiveOutFile}`)
+      console.log(`Archiving version ${archiveVersion} to ${archiveOutFile}`)
+    }
     await runMedusaOasCommand(params)
     console.log("Finished generating full file.")
   }

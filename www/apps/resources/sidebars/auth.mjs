@@ -42,6 +42,11 @@ export const authSidebar = [
             path: "/commerce-modules/auth/authentication-route",
             title: "Auth Flow with Routes",
           },
+          {
+            type: "link",
+            path: "/commerce-modules/auth/mfa",
+            title: "Multi-Factor Authentication",
+          },
         ],
       },
       {
@@ -62,6 +67,11 @@ export const authSidebar = [
             type: "link",
             path: "/commerce-modules/auth/reset-password",
             title: "Handle Password Reset Event",
+          },
+          {
+            type: "link",
+            path: "/commerce-modules/auth/email-verification",
+            title: "Send Email Verification",
           },
           {
             type: "link",

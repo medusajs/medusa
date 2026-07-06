@@ -7,7 +7,7 @@ import { RouteModalProvider } from "../route-modal-provider/route-provider"
 import { StackedModalProvider } from "../stacked-modal-provider"
 
 type RouteDrawerProps = PropsWithChildren<{
-  prev?: string | Partial<Path>
+  prev?: string | Partial<Path> | number
 }>
 
 const Root = ({ prev = "..", children }: RouteDrawerProps) => {
@@ -33,7 +33,11 @@ const Root = ({ prev = "..", children }: RouteDrawerProps) => {
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       document.body.style.pointerEvents = "auto"
-      navigate(to, { replace: true })
+      if (typeof to === "number") {
+        navigate(to)
+      } else {
+        navigate(to, { replace: true })
+      }
       return
     }
 

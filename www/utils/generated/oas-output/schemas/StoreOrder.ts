@@ -6,13 +6,13 @@
  * required:
  *   - items
  *   - shipping_methods
- *   - status
  *   - id
  *   - region_id
  *   - customer_id
  *   - sales_channel_id
  *   - email
  *   - currency_code
+ *   - status
  *   - payment_status
  *   - fulfillment_status
  *   - summary

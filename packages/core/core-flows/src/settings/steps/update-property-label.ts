@@ -2,6 +2,11 @@ import { SettingsTypes } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * Input data for updating property labels step.
+ * 
+ * @since 2.13.7
+ */
 export interface UpdatePropertyLabelsStepInput {
   property_labels: {
     id: string
@@ -14,10 +19,17 @@ interface UpdatePropertyLabelsCompensateData {
   previous: { id: string; label: string; description: string | null }[]
 }
 
+/**
+ * Step ID for updating property labels step.
+ * 
+ * @since 2.13.7
+ */
 export const updatePropertyLabelsStepId = "update-property-labels"
 
 /**
- * @since 2.13.2
+ * Workflow step to update property labels.
+ * 
+ * @since 2.13.7
  * @featureFlag view_configurations
  */
 export const updatePropertyLabelsStep = createStep(

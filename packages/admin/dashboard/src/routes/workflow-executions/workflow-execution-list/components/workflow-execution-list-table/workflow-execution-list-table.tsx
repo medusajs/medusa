@@ -6,6 +6,7 @@ import { useWorkflowExecutions } from "../../../../../hooks/api/workflow-executi
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useWorkflowExecutionTableColumns } from "./use-workflow-execution-table-columns"
 import { useWorkflowExecutionTableQuery } from "./use-workflow-execution-table-query"
+import { useWorkflowExecutionTableFilters } from "./use-workflow-execution-table-filters"
 
 const PAGE_SIZE = 20
 
@@ -25,6 +26,7 @@ export const WorkflowExecutionListTable = () => {
       }
     )
 
+  const filters = useWorkflowExecutionTableFilters()
   const columns = useWorkflowExecutionTableColumns()
 
   const { table } = useDataTable({
@@ -54,8 +56,10 @@ export const WorkflowExecutionListTable = () => {
         table={table}
         columns={columns}
         count={count}
+        filters={filters}
         isLoading={isLoading}
         pageSize={PAGE_SIZE}
+        orderBy={[{ key: "created_at", label: t("fields.createdAt") }]}
         navigateTo={(row) => `${row.id}`}
         search
         pagination

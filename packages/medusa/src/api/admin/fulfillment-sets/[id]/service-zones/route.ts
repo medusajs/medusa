@@ -6,7 +6,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 export const POST = async (
   req: MedusaRequest<
     HttpTypes.AdminCreateFulfillmentSetServiceZone,
-    HttpTypes.SelectParams
+    HttpTypes.AdminServiceZonesParams
   >,
   res: MedusaResponse<HttpTypes.AdminFulfillmentSetResponse>
 ) => {

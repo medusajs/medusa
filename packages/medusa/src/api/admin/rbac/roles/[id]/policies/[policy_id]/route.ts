@@ -6,6 +6,10 @@ import {
 import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../../../feature-flags/rbac"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse

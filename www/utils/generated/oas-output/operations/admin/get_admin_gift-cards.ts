@@ -4,7 +4,6 @@
  * summary: List Gift Cards
  * description: Retrieve a list of gift cards. The gift cards can be filtered by fields such as `id`. The gift cards can also be sorted or paginated.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: id
  *     in: query
@@ -153,6 +152,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a gift card's update date.
@@ -272,6 +272,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -334,6 +335,14 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: with_deleted
+ *     in: query
+ *     description: The gift card's with deleted.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: The gift card's with deleted.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -366,9 +375,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
  * 
 */
 

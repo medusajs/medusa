@@ -1,5 +1,150 @@
 # @medusajs/index
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/framework@2.17.2
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies [[`975313f62b22055ddaacf7852f33cf7b0f4af5df`](https://github.com/medusajs/medusa/commit/975313f62b22055ddaacf7852f33cf7b0f4af5df)]:
+  - @medusajs/framework@2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- Updated dependencies [[`57b8e74d0fea8fb0e9dccd76eb6df06f0380071a`](https://github.com/medusajs/medusa/commit/57b8e74d0fea8fb0e9dccd76eb6df06f0380071a)]:
+  - @medusajs/framework@2.17.0
+
+## 2.16.0
+
+### Patch Changes
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
+- [`a63e47d0014fbe309a8594458fc84926dd107a79`](undefined) - fix(index): subscribe to restored events and re-index on restore
+
+- [`a3af5a25e4acea97514ad9b8362941c1a352bb0c`](undefined) - fix(index): use parameterized binding for JSONB containment filter
+
+- Updated dependencies [[`8a6664d6d445f875f56078fad21fe12a185b9627`](https://github.com/medusajs/medusa/commit/8a6664d6d445f875f56078fad21fe12a185b9627), [`20352f4fa2f31e5b491c8b1b244c407392939fbf`](https://github.com/medusajs/medusa/commit/20352f4fa2f31e5b491c8b1b244c407392939fbf), [`90af038c95c835dee5168ffd19cda5182d81b904`](https://github.com/medusajs/medusa/commit/90af038c95c835dee5168ffd19cda5182d81b904), [`66610b87efb112e37b78c7c9536d95070b8d6b11`](https://github.com/medusajs/medusa/commit/66610b87efb112e37b78c7c9536d95070b8d6b11)]:
+  - @medusajs/framework@2.16.0
+
+## 2.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`8122633a8b33164a6094f5a39896e356efde1747`](https://github.com/medusajs/medusa/commit/8122633a8b33164a6094f5a39896e356efde1747), [`538f98da78ae2d741f1182e6ef315ba8efac6911`](https://github.com/medusajs/medusa/commit/538f98da78ae2d741f1182e6ef315ba8efac6911)]:
+  - @medusajs/framework@2.15.5
+
+## 2.15.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.4
+
+## 2.15.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.3
+
+## 2.15.2
+
+### Patch Changes
+
+- Updated dependencies [[`2b21d15640ae459386b0acea4c83804c6f502b9d`](https://github.com/medusajs/medusa/commit/2b21d15640ae459386b0acea4c83804c6f502b9d)]:
+  - @medusajs/framework@2.15.2
+
+## 2.15.1
+
+### Patch Changes
+
+- [#15131](https://github.com/medusajs/medusa/pull/15131) [`d784e637bd0762033601b8503633871dba779bfb`](https://github.com/medusajs/medusa/commit/d784e637bd0762033601b8503633871dba779bfb) Thanks [@ranma-dev](https://github.com/ranma-dev)! - fix(index): bug in index module that returned no results for a custom module with more than one entity linked to the same parent
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.1
+
+## 2.15.0
+
+### Patch Changes
+
+- [#15176](https://github.com/medusajs/medusa/pull/15176) [`ae7bbaed1011e1a74f814c6c01c0da483f300338`](https://github.com/medusajs/medusa/commit/ae7bbaed1011e1a74f814c6c01c0da483f300338) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(index,modules-sdk,): introduce locking to avoid race conditions in distributed systems for migrations, links and index partition creation
+
+- Updated dependencies []:
+  - @medusajs/framework@2.15.0
+
+## 2.14.2
+
+### Patch Changes
+
+- [#15249](https://github.com/medusajs/medusa/pull/15249) [`650938944e2b5b6fbe3f044b8ced8d260b6742a0`](https://github.com/medusajs/medusa/commit/650938944e2b5b6fbe3f044b8ced8d260b6742a0) Thanks [@srindom](https://github.com/srindom)! - feat(index, medusa): resolve `price_list_id` filter on `GET /admin/products` natively through the index engine.
+
+  - `@medusajs/index`: the default schema now exposes `price_list_id` on `Price`. On upgrade, existing index-engine users will trigger a one-time re-sync of the `Price` entity (driven by the existing schema-change detection); during that window, `price_list_id` filters served from the index may return incomplete results.
+  - `@medusajs/medusa`: `getProductsWithIndexEngine` now translates `price_list_id` into the nested filter `variants.prices.price_list_id`, and `maybeApplyPriceListsFilter` skips its in-JS variant-id expansion when the index engine path will handle the filter (i.e. `index_engine` flag enabled and no `tags`/`categories` filters forcing the non-index fallback).
+
+  For users with the `index_engine` feature flag enabled and large price lists this removes the multi-second middleware overhead on the price-list detail page.
+
+- Updated dependencies [[`be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0`](https://github.com/medusajs/medusa/commit/be0b8817a1e2e48e1c6c579de6598c6f5e9bf4b0), [`7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23`](https://github.com/medusajs/medusa/commit/7c659ff3d69c43bd7477bcc8a1c0afd092ea1c23)]:
+  - @medusajs/framework@2.14.2
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.14.1
+
+## 2.14.0
+
+### Patch Changes
+
+- Updated dependencies [[`0929b8d192833e10b6b91795f1ffc478938c3fb7`](https://github.com/medusajs/medusa/commit/0929b8d192833e10b6b91795f1ffc478938c3fb7), [`843dbfe7c8f27b732486c7a8da7b6d63f2fdf967`](https://github.com/medusajs/medusa/commit/843dbfe7c8f27b732486c7a8da7b6d63f2fdf967)]:
+  - @medusajs/framework@2.14.0
+
+## 2.13.6
+
+### Patch Changes
+
+- Updated dependencies [[`2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d`](https://github.com/medusajs/medusa/commit/2b0cd5ff0ce00bf1de1d99632f1bda4073ac035d)]:
+  - @medusajs/framework@2.13.6
+
+## 2.13.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.5
+
+## 2.13.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.13.4
+
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies [[`dbaae9630d26a0806751d5614beadef3e0b4bf07`](https://github.com/medusajs/medusa/commit/dbaae9630d26a0806751d5614beadef3e0b4bf07)]:
+  - @medusajs/framework@2.13.3
+
+## 2.13.2
+
+### Patch Changes
+
+- Updated dependencies [[`7aca778ae56069371f5d26a757d3b2276d524776`](https://github.com/medusajs/medusa/commit/7aca778ae56069371f5d26a757d3b2276d524776), [`77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8`](https://github.com/medusajs/medusa/commit/77d899e135ed75668ca7d7b01a8ed4f0c1fe0ac8)]:
+  - @medusajs/framework@2.13.2
+
 ## 2.13.1
 
 ### Patch Changes

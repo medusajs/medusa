@@ -56,8 +56,8 @@ export const AddExchangeInboundItemsTable = ({
     if (q) {
       results = results.filter((i) => {
         return (
-          i.product_title.toLowerCase().includes(q.toLowerCase()) ||
-          i.variant_title.toLowerCase().includes(q.toLowerCase()) ||
+          i.product_title?.toLowerCase().includes(q.toLowerCase()) ||
+          i.variant_title?.toLowerCase().includes(q.toLowerCase()) ||
           i.variant_sku?.toLowerCase().includes(q.toLowerCase())
         )
       })
@@ -182,12 +182,4 @@ const filterByDate = (
 
     return isValid
   })
-}
-
-const defaultOperators = {
-  eq: undefined,
-  gt: undefined,
-  gte: undefined,
-  lt: undefined,
-  lte: undefined,
 }

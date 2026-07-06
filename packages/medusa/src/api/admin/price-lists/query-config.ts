@@ -29,6 +29,7 @@ export const adminPriceListRemoteQueryFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+  "metadata",
   "price_list_rules.value",
   "price_list_rules.attribute",
 ]

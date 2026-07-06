@@ -6,6 +6,8 @@
  * required:
  *   - id
  *   - requires_shipping
+ *   - stocked_quantity
+ *   - reserved_quantity
  * properties:
  *   id:
  *     type: string
@@ -71,6 +73,14 @@
  *     description: The inventory item's location levels.
  *     items:
  *       $ref: "#/components/schemas/AdminInventoryLevel"
+ *   stocked_quantity:
+ *     type: number
+ *     title: stocked_quantity
+ *     description: The inventory item's stocked quantity.
+ *   reserved_quantity:
+ *     type: number
+ *     title: reserved_quantity
+ *     description: The inventory item's reserved quantity.
  * 
 */
 

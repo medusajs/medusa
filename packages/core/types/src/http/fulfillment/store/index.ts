@@ -1,5 +1,5 @@
 import { ShippingOptionPriceType } from "../../../fulfillment"
-import { StoreCalculatedPrice, StorePrice } from "../../pricing/store/entities"
+import { StoreCalculatedPrice, StorePrice } from "../../price-preference/store/entities"
 
 // TODO: The way the cart shipping options are listed now differs from most other endpoints as it is fetched in a workflow.
 // We should consider refactoring this to be more consistent with other endpoints.

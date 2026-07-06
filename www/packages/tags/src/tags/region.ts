@@ -36,8 +36,8 @@ export const region = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateShippingOptionsWorkflow"
   },
   {
-    "title": "generateProductCsvStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/generateProductCsvStep"
+    "title": "exportProductsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportProductsStep"
   },
   {
     "title": "exportProductsWorkflow",

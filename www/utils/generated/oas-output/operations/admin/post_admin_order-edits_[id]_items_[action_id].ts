@@ -45,7 +45,7 @@
  *       })
  * 
  *       sdk.admin.orderEdit.updateAddedItem(
- *         "order_123", 
+ *         "order_123",
  *         "orli_123",
  *         {
  *           quantity: 1

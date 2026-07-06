@@ -4,7 +4,7 @@ import { BaseClaimListParams } from "../common"
 
 export interface AdminClaimListParams
   extends BaseClaimListParams,
-    BaseFilterable<AdminClaimListParams> { }
+    BaseFilterable<AdminClaimListParams> {}
 
 export interface AdminClaimActionsParams extends SelectParams {
   /**

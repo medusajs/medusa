@@ -36,13 +36,14 @@ moduleIntegrationTestRunner<Service>({
           const productCategoryResults = await service.list(
             {},
             {
-              select: ["id", "parent_category_id"],
+              select: ["id", "external_id", "parent_category_id"],
             }
           )
 
           expect(productCategoryResults).toEqual([
             expect.objectContaining({
               id: "category-0",
+              external_id: "ext-id-0",
             }),
             expect.objectContaining({
               id: "category-1",
@@ -105,6 +106,17 @@ moduleIntegrationTestRunner<Service>({
             }),
             expect.objectContaining({
               id: "category-1-b-1",
+            }),
+          ])
+
+
+          productCategoryResults = await service.list({
+            external_id: "ext-id-0",
+          })
+
+          expect(productCategoryResults).toEqual([
+            expect.objectContaining({
+              id: "category-0",
             }),
           ])
         })
@@ -920,6 +932,33 @@ moduleIntegrationTestRunner<Service>({
           )
         })
 
+        it("should create a category with external_id successfully", async () => {  
+          await service.create([
+            {
+              name: "New Category Ext Id",
+              handle: "new-category-ext-id",
+              parent_category_id: null,
+              external_id: "external-id",
+            },
+          ])
+          
+          const [productCategory] = await service.list(
+            {
+              name: "New Category Ext Id",
+            },
+            {
+              select: ["name", "external_id"],
+            }
+          )
+
+          expect(JSON.parse(JSON.stringify(productCategory))).toEqual(
+            expect.objectContaining({
+              name: "New Category Ext Id",
+              external_id: "external-id",
+            })
+          )
+        });
+
         it("should append rank from an existing category depending on parent", async () => {
           await service.create([
             {
@@ -1151,6 +1190,24 @@ moduleIntegrationTestRunner<Service>({
               }),
             ])
           )
+        })
+
+        it('should update the external_id of the category successfully', async () => {
+          await service.update([
+            {
+              id: productCategoryZero.id,
+              external_id: "new-external-id",
+            },
+          ])
+
+          const productCategory = await service.retrieve(
+            productCategoryZero.id,
+            {
+              select: ["external_id"],
+            }
+          )
+
+          expect(productCategory.external_id).toEqual("new-external-id")
         })
 
         it(`should update the mpath of the full descendent tree successfully when moving the grand parent in the hierarchy`, async () => {

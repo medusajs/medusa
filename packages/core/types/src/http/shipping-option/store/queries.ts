@@ -14,3 +14,8 @@ export interface StoreGetShippingOptionList
    */
   is_return?: boolean
 }
+
+export interface StoreGetShippingOptionsFields {
+  cart_id: string
+  is_return?: boolean | undefined
+}

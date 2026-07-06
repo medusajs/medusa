@@ -59,6 +59,10 @@ interface ExistingItem {
    * A note viewed by admins only related to the item.
    */
   internal_note?: string | null
+  /**
+   * Custom key-value pairs to store additional information about the item.
+   */
+  metadata?: Record<string, any> | null
 }
 
 /**

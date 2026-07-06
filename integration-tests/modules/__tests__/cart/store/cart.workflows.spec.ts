@@ -54,7 +54,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Carts workflows", () => {
       let appContainer
       let cartModuleService: ICartModuleService
@@ -135,7 +135,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -165,6 +165,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.sales_channel
+
+        await dbUtils.snapshot()
       })
 
       describe("CreateCartWorkflow", () => {
@@ -280,6 +282,152 @@ medusaIntegrationTestRunner({
                   quantity: 1,
                   unit_price: 3000,
                   is_tax_inclusive: true,
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should create a cart with items using customer-group price list", async () => {
+          const region = await regionModuleService.createRegions({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const customer = await customerModule.createCustomers({
+            first_name: "Test",
+            last_name: "Test",
+          })
+
+          const customer_group = await customerModule.createCustomerGroups({
+            name: "Test Group",
+          })
+
+          await customerModule.addCustomerToGroup({
+            customer_id: customer.id,
+            customer_group_id: customer_group.id,
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.createInventoryItems({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
+
+          await pricingModule.createPriceLists([
+            {
+              title: "test price list",
+              description: "test",
+              status: PriceListStatus.ACTIVE,
+              type: PriceListType.OVERRIDE,
+              prices: [
+                {
+                  amount: 1500,
+                  currency_code: "usd",
+                  price_set_id: priceSet.id,
+                },
+              ],
+              rules: {
+                "customer.groups.id": [customer_group.id],
+              },
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          const { result } = await createCartWorkflow(appContainer).run({
+            input: {
+              currency_code: "usd",
+              region_id: region.id,
+              customer_id: customer.id,
+              sales_channel_id: salesChannel.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+          })
+
+          const cart = await cartModuleService.retrieveCart(result.id, {
+            relations: ["items"],
+          })
+
+          expect(cart).toEqual(
+            expect.objectContaining({
+              currency_code: "usd",
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 1500,
+                  is_tax_inclusive: true,
+                  quantity: 1,
                 }),
               ]),
             })
@@ -1146,10 +1294,9 @@ medusaIntegrationTestRunner({
                   issues: [
                     {
                       code: "invalid_type",
-                      expected: "object",
-                      message: "Expected object, received array",
+                      expected: "record",
+                      message: "Invalid input: expected record, received array",
                       path: [],
-                      received: "array",
                     },
                   ],
                 }),
@@ -4767,6 +4914,112 @@ medusaIntegrationTestRunner({
           expect(result).toEqual([])
         })
 
+        it("should not flag insufficient_inventory for a pickup option when item has allow_backorder=true and zero stock", async () => {
+          const [product] = await productModule.createProducts([
+            {
+              title: "Backorder pickup product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Variant",
+                  manage_inventory: true,
+                  allow_backorder: true,
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = (
+            await api.post(
+              `/admin/inventory-items`,
+              {
+                sku: "backorder-pickup-1",
+                location_levels: [
+                  {
+                    location_id: stockLocation.id,
+                    stocked_quantity: 0,
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const variantPriceSet = await pricingModule.createPriceSets({
+            prices: [{ amount: 1000, currency_code: "usd" }],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: { variant_id: product.variants[0].id },
+              [Modules.PRICING]: { price_set_id: variantPriceSet.id },
+            },
+            {
+              [Modules.PRODUCT]: { variant_id: product.variants[0].id },
+              [Modules.INVENTORY]: { inventory_item_id: inventoryItem.id },
+            },
+          ])
+
+          const shippingOption = (
+            await api.post(
+              `/admin/shipping-options`,
+              {
+                name: "Pickup at location",
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: "manual_test-provider",
+                price_type: "flat",
+                type: {
+                  label: "Pickup",
+                  description: "Pickup at location",
+                  code: "pickup",
+                },
+                prices: [
+                  {
+                    amount: 3000,
+                    currency_code: "usd",
+                  },
+                ],
+                rules: [
+                  {
+                    operator: RuleOperator.EQ,
+                    attribute: "is_return",
+                    value: "false",
+                  },
+                  {
+                    operator: RuleOperator.EQ,
+                    attribute: "enabled_in_store",
+                    value: "true",
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.shipping_option
+
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+              items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+            },
+          })
+
+          const { result } = await listShippingOptionsForCartWorkflow(
+            appContainer
+          ).run({ input: { cart_id: cart.id } })
+
+          // The backorder-enabled variant is treated as available even at
+          // stocked_quantity 0, so the pickup option must NOT be flagged
+          // insufficient_inventory. Without the fix this returns true and
+          // the customer cannot select pickup for the backorder item.
+          expect(result).toEqual([
+            expect.objectContaining({
+              id: shippingOption.id,
+              insufficient_inventory: false,
+            }),
+          ])
+        })
+
         describe("setPricingContext hook", () => {
           it("should use context provided by the hook", async () => {
             const shippingOption = (
@@ -5037,12 +5290,57 @@ medusaIntegrationTestRunner({
           })
 
           expect(
-            // @ts-ignore
+            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
             transaction.context.invoke["fetch-cart"].output.output.data
               .shipping_address.metadata
           ).toEqual({
             testing_tax: true,
           })
+        })
+
+        it("should include shipping method id and name in tax calculation context", async () => {
+          const cart = await cartModuleService.createCarts({
+            currency_code: "dkk",
+            region_id: defaultRegion.id,
+            shipping_address: {
+              country_code: "dk",
+            },
+            items: [
+              {
+                quantity: 1,
+                unit_price: 5000,
+                title: "Test item",
+              },
+            ],
+          })
+
+          await cartModuleService.addShippingMethods(cart.id, [
+            {
+              name: "Standard Shipping",
+              amount: 1000,
+              shipping_option_id: "so_test_option",
+            },
+          ])
+
+          const { transaction } = await updateTaxLinesWorkflow(
+            appContainer
+          ).run({
+            input: {
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          const fetchedCart =
+            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
+            transaction.context.invoke["fetch-cart"].output.output.data
+
+          expect(fetchedCart.shipping_methods).toHaveLength(1)
+          expect(fetchedCart.shipping_methods[0].id).toBeDefined()
+          expect(fetchedCart.shipping_methods[0].name).toBeDefined()
+          expect(fetchedCart.shipping_methods[0].name).toEqual(
+            "Standard Shipping"
+          )
         })
       })
 

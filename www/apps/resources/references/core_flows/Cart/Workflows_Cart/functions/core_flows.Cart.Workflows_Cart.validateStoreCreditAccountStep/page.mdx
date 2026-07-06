@@ -1,0 +1,39 @@
+---
+slug: /references/medusa-workflows/validateStoreCreditAccountStep
+sidebar_label: validateStoreCreditAccountStep
+sidebar_description: ""
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateStoreCreditAccountStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateStoreCreditAccountStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that all gift cards on the cart have a positive balance.
+It throws an error for any gift card with zero or negative balance.
+
+## Example
+
+```ts
+const data = validateStoreCreditAccountStep({
+  giftCards: [
+    {
+      id: "gc_123",
+      code: "GC-XXXX",
+      // other gift card properties...
+    }
+  ],
+  giftCardsBalanceMap: {
+    "GC-XXXX": {
+      balance: 100,
+      credit: 150,
+      debit: 50,
+    }
+  },
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateStoreCreditAccountStepInput","type":"[ValidateStoreCreditAccountStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateStoreCreditAccountStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateStoreCreditAccountStepInput","type":"`object`","description":"Input to validate that all gift cards on a cart have a positive balance.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateStoreCreditAccountStep"/>

@@ -1,0 +1,122 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Environment Performance Monitoring`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to monitor your environment's performance in Cloud.
+
+## Monitoring Overview
+
+Medusa allows you to monitor the performance of your deployed [environment](../environments/page.mdx)'s backend in Cloud.
+
+By monitoring key metrics, you can ensure that your environment is running smoothly, identify potential performance bottlenecks, and troubleshoot issues effectively.
+
+You can monitor metrics like:
+
+- [Servers](./servers/page.mdx): Monitor CPU usage, memory consumption, and restarts of your environment's server instances.
+- [Workers](./workers/page.mdx): Monitor CPU usage, memory consumption, and restarts of your environment's worker instances, which handle background jobs.
+- [HTTP](./http/page.mdx): Monitor HTTP request patterns, response times, and HTTP-related performance data.
+
+---
+
+## Access Environment Monitoring
+
+To view your project environment's server performance:
+
+1. Go to your [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard)
+2. Click on the "Monitoring" tab.
+
+This opens the monitoring dashboard, where you can select the specific metrics you want to view from the sidebar.
+
+---
+
+## Troubleshooting Performance Issues
+
+If you notice performance issues in your environment, such as slow response times or increased error rates, use the monitoring dashboards to identify potential causes.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Issue
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Potential Cause
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Monitoring Dashboard
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Slow response times
+      </Table.Cell>
+      <Table.Cell>
+        High CPU or memory usage in server instances due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [Servers](./servers/page.mdx)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Increased error rates
+      </Table.Cell>
+      <Table.Cell>
+        Endpoints with crashes or timeouts due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [HTTP](./http/page.mdx)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High latency in HTTP requests
+      </Table.Cell>
+      <Table.Cell>
+        Inefficient database queries or external API calls in specific endpoints.
+      </Table.Cell>
+      <Table.Cell>
+        [HTTP](./http/page.mdx)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Background jobs not executing or slow execution
+      </Table.Cell>
+      <Table.Cell>
+        High CPU or memory usage in worker instances due to inefficient background job implementation.
+      </Table.Cell>
+      <Table.Cell>
+        [Workers](./workers/page.mdx)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Frequent worker or server restarts
+      </Table.Cell>
+      <Table.Cell>
+        Crashes due to memory leaks or unhandled exceptions in your application code.
+      </Table.Cell>
+      <Table.Cell>
+        [Workers](./workers/page.mdx) and [Servers](./servers/page.mdx)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High [Flex Usage](../usage/page.mdx#what-is-flex-usage)
+      </Table.Cell>
+      <Table.Cell>
+        High resource consumption in servers or workers due to inefficient code.
+      </Table.Cell>
+      <Table.Cell>
+        [Workers](./workers/page.mdx) and [Servers](./servers/page.mdx)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

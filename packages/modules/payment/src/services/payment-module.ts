@@ -11,6 +11,7 @@ import {
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   DAL,
+  DeletePaymentMethodDTO,
   FilterablePaymentCollectionProps,
   FilterablePaymentMethodProps,
   FilterablePaymentProviderProps,
@@ -41,7 +42,9 @@ import {
 } from "@medusajs/framework/types"
 import {
   BigNumber,
+  defaultCurrencies,
   EmitEvents,
+  getEpsilonFromDecimalPrecision,
   InjectManager,
   InjectTransactionManager,
   isPresent,
@@ -50,6 +53,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  normalizeCurrencyCode,
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
@@ -208,7 +212,16 @@ export default class PaymentModuleService
     data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<InferEntityType<typeof PaymentCollection>[]> {
-    return await this.paymentCollectionService_.create(data, sharedContext)
+    const normalizedData = data.map((d) => ({
+      ...d,
+      currency_code: d.currency_code
+        ? normalizeCurrencyCode(d.currency_code)
+        : d.currency_code,
+    }))
+    return await this.paymentCollectionService_.create(
+      normalizedData,
+      sharedContext
+    )
   }
 
   // @ts-expect-error
@@ -239,6 +252,9 @@ export default class PaymentModuleService
         {
           id: idOrSelector,
           ...data,
+          ...(data.currency_code ? 
+            { currency_code: normalizeCurrencyCode(data.currency_code) } :
+            {}),
         },
       ]
     } else {
@@ -251,6 +267,10 @@ export default class PaymentModuleService
       updateData = collections.map((c) => ({
         id: c.id,
         ...data,
+        ...(data.currency_code ?
+          { currency_code: normalizeCurrencyCode(data.currency_code) } :
+          {}
+        ),
       }))
     }
 
@@ -300,12 +320,29 @@ export default class PaymentModuleService
     @MedusaContext() sharedContext?: Context
   ): Promise<InferEntityType<typeof PaymentCollection>[]> {
     const input = Array.isArray(data) ? data : [data]
-    const forUpdate = input.filter(
-      (collection): collection is UpdatePaymentCollectionDTO => !!collection.id
-    )
-    const forCreate = input.filter(
-      (collection): collection is CreatePaymentCollectionDTO => !collection.id
-    )
+    const forUpdate = input
+      .filter(
+        (collection): collection is UpdatePaymentCollectionDTO =>
+          !!collection.id
+      )
+      .map((element) => ({
+        ...element,
+        ...(element.currency_code ? 
+          { currency_code: normalizeCurrencyCode(element.currency_code) } :
+          {}
+        )
+      }))
+    const forCreate = input
+      .filter(
+        (collection): collection is CreatePaymentCollectionDTO => !collection.id
+      )
+      .map((element) => ({
+        ...element,
+        ...(element.currency_code ? 
+          { currency_code: normalizeCurrencyCode(element.currency_code) } :
+          {}
+        )
+      }))
 
     const operations: Promise<InferEntityType<typeof PaymentCollection>[]>[] =
       []
@@ -383,7 +420,7 @@ export default class PaymentModuleService
           },
           data: { ...input.data, session_id: paymentSession!.id },
           amount: input.amount,
-          currency_code: input.currency_code,
+          currency_code: normalizeCurrencyCode(input.currency_code),
         }
       )
 
@@ -426,7 +463,7 @@ export default class PaymentModuleService
         payment_collection_id: paymentCollectionId,
         provider_id: data.provider_id,
         amount: data.amount,
-        currency_code: data.currency_code,
+        currency_code: normalizeCurrencyCode(data.currency_code),
         context: data.context,
         data: data.data,
         metadata: data.metadata,
@@ -454,7 +491,7 @@ export default class PaymentModuleService
       {
         data: data.data,
         amount: data.amount,
-        currency_code: data.currency_code,
+        currency_code: normalizeCurrencyCode(data.currency_code),
         context: data.context,
       }
     )
@@ -463,7 +500,7 @@ export default class PaymentModuleService
       {
         id: session.id,
         amount: data.amount,
-        currency_code: data.currency_code,
+        currency_code: normalizeCurrencyCode(data.currency_code),
         data: providerData.data,
         // Allow the caller to explicitly set the status (eg. due to a webhook), fallback to the update response, and finally to the existing status.
         status: data.status ?? providerData.status ?? session.status,
@@ -500,7 +537,7 @@ export default class PaymentModuleService
     id: string,
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
+  ): Promise<PaymentDTO | null> {
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
@@ -521,7 +558,7 @@ export default class PaymentModuleService
 
     // this method needs to be idempotent
     if (session.payment && session.authorized_at) {
-      return await this.baseRepository_.serialize(session.payment)
+      return await this.baseRepository_.serialize<PaymentDTO>(session.payment)
     }
 
     let { data, status } = await this.paymentProviderService_.authorizePayment(
@@ -531,6 +568,24 @@ export default class PaymentModuleService
         context: { idempotency_key: session.id, ...context },
       }
     )
+
+    if (status === PaymentSessionStatus.PENDING_AUTHORIZATION) {
+      await this.paymentSessionService_.update(
+        {
+          id: session.id,
+          status,
+          data,
+        },
+        sharedContext
+      )
+
+      await this.maybeUpdatePaymentCollection_(
+        session.payment_collection_id,
+        sharedContext
+      )
+
+      return null
+    }
 
     if (
       status !== PaymentSessionStatus.AUTHORIZED &&
@@ -575,7 +630,7 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(payment)
+    return await this.baseRepository_.serialize<PaymentDTO>(payment)
   }
 
   @InjectTransactionManager()
@@ -608,7 +663,7 @@ export default class PaymentModuleService
     const payment = await this.paymentService_.create(
       {
         amount: session.amount,
-        currency_code: session.currency_code,
+        currency_code: normalizeCurrencyCode(session.currency_code),
         payment_session: session.id,
         payment_collection_id: session.payment_collection_id,
         provider_id: session.provider_id,
@@ -827,6 +882,7 @@ export default class PaymentModuleService
       {
         select: [
           "id",
+          "currency_code",
           "data",
           "provider_id",
           "payment_collection_id",
@@ -878,7 +934,17 @@ export default class PaymentModuleService
 
     const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
-    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
+    const upperCurCode = payment.currency_code?.toUpperCase() as string
+    const currencyEpsilon = getEpsilonFromDecimalPrecision(
+      defaultCurrencies[upperCurCode]?.decimal_digits
+    )
+
+    if (
+      MathBN.lt(
+        MathBN.sub(capturedAmount, totalRefundedAmount),
+        -currencyEpsilon
+      )
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `You cannot refund more than what is captured on the payment.`
@@ -892,6 +958,7 @@ export default class PaymentModuleService
         created_by: data.created_by,
         note: data.note,
         refund_reason_id: data.refund_reason_id,
+        metadata: data.metadata,
       },
       sharedContext
     )
@@ -936,15 +1003,18 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    await this.paymentProviderService_.cancelPayment(payment.provider_id, {
-      data: payment.data!,
-      context: {
-        idempotency_key: payment.id,
-      },
-    })
+    const { data } = await this.paymentProviderService_.cancelPayment(
+      payment.provider_id,
+      {
+        data: payment.data!,
+        context: {
+          idempotency_key: payment.id,
+        },
+      }
+    )
 
     await this.paymentService_.update(
-      { id: paymentId, canceled_at: new Date() },
+      { id: paymentId, canceled_at: new Date(), data },
       sharedContext
     )
 
@@ -1263,6 +1333,38 @@ export default class PaymentModuleService
     })
 
     return Array.isArray(data) ? normalizedResponse : normalizedResponse[0]
+  }
+
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  deletePaymentMethods(
+    data: DeletePaymentMethodDTO[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  @InjectManager()
+  @EmitEvents()
+  async deletePaymentMethods(
+    data: DeletePaymentMethodDTO | DeletePaymentMethodDTO[],
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    const input = Array.isArray(data) ? data : [data]
+
+    await promiseAll(
+      input.map((item) =>
+        this.paymentProviderService_.deletePaymentMethod(item.provider_id, {
+          context: item.context,
+          data: {
+            ...item.data,
+            id: item.id,
+          },
+        })
+      ),
+      { aggregateErrors: true }
+    )
   }
 
   @InjectManager()

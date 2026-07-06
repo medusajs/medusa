@@ -16,6 +16,10 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/admin#manage-metadata
  *       description: Learn how to manage metadata
+ *   external_id:
+ *     type: string
+ *     title: external_id
+ *     description: The ID of the product tag in an external or third-party system.
  * 
 */
 

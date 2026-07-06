@@ -2,6 +2,7 @@ import Handlebars from "handlebars"
 import { DeclarationReflection, SignatureReflection } from "typedoc"
 import { getReflectionTypeFakeValueStr, getWorkflowInputType } from "utils"
 import beautifyCode from "../../utils/beautify-code.js"
+import { getPackageNameForWorkflowReflection } from "../../utils/workflow-utils.js"
 
 export default function () {
   Handlebars.registerHelper(
@@ -32,6 +33,7 @@ export default function () {
             exampleCode: generateWorkflowExample(workflowReflection),
             workflowName: workflowReflection.name,
             locking: lockingData,
+            workflowReflection,
           })
         )
       } else {
@@ -56,6 +58,7 @@ export default function () {
                 exampleCode: part.text,
                 workflowName: workflowReflection.name,
                 locking: lockingData,
+                workflowReflection,
               })
             )
           })
@@ -73,6 +76,7 @@ function getExecutionCodeTabs({
   exampleCode,
   workflowName,
   locking,
+  workflowReflection,
 }: {
   exampleCode: string
   workflowName: string
@@ -80,8 +84,10 @@ function getExecutionCodeTabs({
     step: string
     key: string
   }
+  workflowReflection: DeclarationReflection
 }): string {
   exampleCode = exampleCode.replace("```ts\n", "").replace("\n```", "")
+  const packageName = getPackageNameForWorkflowReflection(workflowReflection)
 
   return `<CodeTabs group="workflow-exection">
     <CodeTab label="API Route" value="api-route">
@@ -91,7 +97,7 @@ ${beautifyCode(`import type {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { ${workflowName} } from "@medusajs/medusa/core-flows"
+import { ${workflowName} } from "${packageName}"
 
 export async function POST(
   req: MedusaRequest,
@@ -112,7 +118,7 @@ ${beautifyCode(`import {
   type SubscriberConfig,
   type SubscriberArgs,
 } from "@medusajs/framework"
-import { ${workflowName} } from "@medusajs/medusa/core-flows"
+import { ${workflowName} } from "${packageName}"
 
 export default async function handleOrderPlaced({
   event: { data },
@@ -133,7 +139,7 @@ export const config: SubscriberConfig = {
     
 \`\`\`ts title="src/jobs/message-daily.ts"
 ${beautifyCode(`import { MedusaContainer } from "@medusajs/framework/types"
-import { ${workflowName} } from "@medusajs/medusa/core-flows"
+import { ${workflowName} } from "${packageName}"
 
 export default async function myCustomJob(
   container: MedusaContainer
@@ -154,7 +160,7 @@ export const config = {
     
 \`\`\`ts title="src/workflows/my-workflow.ts"
 ${beautifyCode(`import { createWorkflow } from "@medusajs/framework/workflows-sdk"
-import { ${workflowName} } from "@medusajs/medusa/core-flows"
+import { ${workflowName} } from "${packageName}"
 
 const myWorkflow = createWorkflow(
   "my-workflow",

@@ -6,6 +6,7 @@ import {
 } from "@medusajs/framework/types"
 import {
   ApplicationMethodTargetType,
+  ApplicationMethodType,
   ComputedActions,
   MathBN,
   MedusaError,
@@ -65,13 +66,13 @@ function normalizePromotionApplicationConfiguration(
   const maximumApplyQuantity = MathBN.convert(
     promotion.application_method?.max_quantity ?? 1
   )
-  const applicablePercentage = promotion.application_method?.value ?? 100
+  const promotionValue = promotion.application_method?.value ?? 0
 
   return {
     minimumBuyQuantity,
     targetApplyQuantity,
     maximumApplyQuantity,
-    applicablePercentage,
+    promotionValue,
   }
 }
 
@@ -111,7 +112,7 @@ type PromotionConfig = {
   minimumBuyQuantity: BigNumberInput
   targetApplyQuantity: BigNumberInput
   maximumApplyQuantity: BigNumberInput
-  applicablePercentage: number
+  promotionValue: number
 }
 
 type PromotionApplication = {
@@ -267,7 +268,7 @@ function preparePromotionApplicationState(
   Applies promotion to the target items selected by preparePromotionApplicationState.
   
   This function performs the application by:
-    1. Calculating promotion amounts based on item prices and promotion percentage
+    1. Calculating promotion amounts based on item prices and promotion value (percentage or fixed)
     2. Checking promotion budget limits to prevent overspending
     3. Updating promotional value tracking maps for cross-promotion coordination
     4. Accumulating total promotion amounts per item across all applications
@@ -301,10 +302,20 @@ function applyPromotionToTargetItems(
     const multiplier = MathBN.min(targetItem.quantity, remainingQtyToApply)
     const pricePerUnit = MathBN.div(item.subtotal, item.quantity)
     const applicableAmount = MathBN.mult(pricePerUnit, multiplier)
-    const amount = MathBN.mult(
-      applicableAmount,
-      applicationConfig.applicablePercentage
-    ).div(100)
+
+    let amount
+    if (promotion.application_method?.type === ApplicationMethodType.FIXED) {
+      // Fixed: apply value per unit, capped at item price
+      amount = MathBN.min(
+        MathBN.mult(applicationConfig.promotionValue, multiplier),
+        applicableAmount
+      )
+    } else {
+      amount = MathBN.mult(
+        applicableAmount,
+        applicationConfig.promotionValue
+      ).div(100)
+    }
 
     if (MathBN.lte(amount, 0)) {
       continue

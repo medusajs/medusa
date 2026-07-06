@@ -18,7 +18,9 @@ export const GET = async (
     // TODO: These filters are not supported by the index engine yet
     if (
       isPresent(req.filterableFields.tags) ||
-      isPresent(req.filterableFields.categories)
+      isPresent(req.filterableFields.categories) ||
+      isPresent(req.filterableFields.option_value_id) ||
+      isPresent(req.filterableFields.options)
     ) {
       return await getProducts(req, res)
     }
@@ -61,6 +63,11 @@ async function getProductsWithIndexEngine(
     filters["sales_channels"]["id"] = salesChannelIds
 
     delete filters.sales_channel_id
+  }
+
+  // TODO: Remove once we implement search by relations in a similar way to query.graph
+  if (isPresent(filters.q)) {
+    filters["variants"] ??= {}
   }
 
   const { data: products = [], metadata } = await query.index(

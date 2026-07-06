@@ -1,0 +1,119 @@
+import { InProductAction, getOsShortcut, InlineIcon } from "docs-ui"
+import { ArrowUpRightOnBox } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Cookiebot Integration`,
+}
+
+# {metadata.title}
+
+Add [Cookiebot](https://www.cookiebot.com/) to manage customer consent and comply with privacy regulations like GDPR and CCPA.
+
+Cookiebot displays a consent banner to customers and manages their cookie preferences automatically. Bloom sets it up for you in minutes.
+
+{/* TODO: Add screenshot of Cookiebot consent banner on store */}
+
+## When to Integrate Cookiebot
+
+Integrate Cookiebot if you want to:
+
+- Comply with privacy regulations by managing customer consent for cookies.
+- Display a customizable consent banner to customers.
+- Automatically block tracking cookies until consent is given.
+- Provide customers with control over their cookie preferences.
+
+---
+
+## Prerequisites
+
+Before adding Cookiebot, you need a [Cookiebot account](https://www.cookiebot.com/) and a domain group ID.
+
+To get your Cookiebot domain group ID:
+
+1. Log in to your Cookiebot account.
+2. Go to "Your Scripts" in the main menu.
+3. Find your domain group ID in the script snippet (looks like `data-cbid="YOUR-ID-HERE"`).
+4. Copy the ID value.
+
+You'll need this ID when Bloom asks for it.
+
+{/* TODO: Add screenshot of Cookiebot domain group ID in dashboard */}
+
+---
+
+## Add Cookiebot to Your Store
+
+To add Cookiebot using the <InProductAction product={"bloom"} type={"MEDUSA_AI_OPEN_PANE"} data={{ pane: "integrations" }}>Integrations</InProductAction> panel:
+
+1. Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>k</Kbd> to open the preview tab switcher.
+2. Select the "Integrations" tab from the list.
+3. Find the Cookiebot card in the available integrations.
+4. Click "Build" on the Cookiebot card.
+
+Bloom will start setting up Cookiebot and ask you for your configuration details.
+
+{/* TODO: Add screenshot of Cookiebot card with "Build" button highlighted */}
+
+---
+
+## Answer Bloom's Questions
+
+After you click "Build," Bloom asks questions to configure Cookiebot:
+
+1. **Did you add your domain to Cookiebot?** This is required for the consent banner to work. You can add the test domain that Bloom shows with this question, and later change it to your live domain when you publish.
+2. **What is your Cookiebot domain group ID?** Paste the ID you copied from your Cookiebot dashboard.
+
+<Note title="Technical Information">
+
+Bloom stores your credentials as environment variables in your store. They're never exposed in your code or logs. See [Environment Variables](../../../../developers/environment-variables/page.mdx) for more details.
+
+</Note>
+
+Bloom will add the Cookiebot script to your store and configure it based on your answers.
+
+{/* TODO: Add screenshot of Bloom asking for domain group ID */}
+
+---
+
+## Test Cookiebot
+
+After Bloom finishes the setup, you can test the Cookiebot integration in your store.
+
+The banner won't appear in the preview. Instead, click the <InlineIcon Icon={ArrowUpRightOnBox} alt="Open Store Preview" /> button in the bottom toolbar to open your store in a new tab.
+
+The consent banner should appear after the page loads. Test the different cookie preferences and verify that your choices are saved correctly.
+
+### Customize Consent Banner
+
+If you want to make changes to the banner styling, you can customize it in your Cookiebot dashboard. Changes will be reflected in your store automatically since Bloom uses the same domain group ID for both preview and live environments.
+
+{/* TODO: Add screenshot of consent banner on desktop and mobile */}
+
+---
+
+## Publish Cookiebot Integration
+
+Once you've tested Cookiebot and it's working correctly, publish your store to make it live.
+
+To publish your Cookiebot integration:
+
+1. Click the "Publish" button at the top right of your project.
+2. If you haven't published before, Bloom asks for details about your store.
+3. Bloom will ask you to enter your live cookie domain group ID. You can use the same ID as your preview since Cookiebot doesn't differentiate between environments.
+4. Click "Publish" to make your changes live.
+
+Your Cookiebot integration is now active on your live store. Customers will see the consent banner and can manage their cookie preferences.
+
+<Note title="Verify Your Domain">
+
+After publishing, verify your live domain in your Cookiebot dashboard to ensure the integration works correctly on your production site.
+
+</Note>
+
+{/* TODO: Add screenshot of publish dialog */}
+
+---
+
+## Need Help?
+
+If you face any issues while adding Cookiebot to your Bloom store, [contact support or submit feedback](../../../../help-and-feedback/page.mdx).

@@ -1,6 +1,6 @@
 import { HttpTypes, SelectParams } from "@medusajs/types"
-import { Client, FetchError } from "../client"
-import { ClientHeaders } from "../types"
+import { Client, FetchError } from "../client.js"
+import { ClientHeaders } from "../types.js"
 
 export class Product {
   /**
@@ -780,12 +780,18 @@ export class Product {
    *   console.log(deleted)
    * })
    */
-  async deleteVariant(productId: string, id: string, headers?: ClientHeaders) {
+  async deleteVariant(
+    productId: string,
+    id: string,
+    headers?: ClientHeaders,
+    query?: SelectParams
+  ) {
     return await this.client.fetch<HttpTypes.AdminProductVariantDeleteResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         method: "DELETE",
         headers,
+        query,
       }
     )
   }
@@ -1080,7 +1086,7 @@ export class Product {
    * This method manages image-variant associations for a specific image. It sends a request to the
    * [Batch Image Variants](https://docs.medusajs.com/api/admin#products_postproductsidimagesimage_idvariantsbatch)
    * API route.
-   * 
+   *
    * @since 2.11.2
    *
    * @param productId - The product's ID.
@@ -1118,7 +1124,7 @@ export class Product {
    * This method manages variant-image associations for a specific variant. It sends a request to the
    * [Batch Variant Images](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_idimagesbatch)
    * API route.
-   * 
+   *
    * @since 2.11.2
    *
    * @param productId - The product's ID.
@@ -1148,6 +1154,52 @@ export class Product {
         method: "POST",
         headers,
         body,
+      }
+    )
+  }
+
+  /**
+   * This method links product options to a product. It allows adding new options,
+   * removing existing ones, or updating option values. It sends a request to the
+   * [Batch Product Product Options](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch)
+   * API route.
+   *
+   * @since 2.16.0
+   *
+   * @param productId - The product's ID.
+   * @param body - The options to add or remove.
+   * @param query - Configure the fields to retrieve in the product.
+   * @param headers - Headers to pass in the request
+   * @returns The product's details.
+   *
+   * @example
+   * sdk.admin.product.linkOptions("prod_123", {
+   *   add: [
+   *       "opt_123",
+   *       {
+   *         id: "opt_123",
+   *         value_ids: ["optval_1", "optval_2"]
+   *       }
+   *     ],
+   *     remove: ["opt_456"]
+   * })
+   * .then(({ product }) => {
+   *   console.log(product)
+   * })
+   */
+  async linkOptions(
+    productId: string,
+    body: HttpTypes.AdminLinkProductOptions,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
+      `/admin/products/${productId}/options/batch`,
+      {
+        method: "POST",
+        headers,
+        body: body,
+        query,
       }
     )
   }

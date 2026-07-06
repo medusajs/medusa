@@ -34,7 +34,9 @@ const allowedProjectDocuments: AllowedProjectDocumentsOption = {
   },
 }
 
-modules.forEach((module) => {
+const modifiedModules = [...modules, "loyalty", "store-credit"]
+
+modifiedModules.forEach((module) => {
   allowedProjectDocuments[module] = {
     ...commonAllowedDocuments,
   }
@@ -88,7 +90,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
     },
 
     // modules config
-    ...modules.reduce((obj, moduleName) => {
+    ...modifiedModules.reduce((obj, moduleName) => {
       const snakeCaseModuleName = kebabToSnake(moduleName)
       const camelCaseModuleName = kebabToCamel(moduleName)
       const titleModuleName = Object.hasOwn(customModuleTitles, moduleName)

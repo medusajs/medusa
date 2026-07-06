@@ -677,6 +677,14 @@ export interface BaseOrderFulfillment {
    */
   created_at: Date
   /**
+   * The ID of the user that created the fulfillment.
+   */
+  created_by: string | null
+  /**
+   * The ID of the user that shipped the fulfillment.
+   */
+  marked_shipped_by: string | null
+  /**
    * The date the fulfillment was updated.
    */
   updated_at: Date
@@ -1013,6 +1021,11 @@ export interface BaseOrderChange {
   actions: BaseOrderChangeAction[]
 
   /**
+   * An internal note viewed by admin users only.
+   */
+  internal_note: string | null
+
+  /**
    * Whether to carry over promotions (apply promotions to outbound exchange items).
    */
   carry_over_promotions?: boolean | null
@@ -1063,7 +1076,7 @@ export interface BaseOrderChange {
   declined_at: Date | null
 
   /**
-   * The canceled by of the order change
+   * The ID of the user that canceled the order change
    */
   canceled_by: string | null
 
@@ -1071,6 +1084,11 @@ export interface BaseOrderChange {
    * When the order change was canceled
    */
   canceled_at: Date | null
+
+  /**
+   * The ID of the user that created the order change
+   */
+  created_by: string | null
 
   /**
    * When the order change was created

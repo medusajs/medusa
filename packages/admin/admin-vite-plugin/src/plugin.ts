@@ -5,6 +5,7 @@ import type * as Vite from "vite"
 import { generateCellRendererHash } from "./cell-renderers"
 import { generateCustomFieldHashes } from "./custom-fields"
 import { generateI18nHash } from "./i18n"
+import { generateLayoutHash } from "./layouts"
 import { generateRouteHashes } from "./routes"
 import { MedusaVitePlugin } from "./types"
 import { AdminSubdirectory, isFileInAdminSubdirectory } from "./utils"
@@ -13,6 +14,7 @@ import {
   generateVirtualDisplayModule,
   generateVirtualFormModule,
   generateVirtualI18nModule,
+  generateVirtualLayoutModule,
   generateVirtualLinkModule,
   generateVirtualMenuItemModule,
   generateVirtualRouteModule,
@@ -90,6 +92,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     const displayModule = await generateVirtualDisplayModule(sources, true)
     const i18nModule = await generateVirtualI18nModule(sources, true)
     const cellRendererModule = await generateVirtualCellRendererModule(sources, true)
+    const layoutModule = await generateVirtualLayoutModule(sources, true)
 
     // Create the index.js content that re-exports everything
     return `
@@ -101,6 +104,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     ${displayModule.code}
     ${i18nModule.code}
     ${cellRendererModule.code}
+    ${layoutModule.code}
 
     const plugin = {
       widgetModule,
@@ -109,7 +113,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       formModule,
       displayModule,
       i18nModule,
-      cellRendererModule
+      cellRendererModule,
+      layoutModule
     }
 
     export default plugin
@@ -246,8 +251,14 @@ const loadConfigs: Record<string, ModuleConfig> = {
   },
   [vmod.resolved.cellRenderer]: {
     hashGenerator: async (sources) => generateCellRendererHash(sources),
-    moduleGenerator: async (sources) => generateVirtualCellRendererModule(sources),
+    moduleGenerator: async (sources) =>
+      generateVirtualCellRendererModule(sources),
     hashKey: vmod.virtual.cellRenderer,
+  },
+  [vmod.resolved.layout]: {
+    hashGenerator: async (sources) => generateLayoutHash(sources),
+    moduleGenerator: async (sources) => generateVirtualLayoutModule(sources),
+    hashKey: vmod.virtual.layout,
   },
 }
 
@@ -335,6 +346,19 @@ const watcherConfigs: WatcherConfig[] = [
         virtualModule: vmod.virtual.cellRenderer,
         resolvedModule: vmod.resolved.cellRenderer,
         hashKey: "cellRendererHash",
+      },
+    ],
+  },
+  {
+    subdirectory: "layouts",
+    hashGenerator: async (sources) => ({
+      layoutConfigHash: await generateLayoutHash(sources),
+    }),
+    modules: [
+      {
+        virtualModule: vmod.virtual.layout,
+        resolvedModule: vmod.resolved.layout,
+        hashKey: "layoutConfigHash",
       },
     ],
   },

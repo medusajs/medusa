@@ -8,10 +8,6 @@ import {
 import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
 import TranslationFeatureFlag from "../../../../feature-flags/translation"
 import { defaultAdminTranslationFields } from "../query-config"
-import {
-  AdminCreateTranslationType,
-  AdminUpdateTranslationType,
-} from "../validators"
 
 /**
  * @since 2.12.3
@@ -19,7 +15,9 @@ import {
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<
-    BatchMethodRequest<AdminCreateTranslationType, AdminUpdateTranslationType>
+    BatchMethodRequest<
+      HttpTypes.AdminCreateTranslation, HttpTypes.AdminUpdateTranslation
+    >
   >,
   res: MedusaResponse<HttpTypes.AdminTranslationsBatchResponse>
 ) => {

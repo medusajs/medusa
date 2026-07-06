@@ -59,7 +59,7 @@ async function populateData(
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ getContainer, dbConnection, api }) => {
+  testSuite: ({ getContainer, dbConnection, api, dbUtils, utils }) => {
     let indexEngine: IndexTypes.IIndexService
     let appContainer
 
@@ -72,8 +72,10 @@ medusaIntegrationTestRunner({
       process.env.ENABLE_INDEX_MODULE = "false"
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("Index engine", () => {
@@ -150,7 +152,7 @@ medusaIntegrationTestRunner({
                   variants: {
                     prices: {
                       amount: { $gt: 50 },
-                      currency_code: { $eq: "AUD" },
+                      currency_code: { $eq: "aud" },
                     },
                   },
                 },
@@ -179,7 +181,7 @@ medusaIntegrationTestRunner({
         for (const variant of variants) {
           expect(variant.prices.length).toBe(1)
           expect(variant.prices[0].amount).toBeGreaterThan(50)
-          expect(variant.prices[0].currency_code).toBe("AUD")
+          expect(variant.prices[0].currency_code).toBe("aud")
         }
       })
 

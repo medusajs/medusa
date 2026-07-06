@@ -27,6 +27,10 @@
  *     type: string
  *     title: sales_channel_id
  *     description: The ID of the sales channel associated with the draft order.
+ *   locale:
+ *     type: string
+ *     title: locale
+ *     description: The draft order's locale.
  * 
 */
 

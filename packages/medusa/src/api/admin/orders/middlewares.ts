@@ -7,14 +7,14 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
 import {
-  AdminCancelOrderTransferRequest,
+  AdminAuthorizeOrderPaymentSession,
   AdminCompleteOrder,
   AdminCreateOrderCreditLines,
   AdminGetOrderShippingOptionList,
   AdminGetOrdersOrderItemsParams,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
-  AdminMarkOrderFulfillmentDelivered,
+  AdminMarkOrderFulfillmentAsDelivered,
   AdminOrderCancelFulfillment,
   AdminOrderChangesParams,
   AdminOrderCreateFulfillment,
@@ -184,6 +184,23 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/orders/:id/payment-sessions/authorize",
+    middlewares: [
+      validateAndTransformBody(AdminAuthorizeOrderPaymentSession),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/orders/:id/credit-lines",
     middlewares: [
       validateAndTransformBody(AdminCreateOrderCreditLines),
@@ -254,11 +271,11 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/orders/:id/fulfillments/:fulfillment_id/mark-as-delivered",
     middlewares: [
-      validateAndTransformBody(AdminMarkOrderFulfillmentDelivered),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
+      validateAndTransformBody(AdminMarkOrderFulfillmentAsDelivered),
     ],
     policies: [
       {
@@ -288,7 +305,6 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/orders/:id/transfer/cancel",
     middlewares: [
-      validateAndTransformBody(AdminCancelOrderTransferRequest),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

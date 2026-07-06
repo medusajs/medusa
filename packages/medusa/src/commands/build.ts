@@ -2,25 +2,40 @@ import { Compiler } from "@medusajs/framework/build-tools"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { initializeContainer } from "../loaders"
 import { generateTypes } from "./utils/generate-types"
+import { runLintStep } from "./utils/lint-project"
 
 export default async function build({
   directory,
   adminOnly,
+  lint,
+  fix,
+  quiet,
 }: {
   directory: string
   adminOnly: boolean
+  lint: boolean
+  fix?: boolean
+  quiet?: boolean
 }) {
   const container = await initializeContainer(directory, {
     skipDbConnection: true,
-    throwOnError: false,
+    throwOnValidationError: false,
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
-  await generateTypes({
-    directory,
-    container,
-    logger,
-  })
+  try {
+    await generateTypes({
+      directory,
+      container,
+      logger,
+    })
+  } catch (error) {
+    logger.error("Error generating types", error)
+    process.exit(1)
+  }
+
+  // Lint after type generation.
+  await runLintStep({ directory, lint, fix, quiet, logger })
 
   logger.info("Starting build...")
   const compiler = new Compiler(directory, logger)

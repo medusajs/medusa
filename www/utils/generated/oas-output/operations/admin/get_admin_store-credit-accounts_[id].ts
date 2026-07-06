@@ -4,7 +4,6 @@
  * summary: Get a Store Credit Account
  * description: Retrieve a store credit account by its ID. You can expand the store credit account's relations or select the fields that should be returned.
  * x-authenticated: true
- * x-ignoreCleanup: true
  * parameters:
  *   - name: id
  *     in: path
@@ -59,21 +58,6 @@
  *             type: string
  *             title: customer_id
  *             description: A customer ID.
- *   - name: transaction_group_id
- *     in: query
- *     description: Filter by the associated transaction group's ID.
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: transaction_group_id
- *           description: Filter by the associated transaction group ID.
- *         - type: array
- *           description: Filter by transaction group IDs.
- *           items:
- *             type: string
- *             title: transaction_group_id
- *             description: A transaction group ID.
  *   - name: currency_code
  *     in: query
  *     description: Filter by currency code(s) to retrieve store credit accounts in specific currencies.
@@ -210,6 +194,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a store credit account's update date.
@@ -329,6 +314,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: $and
  *     in: query
  *     description: An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
@@ -379,6 +365,28 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *       externalDocs:
  *         url: "#pagination"
+ *   - name: code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: code
+ *           description: Filter by a store credit account's code.
+ *         - type: array
+ *           description: Filter by store credit account codes.
+ *           items:
+ *             type: string
+ *             title: code
+ *             description: A store credit account code.
+ *   - name: with_deleted
+ *     in: query
+ *     description: Whether to include deleted records in the result.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: Whether to include deleted records in the result.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -411,9 +419,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-badges:
- *   - text: Cloud
+ *   - text: Loyalty Plugin
  *     description: |
- *       This API route is only available in [Medusa Cloud](https://docs.medusajs.com/cloud/loyalty-plugin).
+ *       This API route is only available through the [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/store-credit).
  * 
 */
 

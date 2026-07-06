@@ -1,9 +1,8 @@
 import {
+  AdminPromotion,
+  AdminPromotionRule,
   CreatePromotionRuleDTO,
-  PromotionDTO,
-  PromotionRuleDTO,
   PromotionRuleOperatorValues,
-  PromotionRuleResponse,
 } from "@medusajs/types"
 import { useRouteModal } from "../../../../../../components/modals"
 import {
@@ -15,10 +14,11 @@ import {
 import { RuleTypeValues } from "../../edit-rules"
 import { EditRulesForm } from "../edit-rules-form"
 import { getRuleValue } from "./utils"
+import { RuleWithFormAttributes } from "../rules-form-field"
 
 type EditPromotionFormProps = {
-  promotion: PromotionDTO
-  rules: PromotionRuleDTO[]
+  promotion: AdminPromotion
+  rules: AdminPromotionRule[]
   ruleType: RuleTypeValues
 }
 
@@ -45,7 +45,7 @@ export const EditRulesWrapper = ({
   const handleSubmit = (
     rulesToRemove?: { id: string; disguised: boolean; attribute: string }[]
   ) => {
-    return async function (data: { rules: PromotionRuleResponse[] }) {
+    return async function (data: { rules: RuleWithFormAttributes[] }) {
       const applicationMethodData: Record<any, any> = {}
       const { rules: allRules = [] } = data
       const disguisedRules = allRules.filter((rule) => rule.disguised)
@@ -56,6 +56,9 @@ export const EditRulesWrapper = ({
       // database, they are currently all under application_method. If more of these are coming
       // up, abstract this away.
       for (const rule of disguisedRules) {
+        if (!rule.attribute) {
+          continue
+        }
         applicationMethodData[rule.attribute] = getRuleValue(rule)
       }
 
@@ -97,7 +100,7 @@ export const EditRulesWrapper = ({
 
       rulesToUpdate.length &&
         (await updatePromotionRules({
-          rules: rulesToUpdate.map((rule: PromotionRuleResponse) => {
+          rules: rulesToUpdate.map((rule: RuleWithFormAttributes) => {
             return {
               id: rule.id!,
               attribute: rule.attribute,

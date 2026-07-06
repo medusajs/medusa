@@ -1,14 +1,4 @@
-import {
-  ZodBoolean,
-  ZodEffects,
-  ZodNull,
-  ZodNullable,
-  ZodNumber,
-  ZodOptional,
-  ZodString,
-  ZodType,
-  ZodUndefined,
-} from "zod"
+import { z } from "zod"
 import { FormFieldType } from "./types"
 
 export function getFieldLabel(name: string, label?: string) {
@@ -22,45 +12,42 @@ export function getFieldLabel(name: string, label?: string) {
     .join(" ")
 }
 
-export function getFieldType(type: ZodType): FormFieldType {
-  if (type instanceof ZodString) {
+export function getFieldType(type: z.ZodType): FormFieldType {
+  if (type instanceof z.ZodString) {
     return "text"
   }
 
-  if (type instanceof ZodNumber) {
+  if (type instanceof z.ZodNumber) {
     return "number"
   }
 
-  if (type instanceof ZodBoolean) {
+  if (type instanceof z.ZodBoolean) {
     return "boolean"
   }
 
-  if (type instanceof ZodNullable) {
-    const innerType = type.unwrap()
-
+  if (type instanceof z.ZodNullable) {
+    const innerType = type.unwrap() as z.ZodType
     return getFieldType(innerType)
   }
 
-  if (type instanceof ZodOptional) {
-    const innerType = type.unwrap()
-
+  if (type instanceof z.ZodOptional) {
+    const innerType = type.unwrap() as z.ZodType
     return getFieldType(innerType)
   }
 
-  if (type instanceof ZodEffects) {
-    const innerType = type.innerType()
-
+  if (type instanceof z.ZodPipe) {
+    const innerType = type.def.in as z.ZodType
     return getFieldType(innerType)
   }
 
   return "unsupported"
 }
 
-export function getIsFieldOptional(type: ZodType) {
+export function getIsFieldOptional(type: z.ZodType) {
   return (
-    type instanceof ZodOptional ||
-    type instanceof ZodNull ||
-    type instanceof ZodUndefined ||
-    type instanceof ZodNullable
+    type instanceof z.ZodOptional ||
+    type instanceof z.ZodNull ||
+    type instanceof z.ZodUndefined ||
+    type instanceof z.ZodNullable
   )
 }

@@ -3,8 +3,8 @@ import { ReactNode, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 type ChangeDetailsTooltipProps = {
-  previous: ReactNode
-  next: ReactNode
+  previous?: ReactNode
+  next?: ReactNode
   title: string
 }
 
@@ -14,6 +14,7 @@ function ChangeDetailsTooltip(props: ChangeDetailsTooltipProps) {
   const previous = props.previous
   const next = props.next
   const title = props.title
+  const showComparison = !!previous && !!next
 
   const handleMouseEnter = () => {
     setOpen(true)
@@ -48,21 +49,25 @@ function ChangeDetailsTooltip(props: ChangeDetailsTooltipProps) {
         <div className="flex flex-col">
           {!!previous && (
             <div className="p-3">
-              <div className="txt-compact-small-plus mb-1">
-                {t("labels.from")}
-              </div>
+              {showComparison && (
+                <div className="txt-compact-small-plus mb-1">
+                  {t("labels.from")}
+                </div>
+              )}
 
-              <p className="txt-compact-small text-ui-fg-subtle">{previous}</p>
+              {previous}
             </div>
           )}
 
           {!!next && (
             <div className="border-t-2 border-dotted p-3">
-              <div className="txt-compact-small-plus mb-1">
-                {t("labels.to")}
-              </div>
+              {showComparison && (
+                <div className="txt-compact-small-plus mb-1">
+                  {t("labels.to")}
+                </div>
+              )}
 
-              <p className="txt-compact-small text-ui-fg-subtle">{next}</p>
+              {next}
             </div>
           )}
         </div>

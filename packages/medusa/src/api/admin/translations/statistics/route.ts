@@ -28,7 +28,10 @@ export const GET = async (
   )
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { locales, entity_types } = req.validatedQuery
+  // The Zod schema normalizes both string and string[] to string[] via transform,
+  // so the runtime values are always arrays despite the HTTP type allowing string | string[].
+  const locales = req.validatedQuery.locales as string[]
+  const entity_types = req.validatedQuery.entity_types as string[]
 
   // Fetch counts for each entity type in parallel
   const entityCounts = await promiseAll(

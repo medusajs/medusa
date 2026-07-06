@@ -2,7 +2,7 @@ import { RuleOperatorType } from "../../../common"
 import { ShippingOptionPriceType } from "../../../fulfillment"
 import { AdminFulfillmentProvider } from "../../fulfillment-provider"
 import { AdminServiceZone } from "../../fulfillment-set"
-import { AdminPrice } from "../../pricing"
+import { AdminPrice } from "../../price-preference"
 import { AdminShippingProfile } from "../../shipping-profile"
 
 export interface AdminShippingOptionType {

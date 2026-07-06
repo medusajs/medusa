@@ -21,10 +21,7 @@ import { updateCartItemsTranslationsStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = updateCartItemsTranslationsStep({
-      "cart_id": "cart_123",
-      "locale": "{value}"
-    })
+    const data = updateCartItemsTranslationsStep({})
   }
 )
 ```
@@ -32,4 +29,4 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"UpdateCartItemsTranslationsStepInput","type":"[UpdateCartItemsTranslationsStepInput](../../../../interfaces/core_flows.UpdateCartItemsTranslationsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"cart_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locale","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`object`[]","description":"Pre-loaded items to avoid re-fetching.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variant_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateCartItemsTranslationsStep"/>
+<TypeList types={[{"name":"UpdateCartItemsTranslationsStepInput","type":"[UpdateCartItemsTranslationsStepInput](../../../../core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdateCartItemsTranslationsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateCartItemsTranslationsStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateCartItemsTranslationsStep"/>

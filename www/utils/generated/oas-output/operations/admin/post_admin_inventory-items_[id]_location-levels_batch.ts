@@ -20,7 +20,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminBatchInventoryItemLocationsLevel"
+ *         $ref: "#/components/schemas/AdminBatchInventoryItemLocationLevels"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

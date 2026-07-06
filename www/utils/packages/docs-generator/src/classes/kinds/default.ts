@@ -16,7 +16,6 @@ import {
 } from "../../utils/medusa-react-utils.js"
 import GeneratorEventManager from "../helpers/generator-event-manager.js"
 import { CommonCliOptions } from "../../types/index.js"
-import AiGenerator from "../helpers/ai-generator.js"
 import { camelToWords, capitalize } from "utils"
 import { normalizeName } from "../../utils/str-formatting.js"
 
@@ -30,7 +29,6 @@ export type GeneratorOptions = {
 export type GetDocBlockOptions = {
   addEnd?: boolean
   summaryPrefix?: string
-  aiGenerator?: AiGenerator
 }
 
 type CommonDocsOptions = {

@@ -8,12 +8,12 @@
  *     type: array
  *     description: The created inventory levels.
  *     items:
- *       $ref: "#/components/schemas/InventoryLevel"
+ *       $ref: "#/components/schemas/AdminInventoryLevel"
  *   updated:
  *     type: array
  *     description: The updated inventory levels.
  *     items:
- *       $ref: "#/components/schemas/InventoryLevel"
+ *       $ref: "#/components/schemas/AdminInventoryLevel"
  *   deleted:
  *     type: array
  *     description: The IDs of deleted inventory levels.

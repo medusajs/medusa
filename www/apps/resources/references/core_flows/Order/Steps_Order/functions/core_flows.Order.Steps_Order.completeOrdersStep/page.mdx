@@ -21,11 +21,7 @@ import { completeOrdersStep } from "@medusajs/medusa/core-flows"
 const myWorkflow = createWorkflow(
   "my-workflow",
   () => {
-    const data = completeOrdersStep({
-      "orderIds": [
-        "{value}"
-      ]
-    })
+    const data = completeOrdersStep({})
   }
 )
 ```
@@ -33,7 +29,7 @@ const myWorkflow = createWorkflow(
 
 ## Input
 
-<TypeList types={[{"name":"CompleteOrdersStepInput","type":"[CompleteOrdersStepInput](../../../../types/core_flows.CompleteOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"The details of completing the orders.","expandable":false,"children":[{"name":"orderIds","type":"`string`[]","description":"The IDs of the orders to complete.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeOrdersStep"/>
+<TypeList types={[{"name":"CompleteOrdersStepInput","type":"[CompleteOrdersStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CompleteOrdersStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CompleteOrdersStepInput","type":"`object`","description":"The details of completing the orders.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="completeOrdersStep"/>
 
 ## Output
 

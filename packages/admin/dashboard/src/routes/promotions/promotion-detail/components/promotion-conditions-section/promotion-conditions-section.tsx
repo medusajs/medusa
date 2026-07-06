@@ -1,14 +1,15 @@
 import { PencilSquare } from "@medusajs/icons"
-import { ApplicationMethodTargetTypeValues, HttpTypes, PromotionRuleTypes, } from "@medusajs/types"
+import { ApplicationMethodTargetTypeValues } from "@medusajs/types"
 import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { ExtendedPromotionRule } from "../../promotion-detail"
 
 type RuleProps = {
-  rule: HttpTypes.AdminPromotionRule
+  rule: ExtendedPromotionRule
 }
 
 function RuleBlock({ rule }: RuleProps) {
@@ -31,9 +32,10 @@ function RuleBlock({ rule }: RuleProps) {
           inline
           className="!txt-compact-small-plus"
           list={
-            rule.field_type === "number"
+            (rule.field_type === "number"
               ? [rule.values]
-              : rule.values?.map((v) => v.label)
+              : rule.values?.map((v) => v.label) || []
+            ).filter(Boolean) as string[]
           }
         />
       </div>
@@ -41,10 +43,10 @@ function RuleBlock({ rule }: RuleProps) {
   )
 }
 
-type PromotionConditionsSectionProps = {
-  rules: HttpTypes.AdminPromotionRule[]
-  ruleType: PromotionRuleTypes
-  applicationMethodTargetType: ApplicationMethodTargetTypeValues
+export type PromotionConditionsSectionProps = {
+  rules: ExtendedPromotionRule[]
+  ruleType: string
+  applicationMethodTargetType?: ApplicationMethodTargetTypeValues
 }
 
 export const PromotionConditionsSection = ({
@@ -59,7 +61,7 @@ export const PromotionConditionsSection = ({
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex flex-col">
           <Heading level="h2">
-            {t(
+            {(t as any)(
               ruleType === "target-rules"
                 ? `promotions.fields.conditions.${ruleType}.${applicationMethodTargetType}.title`
                 : `promotions.fields.conditions.${ruleType}.title`

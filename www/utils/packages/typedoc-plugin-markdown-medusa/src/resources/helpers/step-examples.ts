@@ -2,6 +2,7 @@ import Handlebars from "handlebars"
 import { DeclarationReflection, SignatureReflection } from "typedoc"
 import { getReflectionTypeFakeValueStr, getStepInputType } from "utils"
 import beautifyCode from "../../utils/beautify-code.js"
+import { getPackageNameForWorkflowReflection } from "../../utils/workflow-utils.js"
 
 export default function () {
   Handlebars.registerHelper(
@@ -33,12 +34,13 @@ function generateStepExample(stepReflection: DeclarationReflection): string {
         name: "",
       })}`
     : ""
+  const packageName = getPackageNameForWorkflowReflection(stepReflection)
 
   // generate example
   return `
 \`\`\`ts title="src/workflows/my-workflow.ts"
 ${beautifyCode(`import { createWorkflow } from "@medusajs/framework/workflows-sdk"
-import { ${stepReflection.name} } from "@medusajs/medusa/core-flows"
+import { ${stepReflection.name} } from "${packageName}"
 
 const myWorkflow = createWorkflow(
   "my-workflow",

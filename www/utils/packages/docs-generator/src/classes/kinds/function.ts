@@ -8,8 +8,6 @@ import {
   SUMMARY_PLACEHOLDER,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
-import AiGenerator from "../helpers/ai-generator.js"
-import path from "path"
 
 export type FunctionNode =
   | ts.MethodDeclaration
@@ -189,45 +187,6 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     return this.formatExample(FunctionKindGenerator.EXAMPLE_PLACEHOLDER)
   }
 
-  /**
-   * Retrieves a function's example using the AiGenerator
-   *
-   * @param node - The function's node.
-   * @param aiGenerator - An instance of the AiGenerator
-   * @returns the example code
-   */
-  async getFunctionExampleAi(
-    node: FunctionOrVariableNode,
-    aiGenerator: AiGenerator,
-    withTag = true
-  ): Promise<string> {
-    const actualNode = ts.isVariableStatement(node)
-      ? this.extractFunctionNode(node)
-      : node
-
-    if (!actualNode) {
-      return ""
-    }
-
-    const symbol = getSymbol(node, this.checker)
-
-    const example = await aiGenerator.generateExample({
-      className: this.isMethod(actualNode)
-        ? getSymbol(node.parent, this.checker)?.name
-        : undefined,
-      functionName: symbol?.name || "",
-      signature: node.getText(),
-      fileName: path.basename(node.getSourceFile().fileName),
-    })
-
-    return this.formatExample(
-      example.length
-        ? `${example}${DOCBLOCK_NEW_LINE}`
-        : FunctionKindGenerator.EXAMPLE_PLACEHOLDER,
-      withTag
-    )
-  }
-
   formatExample(example: string, withTag = true): string {
     return `${
       withTag ? `${DOCBLOCK_DOUBLE_LINES}@example${DOCBLOCK_NEW_LINE}` : ""
@@ -258,21 +217,9 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
       return await super.getDocBlock(node, options)
     }
 
-    let existingComments = this.getNodeCommentsFromRange(node)
+    const existingComments = this.getNodeCommentsFromRange(node)
 
     if (existingComments?.includes(FunctionKindGenerator.EXAMPLE_PLACEHOLDER)) {
-      // just replace the existing comment and return it
-      if (options.aiGenerator) {
-        existingComments = existingComments.replace(
-          FunctionKindGenerator.EXAMPLE_PLACEHOLDER,
-          await this.getFunctionExampleAi(
-            actualNode,
-            options.aiGenerator,
-            false
-          )
-        )
-      }
-
       return existingComments.replace("/*", "").replace("*/", "")
     }
 
@@ -348,11 +295,7 @@ class FunctionKindGenerator extends DefaultKindGenerator<FunctionOrVariableNode>
     }`
 
     // add example
-    if (!options.aiGenerator) {
-      str += this.getFunctionPlaceholderExample()
-    } else {
-      str += await this.getFunctionExampleAi(actualNode, options.aiGenerator)
-    }
+    str += this.getFunctionPlaceholderExample()
 
     // add common docs
     str += this.getCommonDocs(node, {

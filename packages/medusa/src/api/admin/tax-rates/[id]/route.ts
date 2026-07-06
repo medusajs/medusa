@@ -17,7 +17,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminUpdateTaxRate,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetTaxRateParams
   >,
   res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {
@@ -47,7 +47,7 @@ export const POST = async (
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetTaxRateParams
   >,
   res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {

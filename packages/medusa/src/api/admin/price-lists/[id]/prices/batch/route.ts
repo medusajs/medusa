@@ -17,7 +17,8 @@ export const POST = async (
     BatchMethodRequest<
       AdminCreatePriceListPriceType,
       AdminUpdatePriceListPriceType
-    >
+    >,
+    HttpTypes.AdminGetPriceListPriceParams
   >,
   res: MedusaResponse<HttpTypes.AdminPriceListBatchResponse>
 ) => {

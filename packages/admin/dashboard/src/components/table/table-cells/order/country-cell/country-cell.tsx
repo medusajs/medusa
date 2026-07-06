@@ -7,11 +7,7 @@ type Country = Omit<HttpTypes.AdminRegionCountry, "id"> & {
   id?: string
 }
 
-export const CountryCell = ({
-  country,
-}: {
-  country?: Country | null
-}) => {
+export const CountryCell = ({ country }: { country?: Country | null }) => {
   if (!country) {
     return <PlaceholderCell />
   }

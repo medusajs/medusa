@@ -5,7 +5,6 @@ import {
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
-import { AdminBatchPropertyLabelsType } from "../validators"
 
 /**
  * Batch create, update, and delete property labels.
@@ -13,7 +12,7 @@ import { AdminBatchPropertyLabelsType } from "../validators"
  * @featureFlag view_configurations
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminBatchPropertyLabelsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminBatchPropertyLabels>,
   res: MedusaResponse<HttpTypes.AdminBatchPropertyLabelResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)

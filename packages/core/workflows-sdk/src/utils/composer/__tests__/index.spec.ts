@@ -735,9 +735,9 @@ describe("Workflow composer", () => {
         {
           code: "invalid_type",
           expected: "number",
-          message: "Required",
+          message: "Invalid input: expected number, received undefined",
           path: ["id"],
-          received: "undefined",
+          input: undefined,
         },
       ])
     }
@@ -841,9 +841,9 @@ describe("Workflow composer", () => {
         {
           code: "invalid_type",
           expected: "object",
-          message: "Required",
+          message: "Invalid input: expected object, received undefined",
           path: [],
-          received: "undefined",
+          input: undefined,
         },
       ])
     }

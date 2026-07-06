@@ -9,15 +9,12 @@ import {
 } from "@medusajs/core-flows"
 import { MedusaError } from "@medusajs/framework/utils"
 import { refetchStockLocation } from "../helpers"
-import {
-  AdminGetStockLocationParamsType,
-} from "../validators"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminUpdateStockLocation,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetStockLocationParams
   >,
   res: MedusaResponse<HttpTypes.AdminStockLocationResponse>
 ) => {
@@ -41,7 +38,7 @@ export const POST = async (
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetStockLocationParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetStockLocationParams>,
   res: MedusaResponse<HttpTypes.AdminStockLocationResponse>
 ) => {
   const { id } = req.params

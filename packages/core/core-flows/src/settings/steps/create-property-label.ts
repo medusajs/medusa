@@ -2,6 +2,11 @@ import { SettingsTypes } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
+/**
+ * Input data for creating property labels step.
+ * 
+ * @since 2.13.7
+ */
 export interface CreatePropertyLabelsStepInput {
   property_labels: {
     entity: string
@@ -11,10 +16,17 @@ export interface CreatePropertyLabelsStepInput {
   }[]
 }
 
+/**
+ * Step ID for creating property labels step.
+ * 
+ * @since 2.13.7
+ */
 export const createPropertyLabelsStepId = "create-property-labels"
 
 /**
- * @since 2.13.2
+ * Workflow step to create property labels.
+ * 
+ * @since 2.13.7
  * @featureFlag view_configurations
  */
 export const createPropertyLabelsStep = createStep(

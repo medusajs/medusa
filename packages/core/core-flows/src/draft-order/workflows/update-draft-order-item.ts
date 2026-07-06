@@ -107,6 +107,7 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
               unit_price: item.unit_price,
               compare_at_unit_price: item.compare_at_unit_price,
               quantity_diff: quantityDiff,
+              metadata: item.metadata,
             },
           }
         })

@@ -1,7 +1,7 @@
 /**
  * @schema BaseLineItemTaxLine
  * type: object
- * description: The tax line's details
+ * description: The tax line's details.
  * x-schemaName: BaseLineItemTaxLine
  * required:
  *   - item
@@ -15,19 +15,21 @@
  *   - updated_at
  * properties:
  *   item:
- *     $ref: "#/components/schemas/BaseCartLineItem"
+ *     type: object
+ *     title: item
+ *     description: The details of the item that the tax line belongs to.
  *   item_id:
  *     type: string
  *     title: item_id
- *     description: The ID of the item the tax line applies on.
+ *     description: The ID of the line item this tax line belongs to.
  *   total:
  *     type: number
  *     title: total
- *     description: The item's total, including taxes and promotions.
+ *     description: The item's total including taxes and promotions.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The item's subtotal excluding taxes, including promotions.
+ *     description: The item's total excluding taxes, including promotions.
  *   id:
  *     type: string
  *     title: id
@@ -39,19 +41,19 @@
  *   tax_rate_id:
  *     type: string
  *     title: tax_rate_id
- *     description: The ID of the associated tax rate.
+ *     description: The ID of the applied tax rate.
  *   code:
  *     type: string
  *     title: code
- *     description: The code the tax rate is identified by.
+ *     description: The code that the tax rate is identified by.
  *   rate:
  *     type: number
  *     title: rate
- *     description: The rate to charge.
+ *     description: The charged rate.
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The ID of the tax provider.
+ *     description: The ID of the tax provider used to calculate the tax line.
  *   created_at:
  *     type: string
  *     format: date-time

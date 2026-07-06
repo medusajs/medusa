@@ -40,7 +40,7 @@ export const AdminCreateInvite = z
   .object({
     email: z.string(),
     roles: z.array(z.string()).nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 

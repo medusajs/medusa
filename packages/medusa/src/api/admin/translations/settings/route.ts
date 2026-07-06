@@ -13,7 +13,6 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import TranslationFeatureFlag from "../../../../feature-flags/translation"
-import { AdminTranslationSettingsParamsType } from "../validators"
 
 /**
  * @since 2.12.3
@@ -22,7 +21,7 @@ import { AdminTranslationSettingsParamsType } from "../validators"
 export const GET = async (
   req: AuthenticatedMedusaRequest<
     undefined,
-    AdminTranslationSettingsParamsType
+    HttpTypes.AdminTranslationSettingsParams
   >,
   res: MedusaResponse<HttpTypes.AdminTranslationSettingsResponse>
 ) => {

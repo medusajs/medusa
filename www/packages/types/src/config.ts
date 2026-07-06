@@ -32,4 +32,8 @@ export declare type DocsConfig = {
   }
   reportIssueLink?: string
   logo: string
+  features?: {
+    aiAssistant?: boolean
+  }
+  contentMenuSections?: Record<string, boolean>
 }

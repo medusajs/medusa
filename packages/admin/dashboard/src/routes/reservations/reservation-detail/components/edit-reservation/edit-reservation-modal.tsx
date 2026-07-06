@@ -1,4 +1,3 @@
-import { InventoryTypes } from "@medusajs/types"
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
@@ -22,9 +21,7 @@ export const ReservationEdit = () => {
 
   const { stock_locations } = useStockLocations(
     {
-      id: inventoryItem?.location_levels?.map(
-        (l: InventoryTypes.InventoryLevelDTO) => l.location_id
-      ),
+      id: inventoryItem?.location_levels?.map((l) => l.location_id),
     },
     {
       enabled: !!inventoryItem?.location_levels,

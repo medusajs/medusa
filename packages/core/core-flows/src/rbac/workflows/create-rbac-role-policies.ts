@@ -8,6 +8,10 @@ import {
 import { createRbacRolePoliciesStep } from "../steps"
 import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export type CreateRbacRolePoliciesWorkflowInput = {
   actor_id?: string
   actor?: string
@@ -17,8 +21,16 @@ export type CreateRbacRolePoliciesWorkflowInput = {
   }[]
 }
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const createRbacRolePoliciesWorkflowId = "create-rbac-role-policies"
 
+/**
+ * @ignore
+ * @featureFlag rbac
+ */
 export const createRbacRolePoliciesWorkflow = createWorkflow(
   createRbacRolePoliciesWorkflowId,
   (input: WorkflowData<CreateRbacRolePoliciesWorkflowInput>) => {

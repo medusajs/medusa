@@ -4,8 +4,7 @@
   "workspaces": {
     "packages": [
       "apps/*",
-      "packages/*",
-      "!apps/ui-old"
+      "packages/*"
     ]
   },
   "scripts": {

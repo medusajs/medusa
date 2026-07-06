@@ -13,6 +13,7 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
+import { AdminCreateProductOption } from "../product-options/validators"
 import { AdminGetProductVariantsParamsFields } from "../product-variants/validators"
 
 const statusEnum = z.nativeEnum(ProductStatus)
@@ -78,12 +79,50 @@ export const AdminUpdateProductTag = z.object({
   value: z.string().optional(),
 })
 
-export type AdminCreateProductOptionType = z.infer<typeof CreateProductOption>
-export const CreateProductOption = z.object({
-  title: z.string(),
-  values: z.array(z.string()),
+export type AdminLinkProductOptionWithValuesType = z.infer<
+  typeof AdminLinkProductOptionWithValues
+>
+export const AdminLinkProductOptionWithValues = z.object({
+  id: z.string(),
+  value_ids: z.array(z.string()),
 })
-export const AdminCreateProductOption = WithAdditionalData(CreateProductOption)
+
+export type AdminUpdateProductOptionValuesType = z.infer<
+  typeof AdminUpdateProductOptionValues
+>
+export const AdminUpdateProductOptionValues = z.object({
+  product_option_id: z.string(),
+  add: z
+    .array(
+      z.union([
+        z.string(),
+        z
+          .object({
+            value: z.string(),
+          })
+          .strict(),
+      ])
+    )
+    .optional(),
+  remove: z.array(z.string()).optional(),
+})
+
+export type AdminLinkProductOptionsType = z.infer<
+  typeof AdminLinkProductOptions
+>
+export const AdminLinkProductOptions = z.object({
+  add: z
+    .array(
+      z.union([
+        z.string(),
+        AdminCreateProductOption,
+        AdminLinkProductOptionWithValues,
+      ])
+    )
+    .optional(),
+  remove: z.array(z.string()).optional(),
+  update: z.array(AdminUpdateProductOptionValues).optional(),
+})
 
 export type AdminUpdateProductOptionType = z.infer<typeof UpdateProductOption>
 export const UpdateProductOption = z.object({
@@ -117,11 +156,6 @@ export const AdminUpdateVariantPrice = z.object({
   rules: z.record(z.string(), z.string()).optional(),
 })
 
-export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>
-export const AdminCreateProductType = z.object({
-  value: z.string(),
-})
-
 export type AdminCreateProductVariantType = z.infer<typeof CreateProductVariant>
 export const CreateProductVariant = z
   .object({
@@ -141,9 +175,9 @@ export const CreateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
     prices: z.array(AdminCreateVariantPrice),
-    options: z.record(z.string()).optional(),
+    options: z.record(z.string(), z.string()).optional(),
     inventory_items: z
       .array(
         z.object({
@@ -179,8 +213,8 @@ export const UpdateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
-    options: z.record(z.string()).optional(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
+    options: z.record(z.string(), z.string()).optional(),
   })
   .strict()
 
@@ -215,7 +249,17 @@ export const CreateProduct = z
     collection_id: z.string().nullish(),
     categories: z.array(IdAssociation).optional(),
     tags: z.array(IdAssociation).optional(),
-    options: z.array(CreateProductOption).optional(),
+    options: z
+      .array(
+        z.union([
+          AdminCreateProductOption,
+          z.object({
+            id: z.string(),
+            value_ids: z.array(z.string()).optional(),
+          }),
+        ])
+      )
+      .optional(),
     variants: z.array(CreateProductVariant).optional(),
     sales_channels: z.array(z.object({ id: z.string() })).optional(),
     shipping_profile_id: z.string().optional(),
@@ -227,7 +271,7 @@ export const CreateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
@@ -239,7 +283,16 @@ export const UpdateProduct = z
     title: z.string().optional(),
     discountable: booleanString().optional(),
     is_giftcard: booleanString().optional(),
-    options: z.array(UpdateProductOption).optional(),
+    options: z.any().superRefine((val, ctx) => {
+      if (val !== undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "The 'options' property was removed in version 2.16.0. Please remove it from your request payload.",
+        })
+      }
+    }),
+    option_ids: z.array(z.string()).optional(),
     variants: z.array(UpdateProductVariant).optional(),
     status: statusEnum.optional(),
     subtitle: z.string().nullish(),
@@ -248,7 +301,7 @@ export const UpdateProduct = z
       .array(z.object({ id: z.string().optional(), url: z.string() }))
       .optional(),
     thumbnail: z.string().nullish(),
-    handle: z.string().nullish(),
+    handle: z.string().optional(),
     type_id: z.string().nullish(),
     external_id: z.string().nullish(),
     collection_id: z.string().nullish(),
@@ -264,7 +317,7 @@ export const UpdateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 

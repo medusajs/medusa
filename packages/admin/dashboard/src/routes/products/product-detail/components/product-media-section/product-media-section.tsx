@@ -67,7 +67,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
     }
 
     const mediaToKeep = product.images
-      .filter((i) => !ids.includes(i.id))
+      ?.filter((i) => !ids.includes(i.id))
       .map((i) => ({ id: i.id, url: i.url }))
 
     await mutateAsync(
@@ -199,14 +199,15 @@ type Media = {
   isThumbnail: boolean
 }
 
-const getMedia = (product: Product) => {
+const getMedia = (product: HttpTypes.AdminProduct) => {
   const { images = [], thumbnail } = product
 
-  const media: Media[] = images.map((image) => ({
-    id: image.id,
-    url: image.url,
-    isThumbnail: image.url === thumbnail,
-  }))
+  const media: Media[] =
+    images?.map((image) => ({
+      id: image.id,
+      url: image.url,
+      isThumbnail: image.url === thumbnail,
+    })) || []
 
   if (thumbnail && !media.some((mediaItem) => mediaItem.url === thumbnail)) {
     media.unshift({

@@ -1,0 +1,39 @@
+name: Sync Docs Staging Branch
+
+on:
+  push:
+    branches:
+      - develop
+
+concurrency:
+  group: docs-release-staging
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REFERENCE_PAT }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync docs/release-docs-staging with develop
+        run: |
+          git fetch origin
+          if git ls-remote --exit-code origin docs/release-docs-staging > /dev/null 2>&1; then
+            git checkout docs/release-docs-staging
+            git merge -X theirs origin/develop -m "chore: sync docs/release-docs-staging with develop"
+            git push origin docs/release-docs-staging
+            echo "Synced docs/release-docs-staging with develop"
+          else
+            echo "Branch docs/release-docs-staging does not exist yet — nothing to sync"
+          fi

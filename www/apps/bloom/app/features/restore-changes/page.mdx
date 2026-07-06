@@ -1,0 +1,53 @@
+import { InlineIcon } from "docs-ui"
+import { History } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Restore Changes`,
+}
+
+# {metadata.title}
+
+Restore Changes lets you roll back your store to any previous version created by Bloom. Use this to undo mistakes, try different design directions, or go back to an earlier version you preferred.
+
+## Why Restore Changes
+
+While building your store, you may need to undo changes, try different design directions, or compare changes Bloom made. Handling this manually can be difficult, time-consuming, and risky if you accidentally lose work.
+
+Bloom keeps track of all changes it makes to your store. Each change is saved as a version in your project history.
+
+The Restore Changes feature lets you jump between different versions of your store. You can restore your store to any previous version created by Bloom, or jump forward to a newer version, without losing work or making manual edits.
+
+### What You Can Restore
+
+You can restore your store to any previous version created by Bloom. This includes changes like:
+
+- Design updates and layout changes.
+- Feature additions and customizations.
+- Content updates and page creations.
+
+### What You Can't Restore
+
+Restore Changes only works with changes made by Bloom. So, you can't restore to versions that include manual edits made with [Selection Mode](../selection-mode/page.mdx) or changes made outside of Bloom.
+
+You also can't restore database changes like product and order updates. Even when you restore to a previous version, your products, orders, and other data remain unchanged.
+
+---
+
+## Restore Changes from Chat History
+
+Every time Bloom makes a change to your store, it shows a card in the chat with the change's title and a button to restore to that version.
+
+So, to restore your store to a previous version:
+
+1. Find the change's card in your chat history.
+2. Click the <InlineIcon Icon={History} alt="restore changes" /> button to restore that version.
+
+Bloom will roll back your store to that version. You can then see the restored version in the preview and continue building from there.
+
+{/* TODO add screenshot */}
+
+### Restoring Newer Versions
+
+After restoring an older version, you can also jump forward to newer versions created by Bloom. This is useful if you want to compare different versions or go back to a newer version you preferred.
+
+To jump forward to a newer version, follow the [same steps mentioned above](#restore-changes-from-chat-history). Find the newer version in your chat history and restore it.

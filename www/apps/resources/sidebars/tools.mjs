@@ -39,6 +39,43 @@ export const toolsSidebar = [
           },
         ],
       },
+      {
+        type: "link",
+        path: "/medusa-oas-cli",
+        title: "medusa-oas-cli",
+      },
+    ],
+  },
+  {
+    type: "category",
+    title: "Developer Tools",
+    initialOpen: true,
+    description:
+      "Developer tools facilitate the development of your Medusa application by providing utilities for linting and other uses.",
+    children: [
+      {
+        type: "sidebar",
+        sidebar_id: "lint",
+        title: "ESLint Plugin",
+        childSidebarTitle: "ESLint Plugin Reference",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            path: "/lint",
+            title: "Overview",
+          },
+          {
+            type: "separator",
+          },
+          {
+            type: "category",
+            title: "Rules",
+            autogenerate_path: "lint/rules",
+            initialOpen: true,
+          },
+        ],
+      },
     ],
   },
   {

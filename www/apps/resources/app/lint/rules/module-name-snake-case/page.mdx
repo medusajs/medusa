@@ -1,0 +1,51 @@
+---
+sidebar_label: "module-name-snake-case"
+---
+
+export const metadata = {
+  title: `module-name-snake-case - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that the name passed to `Module(name, ...)` contains only alphanumeric characters and underscores.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets module definition files (`index.ts`) in your project's `src/modules` directory. It reports the name passed to `Module(name, ...)` when it contains characters other than letters, digits, and underscores.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/index.ts"
+import { Module } from "@medusajs/framework/utils"
+import BlogModuleService from "./service"
+
+export default Module("my-blog", {
+  service: BlogModuleService,
+})
+```
+
+Instead, use a name with only alphanumeric characters and underscores:
+
+```ts title="src/modules/blog/index.ts"
+import { Module } from "@medusajs/framework/utils"
+import BlogModuleService from "./service"
+
+export default Module("blog", {
+  service: BlogModuleService,
+})
+```
+
+## Why it's Important
+
+The module name is used as a registration key in the Medusa container. A name with dashes, spaces, or special characters can break resolution and lead to runtime errors.
+
+Learn more in the [Modules documentation](!docs!/learn/fundamentals/modules).
+
+## Fixable
+
+This rule isn't auto-fixable.

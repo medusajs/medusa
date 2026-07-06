@@ -3,6 +3,7 @@ import {
   LoaderOptions,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
+import { WILDCARD } from "@medusajs/framework/utils"
 import { RbacPolicy, RbacRole, RbacRolePolicy } from "@models"
 
 export default async ({
@@ -38,9 +39,9 @@ export default async ({
 
   const policy = await rbacPolicyService.upsert({
     id: "rpol_super_admin",
-    key: "*:*",
-    resource: "*",
-    operation: "*",
+    key: `${WILDCARD}:${WILDCARD}`,
+    resource: WILDCARD,
+    operation: WILDCARD,
     name: "Super Admin",
     description:
       "Super admin policy with full access to all resources and operations",

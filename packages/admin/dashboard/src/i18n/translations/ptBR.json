@@ -1360,6 +1360,14 @@
       "sendNotificationLabel": "Enviar notificação",
       "sendNotificationHint": "Envie uma notificação ao cliente quando o pedido em rascunho for criado."
     },
+    "list": {
+      "noRecordsMessage": "Nenhum pedido em rascunho encontrado",
+      "description": "Crie um novo pedido em rascunho para começar.",
+      "filtered": {
+        "heading": "Nenhum resultado encontrado",
+        "description": "Nenhum pedido em rascunho corresponde ao seu filtro."
+      }
+    },
     "validation": {
       "requiredEmailOrCustomer": "Email ou cliente é obrigatório.",
       "requiredItems": "Pelo menos um item é obrigatório.",
@@ -1785,6 +1793,7 @@
       "allocation": "Alocação",
       "addCondition": "Adicionar condição",
       "clearAll": "Limpar tudo",
+      "usageLimit": "Limite de uso",
       "amount": {
         "tooltip": "Selecione o código da moeda para habilitar a definição do valor"
       },
@@ -1794,8 +1803,18 @@
           "description": "Qual cliente está autorizado a usar o código de promoção? O código pode ser usado por todos os clientes se não for alterado."
         },
         "target-rules": {
-          "title": "A quais itens a promoção será aplicada?",
-          "description": "A promoção será aplicada aos itens que corresponderem às condições abaixo."
+          "order": {
+            "title": "A quais itens a promoção será aplicada?",
+            "description": "A promoção será aplicada aos itens que corresponderem às seguintes condições."
+          },
+          "shipping_methods": {
+            "title": "A quais métodos de envio a promoção será aplicada?",
+            "description": "A promoção será aplicada aos métodos de envio que corresponderem às seguintes condições."
+          },
+          "items": {
+            "title": "A quais itens a promoção será aplicada?",
+            "description": "A promoção será aplicada aos itens que corresponderem às seguintes condições."
+          }
         },
         "buy-rules": {
           "title": "O que precisa estar no carrinho para ativar a promoção?",
@@ -1862,7 +1881,19 @@
         }
       },
       "status": {
-        "title": "Status"
+        "label": "Status",
+        "draft": {
+          "title": "Rascunho",
+          "description": "Os clientes ainda não poderão usar o código"
+        },
+        "active": {
+          "title": "Ativo",
+          "description": "Os clientes poderão usar o código"
+        },
+        "inactive": {
+          "title": "Inativo",
+          "description": "Os clientes não poderão mais usar o código"
+        }
       },
       "method": {
         "label": "Método",
@@ -1897,6 +1928,10 @@
         "across": {
           "title": "Dividido",
           "description": "Aplica o valor entre os itens"
+        },
+        "once": {
+          "title": "Uma vez",
+          "description": "Aplica o valor a um número limitado de itens"
         }
       },
       "code": {
@@ -1915,6 +1950,36 @@
           "title": "Valor da Promoção",
           "description": "A porcentagem de desconto, ex.: 8%"
         }
+      },
+      "limit": {
+        "title": "Limite de uso",
+        "description": "Número máximo de vezes que esta promoção pode ser usada em todos os pedidos. Deixe em branco para uso ilimitado."
+      }
+    },
+    "templates": {
+      "amount_off_products": {
+        "title": "Desconto em produtos",
+        "description": "Desconta produtos específicos ou uma coleção de produtos"
+      },
+      "amount_off_order": {
+        "title": "Desconto no pedido",
+        "description": "Aplica desconto ao valor total do pedido"
+      },
+      "percentage_off_product": {
+        "title": "Percentual de desconto no produto",
+        "description": "Aplica um percentual de desconto aos produtos selecionados"
+      },
+      "percentage_off_order": {
+        "title": "Percentual de desconto no pedido",
+        "description": "Aplica um percentual de desconto sobre o valor total do pedido"
+      },
+      "buy_get": {
+        "title": "Compre X e leve Y",
+        "description": "Compre X produto(s), ganhe Y produto(s)"
+      },
+      "shipping_discount": {
+        "title": "Frete grátis",
+        "description": "Aplica desconto de 100% no frete"
       }
     },
     "deleteWarning": "Você está prestes a excluir a promoção {{code}}. Esta ação não pode ser desfeita.",
@@ -2449,6 +2514,41 @@
       "description": {
         "label": "Descrição",
         "placeholder": "O cliente recebeu o tamanho errado"
+      }
+    }
+  },
+  "refundReasons": {
+    "domain": "Razões de reembolso",
+    "subtitle": "Gerencie os motivos para emissão de reembolsos.",
+    "calloutHint": "Gerencie os motivos para categorizar os reembolsos.",
+    "editReason": "Editar motivo de reembolso",
+    "create": {
+      "header": "Adicionar motivo de reembolso",
+      "subtitle": "Especifique os motivos mais comuns para reembolsos.",
+      "hint": "Crie um novo motivo de reembolso para categorizar reembolsos.",
+      "successToast": "O motivo de reembolso {{label}} foi criado com sucesso."
+    },
+    "edit": {
+      "header": "Editar motivo de reembolso",
+      "subtitle": "Edite o valor do motivo de reembolso.",
+      "successToast": "O motivo de reembolso {{label}} foi atualizado com sucesso."
+    },
+    "delete": {
+      "confirmation": "Você está prestes a excluir o motivo de reembolso \"{{label}}\". Esta ação não pode ser desfeita.",
+      "successToast": "O motivo de reembolso foi excluído com sucesso."
+    },
+    "fields": {
+      "label": {
+        "label": "Rótulo",
+        "placeholder": "Gesto de boa vontade"
+      },
+      "code": {
+        "label": "Código",
+        "placeholder": "gesto_de_boa_vontade"
+      },
+      "description": {
+        "label": "Descrição",
+        "placeholder": "Cliente teve uma experiência de compra ruim"
       }
     }
   },

@@ -467,6 +467,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: external_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: external_id
+ *           description: Filter by an external ID.
+ *         - type: array
+ *           description: Filter by multiple external IDs.
+ *           items:
+ *             type: string
+ *             title: external_id
+ *             description: An external ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

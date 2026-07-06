@@ -60,7 +60,7 @@ export const InventoryStockForm = ({
               ?.locations?.[location_id]?.checked
 
           if (wasChecked && !level.checked) {
-            payload.delete.push(level.id)
+            payload.delete?.push(level.id)
           } else {
             const newQuantity =
               level.quantity !== "" ? castNumber(level.quantity) : 0
@@ -69,7 +69,7 @@ export const InventoryStockForm = ({
                 ?.locations?.[location_id]?.quantity
 
             if (newQuantity !== originalQuantity) {
-              payload.update.push({
+              payload.update?.push({
                 id: level.id,
                 inventory_item_id,
                 location_id,
@@ -80,7 +80,7 @@ export const InventoryStockForm = ({
         }
 
         if (!level.id && level.quantity !== "") {
-          payload.create.push({
+          payload.create?.push({
             inventory_item_id,
             location_id,
             stocked_quantity: castNumber(level.quantity),

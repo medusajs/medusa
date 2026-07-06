@@ -1,0 +1,38 @@
+---
+slug: /references/medusa-workflows/validateCartGiftCardStep
+sidebar_label: validateCartGiftCardStep
+sidebar_description: ""
+tags:
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# validateCartGiftCardStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `validateCartGiftCardStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step validates that gift cards can be added to a cart. It throws an error
+if a gift card is already applied to the cart or if the gift card currency does
+not match the cart's currency.
+
+## Example
+
+```ts
+const data = validateCartGiftCardStep({
+  cart: {
+    id: "cart_123",
+    gift_cards: [
+      { code: "GC-XXXX-XXXX" },
+      // other gift cards applied to the cart...
+    ],
+    currency_code: "usd",
+    // other cart properties... 
+  },
+  giftCards: [...],
+})
+```
+
+## Input
+
+<TypeList types={[{"name":"ValidateCartGiftCardStepInput","type":"[ValidateCartGiftCardStepInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.ValidateCartGiftCardStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ValidateCartGiftCardStepInput","type":"`object`","description":"Input to validate that gift cards can be added to a cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="validateCartGiftCardStep"/>

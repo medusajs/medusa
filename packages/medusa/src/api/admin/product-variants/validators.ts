@@ -10,6 +10,7 @@ export const AdminGetProductVariantsParamsFields = z.object({
   id: z.union([z.string(), z.array(z.string())]).optional(),
   manage_inventory: booleanString().optional(),
   allow_backorder: booleanString().optional(),
+  sku: z.union([z.string(), z.array(z.string())]).optional(),
   ean: z.union([z.string(), z.array(z.string())]).optional(),
   upc: z.union([z.string(), z.array(z.string())]).optional(),
   barcode: z.union([z.string(), z.array(z.string())]).optional(),

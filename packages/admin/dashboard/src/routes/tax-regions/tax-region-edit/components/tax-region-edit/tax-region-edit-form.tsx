@@ -38,7 +38,7 @@ export const TaxRegionEditForm = ({ taxRegion }: TaxRegionEditFormProps) => {
 
   const form = useForm<z.infer<typeof TaxRegionEditSchema>>({
     defaultValues: {
-      provider_id: taxRegion.provider_id,
+      provider_id: taxRegion.provider_id ?? undefined,
     },
     resolver: zodResolver(TaxRegionEditSchema),
   })

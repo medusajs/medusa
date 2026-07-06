@@ -1,0 +1,222 @@
+import { CodeTabs, CodeTab, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Environment Variables`,
+}
+
+# {metadata.title}
+
+Environment variables store configuration values and sensitive information related to your project. Bloom uses environment variables for secrets related to service integrations, configuration, and any sensitive data your store needs to function.
+
+## What Are Environment Variables?
+
+Environment variables are key-value pairs that store configuration settings and sensitive information outside of your codebase. They allow you to keep credentials secure while making them accessible to your application.
+
+Environment variables are commonly used to store API keys, service credentials, and configuration settings that differ between development and production environments.
+
+---
+
+## How Bloom Stores Environment Variables
+
+Bloom stores separate environment variables for your storefront and backend. It also stores separate variables for preview (development) and production environments.
+
+### Storefront vs Backend Variables
+
+![Diagram showing separation between storefront and backend environment variables](https://res.cloudinary.com/dza7lstvk/image/upload/v1770984325/Bloom/bloom-store-vs-backend-env_fpsrbg.jpg)
+
+Storefront environment variables are public and can be accessed in your storefront code, so they should only contain non-sensitive information.
+
+Backend environment variables are private and can be accessed in your backend. They can contain sensitive information like secret API keys.
+
+You can also add variables to access in the Medusa Admin dashboard as backend environment variables. This will make them publicly accessible in the admin dashboard code, so make sure not to add sensitive information in these variables.
+
+### Preview vs Production Variables
+
+Bloom keeps preview (development) and production environment variables separate. The preview environment variables are used for your store preview, while the production environment variables are used for your live store.
+
+![Diagram showing separation between preview and production environment variables](https://res.cloudinary.com/dza7lstvk/image/upload/v1770984325/Bloom/bloom-prod-vs-prev_qftfjf.jpg)
+
+Using testing or sandbox credentials in preview environment variables allows you to safely test your features. Most services provide separate credentials for test and production modes, making it easier to test your integrations without using real data.
+
+For example, Stripe's test mode allows you to use test cards to simulate payments in your store. In production, you would use your live Stripe API keys to process real payments.
+
+---
+
+## Set Environment Variables Through Prompts
+
+When you ask Bloom to integrate a service that requires credentials, Bloom automatically prompts you to enter the necessary environment variables. These environment variables are added to your preview environment so you can build and test the integration without affecting your live store.
+
+For example, when integrating Stripe, Bloom will prompt you to enter your Stripe API keys. You can enter them securely in the prompt. Bloom will store them and use them in the store preview.
+
+{/* TODO: Screenshot of Bloom prompting for env vars */}
+
+You can also explicitly ask Bloom to add environment variables for you. For example:
+
+```bash
+I want to add an environment variable for the Stripe API key in the backend.
+The variable name is STRIPE_SECRET_KEY.
+```
+
+<Note type="warning">
+
+Do not enter secret values in the prompt. Instead, wait for Bloom to ask you for the value and enter it there. This ensures your credentials are stored securely and not exposed in logs or the Bloom interface.
+
+</Note>
+
+Bloom will prompt you to enter the value for `STRIPE_SECRET_KEY` and will store it securely as an environment variable.
+
+### Set Production Values When Publishing
+
+Once you're ready to publish your feature or integration to your live store, Bloom will prompt you to enter production values for the same environment variables you set earlier. These values will be used in your live store only.
+
+The separation between preview and production environment variables allows you to safely test features in the preview environment without risking your live store's functionality or security.
+
+{/* TODO: Screenshot of environment variables separation */}
+
+---
+
+## Manage Environment Variables Manually
+
+You can also add, edit, and delete environment variables manually in Project Settings. This allows you to manage your variables at any time for both your preview and production environments.
+
+To manage your project environment variables:
+
+1. Click your project name dropdown in the top left corner.
+2. Select "Project Settings" from the dropdown menu.
+3. Click "Environment Variables" in the left sidebar.
+
+On this page, you can view all your environment variables, including storefront and backend variables, and preview and production variables.
+
+### Switch Between Types
+
+To switch between storefront and backend environment variables, use the "Backend" and "Storefront" tabs at the top of the page. Clicking a tab will show you the environment variables for that type.
+
+{/* TODO: Screenshot of environment variables tabs */}
+
+### Switch Between Environments
+
+To switch between preview (or development) and production environment variables, use the environment dropdown next to the "Value" column. The list of variables will update to show the variables for the selected environment.
+
+{/* TODO: Screenshot of environment dropdown */}
+
+### Add a Variable
+
+To add a new environment variable:
+
+1. Click the "Add Variable" button at the bottom of the list.
+2. Enter the variable name in the "Key" field and the variable value in the "Value" field. You can also paste a `key=value` pair directly into the fields and Bloom will parse it for you.
+3. Click the "Save changes" button to save the new variable.
+
+{/* TODO add information about redeploying */}
+
+### Edit a Variable
+
+To edit an environment variable:
+
+1. Click the value field of the variable you want to edit.
+2. Update the value as needed.
+3. Click the "Save changes" button to save your changes.
+
+{/* TODO add information about redeploying */}
+
+### Delete a Variable
+
+<Note type="warning">
+
+Deleting an environment variable is irreversible.
+
+</Note>
+
+To delete an environment variable, click the trash icon next to the variable you want to delete. Confirm the deletion in the prompt, then click "Save changes" to apply the deletion.
+
+{/* TODO add information about redeploying */}
+
+---
+
+## Access Environment Variables in Your Code
+
+To access environment variables in your code, use Medusa's and Vite's conventions:
+
+<CodeTabs>
+  <CodeTab label="Backend (Medusa)" value="backend">
+
+```ts forceNoTitle
+const stripeKey = process.env.STRIPE_SECRET_KEY
+```
+
+  </CodeTab>
+  <CodeTab label="Admin Dashboard" value="admin">
+
+```ts forceNoTitle
+const avalaraAccountId = import.meta.env.VITE_AVALARA_ACCOUNT_ID
+```
+
+  </CodeTab>
+  <CodeTab label="Storefront" value="storefront">
+
+```ts forceNoTitle
+const algoliaAppId = import.meta.env.VITE_ALGOLIA_APP_ID
+```
+
+  </CodeTab>
+</CodeTabs>
+
+<Note title="Tip">
+
+Refer to the [Medusa Documentation](!docs!/learn/fundamentals/environment-variables) for more details on using environment variables in your Medusa backend and admin dashboard.
+
+</Note>
+
+---
+
+## Environment Variables Conventions
+
+The following section details conventions to setting environment variables in your Bloom project.
+
+### Storefront Environment Variable Naming
+
+When you add environment variables manually for your storefront, make sure to prefix the variable name with `VITE_`. This is required for the variable to be accessible in your storefront code.
+
+For example, if you want to add the publishable Stripe API key, name it `VITE_STRIPE_PUBLISHABLE_KEY`. This allows you to access it in your storefront code as `import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY`.
+
+<Note type="warning">
+
+Do not expose secret keys in storefront environment variables. Only add public keys and non-sensitive configuration values to storefront variables. Secret keys should be added as backend environment variables.
+
+</Note>
+
+### Admin Dashboard Environment Variables
+
+To add environment variables that are accessible in the Medusa Admin dashboard, add them as backend environment variables prefixed with `VITE_`.
+
+For example, to set the Avalara account ID for the admin dashboard, add a backend environment variable named `VITE_AVALARA_ACCOUNT_ID`. This allows you to access it in the admin dashboard code as `import.meta.env.VITE_AVALARA_ACCOUNT_ID`.
+
+<Note type="warning">
+
+Do not add sensitive information in admin dashboard environment variables. These variables are publicly accessible in the admin dashboard code, so only add non-sensitive configuration values here.
+
+</Note>
+
+### Test vs Production Values
+
+While building your feature with Bloom, use test or sandbox credentials. This allows you to test your feature without affecting your live store or risking accidental charges. Most services like Stripe provide test modes that you can use for development.
+
+Only use production credentials for your live store. You can add them either [manually](#manage-environment-variables-manually) or when publishing your feature with Bloom.
+
+---
+
+## FAQ
+
+### What happens if I change an environment variable?
+
+TODO
+
+### Can I see my environment variable values?
+
+Yes, you can access your environment variable values in the [Environment Variables](#manage-environment-variables-manually) page in Project Settings.
+
+### Can I use the same values for development and production?
+
+It's highly recommended to use different values for development and production to avoid affecting your live store while testing features. For example, use test API keys in development and production API keys in production.
+
+Most services provide separate credentials for test and production modes. Make sure to use the appropriate credentials in each environment.

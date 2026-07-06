@@ -1061,6 +1061,7 @@ To create the page that shows the express checkout page, create the file `app/[h
 
 ```tsx title="app/[handle]/page.tsx"
 import { Router } from "../../components/Router"
+import { Suspense } from "react"
 
 type Params = {
   params: Promise<{ handle: string }>
@@ -1071,9 +1072,19 @@ export default async function ExpressCheckoutPage({
 }: Params) {
   const handle = (await params).handle
 
-  return <Router handle={handle} />
+  return (
+    <Suspense fallback={<></>}>
+      <Router handle={handle} />
+    </Suspense>
+  )
 }
 ```
+
+<Note>
+
+In Next.js 15, any component that uses `useSearchParams()` must be wrapped in a `<Suspense>` boundary to enable static prerendering. Without the `<Suspense>` boundary, the build fails with: `useSearchParams() should be wrapped in a suspense boundary`.
+
+</Note>
 
 This page will render the `Router` component, which will manage the routing between the product, address, shipping, and payment steps. You'll add the components for these steps next.
 

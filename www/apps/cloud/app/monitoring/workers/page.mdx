@@ -1,0 +1,180 @@
+import { InlineIcon, Table } from "docs-ui"
+import { ArrowPath } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Worker Monitoring`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to monitor your environment's workers performance in Cloud.
+
+<Note>
+
+The Workers monitoring page covers the performance of your environment's worker instances, which handle background jobs. To monitor the performance of your environment's server instances, check the [Servers monitoring page](../servers/page.mdx).
+
+</Note>
+
+## Worker Metrics Overview
+
+For your [long-lived environments](../../environments/long-lived/page.mdx), Medusa hosts server and worker instances. Worker instances handle background jobs, such as subscribers and scheduled jobs.
+
+The Workers monitoring dashboard provides insights into the performance of your worker instances, allowing you to track key metrics such as CPU usage, memory usage, and restarts.
+
+By monitoring these metrics, you ensure that your workers are performing optimally or identify potential issues in your background jobs' implementation.
+
+---
+
+## Troubleshooting Common Worker Issues
+
+The following table outlines common worker performance issues, their potential causes, and the specific metrics you can monitor to identify and troubleshoot these issues effectively.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Issue
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Potential Cause
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Metric to Check
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Background jobs slow or not executing
+      </Table.Cell>
+      <Table.Cell>
+        High CPU usage in worker instances due to inefficient background job implementation.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Summary of CPU Usage Across Workers](#monitor-summary-of-cpu-usage-across-workers)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Background jobs failing intermittently
+      </Table.Cell>
+      <Table.Cell>
+        Memory leaks or insufficient memory causing workers to become unstable.
+      </Table.Cell>
+      <Table.Cell>
+        [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Frequent worker restarts
+      </Table.Cell>
+      <Table.Cell>
+        Crashes caused by unhandled exceptions or out-of-memory conditions in background jobs.
+      </Table.Cell>
+      <Table.Cell>
+        [Worker Restarts](#monitor-worker-restarts) and [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Uneven load distribution across worker instances
+      </Table.Cell>
+      <Table.Cell>
+        Specific worker instances handling more jobs than others.
+      </Table.Cell>
+      <Table.Cell>
+        [Summary of CPU Usage Across Workers](#monitor-summary-of-cpu-usage-across-workers) and [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        High [Flex Usage](../../usage/page.mdx#what-is-flex-usage)
+      </Table.Cell>
+      <Table.Cell>
+        Excessive CPU or memory consumption in worker instances due to inefficient background job code.
+      </Table.Cell>
+      <Table.Cell>
+        [Total CPU](#monitor-total-cpu) and [Summary of Memory Usage Across Workers](#monitor-summary-of-memory-usage-across-workers)
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## View Worker Metrics
+
+To view your project environment's worker performance:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click on the "Monitoring" tab.
+2. Select "Workers" from the sidebar.
+
+This opens the Workers monitoring dashboard, where you can analyze your environment's worker performance across any time range.
+
+### Change Time Range
+
+By default, the dashboard shows metrics for the last hour. To change the time range:
+
+1. Click on the time range selector at the top right of the dashboard.
+2. Either choose a preset time range (for example, last 24 hours) or set a custom time range.
+
+The charts will update to show metrics for the selected time range, allowing you to analyze performance trends and patterns over different periods.
+
+### Refresh Metrics
+
+To refresh the metrics displayed on the dashboard, click the <InlineIcon Icon={ArrowPath} alt="refresh" /> button.
+
+The metrics will refresh to show the most up-to-date performance data for your environment's workers in the selected time range.
+
+---
+
+## Monitor Total CPU
+
+The Total CPU usage of your environment shows combined CPU allocation and usage across all worker replicas of your environment. It's useful to understand their overall CPU resource consumption and identify trends or spikes in usage.
+
+In the [Workers monitoring dashboard](#view-worker-metrics), the Total CPU chart shows:
+
+- **Allocated CPU** (blue): The total CPU resources allocated to your workers.
+- **Used CPU** (green): The actual CPU resources being consumed by your workers.
+
+If your environment's background jobs are slow or not executing, check if the Used CPU is consistently close to or exceeding the Allocated CPU, which may indicate the need for performance improvements in your background jobs' implementation.
+
+---
+
+## Monitor Summary of CPU Usage Across Workers
+
+The Summary of CPU usage across Workers of your environment shows CPU usage patterns across individual worker instances. 
+
+In the [Workers monitoring dashboard](#view-worker-metrics), the Summary of CPU chart shows:
+
+- **Minimum CPU**: The lowest CPU percentage used by a worker instance at a given time.
+- **Maximum CPU**: The highest CPU percentage used by a worker instance at a given time.
+- **Average CPU**: The mean CPU usage across all worker instances at a given time.
+
+This breakdown helps you identify peaks in CPU usage across your worker instances and determine if specific instances are under heavy load or if CPU usage is evenly distributed across your infrastructure.
+
+---
+
+## Monitor Summary of Memory Usage Across Workers
+
+The Summary of Memory usage across Workers of your environment shows memory consumption patterns across individual worker instances.
+
+In the [Workers monitoring dashboard](#view-worker-metrics), the Summary of Memory chart shows:
+
+- **Minimum Memory**: The lowest memory percentage used across instances at a given time.
+- **Maximum Memory**: The highest memory percentage used across instances at a given time.
+- **Average Memory**: The mean memory usage across all instances at a given time.
+
+This breakdown helps you identify if specific worker instances are consuming excessive memory or if memory usage is consistent across your infrastructure.
+
+---
+
+## Monitor Worker Restarts
+
+The Worker Restarts section helps you track the frequency and patterns of unexpected worker restarts in your environment. Frequent or unexpected restarts can indicate underlying issues with your application's background jobs, such as crashes and memory leaks.
+
+In the [Workers monitoring dashboard](#view-worker-metrics), the Worker Restarts chart shows the number of restarts across your worker instances over time.
+
+You can also correlate restart patterns with CPU and memory usage to identify potential causes of instability in your environment.

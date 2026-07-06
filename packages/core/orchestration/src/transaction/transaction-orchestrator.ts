@@ -487,7 +487,10 @@ export class TransactionOrchestrator extends EventEmitter {
           hasSkipped = true
         } else if (curState.state === TransactionStepState.REVERTED) {
           hasReverted = true
-        } else if (curState.state === TransactionStepState.FAILED) {
+        } else if (
+          curState.state === TransactionStepState.FAILED ||
+          curState.state === TransactionStepState.TIMEOUT
+        ) {
           if (
             stepDef.definition.continueOnPermanentFailure ||
             stepDef.definition.skipOnPermanentFailure
@@ -825,11 +828,15 @@ export class TransactionOrchestrator extends EventEmitter {
       }
 
       if (!step.isCompensating()) {
-        if (
+        const isTransactionTimeout =
+          TransactionTimeoutError.isTransactionTimeoutError(timeoutError!)
+
+        const canContinueOnFailure =
           (step.definition.continueOnPermanentFailure ||
             step.definition.skipOnPermanentFailure) &&
-          !TransactionTimeoutError.isTransactionTimeoutError(timeoutError!)
-        ) {
+          !isTransactionTimeout
+
+        if (canContinueOnFailure) {
           if (step.definition.skipOnPermanentFailure) {
             const until = isString(step.definition.skipOnPermanentFailure)
               ? step.definition.skipOnPermanentFailure

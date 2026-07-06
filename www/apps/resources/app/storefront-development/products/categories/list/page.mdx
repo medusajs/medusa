@@ -200,7 +200,7 @@ If there are more product categories, you show a button to load more product cat
 
 ## Filter Categories
 
-The [List Product Categories API route](!api!/store#product-categories_getproductcategories) accepts query parameters to filter the categories by description, handle, and more.
+The [List Product Categories API route](!api!/store#product-categories_getproductcategories) accepts query parameters to filter the categories by description, handle, `external_id`, and more.
 
 Refer to the [API reference](!api!/store#product-categories_getproductcategories) for the full list of accepted query parameters.
 
@@ -216,6 +216,23 @@ sdk.store.category.list({
 ```
 
 By passing the `q` parameter, you can search through the categories' searchable fields, including their title and description.
+
+To filter by external ID:
+
+<Note>
+
+This feature is available since Medusa [v2.14.0](https://github.com/medusajs/medusa/releases/tag/v2.14.0).
+
+</Note>
+
+```ts
+sdk.store.category.list({
+  external_id: "ext-category-123",
+})
+.then(({ product_categories, count }) => {
+  // TODO set categories...
+})
+```
 
 ---
 

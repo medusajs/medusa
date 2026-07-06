@@ -4,12 +4,29 @@
   "displayName": "DatePickerButton",
   "props": {
     "size": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"base\" | \"small\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"base\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          }
+        ]
+      },
+      "description": "",
       "defaultValue": {
         "value": "\"base\"",
         "computed": false
-      },
-      "description": "",
-      "required": false
+      }
     }
-  }
+  },
+  "composes": [
+    "AriaButtonProps"
+  ]
 }

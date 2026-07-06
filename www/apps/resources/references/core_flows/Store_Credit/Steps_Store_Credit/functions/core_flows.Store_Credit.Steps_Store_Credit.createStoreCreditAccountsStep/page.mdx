@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/createStoreCreditAccountsStep
+sidebar_label: createStoreCreditAccountsStep
+tags:
+  - store credit
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createStoreCreditAccountsStep - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `createStoreCreditAccountsStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step creates store credit accounts. If no code is provided, a unique code
+prefixed with "SC" is automatically generated. The step supports rollback by
+deleting the created accounts.
+
+## Example
+
+```ts
+const data = createStoreCreditAccountsStep([
+  {
+    currency_code: "usd",
+    customer_id: "cust_123",
+  },
+])
+```
+
+## Input
+
+<TypeList types={[{"name":"CreateStoreCreditAccountsStepInput","type":"[CreateStoreCreditAccountsStepInput](../../../../plugins_loyalty_src_workflows/types/core_flows.plugins_loyalty_src_workflows.CreateStoreCreditAccountsStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"currency_code","type":"`string`","description":"The three-letter ISO currency code for the account.","optional":false,"defaultValue":"","example":"usd","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The unique code for the account. If not provided, one is auto-generated.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer to associate with the account.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Custom key-value pairs to attach to the account.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createStoreCreditAccountsStep"/>
+
+## Output
+
+<TypeList types={[{"name":"ModuleStoreCreditAccount[]","type":"[ModuleStoreCreditAccount](../../../../../store_credit/types/store_credit.ModuleStoreCreditAccount/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The store credit account's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The three-letter ISO currency code of the account's balance.","optional":false,"defaultValue":"","example":"usd","expandable":false,"children":[]},{"name":"credits","type":"[BigNumberValue](../../../../../store_credit/types/store_credit.BigNumberValue/page.mdx)","description":"The total amount credited to this account.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../store_credit/types/store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"debits","type":"[BigNumberValue](../../../../../store_credit/types/store_credit.BigNumberValue/page.mdx)","description":"The total amount debited from this account.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../store_credit/types/store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"balance","type":"[BigNumberValue](../../../../../store_credit/types/store_credit.BigNumberValue/page.mdx)","description":"The current balance of this account (credits minus debits).","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../store_credit/types/store_credit.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Custom key-value pairs attached to this account.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The date the account was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The date the account was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer who owns this account, if any.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The unique code that identifies this account, used for anonymous or gift card accounts.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createStoreCreditAccountsStep"/>

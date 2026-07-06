@@ -1,0 +1,154 @@
+---
+slug: /references/medusa-workflows/addStoreCreditsToCartWorkflow
+sidebar_label: addStoreCreditsToCartWorkflow
+sidebar_description: Apply store credits to a cart.
+tags:
+  - workflow
+  - locking
+  - query
+  - cart
+  - fulfillment
+  - tax
+  - promotion
+  - link
+  - remote query
+  - payment
+  - logger
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# addStoreCreditsToCartWorkflow - Medusa Core Workflows Reference
+
+This documentation provides a reference to the `addStoreCreditsToCartWorkflow`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This workflow applies store credits to a cart. It removes any existing store-credit
+lines and creates a new credit line for the specified amount, or for the full store
+credit balance if no amount is specified. The customer must be set on the cart and
+have a store credit account in the cart's currency.
+
+You can use this workflow within your own customizations or custom workflows,
+allowing you to wrap custom logic around applying store credits to carts.
+
+<SourceCodeLink link="https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/plugins/loyalty/src/workflows/carts/workflows/add-store-credits-to-cart.ts#L153" />
+
+## Examples
+
+<CodeTabs group="workflow-exection">
+    <CodeTab label="API Route" value="api-route">
+    
+```ts title="src/api/workflow/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await addStoreCreditsToCartWorkflow(req.scope)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        amount: 50,
+      },
+    })
+
+  res.send(result)
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Subscriber" value="subscriber">
+    
+```ts title="src/subscribers/order-placed.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function handleOrderPlaced({
+  event: { data },
+  container,
+}: SubscriberArgs < { id: string } > ) {
+  const { result } = await addStoreCreditsToCartWorkflow(container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        amount: 50,
+      },
+    })
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "order.placed",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+```ts title="src/jobs/message-daily.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await addStoreCreditsToCartWorkflow(container)
+    .run({
+      input: {
+        cart_id: "cart_123",
+        amount: 50,
+      },
+    })
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: "0 0 * * *",
+}
+```
+
+    </CodeTab>
+    <CodeTab label="Another Workflow" value="another-workflow">
+    
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const result = addStoreCreditsToCartWorkflow
+      .runAsStep({
+        input: {
+          cart_id: "cart_123",
+          amount: 50,
+        },
+      })
+  }
+)
+```
+
+    </CodeTab>
+  </CodeTabs>
+
+## Steps
+
+<WorkflowDiagram workflow={{"name":"addStoreCreditsToCartWorkflow","steps":[{"type":"step","name":"validateCartStep","description":"This step validates a cart to ensure it exists and is not completed.\nIf not valid, the step throws an error.\n\n:::tip\n\nYou can use the [retrieveCartStep](../../../Steps_Cart/functions/core_flows.Cart.Steps_Cart.retrieveCartStep/page.mdx) to retrieve a cart's details.\n\n:::","link":"../../../Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartStep/page.mdx","depth":1},{"type":"step","name":"validateCustomerStoreCreditAccountStep","description":"This step validates that a customer's store credit account exists and has a positive\nbalance. It throws an error if the account is not found or has no balance.","link":"../core_flows.Cart.Workflows_Cart.validateCustomerStoreCreditAccountStep/page.mdx","depth":2},{"type":"workflow","name":"deleteCartCreditLinesWorkflow","description":"This workflow deletes one or more credit lines from a cart.","link":"../core_flows.Cart.Workflows_Cart.deleteCartCreditLinesWorkflow/page.mdx","depth":3},{"type":"workflow","name":"createCartCreditLinesWorkflow","description":"This workflow creates one or more credit lines for a cart.","link":"../core_flows.Cart.Workflows_Cart.createCartCreditLinesWorkflow/page.mdx","depth":3},{"type":"workflow","name":"refreshCartItemsWorkflow","description":"Refresh a cart's details after an update.","link":"../core_flows.Cart.Workflows_Cart.refreshCartItemsWorkflow/page.mdx","depth":4}]}} />
+
+## Input
+
+<TypeList types={[{"name":"AddStoreCreditsToCartWorkflowInput","type":"[AddStoreCreditsToCartWorkflowInput](../../../../plugins_loyalty_src_workflows/interfaces/core_flows.plugins_loyalty_src_workflows.AddStoreCreditsToCartWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"AddStoreCreditsToCartWorkflowInput","type":"`object`","description":"Input to apply store credits to a cart.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addStoreCreditsToCartWorkflow"/>
+
+## Output
+
+<TypeList types={[{"name":"CartCreditLineDTO[]","type":"[CartCreditLineDTO](../../../../../cart/interfaces/cart.CartCreditLineDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the cart credit line.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`string`","description":"The ID of the cart that the credit line belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../../../../../cart/types/cart.BigNumberValue/page.mdx)","description":"The amount of the credit line.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../../../cart/types/cart.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../../cart/types/cart.BigNumberRawValue/page.mdx)","description":"The raw amount of the credit line.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"reference","type":"`null` \\| `string`","description":"The reference model name that the credit line is generated from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`null` \\| `string`","description":"The reference model id that the credit line is generated from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"The metadata of the cart detail","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date when the cart credit line was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date when the cart credit line was last updated.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="addStoreCreditsToCartWorkflow"/>

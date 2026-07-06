@@ -20,7 +20,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer
     let orderModule: IOrderModuleService
 
@@ -29,8 +29,10 @@ medusaIntegrationTestRunner({
       orderModule = appContainer.resolve(Modules.ORDER)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("CreateOrderWorkflow", () => {
@@ -280,7 +282,7 @@ medusaIntegrationTestRunner({
           id: expect.any(String),
           status: "pending",
           version: 1,
-          display_id: 2,
+          display_id: created.display_id,
           custom_display_id: null,
           payment_collections: [],
           payment_status: "not_paid",
@@ -358,6 +360,7 @@ medusaIntegrationTestRunner({
               },
               is_custom_price: false,
               metadata: null,
+              line_item_metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
               deleted_at: null,
@@ -594,6 +597,8 @@ medusaIntegrationTestRunner({
                     precision: 20,
                   },
                   provider_id: null,
+                  data: null,
+                  metadata: null,
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   deleted_at: null,
@@ -637,16 +642,33 @@ medusaIntegrationTestRunner({
                     value: "1.1",
                     precision: 20,
                   },
+                  version: 1,
                 },
               ]),
               amount: 10,
               subtotal: 10,
               total: 9.9,
               original_total: 11,
+              original_subtotal: 10,
               discount_total: 1.1,
+              discount_subtotal: 1,
               discount_tax_total: 0.1,
               tax_total: 0.9,
               original_tax_total: 1,
+              is_custom_amount: false,
+              deleted_at: null,
+              detail: expect.objectContaining({
+                id: expect.any(String),
+                order_id: expect.any(String),
+                shipping_method_id: expect.any(String),
+                version: 1,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                deleted_at: null,
+                claim_id: null,
+                exchange_id: null,
+                return_id: null,
+              }),
               raw_subtotal: {
                 value: "10",
                 precision: 20,
@@ -659,8 +681,16 @@ medusaIntegrationTestRunner({
                 value: "11",
                 precision: 20,
               },
+              raw_original_subtotal: {
+                value: "10",
+                precision: 20,
+              },
               raw_discount_total: {
                 value: "1.1",
+                precision: 20,
+              },
+              raw_discount_subtotal: {
+                value: "1",
                 precision: 20,
               },
               raw_discount_tax_total: {

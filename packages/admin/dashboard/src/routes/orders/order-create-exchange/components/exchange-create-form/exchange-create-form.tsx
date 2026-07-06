@@ -199,13 +199,19 @@ export const ExchangeCreateForm = ({
 
   useEffect(() => {
     if (inboundShipping) {
-      setCustomInboundShippingAmount(inboundShipping.total)
+      setCustomInboundShippingAmount({
+        value: String(inboundShipping.total),
+        float: inboundShipping.total,
+      })
     }
   }, [inboundShipping])
 
   useEffect(() => {
     if (outboundShipping) {
-      setCustomOutboundShippingAmount(outboundShipping.total)
+      setCustomOutboundShippingAmount({
+        value: String(outboundShipping.total),
+        float: outboundShipping.total,
+      })
     }
   }, [outboundShipping])
 
@@ -233,7 +239,8 @@ export const ExchangeCreateForm = ({
       handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
-        description: e.message,
+        description:
+          e instanceof Error ? e.message : t("errorBoundary.defaultTitle"),
       })
     }
   })
@@ -343,7 +350,8 @@ export const ExchangeCreateForm = ({
                        */
                       acc =
                         acc +
-                        ((action?.details.quantity || 0) / item.quantity) *
+                        (Number(action?.details?.quantity || 0) /
+                          item.quantity) *
                           item.total
 
                       return acc
@@ -430,7 +438,7 @@ export const ExchangeCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, name, values) =>
+                      onValueChange={(_value, _name, values) =>
                         setCustomInboundShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,
@@ -503,7 +511,7 @@ export const ExchangeCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value, name, values) =>
+                      onValueChange={(_value, _name, values) =>
                         setCustomOutboundShippingAmount({
                           value: values?.value ?? "",
                           float: values?.float ?? null,

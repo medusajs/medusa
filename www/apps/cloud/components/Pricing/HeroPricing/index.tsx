@@ -142,9 +142,10 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
                 <Link
                   key={button._key}
                   href={
-                    button.link.path.startsWith("https://")
+                    button.link.url ||
+                    (button.link.path?.startsWith("https://")
                       ? button.link.path
-                      : `https://medusajs.com${button.link.path}`
+                      : `https://medusajs.com${button.link.path}`)
                   }
                   target="_blank"
                   rel="noreferrer"

@@ -172,7 +172,9 @@ export const BatchTranslationSettingsForm = ({
   }
 
   const handleSortToggle = () => {
-    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
+    setSortOrder((prev) => {
+      return prev === "asc" ? "desc" : "asc"
+    })
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {

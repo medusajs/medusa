@@ -27,6 +27,26 @@ describe("toCamelCase", function () {
         input: "testingAlreadyCamelized",
         output: "testingAlreadyCamelized",
       },
+      {
+        input: "H264Widget",
+        output: "H264Widget",
+      },
+      {
+        input: "B2bCustomer",
+        output: "B2bCustomer",
+      },
+      {
+        input: "OtpVerification2",
+        output: "OtpVerification2",
+      },
+      {
+        input: "h264_widget",
+        output: "h264Widget",
+      },
+      {
+        input: "b2b_customer",
+        output: "b2bCustomer",
+      },
     ]
 
     expectations.forEach((expectation) => {

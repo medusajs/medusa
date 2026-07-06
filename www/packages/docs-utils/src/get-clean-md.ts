@@ -3,7 +3,7 @@ import remarkParse from "remark-parse"
 import remarkStringify from "remark-stringify"
 import { FrontMatter, UnistNode, UnistNodeWithData, UnistTree } from "types"
 import { Plugin, Transformer, unified } from "unified"
-import { SKIP } from "unist-util-visit"
+import { SKIP, VisitorResult } from "unist-util-visit"
 import type { VFile } from "vfile"
 import {
   ComponentParser,
@@ -52,6 +52,8 @@ const parsers: Record<string, ComponentParser> = {
   EventHeader: parseEventHeader,
 }
 
+const asyncParserNames = new Set(["ComponentExample", "ComponentReference"])
+
 const isComponentAllowed = (nodeName: string): boolean => {
   return Object.keys(parsers).includes(nodeName)
 }
@@ -65,6 +67,13 @@ const parseComponentsPlugin = (options: ParserPluginOptions): Transformer => {
     const { visit } = await import("unist-util-visit")
 
     let pageTitle = ""
+
+    type AsyncParserTask = {
+      node: UnistNodeWithData
+      parent: UnistTree
+      parserName: string
+    }
+    const asyncTasks: AsyncParserTask[] = []
 
     visit(
       tree as UnistTree,
@@ -119,13 +128,40 @@ const parseComponentsPlugin = (options: ParserPluginOptions): Transformer => {
           return
         }
 
+        if (asyncParserNames.has(node.name)) {
+          asyncTasks.push({
+            node: node as UnistNodeWithData,
+            parent: parent as UnistTree,
+            parserName: node.name,
+          })
+          return
+        }
+
         const parser = parsers[node.name]
         if (parser) {
           const parserOptions = options[node.name] || {}
-          return parser(node as UnistNodeWithData, index, parent, parserOptions)
+          return parser(
+            node as UnistNodeWithData,
+            index,
+            parent,
+            parserOptions
+          ) as VisitorResult
         }
       }
     )
+
+    for (const { node, parent, parserName } of asyncTasks) {
+      const currentIndex = (parent as UnistTree).children.indexOf(
+        node as UnistNode
+      )
+      if (currentIndex === -1) {
+        continue
+      }
+      const parser = parsers[parserName]
+      if (parser) {
+        await parser(node, currentIndex, parent, options[parserName] || {})
+      }
+    }
   }
 }
 

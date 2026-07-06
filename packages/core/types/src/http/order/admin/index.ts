@@ -1,4 +1,4 @@
 export * from "./entities"
-export * from "./payload"
+export * from "./payloads"
 export * from "./queries"
 export * from "./responses"

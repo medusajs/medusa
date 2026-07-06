@@ -87,7 +87,9 @@ export const EditShippingOptionForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     const rules = shippingOption.rules.map((r) => ({
       ...pick(r, ["id", "attribute", "operator", "value"]),
-    })) as HttpTypes.AdminUpdateShippingOptionRule[]
+    })) as (Omit<HttpTypes.AdminUpdateShippingOptionRule, "id"> & {
+      id?: string
+    })[]
 
     const storeRule = rules.find((r) => r.attribute === "enabled_in_store")
 
@@ -255,7 +257,7 @@ export const EditShippingOptionForm = ({
                   control={form.control}
                   name="provider_id"
                   disabled={true}
-                  render={({ field }) => {
+                  render={() => {
                     return (
                       <Form.Item>
                         <Form.Label>

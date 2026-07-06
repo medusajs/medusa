@@ -24,6 +24,7 @@ export const POST = async (
       customer_id: customerId,
       logged_in_user: customerId,
       description: req.validatedBody.description,
+      update_order_email: req.validatedBody.update_order_email,
     },
   })
 

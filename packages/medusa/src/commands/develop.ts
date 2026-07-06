@@ -11,6 +11,8 @@ import { EOL } from "os"
 import path from "path"
 import BackendHmrFeatureFlag from "../feature-flags/backend-hmr"
 import { initializeContainer } from "../loaders"
+import { promptClaudeCodePlugin } from "../utils/claude-code-plugin"
+import { runLintStep } from "./utils/lint-project"
 
 const defaultConfig = {
   padding: 5,
@@ -18,9 +20,23 @@ const defaultConfig = {
   borderStyle: `double`,
 } as boxen.Options
 
-export default async function ({ types, directory }) {
-  const container = await initializeContainer(directory)
+export default async function ({ types, directory, lint, fix }) {
+  const container = await initializeContainer(directory, {
+    skipDbConnection: true,
+  })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
+  // Lint once at startup, before the dev server is forked. On lint errors this
+  // exits 1 and the child server process is never spawned. Always quiet during
+  // develop — only errors are surfaced, warnings are suppressed.
+  await runLintStep({
+    directory,
+    lint,
+    fix,
+    quiet: true,
+    logger,
+    failureSuffix: "Dev server not started.",
+  })
 
   const isBackendHmrEnabled = FeatureFlag.isFeatureEnabled(
     BackendHmrFeatureFlag.key
@@ -50,8 +66,18 @@ export default async function ({ types, directory }) {
   args.shift()
   args.shift()
 
+  /**
+   * The `--lint` / `--no-lint` / `--fix` flags are consumed by the develop
+   * command itself (see runLintStep above). They are not recognized by the
+   * forked `start` command, which runs in strict mode and would reject them, so
+   * strip them before forwarding the remaining args.
+   */
+  const startArgs = args.filter(
+    (arg) => !/^--(no-)?(lint|fix)(=.*)?$/.test(arg)
+  )
+
   if (types) {
-    args.push("--types")
+    startArgs.push("--types")
   }
 
   /**
@@ -90,7 +116,7 @@ export default async function ({ types, directory }) {
         forkOptions.stdio = ["inherit", "inherit", "inherit", "ipc"]
       }
 
-      this.childProcess = fork(cliPath, ["start", ...args], forkOptions)
+      this.childProcess = fork(cliPath, ["start", ...startArgs], forkOptions)
 
       this.childProcess.on("error", (error) => {
         // @ts-ignore
@@ -231,7 +257,7 @@ export default async function ({ types, directory }) {
     },
   }
 
-  process.on("SIGINT", () => {
+  process.on("SIGINT", async () => {
     const configStore = new Store()
     const hasPrompted = configStore.getConfig("star.prompted") ?? false
     if (!hasPrompted) {
@@ -247,6 +273,7 @@ export default async function ({ types, directory }) {
 
       configStore.setConfig("star.prompted", true)
     }
+    await promptClaudeCodePlugin()
     process.exit(0)
   })
 

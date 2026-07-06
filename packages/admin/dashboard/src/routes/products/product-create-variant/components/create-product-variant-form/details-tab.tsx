@@ -1,4 +1,3 @@
-import React from "react"
 import { Heading, Input, Switch } from "@medusajs/ui"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -61,7 +60,7 @@ function DetailsTab({ form, product }: DetailsTabProps) {
             }}
           />
 
-          {product.options.map((option: any) => (
+          {product.options?.map((option: any) => (
             <Form.Field
               key={option.id}
               control={form.control}

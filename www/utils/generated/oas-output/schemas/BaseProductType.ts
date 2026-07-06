@@ -38,6 +38,10 @@
  *     externalDocs:
  *       url: https://docs.medusajs.com/api/store#manage-metadata
  *       description: Learn how to manage metadata
+ *   external_id:
+ *     type: string
+ *     title: external_id
+ *     description: The type's external ID used to link it with external systems.
  * 
 */
 

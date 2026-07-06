@@ -78,7 +78,7 @@
  *     type: array
  *     description: The product variant's prices.
  *     items:
- *       $ref: "#/components/schemas/AdminCreateProductVariantPrice"
+ *       $ref: "#/components/schemas/AdminUpdateProductVariantPrice"
  *   options:
  *     type: object
  *     description: The product variant's options.

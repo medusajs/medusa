@@ -36,3 +36,5 @@ export interface AdminPriceListParams extends SelectParams {}
 export interface AdminPriceListPriceListParams
   extends FindParams,
     BaseFilterable<AdminPriceListPriceListParams> {}
+
+export interface AdminGetPriceListPriceParams extends SelectParams {}

@@ -1,0 +1,122 @@
+import { Table, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `whoami Command - Medusa Cloud CLI Reference`,
+}
+
+# {metadata.title}
+
+Show the authenticated user, the active organization, project, and environment, and CLI metadata. Use this command to verify which account and context the CLI is currently using.
+
+```bash
+mcloud whoami
+```
+
+Returns the following information:
+
+<CodeTabs group="cli-output">
+  <CodeTab label="Plaintext" value="plaintext">
+
+  ```bash
+  CLI version:    1.0.0
+  Auth:           jwt  expires 2026-05-01 09:00
+  User:           Alice Example <alice@example.com> (eu_01ABC)
+  API URL:        https://api.prod.medusajs.cloud
+  Dashboard URL:  https://cloud.medusajs.com
+
+  Organization:   My Organization (org_123)
+  Project:        my-store (proj_01ABC)
+  Environment:    production (projenv_01XYZ)
+  ```
+
+  </CodeTab>
+  <CodeTab label="JSON (--json)" value="json">
+
+  ```json
+  {
+    "cli_version": "1.0.0",
+    "auth": {
+      "kind": "jwt",
+      "expires_at": "2026-05-01T09:00:00.000Z"
+    },
+    "user": {
+      "id": "eu_01ABC",
+      "email": "alice@example.com",
+      "first_name": "Alice",
+      "last_name": "Example"
+    },
+    "api_url": "https://api.prod.medusajs.cloud",
+    "dashboard_url": "https://cloud.medusajs.com",
+    "organization": {
+      "value": "org_123",
+      "id": "org_123",
+      "name": "My Organization"
+    },
+    "project": {
+      "value": "my-store",
+      "id": "proj_01ABC",
+      "handle": "my-store"
+    },
+    "environment": {
+      "value": "production",
+      "id": "projenv_01XYZ",
+      "handle": "production"
+    }
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The `Auth` line shows whether the CLI is using a JWT (browser login) or an access key, and when the JWT expires (when applicable).
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--json`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Print the result as JSON instead of formatted text. Useful for piping the active context into scripts.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Verify Authentication in a Script
+
+Pipe `whoami --json` into `jq` to assert that the CLI is authenticated and that the active context is set before running other commands:
+
+```bash
+mcloud whoami --json | jq -e '.auth.kind != "none" and .organization.id != null'
+```
+
+The command exits with a non-zero status if either condition is unmet, which is useful as a guard step in CI/CD pipelines.
+
+---
+
+## Switch the Active Context
+
+To change the active organization, project, or environment, use [`mcloud use`](../use/page.mdx).
+
+To switch accounts, use [`mcloud logout`](../logout/page.mdx) followed by [`mcloud login`](../login/page.mdx).

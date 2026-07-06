@@ -8,9 +8,6 @@ import {
 } from "@medusajs/framework/http"
 
 import { refetchShippingOptionType } from "../helpers"
-import {
-  AdminGetShippingOptionTypeParamsType,
-} from "../validators"
 import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 
@@ -18,7 +15,7 @@ import { MedusaError } from "@medusajs/framework/utils"
  * @since 2.10.0
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetShippingOptionTypeParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetShippingOptionTypeParams>,
   res: MedusaResponse<HttpTypes.AdminShippingOptionTypeResponse>
 ) => {
   const shippingOptionType = await refetchShippingOptionType(
@@ -36,7 +33,7 @@ export const GET = async (
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     HttpTypes.AdminUpdateShippingOptionType,
-    HttpTypes.SelectParams
+    HttpTypes.AdminGetShippingOptionTypeParams
   >,
   res: MedusaResponse<HttpTypes.AdminShippingOptionTypeResponse>
 ) => {

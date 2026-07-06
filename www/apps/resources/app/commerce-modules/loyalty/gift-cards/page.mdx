@@ -1,0 +1,84 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Gift Cards Concepts`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about gift cards and how they work in the Loyalty Plugin.
+
+<Prerequisites
+  items={[
+    {
+      text: "Loyalty Plugin Installed",
+      link: "../page.mdx",
+    }
+  ]}
+/>
+
+## What is a Gift Card?
+
+A gift card is a stored value that customers can redeem during checkout. Merchants can create gift cards, and customers can purchase them.
+
+Gift cards are represented by the `GiftCard` data model, which includes information such as the unique code, amount, currency, and status of the gift card.
+
+Each gift card record includes the following properties:
+
+- `code`: A unique identifier used to redeem the gift card. For example, `GIFT-123-ABC`.
+- `value`: The gift card's amount in major currency units. For example, `50.00` for a $50 gift card.
+- `status`: Whether the gift card was redeemed.
+- `reference`: The name of the table that triggered the gift card was used with. For example, `order` if the gift card was used in an order.
+- `reference_id`: The ID of the record in the reference table that triggered the gift card was used with. For example, `order_123` if the gift card was used in order with ID `order_123`.
+- `line_item_id`: The ID of the line item in the order that the customer purchased the gift card in.
+
+---
+
+## Gift Card Products
+
+Gift cards can be sold as products in your store. You can create [products](../../product/page.mdx) with the `is_giftcard` property set to `true`.
+
+When a customer purchases a gift card product, a new gift card is automatically created with the specified value and associated with the order.
+
+---
+
+## Redeeming Gift Cards
+
+Customers can redeem gift cards during checkout by entering the gift card code. The gift card balance will be applied to the order total, reducing the amount the customer needs to pay.
+
+Once the order is placed, the gift card's status will be updated to `redeemed`, indicating that it has been used.
+
+---
+
+## Gift Cards Lifecycle with Store Credit Accounts
+
+Gift cards in the Loyalty Plugin are powered by [store credit accounts](../../store-credit/concepts/page.mdx) from the [Store Credit Module](../../store-credit/page.mdx). The following describes the lifecycle of a gift card from purchase to use at checkout.
+
+```mermaid
+flowchart TD
+    A[Customer purchases gift card] --> B[Anonymous store credit account created and credited]
+    B --> C{Recipient action}
+    C -->|Apply code at checkout| D[Credit line added to cart]
+    C -->|Claim gift card| E[Balance transferred to customer store credit account]
+    D --> F[Order placed (anonymous account debited)]
+    E --> G[Customer applies store credit at future checkout]
+```
+
+### 1. Purchase
+
+When a customer purchases a [gift card product](#gift-card-products) and the order is placed, Medusa automatically:
+
+1. Creates a `GiftCard` record with a unique code.
+2. Creates an anonymous store credit account (with no customer associated) in the same currency.
+3. Credits the anonymous account with the gift card's value.
+4. Links the gift card to the anonymous store credit account.
+
+The anonymous store credit account is separate from any customer's personal store credit account.
+
+### 2. Apply to Cart
+
+When the gift card recipient enters the gift card code at checkout, Medusa looks up the linked anonymous store credit account and creates a credit line on the cart. The credit line reduces the cart total by up to the gift card's balance.
+
+### 3. Place Order
+
+When the customer places the order, Medusa debits the anonymous store credit account by the credit line amount, consuming the gift card's balance.

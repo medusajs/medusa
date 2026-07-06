@@ -7,6 +7,7 @@ const Palette = React.forwardRef<SVGSVGElement, IconProps>(
         xmlns="http://www.w3.org/2000/svg"
         width={16}
         height={16}
+        viewBox="0 0 16 16"
         fill="none"
         ref={ref}
         {...props}

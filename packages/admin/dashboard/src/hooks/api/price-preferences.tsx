@@ -18,7 +18,7 @@ export const pricePreferencesQueryKeys = queryKeysFactory(
 
 export const usePricePreference = (
   id: string,
-  query?: HttpTypes.AdminPricePreferenceParams,
+  query?: HttpTypes.AdminGetPricePreferenceParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminPricePreferenceResponse,
@@ -31,7 +31,7 @@ export const usePricePreference = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.pricePreference.retrieve(id, query),
-    queryKey: pricePreferencesQueryKeys.detail(),
+    queryKey: pricePreferencesQueryKeys.detail(id),
     ...options,
   })
 
@@ -61,7 +61,7 @@ export const usePricePreferences = (
 
 export const useUpsertPricePreference = (
   id?: string | undefined,
-  query?: HttpTypes.AdminPricePreferenceParams,
+  query?: HttpTypes.AdminGetPricePreferenceParams,
   options?: UseMutationOptions<
     HttpTypes.AdminPricePreferenceResponse,
     FetchError,
@@ -71,9 +71,16 @@ export const useUpsertPricePreference = (
   return useMutation({
     mutationFn: (payload) => {
       if (id) {
-        return sdk.admin.pricePreference.update(id, payload, query)
+        return sdk.admin.pricePreference.update(
+          id,
+          payload as HttpTypes.AdminUpdatePricePreference,
+          query
+        )
       }
-      return sdk.admin.pricePreference.create(payload, query)
+      return sdk.admin.pricePreference.create(
+        payload as HttpTypes.AdminCreatePricePreference,
+        query
+      )
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({

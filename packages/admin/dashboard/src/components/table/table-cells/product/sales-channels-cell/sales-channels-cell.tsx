@@ -13,15 +13,21 @@ export const SalesChannelsCell = ({
 }: SalesChannelsCellProps) => {
   const { t } = useTranslation()
 
-  if (!salesChannels || !salesChannels.length) {
+  // Filter out null/undefined entries that can occur when a sales channel
+  // is deleted but the product association is not cleaned up
+  const validChannels = salesChannels?.filter(
+    (sc): sc is SalesChannelDTO => sc != null
+  )
+
+  if (!validChannels || !validChannels.length) {
     return <PlaceholderCell />
   }
 
-  if (salesChannels.length > 2) {
+  if (validChannels.length > 2) {
     return (
       <div className="flex h-full w-full items-center gap-x-1 overflow-hidden">
         <span className="truncate">
-          {salesChannels
+          {validChannels
             .slice(0, 2)
             .map((sc) => sc.name)
             .join(", ")}
@@ -29,7 +35,7 @@ export const SalesChannelsCell = ({
         <Tooltip
           content={
             <ul>
-              {salesChannels.slice(2).map((sc) => (
+              {validChannels.slice(2).map((sc) => (
                 <li key={sc.id}>{sc.name}</li>
               ))}
             </ul>
@@ -37,7 +43,7 @@ export const SalesChannelsCell = ({
         >
           <span className="text-xs">
             {t("general.plusCountMore", {
-              count: salesChannels.length - 2,
+              count: validChannels.length - 2,
             })}
           </span>
         </Tooltip>
@@ -45,10 +51,10 @@ export const SalesChannelsCell = ({
     )
   }
 
-  const channels = salesChannels.map((sc) => sc.name).join(", ")
+  const channels = validChannels.map((sc) => sc.name).join(", ")
 
   return (
-    <div className="flex h-full w-full items-center overflow-hidden max-w-[250px]">
+    <div className="flex h-full w-full max-w-[250px] items-center overflow-hidden">
       <span title={channels} className="truncate">
         {channels}
       </span>
