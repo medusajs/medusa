@@ -148,5 +148,5 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-06-09T08:01:44.517Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
   "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T10:39:20.544Z",
-  "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-06-26T11:39:47.155Z"
+  "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-07-06T17:07:02.690Z"
 }
