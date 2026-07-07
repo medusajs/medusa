@@ -74,6 +74,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Chart",
+            path: "/components/chart",
+          },
+          {
+            type: "link",
             title: "Checkbox",
             path: "/components/checkbox",
           },

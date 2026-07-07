@@ -195,6 +195,36 @@ export const ExampleRegistry = {
     component: dynamic(() => import("@/specs/examples/calendar-unavailable")),
     file: "specs/examples/calendar-unavailable.tsx",
   },
+  "chart-line-demo": {
+    name: "chart-line-demo",
+    component: dynamic(() => import("@/specs/examples/chart-line-demo")),
+    file: "specs/examples/chart-line-demo.tsx",
+  },
+  "chart-bar-demo": {
+    name: "chart-bar-demo",
+    component: dynamic(() => import("@/specs/examples/chart-bar-demo")),
+    file: "specs/examples/chart-bar-demo.tsx",
+  },
+  "chart-bar-stacked": {
+    name: "chart-bar-stacked",
+    component: dynamic(() => import("@/specs/examples/chart-bar-stacked")),
+    file: "specs/examples/chart-bar-stacked.tsx",
+  },
+  "chart-area-demo": {
+    name: "chart-area-demo",
+    component: dynamic(() => import("@/specs/examples/chart-area-demo")),
+    file: "specs/examples/chart-area-demo.tsx",
+  },
+  "chart-pie-demo": {
+    name: "chart-pie-demo",
+    component: dynamic(() => import("@/specs/examples/chart-pie-demo")),
+    file: "specs/examples/chart-pie-demo.tsx",
+  },
+  "chart-pie-donut": {
+    name: "chart-pie-donut",
+    component: dynamic(() => import("@/specs/examples/chart-pie-donut")),
+    file: "specs/examples/chart-pie-donut.tsx",
+  },
   "checkbox-demo": {
     name: "checkbox-demo",
     component: dynamic(() => import("@/specs/examples/checkbox-demo")),

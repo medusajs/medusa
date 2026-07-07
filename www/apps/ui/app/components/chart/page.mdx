@@ -1,0 +1,114 @@
+import { ComponentExample } from "@/components/ComponentExample"
+import { ComponentReference } from "@/components/ComponentReference"
+
+export const metadata = {
+  title: `Chart`,
+}
+
+# {metadata.title}
+
+A component for visualizing data with line, bar, area, and pie charts.
+
+The `Chart` component is useful for building analytics and reporting interfaces, such as dashboards that show revenue trends, order volumes, or category breakdowns.
+
+In this guide, you'll learn how to use the Chart component.
+
+<Note>
+
+The `Chart` component is available since v4.1.20 of `@medusajs/ui`.
+
+</Note>
+
+<Note>
+
+The `Chart` component requires the [recharts](https://recharts.org) library as a peer dependency. Install it in your project to use the component:
+
+```bash npm2yarn
+npm install recharts
+```
+
+</Note>
+
+<ComponentExample name="chart-line-demo" />
+
+## Usage
+
+```tsx
+import { Chart } from "@medusajs/ui"
+```
+
+The `Chart` component provides four variants: `Chart.Line`, `Chart.Bar`, `Chart.Area`, and `Chart.Pie`.
+
+The line, bar, and area variants share the same data-driven API:
+
+- `data`: an array of objects to render.
+- `index`: the key in each data object to use for the x-axis.
+- `categories`: the keys in each data object to render as data series.
+
+```tsx
+const data = [
+  { month: "Jan", revenue: 4200 },
+  { month: "Feb", revenue: 5100 },
+  { month: "Mar", revenue: 4800 },
+]
+
+return (
+  <Chart.Line
+    data={data}
+    index="month"
+    categories={["revenue"]}
+  />
+)
+```
+
+The pie variant accepts a single `category` instead of `categories`, and uses `index` for slice labels:
+
+```tsx
+const data = [
+  { name: "Electronics", value: 400 },
+  { name: "Apparel", value: 300 },
+]
+
+return <Chart.Pie data={data} index="name" category="value" />
+```
+
+All variants accept a `colors` prop to override the default palette. Colors are limited to the design system's tag color tokens: `blue`, `green`, `red`, `orange`, `purple`, and `grey`. You can also pass a `valueFormatter` function to format values in tooltips, and toggle chart elements with the `showLegend`, `showGrid`, `showTooltip`, `showXAxis`, and `showYAxis` props.
+
+---
+
+## API Reference
+
+<ComponentReference mainComponent="Chart" componentsToShow={[
+  "Chart.Line",
+  "Chart.Bar",
+  "Chart.Area",
+  "Chart.Pie",
+]} />
+
+---
+
+## Examples
+
+### Bar Chart
+
+<ComponentExample name="chart-bar-demo" />
+
+### Stacked Bar Chart
+
+Pass the `stacked` prop to stack the data series on top of each other. The `Chart.Area` variant supports the same prop.
+
+<ComponentExample name="chart-bar-stacked" />
+
+### Area Chart
+
+<ComponentExample name="chart-area-demo" />
+
+### Pie Chart
+
+<ComponentExample name="chart-pie-demo" />
+
+### Donut Chart
+
+Pass the `donut` prop to the `Chart.Pie` variant to render the pie chart with a hollow center.
+
+<ComponentExample name="chart-pie-donut" hideFeedback />
