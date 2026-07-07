@@ -33,11 +33,19 @@ const getBaseUrl = (passedBaseUrl: string) => {
 }
 
 const hasStorage = (storage: "localStorage" | "sessionStorage") => {
-  if (typeof window !== "undefined") {
-    return storage in window
+  if (typeof window === "undefined") {
+    return false
   }
 
-  return false
+  // `storage in window` only checks that the property exists. In contexts where
+  // storage access is blocked (for example a sandboxed iframe with an opaque
+  // origin), the property is present but accessing it throws a SecurityError, so
+  // read it inside a try/catch before reporting it as available.
+  try {
+    return Boolean(window[storage])
+  } catch {
+    return false
+  }
 }
 
 const toBase64 = (str: string) => {

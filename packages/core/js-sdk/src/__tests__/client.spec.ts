@@ -192,6 +192,30 @@ describe("Client", () => {
       global.window = undefined as any
     })
 
+    it("should not throw when browser storage access is blocked", () => {
+      // Simulate an environment (e.g. a sandboxed iframe with an opaque origin)
+      // where `"localStorage" in window` is true but accessing it throws.
+      const blockedStorage = () => {
+        throw Object.assign(new Error("The operation is insecure."), {
+          name: "SecurityError",
+        })
+      }
+      global.window = { location: { origin: baseUrl } } as any
+      Object.defineProperty(global.window, "localStorage", {
+        configurable: true,
+        get: blockedStorage,
+      })
+      Object.defineProperty(global.window, "sessionStorage", {
+        configurable: true,
+        get: blockedStorage,
+      })
+
+      expect("localStorage" in global.window).toBe(true)
+      expect(() => new Client({ baseUrl })).not.toThrow()
+
+      global.window = undefined as any
+    })
+
     it("should handle baseUrl with path correctly", async () => {
       const pathClient = new Client({
         baseUrl: `${baseUrl}/some/path`,
