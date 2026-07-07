@@ -143,7 +143,7 @@ export const RELATIONSHIP_FILTER_OVERRIDES: Record<
       relatedEntity: "Region",
       valueField: "id",
       displayField: "name",
-      multiple: false,
+      multiple: true,
       filterKey: "region_id",
     },
     {

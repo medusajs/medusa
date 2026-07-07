@@ -15,36 +15,28 @@ export function createOrderTableAdapter(): TableAdapter<HttpTypes.AdminOrder> {
     queryPrefix: "o",
     pageSize: 20,
     transformColumns: (columns) => {
-      const DISABLED_FILTER_PATTERNS = [
-        /^shipping_address.+/,
-        /^billing_address.+/,
-        /^cart.+/,
-        /^shipping_methods.+/,
-        /^items.+/,
-        /^fulfillments.+/,
-        /^payment_collections.+/,
-        /^promotions.+/,
-        /^promotion.+/,
-        /^transactions.+/,
-        /^summary.+/,
-        /total/i,
-        /^customer\.(?!id$).+/,
-        /^region\.(?!id$).+/,
-        /^sales_channel\.(?!id$).+/,
-        /payment_status/,
-        /fulfillment_status/,
+      const ALLOWED_FILTER_FIELDS = [
+        "id",
+        "status",
+        "sales_channel.id",
+        "region.id",
+        "customer.id",
+        "created_at",
+        "updated_at",
+        "total",
       ]
 
       const DISABLED_SORTING_PATTERNS = [
         /total/i,
         /payment_status/,
         /fulfillment_status/,
+        /customer.id/,
+        /region.id/,
+        /sales_channel.id/,
       ]
 
       return columns.map((column) => {
-        const isFilterDisabled = DISABLED_FILTER_PATTERNS.some((pattern) =>
-          pattern.test(column.field)
-        )
+        const isFilterDisabled = !ALLOWED_FILTER_FIELDS.includes(column.field)
 
         const isSortingDisabled = DISABLED_SORTING_PATTERNS.some((pattern) =>
           pattern.test(column.field)
