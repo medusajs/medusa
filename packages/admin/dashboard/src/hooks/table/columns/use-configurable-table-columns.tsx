@@ -6,11 +6,11 @@ import {
   getCellRenderer,
   getColumnValue,
 } from "../../../lib/table/cell-renderers"
-import { getColumnAlignment } from "../../../lib/table/column-utils"
+import { TableAdapter } from "../../../lib/table/table-adapters"
 
 export function useConfigurableTableColumns<TData = any>(
-  entity: string,
-  apiColumns: HttpTypes.AdminColumn[] | undefined
+  apiColumns: HttpTypes.AdminColumn[] | undefined,
+  adapter?: TableAdapter<TData>
 ) {
   const columnHelper = createDataTableColumnHelper<TData>()
   const { t } = useTranslation()
@@ -28,8 +28,7 @@ export function useConfigurableTableColumns<TData = any>(
       }
 
       const renderer = getCellRenderer(renderType, apiColumn.data_type)
-
-      const headerAlign = getColumnAlignment(apiColumn)
+      const align = adapter?.getColumnAlignment?.(apiColumn) ?? renderer.align
 
       const accessor = (row: TData) => getColumnValue(row, apiColumn)
 
@@ -39,7 +38,7 @@ export function useConfigurableTableColumns<TData = any>(
         cell: ({ getValue, row }: { getValue: any; row: any }) => {
           const value = getValue()
 
-          return renderer(value, row.original, apiColumn, t)
+          return renderer.render(value, row.original, apiColumn, t)
         },
         meta: {
           name: apiColumn.name,
@@ -48,8 +47,8 @@ export function useConfigurableTableColumns<TData = any>(
         enableHiding: apiColumn.hideable,
         enableSorting: apiColumn.sortable,
         sortLabel: apiColumn.name,
-        headerAlign, // Pass the header alignment to the DataTable
+        align,
       } as any)
     })
-  }, [entity, apiColumns, t])
+  }, [apiColumns, adapter, t, columnHelper])
 }

@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import {
+  DataTableColumnAlignment,
   DataTableColumnDef,
   DataTableEmptyStateProps,
   DataTableFilter,
@@ -69,6 +70,15 @@ export interface TableAdapter<TData> {
    * If not provided, will use default column generation.
    */
   getColumns?: (apiColumns: any[]) => DataTableColumnDef<TData, any>[]
+
+  /**
+   * Override the alignment of a column's header and cell content.
+   * Return undefined to fall back to the render mode's declared alignment,
+   * and to the DataTable default when the render mode declares none.
+   */
+  getColumnAlignment?: (
+    column: HttpTypes.AdminColumn
+  ) => DataTableColumnAlignment | undefined
 
   /**
    * Empty state configuration

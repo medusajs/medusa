@@ -25,7 +25,17 @@ export type CellRenderer<TData = any> = (
   t: TFunction
 ) => React.ReactNode
 
-export type RendererRegistry = Map<string, CellRenderer>
+export type CellAlignment = "left" | "center" | "right"
+
+/**
+ * A cell renderer plus the alignment it renders best at.
+ */
+export type CellRendererDefinition<TData = any> = {
+  render: CellRenderer<TData>
+  align?: CellAlignment
+}
+
+export type RendererRegistry = Map<string, CellRendererDefinition>
 
 const cellRenderers: RendererRegistry = new Map()
 
@@ -71,20 +81,12 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
 
   if (column.field === "payment_status" && t) {
     const { label, color } = getOrderPaymentStatus(t, value)
-    return (
-      <StatusBadge className="mx-auto" color={color}>
-        {label}
-      </StatusBadge>
-    )
+    return <StatusBadge color={color}>{label}</StatusBadge>
   }
 
   if (column.field === "fulfillment_status" && t) {
     const { label, color } = getOrderFulfillmentStatus(t, value)
-    return (
-      <StatusBadge className="mx-auto" color={color}>
-        {label}
-      </StatusBadge>
-    )
+    return <StatusBadge color={color}>{label}</StatusBadge>
   }
 
   // Generic status badge for other status types
@@ -137,9 +139,7 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
   const translatedValue = getTranslatedStatus(value)
 
   return (
-    <StatusBadge className="mx-auto" color={getStatusColor(value)}>
-      {translatedValue}
-    </StatusBadge>
+    <StatusBadge color={getStatusColor(value)}>{translatedValue}</StatusBadge>
   )
 }
 
@@ -292,28 +292,26 @@ const CountryCodeRenderer: CellRenderer = (_, row, _column, _t) => {
   const countryCode = row.shipping_address?.country_code
 
   if (!countryCode) {
-    return <div className="flex w-full justify-center">-</div>
+    return "-"
   }
 
   const country = getCountryByIso2(countryCode)
   const displayName = country?.display_name || countryCode.toUpperCase()
 
   return (
-    <div className="flex w-full items-center justify-center">
-      <Tooltip content={displayName}>
-        <div className="flex size-4 items-center justify-center overflow-hidden rounded-sm">
-          <ReactCountryFlag
-            countryCode={countryCode.toUpperCase()}
-            svg
-            style={{
-              width: "16px",
-              height: "16px",
-            }}
-            aria-label={displayName}
-          />
-        </div>
-      </Tooltip>
-    </div>
+    <Tooltip content={displayName}>
+      <div className="flex size-4 items-center justify-center overflow-hidden rounded-sm">
+        <ReactCountryFlag
+          countryCode={countryCode.toUpperCase()}
+          svg
+          style={{
+            width: "16px",
+            height: "16px",
+          }}
+          aria-label={displayName}
+        />
+      </div>
+    </Tooltip>
   )
 }
 
@@ -358,11 +356,9 @@ const BooleanRenderer: CellRenderer = (value, _row, _column, t) => {
   ) as string
 
   return (
-    <span className="mx-auto flex items-center justify-center">
-      <Badge size="xsmall" color={value ? "green" : "grey"}>
-        {label}
-      </Badge>
-    </span>
+    <Badge size="xsmall" color={value ? "green" : "grey"}>
+      {label}
+    </Badge>
   )
 }
 
@@ -428,16 +424,14 @@ const ImageRenderer: CellRenderer = (value, _row, _column, _t) => {
   }
 
   return (
-    <div className="flex items-center justify-center">
-      <img
-        src={value}
-        alt=""
-        className="h-8 w-8 rounded object-cover"
-        onError={(e) => {
-          ;(e.target as HTMLImageElement).style.display = "none"
-        }}
-      />
-    </div>
+    <img
+      src={value}
+      alt=""
+      className="h-8 w-8 rounded object-cover"
+      onError={(e) => {
+        ;(e.target as HTMLImageElement).style.display = "none"
+      }}
+    />
   )
 }
 
@@ -520,64 +514,68 @@ const AddressRenderer: CellRenderer = (value, row, column, _t) => {
 }
 
 // Register built-in renderers
-cellRenderers.set("text", TextRenderer)
-cellRenderers.set("count", CountRenderer)
-cellRenderers.set("status", StatusRenderer)
-cellRenderers.set("badge_list", BadgeListRenderer)
-cellRenderers.set("date", DateRenderer)
-cellRenderers.set("timestamp", DateRenderer)
-cellRenderers.set("currency", CurrencyRenderer)
-cellRenderers.set("number", NumberRenderer)
-cellRenderers.set("boolean", BooleanRenderer)
-cellRenderers.set("id", IdRenderer)
-cellRenderers.set("email", EmailRenderer)
-cellRenderers.set("phone", PhoneRenderer)
-cellRenderers.set("url", UrlRenderer)
-cellRenderers.set("image", ImageRenderer)
-cellRenderers.set("json", JsonRenderer)
-cellRenderers.set("badge", BadgeRenderer)
-cellRenderers.set("datetime", DateRenderer)
+cellRenderers.set("text", { render: TextRenderer })
+cellRenderers.set("count", { render: CountRenderer })
+cellRenderers.set("status", { render: StatusRenderer, align: "center" })
+cellRenderers.set("badge_list", { render: BadgeListRenderer })
+cellRenderers.set("date", { render: DateRenderer })
+cellRenderers.set("timestamp", { render: DateRenderer })
+cellRenderers.set("currency", { render: CurrencyRenderer, align: "right" })
+cellRenderers.set("number", { render: NumberRenderer, align: "right" })
+cellRenderers.set("boolean", { render: BooleanRenderer, align: "center" })
+cellRenderers.set("id", { render: IdRenderer })
+cellRenderers.set("email", { render: EmailRenderer })
+cellRenderers.set("phone", { render: PhoneRenderer })
+cellRenderers.set("url", { render: UrlRenderer })
+cellRenderers.set("image", { render: ImageRenderer, align: "center" })
+cellRenderers.set("json", { render: JsonRenderer })
+cellRenderers.set("badge", { render: BadgeRenderer, align: "center" })
+cellRenderers.set("datetime", { render: DateRenderer })
 
 // Register product-specific renderers
-cellRenderers.set("product_info", ProductInfoRenderer)
-cellRenderers.set("collection", CollectionRenderer)
-cellRenderers.set("variants", VariantsRenderer)
-cellRenderers.set("sales_channels_list", BadgeListRenderer)
+cellRenderers.set("product_info", { render: ProductInfoRenderer })
+cellRenderers.set("collection", { render: CollectionRenderer })
+cellRenderers.set("variants", { render: VariantsRenderer })
+cellRenderers.set("sales_channels_list", { render: BadgeListRenderer })
 
 // Register order-specific renderers
-cellRenderers.set("customer_name", CustomerNameRenderer)
-cellRenderers.set("address_summary", AddressSummaryRenderer)
-cellRenderers.set("country_code", CountryCodeRenderer)
-cellRenderers.set("display_id", DisplayIdRenderer)
-cellRenderers.set("address", AddressRenderer)
+cellRenderers.set("customer_name", { render: CustomerNameRenderer })
+cellRenderers.set("address_summary", { render: AddressSummaryRenderer })
+cellRenderers.set("country_code", {
+  render: CountryCodeRenderer,
+  align: "center",
+})
+cellRenderers.set("display_id", { render: DisplayIdRenderer })
+cellRenderers.set("address", { render: AddressRenderer })
 
 export function getCellRenderer(
   renderType?: string,
   dataType?: string
-): CellRenderer {
-  if (renderType && cellRenderers.has(renderType)) {
-    return cellRenderers.get(renderType)!
+): CellRendererDefinition {
+  const definition = renderType ? cellRenderers.get(renderType) : undefined
+  if (definition) {
+    return definition
   }
 
   switch (dataType) {
-    case "number":
-    case "string":
-      return TextRenderer
     case "date":
-      return DateRenderer
+      return { render: DateRenderer }
     case "boolean":
-      return BooleanRenderer
+      return { render: BooleanRenderer, align: "center" }
     case "enum":
-      return StatusRenderer
+      return { render: StatusRenderer, align: "center" }
     case "currency":
-      return CurrencyRenderer
+      return { render: CurrencyRenderer, align: "right" }
     default:
-      return TextRenderer
+      return { render: TextRenderer }
   }
 }
 
-export function registerCellRenderer(type: string, renderer: CellRenderer) {
-  cellRenderers.set(type, renderer)
+export function registerCellRenderer(
+  type: string,
+  def: CellRendererDefinition
+) {
+  cellRenderers.set(type, { render: def.render, align: def.align })
 }
 
 export function getColumnValue(row: any, column: HttpTypes.AdminColumn): any {

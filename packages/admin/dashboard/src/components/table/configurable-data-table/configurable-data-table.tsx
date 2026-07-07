@@ -95,7 +95,10 @@ export function ConfigurableDataTable<TData>({
 
   const fetchResult = adapter.useData(requiredFields, searchParams)
 
-  const generatedColumns = useConfigurableTableColumns(entity, apiColumns || [])
+  const generatedColumns = useConfigurableTableColumns(
+    apiColumns || [],
+    adapter
+  )
   const columns = generatedColumns
 
   if (fetchResult.isError) {

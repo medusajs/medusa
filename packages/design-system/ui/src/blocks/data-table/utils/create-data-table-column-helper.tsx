@@ -30,6 +30,7 @@ const createDataTableColumnHelper = <
         sortAscLabel,
         sortDescLabel,
         headerAlign,
+        align,
         meta,
         enableSorting,
         ...rest
@@ -37,7 +38,7 @@ const createDataTableColumnHelper = <
 
       const extendedMeta: DataTableSortableColumnDefMeta & DataTableAlignableColumnDefMeta = {
         ___sortMetaData: { sortLabel, sortAscLabel, sortDescLabel },
-        ___alignMetaData: { headerAlign },
+        ___alignMetaData: { headerAlign, align },
         ...(meta || {}),
       }
 
