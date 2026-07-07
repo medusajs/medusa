@@ -132,11 +132,11 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
           const [currenciesResult, count] =
             await service.listAndCountCurrencies({}, { skip: 5, take: 1 })
 
-          expect(count).toEqual(124)
+          expect(count).toEqual(125)
           expect(currenciesResult).toEqual([
             expect.objectContaining({
-              code: "aud",
-              name: "Australian Dollar",
+              code: "ars",
+              name: "Argentine Peso",
             }),
           ])
         })
@@ -153,7 +153,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
 
           const serialized = JSON.parse(JSON.stringify(currenciesResult))
 
-          expect(count).toEqual(124)
+          expect(count).toEqual(125)
           expect(serialized).toEqual([
             {
               code: "aed",

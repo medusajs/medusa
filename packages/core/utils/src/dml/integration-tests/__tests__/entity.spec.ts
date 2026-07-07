@@ -13,7 +13,7 @@ import {
 import { pgGodCredentials } from "../utils"
 
 export const fileSystem = new FileSystem(
-  join(__dirname, "../../integration-tests-migrations-enum")
+  join(__dirname, "../../integration-tests-migrations-entity")
 )
 
 describe("EntityBuilder", () => {

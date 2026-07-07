@@ -1,5 +1,11 @@
 # @medusajs/eslint-plugin
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
 ## 2.17.1
 
 ## 2.17.0

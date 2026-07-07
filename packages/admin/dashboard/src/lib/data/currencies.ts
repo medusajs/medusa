@@ -49,6 +49,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "դր.",
     decimal_digits: 0,
   },
+  AOA: {
+    code: "AOA",
+    name: "Angolan Kwanza",
+    symbol_native: "Kz",
+    decimal_digits: 2,
+  },
   ARS: {
     code: "ARS",
     name: "Argentine Peso",
