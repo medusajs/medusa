@@ -93,8 +93,6 @@ export function useTableConfiguration({
     return transformColumns ? transformColumns(rawApiColumns) : rawApiColumns
   }, [rawApiColumns, transformColumns])
 
-  console.log(apiColumns)
-
   // Extract relationship filter configs from filterable columns only
   const relationshipFilterConfigs = useMemo(() => {
     if (!apiColumns) {
