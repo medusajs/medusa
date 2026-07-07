@@ -4,10 +4,7 @@ import {
   isEnumType,
   isScalarType,
 } from "@medusajs/framework/utils"
-import {
-  ComputedColumnDefinition,
-  getComputedColumnRegistry,
-} from "./computed-columns"
+import { getComputedColumnRegistry } from "./computed-columns"
 import {
   DiscoveredEntity,
   EntityDiscoveryService,
@@ -435,42 +432,5 @@ function processEntityType(
         }
       }
     }
-  }
-}
-
-/**
- * Convert a computed column definition to an AdminColumn.
- */
-export function computedColumnToAdminColumn(
-  column: ComputedColumnDefinition,
-  entity: DiscoveredEntity,
-  defaultOrder: number = 850,
-  label?: PropertyLabel
-): ViewConfigurationColumn {
-  return {
-    id: column.id,
-    name: label?.label || column.name,
-    description: label?.description || column.description,
-    field: column.id,
-    sortable: false,
-    hideable: true,
-    default_visible: column.defaultVisible ?? false,
-    data_type: "string",
-    semantic_type: "computed",
-    context: "display",
-    computed: {
-      type: column.renderMode,
-      required_fields: column.requiredFields,
-      optional_fields: column.optionalFields || [],
-      metadata: column.metadata ?? {},
-    },
-    render_mode: column.renderMode,
-    default_order: defaultOrder,
-    category:
-      (column.category as ViewConfigurationColumn["category"]) || "computed",
-    filter: { enabled: false },
-    source: { module: entity.module, entity: entity.name },
-    custom_label: !!label,
-    label_id: label?.id,
   }
 }

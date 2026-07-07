@@ -11,11 +11,11 @@ const filterHelper = createDataTableFilterHelper()
  * Maps API data types to DataTable filter UI types
  */
 function getFilterType(column: HttpTypes.AdminColumn): DataTableFilterType {
-  if (column.filter?.relationship) {
-    return column.filter.relationship.multiple ? "multiselect" : "select"
-  }
-
-  if (column.data_type === "enum" || column.filter?.enumValues) {
+  if (
+    column.filter?.relationship ||
+    column.data_type === "enum" ||
+    column.filter?.enumValues
+  ) {
     return "multiselect"
   }
 
