@@ -15,6 +15,13 @@ const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/api",
+  outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
+  outputFileTracingExcludes: {
+    "*": [
+      "../**/.open-next/**",
+      "../!(api-reference)/.next/**",
+    ],
+  },
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
 
@@ -91,7 +98,8 @@ const withMDX = createMDX({
           },
           useBaseUrl:
             process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production",
+            process.env.VERCEL_ENV === "production" ||
+            !!process.env.CLOUDFLARE_ENV,
         },
       ],
       [

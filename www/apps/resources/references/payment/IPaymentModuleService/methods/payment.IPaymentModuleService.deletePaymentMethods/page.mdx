@@ -1,0 +1,77 @@
+---
+displayed_sidebar: paymentReference
+slug: /references/payment/deletePaymentMethods
+sidebar_label: deletePaymentMethods
+---
+
+import { TypeList } from "docs-ui"
+
+# deletePaymentMethods - Payment Module Reference
+
+This documentation provides a reference to the `deletePaymentMethods` method. This belongs to the Payment Module.
+
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
+## deletePaymentMethods(data, sharedContext?): Promise&#60;void&#62;
+
+This method deletes payment methods.
+
+:::note
+
+This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+:::
+
+### Example
+
+```ts
+await paymentModuleService.deletePaymentMethods([
+  {
+    id: "pm_123",
+    provider_id: "pp_stripe_stripe",
+  },
+  {
+    id: "pm_456",
+    provider_id: "pp_stripe_stripe",
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[DeletePaymentMethodDTO](../../../interfaces/payment.DeletePaymentMethodDTO/page.mdx)[]","description":"The payment methods to delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment method in the payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The provider's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Data for the associated payment provider to delete the payment method.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PaymentProviderContext](../../../interfaces/payment.PaymentProviderContext/page.mdx)","description":"Necessary context data for the associated payment provider.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"account_holder","type":"[PaymentAccountHolderDTO](../../../types/payment.PaymentAccountHolderDTO/page.mdx)","description":"The account holder information, if available for the payment provider.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[PaymentCustomerDTO](../../../types/payment.PaymentCustomerDTO/page.mdx)","description":"The customer information from Medusa.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotency_key","type":"`string`","description":"Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/payment.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/payment.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentMethods"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the payment methods are deleted.","expandable":false,"children":[],"since":"2.16.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentMethods"/>
+
+## deletePaymentMethods(data, sharedContext?): Promise&#60;void&#62;
+
+This method deletes a payment method.
+
+:::note
+
+This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+:::
+
+### Example
+
+```ts
+await paymentModuleService.deletePaymentMethods({
+  id: "pm_123",
+  provider_id: "pp_stripe_stripe",
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[DeletePaymentMethodDTO](../../../interfaces/payment.DeletePaymentMethodDTO/page.mdx)","description":"The payment method to delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment method in the payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The provider's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Data for the associated payment provider to delete the payment method.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[PaymentProviderContext](../../../interfaces/payment.PaymentProviderContext/page.mdx)","description":"Necessary context data for the associated payment provider.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"account_holder","type":"[PaymentAccountHolderDTO](../../../types/payment.PaymentAccountHolderDTO/page.mdx)","description":"The account holder information, if available for the payment provider.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[PaymentCustomerDTO](../../../types/payment.PaymentCustomerDTO/page.mdx)","description":"The customer information from Medusa.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotency_key","type":"`string`","description":"Idempotency key for the request, if the payment provider supports it. It will be ignored otherwise.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/payment.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/payment.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentMethods"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the payment method is deleted.","expandable":false,"children":[],"since":"2.16.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deletePaymentMethods"/>

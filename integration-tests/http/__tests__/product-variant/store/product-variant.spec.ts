@@ -13,7 +13,7 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let appContainer
     let publishableKey
     let storeHeaders
@@ -54,7 +54,7 @@ medusaIntegrationTestRunner({
       return salesChannel
     }
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       appContainer = getContainer()
       publishableKey = await generatePublishableKey(appContainer)
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -95,6 +95,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_profile
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /store/product-variants", () => {

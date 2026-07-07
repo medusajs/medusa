@@ -95,6 +95,13 @@ export const storefrontDevelopmentSidebar = [
         type: "link",
         path: "/storefront-development/products/list",
         title: "List Products",
+        children: [
+          {
+            type: "link",
+            path: "/storefront-development/products/options",
+            title: "Filter by Options",
+          },
+        ],
       },
       {
         type: "link",
@@ -277,6 +284,11 @@ export const storefrontDevelopmentSidebar = [
             type: "link",
             path: "/storefront-development/customers/register",
             title: "Register Customer",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/verify-account",
+            title: "Register Customer with Email Verification",
           },
           {
             type: "link",

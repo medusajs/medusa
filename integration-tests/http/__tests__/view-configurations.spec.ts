@@ -7,14 +7,14 @@ const env = { MEDUSA_FF_VIEW_CONFIGURATIONS: true }
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     describe("View Configurations API", () => {
       let adminHeader
       let secondAdminHeader
       let secondAdminUserId
       let adminUserId
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const container = getContainer()
         const { user: adminUser } = await createAdminUser(
           dbConnection,
@@ -34,6 +34,8 @@ medusaIntegrationTestRunner({
         )
         secondAdminUserId = secondAdminUser.id
         secondAdminHeader = secondAdminHeaders.headers
+
+        await dbUtils.snapshot()
       })
 
       describe("POST /admin/views/{entity}/configurations", () => {

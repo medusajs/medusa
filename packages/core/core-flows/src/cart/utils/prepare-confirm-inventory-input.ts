@@ -259,6 +259,12 @@ const formatInventoryInput = ({
         )
       )
 
+      const locationsWithLevel = location_ids.filter((locId) =>
+        stockAvailability
+          .get(locId)
+          ?.has(variantInventoryItem.inventory_item_id)
+      )
+
       itemsToConfirm.push({
         id: item.id,
         inventory_item_id: variantInventoryItem.inventory_item_id,
@@ -267,6 +273,8 @@ const formatInventoryInput = ({
         quantity: item.quantity,
         location_ids: locationsWithAvailability.length
           ? locationsWithAvailability
+          : locationsWithLevel.length
+          ? locationsWithLevel
           : location_ids,
       })
     })

@@ -56,13 +56,19 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "event",
   }),
   events: getOptions({
-    entryPointPath: "packages/core/utils/src/core-flows/events.ts",
+    entryPointPath: [
+      "packages/core/utils/src/core-flows/events.ts",
+      "packages/core/utils/src/auth/events.ts"
+    ],
     tsConfigName: "utils.json",
     name: "events",
     enableEventsResolver: true,
   }),
   "module-events": getOptions({
-    entryPointPath: "packages/core/utils/src/core-flows/events.ts",
+    entryPointPath: [
+      "packages/core/utils/src/core-flows/events.ts",
+      "packages/core/utils/src/auth/events.ts"
+    ],
     tsConfigName: "utils.json",
     name: "module-events",
     enableEventsResolver: true,
@@ -124,6 +130,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     entryPointPath: "packages/core/types/src/locking/index.ts",
     tsConfigName: "types.json",
     name: "locking",
+  }),
+  mfa: getOptions({
+    entryPointPath: "packages/core/types/src/auth/mfa-provider.ts",
+    tsConfigName: "types.json",
+    name: "mfa",
   }),
   medusa: getOptions({
     entryPointPath: "packages/medusa/src/index.ts",

@@ -199,6 +199,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/requestVerificationWorkflow",
+                  "title": "requestVerificationWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/setAuthAppMetadataWorkflow",
                   "title": "setAuthAppMetadataWorkflow",
                   "description": "",
@@ -212,6 +221,24 @@ const generatedgeneratedReferencesSidebarSidebar = {
               "type": "sub-category",
               "title": "Steps",
               "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/createPasswordResetTokenStep",
+                  "title": "createPasswordResetTokenStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/requestVerificationStep",
+                  "title": "requestVerificationStep",
+                  "description": "",
+                  "children": []
+                },
                 {
                   "loaded": true,
                   "isPathHref": true,
@@ -452,6 +479,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "title": "updateTaxLinesWorkflow",
                   "description": "Update a cart's tax lines.",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/upsertTaxLinesWorkflow",
+                  "title": "upsertTaxLinesWorkflow",
+                  "description": "Update a cart's tax lines.",
+                  "children": []
                 }
               ]
             },
@@ -467,6 +503,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/addShippingMethodToCartStep",
                   "title": "addShippingMethodToCartStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/compensatePaymentIfNeededStep",
+                  "title": "compensatePaymentIfNeededStep",
                   "description": "",
                   "children": []
                 },

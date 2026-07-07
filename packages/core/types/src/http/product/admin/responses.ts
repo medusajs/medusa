@@ -7,6 +7,7 @@ import {
 import {
   AdminProduct,
   AdminProductOption,
+  AdminProductOptionValue,
   AdminProductVariant,
   AdminProductVariantInventoryLink,
 } from "./entitites"
@@ -98,6 +99,26 @@ export type AdminProductOptionListResponse = PaginatedResponse<{
 
 export interface AdminProductOptionDeleteResponse
   extends DeleteResponseWithParent<"product_option", AdminProduct> {}
+
+export interface AdminProductOptionValueResponse {
+  /**
+   * The product option value's details.
+   */
+  product_option_value: AdminProductOptionValue
+}
+
+export type AdminProductOptionValueListResponse = PaginatedResponse<{
+  /**
+   * The list of product option values.
+   */
+  product_option_values: AdminProductOptionValue[]
+}>
+
+export interface AdminProductOptionValueDeleteResponse
+  extends DeleteResponseWithParent<
+    "product_option_value",
+    AdminProductOption
+  > {}
 
 export type AdminProductVariantInventoryResponse =
   | AdminProductVariantInventoryLink

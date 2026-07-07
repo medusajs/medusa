@@ -1,0 +1,34 @@
+name: Index API Reference to Algolia
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Every day at 00:00 UTC
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  index:
+    name: Index to Algolia
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        working-directory: www
+        run: yarn install --frozen-lockfile
+
+      - name: Run Algolia indexer
+        working-directory: www/apps/api-reference
+        run: node scripts/index-algolia.mjs
+        env:
+          NEXT_PUBLIC_ALGOLIA_APP_ID: ${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}
+          ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
+          NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME: ${{ secrets.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME }}
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+          NEXT_PUBLIC_BASE_PATH: /api

@@ -1,0 +1,47 @@
+---
+sidebar_label: "scheduled-job-schedule-valid-cron"
+---
+
+export const metadata = {
+  title: `scheduled-job-schedule-valid-cron - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires a scheduled job's `config.schedule` string to be a valid cron expression.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/jobs` directory. It reports a `config.schedule` whose string value isn't a valid cron expression. Interval-based schedules, such as `{ interval: 60000 }`, aren't checked.
+
+The following code is reported by the rule:
+
+```ts title="src/jobs/sync-products.ts"
+export const config = {
+  name: "sync-products",
+  schedule: "not-a-cron",
+}
+```
+
+Instead, use a valid cron expression:
+
+```ts title="src/jobs/sync-products.ts"
+export const config = {
+  name: "sync-products",
+  schedule: "0 0 * * *",
+}
+```
+
+## Why it's Important
+
+Medusa uses the `schedule` value to determine when to run the job. An invalid cron expression means the job is never scheduled correctly.
+
+Learn more in the [Scheduled Jobs documentation](!docs!/learn/fundamentals/scheduled-jobs).
+
+## Fixable
+
+This rule isn't auto-fixable.

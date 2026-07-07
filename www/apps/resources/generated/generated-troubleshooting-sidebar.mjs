@@ -129,6 +129,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
+          "type": "link",
+          "path": "/troubleshooting/modules/resolve-path",
+          "title": "Module Provider Resolve Path Error",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
           "type": "sub-category",
           "title": "Query",
           "children": [
@@ -146,6 +154,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
               "type": "link",
               "path": "/troubleshooting/query/filter-linked",
               "title": "Not Existing Property",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/troubleshooting/query/metadata-filtering",
+              "title": "Metadata Filtering",
               "children": []
             },
             {

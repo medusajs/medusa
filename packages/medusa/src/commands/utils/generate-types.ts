@@ -4,6 +4,7 @@ import {
   ContainerRegistrationKeys,
   FileSystem,
   generateContainerTypes,
+  generateAugmentationRefs,
   getResolvedPlugins,
   gqlSchemaToTypes,
   mergePluginModules,
@@ -67,6 +68,9 @@ export async function generateTypes({
     })
     logger.debug("Generated modules types")
   }
+
+  await generateAugmentationRefs({ directory, plugins, modules })
+  logger.debug("Generated plugin augmentation types")
 
   logger.info("Types generated successfully")
 }

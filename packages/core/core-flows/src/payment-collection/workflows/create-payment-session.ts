@@ -89,7 +89,7 @@ export const createPaymentSessionsWorkflow = createWorkflow(
         return !!data.input.customer_id
       }
     ).then(() => {
-      const customer: CustomerDTO & { account_holders: AccountHolderDTO[] } =
+      const customer: CustomerDTO & { account_holders?: AccountHolderDTO[] } =
         useRemoteQueryStep({
           entry_point: "customer",
           fields: [
@@ -117,8 +117,8 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       })
 
       const existingAccountHolder = transform({ customer, input }, (data) => {
-        return data.customer.account_holders.find(
-          (ac) => ac.provider_id === data.input.provider_id
+        return (data.customer.account_holders ?? []).find(
+          (ac) => ac?.provider_id === data.input.provider_id
         )
       })
 
@@ -161,7 +161,9 @@ export const createPaymentSessionsWorkflow = createWorkflow(
             account_holder_id: accountHolder.id,
           },
         },
-      ])
+      ]).config({
+        noCompensation: true,
+      })
     })
 
     const paymentSessionInput = transform(

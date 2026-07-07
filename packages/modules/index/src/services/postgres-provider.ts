@@ -41,12 +41,13 @@ const CREATE_PARTITIONS_LOCK_KEY = "index-module:create-partitions"
 const CREATE_PARTITIONS_LOCK_TIMEOUT = 300
 
 export class PostgresProvider implements IndexTypes.StorageProvider {
-  #isReady_: Promise<boolean>
+  #isReady_: Promise<void>
 
   protected readonly eventActionToMethodMap_ = {
     created: "onCreate",
     updated: "onUpdate",
     deleted: "onDelete",
+    restored: "onCreate",
     attached: "onAttach",
     detached: "onDetach",
   }

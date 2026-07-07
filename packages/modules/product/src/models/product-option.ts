@@ -6,24 +6,22 @@ const ProductOption = model
   .define("ProductOption", {
     id: model.id({ prefix: "opt" }).primaryKey(),
     title: model.text().searchable().translatable(),
+    /**
+     * @since 2.16.0
+     */
+    is_exclusive: model.boolean().default(false),
     metadata: model.json().nullable(),
-    product: model.belongsTo(() => Product, {
-      mappedBy: "options",
-    }),
+    /**
+     * @since 2.16.0
+     */
+    products: model.manyToMany(() => Product),
     values: model.hasMany(() => ProductOptionValue, {
       mappedBy: "option",
     }),
   })
   .cascades({
     delete: ["values"],
+    detach: ["products"],
   })
-  .indexes([
-    {
-      name: "IDX_option_product_id_title_unique",
-      on: ["product_id", "title"],
-      unique: true,
-      where: "deleted_at IS NULL",
-    },
-  ])
 
 export default ProductOption

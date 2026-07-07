@@ -471,6 +471,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "path": "/commerce-modules/auth/authentication-route",
               "title": "Auth Flow with Routes",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/mfa",
+              "title": "Multi-Factor Authentication",
+              "children": []
             }
           ]
         },
@@ -504,6 +512,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Custom Admin Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth",
               "children": []
@@ -530,6 +554,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Phone Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/email-verification",
+              "title": "Send Email Verification",
               "children": []
             }
           ]
@@ -566,6 +598,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Register Customer in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/customers/register",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Register Customer with Email Verification in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account",
               "children": []
             },
             {
@@ -714,6 +754,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "requestVerificationWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestVerificationWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "setAuthAppMetadataWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow",
                       "children": []
@@ -729,6 +777,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "autogenerate_as_ref": true,
                   "sort_sidebar": "alphabetize",
                   "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "requestVerificationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep",
+                      "children": []
+                    },
                     {
                       "loaded": true,
                       "isPathHref": true,
@@ -782,14 +838,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "type": "ref",
                   "title": "refresh",
                   "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh",
-                  "children": []
-                },
-                {
-                  "loaded": true,
-                  "isPathHref": true,
-                  "type": "ref",
-                  "title": "register",
-                  "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register",
                   "children": []
                 },
                 {
@@ -865,8 +913,53 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/confirmAuthVerification",
+                      "title": "confirmAuthVerification",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/consumePasswordResetToken",
+                      "title": "consumePasswordResetToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/createAuthIdentities",
                       "title": "createAuthIdentities",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/createAuthMfaChallenge",
+                      "title": "createAuthMfaChallenge",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/createAuthVerificationToken",
+                      "title": "createAuthVerificationToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/createPasswordResetToken",
+                      "title": "createPasswordResetToken",
                       "description": "",
                       "children": []
                     },
@@ -901,6 +994,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/disableAuthMfa",
+                      "title": "disableAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/generateAuthMfaRecoveryCodes",
+                      "title": "generateAuthMfaRecoveryCodes",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/listAndCountAuthIdentities",
                       "title": "listAndCountAuthIdentities",
                       "description": "",
@@ -912,6 +1023,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/listAuthIdentities",
                       "title": "listAuthIdentities",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/listAuthMfa",
+                      "title": "listAuthMfa",
                       "description": "",
                       "children": []
                     },
@@ -937,6 +1057,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/requestAuthVerification",
+                      "title": "requestAuthVerification",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/retrieveAuthIdentity",
                       "title": "retrieveAuthIdentity",
                       "description": "",
@@ -946,8 +1075,26 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/retrieveAuthMfa",
+                      "title": "retrieveAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/retrieveProviderIdentity",
                       "title": "retrieveProviderIdentity",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/startAuthMfa",
+                      "title": "startAuthMfa",
                       "description": "",
                       "children": []
                     },
@@ -982,8 +1129,35 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/useAuthMfaRecoveryCode",
+                      "title": "useAuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/validateCallback",
                       "title": "validateCallback",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/verifyAuthMfa",
+                      "title": "verifyAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/verifyAuthMfaChallenge",
+                      "title": "verifyAuthMfaChallenge",
                       "description": "",
                       "children": []
                     }
@@ -1023,6 +1197,42 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/models/AuthIdentity",
                       "title": "AuthIdentity",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthMfaFactor",
+                      "title": "AuthMfaFactor",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthMfaRecoveryCode",
+                      "title": "AuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthPasswordResetToken",
+                      "title": "AuthPasswordResetToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthVerificationToken",
+                      "title": "AuthVerificationToken",
                       "description": "",
                       "children": []
                     },
@@ -2623,6 +2833,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Register Customer in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/customers/register",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Register Customer with Email Verification in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/customers/verify-account",
               "children": []
             },
             {
@@ -6371,6 +6589,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/loyalty/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
             },
             {
               "loaded": true,
@@ -10612,6 +10838,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/payment/deletePaymentMethods",
+                      "title": "deletePaymentMethods",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/payment/deletePaymentSession",
                       "title": "deletePaymentSession",
                       "description": "",
@@ -12155,6 +12390,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/commerce-modules/product/guides/filter-products",
+              "title": "Filter Products",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/product/guides/variant-inventory",
               "title": "Get Variant Inventory",
               "children": []
@@ -12426,6 +12669,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Show Products in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/products/list",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Use Product Options in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/products/options",
+              "children": []
             }
           ]
         },
@@ -12501,6 +12752,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Manage Product Collections",
               "path": "https://docs.medusajs.com/user-guide/products/collections",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Product Options",
+              "path": "https://docs.medusajs.com/user-guide/products/options",
               "children": []
             },
             {
@@ -17002,6 +17261,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
             },
             {
               "loaded": true,

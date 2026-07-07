@@ -156,17 +156,26 @@ describe("Email password auth provider", () => {
   it("updates identity if it exists but doesnt have app_metadata", async () => {
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
-        return { success: true }
-      }),
-      update: jest.fn().mockImplementation(() => {
         return {
           provider_identities: [
             {
               entity_id: "test@admin.com",
               provider: "emailpass",
               provider_metadata: {
-                password: "somehash",
+                password: "old-hash",
+                custom: "keep-me",
               },
+            },
+          ],
+        }
+      }),
+      update: jest.fn().mockImplementation((_, data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
             },
           ],
         }
@@ -184,7 +193,9 @@ describe("Email password auth provider", () => {
     expect(resp.authIdentity?.provider_identities?.[0]).toEqual(
       expect.objectContaining({
         entity_id: "test@admin.com",
-        provider_metadata: {},
+        provider_metadata: {
+          custom: "keep-me",
+        },
       })
     )
   })
@@ -192,17 +203,27 @@ describe("Email password auth provider", () => {
   it("updates identity if it exists but app_metadata is empty", async () => {
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
-        return { success: true, app_metadata: {} }
-      }),
-      update: jest.fn().mockImplementation(() => {
         return {
+          app_metadata: {},
           provider_identities: [
             {
               entity_id: "test@admin.com",
               provider: "emailpass",
               provider_metadata: {
-                password: "somehash",
+                password: "old-hash",
+                custom: "keep-me",
               },
+            },
+          ],
+        }
+      }),
+      update: jest.fn().mockImplementation((_, data) => {
+        return {
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: data.provider_metadata,
             },
           ],
         }
@@ -220,7 +241,9 @@ describe("Email password auth provider", () => {
     expect(resp.authIdentity?.provider_identities?.[0]).toEqual(
       expect.objectContaining({
         entity_id: "test@admin.com",
-        provider_metadata: {},
+        provider_metadata: {
+          custom: "keep-me",
+        },
       })
     )
   })
@@ -228,7 +251,7 @@ describe("Email password auth provider", () => {
   it("throw if auth identity with email already exists and has app_metadata", async () => {
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
-        return { success: true, app_metadata: {"user_id": "some-id"} }
+        return { success: true, app_metadata: { user_id: "some-id" } }
       }),
       create: jest.fn().mockImplementation(() => {
         return {

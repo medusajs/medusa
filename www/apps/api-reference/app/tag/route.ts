@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server"
-import path from "path"
 import getPathsOfTag from "@/utils/get-paths-of-tag"
 
 export async function GET(request: Request) {
@@ -18,9 +17,6 @@ export async function GET(request: Request) {
       }
     )
   }
-
-  // this is just to ensure that vercel picks up these files on build
-  path.join(process.cwd(), "specs")
 
   // get path files
   const paths = await getPathsOfTag(tagName, area)

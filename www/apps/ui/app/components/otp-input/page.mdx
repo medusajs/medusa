@@ -1,0 +1,74 @@
+import { ComponentExample } from "@/components/ComponentExample"
+import { ComponentReference } from "@/components/ComponentReference"
+
+export const metadata = {
+  title: `OTP Input`,
+}
+
+# {metadata.title}
+
+A component that renders a form input field for one-time passwords (OTP) using Medusa's design system.
+
+The `OtpInput` component is useful for scenarios where you need to input a code sent via email or SMS for verification purposes.
+
+In this guide, you'll learn how to use the OTP Input component.
+
+<Note>
+
+The `OTPInput` component is available since v4.1.13 of `@medusajs/ui`.
+
+</Note>
+
+<ComponentExample name="otp-input-demo" />
+
+## Usage
+
+```tsx
+import { OtpInput } from "@medusajs/ui"
+```
+
+```tsx
+const [otp, setOtp] = useState("")
+
+return <OtpInput value={otp} onChange={setOtp} />
+```
+
+---
+
+## API Reference
+
+<ComponentReference mainComponent="OtpInput" />
+
+---
+
+## Examples
+
+### Handle OTP Completion
+
+Use the `onComplete` callback to react when the user fills in the full code. This is useful to automatically submit the code for verification once it's complete:
+
+<ComponentExample name="otp-input-on-complete" />
+
+### 4-Digit PIN
+
+By default, the OTP input renders a 6-digit code. Use the `length` and `groupSize` props to render a shorter code without a separator:
+
+<ComponentExample name="otp-input-pin" />
+
+### Custom Group Size
+
+By default, the OTP input groups digits in sets of `3`. Use the `groupSize` prop to control how many digits are rendered between each separator:
+
+<ComponentExample name="otp-input-group-size" />
+
+### Custom Separator
+
+By default, the OTP input uses `-` as the separator. You can change it by setting the `separator` prop. It can be a string or a React node:
+
+<ComponentExample name="otp-input-custom-separator" />
+
+### Error State
+
+You can leverage the native `aria-invalid` property to show an error state on the OTP input:
+
+<ComponentExample name="otp-input-error" hideFeedback />

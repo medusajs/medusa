@@ -1,5 +1,9 @@
 import { MedusaContainer } from "@medusajs/types"
-import { ContainerRegistrationKeys, useCache } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  useCache,
+  WILDCARD,
+} from "@medusajs/utils"
 import { FlagRouter } from "../feature-flags/flag-router"
 
 export type PermissionAction = {
@@ -20,7 +24,41 @@ export type HasPermissionInput = {
   container: MedusaContainer
 }
 
+export type ResolvePermissionsInput = {
+  roles: string | string[]
+  /**
+   * The universe of `(resource, operation)` tuples to evaluate against the
+   * actor's policies. The result is the subset of this universe that the
+   * actor is granted, with wildcards (`*:*`, `*:op`, `resource:*`) expanded.
+   */
+  universe: { resource: string; operation: string }[]
+  container: MedusaContainer
+}
+
 type RolePoliciesCache = Map<string, Map<string, Set<string>>>
+
+/**
+ * Applies wildcard-aware matching to decide whether any of the
+ * supplied roles grants `(resource, operation)`. This is the single source of
+ * truth for wildcard semantics used by both {@link hasPermission} and
+ * {@link resolvePermissions}.
+ */
+function policyAllows(
+  rolePoliciesMap: RolePoliciesCache,
+  resource: string,
+  operation: string
+): boolean {
+  for (const resourceMap of rolePoliciesMap.values()) {
+    const allowedOps = new Set([
+      ...(resourceMap.get(resource) || []),
+      ...(resourceMap.get(WILDCARD) || []),
+    ])
+    if (allowedOps.has(operation) || allowedOps.has(WILDCARD)) {
+      return true
+    }
+  }
+  return false
+}
 
 /**
  * Checks if the given role(s) have permission to perform the specified action(s).
@@ -62,37 +100,71 @@ export async function hasPermission(
   const rolePoliciesMap = await fetchRolePolicies(roleIds, container)
 
   for (const action of actionList) {
-    // Handle multiple operations for a single resource (and)
     const operations = Array.isArray(action.operation)
       ? action.operation
       : [action.operation]
 
     for (const op of operations) {
-      let operationHasAccess = false
-
-      for (const roleId of roleIds) {
-        const resourceMap = rolePoliciesMap.get(roleId)
-        if (!resourceMap) {
-          continue
-        }
-
-        const allowedOps = new Set([
-          ...(resourceMap.get(action.resource) || []),
-          ...(resourceMap.get("*") || []),
-        ])
-        if (allowedOps && (allowedOps.has(op) || allowedOps.has("*"))) {
-          operationHasAccess = true
-          break
-        }
-      }
-
-      if (!operationHasAccess) {
+      if (!policyAllows(rolePoliciesMap, action.resource, op)) {
         return false
       }
     }
   }
 
   return true
+}
+
+/**
+ * Resolves the actor's effective permission set: the subset of `universe` that
+ * the actor is granted, with wildcards expanded against concrete entries.
+ *
+ * This is the "inverse" of {@link hasPermission}. It is intended for use by
+ * endpoints that need to hand the client a flat permission list (so the client
+ * can do literal lookups instead of duplicating wildcard semantics).
+ *
+ * @example
+ * ```ts
+ * const granted = await resolvePermissions({
+ *   roles: ["role_super_admin"],
+ *   universe: [
+ *     { resource: "product", operation: "read" },
+ *     { resource: "customer", operation: "create" },
+ *   ],
+ *   container,
+ * })
+ * // granted = Set { "product:read", "customer:create" }
+ * ```
+ */
+export async function resolvePermissions(
+  input: ResolvePermissionsInput
+): Promise<Set<string>> {
+  const { roles, universe, container } = input
+
+  const roleIds = Array.isArray(roles) ? roles : [roles]
+  const ffRouter = container.resolve(
+    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
+  ) as FlagRouter
+
+  if (!ffRouter.isFeatureEnabled("rbac")) {
+    return new Set(
+      universe.map(({ resource, operation }) => `${resource}:${operation}`)
+    )
+  }
+
+  if (!roleIds.length) {
+    return new Set()
+  }
+
+  const rolePoliciesMap = await fetchRolePolicies(roleIds, container)
+  const granted = new Set<string>()
+
+  for (const { resource, operation } of universe) {
+    if (policyAllows(rolePoliciesMap, resource, operation)) {
+      granted.add(`${resource}:${operation}`)
+    }
+  }
+
+  return granted
 }
 
 /**

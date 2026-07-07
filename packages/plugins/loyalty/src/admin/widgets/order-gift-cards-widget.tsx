@@ -71,6 +71,7 @@ const OrderGiftCardsWidget = () => {
 
 export const config = defineWidgetConfig({
   zone: "order.details.side.after",
+  id: "medusa:order-gift-cards-widget",
 });
 
 export default OrderGiftCardsWidget;

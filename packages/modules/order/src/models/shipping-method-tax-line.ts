@@ -14,6 +14,8 @@ const _OrderShippingMethodTaxLine = model
       code: model.text(),
       rate: model.bigNumber(),
       provider_id: model.text().nullable(),
+      metadata: model.json().nullable(),
+      data: model.json().nullable(),
       shipping_method: model.belongsTo<() => typeof OrderShippingMethod>(
         () => OrderShippingMethod,
         {

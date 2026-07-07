@@ -24,6 +24,7 @@ export const retrieveTransformQueryConfig = {
 
 export const defaultStoreCustomerAddressFields = [
   "id",
+  "address_name",
   "company",
   "customer_id",
   "first_name",

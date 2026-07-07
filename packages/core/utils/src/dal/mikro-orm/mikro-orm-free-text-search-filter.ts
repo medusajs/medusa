@@ -140,6 +140,11 @@ export const mikroOrmFreeTextSearchFilterOptionsFactory = (model: string) => {
       }
 
       const { value } = freeTextSearchArgs
+      const tokens = value.split(/\s+/).filter(Boolean)
+
+      if (tokens.length === 0) {
+        return {}
+      }
 
       if (options?.visited?.size) {
         /**
@@ -155,25 +160,39 @@ export const mikroOrmFreeTextSearchFilterOptionsFactory = (model: string) => {
 
       const entityMetadata = manager.getDriver().getMetadata().get(model)
 
-      const freeTextSearchWhere = retrieveRelationsConstraints(
-        {
-          targetMeta: entityMetadata,
-          mapToPk: false,
-          searchable: true,
-          type: model,
-          name: entityMetadata.name!,
-        },
-        entityMetadata,
-        value
-      )
+      const andConditions = tokens
+        .map((token) => {
+          const freeTextSearchWhere = retrieveRelationsConstraints(
+            {
+              targetMeta: entityMetadata,
+              mapToPk: false,
+              searchable: true,
+              type: model,
+              name: entityMetadata.name!,
+            },
+            entityMetadata,
+            token
+          )
 
-      if (!freeTextSearchWhere.length) {
+          if (!freeTextSearchWhere.length) {
+            return null
+          }
+
+          return {
+            $or: freeTextSearchWhere,
+          }
+        })
+        .filter((condition): condition is { $or: any[] } => !!condition)
+
+      if (!andConditions.length) {
         return {}
       }
 
-      return {
-        $or: freeTextSearchWhere,
-      }
+      return andConditions.length === 1
+        ? andConditions[0]
+        : {
+            $and: andConditions,
+          }
     },
   }
 }

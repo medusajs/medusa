@@ -1,10 +1,10 @@
 {
   "name": "medusa-dev-cli",
   "description": "CLI helpers for contributors working on Medusa",
-  "version": "2.15.2",
+  "version": "2.17.2",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "bin": {
-    "medusa-dev": "./dist/index.js"
+    "medusa-dev": "dist/index.js"
   },
   "files": [
     "dist"
@@ -44,8 +44,11 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/cli/medusa-dev-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "scripts": {
     "test": "../../../node_modules/.bin/jest --passWithNoTests --testPathPattern=src",

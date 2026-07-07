@@ -39,7 +39,7 @@ export const authorizePaymentSessionStepId = "authorize-payment-session-step"
 export const authorizePaymentSessionStep = createStep(
   authorizePaymentSessionStepId,
   async (input: AuthorizePaymentSessionStepInput, { container }) => {
-    let payment: PaymentDTO | undefined
+    let payment: PaymentDTO | null | undefined
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
       Modules.PAYMENT
@@ -71,6 +71,14 @@ export const authorizePaymentSessionStep = createStep(
         relations: ["payment", "payment.captures"],
       }
     )
+
+    // If the payment authorization is deferred (e.g., bank transfer, payment link),
+    // allow the workflow to proceed without a payment record.
+    if (
+      paymentSession.status === PaymentSessionStatus.PENDING_AUTHORIZATION
+    ) {
+      return new StepResponse(null)
+    }
 
     // Throw a special error type when the status is requires_more as it requires a specific further action
     // from the consumer

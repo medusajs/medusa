@@ -27,3 +27,14 @@ export const TaxRegionDetailBreadcrumb = (
     </span>
   )
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminTaxRegionResponse>) => {
+  const taxRegion = match.data?.tax_region
+
+  return {
+    title: taxRegion
+      ? getCountryByIso2(taxRegion.country_code)?.display_name ||
+        taxRegion.country_code?.toUpperCase()
+      : undefined,
+  }
+}

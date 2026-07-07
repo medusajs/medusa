@@ -123,6 +123,15 @@ export const exchangeRequestItemReturnValidationStep = createStep(
   }
 )
 
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "canceled_at",
+  "status",
+  "items.variant.manage_inventory",
+  "items.variant.inventory_items.inventory_item_id",
+  "items.variant.inventory_items.inventory.location_levels.location_id",
+]
+
 export const orderExchangeRequestItemReturnWorkflowId =
   "exchange-request-item-return"
 /**
@@ -178,14 +187,7 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "canceled_at",
-        "status",
-        "items.variant.manage_inventory",
-        "items.variant.inventory_items.inventory_item_id",
-        "items.variant.inventory_items.inventory.location_levels.location_id",
-      ],
+      fields: orderFields,
       variables: { id: orderExchange.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -261,12 +263,16 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     when({ createdReturn }, ({ createdReturn }) => {
       return !!createdReturn?.length
     }).then(() => {
-      updateOrderChangesStep([
-        {
-          id: orderChange.id,
-          return_id: createdReturn?.[0]?.id,
-        },
-      ])
+      const orderChangeUpdateInput = transform(
+        { orderChange, createdReturn },
+        ({ orderChange, createdReturn }) => {
+          return [{
+            id: orderChange.id,
+            return_id: createdReturn?.[0]?.id,
+          }]
+        }
+      )
+      updateOrderChangesStep(orderChangeUpdateInput)
     })
 
     exchangeRequestItemReturnValidationStep({
@@ -280,12 +286,18 @@ export const orderExchangeRequestItemReturnWorkflow = createWorkflow(
     when({ orderExchange }, ({ orderExchange }) => {
       return !orderExchange.return_id
     }).then(() => {
-      updateOrderExchangesStep([
-        {
-          id: orderExchange.id,
-          return: createdReturn?.[0]!.id,
-        },
-      ])
+      const updateOrderExchangesInput = transform(
+        { orderExchange, createdReturn },
+        ({ orderExchange, createdReturn }) => {
+          return [
+            {
+              id: orderExchange.id,
+              return: createdReturn?.[0]?.id,
+            },
+          ]
+        }
+      )
+      updateOrderExchangesStep(updateOrderExchangesInput)
     })
 
     const orderChangeActionInput = transform(

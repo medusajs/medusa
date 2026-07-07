@@ -15,7 +15,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Region and Payment Providers", () => {
       let appContainer
       let fulfillmentModule: IFulfillmentModuleService
@@ -30,6 +30,8 @@ medusaIntegrationTestRunner({
           ContainerRegistrationKeys.REMOTE_QUERY
         )
         await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+        await dbUtils.snapshot()
       })
 
       it("should query shipping option and price set link with remote query", async () => {

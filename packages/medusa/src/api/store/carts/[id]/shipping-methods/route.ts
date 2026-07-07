@@ -12,9 +12,14 @@ export const POST = async (
 ) => {
   const payload = req.validatedBody
 
+  const normalizedOptions = Array.isArray(payload) ? payload : [payload]
+
   await addShippingMethodToCartWorkflow(req.scope).run({
     input: {
-      options: [{ id: payload.option_id, data: payload.data }],
+      options: normalizedOptions.map((option) => ({
+        id: option.option_id,
+        data: option.data,
+      })),
       cart_id: req.params.id,
       additional_data: payload.additional_data,
     },

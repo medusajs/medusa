@@ -13,7 +13,7 @@ jest.setTimeout(100000)
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("GET /store/customers/me/addresses", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
@@ -24,10 +24,12 @@ medusaIntegrationTestRunner({
         customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         appContainer = getContainer()
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
+
+        await dbUtils.snapshot()
       })
 
       it("should get all customer addresses and its count", async () => {

@@ -519,6 +519,15 @@ export interface TaxCalculationContext {
      */
     amount: number
   }[]
+
+  /**
+   * Additional context to pass to the underlying tax provider.
+   *
+   * Use this to forward custom data that isn't part of the framework-provided
+   * fields but that your tax provider needs to calculate tax lines accurately.
+   * In cart and order tax workflows, this is populated by the `setTaxLineContext` hook.
+   */
+  additional_context?: Record<string, unknown>
 }
 
 /**
@@ -551,6 +560,13 @@ interface TaxLineDTO {
    * The ID of the tax provider used to calculate and retrieve the tax line.
    */
   provider_id: string
+
+  /**
+   * Additional data returned by the tax provider.
+   * Use this to store jurisdiction-level breakdown data
+   * (e.g. state, county, city rates) that is not captured in the aggregated rate.
+   */
+  data?: Record<string, unknown> | null
 }
 
 /**

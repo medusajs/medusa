@@ -10,13 +10,13 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let tag1
     let tag2
     let publishableKey
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -43,6 +43,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product_type
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /store/product-types", () => {
@@ -63,15 +65,23 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it('returns a list of product types matching external_id search param', async () => {
-        const res = await api.get("/store/product-types?external_id=ext-test-01", storeHeaders)
-        
-        expect(res.status).toEqual(200) 
+      it("returns a list of product types matching external_id search param", async () => {
+        const res = await api.get(
+          "/store/product-types?external_id=ext-test-01",
+          storeHeaders
+        )
+
+        expect(res.status).toEqual(200)
         expect(res.data.product_types.length).toEqual(1)
         expect(res.data.product_types).toEqual(
-          expect.arrayContaining([expect.objectContaining({ value: "test1", external_id: "ext-test-01" })])
+          expect.arrayContaining([
+            expect.objectContaining({
+              value: "test1",
+              external_id: "ext-test-01",
+            }),
+          ])
         )
-      });
+      })
 
       it("returns a list of product types matching free text search param", async () => {
         const res = await api.get("/store/product-types?q=1", storeHeaders)
@@ -79,7 +89,12 @@ medusaIntegrationTestRunner({
         expect(res.status).toEqual(200)
         expect(res.data.product_types.length).toEqual(1)
         expect(res.data.product_types).toEqual(
-          expect.arrayContaining([expect.objectContaining({ value: "test1", external_id: "ext-test-01" })])
+          expect.arrayContaining([
+            expect.objectContaining({
+              value: "test1",
+              external_id: "ext-test-01",
+            }),
+          ])
         )
       })
     })
