@@ -32,13 +32,13 @@ const DataTableFilterBar = ({
   children,
 }: DataTableFilterBarProps) => {
   const { instance, enableColumnVisibility } = useDataTableContext()
-  
+
   // Local state for managing intermediate filters
   const [localFilters, setLocalFilters] = React.useState<LocalFilter[]>([])
-  
+
   const parentFilterState = instance.getFiltering()
   const availableFilters = instance.getFilters()
-  
+
   // Sync parent filters with local state
   React.useEffect(() => {
     setLocalFilters((prevLocalFilters) => {
@@ -93,33 +93,48 @@ const DataTableFilterBar = ({
       return hasChanges ? updatedLocalFilters : prevLocalFilters
     })
   }, [parentFilterState])
-  
+
   // Add a new filter locally
   const addLocalFilter = React.useCallback((id: string, value: unknown) => {
-    setLocalFilters(prev => [...prev, { id, value, isNew: true }])
+    setLocalFilters((prev) => [...prev, { id, value, isNew: true }])
   }, [])
-  
+
   // Update a local filter's value
-  const updateLocalFilter = React.useCallback((id: string, value: unknown) => {
-    setLocalFilters(prev => prev.map(f => 
-      f.id === id ? { ...f, value, isNew: false } : f
-    ))
-    
-    // If the filter has a meaningful value, propagate to parent
-    if (value !== undefined && value !== null && value !== '' && 
-        !(Array.isArray(value) && value.length === 0)) {
+  const updateLocalFilter = React.useCallback(
+    (id: string, value: unknown) => {
+      setLocalFilters((prev) =>
+        prev.map((f) => (f.id === id ? { ...f, value, isNew: false } : f))
+      )
+
+      const isEmptyValue =
+        value === undefined ||
+        value === null ||
+        value === "" ||
+        (Array.isArray(value) && value.length === 0)
+
+      if (isEmptyValue) {
+        if (parentFilterState[id] !== undefined) {
+          instance.removeFilter(id)
+        }
+        return
+      }
+
       instance.updateFilter({ id, value })
-    }
-  }, [instance])
-  
+    },
+    [instance, parentFilterState]
+  )
+
   // Remove a local filter
-  const removeLocalFilter = React.useCallback((id: string) => {
-    setLocalFilters(prev => prev.filter(f => f.id !== id))
-    // Also remove from parent if it exists there
-    if (parentFilterState[id] !== undefined) {
-      instance.removeFilter(id)
-    }
-  }, [instance, parentFilterState])
+  const removeLocalFilter = React.useCallback(
+    (id: string) => {
+      setLocalFilters((prev) => prev.filter((f) => f.id !== id))
+      // Also remove from parent if it exists there
+      if (parentFilterState[id] !== undefined) {
+        instance.removeFilter(id)
+      }
+    },
+    [instance, parentFilterState]
+  )
 
   const clearFilters = React.useCallback(() => {
     setLocalFilters([])
@@ -128,13 +143,22 @@ const DataTableFilterBar = ({
 
   const filterCount = localFilters.length
   const hasAvailableFilters = availableFilters.length > 0
-  
+
   // Check if sorting is enabled
-  const sortableColumns = instance.getAllColumns().filter((column) => column.getCanSort())
+  const sortableColumns = instance
+    .getAllColumns()
+    .filter((column) => column.getCanSort())
   const hasSorting = instance.enableSorting && sortableColumns.length > 0
 
   // Always show the filter bar when there are available filters, sorting, column visibility, or when forced
-  if (filterCount === 0 && !hasAvailableFilters && !hasSorting && !enableColumnVisibility && !alwaysShow && !children) {
+  if (
+    filterCount === 0 &&
+    !hasAvailableFilters &&
+    !hasSorting &&
+    !enableColumnVisibility &&
+    !alwaysShow &&
+    !children
+  ) {
     return null
   }
 
@@ -146,10 +170,10 @@ const DataTableFilterBar = ({
     <div className="bg-ui-bg-subtle flex w-full flex-nowrap items-center justify-between gap-2 overflow-x-auto border-t px-6 py-2">
       <div className="flex flex-nowrap items-center gap-2 md:flex-wrap">
         {localFilters.map((localFilter) => (
-          <DataTableFilter 
-            key={localFilter.id} 
-            id={localFilter.id} 
-            filter={localFilter.value} 
+          <DataTableFilter
+            key={localFilter.id}
+            id={localFilter.id}
+            filter={localFilter.value}
             isNew={localFilter.isNew}
             onUpdate={(value) => updateLocalFilter(localFilter.id, value)}
             onRemove={() => removeLocalFilter(localFilter.id)}
@@ -161,7 +185,9 @@ const DataTableFilterBar = ({
       </div>
       <div className="flex flex-shrink-0 items-center gap-2">
         {hasSorting && <DataTableSortingMenu tooltip={sortingTooltip} />}
-        {enableColumnVisibility && <DataTableColumnVisibilityMenu tooltip={columnsTooltip} />}
+        {enableColumnVisibility && (
+          <DataTableColumnVisibilityMenu tooltip={columnsTooltip} />
+        )}
         {children}
       </div>
     </div>
@@ -186,4 +212,3 @@ const DataTableFilterBarSkeleton = ({
 
 export { DataTableFilterBar }
 export type { DataTableFilterBarProps }
-
