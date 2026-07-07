@@ -237,7 +237,11 @@ async function prepareDataFixtures({ container }) {
   }
 }
 
-async function createOrderFixture({ container, product }) {
+async function createOrderFixture({
+  container,
+  product,
+  withShippingMethodAdjustment = true,
+}) {
   const orderService: IOrderModuleService = container.resolve(Modules.ORDER)
   let order = await orderService.createOrders({
     region_id: "test_region_id",
@@ -297,14 +301,18 @@ async function createOrderFixture({ container, product }) {
             rate: 10,
           },
         ],
-        adjustments: [
-          {
-            code: "VIP_10",
-            amount: 1,
-            description: "VIP discount",
-            promotion_id: "prom_123",
-          },
-        ],
+        ...(withShippingMethodAdjustment
+          ? {
+              adjustments: [
+                {
+                  code: "VIP_10",
+                  amount: 1,
+                  description: "VIP discount",
+                  promotion_id: "prom_123",
+                },
+              ],
+            }
+          : {}),
       },
     ],
     currency_code: "usd",
@@ -531,7 +539,15 @@ medusaIntegrationTestRunner({
       })
 
       it("should emit RETURN_RECEIVED when receive_now is true", async () => {
-        const order = await createOrderFixture({ container, product })
+        // Uses an order without a shipping-method adjustment: receiving an
+        // order that has one currently triggers a pre-existing versioning bug
+        // (duplicate order_shipping_method_adjustment version), tracked in
+        // medusajs/medusa#15959.
+        const order = await createOrderFixture({
+          container,
+          product,
+          withShippingMethodAdjustment: false,
+        })
         const reasons = await orderService.listReturnReasons({})
         const testReason = reasons.find(
           (r) => r.value.toLowerCase() === "test child reason"
