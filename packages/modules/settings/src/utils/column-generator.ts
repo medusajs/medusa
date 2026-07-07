@@ -258,31 +258,27 @@ function processEntityType(
               : undefined
           )
 
-      // TODO: review with Adrien, expectation here is for foreign key columns not to be added, since their corresponding relationship
-      // filter represents it and includes additional properties needed to construct filters in UI
-      if (!processedFields.has(fullPath.replace("_", "."))) {
-        columns.push({
-          id: fullPath,
-          name: label?.label || formatFieldName(fieldName),
-          description: label?.description || undefined,
-          field: fullPath,
-          sortable: !parentPath, // Only top-level fields are sortable
-          hideable: true,
-          default_visible: defaultVisibleFields.includes(fullPath),
-          data_type: dataType,
-          semantic_type: semanticType,
-          context: "both",
-          render_mode: renderMode,
-          default_order: fieldOrdering[fullPath] || 900,
-          category: parentPath
-            ? "relationship"
-            : semanticTypeToCategory(semanticType),
-          filter,
-          source: { module: entity.module, entity: entity.name },
-          custom_label: hasCustomLabel,
-          label_id: label?.id,
-        })
-      }
+      columns.push({
+        id: fullPath,
+        name: label?.label || formatFieldName(fieldName),
+        description: label?.description || undefined,
+        field: fullPath,
+        sortable: !parentPath && dataType !== "object", // Only top-level fields are sortable
+        hideable: true,
+        default_visible: defaultVisibleFields.includes(fullPath),
+        data_type: dataType,
+        semantic_type: semanticType,
+        context: "both",
+        render_mode: renderMode,
+        default_order: fieldOrdering[fullPath] || 900,
+        category: parentPath
+          ? "relationship"
+          : semanticTypeToCategory(semanticType),
+        filter,
+        source: { module: entity.module, entity: entity.name },
+        custom_label: hasCustomLabel,
+        label_id: label?.id,
+      })
     }
     // Handle single relationships (many-to-one, one-to-one)
     else if (
@@ -344,15 +340,6 @@ function processEntityType(
               if (relationshipFilter) {
                 filter.relationship = relationshipFilter
               }
-            }
-
-            // TODO: review with Adrien, expectation here is for foreign key columns to be removed if they were already added, since their corresponding relationship
-            // filter represents it and includes additional properties needed to construct filters in UI
-            if (processedFields.has(nestedPath.replace(".", "_"))) {
-              columns.splice(
-                columns.findIndex((c) => c.id === nestedPath.replace(".", "_")),
-                1
-              )
             }
 
             columns.push({
