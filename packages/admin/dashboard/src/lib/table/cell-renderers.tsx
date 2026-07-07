@@ -28,6 +28,42 @@ export type CellRenderer<TData = any> = (
 export type CellAlignment = "left" | "center" | "right"
 
 /**
+ * Render modes that ship with a built-in cell renderer.
+ */
+export type BuiltInRenderMode =
+  | "text"
+  | "count"
+  | "status"
+  | "badge"
+  | "badge_list"
+  | "date"
+  | "datetime"
+  | "timestamp"
+  | "currency"
+  | "number"
+  | "boolean"
+  | "id"
+  | "email"
+  | "phone"
+  | "url"
+  | "image"
+  | "json"
+  | "product_info"
+  | "collection"
+  | "variants"
+  | "sales_channels_list"
+  | "customer_name"
+  | "address"
+  | "address_summary"
+  | "country_code"
+  | "display_id"
+
+/**
+ * A render mode key. Built-in modes are suggested for autocomplete, but any
+ * custom string is accepted.
+ */
+export type RenderMode = BuiltInRenderMode | (string & {})
+/**
  * A cell renderer plus the alignment it renders best at.
  */
 export type CellRendererDefinition<TData = any> = {
@@ -572,7 +608,7 @@ export function getCellRenderer(
 }
 
 export function registerCellRenderer(
-  type: string,
+  type: RenderMode,
   def: CellRendererDefinition
 ) {
   cellRenderers.set(type, { render: def.render, align: def.align })

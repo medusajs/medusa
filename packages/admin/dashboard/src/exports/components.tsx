@@ -45,4 +45,18 @@ export type { LayoutComponentProps } from "../components/layout-composer/types"
 export {
   registerCellRenderer,
   type CellRenderer,
+  type CellRendererDefinition,
+  type CellAlignment,
+  type RenderMode,
+  type BuiltInRenderMode,
 } from "../lib/table/cell-renderers"
+
+export {
+  ConfigurableDataTable,
+  type ConfigurableDataTableProps,
+} from "../components/table/configurable-data-table/configurable-data-table"
+
+export {
+  createTableAdapter,
+  type TableAdapter,
+} from "../lib/table/table-adapters"
