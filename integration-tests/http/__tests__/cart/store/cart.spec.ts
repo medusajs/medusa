@@ -712,6 +712,54 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should return a 400 instead of a 500 when adding a variant with no price", async () => {
+          const productData = {
+            title: "Medusa T-Shirt with no price",
+            handle: "t-shirt-with-no-price",
+            status: ProductStatus.PUBLISHED,
+            options: [
+              {
+                title: "Size",
+                values: ["S"],
+              },
+            ],
+            variants: [
+              {
+                title: "S",
+                sku: "SHIRT-S-BLACK-NO-PRICE",
+                options: {
+                  Size: "S",
+                },
+                manage_inventory: false,
+              },
+            ],
+          }
+
+          const newProduct = await api.post(
+            `/admin/products`,
+            productData,
+            adminHeaders
+          )
+
+          const variantId = newProduct.data.product.variants[0].id
+
+          const error = await api
+            .post(
+              `/store/carts/${cart.id}/line-items`,
+              {
+                variant_id: variantId,
+                quantity: 1,
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            `Variants with IDs ${variantId} do not have a price`
+          )
+        })
+
         it("should add item to cart and calculate prices based on item quantity", async () => {
           const productData = {
             title: "Medusa T-Shirt based quantity",
