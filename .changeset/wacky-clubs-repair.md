@@ -1,5 +1,5 @@
 ---
-"@medusajs/ui": minor
+"@medusajs/ui": patch
 ---
 
 feat(ui): add Chart component with Line, Bar, Area, and Pie variants

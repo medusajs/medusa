@@ -47,7 +47,8 @@
   "devDependencies": {
     "@medusajs/ui-preset": "2.17.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.0"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -67,13 +68,18 @@
     "react-aria": "^3.33.1",
     "react-currency-input-field": "^3.6.11",
     "react-stately": "^3.31.1",
-    "recharts": "^2.12.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.2.1"
   },
   "peerDependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.0"
+  },
+  "peerDependenciesMeta": {
+    "recharts": {
+      "optional": true
+    }
   },
   "browserslist": [
     "last 3 chrome versions",
