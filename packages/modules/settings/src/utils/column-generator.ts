@@ -20,6 +20,7 @@ import {
   getEntityOverride,
   getFieldFilterRules,
   getFieldOrdering,
+  getFieldRenderModes,
   getNonFilterableFields,
 } from "./entity-overrides"
 import {
@@ -28,7 +29,7 @@ import {
   shouldExcludeField,
 } from "./filter-rules"
 import { getRelationshipFilterConfig } from "./relationship-filters"
-import { inferDataType, inferRenderMode } from "./render-mode-mapper"
+import { inferDataType, inferRenderMode, RenderMode } from "./render-mode-mapper"
 
 // Re-export the AdminColumn type from types for convenience
 export type ViewConfigurationColumn = SettingsTypes.ViewConfigurationColumnDTO
@@ -100,6 +101,7 @@ export function generateEntityColumns(
   const filterRules = getFieldFilterRules(entity.name, override)
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
   const fieldOrdering = getFieldOrdering(entity.name, override)
+  const fieldRenderModes = getFieldRenderModes(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
   const nonFilterableFields = getNonFilterableFields(entity.name, override)
 
@@ -117,6 +119,7 @@ export function generateEntityColumns(
     filterRules,
     defaultVisibleFields,
     fieldOrdering,
+    fieldRenderModes,
     nonFilterableFields,
     propertyLabels
   )
@@ -134,6 +137,7 @@ export function generateEntityColumns(
         filterRules,
         defaultVisibleFields,
         fieldOrdering,
+        fieldRenderModes,
         nonFilterableFields,
         propertyLabels
       )
@@ -201,6 +205,7 @@ function processEntityType(
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
   fieldOrdering: Record<string, number>,
+  fieldRenderModes: Record<string, RenderMode>,
   nonFilterableFields: string[],
   propertyLabels?: Map<string, PropertyLabel>,
   parentPath: string = ""
@@ -254,10 +259,11 @@ function processEntityType(
     if (isScalarType(underlyingType) || isEnumType(underlyingType)) {
       const graphqlTypeName = underlyingType.name
       const dataType = inferDataType(graphqlTypeName, fieldName)
-      const { renderMode, semanticType } = inferRenderMode(
+      const { renderMode: inferredRenderMode, semanticType } = inferRenderMode(
         fieldName,
         graphqlTypeName
       )
+      const renderMode = fieldRenderModes[fullPath] ?? inferredRenderMode
 
       const label = propertyLabels?.get(fullPath)
       const hasCustomLabel = !!label
@@ -326,10 +332,9 @@ function processEntityType(
           ) {
             const graphqlTypeName = nestedUnderlyingType.name
             const dataType = inferDataType(graphqlTypeName, relatedFieldName)
-            const { renderMode, semanticType } = inferRenderMode(
-              relatedFieldName,
-              graphqlTypeName
-            )
+            const { renderMode: inferredRenderMode, semanticType } =
+              inferRenderMode(relatedFieldName, graphqlTypeName)
+            const renderMode = fieldRenderModes[nestedPath] ?? inferredRenderMode
 
             const label = propertyLabels?.get(nestedPath)
             const hasCustomLabel = !!label

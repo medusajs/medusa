@@ -1,5 +1,6 @@
 import { FieldFilterRules } from "./filter-rules"
 import { ComputedColumnDefinition } from "./computed-columns"
+import { RenderMode } from "./render-mode-mapper"
 
 /**
  * Override configuration for an entity.
@@ -31,6 +32,14 @@ export interface EntityOverride {
    * Lower numbers appear first.
    */
   fieldOrdering?: Record<string, number>
+
+  /**
+   * Override the render mode for specific field paths (field path -> render mode).
+   * When set, this render mode replaces the inferred one; the inferred data type
+   * and semantic type are preserved. Supports dotted paths for nested
+   * relationship scalars (e.g. `collection.title`).
+   */
+  fieldRenderModes?: Record<string, RenderMode>
 
   /**
    * Additional GraphQL types to include fields from.
@@ -183,15 +192,17 @@ export class EntityOverrideRegistry {
           ...(existing.excludeFields || []),
           ...(override.excludeFields || []),
         ],
-        excludeSuffixes:
-          override.excludeSuffixes ?? existing.excludeSuffixes,
-        excludePrefixes:
-          override.excludePrefixes ?? existing.excludePrefixes,
+        excludeSuffixes: override.excludeSuffixes ?? existing.excludeSuffixes,
+        excludePrefixes: override.excludePrefixes ?? existing.excludePrefixes,
         defaultVisibleFields:
           override.defaultVisibleFields ?? existing.defaultVisibleFields,
         fieldOrdering: {
           ...(existing.fieldOrdering || {}),
           ...(override.fieldOrdering || {}),
+        },
+        fieldRenderModes: {
+          ...(existing.fieldRenderModes || {}),
+          ...(override.fieldRenderModes || {}),
         },
         additionalTypes: [
           ...(existing.additionalTypes || []),
@@ -323,6 +334,19 @@ export function getFieldOrdering(
 ): Record<string, number> {
   const resolvedOverride = override ?? getEntityOverride(entityName)
   return resolvedOverride?.fieldOrdering || {}
+}
+
+/**
+ * Get the per-field render mode overrides for an entity.
+ * @param entityName - The entity name (used if override is not provided)
+ * @param override - Optional pre-resolved override to use instead of looking up by entity name
+ */
+export function getFieldRenderModes(
+  entityName: string,
+  override?: EntityOverride
+): Record<string, RenderMode> {
+  const resolvedOverride = override ?? getEntityOverride(entityName)
+  return resolvedOverride?.fieldRenderModes || {}
 }
 
 /**
