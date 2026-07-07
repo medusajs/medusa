@@ -37,18 +37,26 @@ export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct
     },
     getRowHref: (row) => `/products/${row.id}`,
     transformColumns: (columns) => {
-      const DISABLED_FILTER_PATTERNS = [
-        /^collection\.(?!id$).+/,
-        /^shipping_profile.+/,
-        /^images.+/,
-        /^options.+/,
-        /^type\.(?!id$).+/,
+      const ALLOWED_FILTERS = [
+        "id",
+        "title",
+        "handle",
+        "is_giftcard",
+        "status",
+        "external_id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+        "collection.id",
+        "type.id",
+        "tags.id",
+        "categories.id",
+        "sales_channels.id",
+        "variants.id",
       ]
 
       return columns.map((column) => {
-        const isFilterDisabled = DISABLED_FILTER_PATTERNS.some((pattern) =>
-          pattern.test(column.field)
-        )
+        const isFilterDisabled = !ALLOWED_FILTERS.includes(column.field)
 
         return {
           ...column,
