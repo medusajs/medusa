@@ -28,9 +28,6 @@ export function calculateRequiredFields(
       column.computed.optional_fields?.forEach((field: string) =>
         requiredFieldsSet.add(field)
       )
-    } else if (!column.field.includes(".")) {
-      // Direct field
-      requiredFieldsSet.add(column.field)
     } else {
       // Relationship field
       requiredFieldsSet.add(column.field)
