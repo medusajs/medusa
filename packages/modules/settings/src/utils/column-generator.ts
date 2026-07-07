@@ -215,6 +215,22 @@ function processEntityType(
 
   const fields = type.getFields()
 
+  // Foreign keys made redundant by a single relationship of the same name
+  // (e.g. collection_id -> collection.id). The relationship's `.id` column
+  // covers both filtering and display, so drop the raw FK to avoid duplicates.
+  const redundantForeignKeys = new Set<string>()
+  if (!parentPath) {
+    for (const [fieldName, fieldDef] of Object.entries(fields)) {
+      const fieldType = (fieldDef as any).type
+      if (
+        isSingleRelationship(fieldType) &&
+        getUnderlyingType(fieldType) instanceof GraphQLObjectType
+      ) {
+        redundantForeignKeys.add(`${fieldName}_id`)
+      }
+    }
+  }
+
   for (const [fieldName, fieldDef] of Object.entries(fields)) {
     const fullPath = parentPath ? `${parentPath}.${fieldName}` : fieldName
 
@@ -225,6 +241,11 @@ function processEntityType(
 
     // Skip excluded fields
     if (shouldExcludeField(fieldName, filterRules)) {
+      continue
+    }
+
+    // Skip FKs covered by their relationship's `.id` column
+    if (redundantForeignKeys.has(fullPath)) {
       continue
     }
 
