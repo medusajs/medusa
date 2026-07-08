@@ -7,6 +7,7 @@ import {
   FindConfig,
   InferEntityType,
   InternalModuleDeclaration,
+  Logger,
   ModulesSdkTypes,
   PromotionDTO,
   PromotionTypes,
@@ -66,6 +67,7 @@ import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 import { buildPromotionRuleQueryFilterFromContext } from "../utils/compute-actions/build-promotion-rule-query-filter-from-context"
 
 type InjectedDependencies = {
+  logger: Logger
   baseRepository: DAL.RepositoryService
   promotionService: ModulesSdkTypes.IMedusaInternalService<any>
   applicationMethodService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -96,6 +98,7 @@ export default class PromotionModuleService
   })
   implements PromotionTypes.IPromotionModuleService
 {
+  protected logger_: Logger
   protected baseRepository_: DAL.RepositoryService
   protected promotionService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof Promotion>
@@ -122,6 +125,7 @@ export default class PromotionModuleService
 
   constructor(
     {
+      logger,
       baseRepository,
       promotionService,
       applicationMethodService,
@@ -136,6 +140,7 @@ export default class PromotionModuleService
     // @ts-ignore
     super(...arguments)
 
+    this.logger_ = logger
     this.baseRepository_ = baseRepository
     this.promotionService_ = promotionService
     this.applicationMethodService_ = applicationMethodService
@@ -886,10 +891,9 @@ export default class PromotionModuleService
         const attributeValue = budgetUsageContext[attribute]
 
         if (!attributeValue) {
-          // The compute context has no value for the budget attribute (e.g. a
-          // guest cart with no email). The per-attribute budget can't be
-          // evaluated yet, so the promotion isn't applicable - skip it instead
-          // of throwing, which would 500 automatic promotions on guest carts.
+          this.logger_.warn(
+            `Attribute value for "${attribute}" is required by promotion campaign budget`
+          )
           continue
         }
 
