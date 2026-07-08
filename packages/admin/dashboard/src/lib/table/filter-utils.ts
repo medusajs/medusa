@@ -69,6 +69,13 @@ export function generateFiltersFromColumns(
       }))
     }
 
+    if (column.data_type === "boolean") {
+      filterConfig.options = [
+        { label: "True", value: "true" },
+        { label: "False", value: "false" },
+      ]
+    }
+
     if (column.filter?.relationship && relationshipOptions) {
       const options = relationshipOptions[column.field]
       if (options) {

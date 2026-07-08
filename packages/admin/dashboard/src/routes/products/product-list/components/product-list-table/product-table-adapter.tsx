@@ -41,7 +41,6 @@ export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct
         "id",
         "title",
         "handle",
-        "is_giftcard",
         "status",
         "external_id",
         "created_at",
