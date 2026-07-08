@@ -167,6 +167,41 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## Tailwind CSS v4 PostCSS Plugin Build Error
+
+If your storefront build fails with the following error after upgrading to Tailwind CSS v4:
+
+```bash
+It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin.
+The PostCSS plugin has moved to a separate package, so to continue using
+Tailwind CSS with PostCSS you'll need to install `@tailwindcss/postcss` and
+update your PostCSS configuration.
+```
+
+Tailwind CSS v4 no longer includes the PostCSS plugin in the main package. You need to install `@tailwindcss/postcss` separately and update your PostCSS configuration.
+
+To fix this error:
+
+1. Install `@tailwindcss/postcss` in your storefront directory:
+
+```bash npm2yarn
+npm install --save-dev @tailwindcss/postcss
+```
+
+2. Update your `postcss.config.js` (or `postcss.config.mjs`) to use the new package:
+
+```js title="postcss.config.js"
+export default {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+}
+```
+
+3. Commit the changes and push to trigger a new deployment.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
