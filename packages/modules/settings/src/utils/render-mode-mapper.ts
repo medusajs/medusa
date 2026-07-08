@@ -2,6 +2,7 @@
  * Render mode mapping utilities for column generation.
  * Maps field names and GraphQL types to appropriate render modes.
  */
+import { GraphQLNamedType, isEnumType } from "@medusajs/framework/utils"
 
 /**
  * Common render mode type that can be extended by plugins.
@@ -179,7 +180,7 @@ const FIELD_PATTERN_OVERRIDES: FieldPatternOverride[] = [
  */
 export function inferRenderMode(
   fieldName: string,
-  graphqlTypeName?: string
+  graphqlType: GraphQLNamedType
 ): { renderMode: RenderMode; semanticType: string } {
   // Check field name patterns first (more specific)
   for (const override of FIELD_PATTERN_OVERRIDES) {
@@ -190,6 +191,15 @@ export function inferRenderMode(
       }
     }
   }
+
+  if (isEnumType(graphqlType)) {
+    return {
+      renderMode: "status",
+      semanticType: "enum",
+    }
+  }
+
+  const graphqlTypeName = graphqlType.name
 
   // Fall back to type mapping
   if (graphqlTypeName && TYPE_TO_RENDER_MODE[graphqlTypeName]) {
@@ -246,9 +256,11 @@ export function dataTypeToRenderMode(dataType: ColumnDataType): RenderMode {
  * Infer the data type from a GraphQL scalar type name.
  */
 export function inferDataType(
-  graphqlTypeName: string,
+  graphqlType: GraphQLNamedType,
   fieldName: string
 ): ColumnDataType {
+  const graphqlTypeName = graphqlType.name
+
   // Check field patterns first
   if (
     /_at$/.test(fieldName) ||
@@ -259,7 +271,7 @@ export function inferDataType(
   if (/total$|amount$|price$/.test(fieldName)) {
     return "currency"
   }
-  if (/status$|^state$/.test(fieldName)) {
+  if (isEnumType(graphqlType)) {
     return "enum"
   }
   if (/^is_|^has_|^can_/.test(fieldName)) {

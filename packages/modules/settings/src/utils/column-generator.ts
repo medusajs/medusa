@@ -1,8 +1,10 @@
 import { SettingsTypes } from "@medusajs/framework/types"
 import {
+  GraphQLEnumType,
   GraphQLObjectType,
   isEnumType,
   isScalarType,
+  Kind,
 } from "@medusajs/framework/utils"
 import { getComputedColumnRegistry } from "./computed-columns"
 import {
@@ -29,7 +31,11 @@ import {
   shouldExcludeField,
 } from "./filter-rules"
 import { getRelationshipFilterConfig } from "./relationship-filters"
-import { inferDataType, inferRenderMode, RenderMode } from "./render-mode-mapper"
+import {
+  inferDataType,
+  inferRenderMode,
+  RenderMode,
+} from "./render-mode-mapper"
 
 // Re-export the AdminColumn type from types for convenience
 export type ViewConfigurationColumn = SettingsTypes.ViewConfigurationColumnDTO
@@ -43,6 +49,27 @@ export interface PropertyLabel {
   property: string
   label: string
   description?: string | null
+}
+
+/**
+ * Resolve the real (stored) values of a GraphQL enum.
+ *
+ * DML-generated enums uppercase the member name and keep the real stored value
+ * in an `@enumValue(value: "...")` directive (e.g. `STANDARD @enumValue(value:
+ * "standard")`). Honor that directive so filters use the value the DB actually
+ * stores; fall back to the member value for enums declared without it.
+ */
+function getEnumValues(enumType: GraphQLEnumType): string[] {
+  return enumType.getValues().map((value) => {
+    const directive = value.astNode?.directives?.find(
+      (d) => d.name.value === "enumValue"
+    )
+    const arg = directive?.arguments?.find((a) => a.name.value === "value")
+    if (arg?.value.kind === Kind.STRING) {
+      return arg.value.value
+    }
+    return String(value.value)
+  })
 }
 
 /**
@@ -257,11 +284,10 @@ function processEntityType(
 
     // Handle scalar and enum types
     if (isScalarType(underlyingType) || isEnumType(underlyingType)) {
-      const graphqlTypeName = underlyingType.name
-      const dataType = inferDataType(graphqlTypeName, fieldName)
+      const dataType = inferDataType(underlyingType, fieldName)
       const { renderMode: inferredRenderMode, semanticType } = inferRenderMode(
         fieldName,
-        graphqlTypeName
+        underlyingType
       )
       const renderMode = fieldRenderModes[fullPath] ?? inferredRenderMode
 
@@ -278,7 +304,7 @@ function processEntityType(
             false,
             semanticType,
             isEnumType(underlyingType)
-              ? underlyingType.getValues().map((v: any) => v.value)
+              ? getEnumValues(underlyingType)
               : undefined
           )
 
@@ -330,11 +356,14 @@ function processEntityType(
             isScalarType(nestedUnderlyingType) &&
             !processedFields.has(nestedPath)
           ) {
-            const graphqlTypeName = nestedUnderlyingType.name
-            const dataType = inferDataType(graphqlTypeName, relatedFieldName)
+            const dataType = inferDataType(
+              nestedUnderlyingType,
+              relatedFieldName
+            )
             const { renderMode: inferredRenderMode, semanticType } =
-              inferRenderMode(relatedFieldName, graphqlTypeName)
-            const renderMode = fieldRenderModes[nestedPath] ?? inferredRenderMode
+              inferRenderMode(relatedFieldName, nestedUnderlyingType)
+            const renderMode =
+              fieldRenderModes[nestedPath] ?? inferredRenderMode
 
             const label = propertyLabels?.get(nestedPath)
             const hasCustomLabel = !!label
@@ -347,7 +376,10 @@ function processEntityType(
                   relatedFieldName,
                   dataType,
                   false,
-                  semanticType
+                  semanticType,
+                  isEnumType(nestedUnderlyingType)
+                    ? getEnumValues(nestedUnderlyingType)
+                    : undefined
                 )
 
             // Note: nested .id paths in nonFilterableFields produce
