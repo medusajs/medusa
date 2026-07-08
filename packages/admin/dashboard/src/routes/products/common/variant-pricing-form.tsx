@@ -67,12 +67,15 @@ const useVariantPriceGridColumns = ({
       columnHelper.column({
         id: t("fields.title"),
         header: t("fields.title"),
+        size: 300,
         cell: (context) => {
           const entity = context.row.original
           return (
             <DataGrid.ReadonlyCell context={context}>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
-                <span className="truncate">{entity.title}</span>
+                <span className="truncate" title={entity.title || undefined}>
+                  {entity.title}
+                </span>
               </div>
             </DataGrid.ReadonlyCell>
           )
