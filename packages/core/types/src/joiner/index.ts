@@ -1,5 +1,8 @@
 import { ICachingModuleService } from "../caching"
 
+/**
+ * Defines a relationship between two services in the remote joiner graph.
+ */
 export type JoinerRelationship = {
   alias: string
   foreignKey: string
@@ -20,11 +23,17 @@ export type JoinerRelationship = {
   args?: Record<string, any>
 }
 
+/**
+ * An extended {@link JoinerRelationship} with pre-parsed arrays for primary and foreign keys.
+ */
 export type ComputedJoinerRelationship = JoinerRelationship & {
   primaryKeyArr: string[]
   foreignKeyArr: string[]
 }
 
+/**
+ * Alias configuration for a service in the remote joiner, used to expose the service under a named entry point.
+ */
 export interface JoinerServiceConfigAlias {
   name: string | string[]
   entity?: string
@@ -48,6 +57,9 @@ export interface JoinerServiceConfigAlias {
   args?: Record<string, any>
 }
 
+/**
+ * Configuration object that describes how a service participates in the remote joiner graph.
+ */
 export interface JoinerServiceConfig {
   serviceName: string
   /**
@@ -78,16 +90,25 @@ export interface JoinerServiceConfig {
   args?: Record<string, any>
 }
 
+/**
+ * A named argument passed to a remote joiner query or relationship.
+ */
 export interface JoinerArgument {
   name: string
   value?: any
 }
 
+/**
+ * A named directive applied to a field in a remote joiner query.
+ */
 export interface JoinerDirective {
   name: string
   value?: any
 }
 
+/**
+ * Describes a query to be executed by the remote joiner across one or more services.
+ */
 export interface RemoteJoinerQuery {
   service?: string
   alias?: string
@@ -102,6 +123,9 @@ export interface RemoteJoinerQuery {
   directives?: { [field: string]: JoinerDirective[] }
 }
 
+/**
+ * Options that control the behavior of a remote joiner query execution.
+ */
 export interface RemoteJoinerOptions {
   throwIfKeyNotFound?: boolean
   throwIfRelationNotFound?: boolean | string[]
@@ -148,6 +172,9 @@ export interface RemoteJoinerOptions {
   }
 }
 
+/**
+ * A recursive map describing nested relationship expansions in a remote query.
+ */
 export interface RemoteNestedExpands {
   [key: string]: {
     fields?: string[]
