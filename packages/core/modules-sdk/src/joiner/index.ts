@@ -1,2 +1,1 @@
-export * from "./helpers"
-export * from "./remote-joiner"
+export { RemoteJoiner } from "@medusajs/query"

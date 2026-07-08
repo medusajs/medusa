@@ -1,5 +1,12 @@
 # @medusajs/oas-github-ci
 
+## 2.17.2
+
+### Patch Changes
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/medusa-oas-cli@2.17.2
+
 ## 2.17.1
 
 ### Patch Changes

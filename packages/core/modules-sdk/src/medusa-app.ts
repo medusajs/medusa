@@ -1,5 +1,4 @@
 import { asValue } from "@medusajs/deps/awilix"
-import { RemoteFetchDataCallback } from "./joiner"
 import {
   ConfigModule,
   ExternalModuleDeclaration,
@@ -13,7 +12,6 @@ import {
   ModuleBootstrapDeclaration,
   ModuleDefinition,
   ModuleExports,
-  ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteQueryFunction,
 } from "@medusajs/types"
@@ -42,7 +40,7 @@ import {
   ModuleBootstrapOptions,
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
-import { createQuery, RemoteQuery } from "./remote-query"
+import { createQuery } from "./remote-query"
 import { MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
@@ -272,16 +270,6 @@ function getLoadedSchema(): string {
     .join("\n")
 }
 
-function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
-  for (const config of servicesConfig) {
-    if (!config.serviceName || config.isReadOnlyLink) {
-      continue
-    }
-
-    MedusaModule.setJoinerConfig(config.serviceName, config)
-  }
-}
-
 export type MedusaAppOutput = {
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: Link | undefined
@@ -304,12 +292,10 @@ export type MedusaAppOptions = {
   sharedContainer?: MedusaContainer
   sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]
-  servicesConfig?: ModuleJoinerConfig[]
   medusaConfigPath?: string
   modulesConfigFileName?: string
   modulesConfig?: MedusaModuleConfig
   linkModules?: RegisterModuleJoinerConfig | RegisterModuleJoinerConfig[]
-  remoteFetchData?: RemoteFetchDataCallback
   injectedDependencies?: any
   onApplicationStartCb?: () => void
   /**
@@ -332,12 +318,10 @@ export type MedusaAppOptions = {
 async function MedusaApp_({
   sharedContainer,
   sharedResourcesConfig,
-  servicesConfig,
   medusaConfigPath,
   modulesConfigFileName,
   modulesConfig,
   linkModules,
-  remoteFetchData,
   injectedDependencies = {},
   migrationOnly = false,
   schemaOnly = false,
@@ -395,8 +379,6 @@ async function MedusaApp_({
     sharedResourcesConfig as ModuleServiceInitializeOptions,
     true
   )!
-
-  registerCustomJoinerConfigs(servicesConfig ?? [])
 
   if (
     sharedResourcesConfig?.database?.connection &&
@@ -510,12 +492,11 @@ async function MedusaApp_({
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
   const entitiesMap = schema.getTypeMap() as unknown as Map<string, any>
+  const relationMap = GraphQLUtils.extractRelationsFromGQL(entitiesMap)
 
-  const remoteQuery = new RemoteQuery({
-    servicesConfig,
-    customRemoteFetchData: remoteFetchData,
-    entitiesMap,
-  })
+  const modulesLoaded = MedusaModule.getLoadedModules().map(
+    (mod) => Object.values(mod)[0]
+  )
 
   const applyMigration = async ({
     modulesNames,
@@ -696,7 +677,8 @@ async function MedusaApp_({
     modules: allModules,
     link: remoteLink,
     query: createQuery({
-      remoteQuery,
+      modulesLoaded,
+      relationMap,
       indexModule,
       container: sharedContainer_,
     }) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,

@@ -3904,6 +3904,21 @@ medusaIntegrationTestRunner({
           })
         })
 
+        it("should throw 400 (not 500) when ruleAttributeId is invalid and a value filter is provided", async () => {
+          const { response } = await api
+            .get(
+              `/admin/promotions/rule-value-options/rules/does-not-exist?value=test`,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message: "Invalid rule attribute - does-not-exist",
+          })
+        })
+
         it("should return all values based on rule types", async () => {
           const region1 = (
             await api.post(

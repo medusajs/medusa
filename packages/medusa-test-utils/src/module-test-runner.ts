@@ -30,7 +30,6 @@ interface ModuleTestRunnerConfig<TService = any> {
   moduleModels?: any[]
   moduleOptions?: Record<string, any>
   moduleDependencies?: string[]
-  joinerConfig?: any[]
   schema?: string
   dbName?: string
   injectedDependencies?: Record<string, any>
@@ -98,7 +97,6 @@ class ModuleTestRunner<TService = any> {
   private cwd?: string
   private moduleOptions: Record<string, any>
   private moduleDependencies?: string[]
-  private joinerConfig: any[]
   private injectedDependencies: Record<string, any>
   private hooks: ModuleTestRunnerConfig<TService>["hooks"] = {}
 
@@ -125,7 +123,6 @@ class ModuleTestRunner<TService = any> {
     this.cwd = config.cwd
     this.moduleOptions = config.moduleOptions ?? {}
     this.moduleDependencies = config.moduleDependencies
-    this.joinerConfig = config.joinerConfig ?? []
     this.injectedDependencies = config.injectedDependencies ?? {}
     this.hooks = config.hooks ?? {}
 
@@ -192,7 +189,6 @@ class ModuleTestRunner<TService = any> {
       },
       modulesConfig: this.modulesConfig,
       databaseConfig: this.dbConfig,
-      joinerConfig: this.joinerConfig,
       preventConnectionDestroyWarning: true,
       cwd: this.cwd,
     }
@@ -307,7 +303,6 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleModels,
   moduleOptions = {},
   moduleDependencies,
-  joinerConfig = [],
   schema = "public",
   dbName,
   debug = false,
@@ -321,7 +316,6 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleModels?: any[]
   moduleOptions?: Record<string, any>
   moduleDependencies?: string[]
-  joinerConfig?: any[]
   schema?: string
   dbName?: string
   injectedDependencies?: Record<string, any>
@@ -336,7 +330,6 @@ export function moduleIntegrationTestRunner<TService = any>({
     moduleModels,
     moduleOptions,
     moduleDependencies,
-    joinerConfig,
     schema,
     dbName,
     debug,
