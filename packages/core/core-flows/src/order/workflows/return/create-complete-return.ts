@@ -471,8 +471,6 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       },
     }).config({ name: "emit-return-requested-event" })
 
-    // Only emit RETURN_RECEIVED when the return is actually received now;
-    // otherwise the return has only been requested.
     when({ input }, ({ input }) => input.receive_now === true).then(() =>
       emitEventStep({
         eventName: OrderWorkflowEvents.RETURN_RECEIVED,
