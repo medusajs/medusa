@@ -1,14 +1,9 @@
 import {
-  ComputedJoinerRelationship,
-  ExecutionStage,
-  InternalJoinerServiceConfig,
   JoinerRelationship,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
-  RemoteExpandProperty,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
-  RemoteNestedExpands,
 } from "@medusajs/types"
 import {
   deduplicate,
@@ -18,7 +13,14 @@ import {
   isString,
   MedusaError,
 } from "@medusajs/utils"
-import { IRemoteDataFetcher } from "./types"
+import {
+  ComputedJoinerRelationship,
+  ExecutionStage,
+  InternalJoinerServiceConfig,
+  IRemoteDataFetcher,
+  RemoteExpandProperty,
+  RemoteNestedExpands,
+} from "./types"
 
 const BASE_PATH = "_root"
 

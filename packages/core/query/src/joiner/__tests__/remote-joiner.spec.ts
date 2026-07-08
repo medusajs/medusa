@@ -1,10 +1,6 @@
-import {
-  IModuleService,
-  MedusaContainer,
-  RemoteExpandProperty,
-} from "@medusajs/types"
+import { IModuleService, MedusaContainer } from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
-import { IRemoteDataFetcher, RemoteJoiner } from ".."
+import { IRemoteDataFetcher, RemoteExpandProperty, RemoteJoiner } from ".."
 import { serviceConfigs, serviceMock } from "../__mocks__/mock_data"
 
 const container = {
