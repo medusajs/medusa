@@ -1,4 +1,3 @@
-import { FindConfig } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -11,9 +10,10 @@ import {
   defineConfig,
   SqlEntityManager,
 } from "@medusajs/deps/mikro-orm/postgresql"
+import { FindConfig } from "@medusajs/types"
 import { dropDatabase } from "pg-god"
-import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
 import { buildQuery } from "../../../../modules-sdk/build-query"
+import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
 import {
   createSqlCapture,
   expectCapturedQueries,
@@ -313,6 +313,22 @@ function buildReadonlyProductJoinFromOrderLineItemMetadata(
   }
 }
 
+function buildReadonlyOrderLineItemJoinFromProductMetadata(
+  filters?: Record<string, unknown>
+) {
+  return {
+    link: {
+      table: "order_line_item",
+      sourceKey: "product_id",
+      targetKey: "id",
+    },
+    target: {
+      table: "order_line_item",
+      filters,
+    },
+  }
+}
+
 function buildOrderJoinMetadata(filters?: Record<string, unknown>) {
   return {
     link: {
@@ -478,7 +494,9 @@ describe("cross-module query integration", () => {
         { display_id: "1002" },
         {
           __internal: {
-            crossModuleJoins: [buildProductJoinMetadata({ handle: "standard" })],
+            crossModuleJoins: [
+              buildProductJoinMetadata({ handle: "standard" }),
+            ],
           },
         }
       )
@@ -1165,6 +1183,9 @@ describe("cross-module query integration", () => {
             }),
           ],
         },
+        order: {
+          "product.handle": "ASC",
+        },
       }
 
       const results = await findOrderLineItems({}, config)
@@ -1177,17 +1198,68 @@ describe("cross-module query integration", () => {
           from "order_line_item" as "o0"
           where exists (
             select 1
-            from "public"."order_line_item" as "cm_link_0"
-            inner join "public"."product" as "product" on true
-            where "cm_link_0"."id" = "o0"."id"
-              and "cm_link_0"."product_id" = "product"."id"
-              and "cm_link_0"."deleted_at" is null
+            from "public"."product" as "product"
+            where "product"."id" = "o0"."product_id"
               and "product"."deleted_at" is null
               and "product"."handle" = 'premium'
           )
+          order by (
+            select "product"."handle"
+            from "public"."product" as "product"
+            where "product"."id" = "o0"."product_id"
+              and "product"."deleted_at" is null
+            order by "product"."id"
+            limit 1
+          ) asc
         `
       )
-      expect(orderLineItemIds(results).sort()).toEqual(["li_1", "li_3"])
+      expect(orderLineItemIds(results)).toEqual(["li_1", "li_3"])
+    })
+
+    it("should filter products by order_line_item id", async () => {
+      const config = {
+        __internal: {
+          crossModuleJoins: [
+            buildReadonlyOrderLineItemJoinFromProductMetadata({
+              id: ["li_1", "li_2"],
+            }),
+          ],
+        },
+        order: {
+          "order_line_item.id": "DESC",
+        },
+      }
+
+      const results = await findProducts({}, config)
+
+      expectCapturedQueries(
+        orm,
+        sqlCapture,
+        `
+          select "p0".*
+          from "product" as "p0"
+          where exists (
+            select 1
+            from "public"."order_line_item" as "order_line_item"
+            where "order_line_item"."product_id" = "p0"."id"
+              and "order_line_item"."deleted_at" is null
+              and "order_line_item"."id" = any(array['li_1', 'li_2'])
+          )
+          order by (
+            select "order_line_item"."id"
+            from "public"."order_line_item" as "order_line_item"
+            where "order_line_item"."product_id" = "p0"."id"
+              and "order_line_item"."deleted_at" is null
+            order by "order_line_item"."id"
+            limit 1
+          ) desc
+        `
+      )
+      expect(results).toHaveLength(2)
+      expect(results[0].id).toBe("prod_standard")
+      expect(results[0].handle).toBe("standard")
+      expect(results[1].id).toBe("prod_premium")
+      expect(results[1].handle).toBe("premium")
     })
   })
 
@@ -1195,9 +1267,7 @@ describe("cross-module query integration", () => {
     it("should filter products by linked order display_id", async () => {
       const config = {
         __internal: {
-          crossModuleJoins: [
-            buildOrderJoinMetadata({ display_id: "1001" }),
-          ],
+          crossModuleJoins: [buildOrderJoinMetadata({ display_id: "1001" })],
         },
       }
 
@@ -1231,9 +1301,7 @@ describe("cross-module query integration", () => {
         { handle: "premium" },
         {
           __internal: {
-            crossModuleJoins: [
-              buildOrderJoinMetadata({ display_id: "1003" }),
-            ],
+            crossModuleJoins: [buildOrderJoinMetadata({ display_id: "1003" })],
           },
         }
       )

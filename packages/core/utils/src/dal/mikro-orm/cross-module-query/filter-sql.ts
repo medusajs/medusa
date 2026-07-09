@@ -2,13 +2,18 @@ import { raw } from "@medusajs/deps/mikro-orm/core"
 import { Knex } from "@medusajs/deps/mikro-orm/knex"
 import { isObject, MedusaError } from "../../../common"
 import {
-  buildJoinCorrelationSql,
-  buildJoinSoftDeleteSql,
+  buildLinkCorrelationSql,
+  buildLinkSoftDeleteSql,
   buildLinkToTargetJoinSql,
+  buildTargetCorrelationSql,
+  buildTargetSoftDeleteSql,
+  CorrelateSpec,
+  getTargetPrimaryKey,
+  inferLinkType,
   qualifyTable,
   quoteIdentifier,
-  SqlFragment,
   ResolvedCrossModuleJoinSpec,
+  SqlFragment,
 } from "./helpers"
 
 export type JoinSqlContext = {
@@ -126,16 +131,10 @@ export function joinRequiresFilter(
 
 export function buildExistsFilter(
   joinSpec: ResolvedCrossModuleJoinSpec,
-  correlateAlias: string,
-  correlateKey: string,
+  correlateSpec: CorrelateSpec,
   context: JoinSqlContext
 ): Record<string, unknown> {
-  const fragment = buildExistsSql(
-    joinSpec,
-    correlateAlias,
-    correlateKey,
-    context
-  )
+  const fragment = buildExistsSql(joinSpec, correlateSpec, context)
 
   return {
     [raw(fragment.sql, fragment.bindings)]: [],
@@ -144,35 +143,35 @@ export function buildExistsFilter(
 
 function buildExistsSql(
   joinSpec: ResolvedCrossModuleJoinSpec,
-  correlateAlias: string,
-  correlateKey: string,
+  correlateSpec: CorrelateSpec,
   context: JoinSqlContext
 ): SqlFragment {
+  const linkType = inferLinkType(joinSpec, correlateSpec)
   const linkAlias = nextLinkAlias(context)
-  const targetAlias = joinSpec.alias
   const linkTable = qualifyTable(
     joinSpec.link.schema,
     joinSpec.link.table,
     context.defaultSchema
   )
+  const targetAlias = joinSpec.alias
   const targetTable = qualifyTable(
     joinSpec.target.schema,
     joinSpec.target.table,
     context.defaultSchema
   )
-  const targetPrimaryKey = joinSpec.target.primaryKey ?? "id"
 
   const bindings: Knex.RawBinding[] = []
-  const clauses = [
-    buildJoinCorrelationSql(joinSpec, linkAlias, correlateAlias, correlateKey),
-    buildLinkToTargetJoinSql(
-      linkAlias,
-      targetAlias,
-      joinSpec.link.targetKey,
-      targetPrimaryKey
-    ),
-    buildJoinSoftDeleteSql(linkAlias, targetAlias, context.withDeleted),
-  ]
+  const clauses: string[] = []
+  if (linkType === "normal") {
+    clauses.push(buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias))
+    clauses.push(buildLinkToTargetJoinSql(joinSpec, linkAlias, targetAlias))
+    clauses.push(buildLinkSoftDeleteSql(linkAlias, context.withDeleted))
+  } else {
+    clauses.push(
+      buildTargetCorrelationSql(joinSpec, correlateSpec, targetAlias, linkType)
+    )
+  }
+  clauses.push(buildTargetSoftDeleteSql(targetAlias, context.withDeleted))
 
   if (hasTargetFilters(joinSpec)) {
     const targetFilters = buildFilterSql(
@@ -189,7 +188,15 @@ function buildExistsSql(
       continue
     }
 
-    const nested = buildExistsSql(child, targetAlias, targetPrimaryKey, context)
+    const nested = buildExistsSql(
+      child,
+      {
+        table: joinSpec.target.table,
+        alias: targetAlias,
+        key: getTargetPrimaryKey(joinSpec),
+      },
+      context
+    )
 
     if (nested.sql) {
       clauses.push(nested.sql)
@@ -197,11 +204,18 @@ function buildExistsSql(
     }
   }
 
-  const sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
-    linkAlias
-  )} inner join ${targetTable} as ${quoteIdentifier(
-    targetAlias
-  )} on true where ${clauses.filter(Boolean).join(" and ")})`
+  let sql: string
+  if (linkType === "normal") {
+    sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
+      linkAlias
+    )} inner join ${targetTable} as ${quoteIdentifier(
+      targetAlias
+    )} on true where ${clauses.filter(Boolean).join(" and ")})`
+  } else {
+    sql = `exists (select 1 from ${targetTable} as ${quoteIdentifier(
+      targetAlias
+    )} where ${clauses.filter(Boolean).join(" and ")})`
+  }
 
   return {
     sql,

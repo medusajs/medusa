@@ -1,5 +1,5 @@
-import { CrossModuleJoinSpec } from "@medusajs/types"
 import { Knex } from "@medusajs/deps/mikro-orm/knex"
+import { CrossModuleJoinSpec } from "@medusajs/types"
 import { MedusaError } from "../../../common"
 
 export type SqlFragment = {
@@ -11,6 +11,36 @@ export type ResolvedCrossModuleJoinSpec = CrossModuleJoinSpec & {
   alias: string
 }
 
+export type CorrelateSpec = {
+  table: string
+  alias: string
+  key: string
+}
+
+export type LinkType = "normal" | "source" | "target"
+
+export function inferLinkType(
+  joinSpec: CrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec
+): LinkType {
+  if (
+    joinSpec.link.schema === joinSpec.target.schema &&
+    joinSpec.link.table === joinSpec.target.table &&
+    joinSpec.link.targetKey === (joinSpec.target.primaryKey ?? "id")
+  ) {
+    return "target"
+  }
+
+  if (
+    joinSpec.link.table === correlateSpec.table &&
+    joinSpec.link.sourceKey === correlateSpec.key
+  ) {
+    return "source"
+  }
+
+  return "normal"
+}
+
 export function qualifyTable(
   schema: string | undefined,
   table: string,
@@ -20,30 +50,71 @@ export function qualifyTable(
   return `${quoteIdentifier(resolvedSchema)}.${quoteIdentifier(table)}`
 }
 
-export function buildJoinCorrelationSql(
+export function getTargetPrimaryKey(joinSpec: CrossModuleJoinSpec): string {
+  return joinSpec.target.primaryKey ?? "id"
+}
+
+export function buildLinkCorrelationSql(
   joinSpec: CrossModuleJoinSpec,
-  linkAlias: string,
-  correlateAlias: string,
-  correlateKey: string
+  correlateSpec: CorrelateSpec,
+  linkAlias: string
 ): string {
   return `${quoteIdentifier(linkAlias)}.${quoteIdentifier(
     joinSpec.link.sourceKey
-  )} = ${quoteIdentifier(correlateAlias)}.${quoteIdentifier(correlateKey)}`
+  )} = ${quoteIdentifier(correlateSpec.alias)}.${quoteIdentifier(
+    correlateSpec.key
+  )}`
+}
+
+export function buildTargetCorrelationSql(
+  joinSpec: CrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  targetAlias: string,
+  linkType: Exclude<LinkType, "normal">
+): string {
+  if (linkType === "target") {
+    return `${quoteIdentifier(targetAlias)}.${quoteIdentifier(
+      joinSpec.link.sourceKey
+    )} = ${quoteIdentifier(correlateSpec.alias)}.${quoteIdentifier(
+      correlateSpec.key
+    )}`
+  }
+
+  if (linkType === "source") {
+    return `${quoteIdentifier(targetAlias)}.${quoteIdentifier(
+      getTargetPrimaryKey(joinSpec)
+    )} = ${quoteIdentifier(correlateSpec.alias)}.${quoteIdentifier(
+      joinSpec.link.targetKey
+    )}`
+  }
+
+  return ""
 }
 
 export function buildLinkToTargetJoinSql(
+  joinSpec: CrossModuleJoinSpec,
   linkAlias: string,
-  targetAlias: string,
-  linkTargetKey: string,
-  targetPrimaryKey: string
+  targetAlias: string
 ): string {
   return `${quoteIdentifier(linkAlias)}.${quoteIdentifier(
-    linkTargetKey
-  )} = ${quoteIdentifier(targetAlias)}.${quoteIdentifier(targetPrimaryKey)}`
+    joinSpec.link.targetKey
+  )} = ${quoteIdentifier(targetAlias)}.${quoteIdentifier(
+    getTargetPrimaryKey(joinSpec)
+  )}`
 }
 
-export function buildJoinSoftDeleteSql(
+export function buildLinkSoftDeleteSql(
   linkAlias: string,
+  withDeleted: boolean
+): string {
+  if (withDeleted) {
+    return ""
+  }
+
+  return `${quoteIdentifier(linkAlias)}."deleted_at" is null`
+}
+
+export function buildTargetSoftDeleteSql(
   targetAlias: string,
   withDeleted: boolean
 ): string {
@@ -51,10 +122,7 @@ export function buildJoinSoftDeleteSql(
     return ""
   }
 
-  return [
-    `${quoteIdentifier(linkAlias)}."deleted_at" is null`,
-    `${quoteIdentifier(targetAlias)}."deleted_at" is null`,
-  ].join(" and ")
+  return `${quoteIdentifier(targetAlias)}."deleted_at" is null`
 }
 
 export function quoteIdentifier(identifier: string): string {
