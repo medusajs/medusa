@@ -478,6 +478,79 @@ You also use the `useLoaderData` hook to access the data returned by the `loader
 
 ---
 
+## Set the Document Title
+
+<Note>
+
+Document title resolution from the route's `config` is available starting [Medusa v2.17.3](https://github.com/medusajs/medusa/releases/tag/v2.17.3).
+
+</Note>
+
+The Medusa Admin sets the browser tab title based on the current route. For custom UI routes, the title is resolved in the following order:
+
+1. An explicit `seo` resolver exported from a `handle` object (for detail pages that surface an entity name).
+2. The `label` from the route's `config` export (set via `defineRouteConfig`).
+3. A `breadcrumb` function from a `handle` object that returns a plain string.
+
+When you export a `config` with a `label`, that label is automatically used as the document title for the route. No extra code is required.
+
+For example, the following UI route displays `Custom Route - Medusa` in the browser tab:
+
+```tsx title="src/admin/routes/custom/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { ChatBubbleLeftRight } from "@medusajs/icons"
+import { Container, Heading } from "@medusajs/ui"
+
+const CustomPage = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">This is my custom route</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Custom Route",
+  icon: ChatBubbleLeftRight,
+})
+
+export default CustomPage
+```
+
+If you need a dynamic title (for example, showing an entity's name on a detail page), export a `handle` with an `seo` function:
+
+export const seoHighlights = [
+  ["18", "seo", "Return an object with a `title` string to set the document title."],
+  ["19", "data", "The loader data is available on the match object."],
+]
+
+```tsx title="src/admin/routes/brands/[id]/page.tsx" highlights={seoHighlights}
+import { Container, Heading } from "@medusajs/ui"
+import { UIMatch } from "react-router-dom"
+
+const BrandPage = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">Brand Details</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export default BrandPage
+
+export const handle = {
+  seo: (match: UIMatch<{ brand: { name: string } }>) => ({
+    title: match.data?.brand?.name,
+  }),
+}
+```
+
+---
+
 ## Admin Components List
 
 To build admin customizations that match the Medusa Admin's designs and layouts, refer to [this guide](!resources!/admin-components) to find common components.
