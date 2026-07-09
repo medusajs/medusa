@@ -184,8 +184,8 @@
 		"filePath": "packages/modules/product/src/models/product-product-option-value.ts",
 		"properties": {
 			"id": "The ID of the product product option value.",
-			"product_product_option": "The associated product_product_option.\n\n@expandable",
-			"product_option_value": "The associated product_option_value.\n\n@expandable"
+			"product_product_option": "The associated product option.\n\n@expandable",
+			"product_option_value": "The associated product option value.\n\n@expandable"
 		},
 		"since": "2.16.0",
 		"deprecated": {
@@ -197,7 +197,7 @@
 		"properties": {
 			"id": "The ID of the product product option.",
 			"product": "The associated product.\n\n@expandable",
-			"product_option": "The associated product_option.\n\n@expandable",
+			"product_option": "The associated product option.\n\n@expandable",
 			"values": "The associated values.\n\n@expandable"
 		},
 		"since": "2.16.0",
