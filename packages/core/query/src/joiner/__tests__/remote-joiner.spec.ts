@@ -1,11 +1,15 @@
-import {
-  IModuleService,
-  MedusaContainer,
-  RemoteExpandProperty,
-} from "@medusajs/types"
+import { IModuleService, MedusaContainer } from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
-import { IRemoteDataFetcher, RemoteJoiner } from ".."
+import { IRemoteDataFetcher, RemoteExpandProperty, RemoteJoiner } from ".."
+import {
+  createFulfillmentLocationCatalog,
+  fulfillmentLocationDataFetcher,
+  fulfillmentLocationJoinerConfigs,
+  shippingOptionLocationQuery,
+} from "../__fixtures__/fulfillment-location"
 import { serviceConfigs, serviceMock } from "../__mocks__/mock_data"
+import { compileQuery } from "../compile"
+import { filterFields } from "../execute"
 
 const container = {
   resolve: (serviceName) => {
@@ -158,7 +162,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (joiner as any).filterFields(data, fields, expands)
+    const filteredFields = filterFields(data, fields, expands)
 
     expect(filteredFields).toEqual(
       expect.objectContaining({
@@ -297,7 +301,7 @@ describe("RemoteJoiner", () => {
       },
     }
 
-    const filteredFields = (joiner as any).filterFields(data, fields, expands)
+    const filteredFields = filterFields(data, fields, expands)
 
     expect(filteredFields).toEqual(
       expect.objectContaining({
@@ -698,5 +702,102 @@ describe("RemoteJoiner", () => {
     expect(firstProduct.posts).toHaveProperty("author")
     expect(firstProduct.posts).toHaveProperty("published")
     expect(firstProduct.posts).toHaveProperty("views")
+  })
+
+  describe("fieldAlias operations", () => {
+    const catalog = createFulfillmentLocationCatalog()
+
+    it("rewrites location fieldAlias and keeps id on real path", () => {
+      const serviceConfig = catalog.getServiceConfig({
+        serviceAlias: "shipping_option",
+      })!
+
+      const plan = compileQuery(
+        {
+          query: shippingOptionLocationQuery,
+          serviceConfig,
+          initialData: [],
+        },
+        catalog
+      )
+
+      expect(plan.shortcuts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            property: "location",
+            location: ["service_zone", "fulfillment_set"],
+            path: [
+              "service_zone",
+              "fulfillment_set",
+              "locations_link",
+              "location",
+            ],
+          }),
+        ])
+      )
+
+      const locationPath =
+        "_root.service_zone.fulfillment_set.locations_link.location"
+      const locationsLinkPath =
+        "_root.service_zone.fulfillment_set.locations_link"
+
+      expect(plan.expands.has(locationsLinkPath)).toBe(true)
+      expect(plan.expands.has(locationPath)).toBe(true)
+
+      const locationExpand = plan.expands.get(locationPath)
+      expect(locationExpand?.fields).toEqual(expect.arrayContaining(["id"]))
+
+      expect(
+        plan.root.expands?.service_zone?.expands?.fulfillment_set?.fields
+      ).toEqual(expect.arrayContaining(["id"]))
+    })
+
+    it("plans cross-service stages for nested same-service hops", () => {
+      const serviceConfig = catalog.getServiceConfig({
+        serviceAlias: "shipping_option",
+      })!
+
+      const plan = compileQuery(
+        {
+          query: shippingOptionLocationQuery,
+          serviceConfig,
+          initialData: [],
+        },
+        catalog
+      )
+
+      expect(plan.root.executionStages?.length).toBeGreaterThan(1)
+      expect(
+        plan.root.executionStages?.flatMap((stage) =>
+          stage.flatMap((s) => s.paths)
+        )
+      ).toEqual(
+        expect.arrayContaining([
+          "_root.service_zone.fulfillment_set.locations_link",
+          "_root.service_zone.fulfillment_set.locations_link.location",
+        ])
+      )
+    })
+
+    it("resolves service_zone.fulfillment_set.location.id on shipping_option", async () => {
+      const joiner = new RemoteJoiner(
+        fulfillmentLocationJoinerConfigs,
+        fulfillmentLocationDataFetcher,
+        { autoCreateServiceNameAlias: false }
+      )
+
+      const result = await joiner.query(shippingOptionLocationQuery)
+
+      expect(result).toEqual([
+        expect.objectContaining({
+          id: "so_1",
+          service_zone: expect.objectContaining({
+            fulfillment_set: expect.objectContaining({
+              location: expect.objectContaining({ id: "sloc_1" }),
+            }),
+          }),
+        }),
+      ])
+    })
   })
 })

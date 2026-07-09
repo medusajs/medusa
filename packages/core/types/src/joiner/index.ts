@@ -20,11 +20,6 @@ export type JoinerRelationship = {
   args?: Record<string, any>
 }
 
-export type ComputedJoinerRelationship = JoinerRelationship & {
-  primaryKeyArr: string[]
-  foreignKeyArr: string[]
-}
-
 export interface JoinerServiceConfigAlias {
   name: string | string[]
   entity?: string
@@ -146,45 +141,4 @@ export interface RemoteJoinerOptions {
      */
     providers?: string[] | ((args: any[]) => string[] | undefined)
   }
-}
-
-export interface RemoteNestedExpands {
-  [key: string]: {
-    fields?: string[]
-    args?: JoinerArgument[]
-    expands?: RemoteNestedExpands
-  }
-}
-
-export type InternalJoinerServiceConfig = Omit<
-  JoinerServiceConfig,
-  "relationships"
-> & {
-  relationships?: Map<string, JoinerRelationship | JoinerRelationship[]>
-  entity?: string
-  /**
-   * Graph alias used to resolve this service config.
-   *
-   * @internal
-   */
-  entryPoint?: string
-}
-
-export type ExecutionStage = {
-  service: string
-  entity?: string
-  paths: string[]
-  depth: number
-}
-
-export interface RemoteExpandProperty {
-  executionStages?: ExecutionStage[][]
-  property: string
-  parent: string
-  parentConfig?: InternalJoinerServiceConfig
-  serviceConfig: InternalJoinerServiceConfig
-  entity?: string
-  fields?: string[]
-  args?: JoinerArgument[]
-  expands?: RemoteNestedExpands
 }

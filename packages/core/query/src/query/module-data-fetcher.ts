@@ -2,11 +2,13 @@ import {
   JoinerArgument,
   JoinerRelationship,
   LoadedModule,
-  RemoteExpandProperty,
-  RemoteNestedExpands,
 } from "@medusajs/types"
 import { isPresent, toPascalCase } from "@medusajs/utils"
-import { IRemoteDataFetcher } from "../joiner/types"
+import {
+  IRemoteDataFetcher,
+  RemoteExpandProperty,
+  RemoteNestedExpands,
+} from "../joiner/types"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
