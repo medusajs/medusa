@@ -167,39 +167,6 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
-## ERR_PNPM_IGNORED_BUILDS Error in Deployments
-
-When using pnpm 11.9.0 or later in a monorepo deployment, you may encounter the following error:
-
-```bash
-ERR_PNPM_IGNORED_BUILDS Some builds are ignored.
-This may cause issues with optional packages like workerd@1.20260329.1.
-```
-
-This error occurs because pnpm 11.9.0 changed how it handles optional build scripts. Packages like `workerd` require their build scripts to run, but pnpm now ignores them by default unless explicitly allowed.
-
-This commonly causes subsequent failures, such as a missing `opennextjs-cloudflare` binary during storefront builds.
-
-### Resolve ERR_PNPM_IGNORED_BUILDS
-
-Add the affected packages to the `pnpm.onlyBuiltDependencies` list in your `package.json` to allow their build scripts to run:
-
-```json title="package.json"
-{
-  "pnpm": {
-    "onlyBuiltDependencies": ["workerd"]
-  }
-}
-```
-
-After adding this configuration:
-
-1. Run `pnpm install` locally to update the lockfile.
-2. Commit both the updated `package.json` and `pnpm-lock.yaml`.
-3. Push the changes to trigger a new deployment.
-
----
-
 ## pnpm Install Frozen Lockfile Failures
 
 If your Cloud build fails with exit code 1 during the `pnpm install` step and the error message only says "process did not complete successfully", the cause is often a lockfile or dependency issue that is hidden in pnpm's full output.
@@ -215,7 +182,7 @@ Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducib
 
 ### Retrieve Full Build Logs
 
-The Cloud dashboard may truncate build output. Use the Cloud CLI to retrieve the full pnpm install logs:
+The Cloud dashboard may truncate build output. Use the [Cloud CLI](../../cli/page.mdx) to retrieve the full pnpm install logs:
 
 ```bash
 # Install the CLI
