@@ -300,6 +300,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/loyalty/links-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/module-options/page.mdx",
+    "pathname": "/commerce-modules/loyalty/module-options"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/page.mdx",
     "pathname": "/commerce-modules/loyalty"
   },
