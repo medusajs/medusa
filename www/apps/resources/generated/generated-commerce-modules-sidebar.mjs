@@ -512,6 +512,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Custom Admin Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth",
               "children": []
@@ -922,6 +938,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/consumePasswordResetToken",
+                      "title": "consumePasswordResetToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/createAuthIdentities",
                       "title": "createAuthIdentities",
                       "description": "",
@@ -942,6 +967,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/createAuthVerificationToken",
                       "title": "createAuthVerificationToken",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/createPasswordResetToken",
+                      "title": "createPasswordResetToken",
                       "description": "",
                       "children": []
                     },
@@ -1197,6 +1231,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/models/AuthMfaRecoveryCode",
                       "title": "AuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/models/AuthPasswordResetToken",
+                      "title": "AuthPasswordResetToken",
                       "description": "",
                       "children": []
                     },
@@ -6566,6 +6609,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/loyalty/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
               "type": "sidebar",
               "sidebar_id": "loyalty-service-reference",
               "title": "Main Service Reference",
@@ -10803,6 +10854,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/payment/deletePaymentMethods",
+                      "title": "deletePaymentMethods",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/payment/deletePaymentSession",
                       "title": "deletePaymentSession",
                       "description": "",
@@ -12346,6 +12406,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/commerce-modules/product/guides/filter-products",
+              "title": "Filter Products",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/product/guides/variant-inventory",
               "title": "Get Variant Inventory",
               "children": []
@@ -12617,6 +12685,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Show Products in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/products/list",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Use Product Options in Storefront",
+              "path": "https://docs.medusajs.com/resources/storefront-development/products/options",
+              "children": []
             }
           ]
         },
@@ -12692,6 +12768,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Manage Product Collections",
               "path": "https://docs.medusajs.com/user-guide/products/collections",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Product Options",
+              "path": "https://docs.medusajs.com/user-guide/products/options",
               "children": []
             },
             {
@@ -17906,6 +17990,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/store-credit/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
             },
             {
               "loaded": true,

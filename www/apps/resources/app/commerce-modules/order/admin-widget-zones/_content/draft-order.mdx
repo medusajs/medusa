@@ -1,0 +1,145 @@
+import { Table } from "docs-ui"
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell className="w-1/3">
+        Injection Zone Name
+      </Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell className="w-1/3">
+        Additional Props
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.details.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of a draft order's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminDraftOrder>` imported from `@medusajs/framework/types`
+
+        ```ts blockStyle="inline"
+        {
+          data, // AdminDraftOrder object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.details.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of a draft order's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminDraftOrder>` imported from `@medusajs/framework/types`
+
+        ```ts blockStyle="inline"
+        {
+          data, // AdminDraftOrder object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.details.side.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the side section in a draft order's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminDraftOrder>` imported from `@medusajs/framework/types`
+
+        ```ts blockStyle="inline"
+        {
+          data, // AdminDraftOrder object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.details.side.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the side section in a draft order's details page.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        Type `DetailWidgetProps<AdminDraftOrder>` imported from `@medusajs/framework/types`
+
+        ```ts blockStyle="inline"
+        {
+          data, // AdminDraftOrder object
+        }
+        ```
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.list.before`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the top of the draft orders list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `draft_order.list.after`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Added at the bottom of the draft orders list page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

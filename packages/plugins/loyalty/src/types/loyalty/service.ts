@@ -3,12 +3,13 @@ import {
   Context,
   FindConfig,
   IModuleService,
-} from "@medusajs/types";
+} from "@medusajs/types"
 import {
+  LoyaltyPluginOptions,
   ModuleCreateGiftCard,
   ModuleGiftCard,
   ModuleUpdateGiftCard,
-} from "./module";
+} from "./module"
 
 /**
  * The filters to apply when retrieving gift cards.
@@ -18,41 +19,43 @@ export interface ModuleGiftCardFilters
   /**
    * A search term to filter gift cards by.
    */
-  q?: string;
+  q?: string
   /**
    * Filter by gift card ID(s).
    */
-  id?: string | string[];
+  id?: string | string[]
   /**
    * Filter by gift card code(s).
    */
-  code?: string | string[];
+  code?: string | string[]
   /**
    * Filter by reference resource ID(s).
    */
-  reference_id?: string | string[];
+  reference_id?: string | string[]
   /**
    * Filter by reference resource type(s).
    */
-  reference?: string | string[];
+  reference?: string | string[]
   /**
    * Filter by gift card status(es).
    */
-  status?: string | string[];
+  status?: string | string[]
   /**
    * Filter by currency code(s).
    */
-  currency_code?: string | string[];
+  currency_code?: string | string[]
   /**
    * The field to order results by.
    */
-  order?: string;
+  order?: string
 }
 
 /**
  * The main service interface for the Loyalty Module.
  */
 export interface ILoyaltyModuleService extends IModuleService {
+  getOptions(): Promise<LoyaltyPluginOptions>
+
   /* Entity: GiftCards */
 
   /**
@@ -78,7 +81,7 @@ export interface ILoyaltyModuleService extends IModuleService {
   createGiftCards(
     data: ModuleCreateGiftCard,
     sharedContext?: Context
-  ): Promise<ModuleGiftCard>;
+  ): Promise<ModuleGiftCard>
 
   /**
    * This method creates gift cards.
@@ -105,7 +108,7 @@ export interface ILoyaltyModuleService extends IModuleService {
   createGiftCards(
     data: ModuleCreateGiftCard[],
     sharedContext?: Context
-  ): Promise<ModuleGiftCard[]>;
+  ): Promise<ModuleGiftCard[]>
 
   /**
    * This method updates a gift card.
@@ -123,7 +126,7 @@ export interface ILoyaltyModuleService extends IModuleService {
   updateGiftCards(
     data: ModuleUpdateGiftCard,
     sharedContext?: Context
-  ): Promise<ModuleGiftCard>;
+  ): Promise<ModuleGiftCard>
 
   /**
    * This method updates gift cards.
@@ -143,7 +146,7 @@ export interface ILoyaltyModuleService extends IModuleService {
   updateGiftCards(
     data: ModuleUpdateGiftCard[],
     sharedContext?: Context
-  ): Promise<ModuleGiftCard[]>;
+  ): Promise<ModuleGiftCard[]>
 
   /**
    * This method retrieves a paginated list of gift cards based on optional filters and configuration.
@@ -175,7 +178,7 @@ export interface ILoyaltyModuleService extends IModuleService {
     filters?: ModuleGiftCardFilters,
     config?: FindConfig<ModuleGiftCard>,
     sharedContext?: Context
-  ): Promise<ModuleGiftCard[]>;
+  ): Promise<ModuleGiftCard[]>
 
   /**
    * This method retrieves a gift card by its ID.
@@ -192,7 +195,7 @@ export interface ILoyaltyModuleService extends IModuleService {
     id: string,
     config?: FindConfig<ModuleGiftCard>,
     sharedContext?: Context
-  ): Promise<ModuleGiftCard>;
+  ): Promise<ModuleGiftCard>
 
   /**
    * This method deletes gift cards by their IDs.
@@ -204,5 +207,5 @@ export interface ILoyaltyModuleService extends IModuleService {
    * @example
    * await loyaltyModuleService.deleteGiftCards(["gc_123", "gc_456"])
    */
-  deleteGiftCards(ids: string[], sharedContext?: Context): Promise<void>;
+  deleteGiftCards(ids: string[], sharedContext?: Context): Promise<void>
 }

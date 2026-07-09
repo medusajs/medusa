@@ -51,6 +51,7 @@ const CustomerStoreCreditWidget = () => {
 
 export const config = defineWidgetConfig({
   zone: "customer.details.side.after",
+  id: "medusa:customer-store-credit-widget",
 });
 
 export default CustomerStoreCreditWidget;

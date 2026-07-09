@@ -238,6 +238,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Manage Product Options",
+            "path": "/products/options",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Import Products",
             "path": "/products/import",
             "children": []

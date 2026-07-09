@@ -638,6 +638,45 @@ export class Order {
   }
 
   /**
+   * This method authorizes a payment session that is in `pending_authorization` status.
+   * It sends a request to the
+   * [Authorize Payment Session](https://docs.medusajs.com/api/admin#orders_postordersidpaymentsessionsauthorize)
+   * API route.
+   *
+   * This is used for payment methods where authorization happens asynchronously
+   * (e.g., bank transfers, payment links). The method triggers a re-check with
+   * the payment provider to see if the payment has been completed.
+   *
+   * @param id - The order's ID.
+   * @param paymentSessionId - The payment session's ID.
+   * @param query - Configure the fields to retrieve in the order.
+   * @param headers - Headers to pass in the request.
+   * @returns The order's details, along with whether the session was authorized.
+   *
+   * @example
+   * sdk.admin.order.authorizePaymentSession("order_123", "payses_123")
+   * .then(({ order, is_authorized }) => {
+   *   console.log(order, is_authorized)
+   * })
+   */
+  async authorizePaymentSession(
+    id: string,
+    paymentSessionId: string,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminAuthorizeOrderPaymentSessionResponse>(
+      `/admin/orders/${id}/payment-sessions/authorize`,
+      {
+        method: "POST",
+        headers,
+        body: { payment_session_id: paymentSessionId },
+        query,
+      }
+    )
+  }
+
+  /**
    * This method updates an order change. It sends a request to the
    * [Update Order Change](https://docs.medusajs.com/api/admin#order-changes_postorder-changesid)
    * API route.

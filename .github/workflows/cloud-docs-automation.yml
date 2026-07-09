@@ -106,6 +106,7 @@ jobs:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*,ls:*,find:*,cat:*)"
+          model: claude-sonnet-4-6
           max_turns: 40
 
       - name: Run prep script for cloud project

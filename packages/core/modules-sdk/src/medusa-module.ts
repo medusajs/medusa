@@ -10,10 +10,12 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
   ModuleResolution,
+  ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  loadDatabaseConfig,
   promiseAll,
   simpleHash,
   stringifyCircular,
@@ -119,22 +121,26 @@ class MedusaModule {
     })
   }
 
-  public static onApplicationStart(onApplicationStartCb?: () => void): void {
-    for (const instances of MedusaModule.instances_.values()) {
-      for (const instance of Object.values(instances) as IModuleService[]) {
-        if (instance?.__hooks) {
-          instance.__hooks?.onApplicationStart
-            ?.bind(instance)()
-            .then(() => {
-              onApplicationStartCb?.()
-            })
-            .catch(() => {
-              // The module should handle this and log it
-              return void 0
-            })
-        }
-      }
-    }
+  public static async onApplicationStart(
+    onApplicationStartCb?: () => void
+  ): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationStart
+              ?.bind(instance)()
+              .then(() => {
+                onApplicationStartCb?.()
+              })
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
   }
   public static async onApplicationShutdown(): Promise<void> {
     await promiseAll(
@@ -636,6 +642,12 @@ class MedusaModule {
           joinerConfig.primaryKeys = ["id"]
         }
 
+        joinerConfig = {
+          ...joinerConfig,
+          databaseClientUrl:
+            resolveJoinerConfigDatabaseClientUrl(resolution),
+        }
+
         services[keyName].__joinerConfig = joinerConfig
         MedusaModule.setJoinerConfig(keyName, joinerConfig)
       }
@@ -762,6 +774,12 @@ class MedusaModule {
           throw new Error(
             `Your module is missing a joiner config: ${keyName}. If this module is not queryable, please set { definition: { isQueryable: false } } in your module configuration.`
           )
+        }
+
+        joinerConfig = {
+          ...joinerConfig,
+          databaseClientUrl:
+            resolveJoinerConfigDatabaseClientUrl(resolution),
         }
 
         services[keyName].__joinerConfig = joinerConfig
@@ -923,6 +941,29 @@ class MedusaModule {
         })
       }
     }
+  }
+}
+
+function resolveJoinerConfigDatabaseClientUrl(
+  resolution: ModuleResolution
+): string | undefined {
+  const declaration = resolution.moduleDeclaration
+  const options =
+    declaration &&
+    typeof declaration === "object" &&
+    "options" in declaration
+      ? (declaration.options as ModuleServiceInitializeOptions | undefined)
+      : (resolution.options as ModuleServiceInitializeOptions | undefined)
+
+  if (!options) {
+    return undefined
+  }
+
+  try {
+    return loadDatabaseConfig(resolution.definition.key, options, true)
+      .clientUrl
+  } catch {
+    return undefined
   }
 }
 

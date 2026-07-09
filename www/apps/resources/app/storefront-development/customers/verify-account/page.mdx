@@ -24,10 +24,16 @@ If you don't have email verification enabled in the Medusa application, follow t
 
 </Note>
 
+<Note>
+
+This guide has been updated since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), which made changes to the overall verification flow.
+
+</Note>
+
 <Prerequisites
   items={[
     {
-      text: "Medusa v2.15.5 or later",
+      text: "Medusa v2.16.0 or later",
       link: "!docs!/learn/update"
     },
     {
@@ -48,6 +54,8 @@ sequenceDiagram
     participant M as Medusa
     C->>S: Submit form
     S->>M: Register
+    M-->>S: Registration token
+    S->>M: Login
     M-->>S: Verification required
     S->>M: Request email
     M->>C: Verification email
@@ -64,25 +72,28 @@ sequenceDiagram
 
 1. Show the customer a form to enter their details.
 2. Send a `POST` request to the `/auth/customer/emailpass/register` [Get Registration Token](!api!/store#auth_postactor_typeauth_provider_register) API route to obtain a registration JWT token.
-3. Request returns a `verification_required` set to `true`, indicating that the customer needs to verify their email.
-4. Send a `POST` request to the `/auth/customer/emailpass/verification/request` [Request Verification Email](!api!/store#auth_postactor_typeauth_provider_verification_request) API route to send the verification email to the customer.
-5. Customer receives the email and clicks the verification link, which is a page in the storefront.
-6. The verification page sends a `POST` request to the `/auth/customer/emailpass/verification/confirm` [Confirm Verification](!api!/store#auth_postactor_typeauth_provider_verification_confirm) API route to verify the customer's email using the `token` query parameter in the URL.
-7. Once the email is verified, the customer can log in.
-8. During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header.
-9. Login the customer again to obtain an active JWT token.
+3. Request returns a registration JWT token if the registration is successful.
+4. Redirect customer to login.
+5. Send a `POST` request to the `/auth/customer/emailpass` [Login Customer](!api!/store#auth_postactor_typeauth_provider) API route, passing the registration JWT token in the header.
+6. Request returns an object indicating that verification is required.
+7. Send a `POST` request to the `/auth/verification/request` [Request Verification Email](!api!/store#auth_postactor_typeauth_provider_verification_request) API route to send the verification email to the customer.
+8. Customer receives the email and clicks the verification link, which is a page in the storefront.
+9. The verification page sends a `POST` request to the `/auth/verification/confirm` [Confirm Verification](!api!/store#auth_postactor_typeauth_provider_verification_confirm) API route to verify the customer's email using the `token` query parameter in the URL.
+10. Once the email is verified, the customer can log in.
+11. During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header.
+12. Login the customer again to obtain an active JWT token.
 
 This guide will cover how to:
 
 1. Create a registration page with email verification.
-2. Create a verification page that the customer receives in the email.
-3. Handle the login flow for customers that need to verify their email.
+2. Handle the login flow for customers that need to verify their email.
+3. Create a verification page that the customer receives in the email.
 
 ---
 
 ## Step 1: Create the Registration Page
 
-The registration page implements steps one to four of the [email verification flow](#register-customer-with-verification-flow). The page shows a form to collect the customer's details, sends a request to the registration API route, and handles the verification requirement.
+The registration page implements steps one to four of the [email verification flow](#register-customer-with-verification-flow). The page shows a form to collect the customer's details, sends a request to the registration API route to obtain a registration token, then redirects the customer to the login page.
 
 The following example shows the updated registration page:
 
@@ -90,16 +101,13 @@ The following example shows the updated registration page:
   <CodeTab label="React" value="react">
 
 export const registerHighlights = [
-  ["28", "returnVerification", "Opt into receiving the verification challenge response."],
-  ["31", "if", "Check that the response indicates that verification is required."],
-  ["34", "request", "Request the verification email to be sent to the customer."],
-  ["38", "localStorage.setItem", "Persist the first and last name to use after verification."],
-  ["43", "alert", "Show a `check your email` message to the customer."],
-  ["59", "login", "Try to log in to support cases where another identity exists with the same email."],
-  ["76", "create", "Create the customer if a login token was obtained."],
+  ["24", "register", "Register the customer to obtain a registration token."],
+  ["31", "if", "Surface unexpected errors. An existing-identity error is expected and handled below."],
+  ["46", "localStorage.setItem", "Persist the first and last name to use after verification on the login page."],
+  ["51", "", "Redirect the customer to the login page to continue the flow."],
 ]
 
-  ```tsx highlights={registerHighlights} collapsibleLines="100-130" expandButtonLabel="Show form"
+  ```tsx highlights={registerHighlights} collapsibleLines="54-92" expandButtonLabel="Show form"
   "use client" // include with Next.js 13+
 
   import { useState } from "react"
@@ -123,28 +131,10 @@ export const registerHighlights = [
       setLoading(true)
 
       try {
-        const registerResponse = await sdk.auth.register(
-          "customer",
-          "emailpass",
-          { email, password },
-          { returnVerification: true }
-        )
-
-        if (typeof registerResponse !== "string" && registerResponse.verification_required) {
-          // verification required, no token issued.
-          // request verification
-          await sdk.auth.verification.request("customer", "emailpass", {
-            entity_id: registerResponse.verification.entity_id,
-          })
-          // persist signup fields so the login page can use them.
-          localStorage.setItem(
-            "pending_customer",
-            JSON.stringify({ email, firstName, lastName })
-          )
-          setLoading(false)
-          alert(`We sent a verification link to ${email}. Check your inbox.`)
-          return
-        }
+        await sdk.auth.register("customer", "emailpass", {
+          email,
+          password,
+        })
       } catch (error) {
         const fetchError = error as FetchError
 
@@ -152,51 +142,23 @@ export const registerHighlights = [
           fetchError.statusText !== "Unauthorized" ||
           fetchError.message !== "Identity with email already exists"
         ) {
+          setLoading(false)
           alert(`An error occurred while creating account: ${fetchError}`)
           return
         }
-        // another identity (for example, admin user)
-        // exists with the same email. Log in to link a customer.
-        const loginResponse = await sdk.auth
-          .login("customer", "emailpass", { email, password })
-          .catch((e) => {
-            alert(`An error occurred while creating account: ${e}`)
-          })
-
-        if (!loginResponse) {
-          return
-        }
-
-        if (typeof loginResponse !== "string") {
-          alert(
-            "Authentication requires more actions, which isn't supported by this flow."
-          )
-          return
-        }
-
-        try {
-          const { customer } = await sdk.store.customer.create({
-            first_name: firstName,
-            last_name: lastName,
-            email,
-          })
-
-          setLoading(false)
-          console.log(customer)
-          // TODO redirect to the account page
-        } catch (error) {
-          console.error(error)
-          alert("Error: " + error)
-          return
-        }
+        // another identity (for example, admin user) exists
+        // with the same email. The customer can still log in
+        // to link a customer record.
       }
-    }
 
-    const handleResend = async () => {
-      await sdk.auth.verification.request("customer", "emailpass", {
-        entity_id: email,
-      })
-      alert("Verification email resent.")
+      // persist signup fields so the login page can use them
+      // to create the customer after verification.
+      localStorage.setItem(
+        "pending_customer",
+        JSON.stringify({ email, firstName, lastName })
+      )
+      setLoading(false)
+      // TODO redirect to the login page
     }
 
     return (
@@ -235,9 +197,6 @@ export const registerHighlights = [
         >
           Register
         </button>
-        <button type="button" onClick={handleResend}>
-          Resend verification email
-        </button>
       </form>
     )
   }
@@ -247,13 +206,10 @@ export const registerHighlights = [
   <CodeTab label="JS SDK" value="js-sdk">
 
 export const registerSdkHighlights = [
-  ["10", "returnVerification", "Opt into receiving the verification challenge response."],
-  ["13", "if", "Check that the response indicates that verification is required."],
-  ["16", "request", "Request the verification email to be sent to the customer."],
-  ["20", "localStorage.setItem", "Persist the first and last name to use after verification."],
-  ["24", "alert", "Show a `check your email` message to the customer."],
-  ["39", "login", "Try to log in to support cases where another identity exists with the same email."],
-  ["55", "create", "Create the customer if a login token was obtained."],
+  ["6", "register", "Register the customer to obtain a registration token."],
+  ["13", "if", "Surface unexpected errors. An existing-identity error is expected and handled below."],
+  ["25", "localStorage.setItem", "Persist the first and last name to use after verification on the login page."],
+  ["29", "", "Redirect the customer to the login page to continue the flow."],
 ]
 
   ```ts highlights={registerSdkHighlights}
@@ -262,27 +218,10 @@ export const registerSdkHighlights = [
 
   const handleRegistration = async () => {
     try {
-      const registerResponse = await sdk.auth.register(
-        "customer",
-        "emailpass",
-        { email, password },
-        { returnVerification: true }
-      )
-
-      if (typeof registerResponse !== "string" && registerResponse.verification_required) {
-        // verification required, no token issued.
-        // request verification
-        await sdk.auth.verification.request("customer", "emailpass", {
-          entity_id: registerResponse.verification.entity_id,
-        })
-        // persist signup fields so the login page can use them.
-        localStorage.setItem(
-          "pending_customer",
-          JSON.stringify({ email, firstName, lastName })
-        )
-        alert(`We sent a verification link to ${email}. Check your inbox.`)
-        return
-      }
+      await sdk.auth.register("customer", "emailpass", {
+        email,
+        password,
+      })
     } catch (error) {
       const fetchError = error as FetchError
 
@@ -294,31 +233,15 @@ export const registerSdkHighlights = [
         return
       }
       // another identity exists with the same email.
-      const loginResponse = await sdk.auth
-        .login("customer", "emailpass", { email, password })
-        .catch((e) => {
-          alert(`An error occurred while creating account: ${e}`)
-        })
-
-      if (!loginResponse) {
-        return
-      }
-
-      if (typeof loginResponse !== "string") {
-        alert(
-          "Authentication requires more actions, which isn't supported by this flow."
-        )
-        return
-      }
-
-      const { customer } = await sdk.store.customer.create({
-        first_name: firstName,
-        last_name: lastName,
-        email,
-      })
-
-      console.log(customer)
+      // the customer can still log in to link a customer record.
     }
+
+    // persist signup fields so the login page can use them.
+    localStorage.setItem(
+      "pending_customer",
+      JSON.stringify({ email, firstName, lastName })
+    )
+    // redirect the customer to the login page.
   }
   ```
 
@@ -327,150 +250,22 @@ export const registerSdkHighlights = [
 
 In the above example, you implement the registration flow as follows:
 
-- Obtains a registration JWT token from the `/auth/customer/emailpass/register` API route using the `auth.register` method.
-  - You pass `{ returnVerification: true }` to `sdk.auth.register` to opt into receiving the verification challenge response. Without this option, the SDK throws an error when verification is required.
-- If the response returns that verification is required, request verification using the `sdk.auth.verification.request` method, persist the customer's first and last name in `localStorage` so that the login page can use them to create the customer after verification, then show a "check your email" message.
+- Obtain a registration JWT token from the `/auth/customer/emailpass/register` API route using the `auth.register` method. The token isn't usable until the customer verifies their email, which the login page handles.
+- Persist the customer's first and last name in `localStorage` so that the login page can use them to create the customer after verification.
 - If an error is thrown:
-  - If the error is an existing identity error, try retrieving the login JWT token from `/auth/customer/emailpass` API route using the `auth.login` method. This will fail if the existing identity has a different password, which doesn't allow the customer from registering.
+  - If the error is an existing identity error, the customer can still continue to the login page to link a customer record. This is useful when another identity, such as an admin user, exists with the same email.
   - For other errors, show an alert and exit execution.
-  - The JS SDK automatically stores and re-uses the authentication headers or session in the `auth.register` and `auth.login` methods. So, if you're not using the JS SDK, make sure to pass the received authentication tokens as explained in the [API reference](!api!/store#1-bearer-authorization-with-jwt-tokens)
----
+- After registering, redirect the customer to the login page to continue the registration flow.
 
-## Step 2: Create the Verify Account Page
-
-Next, create a page in your storefront at the path that the verification link points to (for example, `/verify-account`). The page reads the `token` (and optionally the `email`) from the query string, and sends the token to the [Confirm Verification API route](!api!/store#auth_postactor_typeauth_provider_verification_confirm) to verify the customer's email.
-
-For example, create the page at `src/app/verify-account/page.tsx` with the following content:
-
-<CodeTabs group="store-request">
-  <CodeTab label="React" value="react">
-
-export const verifyHighlights = [
-  ["8", "useSearchParams", "Read the token from the query string."],
-  ["23", "confirm", "Verify the customer's email."],
-  ["32", "request", "Resend the verification email if the token is expired or invalid."],
-]
-
-```tsx highlights={verifyHighlights}
-"use client"
-
-import { useEffect, useState } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
-import { sdk } from "@/lib/sdk"
-
-export default function VerifyAccount() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const token = searchParams.get("token")
-  const email = searchParams.get("email")
-  const [state, setState] = useState<"verifying" | "success" | "error">(
-    "verifying"
-  )
-
-  useEffect(() => {
-    if (!token) {
-      setState("error")
-      return
-    }
-
-    sdk.auth.verification
-      .confirm("customer", "emailpass", { token })
-      .then(() => setState("success"))
-      .catch(() => setState("error"))
-  }, [token])
-
-  const handleResend = async () => {
-    if (!email) {
-      return
-    }
-    await sdk.auth.verification.request("customer", "emailpass", {
-      entity_id: email,
-    })
-    alert("Verification email resent.")
-  }
-
-  if (state === "verifying") {
-    return <div>Verifying your email...</div>
-  }
-
-  if (state === "success") {
-    return (
-      <div>
-        <p>Your email is verified. You can now log in.</p>
-        <button onClick={() => router.push("/login")}>Go to login</button>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <p>The verification link is invalid or has expired.</p>
-      <button onClick={handleResend}>Resend verification email</button>
-    </div>
-  )
-}
-```
-
-  </CodeTab>
-  <CodeTab label="JS SDK" value="js-sdk">
-
-export const verifySdkHighlights = [
-  ["3", "URLSearchParams", "Read the token from the query string."],
-  ["14", "confirm", "Verify the customer's email."],
-  ["26", "request", "Resend the verification email if the token is expired or invalid."],
-]
-
-```ts highlights={verifySdkHighlights}
-import { sdk } from "@/lib/sdk"
-
-const searchParams = new URLSearchParams(window.location.search)
-const token = searchParams.get("token")
-const email = searchParams.get("email")
-
-const handleVerification = async () => {
-  if (!token) {
-    alert("Invalid verification link.")
-    return
-  }
-
-  try {
-    await sdk.auth.verification.confirm("customer", "emailpass", { token })
-    alert("Email verified. You can now log in.")
-  } catch (error) {
-    alert("The verification link is invalid or has expired.")
-  }
-}
-
-const handleResend = async () => {
-  if (!email) {
-    alert("Email is required to resend verification email.")
-    return
-  }
-  await sdk.auth.verification.request("customer", "emailpass", {
-    entity_id: email,
-  })
-  alert("Verification email resent.")
-}
-```
-
-  </CodeTab>
-</CodeTabs>
-
-You add handling for three states in the verification page:
-
-- `verifying`: The page is verifying the token by sending a request to the Medusa application.
-- `success`: The token is verified. The customer can now log in.
-- `error`: The token is invalid or expired. The customer can request a new verification email.
-
-When the page loads, the `useEffect` hook reads the `token` from the query string and sends it to the `sdk.auth.verification.confirm` method. If the request succeeds, the state is set to `success`. Otherwise, it's set to `error`.
-
-The `handleResend` function sends a request to resend the verification email using the `email` query parameter. This is useful in case the token is expired or invalid.
+The JS SDK automatically stores and re-uses the authentication headers or session in the `auth.register` and `auth.login` methods. So, if you're not using the JS SDK, make sure to pass the received authentication tokens as explained in the [API reference](!api!/store#1-bearer-authorization-with-jwt-tokens).
 
 ---
 
-## Step 3: Create the Login Page
+## Step 2: Create the Login Page
 
-The login page implements steps seven and eight of the [email verification flow](#register-customer-with-verification-flow). During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header, then log in the customer again to obtain an active JWT token.
+The login page implements steps five to twelve of the [email verification flow](#register-customer-with-verification-flow). When the customer logs in, if verification is required, request the verification email and prompt the customer to check their inbox.
+
+After the customer verifies their email and logs in again, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header, then log in the customer again to obtain an active JWT token.
 
 The following example shows the updated login page:
 
@@ -481,15 +276,15 @@ export const loginHighlights = [
   ["25", "login", "Send a request to obtain a JWT token."],
   ["34", "if", "Check whether the response indicates that verification is required."],
   ["37", "request", "Request the verification email to be sent to the customer."],
-  ["41", "alert", "Show a `check your email` message to the customer."],
-  ["53", "decodeToken", "Decode the token to check if the customer is activated."],
-  ["55", "!payload?.actor_id", "Check whether customer is active."],
-  ["58", "localStorage.getItem", "Retrieve the persisted first and last name."],
-  ["61", "create", "Create the customer record using the registration token."],
-  ["72", "login", "Re-login to mint a token with the populated `actor_id`."],
+  ["42", "alert", "Show a `check your email` message to the customer."],
+  ["54", "decodeToken", "Decode the token to check if the customer is activated."],
+  ["56", "!payload?.actor_id", "Check whether customer is active."],
+  ["59", "localStorage.getItem", "Retrieve the persisted first and last name."],
+  ["62", "create", "Create the customer record using the registration token."],
+  ["73", "login", "Re-login to mint a token with the populated `actor_id`."],
 ]
 
-  ```tsx highlights={loginHighlights} collapsibleLines="86-104" expandButtonLabel="Show form"
+  ```tsx highlights={loginHighlights} collapsibleLines="87-105" expandButtonLabel="Show form"
   "use client" // include with Next.js 13+
 
   import { useState } from "react"
@@ -526,8 +321,9 @@ export const loginHighlights = [
       if (typeof result === "object" && "verification_required" in result && result.verification_required) {
         // resend the verification email and route the customer back
         // to the pending-verification UI.
-        await sdk.auth.verification.request("customer", "emailpass", {
+        await sdk.auth.verification.request({
           entity_id: email,
+          entity_type: "email",
         })
         setLoading(false)
         alert(`We sent a verification link to ${email}. Check your inbox.`)
@@ -609,12 +405,12 @@ export const loginSdkHighlights = [
   ["7", "login", "Send a request to obtain a JWT token."],
   ["16", "if", "Check whether the response indicates that verification is required."],
   ["17", "request", "Request the verification email to be sent to the customer."],
-  ["20", "alert", "Show a `check your email` message to the customer."],
-  ["30", "decodeToken", "Decode the token to check if the customer is activated."],
-  ["32", "!payload?.actor_id", "Check whether customer is active."],
-  ["34", "localStorage.getItem", "Retrieve the persisted first and last name."],
-  ["37", "create", "Create the customer record using the registration token."],
-  ["47", "login", "Re-login to mint a token with the populated `actor_id`."],
+  ["21", "alert", "Show a `check your email` message to the customer."],
+  ["31", "decodeToken", "Decode the token to check if the customer is activated."],
+  ["33", "!payload?.actor_id", "Check whether customer is active."],
+  ["35", "localStorage.getItem", "Retrieve the persisted first and last name."],
+  ["38", "create", "Create the customer record using the registration token."],
+  ["48", "login", "Re-login to mint a token with the populated `actor_id`."],
 ]
 
   ```ts highlights={loginSdkHighlights}
@@ -634,8 +430,9 @@ export const loginSdkHighlights = [
     }
 
     if (typeof result === "object" && "verification_required" in result && result.verification_required) {
-      await sdk.auth.verification.request("customer", "emailpass", {
+      await sdk.auth.verification.request({
         entity_id: email,
+        entity_type: "email",
       })
       alert(`We sent a verification link to ${email}. Check your inbox.`)
       return
@@ -705,3 +502,144 @@ Because customer creation is deferred to first login, any extra fields you colle
 - **Option B:** Persist the extra fields temporarily and read them in the login flow before calling `customer.create`. The example in this guide uses Option B with `localStorage`, which works across tabs.
 
 If you keep the extra fields in component state only, they are lost the moment the customer closes the tab to open their email. Persist to `localStorage` (or a similar storage) before showing the pending-verification UI.
+
+### Handle Verification with Server Actions and Session Authentication
+
+If you implement the login flow in a server action using session-based authentication, the session cookie set by the `/auth/session` API route isn't persisted between calls in the same server action. So, when the login response indicates that verification is required, you must pass the token returned in that response manually as a bearer token in the `Authorization` header when requesting the verification email.
+
+For example, where `token` is the response of the `sdk.auth.login` method:
+
+```ts
+if (typeof token === "object" && token.verification_required) {
+  // In a server action there's no cookie jar, so a
+  // session cookie set by /auth/session wouldn't carry
+  // over to the next request. Pass the actorless token
+  // returned from login directly as a bearer token to
+  // authenticate the verification request instead.
+  await sdk.client.fetch("/auth/verification/request", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token.token}`,
+    },
+    body: {
+      entity_id: email,
+      entity_type: "email",
+      code_provider: "token",
+    },
+  })
+
+  return { verification_required: true }
+}
+```
+
+This guide's examples are otherwise client-side and rely on `localStorage` and the JS SDK's automatic token storage. If your storefront uses session-based authentication (like the official Next.js starter), make sure the session cookie is persisted between requests. The bearer-token caveat above applies anywhere you request a verification email, including the resend flow that runs after an unverified login.
+
+---
+
+## Step 3: Create the Verify Account Page
+
+Next, create a page in your storefront at the path that the verification link points to (for example, `/verify-account`). The page reads the `token` from the query string and sends it to the [Confirm Verification API route](!api!/store#auth_postactor_typeauth_provider_verification_confirm) to verify the customer's email.
+
+For example, create the page at `src/app/verify-account/page.tsx` with the following content:
+
+<CodeTabs group="store-request">
+  <CodeTab label="React" value="react">
+
+export const verifyHighlights = [
+  ["8", "useSearchParams", "Read the token from the query string."],
+  ["22", "confirm", "Verify the customer's email."],
+]
+
+```tsx highlights={verifyHighlights}
+"use client"
+
+import { useEffect, useState } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
+import { sdk } from "@/lib/sdk"
+
+export default function VerifyAccount() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const token = searchParams.get("token")
+  const [state, setState] = useState<"verifying" | "success" | "error">(
+    "verifying"
+  )
+
+  useEffect(() => {
+    if (!token) {
+      setState("error")
+      return
+    }
+
+    sdk.auth.verification
+      .confirm({ code: token })
+      .then(() => setState("success"))
+      .catch(() => setState("error"))
+  }, [token])
+
+  if (state === "verifying") {
+    return <div>Verifying your email...</div>
+  }
+
+  if (state === "success") {
+    return (
+      <div>
+        <p>Your email is verified. You can now log in.</p>
+        <button onClick={() => router.push("/login")}>Go to login</button>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <p>
+        The verification link is invalid or has expired. Log in
+        again to receive a new verification email.
+      </p>
+      <button onClick={() => router.push("/login")}>Go to login</button>
+    </div>
+  )
+}
+```
+
+  </CodeTab>
+  <CodeTab label="JS SDK" value="js-sdk">
+
+export const verifySdkHighlights = [
+  ["3", "URLSearchParams", "Read the token from the query string."],
+  ["13", "confirm", "Verify the customer's email."],
+]
+
+```ts highlights={verifySdkHighlights}
+import { sdk } from "@/lib/sdk"
+
+const searchParams = new URLSearchParams(window.location.search)
+const token = searchParams.get("token")
+
+const handleVerification = async () => {
+  if (!token) {
+    alert("Invalid verification link.")
+    return
+  }
+
+  try {
+    await sdk.auth.verification.confirm({ code: token })
+    alert("Email verified. You can now log in.")
+  } catch (error) {
+    alert(
+      "The link is invalid or has expired. Log in again to get a new email."
+    )
+  }
+}
+```
+
+  </CodeTab>
+</CodeTabs>
+
+You add handling for three states in the verification page:
+
+- `verifying`: The page is verifying the token by sending a request to the Medusa application.
+- `success`: The token is verified. The customer can now log in.
+- `error`: The token is invalid or expired. The customer is directed back to the login page to receive a new verification email.
+
+When the page loads, the `useEffect` hook reads the `token` from the query string and sends it to the `sdk.auth.verification.confirm` method. If the request succeeds, the state is set to `success`. Otherwise, it's set to `error`.

@@ -7,11 +7,11 @@ import {
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin: Fulfillment Provider API", () => {
       let location
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
 
         location = (
@@ -21,6 +21,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.stock_location
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /admin/fulfillment-providers", () => {

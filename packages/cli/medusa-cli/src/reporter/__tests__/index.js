@@ -1,6 +1,6 @@
-import { Reporter } from "../"
 import winston from "winston"
 import Transport from "winston-transport"
+import { Reporter } from "../"
 
 describe(`Reporter`, () => {
   const winstonMock = {
@@ -29,23 +29,25 @@ describe(`Reporter`, () => {
   it(`handles "String, Error" signature correctly`, () => {
     reporter.error("Test log", new Error("String Error"))
 
-    const generated = getErrorMessages(winstonMock.log)[0]
-    expect(generated).toMatchInlineSnapshot(`
+    const generated = getErrorMessages(winstonMock.log)
+
+    expect(generated).toMatchSnapshot([
       {
-        "level": "error",
-        "message": "Test log",
-      }
-    `)
+        stack: expect.any(Array),
+      },
+    ])
   })
 
   it(`handles "Error" signature correctly`, () => {
     reporter.error(new Error("Error"))
 
-    const generated = getErrorMessages(winstonMock.log)[0]
+    const generated = getErrorMessages(winstonMock.log)
 
-    expect(generated).toMatchSnapshot({
-      stack: expect.any(Array),
-    })
+    expect(generated).toMatchSnapshot([
+      {
+        stack: expect.any(Array),
+      },
+    ])
   })
 
   it(`should display error cause when using json formatter`, () => {
@@ -110,10 +112,11 @@ describe(`Reporter`, () => {
       new Error("Error", { cause: new Error("Nested error") })
     )
 
-    expect(transport.logs).toHaveLength(2)
-    expect(transport.logs[0].message).toEqual("Something went wrong")
-    expect(transport.logs[1].message).toEqual("Error")
-    expect(transport.logs[1]).toHaveProperty("cause")
-    expect(transport.logs[1].cause).toMatch("Nested error")
+    expect(transport.logs).toHaveLength(1)
+    expect(transport.logs[0].message).toEqual("Something went wrong: Error")
+    expect(transport.logs[0]).toHaveProperty("stack")
+    expect(transport.logs[0].stack).toEqual(expect.any(Array))
+    expect(transport.logs[0]).toHaveProperty("cause")
+    expect(transport.logs[0].cause).toMatch("Nested error")
   })
 })

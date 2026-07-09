@@ -5,6 +5,7 @@ import {
   isFunctionNode,
   resolveFunctionFromIdentifier,
 } from "../../util/ast"
+import { isIndexFile } from "../../util/filename"
 
 type MessageIds = "mustBeAsync"
 
@@ -13,8 +14,7 @@ export const rule = createRule<[], MessageIds>({
   meta: {
     type: "problem",
     docs: {
-      description:
-        "The default-exported scheduled job function must be async.",
+      description: "The default-exported scheduled job function must be async.",
     },
     fixable: "code",
     messages: {
@@ -25,6 +25,12 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    // `index.<ext>` files in a jobs directory are barrels/re-exports, not job
+    // definitions.
+    if (isIndexFile(context.filename)) {
+      return {}
+    }
+
     const sourceCode = context.sourceCode ?? context.getSourceCode()
 
     function checkFunction(fn: FunctionNode) {

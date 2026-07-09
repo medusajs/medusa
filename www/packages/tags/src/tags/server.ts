@@ -32,6 +32,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/extend"
   },
   {
+    "title": "Filter Products",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
+  },
+  {
     "title": "Get Variant Prices",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/price"
   },
@@ -230,6 +234,14 @@ export const server = [
   {
     "title": "Create Locking Provider",
     "path": "https://docs.medusajs.com/resources/references/locking-module-provider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
   },
   {
     "title": "Create Notification Provider",

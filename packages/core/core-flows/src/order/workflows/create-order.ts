@@ -26,7 +26,7 @@ import {
 import { pricingContextResult } from "../../cart/utils/schemas"
 import { confirmVariantInventoryWorkflow } from "../../cart/workflows/confirm-variant-inventory"
 import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants-and-items-with-prices"
-import { useQueryGraphStep } from "../../common"
+import { getTranslatedLineItemsStep, useQueryGraphStep } from "../../common"
 import { refreshDraftOrderAdjustmentsWorkflow } from "../../draft-order/workflows/refresh-draft-order-adjustments"
 import { createOrdersStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
@@ -84,6 +84,11 @@ function getOrderInput(data) {
 
   return data_
 }
+
+const variantFields = deduplicate([
+  ...productVariantsFields,
+  ...requiredVariantFieldsForInventoryConfirmation,
+])
 
 /**
  * The data to create an order, along with custom data that's passed to the workflow's hooks.
@@ -266,10 +271,7 @@ export const createOrderWorkflow = createWorkflow(
      */
     const { data: variantsWithoutCalculatedPrice } = useQueryGraphStep({
       entity: "variants",
-      fields: deduplicate([
-        ...productVariantsFields,
-        ...requiredVariantFieldsForInventoryConfirmation,
-      ]),
+      fields: variantFields,
       filters: {
         id: variantIdsWithoutCalculatedPrice,
       },
@@ -290,23 +292,24 @@ export const createOrderWorkflow = createWorkflow(
         return !!variantIdsForPriceCalculation.length
       }
     ).then(() => {
+      const customerId = transform(
+        { customerData },
+        (data) => data.customerData.customer?.id
+      )
       return getVariantsAndItemsWithPrices.runAsStep({
         input: {
           cart: {
             currency_code: input.currency_code,
             region,
             region_id: region.id,
-            customer_id: customerData.customer?.id,
+            customer_id: customerId,
             customer: customerForPricing,
           },
           items: input.items,
           setPricingContextResult: setPricingContextResult!,
           variants: {
             id: variantIdsForPriceCalculation,
-            fields: deduplicate([
-              ...productVariantsFields,
-              ...requiredVariantFieldsForInventoryConfirmation,
-            ]),
+            fields: variantFields,
           },
         },
       })
@@ -387,12 +390,21 @@ export const createOrderWorkflow = createWorkflow(
 
     validateLineItemPricesStep({ items: lineItems })
 
-    const orderToCreate = transform({ lineItems, orderInput }, (data) => {
-      return {
-        ...data.orderInput,
-        items: data.lineItems,
-      }
+    const translatedLineItems = getTranslatedLineItemsStep({
+      items: lineItems,
+      variants,
+      locale: input.locale,
     })
+
+    const orderToCreate = transform(
+      { translatedLineItems, orderInput },
+      (data) => {
+        return {
+          ...data.orderInput,
+          items: data.translatedLineItems,
+        }
+      }
+    )
 
     const orders = createOrdersStep([orderToCreate])
     const order = transform({ orders }, (data) => data.orders?.[0])

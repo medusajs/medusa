@@ -58,6 +58,7 @@ const sidebarMappings: {
       "/js-sdk",
       "/nextjs-starter",
       "/references/js-sdk",
+      "/lint",
     ],
   },
   {

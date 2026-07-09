@@ -58,7 +58,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         for (const specifier of node.specifiers) {
           if (
             specifier.type === AST_NODE_TYPES.ImportSpecifier &&
@@ -71,7 +73,9 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (modelLocalNames.size === 0) return
+        if (modelLocalNames.size === 0) {
+          return
+        }
         const callee = node.callee
         if (
           callee.type !== AST_NODE_TYPES.MemberExpression ||
@@ -93,14 +97,18 @@ export const rule = createRule<[], MessageIds>({
         const hasSpread = schemaArg.properties.some(
           (p) => p.type === AST_NODE_TYPES.SpreadElement
         )
-        if (hasSpread) return
+        if (hasSpread) {
+          return
+        }
 
         const hasPrimaryKey = schemaArg.properties.some(
           (prop) =>
             prop.type === AST_NODE_TYPES.Property &&
             chainHasPrimaryKey(prop.value)
         )
-        if (hasPrimaryKey) return
+        if (hasPrimaryKey) {
+          return
+        }
 
         const firstArg = node.arguments[0]
         const name =

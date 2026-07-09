@@ -138,6 +138,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Manage Product Options",
+            path: "/products/options",
+          },
+          {
+            type: "link",
             title: "Import Products",
             path: "/products/import",
           },

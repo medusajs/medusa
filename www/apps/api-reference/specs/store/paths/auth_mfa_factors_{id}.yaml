@@ -47,7 +47,7 @@ delete:
       source:
         $ref: ../code_samples/Shell/auth_mfa_factors_{id}/delete.sh
   tags:
-    - Auth
+    - Multi-Factor Authentication (MFA) Factors
   responses:
     '200':
       description: OK

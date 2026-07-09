@@ -102,6 +102,19 @@ ruleTester.run("link-uses-linkable-properties", rule, {
         )
       `,
     },
+    // Object form whose `linkable` value references a data model by id
+    // (e.g. the only way to link to draft orders, via `order.id`).
+    {
+      code: `
+        import { defineLink } from "@medusajs/framework/utils"
+        import MarketplaceModule from "../modules/marketplace"
+        import OrderModule from "@medusajs/medusa/order"
+        export default defineLink(
+          MarketplaceModule.linkable.vendor,
+          { linkable: OrderModule.linkable.order.id, isList: true }
+        )
+      `,
+    },
     // Deeper module chain (e.g. namespace import).
     {
       code: `

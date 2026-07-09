@@ -1,0 +1,45 @@
+---
+sidebar_label: "route-file-naming"
+---
+
+export const metadata = {
+  title: `route-file-naming - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires API route handlers to be exported from a `route.ts` or `route.js` file under `src/api`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/api` directory. It reports HTTP method handlers exported from a file that isn't named `route.ts` or `route.js`, and `route` files that export no HTTP method handler.
+
+The following code is reported by the rule:
+
+```ts title="src/api/store/products/handlers.ts"
+export const GET = async (req, res) => {
+  res.json({})
+}
+```
+
+Instead, export the handler from a `route` file:
+
+```ts title="src/api/store/products/route.ts"
+export const GET = async (req, res) => {
+  res.json({})
+}
+```
+
+## Why it's Important
+
+Medusa only registers HTTP method handlers exported from `route.ts` or `route.js` files. Handlers placed in other files are never reached, so the route won't work as expected.
+
+Learn more in the [API Routes documentation](!docs!/learn/fundamentals/api-routes).
+
+## Fixable
+
+This rule isn't auto-fixable.

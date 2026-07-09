@@ -5,7 +5,8 @@ const ruleTester = createRuleTester()
 
 const STATIC_PAGE = "src/admin/routes/custom/page.tsx"
 const DYNAMIC_PAGE = "src/admin/routes/products/[id]/page.tsx"
-const NESTED_DYNAMIC_PAGE = "src/admin/routes/products/[id]/edit/[step]/page.tsx"
+const NESTED_DYNAMIC_PAGE =
+  "src/admin/routes/products/[id]/edit/[step]/page.tsx"
 const DYNAMIC_PAGE_NO_SRC = "admin/routes/orders/[id]/page.tsx"
 
 ruleTester.run("no-config-on-dynamic-ui-route", rule, {

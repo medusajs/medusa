@@ -2270,6 +2270,52 @@ moduleIntegrationTestRunner<ICartModuleService>({
           expect(cart.items?.length).toBe(1)
           expect(cart.items?.[0].tax_lines?.length).toBe(2)
         })
+
+        it("should persist metadata and data on line item tax lines", async () => {
+          const [createdCart] = await service.createCarts([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [item] = await service.addLineItems(createdCart.id, [
+            {
+              quantity: 1,
+              unit_price: 100,
+              title: "test",
+            },
+          ])
+
+          const taxLines = await service.setLineItemTaxLines(createdCart.id, [
+            {
+              item_id: item.id,
+              rate: 8.9,
+              code: "US-GA",
+              metadata: { custom_key: "custom_value" },
+              data: {
+                state_rate: 4.0,
+                county_rate: 3.0,
+                city_rate: 1.9,
+              },
+            },
+          ])
+
+          expect(taxLines).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                item_id: item.id,
+                rate: 8.9,
+                code: "US-GA",
+                metadata: { custom_key: "custom_value" },
+                data: {
+                  state_rate: 4.0,
+                  county_rate: 3.0,
+                  city_rate: 1.9,
+                },
+              }),
+            ])
+          )
+        })
       })
 
       describe("setShippingMethodTaxLines", () => {
@@ -2606,6 +2652,57 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           expect(cart.shipping_methods?.length).toBe(1)
           expect(cart.shipping_methods?.[0].tax_lines?.length).toBe(2)
+        })
+
+        it("should persist metadata and data on shipping method tax lines", async () => {
+          const [createdCart] = await service.createCarts([
+            {
+              currency_code: "eur",
+            },
+          ])
+
+          const [shippingMethod] = await service.addShippingMethods(
+            createdCart.id,
+            [
+              {
+                amount: 10,
+                name: "test",
+              },
+            ]
+          )
+
+          const taxLines = await service.setShippingMethodTaxLines(
+            createdCart.id,
+            [
+              {
+                shipping_method_id: shippingMethod.id,
+                rate: 8.9,
+                code: "US-GA",
+                metadata: { custom_key: "custom_value" },
+                data: {
+                  state_rate: 4.0,
+                  county_rate: 3.0,
+                  city_rate: 1.9,
+                },
+              },
+            ]
+          )
+
+          expect(taxLines).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                shipping_method_id: shippingMethod.id,
+                rate: 8.9,
+                code: "US-GA",
+                metadata: { custom_key: "custom_value" },
+                data: {
+                  state_rate: 4.0,
+                  county_rate: 3.0,
+                  city_rate: 1.9,
+                },
+              }),
+            ])
+          )
         })
       })
 
