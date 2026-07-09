@@ -30,7 +30,7 @@ export function shouldCompressResponse(
 export function compressionOptions(
   config: ProjectConfigOptions
 ): HttpCompressionOptions {
-  const responseCompressionOptions = config.http.compression ?? {}
+  const responseCompressionOptions = config.http?.compression ?? {}
 
   responseCompressionOptions.enabled =
     responseCompressionOptions.enabled ?? false
@@ -40,4 +40,25 @@ export function compressionOptions(
     responseCompressionOptions.threshold ?? 1024
 
   return responseCompressionOptions
+}
+
+export function createCompressionMiddleware(config: ProjectConfigOptions) {
+  const options = compressionOptions(config)
+
+  if (!options.enabled) {
+    return null
+  }
+
+  return compression({
+    level: options.level,
+    memLevel: options.memLevel,
+    threshold: options.threshold,
+    filter: (req, res) => {
+      const medusaRequest = req as MedusaRequest
+      if (!medusaRequest.scope) {
+        return false
+      }
+      return shouldCompressResponse(medusaRequest, res as MedusaResponse)
+    },
+  })
 }

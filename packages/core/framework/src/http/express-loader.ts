@@ -10,6 +10,7 @@ import morgan from "morgan"
 import path from "path"
 import { configManager } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
+import { createCompressionMiddleware } from "./utils/http-compression"
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
@@ -102,6 +103,13 @@ export async function expressLoader({
   }
 
   app.set("trust proxy", 1)
+
+  const compressionMiddleware = createCompressionMiddleware(
+    configModule.projectConfig
+  )
+  if (compressionMiddleware) {
+    app.use(compressionMiddleware)
+  }
 
   /**
    * Method to skip logging HTTP requests. We skip in test environment
