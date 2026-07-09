@@ -71,7 +71,7 @@ You export the `ProductWidget` component, which displays the heading `Product Wi
 To export the widget's configuration, you use `defineWidgetConfig` from the Admin Extension SDK. It accepts an object as a parameter with the following properties:
 
 - `zone`: A string or array of strings indicating the injection zone(s) to inject the widget into.
-- `id` (optional): A stable string identifier for the widget. When omitted, Medusa derives an ID from the widget file's path at build time. You can set this explicitly to keep layout customizations working if you rename or move the file. Plugin authors should prefix the ID to avoid collisions — for example, `"my-plugin:brand-widget"`.
+- `id` (optional): A stable string identifier for the widget. When omitted, Medusa derives an ID from the widget file's path at build time. You can set this explicitly to keep layout customizations working if you rename or move the file. Plugin authors should prefix the ID to avoid collisions. For example, `"my-plugin:brand-widget"`.
 
 <Note title="Important" type="warning">
 

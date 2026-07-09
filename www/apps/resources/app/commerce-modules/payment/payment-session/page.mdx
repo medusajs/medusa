@@ -47,10 +47,4 @@ The `status` property of a payment session indicates its current status. Its val
 - `authorized`: The payment session is authorized.
 - `error`: An error occurred while authorizing the payment.
 - `canceled`: The authorization of the payment session has been canceled.
-- `pending_authorization`: The payment authorization is deferred and will complete asynchronously. This is used for payment methods like bank transfers, payment links, or vouchers (for example, OXXO or boleto) where the customer completes the payment outside of the checkout flow. An order can still be created while the session is in this status, and the session transitions to `authorized` once the payment provider confirms receipt.
-
-<Note>
-
-The `pending_authorization` status is available since Medusa [v2.17.0](https://github.com/medusajs/medusa/releases/tag/v2.17.0).
-
-</Note>
+- `pending_authorization`: The payment authorization is deferred and will complete asynchronously. This is used for payment methods like bank transfers, payment links, or vouchers (for example, OXXO or boleto) where the customer completes the payment outside of the checkout flow. An order can still be created while the session is in this status, and the session transitions to `authorized` once the payment provider confirms receipt. Available since Medusa [v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2)
