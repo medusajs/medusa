@@ -10842,34 +10842,6 @@
           "required": ["metrics"],
           "additionalProperties": false
         },
-        "settings": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "type": "string"
-                },
-                "successToast": {
-                    "type": "string"
-                }
-            },
-            "required": ["header", "successToast"],
-            "additionalProperties": false
-        },
-        "actions": {
-          "type": "object",
-          "properties": {
-            "manageLocales": {
-              "type": "string"
-            },
-            "manageEntities": {
-              "type": "string"
-            },
-            "manage": {
-              "type": "string"
-            }
-          },
-          "required": ["manageLocales", "manageEntities", "manage"]
-        },
         "edit": {
           "type": "object",
           "properties": {
