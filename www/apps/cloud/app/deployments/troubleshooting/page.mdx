@@ -183,16 +183,9 @@ If you have manually set a `DATABASE_URL` in your environment variables, it may 
 
 1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
 2. In the project's dashboard, click on the name of the environment.
-3. In the environment's dashboard, click on the **Environment Variables** tab.
-4. Check whether you have a `DATABASE_URL` variable set. If so, remove it and let Cloud manage the connection string.
-
-### Verify the Deployment Completed Successfully
-
-Database migration runs during deployment. If the deployment itself failed before migrations completed, the database state may be inconsistent. Trigger a new deployment after fixing any build errors to re-run migrations.
-
-### Contact Support
-
-If the issue persists after checking environment variables and re-deploying, contact support with the deployment ID so the team can investigate the database connection at the platform level.
+3. In the environment's dashboard, click on the **Settings** tab.
+4. In the settings, click the **Environment variables** sidebar item.
+5. Check whether you have a `DATABASE_URL` variable set. If so, remove it and let Cloud manage the connection string.
 
 ---
 

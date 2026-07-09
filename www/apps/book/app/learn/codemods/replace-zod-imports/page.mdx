@@ -66,30 +66,6 @@ If everything is working correctly, you can push the changes to your repository.
 
 ## Zod Dependency Management
 
-Medusa v2.13.0+ exports Zod from `@medusajs/framework/zod`, and Medusa v2.14.0+ uses Zod v4 internally. Because Medusa manages Zod as part of its own dependencies, you should avoid manually pinning a `zod` version in your backend's `package.json`.
+Medusa v2.13.0+ exports Zod from `@medusajs/framework/zod`, and Medusa v2.14.0+ uses Zod v4.2.0 internally. So, when you install Zod in your project, make sure to install the same version as Medusa to avoid dependency conflicts.
 
-<Note title="Warning" type="warning">
-
-Do not manually pin `zod` in your backend's `package.json`. Pinning a specific Zod version can conflict with the version Medusa manages internally, especially if other packages in the dependency tree expect Zod v4.
-
-</Note>
-
-If you encounter Zod version conflicts during installation or deployment, follow these steps:
-
-1. Remove any `zod` entry from the `dependencies` or `devDependencies` in your backend's `package.json`.
-2. Delete `node_modules` and your lock file:
-
-```bash
-rm -rf node_modules
-rm package-lock.json   # or yarn.lock / pnpm-lock.yaml
-```
-
-3. Reinstall dependencies:
-
-```bash npm2yarn
-npm install
-```
-
-This lets the package manager resolve a single consistent version of Zod that satisfies all packages in the dependency tree.
-
-If you need Zod for Medusa Admin customizations (frontend code), you can install it separately in your admin package only — this keeps it isolated from the backend dependency graph.
+If you encounter Zod version conflicts during installation or deployment, make sure to install Zod v4.2.0 in your project to match the version used by Medusa. This lets the package manager resolve a single consistent version of Zod that satisfies all packages in the dependency tree.
