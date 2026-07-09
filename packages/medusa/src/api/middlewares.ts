@@ -48,6 +48,7 @@ import { adminUserRoutesMiddlewares } from "./admin/users/middlewares"
 import { columnRoutesMiddlewares } from "./admin/views/[entity]/columns/middlewares"
 import { viewConfigurationRoutesMiddlewares } from "./admin/views/[entity]/configurations/middlewares"
 import { layoutConfigurationRoutesMiddlewares } from "./admin/layouts/[zone]/configuration/middlewares"
+import { layoutConfigurationListRoutesMiddlewares } from "./admin/layouts/configurations/middlewares"
 import { entitiesRoutesMiddlewares } from "./admin/views/entities/middlewares"
 import { adminWorkflowsExecutionsMiddlewares } from "./admin/workflows-executions/middlewares"
 import { authRoutesMiddlewares } from "./auth/middlewares"
@@ -154,6 +155,7 @@ export default defineMiddlewares([
   ...adminPaymentCollectionsMiddlewares,
   ...viewConfigurationRoutesMiddlewares,
   ...layoutConfigurationRoutesMiddlewares,
+  ...layoutConfigurationListRoutesMiddlewares,
   ...entitiesRoutesMiddlewares,
   ...columnRoutesMiddlewares,
   ...adminIndexRoutesMiddlewares,

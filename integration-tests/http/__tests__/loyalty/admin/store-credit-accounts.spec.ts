@@ -155,8 +155,25 @@ medusaIntegrationTestRunner({
         )
 
         expect(store_credit_account).toEqual(
-          expect.objectContaining(storeCreditAccountResponse)
+          expect.objectContaining({
+            ...storeCreditAccountResponse,
+            id: expect.stringMatching(/^sc_acc_/),
+          })
         )
+      })
+
+      it("should enforce unique customer_id + currency_code constraint", async () => {
+        await api.post(
+          `/admin/store-credit-accounts`,
+          storeCreditAccountPayload,
+          adminHeaders
+        )
+
+        const { response } = await api
+          .post(`/admin/store-credit-accounts`, storeCreditAccountPayload, adminHeaders)
+          .catch((e) => e)
+
+        expect(response.status).toEqual(400)
       })
 
       it("should throw an error if required params are missing", async () => {
@@ -211,6 +228,7 @@ medusaIntegrationTestRunner({
             debits: 0,
             transactions: [
               expect.objectContaining({
+                id: expect.stringMatching(/^sc_trx_/),
                 amount: 100,
                 type: "credit",
                 note: "Crediting an account 1",
@@ -254,6 +272,58 @@ medusaIntegrationTestRunner({
               }),
             ]),
           })
+        )
+      })
+
+      it("should list transactions for a store credit account", async () => {
+        const {
+          data: { store_credit_account },
+        } = await api.post(
+          `/admin/store-credit-accounts`,
+          { currency_code: "usd" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/store-credit-accounts/${store_credit_account.id}/credit`,
+          { amount: 50, note: "First credit" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/store-credit-accounts/${store_credit_account.id}/credit`,
+          { amount: 75, note: "Second credit" },
+          adminHeaders
+        )
+
+        const { data } = await api.get(
+          `/admin/store-credit-accounts/${store_credit_account.id}/transactions`,
+          adminHeaders
+        )
+
+        expect(data.transactions).toHaveLength(2)
+        expect(data).toEqual(
+          expect.objectContaining({
+            count: 2,
+            offset: expect.any(Number),
+            limit: expect.any(Number),
+          })
+        )
+        expect(data.transactions).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.stringMatching(/^sc_trx_/),
+              amount: 50,
+              type: "credit",
+              note: "First credit",
+            }),
+            expect.objectContaining({
+              id: expect.stringMatching(/^sc_trx_/),
+              amount: 75,
+              type: "credit",
+              note: "Second credit",
+            }),
+          ])
         )
       })
 

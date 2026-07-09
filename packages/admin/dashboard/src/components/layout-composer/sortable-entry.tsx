@@ -4,6 +4,7 @@ import { DotsSix, Eye, EyeSlash } from "@medusajs/icons"
 import { IconButton, clx } from "@medusajs/ui"
 import { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
+import type { LayoutControlSize } from "./types"
 
 /**
  * An entry's rendered content plus a placeholder that appears (via the
@@ -51,6 +52,7 @@ type SortableEntryProps = {
   hidden: boolean
   onToggleHidden: () => void
   children: ReactNode
+  controlSize?: LayoutControlSize
 }
 
 export function SortableEntry({
@@ -59,6 +61,7 @@ export function SortableEntry({
   hidden,
   onToggleHidden,
   children,
+  controlSize = "default",
 }: SortableEntryProps) {
   const { t } = useTranslation()
   const {
@@ -78,6 +81,10 @@ export function SortableEntry({
     transform: CSS.Translate.toString(transform),
     transition,
   }
+
+  const xsmall = controlSize === "xsmall"
+  const small = controlSize === "small"
+  const showLabel = controlSize === "default"
 
   return (
     <div
@@ -114,23 +121,37 @@ export function SortableEntry({
       >
         {children}
       </EntryContent>
-      {/* Overlay rendered after children so it stacks above them by DOM order —
-          no z-index needed, which keeps Radix portal dropdowns above us. */}
-      <div className="bg-ui-bg-base shadow-elevation-card-rest absolute right-2 top-2 flex items-center gap-x-1 rounded-md p-1">
-        <span className="text-ui-fg-muted px-1 font-mono text-xs">
-          {widgetId} ({order})
-        </span>
+      {/* Overlay rendered after children so it stacks above them by DOM order */}
+      <div
+        className={clx(
+          "bg-ui-bg-base shadow-elevation-card-rest absolute flex items-center rounded-md",
+          xsmall && "right-0 top-0 flex-col gap-y-0.5 p-0 opacity-50",
+          small && "right-1.5 top-1.5 gap-x-0.5 p-0.5",
+          showLabel && "right-2 top-2 gap-x-1 p-1"
+        )}
+      >
+        {showLabel && (
+          <span className="text-ui-fg-muted px-1 font-mono text-xs">
+            {widgetId} ({order})
+          </span>
+        )}
         <IconButton
           size="2xsmall"
           variant="transparent"
           onClick={onToggleHidden}
           aria-label={hidden ? t("actions.show") : t("actions.hide")}
+          className={clx(xsmall && "h-3 w-3 p-0", small && "h-3.5 w-3.5 p-0.5")}
         >
           {hidden ? <EyeSlash /> : <Eye />}
         </IconButton>
         <button
           type="button"
-          className="text-ui-fg-muted cursor-grab touch-none rounded p-1 focus:outline-none"
+          className={clx(
+            "text-ui-fg-muted cursor-grab touch-none rounded focus:outline-none",
+            xsmall && "p-0",
+            small && "p-0.5",
+            showLabel && "p-1"
+          )}
           {...attributes}
           {...listeners}
           aria-label={t("layout.dragToReorder")}
