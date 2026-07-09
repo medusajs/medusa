@@ -9095,48 +9095,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bloom@workspace:apps/bloom":
-  version: 0.0.0-use.local
-  resolution: "bloom@workspace:apps/bloom"
-  dependencies:
-    "@mdx-js/loader": ^3.1.0
-    "@mdx-js/react": ^3.1.0
-    "@medusajs/icons": 2.17.2
-    "@next/mdx": 15.5.18
-    "@opennextjs/cloudflare": ^1.19.9
-    "@stefanprobst/rehype-extract-toc": ^3.0.0
-    "@types/mdx": ^2.0.13
-    "@types/node": ^20
-    "@types/react": 19.2.9
-    "@types/react-dom": 19.2.3
-    autoprefixer: ^10.0.1
-    build-scripts: "*"
-    clsx: ^2.1.0
-    docs-ui: "*"
-    eslint: ^9.13.0
-    eslint-plugin-prettier: ^5.2.1
-    eslint-plugin-react-hooks: ^5.0.0
-    next: 15.5.18
-    postcss: ^8
-    posthog-js: ^1.298.1
-    posthog-node: ^5.29.0
-    react: 19.2.5
-    react-dom: 19.2.5
-    rehype-mdx-code-props: ^2.0.0
-    rehype-slug: ^6.0.0
-    remark-directive: ^3.0.0
-    remark-frontmatter: ^5.0.0
-    remark-rehype-plugins: "*"
-    slugify: ^1.6.6
-    tailwind: "*"
-    tailwindcss: ^3.3.0
-    tsconfig: "*"
-    types: "*"
-    typescript: ^5
-    wrangler: ^4.90.0
-  languageName: unknown
-  linkType: soft
-
 "body-parser@npm:^2.2.1":
   version: 2.2.2
   resolution: "body-parser@npm:2.2.2"

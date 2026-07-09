@@ -1,9 +1,5 @@
 export const remoteQuery = [
   {
-    "title": "generateResetPasswordTokenWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow"
-  },
-  {
     "title": "updateCartPromotionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateCartPromotionsStep"
   },

@@ -24,6 +24,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateSalesChannelsExistStep"
   },
   {
+    "title": "createPasswordResetTokenStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep"
+  },
+  {
     "title": "requestVerificationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
   },

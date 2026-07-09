@@ -214,7 +214,7 @@ export default defineConfig([...medusa.configs.modules])
 
 ## Lint your Project
 
-The Medusa CLI provides commands to lint your project. The commands require an `eslint.config.ts` file (or another supported extension, such as `eslint.config.js`) at the root of your project.
+The Medusa CLI provides commands to lint your project. The commands require a flat ESLint config file (`eslint.config.ts`, `eslint.config.js`, or another supported extension). Config detection uses ESLint's own resolution, which walks ancestor directories, so a config at a monorepo root applies to nested projects.
 
 ### medusa lint
 

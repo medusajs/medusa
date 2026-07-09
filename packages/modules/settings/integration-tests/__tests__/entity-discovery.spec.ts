@@ -13,7 +13,17 @@ jest.setTimeout(30000)
 
 moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
   moduleName: Modules.SETTINGS,
-  joinerConfig: getTestJoinerConfigs(),
+  hooks: {
+    beforeModuleInit: async () => {
+      const { MedusaModule } = await import("@medusajs/framework/modules-sdk")
+
+      for (const config of getTestJoinerConfigs()) {
+        if (config.serviceName && !config.isReadOnlyLink) {
+          MedusaModule.setJoinerConfig(config.serviceName, config)
+        }
+      }
+    },
+  },
   testSuite: ({ service }) => {
     describe("EntityDiscovery", function () {
       describe("listDiscoverableEntities", function () {

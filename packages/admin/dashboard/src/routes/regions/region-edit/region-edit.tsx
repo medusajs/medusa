@@ -44,9 +44,9 @@ export const RegionEdit = () => {
 
   const isLoading = isRegionLoading || isStoreLoading || isPreferenceLoading
 
-  const storeCurrencies = (store?.supported_currencies ?? []).map(
-    (c) => currencies[c.currency_code.toUpperCase()]
-  )
+  const storeCurrencies = (store?.supported_currencies ?? [])
+    .map((c) => currencies[c.currency_code.toUpperCase()])
+    .filter(Boolean)
 
   if (isRegionError) {
     throw regionError
