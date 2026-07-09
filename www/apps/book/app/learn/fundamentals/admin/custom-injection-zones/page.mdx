@@ -98,7 +98,7 @@ const BrandDetailsPage = () => {
   return (
     <LayoutComposer
       widgetsZonePrefix="brand.details"
-      preferredLayoutId="core:single-column"
+      preferredLayoutId="core:two-column"
       data={brand}
       sections={{
         main: (
@@ -204,7 +204,7 @@ If you don't see `brand.list.before` in the autocompletion of the `zone` propert
 ```json title="src/admin/tsconfig.json"
 "include": [
   ".",
-  "../../.medusa/types/augmentation-refs.d.ts"
+  "../../.medusa/types/plugin-augmentations.d.ts"
 ]
 ```
 
