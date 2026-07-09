@@ -297,15 +297,15 @@ npm error peer @medusajs/framework@"2.13.6" from @example/medusa-payment-example
 
 Try the following strategies in order:
 
-1. **Update the third-party package** — Check if a newer version of the package supports your Medusa version. Run:
+1. **Update the third-party package**: Check if a newer version of the package supports your Medusa version. Run:
 
 ```bash npm2yarn
 npm install @example/medusa-payment-example@latest
 ```
 
-2. **Contact the package maintainer** — If no compatible version exists, open an issue or contact the maintainer to request support for your Medusa version.
+2. **Contact the package maintainer**: If no compatible version exists, open an issue or contact the maintainer to request support for your Medusa version.
 
-3. **Use `--legacy-peer-deps`** — If the version mismatch is minor (for example, a patch version difference) and you have confirmed the package works correctly, you can bypass the conflict. Add the following to a `.npmrc` file at the root of your project:
+3. **Use `--legacy-peer-deps`**: If the version mismatch is minor (for example, a patch version difference) and you have confirmed the package works correctly, you can bypass the conflict. Add the following to a `.npmrc` file at the root of your project:
 
 ```bash title=".npmrc"
 legacy-peer-deps=true
@@ -313,11 +313,11 @@ legacy-peer-deps=true
 
 This tells npm to ignore peer dependency conflicts and install anyway. Use this as a last resort, and test your integration thoroughly before deploying.
 
-4. **Downgrade Medusa** — As a temporary workaround, you can downgrade your Medusa version to match the third-party package's requirement. This is not recommended long-term since you will miss out on bug fixes and new features.
-
 <Note type="warning">
 
-Using `--legacy-peer-deps` or downgrading Medusa may introduce compatibility issues. Always test your application thoroughly after applying either of these workarounds.
+Using `--legacy-peer-deps` may introduce compatibility issues. Always test your application thoroughly after applying this workaround.
+
+</Note>
 
 ---
 
