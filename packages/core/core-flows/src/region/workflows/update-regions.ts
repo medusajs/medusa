@@ -45,7 +45,7 @@ export const updateRegionsWorkflow = createWorkflow(
   ): WorkflowResponse<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowOutput> => {
     const normalizedInput = transform(input, (data) => {
       const { selector, update } = data
-      const { payment_providers = [], is_tax_inclusive, ...rest } = update
+      const { payment_providers, is_tax_inclusive, ...rest } = update
       return {
         selector,
         update: rest,
