@@ -300,6 +300,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/loyalty/links-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/module-options/page.mdx",
+    "pathname": "/commerce-modules/loyalty/module-options"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/page.mdx",
     "pathname": "/commerce-modules/loyalty"
   },
@@ -1906,6 +1910,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/modules/resolve-path/page.mdx",
     "pathname": "/troubleshooting/modules/resolve-path"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/nextjs-build-404/page.mdx",
+    "pathname": "/troubleshooting/nextjs-build-404"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/nextjs-node-25/page.mdx",

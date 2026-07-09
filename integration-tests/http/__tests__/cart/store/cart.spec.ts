@@ -832,8 +832,10 @@ medusaIntegrationTestRunner({
                   tax_lines: [
                     {
                       code: "CADEFAULT",
+                      data: null,
                       description: "CA Default Rate",
                       id: expect.any(String),
+                      metadata: null,
                       provider_id: "system",
                       rate: 5,
                     },
@@ -954,8 +956,10 @@ medusaIntegrationTestRunner({
                   tax_lines: [
                     {
                       code: "CADEFAULT",
+                      data: null,
                       description: "CA Default Rate",
                       id: expect.any(String),
+                      metadata: null,
                       provider_id: "system",
                       rate: 5,
                     },

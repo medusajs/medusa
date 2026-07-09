@@ -772,6 +772,7 @@ export class Product {
    * @param productId - The product's ID.
    * @param id - The ID of the variant.
    * @param headers - Headers to pass in the request
+   * @param query - Configure the fields to retrieve in the product variant.
    * @returns The deletion's details.
    *
    * @example

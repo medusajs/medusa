@@ -66,8 +66,33 @@ class ProductEntity {
   }
 }
 
+@Entity({ tableName: "order_line_item" })
+class OrderLineItemEntity {
+  @PrimaryKey()
+  id: string
+
+  @Property()
+  order_id: string
+
+  @Property({ nullable: true })
+  product_id: string | null
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @OnInit()
+  @BeforeCreate()
+  onInit() {
+    if (!this.id) {
+      this.id = Math.random().toString(36).substring(7)
+    }
+  }
+}
+
 const OrderEntityRepository = mikroOrmBaseRepositoryFactory(OrderEntity)
 const ProductEntityRepository = mikroOrmBaseRepositoryFactory(ProductEntity)
+const OrderLineItemEntityRepository =
+  mikroOrmBaseRepositoryFactory(OrderLineItemEntity)
 
 const ordersSeed = [
   { id: "order_a", display_id: "1001" },
@@ -113,6 +138,12 @@ const productSalesChannelLinksSeed = [
     product_id: "prod_standard",
     sales_channel_id: "sc_wholesale",
   },
+]
+
+const orderLineItemsSeed = [
+  { id: "li_1", order_id: "order_a", product_id: "prod_premium" },
+  { id: "li_2", order_id: "order_b", product_id: "prod_standard" },
+  { id: "li_3", order_id: "order_c", product_id: "prod_premium" },
 ]
 
 async function createLinkTable(manager: SqlEntityManager) {
@@ -250,6 +281,38 @@ function buildSalesChannelJoinMetadata(filters?: Record<string, unknown>) {
   }
 }
 
+function buildReadonlyOrderLineItemProductJoinMetadata(
+  filters?: Record<string, unknown>
+) {
+  return {
+    link: {
+      table: "order_line_item",
+      sourceKey: "order_id",
+      targetKey: "product_id",
+    },
+    target: {
+      table: "product",
+      filters,
+    },
+  }
+}
+
+function buildReadonlyProductJoinFromOrderLineItemMetadata(
+  filters?: Record<string, unknown>
+) {
+  return {
+    link: {
+      table: "order_line_item",
+      sourceKey: "id",
+      targetKey: "product_id",
+    },
+    target: {
+      table: "product",
+      filters,
+    },
+  }
+}
+
 function buildOrderJoinMetadata(filters?: Record<string, unknown>) {
   return {
     link: {
@@ -272,6 +335,10 @@ function productIds(results: ProductEntity[]): string[] {
   return results.map((row) => row.id)
 }
 
+function orderLineItemIds(results: OrderLineItemEntity[]): string[] {
+  return results.map((row) => row.id)
+}
+
 describe("cross-module query integration", () => {
   let orm!: MikroORM
   let manager!: SqlEntityManager
@@ -283,6 +350,10 @@ describe("cross-module query integration", () => {
 
   const getProductRepository = () => {
     return new ProductEntityRepository({ manager: manager.fork() })
+  }
+
+  const getOrderLineItemRepository = () => {
+    return new OrderLineItemEntityRepository({ manager: manager.fork() })
   }
 
   const findOrders = async (
@@ -316,6 +387,17 @@ describe("cross-module query integration", () => {
     }) as Promise<ProductEntity[]>
   }
 
+  const findOrderLineItems = async (
+    filters: Record<string, unknown> = {},
+    config: FindConfig<any> = {}
+  ) => {
+    sqlCapture.clear()
+    return getOrderLineItemRepository().find(
+      buildQuery(filters, config) as any,
+      { manager }
+    ) as Promise<OrderLineItemEntity[]>
+  }
+
   beforeEach(async () => {
     sqlCapture = createSqlCapture()
 
@@ -326,7 +408,7 @@ describe("cross-module query integration", () => {
 
     orm = await MikroORM.init(
       defineConfig({
-        entities: [OrderEntity, ProductEntity],
+        entities: [OrderEntity, ProductEntity, OrderLineItemEntity],
         clientUrl: getDatabaseURL(dbName),
         onQuery: sqlCapture.onQuery,
       })
@@ -343,6 +425,7 @@ describe("cross-module query integration", () => {
 
     await getOrderRepository().create(ordersSeed, { manager })
     await getProductRepository().create(productsSeed, { manager })
+    await getOrderLineItemRepository().create(orderLineItemsSeed, { manager })
     await manager.flush()
   })
 
@@ -993,6 +1076,118 @@ describe("cross-module query integration", () => {
         `
       )
       expect(results).toHaveLength(0)
+    })
+  })
+
+  describe("readonly links", () => {
+    it("should filter orders through an entity table used as a readonly link bridge", async () => {
+      const config = {
+        __internal: {
+          crossModuleJoins: [
+            buildReadonlyOrderLineItemProductJoinMetadata({
+              handle: "premium",
+            }),
+          ],
+        },
+      }
+
+      const results = await findOrders({}, config)
+
+      expectCapturedQueries(
+        orm,
+        sqlCapture,
+        `
+          select "o0".*
+          from "order" as "o0"
+          where exists (
+            select 1
+            from "public"."order_line_item" as "cm_link_0"
+            inner join "public"."product" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
+              and "cm_link_0"."deleted_at" is null
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
+          )
+        `
+      )
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
+    })
+
+    it("should filter orders through readonly line items and nested linked sales channels", async () => {
+      const config = {
+        __internal: {
+          crossModuleJoins: [
+            buildReadonlyOrderLineItemProductJoinMetadata(),
+            buildSalesChannelJoinMetadata({ name: "web-store" }),
+          ],
+        },
+      }
+
+      const results = await findOrders({}, config)
+
+      expectCapturedQueries(
+        orm,
+        sqlCapture,
+        `
+          select "o0".*
+          from "order" as "o0"
+          where exists (
+            select 1
+            from "public"."order_line_item" as "cm_link_0"
+            inner join "public"."product" as "product" on true
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
+              and "cm_link_0"."deleted_at" is null
+              and "product"."deleted_at" is null
+              and exists (
+                select 1
+                from "public"."product_sales_channel" as "cm_link_1"
+                inner join "public"."sales_channel" as "sales_channel" on true
+                where "cm_link_1"."product_id" = "product"."id"
+                  and "cm_link_1"."sales_channel_id" = "sales_channel"."id"
+                  and "cm_link_1"."deleted_at" is null
+                  and "sales_channel"."deleted_at" is null
+                  and "sales_channel"."name" = 'web-store'
+              )
+          )
+        `
+      )
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
+    })
+
+    it("should filter order line items by readonly product handle", async () => {
+      const config = {
+        __internal: {
+          crossModuleJoins: [
+            buildReadonlyProductJoinFromOrderLineItemMetadata({
+              handle: "premium",
+            }),
+          ],
+        },
+      }
+
+      const results = await findOrderLineItems({}, config)
+
+      expectCapturedQueries(
+        orm,
+        sqlCapture,
+        `
+          select "o0".*
+          from "order_line_item" as "o0"
+          where exists (
+            select 1
+            from "public"."order_line_item" as "cm_link_0"
+            inner join "public"."product" as "product" on true
+            where "cm_link_0"."id" = "o0"."id"
+              and "cm_link_0"."product_id" = "product"."id"
+              and "cm_link_0"."deleted_at" is null
+              and "product"."deleted_at" is null
+              and "product"."handle" = 'premium'
+          )
+        `
+      )
+      expect(orderLineItemIds(results).sort()).toEqual(["li_1", "li_3"])
     })
   })
 

@@ -445,6 +445,16 @@ export interface CreateOrderTaxLineDTO {
    * The associated provider's ID.
    */
   provider_id?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * Holds data returned by the tax provider in key-value pairs.
+   */
+  data?: Record<string, unknown> | null
 }
 
 /**
@@ -480,6 +490,16 @@ export interface UpdateOrderTaxLineDTO {
    * The associated provider's ID.
    */
   provider_id?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * Holds data returned by the tax provider in key-value pairs.
+   */
+  data?: Record<string, unknown> | null
 }
 
 /**

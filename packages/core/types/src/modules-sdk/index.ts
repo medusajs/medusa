@@ -231,6 +231,12 @@ export type ModuleJoinerConfig = Omit<
    * If not explicitly defined, this array will be populated by databaseConfig.extraFields
    */
   extraDataFields?: string[]
+  /**
+   * Resolved database client URL for this module. This is used to determine if we can do in-DB cross module filtering
+   *
+   * @internal
+   */
+  databaseClientUrl?: string
   databaseConfig?: {
     /**
      * Name of the pivot table. If not provided it is auto generated
@@ -299,6 +305,10 @@ export interface ModuleServiceInitializeOptions {
     database?: string
     driverOptions?: Record<string, unknown> & {
       connection?: Record<string, unknown>
+      /** Dynamic password function called for each new connection (e.g. AWS RDS IAM token) */
+      dynamicPassword?: (() => string) | (() => Promise<string>)
+      /** Optional function to check if a connection's credentials have expired */
+      expirationChecker?: () => boolean
     }
     debug?: boolean
     pool?: Record<string, unknown>

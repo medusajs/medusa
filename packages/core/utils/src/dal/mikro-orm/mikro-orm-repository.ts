@@ -1357,9 +1357,18 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         const batchSize = 100 // Process in chunks to avoid query size limits
         const updatePromises: Promise<any>[] = []
         const allUpdatedEntities: Array<{ id: string; order: number }> = []
+        const metadata = manager.getDriver().getMetadata().get(entityName)
+        const onUpdateProps = metadata.props.filter((p) => !!p.onUpdate)
 
         for (let i = 0; i < toUpdate.length; i += batchSize) {
           const chunk = toUpdate.slice(i, i + batchSize)
+
+          // nativeUpdateMany bypasses lifecycle hooks, so apply onUpdate values manually.
+          for (const item of chunk) {
+            for (const prop of onUpdateProps) {
+              item[prop.name] = prop.onUpdate!(item, manager as EntityManager)
+            }
+          }
 
           updatePromises.push(
             manager

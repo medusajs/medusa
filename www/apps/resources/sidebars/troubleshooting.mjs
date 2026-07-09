@@ -222,6 +222,11 @@ export const troubleshootingSidebar = [
             path: "/troubleshooting/nextjs-starter-rewrites",
             title: "Google Cloud Run Error",
           },
+          {
+            type: "link",
+            path: "/troubleshooting/nextjs-build-404",
+            title: "Dynamic Routes 404 During Build",
+          },
         ],
       },
       {
