@@ -91,34 +91,6 @@ When deploying your storefront to Cloud, you don't need to add any specific conf
 
 Medusa automatically injects the necessary configurations during the deployment process to ensure your storefront is correctly set up on Cloud.
 
-### Next.js Middleware Runtime
-
-Cloud deploys storefronts on Cloudflare via the OpenNext Cloudflare adapter, which only supports Edge runtime middleware. If you use Next.js middleware with the default Node.js runtime, your build will fail with the following error:
-
-```bash
-ERROR Node.js middleware is not currently supported.
-Consider switching to Edge Middleware.
-```
-
-To fix this, add the Edge runtime export to your middleware file:
-
-```ts title="middleware.ts"
-export const config = {
-  runtime: "edge",
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-}
-```
-
-When running middleware in the Edge runtime, Node.js-specific APIs such as `fs`, `path`, and the Node.js `crypto` module are not available. Use Web Platform APIs instead. For example, replace `crypto.createHash` with the Web Crypto API:
-
-```ts title="middleware.ts"
-const encoder = new TextEncoder()
-const data = encoder.encode("value")
-const hash = await crypto.subtle.digest("SHA-256", data)
-```
-
-Refer to the [Next.js Edge Runtime documentation](https://nextjs.org/docs/app/api-reference/edge) and the [OpenNext Cloudflare documentation](https://opennext.js.org/cloudflare) for more details.
-
 ### Next.js Image Optimization
 
 Cloud currently does not support Next.js image optimization for storefronts. The image optimization feature that uses the Next.js Image component's automatic optimization capabilities will not function as expected when deployed on Cloud.

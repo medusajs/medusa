@@ -97,21 +97,13 @@ To resolve this, ensure that your project's dependencies are compatible with tho
 
 ## Missing yarn.lock in Build Context
 
-If your Yarn berry monorepo build fails with the following error, the `yarn.lock` file is not included in the Docker build context:
+If your Yarn berry monorepo build fails with the following error, the `yarn.lock` file is not included in the build context:
 
 ```bash
 failed to calculate checksum of ref: "/yarn.lock": not found
 ```
 
-This is different from an outdated lockfile — the lockfile is entirely absent from the build context. Cloud cannot install dependencies without it.
-
-### Diagnose the Missing Lockfile
-
-Check for these indicators in your build logs:
-
-- The error message references `/yarn.lock: not found`
-- The build fails early during the dependency installation step
-- No other lockfile errors are shown
+This is different from an outdated lockfile. The lockfile is entirely absent from the build context. Cloud cannot install dependencies without it.
 
 The most common cause is that `yarn.lock` is listed in `.gitignore` or was never committed to the repository.
 
@@ -135,9 +127,7 @@ git push
 
 ### Prevent Missing Lockfile Issues
 
-Always commit your lockfile to version control. Cloud requires the lockfile to install dependencies with a frozen install, ensuring reproducible builds. Add the following to your `.gitignore` to make sure the lockfile is not accidentally excluded:
-
-Remove any line in your `.gitignore` that matches `yarn.lock` or `*.lock`.
+Always commit your lockfile to version control. Cloud requires the lockfile to install dependencies with a frozen install, ensuring reproducible builds. Remove any line in your `.gitignore` that matches `yarn.lock` or `*.lock`.
 
 ---
 
@@ -210,6 +200,21 @@ Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs. You can fi
 ### Contact Support
 
 If neither of the steps above resolves the issue and the storefront build logs remain empty, contact support and include the deployment ID so the team can investigate at the platform level.
+
+---
+
+## Next.js 16 Middlewares Not Supported on Cloud
+
+If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:
+
+```bash
+ERROR Node.js middleware is not currently supported. Consider switching to Edge Middleware.
+```
+
+This is because Cloud does not currently support Node.js middlewares in Next.js 16. You can either:
+
+1. Remove the middleware from your Next.js 16 storefront and redeploy.
+2. Downgrade your storefront to Next.js 15, which does not have this limitation.
 
 ---
 
