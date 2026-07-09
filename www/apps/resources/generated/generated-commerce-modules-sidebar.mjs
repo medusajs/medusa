@@ -6489,6 +6489,17 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
+          "type": "link",
+          "path": "/commerce-modules/loyalty/module-options",
+          "title": "Plugin Options",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
           "type": "category",
           "title": "Concepts",
           "children": [

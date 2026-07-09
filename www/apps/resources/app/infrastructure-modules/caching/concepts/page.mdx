@@ -128,7 +128,7 @@ The following table shows when the Caching Module invalidates cached data based 
         Update
       </Table.Cell>
       <Table.Cell>
-        `Entity:{id}`, `Entity:list:*` if the list includes the updated record. (`Product:prod_123`, `Product:list:*`)
+        `Entity:{id}`, `Entity:list:*` (`Product:prod_123`, `Product:list:*`)
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -141,6 +141,12 @@ The following table shows when the Caching Module invalidates cached data based 
     </Table.Row>
   </Table.Body>
 </Table>
+
+<Note>
+
+The `Entity:list:*` tag is always invalidated on update because an update can change whether an entity matches a cached list's filters. For example, a product going from draft to published status would appear in a list filtered by published products. Since the cache layer has no way of knowing which fields are filter-relevant, it invalidates all list caches on every update.
+
+</Note>
 
 ### Which Data is Automatically Invalidated?
 

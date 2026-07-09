@@ -3992,6 +3992,7 @@ __metadata:
     "@medusajs/dashboard": 2.17.2
     "@medusajs/framework": 2.17.2
     "@medusajs/icons": 2.17.2
+    "@medusajs/medusa": 2.17.2
     "@medusajs/test-utils": 2.17.2
     "@medusajs/types": 2.17.2
     "@medusajs/ui": 4.1.19
@@ -4007,6 +4008,7 @@ __metadata:
     "@medusajs/dashboard": 2.17.2
     "@medusajs/framework": 2.17.2
     "@medusajs/icons": 2.17.2
+    "@medusajs/medusa": 2.17.2
     "@medusajs/test-utils": 2.17.2
     "@medusajs/ui": 4.1.19
     react: ^18.3.1
@@ -4151,6 +4153,7 @@ __metadata:
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
     "@medusajs/deps": 2.17.2
+    "@medusajs/query": 2.17.2
     "@medusajs/types": 2.17.2
     "@medusajs/utils": 2.17.2
   languageName: unknown
@@ -4272,6 +4275,16 @@ __metadata:
     "@medusajs/test-utils": 2.17.2
   peerDependencies:
     "@medusajs/framework": 2.17.2
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/query@2.17.2, @medusajs/query@workspace:packages/core/query":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/query@workspace:packages/core/query"
+  dependencies:
+    "@medusajs/deps": 2.17.2
+    "@medusajs/types": 2.17.2
+    "@medusajs/utils": 2.17.2
   languageName: unknown
   linkType: soft
 
