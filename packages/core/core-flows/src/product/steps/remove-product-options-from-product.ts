@@ -15,6 +15,14 @@ export const removeProductOptionsFromProductStepId =
   "remove-product-options-from-product"
 /**
  * This step removes product options from products.
+ *
+ * @example
+ * const data = removeProductOptionsFromProductStep([
+ *   {
+ *     product_id: "prod_123",
+ *     product_option_id: "opt_123",
+ *   },
+ * ])
  */
 export const removeProductOptionsFromProductStep = createStep(
   removeProductOptionsFromProductStepId,

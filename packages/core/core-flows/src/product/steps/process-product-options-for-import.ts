@@ -15,6 +15,8 @@ export const processProductOptionsForImportStepId =
  * product is linked to that existing option. Otherwise, a new option is
  * created — defaulting to `is_exclusive: true` unless the import explicitly
  * sets it to `false`.
+ *
+ * @since 2.17.3
  */
 export type ImportProductOptionInput = ProductTypes.CreateProductOptionDTO & {
   id?: string
