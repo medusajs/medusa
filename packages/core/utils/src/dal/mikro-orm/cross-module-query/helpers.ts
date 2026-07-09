@@ -17,7 +17,10 @@ export type CorrelateSpec = {
   key: string
 }
 
-export type LinkType = "normal" | "source" | "target"
+export type LinkType =
+  | "pivot" // The link between the source and target is through a pivot table
+  | "source" // The source table has a column referencing the target table's key
+  | "target" // The target table has a column referencing the source table's key
 
 export function inferLinkType(
   joinSpec: CrossModuleJoinSpec,
@@ -38,7 +41,7 @@ export function inferLinkType(
     return "source"
   }
 
-  return "normal"
+  return "pivot"
 }
 
 export function qualifyTable(

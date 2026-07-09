@@ -107,7 +107,7 @@ function buildOrderByScalarSubquery(
   const linkType = inferLinkType(joinSpec, correlateSpec)
 
   const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
-  if (field === targetPrimaryKey && linkType === "normal") {
+  if (field === targetPrimaryKey && linkType === "pivot") {
     return buildTargetIdOnlyOrderSql(
       joinSpec,
       correlateSpec,
@@ -117,8 +117,8 @@ function buildOrderByScalarSubquery(
     )
   }
 
-  if (linkType === "normal") {
-    return buildNormalLinkOrderSql(
+  if (linkType === "pivot") {
+    return buildPivotLinkOrderSql(
       joinSpec,
       correlateSpec,
       index,
@@ -168,7 +168,7 @@ function buildTargetIdOnlyOrderSql(
   )
 }
 
-function buildNormalLinkOrderSql(
+function buildPivotLinkOrderSql(
   joinSpec: ResolvedCrossModuleJoinSpec,
   correlateSpec: CorrelateSpec,
   index: number,

@@ -155,12 +155,12 @@ function buildExistsSql(
     !!joinSpec.target.filters &&
     Object.keys(joinSpec.target.filters).length === 1 &&
     joinSpec.target.filters[targetPrimaryKey] !== undefined
-  if (onlyTargetIdFilters && linkType === "normal") {
+  if (onlyTargetIdFilters && linkType === "pivot") {
     return buildTargetIdOnlyExistsSql(joinSpec, correlateSpec, context)
   }
 
-  if (linkType === "normal") {
-    return buildNormalLinkExistsSql(joinSpec, correlateSpec, context)
+  if (linkType === "pivot") {
+    return buildPivotLinkExistsSql(joinSpec, correlateSpec, context)
   } else {
     return buildNoLinkExistsSql(joinSpec, correlateSpec, context, linkType)
   }
@@ -198,7 +198,7 @@ function buildTargetIdOnlyExistsSql(
   return { sql, bindings }
 }
 
-function buildNormalLinkExistsSql(
+function buildPivotLinkExistsSql(
   joinSpec: ResolvedCrossModuleJoinSpec,
   correlateSpec: CorrelateSpec,
   context: JoinSqlContext
