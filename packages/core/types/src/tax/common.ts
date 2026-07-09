@@ -560,6 +560,13 @@ interface TaxLineDTO {
    * The ID of the tax provider used to calculate and retrieve the tax line.
    */
   provider_id: string
+
+  /**
+   * Additional data returned by the tax provider.
+   * Use this to store jurisdiction-level breakdown data
+   * (e.g. state, county, city rates) that is not captured in the aggregated rate.
+   */
+  data?: Record<string, unknown> | null
 }
 
 /**

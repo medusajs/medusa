@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`385819ba1469b4310832a7737060eb23226f135d`](https://github.com/medusajs/medusa/commit/385819ba1469b4310832a7737060eb23226f135d), [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c), [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51), [`5296f51121d4796b1757b65852c48e97e0e1e197`](https://github.com/medusajs/medusa/commit/5296f51121d4796b1757b65852c48e97e0e1e197), [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9)]:
+  - @medusajs/core-flows@2.17.2
+  - @medusajs/framework@2.17.2
+  - @medusajs/medusa@2.17.2
+
 ## 2.17.1
 
 ### Patch Changes

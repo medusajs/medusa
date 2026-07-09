@@ -1,5 +1,24 @@
 # @medusajs/core-flows
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15419](https://github.com/medusajs/medusa/pull/15419) [`385819ba1469b4310832a7737060eb23226f135d`](https://github.com/medusajs/medusa/commit/385819ba1469b4310832a7737060eb23226f135d) Thanks [@scherddel](https://github.com/scherddel)! - fix(core-flows,medusa): Gift-cards bug fix to exclude giftcards from tax lines calculation
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- [#15618](https://github.com/medusajs/medusa/pull/15618) [`5296f51121d4796b1757b65852c48e97e0e1e197`](https://github.com/medusajs/medusa/commit/5296f51121d4796b1757b65852c48e97e0e1e197) Thanks [@Mezzle](https://github.com/Mezzle)! - fix(core-flows): keep the customer account-holder link on a failed payment-session init
+
+  `createPaymentSessionsWorkflow` creates the payment account holder with `noCompensation`, so the holder survives a workflow rollback, but the `createRemoteLinkStep` that links it to the customer was dismissed on rollback. A failed init therefore left an orphaned account holder — present in the DB but unreachable through `customer.account_holders` — so the `existingAccountHolder` short-circuit kept missing it and every later init re-created the same provider customer, colliding on the unique `(provider_id, external_id)` index ("Account holder ... already exists", a 400 on `POST /payment-sessions`) that never self-healed. The link step now also runs with `noCompensation`, so the link survives alongside the holder and a later init reuses the existing holder.
+
+- [#15721](https://github.com/medusajs/medusa/pull/15721) [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9) Thanks [@leobenzol](https://github.com/leobenzol)! - feat: drag&drop LayoutComposer, settings db persistence
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/framework@2.17.2
+
 ## 2.17.1
 
 ### Patch Changes

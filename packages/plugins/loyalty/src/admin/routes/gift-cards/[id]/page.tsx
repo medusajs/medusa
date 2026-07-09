@@ -38,28 +38,40 @@ const GiftCardDetailsPage = () => {
       sections={{
         main: (
           <>
-            <GiftCardGeneralSection giftCard={giftCard!} />
+            <LayoutComposer.Entry id="GiftCardGeneralSection">
+              <GiftCardGeneralSection giftCard={giftCard!} />
+            </LayoutComposer.Entry>
 
             {storeCreditAccount && (
-              <GiftCardTransactionsSection
-                storeCreditAccount={storeCreditAccount}
-              />
+              <LayoutComposer.Entry id="GiftCardTransactionsSection">
+                <GiftCardTransactionsSection
+                  storeCreditAccount={storeCreditAccount}
+                />
+              </LayoutComposer.Entry>
             )}
 
-            <JsonViewSection data={giftCard!} />
+            <LayoutComposer.Entry id="JsonViewSection">
+              <JsonViewSection data={giftCard!} />
+            </LayoutComposer.Entry>
           </>
         ),
         side: (
           <>
             {storeCreditAccount && (
-              <GiftCardBalanceSection
-                storeCreditAccount={storeCreditAccount}
-                giftCard={giftCard!}
-              />
+              <LayoutComposer.Entry id="GiftCardBalanceSection">
+                <GiftCardBalanceSection
+                  storeCreditAccount={storeCreditAccount}
+                  giftCard={giftCard!}
+                />
+              </LayoutComposer.Entry>
             )}
 
-            <GiftCardNoteSection giftCard={giftCard!} />
-            <GiftCardOrderSection giftCard={giftCard!} />
+            <LayoutComposer.Entry id="GiftCardNoteSection">
+              <GiftCardNoteSection giftCard={giftCard!} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="GiftCardOrderSection">
+              <GiftCardOrderSection giftCard={giftCard!} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

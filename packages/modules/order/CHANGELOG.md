@@ -1,5 +1,18 @@
 # @medusajs/order
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15622](https://github.com/medusajs/medusa/pull/15622) [`a04f1e06fcb99373becfe705c09a85910b73cb4c`](https://github.com/medusajs/medusa/commit/a04f1e06fcb99373becfe705c09a85910b73cb4c) Thanks [@Dev-Abdullah-H](https://github.com/Dev-Abdullah-H)! - fix(order): make custom_display_id searchable
+
+- [#15863](https://github.com/medusajs/medusa/pull/15863) [`448498c1450bd75b19d00a515544db61dcdc71e1`](https://github.com/medusajs/medusa/commit/448498c1450bd75b19d00a515544db61dcdc71e1) Thanks [@Dev-Abdullah-H](https://github.com/Dev-Abdullah-H)! - fix: use isDefined check for unit_price in ITEM_UPDATE order change action so that setting an item price to 0 is correctly reflected in previewOrderChange
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/framework@2.17.2
+
 ## 2.17.1
 
 ### Patch Changes
