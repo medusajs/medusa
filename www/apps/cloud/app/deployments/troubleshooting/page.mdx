@@ -274,6 +274,53 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## npm Peer Dependency Conflicts with Third-Party Packages
+
+When you install a third-party package (for example, a payment provider) that requires a specific version of a Medusa package, npm may throw an `ERESOLVE` error if the required version doesn't match the version installed in your project.
+
+For example, you may see an error similar to:
+
+```bash
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: my-medusa-app@1.0.0
+npm error Found: @medusajs/framework@2.15.5
+npm error node_modules/@medusajs/framework
+npm error   @medusajs/framework@"2.15.5" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer @medusajs/framework@"2.13.6" from @example/medusa-payment-example@0.1.0
+```
+
+### Recommended Resolution Strategies
+
+Try the following strategies in order:
+
+1. **Update the third-party package**: Check if a newer version of the package supports your Medusa version. Run:
+
+```bash npm2yarn
+npm install @example/medusa-payment-example@latest
+```
+
+2. **Contact the package maintainer**: If no compatible version exists, open an issue or contact the maintainer to request support for your Medusa version.
+
+3. **Use `--legacy-peer-deps`**: If the version mismatch is minor (for example, a patch version difference) and you have confirmed the package works correctly, you can bypass the conflict. Add the following to a `.npmrc` file at the root of your project:
+
+```bash title=".npmrc"
+legacy-peer-deps=true
+```
+
+This tells npm to ignore peer dependency conflicts and install anyway. Use this as a last resort, and test your integration thoroughly before deploying.
+
+<Note type="warning">
+
+Using `--legacy-peer-deps` may introduce compatibility issues. Always test your application thoroughly after applying this workaround.
+
+</Note>
+
+---
+
 ## pnpm Lockfile Config Mismatch (ERR_PNPM_LOCKFILE_CONFIG_MISMATCH)
 
 If your build fails with the following error, the `patchedDependencies` configuration in your `package.json` does not match what is recorded in `pnpm-lock.yaml`:
