@@ -17,7 +17,19 @@
  *     items:
  *       type: string
  *       title: values
- *       description: A value.
+ *       description: An option value.
+ *       example: "Red"
+ *   ranks:
+ *     type: object
+ *     description: The ranking of the option's values. The keys are the value names and the values are their respective ranks.
+ *     example:
+ *       Small: 1
+ *       Medium: 2
+ *       Large: 3
+ *   is_exclusive:
+ *     type: boolean
+ *     title: is_exclusive
+ *     description: Whether the option is exclusive to the product.
  * 
 */
 

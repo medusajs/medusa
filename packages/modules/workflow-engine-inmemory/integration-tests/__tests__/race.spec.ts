@@ -19,7 +19,6 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
   resolve: __dirname + "/../..",
   testSuite: ({ service: workflowOrcModule }) => {
-    // TODO: Debug the issue with this test https://github.com/medusajs/medusa/actions/runs/13900190144/job/38897122803#step:5:5616
     describe("Testing race condition of the workflow during retry", () => {
       it("should manage saving multiple async steps in concurrency", async () => {
         const step0 = createStep(

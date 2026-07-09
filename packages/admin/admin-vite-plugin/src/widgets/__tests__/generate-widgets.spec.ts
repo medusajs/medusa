@@ -34,11 +34,15 @@ const mockFileContents = [
 `,
 ]
 
+// `<component-name>-<short hash>`. The hash is of the admin-relative path
+// "widgets/widget.tsx" — independent of the absolute/OS path, so both the Unix
+// and Windows cases share this id.
 const expectedWidgets = `
     widgets: [
         {
             Component: WidgetComponent0,
-            zone: ["product.details.after"]
+            zone: ["product.details.after"],
+            widgetId: "Widget-e4f7"
         }
     ]
 `
@@ -78,6 +82,41 @@ describe("generateWidgets", () => {
     ])
     expect(utils.normalizeString(result.code)).toEqual(
       utils.normalizeString(expectedWidgets)
+    )
+  })
+  it("should use an explicit id from the widget config", async () => {
+    const mockFiles = ["Users/user/medusa/src/admin/widgets/widget.tsx"]
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+
+    vi.mocked(fs.readFile).mockImplementation(async () =>
+      Promise.resolve(`
+        import { defineWidgetConfig } from "@medusajs/admin-sdk"
+
+        const Widget = () => <div>Widget</div>
+
+        export const config = defineWidgetConfig({
+            zone: "product.details.after",
+            id: "my-plugin:product-summary",
+        })
+
+        export default Widget
+      `)
+    )
+
+    const result = await generateWidgets(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(`
+        widgets: [
+            {
+                Component: WidgetComponent0,
+                zone: ["product.details.after"],
+                widgetId: "my-plugin:product-summary"
+            }
+        ]
+      `)
     )
   })
 })

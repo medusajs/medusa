@@ -9,7 +9,7 @@ jest.setTimeout(50000)
 
 // BREAKING: Shipping setup has significantly changed from v1, exact migration needs more investigation
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin: Shipping Option API", () => {
       let shippingProfile
       let fulfillmentSet
@@ -25,7 +25,7 @@ medusaIntegrationTestRunner({
         value: "old value",
       }
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         appContainer = getContainer()
 
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -104,6 +104,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_option_type
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /admin/shipping-options", () => {

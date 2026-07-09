@@ -13,6 +13,7 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
+import { AdminCreateProductOption } from "../product-options/validators"
 import { AdminGetProductVariantsParamsFields } from "../product-variants/validators"
 
 const statusEnum = z.nativeEnum(ProductStatus)
@@ -67,12 +68,61 @@ export const AdminGetProductOptionsParams = createFindParams({
   .merge(AdminGetProductOptionsParamsFields)
   .merge(applyAndAndOrOperators(AdminGetProductOptionsParamsFields))
 
-export type AdminCreateProductOptionType = z.infer<typeof CreateProductOption>
-export const CreateProductOption = z.object({
-  title: z.string(),
-  values: z.array(z.string()),
+export type AdminCreateProductTagType = z.infer<typeof AdminCreateProductTag>
+export const AdminCreateProductTag = z.object({
+  value: z.string(),
 })
-export const AdminCreateProductOption = WithAdditionalData(CreateProductOption)
+
+export type AdminUpdateProductTagType = z.infer<typeof AdminUpdateProductTag>
+export const AdminUpdateProductTag = z.object({
+  id: z.string().optional(),
+  value: z.string().optional(),
+})
+
+export type AdminLinkProductOptionWithValuesType = z.infer<
+  typeof AdminLinkProductOptionWithValues
+>
+export const AdminLinkProductOptionWithValues = z.object({
+  id: z.string(),
+  value_ids: z.array(z.string()),
+})
+
+export type AdminUpdateProductOptionValuesType = z.infer<
+  typeof AdminUpdateProductOptionValues
+>
+export const AdminUpdateProductOptionValues = z.object({
+  product_option_id: z.string(),
+  add: z
+    .array(
+      z.union([
+        z.string(),
+        z
+          .object({
+            value: z.string(),
+          })
+          .strict(),
+      ])
+    )
+    .optional(),
+  remove: z.array(z.string()).optional(),
+})
+
+export type AdminLinkProductOptionsType = z.infer<
+  typeof AdminLinkProductOptions
+>
+export const AdminLinkProductOptions = z.object({
+  add: z
+    .array(
+      z.union([
+        z.string(),
+        AdminCreateProductOption,
+        AdminLinkProductOptionWithValues,
+      ])
+    )
+    .optional(),
+  remove: z.array(z.string()).optional(),
+  update: z.array(AdminUpdateProductOptionValues).optional(),
+})
 
 export type AdminUpdateProductOptionType = z.infer<typeof UpdateProductOption>
 export const UpdateProductOption = z.object({
@@ -199,7 +249,17 @@ export const CreateProduct = z
     collection_id: z.string().nullish(),
     categories: z.array(IdAssociation).optional(),
     tags: z.array(IdAssociation).optional(),
-    options: z.array(CreateProductOption).optional(),
+    options: z
+      .array(
+        z.union([
+          AdminCreateProductOption,
+          z.object({
+            id: z.string(),
+            value_ids: z.array(z.string()).optional(),
+          }),
+        ])
+      )
+      .optional(),
     variants: z.array(CreateProductVariant).optional(),
     sales_channels: z.array(z.object({ id: z.string() })).optional(),
     shipping_profile_id: z.string().optional(),
@@ -223,7 +283,16 @@ export const UpdateProduct = z
     title: z.string().optional(),
     discountable: booleanString().optional(),
     is_giftcard: booleanString().optional(),
-    options: z.array(UpdateProductOption).optional(),
+    options: z.any().superRefine((val, ctx) => {
+      if (val !== undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            "The 'options' property was removed in version 2.16.0. Please remove it from your request payload.",
+        })
+      }
+    }),
+    option_ids: z.array(z.string()).optional(),
     variants: z.array(UpdateProductVariant).optional(),
     status: statusEnum.optional(),
     subtitle: z.string().nullish(),

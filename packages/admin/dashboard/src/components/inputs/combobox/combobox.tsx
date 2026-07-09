@@ -15,7 +15,7 @@ import {
   TrianglesMini,
   XMarkMini,
 } from "@medusajs/icons"
-import { clx, Text } from "@medusajs/ui"
+import { Badge, clx, Text } from "@medusajs/ui"
 import { matchSorter } from "match-sorter"
 import {
   ComponentPropsWithoutRef,
@@ -55,9 +55,11 @@ interface ComboboxProps<T extends Value = Value>
   fetchNextPage?: () => void
   isFetchingNextPage?: boolean
   onCreateOption?: (value: string) => void
+  shouldAlwaysShowCreateOption?: boolean
   noResultsPlaceholder?: ReactNode
   allowClear?: boolean
   forceHideInput?: boolean // always hide input -> used for singe value select that don't have query/filter
+  displayMode?: "count" | "chips" // how to display multiple selected values
 }
 
 const ComboboxImpl = <T extends Value = string>(
@@ -72,9 +74,11 @@ const ComboboxImpl = <T extends Value = string>(
     fetchNextPage,
     isFetchingNextPage,
     onCreateOption,
+    shouldAlwaysShowCreateOption,
     noResultsPlaceholder,
     allowClear,
     forceHideInput,
+    displayMode = "count",
     ...inputProps
   }: ComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>
@@ -110,8 +114,9 @@ const ComboboxImpl = <T extends Value = string>(
     const exists = options
       .filter((o) => !o.disabled)
       .find((o) => {
-        if (isArrayValue) {
-          return newValues?.includes(o.value)
+        if (isArrayValue && newValues?.length) {
+          // only check if the last added value
+          return newValues[newValues.length - 1]?.includes(o.value)
         }
         return o.value === newValues
       })
@@ -142,6 +147,15 @@ const ComboboxImpl = <T extends Value = string>(
     if (onSearchValueChange) {
       onSearchValueChange(query)
     }
+  }
+
+  const handleRemoveValue = (valueToRemove: string) => {
+    if (!isArrayValue || !Array.isArray(selectedValues)) {
+      return
+    }
+
+    const newValues = selectedValues.filter((v) => v !== valueToRemove) as T
+    handleValueChange(newValues)
   }
 
   /**
@@ -228,120 +242,207 @@ const ComboboxImpl = <T extends Value = string>(
     return isSearchControlled ? options : matches
   }, [matches, options, isSearchControlled])
 
+  const normalizedSearchValue = searchValue?.trim() ?? ""
+  const hasLabelMatch =
+    !!normalizedSearchValue.length &&
+    options.some(
+      (option) =>
+        option.label.trim().toLowerCase() ===
+        normalizedSearchValue.toLowerCase()
+    )
+
   return (
     <PrimitiveComboboxProvider
       open={open}
       setOpen={handleOpenChange}
       selectedValue={selectedValues}
-      setSelectedValue={(value) => handleValueChange(value as T)}
+      setSelectedValue={(value) => {
+        // TMP: fix issue where sometimes first element of the array is empty string
+        if (Array.isArray(value) && value[0] === "") {
+          value.shift()
+        }
+        handleValueChange(value as T)
+      }}
       value={searchValue}
       setValue={(query) => {
         handleSearchChange(query)
       }}
     >
-      <div
-        className={clx(
-          "relative flex cursor-pointer items-center gap-x-2 overflow-hidden",
-          "h-8 w-full rounded-md",
-          "bg-ui-bg-field transition-fg shadow-borders-base",
-          "has-[input:focus]:shadow-borders-interactive-with-active",
-          "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
-          "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
-          className
-        )}
-        style={
-          {
-            "--tag-width": `${tagWidth}px`,
-          } as CSSProperties
-        }
-      >
-        {showTag && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              handleValueChange(isArrayValue ? ([] as unknown as T) : undefined)
-            }}
-            className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute start-0.5 top-0.5 z-[1] flex h-[28px] items-center rounded-[4px] border py-[3px] pe-1 ps-1.5 outline-none"
-          >
-            <span className="tabular-nums">{selectedValues.length}</span>
-            <XMarkMini className="text-ui-fg-muted" />
-          </button>
-        )}
-        <div className="relative flex size-full items-center">
-          {showSelected && (
-            <div
-              className={clx(
-                "pointer-events-none absolute inset-y-0 flex size-full items-center",
-                {
-                  "start-[calc(var(--tag-width)+8px)]": showTag,
-                  "start-2": !showTag,
-                }
-              )}
-            >
-              <Text size="small" leading="compact">
-                {t("general.selected")}
-              </Text>
-            </div>
+      {displayMode === "chips" && isArrayValue ? (
+        <div
+          className={clx(
+            "relative flex cursor-pointer flex-wrap items-center gap-1.5",
+            "min-h-8 w-full rounded-md",
+            "bg-ui-bg-field transition-fg shadow-borders-base",
+            "has-[input:focus]:shadow-borders-interactive-with-active",
+            "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
+            "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
+            "p-1",
+            className
           )}
-          {hideInput && (
-            <div
+        >
+          {Array.isArray(selectedValues) &&
+            selectedValues.map((value) => {
+              const option = options.find((o) => o.value === value)
+              if (!option) return null
+
+              return (
+                <Badge
+                  key={value}
+                  size="2xsmall"
+                  className="transition-fg gap-x-0.5 pl-1.5 pr-1"
+                >
+                  {option.label}
+                  <button
+                    tabIndex={-1}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleRemoveValue(value)
+                    }}
+                    className="text-ui-fg-subtle transition-fg outline-none"
+                  >
+                    <XMarkMini />
+                  </button>
+                </Badge>
+              )
+            })}
+          <div className="relative flex min-w-[120px] flex-1 items-center">
+            <PrimitiveCombobox
+              autoSelect
+              ref={comboboxRef}
+              onFocus={() => setOpen(true)}
               className={clx(
-                "pointer-events-none absolute inset-y-0 flex size-full items-center overflow-hidden",
-                {
-                  "start-[calc(var(--tag-width)+8px)]": showTag,
-                  "start-2": !showTag,
-                }
+                "txt-compact-small text-ui-fg-base !placeholder:text-ui-fg-muted transition-fg size-full cursor-pointer bg-transparent pe-8 ps-1 outline-none focus:cursor-text"
               )}
-            >
-              <Text size="small" leading="compact" className="truncate">
-                {selectedLabel}
-              </Text>
-            </div>
-          )}
-          <PrimitiveCombobox
-            autoSelect
-            ref={comboboxRef}
-            onFocus={() => setOpen(true)}
-            className={clx(
-              "txt-compact-small text-ui-fg-base !placeholder:text-ui-fg-muted transition-fg size-full cursor-pointer bg-transparent pe-8 ps-2 outline-none focus:cursor-text",
-              "hover:bg-ui-bg-field-hover",
-              {
-                "opacity-0": hideInput,
-                "ps-2": !showTag,
-                "ps-[calc(var(--tag-width)+8px)]": showTag,
+              placeholder={
+                Array.isArray(selectedValues) && selectedValues.length > 0
+                  ? undefined
+                  : placeholder
               }
-            )}
-            placeholder={hidePlaceholder ? undefined : placeholder}
-            {...inputProps}
+              {...inputProps}
+            />
+          </div>
+          <PrimitiveComboboxDisclosure
+            render={(props) => {
+              return (
+                <button
+                  {...props}
+                  type="button"
+                  className="text-ui-fg-muted transition-fg hover:bg-ui-bg-field-hover absolute end-0 top-0 flex h-8 w-8 items-center justify-center rounded-r outline-none"
+                >
+                  <TrianglesMini />
+                </button>
+              )
+            }}
           />
         </div>
-        {allowClear && controlledValue && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault()
-              handleValueChange(undefined)
-            }}
-            className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute end-[28px] top-0.5 z-[1] flex h-[28px] items-center rounded-[4px] border px-1.5 py-[2px] outline-none"
-          >
-            <XMarkMini className="text-ui-fg-muted" />
-          </button>
-        )}
-        <PrimitiveComboboxDisclosure
-          render={(props) => {
-            return (
-              <button
-                {...props}
-                type="button"
-                className="text-ui-fg-muted transition-fg hover:bg-ui-bg-field-hover absolute end-0 flex size-8 items-center justify-center rounded-r outline-none"
+      ) : (
+        <div
+          className={clx(
+            "relative flex cursor-pointer items-center gap-x-2 overflow-hidden",
+            "h-8 w-full rounded-md",
+            "bg-ui-bg-field transition-fg shadow-borders-base",
+            "has-[input:focus]:shadow-borders-interactive-with-active",
+            "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
+            "has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled has-[:disabled]:cursor-not-allowed",
+            className
+          )}
+          style={
+            {
+              "--tag-width": `${tagWidth}px`,
+            } as CSSProperties
+          }
+        >
+          {showTag && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                handleValueChange(
+                  isArrayValue ? ([] as unknown as T) : undefined
+                )
+              }}
+              className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute start-0.5 top-0.5 z-[1] flex h-[28px] items-center rounded-[4px] border py-[3px] pe-1 ps-1.5 outline-none"
+            >
+              <span className="tabular-nums">{selectedValues.length}</span>
+              <XMarkMini className="text-ui-fg-muted" />
+            </button>
+          )}
+          <div className="relative flex size-full items-center">
+            {showSelected && (
+              <div
+                className={clx(
+                  "pointer-events-none absolute inset-y-0 flex size-full items-center",
+                  {
+                    "start-[calc(var(--tag-width)+8px)]": showTag,
+                    "start-2": !showTag,
+                  }
+                )}
               >
-                <TrianglesMini />
-              </button>
-            )
-          }}
-        />
-      </div>
+                <Text size="small" leading="compact">
+                  {t("general.selected")}
+                </Text>
+              </div>
+            )}
+            {hideInput && (
+              <div
+                className={clx(
+                  "pointer-events-none absolute inset-y-0 flex size-full items-center overflow-hidden",
+                  {
+                    "start-[calc(var(--tag-width)+8px)]": showTag,
+                    "start-2": !showTag,
+                  }
+                )}
+              >
+                <Text size="small" leading="compact" className="truncate">
+                  {selectedLabel}
+                </Text>
+              </div>
+            )}
+            <PrimitiveCombobox
+              autoSelect
+              ref={comboboxRef}
+              onFocus={() => setOpen(true)}
+              className={clx(
+                "txt-compact-small text-ui-fg-base !placeholder:text-ui-fg-muted transition-fg size-full cursor-pointer bg-transparent pe-8 ps-2 outline-none focus:cursor-text",
+                {
+                  "opacity-0": hideInput,
+                  "ps-2": !showTag,
+                  "ps-[calc(var(--tag-width)+8px)]": showTag,
+                }
+              )}
+              placeholder={hidePlaceholder ? undefined : placeholder}
+              {...inputProps}
+            />
+          </div>
+          {allowClear && controlledValue && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                handleValueChange(undefined)
+              }}
+              className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute end-[28px] top-0.5 z-[1] flex h-[28px] items-center rounded-[4px] border px-1.5 py-[2px] outline-none"
+            >
+              <XMarkMini className="text-ui-fg-muted" />
+            </button>
+          )}
+          <PrimitiveComboboxDisclosure
+            render={(props) => {
+              return (
+                <button
+                  {...props}
+                  type="button"
+                  className="text-ui-fg-muted transition-fg hover:bg-ui-bg-field-hover absolute end-0 flex size-8 items-center justify-center rounded-r outline-none"
+                >
+                  <TrianglesMini />
+                </button>
+              )
+            }}
+          />
+        </div>
+      )}
       <PrimitiveComboboxPopover
         gutter={4}
         sameWidth
@@ -401,22 +502,31 @@ const ComboboxImpl = <T extends Value = string>(
               </Text>
             </div>
           ))}
-        {!results.length && onCreateOption && (
-          <Fragment>
-            <PrimitiveSeparator className="bg-ui-border-base -mx-1" />
-            <PrimitiveComboboxItem
-              value={searchValue}
-              focusOnHover
-              setValueOnClick={false}
-              className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group mt-1 flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
-            >
-              <PlusMini className="text-ui-fg-subtle" />
-              <Text size="small" leading="compact">
-                {t("actions.create")} &quot;{searchValue}&quot;
-              </Text>
-            </PrimitiveComboboxItem>
-          </Fragment>
-        )}
+        {(!results.length ||
+          (shouldAlwaysShowCreateOption && normalizedSearchValue.length > 0)) &&
+          onCreateOption && (
+            <Fragment>
+              <PrimitiveSeparator className="bg-ui-border-base -mx-1" />
+              <PrimitiveComboboxItem
+                value={searchValue}
+                focusOnHover
+                setValueOnClick={false}
+                disabled={hasLabelMatch}
+                className={clx(
+                  "transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group mt-1 flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5",
+                  {
+                    "text-ui-fg-disabled bg-ui-bg-component cursor-not-allowed":
+                      hasLabelMatch,
+                  }
+                )}
+              >
+                <PlusMini className="text-ui-fg-subtle" />
+                <Text size="small" leading="compact">
+                  {t("actions.create")} &quot;{searchValue}&quot;
+                </Text>
+              </PrimitiveComboboxItem>
+            </Fragment>
+          )}
       </PrimitiveComboboxPopover>
     </PrimitiveComboboxProvider>
   )

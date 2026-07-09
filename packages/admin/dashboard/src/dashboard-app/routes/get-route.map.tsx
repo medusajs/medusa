@@ -7,8 +7,6 @@ import { MainLayout } from "../../components/layout/main-layout"
 import { PublicLayout } from "../../components/layout/public-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-import { TaxRegionDetailBreadcrumb } from "../../routes/tax-regions/tax-region-detail/breadcrumb"
-import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/loader"
 
 export function getRouteMap({
   settingsRoutes,
@@ -62,7 +60,7 @@ export function getRouteMap({
                   path: ":id",
                   errorElement: <ErrorBoundary />,
                   lazy: async () => {
-                    const { Breadcrumb, loader } = await import(
+                    const { Breadcrumb, loader, seo } = await import(
                       "../../routes/products/product-detail"
                     )
 
@@ -73,6 +71,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminProductResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -138,18 +137,6 @@ export function getRouteMap({
                             import("../../routes/products/product-prices"),
                         },
                         {
-                          path: "options/create",
-                          lazy: () =>
-                            import(
-                              "../../routes/products/product-create-option"
-                            ),
-                        },
-                        {
-                          path: "options/:option_id/edit",
-                          lazy: () =>
-                            import("../../routes/products/product-edit-option"),
-                        },
-                        {
                           path: "variants/create",
                           lazy: () =>
                             import(
@@ -166,14 +153,22 @@ export function getRouteMap({
                           lazy: () =>
                             import("../../routes/products/product-metadata"),
                         },
+                        {
+                          path: "options/manage",
+                          lazy: () =>
+                            import(
+                              "../../routes/products/product-options-manage"
+                            ),
+                        },
                       ],
                     },
                     {
                       path: "variants/:variant_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader } = await import(
-                          "../../routes/product-variants/product-variant-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/product-variants/product-variant-detail"
+                          )
 
                         return {
                           Component,
@@ -183,6 +178,7 @@ export function getRouteMap({
                               // eslint-disable-next-line max-len
                               match: UIMatch<HttpTypes.AdminProductVariantResponse>
                             ) => <Breadcrumb {...match} />,
+                            seo,
                           },
                         }
                       },
@@ -227,6 +223,101 @@ export function getRouteMap({
               ],
             },
             {
+              path: "/product-options",
+              errorElement: <ErrorBoundary />,
+              handle: {
+                breadcrumb: () => t("productOptions.domain"),
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () =>
+                    import("../../routes/product-options/product-option-list"),
+                  children: [
+                    {
+                      path: "create",
+                      lazy: () =>
+                        import(
+                          "../../routes/product-options/product-option-create"
+                        ),
+                    },
+                  ],
+                },
+                {
+                  path: ":id",
+                  errorElement: <ErrorBoundary />,
+                  lazy: async () => {
+                    const { Breadcrumb, loader } = await import(
+                      "../../routes/product-options/product-option-detail"
+                    )
+
+                    return {
+                      Component: Outlet,
+                      loader,
+                      handle: {
+                        breadcrumb: (match: UIMatch<any>) => (
+                          <Breadcrumb {...match} />
+                        ),
+                      },
+                    }
+                  },
+                  children: [
+                    {
+                      path: "",
+                      lazy: () =>
+                        import(
+                          "../../routes/product-options/product-option-detail"
+                        ),
+                      children: [
+                        {
+                          path: "edit",
+                          lazy: () =>
+                            import(
+                              "../../routes/product-options/product-option-edit"
+                            ),
+                        },
+                        {
+                          path: "metadata/edit",
+                          lazy: () =>
+                            import(
+                              "../../routes/product-options/product-option-metadata"
+                            ),
+                        },
+                      ],
+                    },
+                    {
+                      path: "values/:value_id",
+                      lazy: async () => {
+                        const { Component, Breadcrumb, loader } = await import(
+                          "../../routes/product-options/product-option-value-detail"
+                        )
+
+                        return {
+                          Component,
+                          loader,
+                          handle: {
+                            breadcrumb: (
+                              // eslint-disable-next-line max-len
+                              match: UIMatch<HttpTypes.AdminProductOptionValueResponse>
+                            ) => <Breadcrumb {...match} />,
+                          },
+                        }
+                      },
+                      children: [
+                        {
+                          path: "metadata/edit",
+                          lazy: () =>
+                            import(
+                              "../../routes/product-options/product-option-value-metadata"
+                            ),
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
               path: "/categories",
               errorElement: <ErrorBoundary />,
               handle: {
@@ -252,7 +343,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/categories/category-detail"
                     )
 
@@ -263,6 +354,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminProductCategoryResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -311,7 +403,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/orders/order-detail"
                     )
 
@@ -322,6 +414,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminOrderResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -422,7 +515,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/promotions/promotion-detail"
                     )
 
@@ -433,6 +526,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminPromotionResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -479,7 +573,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/campaigns/campaign-detail"
                     )
 
@@ -490,6 +584,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminCampaignResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -542,7 +637,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/collections/collection-detail"
                     )
 
@@ -553,6 +648,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminCollectionResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -600,7 +696,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/price-lists/price-list-detail"
                     )
 
@@ -611,6 +707,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminPriceListResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -678,7 +775,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/customers/customer-detail"
                     )
 
@@ -689,6 +786,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminCustomerResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -778,7 +876,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/customer-groups/customer-group-detail"
                     )
 
@@ -789,6 +887,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminCustomerGroupResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -840,7 +939,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/reservations/reservation-detail"
                     )
 
@@ -851,6 +950,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminReservationResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -899,7 +999,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/inventory/inventory-detail"
                     )
 
@@ -910,6 +1010,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminInventoryItemResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1007,7 +1108,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/regions/region-detail"
                     )
 
@@ -1018,6 +1119,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminRegionResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1096,7 +1198,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/users/user-detail"
                     )
 
@@ -1107,6 +1209,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminUserResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1298,7 +1401,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/sales-channels/sales-channel-detail"
                     )
 
@@ -1309,6 +1412,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminSalesChannelResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1380,9 +1484,10 @@ export function getRouteMap({
                     {
                       path: ":shipping_profile_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader } = await import(
-                          "../../routes/shipping-profiles/shipping-profile-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/shipping-profiles/shipping-profile-detail"
+                          )
 
                         return {
                           Component,
@@ -1392,6 +1497,7 @@ export function getRouteMap({
                               // eslint-disable-next-line max-len
                               match: UIMatch<HttpTypes.AdminShippingProfileResponse>
                             ) => <Breadcrumb {...match} />,
+                            seo,
                           },
                         }
                       },
@@ -1434,9 +1540,10 @@ export function getRouteMap({
                     {
                       path: ":id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader } = await import(
-                          "../../routes/shipping-option-types/shipping-option-type-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/shipping-option-types/shipping-option-type-detail"
+                          )
 
                         return {
                           Component,
@@ -1446,6 +1553,7 @@ export function getRouteMap({
                               // eslint-disable-next-line max-len
                               match: UIMatch<HttpTypes.AdminShippingOptionTypeResponse>
                             ) => <Breadcrumb {...match} />,
+                            seo,
                           },
                         }
                       },
@@ -1464,7 +1572,7 @@ export function getRouteMap({
                 {
                   path: ":location_id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/locations/location-detail"
                     )
 
@@ -1475,6 +1583,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminStockLocationResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1592,7 +1701,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/product-tags/product-tag-detail"
                     )
 
@@ -1603,6 +1712,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminProductTagResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1641,7 +1751,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/workflow-executions/workflow-execution-detail"
                     )
 
@@ -1653,6 +1763,7 @@ export function getRouteMap({
                           // eslint-disable-next-line max-len
                           match: UIMatch<HttpTypes.AdminWorkflowExecutionResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1684,7 +1795,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/product-types/product-type-detail"
                     )
 
@@ -1695,6 +1806,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminProductTypeResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1747,7 +1859,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/api-key-management/api-key-management-detail"
                     )
 
@@ -1758,6 +1870,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminApiKeyResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1812,7 +1925,7 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
+                    const { Component, Breadcrumb, loader, seo } = await import(
                       "../../routes/api-key-management/api-key-management-detail"
                     )
 
@@ -1823,6 +1936,7 @@ export function getRouteMap({
                         breadcrumb: (
                           match: UIMatch<HttpTypes.AdminApiKeyResponse>
                         ) => <Breadcrumb {...match} />,
+                        seo,
                       },
                     }
                   },
@@ -1859,12 +1973,22 @@ export function getRouteMap({
                 },
                 {
                   path: ":id",
-                  Component: Outlet,
-                  loader: taxRegionLoader,
-                  handle: {
-                    breadcrumb: (
-                      match: UIMatch<HttpTypes.AdminTaxRegionResponse>
-                    ) => <TaxRegionDetailBreadcrumb {...match} />,
+                  errorElement: <ErrorBoundary />,
+                  lazy: async () => {
+                    const { Breadcrumb, loader, seo } = await import(
+                      "../../routes/tax-regions/tax-region-detail"
+                    )
+
+                    return {
+                      Component: Outlet,
+                      loader,
+                      handle: {
+                        breadcrumb: (
+                          match: UIMatch<HttpTypes.AdminTaxRegionResponse>
+                        ) => <Breadcrumb {...match} />,
+                        seo,
+                      },
+                    }
                   },
                   children: [
                     {
@@ -1924,9 +2048,10 @@ export function getRouteMap({
                     {
                       path: "provinces/:province_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader } = await import(
-                          "../../routes/tax-regions/tax-region-province-detail"
-                        )
+                        const { Component, Breadcrumb, loader, seo } =
+                          await import(
+                            "../../routes/tax-regions/tax-region-province-detail"
+                          )
 
                         return {
                           Component,
@@ -1935,6 +2060,7 @@ export function getRouteMap({
                             breadcrumb: (
                               match: UIMatch<HttpTypes.AdminTaxRegionResponse>
                             ) => <Breadcrumb {...match} />,
+                            seo,
                           },
                         }
                       },
@@ -2088,14 +2214,23 @@ export function getRouteMap({
             {
               path: "/login",
               lazy: () => import("../../routes/login"),
+              handle: {
+                breadcrumb: () => t("login.title"),
+              },
             },
             {
               path: "/reset-password",
               lazy: () => import("../../routes/reset-password"),
+              handle: {
+                breadcrumb: () => t("resetPassword.title"),
+              },
             },
             {
               path: "/invite",
               lazy: () => import("../../routes/invite"),
+              handle: {
+                breadcrumb: () => t("invite.title"),
+              },
             },
             {
               path: "*",

@@ -1,10 +1,11 @@
+import type { ReactNode } from "react"
 import { HttpTypes } from "@medusajs/types"
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, CellContext } from "@tanstack/react-table"
 import { TFunction } from "i18next"
 import { FieldPath, FieldValues } from "react-hook-form"
 import { IncludesTaxTooltip } from "../../common/tax-badge/tax-badge"
-import { DataGridCurrencyCell } from "../components/data-grid-currency-cell"
 import { DataGridReadonlyCell } from "../components/data-grid-readonly-cell"
+import { DataGridCurrencyCell } from "../components/data-grid-currency-cell"
 import { FieldContext } from "../types"
 import { createDataGridHelper } from "./create-data-grid-column-helper"
 
@@ -16,6 +17,10 @@ type CreateDataGridPriceColumnsProps<
   regions?: HttpTypes.AdminRegion[]
   pricePreferences?: HttpTypes.AdminPricePreference[]
   isReadyOnly?: (context: FieldContext<TData>) => boolean
+  renderPriceCell?: (
+    code: string,
+    context: CellContext<TData, any>
+  ) => ReactNode
   getFieldName: (
     context: FieldContext<TData>,
     value: string
@@ -31,6 +36,7 @@ export const createDataGridPriceColumns = <
   regions,
   pricePreferences,
   isReadyOnly,
+  renderPriceCell,
   getFieldName,
   t,
 }: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
@@ -77,7 +83,11 @@ export const createDataGridPriceColumns = <
             return <DataGridReadonlyCell context={context} />
           }
 
-          return <DataGridCurrencyCell code={currency} context={context} />
+          return renderPriceCell ? (
+            renderPriceCell(currency, context)
+          ) : (
+            <DataGridCurrencyCell code={currency} context={context} />
+          )
         },
       })
     }) ?? []),
@@ -123,7 +133,9 @@ export const createDataGridPriceColumns = <
             return null
           }
 
-          return (
+          return renderPriceCell ? (
+            renderPriceCell(region.currency_code, context)
+          ) : (
             <DataGridCurrencyCell
               code={region.currency_code}
               context={context}

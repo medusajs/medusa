@@ -46,47 +46,68 @@ export const createAdminUser = async (
     userRoles = [superAdminRoles[0].id]
   }
 
-  const user = await userModule.createUsers({
-    first_name: "Admin",
-    last_name: "User",
-    email,
-  })
+  const [existingUser] = await userModule.listUsers({ email })
 
-  // Link user to RBAC roles
-  if (rbacEnabled && userRoles?.length) {
-    const link = appContainer.resolve(ContainerRegistrationKeys.LINK)
+  let user
+  let authIdentity
 
-    const links = userRoles.map((role_id) => ({
-      [Modules.USER]: {
-        user_id: user.id,
-      },
-      [Modules.RBAC]: {
-        rbac_role_id: role_id,
-      },
-    }))
+  if (existingUser) {
+    user = existingUser
 
-    await link.create(links)
-  }
-
-  const hashConfig = { logN: 15, r: 8, p: 1 }
-  const passwordHash = await Scrypt.kdf("somepassword", hashConfig)
-
-  const authIdentity = await authModule.createAuthIdentities({
-    provider_identities: [
+    const existingAuthIdentities = await authModule.listAuthIdentities(
       {
-        provider: "emailpass",
-        entity_id: email,
-        provider_metadata: {
-          password: passwordHash.toString("base64"),
+        provider_identities: {
+          entity_id: email,
+          provider: "emailpass",
         },
       },
-    ],
-    app_metadata: {
-      user_id: user.id,
-    },
-  })
+      { relations: ["provider_identities"] }
+    )
 
-  const config = container.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
+    authIdentity = existingAuthIdentities[0]
+  } else {
+    user = await userModule.createUsers({
+      first_name: "Admin",
+      last_name: "User",
+      email,
+    })
+
+    // Link user to RBAC roles
+    if (rbacEnabled && userRoles?.length) {
+      const link = appContainer.resolve(ContainerRegistrationKeys.LINK)
+
+      const links = userRoles.map((role_id) => ({
+        [Modules.USER]: {
+          user_id: user.id,
+        },
+        [Modules.RBAC]: {
+          rbac_role_id: role_id,
+        },
+      }))
+
+      await link.create(links)
+    }
+
+    const hashConfig = { logN: 15, r: 8, p: 1 }
+    const passwordHash = await Scrypt.kdf("somepassword", hashConfig)
+
+    authIdentity = await authModule.createAuthIdentities({
+      provider_identities: [
+        {
+          provider: "emailpass",
+          entity_id: email,
+          provider_metadata: {
+            password: passwordHash.toString("base64"),
+          },
+        },
+      ],
+      app_metadata: {
+        user_id: user.id,
+      },
+    })
+  }
+
+  const config = appContainer.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
   const { projectConfig } = config
   const { jwtSecret, jwtOptions } = projectConfig.http
   const token = generateJwtToken(

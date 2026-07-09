@@ -7,6 +7,10 @@ import {
   InjectionZone,
   NESTED_ROUTE_POSITIONS,
 } from "@medusajs/admin-shared"
+import {
+  LayoutDefinition,
+  SectionWidgetMap,
+} from "../components/layout-composer/types"
 import * as React from "react"
 import {
   createBrowserRouter,
@@ -42,12 +46,6 @@ import {
   WidgetMap,
   ZoneStructure,
 } from "./types"
-import {
-  AFTER_ORDER,
-  BEFORE_ORDER,
-  LayoutDefinition,
-  SectionWidgetMap,
-} from "../components/layout-composer"
 
 type DashboardAppProps = {
   plugins: DashboardPlugin[]
@@ -130,18 +128,16 @@ export class DashboardApp {
     return registry
   }
 
-  private populateLayouts(_plugins: DashboardPlugin[]) {
+  private populateLayouts(plugins: DashboardPlugin[]) {
     const registry = new Map<string, LayoutDefinition>()
 
     CORE_LAYOUTS.forEach((layout) => registry.set(layout.id, layout))
 
-    // TODO: layout virtual module for custom user layouts
-
-    // plugins.forEach((plugin) => {
-    //   plugin.layoutModule?.layouts?.forEach((layout) => {
-    //     registry.set(layout.id, layout)
-    //   })
-    // })
+    plugins.forEach((plugin) => {
+      plugin.layoutModule?.layouts?.forEach((layout) => {
+        registry.set(layout.id, layout)
+      })
+    })
 
     return registry
   }
@@ -471,12 +467,9 @@ export class DashboardApp {
 
   /**
    * Returns widgets for a given base zone grouped by layout section.
-   *
-   * Zone suffixes determine section and order, e.g.:
-   *   "before"      → main section, order BEFORE_ORDER
-   *   "after"       → main section, order AFTER_ORDER
-   *   "side.before" → side section, order BEFORE_ORDER
-   *   "side.after"  → side section, order AFTER_ORDER
+   * The legacy `.before`/`.after` ordering suffixes are stripped and
+   * ignored. Widgets are returned inregistration order and will be
+   * assigned a default order of 0 in the LayoutComposer.
    */
   private getWidgetsForSections(
     route: string,
@@ -485,25 +478,13 @@ export class DashboardApp {
     const result: SectionWidgetMap = {}
 
     for (const [zone, extensions] of this.widgets.entries()) {
-      if (!zone.startsWith(route + ".")) {
+      if (!zone.startsWith(route)) {
         continue
       }
 
-      let suffix = zone.slice(route.length + 1)
-
-      let order: number
-
-      if (suffix.endsWith("before")) {
-        order = BEFORE_ORDER
-        suffix = suffix.replace(/before$/, "")
-      } else if (suffix.endsWith("after")) {
-        order = AFTER_ORDER
-        suffix = suffix.replace(/after$/, "")
-      } else {
-        order = AFTER_ORDER
-      }
-
-      suffix = suffix.replace(/\.$/, "") // Remove trailing dot if exists
+      const suffix = zone
+        .slice(route.length + 1)
+        .replace(/\.?(before|after)$/, "")
 
       const mainSection = sections.includes("main") ? "main" : sections[0]
       const section = suffix || mainSection
@@ -512,16 +493,36 @@ export class DashboardApp {
         result[section] = []
       }
 
-      extensions.forEach((ext) => {
+      extensions.forEach((ext, i) => {
+        // `ext.widgetId` is the build-time stable id (author id or file hash).
+        // The positional `${zone}:${i}` is only a defensive fallback for
+        // widgets registered without one (e.g. legacy/unbuilt bundles).
+        const sourceId = ext.widgetId ?? `${zone}:${i}`
         result[section].push({
           Component: ext.Component,
-          order: order,
+          // The id intentionally omits the section so a widget keeps its
+          // identity (and saved preference) when its zone moves to a different
+          // section of the same route.
+          widgetId: `widget:${sourceId}`,
         })
       })
     }
 
+    // Two widgets resolving to the same id (e.g. one source file injected into
+    // two zones) would collide as React keys, sortable ids, and preference
+    // keys. Suffix later occurrences deterministically so each entry stays
+    // addressable. Deduped across all sections — not per-section — since ids no
+    // longer carry their section, so the same source injected into two
+    // different sections would otherwise produce identical ids.
+    const seen = new Map<string, number>()
     for (const section of Object.keys(result)) {
-      result[section].sort((a, b) => a.order - b.order)
+      for (const entry of result[section]) {
+        const count = seen.get(entry.widgetId) ?? 0
+        seen.set(entry.widgetId, count + 1)
+        if (count > 0) {
+          entry.widgetId = `${entry.widgetId}#${count + 1}`
+        }
+      }
     }
 
     return result

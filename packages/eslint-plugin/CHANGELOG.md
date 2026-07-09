@@ -1,5 +1,19 @@
 # @medusajs/eslint-plugin
 
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+## 2.17.1
+
+## 2.17.0
+
+### Patch Changes
+
+- [#15774](https://github.com/medusajs/medusa/pull/15774) [`c352997589d4d41d585df4600e0a6b51e6f320aa`](https://github.com/medusajs/medusa/commit/c352997589d4d41d585df4600e0a6b51e6f320aa) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(eslint-plugin): handle link edge cases
+
 ## 2.16.0
 
 ### Patch Changes

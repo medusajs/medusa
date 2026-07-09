@@ -15,7 +15,7 @@ const adminHeaders = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Promotions API - Promotion Limits", () => {
       let appContainer
       let promotion
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         await setupTaxStructure(appContainer.resolve(Modules.TAX))
@@ -138,6 +138,8 @@ medusaIntegrationTestRunner({
 
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
+
+        await dbUtils.snapshot()
       })
 
       describe("Create promotion with limit", () => {

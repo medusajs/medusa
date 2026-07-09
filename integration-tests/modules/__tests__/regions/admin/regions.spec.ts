@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Regions - Admin", () => {
       let appContainer
       let service: IRegionModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         service = appContainer.resolve(Modules.REGION)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should create, update, and delete a region", async () => {

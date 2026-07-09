@@ -359,6 +359,116 @@ export class Store {
 
   /**
    * @tags product
+   * @since 2.16.0
+   */
+  public productOption = {
+    /**
+     * This method retrieves a paginated list of product options. It sends a request to the
+     * [List Product Options](https://docs.medusajs.com/api/store#product-options_getproductoptions) API route.
+     *
+     * @param query - Filters and pagination configurations.
+     * @param headers - Headers to pass in the request.
+     * @returns The paginated list of product options.
+     *
+     * @example
+     * To retrieve the list of product options:
+     *
+     * ```ts
+     * sdk.store.productOption.list()
+     * .then(({ product_options, count, offset, limit }) => {
+     *   console.log(product_options)
+     * })
+     * ```
+     *
+     * To configure the pagination, pass the `limit` and `offset` query parameters.
+     *
+     * For example, to retrieve only 10 items and skip 10 items:
+     *
+     * ```ts
+     * sdk.store.productOption.list({
+     *   limit: 10,
+     *   offset: 10
+     * })
+     * .then(({ product_options, count, offset, limit }) => {
+     *   console.log(product_options)
+     * })
+     * ```
+     *
+     * Using the `fields` query parameter, you can specify the fields and relations to retrieve
+     * in each product option:
+     *
+     * ```ts
+     * sdk.store.productOption.list({
+     *   fields: "id,title"
+     * })
+     * .then(({ product_options, count, offset, limit }) => {
+     *   console.log(product_options)
+     * })
+     * ```
+     *
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+     */
+    list: async (
+      query?: FindParams & HttpTypes.StoreProductOptionListParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreProductOptionListResponse>(
+        `/store/product-options`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+    /**
+     * This method retrieves a product option by its ID. It sends a request to the
+     * [Retrieve Product Option](https://docs.medusajs.com/api/store#product-options_getproductoptionsid).
+     *
+     * @param id - The product option's ID.
+     * @param query - Configure the fields to retrieve in the product option.
+     * @param headers - Headers to pass in the request.
+     * @returns The product option.
+     *
+     * @example
+     * To retrieve a product option by its ID:
+     *
+     * ```ts
+     * sdk.store.productOption.retrieve("opt_123")
+     * .then(({ product_option }) => {
+     *   console.log(product_option)
+     * })
+     * ```
+     *
+     * To specify the fields and relations to retrieve:
+     *
+     * ```ts
+     * sdk.store.productOption.retrieve("opt_123", {
+     *   fields: "id,title,values.value"
+     * })
+     * .then(({ product_option }) => {
+     *   console.log(product_option)
+     * })
+     * ```
+     *
+     * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+     */
+    retrieve: async (
+      id: string,
+      query?: HttpTypes.StoreProductOptionParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StoreProductOptionResponse>(
+        `/store/product-options/${id}`,
+        {
+          query,
+          headers,
+        }
+      )
+    },
+  }
+
+  /**
+   * @tags product
    */
   public product = {
     /**

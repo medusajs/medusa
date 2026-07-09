@@ -1,4 +1,5 @@
-import { Note } from "docs-ui"
+import { Note, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Troubleshooting Cloud Deployments`,
@@ -187,15 +188,38 @@ Retry the build. The error is transient and the build typically succeeds on the 
 
 To retry a deployment from the Cloud dashboard:
 
-1. Navigate to your project's deployment history.
-2. Click the failed deployment to open its details.
-3. Click **Redeploy** to trigger a new build.
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the **Deployments** tab.
+3. Find the failed deployment and click the <InlineIcon icon={EllipsisHorizontal} /> button to open the deployment actions menu. 
+4. Click **Redeploy** to trigger a new build.
 
 <Note>
 
 If the error persists across two or three consecutive builds, contact support to clear the npm cache for your project.
 
 </Note>
+
+---
+
+## Database Connection Failures
+
+If your deployment fails with a database connection error such as `KnexTimeoutError` or `Pg connection failed to connect to the database`, the most common cause is a missing or misconfigured `DATABASE_URL` environment variable.
+
+<Note>
+
+Medusa automatically provisions and manages the database for each environment on Cloud. You do not need to create or configure a database yourself. The `DATABASE_URL` is set automatically by Cloud when your environment is created.
+
+</Note>
+
+### Check Your Environment Variables
+
+If you have manually set a `DATABASE_URL` in your environment variables, it may conflict with the one Cloud sets automatically. To resolve this:
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment.
+3. In the environment's dashboard, click on the **Settings** tab.
+4. In the settings, click the **Environment variables** sidebar item.
+5. Check whether you have a `DATABASE_URL` variable set. If so, remove it and let Cloud manage the connection string.
 
 ---
 
