@@ -656,7 +656,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         return mainEntity
       })
 
-      let {
+      const {
         orderedEntities: upsertedTopLevelEntities,
         performedActions: performedActions_,
       } = await this.upsertMany_(manager, this.entity.name, toUpsert)
@@ -673,7 +673,9 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       config.relations?.forEach((relationName) => {
         const relation = allRelations?.find((r) => r.name === relationName)
-        if (!relation) return
+        if (!relation) {
+          return
+        }
 
         if (
           relation.kind === ReferenceKind.ONE_TO_ONE ||

@@ -3,6 +3,8 @@ import {
   setProductProductOptionsWorkflow,
   setProductProductOptionsWorkflowId,
   updateProductOptionsWorkflow,
+  updateProductsWorkflow,
+  updateProductsWorkflowId,
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -897,6 +899,138 @@ medusaIntegrationTestRunner({
           expect(materialOption?.values.map((value) => value.value)).toEqual(
             expect.arrayContaining(["Cotton"])
           )
+        })
+      })
+
+      describe("updateProductsWorkflow", () => {
+        describe("compensation", () => {
+          it("restores and re-links an exclusive option orphaned by an option_ids change on rollback", async () => {
+            const workflow = updateProductsWorkflow(appContainer)
+
+            workflow.appendAction("throw", updateProductsWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(`Fail`)
+              },
+            })
+
+            const product = await service.createProducts({
+              title: "Test Product",
+              shipping_profile_id: shippingProfile.id,
+              options: [{ title: "Size", values: ["S", "M", "L"] }],
+            })
+            const sizeOption = product.options[0]
+
+            // A separate global option the update will link in place of the
+            // product's exclusive option.
+            const globalOption = await service.createProductOptions({
+              title: "Color",
+              values: ["Red"],
+              is_exclusive: false,
+            })
+
+            const { errors } = await workflow.run({
+              input: {
+                products: [{ id: product.id, option_ids: [globalOption.id] }],
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({ message: `Fail` }),
+              },
+            ])
+
+            const [compensated] = await service.listProducts(
+              { id: [product.id] },
+              { relations: ["options.values"] }
+            )
+
+            // The exclusive "Size" option is restored and re-linked with its
+            // exact prior values (product↔option and product↔option↔value).
+            const restoredSize = compensated.options.find(
+              (option) => option.title === "Size"
+            )
+            expect(restoredSize).toBeTruthy()
+            expect(restoredSize?.id).toEqual(sizeOption.id)
+            expect(
+              restoredSize?.values.map((value) => value.value).sort()
+            ).toEqual(["L", "M", "S"])
+
+            // The option the update linked is rolled back off the product.
+            expect(
+              compensated.options.find((option) => option.title === "Color")
+            ).toBeFalsy()
+
+            // The restored option is live, not left soft-deleted.
+            const sizeOptions = await service.listProductOptions({
+              id: [sizeOption.id],
+            })
+            expect(sizeOptions).toHaveLength(1)
+          })
+
+          it("re-links a dropped option with the product's prior value subset, not all the option's values, on rollback", async () => {
+            const workflow = updateProductsWorkflow(appContainer)
+
+            workflow.appendAction("throw", updateProductsWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(`Fail`)
+              },
+            })
+
+            // A global option with three values; the product links to only two.
+            const globalOption = await service.createProductOptions({
+              title: "Material",
+              values: ["Cotton", "Wool", "Linen"],
+              is_exclusive: false,
+            })
+            const subsetValueIds = globalOption.values
+              .filter((value) => ["Cotton", "Wool"].includes(value.value))
+              .map((value) => value.id)
+
+            const product = await service.createProducts({
+              title: "Test Product",
+              shipping_profile_id: shippingProfile.id,
+            })
+
+            await service.addProductOptionToProduct({
+              product_id: product.id,
+              product_option_id: globalOption.id,
+              product_option_value_ids: subsetValueIds,
+            })
+
+            // Drop the option via the update, then fail so it compensates.
+            const { errors } = await workflow.run({
+              input: { products: [{ id: product.id, option_ids: [] }] },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({ message: `Fail` }),
+              },
+            ])
+
+            const [compensated] = await service.listProducts(
+              { id: [product.id] },
+              { relations: ["options.values"] }
+            )
+
+            const material = compensated.options.find(
+              (option) => option.title === "Material"
+            )
+            expect(material).toBeTruthy()
+            // Only the product's prior subset is restored — NOT "Linen", which
+            // the product never linked. (A blanket re-link by option_ids would
+            // wrongly restore all three values.)
+            expect(material?.values.map((value) => value.value).sort()).toEqual(
+              ["Cotton", "Wool"]
+            )
+          })
         })
       })
     })

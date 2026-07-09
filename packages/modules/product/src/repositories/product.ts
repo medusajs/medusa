@@ -418,7 +418,8 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
     const { rows: alreadyLinkedRows } = await knex.raw(
       `SELECT DISTINCT product_option_id as option_id
        FROM product_product_option
-       WHERE (product_id, product_option_id) IN (${pairPlaceholders})`,
+       WHERE (product_id, product_option_id) IN (${pairPlaceholders})
+         AND deleted_at IS NULL`,
       pairBindings
     )
 
@@ -437,6 +438,7 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
            OR EXISTS (
              SELECT 1 FROM product_product_option ppo
              WHERE ppo.product_option_id = po.id
+               AND ppo.deleted_at IS NULL
                AND ppo.product_id NOT IN (SELECT ip.product_id FROM input_pairs ip WHERE ip.option_id = po.id)
            )
          )`,
