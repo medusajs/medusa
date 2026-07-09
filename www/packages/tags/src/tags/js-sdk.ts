@@ -216,6 +216,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
   },
   {
+    "title": "register",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
+  },
+  {
     "title": "resetPassword",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/resetPassword"
   },

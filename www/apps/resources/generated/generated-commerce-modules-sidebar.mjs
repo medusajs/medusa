@@ -738,6 +738,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "generateResetPasswordTokenWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "removeCustomerAccountWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeCustomerAccountWorkflow",
                       "children": []
@@ -777,6 +785,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "autogenerate_as_ref": true,
                   "sort_sidebar": "alphabetize",
                   "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createPasswordResetTokenStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep",
+                      "children": []
+                    },
                     {
                       "loaded": true,
                       "isPathHref": true,
@@ -838,6 +854,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "type": "ref",
                   "title": "refresh",
                   "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "ref",
+                  "title": "register",
+                  "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register",
                   "children": []
                 },
                 {
@@ -17882,6 +17906,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateTaxRegionsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxRegionsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "upsertTaxLinesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/upsertTaxLinesWorkflow",
                       "children": []
                     }
                   ]
