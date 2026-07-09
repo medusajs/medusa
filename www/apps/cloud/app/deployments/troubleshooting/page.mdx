@@ -1,4 +1,5 @@
-import { Note } from "docs-ui"
+import { Note, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Troubleshooting Cloud Deployments`,
@@ -73,6 +74,76 @@ You can replace `npm run postbuild` with the appropriate command for your packag
 
 ---
 
+## Missing medusa-config.js in Build Output
+
+If your deployment fails with an error similar to:
+
+```bash
+Invalid build output: missing /build/apps/backend/.medusa/server/medusa-config.js.
+Ensure tsconfig compilerOptions.outDir is .medusa/server (or unset), your package.json
+build script runs medusa build, and the Medusa build step completed successfully.
+```
+
+Cloud validates that the Medusa build output contains a compiled `medusa-config.js` file at `.medusa/server/medusa-config.js`. This file is produced when `medusa build` compiles your `medusa-config.ts` file to the `.medusa/server` directory.
+
+The error occurs when one of the following is true:
+
+- The `build` script in `package.json` does not run `medusa build`.
+- The `tsconfig.json` file sets `compilerOptions.outDir` to a path other than `.medusa/server`, causing the build output to land in the wrong directory.
+- The `medusa build` step failed silently or was skipped during the build.
+
+### Verify the build script
+
+Open your `package.json` and confirm the `build` script calls `medusa build`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "build": "medusa build"
+  }
+}
+```
+
+If you have a custom post-build step, chain it after `medusa build`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "build": "medusa build && npm run postbuild"
+  }
+}
+```
+
+### Check tsconfig.json outDir
+
+Open `tsconfig.json` and check the `compilerOptions.outDir` value. Either remove it to use the default (`.medusa/server`), or set it explicitly to `.medusa/server`:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "outDir": ".medusa/server"
+  }
+}
+```
+
+<Note type="warning">
+
+Setting `outDir` to any path other than `.medusa/server` causes the build output to land in the wrong location and triggers this error.
+
+</Note>
+
+### Check the build logs
+
+After verifying the script and `tsconfig.json`, check the build logs to confirm `medusa build` ran and completed without errors. If you see TypeScript compilation errors in the logs, fix them locally by running:
+
+```bash npm2yarn
+npm run build
+```
+
+Then commit the fixes and push to trigger a new deployment.
+
+---
+
 ## Out of Memory (OOM) Build Failures
 
 Exit code 137 indicates that your build process was killed by the system due to memory exhaustion. This commonly occurs with TypeScript-heavy monorepos during compilation.
@@ -92,6 +163,42 @@ OOM Build failures typically occur when the TypeScript compiler faces complex ty
 For example, Medusa supports Zod v4.2.0. If you install a different version of Zod in your project, it can lead to complex type issues during compilation, causing OOM failures.
 
 To resolve this, ensure that your project's dependencies are compatible with those used by Medusa or other dependencies.
+
+---
+
+## Missing yarn.lock in Build Context
+
+If your Yarn berry monorepo build fails with the following error, the `yarn.lock` file is not included in the build context:
+
+```bash
+failed to calculate checksum of ref: "/yarn.lock": not found
+```
+
+This is different from an outdated lockfile. The lockfile is entirely absent from the build context. Cloud cannot install dependencies without it.
+
+The most common cause is that `yarn.lock` is listed in `.gitignore` or was never committed to the repository.
+
+### Fix a Missing yarn.lock
+
+1. Run `yarn install` locally to generate the lockfile:
+
+```bash
+yarn install
+```
+
+2. Commit the `yarn.lock` file to your repository:
+
+```bash
+git add yarn.lock
+git commit -m "Add yarn.lock"
+git push
+```
+
+3. Push the changes to trigger a new deployment.
+
+### Prevent Missing Lockfile Issues
+
+Always commit your lockfile to version control. Cloud requires the lockfile to install dependencies with a frozen install, ensuring reproducible builds. Remove any line in your `.gitignore` that matches `yarn.lock` or `*.lock`.
 
 ---
 
@@ -201,6 +308,124 @@ The `.npmrc` file must be committed to your repository for Cloud to use it durin
 ### Secondary Failures from Failed Dependency Installation
 
 If the private registry authentication fails, `pnpm install` may fail silently or produce cryptic secondary errors such as missing binaries or missing modules. If you see unexpected errors after a build, check the build logs for `401 Unauthorized` or `ERR_PNPM_FETCH_401` errors earlier in the output — these are the root cause.
+
+---
+
+## pnpm Install Frozen Lockfile Failures
+
+If your Cloud build fails with exit code 1 during the `pnpm install` step and the error message only says "process did not complete successfully", the cause is often a lockfile or dependency issue that is hidden in pnpm's full output.
+
+Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducible builds. This means your `pnpm-lock.yaml` must be committed and kept in sync with `package.json`.
+
+### Common Causes
+
+- **Lockfile drift**: The `pnpm-lock.yaml` file was not committed after updating `package.json`.
+- **pnpm version mismatch**: The version of pnpm used locally differs from the one used in Cloud builds.
+- **Native build dependencies**: A package with native binaries fails to build in the Cloud environment.
+- **Registry connectivity issues**: A package registry is unreachable during the build.
+
+### Retrieve Full Build Logs
+
+The Cloud dashboard may truncate build output. Use the [Cloud CLI](../../cli/page.mdx) to retrieve the full pnpm install logs:
+
+```bash
+# Install the CLI
+npm install @medusajs/mcloud -g
+
+# Login
+mcloud login
+
+# List recent deployments to find the failed deployment ID
+mcloud deployments list \
+  --organization org_123 \
+  --project proj_123
+
+# Fetch the full build logs
+mcloud deployments build-logs deploy_123 \
+  --organization org_123 \
+  --project proj_123
+```
+
+Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs.
+
+### Fix a Lockfile Mismatch
+
+If the logs show a lockfile error, regenerate the lockfile locally:
+
+1. Run `pnpm install` locally to update the lockfile.
+2. Commit the updated `pnpm-lock.yaml`.
+3. Push the changes to trigger a new deployment.
+
+---
+
+## Next.js 16 Middlewares Not Supported on Cloud
+
+If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:
+
+```bash
+ERROR Node.js middleware is not currently supported. Consider switching to Edge Middleware.
+```
+
+This is because Cloud does not currently support Node.js middlewares in Next.js 16. You can either:
+
+1. Remove the middleware from your Next.js 16 storefront and redeploy.
+2. Downgrade your storefront to Next.js 15, which does not have this limitation.
+
+---
+
+
+## npm Cache Errors During Build
+
+If your build fails with an error similar to:
+
+```bash
+npm error code EEXIST
+npm error syscall open
+npm error path /root/.npm/_cacache/tmp/...
+npm error errno -17
+npm error EEXIST: file already exists, open '/root/.npm/_cacache/tmp/...'
+```
+
+This is a transient npm cache corruption or a race condition in Docker's cache mount. The build environment's npm cache becomes temporarily inconsistent, causing `npm ci` to fail when writing temporary files.
+
+### Resolve npm Cache Errors
+
+Retry the build. The error is transient and the build typically succeeds on the second attempt.
+
+To retry a deployment from the Cloud dashboard:
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the **Deployments** tab.
+3. Find the failed deployment and click the <InlineIcon icon={EllipsisHorizontal} /> button to open the deployment actions menu. 
+4. Click **Redeploy** to trigger a new build.
+
+<Note>
+
+If the error persists across two or three consecutive builds, contact support to clear the npm cache for your project.
+
+</Note>
+
+---
+
+## Database Connection Failures
+
+If your deployment fails with a database connection error such as `KnexTimeoutError` or `Pg connection failed to connect to the database`, the most common cause is a missing or misconfigured `DATABASE_URL` environment variable.
+
+<Note>
+
+Medusa automatically provisions and manages the database for each environment on Cloud. You do not need to create or configure a database yourself. The `DATABASE_URL` is set automatically by Cloud when your environment is created.
+
+</Note>
+
+### Check Your Environment Variables
+
+If you have manually set a `DATABASE_URL` in your environment variables, it may conflict with the one Cloud sets automatically. To resolve this:
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment.
+3. In the environment's dashboard, click on the **Settings** tab.
+4. In the settings, click the **Environment variables** sidebar item.
+5. Check whether you have a `DATABASE_URL` variable set. If so, remove it and let Cloud manage the connection string.
 
 ---
 

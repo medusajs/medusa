@@ -6,6 +6,28 @@ import * as path from "path"
  */
 export const toPosix = (p: string): string => p.replace(/\\/g, "/")
 
+export const normalizePathForComparison = (p: string): string => toPosix(p)
+
+/**
+ * True when `candidate` is inside (or exactly equals) `root`, after normalizing
+ * path separators for host-independent comparisons.
+ */
+export const isPathInsideOrEqual = (
+  candidate: string,
+  root: string
+): boolean => {
+  const normalizedCandidate = normalizePathForComparison(candidate).replace(
+    /\/+$/,
+    ""
+  )
+  const normalizedRoot = normalizePathForComparison(root).replace(/\/+$/, "")
+
+  return (
+    normalizedCandidate === normalizedRoot ||
+    normalizedCandidate.startsWith(`${normalizedRoot}/`)
+  )
+}
+
 /**
  * Returns the basename of `filename` without its extension, or `null` when
  * the filename is unusable as a naming hint — empty, synthetic (`<input>`),

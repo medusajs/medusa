@@ -10,6 +10,12 @@ import { productWorkflowId } from "../__fixtures__/workflows/deep-workflows/prod
 import { orderWorkflowId } from "../__fixtures__/workflows/order-notifier"
 import { WorkflowLoader } from "../workflow-loader"
 
+// NOTE: the index-file workflow fixture is intentionally NOT imported here.
+// Workflows self-register on module evaluation, so importing the fixture would
+// register it regardless of the loader. Referencing the id as a literal proves
+// the workflow is only registered when the loader discovers its `index.ts`.
+const indexFileWorkflowId = "index-file-workflow"
+
 describe("WorkflowLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "workflows")
 
@@ -20,11 +26,13 @@ describe("WorkflowLoader", () => {
     await new WorkflowLoader(rootDir, container).load()
   })
 
-  it("should register each workflow in the '/workflows' folder and sub folder", async () => {
+  it("should register each workflow in the '/workflows' folder and sub folder, including index files", async () => {
     const registeredWorkflows = WorkflowManager.getWorkflows()
 
-    expect(registeredWorkflows.size).toBe(2)
+    expect(registeredWorkflows.size).toBe(3)
     expect(registeredWorkflows.has(orderWorkflowId)).toBe(true)
     expect(registeredWorkflows.has(productWorkflowId)).toBe(true)
+    // A workflow defined in an `index.[js,ts]` file must also be registered.
+    expect(registeredWorkflows.has(indexFileWorkflowId)).toBe(true)
   })
 })

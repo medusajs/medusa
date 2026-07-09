@@ -132,6 +132,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxLinesWorkflow"
   },
   {
+    "title": "upsertTaxLinesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/upsertTaxLinesWorkflow"
+  },
+  {
     "title": "batchLinksWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchLinksWorkflow"
   },

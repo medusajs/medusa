@@ -12,7 +12,7 @@ import {
   FeatureFlag,
   FileSystem,
   generateContainerTypes,
-  generatePluginAugmentations,
+  generateAugmentationRefs,
   generatePolicyTypes,
   getResolvedPlugins,
   gqlSchemaToTypes,
@@ -310,7 +310,9 @@ async function start(args: {
           ContainerRegistrationKeys.CONFIG_MODULE
         )
         const plugins = await getResolvedPlugins(directory, configModule, true)
-        fileGenPromises.push(generatePluginAugmentations({ directory, plugins }))
+        fileGenPromises.push(
+          generateAugmentationRefs({ directory, plugins, modules })
+        )
 
         await promiseAll(fileGenPromises)
         logger.debug("Generated policy types")

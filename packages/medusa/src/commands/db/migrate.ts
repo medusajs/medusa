@@ -153,7 +153,7 @@ const main = async function ({
     process.exit(migrated ? 0 : 1)
   } catch (error) {
     if (logger) {
-      logger.error(error)
+      logger.error(error as string | Error)
     } else {
       console.error(error)
     }
