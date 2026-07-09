@@ -1912,6 +1912,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/modules/resolve-path"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/nextjs-build-404/page.mdx",
+    "pathname": "/troubleshooting/nextjs-build-404"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/nextjs-node-25/page.mdx",
     "pathname": "/troubleshooting/nextjs-node-25"
   },
