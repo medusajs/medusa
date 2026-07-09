@@ -1,4 +1,5 @@
-import { Note } from "docs-ui"
+import { Note, InlineIcon } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
   title: `Troubleshooting Cloud Deployments`,
@@ -164,6 +165,39 @@ Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs. You can fi
 ### Contact Support
 
 If neither of the steps above resolves the issue and the storefront build logs remain empty, contact support and include the deployment ID so the team can investigate at the platform level.
+
+---
+
+## npm Cache Errors During Build
+
+If your build fails with an error similar to:
+
+```bash
+npm error code EEXIST
+npm error syscall open
+npm error path /root/.npm/_cacache/tmp/...
+npm error errno -17
+npm error EEXIST: file already exists, open '/root/.npm/_cacache/tmp/...'
+```
+
+This is a transient npm cache corruption or a race condition in Docker's cache mount. The build environment's npm cache becomes temporarily inconsistent, causing `npm ci` to fail when writing temporary files.
+
+### Resolve npm Cache Errors
+
+Retry the build. The error is transient and the build typically succeeds on the second attempt.
+
+To retry a deployment from the Cloud dashboard:
+
+1. From the [organization's dashboard](../../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the **Deployments** tab.
+3. Find the failed deployment and click the <InlineIcon icon={EllipsisHorizontal} /> button to open the deployment actions menu. 
+4. Click **Redeploy** to trigger a new build.
+
+<Note>
+
+If the error persists across two or three consecutive builds, contact support to clear the npm cache for your project.
+
+</Note>
 
 ---
 
