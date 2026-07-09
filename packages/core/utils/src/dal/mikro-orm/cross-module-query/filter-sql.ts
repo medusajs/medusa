@@ -148,6 +148,61 @@ function buildExistsSql(
   context: JoinSqlContext
 ): SqlFragment {
   const linkType = inferLinkType(joinSpec, correlateSpec)
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+
+  // An optimization for filters that only apply on the target's primary key, useful to support these filters on non-DB external modules
+  const onlyTargetIdFilters =
+    !!joinSpec.target.filters &&
+    Object.keys(joinSpec.target.filters).length === 1 &&
+    joinSpec.target.filters[targetPrimaryKey] !== undefined
+  if (onlyTargetIdFilters && linkType === "normal") {
+    return buildTargetIdOnlyExistsSql(joinSpec, correlateSpec, context)
+  }
+
+  if (linkType === "normal") {
+    return buildNormalLinkExistsSql(joinSpec, correlateSpec, context)
+  } else {
+    return buildNoLinkExistsSql(joinSpec, correlateSpec, context, linkType)
+  }
+}
+
+function buildTargetIdOnlyExistsSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  context: JoinSqlContext
+): SqlFragment {
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+  const linkAlias = nextLinkAlias(context)
+  const linkTable = qualifyTable(
+    joinSpec.link.schema,
+    joinSpec.link.table,
+    context.defaultSchema
+  )
+
+  const bindings: Knex.RawBinding[] = []
+  const clauses: string[] = [
+    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
+    buildLinkSoftDeleteSql(linkAlias, context.withDeleted),
+  ]
+
+  const linkFilters = buildFilterSql(linkAlias, {
+    [joinSpec.link.targetKey]: joinSpec.target.filters?.[targetPrimaryKey],
+  })
+  clauses.push(linkFilters.sql)
+  bindings.push(...linkFilters.bindings)
+
+  const sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
+    linkAlias
+  )} where ${clauses.filter(Boolean).join(" and ")})`
+
+  return { sql, bindings }
+}
+
+function buildNormalLinkExistsSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  context: JoinSqlContext
+): SqlFragment {
   const linkAlias = nextLinkAlias(context)
   const linkTable = qualifyTable(
     joinSpec.link.schema,
@@ -160,33 +215,69 @@ function buildExistsSql(
     joinSpec.target.table,
     context.defaultSchema
   )
-  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
-
-  // An optimization for filters that only apply on the target's primary key, useful to support these filters on non-DB external modules
-  const targetIdOnlyFilterSql = buildTargetIdOnlyFilterSql(
-    joinSpec,
-    correlateSpec,
-    context,
-    linkType,
-    linkAlias,
-    linkTable
-  )
-  if (targetIdOnlyFilterSql) {
-    return targetIdOnlyFilterSql
-  }
 
   const bindings: Knex.RawBinding[] = []
-  const clauses: string[] = []
-  if (linkType === "normal") {
-    clauses.push(buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias))
-    clauses.push(buildLinkToTargetJoinSql(joinSpec, linkAlias, targetAlias))
-    clauses.push(buildLinkSoftDeleteSql(linkAlias, context.withDeleted))
-  } else {
-    clauses.push(
-      buildTargetCorrelationSql(joinSpec, correlateSpec, targetAlias, linkType)
-    )
+  const clauses: string[] = [
+    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
+    buildLinkToTargetJoinSql(joinSpec, linkAlias, targetAlias),
+    buildLinkSoftDeleteSql(linkAlias, context.withDeleted),
+    buildTargetSoftDeleteSql(targetAlias, context.withDeleted),
+  ]
+
+  const targetFilters = getTargetFilters(joinSpec, targetAlias, context)
+  clauses.push(...targetFilters.clauses)
+  bindings.push(...targetFilters.bindings)
+
+  const sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
+    linkAlias
+  )} inner join ${targetTable} as ${quoteIdentifier(
+    targetAlias
+  )} on true where ${clauses.filter(Boolean).join(" and ")})`
+
+  return {
+    sql,
+    bindings,
   }
-  clauses.push(buildTargetSoftDeleteSql(targetAlias, context.withDeleted))
+}
+
+function buildNoLinkExistsSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  context: JoinSqlContext,
+  linkType: Exclude<LinkType, "normal">
+): SqlFragment {
+  const targetAlias = joinSpec.alias
+  const targetTable = qualifyTable(
+    joinSpec.target.schema,
+    joinSpec.target.table,
+    context.defaultSchema
+  )
+
+  const bindings: Knex.RawBinding[] = []
+  const clauses: string[] = [
+    buildTargetCorrelationSql(joinSpec, correlateSpec, targetAlias, linkType),
+    buildTargetSoftDeleteSql(targetAlias, context.withDeleted),
+  ]
+
+  const targetFilters = getTargetFilters(joinSpec, targetAlias, context)
+  clauses.push(...targetFilters.clauses)
+  bindings.push(...targetFilters.bindings)
+
+  let sql = `exists (select 1 from ${targetTable} as ${quoteIdentifier(
+    targetAlias
+  )} where ${clauses.filter(Boolean).join(" and ")})`
+
+  return { sql, bindings }
+}
+
+function getTargetFilters(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  targetAlias: string,
+  context: JoinSqlContext
+) {
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+  const bindings: Knex.RawBinding[] = []
+  const clauses: string[] = []
 
   if (hasTargetFilters(joinSpec)) {
     const targetFilters = buildFilterSql(
@@ -219,59 +310,7 @@ function buildExistsSql(
     }
   }
 
-  let sql: string
-  if (linkType === "normal") {
-    sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
-      linkAlias
-    )} inner join ${targetTable} as ${quoteIdentifier(
-      targetAlias
-    )} on true where ${clauses.filter(Boolean).join(" and ")})`
-  } else {
-    sql = `exists (select 1 from ${targetTable} as ${quoteIdentifier(
-      targetAlias
-    )} where ${clauses.filter(Boolean).join(" and ")})`
-  }
-
-  return {
-    sql,
-    bindings,
-  }
-}
-
-function buildTargetIdOnlyFilterSql(
-  joinSpec: ResolvedCrossModuleJoinSpec,
-  correlateSpec: CorrelateSpec,
-  context: JoinSqlContext,
-  linkType: LinkType,
-  linkAlias: string,
-  linkTable: string
-): SqlFragment | false {
-  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
-  const onlyTargetIdFilters =
-    !!joinSpec.target.filters &&
-    Object.keys(joinSpec.target.filters).length === 1 &&
-    joinSpec.target.filters[targetPrimaryKey] !== undefined
-  if (!onlyTargetIdFilters || linkType !== "normal") {
-    return false
-  }
-
-  const bindings: Knex.RawBinding[] = []
-  const clauses: string[] = [
-    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
-    buildLinkSoftDeleteSql(linkAlias, context.withDeleted),
-  ]
-
-  const linkFilters = buildFilterSql(linkAlias, {
-    [joinSpec.link.targetKey]: joinSpec.target.filters?.[targetPrimaryKey],
-  })
-  clauses.push(linkFilters.sql)
-  bindings.push(...linkFilters.bindings)
-
-  const sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
-    linkAlias
-  )} where ${clauses.filter(Boolean).join(" and ")})`
-
-  return { sql, bindings }
+  return { clauses, bindings }
 }
 
 function nextLinkAlias(context: JoinSqlContext): string {
