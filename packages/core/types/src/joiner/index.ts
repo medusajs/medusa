@@ -1,10 +1,28 @@
 import { ICachingModuleService } from "../caching"
 
+/**
+ * A relationship between two services in the remote joiner.
+ */
 export type JoinerRelationship = {
+  /**
+   * The alias used to reference this relationship.
+   */
   alias: string
+  /**
+   * The foreign key field on the related service.
+   */
   foreignKey: string
+  /**
+   * The primary key field on the current service.
+   */
   primaryKey: string
+  /**
+   * The name of the related service.
+   */
   serviceName: string
+  /**
+   * The entity name in the related service.
+   */
   entity?: string
   /**
    * In an inverted relationship the foreign key is on the other service and the primary key is on the current service
@@ -20,9 +38,21 @@ export type JoinerRelationship = {
   args?: Record<string, any>
 }
 
+/**
+ * An alias configuration for a joiner service.
+ */
 export interface JoinerServiceConfigAlias {
+  /**
+   * The alias name or list of names for this service entry point.
+   */
   name: string | string[]
+  /**
+   * The entity associated with this alias.
+   */
   entity?: string
+  /**
+   * The fields that can be used to filter the results.
+   */
   filterable?: string[]
   /**
    * Internal-only alias metadata used by the query layer.
@@ -43,7 +73,13 @@ export interface JoinerServiceConfigAlias {
   args?: Record<string, any>
 }
 
+/**
+ * The configuration of a service registered with the remote joiner.
+ */
 export interface JoinerServiceConfig {
+  /**
+   * The unique name of the service.
+   */
   serviceName: string
   /**
    * Property name to use as entrypoint to the service
@@ -60,8 +96,17 @@ export interface JoinerServiceConfig {
         forwardArgumentsOnPath: string[]
       }
   >
+  /**
+   * The primary key fields of the service entity.
+   */
   primaryKeys: string[]
+  /**
+   * The relationships this service has with other services.
+   */
   relationships?: JoinerRelationship[]
+  /**
+   * Relationship extensions that augment another service's configuration.
+   */
   extends?: {
     serviceName: string
     entity?: string
@@ -73,34 +118,88 @@ export interface JoinerServiceConfig {
   args?: Record<string, any>
 }
 
+/**
+ * An argument passed to a joiner query or expand.
+ */
 export interface JoinerArgument {
+  /**
+   * The name of the argument.
+   */
   name: string
+  /**
+   * The value of the argument.
+   */
   value?: any
 }
 
+/**
+ * A directive applied to a field in a joiner query.
+ */
 export interface JoinerDirective {
+  /**
+   * The name of the directive.
+   */
   name: string
+  /**
+   * The value associated with the directive.
+   */
   value?: any
 }
 
+/**
+ * A query object passed to the remote joiner to fetch and join data across services.
+ */
 export interface RemoteJoinerQuery {
+  /**
+   * The name of the service to query.
+   */
   service?: string
+  /**
+   * The alias of the service entry point to query.
+   */
   alias?: string
+  /**
+   * Nested relationship expansions to include in the query.
+   */
   expands?: Array<{
     property: string
     fields: string[]
     args?: JoinerArgument[]
     directives?: { [field: string]: JoinerDirective[] }
   }>
+  /**
+   * The fields to retrieve from the queried service.
+   */
   fields: string[]
+  /**
+   * Arguments to pass to the query.
+   */
   args?: JoinerArgument[]
+  /**
+   * Directives to apply to the query fields.
+   */
   directives?: { [field: string]: JoinerDirective[] }
 }
 
+/**
+ * Options to configure the behavior of a remote joiner query execution.
+ */
 export interface RemoteJoinerOptions {
+  /**
+   * Whether to throw an error if a requested primary key is not found in the results.
+   */
   throwIfKeyNotFound?: boolean
+  /**
+   * Whether to throw an error if a requested relationship cannot be resolved. Pass an array of relationship names to only throw for specific ones.
+   */
   throwIfRelationNotFound?: boolean | string[]
+  /**
+   * Pre-fetched data to use as the initial dataset for the query instead of fetching from a service.
+   */
   initialData?: object | object[]
+  /**
+   * When true, only the initial data is used and no additional service fetches are performed.
+   */
   initialDataOnly?: boolean
   /**
    * The locale to use for the query.
