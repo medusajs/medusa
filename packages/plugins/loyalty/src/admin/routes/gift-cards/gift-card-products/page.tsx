@@ -10,7 +10,11 @@ const GiftCardProductsPage = () => {
         widgetsZonePrefix="gift_card_product.list"
         preferredLayoutId="core:single-column"
         sections={{
-          main: <GiftCardProductsTable />,
+          main: (
+            <LayoutComposer.Entry id="GiftCardProductsTable">
+              <GiftCardProductsTable />
+            </LayoutComposer.Entry>
+          ),
         }}
       />
 

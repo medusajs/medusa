@@ -85,8 +85,13 @@ class OasKindGenerator extends FunctionKindGenerator {
     "RequestWithContext",
     "AuthenticatedMedusaRequest",
     "MedusaStoreRequest",
+    "StoreRequestWithContext",
+    "StoreVariantListRequest",
   ]
-  readonly REQUEST_CHECK_QUERY_ARGS = ["RequestWithContext"]
+  readonly REQUEST_CHECK_QUERY_ARGS = [
+    "RequestWithContext",
+    "StoreVariantListRequest",
+  ]
   // as it's not always possible to detect authenticated request
   // use this to override the default detection logic.
   readonly AUTH_REQUESTS: AuthRequests[] = [

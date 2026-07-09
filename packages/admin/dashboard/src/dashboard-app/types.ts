@@ -9,7 +9,7 @@ import {
 import {
   LayoutDefinition,
   SectionWidgetMap,
-} from "../components/layout-composer"
+} from "../components/layout-composer/types"
 import { ComponentType } from "react"
 import { LoaderFunction } from "react-router-dom"
 import { z } from "zod"
@@ -35,6 +35,7 @@ export type MenuItemExtension = {
 export type WidgetExtension = {
   Component: ComponentType
   zone: InjectionZone[]
+  widgetId?: string
 }
 
 export type DisplayExtension = {
@@ -102,6 +103,10 @@ export type I18nModule = {
   resources: I18nExtension
 }
 
+export type LayoutModule = {
+  layouts: LayoutDefinition[]
+}
+
 export type MenuItemKey = "coreExtensions" | "settingsExtensions"
 
 export type FormField = FormFieldExtension & {
@@ -146,6 +151,7 @@ export type DashboardPlugin = {
   widgetModule: WidgetModule
   routeModule: RouteModule
   i18nModule?: I18nModule
+  layoutModule?: LayoutModule
 }
 
 export type ExtensionApi = {

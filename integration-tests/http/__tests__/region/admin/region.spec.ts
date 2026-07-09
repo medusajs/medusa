@@ -10,13 +10,13 @@ import {
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let region1
     let region2
     let container
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
       const publishableKey = await generatePublishableKey(container)
@@ -43,6 +43,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.region
+
+      await dbUtils.snapshot()
     })
 
     // BREAKING: There is no more `tax_rate` field on the region.

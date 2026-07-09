@@ -390,6 +390,18 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/product
     x-associatedSchema:
       $ref: "#/components/schemas/AdminProductCategory"
+  - name: Product Options
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminProductOption"
+    description: >
+      A product option is a way to define different options for a product, such
+      as "Size" or "Color". Product options can be created globally and used by
+      multiple products, or they can be exclusive to a specific product.
+
+      These API routes allow admin users to manage product options.
+    externalDocs:
+      description: Learn more about the Product Module
+      url: https://docs.medusajs.com/resources/commerce-modules/product
   - name: Product Tags
     description: >
       A tag is another way of organizing a product. Each tag has a name and a

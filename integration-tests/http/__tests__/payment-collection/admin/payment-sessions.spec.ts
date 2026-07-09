@@ -12,10 +12,10 @@ import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let storeHeaders
     let storeHeadersWithCustomer
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       const publishableKey = await generatePublishableKey(container)
       storeHeaders = generateStoreHeaders({ publishableKey })
@@ -32,6 +32,8 @@ medusaIntegrationTestRunner({
           authorization: `Bearer ${result.jwt}`,
         },
       }
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /store/payment-collections/:id/payment-sessions", () => {
@@ -55,11 +57,7 @@ medusaIntegrationTestRunner({
         ).data.region
 
         salesChannel = (
-          await api.post(
-            "/admin/sales-channels",
-            { name: "Web" },
-            adminHeaders
-          )
+          await api.post("/admin/sales-channels", { name: "Web" }, adminHeaders)
         ).data.sales_channel
 
         shippingProfile = (

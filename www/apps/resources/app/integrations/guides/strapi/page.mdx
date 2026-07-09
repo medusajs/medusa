@@ -19,6 +19,12 @@ export const metadata = {
 
 In this tutorial, you'll learn how to integrate [Strapi](https://strapi.io/) with Medusa.
 
+<Note>
+
+This guide has been revisited to support [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0) which introduced global product options.
+
+</Note>
+
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa also facilitates integrating third-party services that enrich your application with features specific to your unique business use case.
 
 By integrating Strapi, you can manage your products' content with powerful content management capabilities, including custom fields, media, localization, and more.
@@ -198,9 +204,9 @@ To create the schema for the Product content type, create the file `src/api/prod
     },
     "options": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::product-option.product-option",
-      "mappedBy": "product"
+      "inversedBy": "product"
     }
   }
 }
@@ -217,7 +223,7 @@ You define the following fields for the Product content type:
 7. `thumbnail`: A media field to store a single thumbnail image of the product.
 8. `locale`: A string field to support localization.
 9. `variants`: A one-to-many relation to the Product Variant content type, which you'll define later.
-10. `options`: A one-to-many relation to the Product Option content type, which you'll define later.
+10. `options`: A many-to-many relation to the Product Option content type, which you'll define later.
 
 #### Product Lifecycle Hooks
 
@@ -465,9 +471,9 @@ To create the schema for the Product Option content type, create the file `src/a
       "type": "string",
       "default": "en"
     },
-    "product": {
+    "products": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::product.product",
       "inversedBy": "options"
     },
@@ -486,7 +492,7 @@ You define the following fields for the Product Option content type:
 1. `medusaId`: A unique identifier that maps to the Medusa product option ID.
 2. `title`: The option's title.
 3. `locale`: A string field to support localization.
-4. `product`: A many-to-one relation to the Product content type.
+4. `products`: A many-to-many relation to the Product content type.
 5. `values`: A one-to-many relation to the Product Option Value content type, which you'll define later.
 
 #### Product Option Lifecycle Hooks
@@ -1072,20 +1078,20 @@ export default class StrapiModuleService {
   // ...
   async findByMedusaId(
     collection: Collection, 
-    medusaId: string, 
+    medusaId: string | string[], 
     populate?: string[]
   ) {
     try {
       const result = await this.client_.collection(collection).find({
         filters: {
           medusaId: {
-            $eq: medusaId,
+            $in: Array.isArray(medusaId) ? medusaId : [medusaId],
           },
         },
         populate,
       })
 
-      return result.data[0]
+      return result.data
     }
     catch (error) {
       throw new MedusaError(
@@ -1100,10 +1106,10 @@ export default class StrapiModuleService {
 This method takes the following parameters:
 
 1. `collection`: The collection (content type) in which the document exists. It uses the `Collection` enum.
-2. `medusaId`: The Medusa ID of the document to be retrieved.
+2. `medusaId`: A single Medusa ID or an array of Medusa IDs of the documents to be retrieved.
 3. `populate`: An optional array of relations to populate in the retrieved document.
 
-In the method, you retrieve the documents and return the first result.
+In the method, you retrieve the documents and return the results.
 
 ### e. Export Module Definition
 
@@ -1393,7 +1399,6 @@ export type CreateOptionsInStrapiInput = {
   options: {
     id: string
     title: string
-    strapiProductId: number
   }[]
 }
 
@@ -1406,13 +1411,11 @@ export const createOptionsInStrapiStep = createStep(
 
     try {
       for (const option of options) {
-        // Create option in Strapi
         const strapiOption = await strapiService.create(
           Collection.PRODUCT_OPTIONS, 
           {
             medusaId: option.id,
             title: option.title,
-            product: option.strapiProductId,
           }
         )
 
@@ -1655,16 +1658,16 @@ export const createOptionsInStrapiWorkflow = createWorkflow(
   "create-options-in-strapi",
   (input: CreateOptionsInStrapiWorkflowInput) => {
     // Fetch the option with all necessary fields
-    // including metadata and product metadata
+    // including metadata
     const { data: options } = useQueryGraphStep({
       entity: "product_option",
       fields: [
         "id",
         "title",
-        "product_id",
         "metadata",
-        "product.metadata",
-        "values.*",
+        "values.id",
+        "values.value",
+        "values.metadata",
       ],
       filters: {
         id: input.ids,
@@ -1679,7 +1682,6 @@ export const createOptionsInStrapiWorkflow = createWorkflow(
       return data.options.map((option) => ({
         id: option.id,
         title: option.title,
-        strapiProductId: Number(option.product?.metadata?.strapi_id),
       }))
     })
 
@@ -2291,30 +2293,154 @@ The workflow to create products in Strapi has the following steps:
         depth: 6
       },
       {
-        type: "workflow",
-        name: "createOptionsInStrapiWorkflow",
-        description: "Create the product options in Strapi.",
+        type: "step",
+        name: "retrieveFromStrapiStep",
+        description: "Retrieve existing product options from Strapi.",
         depth: 7
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "workflow",
+            name: "createOptionsInStrapiWorkflow",
+            description: "Create the product options in Strapi.",
+            depth: 1
+          }
+        ],
+        depth: 8,
+      },
+      {
+        type: "when",
+        steps: [
+          {
+            type: "step",
+            name: "updateProductInStrapiStep",
+            description: "Update the product in Strapi with the option IDs.",
+            depth: 1
+          }
+        ],
+        depth: 9
       },
       {
         type: "step",
         name: "releaseLockStep",
         description: "Release the acquired lock",
         link: "/references/medusa-workflows/steps/releaseLockStep",
-        depth: 8
+        depth: 10
       },
       {
         type: "workflow",
         name: "createVariantsInStrapiWorkflow",
         description: "Create the product variants in Strapi.",
-        depth: 9
+        depth: 11
       }
     ]
   }}
   hideLegend
 />
 
-You only need to create the `createProductInStrapiStep` step. The rest of the steps and workflows are either available out-of-the-box in Medusa or you have already created them.
+You need to create the `createProductInStrapiStep`, `retrieveFromStrapiStep`, and `updateProductInStrapiStep` steps. The rest of the steps and workflows are either available out-of-the-box in Medusa or you have already created them.
+
+#### retrieveFromStrapiStep
+
+The `retrieveFromStrapiStep` retrieves items from Strapi by their Medusa IDs.
+
+To create the step, create the file `src/workflows/steps/retrieve-from-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/retrieve-from-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService, { Collection } from "../../modules/strapi/service"
+
+export type RetrieveFromStrapiInput = {
+  collection: Collection
+  ids: string[]
+  populate?: string[]
+}
+
+export const retrieveFromStrapiStep = createStep(
+  "retrieve-from-strapi",
+  async ({ collection, ids, populate }: RetrieveFromStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    const items = await strapiService.findByMedusaId(collection, ids, populate)
+
+    return new StepResponse(items)
+  }
+)
+```
+
+The step receives a collection name, an array of Medusa IDs, and an optional array of fields to populate.
+
+In the step, you use the Strapi Module's service `findByMedusaId` method to retrieve items from Strapi.
+
+#### updateProductInStrapiStep
+
+The `updateProductInStrapiStep` updates a product in Strapi.
+
+To create the step, create the file `src/workflows/steps/update-product-in-strapi.ts` with the following content:
+
+```ts title="src/workflows/steps/update-product-in-strapi.ts" badgeLabel="Medusa application" badgeColor="green"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { STRAPI_MODULE } from "../../modules/strapi"
+import StrapiModuleService, { Collection } from "../../modules/strapi/service"
+
+export type UpdateProductInStrapiInput = {
+  product: {
+    id: string
+    title?: string
+    subtitle?: string
+    description?: string
+    handle?: string
+    optionIds?: number[]
+  }
+}
+
+export const updateProductInStrapiStep = createStep(
+  "update-product-in-strapi",
+  async ({ product }: UpdateProductInStrapiInput, { container }) => {
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    // Fetch current Strapi product data for compensation
+    const [originalProduct] = await strapiService.findByMedusaId(Collection.PRODUCTS, product.id, ["options"])
+
+    // Update product in Strapi
+    const updateData: Record<string, any> = {}
+    if (product.title !== undefined) updateData.title = product.title
+    if (product.subtitle !== undefined) updateData.subtitle = product.subtitle
+    if (product.description !== undefined) updateData.description = product.description
+    if (product.handle !== undefined) updateData.handle = product.handle
+    if (product.optionIds !== undefined) updateData.options = product.optionIds
+
+    const updated = await strapiService.update(Collection.PRODUCTS, originalProduct.documentId, updateData)
+
+    return new StepResponse(
+      updated.data,
+      originalProduct
+    )
+  },
+  async (compensationData, { container }) => {
+    if (!compensationData) {
+      return
+    }
+
+    const strapiService: StrapiModuleService = container.resolve(STRAPI_MODULE)
+
+    await strapiService.update(Collection.PRODUCTS, compensationData.documentId, {
+      title: compensationData.title,
+      subtitle: compensationData.subtitle,
+      description: compensationData.description,
+      handle: compensationData.handle,
+      options: compensationData.options?.map((opt) => opt.id) || [],
+    })
+  }
+)
+```
+
+The step receives a product object with an ID and optional fields to update (title, subtitle, description, handle, and optionIds). It finds the Strapi product by its Medusa ID and updates it with the provided details.
+
+In the compensation function, you restore the original product data if an error occurs during the workflow's execution.
 
 #### createProductInStrapiStep
 
@@ -2379,7 +2505,7 @@ In the compensation function, you delete the created product in Strapi if an err
 
 #### Create Product Workflow
 
-Now that you have created the necessary step, you can create the main workflow to handle product creation in Strapi.
+Now that you have created the necessary steps, you can create the main workflow to handle product creation in Strapi.
 
 To create the workflow, create the file `src/workflows/create-product-in-strapi.ts` with the following content:
 
@@ -2403,6 +2529,9 @@ import {
 } from "@medusajs/medusa/core-flows"
 import { createOptionsInStrapiWorkflow } from "./create-options-in-strapi"
 import { createVariantsInStrapiWorkflow } from "./create-variants-in-strapi"
+import { updateProductInStrapiStep } from "./steps/update-product-in-strapi"
+import { retrieveFromStrapiStep } from "./steps/retrieve-from-strapi"
+import { Collection } from "../modules/strapi/service"
 
 export type CreateProductInStrapiWorkflowInput = {
   id: string
@@ -2504,10 +2633,37 @@ export const createProductInStrapiWorkflow = createWorkflow(
       products,
     }, (data) => data.products[0].options.map((option) => option.id))
 
-    createOptionsInStrapiWorkflow.runAsStep({
-      input: {
-        ids: optionIds,
-      },
+    const existingStrapiOptions = retrieveFromStrapiStep({
+      collection: Collection.PRODUCT_OPTIONS,
+      ids: optionIds,
+    })
+
+    const optionsToCreate = transform({ existingStrapiOptions, optionIds }, (data) => {
+      const existingMedusaIds = new Set(data.existingStrapiOptions.map((option) => option.medusaId))
+      return data.optionIds.filter((id: string) => !existingMedusaIds.has(id))
+    })
+
+    const newStrapiOptions = when({ optionsToCreate }, (data) => data.optionsToCreate.length > 0).then(() => {
+      return createOptionsInStrapiWorkflow.runAsStep({
+        input: {
+          ids: optionsToCreate,
+        }
+      })
+    })
+
+    const strapiOptionIds = transform({ existingStrapiOptions, newStrapiOptions }, (data): number[] => {
+      const existingIds = (data.existingStrapiOptions || []).map((option) => option.id).filter(Boolean) as number[]
+      const newIds = data.newStrapiOptions ? (data.newStrapiOptions.strapi_options || []).map((option) => option.id).filter(Boolean) as number[] : []
+      return [...existingIds, ...newIds]
+    })
+
+    when({ strapiOptionIds }, (data) => data.strapiOptionIds.length > 0).then(() => {
+      return updateProductInStrapiStep({
+        product: {
+          id: input.id,
+          optionIds: strapiOptionIds,
+        },
+      })
     })
 
     releaseLockStep({
@@ -2540,9 +2696,13 @@ In the workflow, you:
 8. Prepare the data to update the product's metadata using `transform`.
 9. Update the product's metadata using the `updateProductsWorkflow`.
 10. Prepare the IDs of the product options and variants using `transform`.
-11. Create the product options in Strapi using the `createOptionsInStrapiWorkflow`.
-12. Release the acquired lock.
-13. Create the product variants in Strapi using the `createVariantsInStrapiWorkflow`.
+11. Check for existing product options in Strapi using `retrieveFromStrapiStep`.
+12. Identify which options need to be created using `transform`.
+13. Create only the product options that don't exist yet using the `createOptionsInStrapiWorkflow` (conditionally with `when`).
+14. Combine existing and newly created option IDs using `transform`.
+15. Link existing and newly created options to the product using `updateProductInStrapiStep` (conditionally with `when`).
+16. Release the acquired lock.
+17. Create the product variants in Strapi using the `createVariantsInStrapiWorkflow`.
 
 The workflow returns the created Strapi product as a response.
 
@@ -2951,12 +3111,29 @@ export const handleStrapiWebhookWorkflow = createWorkflow(
 
     when(input, (input) => input.entry.model === "product-option")
       .then(() => {
-        const options = updateProductOptionsWorkflow.runAsStep({
+        updateProductOptionsWorkflow.runAsStep({
           input: preparedData.data as any,
         })
 
+        // Since options can belong to multiple products (manyToMany), 
+        // we need to find all products that use this option
+        const { data: products } = useQueryGraphStep({
+          entity: "product",
+          fields: ["id"],
+          filters: {
+            options: {
+              id: (preparedData.data.selector as Record<string, string>).id,
+            },
+          },
+        }).config({ name: "get-products-from-option" })
+
+        // Clear cache for all products that use this option
+        const productIds = transform({ products }, (data) => {
+          return data.products.map((p) => p.id) as string[]
+        })
+
         clearProductCacheStep({ 
-          productId: options[0].product_id!,
+          productId: productIds
         }).config({ name: "clear-product-cache-option" })
       })
 

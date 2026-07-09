@@ -1,12 +1,51 @@
 import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
-import { BaseProductListParams, BaseProductOptionParams } from "../common"
+import {
+  BaseProductListParams,
+  BaseProductOptionListParams,
+  BaseProductOptionParams,
+} from "../common"
 
 /**
  * The product option's details.
  */
 export interface AdminProductOptionParams
   extends Omit<BaseProductOptionParams, "product_id"> {}
+/**
+ * The filters to apply on the retrieved product option values.
+ */
+export interface AdminProductOptionValueListParams
+  extends FindParams,
+    BaseFilterable<AdminProductOptionValueListParams> {
+  /**
+   * Query or keywords to filter the option value's searchable fields.
+   */
+  q?: string
+  /**
+   * Filter by option value ID(s).
+   */
+  id?: string | string[]
+  /**
+   * Filter by value(s).
+   */
+  value?: string | string[]
+  /**
+   * Filter by the ID(s) of the option the values belong to.
+   */
+  option_id?: string | string[]
+  /**
+   * Filter by the value's creation date.
+   */
+  created_at?: OperatorMap<string>
+  /**
+   * Filter by the value's update date.
+   */
+  updated_at?: OperatorMap<string>
+  /**
+   * Filter by the value's deletion date.
+   */
+  deleted_at?: OperatorMap<string>
+}
 /**
  * The filters to apply on the retrieved product variants.
  */
@@ -134,5 +173,7 @@ export interface AdminProductExportParams extends Omit<AdminProductListParams, "
     }
   }
 }
+export interface AdminProductOptionListParams
+  extends BaseProductOptionListParams {}
 
 export interface AdminGetProductParams extends SelectParams {}

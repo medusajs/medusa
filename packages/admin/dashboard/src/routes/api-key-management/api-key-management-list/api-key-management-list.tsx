@@ -1,25 +1,26 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLocation } from "react-router-dom"
 import { getApiKeyTypeFromPathname } from "../common/utils"
 import { ApiKeyManagementListTable } from "./components/api-key-management-list-table"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../../components/layout-composer"
 
 export const ApiKeyManagementList = () => {
   const { pathname } = useLocation()
-  const { getWidgets } = useExtension()
 
   const keyType = getApiKeyTypeFromPathname(pathname)
 
   return (
-    <SingleColumnPage
-      hasOutlet
-      widgets={{
-        before: getWidgets("api_key.list.before"),
-        after: getWidgets("api_key.list.after"),
+    <LayoutComposer
+      widgetsZonePrefix="api_key.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="ApiKeyManagementListTable">
+            <ApiKeyManagementListTable keyType={keyType} />
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <ApiKeyManagementListTable keyType={keyType} />
-    </SingleColumnPage>
+    />
   )
 }

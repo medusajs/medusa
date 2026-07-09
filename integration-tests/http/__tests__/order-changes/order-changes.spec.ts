@@ -8,16 +8,18 @@ import { createOrderSeeder } from "../fixtures/order"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
       const seeder = await createOrderSeeder({ api, container: getContainer() })
       order = seeder.order
+
+      await dbUtils.snapshot()
     })
 
     describe("POST /admin/order-changes/:id", () => {

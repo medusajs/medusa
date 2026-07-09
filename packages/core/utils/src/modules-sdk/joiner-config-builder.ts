@@ -201,6 +201,10 @@ export function defineJoinerConfig(
 
   primaryKeys = Array.from(finalPrimaryKeys.add("id"))
 
+  const crossjoinableFieldsByEntity = buildCrossjoinableFieldsFromDmlObjects(
+    Array.from(modelDefinitions.values())
+  )
+
   // TODO: In the context of DML add a validation on primary keys and linkable keys if the consumer provide them manually. follow up pr
 
   return {
@@ -210,12 +214,21 @@ export function defineJoinerConfig(
     idPrefixToEntityName,
     linkableKeys: linkableKeys,
     alias: [
-      ...[...(alias ?? ([] as any))].map((alias) => ({
-        name: alias.name,
-        entity: alias.entity,
+      ...(alias ?? ([] as any)).map((aliasConfig) => ({
+        name: aliasConfig.name,
+        entity: aliasConfig.entity,
+        filterable: aliasConfig.filterable,
+        ...(crossjoinableFieldsByEntity[aliasConfig.entity]
+          ? {
+              __internal: {
+                crossjoinable: crossjoinableFieldsByEntity[aliasConfig.entity],
+              },
+            }
+          : {}),
         args: {
           methodSuffix:
-            alias.args?.methodSuffix ?? pluralize(upperCaseFirst(alias.entity)),
+            aliasConfig.args?.methodSuffix ??
+            pluralize(upperCaseFirst(aliasConfig.entity)),
         },
       })),
       ...deduplicatedLoadedModels
@@ -225,18 +238,66 @@ export function defineJoinerConfig(
             !alias.some((alias) => alias.entity === upperCaseFirst(model.name))
           )
         })
-        .map((entity, i) => ({
-          name: [
-            `${camelToSnakeCase(entity.name).toLowerCase()}`,
-            `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
-          ],
-          entity: upperCaseFirst(entity.name),
-          args: {
-            methodSuffix: pluralize(upperCaseFirst(entity.name)),
-          },
-        })),
+        .map((entity) => {
+          const entityName = upperCaseFirst(entity.name)
+          const crossjoinable = crossjoinableFieldsByEntity[entityName]
+
+          return {
+            name: [
+              `${camelToSnakeCase(entity.name).toLowerCase()}`,
+              `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
+            ],
+            entity: entityName,
+            ...(crossjoinable
+              ? {
+                  __internal: {
+                    crossjoinable,
+                  },
+                }
+              : {}),
+            args: {
+              methodSuffix: pluralize(entityName),
+            },
+          }
+        }),
     ],
   }
+}
+
+/**
+ * Build crossjoinable field lists from DML entity definitions.
+ * Crossjoinable fields are all non-computed DML properties. These fields are
+ * used to determine what optimizations for cross-module joins can be performed.
+ */
+function buildCrossjoinableFieldsFromDmlObjects(
+  models: DmlEntity<any, any>[]
+): Record<string, string[]> {
+  const crossjoinableFields: Record<string, string[]> = {}
+
+  for (const model of models) {
+    if (!DmlEntity.isDmlEntity(model)) {
+      continue
+    }
+
+    const entityName = upperCaseFirst(model.name)
+
+    for (const [property, value] of Object.entries(model.schema)) {
+      if (BaseRelationship.isRelationship(value)) {
+        continue
+      }
+
+      const parsedProperty = (value as PropertyType<any>).parse(property)
+
+      if (parsedProperty.computed) {
+        continue
+      }
+
+      crossjoinableFields[entityName] ??= []
+      crossjoinableFields[entityName].push(property)
+    }
+  }
+
+  return crossjoinableFields
 }
 
 /**

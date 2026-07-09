@@ -87,17 +87,17 @@ export const processPaymentWorkflow = createWorkflow(
     )
 
     const { data: order } = useQueryGraphStep({
-        entity: "order_cart",
-        fields: ["id"],
-        filters: {
-          cart_id: cartId
-        },
-        options: {
-            isList: false
-        }
-      }).config({
-        name: "cart-order-query",
-      })
+      entity: "order_cart",
+      fields: ["id"],
+      filters: {
+        cart_id: cartId,
+      },
+      options: {
+        isList: false,
+      },
+    }).config({
+      name: "cart-order-query",
+    })
 
     when("lock-cart-when-available", { cartId }, ({ cartId }) => {
       return !!cartId
@@ -172,6 +172,30 @@ export const processPaymentWorkflow = createWorkflow(
         context: {},
       }).config({
         name: "authorize-payment-session",
+      })
+    })
+
+    // When an order already exists (created with pending_authorization) and the
+    // payment has now been authorized via webhook, authorize the session to create
+    // the Payment record.
+    when(
+      "authorize-existing-order",
+      { input, paymentData, cartPaymentCollection, order },
+      ({ input, paymentData, cartPaymentCollection, order }) => {
+        return (
+          !!order &&
+          !paymentData.data.length &&
+          !!cartPaymentCollection.data.length &&
+          input.action === PaymentActions.AUTHORIZED &&
+          !!input.data?.session_id
+        )
+      }
+    ).then(() => {
+      authorizePaymentSessionStep({
+        id: input.data!.session_id,
+        context: {},
+      }).config({
+        name: "authorize-payment-session-deferred",
       })
     })
 

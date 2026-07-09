@@ -7,10 +7,12 @@ import {
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("GET /admin/products - SKU Search", () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+        await dbUtils.snapshot()
       })
 
       describe("searching products by variant SKU using q parameter", () => {

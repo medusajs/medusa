@@ -1,3 +1,4 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { useCampaign } from "../../../hooks/api/campaigns"
@@ -8,8 +9,7 @@ import { CampaignSpend } from "./components/campaign-spend"
 import { campaignLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { CampaignConfigurationSection } from "./components/campaign-configuration-section"
 import { CAMPAIGN_DETAIL_FIELDS } from "./constants"
 
@@ -24,8 +24,6 @@ export const CampaignDetail = () => {
     { fields: CAMPAIGN_DETAIL_FIELDS },
     { initialData }
   )
-
-  const { getWidgets } = useExtension()
 
   if (isLoading || !campaign) {
     return (
@@ -43,27 +41,36 @@ export const CampaignDetail = () => {
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        after: getWidgets("campaign.details.after"),
-        before: getWidgets("campaign.details.before"),
-        sideAfter: getWidgets("campaign.details.side.after"),
-        sideBefore: getWidgets("campaign.details.side.before"),
-      }}
-      hasOutlet
-      showJSON
-      showMetadata
+    <LayoutComposer
+      widgetsZonePrefix="campaign.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={campaign}
-    >
-      <TwoColumnPage.Main>
-        <CampaignGeneralSection campaign={campaign} />
-        <CampaignPromotionSection campaign={campaign} />
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <CampaignConfigurationSection campaign={campaign} />
-        <CampaignSpend campaign={campaign} />
-        <CampaignBudget campaign={campaign} />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="CampaignGeneralSection">
+              <CampaignGeneralSection campaign={campaign} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CampaignPromotionSection">
+              <CampaignPromotionSection campaign={campaign} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(campaign)}
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="CampaignConfigurationSection">
+              <CampaignConfigurationSection campaign={campaign} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CampaignSpend">
+              <CampaignSpend campaign={campaign} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CampaignBudget">
+              <CampaignBudget campaign={campaign} />
+            </LayoutComposer.Entry>
+          </>
+        ),
+      }}
+    />
   )
 }

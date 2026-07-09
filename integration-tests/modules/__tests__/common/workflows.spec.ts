@@ -17,7 +17,7 @@ jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ getContainer, api, dbConnection }) => {
+  testSuite: ({ getContainer, api, dbConnection, dbUtils }) => {
     describe("Workflows: Common", () => {
       let appContainer
       let product
@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
 
         const shippingProfile = (
@@ -58,6 +58,8 @@ medusaIntegrationTestRunner({
         ).data.product
 
         variant = product.variants[0]
+
+        await dbUtils.snapshot()
       })
 
       describe("createLinksWorkflow", () => {

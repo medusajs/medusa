@@ -19,6 +19,7 @@ const SalesChannelGiftCardsWidget = () => {
 
 export const config = defineWidgetConfig({
   zone: "sales_channel.details.after",
+  id: "medusa:sales-channel-gift-cards-widget",
 });
 
 export default SalesChannelGiftCardsWidget;

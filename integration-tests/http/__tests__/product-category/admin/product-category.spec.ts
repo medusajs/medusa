@@ -7,7 +7,7 @@ import {
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let productCategory
     let productCategory1
     let productCategory2
@@ -20,7 +20,7 @@ medusaIntegrationTestRunner({
 
     let shippingProfile
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
@@ -31,6 +31,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.shipping_profile
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/product-categories/:id", () => {

@@ -14,21 +14,39 @@ const handlerP =
   (...args) => {
     Promise.resolve(fn(...args)).then(
       () => process.exit(0),
-      (err) => console.log(err)
+      (err) => {
+        console.error(err)
+        process.exit(1)
+      }
     )
   }
+
+/**
+ * Whether `@medusajs/eslint-plugin` is installed in the consumer project.
+ * Linting is enabled by default on `build` and `develop` only when this is true.
+ */
+function isMedusaEslintPluginInstalled(cwd: string): boolean {
+  try {
+    require.resolve("@medusajs/eslint-plugin", { paths: [cwd] })
+    return true
+  } catch {
+    return false
+  }
+}
 
 /**
  * Adds the shared `--lint` / `--fix` options to a command builder. Used by both
  * `build` and `develop`; the only difference is the `commandLabel` woven into
  * the describe text.
  */
-function addLintOptions(builder, commandLabel: string) {
+function addLintOptions(builder, commandLabel: string, directory: string) {
+  const lintByDefault = isMedusaEslintPluginInstalled(directory)
+
   return builder
     .option("lint", {
       type: "boolean",
-      describe: `Run the Medusa linter before ${commandLabel}. Use --no-lint to skip linting.`,
-      default: true,
+      describe: `Run the Medusa linter before ${commandLabel}. Enabled by default when @medusajs/eslint-plugin is installed. Use --no-lint to skip linting.`,
+      default: lintByDefault,
     })
     .option("fix", {
       type: "boolean",
@@ -471,7 +489,8 @@ function buildLocalCommands(cli, isLocalProject) {
                 ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
                 : `Set port. Defaults to ${defaultPort}`,
             }),
-          "starting the dev server"
+          "starting the dev server",
+          directory
         ),
       handler: handlerP(
         getCommandHandler(`develop`, async (args, cmd) => {
@@ -550,7 +569,8 @@ function buildLocalCommands(cli, isLocalProject) {
             describe:
               "Only build the admin to serve it separately (outDir .medusa/admin)",
           }),
-          "building"
+          "building",
+          directory
         ).option("quiet", {
           type: "boolean",
           default: false,

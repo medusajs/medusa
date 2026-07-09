@@ -144,6 +144,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/products/import"
   },
   {
+    "title": "Manage Product Options",
+    "path": "https://docs.medusajs.com/user-guide/products/options"
+  },
+  {
     "title": "Products Overview",
     "path": "https://docs.medusajs.com/user-guide/products"
   },
