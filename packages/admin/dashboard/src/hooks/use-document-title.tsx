@@ -53,12 +53,12 @@ export function getTitleFromMatch(
     }
   }
 
-  if (typeof handle?.label === "string" && handle.label.trim() !== "") {
+  if (handle?.label?.trim()?.length) {
     try {
       const label = handle.translationNs
         ? (i18n.t as any)(handle.label, { ns: handle.translationNs })
         : handle.label
-      if (typeof label === "string" && label.trim() !== "") {
+      if (label?.trim()?.length) {
         return label
       }
     } catch {
