@@ -27,3 +27,7 @@ export const CampaignDetailBreadcrumb = (
 
   return <span>{campaign.name}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminCampaignResponse>) => ({
+  title: match.data?.campaign?.name,
+})
