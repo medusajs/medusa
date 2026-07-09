@@ -23,5 +23,13 @@ const ProductOption = model
     delete: ["values"],
     detach: ["products"],
   })
+  .indexes([
+    {
+      name: "IDX_product_option_global_title_unique",
+      on: ["title"],
+      unique: true,
+      where: "deleted_at IS NULL AND is_exclusive = false",
+    },
+  ])
 
 export default ProductOption
