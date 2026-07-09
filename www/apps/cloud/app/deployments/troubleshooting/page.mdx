@@ -167,33 +167,6 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
-## pnpm Ignored Build Scripts (ERR_PNPM_IGNORED_BUILDS)
-
-If your storefront build fails with an error like the following, pnpm has blocked a post-install build script for a native package such as `workerd`:
-
-```bash
-ERR_PNPM_IGNORED_BUILDS Ignored build scripts: workerd@1.20260426.1
-opennextjs-cloudflare: not found
-```
-
-pnpm blocks certain post-install build scripts by default for security. When `workerd` (a dependency of `opennextjs-cloudflare`) cannot run its build script, the package is not set up correctly, causing subsequent tools that depend on it to fail with a "not found" error.
-
-To resolve this, allow `workerd` to run its build script by adding it to the `pnpm.onlyBuiltDependencies` list in your `package.json`:
-
-```json title="package.json"
-{
-  "pnpm": {
-    "onlyBuiltDependencies": ["workerd"]
-  }
-}
-```
-
-Then run `pnpm install` locally to update `pnpm-lock.yaml`, commit both files, and push to trigger a new deployment.
-
-Alternatively, you can run `pnpm approve-builds` locally to interactively approve the build scripts, then commit the updated lockfile.
-
----
-
 ## pnpm Lockfile Config Mismatch (ERR_PNPM_LOCKFILE_CONFIG_MISMATCH)
 
 If your build fails with the following error, the `patchedDependencies` configuration in your `package.json` does not match what is recorded in `pnpm-lock.yaml`:
