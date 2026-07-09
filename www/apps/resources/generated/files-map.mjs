@@ -1860,6 +1860,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/api-routes/middleware-registration"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/api-routes/route-registration-error/page.mdx",
+    "pathname": "/troubleshooting/api-routes/route-registration-error"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",
     "pathname": "/troubleshooting/cors-errors"
   },

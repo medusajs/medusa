@@ -52,6 +52,18 @@ Newer versions of React Email are not supported due to Node version incompatibil
 
 </Note>
 
+<Note title="Warning" type="warning">
+
+If your Cloud deployment fails with `Cannot find module 'react/jsx-runtime'`, it means `react` and `react-dom` are not available at runtime. Cloud does not install `devDependencies` during deployment, so these packages must be in the `dependencies` section of your `package.json`.
+
+To fix this, install them as production dependencies:
+
+```bash npm2yarn
+npm install react react-dom
+```
+
+</Note>
+
 ---
 
 ## Step 2: Create Invite User Email Template

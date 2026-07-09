@@ -99,6 +99,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
               "title": "Middleware Registration",
               "path": "/troubleshooting/api-routes/middleware-registration",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "title": "Route Registration Error",
+              "path": "/troubleshooting/api-routes/route-registration-error",
+              "children": []
             }
           ]
         },
