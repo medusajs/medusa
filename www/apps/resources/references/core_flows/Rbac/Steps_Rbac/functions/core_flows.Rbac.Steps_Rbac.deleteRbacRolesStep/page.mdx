@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/deleteRbacRolesStep
+sidebar_label: deleteRbacRolesStep
+tags:
+  - rbac
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# deleteRbacRolesStep - Medusa Core Workflows Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the `deleteRbacRolesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+This step deletes one or more RBAC roles.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { deleteRbacRolesStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = deleteRbacRolesStep([
+      "{value}"
+    ])
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"DeleteRbacRolesStepInput","type":"[DeleteRbacRolesStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"DeleteRbacRolesStepInput","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="deleteRbacRolesStep"/>

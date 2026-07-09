@@ -7,7 +7,7 @@
     "dev:monorepo": "yarn prep && yarn dev -p 3005",
     "dev:wrangler": "wrangler dev --port 3000",
     "build": "yarn prep && next build",
-    "build:cloudflare": "CF_PAGES=1 yarn prep && opennextjs-cloudflare build",
+    "build:cloudflare": "CLOUDFLARE_ENV=1 yarn prep && opennextjs-cloudflare build",
     "build:dev": "NODE_ENV=test yarn build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3005",

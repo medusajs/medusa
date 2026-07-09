@@ -110,6 +110,7 @@ const sidebarMappings: {
       "/references/user",
       "/references/loyalty",
       "/references/store-credit",
+      "/references/rbac"
     ],
   },
   {

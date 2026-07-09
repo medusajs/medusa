@@ -37,6 +37,8 @@ You can manage this setting during region creation or update.
 
 ## View Regions
 
+<PermissionsBadge permissions={["region:read"]} />
+
 To view regions in your store, go to Settings → Regions. Here, you can see a list of all the regions you have set up in your store. You can also search, filter, and sort the regions to find the one you are looking for.
 
 ![Regions list](https://res.cloudinary.com/dza7lstvk/image/upload/v1739965984/User%20Guide/Screenshot_2025-02-19_at_1.52.50_PM_xpbkm9.png)
@@ -44,6 +46,8 @@ To view regions in your store, go to Settings → Regions. Here, you can see a l
 ---
 
 ## Create Region
+
+<PermissionsBadge permissions={["region:create", "currency:read"]} />
 
 To create a region:
 
@@ -67,18 +71,22 @@ To create a region:
 
 ## View Region Details
 
+<PermissionsBadge permissions={["region:read"]} />
+
 To view the details of a region:
 
 1. Go to Settings → Regions.
 2. Click on the region you want to view.
 
-This opens the region's details page where you can also manage the region.
+This opens the region's details page where you can also manage the region. To see the region's currency, you also need the `currency:read` policy.
 
 ![Region details](https://res.cloudinary.com/dza7lstvk/image/upload/v1739968596/User%20Guide/Screenshot_2025-02-19_at_2.36.23_PM_ny7bip.png)
 
 ---
 
 ## Edit Region Details
+
+<PermissionsBadge permissions={["region:update"]} />
 
 To edit a region's details:
 
@@ -98,6 +106,8 @@ You can manage a region's countries to add or remove them from the region.
 
 ### Add Countries to Region
 
+<PermissionsBadge permissions={["region:update"]} />
+
 To add countries to a region:
 
 1. Go to the region's details page.
@@ -107,6 +117,8 @@ To add countries to a region:
 5. Once you're done, click the Add button.
 
 ### Remove Countries from Region
+
+<PermissionsBadge permissions={["region:update"]} />
 
 To remove countries from a region:
 
@@ -120,6 +132,8 @@ To remove countries from a region:
 ---
 
 ## Manage Region Metadata
+
+<PermissionsBadge permissions={["region:update"]} />
 
 Metadata is custom data that can be associated with the region in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the region.
 
@@ -139,6 +153,8 @@ To edit the region's metadata:
 ---
 
 ## Delete Region
+
+<PermissionsBadge permissions={["region:delete"]} />
 
 <Note type="warning">
 

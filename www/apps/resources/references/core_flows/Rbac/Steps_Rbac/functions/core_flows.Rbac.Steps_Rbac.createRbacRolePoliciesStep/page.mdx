@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/createRbacRolePoliciesStep
+sidebar_label: createRbacRolePoliciesStep
+tags:
+  - rbac
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# createRbacRolePoliciesStep - Medusa Core Workflows Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the `createRbacRolePoliciesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { createRbacRolePoliciesStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = createRbacRolePoliciesStep({})
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"CreateRbacRolePoliciesStepInput","type":"[CreateRbacRolePoliciesStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"CreateRbacRolePoliciesStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createRbacRolePoliciesStep"/>
+
+## Output
+
+<TypeList types={[{"name":"RbacRolePolicyDTO[]","type":"[RbacRolePolicyDTO](../../../../../types/types/types.RbacRolePolicyDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"role_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policy_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date` \\| `string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="createRbacRolePoliciesStep"/>

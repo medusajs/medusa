@@ -4,8 +4,20 @@ export const user = [
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
   {
+    "title": "View Policies",
+    "path": "https://docs.medusajs.com/user-guide/settings/policies"
+  },
+  {
     "title": "Manage Profile",
     "path": "https://docs.medusajs.com/user-guide/settings/profile"
+  },
+  {
+    "title": "Common Roles",
+    "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles"
+  },
+  {
+    "title": "Manage Roles",
+    "path": "https://docs.medusajs.com/user-guide/settings/roles"
   },
   {
     "title": "Manage Invites",

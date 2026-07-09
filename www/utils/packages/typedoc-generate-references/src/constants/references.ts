@@ -18,6 +18,7 @@ export const modules = [
   "tax",
   "translation",
   "user",
+  "rbac"
 ]
 
 const allReferences = [

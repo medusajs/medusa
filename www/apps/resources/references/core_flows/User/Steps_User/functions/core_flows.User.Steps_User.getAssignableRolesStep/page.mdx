@@ -1,0 +1,48 @@
+---
+slug: /references/medusa-workflows/steps/getAssignableRolesStep
+sidebar_label: getAssignableRolesStep
+tags:
+  - query
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# getAssignableRolesStep - Medusa Core Workflows Reference
+
+:::note
+
+To use this resource, make sure to [enable its feature flag: rbac](https://docs.medusajs.com/development/feature-flags/toggle)
+
+:::
+
+This documentation provides a reference to the `getAssignableRolesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+Resolves the set of roles the actor is allowed to assign.
+
+:::note
+
+This is available starting from [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+:::
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { getAssignableRolesStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = getAssignableRolesStep({})
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"GetAssignableRolesStepInput","type":"[GetAssignableRolesStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetAssignableRolesStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[],"since":"2.16.0"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getAssignableRolesStep"/>
+
+## Output
+
+<TypeList types={[{"name":"GetAssignableRolesStepOutput","type":"[GetAssignableRolesStepOutput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepOutput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"GetAssignableRolesStepOutput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[],"since":"2.16.0"}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="getAssignableRolesStep"/>

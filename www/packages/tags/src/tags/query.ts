@@ -276,11 +276,55 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductsWorkflow"
   },
   {
+    "title": "validateUserPermissionsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateUserPermissionsStep"
+  },
+  {
+    "title": "createRbacRolePoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolePoliciesWorkflow"
+  },
+  {
+    "title": "createRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolesWorkflow"
+  },
+  {
+    "title": "updateRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacRolesWorkflow"
+  },
+  {
     "title": "deleteShippingProfileWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteShippingProfileWorkflow"
   },
   {
     "title": "creditStoreCreditAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/creditStoreCreditAccountWorkflow"
+  },
+  {
+    "title": "getAssignablePoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignablePoliciesStep"
+  },
+  {
+    "title": "getAssignableRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignableRolesStep"
+  },
+  {
+    "title": "validateUserRolePermissionsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateUserRolePermissionsStep"
+  },
+  {
+    "title": "assignUserRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/assignUserRolesWorkflow"
+  },
+  {
+    "title": "getAssignablePoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignablePoliciesWorkflow"
+  },
+  {
+    "title": "getAssignableRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignableRolesWorkflow"
+  },
+  {
+    "title": "removeUserRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserRolesWorkflow"
   }
 ]

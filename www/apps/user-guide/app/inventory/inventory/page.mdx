@@ -26,6 +26,8 @@ This guide covers how to manage inventory items in the Inventory domain of the M
 
 ## Create Inventory Item
 
+<PermissionsBadge permissions={["inventory_item:create", "inventory_level:read"]} />
+
 To create an inventory item:
 
 1. Go to the Inventory page from the sidebar.
@@ -47,6 +49,8 @@ To create an inventory item:
 
 ## View Inventory Item Details
 
+<PermissionsBadge permissions={["inventory_item:read"]} />
+
 To view an inventory item's details:
 
 1. Go to the Inventory page from the sidebar.
@@ -57,6 +61,8 @@ To view an inventory item's details:
 ---
 
 ## Edit Inventory Item Details
+
+<PermissionsBadge permissions={["inventory_item:update"]} />
 
 To edit an inventory item's details:
 
@@ -72,6 +78,8 @@ To edit an inventory item's details:
 
 ## Edit Inventory Item Attributes
 
+<PermissionsBadge permissions={["inventory_item:update"]} />
+
 To edit an inventory item's attributes, such as height and weight:
 
 1. Go to the inventory item's details page.
@@ -85,6 +93,8 @@ To edit an inventory item's attributes, such as height and weight:
 ---
 
 ## Edit Inventory Item Metadata
+
+<PermissionsBadge permissions={["inventory_item:update"]} />
 
 Metadata is custom data that can be associated with the inventory item in key-value pairs. This is usually used by developers for custom integrations or to store additional information about the inventory item.
 
@@ -110,6 +120,8 @@ You can manage which locations the inventory item is available in, the quantity 
 
 ### Manage Locations Availability
 
+<PermissionsBadge permissions={["inventory_level:create", "inventory_level:update", "inventory_level:delete"]} />
+
 To manage the locations that an inventory item is available in:
 
 1. Go to the inventory item's details page.
@@ -120,6 +132,8 @@ To manage the locations that an inventory item is available in:
 ![Manage Locations Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739883050/User%20Guide/Screenshot_2025-02-18_at_2.50.41_PM_zxtz8k.png)
 
 ### Manage Quantity Availability
+
+<PermissionsBadge permissions={["inventory_level:update"]} />
 
 To manage the in-stock quantity of an inventory item in a location:
 
@@ -139,6 +153,8 @@ You can manage all reservations from the [Reservations page](../reservations/pag
 
 ### Create Reservation for Item
 
+<PermissionsBadge permissions={["reservation_item:create", "stock_location:read"]} />
+
 To create a reservation for an inventory item:
 
 1. Go to the inventory item's details page.
@@ -154,6 +170,8 @@ To create a reservation for an inventory item:
 
 ### Edit Reservation for Item
 
+<PermissionsBadge permissions={["reservation_item:update"]} />
+
 To edit a reservation for an inventory item:
 
 1. Go to the inventory item's details page.
@@ -165,6 +183,8 @@ To edit a reservation for an inventory item:
 ![Edit Reservation form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739884918/User%20Guide/Screenshot_2025-02-18_at_3.21.36_PM_vjp0eo.png)
 
 ### Delete Reservation of an Item
+
+<PermissionsBadge permissions={["reservation_item:delete"]} />
 
 <Note type="warning">
 
@@ -182,6 +202,8 @@ To delete a reservation for an inventory item:
 ---
 
 ## Delete Inventory Item
+
+<PermissionsBadge permissions={["inventory_item:delete"]} />
 
 <Note type="warning">
 

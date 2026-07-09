@@ -10,6 +10,7 @@ export const customModuleServiceNames: Record<string, string> = {
 // they're added to this object
 export const customModuleTitles: Record<string, string> = {
   "api-key": "API Key",
+  "rbac": "RBAC",
 }
 
 // if any module requires custom options, they're added to this object

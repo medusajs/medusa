@@ -52,6 +52,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/promotion/extend"
   },
   {
+    "title": "Define Custom Policies",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/rbac/define-policies"
+  },
+  {
     "title": "Invite User Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber"
   },

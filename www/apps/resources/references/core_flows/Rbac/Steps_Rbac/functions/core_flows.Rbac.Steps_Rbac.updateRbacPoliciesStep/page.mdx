@@ -1,0 +1,36 @@
+---
+slug: /references/medusa-workflows/steps/updateRbacPoliciesStep
+sidebar_label: updateRbacPoliciesStep
+tags:
+  - rbac
+  - step
+---
+
+import { TypeList, WorkflowDiagram } from "docs-ui"
+
+# updateRbacPoliciesStep - Medusa Core Workflows Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the `updateRbacPoliciesStep`. It belongs to the `@medusajs/medusa/core-flows` package.
+
+```ts title="src/workflows/my-workflow.ts"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { updateRbacPoliciesStep } from "@medusajs/medusa/core-flows"
+
+const myWorkflow = createWorkflow(
+  "my-workflow",
+  () => {
+    const data = updateRbacPoliciesStep({})
+  }
+)
+```
+  
+
+## Input
+
+<TypeList types={[{"name":"UpdateRbacPoliciesStepInput","type":"[UpdateRbacPoliciesStepInput](../../../../core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesStepInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"UpdateRbacPoliciesStepInput","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"featureFlag":"rbac","children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateRbacPoliciesStep"/>
+
+## Output
+
+<TypeList types={[{"name":"RbacPolicyDTO[]","type":"[RbacPolicyDTO](../../../../../types/types/types.RbacPolicyDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"operation","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date` \\| `string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" openedLevel={1} sectionTitle="updateRbacPoliciesStep"/>

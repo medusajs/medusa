@@ -1,0 +1,131 @@
+---
+sidebar_label: "Manage Roles"
+tags:
+  - user guide
+  - rbac
+  - user
+products:
+  - user
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Roles in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how to manage roles in the Medusa Admin.
+
+<Note title="Enterprise feature">
+
+Roles are part of the role-based access control (RBAC) feature, which is an enterprise feature. A developer must enable it in your Medusa configuration before the **Roles** and **Policies** settings appear. If you don't find these settings, reach out to your development team.
+
+</Note>
+
+## What is a Role?
+
+A role groups a set of permissions, called policies, under a name such as "Product Manager". You assign roles to admin users to control what they can access and do in the Medusa Admin.
+
+---
+
+## View Roles
+
+<PermissionsBadge permissions={["rbac_role:read"]} />
+
+To view the roles in your store, go to Settings → Roles. In the list, you can see each role's name and description. You can also search and sort the roles to find a specific one.
+
+To view a role's details, click on it in the list. The role's details page shows its general information, the users assigned to it, and the permissions it grants. To see the assigned policies, you also need the `rbac_policy:read` policy, and to see the assigned users, you also need the `user:read` policy.
+
+---
+
+## Create a Role
+
+<PermissionsBadge permissions={["rbac_role:create", "rbac_policy:read"]} />
+
+To create a role:
+
+1. Go to Settings → Roles.
+2. Click the **Create** button in the top-right corner.
+3. In the **Details** tab, enter a name and an optional description for the role.
+4. Click **Continue** to move to the **Permissions** tab.
+5. Select the permissions that this role should grant. Each permission allows an operation, such as read or create, on a resource, such as products or orders.
+    - To learn which policies common roles need, refer to the [Common Roles](./common-roles/page.mdx) guide.
+6. Click **Save**.
+
+The role now appears in the list, and you can assign it to users.
+
+---
+
+## Edit a Role's Details
+
+<PermissionsBadge permissions={["rbac_role:update"]} />
+
+To edit a role's name or description:
+
+1. Go to the role's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top-right of the first section.
+3. Choose **Edit** from the dropdown.
+4. In the side window that opens, edit the role's name or description.
+5. Click **Save**.
+
+---
+
+## Manage a Role's Permissions
+
+<PermissionsBadge permissions={["rbac_role:update", "rbac_policy:read"]} />
+
+To change the permissions that a role grants:
+
+1. Go to the role's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top-right of the first section.
+3. Choose **Manage permissions** from the dropdown.
+4. In the form that opens, select or unselect the permissions for this role. You can use the search to find specific permissions.
+5. Click **Save**.
+
+Users assigned this role gain or lose access based on the permissions you change.
+
+---
+
+## Assign Users to a Role
+
+<PermissionsBadge permissions={["rbac_role:update", "user:update", "user:read"]} />
+
+To assign users to a role:
+
+1. Go to the role's details page.
+2. In the **Users** section, click the **Add** button.
+3. Select the users you want to assign this role to.
+4. Click **Save**.
+
+<Note>
+
+You can only assign a role if you have all the permissions that the role grants. If you don't, the role can't be selected, and a tooltip explains why.
+
+</Note>
+
+### Remove Users from a Role
+
+To remove a user from a role, find the user in the **Users** section, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the end of their row, and choose **Remove**.
+
+---
+
+## Delete a Role
+
+<PermissionsBadge permissions={["rbac_role:delete"]} />
+
+<Note type="warning">
+
+Deleting a role is irreversible. Users assigned to the role lose the access it granted.
+
+</Note>
+
+To delete a role:
+
+1. Go to the role's details page.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top-right of the first section.
+3. Choose **Delete** from the dropdown.
+4. Confirm deleting the role in the pop-up.

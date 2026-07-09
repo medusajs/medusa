@@ -10,6 +10,7 @@ import {
   cloudinaryImgRehypePlugin,
   resolveAdmonitionsPlugin,
   crossProjectLinksPlugin,
+  enterpriseNoticeLinkFixerPlugin,
   prerequisitesLinkFixerPlugin,
   remarkAttachFrontmatterDataPlugin,
   recmaInjectMdxDataPlugin,
@@ -105,6 +106,12 @@ const withMDX = mdx({
       ],
       [
         prerequisitesLinkFixerPlugin,
+        {
+          checkLinksType: "value",
+        },
+      ],
+      [
+        enterpriseNoticeLinkFixerPlugin,
         {
           checkLinksType: "value",
         },

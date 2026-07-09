@@ -32,6 +32,8 @@ Make sure you've set up [Medusa Emails](!cloud!/emails) in your Cloud project to
 
 ## Invite a User
 
+<PermissionsBadge permissions={["invite:create", "invite:read"]} />
+
 To send an invite to a user:
 
 1. Go to Settings → Users.
@@ -45,6 +47,8 @@ To send an invite to a user:
 
 ## View Pending Invites
 
+<PermissionsBadge permissions={["invite:read"]} />
+
 To view pending invites:
 
 1. Go to Settings → Users.
@@ -56,6 +60,8 @@ To view pending invites:
 ---
 
 ## Resend an Invite
+
+<PermissionsBadge permissions={["invite:update"]} />
 
 You can resend an invite if the user hasn't received it, they lost their link, or the invite has expired.
 
@@ -86,6 +92,8 @@ You can then send this link to the user to sign up.
 ---
 
 ## Delete Invite
+
+<PermissionsBadge permissions={["invite:delete"]} />
 
 <Note type="warning">
 

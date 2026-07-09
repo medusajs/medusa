@@ -1,13 +1,17 @@
 import { FormattingOptionsType } from "types"
 import baseSectionsOptions from "../base-section-options.js"
+import { getEnterpriseNotice } from "../../utils/enterprise.js"
+
+const rbacEnterpriseNotice = getEnterpriseNotice("rbac")
+const baseSections = {
+  ...baseSectionsOptions,
+  member_getterSetter: false,
+}
 
 const coreFlowsOptions: FormattingOptionsType = {
   "^core_flows": {
     expandMembers: true,
-    sections: {
-      ...baseSectionsOptions,
-      member_getterSetter: false,
-    },
+    sections: baseSections,
     workflowDiagramComponent: "WorkflowDiagram",
     mdxImports: [`import { TypeList, WorkflowDiagram } from "docs-ui"`],
   },
@@ -70,6 +74,22 @@ const coreFlowsOptions: FormattingOptionsType = {
   },
   "^core_flows/(Order|Draft_Order)/.*": {
     maxLevel: 2,
+  },
+  "^core_flows/Rbac/Workflows_Rbac/.*/page\\.mdx": {
+    reflectionDescription:
+      `${rbacEnterpriseNotice}This documentation provides a reference to the \`{{alias}}\`. It belongs to the \`@medusajs/medusa/core-flows\` package.`,
+    sections: {
+      ...baseSections,
+      feature_flag: false,
+    }
+  },
+  "^core_flows/Rbac/Steps_Rbac/.*/page\\.mdx": {
+    reflectionDescription:
+      `${rbacEnterpriseNotice}This documentation provides a reference to the \`{{alias}}\`. It belongs to the \`@medusajs/medusa/core-flows\` package.`,
+    sections: {
+      ...baseSections,
+      feature_flag: false,
+    }
   },
 }
 

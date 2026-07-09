@@ -1,0 +1,67 @@
+---
+displayed_sidebar: rbacReference
+slug: /references/rbac/updateRbacRolePolicies
+sidebar_label: updateRbacRolePolicies
+---
+
+import { TypeList } from "docs-ui"
+
+# updateRbacRolePolicies - RBAC Module Reference
+
+<EnterpriseNotice featureName="role-based access control feature" featureFlag="rbac" featureFlagHref="/resources/commerce-modules/rbac#how-to-use-the-rbac-module" />
+
+This documentation provides a reference to the `updateRbacRolePolicies` method. This belongs to the RBAC Module.
+
+<Note>
+
+You should only use this methods when implementing complex customizations. For common cases, check out [available workflows instead](/medusa-workflows-reference).
+
+</Note>
+
+## updateRbacRolePolicies(data, sharedContext?): Promise&#60;[RbacRolePolicyDTO](../../../types/rbac.RbacRolePolicyDTO/page.mdx)&#62;
+
+This method updates an existing role-policy assignment.
+
+### Example
+
+```ts
+const rolePolicy = await rbacModuleService.updateRbacRolePolicies({
+  id: "rbrp_123",
+  policy_id: "rbpol_321",
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdateRbacRolePolicyDTO](../../../types/rbac.UpdateRbacRolePolicyDTO/page.mdx)","description":"The attributes to update in the role-policy assignment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"role_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policy_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/rbac.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/rbac.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRbacRolePolicies"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[RbacRolePolicyDTO](../../../types/rbac.RbacRolePolicyDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The updated role-policy assignment.","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"role_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policy_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date` \\| `string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRbacRolePolicies"/>
+
+## updateRbacRolePolicies(data, sharedContext?): Promise&#60;[RbacRolePolicyDTO](../../../types/rbac.RbacRolePolicyDTO/page.mdx)[]&#62;
+
+This method updates existing role-policy assignments.
+
+### Example
+
+```ts
+const rolePolicies = await rbacModuleService.updateRbacRolePolicies([
+  {
+    id: "rbrp_123",
+    policy_id: "rbpol_321",
+  },
+  {
+    id: "rbrp_321",
+    policy_id: "rbpol_123",
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpdateRbacRolePolicyDTO](../../../types/rbac.UpdateRbacRolePolicyDTO/page.mdx)[]","description":"The attributes to update in each role-policy assignment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/rbac.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"runId","type":"`string`","description":"A string indicating the ID of the current run.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/rbac.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parentStepIdempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the parent workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"preventReleaseEvents","type":"`boolean`","description":"preventReleaseEvents","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isCancelling","type":"`boolean`","description":"A boolean value indicating whether the current workflow execution is being cancelled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cancelingFromParentStep","type":"`boolean`","description":"Weither or not a sub workflow cancellation is being triggered from a parent step.\nIf true, the parent step will not be triggered by the sub workflow.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRbacRolePolicies"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[RbacRolePolicyDTO](../../../types/rbac.RbacRolePolicyDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The updated role-policy assignments.","expandable":false,"children":[{"name":"RbacRolePolicyDTO[]","type":"[RbacRolePolicyDTO](../../../types/rbac.RbacRolePolicyDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"role_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"policy_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`Date` \\| `string` \\| `null`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateRbacRolePolicies"/>

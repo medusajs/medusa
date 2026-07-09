@@ -11,6 +11,7 @@ import { paymentSidebar } from "./payment.mjs"
 import { pricingSidebar } from "./pricing.mjs"
 import { productSidebar } from "./product.mjs"
 import { promotionSidebar } from "./promotion.mjs"
+import { rbacSidebar } from "./rbac.mjs"
 import { regionSidebar } from "./region.mjs"
 import { salesChannelSidebar } from "./sales-channel.mjs"
 import { stockLocationSidebar } from "./stock-location.mjs"
@@ -43,6 +44,7 @@ export const commerceModulesSidebar = [
   ...pricingSidebar,
   ...productSidebar,
   ...promotionSidebar,
+  ...rbacSidebar,
   ...regionSidebar,
   ...salesChannelSidebar,
   ...stockLocationSidebar,
