@@ -1138,13 +1138,13 @@
  *       oneOf:
  *         - type: string
  *           title: option_id
- *           description: The product's option id.
+ *           description: Filter by an option ID to return products that have the option.
  *         - type: array
- *           description: The product's option id.
+ *           description: Filter by option IDs to return products that have the options.
  *           items:
  *             type: string
  *             title: option_id
- *             description: The option id's details.
+ *             description: The option ID's details.
  *   - name: option_value_id
  *     in: query
  *     required: false
@@ -1152,13 +1152,13 @@
  *       oneOf:
  *         - type: string
  *           title: option_value_id
- *           description: The product's option value id.
+ *           description: Filter by an option value ID to return products that have the option value.
  *         - type: array
- *           description: The product's option value id.
+ *           description: Filter by option value IDs to return products that have the option values.
  *           items:
  *             type: string
  *             title: option_value_id
- *             description: The option value id's details.
+ *             description: The option value ID's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

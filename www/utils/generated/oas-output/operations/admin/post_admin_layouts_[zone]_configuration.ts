@@ -1,13 +1,13 @@
 /**
  * @oas [post] /admin/layouts/{zone}/configuration
  * operationId: PostLayoutsZoneConfiguration
- * summary: Add Configuration to Layout
- * description: Add a Configuration to a layout
+ * summary: Add Layout Configuration
+ * description: Add a layout configuration for a specific zone. This allows you to customize the layout of the admin dashboard for that zone, including the arrangement of widgets and other UI elements.
  * x-authenticated: true
  * parameters:
  *   - name: zone
  *     in: path
- *     description: The layout's zone.
+ *     description: The zone for which the layout configuration should be added.
  *     required: true
  *     schema:
  *       type: string
@@ -55,6 +55,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: setLayoutConfigurationWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.2
 */
 

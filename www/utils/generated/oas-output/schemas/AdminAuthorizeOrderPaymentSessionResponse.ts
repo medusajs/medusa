@@ -1,7 +1,7 @@
 /**
  * @schema AdminAuthorizeOrderPaymentSessionResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the response after authorizing a payment session for an order.
  * x-schemaName: AdminAuthorizeOrderPaymentSessionResponse
  * required:
  *   - order
@@ -12,7 +12,7 @@
  *   is_authorized:
  *     type: boolean
  *     title: is_authorized
- *     description: The order's is authorized.
+ *     description: Whether the payment session was successfully authorized.
  * 
 */
 

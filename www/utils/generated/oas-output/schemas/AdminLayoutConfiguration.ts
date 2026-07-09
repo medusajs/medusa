@@ -1,7 +1,7 @@
 /**
  * @schema AdminLayoutConfiguration
  * type: object
- * description: The layout configuration's layout configurations.
+ * description: The layout configuration's details.
  * x-schemaName: AdminLayoutConfiguration
  * required:
  *   - id
@@ -23,31 +23,31 @@
  *   user_id:
  *     type: string
  *     title: user_id
- *     description: The layout configuration's user id.
+ *     description: The ID of the user who created the layout configuration.
  *   is_system_default:
  *     type: boolean
  *     title: is_system_default
- *     description: The layout configuration's is system default.
+ *     description: Whether the layout configuration is a system default.
  *   configuration:
  *     type: object
- *     description: The layout configuration's configuration.
+ *     description: The configuration's details.
  *     required:
  *       - widgets
  *     properties:
  *       widgets:
  *         type: object
- *         description: The configuration's widgets.
+ *         description: The configurations of the widgets in the layout. The object's keys are the widget IDs, and the values are objects containing the widget's configuration details.
  *         additionalProperties:
  *           type: object
  *           properties:
  *             hidden:
  *               type: boolean
  *               title: hidden
- *               description: The widget's hidden.
+ *               description: Whether the widget is hidden.
  *             section:
  *               type: string
  *               title: section
- *               description: The widget's section.
+ *               description: The section of the layout where the widget is placed.
  *             order:
  *               type: number
  *               title: order
@@ -56,12 +56,12 @@
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The layout configuration's created at.
+ *     description: The date the layout configuration was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The layout configuration's updated at.
+ *     description: The date the layout configuration was last updated.
  * 
 */
 

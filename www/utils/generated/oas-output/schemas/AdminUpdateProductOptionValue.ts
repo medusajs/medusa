@@ -1,7 +1,7 @@
 /**
  * @schema AdminUpdateProductOptionValue
  * type: object
- * description: SUMMARY
+ * description: The details of updating a product option value.
  * x-schemaName: AdminUpdateProductOptionValue
  * properties:
  *   value:
@@ -10,7 +10,7 @@
  *     description: The product option's value.
  *   metadata:
  *     type: object
- *     description: The product option's metadata.
+ *     description: Key-value pairs that hold additional information about the product option value.
  * 
 */
 

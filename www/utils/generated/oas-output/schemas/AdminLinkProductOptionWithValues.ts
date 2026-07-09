@@ -1,7 +1,7 @@
 /**
  * @schema AdminLinkProductOptionWithValues
  * type: object
- * description: The add's details.
+ * description: The details for linking a product option with its values.
  * x-schemaName: AdminLinkProductOptionWithValues
  * required:
  *   - id
@@ -10,14 +10,14 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The add's ID.
+ *     description: The option's ID.
  *   value_ids:
  *     type: array
- *     description: The add's value ids.
+ *     description: The values to add to the product.
  *     items:
  *       type: string
  *       title: value_ids
- *       description: The value id's value ids.
+ *       description: The value's ID.
  * 
 */
 

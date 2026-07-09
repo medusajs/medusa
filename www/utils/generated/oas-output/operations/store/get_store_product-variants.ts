@@ -40,29 +40,29 @@
  *       oneOf:
  *         - type: string
  *           title: sku
- *           description: The product variant's sku.
+ *           description: Filter by a product variant's sku.
  *         - type: array
- *           description: The product variant's sku.
+ *           description: Filter by product variant skus.
  *           items:
  *             type: string
  *             title: sku
- *             description: The sku's details.
+ *             description: The product variant's sku.
  *   - name: manage_inventory
  *     in: query
- *     description: The product variant's manage inventory.
+ *     description: Filter by whether Medusa manages inventory for the product variant.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: manage_inventory
- *       description: The product variant's manage inventory.
+ *       description: Filter by whether Medusa manages inventory for the product variant.
  *   - name: allow_backorder
  *     in: query
- *     description: The product variant's allow backorder.
+ *     description: Filter by whether backorders are allowed for the product variant.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: allow_backorder
- *       description: The product variant's allow backorder.
+ *       description: Filter by whether backorders are allowed for the product variant.
  *   - name: product_id
  *     in: query
  *     required: false
@@ -70,21 +70,21 @@
  *       oneOf:
  *         - type: string
  *           title: product_id
- *           description: The product variant's product id.
+ *           description: Filter by a product ID to retrieve its variants.
  *         - type: array
- *           description: The product variant's product id.
+ *           description: Filter by product IDs to retrieve their variants.
  *           items:
  *             type: string
  *             title: product_id
- *             description: The product id's details.
+ *             description: The product's ID.
  *   - name: q
  *     in: query
- *     description: The product variant's q.
+ *     description: Query to search variants by their searchable fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The product variant's q.
+ *       description: Query to search variants by their searchable fields.
  *   - name: id
  *     in: query
  *     required: false
@@ -92,20 +92,20 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The product variant's ID.
+ *           description: Filter by a product variant's ID.
  *         - type: array
- *           description: The product variant's ID.
+ *           description: Filter by product variant IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: The product variant's ID.
  *   - name: options
  *     in: query
- *     description: The product variant's options.
+ *     description: Filter by the product variant's options.
  *     required: false
  *     schema:
  *       type: object
- *       description: The product variant's options.
+ *       description: Apply filters on the product variant's options.
  *       properties:
  *         value:
  *           type: string
@@ -114,10 +114,10 @@
  *         option_id:
  *           type: string
  *           title: option_id
- *           description: The option's option id.
+ *           description: The option's ID.
  *   - name: created_at
  *     in: query
- *     description: The product variant's created at.
+ *     description: Filter by the product variant's creation date.
  *     required: false
  *     schema:
  *       type: object
@@ -226,10 +226,10 @@
  *           title: $exists
  *           description: Filter by whether a value exists or not.
  *       title: created_at
- *       description: The product variant's created at.
+ *       description: Filter by the product variant's creation date.
  *   - name: updated_at
  *     in: query
- *     description: The product variant's updated at.
+ *     description: Filter by the product variant's last update date.
  *     required: false
  *     schema:
  *       type: object
@@ -338,10 +338,10 @@
  *           title: $exists
  *           description: Filter by whether a value exists or not.
  *       title: updated_at
- *       description: The product variant's updated at.
+ *       description: Filter by the product variant's last update date.
  *   - name: deleted_at
  *     in: query
- *     description: The product variant's deleted at.
+ *     description: Filter by the product variant's deletion date.
  *     required: false
  *     schema:
  *       type: object
@@ -450,7 +450,7 @@
  *           title: $exists
  *           description: Filter by whether a value exists or not.
  *       title: deleted_at
- *       description: The product variant's deleted at.
+ *       description: Filter by the product variant's deletion date.
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -537,7 +537,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The pagination details.
  *               required:
  *                 - limit
  *                 - offset
@@ -546,28 +546,28 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The product variant's limit.
+ *                   description: The maximum number of items returned in the list.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The product variant's offset.
+ *                   description: The number of items skipped before the retrieved list.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The product variant's count.
+ *                   description: The total number of items available.
  *                 estimate_count:
  *                   type: number
  *                   title: estimate_count
- *                   description: The product variant's estimate count.
+ *                   description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
  *                   x-featureFlag: index_engine
  *             - type: object
- *               description: SUMMARY
+ *               description: The list of product variants.
  *               required:
  *                 - variants
  *               properties:
  *                 variants:
  *                   type: array
- *                   description: The product variant's variants.
+ *                   description: The list of product variants.
  *                   items:
  *                     $ref: "#/components/schemas/StoreProductVariant"
  *   "400":

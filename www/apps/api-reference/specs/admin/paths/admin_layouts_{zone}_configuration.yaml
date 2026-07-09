@@ -1,15 +1,14 @@
 get:
   operationId: GetLayoutsZoneConfiguration
-  summary: List Configurations
+  summary: List Layout Configurations
   description: >-
-    Retrieve a list of configurations in a layout. The configurations can be
-    filtered by fields like FILTER FIELDS. The configurations can also be
-    paginated.
+    Retrieve a list of layout configurations for a specific zone. These are the
+    configurations made by the users for their admin dashboard layouts.
   x-authenticated: true
   parameters:
     - name: zone
       in: path
-      description: The layout's zone.
+      description: The zone for which the layout configurations should be retrieved.
       required: true
       schema:
         type: string
@@ -43,15 +42,19 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-since: 2.17.2
 post:
   operationId: PostLayoutsZoneConfiguration
-  summary: Add Configuration to Layout
-  description: Add a Configuration to a layout
+  summary: Add Layout Configuration
+  description: >-
+    Add a layout configuration for a specific zone. This allows you to customize
+    the layout of the admin dashboard for that zone, including the arrangement
+    of widgets and other UI elements.
   x-authenticated: true
   parameters:
     - name: zone
       in: path
-      description: The layout's zone.
+      description: The zone for which the layout configuration should be added.
       required: true
       schema:
         type: string
@@ -92,15 +95,19 @@ post:
       $ref: ../components/responses/500_error.yaml
   x-workflow: setLayoutConfigurationWorkflow
   x-events: []
+  x-since: 2.17.2
 delete:
   operationId: DeleteLayoutsZoneConfiguration
-  summary: Remove Configuration from Layout
-  description: Remove a Configuration from a layout.
+  summary: Clear Configuration of Layout
+  description: >-
+    Clears all layout configurations for a given zone, including both personal
+    and default configurations. This action will remove any customizations made
+    by the user and revert to the system defaults.
   x-authenticated: true
   parameters:
     - name: zone
       in: path
-      description: The layout's zone.
+      description: The zone for which the layout configuration should be cleared.
       required: true
       schema:
         type: string
@@ -122,14 +129,14 @@ delete:
         application/json:
           schema:
             type: object
-            description: SUMMARY
+            description: The details of the layout configuration deletion result.
             required:
               - success
             properties:
               success:
                 type: boolean
                 title: success
-                description: The layout's success.
+                description: Whether the layout configuration was successfully cleared.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -144,3 +151,4 @@ delete:
       $ref: ../components/responses/500_error.yaml
   x-workflow: clearLayoutConfigurationWorkflow
   x-events: []
+  x-since: 2.17.2

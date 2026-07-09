@@ -84,6 +84,6 @@
  *       ```
  *     description: Emitted when products are updated.
  *     deprecated: false
- * 
+ * x-since: 2.17.0
 */
 

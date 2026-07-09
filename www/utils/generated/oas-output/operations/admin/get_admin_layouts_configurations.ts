@@ -1,8 +1,8 @@
 /**
  * @oas [get] /admin/layouts/configurations
  * operationId: GetLayoutsConfigurations
- * summary: List Layouts
- * description: Retrieve a list of layouts. The layouts can be filtered by fields such as `id`. The layouts can also be sorted or paginated.
+ * summary: List Layout Configurations
+ * description: Retrieve a list of layout configurations made by admin users. The layouts can be filtered by fields such as `id`. The layouts can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -12,13 +12,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The layout's ID.
+ *           description: Filter by layout configuration ID.
  *         - type: array
- *           description: The layout's ID.
+ *           description: Filter by layout configuration IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: The layout configuration's ID.
  *   - name: zone
  *     in: query
  *     required: false
@@ -26,13 +26,13 @@
  *       oneOf:
  *         - type: string
  *           title: zone
- *           description: The layout's zone.
+ *           description: Filter by layout configuration zone.
  *         - type: array
- *           description: The layout's zone.
+ *           description: Filter by layout configuration zones.
  *           items:
  *             type: string
  *             title: zone
- *             description: The zone's details.
+ *             description: The layout configuration's zone.
  *   - name: user_id
  *     in: query
  *     required: false
@@ -40,21 +40,21 @@
  *       oneOf:
  *         - type: string
  *           title: user_id
- *           description: The layout's user id.
+ *           description: Filter by the ID of the user who created the layout configuration.
  *         - type: array
- *           description: The layout's user id.
+ *           description: Filter by the IDs of users who created the layout configurations.
  *           items:
  *             type: string
  *             title: user_id
- *             description: The user id's details.
+ *             description: The ID of the user who created the layout configuration.
  *   - name: is_system_default
  *     in: query
- *     description: The layout's is system default.
+ *     description: Filter by whether the layout configuration is a system default.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: is_system_default
- *       description: The layout's is system default.
+ *       description: Whether the layout configuration is a system default.
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -145,7 +145,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The pagination details of the layout configurations list.
  *               required:
  *                 - limit
  *                 - offset
@@ -154,28 +154,28 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The layout's limit.
+ *                   description: The maximum number of items returned in the list.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The layout's offset.
+ *                   description: The number of items skipped before retrieving the list.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The layout's count.
+ *                   description: The total number of items in the list.
  *                 estimate_count:
  *                   type: number
  *                   title: estimate_count
- *                   description: The layout's estimate count.
+ *                   description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
  *                   x-featureFlag: index_engine
  *             - type: object
- *               description: SUMMARY
+ *               description: The layout configurations list.
  *               required:
  *                 - layout_configurations
  *               properties:
  *                 layout_configurations:
  *                   type: array
- *                   description: The layout's layout configurations.
+ *                   description: The list of layout configurations.
  *                   items:
  *                     $ref: "#/components/schemas/AdminLayoutConfiguration"
  *   "400":
@@ -190,6 +190,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * 
+ * x-since: 2.17.2
 */
 

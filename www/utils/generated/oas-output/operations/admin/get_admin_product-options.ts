@@ -472,13 +472,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The product option's ID.
+ *           description: Filter by a product option ID.
  *         - type: array
- *           description: The product option's ID.
+ *           description: Filter by product option IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: The product option's ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

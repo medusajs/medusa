@@ -174,6 +174,9 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminInvite'
   - name: Layouts
+    description: |
+      An admin can modify the layout of their admin dashboard. This allows admins to customize their dashboard to their preferences and needs.
+      These API routes allow admin users to manage layouts.
   - name: Locales
     description: |
       A locale is a language that content is translated into for customers to view in a storefront.
@@ -25534,8 +25537,8 @@ paths:
   /admin/layouts/configurations:
     get:
       operationId: GetLayoutsConfigurations
-      summary: List Layouts
-      description: Retrieve a list of layouts. The layouts can be filtered by fields such as `id`. The layouts can also be sorted or paginated.
+      summary: List Layout Configurations
+      description: Retrieve a list of layout configurations made by admin users. The layouts can be filtered by fields such as `id`. The layouts can also be sorted or paginated.
       x-authenticated: true
       parameters:
         - name: id
@@ -25545,13 +25548,13 @@ paths:
             oneOf:
               - type: string
                 title: id
-                description: The layout's ID.
+                description: Filter by layout configuration ID.
               - type: array
-                description: The layout's ID.
+                description: Filter by layout configuration IDs.
                 items:
                   type: string
                   title: id
-                  description: The id's ID.
+                  description: The layout configuration's ID.
         - name: zone
           in: query
           required: false
@@ -25559,13 +25562,13 @@ paths:
             oneOf:
               - type: string
                 title: zone
-                description: The layout's zone.
+                description: Filter by layout configuration zone.
               - type: array
-                description: The layout's zone.
+                description: Filter by layout configuration zones.
                 items:
                   type: string
                   title: zone
-                  description: The zone's details.
+                  description: The layout configuration's zone.
         - name: user_id
           in: query
           required: false
@@ -25573,21 +25576,21 @@ paths:
             oneOf:
               - type: string
                 title: user_id
-                description: The layout's user id.
+                description: Filter by the ID of the user who created the layout configuration.
               - type: array
-                description: The layout's user id.
+                description: Filter by the IDs of users who created the layout configurations.
                 items:
                   type: string
                   title: user_id
-                  description: The user id's details.
+                  description: The ID of the user who created the layout configuration.
         - name: is_system_default
           in: query
-          description: The layout's is system default.
+          description: Filter by whether the layout configuration is a system default.
           required: false
           schema:
             type: boolean
             title: is_system_default
-            description: The layout's is system default.
+            description: Whether the layout configuration is a system default.
         - name: limit
           in: query
           description: Limit the number of items returned in the list.
@@ -25676,7 +25679,7 @@ paths:
               schema:
                 allOf:
                   - type: object
-                    description: SUMMARY
+                    description: The pagination details of the layout configurations list.
                     required:
                       - limit
                       - offset
@@ -25685,28 +25688,28 @@ paths:
                       limit:
                         type: number
                         title: limit
-                        description: The layout's limit.
+                        description: The maximum number of items returned in the list.
                       offset:
                         type: number
                         title: offset
-                        description: The layout's offset.
+                        description: The number of items skipped before retrieving the list.
                       count:
                         type: number
                         title: count
-                        description: The layout's count.
+                        description: The total number of items in the list.
                       estimate_count:
                         type: number
                         title: estimate_count
-                        description: The layout's estimate count.
+                        description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
                         x-featureFlag: index_engine
                   - type: object
-                    description: SUMMARY
+                    description: The layout configurations list.
                     required:
                       - layout_configurations
                     properties:
                       layout_configurations:
                         type: array
-                        description: The layout's layout configurations.
+                        description: The list of layout configurations.
                         items:
                           $ref: '#/components/schemas/AdminLayoutConfiguration'
         '400':
@@ -25721,16 +25724,17 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.17.2
   /admin/layouts/{zone}/configuration:
     get:
       operationId: GetLayoutsZoneConfiguration
-      summary: List Configurations
-      description: Retrieve a list of configurations in a layout. The configurations can be filtered by fields like FILTER FIELDS. The configurations can also be paginated.
+      summary: List Layout Configurations
+      description: Retrieve a list of layout configurations for a specific zone. These are the configurations made by the users for their admin dashboard layouts.
       x-authenticated: true
       parameters:
         - name: zone
           in: path
-          description: The layout's zone.
+          description: The zone for which the layout configurations should be retrieved.
           required: true
           schema:
             type: string
@@ -25765,15 +25769,16 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.17.2
     post:
       operationId: PostLayoutsZoneConfiguration
-      summary: Add Configuration to Layout
-      description: Add a Configuration to a layout
+      summary: Add Layout Configuration
+      description: Add a layout configuration for a specific zone. This allows you to customize the layout of the admin dashboard for that zone, including the arrangement of widgets and other UI elements.
       x-authenticated: true
       parameters:
         - name: zone
           in: path
-          description: The layout's zone.
+          description: The zone for which the layout configuration should be added.
           required: true
           schema:
             type: string
@@ -25821,15 +25826,16 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: setLayoutConfigurationWorkflow
       x-events: []
+      x-since: 2.17.2
     delete:
       operationId: DeleteLayoutsZoneConfiguration
-      summary: Remove Configuration from Layout
-      description: Remove a Configuration from a layout.
+      summary: Clear Configuration of Layout
+      description: Clears all layout configurations for a given zone, including both personal and default configurations. This action will remove any customizations made by the user and revert to the system defaults.
       x-authenticated: true
       parameters:
         - name: zone
           in: path
-          description: The layout's zone.
+          description: The zone for which the layout configuration should be cleared.
           required: true
           schema:
             type: string
@@ -25852,14 +25858,14 @@ paths:
             application/json:
               schema:
                 type: object
-                description: SUMMARY
+                description: The details of the layout configuration deletion result.
                 required:
                   - success
                 properties:
                   success:
                     type: boolean
                     title: success
-                    description: The layout's success.
+                    description: Whether the layout configuration was successfully cleared.
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -25874,6 +25880,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: clearLayoutConfigurationWorkflow
       x-events: []
+      x-since: 2.17.2
   /admin/locales:
     get:
       operationId: GetLocales
@@ -31339,8 +31346,8 @@ paths:
   /admin/orders/{id}/payment-sessions/authorize:
     post:
       operationId: PostOrdersIdPaymentSessionsAuthorize
-      summary: Add Authorize to Order
-      description: Add a Authorize to a order
+      summary: Authorize Payment Session
+      description: Authorize a payment session for an order. This is useful for orders created from draft orders.
       x-authenticated: true
       parameters:
         - name: id
@@ -31408,6 +31415,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: authorizePaymentSessionForOrderWorkflow
       x-events: []
+      x-since: 2.17.0
   /admin/orders/{id}/preview:
     get:
       operationId: GetOrdersIdPreview
@@ -37301,13 +37309,13 @@ paths:
             oneOf:
               - type: string
                 title: id
-                description: The product option's ID.
+                description: Filter by a product option ID.
               - type: array
-                description: The product option's ID.
+                description: Filter by product option IDs.
                 items:
                   type: string
                   title: id
-                  description: The id's ID.
+                  description: The product option's ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -37696,8 +37704,8 @@ paths:
   /admin/product-options/{id}/values:
     get:
       operationId: GetProductOptionsIdValues
-      summary: List Values
-      description: Retrieve a list of values in a product option. The values can be filtered by fields like FILTER FIELDS. The values can also be paginated.
+      summary: List Product Option Values
+      description: Retrieve a list of values in a product option. The values can be filtered by fields like `id`. The values can also be paginated.
       x-authenticated: true
       parameters:
         - name: id
@@ -37708,12 +37716,12 @@ paths:
             type: string
         - name: q
           in: query
-          description: The product option's q.
+          description: Query to apply on the product option value's searchable fields.
           required: false
           schema:
             type: string
             title: q
-            description: The product option's q.
+            description: Query to apply on the product option value's searchable fields.
         - name: id
           in: query
           required: false
@@ -37721,13 +37729,13 @@ paths:
             oneOf:
               - type: string
                 title: id
-                description: The product option's ID.
+                description: Filter by a product option value ID.
               - type: array
-                description: The product option's ID.
+                description: Filter by product option value IDs.
                 items:
                   type: string
                   title: id
-                  description: The id's ID.
+                  description: The product option value's ID.
         - name: value
           in: query
           required: false
@@ -37735,13 +37743,13 @@ paths:
             oneOf:
               - type: string
                 title: value
-                description: The product option's value.
+                description: Filter by a product option value.
               - type: array
-                description: The product option's value.
+                description: Filter by product option values.
                 items:
                   type: string
                   title: value
-                  description: The value's details.
+                  description: The value.
         - name: option_id
           in: query
           required: false
@@ -37749,16 +37757,16 @@ paths:
             oneOf:
               - type: string
                 title: option_id
-                description: The product option's option id.
+                description: Filter by the value's product option ID.
               - type: array
-                description: The product option's option id.
+                description: Filter by the value's product option IDs.
                 items:
                   type: string
                   title: option_id
-                  description: The option id's details.
+                  description: The value's product option ID.
         - name: created_at
           in: query
-          description: The product option's created at.
+          description: Filter by the product option value's creation date.
           required: false
           schema:
             type: object
@@ -37867,10 +37875,10 @@ paths:
                 title: $exists
                 description: Filter by whether a value exists or not.
             title: created_at
-            description: The product option's created at.
+            description: Filter by the product option value's creation date.
         - name: updated_at
           in: query
-          description: The product option's updated at.
+          description: Filter by the product option value's update date.
           required: false
           schema:
             type: object
@@ -37979,10 +37987,10 @@ paths:
                 title: $exists
                 description: Filter by whether a value exists or not.
             title: updated_at
-            description: The product option's updated at.
+            description: Filter by the product option value's update date.
         - name: deleted_at
           in: query
-          description: The product option's deleted at.
+          description: Filter by the product option value's deletion date.
           required: false
           schema:
             type: object
@@ -38091,7 +38099,7 @@ paths:
                 title: $exists
                 description: Filter by whether a value exists or not.
             title: deleted_at
-            description: The product option's deleted at.
+            description: Filter by the product option value's deletion date.
         - name: limit
           in: query
           description: Limit the number of items returned in the list.
@@ -38197,7 +38205,7 @@ paths:
               schema:
                 allOf:
                   - type: object
-                    description: SUMMARY
+                    description: The pagination details of the product option values list.
                     required:
                       - limit
                       - offset
@@ -38206,28 +38214,28 @@ paths:
                       limit:
                         type: number
                         title: limit
-                        description: The product option's limit.
+                        description: The maximum number of items returned in the list.
                       offset:
                         type: number
                         title: offset
-                        description: The product option's offset.
+                        description: The number of items skipped before retrieving the list.
                       count:
                         type: number
                         title: count
-                        description: The product option's count.
+                        description: The total number of items in the list.
                       estimate_count:
                         type: number
                         title: estimate_count
-                        description: The product option's estimate count.
+                        description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
                         x-featureFlag: index_engine
                   - type: object
-                    description: SUMMARY
+                    description: The product option values list.
                     required:
                       - product_option_values
                     properties:
                       product_option_values:
                         type: array
-                        description: The product option's product option values.
+                        description: The list of product option values.
                         items:
                           $ref: '#/components/schemas/AdminProductOptionValue'
         '400':
@@ -38242,11 +38250,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.16.0
   /admin/product-options/{id}/values/{value_id}:
     get:
       operationId: GetProductOptionsIdValuesValue_id
-      summary: List Values
-      description: Retrieve a list of values in a product option. The values can be filtered by fields like FILTER FIELDS. The values can also be paginated.
+      summary: Get Product Option Value
+      description: Get a product option value by its ID.
       x-authenticated: true
       parameters:
         - name: id
@@ -38257,7 +38266,7 @@ paths:
             type: string
         - name: value_id
           in: path
-          description: The product option's value id.
+          description: The product option value's ID.
           required: true
           schema:
             type: string
@@ -38319,10 +38328,11 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.16.0
     post:
       operationId: PostProductOptionsIdValuesValue_id
-      summary: Add Value to Product Option
-      description: Add a Value to a product option
+      summary: Update Product Option Value
+      description: Update a product option value's details.
       x-authenticated: true
       parameters:
         - name: id
@@ -38333,7 +38343,7 @@ paths:
             type: string
         - name: value_id
           in: path
-          description: The product option's value id.
+          description: The product option value's ID.
           required: true
           schema:
             type: string
@@ -38394,6 +38404,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: updateProductOptionValuesWorkflow
       x-events: []
+      x-since: 2.17.0
     delete:
       operationId: DeleteProductOptionsIdValuesValue_id
       summary: Remove Value from Product Option
@@ -38408,7 +38419,7 @@ paths:
             type: string
         - name: value_id
           in: path
-          description: The product option's value id.
+          description: The value's ID.
           required: true
           schema:
             type: string
@@ -38462,6 +38473,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: deleteProductOptionValuesWorkflow
       x-events: []
+      x-since: 2.17.0
   /admin/product-tags:
     get:
       operationId: GetProductTags
@@ -41826,13 +41838,13 @@ paths:
             oneOf:
               - type: string
                 title: option_id
-                description: The product's option id.
+                description: Filter by an option ID to retrieve the products that have the option.
               - type: array
-                description: The product's option id.
+                description: Filter by option IDs to retrieve the products that have the options.
                 items:
                   type: string
                   title: option_id
-                  description: The option id's details.
+                  description: The option ID.
         - name: option_value_id
           in: query
           required: false
@@ -41840,13 +41852,13 @@ paths:
             oneOf:
               - type: string
                 title: option_value_id
-                description: The product's option value id.
+                description: Filter by an option value ID to retrieve the products that have the option value.
               - type: array
-                description: The product's option value id.
+                description: Filter by option value IDs to retrieve the products that have the option values.
                 items:
                   type: string
                   title: option_value_id
-                  description: The option value id's details.
+                  description: The option value ID.
       security:
         - api_token: []
         - cookie_auth: []
@@ -43328,13 +43340,13 @@ paths:
             oneOf:
               - type: string
                 title: option_id
-                description: The product's option id.
+                description: Filter by an option ID to return products that have the option.
               - type: array
-                description: The product's option id.
+                description: Filter by option IDs to return products that have the options.
                 items:
                   type: string
                   title: option_id
-                  description: The option id's details.
+                  description: The option ID's details.
         - name: option_value_id
           in: query
           required: false
@@ -43342,13 +43354,13 @@ paths:
             oneOf:
               - type: string
                 title: option_value_id
-                description: The product's option value id.
+                description: Filter by an option value ID to return products that have the option value.
               - type: array
-                description: The product's option value id.
+                description: Filter by option value IDs to return products that have the option values.
                 items:
                   type: string
                   title: option_value_id
-                  description: The option value id's details.
+                  description: The option value ID's details.
       security:
         - api_token: []
         - cookie_auth: []
@@ -44315,6 +44327,7 @@ paths:
             ```
           description: Emitted when products are updated.
           deprecated: false
+      x-since: 2.17.0
   /admin/products/{id}/variants:
     get:
       operationId: GetProductsIdVariants
@@ -66500,26 +66513,28 @@ paths:
   /admin/translations/settings:
     get:
       operationId: GetTranslationsSettings
-      summary: List Translations
-      description: Retrieve a list of translations. The translations can be filtered by fields such as `id`. The translations can also be sorted or paginated.
+      summary: List Translation Settings
+      x-sidebar-summary: List Settings
+      description: Retrieve the list of translatable fields for all entities, such as products and collections. You can also filter the results by entity type or active entities.
       x-authenticated: true
       parameters:
         - name: entity_type
           in: query
-          description: The translation's entity type.
+          description: The entity to retrieve translation settings for.
           required: false
           schema:
             type: string
             title: entity_type
-            description: The translation's entity type.
+            description: The entity to retrieve translation settings for.
+            example: product
         - name: is_active
           in: query
-          description: The translation's is active.
+          description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
           required: false
           schema:
             type: boolean
             title: is_active
-            description: The translation's is active.
+            description: Filter resources by whether translations is activated for them or not. If not provided, all resources are returned.
       security:
         - api_token: []
         - cookie_auth: []
@@ -71064,7 +71079,7 @@ components:
           description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
     AdminAuthorizeOrderPaymentSession:
       type: object
-      description: SUMMARY
+      description: The details for authorizing a payment session for an order.
       x-schemaName: AdminAuthorizeOrderPaymentSession
       required:
         - payment_session_id
@@ -71072,10 +71087,10 @@ components:
         payment_session_id:
           type: string
           title: payment_session_id
-          description: The order's payment session id.
+          description: The payment session's ID.
     AdminAuthorizeOrderPaymentSessionResponse:
       type: object
-      description: SUMMARY
+      description: The details of the response after authorizing a payment session for an order.
       x-schemaName: AdminAuthorizeOrderPaymentSessionResponse
       required:
         - order
@@ -71086,7 +71101,7 @@ components:
         is_authorized:
           type: boolean
           title: is_authorized
-          description: The order's is authorized.
+          description: Whether the payment session was successfully authorized.
     AdminBatchCreateInventoryItemLocationLevels:
       type: object
       description: The inventory level's details.
@@ -77742,7 +77757,8 @@ components:
           description: The date the invite was updated.
         rbac_roles:
           type: array
-          description: The invite's rbac roles.
+          description: The roles of the invited user.
+          x-featureFlag: rbac
           items:
             $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
@@ -77756,7 +77772,7 @@ components:
           $ref: '#/components/schemas/AdminInvite'
     AdminLayoutConfiguration:
       type: object
-      description: The layout configuration's layout configurations.
+      description: The layout configuration's details.
       x-schemaName: AdminLayoutConfiguration
       required:
         - id
@@ -77778,31 +77794,31 @@ components:
         user_id:
           type: string
           title: user_id
-          description: The layout configuration's user id.
+          description: The ID of the user who created the layout configuration.
         is_system_default:
           type: boolean
           title: is_system_default
-          description: The layout configuration's is system default.
+          description: Whether the layout configuration is a system default.
         configuration:
           type: object
-          description: The layout configuration's configuration.
+          description: The configuration's details.
           required:
             - widgets
           properties:
             widgets:
               type: object
-              description: The configuration's widgets.
+              description: The configurations of the widgets in the layout. The object's keys are the widget IDs, and the values are objects containing the widget's configuration details.
               additionalProperties:
                 type: object
                 properties:
                   hidden:
                     type: boolean
                     title: hidden
-                    description: The widget's hidden.
+                    description: Whether the widget is hidden.
                   section:
                     type: string
                     title: section
-                    description: The widget's section.
+                    description: The section of the layout where the widget is placed.
                   order:
                     type: number
                     title: order
@@ -77811,15 +77827,15 @@ components:
           type: string
           format: date-time
           title: created_at
-          description: The layout configuration's created at.
+          description: The date the layout configuration was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The layout configuration's updated at.
+          description: The date the layout configuration was last updated.
     AdminLayoutConfigurationResponse:
       type: object
-      description: SUMMARY
+      description: The details for a layout configuration response.
       x-schemaName: AdminLayoutConfigurationResponse
       required:
         - personal_configuration
@@ -77832,7 +77848,7 @@ components:
           $ref: '#/components/schemas/AdminLayoutConfiguration'
         active_scope:
           type: string
-          description: The layout's active scope.
+          description: The active scope of the layout configuration.
           enum:
             - default
             - personal
@@ -77850,7 +77866,7 @@ components:
       x-schemaName: AdminLinkPriceListProducts
     AdminLinkProductOptionWithValues:
       type: object
-      description: The add's details.
+      description: The details for linking a product option with its values.
       x-schemaName: AdminLinkProductOptionWithValues
       required:
         - id
@@ -77859,36 +77875,36 @@ components:
         id:
           type: string
           title: id
-          description: The add's ID.
+          description: The option's ID.
         value_ids:
           type: array
-          description: The add's value ids.
+          description: The values to add to the product.
           items:
             type: string
             title: value_ids
-            description: The value id's value ids.
+            description: The value's ID.
     AdminLinkProductOptions:
       type: object
-      description: SUMMARY
+      description: The details of linking product options to a product.
       x-schemaName: AdminLinkProductOptions
       properties:
         add:
           type: array
-          description: The product's add.
+          description: The options to add to the product.
           items:
             oneOf:
               - type: string
                 title: add
-                description: The add's details.
+                description: The details of the product option to add.
               - $ref: '#/components/schemas/AdminCreateProductOption'
               - $ref: '#/components/schemas/AdminLinkProductOptionWithValues'
         remove:
           type: array
-          description: The product's remove.
+          description: The IDs of the product options to remove from the product.
           items:
             type: string
             title: remove
-            description: The remove's details.
+            description: The ID of the product option to remove.
         update:
           type: array
           description: The product's update.
@@ -81381,7 +81397,7 @@ components:
           description: The rank of the value among other option values.
     AdminProductOptionValueDeleteResponse:
       type: object
-      description: SUMMARY
+      description: The details of the product option value deletion.
       x-schemaName: AdminProductOptionValueDeleteResponse
       required:
         - id
@@ -81391,20 +81407,21 @@ components:
         id:
           type: string
           title: id
-          description: The product option's ID.
+          description: The ID of the deleted product option value.
         object:
           type: string
           title: object
           description: The name of the deleted object.
+          default: product_option_value
         deleted:
           type: boolean
           title: deleted
-          description: Whether the Product Option was deleted.
+          description: Whether the Product Option Value was deleted.
         parent:
           $ref: '#/components/schemas/AdminProductOption'
     AdminProductOptionValueResponse:
       type: object
-      description: SUMMARY
+      description: The details of a product option value.
       x-schemaName: AdminProductOptionValueResponse
       required:
         - product_option_value
@@ -82168,7 +82185,7 @@ components:
           $ref: '#/components/schemas/AdminPropertyLabel'
     AdminRbacPolicy:
       type: object
-      description: The policy's policies.
+      description: The details of an RBAC policy.
       x-schemaName: AdminRbacPolicy
       required:
         - id
@@ -82193,44 +82210,46 @@ components:
         resource:
           type: string
           title: resource
-          description: The policy's resource.
+          description: The resource that the policy applies to.
+          example: product
         operation:
           type: string
           title: operation
-          description: The policy's operation.
+          description: The operation that the policy allows or denies.
+          example: create
         name:
           type: string
           title: name
-          description: The policy's name.
+          description: The policy's name. Used for display purposes.
         description:
           type: string
           title: description
           description: The policy's description.
         metadata:
           type: object
-          description: The policy's metadata.
+          description: Key-value pairs that hold additional information about the policy.
         inherited_from_role_id:
           type: string
           title: inherited_from_role_id
-          description: The policy's inherited from role id.
+          description: The ID of the role from which the policy is inherited.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The policy's created at.
+          description: The date the policy was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The policy's updated at.
+          description: The date the policy was last updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The policy's deleted at.
+          description: The date the policy was deleted.
     AdminRbacRole:
       type: object
-      description: The rbac role's rbac roles.
+      description: The details of an RBAC role.
       x-schemaName: AdminRbacRole
       required:
         - id
@@ -82245,42 +82264,42 @@ components:
         id:
           type: string
           title: id
-          description: The rbac role's ID.
+          description: The ID of the RBAC role.
         name:
           type: string
           title: name
-          description: The rbac role's name.
+          description: The name of the RBAC role.
         description:
           type: string
           title: description
-          description: The rbac role's description.
+          description: The description of the RBAC role.
         parent_id:
           type: string
           title: parent_id
-          description: The rbac role's parent id.
+          description: The ID of the parent RBAC role.
         metadata:
           type: object
-          description: The rbac role's metadata.
+          description: Key-value pairs that hold additional information about the RBAC role.
         policies:
           type: array
-          description: The rbac role's policies.
+          description: The RBAC role's policies.
           items:
             $ref: '#/components/schemas/AdminRbacPolicy'
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The rbac role's created at.
+          description: The date the RBAC role was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The rbac role's updated at.
+          description: The date the RBAC role was last updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The rbac role's deleted at.
+          description: The date the RBAC role was deleted.
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -83146,7 +83165,7 @@ components:
           description: The ID of the view configuration to set as active. If `null`, the active view configuration will be cleared, and the `code` or system default view configuration will be used as the active view.
     AdminSetLayoutConfiguration:
       type: object
-      description: SUMMARY
+      description: The details of setting the layout configuration for a zone in the admin dashboard.
       x-schemaName: AdminSetLayoutConfiguration
       required:
         - configuration
@@ -83154,7 +83173,7 @@ components:
         is_default:
           type: boolean
           title: is_default
-          description: The layout's is default.
+          description: Whether the layout configuration is set as the default for the zone.
         configuration:
           type: object
           description: The layout's configuration.
@@ -83163,18 +83182,18 @@ components:
           properties:
             widgets:
               type: object
-              description: The configuration's widgets.
+              description: The widgets configuration for the layout. Each key represents a widget's ID, and the value is an object containing the widget's configuration details.
               additionalProperties:
                 type: object
                 properties:
                   hidden:
                     type: boolean
                     title: hidden
-                    description: The widget's hidden.
+                    description: Whether the widget is hidden in the layout.
                   section:
                     type: string
                     title: section
-                    description: The widget's section.
+                    description: The section of the layout where the widget is placed.
                   order:
                     type: number
                     title: order
@@ -84667,14 +84686,14 @@ components:
           description: Whether translations are active for the given entity type.
     AdminTranslationSettingsResponse:
       type: object
-      description: SUMMARY
+      description: The translation settings' details.
       x-schemaName: AdminTranslationSettingsResponse
       required:
         - translation_settings
       properties:
         translation_settings:
           type: object
-          description: The translation's translation settings.
+          description: The translation settings details.
     AdminTranslationStatisticsResponse:
       type: object
       description: The translation statistics details.
@@ -85581,13 +85600,13 @@ components:
         is_exclusive:
           type: boolean
           title: is_exclusive
-          description: The product option's is exclusive.
+          description: Whether the product option is exclusive to the product. If disabled, the product option can be used by other products.
         metadata:
           type: object
-          description: The product option's metadata.
+          description: Key-value pairs that hold additional information about the product option.
     AdminUpdateProductOptionValue:
       type: object
-      description: SUMMARY
+      description: The details of updating a product option value.
       x-schemaName: AdminUpdateProductOptionValue
       properties:
         value:
@@ -85596,10 +85615,10 @@ components:
           description: The product option's value.
         metadata:
           type: object
-          description: The product option's metadata.
+          description: Key-value pairs that hold additional information about the product option value.
     AdminUpdateProductOptionValues:
       type: object
-      description: The update's details.
+      description: The details to update a product option's values.
       x-schemaName: AdminUpdateProductOptionValues
       required:
         - product_option_id
@@ -85607,31 +85626,31 @@ components:
         product_option_id:
           type: string
           title: product_option_id
-          description: The update's product option id.
+          description: The ID of the product option to update.
         add:
           type: array
-          description: The update's add.
+          description: The values to add to the product option.
           items:
             oneOf:
               - type: string
                 title: add
-                description: The add's details.
+                description: The value to add to the product option.
               - type: object
-                description: The add's details.
+                description: The details of the value to add to the product option.
                 required:
                   - value
                 properties:
                   value:
                     type: string
                     title: value
-                    description: The add's value.
+                    description: The value to add to the product option.
         remove:
           type: array
-          description: The update's remove.
+          description: The values to remove from the product option.
           items:
             type: string
             title: remove
-            description: The remove's details.
+            description: The ID of the value to remove from the product option.
     AdminUpdateProductTag:
       type: object
       description: The properties to update in the product tag.

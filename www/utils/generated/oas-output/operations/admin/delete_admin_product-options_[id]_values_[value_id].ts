@@ -13,7 +13,7 @@
  *       type: string
  *   - name: value_id
  *     in: path
- *     description: The product option's value id.
+ *     description: The value's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -67,6 +67,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteProductOptionValuesWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.0
 */
 

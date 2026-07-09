@@ -23,7 +23,9 @@ properties:
   is_exclusive:
     type: boolean
     title: is_exclusive
-    description: The product option's is exclusive.
+    description: >-
+      Whether the product option is exclusive to the product. If disabled, the
+      product option can be used by other products.
   metadata:
     type: object
-    description: The product option's metadata.
+    description: Key-value pairs that hold additional information about the product option.

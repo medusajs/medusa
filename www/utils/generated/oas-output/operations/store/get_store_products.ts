@@ -1239,13 +1239,13 @@
  *       oneOf:
  *         - type: string
  *           title: option_value_id
- *           description: The product's option value id.
+ *           description: Filter by a product option value ID to retrieve products that have variants with that option value.
  *         - type: array
- *           description: The product's option value id.
+ *           description: Filter by product option value IDs to retrieve products that have variants with those option values.
  *           items:
  *             type: string
  *             title: option_value_id
- *             description: The option value id's details.
+ *             description: The product option value ID.
  *   - name: option_id
  *     in: query
  *     required: false
@@ -1253,13 +1253,13 @@
  *       oneOf:
  *         - type: string
  *           title: option_id
- *           description: The product's option id.
+ *           description: Filter by a product option ID to retrieve products that have variants with that option.
  *         - type: array
- *           description: The product's option id.
+ *           description: Filter by product option IDs to retrieve products that have variants with those options.
  *           items:
  *             type: string
  *             title: option_id
- *             description: The option id's details.
+ *             description: The product option ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

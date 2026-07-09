@@ -1,7 +1,7 @@
 /**
  * @schema AdminLayoutConfigurationResponse
  * type: object
- * description: SUMMARY
+ * description: The details for a layout configuration response.
  * x-schemaName: AdminLayoutConfigurationResponse
  * required:
  *   - personal_configuration
@@ -14,7 +14,7 @@
  *     $ref: "#/components/schemas/AdminLayoutConfiguration"
  *   active_scope:
  *     type: string
- *     description: The layout's active scope.
+ *     description: The active scope of the layout configuration.
  *     enum:
  *       - default
  *       - personal

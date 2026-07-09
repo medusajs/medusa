@@ -1,9 +1,9 @@
 get:
   operationId: GetProductOptionsIdValues
-  summary: List Values
+  summary: List Product Option Values
   description: >-
     Retrieve a list of values in a product option. The values can be filtered by
-    fields like FILTER FIELDS. The values can also be paginated.
+    fields like `id`. The values can also be paginated.
   x-authenticated: true
   parameters:
     - name: id
@@ -14,12 +14,12 @@ get:
         type: string
     - name: q
       in: query
-      description: The product option's q.
+      description: Query to apply on the product option value's searchable fields.
       required: false
       schema:
         type: string
         title: q
-        description: The product option's q.
+        description: Query to apply on the product option value's searchable fields.
     - name: id
       in: query
       required: false
@@ -27,13 +27,13 @@ get:
         oneOf:
           - type: string
             title: id
-            description: The product option's ID.
+            description: Filter by a product option value ID.
           - type: array
-            description: The product option's ID.
+            description: Filter by product option value IDs.
             items:
               type: string
               title: id
-              description: The id's ID.
+              description: The product option value's ID.
     - name: value
       in: query
       required: false
@@ -41,13 +41,13 @@ get:
         oneOf:
           - type: string
             title: value
-            description: The product option's value.
+            description: Filter by a product option value.
           - type: array
-            description: The product option's value.
+            description: Filter by product option values.
             items:
               type: string
               title: value
-              description: The value's details.
+              description: The value.
     - name: option_id
       in: query
       required: false
@@ -55,16 +55,16 @@ get:
         oneOf:
           - type: string
             title: option_id
-            description: The product option's option id.
+            description: Filter by the value's product option ID.
           - type: array
-            description: The product option's option id.
+            description: Filter by the value's product option IDs.
             items:
               type: string
               title: option_id
-              description: The option id's details.
+              description: The value's product option ID.
     - name: created_at
       in: query
-      description: The product option's created at.
+      description: Filter by the product option value's creation date.
       required: false
       schema:
         type: object
@@ -181,10 +181,10 @@ get:
             title: $exists
             description: Filter by whether a value exists or not.
         title: created_at
-        description: The product option's created at.
+        description: Filter by the product option value's creation date.
     - name: updated_at
       in: query
-      description: The product option's updated at.
+      description: Filter by the product option value's update date.
       required: false
       schema:
         type: object
@@ -301,10 +301,10 @@ get:
             title: $exists
             description: Filter by whether a value exists or not.
         title: updated_at
-        description: The product option's updated at.
+        description: Filter by the product option value's update date.
     - name: deleted_at
       in: query
-      description: The product option's deleted at.
+      description: Filter by the product option value's deletion date.
       required: false
       schema:
         type: object
@@ -421,7 +421,7 @@ get:
             title: $exists
             description: Filter by whether a value exists or not.
         title: deleted_at
-        description: The product option's deleted at.
+        description: Filter by the product option value's deletion date.
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -534,7 +534,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The pagination details of the product option values list.
                 required:
                   - limit
                   - offset
@@ -543,28 +543,30 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The product option's limit.
+                    description: The maximum number of items returned in the list.
                   offset:
                     type: number
                     title: offset
-                    description: The product option's offset.
+                    description: The number of items skipped before retrieving the list.
                   count:
                     type: number
                     title: count
-                    description: The product option's count.
+                    description: The total number of items in the list.
                   estimate_count:
                     type: number
                     title: estimate_count
-                    description: The product option's estimate count.
+                    description: >-
+                      The estimated count retrieved from the PostgreSQL query
+                      planner, which may be inaccurate.
                     x-featureFlag: index_engine
               - type: object
-                description: SUMMARY
+                description: The product option values list.
                 required:
                   - product_option_values
                 properties:
                   product_option_values:
                     type: array
-                    description: The product option's product option values.
+                    description: The list of product option values.
                     items:
                       $ref: ../components/schemas/AdminProductOptionValue.yaml
     '400':
@@ -579,3 +581,4 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-since: 2.16.0

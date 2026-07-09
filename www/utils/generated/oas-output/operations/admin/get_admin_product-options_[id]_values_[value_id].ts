@@ -1,8 +1,8 @@
 /**
  * @oas [get] /admin/product-options/{id}/values/{value_id}
  * operationId: GetProductOptionsIdValuesValue_id
- * summary: List Values
- * description: Retrieve a list of values in a product option. The values can be filtered by fields like FILTER FIELDS. The values can also be paginated.
+ * summary: Get Product Option Value
+ * description: Get a product option value by its ID.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +13,7 @@
  *       type: string
  *   - name: value_id
  *     in: path
- *     description: The product option's value id.
+ *     description: The product option value's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -77,6 +77,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * 
+ * x-since: 2.16.0
 */
 

@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductOptionValueResponse
  * type: object
- * description: SUMMARY
+ * description: The details of a product option value.
  * x-schemaName: AdminProductOptionValueResponse
  * required:
  *   - product_option_value

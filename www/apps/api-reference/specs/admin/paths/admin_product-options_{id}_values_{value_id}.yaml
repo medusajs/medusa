@@ -1,9 +1,7 @@
 get:
   operationId: GetProductOptionsIdValuesValue_id
-  summary: List Values
-  description: >-
-    Retrieve a list of values in a product option. The values can be filtered by
-    fields like FILTER FIELDS. The values can also be paginated.
+  summary: Get Product Option Value
+  description: Get a product option value by its ID.
   x-authenticated: true
   parameters:
     - name: id
@@ -14,7 +12,7 @@ get:
         type: string
     - name: value_id
       in: path
-      description: The product option's value id.
+      description: The product option value's ID.
       required: true
       schema:
         type: string
@@ -72,10 +70,11 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-since: 2.16.0
 post:
   operationId: PostProductOptionsIdValuesValue_id
-  summary: Add Value to Product Option
-  description: Add a Value to a product option
+  summary: Update Product Option Value
+  description: Update a product option value's details.
   x-authenticated: true
   parameters:
     - name: id
@@ -86,7 +85,7 @@ post:
         type: string
     - name: value_id
       in: path
-      description: The product option's value id.
+      description: The product option value's ID.
       required: true
       schema:
         type: string
@@ -133,6 +132,7 @@ post:
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateProductOptionValuesWorkflow
   x-events: []
+  x-since: 2.17.0
 delete:
   operationId: DeleteProductOptionsIdValuesValue_id
   summary: Remove Value from Product Option
@@ -147,7 +147,7 @@ delete:
         type: string
     - name: value_id
       in: path
-      description: The product option's value id.
+      description: The value's ID.
       required: true
       schema:
         type: string
@@ -189,3 +189,4 @@ delete:
       $ref: ../components/responses/500_error.yaml
   x-workflow: deleteProductOptionValuesWorkflow
   x-events: []
+  x-since: 2.17.0

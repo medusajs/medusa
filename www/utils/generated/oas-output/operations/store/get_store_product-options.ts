@@ -500,13 +500,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The product option's ID.
+ *           description: Filter by a product option's ID.
  *         - type: array
- *           description: The product option's ID.
+ *           description: Filter by product option IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: The product option's ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

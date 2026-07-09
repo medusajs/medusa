@@ -1,7 +1,7 @@
 /**
  * @schema AdminRbacPolicy
  * type: object
- * description: The policy's policies.
+ * description: The details of an RBAC policy.
  * x-schemaName: AdminRbacPolicy
  * required:
  *   - id
@@ -26,41 +26,43 @@
  *   resource:
  *     type: string
  *     title: resource
- *     description: The policy's resource.
+ *     description: The resource that the policy applies to.
+ *     example: "product"
  *   operation:
  *     type: string
  *     title: operation
- *     description: The policy's operation.
+ *     description: The operation that the policy allows or denies.
+ *     example: "create"
  *   name:
  *     type: string
  *     title: name
- *     description: The policy's name.
+ *     description: The policy's name. Used for display purposes.
  *   description:
  *     type: string
  *     title: description
  *     description: The policy's description.
  *   metadata:
  *     type: object
- *     description: The policy's metadata.
+ *     description: Key-value pairs that hold additional information about the policy.
  *   inherited_from_role_id:
  *     type: string
  *     title: inherited_from_role_id
- *     description: The policy's inherited from role id.
+ *     description: The ID of the role from which the policy is inherited.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The policy's created at.
+ *     description: The date the policy was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The policy's updated at.
+ *     description: The date the policy was last updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The policy's deleted at.
+ *     description: The date the policy was deleted.
  * 
 */
 

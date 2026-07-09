@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/orders/{id}/payment-sessions/authorize
  * operationId: PostOrdersIdPaymentSessionsAuthorize
- * summary: Add Authorize to Order
- * description: Add a Authorize to a order
+ * summary: Authorize Payment Session
+ * description: Authorize a payment session for an order. This is useful for orders created from draft orders.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -70,6 +70,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: authorizePaymentSessionForOrderWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.0
 */
 

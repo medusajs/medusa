@@ -1,13 +1,13 @@
 /**
  * @oas [delete] /admin/layouts/{zone}/configuration
  * operationId: DeleteLayoutsZoneConfiguration
- * summary: Remove Configuration from Layout
- * description: Remove a Configuration from a layout.
+ * summary: Clear Configuration of Layout
+ * description: Clears all layout configurations for a given zone, including both personal and default configurations. This action will remove any customizations made by the user and revert to the system defaults.
  * x-authenticated: true
  * parameters:
  *   - name: zone
  *     in: path
- *     description: The layout's zone.
+ *     description: The zone for which the layout configuration should be cleared.
  *     required: true
  *     schema:
  *       type: string
@@ -30,14 +30,14 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The details of the layout configuration deletion result.
  *           required:
  *             - success
  *           properties:
  *             success:
  *               type: boolean
  *               title: success
- *               description: The layout's success.
+ *               description: Whether the layout configuration was successfully cleared.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -52,6 +52,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: clearLayoutConfigurationWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.2
 */
 

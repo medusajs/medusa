@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/product-options/{id}/values/{value_id}
  * operationId: PostProductOptionsIdValuesValue_id
- * summary: Add Value to Product Option
- * description: Add a Value to a product option
+ * summary: Update Product Option Value
+ * description: Update a product option value's details.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +13,7 @@
  *       type: string
  *   - name: value_id
  *     in: path
- *     description: The product option's value id.
+ *     description: The product option value's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -74,6 +74,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateProductOptionValuesWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.0
 */
 
