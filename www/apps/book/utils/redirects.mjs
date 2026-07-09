@@ -485,6 +485,11 @@ const redirects = async () => {
       destination: "/learn/fundamentals/data-models/indexes",
       permanent: true,
     },
+    {
+      source: "/learn/introduction/build-with-llms-ai/bloom",
+      destination: "/learn/introduction/build-with-llms-ai",
+      permanent: true,
+    },
   ]
 }
 
