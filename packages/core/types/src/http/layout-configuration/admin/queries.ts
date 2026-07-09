@@ -1,6 +1,11 @@
 import { BaseFilterable } from "../../../dal"
 import { FindParams } from "../../common"
 
+/**
+ * The filters to apply when listing layout configurations.
+ *
+ * @since 2.17.2
+ */
 export interface AdminGetLayoutConfigurationsParams
   extends FindParams,
     BaseFilterable<AdminGetLayoutConfigurationsParams> {
