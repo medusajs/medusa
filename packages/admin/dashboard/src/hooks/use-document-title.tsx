@@ -1,3 +1,4 @@
+import i18n from "i18next"
 import { ReactNode, useMemo } from "react"
 import { Helmet } from "react-helmet-async"
 import { UIMatch, useMatches } from "react-router-dom"
@@ -15,6 +16,13 @@ export type RouteHandle = {
    * title or the default apply.
    */
   seo?: (match: UIMatch) => { title?: string }
+  /**
+   * A static label for the route, sourced from `defineRouteConfig` on custom
+   * admin pages. When `translationNs` is set, the label is treated as an i18n
+   * key and resolved against that namespace. Used for document title fallback.
+   */
+  label?: string
+  translationNs?: string
 }
 
 /**
@@ -23,7 +31,8 @@ export type RouteHandle = {
  *
  * Resolution order:
  * 1. An explicit `seo` resolver (used by detail pages to surface entity names).
- * 2. A `breadcrumb` that returns a plain string (used by list/section pages).
+ * 2. A static `label` from `defineRouteConfig` (custom pages' sidebar label).
+ * 3. A `breadcrumb` that returns a plain string (used by list/section pages).
  *
  * React-element breadcrumbs (rendered by detail pages) carry no extractable
  * text and are intentionally ignored here; those routes rely on `seo`.
@@ -38,6 +47,19 @@ export function getTitleFromMatch(
       const title = handle.seo(match)?.title
       if (typeof title === "string" && title.trim() !== "") {
         return title
+      }
+    } catch {
+      // Fall through to the label / breadcrumb / default below.
+    }
+  }
+
+  if (typeof handle?.label === "string" && handle.label.trim() !== "") {
+    try {
+      const label = handle.translationNs
+        ? (i18n.t as any)(handle.label, { ns: handle.translationNs })
+        : handle.label
+      if (typeof label === "string" && label.trim() !== "") {
+        return label
       }
     } catch {
       // Fall through to the breadcrumb / default below.
