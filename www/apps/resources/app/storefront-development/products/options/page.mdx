@@ -383,7 +383,7 @@ sdk.store.product.list({
   offset,
   // a string or array of strings indicating
   // option value IDs to filter by
-  option_value_id: selectedOptionValues
+  option_value_id: selectedOptionValues,
 })
 .then(({ products, count }) => {
   // TODO set products...
@@ -410,7 +410,7 @@ sdk.store.product.list({
   offset,
   // a string or array of strings indicating
   // option IDs to filter by
-  option_id: selectedOptionIds
+  option_id: selectedOptionIds,
 })
 .then(({ products, count }) => {
   // TODO set products...
