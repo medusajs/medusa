@@ -140,11 +140,11 @@ async function parseFile(
     return null
   }
 
-  const { hasHandle, hasLoader } = await hasNamedExports(ast, file)
+  const { hasHandle, hasLoader, hasConfig } = await hasNamedExports(ast, file)
   const routePath = getRoute(file)
 
-  const imports = generateImports(file, index, hasHandle, hasLoader)
-  const route = generateRoute(routePath, index, hasHandle, hasLoader)
+  const imports = generateImports(file, index, hasHandle, hasLoader, hasConfig)
+  const route = generateRoute(routePath, index, hasHandle, hasLoader, hasConfig)
 
   return {
     imports,
@@ -170,18 +170,20 @@ function generateImports(
   file: string,
   index: number,
   hasHandle: boolean,
-  hasLoader: boolean
+  hasLoader: boolean,
+  hasConfig: boolean
 ): string[] {
   const imports: string[] = []
   const route = generateRouteComponentName(index)
   const importPath = normalizePath(file)
 
-  if (!hasHandle && !hasLoader) {
+  if (!hasHandle && !hasLoader && !hasConfig) {
     imports.push(`import ${route} from "${importPath}"`)
   } else {
     const namedImports = [
       hasHandle && `handle as ${generateHandleName(index)}`,
       hasLoader && `loader as ${generateLoaderName(index)}`,
+      hasConfig && `config as ${generateRouteConfigName(index)}`,
     ]
       .filter(Boolean)
       .join(", ")
@@ -195,14 +197,44 @@ function generateRoute(
   route: string,
   index: number,
   hasHandle: boolean,
-  hasLoader: boolean
+  hasLoader: boolean,
+  hasConfig: boolean
 ): Route {
   return {
     Component: generateRouteComponentName(index),
     path: route,
-    handle: hasHandle ? generateHandleName(index) : undefined,
+    handle: generateHandle(index, hasHandle, hasConfig),
     loader: hasLoader ? generateLoaderName(index) : undefined,
   }
+}
+
+/**
+ * Builds the route's `handle` expression.
+ *
+ * When the route file exports a `config` (via `defineRouteConfig`), its `label`
+ * and `translationNs` are surfaced on the handle so the dashboard can fall back
+ * to the sidebar label for the document title when no `seo` resolver is
+ * provided. An explicit `handle` export always wins.
+ */
+function generateHandle(
+  index: number,
+  hasHandle: boolean,
+  hasConfig: boolean
+): string | undefined {
+  if (!hasHandle && !hasConfig) {
+    return undefined
+  }
+
+  if (!hasConfig) {
+    return generateHandleName(index)
+  }
+
+  const configName = generateRouteConfigName(index)
+  const labelFields = `label: ${configName}.label, translationNs: ${configName}.translationNs`
+
+  return hasHandle
+    ? `{ ${labelFields}, ...${generateHandleName(index)} }`
+    : `{ ${labelFields} }`
 }
 
 function generateRouteComponentName(index: number): string {
@@ -213,6 +245,15 @@ function generateHandleName(index: number): string {
   return `handle${index}`
 }
 
+/**
+ * Distinct from the menu-item module's `RouteConfig${index}` binding: both
+ * modules are concatenated into the same virtual file, so the route module
+ * needs its own local name to avoid a duplicate import declaration.
+ */
+function generateRouteConfigName(index: number): string {
+  return `HandleConfig${index}`
+}
+
 function generateLoaderName(index: number): string {
   return `loader${index}`
 }
@@ -220,9 +261,10 @@ function generateLoaderName(index: number): string {
 async function hasNamedExports(
   ast: ParseResult<File>,
   file: string
-): Promise<{ hasHandle: boolean; hasLoader: boolean }> {
+): Promise<{ hasHandle: boolean; hasLoader: boolean; hasConfig: boolean }> {
   let hasHandle = false
   let hasLoader = false
+  let hasConfig = false
 
   try {
     traverse(ast, {
@@ -237,6 +279,9 @@ async function hasNamedExports(
             }
             if (decl.id.type === "Identifier" && decl.id.name === "loader") {
               hasLoader = true
+            }
+            if (decl.id.type === "Identifier" && decl.id.name === "config") {
+              hasConfig = true
             }
           })
         }
@@ -257,5 +302,5 @@ async function hasNamedExports(
     })
   }
 
-  return { hasHandle, hasLoader }
+  return { hasHandle, hasLoader, hasConfig }
 }
