@@ -1,0 +1,7 @@
+import { TypeList } from "docs-ui"
+
+# AdminSetLayoutConfiguration
+
+## Properties
+
+<TypeList types={[{"name":"configuration","type":"`object`","description":"The layout configuration settings.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"widgets","type":"`Record<string, [AdminLayoutWidgetPreference](../types.HttpTypes.AdminLayoutWidgetPreference/page.mdx)>`","description":"Per-widget placement and visibility preferences, keyed by widget ID.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"hidden","type":"`boolean`","description":"Whether the widget is hidden.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"section","type":"`string`","description":"Override which section this widget appears in.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`number`","description":"Override the sort order of the widget within its section.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"is_default","type":"`boolean`","description":"Whether to set the zone's system default configuration (applies to all\nusers) instead of the current user's personal configuration.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="AdminSetLayoutConfiguration"/>

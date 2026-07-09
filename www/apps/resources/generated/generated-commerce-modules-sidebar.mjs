@@ -973,15 +973,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
-                      "path": "/references/auth/createAuthVerificationToken",
-                      "title": "createAuthVerificationToken",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
                       "path": "/references/auth/createPasswordResetToken",
                       "title": "createPasswordResetToken",
                       "description": "",
@@ -1045,6 +1036,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/listAndCountAuthVerifications",
+                      "title": "listAndCountAuthVerifications",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/listAuthIdentities",
                       "title": "listAuthIdentities",
                       "description": "",
@@ -1056,6 +1056,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/listAuthMfa",
                       "title": "listAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/listAuthVerifications",
+                      "title": "listAuthVerifications",
                       "description": "",
                       "children": []
                     },
@@ -1101,6 +1110,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/retrieveAuthMfa",
                       "title": "retrieveAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/retrieveAuthVerification",
+                      "title": "retrieveAuthVerification",
                       "description": "",
                       "children": []
                     },
@@ -1155,6 +1173,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/useAuthMfaRecoveryCode",
                       "title": "useAuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/validateAuthIdentity",
+                      "title": "validateAuthIdentity",
                       "description": "",
                       "children": []
                     },
@@ -1255,8 +1282,8 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
-                      "path": "/references/auth/models/AuthVerificationToken",
-                      "title": "AuthVerificationToken",
+                      "path": "/references/auth/models/AuthVerification",
+                      "title": "AuthVerification",
                       "description": "",
                       "children": []
                     },
@@ -13463,6 +13490,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/product/addProductOptionToProduct",
+                      "title": "addProductOptionToProduct",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/product/createProductCategories",
                       "title": "createProductCategories",
                       "description": "",
@@ -13760,6 +13796,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/product/removeProductOptionFromProduct",
+                      "title": "removeProductOptionFromProduct",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/product/restoreProductCategories",
                       "title": "restoreProductCategories",
                       "description": "",
@@ -14003,6 +14048,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/product/updateProductOptionValuesOnProduct",
+                      "title": "updateProductOptionValuesOnProduct",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/product/updateProductOptions",
                       "title": "updateProductOptions",
                       "description": "",
@@ -14189,6 +14243,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/product/models/ProductOptionValue",
                       "title": "ProductOptionValue",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/product/models/ProductProductOption",
+                      "title": "ProductProductOption",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/product/models/ProductProductOptionValue",
+                      "title": "ProductProductOptionValue",
                       "description": "",
                       "children": []
                     },
