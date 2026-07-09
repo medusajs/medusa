@@ -5,7 +5,7 @@
 			"id": "The ID of the view configuration.",
 			"entity": "The entity of the view configuration",
 			"name": "The name of the view configuration",
-			"user_id": "The user id of the view configuration",
+			"user_id": "The user ID of the view configuration",
 			"is_system_default": "Whether the view configuration is system default.",
 			"configuration": "The configuration of the view configuration"
 		},
@@ -33,6 +33,19 @@
 			"property": "The property of the property label",
 			"label": "The label of the property label",
 			"description": "The description of the property label"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"LayoutConfiguration": {
+		"filePath": "packages/modules/settings/src/models/layout-configuration.ts",
+		"properties": {
+			"id": "The ID of the layout configuration.",
+			"zone": "The zone of the layout configuration",
+			"user_id": "The user ID of the layout configuration",
+			"is_system_default": "Whether the layout configuration is system default.",
+			"configuration": "The configuration of the layout."
 		},
 		"deprecated": {
 			"is_deprecated": false
