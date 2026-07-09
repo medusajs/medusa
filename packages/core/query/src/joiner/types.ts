@@ -2,34 +2,37 @@ import {
   JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
+  RemoteJoinerOptions,
+  RemoteJoinerQuery,
 } from "@medusajs/types"
 
+// Sentinel path used as the root key in expand maps.
+export const BASE_PATH = "_root"
+
+export type RelationMap = Map<string, Map<string, string>>
+
+// Relationship with pre-split key arrays used during join execution.
 export type ComputedJoinerRelationship = JoinerRelationship & {
   primaryKeyArr: string[]
   foreignKeyArr: string[]
 }
 
+// Service config after catalog indexing (relationships as a Map).
 export type InternalJoinerServiceConfig = Omit<
   JoinerServiceConfig,
   "relationships"
 > & {
   relationships?: Map<string, JoinerRelationship | JoinerRelationship[]>
   entity?: string
-  /**
-   * Graph alias used to resolve this service config.
-   *
-   * @internal
-   */
   entryPoint?: string
 }
 
-export type ExecutionStage = {
-  service: string
-  entity?: string
-  paths: string[]
-  depth: number
-}
-
+/**
+ * Nested expand tree attached to a fetch node so a single module call can
+ * load same-service relations in one round-trip.
+ *
+ * Consumed by {@link IRemoteDataFetcher} / ModuleDataFetcher.
+ */
 export interface RemoteNestedExpands {
   [key: string]: {
     fields?: string[]
@@ -38,7 +41,12 @@ export interface RemoteNestedExpands {
   }
 }
 
+/**
+ * One node in the expand/fetch graph. Also the payload passed to
+ * {@link IRemoteDataFetcher.fetch}.
+ */
 export interface RemoteExpandProperty {
+  /** Depth-batched fetch groups; set on the root node only. */
   executionStages?: ExecutionStage[][]
   property: string
   parent: string
@@ -48,6 +56,47 @@ export interface RemoteExpandProperty {
   fields?: string[]
   args?: JoinerArgument[]
   expands?: RemoteNestedExpands
+  /** True when this node was synthesized from a fieldAlias rewrite. */
+  isAliasMapping?: boolean
+}
+
+export type ExecutionStage = {
+  service: string
+  entity?: string
+  paths: string[]
+  depth: number
+}
+
+/**
+ * Records a fieldAlias that must be collapsed onto its short name after joins.
+ *
+ * `path` is the full real path from the query root (excluding BASE_PATH).
+ * `location` is the path to the parent object that should receive the short name.
+ */
+export type ShortcutSpec = {
+  location: string[]
+  property: string
+  path: string[]
+  isList?: boolean
+}
+
+/**
+ * Compiled query ready for execution.
+ */
+export type QueryPlan = {
+  root: RemoteExpandProperty
+  /**
+   * Expand map after same-service grouping. Keys are dotted paths starting
+   * with BASE_PATH. The root entry holds `executionStages`.
+   */
+  expands: Map<string, RemoteExpandProperty>
+  shortcuts: ShortcutSpec[]
+  pkName: string
+  primaryKeyArg?: { name: string; value?: any }
+  otherArgs?: { name: string; value?: any }[]
+  initialData: any[]
+  initialDataOnly?: boolean
+  options?: RemoteJoinerOptions
 }
 
 /** Contract for loading module data during join execution. */
@@ -61,4 +110,11 @@ export interface IRemoteDataFetcher {
     data: unknown[] | { [path: string]: unknown }
     path?: string
   }>
+}
+
+export type CompileInput = {
+  query: RemoteJoinerQuery
+  serviceConfig: InternalJoinerServiceConfig
+  options?: RemoteJoinerOptions
+  initialData: any[]
 }
