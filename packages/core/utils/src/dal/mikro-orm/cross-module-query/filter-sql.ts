@@ -10,6 +10,7 @@ import {
   CorrelateSpec,
   getTargetPrimaryKey,
   inferLinkType,
+  LinkType,
   qualifyTable,
   quoteIdentifier,
   ResolvedCrossModuleJoinSpec,
@@ -159,6 +160,20 @@ function buildExistsSql(
     joinSpec.target.table,
     context.defaultSchema
   )
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+
+  // An optimization for filters that only apply on the target's primary key, useful to support these filters on non-DB external modules
+  const targetIdOnlyFilterSql = buildTargetIdOnlyFilterSql(
+    joinSpec,
+    correlateSpec,
+    context,
+    linkType,
+    linkAlias,
+    linkTable
+  )
+  if (targetIdOnlyFilterSql) {
+    return targetIdOnlyFilterSql
+  }
 
   const bindings: Knex.RawBinding[] = []
   const clauses: string[] = []
@@ -193,7 +208,7 @@ function buildExistsSql(
       {
         table: joinSpec.target.table,
         alias: targetAlias,
-        key: getTargetPrimaryKey(joinSpec),
+        key: targetPrimaryKey,
       },
       context
     )
@@ -221,6 +236,42 @@ function buildExistsSql(
     sql,
     bindings,
   }
+}
+
+function buildTargetIdOnlyFilterSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  context: JoinSqlContext,
+  linkType: LinkType,
+  linkAlias: string,
+  linkTable: string
+): SqlFragment | false {
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+  const onlyTargetIdFilters =
+    !!joinSpec.target.filters &&
+    Object.keys(joinSpec.target.filters).length === 1 &&
+    joinSpec.target.filters[targetPrimaryKey] !== undefined
+  if (!onlyTargetIdFilters || linkType !== "normal") {
+    return false
+  }
+
+  const bindings: Knex.RawBinding[] = []
+  const clauses: string[] = [
+    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
+    buildLinkSoftDeleteSql(linkAlias, context.withDeleted),
+  ]
+
+  const linkFilters = buildFilterSql(linkAlias, {
+    [joinSpec.link.targetKey]: joinSpec.target.filters?.[targetPrimaryKey],
+  })
+  clauses.push(linkFilters.sql)
+  bindings.push(...linkFilters.bindings)
+
+  const sql = `exists (select 1 from ${linkTable} as ${quoteIdentifier(
+    linkAlias
+  )} where ${clauses.filter(Boolean).join(" and ")})`
+
+  return { sql, bindings }
 }
 
 function nextLinkAlias(context: JoinSqlContext): string {

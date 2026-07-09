@@ -489,6 +489,44 @@ describe("cross-module query integration", () => {
       expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
+    it("should filter orders by linked product id using the link table only", async () => {
+      const config = {
+        __internal: {
+          crossModuleJoins: [buildProductJoinMetadata({ id: "prod_premium" })],
+        },
+        order: {
+          "product.id": "DESC",
+        },
+      }
+
+      const results = await findOrders({}, config)
+
+      expectCapturedQueries(
+        orm,
+        sqlCapture,
+        `
+          select "o0".*
+          from "order" as "o0"
+          where exists (
+            select 1
+            from "public"."order_product_link" as "cm_link_0"
+            where "cm_link_0"."order_id" = "o0"."id"
+              and "cm_link_0"."deleted_at" is null
+              and "cm_link_0"."product_id" = 'prod_premium'
+          )
+          order by (
+            select "cm_order_link_0"."product_id"
+            from "public"."order_product_link" as "cm_order_link_0"
+            where "cm_order_link_0"."order_id" = "o0"."id"
+              and "cm_order_link_0"."deleted_at" is null
+            order by "cm_order_link_0"."product_id"
+            limit 1
+          ) desc
+        `
+      )
+      expect(orderIds(results)).toEqual(["order_c", "order_a"])
+    })
+
     it("should combine order filters with product filters", async () => {
       const results = await findOrders(
         { display_id: "1002" },

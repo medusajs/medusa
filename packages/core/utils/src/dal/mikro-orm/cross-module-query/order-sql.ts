@@ -116,6 +116,20 @@ function buildOrderByScalarSubquery(
     joinSpec.target.table,
     defaultSchema
   )
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+
+  const targetIdOnlyOrderSql = buildTargetIdOnlyOrderSql(
+    joinSpec,
+    correlateSpec,
+    linkType,
+    linkAlias,
+    linkTable,
+    field,
+    withDeleted
+  )
+  if (targetIdOnlyOrderSql) {
+    return raw(targetIdOnlyOrderSql)
+  }
 
   const clauses: string[] = []
   if (linkType === "normal") {
@@ -144,7 +158,7 @@ function buildOrderByScalarSubquery(
       targetAlias
     )} on true where ${clauses.join(" and ")} order by ${quoteIdentifier(
       targetAlias
-    )}.${quoteIdentifier(getTargetPrimaryKey(joinSpec))} limit 1)`
+    )}.${quoteIdentifier(targetPrimaryKey)} limit 1)`
   } else {
     sql = `(select ${quoteIdentifier(targetAlias)}.${quoteIdentifier(
       field
@@ -152,10 +166,38 @@ function buildOrderByScalarSubquery(
       targetAlias
     )} where ${clauses.join(" and ")} order by ${quoteIdentifier(
       targetAlias
-    )}.${quoteIdentifier(getTargetPrimaryKey(joinSpec))} limit 1)`
+    )}.${quoteIdentifier(targetPrimaryKey)} limit 1)`
   }
 
   return raw(sql)
+}
+
+function buildTargetIdOnlyOrderSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  linkType: ReturnType<typeof inferLinkType>,
+  linkAlias: string,
+  linkTable: string,
+  field: string,
+  withDeleted: boolean
+): string | false {
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+  if (field !== targetPrimaryKey || linkType !== "normal") {
+    return false
+  }
+
+  const clauses = [
+    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
+    buildLinkSoftDeleteSql(linkAlias, withDeleted),
+  ].filter(Boolean)
+
+  return `(select ${quoteIdentifier(linkAlias)}.${quoteIdentifier(
+    joinSpec.link.targetKey
+  )} from ${linkTable} as ${quoteIdentifier(linkAlias)} where ${clauses.join(
+    " and "
+  )} order by ${quoteIdentifier(linkAlias)}.${quoteIdentifier(
+    joinSpec.link.targetKey
+  )} limit 1)`
 }
 
 function getJoinSpecByAlias(

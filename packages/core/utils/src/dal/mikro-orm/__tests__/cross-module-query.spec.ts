@@ -663,6 +663,55 @@ describe("cross-module-query", () => {
       ).toThrow(/Duplicate cross-module join target table/)
     })
 
+    it("should filter on the link table when the target filter is only the primary key", () => {
+      const result = augmentFindOptionsWithCrossModuleJoins(
+        {
+          where: {},
+          options: {
+            __internal: {
+              crossModuleJoins: [
+                buildProductJoinMetadata({ id: "prod_premium" }),
+              ],
+            },
+            orderBy: {
+              "product.id": "ASC",
+            },
+          },
+        },
+        { primaryKey: "id", entityName: "OrderEntity", entityTable: "order" }
+      )
+
+      const existsSql = Object.keys(
+        (result.where?.$and as Record<string, unknown>[])[0]
+      )[0]
+
+      expect(existsSql).toMatch(
+        /exists \(select 1 from "public"\."order_product_link" as "cm_link_0" where/
+      )
+      expect(existsSql).not.toMatch(/inner join/)
+      expect(existsSql).toMatch(/"cm_link_0"\."order_id" = "o0"\."id"/)
+      expect(existsSql).toMatch(/"cm_link_0"\."product_id" = \?/)
+      expect(existsSql).toMatch(/"cm_link_0"\."deleted_at" is null/)
+      expect(existsSql).not.toMatch(/"product"\./)
+
+      const orderBy = result.options?.orderBy as Record<string, unknown>
+      expect(orderBy["product.id"]).toBeUndefined()
+      expect(Object.keys(orderBy)).toHaveLength(1)
+      expect(Object.values(orderBy)[0]).toBe("ASC")
+
+      const orderSql = Object.keys(orderBy)[0]
+
+      expect(orderSql).toMatch(
+        /\(select "cm_order_link_0"\."product_id" from "public"\."order_product_link"/
+      )
+      expect(orderSql).toMatch(/"cm_order_link_0"\."order_id" = "o0"\."id"/)
+      expect(orderSql).not.toMatch(/inner join/)
+      expect(orderSql).not.toMatch(/"product"\./)
+      expect(orderSql).toMatch(
+        /order by "cm_order_link_0"\."product_id" limit 1\)/
+      )
+    })
+
     it("should skip the link-to-target join for target links", () => {
       const result = augmentFindOptionsWithCrossModuleJoins(
         {
