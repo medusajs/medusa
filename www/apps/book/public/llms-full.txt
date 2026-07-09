@@ -27881,29 +27881,6 @@ You can access the following plain text documentation files:
   - Appending `.md` to the page URL. For example, the plain text content of the current page is also available at [https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs.md](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs.md/index.html.md).
 
 
-# Bloom: AI-Powered Commerce Assistant
-
-[Bloom](https://bloom.chat/) is an AI-powered commerce assistant built by Medusa to help you build, manage, and scale your ecommerce store.
-
-Bloom has the ecommerce expertise to build your store following best practices and using Medusa's rich commerce features. You can build a complete ecommerce store that has a storefront, admin dashboard, and backend with a single prompt.
-
-## Who Can Use Bloom?
-
-Bloom helps you design your store, implement custom features, integrate third-party services, and more. It's ideal for:
-
-1. **Developers:** Build showcases for business ideas, speed up store development, and focus on advanced customizations.
-2. **Side Hustlers:** Start your ecommerce journey with minimal investment.
-3. **Business Owners:** Launch your online store quickly without technical expertise.
-4. **Designers:** Build production-ready storefronts with your unique design vision.
-5. **Marketers:** Test new store concepts and campaigns rapidly.
-
-***
-
-## Get Started with Bloom
-
-Go to [Bloom](https://bloom.chat/) to get started. You'll start with free credits to try out Bloom's features and upgrade your plan as needed.
-
-
 # Agentic Deployment with Cloud CLI
 
 In this guide, you'll learn how the [Cloud CLI](undefined/cloud/cli) supports deployment and debugging through AI agents.
@@ -28151,7 +28128,6 @@ Medusa provides various tools and integrations to help you leverage AI assistant
 - [Cloud CLI](undefined/learn/introduction/build-with-llms-ai/cloud-cli): Command-line interface for managing Cloud resources and deployments.
 - [Medusa Agent Skills](undefined/learn/introduction/build-with-llms-ai/agentic-skills): Collection of skills for AI agents to assist you in building features, fixing bugs, and more.
 - [MCP Remote Server](undefined/learn/introduction/build-with-llms-ai/mcp-server): Find information from the docs when building features with AI agents like Claude Code.
-- [Bloom](https://bloom.chat/): AI-powered commerce assistant by Medusa to help you build and manage your store.
 - [AI-Friendly Documentation](undefined/learn/introduction/build-with-llms-ai/ai-friendly-docs): Docs with an AI assistant and content optimized for humans and LLMs alike.
 
 
@@ -53786,14 +53762,19 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [addStoreCreditsToCartWorkflow](undefined/references/medusa-workflows/addStoreCreditsToCartWorkflow/index.html.md)
 - [addToCartWorkflow](undefined/references/medusa-workflows/addToCartWorkflow/index.html.md)
 - [completeCartWorkflow](undefined/references/medusa-workflows/completeCartWorkflow/index.html.md)
+- [computeCreditLineActionsStep](undefined/references/medusa-workflows/computeCreditLineActionsStep/index.html.md)
 - [confirmCartCreditLinesWorkflow](undefined/references/medusa-workflows/confirmCartCreditLinesWorkflow/index.html.md)
 - [confirmVariantInventoryWorkflow](undefined/references/medusa-workflows/confirmVariantInventoryWorkflow/index.html.md)
 - [createCartCreditLinesWorkflow](undefined/references/medusa-workflows/createCartCreditLinesWorkflow/index.html.md)
 - [createCartWorkflow](undefined/references/medusa-workflows/createCartWorkflow/index.html.md)
 - [createPaymentCollectionForCartWorkflow](undefined/references/medusa-workflows/createPaymentCollectionForCartWorkflow/index.html.md)
 - [deleteCartCreditLinesWorkflow](undefined/references/medusa-workflows/deleteCartCreditLinesWorkflow/index.html.md)
+- [findLineItemToUpdateStep](undefined/references/medusa-workflows/findLineItemToUpdateStep/index.html.md)
 - [listShippingOptionsForCartWithPricingWorkflow](undefined/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow/index.html.md)
 - [listShippingOptionsForCartWorkflow](undefined/references/medusa-workflows/listShippingOptionsForCartWorkflow/index.html.md)
+- [prepareCartToCreateStep](undefined/references/medusa-workflows/prepareCartToCreateStep/index.html.md)
+- [prepareCartToUpdateStep](undefined/references/medusa-workflows/prepareCartToUpdateStep/index.html.md)
+- [prepareLineItemUpdateStep](undefined/references/medusa-workflows/prepareLineItemUpdateStep/index.html.md)
 - [refreshCartGiftCardsWorkflow](undefined/references/medusa-workflows/refreshCartGiftCardsWorkflow/index.html.md)
 - [refreshCartItemsWorkflow](undefined/references/medusa-workflows/refreshCartItemsWorkflow/index.html.md)
 - [refreshCartShippingMethodsWorkflow](undefined/references/medusa-workflows/refreshCartShippingMethodsWorkflow/index.html.md)
@@ -53823,6 +53804,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [createCustomersWorkflow](undefined/references/medusa-workflows/createCustomersWorkflow/index.html.md)
 - [deleteCustomerAddressesWorkflow](undefined/references/medusa-workflows/deleteCustomerAddressesWorkflow/index.html.md)
 - [deleteCustomersWorkflow](undefined/references/medusa-workflows/deleteCustomersWorkflow/index.html.md)
+- [getCustomerAuthIdentityStep](undefined/references/medusa-workflows/getCustomerAuthIdentityStep/index.html.md)
 - [removeCustomerAccountWorkflow](undefined/references/medusa-workflows/removeCustomerAccountWorkflow/index.html.md)
 - [updateCustomerAddressesWorkflow](undefined/references/medusa-workflows/updateCustomerAddressesWorkflow/index.html.md)
 - [updateCustomersWorkflow](undefined/references/medusa-workflows/updateCustomersWorkflow/index.html.md)
@@ -53977,6 +53959,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [exportOrdersWorkflow](undefined/references/medusa-workflows/exportOrdersWorkflow/index.html.md)
 - [fetchShippingOptionForOrderWorkflow](undefined/references/medusa-workflows/fetchShippingOptionForOrderWorkflow/index.html.md)
 - [getOrderDetailWorkflow](undefined/references/medusa-workflows/getOrderDetailWorkflow/index.html.md)
+- [getOrderPendingAmountStep](undefined/references/medusa-workflows/getOrderPendingAmountStep/index.html.md)
 - [getOrdersListWorkflow](undefined/references/medusa-workflows/getOrdersListWorkflow/index.html.md)
 - [listShippingOptionsForOrderWorkflow](undefined/references/medusa-workflows/listShippingOptionsForOrderWorkflow/index.html.md)
 - [markOrderFulfillmentAsDeliveredWorkflow](undefined/references/medusa-workflows/markOrderFulfillmentAsDeliveredWorkflow/index.html.md)
@@ -54060,6 +54043,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updateReturnWorkflow](undefined/references/medusa-workflows/updateReturnWorkflow/index.html.md)
 - [validateCarryPromotionsFlagStep](undefined/references/medusa-workflows/validateCarryPromotionsFlagStep/index.html.md)
 - [validateOrderCreditLinesStep](undefined/references/medusa-workflows/validateOrderCreditLinesStep/index.html.md)
+- [authorizePaymentSessionForOrderWorkflow](undefined/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow/index.html.md)
 - [capturePaymentWorkflow](undefined/references/medusa-workflows/capturePaymentWorkflow/index.html.md)
 - [processPaymentWorkflow](undefined/references/medusa-workflows/processPaymentWorkflow/index.html.md)
 - [refundPaymentWorkflow](undefined/references/medusa-workflows/refundPaymentWorkflow/index.html.md)
@@ -54087,6 +54071,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [batchProductVariantsWorkflow](undefined/references/medusa-workflows/batchProductVariantsWorkflow/index.html.md)
 - [batchProductsWorkflow](undefined/references/medusa-workflows/batchProductsWorkflow/index.html.md)
 - [batchVariantImagesWorkflow](undefined/references/medusa-workflows/batchVariantImagesWorkflow/index.html.md)
+- [createAndLinkProductOptionsToProductWorkflow](undefined/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow/index.html.md)
 - [createCollectionsWorkflow](undefined/references/medusa-workflows/createCollectionsWorkflow/index.html.md)
 - [createProductOptionsWorkflow](undefined/references/medusa-workflows/createProductOptionsWorkflow/index.html.md)
 - [createProductTagsWorkflow](undefined/references/medusa-workflows/createProductTagsWorkflow/index.html.md)
@@ -54094,6 +54079,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [createProductVariantsWorkflow](undefined/references/medusa-workflows/createProductVariantsWorkflow/index.html.md)
 - [createProductsWorkflow](undefined/references/medusa-workflows/createProductsWorkflow/index.html.md)
 - [deleteCollectionsWorkflow](undefined/references/medusa-workflows/deleteCollectionsWorkflow/index.html.md)
+- [deleteProductOptionValuesWorkflow](undefined/references/medusa-workflows/deleteProductOptionValuesWorkflow/index.html.md)
 - [deleteProductOptionsWorkflow](undefined/references/medusa-workflows/deleteProductOptionsWorkflow/index.html.md)
 - [deleteProductTagsWorkflow](undefined/references/medusa-workflows/deleteProductTagsWorkflow/index.html.md)
 - [deleteProductTypesWorkflow](undefined/references/medusa-workflows/deleteProductTypesWorkflow/index.html.md)
@@ -54102,7 +54088,9 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [exportProductsWorkflow](undefined/references/medusa-workflows/exportProductsWorkflow/index.html.md)
 - [importProductsAsChunksWorkflow](undefined/references/medusa-workflows/importProductsAsChunksWorkflow/index.html.md)
 - [importProductsWorkflow](undefined/references/medusa-workflows/importProductsWorkflow/index.html.md)
+- [setProductProductOptionsWorkflow](undefined/references/medusa-workflows/setProductProductOptionsWorkflow/index.html.md)
 - [updateCollectionsWorkflow](undefined/references/medusa-workflows/updateCollectionsWorkflow/index.html.md)
+- [updateProductOptionValuesWorkflow](undefined/references/medusa-workflows/updateProductOptionValuesWorkflow/index.html.md)
 - [updateProductOptionsWorkflow](undefined/references/medusa-workflows/updateProductOptionsWorkflow/index.html.md)
 - [updateProductTagsWorkflow](undefined/references/medusa-workflows/updateProductTagsWorkflow/index.html.md)
 - [updateProductTypesWorkflow](undefined/references/medusa-workflows/updateProductTypesWorkflow/index.html.md)
@@ -54141,9 +54129,11 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [linkProductsToSalesChannelWorkflow](undefined/references/medusa-workflows/linkProductsToSalesChannelWorkflow/index.html.md)
 - [updateSalesChannelsWorkflow](undefined/references/medusa-workflows/updateSalesChannelsWorkflow/index.html.md)
 - [batchPropertyLabelsWorkflow](undefined/references/medusa-workflows/batchPropertyLabelsWorkflow/index.html.md)
+- [clearLayoutConfigurationWorkflow](undefined/references/medusa-workflows/clearLayoutConfigurationWorkflow/index.html.md)
 - [createPropertyLabelsWorkflow](undefined/references/medusa-workflows/createPropertyLabelsWorkflow/index.html.md)
 - [createViewConfigurationWorkflow](undefined/references/medusa-workflows/createViewConfigurationWorkflow/index.html.md)
 - [deletePropertyLabelsWorkflow](undefined/references/medusa-workflows/deletePropertyLabelsWorkflow/index.html.md)
+- [setLayoutConfigurationWorkflow](undefined/references/medusa-workflows/setLayoutConfigurationWorkflow/index.html.md)
 - [updatePropertyLabelsWorkflow](undefined/references/medusa-workflows/updatePropertyLabelsWorkflow/index.html.md)
 - [updateViewConfigurationWorkflow](undefined/references/medusa-workflows/updateViewConfigurationWorkflow/index.html.md)
 - [createShippingOptionTypesWorkflow](undefined/references/medusa-workflows/createShippingOptionTypesWorkflow/index.html.md)
@@ -54388,6 +54378,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [updatePriceSetsStep](undefined/references/medusa-workflows/steps/updatePriceSetsStep/index.html.md)
 - [addImageToVariantsStep](undefined/references/medusa-workflows/steps/addImageToVariantsStep/index.html.md)
 - [addImagesToVariantStep](undefined/references/medusa-workflows/steps/addImagesToVariantStep/index.html.md)
+- [addProductOptionsToProductStep](undefined/references/medusa-workflows/steps/addProductOptionsToProductStep/index.html.md)
 - [batchLinkProductsToCategoryStep](undefined/references/medusa-workflows/steps/batchLinkProductsToCategoryStep/index.html.md)
 - [batchLinkProductsToCollectionStep](undefined/references/medusa-workflows/steps/batchLinkProductsToCollectionStep/index.html.md)
 - [createCollectionsStep](undefined/references/medusa-workflows/steps/createCollectionsStep/index.html.md)
@@ -54398,6 +54389,7 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [createProductsStep](undefined/references/medusa-workflows/steps/createProductsStep/index.html.md)
 - [createVariantPricingLinkStep](undefined/references/medusa-workflows/steps/createVariantPricingLinkStep/index.html.md)
 - [deleteCollectionsStep](undefined/references/medusa-workflows/steps/deleteCollectionsStep/index.html.md)
+- [deleteProductOptionValuesStep](undefined/references/medusa-workflows/steps/deleteProductOptionValuesStep/index.html.md)
 - [deleteProductOptionsStep](undefined/references/medusa-workflows/steps/deleteProductOptionsStep/index.html.md)
 - [deleteProductTagsStep](undefined/references/medusa-workflows/steps/deleteProductTagsStep/index.html.md)
 - [deleteProductTypesStep](undefined/references/medusa-workflows/steps/deleteProductTypesStep/index.html.md)
@@ -54407,15 +54399,18 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [exportProductsStep](undefined/references/medusa-workflows/steps/exportProductsStep/index.html.md)
 - [generateProductCsvStep](undefined/references/medusa-workflows/steps/generateProductCsvStep/index.html.md)
 - [getAllProductsStep](undefined/references/medusa-workflows/steps/getAllProductsStep/index.html.md)
-- [getProductsStep](undefined/references/medusa-workflows/steps/getProductsStep/index.html.md)
 - [getVariantAvailabilityStep](undefined/references/medusa-workflows/steps/getVariantAvailabilityStep/index.html.md)
 - [normalizeCsvStep](undefined/references/medusa-workflows/steps/normalizeCsvStep/index.html.md)
 - [normalizeCsvToChunksStep](undefined/references/medusa-workflows/steps/normalizeCsvToChunksStep/index.html.md)
 - [parseProductCsvStep](undefined/references/medusa-workflows/steps/parseProductCsvStep/index.html.md)
 - [processImportChunksStep](undefined/references/medusa-workflows/steps/processImportChunksStep/index.html.md)
+- [processProductOptionsForImportStep](undefined/references/medusa-workflows/steps/processProductOptionsForImportStep/index.html.md)
 - [removeImageFromVariantsStep](undefined/references/medusa-workflows/steps/removeImageFromVariantsStep/index.html.md)
 - [removeImagesFromVariantStep](undefined/references/medusa-workflows/steps/removeImagesFromVariantStep/index.html.md)
+- [removeProductOptionsFromProductStep](undefined/references/medusa-workflows/steps/removeProductOptionsFromProductStep/index.html.md)
 - [updateCollectionsStep](undefined/references/medusa-workflows/steps/updateCollectionsStep/index.html.md)
+- [updateProductOptionValuesOnProductStep](undefined/references/medusa-workflows/steps/updateProductOptionValuesOnProductStep/index.html.md)
+- [updateProductOptionValuesStep](undefined/references/medusa-workflows/steps/updateProductOptionValuesStep/index.html.md)
 - [updateProductOptionsStep](undefined/references/medusa-workflows/steps/updateProductOptionsStep/index.html.md)
 - [updateProductTagsStep](undefined/references/medusa-workflows/steps/updateProductTagsStep/index.html.md)
 - [updateProductTypesStep](undefined/references/medusa-workflows/steps/updateProductTypesStep/index.html.md)
@@ -54456,10 +54451,13 @@ Connection to Redis in module 'workflow-engine-redis' established
 - [detachLocationsFromSalesChannelsStep](undefined/references/medusa-workflows/steps/detachLocationsFromSalesChannelsStep/index.html.md)
 - [detachProductsFromSalesChannelsStep](undefined/references/medusa-workflows/steps/detachProductsFromSalesChannelsStep/index.html.md)
 - [updateSalesChannelsStep](undefined/references/medusa-workflows/steps/updateSalesChannelsStep/index.html.md)
+- [clearLayoutConfigurationStep](undefined/references/medusa-workflows/steps/clearLayoutConfigurationStep/index.html.md)
 - [createPropertyLabelsStep](undefined/references/medusa-workflows/steps/createPropertyLabelsStep/index.html.md)
 - [createViewConfigurationStep](undefined/references/medusa-workflows/steps/createViewConfigurationStep/index.html.md)
 - [deletePropertyLabelsStep](undefined/references/medusa-workflows/steps/deletePropertyLabelsStep/index.html.md)
+- [setActiveLayoutScopeStep](undefined/references/medusa-workflows/steps/setActiveLayoutScopeStep/index.html.md)
 - [setActiveViewConfigurationStep](undefined/references/medusa-workflows/steps/setActiveViewConfigurationStep/index.html.md)
+- [setLayoutConfigurationStep](undefined/references/medusa-workflows/steps/setLayoutConfigurationStep/index.html.md)
 - [updatePropertyLabelsStep](undefined/references/medusa-workflows/steps/updatePropertyLabelsStep/index.html.md)
 - [updateViewConfigurationStep](undefined/references/medusa-workflows/steps/updateViewConfigurationStep/index.html.md)
 - [createShippingOptionTypesStep](undefined/references/medusa-workflows/steps/createShippingOptionTypesStep/index.html.md)
@@ -54514,8 +54512,8 @@ This documentation page includes the list of all events emitted by [Medusa's wor
 |auth.mfa\_recovery\_codes\_generated|Emitted when recovery codes are generated for an auth identity.|
 |auth.password\_reset|Emitted when a reset password token is generated. You can listen to this event
 to send a reset password email to the user or customer, for example.|
-|auth.verification\_requested|Emitted when a verification token is generated. You can listen to
-this event and decide how to deliver the token to the user or customer.|
+|auth.verification\_requested|Emitted when a verification code is generated. You can listen to
+this event and decide how to deliver the code to the user or customer.|
 
 ### auth.mfa\_enabled&#xA;
 
@@ -54590,8 +54588,8 @@ The following workflows emit this event when they're executed. These workflows a
 
 ### auth.verification\_requested&#xA;
 
-Emitted when a verification token is generated. You can listen to
-this event and decide how to deliver the token to the user or customer.
+Emitted when a verification code is generated. You can listen to
+this event and decide how to deliver the code to the user or customer.
 
 #### Payload
 
@@ -54602,8 +54600,8 @@ this event and decide how to deliver the token to the user or customer.
   provider, // The auth provider that requested verification.
   auth_identity_id, // The ID of the auth identity being verified.
   provider_identity_id, // The ID of the provider identity being verified.
-  token, // The generated token.
-  expires_at, // The token expiry date.
+  code, // The generated verification code.
+  expires_at, // The code expiry date.
   metadata, // Optional custom metadata passed from the request.
 }
 ```
@@ -55363,6 +55361,7 @@ Emitted when products are updated.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [updateProductsWorkflow](undefined/references/medusa-workflows/updateProductsWorkflow)
+- [createAndLinkProductOptionsToProductWorkflow](undefined/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow)
 - [batchProductsWorkflow](undefined/references/medusa-workflows/batchProductsWorkflow)
 - [importProductsWorkflow](undefined/references/medusa-workflows/importProductsWorkflow)
 
@@ -55619,6 +55618,9 @@ Emitted when product options are deleted.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [deleteProductOptionsWorkflow](undefined/references/medusa-workflows/deleteProductOptionsWorkflow)
+- [deleteProductsWorkflow](undefined/references/medusa-workflows/deleteProductsWorkflow)
+- [batchProductsWorkflow](undefined/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](undefined/references/medusa-workflows/importProductsWorkflow)
 
 ***
 
@@ -130848,11 +130850,16 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [list](undefined/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.list/index.html.md)
 - [resend](undefined/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.resend/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/Invite/methods/js_sdk.admin.Invite.retrieve/index.html.md)
+- [deleteConfiguration](undefined/references/js_sdk/admin/Layouts/methods/js_sdk.admin.Layouts.deleteConfiguration/index.html.md)
+- [listConfigurations](undefined/references/js_sdk/admin/Layouts/methods/js_sdk.admin.Layouts.listConfigurations/index.html.md)
+- [retrieveConfiguration](undefined/references/js_sdk/admin/Layouts/methods/js_sdk.admin.Layouts.retrieveConfiguration/index.html.md)
+- [setConfiguration](undefined/references/js_sdk/admin/Layouts/methods/js_sdk.admin.Layouts.setConfiguration/index.html.md)
 - [list](undefined/references/js_sdk/admin/Locale/methods/js_sdk.admin.Locale.list/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/Locale/methods/js_sdk.admin.Locale.retrieve/index.html.md)
 - [list](undefined/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list/index.html.md)
 - [retrieve](undefined/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.retrieve/index.html.md)
 - [archive](undefined/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.archive/index.html.md)
+- [authorizePaymentSession](undefined/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.authorizePaymentSession/index.html.md)
 - [cancel](undefined/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancel/index.html.md)
 - [cancelFulfillment](undefined/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancelFulfillment/index.html.md)
 - [cancelTransfer](undefined/references/js_sdk/admin/Order/methods/js_sdk.admin.Order.cancelTransfer/index.html.md)
@@ -130917,6 +130924,7 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [deleteVariant](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.deleteVariant/index.html.md)
 - [export](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.export/index.html.md)
 - [import](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.import/index.html.md)
+- [linkOptions](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.linkOptions/index.html.md)
 - [list](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.list/index.html.md)
 - [listOptions](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.listOptions/index.html.md)
 - [listVariants](undefined/references/js_sdk/admin/Product/methods/js_sdk.admin.Product.listVariants/index.html.md)
@@ -130938,6 +130946,15 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [retrieve](undefined/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.retrieve/index.html.md)
 - [update](undefined/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.update/index.html.md)
 - [updateProducts](undefined/references/js_sdk/admin/ProductCollection/methods/js_sdk.admin.ProductCollection.updateProducts/index.html.md)
+- [create](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.create/index.html.md)
+- [delete](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.delete/index.html.md)
+- [deleteValue](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.deleteValue/index.html.md)
+- [list](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.list/index.html.md)
+- [listValues](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.listValues/index.html.md)
+- [retrieve](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.retrieve/index.html.md)
+- [retrieveValue](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.retrieveValue/index.html.md)
+- [update](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.update/index.html.md)
+- [updateValue](undefined/references/js_sdk/admin/ProductOption/methods/js_sdk.admin.ProductOption.updateValue/index.html.md)
 - [create](undefined/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.create/index.html.md)
 - [delete](undefined/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.delete/index.html.md)
 - [list](undefined/references/js_sdk/admin/ProductTag/methods/js_sdk.admin.ProductTag.list/index.html.md)
@@ -131120,6 +131137,7 @@ To learn more about the commerce features that Medusa provides, check out Medusa
 - [order](undefined/references/js-sdk/store/order/index.html.md)
 - [payment](undefined/references/js-sdk/store/payment/index.html.md)
 - [product](undefined/references/js-sdk/store/product/index.html.md)
+- [productOption](undefined/references/js-sdk/store/productOption/index.html.md)
 - [region](undefined/references/js-sdk/store/region/index.html.md)
 
 
@@ -138391,6 +138409,10 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/invites/{id}](undefined/api/admin#invites_getinvitesid)
 - [DELETE /admin/invites/{id}](undefined/api/admin#invites_deleteinvitesid)
 - [POST /admin/invites/{id}/resend](undefined/api/admin#invites_postinvitesidresend)
+- [GET /admin/layouts/configurations](undefined/api/admin#layouts_getlayoutsconfigurations)
+- [GET /admin/layouts/{zone}/configuration](undefined/api/admin#layouts_getlayoutszoneconfiguration)
+- [POST /admin/layouts/{zone}/configuration](undefined/api/admin#layouts_postlayoutszoneconfiguration)
+- [DELETE /admin/layouts/{zone}/configuration](undefined/api/admin#layouts_deletelayoutszoneconfiguration)
 - [GET /admin/locales](undefined/api/admin#locales_getlocales)
 - [GET /admin/locales/{code}](undefined/api/admin#locales_getlocalescode)
 - [GET /admin/notifications](undefined/api/admin#notifications_getnotifications)
@@ -138421,6 +138443,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered](undefined/api/admin#orders_postordersidfulfillmentsfulfillment_idmarkasdelivered)
 - [POST /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments](undefined/api/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
 - [GET /admin/orders/{id}/line-items](undefined/api/admin#orders_getordersidlineitems)
+- [POST /admin/orders/{id}/payment-sessions/authorize](undefined/api/admin#orders_postordersidpaymentsessionsauthorize)
 - [GET /admin/orders/{id}/preview](undefined/api/admin#orders_getordersidpreview)
 - [GET /admin/orders/{id}/shipping-options](undefined/api/admin#orders_getordersidshippingoptions)
 - [POST /admin/orders/{id}/transfer](undefined/api/admin#orders_postordersidtransfer)
@@ -138454,6 +138477,15 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/product-categories/{id}](undefined/api/admin#product-categories_postproductcategoriesid)
 - [DELETE /admin/product-categories/{id}](undefined/api/admin#product-categories_deleteproductcategoriesid)
 - [POST /admin/product-categories/{id}/products](undefined/api/admin#product-categories_postproductcategoriesidproducts)
+- [GET /admin/product-options](undefined/api/admin#product-options_getproductoptions)
+- [POST /admin/product-options](undefined/api/admin#product-options_postproductoptions)
+- [GET /admin/product-options/{id}](undefined/api/admin#product-options_getproductoptionsid)
+- [POST /admin/product-options/{id}](undefined/api/admin#product-options_postproductoptionsid)
+- [DELETE /admin/product-options/{id}](undefined/api/admin#product-options_deleteproductoptionsid)
+- [GET /admin/product-options/{id}/values](undefined/api/admin#product-options_getproductoptionsidvalues)
+- [GET /admin/product-options/{id}/values/{value_id}](undefined/api/admin#product-options_getproductoptionsidvaluesvalue_id)
+- [POST /admin/product-options/{id}/values/{value_id}](undefined/api/admin#product-options_postproductoptionsidvaluesvalue_id)
+- [DELETE /admin/product-options/{id}/values/{value_id}](undefined/api/admin#product-options_deleteproductoptionsidvaluesvalue_id)
 - [GET /admin/product-tags](undefined/api/admin#product-tags_getproducttags)
 - [POST /admin/product-tags](undefined/api/admin#product-tags_postproducttags)
 - [GET /admin/product-tags/{id}](undefined/api/admin#product-tags_getproducttagsid)
@@ -138478,10 +138510,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [DELETE /admin/products/{id}](undefined/api/admin#products_deleteproductsid)
 - [POST /admin/products/{id}/images/{image_id}/variants/batch](undefined/api/admin#products_postproductsidimagesimage_idvariantsbatch)
 - [GET /admin/products/{id}/options](undefined/api/admin#products_getproductsidoptions)
-- [POST /admin/products/{id}/options](undefined/api/admin#products_postproductsidoptions)
-- [GET /admin/products/{id}/options/{option_id}](undefined/api/admin#products_getproductsidoptionsoption_id)
-- [POST /admin/products/{id}/options/{option_id}](undefined/api/admin#products_postproductsidoptionsoption_id)
-- [DELETE /admin/products/{id}/options/{option_id}](undefined/api/admin#products_deleteproductsidoptionsoption_id)
+- [POST /admin/products/{id}/options/batch](undefined/api/admin#products_postproductsidoptionsbatch)
 - [GET /admin/products/{id}/variants](undefined/api/admin#products_getproductsidvariants)
 - [POST /admin/products/{id}/variants](undefined/api/admin#products_postproductsidvariants)
 - [POST /admin/products/{id}/variants/batch](undefined/api/admin#products_postproductsidvariantsbatch)
@@ -138710,10 +138739,13 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /store/payment-providers](undefined/api/store#payment-providers_getpaymentproviders)
 - [GET /store/product-categories](undefined/api/store#product-categories_getproductcategories)
 - [GET /store/product-categories/{id}](undefined/api/store#product-categories_getproductcategoriesid)
+- [GET /store/product-options](undefined/api/store#product-options_getproductoptions)
+- [GET /store/product-options/{id}](undefined/api/store#product-options_getproductoptionsid)
 - [GET /store/product-tags](undefined/api/store#product-tags_getproducttags)
 - [GET /store/product-tags/{id}](undefined/api/store#product-tags_getproducttagsid)
 - [GET /store/product-types](undefined/api/store#product-types_getproducttypes)
 - [GET /store/product-types/{id}](undefined/api/store#product-types_getproducttypesid)
+- [GET /store/product-variants](undefined/api/store#product-variants_getproductvariants)
 - [GET /store/products](undefined/api/store#products_getproducts)
 - [GET /store/products/{id}](undefined/api/store#products_getproductsid)
 - [GET /store/regions](undefined/api/store#regions_getregions)
