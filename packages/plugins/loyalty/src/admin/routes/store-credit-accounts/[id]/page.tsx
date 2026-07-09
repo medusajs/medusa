@@ -26,22 +26,32 @@ const StoreCreditAccountPage = () => {
       sections={{
         main: (
           <>
-            <StoreCreditAccountDetailsSection
-              storeCreditAccount={storeCreditAccount}
-            />
+            <LayoutComposer.Entry id="StoreCreditAccountDetailsSection">
+              <StoreCreditAccountDetailsSection
+                storeCreditAccount={storeCreditAccount}
+              />
+            </LayoutComposer.Entry>
 
-            <TransactionsTable id={storeCreditAccount.id} />
+            <LayoutComposer.Entry id="TransactionsTable">
+              <TransactionsTable id={storeCreditAccount.id} />
+            </LayoutComposer.Entry>
           </>
         ),
         side: (
           <>
-            <StoreCreditAccountBalanceSection
-              storeCreditAccount={storeCreditAccount}
-            />
-            <StoreCreditAccountCodeSection code={storeCreditAccount.code} />
-            <StoreCreditAccountCustomerSection
-              customerId={storeCreditAccount.customer_id}
-            />
+            <LayoutComposer.Entry id="StoreCreditAccountBalanceSection">
+              <StoreCreditAccountBalanceSection
+                storeCreditAccount={storeCreditAccount}
+              />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="StoreCreditAccountCodeSection">
+              <StoreCreditAccountCodeSection code={storeCreditAccount.code} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="StoreCreditAccountCustomerSection">
+              <StoreCreditAccountCustomerSection
+                customerId={storeCreditAccount.customer_id}
+              />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

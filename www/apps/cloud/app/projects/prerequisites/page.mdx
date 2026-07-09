@@ -82,6 +82,12 @@ The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusaj
 
 </Note>
 
+<Note type="warning">
+
+Do not set `projectConfig.databaseDriverOptions` or `projectConfig.redisUrl` in your `medusa-config.ts` when deploying to Cloud. Cloud automatically manages the database connection, SSL configuration, connection pooling, and Redis provisioning. Setting these options manually may cause deployment or database migration failures.
+
+</Note>
+
 ---
 
 ## Prerequisites for Medusa Application with Storefront

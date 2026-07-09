@@ -26,7 +26,7 @@ export type UpdateProductOptionsWorkflowInput = {
 
 export const updateProductOptionsWorkflowId = "update-product-options"
 /**
- * This workflow updates one or more product options. It's used by the [Update Product Option Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_id).
+ * This workflow updates one or more product options. It's used by the [Update Product Option Admin API Route](https://docs.medusajs.com/api/admin#product-options_postproductoptionsid).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated product options. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the product options.

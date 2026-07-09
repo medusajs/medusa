@@ -42,6 +42,8 @@ medusaIntegrationTestRunner({
             object: "object",
             source: "source",
             action: "action",
+            created_at: expect.any(Date),
+            published_at: expect.any(Date),
           },
         })
       })

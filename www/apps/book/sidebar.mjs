@@ -58,11 +58,6 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "Bloom",
-            path: "/learn/introduction/build-with-llms-ai/bloom",
-          },
-          {
-            type: "link",
             title: "AI-Friendly Docs",
             path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
           },

@@ -8,7 +8,14 @@ import {
   SqlEntityManager,
 } from "@medusajs/framework/mikro-orm/postgresql"
 import { createDatabase, dropDatabase } from "pg-god"
-import { execOrTimeout } from "./medusa-test-runner-utils"
+import {
+  createPostgresDatabaseTemplate,
+  dropPostgresDatabaseTemplate,
+  execOrTimeout,
+  formatError,
+  restorePostgresDatabaseFromTemplate,
+} from "./medusa-test-runner-utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
@@ -219,6 +226,47 @@ export const dbTestUtilFactory = (): any => ({
     }
   },
 
+  snapshot: async function ({
+    databaseName,
+    templateName,
+  }: {
+    databaseName: string
+    templateName: string
+  }) {
+    try {
+      await createPostgresDatabaseTemplate({ databaseName, templateName })
+    } catch (error) {
+      logger.error(`Error creating database template:\n${formatError(error)}`)
+      throw error
+    }
+  },
+
+  restore: async function ({
+    databaseName,
+    templateName,
+  }: {
+    databaseName: string
+    templateName: string
+  }) {
+    try {
+      await restorePostgresDatabaseFromTemplate({ databaseName, templateName })
+    } catch (error) {
+      logger.error(
+        `Error restoring database from template:\n${formatError(error)}`
+      )
+      throw error
+    }
+  },
+
+  dropTemplate: async function (templateName: string) {
+    try {
+      await dropPostgresDatabaseTemplate(templateName)
+    } catch (error) {
+      logger.error(`Error dropping database template:\n${formatError(error)}`)
+      throw error
+    }
+  },
+
   teardown: async function ({ schema }: { schema?: string } = {}) {
     if (!this.pgConnection_) {
       return
@@ -311,19 +359,8 @@ export const dbTestUtilFactory = (): any => ({
 
   shutdown: async function (dbName: string) {
     try {
-      const cleanupPromises: Promise<any>[] = []
-
-      if (this.pgConnection_?.context) {
-        cleanupPromises.push(
-          execOrTimeout(this.pgConnection_.context.destroy())
-        )
-      }
-
-      if (this.pgConnection_) {
-        cleanupPromises.push(execOrTimeout(this.pgConnection_.destroy()))
-      }
-
-      await Promise.all(cleanupPromises)
+      await closePgConnection(this.pgConnection_)
+      await unregisterFrameworkPgConnection(this.pgConnection_)
 
       return await dropDatabase(
         { databaseName: dbName, errorIfNonExist: false },
@@ -332,8 +369,8 @@ export const dbTestUtilFactory = (): any => ({
     } catch (error) {
       logger.error("Error during database shutdown:", error)
       try {
-        await this.pgConnection_?.context?.destroy()
-        await this.pgConnection_?.destroy()
+        await closePgConnection(this.pgConnection_)
+        await unregisterFrameworkPgConnection(this.pgConnection_)
       } catch (cleanupError) {
         logger.error("Error during forced cleanup:", cleanupError)
       }
@@ -343,3 +380,48 @@ export const dbTestUtilFactory = (): any => ({
     }
   },
 })
+
+async function closePgConnection(pgConnection: any) {
+  if (!pgConnection) {
+    return
+  }
+
+  const cleanupPromises: Promise<any>[] = []
+
+  if (pgConnection.context?.destroy) {
+    cleanupPromises.push(
+      execOrTimeout(pgConnection.context.destroy()).catch(() => void 0)
+    )
+  }
+
+  if (pgConnection.destroy) {
+    cleanupPromises.push(
+      execOrTimeout(pgConnection.destroy()).catch(() => void 0)
+    )
+  }
+
+  await Promise.all(cleanupPromises)
+}
+
+async function unregisterFrameworkPgConnection(pgConnection: any) {
+  if (!pgConnection) {
+    return
+  }
+
+  const { container } = await import("@medusajs/framework")
+
+  if (!container.hasRegistration(ContainerRegistrationKeys.PG_CONNECTION)) {
+    return
+  }
+
+  const registeredConnection = container.resolve(
+    ContainerRegistrationKeys.PG_CONNECTION
+  )
+
+  if (registeredConnection !== pgConnection) {
+    return
+  }
+
+  delete (container as { registrations?: Record<string, unknown> })
+    .registrations?.[ContainerRegistrationKeys.PG_CONNECTION]
+}

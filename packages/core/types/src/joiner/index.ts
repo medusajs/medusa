@@ -20,15 +20,23 @@ export type JoinerRelationship = {
   args?: Record<string, any>
 }
 
-export type ComputedJoinerRelationship = JoinerRelationship & {
-  primaryKeyArr: string[]
-  foreignKeyArr: string[]
-}
-
 export interface JoinerServiceConfigAlias {
   name: string | string[]
   entity?: string
   filterable?: string[]
+  /**
+   * Internal-only alias metadata used by the query layer.
+   *
+   * @internal
+   */
+  __internal?: {
+    /**
+     * Non-computed DML fields that can be used in cross-module SQL joins.
+     * Used as an optimization layer to determine which fields are safe to
+     * push into EXISTS-based cross-module filters.
+     */
+    crossjoinable?: string[]
+  }
   /**
    * Extra arguments to pass to the remoteFetchData callback
    */
@@ -133,39 +141,4 @@ export interface RemoteJoinerOptions {
      */
     providers?: string[] | ((args: any[]) => string[] | undefined)
   }
-}
-
-export interface RemoteNestedExpands {
-  [key: string]: {
-    fields?: string[]
-    args?: JoinerArgument[]
-    expands?: RemoteNestedExpands
-  }
-}
-
-export type InternalJoinerServiceConfig = Omit<
-  JoinerServiceConfig,
-  "relationships"
-> & {
-  relationships?: Map<string, JoinerRelationship | JoinerRelationship[]>
-  entity?: string
-}
-
-export type ExecutionStage = {
-  service: string
-  entity?: string
-  paths: string[]
-  depth: number
-}
-
-export interface RemoteExpandProperty {
-  executionStages?: ExecutionStage[][]
-  property: string
-  parent: string
-  parentConfig?: InternalJoinerServiceConfig
-  serviceConfig: InternalJoinerServiceConfig
-  entity?: string
-  fields?: string[]
-  args?: JoinerArgument[]
-  expands?: RemoteNestedExpands
 }

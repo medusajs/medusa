@@ -1,3 +1,5 @@
+import { LayoutConfigurationData } from "./common"
+
 /**
  * The view configuration to be created.
  */
@@ -101,6 +103,41 @@ export interface UpdateViewConfigurationDTO {
      */
     search?: string
   }
+}
+
+/**
+ * The layout configuration to be created.
+ */
+export interface CreateLayoutConfigurationDTO {
+  /**
+   * The zone (page) this configuration is for, e.g. "product.details".
+   */
+  zone: string
+
+  /**
+   * The user ID this configuration belongs to. Null for the system default.
+   */
+  user_id?: string | null
+
+  /**
+   * Whether this is the system default configuration for the zone.
+   */
+  is_system_default?: boolean
+
+  /**
+   * The layout configuration data.
+   */
+  configuration: LayoutConfigurationData
+}
+
+/**
+ * The attributes to update in a layout configuration.
+ */
+export interface UpdateLayoutConfigurationDTO {
+  /**
+   * The layout configuration data.
+   */
+  configuration?: LayoutConfigurationData
 }
 
 /**

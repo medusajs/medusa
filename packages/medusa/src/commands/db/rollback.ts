@@ -56,20 +56,20 @@ const main = async function ({ directory, modules }) {
     logger.info("Migrations reverted")
 
     process.exit()
-  } catch (error) {
-    if (!logger) {
-      console.error(error)
-      process.exit(1)
-    }
-    logger.log(new Array(TERMINAL_SIZE).join("-"))
-    if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
-      logger.error(error.message)
-      const modulesList = error.allModules.map(
-        (name: string) => `          - ${name}`
-      )
-      logger.error(`Available modules:\n${modulesList.join("\n")}`)
+  } catch (error: any) {
+    if (logger) {
+      logger.log(new Array(TERMINAL_SIZE).join("-"))
+      if (error.code && error.code === MedusaError.Codes.UNKNOWN_MODULES) {
+        logger.error(error.message)
+        const modulesList = error.allModules.map(
+          (name: string) => `          - ${name}`
+        )
+        logger.error(`Available modules:\n${modulesList.join("\n")}`)
+      } else {
+        logger.error(error.message, error)
+      }
     } else {
-      logger.error(error.message, error)
+      console.error(error)
     }
     process.exit(1)
   }

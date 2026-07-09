@@ -14,18 +14,13 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
-  const filterableFields: HttpTypes.StoreProductListParams & {
-    // these are available through the Zod transformation
-    tags?: string | string[]
-    categories?: string | string[]
-  } =
-    req.filterableFields
-
   if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
     // TODO: These filters are not supported by the index engine yet
     if (
-      isPresent(filterableFields.tags) ||
-      isPresent(filterableFields.categories)
+      isPresent(req.filterableFields.tags) ||
+      isPresent(req.filterableFields.categories) ||
+      isPresent(req.filterableFields.option_value_id) ||
+      isPresent(req.filterableFields.options)
     ) {
       return await getProducts(req, res)
     }
