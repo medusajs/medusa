@@ -58,7 +58,7 @@ export interface S3FileServiceOptions {
    *   BucketOwnerEnforced Object Ownership or Block Public Access enabled.
    * - A specific `ObjectCannedACL` value: Uses that ACL for all uploads.
    *
-   * @since 2.16.1
+   * @since 2.17.0
    */
   acl?: "public-read" | "private" | "authenticated-read" | "bucket-owner-full-control" | false
 }
