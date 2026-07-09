@@ -1,5 +1,77 @@
 # @medusajs/dashboard
 
+## 2.17.2
+
+### Patch Changes
+
+- [#14426](https://github.com/medusajs/medusa/pull/14426) [`697fde7d4610a44b01a7c21711edacb46e7de856`](https://github.com/medusajs/medusa/commit/697fde7d4610a44b01a7c21711edacb46e7de856) Thanks [@bqst](https://github.com/bqst)! - feat(dashboard): add dynamic document titles for browser tabs
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- [#15258](https://github.com/medusajs/medusa/pull/15258) [`1eb56d1111c10cbd33da578e2c45da8b21cb93d7`](https://github.com/medusajs/medusa/commit/1eb56d1111c10cbd33da578e2c45da8b21cb93d7) Thanks [@laaibaQasim](https://github.com/laaibaQasim)! - feat(dashboard): Add quantity-based pricing support for price lists
+
+- [#15721](https://github.com/medusajs/medusa/pull/15721) [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9) Thanks [@leobenzol](https://github.com/leobenzol)! - feat: drag&drop LayoutComposer, settings db persistence
+
+- [#15862](https://github.com/medusajs/medusa/pull/15862) [`9e47b94b5fb9777b06f099d270bcb95df99c3214`](https://github.com/medusajs/medusa/commit/9e47b94b5fb9777b06f099d270bcb95df99c3214) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(admin-shared,dashboard): use layout composer in Topbar, Sidebar and settings Sidebar
+
+- [#15881](https://github.com/medusajs/medusa/pull/15881) [`92559c67035a98f5edb5159ae9da678e19edf709`](https://github.com/medusajs/medusa/commit/92559c67035a98f5edb5159ae9da678e19edf709) Thanks [@weknowyourgame](https://github.com/weknowyourgame)! - fix(dashboard): make product option and product option value translatable
+
+- [#15861](https://github.com/medusajs/medusa/pull/15861) [`f79afaaecdd5aaa84b31ddcdea14a43692e33eff`](https://github.com/medusajs/medusa/commit/f79afaaecdd5aaa84b31ddcdea14a43692e33eff) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(admin-shared,dashboard): apply new LayoutComposer approach across the admin dashboard
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c), [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51), [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9), [`9e47b94b5fb9777b06f099d270bcb95df99c3214`](https://github.com/medusajs/medusa/commit/9e47b94b5fb9777b06f099d270bcb95df99c3214), [`f79afaaecdd5aaa84b31ddcdea14a43692e33eff`](https://github.com/medusajs/medusa/commit/f79afaaecdd5aaa84b31ddcdea14a43692e33eff)]:
+  - @medusajs/admin-shared@2.17.2
+  - @medusajs/icons@2.17.2
+  - @medusajs/js-sdk@2.17.2
+  - @medusajs/ui@4.1.19
+
+## 2.17.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/js-sdk@2.17.1
+  - @medusajs/admin-shared@2.17.1
+  - @medusajs/icons@2.17.1
+  - @medusajs/ui@4.1.18
+
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(dashboard,admin-shared): product option redesign (client-side)
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(): allow linking a subset of an option's values to the product
+
+### Patch Changes
+
+- [#15791](https://github.com/medusajs/medusa/pull/15791) [`c11326f633e667c8bc9d33ad2cf2d84b7a9f8935`](https://github.com/medusajs/medusa/commit/c11326f633e667c8bc9d33ad2cf2d84b7a9f8935) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard): allow already registered actor to accept admin invite
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,core-flows,product,js-sdk,types,medusa): rework product option values views and add dedicated endpoints
+
+- [#15750](https://github.com/medusajs/medusa/pull/15750) [`213455d6c62aa005723c8d438c0cf2797b9c3743`](https://github.com/medusajs/medusa/commit/213455d6c62aa005723c8d438c0cf2797b9c3743) Thanks [@merkelis-p](https://github.com/merkelis-p)! - Fix Rules of Hooks violation in the admin sidebar `NavItem`. `useTranslation`
+  was called inside `items.map()` (suppressed with an
+  `eslint-disable react-hooks/rules-of-hooks`), so the number of hooks rendered by
+  `NavItem` varied with the sub-item list length and the dashboard crashed with
+  "Rendered more hooks than during the previous render" whenever the menu changed
+  at runtime. The mapped row is extracted into a `NavItemSubItem` component that
+  owns its own `useTranslation` call.
+
+- [#15735](https://github.com/medusajs/medusa/pull/15735) [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard,js-sdk): exclude unnecessary relations from variants mutation responses in dashboard
+
+- [#15751](https://github.com/medusajs/medusa/pull/15751) [`f266d9808a36a8e28da4d7781b5e46c4b52522ef`](https://github.com/medusajs/medusa/commit/f266d9808a36a8e28da4d7781b5e46c4b52522ef) Thanks [@merkelis-p](https://github.com/merkelis-p)! - Fix a Rules of Hooks violation in `UserLink`'s `By` component: `useUser` and
+  `useCustomer` were called after an early `return null` (suppressed with
+  `eslint-disable react-hooks/rules-of-hooks`), so the hook count could change
+  between renders of the same instance. The hooks now run unconditionally before
+  the early return — the existing `{ enabled }` flags already prevent fetching for
+  the branch that does not apply, so behaviour is unchanged.
+- Updated dependencies [[`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753), [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753)]:
+  - @medusajs/admin-shared@2.17.0
+  - @medusajs/js-sdk@2.17.0
+  - @medusajs/icons@2.17.0
+  - @medusajs/ui@4.1.17
+
 ## 2.16.0
 
 ### Patch Changes

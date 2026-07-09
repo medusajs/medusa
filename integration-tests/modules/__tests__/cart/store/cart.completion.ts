@@ -54,7 +54,7 @@ const env = {}
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Carts workflows", () => {
       let appContainer
       let cartModuleService: ICartModuleService
@@ -120,7 +120,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
         await createAdminUser(dbConnection, adminHeaders, appContainer)
@@ -150,6 +150,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.sales_channel
+
+        await dbUtils.snapshot()
       })
 
       describe("CompleteCartWorkflow", () => {

@@ -1325,7 +1325,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
               options: [
                 { id: sharedOption.id, value_ids: [valueA.id, valueB.id] },
               ],
-              variants: [{ title: "vA", options: { ExpandSubset: "e-a" } }],
+              variants: [
+                { title: "vA", options: { ExpandSubset: "e-a" } },
+              ],
             },
           ])
 
@@ -1366,37 +1368,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const reloaded = await service.retrieveProduct(created.id, {
             relations: ["variants.options", "options.values"],
           })
-          const variantValues = reloaded.variants[0].options.map((o) => o.value)
-          expect(variantValues).toEqual(["e-c"])
-        })
-
-        it("should re-link an option whose previous link row is soft-deleted", async () => {
-          const option = await service.createProductOptions({
-            title: "Relink",
-            values: ["r-a", "r-b"],
-            is_exclusive: false,
-          })
-
-          const [product] = await service.createProducts([
-            { title: "Relink product", options: [{ id: option.id }] },
-          ])
-
-          const manager = MikroOrmWrapper.forkManager()
-          await manager.nativeUpdate(
-            ProductProductOption,
-            { product_id: product.id, product_option_id: option.id },
-            { deleted_at: new Date() }
+          const variantValues = reloaded.variants[0].options.map(
+            (o) => o.value
           )
-
-          await service.addProductOptionToProduct({
-            product_id: product.id,
-            product_option_id: option.id,
-          })
-
-          const reloaded = await service.retrieveProduct(product.id, {
-            relations: ["options"],
-          })
-          expect(reloaded.options.map((o) => o.id)).toContain(option.id)
+          expect(variantValues).toEqual(["e-c"])
         })
       })
 

@@ -9,10 +9,12 @@ jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("API Keys - Admin", () => {
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+        await dbUtils.snapshot()
       })
 
       it("should correctly implement the entire lifecycle of an api key", async () => {

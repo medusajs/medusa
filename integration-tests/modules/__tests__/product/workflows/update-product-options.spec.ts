@@ -930,9 +930,7 @@ medusaIntegrationTestRunner({
 
             const { errors } = await workflow.run({
               input: {
-                products: [
-                  { id: product.id, option_ids: [globalOption.id] },
-                ],
+                products: [{ id: product.id, option_ids: [globalOption.id] }],
               },
               throwOnError: false,
             })
@@ -1029,9 +1027,9 @@ medusaIntegrationTestRunner({
             // Only the product's prior subset is restored — NOT "Linen", which
             // the product never linked. (A blanket re-link by option_ids would
             // wrongly restore all three values.)
-            expect(
-              material?.values.map((value) => value.value).sort()
-            ).toEqual(["Cotton", "Wool"])
+            expect(material?.values.map((value) => value.value).sort()).toEqual(
+              ["Cotton", "Wool"]
+            )
           })
         })
       })

@@ -20,3 +20,7 @@ export const PromotionDetailBreadcrumb = (
 
   return <span>{promotion.code}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminPromotionResponse>) => ({
+  title: match.data?.promotion?.code,
+})

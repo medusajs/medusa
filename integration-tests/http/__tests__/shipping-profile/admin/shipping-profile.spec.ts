@@ -7,10 +7,12 @@ import {
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeEach(async () => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    beforeAll(async () => {
       const appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+      await dbUtils.snapshot()
     })
 
     describe("Admin - Shipping Profiles", () => {

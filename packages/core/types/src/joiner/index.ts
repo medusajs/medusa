@@ -30,6 +30,19 @@ export interface JoinerServiceConfigAlias {
   entity?: string
   filterable?: string[]
   /**
+   * Internal-only alias metadata used by the query layer.
+   *
+   * @internal
+   */
+  __internal?: {
+    /**
+     * Non-computed DML fields that can be used in cross-module SQL joins.
+     * Used as an optimization layer to determine which fields are safe to
+     * push into EXISTS-based cross-module filters.
+     */
+    crossjoinable?: string[]
+  }
+  /**
    * Extra arguments to pass to the remoteFetchData callback
    */
   args?: Record<string, any>
@@ -149,6 +162,12 @@ export type InternalJoinerServiceConfig = Omit<
 > & {
   relationships?: Map<string, JoinerRelationship | JoinerRelationship[]>
   entity?: string
+  /**
+   * Graph alias used to resolve this service config.
+   *
+   * @internal
+   */
+  entryPoint?: string
 }
 
 export type ExecutionStage = {

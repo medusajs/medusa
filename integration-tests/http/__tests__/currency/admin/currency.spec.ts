@@ -8,10 +8,12 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeEach(async () => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/currencies", () => {
@@ -22,7 +24,7 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.currencies).toHaveLength(124)
+        expect(response.data.currencies).toHaveLength(125)
         expect(response.data.currencies).toEqual(
           expect.arrayContaining([
             expect.objectContaining({

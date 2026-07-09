@@ -14,6 +14,7 @@ const LineItemTaxLine = model
       rate: model.float(),
       provider_id: model.text().nullable(),
       metadata: model.json().nullable(),
+      data: model.json().nullable(),
       tax_rate_id: model.text().nullable(),
       item: model.belongsTo(() => LineItem, {
         mappedBy: "tax_lines",

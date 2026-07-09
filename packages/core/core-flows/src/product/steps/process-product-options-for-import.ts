@@ -5,7 +5,7 @@ import type {
 } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { deepCopy } from "@medusajs/utils"
+import { deepCopy } from "@medusajs/framework/utils"
 
 export const processProductOptionsForImportStepId =
   "process-product-options-for-import"

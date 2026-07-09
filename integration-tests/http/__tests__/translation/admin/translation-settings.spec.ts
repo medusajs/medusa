@@ -10,11 +10,11 @@ jest.setTimeout(100000)
 process.env.MEDUSA_FF_TRANSLATION = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Translation Settings Batch API", () => {
       let mockGetTranslatableEntities: jest.SpyInstance
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         mockGetTranslatableEntities = jest.spyOn(
           DmlEntity,
           "getTranslatableEntities"
@@ -41,6 +41,8 @@ medusaIntegrationTestRunner({
         await translationModuleService.deleteTranslationSettings(
           settings.map((s) => s.id)
         )
+
+        await dbUtils.snapshot()
       })
 
       afterAll(async () => {

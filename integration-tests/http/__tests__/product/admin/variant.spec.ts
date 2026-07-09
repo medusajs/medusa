@@ -9,11 +9,11 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseProduct
     let baseRegion
     let shippingProfile
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
       // BREAKING: Creating a region no longer takes tax_rate, payment_providers, fulfillment_providers, countriesr
       baseRegion = (
@@ -45,6 +45,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product
+
+      await dbUtils.snapshot()
     })
 
     // BREAKING: We no longer have `/admin/variants` endpoint. Instead, variant is scoped by product ID, `/admin/products/:id/variants`

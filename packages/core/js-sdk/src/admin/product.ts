@@ -780,12 +780,18 @@ export class Product {
    *   console.log(deleted)
    * })
    */
-  async deleteVariant(productId: string, id: string, headers?: ClientHeaders) {
+  async deleteVariant(
+    productId: string,
+    id: string,
+    headers?: ClientHeaders,
+    query?: SelectParams
+  ) {
     return await this.client.fetch<HttpTypes.AdminProductVariantDeleteResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         method: "DELETE",
         headers,
+        query,
       }
     )
   }

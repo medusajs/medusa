@@ -8,12 +8,12 @@ jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Publishable Keys - Admin", () => {
       let pubKey1
       let pubKey2
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, getContainer())
 
         // BREAKING: Before the ID of the token was used in request headers, now there is a separate `token` field that should be used
@@ -32,6 +32,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.api_key
+
+        await dbUtils.snapshot()
       })
 
       // BREAKING: The URL changed from /admin/publishable-api-keys to /admin/api-keys, as well as the response field

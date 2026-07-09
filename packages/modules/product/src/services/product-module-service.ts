@@ -377,6 +377,10 @@ export default class ProductModuleService
     if (shouldLoadVariantImages) {
       await this.assignImagesToVariants(serializedProducts, sharedContext)
     }
+    
+    if (shouldFilterOptionValues) {
+      await this.filterOptionValues(serializedProducts, sharedContext)
+    }
 
     if (shouldFilterOptionValues) {
       await this.filterOptionValues(serializedProducts, sharedContext)
@@ -2742,10 +2746,7 @@ export default class ProductModuleService
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productIdHydratedData = new Map<
-      string,
-      (typeof hydratedData)[number]
-    >()
+    const productIdHydratedData = new Map<string, (typeof hydratedData)[number]>()
     const productsToCreate = normalizedProducts.map((product, index) => {
       const productId = generateEntityId(product.id, "prod")
       product.id = productId
@@ -3165,11 +3166,7 @@ export default class ProductModuleService
       if (duplicateOptionIds.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product "${
-            productData.title
-          }" has duplicate option assignments: [${duplicateOptionIds.join(
-            ", "
-          )}]`
+          `Product "${productData.title}" has duplicate option assignments: [${duplicateOptionIds.join(", ")}]`
         )
       }
     }
@@ -3391,7 +3388,8 @@ export default class ProductModuleService
         variant.options || {}
       ).length
 
-      const productsOptions = optionsByProductId.get(variant.product_id) ?? []
+      const productsOptions =
+        optionsByProductId.get(variant.product_id) ?? []
       const allowedValueIds = valueIdsByProductId?.get(variant.product_id)
 
       if (

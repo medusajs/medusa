@@ -64,9 +64,16 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
     })
 
     afterEach(async () => {
-      const generator = orm.getSchemaGenerator()
-      await generator.dropSchema()
-      await orm.close(true)
+      if (orm) {
+        const generator = orm.getSchemaGenerator()
+        await generator.dropSchema()
+        await orm.close(true)
+      }
+
+      await dropDatabase(
+        { databaseName: dbName, errorIfNonExist: false },
+        pgGodCredentials
+      )
     })
 
     it("should successfully mark the entities deleted_at recursively", async () => {

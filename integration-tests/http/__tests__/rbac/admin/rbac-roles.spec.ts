@@ -17,13 +17,37 @@ jest.setTimeout(60000)
 
 process.env.MEDUSA_FF_RBAC = "true"
 
+const ensureRbacPolicy = async (
+  rbacModule,
+  params: {
+    key: string
+    resource: string
+    operation: string
+    name: string
+    description?: string
+  }
+) => {
+  const [existing] = await rbacModule.listRbacPolicies({
+    key: params.key,
+  })
+
+  if (existing) {
+    return existing
+  }
+
+  const [created] = await rbacModule.createRbacPolicies([params])
+  return created
+}
+
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     afterAll(async () => {
@@ -75,22 +99,18 @@ medusaIntegrationTestRunner({
         it("creates a role with attached policies in a single request", async () => {
           // Seed two concrete policies for super-admin to attach.
           const rbacModule = container.resolve(Modules.RBAC)
-          const [readPolicy] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:read",
-              resource: "product",
-              operation: "read",
-              name: "Read Products",
-            },
-          ])
-          const [createPolicy] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:create",
-              resource: "product",
-              operation: "create",
-              name: "Create Products",
-            },
-          ])
+          const readPolicy = await ensureRbacPolicy(rbacModule, {
+            key: "product:read",
+            resource: "product",
+            operation: "read",
+            name: "Read Products",
+          })
+          const createPolicy = await ensureRbacPolicy(rbacModule, {
+            key: "product:create",
+            resource: "product",
+            operation: "create",
+            name: "Create Products",
+          })
 
           const response = await api.post(
             "/admin/rbac/roles",
@@ -125,22 +145,18 @@ medusaIntegrationTestRunner({
           // to create a role bundling product:read + customer:create.
           const rbacModule = container.resolve(Modules.RBAC)
 
-          const [productRead] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:read",
-              resource: "product",
-              operation: "read",
-              name: "Read Products",
-            },
-          ])
-          const [customerCreate] = await rbacModule.createRbacPolicies([
-            {
-              key: "customer:create",
-              resource: "customer",
-              operation: "create",
-              name: "Create Customers",
-            },
-          ])
+          const productRead = await ensureRbacPolicy(rbacModule, {
+            key: "product:read",
+            resource: "product",
+            operation: "read",
+            name: "Read Products",
+          })
+          const customerCreate = await ensureRbacPolicy(rbacModule, {
+            key: "customer:create",
+            resource: "customer",
+            operation: "create",
+            name: "Create Customers",
+          })
 
           const scopedRole = await rbacModule.createRbacRoles({
             name: "Product Reader Only",
@@ -600,70 +616,54 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           const rbacModule = container.resolve(Modules.RBAC)
 
-          const [productRead] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:read",
-              resource: "product",
-              operation: "read",
-              name: "Read Products",
-            },
-          ])
-          const [productCreate] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:create",
-              resource: "product",
-              operation: "create",
-              name: "Create Products",
-            },
-          ])
-          const [productUpdate] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:update",
-              resource: "product",
-              operation: "update",
-              name: "Update Products",
-            },
-          ])
-          const [customerRead] = await rbacModule.createRbacPolicies([
-            {
-              key: "customer:read",
-              resource: "customer",
-              operation: "read",
-              name: "Read Customers",
-            },
-          ])
-          const [customerCreate] = await rbacModule.createRbacPolicies([
-            {
-              key: "customer:create",
-              resource: "customer",
-              operation: "create",
-              name: "Create Customers",
-            },
-          ])
-          const [productWildcard] = await rbacModule.createRbacPolicies([
-            {
-              key: "product:*",
-              resource: "product",
-              operation: "*",
-              name: "Manage Products",
-            },
-          ])
-          const [universalRead] = await rbacModule.createRbacPolicies([
-            {
-              key: "*:read",
-              resource: "*",
-              operation: "read",
-              name: "Read Anything",
-            },
-          ])
-          const [rbacRoleUpdate] = await rbacModule.createRbacPolicies([
-            {
-              key: "rbac_role:update",
-              resource: "rbac_role",
-              operation: "update",
-              name: "Update Roles",
-            },
-          ])
+          const productRead = await ensureRbacPolicy(rbacModule, {
+            key: "product:read",
+            resource: "product",
+            operation: "read",
+            name: "Read Products",
+          })
+          const productCreate = await ensureRbacPolicy(rbacModule, {
+            key: "product:create",
+            resource: "product",
+            operation: "create",
+            name: "Create Products",
+          })
+          const productUpdate = await ensureRbacPolicy(rbacModule, {
+            key: "product:update",
+            resource: "product",
+            operation: "update",
+            name: "Update Products",
+          })
+          const customerRead = await ensureRbacPolicy(rbacModule, {
+            key: "customer:read",
+            resource: "customer",
+            operation: "read",
+            name: "Read Customers",
+          })
+          const customerCreate = await ensureRbacPolicy(rbacModule, {
+            key: "customer:create",
+            resource: "customer",
+            operation: "create",
+            name: "Create Customers",
+          })
+          const productWildcard = await ensureRbacPolicy(rbacModule, {
+            key: "product:*",
+            resource: "product",
+            operation: "*",
+            name: "Manage Products",
+          })
+          const universalRead = await ensureRbacPolicy(rbacModule, {
+            key: "*:read",
+            resource: "*",
+            operation: "read",
+            name: "Read Anything",
+          })
+          const rbacRoleUpdate = await ensureRbacPolicy(rbacModule, {
+            key: "rbac_role:update",
+            resource: "rbac_role",
+            operation: "update",
+            name: "Update Roles",
+          })
 
           productReadPolicyId = productRead.id
           productCreatePolicyId = productCreate.id
@@ -1534,7 +1534,6 @@ medusaIntegrationTestRunner({
         let testUser2
 
         beforeEach(async () => {
-          const userModule = container.resolve(Modules.USER)
           const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
 
           // Create a role for testing

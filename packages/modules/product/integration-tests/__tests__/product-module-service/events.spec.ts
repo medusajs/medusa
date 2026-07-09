@@ -319,9 +319,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
           // which is now orphaned and garbage-collected by the module.
           expect(emittedEvents).toEqual(
             expect.arrayContaining([
-              composeMessage(ProductEvents.PRODUCT_OPTION_DELETED, {
-                data: expect.objectContaining({ id: expectedDeletedOption.id }),
-                object: "product_option",
+              composeMessage(ProductEvents.PRODUCT_PRODUCT_OPTION_DELETED, {
+                data: expect.objectContaining({ id: expect.any(String) }),
+                object: "product_product_option",
                 source: Modules.PRODUCT,
                 action: CommonEvents.DELETED,
               }),

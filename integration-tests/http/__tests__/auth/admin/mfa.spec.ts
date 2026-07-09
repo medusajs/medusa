@@ -42,9 +42,11 @@ const enrollTotpFactor = async (api) => {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
-    beforeEach(async () => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      await dbUtils.snapshot()
     })
 
     describe("MFA HTTP routes", () => {
