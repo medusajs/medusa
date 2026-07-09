@@ -274,6 +274,25 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## pnpm Lockfile Config Mismatch (ERR_PNPM_LOCKFILE_CONFIG_MISMATCH)
+
+If your build fails with the following error, the `patchedDependencies` configuration in your `package.json` does not match what is recorded in `pnpm-lock.yaml`:
+
+```bash
+ERR_PNPM_LOCKFILE_CONFIG_MISMATCH Cannot proceed with the frozen installation.
+The current "patchedDependencies" configuration doesn't match
+the value found in the lockfile
+```
+
+This happens when you add, remove, or modify patch files in the `patches/` directory without regenerating the lockfile. Cloud uses `--frozen-lockfile` for reproducible builds, so the lockfile must reflect the current patch configuration.
+
+To fix this error:
+
+1. Run `pnpm install` locally to regenerate the lockfile.
+2. Commit the updated `pnpm-lock.yaml` file.
+
+---
+
 ## Private npm Registry Authentication Failures
 
 If your storefront or backend build fails with an authentication error like the following, your private npm registry credentials are not available during the build:
@@ -372,7 +391,6 @@ This is because Cloud does not currently support Node.js middlewares in Next.js 
 2. Downgrade your storefront to Next.js 15, which does not have this limitation.
 
 ---
-
 
 ## npm Cache Errors During Build
 
