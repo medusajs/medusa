@@ -300,6 +300,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/loyalty/links-to-other-modules"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/loyalty/module-options/page.mdx",
+    "pathname": "/commerce-modules/loyalty/module-options"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/loyalty/page.mdx",
     "pathname": "/commerce-modules/loyalty"
   },
@@ -1856,6 +1860,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/api-routes/middleware-registration"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/api-routes/route-registration-error/page.mdx",
+    "pathname": "/troubleshooting/api-routes/route-registration-error"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",
     "pathname": "/troubleshooting/cors-errors"
   },
@@ -1906,6 +1914,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/modules/resolve-path/page.mdx",
     "pathname": "/troubleshooting/modules/resolve-path"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/nextjs-build-404/page.mdx",
+    "pathname": "/troubleshooting/nextjs-build-404"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/nextjs-node-25/page.mdx",

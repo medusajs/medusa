@@ -27,7 +27,9 @@ const moduleWithAlias = (tsconfigPaths: Record<string, string[]>): string => {
 // Alias `@models` resolving inside the module.
 const aliasInModule = moduleWithAlias({ "@models": ["./src/models"] })
 // Wildcard alias `@models/*` resolving inside the module.
-const aliasSubpathInModule = moduleWithAlias({ "@models/*": ["./src/models/*"] })
+const aliasSubpathInModule = moduleWithAlias({
+  "@models/*": ["./src/models/*"],
+})
 // Alias that points OUTSIDE the module — must still be flagged.
 const aliasOutsideModule = moduleWithAlias({
   "@external": ["../../other-module/src/models"],
@@ -109,6 +111,17 @@ ruleTester.run("link-no-cross-module-relationship", rule, {
     // Relative import that stays inside the module (sibling models/ dir).
     {
       filename: "/repo/src/modules/company/models/company.ts",
+      code: `
+        import { model } from "@medusajs/framework/utils"
+        import Office from "./office"
+        export default model.define("company", {
+          offices: model.hasMany(() => Office, {}),
+        })
+      `,
+    },
+    // Same-module sibling import with Windows path separators.
+    {
+      filename: "C:\\repo\\src\\modules\\company\\models\\company.ts",
       code: `
         import { model } from "@medusajs/framework/utils"
         import Office from "./office"

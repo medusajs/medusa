@@ -40,7 +40,7 @@ import {
   ModuleBootstrapOptions,
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
-import { createQuery, RemoteQuery } from "./remote-query"
+import { createQuery } from "./remote-query"
 import { MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
@@ -498,11 +498,6 @@ async function MedusaApp_({
     (mod) => Object.values(mod)[0]
   )
 
-  const remoteQuery = new RemoteQuery({
-    modulesLoaded,
-    relationMap,
-  })
-
   const applyMigration = async ({
     modulesNames,
     action = "run",
@@ -682,7 +677,8 @@ async function MedusaApp_({
     modules: allModules,
     link: remoteLink,
     query: createQuery({
-      remoteQuery,
+      modulesLoaded,
+      relationMap,
       indexModule,
       container: sharedContainer_,
     }) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,
