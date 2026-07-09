@@ -3073,6 +3073,107 @@ medusaIntegrationTestRunner({
           })
         })
 
+        it("should preserve tax line data field on order after cart completion", async () => {
+          const taxService = appContainer.resolve(Modules.TAX)
+          await taxService.createTaxRegions([
+            {
+              country_code: "GB",
+              provider_id: "tp_tax-data-provider_data-provider",
+              default_tax_rate: {
+                name: "GB Standard Rate",
+                rate: 20,
+                code: "GB_STD",
+              },
+            },
+          ])
+
+          const gbRegion = (
+            await api.post(
+              "/admin/regions",
+              { name: "GB Tax Data", currency_code: "gbp", countries: ["gb"] },
+              adminHeaders
+            )
+          ).data.region
+
+          const gbProduct = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "GB Tax Test Product",
+                status: ProductStatus.PUBLISHED,
+                options: [{ title: "Size", values: ["S"] }],
+                variants: [
+                  {
+                    title: "S",
+                    manage_inventory: false,
+                    options: { Size: "S" },
+                    prices: [{ amount: 1000, currency_code: "gbp" }],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const gbCart = (
+            await api.post(
+              "/store/carts",
+              {
+                currency_code: "gbp",
+                region_id: gbRegion.id,
+                sales_channel_id: salesChannel.id,
+                shipping_address: {
+                  address_1: "1 Oxford Street",
+                  city: "London",
+                  country_code: "GB",
+                  postal_code: "W1D 1AN",
+                },
+                items: [{ variant_id: gbProduct.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              "/store/payment-collections",
+              { cart_id: gbCart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+
+          const response = await api.post(
+            `/store/carts/${gbCart.id}/complete`,
+            {},
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          const order = (
+            await api.get(
+              `/admin/orders/${response.data.order.id}?fields=items.tax_lines.*`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(order.items[0].tax_lines).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                code: "GB_STD",
+                provider_id: "tax-data-provider",
+                data: { state_rate: 4.0, county_rate: 3.0, city_rate: 1.9 },
+              }),
+            ])
+          )
+        })
+
         describe("empty cart validation", () => {
           it("should fail to complete an empty cart via the store endpoint", async () => {
             const emptyCart = (
