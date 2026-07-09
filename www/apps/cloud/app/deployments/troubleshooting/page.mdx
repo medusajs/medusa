@@ -274,6 +274,53 @@ If neither of the steps above resolves the issue and the storefront build logs r
 
 ---
 
+## pnpm Install Frozen Lockfile Failures
+
+If your Cloud build fails with exit code 1 during the `pnpm install` step and the error message only says "process did not complete successfully", the cause is often a lockfile or dependency issue that is hidden in pnpm's full output.
+
+Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducible builds. This means your `pnpm-lock.yaml` must be committed and kept in sync with `package.json`.
+
+### Common Causes
+
+- **Lockfile drift**: The `pnpm-lock.yaml` file was not committed after updating `package.json`.
+- **pnpm version mismatch**: The version of pnpm used locally differs from the one used in Cloud builds.
+- **Native build dependencies**: A package with native binaries fails to build in the Cloud environment.
+- **Registry connectivity issues**: A package registry is unreachable during the build.
+
+### Retrieve Full Build Logs
+
+The Cloud dashboard may truncate build output. Use the [Cloud CLI](../../cli/page.mdx) to retrieve the full pnpm install logs:
+
+```bash
+# Install the CLI
+npm install @medusajs/mcloud -g
+
+# Login
+mcloud login
+
+# List recent deployments to find the failed deployment ID
+mcloud deployments list \
+  --organization org_123 \
+  --project proj_123
+
+# Fetch the full build logs
+mcloud deployments build-logs deploy_123 \
+  --organization org_123 \
+  --project proj_123
+```
+
+Replace `org_123`, `proj_123`, and `deploy_123` with your actual IDs.
+
+### Fix a Lockfile Mismatch
+
+If the logs show a lockfile error, regenerate the lockfile locally:
+
+1. Run `pnpm install` locally to update the lockfile.
+2. Commit the updated `pnpm-lock.yaml`.
+3. Push the changes to trigger a new deployment.
+
+---
+
 ## Next.js 16 Middlewares Not Supported on Cloud
 
 If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:
