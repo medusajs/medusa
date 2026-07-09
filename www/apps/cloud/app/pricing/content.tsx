@@ -6,6 +6,15 @@ import FeatureSections from "../../components/Pricing/FeatureSections"
 import { H2, Hr } from "docs-ui"
 
 export default async function PricingPage() {
+  if (
+    process.env.NEXT_PUBLIC_ENV === "CI" ||
+    process.env.NEXT_PUBLIC_ENV === "preview" ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview"
+  ) {
+    return (
+      <div>Pricing page is not available in the CI / Preview environment.</div>
+    )
+  }
   const data = await loadPricingData()
 
   const heroPricingData = data.find((item) => item._type === "heroPricing")
