@@ -1490,6 +1490,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       findOptions_ = augmentFindOptionsWithCrossModuleJoins(findOptions_, {
         entityName: this.getEntityName(),
+        entityTable: this.tableName,
         primaryKey: this.getPrimaryKeyField(),
         defaultSchema: this.getConnectionSchema(manager),
       })
