@@ -891,7 +891,7 @@ export default class PromotionModuleService
         const attributeValue = budgetUsageContext[attribute]
 
         if (!attributeValue) {
-          this.logger_.warn(
+          this.logger_.debug(
             `Attribute value for "${attribute}" is required by promotion campaign budget`
           )
           continue
