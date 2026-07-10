@@ -28,7 +28,17 @@ export const generatedSidebars = [
         "type": "category",
         "title": "Tips",
         "autogenerate_path": "/tips",
+        "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/tips/layout-configurations",
+            "title": "Configure Layouts",
+            "description": "",
+            "children": []
+          },
           {
             "loaded": true,
             "isPathHref": true,

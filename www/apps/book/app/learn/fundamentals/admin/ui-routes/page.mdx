@@ -478,6 +478,86 @@ You also use the `useLoaderData` hook to access the data returned by the `loader
 
 ---
 
+## Set UI Route Page Title
+
+<Note>
+
+This feature is available starting [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2).
+
+</Note>
+
+{/* By default, a UI route's page title is set to the `label` property of the route's configuration.
+
+You can also set it to a dynamic value, which is useful for UI routes that accept path parameters. For example, if you have a brand details page, you can set the page title to the brand's name. */}
+
+{/* To set the page title of a UI route different than the `label` property, export a `handle` object with a `seo` property in the UI route's file: */}
+
+To set the page title of a UI route, export a `handle` object with a `seo` property in the UI route's file. It can return a string, or it can accept a `match` object whose `data` property holds the data returned by the `loader` function. This is useful for UI routes that accept path parameters, allowing you to set the page title dynamically.
+
+For example:
+
+export const seoHighlights = [
+  ["26", "loader", "Define a loader function to fetch the brand data."],
+  ["36", "seo", "Set the document title using the fetched brand data."],
+  ["37", "match", "The match object holds the data returned by the loader in its `data` property."],
+]
+
+```tsx title="src/admin/routes/brands/[id]/page.tsx" highlights={seoHighlights}
+import { Container, Heading } from "@medusajs/ui"
+import { LoaderFunctionArgs, UIMatch, useLoaderData } from "react-router-dom"
+// Path to the JS SDK
+import { sdk } from "../../../lib/sdk"
+
+type BrandResponse = {
+  brand: {
+    name: string
+  }
+}
+
+const BrandPage = () => {
+  const { brand } = useLoaderData() as Awaited<BrandResponse>
+
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">{brand.name}</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export default BrandPage
+
+export async function loader({ params }: LoaderFunctionArgs) {
+  const { id } = params
+  const { brand } = await sdk.client.fetch<BrandResponse>(`/admin/brands/${id}`)
+
+  return {
+    brand,
+  }
+}
+
+export const handle = {
+  seo: (match: UIMatch<BrandResponse>) => ({
+    title: match.data?.brand.name || "Brand",
+  }),
+}
+```
+
+In the `loader` function, you retrieve the brand from a custom API route and return it.
+
+Then, in the `handle.seo` function, you receive the `match` object whose `data` property holds the data returned by the `loader` function. You use this data to return the dynamic title.
+
+When you open the UI route at `http://localhost:9000/app/brands/123`, the browser tab's title will show the brand's name, such as `Acme - Medusa`.
+
+<Note title="Tip">
+
+If the `seo` function returns an empty `title` or doesn't return one, the dashboard falls back to the route's [sidebar label](#show-ui-route-in-the-sidebar), then its [breadcrumb](#set-ui-route-breadcrumbs), and finally the default `Medusa` title.
+
+</Note>
+
+---
+
 ## Admin Components List
 
 To build admin customizations that match the Medusa Admin's designs and layouts, refer to [this guide](!resources!/admin-components) to find common components.
