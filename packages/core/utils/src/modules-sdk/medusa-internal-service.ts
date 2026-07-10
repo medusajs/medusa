@@ -446,16 +446,28 @@ export function MedusaInternalService<
       return shouldReturnArray ? entities : entities[0]
     }
 
-    delete(idOrSelector: string, sharedContext?: Context): Promise<string[]>
-    delete(idOrSelector: string[], sharedContext?: Context): Promise<string[]>
-    delete(idOrSelector: object, sharedContext?: Context): Promise<string[]>
-    delete(idOrSelector: object[], sharedContext?: Context): Promise<string[]>
+    delete(
+      idOrSelector: string,
+      sharedContext?: Context
+    ): Promise<string[] | Record<string, any>[]>
+    delete(
+      idOrSelector: string[],
+      sharedContext?: Context
+    ): Promise<string[] | Record<string, any>[]>
+    delete(
+      idOrSelector: object,
+      sharedContext?: Context
+    ): Promise<string[] | Record<string, any>[]>
+    delete(
+      idOrSelector: object[],
+      sharedContext?: Context
+    ): Promise<string[] | Record<string, any>[]>
     delete(
       idOrSelector: {
         selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
       },
       sharedContext?: Context
-    ): Promise<string[]>
+    ): Promise<string[] | Record<string, any>[]>
 
     @InjectTransactionManager(propertyRepositoryName)
     async delete(
@@ -468,7 +480,7 @@ export function MedusaInternalService<
             selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
           },
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<string[]> {
+    ): Promise<string[] | Record<string, any>[]> {
       if (
         !isDefined(idOrSelector) ||
         (Array.isArray(idOrSelector) && !idOrSelector.length)
@@ -542,11 +554,11 @@ export function MedusaInternalService<
         const eventManager = manager.getEventManager()
 
         deletedIds.forEach((deletedId) => {
-          // `delete` returns the primary key value(s) for each deleted row: a
-          // flat value for single primary keys and an object keyed by the
-          // primary key property names for composite keys. Build the event
-          // payload using the model's real primary key(s) rather than a
-          // hardcoded `id`.
+          // `delete` returns a flat primary key value for single primary keys
+          // and an object keyed by the primary key property names for composite
+          // keys. Build the event payload using the model's real primary key(s)
+          // rather than a hardcoded `id`, so models with a custom (non-id) or
+          // composite primary key emit the correct identifier.
           const entity = isObject(deletedId)
             ? deletedId
             : { [primaryKeys[0]]: deletedId }

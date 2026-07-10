@@ -161,7 +161,7 @@ export class MikroOrmBaseRepository<const T extends object = object>
   delete(
     idsOrPKs: FindOptions<T>["where"],
     context?: Context
-  ): Promise<string[]> {
+  ): Promise<string[] | Record<string, any>[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -279,7 +279,10 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  delete(ids: string[], context?: Context): Promise<string[]> {
+  delete(
+    ids: string[],
+    context?: Context
+  ): Promise<string[] | Record<string, any>[]> {
     throw new Error("Method not implemented.")
   }
 }
@@ -429,7 +432,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
     async delete(
       filters: FindOptions<T>["where"],
       context?: Context
-    ): Promise<string[]> {
+    ): Promise<string[] | Record<string, any>[]> {
       const manager = this.getActiveManager<SqlEntityManager>(context)
 
       // Resolve the model's real primary key(s) so the RETURNING clause and the
@@ -466,9 +469,9 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       return await builder
         .returning(primaryKeyColumns)
         .then((rows: Record<string, any>[]) => {
-          // Preserve the flat `string[]` shape for the common single primary
-          // key case. Composite keys are returned as objects keyed by the real
-          // primary key property names.
+          // For the common single primary key case, return a flat array of the
+          // primary key values. For composite keys, return an array of objects
+          // keyed by the real primary key property names.
           if (primaryKeys.length === 1) {
             return rows.map((row) => row[primaryKeyColumns[0]])
           }
@@ -478,7 +481,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
               acc[key] = row[primaryKeyColumns[index]]
               return acc
             }, {} as Record<string, any>)
-          ) as unknown as string[]
+          )
         })
     }
 

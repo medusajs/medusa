@@ -256,6 +256,22 @@ class CustomPkEntity {
   deleted_at: Date | null
 }
 
+// Entity with a composite primary key
+@Entity()
+class CompositePkEntity {
+  @PrimaryKey({ columnType: "text" })
+  foo: string
+
+  @PrimaryKey({ columnType: "text" })
+  bar: string
+
+  @Property()
+  title: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+}
+
 const Entity1Repository = mikroOrmBaseRepositoryFactory(Entity1)
 const Entity2Repository = mikroOrmBaseRepositoryFactory(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory(Entity3)
@@ -263,6 +279,8 @@ const Entity4Repository = mikroOrmBaseRepositoryFactory(Entity4)
 const Entity5Repository = mikroOrmBaseRepositoryFactory(Entity5)
 const Entity6Repository = mikroOrmBaseRepositoryFactory(Entity6)
 const CustomPkEntityRepository = mikroOrmBaseRepositoryFactory(CustomPkEntity)
+const CompositePkEntityRepository =
+  mikroOrmBaseRepositoryFactory(CompositePkEntity)
 
 describe("mikroOrmRepository", () => {
   let orm!: MikroORM
@@ -290,6 +308,9 @@ describe("mikroOrmRepository", () => {
   const customPkManager = () => {
     return new CustomPkEntityRepository({ manager: manager.fork() })
   }
+  const compositePkManager = () => {
+    return new CompositePkEntityRepository({ manager: manager.fork() })
+  }
 
   beforeEach(async () => {
     await dropDatabase(
@@ -307,6 +328,7 @@ describe("mikroOrmRepository", () => {
           Entity5,
           Entity6,
           CustomPkEntity,
+          CompositePkEntity,
         ],
         clientUrl: getDatabaseURL(dbName),
       })
@@ -1467,6 +1489,30 @@ describe("mikroOrmRepository", () => {
       const remaining = await customPkManager().find({ where: {} })
       expect(remaining).toHaveLength(1)
       expect(remaining[0].code).toEqual("code-2")
+    })
+
+    it("should delete an entity with a composite primary key and return the primary key values keyed by property name", async () => {
+      const seedManager = orm.em.fork()
+      await compositePkManager().create(
+        [
+          { foo: "foo-1", bar: "bar-1", title: "first" },
+          { foo: "foo-2", bar: "bar-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await compositePkManager().delete({
+        foo: "foo-1",
+        bar: "bar-1",
+      })
+
+      expect(deleted).toEqual([{ foo: "foo-1", bar: "bar-1" }])
+
+      const remaining = await compositePkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].foo).toEqual("foo-2")
+      expect(remaining[0].bar).toEqual("bar-2")
     })
   })
 
