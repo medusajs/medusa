@@ -289,6 +289,24 @@ describe("Client", () => {
     })
   })
 
+  describe("Blocked storage", () => {
+    it("should not throw when reading the storage getter throws", async () => {
+      // Mimicking a sandboxed iframe where accessing the storage getter throws
+      global.window = {} as any
+      Object.defineProperty(global.window, "localStorage", {
+        configurable: true,
+        get() {
+          throw new Error("SecurityError")
+        },
+      })
+
+      expect(() => new Client({ baseUrl })).not.toThrow()
+
+      // Cleaning up after this specific test
+      global.window = undefined as any
+    })
+  })
+
   describe("Custom Storage", () => {
     const mockSyncStorage = {
       storage: new Map<string, string>(),

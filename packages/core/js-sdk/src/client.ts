@@ -33,11 +33,23 @@ const getBaseUrl = (passedBaseUrl: string) => {
 }
 
 const hasStorage = (storage: "localStorage" | "sessionStorage") => {
-  if (typeof window !== "undefined") {
-    return storage in window
+  if (typeof window === "undefined") {
+    return false
   }
 
-  return false
+  // Reading the storage getter can throw (for example a sandboxed iframe
+  // with an opaque origin), so access it inside a try/catch.
+  try {
+    const value = window[storage]
+
+    return Boolean(
+      value &&
+        typeof value.getItem === "function" &&
+        typeof value.setItem === "function"
+    )
+  } catch {
+    return false
+  }
 }
 
 const toBase64 = (str: string) => {
