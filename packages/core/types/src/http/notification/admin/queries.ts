@@ -1,6 +1,9 @@
 import { BaseFilterable } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
+/**
+ * The filters to apply when listing notifications.
+ */
 export interface AdminNotificationListParams
   extends BaseFilterable<AdminNotificationListParams>,
     FindParams {
@@ -22,4 +25,7 @@ export interface AdminNotificationListParams
   to?: string | string[]
 }
 
+/**
+ * The parameters to retrieve a notification by ID.
+ */
 export interface AdminNotificationParams extends SelectParams {}
