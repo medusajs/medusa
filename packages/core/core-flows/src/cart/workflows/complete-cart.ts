@@ -11,6 +11,7 @@ import {
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -594,7 +595,7 @@ export const completeCartWorkflow = createWorkflow(
         }
       )
 
-      parallelize(
+      const [, , createdReservations] = parallelize(
         createRemoteLinkStep(linksToCreate),
         updateCartsStep([updateCompletedAt]),
         reserveInventoryStep(formatedInventoryItems),
@@ -607,6 +608,21 @@ export const completeCartWorkflow = createWorkflow(
           },
         })
       )
+
+      const reservationCreatedEvents = transform(
+        { createdReservations, createdOrder },
+        ({ createdReservations, createdOrder }) => {
+          return (createdReservations ?? []).map((reservation) => ({
+            id: reservation.id,
+            order_id: createdOrder.id,
+          }))
+        }
+      )
+
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
 
       /**
        * @ignore

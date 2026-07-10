@@ -10,6 +10,7 @@ import {
   MathBN,
   OrderChangeStatus,
   OrderEditWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createStep,
@@ -271,8 +272,38 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       prepareConfirmInventoryInput
     )
 
-    deleteReservationsByLineItemsStep(toRemoveReservationLineItemIds)
-    reserveInventoryStep(formatedInventoryItems)
+    const deletedReservationIds = deleteReservationsByLineItemsStep(
+      toRemoveReservationLineItemIds
+    )
+    const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+    const { reservationDeletedEvents, reservationCreatedEvents } = transform(
+      { deletedReservationIds, createdReservations, order },
+      ({ deletedReservationIds, createdReservations, order }) => {
+        return {
+          reservationDeletedEvents: (deletedReservationIds ?? []).map((id) => ({
+            id,
+            order_id: order.id,
+          })),
+          reservationCreatedEvents: (createdReservations ?? []).map(
+            (reservation) => ({
+              id: reservation.id,
+              order_id: order.id,
+            })
+          ),
+        }
+      }
+    )
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.DELETED,
+      data: reservationDeletedEvents,
+    }).config({ name: "emit-reservation-item-deleted" })
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.CREATED,
+      data: reservationCreatedEvents,
+    }).config({ name: "emit-reservation-item-created" })
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
       input: {
