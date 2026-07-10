@@ -62,6 +62,7 @@ describe("Query integration", () => {
           relations: ["variants"],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
     })
@@ -110,6 +111,7 @@ describe("Query integration", () => {
           relations: [],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
 
@@ -122,6 +124,7 @@ describe("Query integration", () => {
           relations: [],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
 
@@ -149,6 +152,7 @@ describe("Query integration", () => {
           relations: ["prices"],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
 
@@ -184,6 +188,7 @@ describe("Query integration", () => {
           relations: [],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
       expect(modules.link.list).toHaveBeenCalledWith(
@@ -193,6 +198,7 @@ describe("Query integration", () => {
           relations: [],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
       expect(modules.product.listProductVariants).toHaveBeenCalledWith(
@@ -202,6 +208,7 @@ describe("Query integration", () => {
           relations: [],
           args: {},
           take: null,
+          options: { strategy: "select-in" },
         }
       )
     })
