@@ -432,6 +432,17 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
     ): Promise<string[]> {
       const manager = this.getActiveManager<SqlEntityManager>(context)
 
+      // Resolve the model's real primary key(s) so the RETURNING clause and the
+      // returned values do not assume an "id" column, which breaks on models
+      // whose primary key is a custom (non-id) column or a composite key.
+      const primaryKeys = MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(
+        this.entity
+      )
+      const metadata = manager.getDriver().getMetadata().get(this.entity.name)
+      const primaryKeyColumns = primaryKeys.map(
+        (key) => metadata?.properties?.[key]?.fieldNames?.[0] ?? key
+      )
+
       const whereSqlInfo = manager
         .createQueryBuilder(this.entity.name, this.tableName)
         .where(filters)
@@ -452,9 +463,23 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         builder.where(manager.getKnex().raw(...where))
       }
 
-      return await builder.returning("id").then((rows: { id: string }[]) => {
-        return rows.map((row: { id: string }) => row.id)
-      })
+      return await builder
+        .returning(primaryKeyColumns)
+        .then((rows: Record<string, any>[]) => {
+          // Preserve the flat `string[]` shape for the common single primary
+          // key case. Composite keys are returned as objects keyed by the real
+          // primary key property names.
+          if (primaryKeys.length === 1) {
+            return rows.map((row) => row[primaryKeyColumns[0]])
+          }
+
+          return rows.map((row) =>
+            primaryKeys.reduce((acc, key, index) => {
+              acc[key] = row[primaryKeyColumns[index]]
+              return acc
+            }, {} as Record<string, any>)
+          ) as unknown as string[]
+        })
     }
 
     async find(

@@ -541,11 +541,21 @@ export function MedusaInternalService<
           sharedContext.manager) as EntityManager
         const eventManager = manager.getEventManager()
 
-        deletedIds.forEach((id) => {
+        deletedIds.forEach((deletedId) => {
+          // `delete` returns the primary key value(s) for each deleted row: a
+          // flat value for single primary keys and an object keyed by the
+          // primary key property names for composite keys. Build the event
+          // payload using the model's real primary key(s) rather than a
+          // hardcoded `id`.
+          const entity = isObject(deletedId)
+            ? deletedId
+            : { [primaryKeys[0]]: deletedId }
+
           eventManager.dispatchEvent(EventType.afterDelete, {
-            entity: { id },
+            entity,
             meta: {
               className: model.name,
+              primaryKeys,
             } as Parameters<typeof eventManager.dispatchEvent>[2],
           })
         })

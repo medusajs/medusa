@@ -243,12 +243,26 @@ class Entity6 {
   }
 }
 
+// Entity whose primary key is a custom (non-id) column
+@Entity()
+class CustomPkEntity {
+  @PrimaryKey({ columnType: "text" })
+  code: string
+
+  @Property()
+  title: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+}
+
 const Entity1Repository = mikroOrmBaseRepositoryFactory(Entity1)
 const Entity2Repository = mikroOrmBaseRepositoryFactory(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory(Entity3)
 const Entity4Repository = mikroOrmBaseRepositoryFactory(Entity4)
 const Entity5Repository = mikroOrmBaseRepositoryFactory(Entity5)
 const Entity6Repository = mikroOrmBaseRepositoryFactory(Entity6)
+const CustomPkEntityRepository = mikroOrmBaseRepositoryFactory(CustomPkEntity)
 
 describe("mikroOrmRepository", () => {
   let orm!: MikroORM
@@ -273,6 +287,9 @@ describe("mikroOrmRepository", () => {
   const manager6 = () => {
     return new Entity6Repository({ manager: manager.fork() })
   }
+  const customPkManager = () => {
+    return new CustomPkEntityRepository({ manager: manager.fork() })
+  }
 
   beforeEach(async () => {
     await dropDatabase(
@@ -282,7 +299,15 @@ describe("mikroOrmRepository", () => {
 
     orm = await MikroORM.init(
       defineConfig({
-        entities: [Entity1, Entity2, Entity3, Entity4, Entity5, Entity6],
+        entities: [
+          Entity1,
+          Entity2,
+          Entity3,
+          Entity4,
+          Entity5,
+          Entity6,
+          CustomPkEntity,
+        ],
         clientUrl: getDatabaseURL(dbName),
       })
     )
@@ -1400,6 +1425,38 @@ describe("mikroOrmRepository", () => {
       expect(listedEntities[0].entity3.getItems()).toEqual(
         listedEntities[1].entity3.getItems()
       )
+    })
+  })
+
+  describe("delete", () => {
+    it("should delete an entity with a standard id primary key and return the ids", async () => {
+      await manager1().upsertWithReplace([
+        { id: "1", title: "en1" },
+        { id: "2", title: "en2" },
+      ])
+
+      const deleted = await manager1().delete({ id: "1" })
+
+      expect(deleted).toEqual(["1"])
+
+      const remaining = await manager1().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].id).toEqual("2")
+    })
+
+    it("should delete an entity with a custom (non-id) primary key and return the primary key values", async () => {
+      await customPkManager().upsertWithReplace([
+        { code: "code-1", title: "first" },
+        { code: "code-2", title: "second" },
+      ])
+
+      const deleted = await customPkManager().delete({ code: "code-1" })
+
+      expect(deleted).toEqual(["code-1"])
+
+      const remaining = await customPkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].code).toEqual("code-2")
     })
   })
 
