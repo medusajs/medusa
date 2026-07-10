@@ -1033,6 +1033,7 @@ export default class PaymentModuleService
         relations: [
           "payment_sessions.amount",
           "payment_sessions.raw_amount",
+          "payment_sessions.status",
           "payments.captures.amount",
           "payments.captures.raw_amount",
           "payments.refunds.amount",
