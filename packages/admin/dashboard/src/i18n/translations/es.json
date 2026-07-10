@@ -995,6 +995,14 @@
   "customers": {
     "domain": "Clientes",
     "list": {
+      "empty": {
+        "heading": "No hay clientes",
+        "description": "No hay clientes para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ningún cliente coincide con los criterios de filtro actuales."
+      },
       "noRecordsMessage": "Tus clientes aparecerán aquí."
     },
     "create": {

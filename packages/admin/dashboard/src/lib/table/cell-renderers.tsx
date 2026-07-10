@@ -53,6 +53,7 @@ export type BuiltInRenderMode =
   | "variants"
   | "sales_channels_list"
   | "customer_name"
+  | "full_name"
   | "address"
   | "address_summary"
   | "country_code"
@@ -276,6 +277,13 @@ const CustomerNameRenderer: CellRenderer = (_, row, _column, t) => {
   }
 
   return t ? t("customers.guest", "Guest") : "Guest"
+}
+
+// Full name for entities that expose first_name/last_name at the top level
+// (e.g. Customer, User).
+const FullNameRenderer: CellRenderer = (_, row, _column, _t) => {
+  const name = [row.first_name, row.last_name].filter(Boolean).join(" ")
+  return name || "-"
 }
 
 const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
@@ -571,6 +579,7 @@ cellRenderers.set("sales_channels_list", { render: BadgeListRenderer })
 
 // Register order-specific renderers
 cellRenderers.set("customer_name", { render: CustomerNameRenderer })
+cellRenderers.set("full_name", { render: FullNameRenderer })
 cellRenderers.set("address_summary", { render: AddressSummaryRenderer })
 cellRenderers.set("country_code", {
   render: CountryCodeRenderer,

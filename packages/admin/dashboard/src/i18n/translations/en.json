@@ -1028,6 +1028,14 @@
   "customers": {
     "domain": "Customers",
     "list": {
+      "empty": {
+        "heading": "No customers",
+        "description": "There are no customers to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No customers match the current filter criteria."
+      },
       "noRecordsMessage": "Your customers will show up here."
     },
     "create": {

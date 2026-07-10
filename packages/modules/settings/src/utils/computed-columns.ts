@@ -166,6 +166,19 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     description: "Sales channels the product is available in",
     category: "relationship",
   },
+
+  // Customer computed columns
+  {
+    id: "customer_name",
+    name: "Name",
+    renderMode: "full_name",
+    requiredFields: ["first_name", "last_name"],
+    optionalFields: [],
+    entities: ["Customer"],
+    defaultVisible: true,
+    description: "Customer's full name",
+    category: "computed",
+  },
 ]
 
 /**

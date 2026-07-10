@@ -131,12 +131,16 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludeFields: [],
     defaultVisibleFields: [
       "email",
-      "first_name",
-      "last_name",
+      "customer_name",
+      "has_account",
       "created_at",
-      "updated_at",
     ],
-    fieldOrdering: {},
+    fieldOrdering: {
+      email: 100,
+      customer_name: 200,
+      has_account: 300,
+      created_at: 400,
+    },
   },
   User: {
     excludeSuffixes: ["_link"],
