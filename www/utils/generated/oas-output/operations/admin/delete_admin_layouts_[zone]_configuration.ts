@@ -2,7 +2,7 @@
  * @oas [delete] /admin/layouts/{zone}/configuration
  * operationId: DeleteLayoutsZoneConfiguration
  * summary: Clear Configuration of Layout
- * description: Clears all layout configurations for a given zone, including both personal and default configurations. This action will remove any customizations made by the user and revert to the system defaults.
+ * description: Clears all user layout configurations for a given zone. This action will remove any customizations made by the user and revert to the system defaults.
  * x-authenticated: true
  * parameters:
  *   - name: zone

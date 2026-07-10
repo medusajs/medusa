@@ -21,6 +21,7 @@ export const sidebar = [
         type: "category",
         title: "Tips",
         autogenerate_path: "/tips",
+        initialOpen: true,
       },
       {
         type: "category",

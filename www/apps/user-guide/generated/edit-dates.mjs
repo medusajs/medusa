@@ -1,7 +1,7 @@
 export const generatedEditDates = {
-  "app/tips/languages/page.mdx": "2026-04-13T11:59:49.409Z",
-  "app/tips/bulk-editor/page.mdx": "2025-04-07T13:20:09.040Z",
-  "app/tips/lists/page.mdx": "2025-02-14T14:16:04.867Z",
+  "app/tips/languages/page.mdx": "2026-07-10T06:21:41.949Z",
+  "app/tips/bulk-editor/page.mdx": "2026-07-10T06:21:38.367Z",
+  "app/tips/lists/page.mdx": "2026-07-10T06:21:44.183Z",
   "app/settings/sales-channels/page.mdx": "2025-05-30T13:31:09.754Z",
   "app/settings/users/page.mdx": "2026-06-09T08:36:17.375Z",
   "app/page.mdx": "2025-02-26T14:18:27.755Z",
@@ -70,5 +70,6 @@ export const generatedEditDates = {
   "app/loyalty/page.mdx": "2026-04-20T08:43:37.383Z",
   "app/loyalty/store-credits/manage/page.mdx": "2026-04-20T10:38:06.046Z",
   "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
-  "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z"
+  "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z",
+  "app/tips/layout-configurations/page.mdx": "2026-07-10T06:55:25.191Z"
 }
