@@ -4194,6 +4194,62 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should refresh tax lines when the shipping address province changes", async () => {
+          let updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {},
+            storeHeaders
+          )
+
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "CA Default Rate",
+                      code: "CADEFAULT",
+                      rate: 5,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              shipping_address: {
+                ...shippingAddressData,
+                country_code: "us",
+                province: "NY",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_address: expect.objectContaining({ province: "NY" }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "NY Default Rate",
+                      code: "NYDEFAULT",
+                      rate: 6,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
         it("should not generate tax lines for gift card products", async () => {
           const giftCardProduct = (
             await api.post(
