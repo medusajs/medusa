@@ -1,5 +1,5 @@
 import { Prerequisites, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { ChevronUpDown } from "@medusajs/icons"
+import { ChevronUpDown, XCircleSolid } from "@medusajs/icons"
 
 export const metadata = {
   title: `Create Projects and Deploy to Cloud`,
@@ -294,6 +294,19 @@ Then, to add a storefront to an existing project:
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
 
 You can also set a custom domain for the storefront, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
+
+---
+
+## Remove Storefront from Project
+
+You can remove a storefront from a project and only keep the Medusa backend and admin dashboard. To do that:
+
+1. Open the project's dashboard.
+2. Click on the "Settings" tab.
+3. In the "General" tab of the Settings page, find the "Medusa root directory" section.
+4. Click on <InlineIcon Icon={XCircleSolid} alt="remove storefront" /> next to the "Storefront root directory" input field.
+
+This will remove the storefront from the project. Future deployments will only deploy the Medusa backend and admin dashboard.
 
 ---
 
