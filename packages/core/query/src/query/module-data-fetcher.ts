@@ -4,7 +4,6 @@ import {
   LoadedModule,
 } from "@medusajs/types"
 import { isPresent, toPascalCase } from "@medusajs/utils"
-import { LoadStrategy } from "@medusajs/deps/mikro-orm/core"
 import {
   IRemoteDataFetcher,
   RemoteExpandProperty,
@@ -263,18 +262,6 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
 
     if (isIdsArray && idsLength && !hasPagination) {
       options.take = null
-
-      // Retrieve-by-id fetches have no limit, so MikroORM would default to the
-      // joined load strategy and LEFT-JOIN every sibling to-many relation into
-      // a cartesian result set, which can allocate gigabytes and OOM on
-      // entities with many nested collections (e.g. a product with hundreds of
-      // variants). Force the select-in strategy here instead. Unlike
-      // same-transaction service reads, these query-engine fetches operate on a
-      // fresh entity manager, so select-in populates collections correctly.
-      options.options = {
-        ...(options.options ?? {}),
-        strategy: LoadStrategy.SELECT_IN,
-      }
     }
 
     if (isIdsArray && idsLength >= MAX_BATCH_SIZE && !hasPagination) {
@@ -328,7 +315,6 @@ export function getAllFieldsAndRelations(
   relations: string[]
   args: JoinerArgument
   take?: number | null
-  options?: Record<string, any>
 } {
   expand = JSON.parse(JSON.stringify(expand))
 

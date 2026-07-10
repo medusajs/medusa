@@ -1503,12 +1503,16 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       }
 
       if (!("strategy" in findOptions_.options)) {
-        if (findOptions_.options.limit != null || findOptions_.options.offset) {
-          // TODO: from 7+ it will be the default strategy
-          Object.assign(findOptions_.options, {
-            strategy: LoadStrategy.SELECT_IN,
-          })
-        }
+        // Default to SELECT_IN whenever a strategy isn't explicitly set. This
+        // matches MikroORM v7's intended default and avoids the JOINED strategy
+        // LEFT-JOINing all sibling to-many collections into a cartesian result
+        // set, which can allocate gigabytes and OOM on retrieve-by-id paths
+        // (no limit/offset) for entities with many nested to-many relations.
+        // Modules that need JOINED semantics (e.g. the order module's versioned
+        // repository) set the strategy explicitly and are unaffected.
+        Object.assign(findOptions_.options, {
+          strategy: LoadStrategy.SELECT_IN,
+        })
       }
 
       pruneFindOptionsAgainstMetadata(
