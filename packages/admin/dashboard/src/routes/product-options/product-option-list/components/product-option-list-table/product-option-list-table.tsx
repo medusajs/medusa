@@ -73,8 +73,7 @@ export const ProductOptionListTable = () => {
       <DataTable
         data={product_options}
         columns={columns}
-        filters={filters} // show filter bar ...
-        enableFilterMenu={false} // hide filter with search bar so we don't render duplicates
+        filters={filters}
         rowCount={count}
         pageSize={PAGE_SIZE}
         getRowId={(row) => row.id}

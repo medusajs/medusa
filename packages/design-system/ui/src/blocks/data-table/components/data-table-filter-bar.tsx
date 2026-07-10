@@ -3,18 +3,18 @@
 import * as React from "react"
 
 import { DataTableFilter } from "@/blocks/data-table/components/data-table-filter"
-import { DataTableFilterMenu } from "@/blocks/data-table/components/data-table-filter-menu"
-import { DataTableSortingMenu } from "@/blocks/data-table/components/data-table-sorting-menu"
-import { DataTableColumnVisibilityMenu } from "@/blocks/data-table/components/data-table-column-visibility-menu"
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
+import { Button } from "@/components/button"
 import { Skeleton } from "@/components/skeleton"
 import isEqual from "lodash.isequal"
 
 interface DataTableFilterBarProps {
+  /**
+   * The label for the button that clears all active filters.
+   * @default "Clear all"
+   */
   clearAllFiltersLabel?: string
   alwaysShow?: boolean
-  sortingTooltip?: string
-  columnsTooltip?: string
   children?: React.ReactNode
 }
 
@@ -24,20 +24,23 @@ interface LocalFilter {
   isNew: boolean
 }
 
+const isEmptyFilterValue = (value: unknown) =>
+  value === undefined ||
+  value === null ||
+  value === "" ||
+  (Array.isArray(value) && value.length === 0)
+
 const DataTableFilterBar = ({
   clearAllFiltersLabel = "Clear all",
   alwaysShow = false,
-  sortingTooltip,
-  columnsTooltip,
   children,
 }: DataTableFilterBarProps) => {
-  const { instance, enableColumnVisibility } = useDataTableContext()
+  const { instance } = useDataTableContext()
 
   // Local state for managing intermediate filters
   const [localFilters, setLocalFilters] = React.useState<LocalFilter[]>([])
 
   const parentFilterState = instance.getFiltering()
-  const availableFilters = instance.getFilters()
 
   // Sync parent filters with local state
   React.useEffect(() => {
@@ -49,27 +52,36 @@ const DataTableFilterBar = ({
       const updatedLocalFilters: LocalFilter[] = prevLocalFilters
         .filter((f) => parentIds.includes(f.id) || f.isNew)
         .map((f) => {
-          // If filter exists in parent, it's no longer "new"
           if (parentIds.includes(f.id)) {
             const parentValue = parentFilterState[f.id]
-            if (!isEqual(f.value, parentValue) || f.isNew) {
+            // A "new" filter keeps its value picker open until it receives a
+            // non-empty value; only settle it (isNew: false) once it has one.
+            // getFiltering() returns a fresh object each render, so this sync
+            // runs constantly — settling too early would collapse the picker
+            // into an unopenable label-only pill.
+            const isNew = f.isNew && isEmptyFilterValue(parentValue)
+            if (!isEqual(f.value, parentValue) || f.isNew !== isNew) {
               return {
                 id: f.id,
                 value: parentValue,
-                isNew: false,
+                isNew,
               }
             }
           }
           return f
         })
 
-      // Add parent filters that don't exist locally
+      // Add parent filters that don't exist locally. A filter added from the
+      // toolbar filter menu arrives here with an empty default value; mark it
+      // as new so its value picker auto-opens and it self-removes if dismissed
+      // without a value.
       parentIds.forEach((id) => {
         if (!localIds.includes(id)) {
+          const value = parentFilterState[id]
           updatedLocalFilters.push({
             id,
-            value: parentFilterState[id],
-            isNew: false,
+            value,
+            isNew: isEmptyFilterValue(value),
           })
         }
       })
@@ -94,11 +106,6 @@ const DataTableFilterBar = ({
     })
   }, [parentFilterState])
 
-  // Add a new filter locally
-  const addLocalFilter = React.useCallback((id: string, value: unknown) => {
-    setLocalFilters((prev) => [...prev, { id, value, isNew: true }])
-  }, [])
-
   // Update a local filter's value
   const updateLocalFilter = React.useCallback(
     (id: string, value: unknown) => {
@@ -106,13 +113,7 @@ const DataTableFilterBar = ({
         prev.map((f) => (f.id === id ? { ...f, value, isNew: false } : f))
       )
 
-      const isEmptyValue =
-        value === undefined ||
-        value === null ||
-        value === "" ||
-        (Array.isArray(value) && value.length === 0)
-
-      if (isEmptyValue) {
+      if (isEmptyFilterValue(value)) {
         if (parentFilterState[id] !== undefined) {
           instance.removeFilter(id)
         }
@@ -136,29 +137,15 @@ const DataTableFilterBar = ({
     [instance, parentFilterState]
   )
 
+  // Clear every filter, including any new ones not yet committed to the parent
   const clearFilters = React.useCallback(() => {
     setLocalFilters([])
     instance.clearFilters()
   }, [instance])
 
   const filterCount = localFilters.length
-  const hasAvailableFilters = availableFilters.length > 0
 
-  // Check if sorting is enabled
-  const sortableColumns = instance
-    .getAllColumns()
-    .filter((column) => column.getCanSort())
-  const hasSorting = instance.enableSorting && sortableColumns.length > 0
-
-  // Always show the filter bar when there are available filters, sorting, column visibility, or when forced
-  if (
-    filterCount === 0 &&
-    !hasAvailableFilters &&
-    !hasSorting &&
-    !enableColumnVisibility &&
-    !alwaysShow &&
-    !children
-  ) {
+  if (filterCount === 0 && !alwaysShow && !children) {
     return null
   }
 
@@ -167,8 +154,8 @@ const DataTableFilterBar = ({
   }
 
   return (
-    <div className="bg-ui-bg-subtle flex w-full flex-nowrap items-center justify-between gap-2 overflow-x-auto border-t px-6 py-2">
-      <div className="flex flex-nowrap items-center gap-2 md:flex-wrap">
+    <div className="flex w-full flex-nowrap items-center justify-between gap-2 overflow-x-auto border-t px-6 py-2">
+      <div className="flex min-h-[28px] flex-nowrap items-center gap-2 md:flex-wrap">
         {localFilters.map((localFilter) => (
           <DataTableFilter
             key={localFilter.id}
@@ -179,17 +166,21 @@ const DataTableFilterBar = ({
             onRemove={() => removeLocalFilter(localFilter.id)}
           />
         ))}
-        {hasAvailableFilters && (
-          <DataTableFilterMenu onAddFilter={addLocalFilter} />
+        {filterCount > 0 && (
+          <Button
+            variant="transparent"
+            size="small"
+            type="button"
+            className="text-ui-fg-muted hover:text-ui-fg-subtle flex-shrink-0 whitespace-nowrap"
+            onClick={clearFilters}
+          >
+            {clearAllFiltersLabel}
+          </Button>
         )}
       </div>
-      <div className="flex flex-shrink-0 items-center gap-2">
-        {hasSorting && <DataTableSortingMenu tooltip={sortingTooltip} />}
-        {enableColumnVisibility && (
-          <DataTableColumnVisibilityMenu tooltip={columnsTooltip} />
-        )}
-        {children}
-      </div>
+      {children && (
+        <div className="flex flex-shrink-0 items-center gap-2">{children}</div>
+      )}
     </div>
   )
 }
@@ -201,11 +192,13 @@ const DataTableFilterBarSkeleton = ({
   filterCount: number
 }) => {
   return (
-    <div className="bg-ui-bg-subtle flex w-full flex-nowrap items-center gap-2 overflow-x-auto border-t px-6 py-2 md:flex-wrap">
-      {Array.from({ length: filterCount }).map((_, index) => (
-        <Skeleton key={index} className="h-7 w-[180px]" />
-      ))}
-      {filterCount > 0 ? <Skeleton className="h-7 w-[66px]" /> : null}
+    <div className="flex w-full overflow-x-auto border-t px-6 py-2">
+      <div className="flex min-h-[28px] flex-nowrap items-center gap-2 md:flex-wrap">
+        {Array.from({ length: filterCount }).map((_, index) => (
+          <Skeleton key={index} className="h-7 w-[180px]" />
+        ))}
+        {filterCount > 0 ? <Skeleton className="h-7 w-[66px]" /> : null}
+      </div>
     </div>
   )
 }

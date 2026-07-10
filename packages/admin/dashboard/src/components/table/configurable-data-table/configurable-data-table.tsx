@@ -6,6 +6,7 @@ import { SaveViewDialog } from "../save-view-dialog"
 import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
+import { parseFilterParam } from "../../../hooks/table/query"
 import { TableAdapter } from "../../../lib/table/table-adapters"
 
 type DataTableActionProps = {
@@ -78,10 +79,11 @@ export function ConfigurableDataTable<TData>({
   filters.forEach((filter) => {
     const filterKey = filter.id
     if (filterKey && parsedQueryParams[filterKey] !== undefined) {
-      try {
-        parsedQueryParams[filterKey] = JSON.parse(parsedQueryParams[filterKey])
-      } catch {
-        // If parsing fails, keep the original value
+      const value = parseFilterParam(parsedQueryParams[filterKey])
+      if (value === undefined) {
+        delete parsedQueryParams[filterKey]
+      } else {
+        parsedQueryParams[filterKey] = value
       }
     }
   })
@@ -223,8 +225,6 @@ export function ConfigurableDataTable<TData>({
         }
         prefix={queryPrefix}
         actions={actions}
-        enableFilterMenu={false}
-        enableSortingMenu={false}
       />
 
       {saveDialogOpen && (

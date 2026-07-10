@@ -1374,6 +1374,9 @@
         "filterLabel": {
           "type": "string"
         },
+        "columnsLabel": {
+          "type": "string"
+        },
         "searchLabel": {
           "type": "string"
         },
@@ -1512,6 +1515,7 @@
         "sortLabel",
         "collapse",
         "filterLabel",
+        "columnsLabel",
         "searchLabel",
         "date",
         "compare",

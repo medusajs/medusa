@@ -347,6 +347,7 @@
   },
   "filters": {
     "sortLabel": "Ordenar",
+    "columnsLabel": "Columnas",
     "collapse": {
       "all": "Colapsar todo"
     },
