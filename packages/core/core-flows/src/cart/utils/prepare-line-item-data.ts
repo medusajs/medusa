@@ -56,6 +56,9 @@ type AddItemProductDTO = ProductDTO & {
   shipping_profile: { id: string }
 }
 
+/**
+ * The input for the {@link prepareLineItemData} function when using a variant.
+ */
 export interface PrepareVariantLineItemInput extends ProductVariantDTO {
   thumbnail: string
   inventory_items: { inventory: InventoryItemDTO }[]
@@ -69,6 +72,9 @@ export interface PrepareVariantLineItemInput extends ProductVariantDTO {
   }
 }
 
+/**
+ * The input for the {@link prepareLineItemData} function.
+ */
 export interface PrepareLineItemDataInput {
   item?: PrepareItemLineItemInput
   isCustomPrice?: boolean
@@ -80,6 +86,16 @@ export interface PrepareLineItemDataInput {
   isTaxInclusive: boolean
 }
 
+/**
+ * Prepares the data for a cart line item from a variant or custom item input.
+ *
+ * @example
+ * const lineItemData = prepareLineItemData({
+ *   variant,
+ *   unitPrice: 1000,
+ *   isTaxInclusive: false,
+ * })
+ */
 export function prepareLineItemData(data: PrepareLineItemDataInput) {
   const {
     item,
@@ -192,6 +208,14 @@ export function prepareLineItemData(data: PrepareLineItemDataInput) {
   return lineItem
 }
 
+/**
+ * Prepares tax line data from an array of order line item tax line DTOs.
+ *
+ * @example
+ * const taxLines = prepareTaxLinesData([
+ *   { code: "TAX", rate: 0.1, provider_id: "tp_01" },
+ * ])
+ */
 export function prepareTaxLinesData(data: CreateOrderLineItemTaxLineDTO[]) {
   return data.map((d) => ({
     description: d.description,
@@ -204,6 +228,14 @@ export function prepareTaxLinesData(data: CreateOrderLineItemTaxLineDTO[]) {
   }))
 }
 
+/**
+ * Prepares adjustment data from an array of order adjustment DTOs.
+ *
+ * @example
+ * const adjustments = prepareAdjustmentsData([
+ *   { code: "PROMO10", amount: 100, promotion_id: "promo_01" },
+ * ])
+ */
 export function prepareAdjustmentsData(data: CreateOrderAdjustmentDTO[]) {
   return data.map((d) => ({
     code: d.code,
