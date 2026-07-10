@@ -1430,10 +1430,15 @@ describe("mikroOrmRepository", () => {
 
   describe("delete", () => {
     it("should delete an entity with a standard id primary key and return the ids", async () => {
-      await manager1().upsertWithReplace([
-        { id: "1", title: "en1" },
-        { id: "2", title: "en2" },
-      ])
+      const seedManager = orm.em.fork()
+      await manager1().create(
+        [
+          { id: "1", title: "en1" },
+          { id: "2", title: "en2" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
 
       const deleted = await manager1().delete({ id: "1" })
 
@@ -1445,10 +1450,15 @@ describe("mikroOrmRepository", () => {
     })
 
     it("should delete an entity with a custom (non-id) primary key and return the primary key values", async () => {
-      await customPkManager().upsertWithReplace([
-        { code: "code-1", title: "first" },
-        { code: "code-2", title: "second" },
-      ])
+      const seedManager = orm.em.fork()
+      await customPkManager().create(
+        [
+          { code: "code-1", title: "first" },
+          { code: "code-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
 
       const deleted = await customPkManager().delete({ code: "code-1" })
 
