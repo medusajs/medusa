@@ -223,7 +223,10 @@ export function getLineItemTotals(
     isDefined(item.detail?.return_received_quantity) ||
     isDefined(item.detail?.return_dismissed_quantity)
   ) {
-    setRefundableTotal(item, discountsTotal, totals)
+    const refundableDiscountTotal = isTaxInclusive
+      ? discountsTotal
+      : (discountsSubtotalFull ?? discountsTotal)
+    setRefundableTotal(item, refundableDiscountTotal, totals)
   }
 
   // Per-unit total should be based on full-quantity net total to support lifecycle totals consistently
