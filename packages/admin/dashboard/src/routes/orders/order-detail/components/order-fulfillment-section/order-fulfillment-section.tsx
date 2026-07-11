@@ -323,7 +323,7 @@ const Fulfillment = ({
   }
 
   if (isError) {
-    throw error
+    stock_location = null
   }
 
   const isValidUrl = (url?: string) => {
