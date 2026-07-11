@@ -697,6 +697,12 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
     switch (event.type) {
       case "payment_intent.created":
+        // A PaymentIntent being created does not mean a payment has been made.
+        // The customer has not yet submitted their payment details at this
+        // point. Cart completion is only triggered on definitive events such
+        // as amount_capturable_updated or succeeded.
+        return { action: PaymentActions.NOT_SUPPORTED }
+
       case "payment_intent.processing":
         const webhookPaymentMethod = intent.payment_method
         const paymentMethod =
