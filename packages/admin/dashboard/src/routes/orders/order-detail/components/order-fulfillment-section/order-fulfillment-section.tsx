@@ -217,7 +217,7 @@ const Fulfillment = ({
     fulfillment.shipping_option?.service_zone?.fulfillment_set?.type ===
     FulfillmentSetType.Pickup
 
-  const { stock_location, isError, error } = useStockLocation(
+  let { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
     undefined,
     {
@@ -323,7 +323,7 @@ const Fulfillment = ({
   }
 
   if (isError) {
-    throw error
+    stock_location = undefined
   }
 
   const isValidUrl = (url?: string) => {
