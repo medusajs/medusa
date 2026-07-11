@@ -146,7 +146,7 @@ export class S3FileService extends AbstractFileProviderService {
     const parsedFilename = path.parse(file.filename)
 
     // TODO: Allow passing a full path for storage per request, not as a global config.
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+    const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
 
     let content: Buffer
@@ -213,7 +213,7 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const parsedFilename = path.parse(fileData.filename)
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+    const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
 
     const pass = new PassThrough()
