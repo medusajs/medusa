@@ -390,4 +390,78 @@ describe("Client", () => {
       })
     })
   })
+
+  describe("hasStorage with blocked storage", () => {
+    const originalLocalStorageDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      "localStorage"
+    )
+    const originalSessionStorageDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      "sessionStorage"
+    )
+
+    afterEach(() => {
+      if (originalLocalStorageDescriptor) {
+        Object.defineProperty(window, "localStorage", originalLocalStorageDescriptor)
+      }
+      if (originalSessionStorageDescriptor) {
+        Object.defineProperty(window, "sessionStorage", originalSessionStorageDescriptor)
+      }
+    })
+
+    it("should not throw when localStorage access is blocked (SecurityError)", () => {
+      Object.defineProperty(window, "localStorage", {
+        get() {
+          throw new DOMException(
+            "Failed to read the 'localStorage' property from 'Window': Access is denied for this document.",
+            "SecurityError"
+          )
+        },
+        configurable: true,
+      })
+
+      expect(() => {
+        new Client({ baseUrl })
+      }).not.toThrow()
+    })
+
+    it("should not throw when sessionStorage access is blocked (SecurityError)", () => {
+      Object.defineProperty(window, "sessionStorage", {
+        get() {
+          throw new DOMException(
+            "Failed to read the 'sessionStorage' property from 'Window': Access is denied for this document.",
+            "SecurityError"
+          )
+        },
+        configurable: true,
+      })
+
+      expect(() => {
+        new Client({ baseUrl })
+      }).not.toThrow()
+    })
+
+    it("should not throw when both storage APIs are blocked", () => {
+      const blockedGetter = (name: string) => () => {
+        throw new DOMException(
+          `Failed to read the '${name}' property from 'Window': Access is denied for this document.`,
+          "SecurityError"
+        )
+      }
+
+      Object.defineProperty(window, "localStorage", {
+        get: blockedGetter("localStorage"),
+        configurable: true,
+      })
+      Object.defineProperty(window, "sessionStorage", {
+        get: blockedGetter("sessionStorage"),
+        configurable: true,
+      })
+
+      expect(() => {
+        new Client({ baseUrl })
+      }).not.toThrow()
+    })
+  })
 })
