@@ -7,6 +7,7 @@ import {
 } from "../../../../../lib/table/table-adapters"
 import { TFunction } from "i18next"
 import { useTranslation } from "react-i18next"
+import { CustomerActions } from "./customer-list-table-actions"
 
 export function createCustomerTableAdapter({
   t,
@@ -48,6 +49,7 @@ export function createCustomerTableAdapter({
       return { data: customers, count, isLoading, isError, error }
     },
     getRowHref: (row) => `/customers/${row.id}`,
+    renderRowActions: (row) => <CustomerActions customer={row} />,
     transformColumns: (columns) => {
       const ALLOWED_FILTERS = [
         "id",

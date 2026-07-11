@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Container, Button } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../data-table"
@@ -7,7 +7,10 @@ import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
 import { parseFilterParam } from "../../../hooks/table/query"
-import { TableAdapter } from "../../../lib/table/table-adapters"
+import {
+  createActionsColumn,
+  TableAdapter,
+} from "../../../lib/table/table-adapters"
 
 type DataTableActionProps = {
   label: string
@@ -49,6 +52,14 @@ export function ConfigurableDataTable<TData>({
   const pageSize = pageSizeProp || adapter.pageSize || 20
   const queryPrefix = queryPrefixProp || adapter.queryPrefix || ""
 
+  // Inject a virtual, toggleable actions column when the adapter defines row
+  // actions. It flows through column state like any other column.
+  const extraColumns = useMemo(() => {
+    return adapter.renderRowActions
+      ? [createActionsColumn(t("fields.actions"))]
+      : undefined
+  }, [adapter, t])
+
   const {
     activeView,
     createView,
@@ -73,6 +84,7 @@ export function ConfigurableDataTable<TData>({
     pageSize,
     queryPrefix,
     transformColumns: adapter.transformColumns,
+    extraColumns,
   })
 
   const parsedQueryParams = { ...queryParams }

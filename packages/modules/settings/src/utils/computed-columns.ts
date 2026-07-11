@@ -133,12 +133,15 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     id: "variants_count",
     name: "Variants",
     renderMode: "count",
-    requiredFields: ["variants"],
+    requiredFields: ["variants.id"],
     optionalFields: [],
     entities: ["Product"],
     defaultVisible: true,
     description: "Number of product variants",
     category: "metric",
+    metadata: {
+      list_field: "variants",
+    },
   },
   {
     id: "categories_display",
@@ -178,6 +181,35 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     defaultVisible: true,
     description: "Customer's full name",
     category: "computed",
+  },
+
+  // Customer group computed columns
+  {
+    id: "customers_count",
+    name: "Customers",
+    renderMode: "count",
+    requiredFields: ["customers.id"],
+    optionalFields: [],
+    entities: ["CustomerGroup"],
+    defaultVisible: true,
+    description: "Number of customers in the group",
+    category: "metric",
+    metadata: {
+      list_field: "customers",
+    },
+  },
+
+  // Price list computed columns
+  {
+    id: "price_overrides",
+    name: "Price overrides",
+    renderMode: "price_overrides_count",
+    requiredFields: [],
+    optionalFields: [],
+    entities: ["PriceList"],
+    defaultVisible: true,
+    description: "Number of price overrides in the price list",
+    category: "metric",
   },
 ]
 

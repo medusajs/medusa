@@ -142,6 +142,39 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       created_at: 400,
     },
   },
+  CustomerGroup: {
+    excludeSuffixes: ["_link"],
+    excludePrefixes: ["raw_"],
+    excludeFields: [],
+    defaultVisibleFields: [
+      "name",
+      "customers_count",
+      "created_at",
+      "updated_at",
+    ],
+    fieldOrdering: {
+      name: 100,
+      customers_count: 200,
+      created_at: 300,
+      updated_at: 400,
+    },
+  },
+  PriceList: {
+    excludeSuffixes: ["_link"],
+    excludePrefixes: ["raw_"],
+    excludeFields: [],
+    defaultVisibleFields: ["title", "status", "price_overrides"],
+    fieldOrdering: {
+      title: 100,
+      status: 200,
+      price_overrides: 300,
+    },
+    // The price list status is derived from status + start/end dates, so it
+    // needs the dedicated renderer registered by the price list table.
+    fieldRenderModes: {
+      status: "price_list_status",
+    },
+  },
   User: {
     excludeSuffixes: ["_link"],
     excludePrefixes: ["raw_"],

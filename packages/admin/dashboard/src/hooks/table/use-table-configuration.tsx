@@ -34,6 +34,11 @@ export interface UseTableConfigurationOptions {
   pageSize?: number
   queryPrefix?: string
   transformColumns?: TableAdapter<unknown>["transformColumns"]
+  /**
+   * Extra client-side columns to append to the API columns (e.g. the virtual
+   * actions column). They participate in column state like any other column.
+   */
+  extraColumns?: HttpTypes.AdminColumn[]
 }
 
 export interface UseTableConfigurationReturn {
@@ -70,6 +75,7 @@ export function useTableConfiguration({
   entity,
   queryPrefix = "",
   transformColumns,
+  extraColumns,
 }: UseTableConfigurationOptions): UseTableConfigurationReturn {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const [_, setSearchParams] = useSearchParams()
@@ -90,8 +96,13 @@ export function useTableConfiguration({
     if (!rawApiColumns) {
       return undefined
     }
-    return transformColumns ? transformColumns(rawApiColumns) : rawApiColumns
-  }, [rawApiColumns, transformColumns])
+    const transformed = transformColumns
+      ? transformColumns(rawApiColumns)
+      : rawApiColumns
+    return extraColumns?.length
+      ? [...transformed, ...extraColumns]
+      : transformed
+  }, [rawApiColumns, transformColumns, extraColumns])
 
   // Extract relationship filter configs from filterable columns only
   const relationshipFilterConfigs = useMemo(() => {

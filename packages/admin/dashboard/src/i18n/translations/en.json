@@ -2515,6 +2515,16 @@
   "priceLists": {
     "domain": "Price Lists",
     "subtitle": "Create sales or override prices for specific conditions.",
+    "list": {
+      "empty": {
+        "heading": "No price lists",
+        "description": "There are no price lists to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No price lists match the current filter criteria."
+      }
+    },
     "delete": {
       "confirmation": "You are about to delete the price list \"{{title}}\". This action cannot be undone.",
       "successToast": "Price list \"{{title}}\" was successfully deleted."
@@ -3444,6 +3454,7 @@
     "selectValues": "Select Values"
   },
   "fields": {
+    "actions": "Actions",
     "amount": "Amount",
     "reference": "Reference",
     "reference_id": "Reference ID",

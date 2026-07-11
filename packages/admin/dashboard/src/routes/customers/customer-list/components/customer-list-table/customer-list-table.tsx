@@ -1,4 +1,3 @@
-import { PencilSquare } from "@medusajs/icons"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -7,10 +6,6 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 import { HttpTypes } from "@medusajs/types"
-import {
-  Action,
-  ActionMenu,
-} from "../../../../../components/common/action-menu"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useCustomers } from "../../../../../hooks/api/customers"
@@ -18,7 +13,7 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { CustomerActions } from "./customer-list-table-actions"
 
 const PAGE_SIZE = 20
 
@@ -86,39 +81,6 @@ export const CustomerListTable = () => {
         }}
       />
     </Container>
-  )
-}
-
-const CustomerActions = ({
-  customer,
-}: {
-  customer: HttpTypes.AdminCustomer
-}) => {
-  const { t } = useTranslation()
-  const { can } = usePermissions()
-
-  const actions: Action[] = []
-
-  if (can("customer", "update")) {
-    actions.push({
-      icon: <PencilSquare />,
-      label: t("actions.edit"),
-      to: `/customers/${customer.id}/edit`,
-    })
-  }
-
-  if (!actions.length) {
-    return null
-  }
-
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions,
-        },
-      ]}
-    />
   )
 }
 

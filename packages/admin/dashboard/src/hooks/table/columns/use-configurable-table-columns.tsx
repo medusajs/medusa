@@ -21,6 +21,41 @@ export function useConfigurableTableColumns<TData = any>(
     }
 
     return apiColumns.map((apiColumn) => {
+      // Virtual actions column: rendered from the adapter's row actions rather
+      // than the cell-renderer registry, but kept as a normal column so it
+      // participates in visibility/ordering.
+      if (apiColumn.render_mode === "actions") {
+        return columnHelper.accessor(() => null, {
+          id: apiColumn.field,
+          header: () => null,
+          cell: ({ row }: { row: any }) => {
+            const content = adapter?.renderRowActions?.(row.original)
+            if (!content) {
+              return null
+            }
+            return (
+              <div
+                className="flex items-center justify-end"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {content}
+              </div>
+            )
+          },
+          meta: {
+            name: apiColumn.name,
+            column: apiColumn,
+          },
+          computed: {
+            required_fields: [],
+            optional_fields: [],
+          },
+          enableHiding: apiColumn.hideable,
+          enableSorting: false,
+          align: "right",
+        } as any)
+      }
+
       let renderType = apiColumn.computed?.type
 
       if (!renderType) {

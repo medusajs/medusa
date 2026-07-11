@@ -2485,6 +2485,16 @@
   "priceLists": {
     "domain": "Listas de Precios",
     "subtitle": "Crea precios de venta o anula precios para condiciones específicas.",
+    "list": {
+      "empty": {
+        "heading": "No hay listas de precios",
+        "description": "No hay listas de precios para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "No hay listas de precios que coincidan con los criterios de filtro actuales."
+      }
+    },
     "delete": {
       "confirmation": "Estás a punto de eliminar la lista de precios {{title}}. Esta acción no puede deshacerse.",
       "successToast": "La lista de precios {{title}} fue eliminada exitosamente."

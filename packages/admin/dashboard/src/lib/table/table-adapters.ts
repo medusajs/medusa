@@ -5,6 +5,7 @@ import {
   DataTableEmptyStateProps,
   DataTableFilter,
 } from "@medusajs/ui"
+import { ReactNode } from "react"
 
 /**
  * Adapter interface for configurable tables.
@@ -99,6 +100,45 @@ export interface TableAdapter<TData> {
    * Optional entity display name for headings
    */
   entityName?: string
+
+  /**
+   * Domain-specific row actions. When provided, a trailing, toggleable
+   * "actions" column is injected that renders this per row — typically the
+   * domain's existing action-menu component (icon trigger + menu), which can
+   * own its permissions, prompts and mutations.
+   */
+  renderRowActions?: (row: TData) => ReactNode
+}
+
+/**
+ * Field/id used for the injected virtual actions column.
+ */
+export const ACTIONS_COLUMN_FIELD = "actions"
+
+/**
+ * Build the synthetic column definition for the row actions column. It is
+ * injected client-side (it does not come from the API) but is shaped like an
+ * API column so it participates in column visibility, ordering and view
+ * persistence like any other column. Rendered specially by
+ * `useConfigurableTableColumns` via the adapter's `getRowActions`.
+ */
+export function createActionsColumn(name: string): HttpTypes.AdminColumn {
+  return {
+    id: ACTIONS_COLUMN_FIELD,
+    name,
+    field: ACTIONS_COLUMN_FIELD,
+    sortable: false,
+    hideable: true,
+    default_visible: true,
+    data_type: "string",
+    semantic_type: "actions",
+    context: "display",
+    render_mode: "actions",
+    // Keep the actions column last by default.
+    default_order: 100000,
+    filter: { enabled: false },
+    category: "computed",
+  }
 }
 
 /**
