@@ -38,6 +38,20 @@ export function resolveSessionCookieSecurity({
   return { sameSite: false, secure: false }
 }
 
+/**
+ * Registers the compression middleware on the Express app when enabled in config.
+ * Extracted as a separate function so it can be unit-tested independently.
+ */
+export function registerCompressionIfEnabled(
+  app: Express,
+  configModule: { projectConfig: { http?: { compression?: any } } }
+) {
+  const { enabled, ...rest } = compressionOptions(configModule.projectConfig)
+  if (enabled) {
+    app.use(compression({ ...rest, filter: shouldCompressResponse }))
+  }
+}
+
 export async function expressLoader({
   app,
   container,
@@ -175,12 +189,7 @@ export async function expressLoader({
   app.use(session(sessionOpts))
 
   // Wire compression middleware when enabled in config
-  const compressionConfig = compressionOptions(configModule.projectConfig)
-  if (compressionConfig.enabled) {
-    app.use(
-      compression({ ...compressionConfig, filter: shouldCompressResponse })
-    )
-  }
+  registerCompressionIfEnabled(app, configModule)
 
   // Currently we don't allow configuration of static files, but this can be revisited as needed.
   app.use("/static", express.static(path.join(baseDir, "static")))
