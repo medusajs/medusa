@@ -15,13 +15,15 @@ This documentation provides a reference to the data models in the Product Module
 erDiagram
 	Product ||--|| ProductVariant : variants
 	Product }|--|{ ProductTag : tags
-	Product ||--|| ProductOption : options
+	Product }|--|{ ProductOption : options
+	Product ||--|| ProductProductOption : product_options
 	Product ||--|| ProductImage : images
 	Product }|--|{ ProductCategory : categories
 	ProductCategory ||--|| ProductCategory : category_children
 	ProductCollection ||--|| Product : products
 	ProductImage }|--|{ ProductVariant : variants
 	ProductOption ||--|| ProductOptionValue : values
+	ProductProductOption }|--|{ ProductOptionValue : values
 	ProductOptionValue }|--|{ ProductVariant : variants
 	ProductType ||--|| Product : products
 
@@ -35,6 +37,8 @@ erDiagram
 - [ProductImage](../../product_models/variables/product_models.ProductImage/page.mdx)
 - [ProductOption](../../product_models/variables/product_models.ProductOption/page.mdx)
 - [ProductOptionValue](../../product_models/variables/product_models.ProductOptionValue/page.mdx)
+- [ProductProductOption](../../product_models/variables/product_models.ProductProductOption/page.mdx)
+- [ProductProductOptionValue](../../product_models/variables/product_models.ProductProductOptionValue/page.mdx)
 - [ProductTag](../../product_models/variables/product_models.ProductTag/page.mdx)
 - [ProductType](../../product_models/variables/product_models.ProductType/page.mdx)
 - [ProductVariant](../../product_models/variables/product_models.ProductVariant/page.mdx)
