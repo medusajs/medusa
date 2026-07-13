@@ -40,7 +40,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   // Reference pages are the JSON doc-model (page.json) — convert the DocPage to
   // Markdown directly rather than running the MDX cleaner over it.
   const cleanMdContent = filePathFromMap.endsWith("page.json")
-    ? docPageToMarkdown_(fileContent)
+    ? await docPageToMarkdown_(fileContent)
     : await getCleanMd_(fileContent, {
     before: [
       [
@@ -128,15 +128,21 @@ const getCleanMd_ = unstable_cache(
 )
 
 /** Converts a reference DocPage JSON string to Markdown. */
-function docPageToMarkdown_(content: string): string {
-  try {
-    return docPageToMarkdown(JSON.parse(content), {
-      baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-    })
-  } catch {
-    return ""
+const docPageToMarkdown_ = unstable_cache(
+  async (content: string): Promise<string> => {
+    try {
+      return docPageToMarkdown(JSON.parse(content), {
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+      })
+    } catch {
+      return ""
+    }
+  },
+  ["doc-page-md"],
+  {
+    revalidate: 3600,
   }
-}
+)
 
 const getFileFromMaps = unstable_cache(
   async (path: string) => {
