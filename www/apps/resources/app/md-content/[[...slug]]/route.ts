@@ -1,4 +1,4 @@
-import { addExtraToMd, getCleanMd } from "docs-utils"
+import { addExtraToMd, docPageToMarkdown, getCleanMd } from "docs-utils"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -37,7 +37,11 @@ export async function GET(req: NextRequest, { params }: Params) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMd_(fileContent, {
+  // Reference pages are the JSON doc-model (page.json) — convert the DocPage to
+  // Markdown directly rather than running the MDX cleaner over it.
+  const cleanMdContent = filePathFromMap.endsWith("page.json")
+    ? docPageToMarkdown_(fileContent)
+    : await getCleanMd_(fileContent, {
     before: [
       [
         crossProjectLinksPlugin,
@@ -122,6 +126,17 @@ const getCleanMd_ = unstable_cache(
     revalidate: 3600,
   }
 )
+
+/** Converts a reference DocPage JSON string to Markdown. */
+function docPageToMarkdown_(content: string): string {
+  try {
+    return docPageToMarkdown(JSON.parse(content), {
+      baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+    })
+  } catch {
+    return ""
+  }
+}
 
 const getFileFromMaps = unstable_cache(
   async (path: string) => {
