@@ -45,7 +45,6 @@ import { rule as serviceConstructorMustCallSuper } from "./service-constructor-m
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
 import { rule as useMedusaErrorNotGenericError } from "./use-medusa-error-not-generic-error"
-import { rule as useQueryContextUtility } from "./use-query-context-utility"
 import { rule as useValidatedBodyOrQuery } from "./use-validated-body-or-query"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeys } from "./prefer-container-registration-keys"
@@ -116,7 +115,6 @@ export const rules = {
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
   "use-medusa-error-not-generic-error": useMedusaErrorNotGenericError,
-  "use-query-context-utility": useQueryContextUtility,
   "use-validated-body-or-query": useValidatedBodyOrQuery,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
   "prefer-container-registration-keys": preferContainerRegistrationKeys,
