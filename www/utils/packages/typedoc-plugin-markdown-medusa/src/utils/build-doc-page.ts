@@ -151,7 +151,10 @@ function buildContainerBlocks(
 
     // Members that own a document (e.g. an interface's methods) become links.
     if (linked.length) {
-      blocks.push({ kind: "heading", level: 2, text: group.title, id: slugId(group.title) })
+      // Index pages list their namespaces without a "Namespaces" header.
+      if (group.title !== "Namespaces") {
+        blocks.push({ kind: "heading", level: 2, text: group.title, id: slugId(group.title) })
+      }
       blocks.push({
         kind: "linkList",
         items: linked.map((child) => ({
