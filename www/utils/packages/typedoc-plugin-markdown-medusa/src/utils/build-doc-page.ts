@@ -87,12 +87,31 @@ export function buildDocPage({
     }
   }
 
+  // Ensure heading ids are unique within the page (rehype-slug style), since
+  // repeated section titles (e.g. per-hook "Example"/"Input") would otherwise
+  // collide, producing duplicate DOM ids and duplicate TOC keys.
+  dedupeHeadingIds(blocks)
+
   return {
     slug: theme.getRelativeUrl(model.url || location),
     title,
     frontmatter,
     toc: buildToc(blocks),
     blocks,
+  }
+}
+
+/** Makes every `heading` block's id unique, appending `-1`, `-2`, ... */
+function dedupeHeadingIds(blocks: DocBlock[]): void {
+  const counts = new Map<string, number>()
+  for (const block of blocks) {
+    if (block.kind !== "heading") {
+      continue
+    }
+    const base = block.id || slugId(block.text)
+    const seen = counts.get(base) ?? 0
+    counts.set(base, seen + 1)
+    block.id = seen === 0 ? base : `${base}-${seen}`
   }
 }
 
