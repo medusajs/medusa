@@ -44,6 +44,17 @@ export type DocWorkflowEvent = {
   since?: string
 }
 
+export type DocEvent = {
+  name: string
+  id: string
+  description?: string
+  payload?: string
+  workflows?: { name: string; href: string }[]
+  deprecated?: boolean
+  deprecatedMessage?: string
+  since?: string
+}
+
 export type DocBlock =
   | { kind: "markdown"; html: string }
   | { kind: "heading"; level: number; text: string; id: string }
@@ -67,6 +78,10 @@ export type DocBlock =
       badges: { variant?: string; label: string; tooltip?: string }[]
     }
   | { kind: "workflowEvents"; events: DocWorkflowEvent[] }
+  | {
+      kind: "eventsListing"
+      categories: { title?: string; events: DocEvent[] }[]
+    }
 
 export type DocPage = {
   slug: string

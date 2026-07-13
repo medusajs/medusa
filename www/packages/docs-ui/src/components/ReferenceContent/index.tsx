@@ -12,6 +12,7 @@ import { SourceCodeLink } from "@/components/SourceCodeLink"
 import { MarkdownContent } from "@/components/MarkdownContent"
 import { H1 } from "@/components/Heading/H1"
 import { ReferenceWorkflowEvents } from "./WorkflowEvents"
+import { ReferenceEventsListing } from "./EventsListing"
 
 export type ReferenceContentProps = {
   page: DocPage
@@ -100,6 +101,8 @@ const Block = ({ block }: { block: DocBlock }) => {
       )
     case "workflowEvents":
       return <ReferenceWorkflowEvents events={block.events} />
+    case "eventsListing":
+      return <ReferenceEventsListing categories={block.categories} />
     case "badges":
       return null
     case "table":

@@ -17,6 +17,7 @@ import { parseParams } from "./params-utils.js"
 import { reflectionComponentFormatter } from "./reflection-formatter.js"
 import { splitContentBlocks } from "./parse-code-tabs.js"
 import { buildStepBlocks, buildWorkflowBlocks } from "./build-workflow-blocks.js"
+import { buildEventsListingBlock } from "./build-events-listing.js"
 
 type BuildDocPageOptions = {
   theme: MarkdownTheme
@@ -73,7 +74,17 @@ export function buildDocPage({
     blocks.push(
       ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
     )
-    blocks.push(...buildContainerBlocks(model, theme))
+
+    // The events reference pages render the full events listing instead of the
+    // usual namespace/member links.
+    if (theme.getFormattingOptions(location).isEventsReference) {
+      const eventsBlock = buildEventsListingBlock(model)
+      if (eventsBlock) {
+        blocks.push(eventsBlock)
+      }
+    } else {
+      blocks.push(...buildContainerBlocks(model, theme))
+    }
   }
 
   return {

@@ -113,6 +113,46 @@ function renderBlock(block: DocBlock): string {
           return `${header}${payload}`
         })
         .join("\n")}`
+    case "eventsListing":
+      return block.categories
+        .map((category) => {
+          const parts: string[] = []
+          if (block.categories.length > 1 && category.title) {
+            parts.push(`## ${category.title} Events`)
+          }
+          parts.push("### Summary\n")
+          parts.push(
+            [
+              "| Event | Description |",
+              "| --- | --- |",
+              ...category.events.map(
+                (event) =>
+                  `| [\`${event.name}\`](#${event.id}) | ${
+                    event.description ? oneLine(event.description) : ""
+                  } |`
+              ),
+            ].join("\n")
+          )
+          category.events.forEach((event) => {
+            parts.push(`### ${event.name}`)
+            if (event.description) {
+              parts.push(event.description)
+            }
+            if (event.payload) {
+              parts.push(`#### Payload\n\n${event.payload}`)
+            }
+            if (event.workflows?.length) {
+              parts.push("#### Workflows Emitting this Event\n")
+              parts.push(
+                event.workflows
+                  .map((workflow) => `- [${workflow.name}](${workflow.href})`)
+                  .join("\n")
+              )
+            }
+          })
+          return parts.join("\n\n")
+        })
+        .join("\n\n---\n\n")
     case "table": {
       const header = `| ${block.headers.join(" | ")} |`
       const divider = `| ${block.headers.map(() => "---").join(" | ")} |`

@@ -504,6 +504,30 @@ export declare type DocBlock =
         since?: string
       }[]
     }
+  | {
+      /** The full events reference listing (grouped by module/category). */
+      kind: "eventsListing"
+      categories: {
+        title?: string
+        events: DocEvent[]
+      }[]
+    }
+
+/** A single event in the events reference listing. */
+export declare type DocEvent = {
+  name: string
+  /** Anchor id (slug of the event name). */
+  id: string
+  /** Description as Markdown (links resolved). */
+  description?: string
+  /** The event payload, as a fenced code block. */
+  payload?: string
+  /** Workflows that emit this event, as pre-resolved links. */
+  workflows?: { name: string; href: string }[]
+  deprecated?: boolean
+  deprecatedMessage?: string
+  since?: string
+}
 
 /**
  * A fully-serialized reference page.
