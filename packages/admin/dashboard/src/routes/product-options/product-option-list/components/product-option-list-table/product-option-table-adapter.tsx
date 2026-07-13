@@ -19,9 +19,6 @@ export function createProductOptionTableAdapter({
     entity: "product-options",
     queryPrefix: "po",
     pageSize: 20,
-    defaultFilters: {
-      is_exclusive: "false",
-    },
     emptyState: {
       empty: {
         heading: t("general.noRecordsMessage"),
