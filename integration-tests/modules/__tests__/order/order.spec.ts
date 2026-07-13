@@ -940,7 +940,7 @@ medusaIntegrationTestRunner({
 
       expect(orderSummary.length).toBe(1)
       expect(orderSummary[0].totals.original_order_total).toBe(
-        persistedOrder.summary.original_order_total
+        Number(persistedOrder.summary.original_order_total)
       )
 
       /**
