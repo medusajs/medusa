@@ -8,12 +8,15 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
+import { isWorkflow, isWorkflowStep } from "utils"
 import type { DocBlock, DocPage, DocTypeListItem } from "types"
 import { MarkdownTheme } from "../theme.js"
 import { ReflectionParameterType } from "../types.js"
 import { getPageFrontmatter } from "./frontmatter.js"
 import { parseParams } from "./params-utils.js"
 import { reflectionComponentFormatter } from "./reflection-formatter.js"
+import { splitContentBlocks } from "./parse-code-tabs.js"
+import { buildStepBlocks, buildWorkflowBlocks } from "./build-workflow-blocks.js"
 
 type BuildDocPageOptions = {
   theme: MarkdownTheme
@@ -58,29 +61,19 @@ export function buildDocPage({
 
   const blocks: DocBlock[] = []
 
-  // Leading comment / description prose.
-  const description = getCommentMarkdown(model)
-  if (description) {
-    blocks.push({ kind: "markdown", html: description })
-  }
-
-  // @example block(s).
-  const example = String(Handlebars.helpers.example(model) || "").trim()
-  if (example) {
-    // TODO: parse the example markdown (which embeds <CodeTabs>) into a
-    // structured `codeTabs` block. Kept as prose for the first cut.
-    blocks.push({ kind: "markdown", html: example })
-  }
-
   if (kind === "member") {
+    // Member pages own their comment / example / source per signature.
     blocks.push(...buildMemberBlocks(model as DeclarationReflection, theme))
   } else {
+    // Container / index pages: leading description, then member lists.
+    const description = getCommentMarkdown(model)
+    if (description) {
+      blocks.push({ kind: "markdown", html: description })
+    }
+    blocks.push(
+      ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
+    )
     blocks.push(...buildContainerBlocks(model, theme))
-  }
-
-  const source = extractSourceLink(model)
-  if (source) {
-    blocks.push({ kind: "sourceCodeLink", link: source })
   }
 
   return {
@@ -167,13 +160,27 @@ function buildMemberBlocks(
   const signatures = model.signatures || []
   if (signatures.length) {
     for (const signature of signatures) {
-      blocks.push(...buildSignatureBlocks(signature, model))
+      if (isWorkflow(signature)) {
+        blocks.push(...buildWorkflowBlocks(theme, signature))
+      } else if (isWorkflowStep(signature)) {
+        blocks.push(...buildStepBlocks(theme, signature))
+      } else {
+        blocks.push(...buildSignatureBlocks(signature, model, theme))
+      }
     }
     return blocks
   }
 
-  // Plain declaration (type alias / variable / object literal): render its
-  // resolved type as a property TypeList.
+  // Plain declaration (type alias / variable / object literal): comment,
+  // example, then its resolved type as a property TypeList.
+  const description = getCommentMarkdown(model)
+  if (description) {
+    blocks.push({ kind: "markdown", html: description })
+  }
+  blocks.push(
+    ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
+  )
+
   const types = buildTypeListItems(
     model.children && model.children.length ? model.children : [model],
     model.project
@@ -187,7 +194,8 @@ function buildMemberBlocks(
 
 function buildSignatureBlocks(
   signature: SignatureReflection,
-  owner: DeclarationReflection
+  owner: DeclarationReflection,
+  theme: MarkdownTheme
 ): DocBlock[] {
   const blocks: DocBlock[] = []
 
@@ -195,6 +203,11 @@ function buildSignatureBlocks(
   if (comment) {
     blocks.push({ kind: "markdown", html: comment })
   }
+
+  // @example (may embed <CodeTabs>).
+  blocks.push(
+    ...splitContentBlocks(String(Handlebars.helpers.example(signature) || ""))
+  )
 
   // Parameters
   const parameters = signature.parameters || []
@@ -217,6 +230,10 @@ function buildSignatureBlocks(
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types: returnItems })
     }
   }
+
+  // NOTE: the `<SourceCodeLink>` component is only rendered for workflows in
+  // the MDX theme; regular members use a "Defined in" footer (member.sources),
+  // which is not yet ported. Tracked as a follow-up.
 
   return blocks
 }
@@ -261,12 +278,6 @@ function getSummary(reflection: Reflection): string | undefined {
     return undefined
   }
   return String(Handlebars.helpers.comment(summary) || "").trim() || undefined
-}
-
-function extractSourceLink(reflection: Reflection): string | undefined {
-  const rendered = String(Handlebars.helpers.sourceCodeLink.call(reflection) || "")
-  const match = rendered.match(/link="([^"]+)"/)
-  return match?.[1]
 }
 
 /** Builds a table of contents from the heading blocks. */
