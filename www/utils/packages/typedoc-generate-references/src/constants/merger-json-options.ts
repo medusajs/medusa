@@ -5,28 +5,21 @@ import mergerOptions from "./merger-options.js"
 
 /**
  * Merge-phase options that emit the references doc-model (`DocPage` JSON) via
- * the `json` theme instead of MDX.
+ * the `json` theme. This is the only reference output — MDX is no longer
+ * generated.
  *
  * It reuses every setting from {@link mergerOptions} (entry points, the
- * regex-keyed `formatting` map, `allowedProjectDocuments`, `maxLevel`, ...) so
- * page slugs and content shaping stay identical to the MDX pipeline, and only
- * overrides:
+ * regex-keyed `formatting` map, `allowedProjectDocuments`, `maxLevel`, ...) for
+ * content shaping / page slugs, and overrides:
  *  - `theme`: selects `JsonTheme` (registered by typedoc-plugin-markdown-medusa)
- *  - `out`: a parallel `references-json` directory so both artifacts can be
- *    produced side by side during the incremental migration
  *  - `entryDocument`: the JSON index document name
+ *  - `out`: the canonical `references` directory (now holding `page.json`)
  */
 const mergerJsonOptions: Partial<TypeDocOptions> = {
   ...mergerOptions,
   theme: "json",
   entryDocument: "_index.json",
-  out: path.join(
-    rootPathPrefix,
-    "www",
-    "apps",
-    "resources",
-    "references-json"
-  ),
+  out: path.join(rootPathPrefix, "www", "apps", "resources", "references"),
 }
 
 export default mergerJsonOptions

@@ -18,23 +18,13 @@ program
     "The name(s) of the reference(s) to generate. Use `all` to generate all references"
   )
   .option("--merge", "Merge references after generating them.", false)
-  .option(
-    "--format <format>",
-    "Output format when merging: `mdx`, `json`, or `both`.",
-    "mdx"
-  )
   .action(generate)
 
 program
   .command("merge")
   .description(
-    "Merge JSON references located in the `www/utils/generated/typedoc-json-output` directory."
+    "Merge the per-reference JSON in `www/utils/generated/typedoc-json-output` into the references doc-model."
   )
-  .option(
-    "--format <format>",
-    "Output format: `mdx`, `json`, or `both`.",
-    "mdx"
-  )
-  .action((options) => merge(options.format))
+  .action(() => merge())
 
 program.parse()

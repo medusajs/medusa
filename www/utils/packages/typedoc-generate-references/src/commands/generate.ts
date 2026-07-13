@@ -9,16 +9,13 @@ import formatColoredLog from "../utils/format-colored-logs.js"
 import generateReference from "../utils/generate-reference.js"
 import getModelOptions from "../utils/get-model-options.js"
 
-import type { MergeFormat } from "./merge.js"
-
 type Options = {
   merge: boolean
-  format?: MergeFormat
 }
 
 export default async function generate(
   names: string[],
-  { merge: mergeOption, format = "mdx" }: Options
+  { merge: mergeOption }: Options
 ) {
   const references = names.includes("all") ? allReferences : names
 
@@ -102,6 +99,6 @@ export default async function generate(
   console.info(chalk.bgGreen("Finished generating references."))
 
   if (mergeOption) {
-    await merge(format)
+    await merge()
   }
 }

@@ -7,7 +7,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
-    "generate:references": "yarn start generate all --merge --format both"
+    "generate:references": "yarn start generate all --merge"
   },
   "publishConfig": {
     "access": "public"
