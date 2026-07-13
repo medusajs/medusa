@@ -1,7 +1,8 @@
 "use client"
 
-import React from "react"
-import type { DocBlock, DocPage } from "types"
+import React, { useEffect } from "react"
+import type { DocBlock, DocPage, ToCItem } from "types"
+import { useSiteConfig } from "@/providers/SiteConfig"
 import { TypeList } from "@/components/TypeList"
 import { CodeTabs } from "@/components/CodeTabs"
 import { CodeTab } from "@/components/CodeTabs/Item"
@@ -99,6 +100,22 @@ const Block = ({ block }: { block: DocBlock }) => {
  * the runtime MDX serialization + `MDXClient` path for migrated references.
  */
 export const ReferenceContent = ({ page }: ReferenceContentProps) => {
+  const { setFrontmatter, setToc } = useSiteConfig()
+
+  // Feed the page's frontmatter/TOC into the site config so the "On this page"
+  // content menu works (same data the MDX pipeline injected via InjectedMDXData).
+  useEffect(() => {
+    setFrontmatter(page.frontmatter)
+  }, [page])
+
+  useEffect(() => {
+    // generate_toc pages build the TOC by scanning the rendered headings, so
+    // start from null to show the loading state until that scan runs.
+    setToc(
+      page.frontmatter?.generate_toc ? null : ((page.toc as ToCItem[]) ?? [])
+    )
+  }, [page])
+
   return (
     <>
       <H1 variant="content">{page.title}</H1>

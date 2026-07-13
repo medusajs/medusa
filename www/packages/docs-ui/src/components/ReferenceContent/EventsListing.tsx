@@ -57,7 +57,9 @@ function EventDetail({ event, level }: { event: DocEvent; level: number }) {
       ) : null}
       {event.payload ? (
         <>
-          <DocHeading level={level + 1}>Payload</DocHeading>
+          <DocHeading level={level + 1} id={`${event.id}-payload`}>
+            Payload
+          </DocHeading>
           <CodeBlock
             source={(fence?.[2] ?? event.payload).trim()}
             lang={fence?.[1] || "ts"}
@@ -66,7 +68,7 @@ function EventDetail({ event, level }: { event: DocEvent; level: number }) {
       ) : null}
       {event.workflows?.length ? (
         <>
-          <DocHeading level={level + 1}>
+          <DocHeading level={level + 1} id={`${event.id}-workflows`}>
             Workflows Emitting this Event
           </DocHeading>
           <Ul>
@@ -96,12 +98,22 @@ export const ReferenceEventsListing = ({
 
   return (
     <>
-      {categories.map((category, index) => (
+      {categories.map((category, index) => {
+        const categorySlug =
+          (category.title || `category-${index}`)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "") || `category-${index}`
+        return (
         <React.Fragment key={index}>
           {multi && category.title ? (
-            <DocHeading level={2}>{category.title} Events</DocHeading>
+            <DocHeading level={2} id={`${categorySlug}-events`}>
+              {category.title} Events
+            </DocHeading>
           ) : null}
-          <DocHeading level={summaryLevel}>Summary</DocHeading>
+          <DocHeading level={summaryLevel} id={`${categorySlug}-summary`}>
+            Summary
+          </DocHeading>
           <Table>
             <Table.Header>
               <Table.Row>
@@ -131,7 +143,8 @@ export const ReferenceEventsListing = ({
             <EventDetail key={event.id} event={event} level={eventLevel} />
           ))}
         </React.Fragment>
-      ))}
+        )
+      })}
     </>
   )
 }
