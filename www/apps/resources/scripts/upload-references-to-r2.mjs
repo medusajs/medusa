@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
 /**
- * Uploads references/ to Cloudflare R2.
+ * Uploads references/ (MDX) and references-json/ (JSON doc-model) to
+ * Cloudflare R2.
  *
  * Usage:
  *   node ./scripts/upload-references-to-r2.mjs
- *     Full upload of references/ directory.
+ *     Full upload of the references/ and references-json/ directories.
  *
- *   node ./scripts/upload-references-to-r2.mjs --upload references/js-client/foo.mdx
- *     Upload only the listed files (paths relative to app root).
+ *   node ./scripts/upload-references-to-r2.mjs --upload references-json/js-sdk/foo/page.json
+ *     Upload only the listed files (paths relative to app root; page.mdx or
+ *     page.json).
  *
- *   node ./scripts/upload-references-to-r2.mjs --remove references/js-client/old.mdx
+ *   node ./scripts/upload-references-to-r2.mjs --remove references/js-client/old/page.mdx
  *     Remove the listed keys from R2 (paths relative to app root).
  *
  *   --upload and --remove can be combined in a single invocation.
@@ -105,16 +107,25 @@ async function removeFile(r2Key) {
   console.log(`  removed: ${r2Key}`)
 }
 
-async function uploadDir(localDir, r2Prefix) {
-  const entries = await readdir(localDir, { withFileTypes: true })
+// Content files uploaded to R2, keyed by directory -> the file name to match.
+const CONTENT_FILES = ["page.mdx", "page.json"]
+
+async function uploadDir(localDir, r2Prefix, targetBasename) {
+  let entries
+  try {
+    entries = await readdir(localDir, { withFileTypes: true })
+  } catch {
+    console.log(`  skipped (missing): ${localDir}`)
+    return
+  }
   for (const entry of entries) {
-    if (entry.isFile() && entry.name !== "page.mdx") {
+    if (entry.isFile() && entry.name !== targetBasename) {
       continue
     }
     const localPath = path.join(localDir, entry.name)
     const r2Key = `${r2Prefix}/${entry.name}`
     if (entry.isDirectory()) {
-      await uploadDir(localPath, r2Key)
+      await uploadDir(localPath, r2Key, targetBasename)
     } else {
       await uploadFile(localPath, r2Key)
     }
@@ -125,25 +136,32 @@ async function uploadDir(localDir, r2Prefix) {
 
 if (isSelective) {
   for (const relPath of filesToUpload) {
-    if (path.basename(relPath) !== "page.mdx") {
-      console.log(`  skipped (not page.mdx): ${relPath}`)
+    if (!CONTENT_FILES.includes(path.basename(relPath))) {
+      console.log(`  skipped (not a page.mdx/page.json): ${relPath}`)
       continue
     }
     await uploadFile(path.join(process.cwd(), relPath), `resources/${relPath}`)
   }
   for (const relPath of filesToRemove) {
-    if (path.basename(relPath) !== "page.mdx") {
-      console.log(`  skipped (not page.mdx): ${relPath}`)
+    if (!CONTENT_FILES.includes(path.basename(relPath))) {
+      console.log(`  skipped (not a page.mdx/page.json): ${relPath}`)
       continue
     }
     await removeFile(`resources/${relPath}`)
   }
 } else {
+  // Full upload of both the MDX references and the JSON doc-model references.
   const referencesDir = path.join(process.cwd(), "references")
   console.log(
     `Uploading ${referencesDir} → r2://${bucket}/resources/references`
   )
-  await uploadDir(referencesDir, "resources/references")
+  await uploadDir(referencesDir, "resources/references", "page.mdx")
+
+  const referencesJsonDir = path.join(process.cwd(), "references-json")
+  console.log(
+    `Uploading ${referencesJsonDir} → r2://${bucket}/resources/references-json`
+  )
+  await uploadDir(referencesJsonDir, "resources/references-json", "page.json")
 }
 
 console.log("Done.")

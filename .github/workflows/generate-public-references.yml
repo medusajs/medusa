@@ -82,7 +82,7 @@ jobs:
 
       - name: Generate References
         if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: "yarn start generate ${{ github.event.inputs.referenceName || 'all' }} --merge"
+        run: "yarn start generate ${{ github.event.inputs.referenceName || 'all' }} --merge --format both"
         working-directory: www/utils/packages/typedoc-generate-references
 
       - name: Generate References
@@ -108,6 +108,7 @@ jobs:
           labels: "type: chore"
           add-paths: |
             www/apps/resources/references/**
+            www/apps/resources/references-json/**
             www/apps/resources/generated/**
             www/utils/generated/typedoc-json-output
           branch: "docs/generate-reference"
