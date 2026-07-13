@@ -21,3 +21,7 @@ export const PriceListDetailBreadcrumb = (
 
   return <span>{price_list.title}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminPriceListResponse>) => ({
+  title: match.data?.price_list?.title,
+})

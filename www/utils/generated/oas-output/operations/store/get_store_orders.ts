@@ -104,21 +104,13 @@
  *         - type: string
  *           title: status
  *           description: The order's status.
- *         - type: string
- *           title: status
- *           description: The order's status.
- *         - type: string
- *           title: status
- *           description: The order's status.
- *         - type: string
- *           title: status
- *           description: The order's status.
- *         - type: string
- *           title: status
- *           description: The order's status.
- *         - type: string
- *           title: status
- *           description: The order's status.
+ *           enum:
+ *             - canceled
+ *             - requires_action
+ *             - pending
+ *             - completed
+ *             - draft
+ *             - archived
  *         - type: array
  *           description: The order's status.
  *           items:

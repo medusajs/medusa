@@ -4,6 +4,7 @@ import { DashboardPlugin } from "./dashboard-app/types"
 import displayModule from "virtual:medusa/displays"
 import formModule from "virtual:medusa/forms"
 import i18nModule from "virtual:medusa/i18n"
+import layoutModule from "virtual:medusa/layouts"
 import menuItemModule from "virtual:medusa/menu-items"
 import routeModule from "virtual:medusa/routes"
 import widgetModule from "virtual:medusa/widgets"
@@ -17,6 +18,7 @@ const localPlugin = {
   formModule,
   menuItemModule,
   i18nModule,
+  layoutModule,
 }
 
 interface AppProps {

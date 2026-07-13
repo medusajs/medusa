@@ -64,6 +64,7 @@ const DEFAULT_RELATIONS = [
   "*fulfillments.labels",
   "*fulfillments.labels",
   "*payment_collections",
+  "*payment_collections.payment_sessions",
   "*payment_collections.payments",
   "*payment_collections.payments.refunds",
   "*payment_collections.payments.refunds.refund_reason",

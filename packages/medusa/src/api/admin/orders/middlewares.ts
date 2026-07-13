@@ -7,6 +7,7 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
 import {
+  AdminAuthorizeOrderPaymentSession,
   AdminCompleteOrder,
   AdminCreateOrderCreditLines,
   AdminGetOrderShippingOptionList,
@@ -169,6 +170,23 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/orders/:id/complete",
     middlewares: [
       validateAndTransformBody(AdminCompleteOrder),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/orders/:id/payment-sessions/authorize",
+    middlewares: [
+      validateAndTransformBody(AdminAuthorizeOrderPaymentSession),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

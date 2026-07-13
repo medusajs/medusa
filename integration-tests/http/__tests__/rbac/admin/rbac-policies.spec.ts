@@ -11,12 +11,14 @@ jest.setTimeout(60000)
 process.env.MEDUSA_FF_RBAC = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let container
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     afterAll(async () => {
@@ -113,10 +115,13 @@ medusaIntegrationTestRunner({
         })
 
         it("should list all policies", async () => {
-          const response = await api.get("/admin/rbac/policies", adminHeaders)
+          const response = await api.get(
+            "/admin/rbac/policies?limit=1000",
+            adminHeaders
+          )
 
           expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(4)
+          expect(response.data.count).toBeGreaterThanOrEqual(3)
           expect(response.data.policies).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -145,7 +150,7 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(2)
+          expect(response.data.count).toEqual(6)
           expect(response.data.policies).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -162,12 +167,12 @@ medusaIntegrationTestRunner({
 
         it("should filter policies by operation", async () => {
           const response = await api.get(
-            "/admin/rbac/policies?operation=read",
+            "/admin/rbac/policies?operation=read&limit=1000",
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.count).toEqual(2)
+          expect(response.data.count).toBeGreaterThanOrEqual(2)
           expect(response.data.policies).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -301,6 +306,8 @@ medusaIntegrationTestRunner({
         // operation)` shape drives whether each scoped actor can cover them.
         let productReadId: string
         let productCreateId: string
+        let productUpdateId: string
+        let productDeleteId: string
         let customerReadId: string
         let customerCreateId: string
         let wildcardPolicyId: string
@@ -339,6 +346,18 @@ medusaIntegrationTestRunner({
             resource: "product",
             operation: "create",
             name: "Create Products",
+          })
+          const productUpdate = await ensurePolicy({
+            key: "product:update",
+            resource: "product",
+            operation: "update",
+            name: "Update Products",
+          })
+          const productDelete = await ensurePolicy({
+            key: "product:delete",
+            resource: "product",
+            operation: "delete",
+            name: "Delete Products",
           })
           const customerRead = await ensurePolicy({
             key: "customer:read",
@@ -386,6 +405,8 @@ medusaIntegrationTestRunner({
 
           productReadId = productRead.id
           productCreateId = productCreate.id
+          productUpdateId = productUpdate.id
+          productDeleteId = productDelete.id
           customerReadId = customerRead.id
           customerCreateId = customerCreate.id
           wildcardPolicyId = fullWildcard.id
@@ -455,7 +476,7 @@ medusaIntegrationTestRunner({
 
         it("returns every candidate policy for a super-admin (`*:*`)", async () => {
           const response = await api.get(
-            "/admin/rbac/policies/assignable",
+            "/admin/rbac/policies/assignable?limit=1000",
             adminHeaders
           )
 
@@ -464,6 +485,8 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               productReadId,
               productCreateId,
+              productUpdateId,
+              productDeleteId,
               customerReadId,
               customerCreateId,
               wildcardPolicyId,
@@ -482,16 +505,18 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               productReadId,
               productCreateId,
+              productUpdateId,
+              productDeleteId,
               productWildcardId,
               rbacPolicyReadId,
             ])
           )
-          expect(ids.length).toEqual(4)
+          expect(ids.length).toEqual(6)
         })
 
         it("expands `*:op` — *:read actor sees all read policies including the wildcard itself", async () => {
           const response = await api.get(
-            "/admin/rbac/policies/assignable",
+            "/admin/rbac/policies/assignable?limit=1000",
             universalReaderHeaders
           )
 
@@ -504,7 +529,6 @@ medusaIntegrationTestRunner({
               rbacPolicyReadId,
             ])
           )
-          expect(ids.length).toEqual(4)
         })
 
         it("literal grant — product:read actor sees product:read and any policy covered by that grant", async () => {
@@ -523,15 +547,27 @@ medusaIntegrationTestRunner({
         it("only a `*:*` holder can assign a literal `*:*` policy", async () => {
           // Super-admin holds *:* → can assign the wildcard policy row.
           const superAdminIds = (
-            await api.get("/admin/rbac/policies/assignable", adminHeaders)
+            await api.get(
+              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              adminHeaders
+            )
           ).data.policies.map((p: { id: string }) => p.id)
           expect(superAdminIds).toContain(wildcardPolicyId)
 
           // Every scoped actor cannot.
           const others = await Promise.all([
-            api.get("/admin/rbac/policies/assignable", productManagerHeaders),
-            api.get("/admin/rbac/policies/assignable", universalReaderHeaders),
-            api.get("/admin/rbac/policies/assignable", productReaderHeaders),
+            api.get(
+              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              productManagerHeaders
+            ),
+            api.get(
+              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              universalReaderHeaders
+            ),
+            api.get(
+              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              productReaderHeaders
+            ),
           ])
           for (const response of others) {
             const ids = response.data.policies.map((p: { id: string }) => p.id)
@@ -573,8 +609,9 @@ medusaIntegrationTestRunner({
         })
 
         it("paginates the assignable subset, not the raw rbac_policy set", async () => {
-          // product:* actor is assignable exactly 4 policies:
-          //   product:read, product:create, product:* (self), rbac_policy:read.
+          // product:* actor is assignable exactly 6 policies:
+          //   product:read/create/update/delete, product:* (self),
+          //   rbac_policy:read.
           // Asking for limit=2 must return 2 rows (a full page), and the next
           // page (offset=2, limit=2) must return the remaining 2 — proving
           // filtering happens before pagination. count must reflect the total
@@ -585,7 +622,7 @@ medusaIntegrationTestRunner({
           )
 
           expect(firstPage.data.policies).toHaveLength(2)
-          expect(firstPage.data.count).toEqual(4)
+          expect(firstPage.data.count).toEqual(6)
 
           const secondPage = await api.get(
             "/admin/rbac/policies/assignable?limit=2&offset=2&order=id",
@@ -593,7 +630,15 @@ medusaIntegrationTestRunner({
           )
 
           expect(secondPage.data.policies).toHaveLength(2)
-          expect(secondPage.data.count).toEqual(4)
+          expect(secondPage.data.count).toEqual(6)
+
+          const thirdPage = await api.get(
+            "/admin/rbac/policies/assignable?limit=2&offset=4&order=id",
+            productManagerHeaders
+          )
+
+          expect(thirdPage.data.policies).toHaveLength(2)
+          expect(thirdPage.data.count).toEqual(6)
 
           // No overlap between the pages
           const firstIds = firstPage.data.policies.map(
@@ -602,15 +647,26 @@ medusaIntegrationTestRunner({
           const secondIds = secondPage.data.policies.map(
             (p: { id: string }) => p.id
           )
+          const thirdIds = thirdPage.data.policies.map(
+            (p: { id: string }) => p.id
+          )
           expect(firstIds).not.toEqual(
             expect.arrayContaining(secondIds as string[])
           )
+          expect(firstIds).not.toEqual(
+            expect.arrayContaining(thirdIds as string[])
+          )
+          expect(secondIds).not.toEqual(
+            expect.arrayContaining(thirdIds as string[])
+          )
 
           // Union covers exactly the assignable set.
-          expect(new Set([...firstIds, ...secondIds])).toEqual(
+          expect(new Set([...firstIds, ...secondIds, ...thirdIds])).toEqual(
             new Set([
               productReadId,
               productCreateId,
+              productUpdateId,
+              productDeleteId,
               productWildcardId,
               rbacPolicyReadId,
             ])

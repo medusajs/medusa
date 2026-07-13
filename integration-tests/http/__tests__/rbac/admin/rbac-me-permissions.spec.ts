@@ -10,7 +10,7 @@ jest.setTimeout(60000)
 process.env.MEDUSA_FF_RBAC = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let container
 
     // Headers for users holding different scoped roles.
@@ -23,7 +23,7 @@ medusaIntegrationTestRunner({
     let productReadId: string
     let customerCreateId: string
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -130,6 +130,8 @@ medusaIntegrationTestRunner({
         email: "no-roles@medusa.js",
         roles: [],
       })
+
+      await dbUtils.snapshot()
     })
 
     afterAll(async () => {

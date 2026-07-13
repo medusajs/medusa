@@ -3,10 +3,11 @@ import type {
   ProductTypes,
 } from "@medusajs/framework/types"
 import {
-  Modules,
   getSelectsAndRelationsFromObjectArray,
+  MedusaError,
+  Modules,
 } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * The data to identify and update the product options.
@@ -41,14 +42,20 @@ export const updateProductOptionsStep = createStep(
   async (data: UpdateProductOptionsStepInput, { container }) => {
     const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { ranks, ...cleanedUpdate } = data.update
+    const { selects } = getSelectsAndRelationsFromObjectArray([cleanedUpdate])
 
     const prevData = await service.listProductOptions(data.selector, {
       select: selects,
-      relations,
+      relations: ["values"],
     })
+
+    if (!prevData.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product option with id "${data.selector.id}" not found`
+      )
+    }
 
     const productOptions = await service.updateProductOptions(
       data.selector,
@@ -67,8 +74,6 @@ export const updateProductOptionsStep = createStep(
       prevData.map((o) => ({
         ...o,
         values: o.values?.map((v) => v.value),
-        product: undefined,
-        product_id: o.product_id ?? undefined,
       }))
     )
   }

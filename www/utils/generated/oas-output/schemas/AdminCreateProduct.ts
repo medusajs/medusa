@@ -93,7 +93,25 @@
  *     type: array
  *     description: The product's options.
  *     items:
- *       $ref: "#/components/schemas/AdminCreateProductOption"
+ *       oneOf:
+ *         - $ref: "#/components/schemas/AdminCreateProductOption"
+ *         - type: object
+ *           description: Existing global options to associate with the product.
+ *           required:
+ *             - id
+ *           properties:
+ *             id:
+ *               type: string
+ *               title: id
+ *               description: The option's ID.
+ *             value_ids:
+ *               type: array
+ *               description: The IDs of the option values to associate with the product. This is useful to associate specific values from a global option.
+ *               items:
+ *                 type: string
+ *                 title: value_ids
+ *                 description: The value's ID.
+ *       description: The product option's details.
  *   variants:
  *     type: array
  *     description: The product's variants.

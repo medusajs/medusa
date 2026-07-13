@@ -68,8 +68,8 @@ to send a reset password email to the user or customer, for example.
 <Tooltip text="This event was added in version v2.15.5"><Badge variant="blue">v2.15.5</Badge></Tooltip>
 </Table.Cell>
       <Table.Cell>
-Emitted when a verification token is generated. You can listen to
-this event and decide how to deliver the token to the user or customer.
+Emitted when a verification code is generated. You can listen to
+this event and decide how to deliver the code to the user or customer.
 </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -189,14 +189,14 @@ The following workflows emit this event when they're executed. These workflows a
   provider, // The auth provider that requested verification.
   auth_identity_id, // The ID of the auth identity being verified.
   provider_identity_id, // The ID of the provider identity being verified.
-  token, // The generated token.
-  expires_at, // The token expiry date.
+  code, // The generated verification code.
+  expires_at, // The code expiry date.
   metadata, // Optional custom metadata passed from the request.
 }
 \`\`\``} />
 
-Emitted when a verification token is generated. You can listen to
-this event and decide how to deliver the token to the user or customer.
+Emitted when a verification code is generated. You can listen to
+this event and decide how to deliver the code to the user or customer.
 
 #### Payload
 
@@ -207,8 +207,8 @@ this event and decide how to deliver the token to the user or customer.
   provider, // The auth provider that requested verification.
   auth_identity_id, // The ID of the auth identity being verified.
   provider_identity_id, // The ID of the provider identity being verified.
-  token, // The generated token.
-  expires_at, // The token expiry date.
+  code, // The generated verification code.
+  expires_at, // The code expiry date.
   metadata, // Optional custom metadata passed from the request.
 }
 ```
@@ -1449,6 +1449,7 @@ Emitted when products are updated.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [updateProductsWorkflow](/references/medusa-workflows/updateProductsWorkflow)
+- [createAndLinkProductOptionsToProductWorkflow](/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow)
 - [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
 - [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
 
@@ -1848,6 +1849,9 @@ Emitted when product options are deleted.
 The following workflows emit this event when they're executed. These workflows are executed by Medusa's API routes. You can also view the events emitted by API routes in the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API references.
 
 - [deleteProductOptionsWorkflow](/references/medusa-workflows/deleteProductOptionsWorkflow)
+- [deleteProductsWorkflow](/references/medusa-workflows/deleteProductsWorkflow)
+- [batchProductsWorkflow](/references/medusa-workflows/batchProductsWorkflow)
+- [importProductsWorkflow](/references/medusa-workflows/importProductsWorkflow)
 
 ---
 

@@ -28,7 +28,17 @@ export const generatedSidebars = [
         "type": "category",
         "title": "Tips",
         "autogenerate_path": "/tips",
+        "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/tips/layout-configurations",
+            "title": "Configure Layouts",
+            "description": "",
+            "children": []
+          },
           {
             "loaded": true,
             "isPathHref": true,
@@ -232,6 +242,14 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Manage Categories",
             "path": "/products/categories",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Manage Product Options",
+            "path": "/products/options",
             "children": []
           },
           {

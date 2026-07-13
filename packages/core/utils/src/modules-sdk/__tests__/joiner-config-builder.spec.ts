@@ -355,6 +355,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["fulfillment_set", "fulfillment_sets"],
             entity: FulfillmentSet.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "FulfillmentSets",
             },
@@ -362,6 +365,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["shipping_option", "shipping_options"],
             entity: ShippingOption.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "ShippingOptions",
             },
@@ -369,6 +375,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["shipping_profile", "shipping_profiles"],
             entity: ShippingProfile.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "ShippingProfiles",
             },
@@ -376,6 +385,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["fulfillment", "fulfillments"],
             entity: Fulfillment.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "Fulfillments",
             },
@@ -383,6 +395,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["fulfillment_provider", "fulfillment_providers"],
             entity: FulfillmentProvider.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "FulfillmentProviders",
             },
@@ -390,6 +405,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["service_zone", "service_zones"],
             entity: ServiceZone.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "ServiceZones",
             },
@@ -397,6 +415,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["geo_zone", "geo_zones"],
             entity: GeoZone.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "GeoZones",
             },
@@ -404,6 +425,9 @@ describe("joiner-config-builder", () => {
           {
             name: ["shipping_option_rule", "shipping_option_rules"],
             entity: ShippingOptionRule.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+            },
             args: {
               methodSuffix: "ShippingOptionRules",
             },
@@ -466,6 +490,31 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig.schema!.replace(/\s/g, "")).toEqual(
         schemaExpected.replace(/\s/g, "")
       )
+    })
+
+    it("should exclude computed fields from __internal.crossjoinable", () => {
+      const product = model.define("product", {
+        id: model.id().primaryKey(),
+        title: model.text(),
+        slug: model.text().computed(),
+      })
+
+      const joinerConfig = defineJoinerConfig("product", {
+        models: [product],
+      })
+
+      expect(joinerConfig.alias).toEqual([
+        {
+          name: ["product", "products"],
+          entity: "Product",
+          __internal: {
+            crossjoinable: ["id", "title", "created_at", "updated_at", "deleted_at"],
+          },
+          args: {
+            methodSuffix: "Products",
+          },
+        },
+      ])
     })
   })
 

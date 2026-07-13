@@ -400,6 +400,16 @@ export interface CreateTaxLineDTO {
    * The associated item's ID.
    */
   item_id?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * Holds data returned by the tax provider in key-value pairs.
+   */
+  data?: Record<string, unknown> | null
 }
 
 /**
@@ -440,6 +450,16 @@ export interface UpdateTaxLineDTO {
    * The associated item's ID.
    */
   item_id?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * Holds data returned by the tax provider in key-value pairs.
+   */
+  data?: Record<string, unknown> | null
 }
 
 /**

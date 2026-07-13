@@ -163,6 +163,17 @@ using the [capturePayment](page.mdx#capturepayment) method.
 When authorized successfully, a `Payment` is created by the Payment
 Module, and it's associated with the order.
 
+#### Deferred / Asynchronous Authorization
+
+For payment methods where authorization does not happen immediately (e.g., bank transfers,
+payment links, vouchers like OXXO or boleto), return `status: "pending_authorization"` instead
+of `"authorized"`. This signals that:
+
+- No `Payment` record will be created yet.
+- The cart can still be completed and an order will be created with an "awaiting" payment status.
+- This method may be called again later (via a webhook or manual admin action) to check if the
+  payment has been completed. When the payment is confirmed, return `"authorized"` or `"captured"`.
+
 #### Understanding `data` property
 
 The `data` property of the method's parameter contains the `PaymentSession` record's `data` property, which was
@@ -210,7 +221,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthorizePaymentOutput](../../../types/interfaces/types.AuthorizePaymentOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the authorization, along with the `data` field about the payment. Throws in case of an error.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authorizePayment"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthorizePaymentOutput](../../../types/interfaces/types.AuthorizePaymentOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the authorization, along with the `data` field about the payment. Return `\"pending_authorization\"` for async payment methods. Throws in case of an error.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authorizePayment"/>
 
 ### cancelPayment
 
