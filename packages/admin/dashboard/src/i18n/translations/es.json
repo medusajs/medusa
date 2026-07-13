@@ -771,6 +771,16 @@
   "collections": {
     "domain": "Colecciones",
     "subtitle": "Organiza los productos en colecciones.",
+    "list": {
+      "empty": {
+        "heading": "No hay colecciones",
+        "description": "No hay colecciones para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ninguna colección coincide con los criterios de filtro actuales."
+      }
+    },
     "createCollection": "Crear Colección",
     "createCollectionHint": "Crea una nueva colección para organizar tus productos.",
     "createSuccess": "Colección creada exitosamente.",
@@ -3168,6 +3178,7 @@
     "selectValues": "Seleccionar valores"
   },
   "fields": {
+    "actions": "Acciones",
     "amount": "Monto",
     "by": "Por",
     "creditTotal": "Total de líneas de crédito",

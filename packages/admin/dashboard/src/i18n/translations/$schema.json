@@ -1361,6 +1361,9 @@
         "sortLabel": {
           "type": "string"
         },
+        "columnsLabel": {
+          "type": "string"
+        },
         "collapse": {
           "type": "object",
           "properties": {
@@ -1372,9 +1375,6 @@
           "additionalProperties": false
         },
         "filterLabel": {
-          "type": "string"
-        },
-        "columnsLabel": {
           "type": "string"
         },
         "searchLabel": {
@@ -1513,9 +1513,9 @@
       },
       "required": [
         "sortLabel",
+        "columnsLabel",
         "collapse",
         "filterLabel",
-        "columnsLabel",
         "searchLabel",
         "date",
         "compare",
@@ -3141,6 +3141,39 @@
         "subtitle": {
           "type": "string"
         },
+        "list": {
+          "type": "object",
+          "properties": {
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["empty", "filtered"],
+          "additionalProperties": false
+        },
         "createCollection": {
           "type": "string"
         },
@@ -3251,6 +3284,7 @@
       "required": [
         "domain",
         "subtitle",
+        "list",
         "createCollection",
         "createCollectionHint",
         "createSuccess",
@@ -10154,6 +10188,7 @@
       "required": [
         "domain",
         "subtitle",
+        "list",
         "delete",
         "create",
         "edit",
@@ -13244,6 +13279,9 @@
     "fields": {
       "type": "object",
       "properties": {
+        "actions": {
+          "type": "string"
+        },
         "amount": {
           "type": "string"
         },
@@ -13741,6 +13779,7 @@
         }
       },
       "required": [
+        "actions",
         "amount",
         "reference",
         "reference_id",

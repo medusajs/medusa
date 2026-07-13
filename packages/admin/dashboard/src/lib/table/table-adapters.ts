@@ -108,6 +108,14 @@ export interface TableAdapter<TData> {
    * own its permissions, prompts and mutations.
    */
   renderRowActions?: (row: TData) => ReactNode
+
+  /**
+   * Default filters (filter id -> value) applied only when no saved view
+   * configuration is active. Once a view is active, its filters win. Values
+   * use the same shape as the filter's option value (e.g. `"false"` for a
+   * boolean filter). Also used as the baseline for "unsaved changes".
+   */
+  defaultFilters?: Record<string, any>
 }
 
 /**

@@ -32,6 +32,7 @@ export type CellAlignment = "left" | "center" | "right"
  */
 export type BuiltInRenderMode =
   | "text"
+  | "handle"
   | "count"
   | "status"
   | "badge"
@@ -85,6 +86,13 @@ const TextRenderer: CellRenderer = (value, _row, _column, _t) => {
     return "-"
   }
   return String(value)
+}
+
+const HandleRenderer: CellRenderer = (value, _row, _column, _t) => {
+  if (value === null || value === undefined || value === "") {
+    return "-"
+  }
+  return `/${value}`
 }
 
 const CountRenderer: CellRenderer = (value, row, column, t) => {
@@ -570,6 +578,7 @@ const AddressRenderer: CellRenderer = (value, row, column, _t) => {
 
 // Register built-in renderers
 cellRenderers.set("text", { render: TextRenderer })
+cellRenderers.set("handle", { render: HandleRenderer })
 cellRenderers.set("count", { render: CountRenderer })
 cellRenderers.set("status", { render: StatusRenderer, align: "center" })
 cellRenderers.set("badge_list", { render: BadgeListRenderer })

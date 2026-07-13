@@ -211,6 +211,38 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     description: "Number of price overrides in the price list",
     category: "metric",
   },
+
+  // Product collection computed columns
+  {
+    id: "products_count",
+    name: "Products",
+    renderMode: "count",
+    requiredFields: ["products.id"],
+    optionalFields: [],
+    entities: ["ProductCollection"],
+    defaultVisible: true,
+    description: "Number of products in the collection",
+    category: "metric",
+    metadata: {
+      list_field: "products",
+    },
+  },
+
+  // Product option computed columns
+  {
+    id: "values_count",
+    name: "Values",
+    renderMode: "count",
+    requiredFields: ["values.id"],
+    optionalFields: [],
+    entities: ["ProductOption"],
+    defaultVisible: true,
+    description: "Number of values for the option",
+    category: "metric",
+    metadata: {
+      list_field: "values",
+    },
+  },
 ]
 
 /**

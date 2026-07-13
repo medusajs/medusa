@@ -175,6 +175,34 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       status: "price_list_status",
     },
   },
+  ProductCollection: {
+    excludeSuffixes: ["_link"],
+    excludePrefixes: ["raw_"],
+    excludeFields: [],
+    defaultVisibleFields: ["title", "handle", "products_count"],
+    fieldOrdering: {
+      title: 100,
+      handle: 200,
+      products_count: 300,
+    },
+    fieldRenderModes: {
+      handle: "handle",
+    },
+  },
+  ProductOption: {
+    excludeSuffixes: ["_link"],
+    excludePrefixes: ["raw_"],
+    excludeFields: [],
+    defaultVisibleFields: ["title", "values_count", "is_exclusive"],
+    fieldOrdering: {
+      title: 100,
+      values_count: 200,
+      is_exclusive: 300,
+    },
+    fieldRenderModes: {
+      is_exclusive: "product_option_exclusivity",
+    },
+  },
   User: {
     excludeSuffixes: ["_link"],
     excludePrefixes: ["raw_"],

@@ -803,6 +803,16 @@
   "collections": {
     "domain": "Collections",
     "subtitle": "Organize products into collections.",
+    "list": {
+      "empty": {
+        "heading": "No collections",
+        "description": "There are no collections to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No collections match the current filter criteria."
+      }
+    },
     "createCollection": "Create Collection",
     "createCollectionHint": "Create a new collection to organize your products.",
     "createSuccess": "Collection created successfully.",
