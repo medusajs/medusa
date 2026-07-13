@@ -443,6 +443,8 @@ export declare type DocBlock =
       kind: "typeList"
       sectionTitle?: string
       expandUrl?: string
+      /** Levels to expand by default (e.g. 1 for workflow input/output). */
+      openedLevel?: number
       types: DocTypeListItem[]
     }
   | {

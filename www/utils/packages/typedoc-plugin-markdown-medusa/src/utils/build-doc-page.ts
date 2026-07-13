@@ -60,7 +60,21 @@ export function buildDocPage({
     Handlebars.helpers.reflectionTitle.call(page, false) || model.name
   )
 
+  // The page title is an <h1>, so content sections start at level 2. The
+  // Handlebars helpers we reuse (examples, hooks, ...) derive heading levels
+  // from `currentTitleLevel`, so set it here to match the MDX theme (which
+  // increments past the title before rendering the body).
+  theme.currentTitleLevel = 2
+
   const blocks: DocBlock[] = []
+
+  // Formatting-driven description shown right after the title (title.hbs). It
+  // can embed a <Note>, so run it through the block splitter.
+  blocks.push(
+    ...splitContentBlocks(
+      String(Handlebars.helpers.reflectionDescription.call(model) || "")
+    )
+  )
 
   if (kind === "member") {
     // Member pages own their comment / example / source per signature.
@@ -207,6 +221,7 @@ function buildMemberBlocks(
   if (description) {
     blocks.push({ kind: "markdown", html: description })
   }
+  blocks.push(...versionNoteBlocks(model))
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
   )
@@ -248,6 +263,9 @@ function buildSignatureBlocks(
     blocks.push({ kind: "markdown", html: comment })
   }
 
+  // @since note.
+  blocks.push(...versionNoteBlocks(signature))
+
   // @example (may embed <CodeTabs>).
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.example(signature) || ""))
@@ -258,7 +276,7 @@ function buildSignatureBlocks(
   if (parameters.length) {
     const types = buildTypeListItems(parameters, signature.project)
     if (types.length) {
-      blocks.push({ kind: "heading", level: 4, text: "Parameters", id: slugId(`${owner.name}-parameters`) })
+      blocks.push({ kind: "heading", level: 2, text: "Parameters", id: slugId(`${owner.name}-parameters`) })
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types })
     }
   }
@@ -270,7 +288,7 @@ function buildSignatureBlocks(
       signature.project
     )
     if (returnItems.length) {
-      blocks.push({ kind: "heading", level: 4, text: "Returns", id: slugId(`${owner.name}-returns`) })
+      blocks.push({ kind: "heading", level: 2, text: "Returns", id: slugId(`${owner.name}-returns`) })
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types: returnItems })
     }
   }
@@ -302,6 +320,14 @@ function buildTypeListItems(
         }) as DocTypeListItem
     )
     .filter(Boolean)
+}
+
+/**
+ * Emits the `@since` availability note (`version` helper) as a `note` block,
+ * matching the MDX theme which renders it right after the member comment.
+ */
+export function versionNoteBlocks(reflection: Reflection): DocBlock[] {
+  return splitContentBlocks(String(Handlebars.helpers.version(reflection) || ""))
 }
 
 function getCommentMarkdown(reflection: Reflection): string {

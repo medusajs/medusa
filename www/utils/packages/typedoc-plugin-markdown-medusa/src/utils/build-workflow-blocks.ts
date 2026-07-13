@@ -38,6 +38,17 @@ export function buildWorkflowBlocks(
     blocks.push({ kind: "markdown", html: comment })
   }
 
+  // @since availability note + locking note (member.workflow.hbs: version +
+  // workflowNotes, both after the comment and before the source link).
+  blocks.push(
+    ...splitContentBlocks(String(Handlebars.helpers.version(signature) || ""))
+  )
+  blocks.push(
+    ...splitContentBlocks(
+      String(Handlebars.helpers.workflowNotes.call(signature) || "")
+    )
+  )
+
   const source = extractSourceLink(signature)
   if (source) {
     blocks.push({ kind: "sourceCodeLink", link: source })
@@ -50,6 +61,12 @@ export function buildWorkflowBlocks(
 
   const diagram = buildWorkflowDiagramBlock(theme, signature)
   if (diagram) {
+    blocks.push({
+      kind: "heading",
+      level: 2,
+      text: "Steps",
+      id: slugId(`${signature.name}-steps`),
+    })
     blocks.push(diagram)
   }
 
@@ -148,6 +165,10 @@ export function buildStepBlocks(
     blocks.push({ kind: "markdown", html: comment })
   }
 
+  blocks.push(
+    ...splitContentBlocks(String(Handlebars.helpers.version(signature) || ""))
+  )
+
   const examples = String(Handlebars.helpers.stepExamples.call(signature) || "")
   blocks.push(...splitContentBlocks(examples))
 
@@ -198,8 +219,15 @@ function buildTypeParametersBlock(
   }
 
   return [
-    { kind: "heading", level: 4, text: title, id: slugId(`${signature.name}-${title}`) },
-    { kind: "typeList", sectionTitle: signature.name, types: items },
+    { kind: "heading", level: 2, text: title, id: slugId(`${signature.name}-${title}`) },
+    {
+      kind: "typeList",
+      sectionTitle: signature.name,
+      // Workflow/step input & output are expanded to the first level, matching
+      // the `openedLevel: 1` the workflowInput/Output helpers passed.
+      openedLevel: 1,
+      types: items,
+    },
   ]
 }
 

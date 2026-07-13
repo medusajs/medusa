@@ -46,6 +46,7 @@ const Block = ({ block }: { block: DocBlock }) => {
           types={block.types}
           sectionTitle={block.sectionTitle}
           expandUrl={block.expandUrl}
+          openedLevel={block.openedLevel}
         />
       )
     case "workflowDiagram":

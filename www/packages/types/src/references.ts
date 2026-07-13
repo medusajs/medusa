@@ -62,6 +62,7 @@ export type DocBlock =
       kind: "typeList"
       sectionTitle?: string
       expandUrl?: string
+      openedLevel?: number
       types: DocTypeListItem[]
     }
   | { kind: "workflowDiagram"; workflow: Workflow }

@@ -182,6 +182,27 @@ function buildConstructs(): Construct[] {
       },
     },
     {
+      name: "noteComponent",
+      re: /<Note\b[^>]*>/g,
+      build: (content, idx) => {
+        const close = content.indexOf("</Note>", idx)
+        if (close === -1) {
+          return null
+        }
+        const openTagEnd = content.indexOf(">", idx)
+        const tag = content.slice(idx, openTagEnd + 1)
+        return {
+          block: {
+            kind: "note",
+            variant: getAttr(tag, "type") || "note",
+            title: getAttr(tag, "title") || undefined,
+            html: content.slice(openTagEnd + 1, close).trim(),
+          },
+          end: close + "</Note>".length,
+        }
+      },
+    },
+    {
       name: "note",
       re: /:::(\w+)?(?:\[([^\]]*)\])?/g,
       build: (content, idx) => {
