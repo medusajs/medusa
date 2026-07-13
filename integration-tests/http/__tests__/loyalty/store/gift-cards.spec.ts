@@ -36,43 +36,34 @@ medusaIntegrationTestRunner({
       await dbUtils.snapshot()
     })
 
-    describe("POST /admin/gift-cards", () => {
-      it("should create a gift card and an anonymous credit account for the card", async () => {
-        const giftCard = (
-          await api.post(
-            `/admin/gift-cards?fields=*store_credit_account,*store_credit_account.transactions`,
-            { ...giftCardPayload },
-            adminHeaders
-          )
+    describe("GET /store/gift-cards/:code", () => {
+      it("should retrieve a gift card by code", async () => {
+        const created = (
+          await api.post(`/admin/gift-cards`, giftCardPayload, adminHeaders)
         ).data.gift_card
 
-        expect(giftCard).toEqual(
+        const {
+          data: { gift_card },
+        } = await api.get(`/store/gift-cards/${created.code}`, storeHeaders)
+
+        expect(gift_card).toEqual(
           expect.objectContaining({
-            status: "redeemed",
-            value: 1000,
-            currency_code: "usd",
+            id: created.id,
             code: "TEST1",
-            store_credit_account: expect.objectContaining({
-              currency_code: "usd",
-              balance: 1000,
-              credits: 1000,
-              debits: 0,
-              transactions: expect.arrayContaining([
-                expect.objectContaining({
-                  amount: 1000,
-                  type: "credit",
-                  reference: "gift_card",
-                  reference_id: giftCard.id,
-                }),
-              ]),
-            }),
+            currency_code: "usd",
+            value: 1000,
           })
         )
       })
-    })
 
-    describe("POST /admin/gift-cards/:id/claim", () => {
-      it.todo("should claim a gift card")
+      it("should return not found for an invalid code", async () => {
+        const { response } = await api
+          .get(`/store/gift-cards/INVALID-CODE`, storeHeaders)
+          .catch((e) => e)
+
+        expect(response.status).toBe(404)
+        expect(response.data.message).toBe("Gift card not found")
+      })
     })
   },
 })

@@ -28,4 +28,9 @@ export enum PaymentSessionStatus {
    * The payment is canceled.
    */
   CANCELED = "canceled",
+  /**
+   * The payment authorization is pending and expected to be completed asynchronously
+   * (e.g., bank transfers, payment links, vouchers, etc.).
+   */
+  PENDING_AUTHORIZATION = "pending_authorization",
 }

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/js-sdk",
-  "version": "2.17.1",
+  "version": "2.17.2",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -13,6 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/core/js-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
     "node": ">=20"
@@ -29,7 +32,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.17.1"
+    "@medusajs/types": "2.17.2"
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",

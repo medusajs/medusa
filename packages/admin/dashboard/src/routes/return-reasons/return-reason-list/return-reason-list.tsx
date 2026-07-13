@@ -1,21 +1,20 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
 import { ReturnReasonListTable } from "./components/return-reason-list-table"
 
 export const ReturnReasonList = () => {
-  const { getWidgets } = useExtension()
-
   return (
-    <SingleColumnPage
-      showMetadata={false}
-      showJSON={false}
-      hasOutlet
-      widgets={{
-        after: getWidgets("return_reason.list.after"),
-        before: getWidgets("return_reason.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="return_reason.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="ReturnReasonListTable">
+            <ReturnReasonListTable />
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <ReturnReasonListTable />
-    </SingleColumnPage>
+    />
   )
 }

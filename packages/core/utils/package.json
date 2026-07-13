@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "2.17.1",
+  "version": "2.17.2",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "exports": {
@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/core/utils"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -26,7 +29,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.17.1",
+    "@medusajs/types": "2.17.2",
     "express": "^4.21.0"
   },
   "dependencies": {
@@ -34,7 +37,7 @@
     "@graphql-codegen/typescript": "^4.0.9",
     "@graphql-tools/merge": "^9.0.7",
     "@graphql-tools/schema": "^10.0.6",
-    "@medusajs/deps": "2.17.1",
+    "@medusajs/deps": "2.17.2",
     "@types/pluralize": "^0.0.33",
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
@@ -52,6 +55,6 @@
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
     "test": "../../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathIgnorePatterns='/integration-tests/' --testPathPattern=src",
-    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --silent --bail --forceExit --testPathPattern=\"src/.*/integration-tests/__tests__/.*\\.ts\""
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --silent --bail --forceExit --testPathPattern=\"src/.*/integration-tests/__tests__/.*\\.spec\\.ts\""
   }
 }

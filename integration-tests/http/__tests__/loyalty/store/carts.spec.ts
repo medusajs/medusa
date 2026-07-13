@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/framework/utils"
+import { Modules, ProductStatus } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -1453,6 +1453,85 @@ medusaIntegrationTestRunner({
             credits: 400,
             debits: 400,
           })
+        )
+      })
+    })
+
+    describe("POST /store/carts/:id/taxes", () => {
+      it("should not generate tax lines for gift card product items (is_giftcard=true)", async () => {
+        const taxService = getContainer().resolve(Modules.TAX)
+        await taxService.createTaxRegions([
+          {
+            country_code: "US",
+            provider_id: "tp_system",
+            default_tax_rate: { name: "US Default Rate", rate: 10, code: "US_RATE" },
+          },
+        ])
+
+        const taxRegion = (
+          await api.post(
+            "/admin/regions",
+            { name: "us-tax-region", currency_code: "usd", countries: ["us"] },
+            adminHeaders
+          )
+        ).data.region
+
+        const giftCardProduct = (
+          await api.post(
+            `/admin/products`,
+            {
+              title: "Gift Card Product",
+              status: ProductStatus.PUBLISHED,
+              is_giftcard: true,
+              options: [{ title: "Denomination", values: ["10"] }],
+              variants: [
+                {
+                  title: "10",
+                  manage_inventory: false,
+                  options: { Denomination: "10" },
+                  prices: [{ amount: 1000, currency_code: "usd" }],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        const taxCart = (
+          await api.post(
+            `/store/carts`,
+            {
+              region_id: taxRegion.id,
+              sales_channel_id: salesChannel.id,
+              shipping_address: { country_code: "us" },
+              items: [
+                { variant_id: expensiveVariant.id, quantity: 1 },
+                { variant_id: giftCardProduct.variants[0].id, quantity: 1 },
+              ],
+            },
+            storeHeaders
+          )
+        ).data.cart
+
+        const { data } = await api.post(
+          `/store/carts/${taxCart.id}/taxes`,
+          {},
+          storeHeaders
+        )
+
+        expect(data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              is_giftcard: false,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({ rate: expect.any(Number) }),
+              ]),
+            }),
+            expect.objectContaining({
+              is_giftcard: true,
+              tax_lines: [],
+            }),
+          ])
         )
       })
     })

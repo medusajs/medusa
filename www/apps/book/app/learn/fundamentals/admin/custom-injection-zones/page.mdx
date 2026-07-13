@@ -70,12 +70,11 @@ const BrandListPage = () => {
 export default BrandListPage
 ```
 
-Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
+Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zone:
 
-- `brand.list.before`: Widgets rendered before the main content of the brand list page.
-- `brand.list.after`: Widgets rendered after the main content of the brand list page.
+- `brand.list`: Widgets rendered in the main section of the brand list page.
 
-Widgets injected into these zones are rendered around the page's sections.
+Widgets injected into this zone appear inside the main section and can be reordered by admin users.
 
 Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
 
@@ -99,7 +98,7 @@ const BrandDetailsPage = () => {
   return (
     <LayoutComposer
       widgetsZonePrefix="brand.details"
-      preferredLayoutId="core:single-column"
+      preferredLayoutId="core:two-column"
       data={brand}
       sections={{
         main: (
@@ -118,12 +117,10 @@ export default BrandDetailsPage
 
 Based on the `widgetsZonePrefix` prop, the `LayoutComposer` in the example exposes the following injection zones:
 
-- `brand.details.before`: Widgets rendered before the main content of the brand details page.
-- `brand.details.after`: Widgets rendered after the main content of the brand details page.
-- `brand.details.side.before` (since layout is two-column): Widgets rendered before the side content of the brand details page.
-- `brand.details.side.after` (since layout is two-column): Widgets rendered after the side content of the brand details page.
+- `brand.details`: Widgets rendered in the main section of the brand details page.
+- `brand.details.side`: Widgets rendered in the side section of the brand details page.
 
-Widgets injected into these zones are rendered around the page's sections. The `data` prop is passed to the widgets injected into the zones, allowing them to access the page's main data. In this example, the `brand` object is passed as data, so widgets can access it through their props.
+Widgets injected into these zones appear inside the respective sections and can be reordered by admin users. The `data` prop is passed to the widgets, allowing them to access the page's main data. In this example, widgets can access the `brand` object through their `data` prop.
 
 Refer to the [LayoutComposer](!resources!/admin-components/components/layout-composer) reference for more details on the component's props and layouts.
 

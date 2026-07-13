@@ -29,9 +29,6 @@ const withMDX = mdx({
           },
           hasGeneratedSlugs: true,
           crossProjects: {
-            bloom: {
-              projectPath: path.resolve("..", "bloom"),
-            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
