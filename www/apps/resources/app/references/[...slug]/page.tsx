@@ -1,5 +1,6 @@
 import { cache } from "react"
 import { ReferenceMDX } from "../../../components/ReferenceMDX"
+import { ReferenceJSON } from "../../../components/ReferenceJSON"
 import { Metadata } from "next"
 import { getFrontMatterFromString, workerCompatibleFetch } from "docs-utils"
 import path from "path"
@@ -13,6 +14,12 @@ type PageProps = {
 export default async function ReferencesPage(props: PageProps) {
   const params = await props.params
   const { slug } = params
+
+  const fileDetails = await getReferenceFileDetails(slug)
+
+  if (fileDetails?.format === "json") {
+    return <ReferenceJSON slug={slug} />
+  }
 
   return <ReferenceMDX slug={slug} />
 }
@@ -29,6 +36,18 @@ export async function generateMetadata({
     return metadata
   }
 
+  // JSON doc-model pages carry title / keywords in the DocPage itself.
+  if (fileData.format === "json") {
+    try {
+      const docPage = JSON.parse(fileData.content)
+      metadata.title = docPage.title
+      metadata.keywords = (docPage.frontmatter?.keywords || []) as string[]
+    } catch {
+      // ignore malformed JSON
+    }
+    return metadata
+  }
+
   const pageTitleMatch = /#(?<title>[\w -]+)/.exec(fileData.content)
 
   if (!pageTitleMatch?.groups?.title) {
@@ -42,29 +61,48 @@ export async function generateMetadata({
   return metadata
 }
 
+type ReferenceFileDetails = {
+  filePath: string
+  pathname: string
+  format?: string
+}
+
+const getReferenceFileDetails = cache(
+  async (slug: string[]): Promise<ReferenceFileDetails | undefined> => {
+    const pathname = `/references/${slug.join("/")}`
+    const slugChanges = (await import("@/generated/slug-changes.mjs"))
+      .slugChanges
+    const filesMap = (await import("@/generated/files-map.mjs")).filesMap
+    return (filesMap.find(
+      (f) =>
+        (f as { format?: string }).format === "json" && f.pathname === pathname
+    ) ||
+      slugChanges.find((f) => f.newSlug === pathname) ||
+      filesMap.find((f) => f.pathname === pathname)) as
+      | ReferenceFileDetails
+      | undefined
+  }
+)
+
 export type LoadedReferenceFile = {
   content: string
+  format?: string
 }
 
 const loadReferencesFile = cache(
   async (slug: string[]): Promise<LoadedReferenceFile | undefined> => {
     const monoRepoPath = path.resolve("..", "..", "..")
 
-    const pathname = `/references/${slug.join("/")}`
-    const slugChanges = (await import("@/generated/slug-changes.mjs"))
-      .slugChanges
-    const filesMap = (await import("@/generated/files-map.mjs")).filesMap
-    const fileDetails =
-      slugChanges.find((f) => f.newSlug === pathname) ||
-      filesMap.find((f) => f.pathname === pathname)
+    const fileDetails = await getReferenceFileDetails(slug)
     if (!fileDetails) {
       return undefined
     }
 
+    const dir = fileDetails.format === "json" ? "references-json" : "references"
     const r2Base = process.env.NEXT_PUBLIC_REFERENCES_R2_BASE_URL
     const fileContent = await workerCompatibleFetch<string | null>({
-      url: `${r2Base}/references/${fileDetails.filePath.replace(
-        /^.*\/references\//,
+      url: `${r2Base}/${dir}/${fileDetails.filePath.replace(
+        new RegExp(`^.*/${dir}/`),
         ""
       )}`,
       responseTransformer: async (res) => {
@@ -88,6 +126,7 @@ const loadReferencesFile = cache(
 
     return {
       content: fileContent,
+      format: fileDetails.format,
     }
   }
 )

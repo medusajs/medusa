@@ -39,7 +39,12 @@ export async function GET(request: Request, { params }: GetRouteProps) {
     )
   }
 
-  return new Response(JSON.stringify(fileData.serialized), {
+  const payload =
+    "docPage" in fileData && fileData.docPage
+      ? fileData.docPage
+      : fileData.serialized
+
+  return new Response(JSON.stringify(payload), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
@@ -52,34 +57,25 @@ export async function GET(request: Request, { params }: GetRouteProps) {
   })
 }
 
-async function loadReferencesFileUncached(slug: string[]) {
+/**
+ * Reads a reference source file (MDX or JSON doc-model) from R2 — via the
+ * bucket binding, the public bucket URL, or the local filesystem in dev — using
+ * the `<dir>/<relPath>` key derived from `fileDetails.filePath`.
+ */
+async function loadReferenceSource(
+  filePath: string,
+  dir: "references" | "references-json"
+): Promise<string | null> {
   const r2Base = process.env.NEXT_PUBLIC_REFERENCES_R2_BASE_URL
   const monoRepoPath = path.resolve("..", "..", "..")
+  const relPath = filePath.replace(new RegExp(`^.*/${dir}/`), "")
+  const localPath = path.join(monoRepoPath, filePath)
 
-  const pathname = `/references/${slug.join("/")}`
-  const slugChanges = (await import("@/generated/slug-changes.mjs")).slugChanges
-  const filesMap = (await import("@/generated/files-map.mjs")).filesMap
-  const fileDetails =
-    slugChanges.find((f) => f.newSlug === pathname) ||
-    filesMap.find((f) => f.pathname === pathname)
-  // eslint-disable-next-line no-console
-  console.log(r2Base, monoRepoPath, pathname, fileDetails)
-  if (!fileDetails) {
-    return undefined
-  }
-
-  // fileDetails.filePath is like /www/apps/resources/references/some/path/page.mdx
-  const relPath = fileDetails.filePath.replace(/^.*\/references\//, "")
-  const r2Url = `${r2Base}/references/${relPath}`
-  const localPath = path.join(monoRepoPath, fileDetails.filePath)
-
-  const fileContent =
-    (await loadReferenceFromBinding(`resources/references/${relPath}`)) ??
+  return (
+    (await loadReferenceFromBinding(`resources/${dir}/${relPath}`)) ??
     (await workerCompatibleFetch<string | null>({
-      url: r2Url,
-      responseTransformer: async (res) => {
-        return res.ok ? res.text() : null
-      },
+      url: `${r2Base}/${dir}/${relPath}`,
+      responseTransformer: async (res) => (res.ok ? res.text() : null),
       fallbackAction: async () => {
         try {
           const { promises: fs } = await import("fs")
@@ -91,6 +87,52 @@ async function loadReferencesFileUncached(slug: string[]) {
       },
       useRemote: !!r2Base,
     }))
+  )
+}
+
+async function loadReferencesFileUncached(slug: string[]) {
+  const r2Base = process.env.NEXT_PUBLIC_REFERENCES_R2_BASE_URL
+
+  const pathname = `/references/${slug.join("/")}`
+  const slugChanges = (await import("@/generated/slug-changes.mjs")).slugChanges
+  const filesMap = (await import("@/generated/files-map.mjs")).filesMap
+  // JSON doc-model entries are keyed by their final slug, so they are matched
+  // first (and win over the MDX slug-changes / files-map) during migration.
+  const fileDetails = (filesMap.find(
+    (f) => (f as { format?: string }).format === "json" && f.pathname === pathname
+  ) ||
+    slugChanges.find((f) => f.newSlug === pathname) ||
+    filesMap.find((f) => f.pathname === pathname)) as
+    | { filePath: string; pathname?: string; format?: string }
+    | undefined
+  if (!fileDetails) {
+    return undefined
+  }
+
+  // References served from the JSON doc-model return the parsed DocPage as-is:
+  // no MDX serialization, no runtime link-fixing (links are pre-resolved).
+  if (fileDetails.format === "json") {
+    const jsonContent = await loadReferenceSource(
+      fileDetails.filePath,
+      "references-json"
+    )
+    if (!jsonContent) {
+      return undefined
+    }
+    try {
+      return { docPage: JSON.parse(jsonContent), content: jsonContent }
+    } catch {
+      return undefined
+    }
+  }
+
+  const monoRepoPath = path.resolve("..", "..", "..")
+  const localPath = path.join(monoRepoPath, fileDetails.filePath)
+
+  const fileContent = await loadReferenceSource(
+    fileDetails.filePath,
+    "references"
+  )
 
   if (!fileContent) {
     return undefined
