@@ -45,7 +45,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
 ) {
   let {
     allowed = [],
-    allowedOrderBy = [],
+    forbiddenOrderBy = [],
     restricted = [],
     defaults = [],
     defaultLimit = 50,
@@ -117,8 +117,10 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
       orderBy = { [order]: "ASC" }
     }
 
-    const orderAllowList = allowedOrderBy.length ? allowedOrderBy : allowed
-    if (orderAllowList.length && !orderAllowList.includes(orderField)) {
+    if (
+      forbiddenOrderBy.includes(orderField) ||
+      (allowed.length && !allowed.includes(orderField))
+    ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Order field ${orderField} is not valid`

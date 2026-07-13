@@ -247,7 +247,7 @@ describe("prepareListQuery", () => {
       })
     })
 
-    it("should throw error when order field is not in allowedOrderBy", async () => {
+    it("should throw error when order field is in forbiddenOrderBy", async () => {
       const validated: RequestQueryFields = {
         order: "total",
         limit: 10,
@@ -256,7 +256,7 @@ describe("prepareListQuery", () => {
 
       const queryConfig: QueryConfig<any> = {
         isList: true,
-        allowedOrderBy: ["display_id", "created_at"],
+        forbiddenOrderBy: ["total", "payment_status"],
       }
 
       await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
@@ -264,7 +264,24 @@ describe("prepareListQuery", () => {
       )
     })
 
-    it("should allow order field when it is in allowedOrderBy", async () => {
+    it("should throw error when descending order field is in forbiddenOrderBy", async () => {
+      const validated: RequestQueryFields = {
+        order: "-payment_status",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        forbiddenOrderBy: ["total", "payment_status"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field payment_status is not valid"
+      )
+    })
+
+    it("should allow order field when it is not in forbiddenOrderBy", async () => {
       const validated: RequestQueryFields = {
         order: "-created_at",
         limit: 10,
@@ -273,7 +290,7 @@ describe("prepareListQuery", () => {
 
       const queryConfig: QueryConfig<any> = {
         isList: true,
-        allowedOrderBy: ["display_id", "created_at"],
+        forbiddenOrderBy: ["total", "payment_status"],
       }
 
       const result = await prepareListQuery(validated, queryConfig)
@@ -284,9 +301,9 @@ describe("prepareListQuery", () => {
       })
     })
 
-    it("should prefer allowedOrderBy over allowed for sorting", async () => {
-      // `total` is selectable (in `allowed`) but not sortable (absent from
-      // `allowedOrderBy`) — sorting is decoupled from field selection.
+    it("should reject a forbiddenOrderBy field even when it is in allowed", async () => {
+      // `total` is selectable (in `allowed`) but forbidden as a sort key —
+      // sorting is decoupled from field selection.
       const validated: RequestQueryFields = {
         order: "total",
         limit: 10,
@@ -296,7 +313,7 @@ describe("prepareListQuery", () => {
       const queryConfig: QueryConfig<any> = {
         isList: true,
         allowed: ["id", "total", "created_at"],
-        allowedOrderBy: ["created_at"],
+        forbiddenOrderBy: ["total"],
       }
 
       await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
@@ -304,22 +321,22 @@ describe("prepareListQuery", () => {
       )
     })
 
-    it("should sort by a field in allowedOrderBy even when absent from allowed", async () => {
+    it("should still enforce allowed when forbiddenOrderBy is set", async () => {
       const validated: RequestQueryFields = {
-        order: "created_at",
+        order: "email",
         limit: 10,
         offset: 0,
       }
 
       const queryConfig: QueryConfig<any> = {
         isList: true,
-        allowed: ["id"],
-        allowedOrderBy: ["created_at"],
+        allowed: ["id", "created_at"],
+        forbiddenOrderBy: ["total"],
       }
 
-      const result = await prepareListQuery(validated, queryConfig)
-
-      expect(result.listConfig.order).toEqual({ created_at: "ASC" })
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field email is not valid"
+      )
     })
 
     it("should allow nested order field when parent relation is in allowed fields", async () => {

@@ -105,21 +105,19 @@ export const retrieveTransformQueryConfig = {
 }
 
 /**
- * Fields the orders list may be sorted by. Limited to persisted Order columns
- * exposed as sort options in the admin dashboard. Computed fields (totals,
- * payment_status, fulfillment_status), the summary, and relations are excluded:
- * they aren't columns on the order table, so ordering by them throws at the
- * database layer.
+ * Fields the orders list may NOT be sorted by. These are computed at query
+ * time — not columns on the order table — so ordering by them throws at the
+ * database layer. They remain selectable; they just can't be sort keys.
  */
-export const allowedAdminOrderSortFields = [
-  "display_id",
-  "created_at",
-  "updated_at",
+export const forbiddenAdminOrderSortFields = [
+  "total",
+  "payment_status",
+  "fulfillment_status",
 ]
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminOrderFields,
-  allowedOrderBy: allowedAdminOrderSortFields,
+  forbiddenOrderBy: forbiddenAdminOrderSortFields,
   defaultLimit: 20,
   isList: true,
   entity: Entities.order,
