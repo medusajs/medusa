@@ -3,7 +3,10 @@ import {
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
 import { RemoteLink } from "@medusajs/modules-sdk"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  medusaIntegrationTestRunner,
+  normalizeBigNumbers,
+} from "@medusajs/test-utils"
 import {
   FulfillmentSetDTO,
   FulfillmentWorkflow,
@@ -427,9 +430,8 @@ medusaIntegrationTestRunner({
         const [returnOrder] = await remoteQuery(remoteQueryObject)
 
         // The query requests totals ("total", "item_total"), so numeric fields
-        // come back as BigNumber instances; serialize to normalize them to
-        // plain numbers before asserting (same pattern as order-edit.spec.ts).
-        const serializedReturnOrder = JSON.parse(JSON.stringify(returnOrder))
+        // come back as BigNumber instances; normalize them to plain numbers.
+        const serializedReturnOrder = normalizeBigNumbers(returnOrder)
 
         expect(serializedReturnOrder).toEqual(
           expect.objectContaining({

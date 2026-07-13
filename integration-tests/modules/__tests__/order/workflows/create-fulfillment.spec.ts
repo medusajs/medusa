@@ -3,7 +3,10 @@ import {
   createOrderFulfillmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  medusaIntegrationTestRunner,
+  normalizeBigNumbers,
+} from "@medusajs/test-utils"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
@@ -418,7 +421,7 @@ medusaIntegrationTestRunner({
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
         expect(
-          Number(orderFulfillItemWithInventory.detail.fulfilled_quantity)
+          normalizeBigNumbers(orderFulfillItemWithInventory.detail.fulfilled_quantity)
         ).toEqual(1)
         expect(orderFulfill.fulfillments[0].metadata).toEqual({
           meta_key: "meta_value",
@@ -545,7 +548,9 @@ medusaIntegrationTestRunner({
         const fulfilledItem = orderFulfill.items?.find((i) => i.id === itemId)
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
-        expect(Number(fulfilledItem?.detail.fulfilled_quantity)).toEqual(1)
+        expect(normalizeBigNumbers(fulfilledItem?.detail.fulfilled_quantity)).toEqual(
+          1
+        )
 
         const inventoryModule = container.resolve(Modules.INVENTORY)
         const reservation = await inventoryModule.listReservationItems({
