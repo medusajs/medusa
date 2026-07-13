@@ -8,6 +8,7 @@ import { Tooltip } from "@/components/Tooltip"
 import { CodeBlock } from "@/components/CodeBlock"
 import { CopyGeneratedSnippetButton } from "@/components/CopyGeneratedSnippetButton"
 import { MarkdownContent } from "@/components/MarkdownContent"
+import { Mdx } from "./shared"
 
 export type ReferenceWorkflowEventsProps = {
   events: DocWorkflowEvent[]
@@ -35,7 +36,7 @@ export const ReferenceWorkflowEvents = ({
         {events.map((event, index) => (
           <Table.Row key={index}>
             <Table.Cell>
-              <code>{event.name}</code>
+              <Mdx.code>{event.name}</Mdx.code>
               {event.deprecated ? (
                 <Tooltip text={event.deprecatedMessage || "Deprecated"}>
                   <Badge variant="orange">Deprecated</Badge>

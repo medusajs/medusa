@@ -11,6 +11,7 @@ import { Note } from "@/components/Note"
 import { SourceCodeLink } from "@/components/SourceCodeLink"
 import { MarkdownContent } from "@/components/MarkdownContent"
 import { H1 } from "@/components/Heading/H1"
+import { Mdx, DocHeading } from "./shared"
 import { ReferenceWorkflowEvents } from "./WorkflowEvents"
 import { ReferenceEventsListing } from "./EventsListing"
 
@@ -28,32 +29,15 @@ const noteTypeMap: Record<string, React.ComponentProps<typeof Note>["type"]> = {
   soon: "soon",
 }
 
-const HeadingTag = ({
-  level,
-  id,
-  children,
-}: {
-  level: number
-  id: string
-  children: React.ReactNode
-}) => {
-  const Tag = `h${Math.min(Math.max(level, 2), 6)}` as keyof React.JSX.IntrinsicElements
-  return (
-    <Tag id={id} className="scroll-mt-4">
-      {children}
-    </Tag>
-  )
-}
-
 const Block = ({ block }: { block: DocBlock }) => {
   switch (block.kind) {
     case "markdown":
       return <MarkdownContent>{block.html}</MarkdownContent>
     case "heading":
       return (
-        <HeadingTag level={block.level} id={block.id}>
+        <DocHeading level={block.level} id={block.id}>
           {block.text}
-        </HeadingTag>
+        </DocHeading>
       )
     case "typeList":
       return (
@@ -83,22 +67,19 @@ const Block = ({ block }: { block: DocBlock }) => {
       )
     case "sourceCodeLink":
       return <SourceCodeLink link={block.link} />
-    case "linkList":
+    case "linkList": {
+      const { ul: Ul, li: Li, a: Anchor } = Mdx
       return (
-        <ul className="!list-disc !pl-docs_1">
+        <Ul>
           {block.items.map((item, index) => (
-            <li key={index}>
-              <a href={item.href}>{item.title}</a>
-              {item.description ? (
-                <span className="text-medusa-fg-subtle">
-                  {" — "}
-                  {item.description}
-                </span>
-              ) : null}
-            </li>
+            <Li key={index}>
+              <Anchor href={item.href}>{item.title}</Anchor>
+              {item.description ? ` — ${item.description}` : null}
+            </Li>
           ))}
-        </ul>
+        </Ul>
       )
+    }
     case "workflowEvents":
       return <ReferenceWorkflowEvents events={block.events} />
     case "eventsListing":
@@ -120,7 +101,7 @@ const Block = ({ block }: { block: DocBlock }) => {
 export const ReferenceContent = ({ page }: ReferenceContentProps) => {
   return (
     <>
-      <H1>{page.title}</H1>
+      <H1 variant="content">{page.title}</H1>
       {page.blocks.map((block, index) => (
         <Block key={index} block={block} />
       ))}

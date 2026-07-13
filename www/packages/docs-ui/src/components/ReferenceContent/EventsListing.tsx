@@ -8,6 +8,7 @@ import { Tooltip } from "@/components/Tooltip"
 import { CodeBlock } from "@/components/CodeBlock"
 import { CopyGeneratedSnippetButton } from "@/components/CopyGeneratedSnippetButton"
 import { MarkdownContent } from "@/components/MarkdownContent"
+import { Mdx, DocHeading } from "./shared"
 
 export type ReferenceEventsListingProps = {
   categories: { title?: string; events: DocEvent[] }[]
@@ -33,17 +34,18 @@ function EventBadges({ event }: { event: DocEvent }) {
 }
 
 function EventDetail({ event, level }: { event: DocEvent; level: number }) {
-  const Heading = `h${Math.min(level, 6)}` as keyof React.JSX.IntrinsicElements
-  const PayloadHeading = `h${Math.min(level + 1, 6)}` as keyof React.JSX.IntrinsicElements
   const fence = event.payload?.match(FENCE_RE)
+  const { ul: Ul, li: Li, a: Anchor } = Mdx
 
   return (
     <>
       <div className="flex items-center justify-between flex-wrap gap-docs_0.5">
-        <Heading id={event.id} className="scroll-mt-4 flex items-center gap-docs_0.5">
-          {event.name}
-          <EventBadges event={event} />
-        </Heading>
+        <DocHeading level={level} id={event.id}>
+          <span className="inline-flex items-center gap-docs_0.5">
+            {event.name}
+            <EventBadges event={event} />
+          </span>
+        </DocHeading>
         <CopyGeneratedSnippetButton
           tooltipText="Copy subscriber for event"
           type="subscriber"
@@ -55,7 +57,7 @@ function EventDetail({ event, level }: { event: DocEvent; level: number }) {
       ) : null}
       {event.payload ? (
         <>
-          <PayloadHeading>Payload</PayloadHeading>
+          <DocHeading level={level + 1}>Payload</DocHeading>
           <CodeBlock
             source={(fence?.[2] ?? event.payload).trim()}
             lang={fence?.[1] || "ts"}
@@ -64,14 +66,16 @@ function EventDetail({ event, level }: { event: DocEvent; level: number }) {
       ) : null}
       {event.workflows?.length ? (
         <>
-          <PayloadHeading>Workflows Emitting this Event</PayloadHeading>
-          <ul className="!list-disc !pl-docs_1">
+          <DocHeading level={level + 1}>
+            Workflows Emitting this Event
+          </DocHeading>
+          <Ul>
             {event.workflows.map((workflow) => (
-              <li key={workflow.name}>
-                <a href={workflow.href}>{workflow.name}</a>
-              </li>
+              <Li key={workflow.name}>
+                <Anchor href={workflow.href}>{workflow.name}</Anchor>
+              </Li>
             ))}
-          </ul>
+          </Ul>
         </>
       ) : null}
     </>
@@ -86,18 +90,18 @@ export const ReferenceEventsListing = ({
   categories,
 }: ReferenceEventsListingProps) => {
   const multi = categories.length > 1
-  const CategoryHeading = "h2" as const
-  const SummaryHeading = (multi ? "h3" : "h2") as keyof React.JSX.IntrinsicElements
+  const summaryLevel = multi ? 3 : 2
   const eventLevel = multi ? 3 : 2
+  const { code: Code, a: Anchor } = Mdx
 
   return (
     <>
       {categories.map((category, index) => (
         <React.Fragment key={index}>
           {multi && category.title ? (
-            <CategoryHeading>{category.title} Events</CategoryHeading>
+            <DocHeading level={2}>{category.title} Events</DocHeading>
           ) : null}
-          <SummaryHeading>Summary</SummaryHeading>
+          <DocHeading level={summaryLevel}>Summary</DocHeading>
           <Table>
             <Table.Header>
               <Table.Row>
@@ -109,9 +113,9 @@ export const ReferenceEventsListing = ({
               {category.events.map((event) => (
                 <Table.Row key={event.id}>
                   <Table.Cell>
-                    <a href={`#${event.id}`}>
-                      <code>{event.name}</code>
-                    </a>{" "}
+                    <Anchor href={`#${event.id}`}>
+                      <Code>{event.name}</Code>
+                    </Anchor>{" "}
                     <EventBadges event={event} />
                   </Table.Cell>
                   <Table.Cell>
