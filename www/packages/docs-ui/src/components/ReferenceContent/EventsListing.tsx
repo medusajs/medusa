@@ -39,12 +39,14 @@ function EventDetail({ event, level }: { event: DocEvent; level: number }) {
 
   return (
     <>
-      <div className="flex items-center justify-between flex-wrap gap-docs_0.5">
-        <DocHeading level={level} id={event.id}>
-          <span className="inline-flex items-center gap-docs_0.5">
-            {event.name}
-            <EventBadges event={event} />
-          </span>
+      <div className="flex items-center justify-between flex-wrap">
+        <DocHeading
+          level={level}
+          id={event.id}
+          className="flex flex-wrap justify-center gap-docs_0.25"
+        >
+          {event.name}
+          <EventBadges event={event} />
         </DocHeading>
         <CopyGeneratedSnippetButton
           tooltipText="Copy subscriber for event"

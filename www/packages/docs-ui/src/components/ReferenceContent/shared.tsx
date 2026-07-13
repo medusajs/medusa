@@ -18,12 +18,18 @@ export const Mdx = MDXComponents as Record<
 export const DocHeading = ({
   level,
   id,
+  className,
   children,
 }: {
   level: number
   id?: string
+  className?: string
   children: React.ReactNode
 }) => {
   const Heading = Mdx[`h${Math.min(Math.max(level, 1), 4)}`]
-  return <Heading id={id}>{children}</Heading>
+  return (
+    <Heading id={id} className={className}>
+      {children}
+    </Heading>
+  )
 }
