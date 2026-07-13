@@ -426,7 +426,12 @@ medusaIntegrationTestRunner({
 
         const [returnOrder] = await remoteQuery(remoteQueryObject)
 
-        expect(returnOrder).toEqual(
+        // The query requests totals ("total", "item_total"), so numeric fields
+        // come back as BigNumber instances; serialize to normalize them to
+        // plain numbers before asserting (same pattern as order-edit.spec.ts).
+        const serializedReturnOrder = JSON.parse(JSON.stringify(returnOrder))
+
+        expect(serializedReturnOrder).toEqual(
           expect.objectContaining({
             id: expect.any(String),
             display_id: 1,
