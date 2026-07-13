@@ -1,0 +1,1 @@
+{"slug":"/references/translation/types/translation.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"translationReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}
