@@ -73,7 +73,64 @@ export function buildWorkflowBlocks(
     blocks.push(...output)
   }
 
+  // Hooks: reuse the workflowHooks helper (headings + notes + TypeLists) and
+  // split its output into structured blocks.
+  const hooks = String(Handlebars.helpers.workflowHooks.call(signature) || "")
+  blocks.push(...splitContentBlocks(hooks))
+
+  // Emitted events: build a structured block from the @workflowEvent tags.
+  const events = buildWorkflowEventsBlock(signature)
+  if (events) {
+    blocks.push({
+      kind: "heading",
+      level: 2,
+      text: "Emitted Events",
+      id: slugId(`${signature.name}-emitted-events`),
+    })
+    blocks.push(events)
+  }
+
   return blocks
+}
+
+/**
+ * Parses the `@workflowEvent` block tags of a workflow into a structured
+ * `workflowEvents` block, mirroring the tag format the `workflowEvents` helper
+ * decodes (`name -- description -- payload -- [deprecated] -- [since: x]`).
+ */
+function buildWorkflowEventsBlock(
+  signature: SignatureReflection
+): Extract<DocBlock, { kind: "workflowEvents" }> | undefined {
+  const tags = signature.parent?.comment?.blockTags.filter(
+    (tag) => tag.tag === "@workflowEvent"
+  )
+  if (!tags?.length) {
+    return undefined
+  }
+
+  const events = tags.map((tag) => {
+    const parts = tag.content
+      .map((c) => c.text)
+      .join(" ")
+      .split("--")
+    const rest = parts.slice(3).map((p) => p.trim())
+    const deprecatedIndex = rest.findIndex((p) => p === "deprecated")
+    const since = rest.find((p) => p.startsWith("since: "))
+
+    return {
+      name: parts[0].trim(),
+      description: parts[1]?.trim() || undefined,
+      payload:
+        parts[2]?.trim().replace(/^```ts\n/, "").replace(/\n```$/, "") ||
+        undefined,
+      deprecated: deprecatedIndex !== -1 || undefined,
+      deprecatedMessage:
+        deprecatedIndex !== -1 ? rest[deprecatedIndex] || undefined : undefined,
+      since: since ? since.replace("since: ", "").trim() : undefined,
+    }
+  })
+
+  return { kind: "workflowEvents", events }
 }
 
 /**

@@ -491,6 +491,19 @@ export declare type DocBlock =
         tooltip?: string
       }[]
     }
+  | {
+      /** Events emitted by a workflow (from `@workflowEvent` tags). */
+      kind: "workflowEvents"
+      events: {
+        name: string
+        description?: string
+        /** The event payload as a code snippet. */
+        payload?: string
+        deprecated?: boolean
+        deprecatedMessage?: string
+        since?: string
+      }[]
+    }
 
 /**
  * A fully-serialized reference page.

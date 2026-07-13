@@ -8,7 +8,7 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
-import { isWorkflow, isWorkflowStep } from "utils"
+import { getDmlProperties, isDmlEntity, isWorkflow, isWorkflowStep } from "utils"
 import type { DocBlock, DocPage, DocTypeListItem } from "types"
 import { MarkdownTheme } from "../theme.js"
 import { ReflectionParameterType } from "../types.js"
@@ -180,6 +180,20 @@ function buildMemberBlocks(
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
   )
+
+  // DML entity (data model) pages list the entity's properties directly,
+  // rather than wrapping them under the `DmlEntity<...>` type (mirrors the
+  // `dmlProperties` helper / `member.dml` template).
+  if (isDmlEntity(model) && model.type?.type === "reference") {
+    const types = buildTypeListItems(
+      getDmlProperties(model.type),
+      model.project
+    )
+    if (types.length) {
+      blocks.push({ kind: "typeList", sectionTitle: model.name, types })
+    }
+    return blocks
+  }
 
   const types = buildTypeListItems(
     model.children && model.children.length ? model.children : [model],
