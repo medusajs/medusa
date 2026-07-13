@@ -38,8 +38,9 @@ export function buildWorkflowBlocks(
     blocks.push({ kind: "markdown", html: comment })
   }
 
-  // @since availability note + locking note (member.workflow.hbs: version +
-  // workflowNotes, both after the comment and before the source link).
+  // @deprecated + @since notes, then the locking note (member.workflow.hbs:
+  // comment tags + version + workflowNotes, before the source link).
+  blocks.push(...deprecatedNoteBlocks(signature))
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.version(signature) || ""))
   )
@@ -165,6 +166,7 @@ export function buildStepBlocks(
     blocks.push({ kind: "markdown", html: comment })
   }
 
+  blocks.push(...deprecatedNoteBlocks(signature))
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.version(signature) || ""))
   )
@@ -338,6 +340,17 @@ function getSignatureComment(signature: SignatureReflection): string {
   return String(
     Handlebars.helpers.comments(signature.comment, true, false) || ""
   ).trim()
+}
+
+/** Emits the `@deprecated` note (`:::note[Deprecated]`) as a `note` block. */
+function deprecatedNoteBlocks(signature: SignatureReflection): DocBlock[] {
+  const tag = signature.comment?.blockTags.find(
+    (blockTag) => blockTag.tag === "@deprecated"
+  )
+  if (!tag) {
+    return []
+  }
+  return splitContentBlocks(String(Handlebars.helpers.commentTag(tag) || ""))
 }
 
 function extractSourceLink(signature: SignatureReflection): string | undefined {

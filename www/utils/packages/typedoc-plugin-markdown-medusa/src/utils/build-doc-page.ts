@@ -221,6 +221,7 @@ function buildMemberBlocks(
   if (description) {
     blocks.push({ kind: "markdown", html: description })
   }
+  blocks.push(...deprecatedNoteBlocks(model))
   blocks.push(...versionNoteBlocks(model))
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
@@ -263,7 +264,8 @@ function buildSignatureBlocks(
     blocks.push({ kind: "markdown", html: comment })
   }
 
-  // @since note.
+  // @deprecated + @since notes.
+  blocks.push(...deprecatedNoteBlocks(signature))
   blocks.push(...versionNoteBlocks(signature))
 
   // @example (may embed <CodeTabs>).
@@ -328,6 +330,22 @@ function buildTypeListItems(
  */
 export function versionNoteBlocks(reflection: Reflection): DocBlock[] {
   return splitContentBlocks(String(Handlebars.helpers.version(reflection) || ""))
+}
+
+/**
+ * Emits the `@deprecated` note as a `note` block. The MDX theme renders it
+ * inline with the comment (`comments` with tags -> `commentTag` produces a
+ * `:::note[Deprecated]` admonition); we emit it explicitly since our comment
+ * rendering omits block tags.
+ */
+export function deprecatedNoteBlocks(reflection: Reflection): DocBlock[] {
+  const tag = reflection.comment?.blockTags.find(
+    (blockTag) => blockTag.tag === "@deprecated"
+  )
+  if (!tag) {
+    return []
+  }
+  return splitContentBlocks(String(Handlebars.helpers.commentTag(tag) || ""))
 }
 
 function getCommentMarkdown(reflection: Reflection): string {
