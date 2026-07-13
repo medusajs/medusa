@@ -57,6 +57,17 @@ export class JsonTheme extends MarkdownTheme {
     return "modules.json"
   }
 
+  // The merge-phase `formatting` regexes are written against `page.mdx`
+  // locations (e.g. the core-flows workflow key that sets the
+  // `/references/medusa-workflows/{{alias}}` slug). Normalize the JSON theme's
+  // `page.json` location back to `page.mdx` so every existing regex — slugs,
+  // titles, descriptions, group filtering — matches unchanged.
+  getFormattingOptions(location: string) {
+    return super.getFormattingOptions(
+      location.replace(/page\.json$/, "page.mdx")
+    )
+  }
+
   /**
    * All three template getters build a `DocPage` from the page's reflection and
    * return it serialized. The `kind` mirrors which Handlebars template the MDX
