@@ -20,7 +20,9 @@ export const GET = async (
 
   const allowedProviderIds = getAllowedAuthProvidersForActor(config, actor_type)
 
-  const providers = await service.listAuthProviders({ id: allowedProviderIds })
+  const providers = await service.listAuthProviders(
+    allowedProviderIds ? { id: allowedProviderIds } : undefined
+  )
 
   res.status(200).json({
     providers: providers.map((provider) => ({
