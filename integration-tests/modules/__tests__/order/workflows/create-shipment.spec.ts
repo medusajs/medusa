@@ -420,7 +420,9 @@ medusaIntegrationTestRunner({
         const [orderFulfill] = await remoteQuery(remoteQueryObject)
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
-        expect(orderFulfill.items[0].detail.fulfilled_quantity).toEqual(1)
+        expect(Number(orderFulfill.items[0].detail.fulfilled_quantity)).toEqual(
+          1
+        )
         expect(orderFulfill.fulfillments[0].marked_shipped_by).toEqual("user_1")
 
         const inventoryModule = container.resolve(Modules.INVENTORY)
