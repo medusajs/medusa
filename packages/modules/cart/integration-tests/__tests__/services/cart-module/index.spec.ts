@@ -6,6 +6,24 @@ import { CartModuleService } from "@services"
 
 jest.setTimeout(50000)
 
+// Retrieving a cart without an explicit `select` now computes totals, so numeric
+// fields come back as BigNumber instances. This normalizes them to plain numbers
+// for equality assertions while preserving Dates and object structure.
+const normalizeBigNumbers = (value) => {
+  if (Array.isArray(value)) {
+    return value.map(normalizeBigNumbers)
+  }
+  if (value && typeof value === "object" && !(value instanceof Date)) {
+    if ("numeric_" in value && "raw_" in value) {
+      return Number(value)
+    }
+    return Object.fromEntries(
+      Object.keys(value).map((key) => [key, normalizeBigNumbers(value[key])])
+    )
+  }
+  return value
+}
+
 moduleIntegrationTestRunner<ICartModuleService>({
   moduleName: Modules.CART,
   testSuite: ({ service }) => {
@@ -234,7 +252,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             relations: ["items"],
           })
 
-          expect(cart).toEqual(
+          expect(normalizeBigNumbers(cart)).toEqual(
             expect.objectContaining({
               id: createdCart.id,
               currency_code: "eur",
@@ -279,7 +297,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             }
           )
 
-          expect(carts).toEqual(
+          expect(normalizeBigNumbers(carts)).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
                 currency_code: "eur",
@@ -522,6 +540,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
+            select: [],
           })
 
           expect(cart.items).toEqual(
@@ -1072,6 +1091,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
+            select: [],
           })
 
           expect(cart.items).toEqual(
@@ -1195,6 +1215,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
+            select: [],
           })
 
           expect(cart.items).toEqual(
@@ -1537,6 +1558,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
+            select: [],
           })
 
           expect(cart.shipping_methods).toEqual(
@@ -1664,6 +1686,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
 
           const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
+            select: [],
           })
 
           expect(cart.shipping_methods).toEqual(
