@@ -3464,6 +3464,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/auth-oidc@2.17.2, @medusajs/auth-oidc@workspace:packages/modules/providers/auth-oidc":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/auth-oidc@workspace:packages/modules/providers/auth-oidc"
+  dependencies:
+    "@medusajs/framework": 2.17.2
+    openid-client: ^5.7.1
+  peerDependencies:
+    "@medusajs/framework": 2.17.2
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/auth@2.17.2, @medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
@@ -4073,6 +4084,7 @@ __metadata:
     "@medusajs/auth-emailpass": 2.17.2
     "@medusajs/auth-github": 2.17.2
     "@medusajs/auth-google": 2.17.2
+    "@medusajs/auth-oidc": 2.17.2
     "@medusajs/cache-inmemory": 2.17.2
     "@medusajs/cache-redis": 2.17.2
     "@medusajs/caching": 2.17.2
@@ -20795,7 +20807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.15.4":
+"jose@npm:^4.15.4, jose@npm:^4.15.9":
   version: 4.15.9
   resolution: "jose@npm:4.15.9"
   checksum: 4ed4ddf4a029db04bd167f2215f65d7245e4dc5f36d7ac3c0126aab38d66309a9e692f52df88975d99429e357e5fd8bab340ff20baab544d17684dd1d940a0f4
@@ -22965,6 +22977,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object-hash@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "object-hash@npm:2.2.0"
+  checksum: 1527de843926c5442ed61f8bdddfc7dc181b6497f725b0e89fcf50a55d9c803088763ed447cac85a5aa65345f1e99c2469ba679a54349ef3c4c0aeaa396a3eb9
+  languageName: node
+  linkType: hard
+
 "object-hash@npm:^3.0.0":
   version: 3.0.0
   resolution: "object-hash@npm:3.0.0"
@@ -23064,6 +23083,13 @@ __metadata:
   version: 1.6.1
   resolution: "obliterator@npm:1.6.1"
   checksum: 5fad57319aae0ef6e34efa640541d41c2dd9790a7ab808f17dcb66c83a81333963fc2dfcfa6e1b62158e5cef6291cdcf15c503ad6c3de54b2227dd4c3d7e1b55
+  languageName: node
+  linkType: hard
+
+"oidc-token-hash@npm:^5.0.3":
+  version: 5.2.0
+  resolution: "oidc-token-hash@npm:5.2.0"
+  checksum: 4fa9a6f0a27c0b304aa2e4a37e433e871fb2e71418b62ada7305022ed7c70a4b325a81a4ee9661bf0c456cda0acdbeb564e68659bd6fe6a192b20bdec11688ea
   languageName: node
   linkType: hard
 
@@ -23201,6 +23227,18 @@ __metadata:
   dependencies:
     yaml: ^2.2.1
   checksum: 3b9a663bf71f9292880c970a80f6f1a8db0ee475451c03b4fd336da957a24372349594d7868ce0a60b3a0875844a1f0e906e8fec8ef4220c06aa70670bfa3148
+  languageName: node
+  linkType: hard
+
+"openid-client@npm:^5.7.1":
+  version: 5.7.1
+  resolution: "openid-client@npm:5.7.1"
+  dependencies:
+    jose: ^4.15.9
+    lru-cache: ^6.0.0
+    object-hash: ^2.2.0
+    oidc-token-hash: ^5.0.3
+  checksum: 6aae649758562002eace7574b6eda02be7eddbb0df61eef497ae98b7a4a0ae4c6b09f3f0c1b9b6cb7fcc0c70bbde2576691bf31b870db1f19ab634c1def10bc7
   languageName: node
   linkType: hard
 

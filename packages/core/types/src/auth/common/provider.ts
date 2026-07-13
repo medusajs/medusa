@@ -44,6 +44,32 @@ export type AuthenticationResponse = {
 /**
  * @interface
  *
+ * Public information about a registered auth provider instance. This is safe to
+ * expose to unauthenticated clients (for example, a login UI that renders a
+ * button per provider). It never includes the provider's options or secrets.
+ */
+export type AuthProviderInfoDTO = {
+  /**
+   * The registered instance ID of the provider. This is the value used in
+   * authentication routes (for example, `okta` in `POST /auth/user/okta`).
+   */
+  id: string
+
+  /**
+   * The provider's static identifier (for example, `oidc` or `emailpass`).
+   * Multiple instances can share the same identifier.
+   */
+  identifier: string
+
+  /**
+   * The name to display for the provider in a frontend application.
+   */
+  display_name: string
+}
+
+/**
+ * @interface
+ *
  * The data passed to the auth provider when authenticating a user
  * or validating a callback.
  */

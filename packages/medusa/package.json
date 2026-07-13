@@ -67,6 +67,7 @@
     "@medusajs/auth-emailpass": "2.17.2",
     "@medusajs/auth-github": "2.17.2",
     "@medusajs/auth-google": "2.17.2",
+    "@medusajs/auth-oidc": "2.17.2",
     "@medusajs/cache-inmemory": "2.17.2",
     "@medusajs/cache-redis": "2.17.2",
     "@medusajs/caching": "2.17.2",

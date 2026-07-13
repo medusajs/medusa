@@ -184,6 +184,12 @@ export default class AuthModuleService
     return serializedUsers
   }
 
+  async listAuthProviders(filters?: {
+    id: string | string[]
+  }): Promise<AuthTypes.AuthProviderInfoDTO[]> {
+    return this.authProviderService_.listProviders(filters)
+  }
+
   async register(
     provider: string,
     authenticationData: AuthenticationInput
@@ -1207,7 +1213,11 @@ export default class AuthModuleService
 
         return serializedResponse
       },
-      setState: async (key: string, value: Record<string, unknown>) => {
+      setState: async (
+        key: string,
+        value: Record<string, unknown>,
+        ttlSeconds?: number
+      ) => {
         if (!this.cache_) {
           throw new MedusaError(
             MedusaError.Types.INVALID_ARGUMENT,
@@ -1215,8 +1225,8 @@ export default class AuthModuleService
           )
         }
 
-        // 20 minutes. Can be made configurable if necessary, but this is a good default.
-        this.cache_.set(key, value, 1200)
+        // 20 minutes default. Can be overridden per call, but this is a good default.
+        this.cache_.set(key, value, ttlSeconds ?? 1200)
       },
       getState: async (key: string) => {
         if (!this.cache_) {
@@ -1226,7 +1236,14 @@ export default class AuthModuleService
           )
         }
 
-        return await this.cache_.get(key)
+        const value = await this.cache_.get<Record<string, unknown>>(key)
+
+        // State is single-use: consume it on read so that a state value can't be replayed
+        if (value !== null && value !== undefined) {
+          await this.cache_.invalidate(key)
+        }
+
+        return value
       },
     }
   }
