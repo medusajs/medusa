@@ -39,6 +39,12 @@ export interface UseTableConfigurationOptions {
    * actions column). They participate in column state like any other column.
    */
   extraColumns?: HttpTypes.AdminColumn[]
+  /**
+   * Default filters (filter id -> value) applied only when there is no saved
+   * view configuration active. Once a view is active, its filters are used
+   * instead. Acts as the baseline for "unsaved changes" detection.
+   */
+  defaultFilters?: Record<string, any>
 }
 
 export interface UseTableConfigurationReturn {
@@ -76,9 +82,24 @@ export function useTableConfiguration({
   queryPrefix = "",
   transformColumns,
   extraColumns,
+  defaultFilters,
 }: UseTableConfigurationOptions): UseTableConfigurationReturn {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const [_, setSearchParams] = useSearchParams()
+
+  // Seed the adapter's default filters into the URL params. Used when no saved
+  // view is active, both on initial sync and when clearing.
+  const applyDefaultFilters = useCallback(
+    (params: URLSearchParams) => {
+      if (!defaultFilters) {
+        return
+      }
+      Object.entries(defaultFilters).forEach(([key, value]) => {
+        params.set(`${queryPrefix}_${key}`, JSON.stringify(value))
+      })
+    },
+    [defaultFilters, queryPrefix]
+  )
 
   const { activeView, createView } = useViewConfigurations(entity)
   const currentActiveView = activeView?.view_configuration || null
@@ -186,17 +207,14 @@ export function useTableConfiguration({
         if (viewConfig.search) {
           prev.set(`${queryPrefix}_q`, viewConfig.search)
         }
+      } else {
+        // No saved view: fall back to the adapter's default filters.
+        applyDefaultFilters(prev)
       }
 
       return prev
     })
-  }, [
-    currentActiveView,
-    columnsToRender,
-    queryPrefix,
-    setSearchParams,
-    originalHandleViewChange,
-  ])
+  }, [currentActiveView, columnsToRender])
 
   // Current configuration from URL
   const currentConfiguration = useMemo(() => {
@@ -278,8 +296,20 @@ export function useTableConfiguration({
         return true
       }
     } else {
-      if (Object.keys(currentFilters).length > 0) {
-        return true
+      // Check filters against the adapter's default filters (the baseline when
+      // no view is saved), not against "no filters".
+      const baselineFilters = defaultFilters ?? {}
+      const filterKeys = new Set([
+        ...Object.keys(currentFilters),
+        ...Object.keys(baselineFilters),
+      ])
+      for (const key of filterKeys) {
+        if (
+          JSON.stringify(currentFilters[key]) !==
+          JSON.stringify(baselineFilters[key])
+        ) {
+          return true
+        }
       }
       if (currentSorting !== null) {
         return true
@@ -320,6 +350,7 @@ export function useTableConfiguration({
     columnOrder,
     currentConfiguration,
     columnsToRender,
+    defaultFilters,
   ])
 
   // Debounce configuration change detection
@@ -365,17 +396,15 @@ export function useTableConfiguration({
         if (viewConfig.search) {
           prev.set(`${queryPrefix}_q`, viewConfig.search)
         }
+      } else {
+        // No saved view: clear back to the adapter's default filters.
+        applyDefaultFilters(prev)
       }
 
       return prev
     })
-  }, [
-    currentActiveView,
-    columnsToRender,
-    queryPrefix,
-    setSearchParams,
-    originalHandleViewChange,
-  ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentActiveView, columnsToRender, queryPrefix])
 
   // Calculate required fields based on visible columns
   const requiredFields = useMemo(() => {

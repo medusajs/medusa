@@ -85,6 +85,7 @@ export function ConfigurableDataTable<TData>({
     queryPrefix,
     transformColumns: adapter.transformColumns,
     extraColumns,
+    defaultFilters: adapter.defaultFilters,
   })
 
   const parsedQueryParams = { ...queryParams }
