@@ -82,14 +82,17 @@ function extractEvent(event: DeclarationReflection): DocEvent | undefined {
     (tag) => tag.tag === "@deprecated"
   )
   const since = getTagText(event, "@since")
-  const workflows = (getTagText(event, "@workflows") || "")
-    .split(", ")
-    .map((workflow) => workflow.trim())
-    .filter(Boolean)
-    .map((workflow) => ({
-      name: workflow,
-      href: `/references/medusa-workflows/${workflow}`,
-    }))
+  const workflows = [
+    ...new Set(
+      (getTagText(event, "@workflows") || "")
+        .split(", ")
+        .map((workflow) => workflow.trim())
+        .filter(Boolean)
+    ),
+  ].map((workflow) => ({
+    name: workflow,
+    href: `/references/medusa-workflows/${workflow}`,
+  }))
 
   return {
     name,

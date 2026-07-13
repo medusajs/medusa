@@ -70,8 +70,8 @@ function EventDetail({ event, level }: { event: DocEvent; level: number }) {
             Workflows Emitting this Event
           </DocHeading>
           <Ul>
-            {event.workflows.map((workflow) => (
-              <Li key={workflow.name}>
+            {event.workflows.map((workflow, index) => (
+              <Li key={`${workflow.name}-${index}`}>
                 <Anchor href={workflow.href}>{workflow.name}</Anchor>
               </Li>
             ))}
