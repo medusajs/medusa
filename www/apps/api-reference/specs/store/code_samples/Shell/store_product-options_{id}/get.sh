@@ -1,0 +1,2 @@
+curl '{backend_url}/store/product-options/{id}' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'

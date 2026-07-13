@@ -20,6 +20,18 @@ class MockEventBusModuleService extends AbstractEventBusModuleService {
   async clearGroupedEvents(eventGroupId: string): Promise<void> {
     return Promise.resolve()
   }
+
+  public testWithCreatedAtMetadata(metadata?: EventBusTypes.EventMetadata) {
+    return this.withCreatedAtMetadata(metadata)
+  }
+
+  public testWithPublishedAtMetadata(metadata?: EventBusTypes.EventMetadata) {
+    return this.withPublishedAtMetadata(metadata)
+  }
+
+  public testParseEventMetadataDates(metadata?: EventBusTypes.EventMetadata) {
+    return this.parseEventMetadataDates(metadata)
+  }
 }
 
 describe("AbstractEventBusModuleService", () => {
@@ -48,5 +60,55 @@ describe("AbstractEventBusModuleService", () => {
     eventBus.subscribe("test", subscriber)
     eventBus.unsubscribe("test", subscriber)
     expect(eventBus.eventToSubscribersMap.get("test")).toEqual([])
+  })
+
+  describe("event metadata timestamps", () => {
+    it("should add created_at to metadata", () => {
+      jest.useFakeTimers()
+      jest.setSystemTime(new Date("2026-06-20T10:00:00.000Z"))
+
+      const eventBus = new MockEventBusModuleService()
+      const metadata = eventBus.testWithCreatedAtMetadata({
+        source: "test",
+      })
+
+      expect(metadata).toEqual({
+        source: "test",
+        created_at: new Date("2026-06-20T10:00:00.000Z"),
+      })
+      expect(metadata.published_at).toBeUndefined()
+
+      jest.useRealTimers()
+    })
+
+    it("should add published_at to metadata", () => {
+      jest.useFakeTimers()
+      jest.setSystemTime(new Date("2026-06-20T11:00:00.000Z"))
+
+      const eventBus = new MockEventBusModuleService()
+      const metadata = eventBus.testWithPublishedAtMetadata({
+        created_at: new Date("2026-06-20T10:00:00.000Z"),
+      })
+
+      expect(metadata.created_at).toEqual(new Date("2026-06-20T10:00:00.000Z"))
+      expect(metadata.published_at).toEqual(
+        new Date("2026-06-20T11:00:00.000Z")
+      )
+
+      jest.useRealTimers()
+    })
+
+    it("should parse serialized metadata dates", () => {
+      const eventBus = new MockEventBusModuleService()
+      const metadata = eventBus.testParseEventMetadataDates({
+        created_at: "2026-06-20T10:00:00.000Z" as unknown as Date,
+        published_at: "2026-06-20T11:00:00.000Z" as unknown as Date,
+      })
+
+      expect(metadata?.created_at).toEqual(new Date("2026-06-20T10:00:00.000Z"))
+      expect(metadata?.published_at).toEqual(
+        new Date("2026-06-20T11:00:00.000Z")
+      )
+    })
   })
 })
