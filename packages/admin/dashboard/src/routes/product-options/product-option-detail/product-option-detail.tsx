@@ -7,13 +7,16 @@ import {
   detailPageDefaultEntries,
 } from "../../../components/layout-composer"
 import { useProductOption } from "../../../hooks/api"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { productOptionLoader } from "./loader.ts"
 import { ProductOptionGeneralSection } from "./components/product-option-general-section"
 import { ProductOptionProductSection } from "./components/product-option-product-section"
 import { ProductOptionValuesSection } from "./components/product-option-values-section"
+import { ConfigurableProductOptionValuesSection } from "./components/product-option-values-section/configurable-product-option-values-section"
 
 export const ProductOptionDetail = () => {
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof productOptionLoader>
@@ -47,7 +50,13 @@ export const ProductOptionDetail = () => {
               <ProductOptionGeneralSection productOption={product_option} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionValuesSection">
-              <ProductOptionValuesSection productOption={product_option} />
+              {isViewConfigEnabled ? (
+                <ConfigurableProductOptionValuesSection
+                  productOption={product_option}
+                />
+              ) : (
+                <ProductOptionValuesSection productOption={product_option} />
+              )}
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionProductSection">
               <ProductOptionProductSection
