@@ -25,9 +25,7 @@ export const ContentMenuToc = () => {
     // the heading components add. Content links (e.g. a signature title's return
     // type) point elsewhere, so they're preserved.
     const clone = heading.cloneNode(true) as HTMLElement
-    clone
-      .querySelectorAll('a[href^="#"]')
-      .forEach((anchor) => anchor.remove())
+    clone.querySelectorAll(`a[href^="#"]`).forEach((anchor) => anchor.remove())
     return (clone.textContent || "").replace(/\s+/g, " ").trim()
   }
 
