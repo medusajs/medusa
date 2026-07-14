@@ -60,6 +60,27 @@ These variables are automatically set by Cloud and don't need to be configured m
 
 ---
 
+## Search and Filter Environment Variables
+
+A toolbar above the environment variables table lets you find and filter variables quickly:
+
+- **Search**: Enter a key name or value in the search field to filter the list in real time.
+- **Build / Runtime toggles**: Show only variables available at build time, only those available at runtime, or both at once.
+- **System Variables toggle** (backend tab only): Show or hide system-managed variables. System variables are hidden by default.
+
+---
+
+## System Environment Variables Visibility
+
+In addition to the [system environment variables](#system-environment-variables) documented above, the backend tab can now display all system-provided variables alongside your user-defined ones when the **System Variables** toggle is enabled.
+
+System variables are visually distinguished from user-defined variables with a subtle background and muted text. Because they are managed by Cloud:
+
+- The edit and delete actions are not available for system variables.
+- Secret system variables do not show the reveal (eye) icon.
+
+---
+
 ## Add Environment Variables on Cloud
 
 To add environment variables to an environment:
