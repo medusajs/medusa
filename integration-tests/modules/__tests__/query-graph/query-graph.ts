@@ -549,6 +549,206 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      describe("cross-module filtering", () => {
+        it("should filter variants by linked price set id", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: variants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title", "price_set.id"],
+          })
+
+          const targetVariant = variants.find(
+            (variant) => variant.title === "P1 Variant 1"
+          )
+
+          expect(targetVariant?.price_set?.id).toBeDefined()
+
+          const { data: filteredVariants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title"],
+            filters: {
+              price_set: {
+                id: targetVariant!.price_set!.id,
+              },
+            },
+          })
+
+          expect(filteredVariants).toHaveLength(1)
+          expect(filteredVariants[0]).toEqual(
+            expect.objectContaining({
+              id: targetVariant!.id,
+              title: "P1 Variant 1",
+            })
+          )
+        })
+
+        it("should filter products by linked translation key", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: products } = await query.graph({
+            entity: "product",
+            fields: ["id", "title", "translation.key"],
+          })
+
+          const targetProduct = products.find(
+            (product) => product.title === "Product 2"
+          )
+
+          expect(targetProduct?.translation?.key).toBeDefined()
+
+          const { data: filteredProducts } = await query.graph({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: {
+              translation: {
+                key: targetProduct!.translation!.key,
+              },
+            },
+          })
+
+          expect(filteredProducts).toHaveLength(1)
+          expect(filteredProducts[0]).toEqual(
+            expect.objectContaining({
+              id: targetProduct!.id,
+              title: "Product 2",
+            })
+          )
+        })
+
+        it("should filter price sets by linked variant id", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: variants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title", "price_set.id"],
+          })
+
+          const targetVariant = variants.find(
+            (variant) => variant.title === "P2 Variant 2"
+          )
+
+          expect(targetVariant?.price_set?.id).toBeDefined()
+
+          const { data: filteredPriceSets } = await query.graph({
+            entity: "price_set",
+            fields: ["id"],
+            filters: {
+              variant: {
+                id: targetVariant!.id,
+              },
+            },
+          })
+
+          expect(filteredPriceSets).toHaveLength(1)
+          expect(filteredPriceSets[0]).toEqual(
+            expect.objectContaining({
+              id: targetVariant!.price_set!.id,
+            })
+          )
+        })
+
+        // Traverses a module-internal relation (cart -> items) before crossing
+        // modules twice (line item -> product via read-only link, product ->
+        // sales channel via link module).
+        it("should filter carts by product sales channel", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const remoteLink: any = container.resolve("remoteLink")
+          const cartService: any = container.resolve(Modules.CART)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const { data: products } = await query.graph({
+            entity: "product",
+            fields: ["id", "title"],
+          })
+
+          const retailProduct = products.find(
+            (product) => product.title === "Product 1"
+          )
+          const wholesaleProduct = products.find(
+            (product) => product.title === "Product 2"
+          )
+
+          expect(retailProduct).toBeDefined()
+          expect(wholesaleProduct).toBeDefined()
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Retail Store",
+          })
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
+              name: "Wholesale Store",
+            })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: { product_id: retailProduct!.id },
+              [Modules.SALES_CHANNEL]: { sales_channel_id: retailChannel.id },
+            },
+            {
+              [Modules.PRODUCT]: { product_id: wholesaleProduct!.id },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: wholesaleChannel.id,
+              },
+            },
+          ])
+
+          await cartService.createCarts([
+            {
+              currency_code: "usd",
+              email: "retail-cart@test.com",
+              items: [
+                {
+                  title: retailProduct!.title,
+                  product_id: retailProduct!.id,
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+            {
+              currency_code: "usd",
+              email: "wholesale-cart@test.com",
+              items: [
+                {
+                  title: wholesaleProduct!.title,
+                  product_id: wholesaleProduct!.id,
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+          ])
+
+          const { data: filteredCarts } = await query.graph({
+            entity: "cart",
+            fields: ["id", "email"],
+            filters: {
+              items: {
+                product: {
+                  sales_channels: {
+                    name: "Retail Store",
+                  },
+                },
+              },
+            },
+          })
+
+          expect(filteredCarts).toHaveLength(1)
+          expect(filteredCarts[0]).toEqual(
+            expect.objectContaining({
+              email: "retail-cart@test.com",
+            })
+          )
+        })
+      })
     })
   },
 })
