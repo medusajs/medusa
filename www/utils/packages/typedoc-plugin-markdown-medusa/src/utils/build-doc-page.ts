@@ -141,8 +141,11 @@ function buildContainerBlocks(
 ): DocBlock[] {
   const blocks: DocBlock[] = []
 
+  const { reflectionGroupRename } = theme.getFormattingOptionsForLocation()
   const groups = model.groups || []
   for (const group of groups) {
+    // Apply the configured group rename (e.g. Functions -> Steps).
+    const groupTitle = reflectionGroupRename?.[group.title] || group.title
     const linked = group.children.filter((child) => child.hasOwnDocument)
     const inline = group.children.filter(
       (child): child is DeclarationReflection =>
@@ -150,17 +153,17 @@ function buildContainerBlocks(
     )
 
     // Members that own a document (e.g. an interface's methods) become links.
+    // Index pages list just the name + link (no description).
     if (linked.length) {
       // Index pages list their namespaces without a "Namespaces" header.
-      if (group.title !== "Namespaces") {
-        blocks.push({ kind: "heading", level: 2, text: group.title, id: slugId(group.title) })
+      if (groupTitle !== "Namespaces") {
+        blocks.push({ kind: "heading", level: 2, text: groupTitle, id: slugId(groupTitle) })
       }
       blocks.push({
         kind: "linkList",
         items: linked.map((child) => ({
           title: child.name,
           href: theme.getRelativeUrl(child.url || ""),
-          description: getSummary(child),
         })),
       })
     }
@@ -387,17 +390,6 @@ function getCommentMarkdown(reflection: Reflection): string {
   return String(
     Handlebars.helpers.comments(reflection.comment, true, false) || ""
   ).trim()
-}
-
-function getSummary(reflection: Reflection): string | undefined {
-  const summaryTag = reflection.comment?.blockTags.find(
-    (tag) => tag.tag === "@summary"
-  )
-  const summary = summaryTag?.content || reflection.comment?.summary
-  if (!summary?.length) {
-    return undefined
-  }
-  return String(Handlebars.helpers.comment(summary) || "").trim() || undefined
 }
 
 /** Builds a table of contents from the heading blocks. */
