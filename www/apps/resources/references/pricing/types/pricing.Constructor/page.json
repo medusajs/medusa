@@ -1,0 +1,1 @@
+{"slug":"/references/pricing/types/pricing.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"pricingReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

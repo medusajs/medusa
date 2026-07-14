@@ -1,0 +1,1 @@
+{"slug":"/references/product/types/product.ProductStatus","title":"ProductStatus","frontmatter":{"displayed_sidebar":"productReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"ProductStatus","type":"`\"draft\"` \\| `\"proposed\"` \\| `\"published\"` \\| `\"rejected\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}
