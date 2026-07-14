@@ -27989,7 +27989,7 @@ This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.h
 The MCP server supports two authentication methods:
 
 1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
-2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This is useful for AI agents like OpenCode that may have issues with OAuth authentication flows.
+2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This method is useful if you face issues with OAuth or prefer to use a token for authentication.
 
 ***
 
@@ -28003,24 +28003,44 @@ The MCP server supports two authentication methods:
 
 To connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
 
-```sh
+### OAuth
+
+```bash
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
+```
+
+### Personal Access Key
+
+```bash
+claude mcp add --transport http medusa https://docs.medusajs.com/mcp --header "Authorization: Bearer {token}"
 ```
 
 Then, start Claude Code and authenticate with your Cloud account:
 
 ```sh
 claude
-/mcp
+/mcp # for oauth
 ```
 
-Then, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
+If you're connecting with OAuth, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
 
 ### Cursor
 
-Cursor has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in Cursor, [create a personal access key in your Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
+Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
 
-Then, add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
+### OAuth
+
+```json title=".cursor/mcp.json"
+{
+  "mcpServers": {
+    "medusa": {
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### Personal Access Key
 
 ```json title=".cursor/mcp.json"
 {
@@ -28035,15 +28055,15 @@ Then, add the following to your `.cursor/mcp.json` file or Cursor settings, as e
 }
 ```
 
-Replace `{token}` with the personal access key you generated in your Cloud account.
-
-You can then start using the Medusa MCP server in Cursor.
+If you're connecting with OAuth, open Settings -> Tools & MCPs and click "Connect" next to the `medusa` MCP server. This will open a browser window where you can log into your Cloud account to authenticate.
 
 ### VS Code
 
 <Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
 
 To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
+
+### OAuth
 
 ```json title=".vscode/mcp.json"
 {
@@ -28056,13 +28076,43 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
 }
 ```
 
-Then, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+### Personal Access Key
+
+```json title=".vscode/mcp.json"
+{
+  "servers": {
+    "medusa": {
+      "type": "http",
+      "url": "https://docs.medusajs.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {token}"
+      }
+    }
+  }
+}
+```
+
+If you're connecting with OAuth, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
 
 ### OpenCode
 
-OpenCode has known issues with OAuth authentication flows. So, to connect to the Medusa MCP server in OpenCode, [create a personal access key in your Cloud account](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md) first.
+Add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
 
-Then, add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
+### OAuth
+
+```json title="~/.config/opencode/opencode.json"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa": {
+      "type": "remote",
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  },
+}
+```
+
+### Personal Access Key
 
 ```json title="~/.config/opencode/opencode.json"
 {
@@ -28080,9 +28130,13 @@ Then, add the following to your [OpenCode config file](https://opencode.ai/docs/
 }
 ```
 
-Replace `{token}` with the personal access key you generated in your Cloud account.
+If you're connecting with OAuth, run the following command in your terminal to authenticate with your Cloud account:
 
-You can then start using the Medusa MCP server in OpenCode.
+```bash
+opencode mcp auth medusa
+```
+
+This will open a browser window where you can log into your Cloud account to authenticate.
 
 ***
 
