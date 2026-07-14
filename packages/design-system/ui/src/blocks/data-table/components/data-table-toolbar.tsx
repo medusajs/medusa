@@ -1,5 +1,4 @@
 import { DataTableFilterBar } from "@/blocks/data-table/components/data-table-filter-bar"
-import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
 import { clx } from "@/utils/clx"
 import * as React from "react"
 
@@ -36,15 +35,18 @@ interface DataTableToolbarProps {
    * Custom content to render in the filter bar
    */
   filterBarContent?: React.ReactNode
+  /**
+   * Whether to always render the filter bar, even when there are no active
+   * filters or custom content. Useful to reserve its space and avoid layout
+   * shifts when filters are added or removed.
+   */
+  alwaysShowFilterBar?: boolean
 }
 
 /**
  * Toolbar shown for the data table.
  */
 const DataTableToolbar = (props: DataTableToolbarProps) => {
-  const { instance } = useDataTableContext()
-  const hasFilters = instance.getFilters().length > 0
-
   return (
     <div className="flex flex-col divide-y">
       <div className={clx("flex items-center px-6 py-4", props.className)}>
@@ -52,9 +54,7 @@ const DataTableToolbar = (props: DataTableToolbarProps) => {
       </div>
       <DataTableFilterBar
         clearAllFiltersLabel={props.translations?.clearAll}
-        alwaysShow={hasFilters}
-        sortingTooltip={props.translations?.sort}
-        columnsTooltip={props.translations?.columns}
+        alwaysShow={props.alwaysShowFilterBar}
       >
         {props.filterBarContent}
       </DataTableFilterBar>

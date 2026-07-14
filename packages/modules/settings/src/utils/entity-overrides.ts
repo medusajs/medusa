@@ -1,5 +1,6 @@
 import { FieldFilterRules } from "./filter-rules"
 import { ComputedColumnDefinition } from "./computed-columns"
+import { RenderMode } from "./render-mode-mapper"
 
 /**
  * Override configuration for an entity.
@@ -33,6 +34,14 @@ export interface EntityOverride {
   fieldOrdering?: Record<string, number>
 
   /**
+   * Override the render mode for specific field paths (field path -> render mode).
+   * When set, this render mode replaces the inferred one; the inferred data type
+   * and semantic type are preserved. Supports dotted paths for nested
+   * relationship scalars (e.g. `collection.title`).
+   */
+  fieldRenderModes?: Record<string, RenderMode>
+
+  /**
    * Additional GraphQL types to include fields from.
    */
   additionalTypes?: string[]
@@ -46,6 +55,16 @@ export interface EntityOverride {
    * `defaultVisibleFields` and `fieldOrdering`.
    */
   nonFilterableFields?: string[]
+
+  /**
+   * Fields that should be displayed as columns but cannot be sorted on.
+   * Use for fields that exist on the entity (e.g. computed enums like
+   * `payment_status`) but are not accepted by the corresponding list API.
+   * Dotted paths are supported (e.g. `customer.email`) to target
+   * nested-relationship scalar fields, matching the convention used by
+   * `defaultVisibleFields` and `fieldOrdering`.
+   */
+  nonSortableFields?: string[]
 
   /**
    * Computed columns specific to this entity.
@@ -183,15 +202,17 @@ export class EntityOverrideRegistry {
           ...(existing.excludeFields || []),
           ...(override.excludeFields || []),
         ],
-        excludeSuffixes:
-          override.excludeSuffixes ?? existing.excludeSuffixes,
-        excludePrefixes:
-          override.excludePrefixes ?? existing.excludePrefixes,
+        excludeSuffixes: override.excludeSuffixes ?? existing.excludeSuffixes,
+        excludePrefixes: override.excludePrefixes ?? existing.excludePrefixes,
         defaultVisibleFields:
           override.defaultVisibleFields ?? existing.defaultVisibleFields,
         fieldOrdering: {
           ...(existing.fieldOrdering || {}),
           ...(override.fieldOrdering || {}),
+        },
+        fieldRenderModes: {
+          ...(existing.fieldRenderModes || {}),
+          ...(override.fieldRenderModes || {}),
         },
         additionalTypes: [
           ...(existing.additionalTypes || []),
@@ -326,6 +347,19 @@ export function getFieldOrdering(
 }
 
 /**
+ * Get the per-field render mode overrides for an entity.
+ * @param entityName - The entity name (used if override is not provided)
+ * @param override - Optional pre-resolved override to use instead of looking up by entity name
+ */
+export function getFieldRenderModes(
+  entityName: string,
+  override?: EntityOverride
+): Record<string, RenderMode> {
+  const resolvedOverride = override ?? getEntityOverride(entityName)
+  return resolvedOverride?.fieldRenderModes || {}
+}
+
+/**
  * Get additional types to include for an entity.
  * @param entityName - The entity name (used if override is not provided)
  * @param override - Optional pre-resolved override to use instead of looking up by entity name
@@ -349,6 +383,19 @@ export function getNonFilterableFields(
 ): string[] {
   const resolvedOverride = override ?? getEntityOverride(entityName)
   return resolvedOverride?.nonFilterableFields || []
+}
+
+/**
+ * Get fields that should be displayed but not sortable for an entity.
+ * @param entityName - The entity name (used if override is not provided)
+ * @param override - Optional pre-resolved override to use instead of looking up by entity name
+ */
+export function getNonSortableFields(
+  entityName: string,
+  override?: EntityOverride
+): string[] {
+  const resolvedOverride = override ?? getEntityOverride(entityName)
+  return resolvedOverride?.nonSortableFields || []
 }
 
 /**

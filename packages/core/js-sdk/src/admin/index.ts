@@ -27,6 +27,7 @@ import { ProductTag } from "./product-tag.js"
 import { ProductType } from "./product-type.js"
 import { ProductVariant } from "./product-variant.js"
 import { Promotion } from "./promotion.js"
+import { PropertyLabel } from "./property-label.js"
 import { RefundReason } from "./refund-reasons.js"
 import { Region } from "./region.js"
 import Reservation from "./reservation.js"
@@ -256,6 +257,11 @@ export class Admin {
    */
   public views: Views
   /**
+   * @tags property-labels
+   * @featureFlag view_configurations
+   */
+  public propertyLabel: PropertyLabel
+  /**
    * @tags layouts
    */
   public layouts: Layouts
@@ -320,6 +326,7 @@ export class Admin {
     this.plugin = new Plugin(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
+    this.propertyLabel = new PropertyLabel(client)
     this.layouts = new Layouts(client)
     this.rbacRole = new RbacRole(client)
     this.rbacPolicy = new RbacPolicy(client)
