@@ -193,25 +193,30 @@ export function generateEntityColumns(
       name: label?.label || computed.name,
       description: label?.description || computed.description,
       field: columnId,
-      sortable: false,
+      sortable: computed.sortable ?? false,
       hideable: true,
       default_visible:
         computed.defaultVisible || defaultVisibleFields.includes(columnId),
-      data_type: "string",
-      semantic_type: "computed",
-      context: "display",
-      computed: {
-        type: computed.renderMode,
-        required_fields: computed.requiredFields,
-        optional_fields: computed.optionalFields || [],
-        metadata: computed.metadata ?? {},
-      },
+      data_type: (computed.dataType ??
+        "string") as ViewConfigurationColumn["data_type"],
+      semantic_type: computed.renderMode ? "computed" : "relationship",
+      context: computed.context ?? "display",
+      // Only display columns carry a compute (render + required fields);
+      // filter-only injected columns omit it.
+      computed: computed.renderMode
+        ? {
+            type: computed.renderMode,
+            required_fields: computed.requiredFields ?? [],
+            optional_fields: computed.optionalFields || [],
+            metadata: computed.metadata ?? {},
+          }
+        : undefined,
       render_mode: computed.renderMode,
       default_order: fieldOrdering[columnId] || 850,
       category:
         (computed.category as ViewConfigurationColumn["category"]) ||
         "computed",
-      filter: { enabled: false },
+      filter: computed.filter ?? { enabled: false },
       source: { module: entity.module, entity: entity.name },
       custom_label: hasCustomLabel,
       label_id: label?.id,

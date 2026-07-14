@@ -74,7 +74,7 @@ export function createInventoryTableAdapter({
         "length",
         "height",
         "width",
-        "location_levels.location_id",
+        "location",
       ]
 
       return columns.map((column) => {
