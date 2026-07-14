@@ -79,6 +79,23 @@ export const completeCartWorkflowId = "complete-cart"
  * For example, in the [Subscriptions recipe](https://docs.medusajs.com/resources/recipes/subscriptions/examples/standard#create-workflow),
  * this workflow is used within another workflow that creates a subscription order.
  *
+ * ## Payment Validation
+ *
+ * When completing a cart, this workflow validates the cart's payment sessions, but it doesn't validate payment amounts.
+ *
+ * The workflow requires the cart's payment collection to have at least one payment session in a processable status: `pending`,
+ * `requires_more`, `authorized`, `captured`, or `pending_authorization` (used for asynchronous or deferred authorization, such as
+ * bank transfers). If the payment collection hasn't been initiated, or no payment session is in a processable status, the workflow
+ * throws an error.
+ *
+ * The workflow doesn't compare the authorized or captured amount against the cart's total. It neither requires the amount to equal
+ * the cart's total nor enforces a minimum amount. The amount that's authorized or captured is the payment session's own amount, which
+ * is set to the cart's total when the payment collection is created or refreshed. So, if the cart changes after its payment collection
+ * is created without the payment collection being refreshed, the workflow authorizes or captures the payment session's existing amount
+ * and records it in the order's transactions as-is.
+ *
+ * If the cart's total is zero and covered by credit lines, the workflow can complete the cart without a payment session.
+ *
  * ## Cart Completion Idempotency
  *
  * This workflow's logic is idempotent, meaning that if it is executed multiple times with the same input, it will not create duplicate orders. The
