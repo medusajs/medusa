@@ -100,16 +100,22 @@ export function ConfigurableDataTable<TData>({
     viewConfigurationKey: viewConfigKey,
   })
 
-  const parsedQueryParams = { ...queryParams }
+  const parsedQueryParams: Record<string, any> = { ...queryParams }
   filters.forEach((filter) => {
     const filterKey = filter.id
-    if (filterKey && parsedQueryParams[filterKey] !== undefined) {
-      const value = parseFilterParam(parsedQueryParams[filterKey])
-      if (value === undefined) {
-        delete parsedQueryParams[filterKey]
-      } else {
-        parsedQueryParams[filterKey] = value
-      }
+    if (!filterKey || parsedQueryParams[filterKey] === undefined) {
+      return
+    }
+    const value = parseFilterParam(parsedQueryParams[filterKey])
+
+    const paramKey = adapter.filterParamMap?.[filterKey] ?? filterKey
+    if (paramKey !== filterKey) {
+      delete parsedQueryParams[filterKey]
+    }
+    if (value === undefined) {
+      delete parsedQueryParams[paramKey]
+    } else {
+      parsedQueryParams[paramKey] = value
     }
   })
 

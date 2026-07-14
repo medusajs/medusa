@@ -127,6 +127,16 @@ export interface TableAdapter<TData> {
   defaultFilters?: Record<string, any>
 
   /**
+   * Override the outgoing query-param key for a resolved filter id when issuing
+   * the data request. The columns endpoint exposes filter ids by schema field
+   * path (e.g. `"sales_channels.id"`), which may not match the key the target
+   * list endpoint accepts (e.g. `"sales_channel_id"`). Map filter id -> param
+   * key; only the request key is rewritten — the filter id stays the same for
+   * the UI, URL and saved views. Unmapped filters pass through unchanged.
+   */
+  filterParamMap?: Record<string, string>
+
+  /**
    * Enable per-row selection. When true, a leading checkbox "select" column is
    * injected and selection state is managed by the table. Required for
    * `commands` (bulk actions) to be usable.

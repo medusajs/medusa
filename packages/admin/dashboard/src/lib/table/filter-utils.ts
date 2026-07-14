@@ -76,11 +76,13 @@ export function generateFiltersFromColumns(
       ]
     }
 
-    if (column.filter?.relationship && relationshipOptions) {
-      const options = relationshipOptions[column.field]
+    if (column.filter?.relationship) {
+      const options = relationshipOptions?.[column.field]
       if (options) {
         filterConfig.options = options
         filterConfig.searchable = true
+      } else {
+        filterConfig.type = "string"
       }
     }
 
