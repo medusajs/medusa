@@ -1,0 +1,1 @@
+{"slug":"/references/types/CommonTypes/types/types.CommonTypes.QueryContextType","title":"QueryContextType","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"QueryContextType","type":"`Record<string, any>` & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

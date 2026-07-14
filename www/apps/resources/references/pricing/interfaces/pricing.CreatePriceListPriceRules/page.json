@@ -1,0 +1,1 @@
+{"slug":"/references/pricing/interfaces/pricing.CreatePriceListPriceRules","title":"CreatePriceListPriceRules","frontmatter":{"displayed_sidebar":"pricingReference"},"toc":[],"blocks":[{"kind":"markdown","html":"The price rules to be set for each price in the price list.\n\nEach key of the object is an attribute, and its value\nis the values of the rule."}]}
