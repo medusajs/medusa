@@ -1,8 +1,12 @@
-import { RegionCountryDTO } from "@medusajs/types"
 import { json } from "react-router-dom"
 import { StaticCountry } from "../../../../lib/data/countries"
 
-const acceptedOrderKeys = ["name", "code"]
+const acceptedOrderKeys = ["display_name", "iso_2"] as const
+
+type CountryOrderKey = (typeof acceptedOrderKeys)[number]
+
+const isCountryOrderKey = (key: string): key is CountryOrderKey =>
+  acceptedOrderKeys.includes(key as CountryOrderKey)
 
 /**
  * Since countries cannot be retrieved from the API, we need to create a hook
@@ -11,7 +15,7 @@ const acceptedOrderKeys = ["name", "code"]
 export const useCountries = ({
   countries,
   q,
-  order = "name",
+  order = "display_name",
   limit,
   offset = 0,
 }: {
@@ -27,24 +31,21 @@ export const useCountries = ({
     const direction = order.startsWith("-") ? -1 : 1
     const key = order.replace("-", "")
 
-    if (!acceptedOrderKeys.includes(key)) {
-      console.log("The key ${key} is not a valid order key")
+    if (!isCountryOrderKey(key)) {
       throw json(`The key ${key} is not a valid order key`, 500)
     }
 
-    const sortKey: keyof RegionCountryDTO = key === "code" ? "iso_2" : "name"
-
     data.sort((a, b) => {
-      if (a[sortKey] === null && b[sortKey] === null) {
+      if (a[key] === null && b[key] === null) {
         return 0
       }
-      if (a[sortKey] === null) {
+      if (a[key] === null) {
         return direction
       }
-      if (b[sortKey] === null) {
+      if (b[key] === null) {
         return -direction
       }
-      return a[sortKey]! > b[sortKey]! ? direction : -direction
+      return a[key]! > b[key]! ? direction : -direction
     })
   }
 
