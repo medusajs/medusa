@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
+import compression from "compression"
 import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
@@ -10,6 +11,7 @@ import morgan from "morgan"
 import path from "path"
 import { configManager } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
+import { compressionOptions, shouldCompressResponse } from "./utils/http-compression"
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
@@ -171,6 +173,13 @@ export async function expressLoader({
   app.use(loggingMiddleware)
   app.use(cookieParser())
   app.use(session(sessionOpts))
+
+  const compressionConfig = compressionOptions(configModule.projectConfig)
+  if (compressionConfig.enabled) {
+    app.use(
+      compression({ ...compressionConfig, filter: shouldCompressResponse })
+    )
+  }
 
   // Currently we don't allow configuration of static files, but this can be revisited as needed.
   app.use("/static", express.static(path.join(baseDir, "static")))
