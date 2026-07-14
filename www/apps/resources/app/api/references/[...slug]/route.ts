@@ -57,7 +57,9 @@ async function loadReferenceSource(filePath: string): Promise<string | null> {
     (await loadReferenceFromBinding(`resources/references/${relPath}`)) ??
     (await workerCompatibleFetch<string | null>({
       url: `${r2Base}/references/${relPath}`,
-      responseTransformer: async (res) => (res.ok ? res.text() : null),
+      responseTransformer: async (res) => {
+        return res.ok ? res.text() : null
+      },
       fallbackAction: async () => {
         try {
           const { promises: fs } = await import("fs")

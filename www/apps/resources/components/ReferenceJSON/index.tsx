@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { ReferenceContent } from "docs-ui"
 import type { DocPage } from "types"
 import { Loading, swrFetcher } from "docs-ui"
@@ -18,14 +19,9 @@ type ReferenceJSONProps = {
  * (no MDX serialization / hydration).
  */
 export const ReferenceJSON = ({ slug }: ReferenceJSONProps) => {
-  const {
-    data,
-    error,
-    isLoading,
-  } = useSWR<DocPage | { error: { name: string; message: string } }>(
-    `${config.basePath}/api/references/${slug.join("/")}`,
-    swrFetcher
-  )
+  const { data, error, isLoading } = useSWR<
+    DocPage | { error: { name: string; message: string } }
+  >(`${config.basePath}/api/references/${slug.join("/")}`, swrFetcher)
 
   if (isLoading || !data) {
     return <Loading />
