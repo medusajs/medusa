@@ -251,6 +251,10 @@ export const PropertyLabelsEditForm = ({
       }
     })
 
+    if (!create.length && !update.length && !deleteIds.length) {
+      return
+    }
+
     await batchMutation.mutateAsync(
       {
         create: create.length > 0 ? create : undefined,
