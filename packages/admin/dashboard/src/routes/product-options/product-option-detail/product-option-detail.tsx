@@ -11,6 +11,7 @@ import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { productOptionLoader } from "./loader.ts"
 import { ProductOptionGeneralSection } from "./components/product-option-general-section"
 import { ProductOptionProductSection } from "./components/product-option-product-section"
+import { ConfigurableProductOptionProductSection } from "./components/product-option-product-section/configurable-product-option-product-section"
 import { ProductOptionValuesSection } from "./components/product-option-values-section"
 import { ConfigurableProductOptionValuesSection } from "./components/product-option-values-section/configurable-product-option-values-section"
 
@@ -59,9 +60,15 @@ export const ProductOptionDetail = () => {
               )}
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionProductSection">
-              <ProductOptionProductSection
-                productOptionId={product_option.id}
-              />
+              {isViewConfigEnabled ? (
+                <ConfigurableProductOptionProductSection
+                  productOptionId={product_option.id}
+                />
+              ) : (
+                <ProductOptionProductSection
+                  productOptionId={product_option.id}
+                />
+              )}
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_option, { permissions: false })}
           </>
