@@ -34,6 +34,8 @@ export interface SetOrderTaxLinesForItemsStepInput {
   is_full_replacement?: boolean
 }
 
+type TaxLinesOp = "replace" | "upsert" | "none"
+
 export const setOrderTaxLinesForItemsStepId = "set-order-tax-lines-for-items"
 /**
  * This step sets the tax lines of an order's items and shipping methods.
@@ -83,33 +85,48 @@ export const setOrderTaxLinesForItemsStep = createStep(
     const shippingTaxLinesData =
       normalizeShippingTaxLinesForOrder(shipping_tax_lines)
 
-    if (is_full_replacement) {
-      // The input covers the whole order, so replace the order's tax lines.
-      // This removes stale tax lines (e.g. from a previous address/region)
-      // instead of accumulating duplicates as an upsert would.
-      await promiseAll([
-        orderService.setOrderLineItemTaxLines(order.id, itemsTaxLinesData),
-        orderService.setOrderShippingMethodTaxLines(
-          order.id,
-          shippingTaxLinesData
-        ),
-      ])
-    } else {
-      await promiseAll([
-        itemsTaxLinesData.length
-          ? orderService.upsertOrderLineItemTaxLines(itemsTaxLinesData)
-          : Promise.resolve(void 0),
-        shippingTaxLinesData.length
-          ? orderService.upsertOrderShippingMethodTaxLines(shippingTaxLinesData)
-          : Promise.resolve(void 0),
-      ])
-    }
+    // When the input covers the whole order (full recompute) and there are
+    // computed tax lines, replace the order's tax lines so stale ones (e.g. from
+    // a previous address/region) are removed instead of accumulating duplicates.
+    // When the recompute yields no tax lines (e.g. the region has automatic
+    // taxes disabled), fall back to a no-op so existing (e.g. manually set) tax
+    // lines are preserved rather than wiped.
+    const itemsOp: TaxLinesOp =
+      is_full_replacement && itemsTaxLinesData.length
+        ? "replace"
+        : itemsTaxLinesData.length
+        ? "upsert"
+        : "none"
+
+    const shippingOp: TaxLinesOp =
+      is_full_replacement && shippingTaxLinesData.length
+        ? "replace"
+        : shippingTaxLinesData.length
+        ? "upsert"
+        : "none"
+
+    await promiseAll([
+      itemsOp === "replace"
+        ? orderService.setOrderLineItemTaxLines(order.id, itemsTaxLinesData)
+        : itemsOp === "upsert"
+        ? orderService.upsertOrderLineItemTaxLines(itemsTaxLinesData)
+        : Promise.resolve(void 0),
+      shippingOp === "replace"
+        ? orderService.setOrderShippingMethodTaxLines(
+            order.id,
+            shippingTaxLinesData
+          )
+        : shippingOp === "upsert"
+        ? orderService.upsertOrderShippingMethodTaxLines(shippingTaxLinesData)
+        : Promise.resolve(void 0),
+    ])
 
     return new StepResponse(void 0, {
       order,
       existingLineItemTaxLines,
       existingShippingMethodTaxLines,
-      is_full_replacement,
+      itemsOp,
+      shippingOp,
     })
   },
   async (revertData, { container }) => {
@@ -121,7 +138,8 @@ export const setOrderTaxLinesForItemsStep = createStep(
       order,
       existingLineItemTaxLines,
       existingShippingMethodTaxLines,
-      is_full_replacement,
+      itemsOp,
+      shippingOp,
     } = revertData
 
     const orderService = container.resolve<IOrderModuleService>(Modules.ORDER)
@@ -150,18 +168,20 @@ export const setOrderTaxLinesForItemsStep = createStep(
       })
     )
 
-    if (is_full_replacement) {
-      await promiseAll([
-        orderService.setOrderLineItemTaxLines(order.id, itemTaxLines),
-        orderService.setOrderShippingMethodTaxLines(order.id, shippingTaxLines),
-      ])
-    } else {
-      if (itemTaxLines.length) {
-        await orderService.upsertOrderLineItemTaxLines(itemTaxLines)
-      }
-
-      await orderService.upsertOrderShippingMethodTaxLines(shippingTaxLines)
-    }
+    await promiseAll([
+      // Only undo the entities we actually modified. A "replace" is undone by
+      // restoring the previous full set (which also removes the lines we set).
+      itemsOp === "replace"
+        ? orderService.setOrderLineItemTaxLines(order.id, itemTaxLines)
+        : itemsOp === "upsert" && itemTaxLines.length
+        ? orderService.upsertOrderLineItemTaxLines(itemTaxLines)
+        : Promise.resolve(void 0),
+      shippingOp === "replace"
+        ? orderService.setOrderShippingMethodTaxLines(order.id, shippingTaxLines)
+        : shippingOp === "upsert"
+        ? orderService.upsertOrderShippingMethodTaxLines(shippingTaxLines)
+        : Promise.resolve(void 0),
+    ])
   }
 )
 
