@@ -245,9 +245,52 @@ export const updateCartWorkflow = createWorkflow(
       return newRegion
     })
 
-    const hasUpdatedState = transform({ input }, (data) => {
-      return !!data.input.shipping_address?.province
-    })
+    // The tax lines of a cart depend on its shipping address (primarily the
+    // country, but also province/postal code/city for regional rates). When
+    // any of these change, the taxes must be fully recomputed. Comparing
+    // against the current cart address avoids forcing a needless refresh when
+    // an unchanged address is resent alongside another update.
+    const taxRelevantAddressChanged = transform(
+      { input, cartToUpdate },
+      ({ input, cartToUpdate }) => {
+        const nextAddress = input.shipping_address as
+          | Record<string, unknown>
+          | null
+          | undefined
+
+        if (!nextAddress) {
+          return false
+        }
+
+        const prevAddress = (cartToUpdate?.shipping_address ??
+          {}) as Record<string, unknown>
+
+        const taxRelevantKeys = [
+          "country_code",
+          "province",
+          "postal_code",
+          "city",
+        ]
+
+        return taxRelevantKeys.some((key) => {
+          const nextValue = nextAddress[key]
+
+          if (nextValue === undefined) {
+            return false
+          }
+
+          // Country codes are persisted in lower-case, so compare them
+          // case-insensitively to avoid forcing a refresh when an unchanged
+          // address is resent with a different casing.
+          const normalize = (value: unknown) =>
+            key === "country_code" && typeof value === "string"
+              ? value.toLowerCase()
+              : value
+
+          return normalize(nextValue) !== normalize(prevAddress[key])
+        })
+      }
+    )
 
     const region = transform({ cartToUpdate, newRegion }, (data) => {
       return data.newRegion ?? data.cartToUpdate.region
@@ -341,12 +384,19 @@ export const updateCartWorkflow = createWorkflow(
     })
 
     const refreshCartItemsInput = transform(
-      { cartInput, input, newRegion, newLocaleCode, hasUpdatedState },
-      ({ cartInput, input, newRegion, newLocaleCode, hasUpdatedState }) => {
+      { cartInput, input, newRegion, newLocaleCode, taxRelevantAddressChanged },
+      ({
+        cartInput,
+        input,
+        newRegion,
+        newLocaleCode,
+        taxRelevantAddressChanged,
+      }) => {
         return {
           cart_id: cartInput.id,
           promo_codes: input.promo_codes,
-          force_refresh: !!newRegion || !!newLocaleCode || hasUpdatedState,
+          force_refresh:
+            !!newRegion || !!newLocaleCode || taxRelevantAddressChanged,
           locale: newLocaleCode || undefined,
           additional_data: input.additional_data,
         }

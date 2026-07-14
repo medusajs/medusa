@@ -4351,6 +4351,132 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should refresh tax lines when a country-only shipping address is set on a multi-country region cart", async () => {
+          const euRegion = (
+            await api.post(
+              "/admin/regions",
+              {
+                name: "Europe",
+                currency_code: "eur",
+                countries: ["de", "dk"],
+              },
+              adminHeaders
+            )
+          ).data.region
+
+          // A multi-country region doesn't auto-assign a country, so the item
+          // is added before the cart has a shipping country.
+          const euCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "eur",
+                sales_channel_id: salesChannel.id,
+                region_id: euRegion.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 2 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Without a country on the cart, items carry no tax lines.
+          expect(euCart.items).toEqual([
+            expect.objectContaining({ tax_lines: [] }),
+          ])
+
+          // Setting a country-only address (no province) must refresh taxes.
+          const updated = await api.post(
+            `/store/carts/${euCart.id}`,
+            { shipping_address: { country_code: "de" } },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: euCart.id,
+              shipping_address: expect.objectContaining({ country_code: "de" }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "Germany Default Rate",
+                      code: "DE19",
+                      rate: 19,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should refresh tax lines when the shipping country changes within a multi-country region", async () => {
+          const euRegion = (
+            await api.post(
+              "/admin/regions",
+              {
+                name: "Europe",
+                currency_code: "eur",
+                countries: ["de", "dk"],
+              },
+              adminHeaders
+            )
+          ).data.region
+
+          const euCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "eur",
+                sales_channel_id: salesChannel.id,
+                region_id: euRegion.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 2 }],
+                shipping_address: { country_code: "de" },
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(euCart.items).toEqual([
+            expect.objectContaining({
+              tax_lines: [
+                expect.objectContaining({
+                  code: "DE19",
+                  rate: 19,
+                }),
+              ],
+            }),
+          ])
+
+          // Switching the country (still no province) must re-tax at the new
+          // country's rate.
+          const updated = await api.post(
+            `/store/carts/${euCart.id}`,
+            { shipping_address: { country_code: "dk" } },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: euCart.id,
+              shipping_address: expect.objectContaining({ country_code: "dk" }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "Denmark Default Rate",
+                      code: "DK_DEF",
+                      rate: 25,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
         it("should not generate tax lines for gift card products", async () => {
           const giftCardProduct = (
             await api.post(
