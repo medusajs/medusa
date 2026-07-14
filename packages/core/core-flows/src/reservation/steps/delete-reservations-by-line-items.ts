@@ -24,6 +24,7 @@ export const deleteReservationsByLineItemsStep = createStep(
       { select: ["id", "inventory_item_id"] }
     )
 
+    const reservationIds = reservations.map((r) => r.id)
     const inventoryItemIds = reservations.map((r) => r.inventory_item_id)
     const lockingKeys = Array.from(new Set(inventoryItemIds))
 
@@ -31,7 +32,7 @@ export const deleteReservationsByLineItemsStep = createStep(
       await service.deleteReservationItemsByLineItem(ids)
     })
 
-    return new StepResponse(void 0, { ids, inventoryItemIds })
+    return new StepResponse(reservationIds, { ids, inventoryItemIds })
   },
   async (data, { container }) => {
     if (!data?.ids?.length) {

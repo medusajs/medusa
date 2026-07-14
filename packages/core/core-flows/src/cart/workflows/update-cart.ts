@@ -55,11 +55,7 @@ interface PrepareCartToUpdateStepInput {
 export const prepareCartToUpdateStep = createStep(
   "prepare-cart-to-update",
   async (data: PrepareCartToUpdateStepInput) => {
-    const {
-      promo_codes,
-      additional_data: _,
-      ...updateCartData
-    } = data.input
+    const { promo_codes, additional_data: _, ...updateCartData } = data.input
 
     const data_ = {
       ...updateCartData,
@@ -249,6 +245,10 @@ export const updateCartWorkflow = createWorkflow(
       return newRegion
     })
 
+    const hasUpdatedState = transform({ input }, (data) => {
+      return !!data.input.shipping_address?.province
+    })
+
     const region = transform({ cartToUpdate, newRegion }, (data) => {
       return data.newRegion ?? data.cartToUpdate.region
     })
@@ -341,12 +341,12 @@ export const updateCartWorkflow = createWorkflow(
     })
 
     const refreshCartItemsInput = transform(
-      { cartInput, input, newRegion, newLocaleCode },
-      ({ cartInput, input, newRegion, newLocaleCode }) => {
+      { cartInput, input, newRegion, newLocaleCode, hasUpdatedState },
+      ({ cartInput, input, newRegion, newLocaleCode, hasUpdatedState }) => {
         return {
           cart_id: cartInput.id,
           promo_codes: input.promo_codes,
-          force_refresh: !!newRegion || !!newLocaleCode,
+          force_refresh: !!newRegion || !!newLocaleCode || hasUpdatedState,
           locale: newLocaleCode || undefined,
           additional_data: input.additional_data,
         }

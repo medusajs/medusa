@@ -43,12 +43,6 @@ export const GET = async (
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
   const filterableFields = req.filterableFields
 
-  if (filterableFields.value) {
-    filterableFields[queryConfig.valueAttr] = filterableFields.value
-
-    delete filterableFields.value
-  }
-
   validateRuleType(ruleType)
   validateRuleAttribute({
     ruleType: ruleType as RuleTypeValues,
@@ -60,6 +54,12 @@ export const GET = async (
         | ApplicationMethodTargetTypeValues
         | undefined,
   })
+
+  if (filterableFields.value) {
+    filterableFields[queryConfig.valueAttr] = filterableFields.value
+
+    delete filterableFields.value
+  }
 
   if (filterableFields.application_method_target_type) {
     delete filterableFields.application_method_target_type

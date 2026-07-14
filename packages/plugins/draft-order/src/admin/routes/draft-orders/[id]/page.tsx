@@ -80,18 +80,34 @@ const ID = () => {
       sections={{
         main: (
           <>
-            <ActiveOrderChange orderId={order.id} />
-            <GeneralSection order={order} />
-            <SummarySection order={order as AdminDraftOrderSummary} />
-            <ShippingSection order={order} />
-            <MetadataSection order={order} />
-            <JsonViewSection data={order} />
+            <LayoutComposer.Entry id="ActiveOrderChange">
+              <ActiveOrderChange orderId={order.id} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="GeneralSection">
+              <GeneralSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="SummarySection">
+              <SummarySection order={order as AdminDraftOrderSummary} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ShippingSection">
+              <ShippingSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="MetadataSection">
+              <MetadataSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="JsonViewSection">
+              <JsonViewSection data={order} />
+            </LayoutComposer.Entry>
           </>
         ),
         side: (
           <>
-            <CustomerSection order={order} />
-            <ActivitySection order={order} changes={order_changes} />
+            <LayoutComposer.Entry id="CustomerSection">
+              <CustomerSection order={order} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="ActivitySection">
+              <ActivitySection order={order} changes={order_changes} />
+            </LayoutComposer.Entry>
           </>
         ),
       }}

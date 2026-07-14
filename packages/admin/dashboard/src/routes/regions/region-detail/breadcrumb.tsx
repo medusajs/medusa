@@ -25,3 +25,7 @@ export const RegionDetailBreadcrumb = (props: RegionDetailBreadcrumbProps) => {
 
   return <span>{region.name}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminRegionResponse>) => ({
+  title: match.data?.region?.name,
+})

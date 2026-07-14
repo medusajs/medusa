@@ -17,10 +17,7 @@ const nextConfig = {
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/api",
   outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingExcludes: {
-    "*": [
-      "../**/.open-next/**",
-      "../!(api-reference)/.next/**",
-    ],
+    "*": ["../**/.open-next/**", "../!(api-reference)/.next/**"],
   },
   webpack: (config) => {
     config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
@@ -49,9 +46,6 @@ const withMDX = createMDX({
         brokenLinkCheckerPlugin,
         {
           crossProjects: {
-            bloom: {
-              projectPath: path.resolve("..", "bloom"),
-            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -79,9 +73,6 @@ const withMDX = createMDX({
             docs: {
               url: process.env.NEXT_PUBLIC_DOCS_URL,
               path: "",
-            },
-            bloom: {
-              url: process.env.NEXT_PUBLIC_BLOOM_URL,
             },
             resources: {
               url: process.env.NEXT_PUBLIC_RESOURCES_URL,

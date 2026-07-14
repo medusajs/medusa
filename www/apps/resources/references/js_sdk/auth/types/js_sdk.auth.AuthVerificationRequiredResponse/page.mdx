@@ -11,37 +11,11 @@ This is available starting from [Medusa v2.15.5](https://github.com/medusajs/med
 
 :::
 
-## verification\_required
+## token
 
-Indicates that the client must complete verification.
+A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
 
 ___
-
-## verification
-
-The verification state to show to the caller.
-
-### actor\_type
-
-<BadgesList badges={[
-  {
-    "variant": "neutral",
-    "children": "optional"
-  }
-]} className="mb-1" />
-
-### provider
-
-### entity\_id
-
-### expires\_at
-
-<BadgesList badges={[
-  {
-    "variant": "neutral",
-    "children": "optional"
-  }
-]} className="mb-1" />
 
 ## verification\_required
 
@@ -51,10 +25,6 @@ ___
 
 ## verification
 
-The verification state to show to the caller.
-
-### actor\_type
-
 <BadgesList badges={[
   {
     "variant": "neutral",
@@ -62,11 +32,26 @@ The verification state to show to the caller.
   }
 ]} className="mb-1" />
 
-### provider
+The verification state to show to the caller.
+
+### id
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
 
 ### entity\_id
 
-### expires\_at
+### auth\_identity\_id
+
+### entity\_type
+
+### code\_provider
+
+### provider\_metadata
 
 <BadgesList badges={[
   {
@@ -74,3 +59,92 @@ The verification state to show to the caller.
     "children": "optional"
   }
 ]} className="mb-1" />
+
+### metadata
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+### verified\_at
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+### requested\_at
+
+## token
+
+A token without an actor type (permissions) attached to it. Used to request and confirm verifications.
+
+___
+
+## verification\_required
+
+Indicates that the client must complete verification.
+
+___
+
+## verification
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+The verification state to show to the caller.
+
+### id
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+### entity\_id
+
+### auth\_identity\_id
+
+### entity\_type
+
+### code\_provider
+
+### provider\_metadata
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+### metadata
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+### verified\_at
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+### requested\_at

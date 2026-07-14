@@ -223,19 +223,30 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    * 
    * When authorized successfully, a `Payment` is created by the Payment
    * Module, and it's associated with the order.
-   * 
+   *
+   * #### Deferred / Asynchronous Authorization
+   *
+   * For payment methods where authorization does not happen immediately (e.g., bank transfers,
+   * payment links, vouchers like OXXO or boleto), return `status: "pending_authorization"` instead
+   * of `"authorized"`. This signals that:
+   *
+   * - No `Payment` record will be created yet.
+   * - The cart can still be completed and an order will be created with an "awaiting" payment status.
+   * - This method may be called again later (via a webhook or manual admin action) to check if the
+   *   payment has been completed. When the payment is confirmed, return `"authorized"` or `"captured"`.
+   *
    * #### Understanding `data` property
-   * 
+   *
    * The `data` property of the method's parameter contains the `PaymentSession` record's `data` property, which was
    * returned by the {@link initiatePayment} method.
-   * 
+   *
    * The `data` property returned by this method is then stored in the created `Payment` record. You can store data relevant to later capture or process the payment.
    * For example, you can store the ID of the payment in the third-party provider to reference it later.
-   * 
+   *
    * ![Diagram showcasing data flow between methods](https://res.cloudinary.com/dza7lstvk/image/upload/v1747309278/Medusa%20Resources/authorize-data_erjg7r.jpg)
    *
    * @param input - The input to authorize the payment. The `data` field should contain the data from the payment provider. when the payment was created.
-   * @returns The status of the authorization, along with the `data` field about the payment. Throws in case of an error.
+   * @returns The status of the authorization, along with the `data` field about the payment. Return `"pending_authorization"` for async payment methods. Throws in case of an error.
    *
    * @example
    * // other imports...

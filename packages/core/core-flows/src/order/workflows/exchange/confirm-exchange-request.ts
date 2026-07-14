@@ -14,6 +14,7 @@ import {
   Modules,
   OrderChangeStatus,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
   ReturnStatus,
 } from "@medusajs/framework/utils"
 import {
@@ -435,7 +436,22 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
         prepareConfirmInventoryInput
       )
 
-      reserveInventoryStep(formatedInventoryItems)
+      const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+      const reservationCreatedEvents = transform(
+        { createdReservations, order },
+        ({ createdReservations, order }) => {
+          return (createdReservations ?? []).map((reservation) => ({
+            id: reservation.id,
+            order_id: order.id,
+          }))
+        }
+      )
+
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
     })
 
     when(

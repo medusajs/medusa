@@ -1,10 +1,10 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useInventoryItem } from "../../../hooks/api"
 import { useReservationItem } from "../../../hooks/api/reservations"
-import { useExtension } from "../../../providers/extension-provider"
 import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
 import { ReservationGeneralSection } from "./components/reservation-general-section"
 import { reservationItemLoader } from "./loader"
@@ -31,8 +31,6 @@ export const ReservationDetail = () => {
     { enabled: !!reservation?.inventory_item?.id! }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !reservation) {
     return (
       <TwoColumnPageSkeleton
@@ -49,25 +47,29 @@ export const ReservationDetail = () => {
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        before: getWidgets("reservation.details.before"),
-        after: getWidgets("reservation.details.after"),
-        sideBefore: getWidgets("reservation.details.side.before"),
-        sideAfter: getWidgets("reservation.details.side.after"),
-      }}
+    <LayoutComposer
+      widgetsZonePrefix="reservation.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={reservation}
-      showJSON
-      showMetadata
-    >
-      <TwoColumnPage.Main>
-        <ReservationGeneralSection reservation={reservation} />
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        {inventory_item && (
-          <InventoryItemGeneralSection inventoryItem={inventory_item} />
-        )}
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="ReservationGeneralSection">
+              <ReservationGeneralSection reservation={reservation} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(reservation)}
+          </>
+        ),
+        side: (
+          <>
+            {inventory_item && (
+              <LayoutComposer.Entry id="InventoryItemGeneralSection">
+                <InventoryItemGeneralSection inventoryItem={inventory_item} />
+              </LayoutComposer.Entry>
+            )}
+          </>
+        ),
+      }}
+    />
   )
 }

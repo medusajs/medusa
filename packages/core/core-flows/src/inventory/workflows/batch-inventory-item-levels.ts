@@ -11,6 +11,8 @@ import {
   InventoryLevelDTO,
   InventoryTypes,
 } from "@medusajs/framework/types"
+import { InventoryLevelWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { createInventoryLevelsStep, updateInventoryLevelsStep } from "../steps"
 import { deleteInventoryLevelsWorkflow } from "./delete-inventory-levels"
 
@@ -107,6 +109,25 @@ export const batchInventoryItemLevelsWorkflow = createWorkflow(
       deleteInventoryLevelsWorkflow.runAsStep({
         input: deleteInput,
       })
+    )
+
+    const { createdEvents, updatedEvents } = transform({ res }, ({ res }) => {
+      return {
+        createdEvents: (res[0] || []).map((level) => ({ id: level.id })),
+        updatedEvents: (res[1] || []).map((level) => ({ id: level.id })),
+      }
+    })
+
+    // Delete event is emitted by the deleteInventoryLevelsWorkflow, so we don't need to emit it here.
+    parallelize(
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.CREATED,
+        data: createdEvents,
+      }).config({ name: "emit-inventory-level-created" }),
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.UPDATED,
+        data: updatedEvents,
+      }).config({ name: "emit-inventory-level-updated" })
     )
 
     return new WorkflowResponse(

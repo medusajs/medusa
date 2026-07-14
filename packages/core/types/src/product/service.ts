@@ -1441,7 +1441,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {ProductOptionProductPair} productOptionProductPair - The details of the product option and the product it should be added to.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<{ id: string; }>} The ID of the relation between the product option and the product.
-   * 
+   *
    * @since 2.16.0
    *
    * @example
@@ -1467,7 +1467,7 @@ export interface IProductModuleService extends IModuleService {
    * @param {ProductOptionProductPair[]} productOptionProductPairs - A list of items, each being the details of a product option and the product it should be added to.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<{ id: string; }[]>} The IDs of the relations between each of the product option and product pairs.
-   * 
+   *
    * @since 2.16.0
    *
    * @example
@@ -1496,8 +1496,8 @@ export interface IProductModuleService extends IModuleService {
    *
    * @param {ProductOptionProductPair} productOptionProductPair - The details of the product option and the product it should be removed from.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the product option is removed from the product successfully.
-   * 
+   * @returns {Promise<string[]>} The IDs of exclusive options that were soft-deleted because they became orphaned by the removal. Callers can restore these to undo the removal.
+   *
    * @since 2.16.0
    *
    * @example
@@ -1509,15 +1509,15 @@ export interface IProductModuleService extends IModuleService {
   removeProductOptionFromProduct(
     productOptionProductPair: ProductOptionProductPair,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<string[]>
 
   /**
    * This method removes product options from products.
    *
    * @param {ProductOptionProductPair[]} productOptionProductPairs - A list of items, each being the details of a product option and the product it should be removed from.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the product options are removed from the products successfully.
-   * 
+   * @returns {Promise<string[]>} The IDs of exclusive options that were soft-deleted because they became orphaned by the removal. Callers can restore these to undo the removal.
+   *
    * @since 2.16.0
    *
    * @example
@@ -1531,7 +1531,7 @@ export interface IProductModuleService extends IModuleService {
   removeProductOptionFromProduct(
     productOptionProductPairs: ProductOptionProductPair[],
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<string[]>
 
   /**
    * This method updates product option values linked to a product option for a product.
@@ -1640,12 +1640,12 @@ export interface IProductModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the product option values:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts

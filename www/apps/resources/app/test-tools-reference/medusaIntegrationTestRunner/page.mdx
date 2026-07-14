@@ -167,6 +167,16 @@ The function passed to `testSuite` accepts the following parameters:
               description: "Creates a database."
             },
             {
+              type: "`(options?: { templateName?: string }) => Promise<void>`",
+              name: "snapshot",
+              description: "Creates a PostgreSQL template database from the current test database. Call this in a `beforeAll` hook after seeding data to enable fast per-test restores. Optionally pass a `templateName` to use a custom template name instead of the default."
+            },
+            {
+              type: "`(options?: { templateName?: string }) => Promise<void>`",
+              name: "restore",
+              description: "Restores the test database from a previously created template snapshot. Call this in a `beforeEach` hook to reset the database to a known state before each test. Optionally pass a `templateName` to restore from a custom template."
+            },
+            {
               type: "`(options: { schema?: string }) => Promise<void>`",
               name: "teardown",
               description: "Deletes all data in a database's tables."

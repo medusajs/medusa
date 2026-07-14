@@ -43,6 +43,7 @@ import { TaxRegion } from "./tax-region.js"
 import { Upload } from "./upload.js"
 import { User } from "./user.js"
 import { Views } from "./views.js"
+import { Layouts } from "./layouts.js"
 import { WorkflowExecution } from "./workflow-execution.js"
 import { ShippingOptionType } from "./shipping-option-type.js"
 import { Locale } from "./locale.js"
@@ -255,6 +256,10 @@ export class Admin {
    */
   public views: Views
   /**
+   * @tags layouts
+   */
+  public layouts: Layouts
+  /**
    * @tags rbac
    * @since 2.15.5
    */
@@ -315,6 +320,7 @@ export class Admin {
     this.plugin = new Plugin(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
+    this.layouts = new Layouts(client)
     this.rbacRole = new RbacRole(client)
     this.rbacPolicy = new RbacPolicy(client)
   }

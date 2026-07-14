@@ -137,6 +137,15 @@
  *       ```
  *     description: Emitted when products are deleted.
  *     deprecated: false
+ *   - name: product-option.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the product option
+ *       }
+ *       ```
+ *     description: Emitted when product options are deleted.
+ *     deprecated: false
  * 
 */
 

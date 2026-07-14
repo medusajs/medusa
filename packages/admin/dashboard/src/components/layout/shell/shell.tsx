@@ -12,11 +12,22 @@ import {
   useNavigation,
 } from "react-router-dom"
 
+import { DocumentTitle } from "../../../hooks/use-document-title"
 import { KeybindProvider } from "../../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { ProgressBar } from "../../common/progress-bar"
+import {
+  LayoutCustomizerHostProvider,
+  LayoutCustomizerSlot,
+} from "../../../providers/customizer-host-provider/customizer-host-provider"
 import { Notifications } from "../notifications"
+import { CustomizerMenu, LayoutComposer } from "../../layout-composer"
+import {
+  CUSTOMIZE_IDS,
+  LAYOUT_CONTROLS_LOCATION,
+} from "../../layout-composer/constants"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -26,28 +37,31 @@ export const Shell = ({ children }: PropsWithChildren) => {
 
   return (
     <KeybindProvider shortcuts={globalShortcuts}>
-      <div className="relative flex h-screen flex-col items-start overflow-hidden lg:flex-row">
-        <NavigationBar loading={loading} />
-        <div>
-          <MobileSidebarContainer>{children}</MobileSidebarContainer>
-          <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
+      <DocumentTitle />
+      <LayoutCustomizerHostProvider>
+        <div className="relative flex h-screen flex-col items-start overflow-hidden lg:flex-row">
+          <NavigationBar loading={loading} />
+          <div>
+            <MobileSidebarContainer>{children}</MobileSidebarContainer>
+            <DesktopSidebarContainer>{children}</DesktopSidebarContainer>
+          </div>
+          <div className="flex h-screen w-full flex-col overflow-auto">
+            <Topbar />
+            <main
+              className={clx(
+                "flex h-full w-full flex-col items-center overflow-y-auto transition-opacity delay-200 duration-200",
+                {
+                  "opacity-25": loading,
+                }
+              )}
+            >
+              <Gutter>
+                <Outlet />
+              </Gutter>
+            </main>
+          </div>
         </div>
-        <div className="flex h-screen w-full flex-col overflow-auto">
-          <Topbar />
-          <main
-            className={clx(
-              "flex h-full w-full flex-col items-center overflow-y-auto transition-opacity delay-200 duration-200",
-              {
-                "opacity-25": loading,
-              }
-            )}
-          >
-            <Gutter>
-              <Outlet />
-            </Gutter>
-          </main>
-        </div>
-      </div>
+      </LayoutCustomizerHostProvider>
     </KeybindProvider>
   )
 }
@@ -199,7 +213,24 @@ const Topbar = () => {
         <Breadcrumbs />
       </div>
       <div className="flex items-center justify-end gap-x-3">
-        <Notifications />
+        {/* Single trigger for every host; while editing, the active composer's
+            controls portal into the adjacent slot in its place. */}
+        <CustomizerMenu />
+        <LayoutCustomizerSlot location={LAYOUT_CONTROLS_LOCATION} />
+        <LayoutComposer
+          widgetsZonePrefix="topbar"
+          preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_ROW}
+          sections={{
+            main: (
+              <LayoutComposer.Entry id="Notifications">
+                <Notifications />
+              </LayoutComposer.Entry>
+            ),
+          }}
+          hasOutlet={false}
+          customizeId={CUSTOMIZE_IDS.TOPBAR}
+          controlSize="xsmall"
+        />
       </div>
     </div>
   )

@@ -2407,11 +2407,11 @@ export const updateProductInStrapiStep = createStep(
 
     // Update product in Strapi
     const updateData: Record<string, any> = {}
-    if (product.title !== undefined) updateData.title = product.title
-    if (product.subtitle !== undefined) updateData.subtitle = product.subtitle
-    if (product.description !== undefined) updateData.description = product.description
-    if (product.handle !== undefined) updateData.handle = product.handle
-    if (product.optionIds !== undefined) updateData.options = product.optionIds
+    if (product.title !== undefined) {updateData.title = product.title}
+    if (product.subtitle !== undefined) {updateData.subtitle = product.subtitle}
+    if (product.description !== undefined) {updateData.description = product.description}
+    if (product.handle !== undefined) {updateData.handle = product.handle}
+    if (product.optionIds !== undefined) {updateData.options = product.optionIds}
 
     const updated = await strapiService.update(Collection.PRODUCTS, originalProduct.documentId, updateData)
 
@@ -2647,7 +2647,7 @@ export const createProductInStrapiWorkflow = createWorkflow(
       return createOptionsInStrapiWorkflow.runAsStep({
         input: {
           ids: optionsToCreate,
-        }
+        },
       })
     })
 
@@ -3133,7 +3133,7 @@ export const handleStrapiWebhookWorkflow = createWorkflow(
         })
 
         clearProductCacheStep({ 
-          productId: productIds
+          productId: productIds,
         }).config({ name: "clear-product-cache-option" })
       })
 

@@ -7,6 +7,8 @@ import {
 import { createInventoryItemsStep } from "../steps"
 
 import type { InventoryTypes } from "@medusajs/framework/types"
+import { InventoryItemWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { createInventoryLevelsWorkflow } from "./create-inventory-levels"
 
 /**
@@ -122,6 +124,15 @@ export const createInventoryItemsWorkflow = createWorkflow(
     )
 
     createInventoryLevelsWorkflow.runAsStep(inventoryLevelsInput)
+
+    const itemIdEvents = transform({ items }, ({ items }) => {
+      return items.map((item) => ({ id: item.id }))
+    })
+
+    emitEventStep({
+      eventName: InventoryItemWorkflowEvents.CREATED,
+      data: itemIdEvents,
+    })
 
     return new WorkflowResponse(items)
   }
