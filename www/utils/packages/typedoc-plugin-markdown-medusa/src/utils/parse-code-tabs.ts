@@ -279,7 +279,15 @@ function proseToBlocks(content: string): DocBlock[] {
         kind: "heading",
         level: heading[1].length,
         text,
-        id: slugId(text),
+        // Slug from the visible text only: drop markdown link targets
+        // (`[label](url)` -> `label`), code backticks, and HTML entities so the
+        // anchor stays clean (matches rehype-slug on the MDX heading text).
+        id: slugId(
+          text
+            .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+            .replace(/`/g, "")
+            .replace(/&#\d+;/g, "")
+        ),
       })
     } else {
       buffer.push(line)

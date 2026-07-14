@@ -87,25 +87,42 @@ export function buildDocPage({
     // Member pages own their comment / example / source per signature.
     blocks.push(...buildMemberBlocks(model as DeclarationReflection, theme))
   } else {
-    // Container / index pages: leading description, then member lists.
-    const description = getCommentMarkdown(model)
-    if (description) {
-      blocks.push({ kind: "markdown", html: description })
+    const formatting = theme.getFormattingOptions(location)
+
+    // Formatting-driven prose wrapped around the reference body. `reflection.hbs`
+    // renders `startSections` right after the title/description (before the
+    // comment and members) and `endSections` at the very end.
+    blocks.push(...buildSectionsBlocks(formatting.startSections))
+    if (
+      formatting.startSections?.length &&
+      formatting.shouldIncrementAfterStartSections
+    ) {
+      theme.currentTitleLevel += 1
     }
+
+    // Container / index pages: leading description, then member lists.
+    blocks.push(...splitContentBlocks(getCommentMarkdown(model)))
     blocks.push(
       ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
     )
 
     // The events reference pages render the full events listing instead of the
     // usual namespace/member links.
-    if (theme.getFormattingOptions(location).isEventsReference) {
+    if (formatting.isEventsReference) {
       const eventsBlock = buildEventsListingBlock(model)
       if (eventsBlock) {
         blocks.push(eventsBlock)
       }
     } else {
-      blocks.push(...buildContainerBlocks(model, theme))
+      // reflection.hbs renders the reflection's own type parameters before the
+      // member lists.
+      blocks.push(...reflectionTypeParameterBlocks(model, theme))
+      // main.hbs = in-page member navigation (`toc`) + the member sections.
+      blocks.push(...buildTocBlocks(model, theme))
+      blocks.push(...buildMembersBlocks(model, theme))
     }
+
+    blocks.push(...buildSectionsBlocks(formatting.endSections))
   }
 
   // Ensure heading ids are unique within the page (rehype-slug style), since
@@ -142,45 +159,209 @@ function dedupeHeadingIds(blocks: DocBlock[]): void {
  * (`linkList`); members rendered inline (anchors) are TODO — they need the
  * recursive `member.hbs` logic.
  */
-function buildContainerBlocks(
+/**
+ * The reflection's own type parameters (`reflection.hbs` `reflection_typeParameters`
+ * section) — e.g. `BaseFilterable<T>`, `FindConfig<T>`, `StepResponse<TOutput>`.
+ * Rendered as a `## Type parameters` heading + `TypeList`.
+ */
+function reflectionTypeParameterBlocks(
+  model: ContainerReflection,
+  theme: MarkdownTheme
+): DocBlock[] {
+  if (!Handlebars.helpers.sectionEnabled("reflection_typeParameters")) {
+    return []
+  }
+  const typeParameters =
+    (model as DeclarationReflection).typeParameters || []
+  if (!typeParameters.length) {
+    return []
+  }
+  const types = typeParameters
+    .map(
+      (typeParameter) =>
+        reflectionComponentFormatter({
+          reflection: typeParameter,
+          type: "component",
+          isTypeParams: true,
+          project: model.project,
+        }) as DocTypeListItem
+    )
+    .filter(Boolean)
+  if (!types.length) {
+    return []
+  }
+  return [
+    {
+      kind: "heading",
+      level: theme.currentTitleLevel,
+      text: "Type parameters",
+      id: slugId("Type parameters"),
+    },
+    { kind: "typeList", sectionTitle: model.name, types },
+  ]
+}
+
+/**
+ * Whether the in-page member navigation (`toc`) renders for this reflection:
+ * at least one group's children all own their own document, or the reflection
+ * is a visible namespace (matching the theme with `hideInPageTOC` enabled).
+ */
+function isTocVisible(
+  model: ContainerReflection,
+  theme: MarkdownTheme
+): boolean {
+  const groups = model.groups
+  if (!groups?.length) {
+    return false
+  }
+  const isNamespaceVisible =
+    model.kind === ReflectionKind.Namespace &&
+    Boolean(
+      theme.getMappings(model as DeclarationReflection)[ReflectionKind.Namespace]
+    )
+  return (
+    isNamespaceVisible ||
+    groups.some((group) => group.allChildrenHaveOwnDocument())
+  )
+}
+
+/**
+ * The in-page member navigation (`toc` helper): a link list per group. Only
+ * rendered when {@link isTocVisible}. Groups are sorted by title; children by
+ * name.
+ */
+function buildTocBlocks(
+  model: ContainerReflection,
+  theme: MarkdownTheme
+): DocBlock[] {
+  const groups = model.groups
+  if (!groups?.length || !isTocVisible(model, theme)) {
+    return []
+  }
+
+  const { reflectionGroupRename = {}, hideTocHeaders } =
+    theme.getFormattingOptionsForLocation()
+
+  const blocks: DocBlock[] = []
+  const linkItems = (children: { name: string; url?: string }[]) =>
+    [...children]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((child) => ({
+        title: child.name,
+        href: theme.getRelativeUrl(child.url || ""),
+      }))
+
+  const sortedGroups = [...groups].sort((a, b) =>
+    a.title.localeCompare(b.title)
+  )
+  for (const group of sortedGroups) {
+    const groupTitle = Object.hasOwn(reflectionGroupRename, group.title)
+      ? reflectionGroupRename[group.title]
+      : group.title
+
+    if (group.categories) {
+      for (const category of [...group.categories].sort((a, b) =>
+        a.title.localeCompare(b.title)
+      )) {
+        blocks.push({
+          kind: "heading",
+          level: 2,
+          text: `${category.title} ${groupTitle}`,
+          id: slugId(`${category.title} ${groupTitle}`),
+        })
+        blocks.push({ kind: "linkList", items: linkItems(category.children) })
+      }
+      continue
+    }
+
+    // Index pages list their namespaces without a "Namespaces" header.
+    if (!hideTocHeaders && groupTitle !== "Namespaces") {
+      blocks.push({
+        kind: "heading",
+        level: 2,
+        text: groupTitle,
+        id: slugId(groupTitle),
+      })
+    }
+    blocks.push({ kind: "linkList", items: linkItems(group.children) })
+  }
+
+  return blocks
+}
+
+/**
+ * The rendered member sections (`members.hbs` -> `members.group.hbs`). Groups
+ * whose children all own a document are skipped (they appear only in the `toc`
+ * link list). Follows `members.group.hbs`: `getAllChildren` (merges implemented
+ * types + sorts), an optional group heading (omitted when `expandMembers`),
+ * then either an expanded member section per child or a single `TypeList`.
+ */
+function buildMembersBlocks(
   model: ContainerReflection,
   theme: MarkdownTheme
 ): DocBlock[] {
   const blocks: DocBlock[] = []
 
-  const { reflectionGroupRename } = theme.getFormattingOptionsForLocation()
-  const groups = model.groups || []
-  for (const group of groups) {
-    // Apply the configured group rename (e.g. Functions -> Steps).
-    const groupTitle = reflectionGroupRename?.[group.title] || group.title
-    const linked = group.children
-      .filter((child) => child.hasOwnDocument)
-      .sort((a, b) => a.name.localeCompare(b.name))
-    const inline = group.children.filter(
-      (child): child is DeclarationReflection =>
-        !child.hasOwnDocument && child instanceof DeclarationReflection
-    )
+  const { reflectionGroupRename, expandMembers, expandProperties, parameterStyle } =
+    theme.getFormattingOptionsForLocation()
 
-    // Members that own a document (e.g. an interface's methods) become links.
-    // Index pages list just the name + link (no description).
-    if (linked.length) {
-      // Index pages list their namespaces without a "Namespaces" header.
-      if (groupTitle !== "Namespaces") {
-        blocks.push({ kind: "heading", level: 2, text: groupTitle, id: slugId(groupTitle) })
-      }
-      blocks.push({
-        kind: "linkList",
-        items: linked.map((child) => ({
-          title: child.name,
-          href: theme.getRelativeUrl(child.url || ""),
-        })),
-      })
+  // When the `toc` renders, its helper sorts `groups` by title and each group's
+  // `children` by name in place, so the member sections below inherit that
+  // order. Mirror that here rather than mutating the reflection.
+  const sorted = isTocVisible(model, theme)
+  const groups = sorted
+    ? [...(model.groups || [])].sort((a, b) => a.title.localeCompare(b.title))
+    : model.groups || []
+
+  for (const group of groups) {
+    if (group.allChildrenHaveOwnDocument()) {
+      continue
     }
 
-    // Members rendered on this page (e.g. an interface's properties or enum
-    // members) become a `TypeList`, mirroring the `parameterComponent` helper:
-    // flatten destructured params, drop nested (dotted) entries, then format.
-    if (inline.length) {
+    // Apply the configured group rename (e.g. Functions -> Steps).
+    const groupTitle = reflectionGroupRename?.[group.title] || group.title
+
+    let inline = (
+      Handlebars.helpers.getAllChildren.call(group) as DeclarationReflection[]
+    ).filter(
+      (child) => !child.hasOwnDocument && child instanceof DeclarationReflection
+    )
+    if (sorted) {
+      inline = [...inline].sort((a, b) => a.name.localeCompare(b.name))
+    }
+    if (!inline.length) {
+      continue
+    }
+
+    // `ifCanShowConstructorTitle`: hide a lone constructor's group heading.
+    const canShowGroupTitle =
+      group.title.toLowerCase() !== "constructors" || group.children.length > 1
+    const showGroupTitle = !expandMembers && canShowGroupTitle
+
+    const previousLevel = theme.currentTitleLevel
+    if (showGroupTitle) {
+      blocks.push({
+        kind: "heading",
+        level: theme.currentTitleLevel,
+        text: groupTitle,
+        id: slugId(groupTitle),
+      })
+      theme.currentTitleLevel += 1
+    }
+
+    // `shouldExpandProperties` / `showPropertiesAsComponent`: Properties render
+    // as a `TypeList` (component style) unless `expandProperties` expands them;
+    // every other group (Methods, Constructors, enum members) is expanded.
+    const expandThisGroup =
+      group.title === "Properties" &&
+      expandProperties &&
+      theme.currentTitleLevel <= 3
+    const asComponent =
+      !expandThisGroup &&
+      parameterStyle === "component" &&
+      group.title === "Properties"
+
+    if (asComponent) {
       const types = buildTypeListItems(
         inline
           .reduce(
@@ -190,19 +371,202 @@ function buildContainerBlocks(
           .filter((param) => !param.name.includes(".")),
         model.project
       )
-
       if (types.length) {
-        blocks.push({ kind: "heading", level: 2, text: group.title, id: slugId(group.title) })
         blocks.push({ kind: "typeList", sectionTitle: model.name, types })
+      }
+    } else {
+      for (const child of inline) {
+        blocks.push(...buildMemberInline(child, theme))
       }
     }
 
-    // TODO: workflow / DML / react-query member variants still need their
-    // dedicated blocks (workflowDiagram, structured codeTabs). Tracked for
-    // Phase 1 expansion.
+    if (showGroupTitle) {
+      theme.currentTitleLevel = previousLevel
+    }
   }
 
   return blocks
+}
+
+/**
+ * Renders a single inline member of a container page (mirrors `member.hbs`): an
+ * optional name heading + badges, then the member's signatures (methods) or its
+ * declaration (properties). Heading levels track `theme.currentTitleLevel`.
+ */
+function buildMemberInline(
+  child: DeclarationReflection,
+  theme: MarkdownTheme
+): DocBlock[] {
+  const blocks: DocBlock[] = []
+
+  // `ifMemberShowTitle`: inline members (no own document) show their name.
+  const showTitle =
+    !child.hasOwnDocument ||
+    (Boolean(Handlebars.helpers.sectionEnabled("member_force_title")) &&
+      theme.location !== child.url)
+
+  const previousLevel = theme.currentTitleLevel
+  if (showTitle && child.name) {
+    blocks.push({
+      kind: "heading",
+      level: theme.currentTitleLevel,
+      text: child.name,
+      id: slugId(child.name),
+    })
+    blocks.push(...badgeBlocks(child))
+    theme.currentTitleLevel += 1
+  }
+
+  const signatures = child.signatures || []
+  const accessorSignatures = [child.getSignature, child.setSignature].filter(
+    (signature): signature is SignatureReflection => Boolean(signature)
+  )
+  if (signatures.length && Handlebars.helpers.sectionEnabled("member_signatures")) {
+    for (const signature of signatures) {
+      if (isWorkflow(signature)) {
+        blocks.push(...buildWorkflowBlocks(theme, signature))
+      } else if (isWorkflowStep(signature)) {
+        blocks.push(...buildStepBlocks(theme, signature))
+      } else {
+        blocks.push(
+          ...buildSignatureBlocks(signature, child, theme)
+        )
+      }
+    }
+  } else if (
+    accessorSignatures.length &&
+    Handlebars.helpers.sectionEnabled("member_getterSetter")
+  ) {
+    // Accessors (getters/setters) render each signature like a method
+    // (member.getterSetter -> member.signature).
+    for (const signature of accessorSignatures) {
+      blocks.push(
+        ...buildSignatureBlocks(signature, child, theme)
+      )
+    }
+  } else if (Handlebars.helpers.sectionEnabled("member_declaration")) {
+    blocks.push(...buildDeclarationInline(child, theme))
+  }
+
+  if (showTitle && child.name) {
+    theme.currentTitleLevel = previousLevel
+  }
+
+  return blocks
+}
+
+/**
+ * Renders a property/declaration inline member (mirrors `member.declaration.hbs`):
+ * the declaration title, comment (+ deprecated/since notes), example, and any
+ * callable signatures or nested properties of its type. Section toggles
+ * (`member_declaration_*`) gate each part.
+ */
+function buildDeclarationInline(
+  child: DeclarationReflection,
+  theme: MarkdownTheme
+): DocBlock[] {
+  const blocks: DocBlock[] = []
+
+  if (Handlebars.helpers.sectionEnabled("member_declaration_title")) {
+    blocks.push(
+      ...splitContentBlocks(
+        String(Handlebars.helpers.declarationTitle.call(child) || "")
+      )
+    )
+  }
+
+  if (Handlebars.helpers.sectionEnabled("member_declaration_comment")) {
+    // @deprecated is rendered inline with the comment; @since via `version`.
+    blocks.push(...splitContentBlocks(getCommentMarkdown(child)))
+    blocks.push(...versionNoteBlocks(child))
+  }
+
+  blocks.push(...sourceCodeLinkBlocks(theme, child))
+
+  if (Handlebars.helpers.sectionEnabled("member_declaration_example")) {
+    blocks.push(
+      ...splitContentBlocks(String(Handlebars.helpers.example(child) || ""))
+    )
+  }
+
+  // Callable signatures carried on the property's type (e.g. a method-shaped
+  // property).
+  if (
+    Handlebars.helpers.sectionEnabled("member_declaration_signatures") &&
+    child.type?.type === "reflection" &&
+    child.type.declaration.signatures?.length
+  ) {
+    for (const signature of child.type.declaration.signatures) {
+      blocks.push(...buildSignatureBlocks(signature, child, theme))
+    }
+    return blocks
+  }
+
+  // Object-typed property/variable: a `Properties` sub-heading (unless
+  // `expandMembers`) + the nested members as a TypeList (member.declaration's
+  // `member_declaration_typeDeclaration` branch).
+  const typeChildren =
+    child.type?.type === "reflection" ? child.type.declaration.children : undefined
+  if (
+    typeChildren?.length &&
+    Handlebars.helpers.sectionEnabled("member_declaration_typeDeclaration")
+  ) {
+    const { expandMembers } = theme.getFormattingOptionsForLocation()
+    if (!expandMembers) {
+      blocks.push({
+        kind: "heading",
+        level: theme.currentTitleLevel,
+        text: "Properties",
+        id: slugId(`${child.name}-properties`),
+      })
+    }
+    const types = buildTypeListItems(typeChildren, child.project)
+    if (types.length) {
+      blocks.push({ kind: "typeList", sectionTitle: child.name, types })
+    }
+  }
+
+  return blocks
+}
+
+/**
+ * Parses the `reflectionBadges` helper output (`<BadgesList badges={[...]} />`)
+ * into a `badges` block. Emitted right after a member's name heading.
+ */
+function badgeBlocks(reflection: Reflection): DocBlock[] {
+  const rendered = String(
+    Handlebars.helpers.reflectionBadges.call(reflection) || ""
+  )
+  const match = rendered.match(/badges=\{([\s\S]*?)\}\s+className=/)
+  if (!match) {
+    return []
+  }
+  try {
+    const parsed = JSON.parse(match[1]) as { variant?: string; children: string }[]
+    const badges = parsed.map((badge) => ({
+      variant: badge.variant,
+      label: badge.children,
+    }))
+    return badges.length ? [{ kind: "badges", badges }] : []
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Renders the formatting `startSections` / `endSections` (arrays of MDX prose)
+ * as blocks, matching the `startSections`/`endSections` helpers (each section
+ * separated by a `---` rule).
+ */
+function buildSectionsBlocks(sections: string[] | undefined): DocBlock[] {
+  if (!sections?.length) {
+    return []
+  }
+  const lineBreaks = "\n\n"
+  const separator = `---${lineBreaks}`
+  return splitContentBlocks(
+    `${separator}${sections.join(`${lineBreaks}${separator}`)}`
+  )
 }
 
 /**
@@ -232,11 +596,7 @@ function buildMemberBlocks(
 
   // Plain declaration (type alias / variable / object literal): comment,
   // example, then its resolved type as a property TypeList.
-  const description = getCommentMarkdown(model)
-  if (description) {
-    blocks.push({ kind: "markdown", html: description })
-  }
-  blocks.push(...deprecatedNoteBlocks(model))
+  blocks.push(...splitContentBlocks(getCommentMarkdown(model)))
   blocks.push(...versionNoteBlocks(model))
   blocks.push(...sourceCodeLinkBlocks(theme, model))
   blocks.push(
@@ -314,7 +674,7 @@ function buildExpandedMemberBlocks(
   const previousLevel = theme.currentTitleLevel
   theme.currentTitleLevel = 3
   for (const signature of getMemberSignatures(child)) {
-    blocks.push(...buildSignatureBlocks(signature, child, theme, 3))
+    blocks.push(...buildSignatureBlocks(signature, child, theme, true))
   }
   theme.currentTitleLevel = previousLevel
 
@@ -325,33 +685,54 @@ function buildSignatureBlocks(
   signature: SignatureReflection,
   owner: DeclarationReflection,
   theme: MarkdownTheme,
-  level = 2
+  // Expanded object members (js-sdk) carry their comment/example on the owning
+  // property rather than the synthesized signature; fall back to the owner
+  // there. Regular members render the signature's own comment/example (matching
+  // `member.signature`), so the fallback is off by default.
+  useOwnerFallback = false
 ): DocBlock[] {
   const blocks: DocBlock[] = []
-
-  const comment =
-    getCommentMarkdown(signature) || getCommentMarkdown(owner)
-  if (comment) {
-    blocks.push({ kind: "markdown", html: comment })
-  }
-
-  // @deprecated + @since notes.
-  blocks.push(...deprecatedNoteBlocks(signature))
-  blocks.push(...versionNoteBlocks(signature))
-  blocks.push(...sourceCodeLinkBlocks(theme, signature))
-
-  // @example (may embed <CodeTabs>). For expanded members the example lives on
-  // the owning property rather than the signature, so fall back to it.
-  const example =
-    String(Handlebars.helpers.example(signature) || "") ||
-    (owner !== (signature as unknown)
-      ? String(Handlebars.helpers.example(owner) || "")
-      : "")
-  blocks.push(...splitContentBlocks(example))
-
+  const { expandMembers } = theme.getFormattingOptionsForLocation()
   const sections = theme.getFormattingOptionsForLocation().sections
   const sectionEnabled = (key: string) =>
     !sections || !(key in sections) || sections[key as never] !== false
+
+  const previousLevel = theme.currentTitleLevel
+
+  // Signature title (`member_signature_title`). Suppressed by default, but shown
+  // for overloaded members. With `expandMembers` it's a heading (and nests its
+  // sub-sections one level deeper); otherwise it's an inline bold code line.
+  const titleStr = String(Handlebars.helpers.signatureTitle.call(signature) || "")
+  if (titleStr.trim()) {
+    if (expandMembers) {
+      blocks.push(...splitContentBlocks(titleStr))
+      if (Handlebars.helpers.hasMoreThanOneSignature(signature.parent)) {
+        theme.currentTitleLevel += 1
+      }
+    } else {
+      blocks.push({ kind: "markdown", html: titleStr })
+    }
+  }
+  const level = theme.currentTitleLevel
+
+  // Comment summary (block tags are rendered after Returns, per member.signature).
+  const summary =
+    (signature.comment &&
+      String(
+        Handlebars.helpers.comments(signature.comment, true, false) || ""
+      ).trim()) ||
+    (useOwnerFallback ? getCommentMarkdown(owner) : "")
+  blocks.push(...splitContentBlocks(summary))
+
+  // @since note.
+  blocks.push(...versionNoteBlocks(signature))
+  blocks.push(...sourceCodeLinkBlocks(theme, signature))
+
+  // @example (may embed <CodeTabs>).
+  const example =
+    String(Handlebars.helpers.example(signature) || "") ||
+    (useOwnerFallback ? String(Handlebars.helpers.example(owner) || "") : "")
+  blocks.push(...splitContentBlocks(example))
 
   // Type Parameters (before Parameters; hidden for e.g. module service methods
   // that disable member_signature_typeParameters).
@@ -406,10 +787,19 @@ function buildSignatureBlocks(
     }
   }
 
-  // NOTE: the `<SourceCodeLink>` component is only rendered for workflows in
-  // the MDX theme; regular members use a "Defined in" footer (member.sources),
-  // which is not yet ported. Tracked as a follow-up.
+  // Comment block tags (@deprecated, custom tags) — rendered after Returns.
+  if (sectionEnabled("member_signature_comment") && signature.comment) {
+    blocks.push(
+      ...splitContentBlocks(
+        String(
+          Handlebars.helpers.comments(signature.comment, false, true, signature) ||
+            ""
+        )
+      )
+    )
+  }
 
+  theme.currentTitleLevel = previousLevel
   return blocks
 }
 
@@ -443,22 +833,6 @@ export function versionNoteBlocks(reflection: Reflection): DocBlock[] {
   return splitContentBlocks(String(Handlebars.helpers.version(reflection) || ""))
 }
 
-/**
- * Emits the `@deprecated` note as a `note` block. The MDX theme renders it
- * inline with the comment (`comments` with tags -> `commentTag` produces a
- * `:::note[Deprecated]` admonition); we emit it explicitly since our comment
- * rendering omits block tags.
- */
-export function deprecatedNoteBlocks(reflection: Reflection): DocBlock[] {
-  const tag = reflection.comment?.blockTags.find(
-    (blockTag) => blockTag.tag === "@deprecated"
-  )
-  if (!tag) {
-    return []
-  }
-  return splitContentBlocks(String(Handlebars.helpers.commentTag(tag) || ""))
-}
-
 /** Extracts the GitHub source URL from the `sourceCodeLink` helper output. */
 function extractSourceLink(reflection: Reflection): string | undefined {
   const rendered = String(
@@ -484,12 +858,19 @@ function sourceCodeLinkBlocks(
   return source ? [{ kind: "sourceCodeLink", link: source }] : []
 }
 
+/**
+ * Renders a reflection's comment (summary + block tags) as markdown, matching
+ * the `comment` partial (`{{{comments this true true model}}}`). Block tags
+ * that aren't excluded (e.g. `@classdesc`, `@deprecated`) are rendered as
+ * headings / admonitions, so callers should run the output through
+ * {@link splitContentBlocks} to lift those into their own blocks.
+ */
 function getCommentMarkdown(reflection: Reflection): string {
   if (!reflection.comment) {
     return ""
   }
   return String(
-    Handlebars.helpers.comments(reflection.comment, true, false) || ""
+    Handlebars.helpers.comments(reflection.comment, true, true, reflection) || ""
   ).trim()
 }
 

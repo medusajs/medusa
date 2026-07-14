@@ -11,6 +11,8 @@ import { WorkflowDiagram } from "@/components/WorkflowDiagram"
 import { Note } from "@/components/Note"
 import { SourceCodeLink } from "@/components/SourceCodeLink"
 import { MarkdownContent } from "@/components/MarkdownContent"
+import { BadgesList } from "@/components/BadgesList"
+import type { BadgeVariant } from "@/components/Badge"
 import { H1 } from "@/components/Heading/H1"
 import { Mdx, DocHeading } from "./shared"
 import { ReferenceWorkflowEvents } from "./WorkflowEvents"
@@ -87,7 +89,15 @@ const Block = ({ block }: { block: DocBlock }) => {
     case "eventsListing":
       return <ReferenceEventsListing categories={block.categories} />
     case "badges":
-      return null
+      return (
+        <BadgesList
+          className="mb-docs_0.5"
+          badges={block.badges.map((badge) => ({
+            variant: (badge.variant as BadgeVariant) || "neutral",
+            children: badge.label,
+          }))}
+        />
+      )
     case "table":
       return null
     default:
