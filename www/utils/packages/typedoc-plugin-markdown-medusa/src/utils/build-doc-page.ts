@@ -15,6 +15,7 @@ import { ReflectionParameterType } from "../types.js"
 import { getPageFrontmatter } from "./frontmatter.js"
 import { parseParams } from "./params-utils.js"
 import { reflectionComponentFormatter } from "./reflection-formatter.js"
+import { getReflectionTypeParameters } from "./reflection-type-parameters.js"
 import { splitContentBlocks } from "./parse-code-tabs.js"
 import { buildStepBlocks, buildWorkflowBlocks } from "./build-workflow-blocks.js"
 import { buildEventsListingBlock } from "./build-events-listing.js"
@@ -316,16 +317,22 @@ function buildSignatureBlocks(
     }
   }
 
-  // Returns (hidden when member_returns is disabled, e.g. DML methods).
+  // Returns (hidden when member_returns is disabled, e.g. DML methods). Built
+  // from the return type via getReflectionTypeParameters — matching the MDX
+  // `returns` helper, which (unlike the parameter formatter) does not attach
+  // the signature's @example to the return value.
   if (
     signature.type &&
     sections?.member_returns !== false &&
     !signature.parent?.kindOf(ReflectionKind.Constructor)
   ) {
-    const returnItems = buildTypeListItems(
-      [signature as unknown as ReflectionParameterType],
-      signature.project
-    )
+    const { maxLevel } = theme.getFormattingOptionsForLocation()
+    const returnItems = getReflectionTypeParameters({
+      reflectionType: signature.type,
+      project: signature.project || (theme.project as never),
+      comment: signature.comment,
+      maxLevel,
+    }) as DocTypeListItem[]
     if (returnItems.length) {
       blocks.push({ kind: "heading", level: 2, text: "Returns", id: slugId(`${owner.name}-returns`) })
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types: returnItems })

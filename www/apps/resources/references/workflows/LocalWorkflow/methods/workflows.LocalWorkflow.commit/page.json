@@ -1,1 +1,1 @@
-{"slug":"/references/workflows/LocalWorkflow/methods/workflows.LocalWorkflow.commit","title":"commit","frontmatter":{},"toc":[{"title":"Returns","id":"commit-returns","level":2}],"blocks":[{"kind":"heading","level":2,"text":"Returns","id":"commit-returns"},{"kind":"typeList","sectionTitle":"commit","types":[{"name":"commit","type":"`void`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}
+{"slug":"/references/workflows/LocalWorkflow/methods/workflows.LocalWorkflow.commit","title":"commit","frontmatter":{},"toc":[],"blocks":[]}
