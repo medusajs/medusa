@@ -1,9 +1,14 @@
 import { Application, ParameterType } from "typedoc"
 import { MarkdownThemeOptionsReader } from "./options-reader.js"
 import { MarkdownTheme } from "./theme.js"
+import { JsonTheme } from "./json-theme.js"
 
 export function load(app: Application) {
   app.renderer.defineTheme("markdown", MarkdownTheme)
+  // The `json` theme emits the references doc-model (`DocPage` JSON) instead of
+  // MDX, reusing all of `MarkdownTheme`'s URL/helper logic. Select it by
+  // setting `theme: "json"` in the merge-phase TypeDoc options.
+  app.renderer.defineTheme("json", JsonTheme)
   app.options.addReader(new MarkdownThemeOptionsReader())
 
   app.options.addDeclaration({
@@ -139,3 +144,4 @@ export function load(app: Application) {
   })
 }
 export { MarkdownTheme }
+export { JsonTheme }
