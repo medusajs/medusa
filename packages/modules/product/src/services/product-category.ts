@@ -180,7 +180,7 @@ export default class ProductCategoryService extends MedusaInternalService<
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<string[]> {
+  ): Promise<string[] | Record<string, any>[]> {
     const subscriber = createMedusaMikroOrmEventSubscriber(
       [ProductCategory.name],
       this.container["productModuleService"]
