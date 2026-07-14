@@ -24,7 +24,7 @@ import { createOrderChangeActionsWorkflow } from "../create-order-change-actions
 /**
  * The details of the guest order transfer to validate.
  *
- * @since 2.17.3
+ * @since 2.18.0
  */
 export type TransferOrderToGuestValidationStepInput = {
   /**
@@ -43,7 +43,7 @@ export type TransferOrderToGuestValidationStepInput = {
  * is the one already linked to the order, or if the resolved customer is a
  * registered (non-guest) customer.
  *
- * @since 2.17.3
+ * @since 2.18.0
  *
  * @example
  * const data = transferOrderToGuestValidationStep({
@@ -105,7 +105,7 @@ export const transferOrderToGuestWorkflowId = "transfer-order-to-guest-workflow"
  *   }
  * })
  *
- * @since 2.17.3
+ * @since 2.18.0
  *
  * @summary
  *

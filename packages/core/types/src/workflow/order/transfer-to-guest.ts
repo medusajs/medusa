@@ -1,7 +1,7 @@
 /**
  * The input to the transfer order to guest workflow.
  *
- * @since 2.17.3
+ * @since 2.18.0
  */
 export interface TransferOrderToGuestWorkflowInput {
   /**

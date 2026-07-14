@@ -143,7 +143,7 @@ export interface AdminRequestOrderTransfer {
 /**
  * The data to transfer an order to a guest customer.
  *
- * @since 2.17.3
+ * @since 2.18.0
  */
 export interface AdminTransferOrderToGuest {
   /**
