@@ -42,38 +42,38 @@ export async function GET(req: NextRequest, { params }: Params) {
   const cleanMdContent = filePathFromMap.endsWith("page.json")
     ? await docPageToMarkdown_(fileContent)
     : await getCleanMd_(fileContent, {
-    before: [
-      [
-        crossProjectLinksPlugin,
-        {
-          baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-          projectUrls: {
-            docs: {
-              url: process.env.NEXT_PUBLIC_DOCS_URL,
-              path: "",
+        before: [
+          [
+            crossProjectLinksPlugin,
+            {
+              baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+              projectUrls: {
+                docs: {
+                  url: process.env.NEXT_PUBLIC_DOCS_URL,
+                  path: "",
+                },
+                "user-guide": {
+                  url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
+                },
+                ui: {
+                  url: process.env.NEXT_PUBLIC_UI_URL,
+                },
+                api: {
+                  url: process.env.NEXT_PUBLIC_API_URL,
+                },
+              },
+              useBaseUrl:
+                process.env.NODE_ENV === "production" ||
+                process.env.VERCEL_ENV === "production" ||
+                !!process.env.CLOUDFLARE_ENV,
             },
-            "user-guide": {
-              url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
-            },
-            ui: {
-              url: process.env.NEXT_PUBLIC_UI_URL,
-            },
-            api: {
-              url: process.env.NEXT_PUBLIC_API_URL,
-            },
-          },
-          useBaseUrl:
-            process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production" ||
-            !!process.env.CLOUDFLARE_ENV,
-        },
-      ],
-      [localLinksRehypePlugin],
-    ] as unknown as Plugin[],
-    after: [
-      [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
-    ] as unknown as Plugin[],
-  })
+          ],
+          [localLinksRehypePlugin],
+        ] as unknown as Plugin[],
+        after: [
+          [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
+        ] as unknown as Plugin[],
+      })
 
   const acceptHeader = req.headers.get("accept") || ""
   if (
