@@ -276,6 +276,31 @@ function buildSignatureBlocks(
     ...splitContentBlocks(String(Handlebars.helpers.example(signature) || ""))
   )
 
+  const sections = theme.getFormattingOptionsForLocation().sections
+  const sectionEnabled = (key: string) =>
+    !sections || !(key in sections) || sections[key as never] !== false
+
+  // Type Parameters (before Parameters; hidden for e.g. module service methods
+  // that disable member_signature_typeParameters).
+  const typeParameters = signature.typeParameters || []
+  if (typeParameters.length && sectionEnabled("member_signature_typeParameters")) {
+    const types = typeParameters
+      .map(
+        (typeParameter) =>
+          reflectionComponentFormatter({
+            reflection: typeParameter,
+            type: "component",
+            isTypeParams: true,
+            project: signature.project,
+          }) as DocTypeListItem
+      )
+      .filter(Boolean)
+    if (types.length) {
+      blocks.push({ kind: "heading", level: 2, text: "Type Parameters", id: slugId(`${owner.name}-type-parameters`) })
+      blocks.push({ kind: "typeList", sectionTitle: owner.name, types })
+    }
+  }
+
   // Parameters
   const parameters = signature.parameters || []
   if (parameters.length) {
@@ -286,8 +311,12 @@ function buildSignatureBlocks(
     }
   }
 
-  // Returns
-  if (signature.type) {
+  // Returns (hidden when member_returns is disabled, e.g. DML methods).
+  if (
+    signature.type &&
+    sections?.member_returns !== false &&
+    !signature.parent?.kindOf(ReflectionKind.Constructor)
+  ) {
     const returnItems = buildTypeListItems(
       [signature as unknown as ReflectionParameterType],
       signature.project
