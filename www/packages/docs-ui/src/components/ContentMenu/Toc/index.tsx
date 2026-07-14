@@ -20,10 +20,15 @@ export const ContentMenuToc = () => {
   })
 
   const formatHeadingContent = (heading: HTMLHeadingElement): string => {
-    return Array.from(heading.childNodes)
-      .filter((child) => child.nodeType === Node.TEXT_NODE && child.textContent)
-      .map((textNode) => textNode.textContent!.trim())
-      .join("")
+    // Use the heading's full text (so inline code, links, etc. are included),
+    // but drop the appended self-anchor permalink (`<a href="#id">#</a>`) that
+    // the heading components add. Content links (e.g. a signature title's return
+    // type) point elsewhere, so they're preserved.
+    const clone = heading.cloneNode(true) as HTMLElement
+    clone
+      .querySelectorAll('a[href^="#"]')
+      .forEach((anchor) => anchor.remove())
+    return (clone.textContent || "").replace(/\s+/g, " ").trim()
   }
 
   const formatHeadingObject = ({
