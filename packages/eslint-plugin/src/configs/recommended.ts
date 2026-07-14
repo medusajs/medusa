@@ -25,6 +25,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
+        [ruleId("no-wildcard-with-specific-fields")]: "warn",
         [ruleId("import-from-framework-not-internal")]: "warn",
         [ruleId("no-mikroorm-direct-import")]: "warn",
         [ruleId("use-medusa-error-not-generic-error")]: "warn",

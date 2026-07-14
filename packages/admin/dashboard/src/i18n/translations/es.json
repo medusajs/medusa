@@ -1192,10 +1192,18 @@
     "transfer": {
       "title": "Transferir propiedad",
       "requestSuccess": "Solicitud de transferencia de pedido enviada a: {{email}}.",
+      "guestSuccess": "Pedido transferido al cliente invitado: {{email}}.",
+      "ownerType": "Tipo de cuenta",
+      "registered": "Registrado",
+      "registeredDescription": "Transferir a un cliente registrado, que debe aceptar la solicitud.",
+      "guest": "Invitado",
+      "guestDescription": "Transferir a un cliente invitado por correo electrónico. Se aplica de inmediato.",
       "currentOwner": "Propietario actual",
       "newOwner": "Nuevo propietario",
+      "newGuestOwner": "Correo electrónico del nuevo propietario",
       "currentOwnerDescription": "El cliente actualmente relacionado con este pedido.",
-      "newOwnerDescription": "El cliente a quien se transferirá este pedido."
+      "newOwnerDescription": "El cliente a quien se transferirá este pedido.",
+      "newGuestOwnerDescription": "El correo electrónico del cliente invitado a quien se transferirá este pedido. Se crea un cliente invitado si no existe."
     },
     "payment": {
       "title": "Pagos",
