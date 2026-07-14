@@ -311,14 +311,10 @@ const FullNameRenderer: CellRenderer = (_, row, _column, _t) => {
 }
 
 const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
-  let address: Record<string, string> | null = null
-  if (column.field === "shipping_address_display") {
-    address = row.shipping_address
-  } else if (column.field === "billing_address_display") {
-    address = row.billing_address
-  } else {
-    address = row.shipping_address || row.billing_address
-  }
+  const address: Record<string, string> | undefined = getNestedValue(
+    row,
+    column.computed?.metadata?.address_field ?? ""
+  )
 
   if (!address) {
     return "-"
@@ -352,8 +348,11 @@ const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
   return parts.join(" • ") || "-"
 }
 
-const CountryCodeRenderer: CellRenderer = (_, row, _column, _t) => {
-  const countryCode = row.shipping_address?.country_code
+const CountryCodeRenderer: CellRenderer = (_, row, column, _t) => {
+  const countryCode = getNestedValue(
+    row,
+    column.computed?.metadata?.country_code_field ?? ""
+  )
 
   if (!countryCode) {
     return "-"
@@ -606,12 +605,13 @@ cellRenderers.set("sales_channels_list", { render: BadgeListRenderer })
 cellRenderers.set("customer_name", { render: CustomerNameRenderer })
 cellRenderers.set("full_name", { render: FullNameRenderer })
 cellRenderers.set("address_summary", { render: AddressSummaryRenderer })
+cellRenderers.set("display_id", { render: DisplayIdRenderer })
+
+cellRenderers.set("address", { render: AddressRenderer })
 cellRenderers.set("country_code", {
   render: CountryCodeRenderer,
   align: "center",
 })
-cellRenderers.set("display_id", { render: DisplayIdRenderer })
-cellRenderers.set("address", { render: AddressRenderer })
 
 export function getCellRenderer(
   renderType?: string,
