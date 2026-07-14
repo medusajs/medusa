@@ -1,5 +1,5 @@
 {
-  "name": "typedoc-plugin-markdown-medusa",
+  "name": "typedoc-plugin-medusa-theme",
   "private": true,
   "license": "MIT",
   "publishConfig": {
@@ -16,7 +16,9 @@
   "type": "module",
   "scripts": {
     "build": "tsc && copyfiles --up 1 ./src/**/*.hbs ./dist/",
-    "lint": "eslint --ext .ts src"
+    "lint": "eslint --ext .ts src",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "typedoc": "0.27.x"
@@ -27,7 +29,8 @@
     "copyfiles": "^2.4.1",
     "typedoc": "^0.27.5",
     "types": "*",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.8"
   },
   "keywords": [
     "typedocplugin",
