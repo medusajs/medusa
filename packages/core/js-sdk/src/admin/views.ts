@@ -8,7 +8,7 @@ export class Views {
 
   /**
    * List available entities for view configuration
-   * @since 2.13.2
+   * @since 2.18.0
    * @featureFlag view_configurations
    */
   async listEntities(
