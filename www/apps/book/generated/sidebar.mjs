@@ -1538,11 +1538,21 @@ export const generatedSidebars = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
+                "path": "/learn/resources/contribution-guidelines/code",
+                "title": "Code",
+                "children": [],
+                "chapterTitle": "12.1.1. Code",
+                "number": "12.1.1."
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
                 "path": "/learn/resources/contribution-guidelines/docs",
                 "title": "Docs",
                 "children": [],
-                "chapterTitle": "12.1.1. Docs",
-                "number": "12.1.1."
+                "chapterTitle": "12.1.2. Docs",
+                "number": "12.1.2."
               },
               {
                 "loaded": true,
@@ -1551,8 +1561,8 @@ export const generatedSidebars = [
                 "path": "/learn/resources/contribution-guidelines/admin-translations",
                 "title": "Admin Translations",
                 "children": [],
-                "chapterTitle": "12.1.2. Admin Translations",
-                "number": "12.1.2."
+                "chapterTitle": "12.1.3. Admin Translations",
+                "number": "12.1.3."
               }
             ],
             "chapterTitle": "12.1. Contribution Guidelines",
