@@ -238,7 +238,7 @@ run yarn explain peer-requirements <hash> for details, where <hash>
 is the six-letter p-prefixed code.
 ```
 
-Yarn Berry uses `--frozen-lockfile` (also known as immutable installs) during Cloud builds to ensure reproducible deployments. This means the `yarn.lock` file must be committed and kept in sync with your `package.json`. The error occurs when you add or update a dependency in `package.json` without running `yarn install` locally and committing the updated lockfile.
+Medusa uses `--frozen-lockfile` (also known as immutable installs) during Cloud builds to ensure reproducible deployments. This means the `yarn.lock` file must be committed and kept in sync with your `package.json`. The error occurs when you add or update a dependency in `package.json` without running `yarn install` locally and committing the updated lockfile.
 
 To fix this error:
 
