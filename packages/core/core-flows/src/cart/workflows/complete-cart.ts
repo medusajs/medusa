@@ -96,6 +96,20 @@ export const completeCartWorkflowId = "complete-cart"
  *
  * If the cart's total is zero and covered by credit lines, the workflow can complete the cart without a payment session.
  *
+ * ### Don't Mutate the Cart in Hooks
+ *
+ * Don't use this workflow's hooks (such as the `validate` hook) to mutate the cart's line items, shipping methods, or totals.
+ * The workflow retrieves the cart once at the beginning, before any hook runs, and builds the order from that snapshot. It doesn't
+ * re-retrieve the cart or refresh the payment collection afterwards. So, a mutation made in a hook has two consequences that leave
+ * the order and payment inconsistent with the change:
+ *
+ * - The created order is built from the initial cart snapshot, so the mutation isn't reflected in the order.
+ * - As explained in the previous section, the authorized or captured amount is the payment session's own amount, which was set to the
+ * cart's total when the payment collection was created or refreshed. So, the payment amount doesn't account for the mutation either.
+ *
+ * If you need to change the cart before completing it, do so in a separate step or workflow that runs before `completeCartWorkflow`,
+ * and refresh the cart's payment collection so that the payment session's amount matches the new total.
+ *
  * ## Cart Completion Idempotency
  *
  * This workflow's logic is idempotent, meaning that if it is executed multiple times with the same input, it will not create duplicate orders. The
@@ -316,7 +330,7 @@ export const completeCartWorkflowId = "complete-cart"
  *
  * Complete a cart and place an order.
  *
- * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+ * @property hooks.validate - This hook is executed before the order is created and the payment is authorized. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution. Don't use this hook to mutate the cart's line items or totals, as explained in the Don't Mutate the Cart in Hooks section.
  */
 export const completeCartWorkflow = createWorkflow(
   {
