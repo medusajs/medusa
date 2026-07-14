@@ -146,7 +146,9 @@ function buildContainerBlocks(
   for (const group of groups) {
     // Apply the configured group rename (e.g. Functions -> Steps).
     const groupTitle = reflectionGroupRename?.[group.title] || group.title
-    const linked = group.children.filter((child) => child.hasOwnDocument)
+    const linked = group.children
+      .filter((child) => child.hasOwnDocument)
+      .sort((a, b) => a.name.localeCompare(b.name))
     const inline = group.children.filter(
       (child): child is DeclarationReflection =>
         !child.hasOwnDocument && child instanceof DeclarationReflection
