@@ -71,9 +71,11 @@ function renderBlock(block: DocBlock): string {
         })
         .join("\n\n")
     case "workflowDiagram":
-      return `## Steps\n\n${block.workflow.steps
+      // The builder emits a preceding "Steps" heading block, so this renders
+      // only the step list.
+      return block.workflow.steps
         .map((step) => renderWorkflowStep(step))
-        .join("\n")}`
+        .join("\n")
     case "note": {
       const title = block.title || capitalize(block.variant || "note")
       const body = block.html
