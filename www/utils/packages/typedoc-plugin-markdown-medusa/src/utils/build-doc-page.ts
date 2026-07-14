@@ -8,7 +8,13 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
-import { getDmlProperties, isDmlEntity, isWorkflow, isWorkflowStep } from "utils"
+import {
+  getDmlProperties,
+  getTypeChildren,
+  isDmlEntity,
+  isWorkflow,
+  isWorkflowStep,
+} from "utils"
 import type { DocBlock, DocPage, DocTypeListItem } from "types"
 import { MarkdownTheme } from "../theme.js"
 import { ReflectionParameterType } from "../types.js"
@@ -237,6 +243,23 @@ function buildMemberBlocks(
     ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
   )
 
+  // Expandable object properties (e.g. js-sdk `sdk.store.cart`): render each
+  // method child as its own member section (heading + example/params/returns),
+  // matching member.declaration with `expandProperties`.
+  if (theme.getFormattingOptionsForLocation().expandProperties && model.type) {
+    const memberChildren = getTypeChildren({
+      reflectionType: model.type,
+      project: model.project || theme.project,
+    }).filter((child) => getMemberSignatures(child).length)
+
+    if (memberChildren.length) {
+      for (const child of memberChildren) {
+        blocks.push(...buildExpandedMemberBlocks(child, theme))
+      }
+      return blocks
+    }
+  }
+
   // DML entity (data model) pages list the entity's properties directly,
   // rather than wrapping them under the `DmlEntity<...>` type (mirrors the
   // `member.dml` template).
@@ -262,14 +285,52 @@ function buildMemberBlocks(
   return blocks
 }
 
+/** The callable signatures of a member (method, or property with a fn type). */
+function getMemberSignatures(
+  child: DeclarationReflection
+): SignatureReflection[] {
+  if (child.signatures?.length) {
+    return child.signatures
+  }
+  if (child.type?.type === "reflection" && child.type.declaration.signatures) {
+    return child.type.declaration.signatures
+  }
+  return []
+}
+
+/**
+ * Renders an expanded object member (e.g. a `sdk.store.cart` method) as a
+ * section: an `<h2>` with the member name, then each signature's blocks (comment,
+ * example, parameters, returns) nested one level deeper.
+ */
+function buildExpandedMemberBlocks(
+  child: DeclarationReflection,
+  theme: MarkdownTheme
+): DocBlock[] {
+  const blocks: DocBlock[] = [
+    { kind: "heading", level: 2, text: child.name, id: slugId(child.name) },
+  ]
+
+  const previousLevel = theme.currentTitleLevel
+  theme.currentTitleLevel = 3
+  for (const signature of getMemberSignatures(child)) {
+    blocks.push(...buildSignatureBlocks(signature, child, theme, 3))
+  }
+  theme.currentTitleLevel = previousLevel
+
+  return blocks
+}
+
 function buildSignatureBlocks(
   signature: SignatureReflection,
   owner: DeclarationReflection,
-  theme: MarkdownTheme
+  theme: MarkdownTheme,
+  level = 2
 ): DocBlock[] {
   const blocks: DocBlock[] = []
 
-  const comment = getCommentMarkdown(signature)
+  const comment =
+    getCommentMarkdown(signature) || getCommentMarkdown(owner)
   if (comment) {
     blocks.push({ kind: "markdown", html: comment })
   }
@@ -279,10 +340,14 @@ function buildSignatureBlocks(
   blocks.push(...versionNoteBlocks(signature))
   blocks.push(...sourceCodeLinkBlocks(theme, signature))
 
-  // @example (may embed <CodeTabs>).
-  blocks.push(
-    ...splitContentBlocks(String(Handlebars.helpers.example(signature) || ""))
-  )
+  // @example (may embed <CodeTabs>). For expanded members the example lives on
+  // the owning property rather than the signature, so fall back to it.
+  const example =
+    String(Handlebars.helpers.example(signature) || "") ||
+    (owner !== (signature as unknown)
+      ? String(Handlebars.helpers.example(owner) || "")
+      : "")
+  blocks.push(...splitContentBlocks(example))
 
   const sections = theme.getFormattingOptionsForLocation().sections
   const sectionEnabled = (key: string) =>
@@ -304,7 +369,7 @@ function buildSignatureBlocks(
       )
       .filter(Boolean)
     if (types.length) {
-      blocks.push({ kind: "heading", level: 2, text: "Type Parameters", id: slugId(`${owner.name}-type-parameters`) })
+      blocks.push({ kind: "heading", level, text: "Type Parameters", id: slugId(`${owner.name}-type-parameters`) })
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types })
     }
   }
@@ -314,7 +379,7 @@ function buildSignatureBlocks(
   if (parameters.length) {
     const types = buildTypeListItems(parameters, signature.project)
     if (types.length) {
-      blocks.push({ kind: "heading", level: 2, text: "Parameters", id: slugId(`${owner.name}-parameters`) })
+      blocks.push({ kind: "heading", level, text: "Parameters", id: slugId(`${owner.name}-parameters`) })
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types })
     }
   }
@@ -336,7 +401,7 @@ function buildSignatureBlocks(
       maxLevel,
     }) as DocTypeListItem[]
     if (returnItems.length) {
-      blocks.push({ kind: "heading", level: 2, text: "Returns", id: slugId(`${owner.name}-returns`) })
+      blocks.push({ kind: "heading", level, text: "Returns", id: slugId(`${owner.name}-returns`) })
       blocks.push({ kind: "typeList", sectionTitle: owner.name, types: returnItems })
     }
   }
