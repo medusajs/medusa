@@ -1256,6 +1256,10 @@ export const filesMap = [
     "pathname": "/lint/rules/no-try-catch-in-workflow"
   },
   {
+    "filePath": "/www/apps/resources/app/lint/rules/no-wildcard-with-specific-fields/page.mdx",
+    "pathname": "/lint/rules/no-wildcard-with-specific-fields"
+  },
+  {
     "filePath": "/www/apps/resources/app/lint/rules/no-workflow-call-without-container/page.mdx",
     "pathname": "/lint/rules/no-workflow-call-without-container"
   },

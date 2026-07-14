@@ -7620,5 +7620,6 @@ export const generatedEditDates = {
   "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z",
   "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
   "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",
-  "app/lint/rules/use-query-context-utility/page.mdx": "2026-07-13T15:24:48.456Z"
+  "app/lint/rules/use-query-context-utility/page.mdx": "2026-07-13T15:24:48.456Z",
+  "app/lint/rules/no-wildcard-with-specific-fields/page.mdx": "2026-07-14T12:48:48.767Z"
 }

@@ -502,6 +502,15 @@ const generatedgeneratedToolsSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/lint/rules/no-wildcard-with-specific-fields",
+                      "title": "no-wildcard-with-specific-fields",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/lint/rules/no-workflow-call-without-container",
                       "title": "no-workflow-call-without-container",
                       "description": "",
