@@ -20,7 +20,14 @@ export function useConfigurableTableColumns<TData = any>(
       return []
     }
 
-    return apiColumns.map((apiColumn) => {
+    const generatedColumns = apiColumns.map((apiColumn) => {
+      // Virtual selection column: the ui select column (checkbox), kept as a
+      // normal column (id "select") so it participates in ordering — its low
+      // default_order keeps it first.
+      if (apiColumn.render_mode === "select") {
+        return columnHelper.select()
+      }
+
       // Virtual actions column: rendered from the adapter's row actions rather
       // than the cell-renderer registry, but kept as a normal column so it
       // participates in visibility/ordering.
@@ -85,5 +92,7 @@ export function useConfigurableTableColumns<TData = any>(
         align,
       } as any)
     })
+
+    return generatedColumns
   }, [apiColumns, adapter, t, columnHelper])
 }

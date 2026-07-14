@@ -45,6 +45,13 @@ export interface UseTableConfigurationOptions {
    * instead. Acts as the baseline for "unsaved changes" detection.
    */
   defaultFilters?: Record<string, any>
+  /**
+   * Key under which saved view configurations are stored/looked up. Columns
+   * always come from the real `entity`, but views are keyed independently so
+   * that multiple tables of the SAME entity each get their own views without
+   * clobbering each other. Defaults to `entity`.
+   */
+  viewConfigurationKey?: string
 }
 
 export interface UseTableConfigurationReturn {
@@ -83,9 +90,12 @@ export function useTableConfiguration({
   transformColumns,
   extraColumns,
   defaultFilters,
+  viewConfigurationKey,
 }: UseTableConfigurationOptions): UseTableConfigurationReturn {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const [_, setSearchParams] = useSearchParams()
+
+  const viewConfigKey = viewConfigurationKey ?? entity
 
   // Seed the adapter's default filters into the URL params. Used when no saved
   // view is active, both on initial sync and when clearing.
@@ -101,10 +111,10 @@ export function useTableConfiguration({
     [defaultFilters, queryPrefix]
   )
 
-  const { activeView, createView } = useViewConfigurations(entity)
+  const { activeView, createView } = useViewConfigurations(viewConfigKey)
   const currentActiveView = activeView?.view_configuration || null
   const { updateView } = useViewConfiguration(
-    entity,
+    viewConfigKey,
     currentActiveView?.id || ""
   )
 
@@ -214,6 +224,11 @@ export function useTableConfiguration({
 
       return prev
     })
+    // Intentionally only re-syncs when the active view or columns change. Must
+    // NOT depend on setSearchParams (its identity changes on every URL change)
+    // or it re-runs on each filter edit and clears the just-applied filter.
+    // applyDefaultFilters is stable, so it is safe to call without listing it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentActiveView, columnsToRender])
 
   // Current configuration from URL

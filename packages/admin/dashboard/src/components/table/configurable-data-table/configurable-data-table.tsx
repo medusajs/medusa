@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
-import { Container, Button } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { Container, Button, DataTableRowSelectionState } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../data-table"
 import { SaveViewDialog } from "../save-view-dialog"
@@ -9,6 +10,7 @@ import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-co
 import { parseFilterParam } from "../../../hooks/table/query"
 import {
   createActionsColumn,
+  createSelectColumn,
   TableAdapter,
 } from "../../../lib/table/table-adapters"
 
@@ -46,18 +48,27 @@ export function ConfigurableDataTable<TData>({
   const { t } = useTranslation()
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [editingView, setEditingView] = useState<any>(null)
+  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
+    {}
+  )
 
   const entity = adapter.entity
+  const viewConfigKey = adapter.viewConfigurationKey ?? adapter.entity
   const entityName = adapter.entityName
   const pageSize = pageSizeProp || adapter.pageSize || 20
   const queryPrefix = queryPrefixProp || adapter.queryPrefix || ""
 
-  // Inject a virtual, toggleable actions column when the adapter defines row
-  // actions. It flows through column state like any other column.
+  // Inject virtual columns (selection + actions) as API-shaped columns so they
+  // flow through column ordering/visibility state. Their default_order keeps
+  // selection first and actions last.
   const extraColumns = useMemo(() => {
-    return adapter.renderRowActions
-      ? [createActionsColumn(t("fields.actions"))]
-      : undefined
+    const cols = [
+      adapter.enableRowSelection ? createSelectColumn() : null,
+      adapter.renderRowActions
+        ? createActionsColumn(t("fields.actions"))
+        : null,
+    ].filter((c): c is HttpTypes.AdminColumn => c !== null)
+    return cols.length ? cols : undefined
   }, [adapter, t])
 
   const {
@@ -86,6 +97,7 @@ export function ConfigurableDataTable<TData>({
     transformColumns: adapter.transformColumns,
     extraColumns,
     defaultFilters: adapter.defaultFilters,
+    viewConfigurationKey: viewConfigKey,
   })
 
   const parsedQueryParams = { ...queryParams }
@@ -225,7 +237,7 @@ export function ConfigurableDataTable<TData>({
         columnOrder={columnOrder}
         onColumnOrderChange={setColumnOrder}
         enableViewSelector={isViewConfigEnabled}
-        entity={entity}
+        entity={viewConfigKey}
         currentColumns={currentColumns}
         filterBarContent={filterBarContent}
         rowHref={adapter.getRowHref as ((row: any) => string) | undefined}
@@ -238,11 +250,21 @@ export function ConfigurableDataTable<TData>({
         }
         prefix={queryPrefix}
         actions={actions}
+        commands={adapter.commands}
+        rowSelection={
+          adapter.enableRowSelection
+            ? {
+                state: rowSelection,
+                onRowSelectionChange: setRowSelection,
+                enableRowSelection: true,
+              }
+            : undefined
+        }
       />
 
       {saveDialogOpen && (
         <SaveViewDialog
-          entity={entity}
+          entity={viewConfigKey}
           currentColumns={currentColumns}
           currentConfiguration={currentConfiguration}
           editingView={editingView}

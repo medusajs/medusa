@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import {
   DataTableColumnAlignment,
   DataTableColumnDef,
+  DataTableCommand,
   DataTableEmptyStateProps,
   DataTableFilter,
 } from "@medusajs/ui"
@@ -97,6 +98,14 @@ export interface TableAdapter<TData> {
   queryPrefix?: string
 
   /**
+   * Key under which saved view configurations are stored, decoupled from
+   * `entity` (which drives columns). Set this when more than one table renders
+   * the SAME entity (e.g. publishable vs secret api keys) so each table keeps
+   * its own views instead of sharing them. Defaults to `entity`.
+   */
+  viewConfigurationKey?: string
+
+  /**
    * Optional entity display name for headings
    */
   entityName?: string
@@ -116,6 +125,50 @@ export interface TableAdapter<TData> {
    * boolean filter). Also used as the baseline for "unsaved changes".
    */
   defaultFilters?: Record<string, any>
+
+  /**
+   * Enable per-row selection. When true, a leading checkbox "select" column is
+   * injected and selection state is managed by the table. Required for
+   * `commands` (bulk actions) to be usable.
+   */
+  enableRowSelection?: boolean
+
+  /**
+   * Bulk command-bar actions operating on the current row selection. Each
+   * command's `action` receives the selection state (row id -> boolean).
+   */
+  commands?: DataTableCommand[]
+}
+
+/**
+ * Field/id used for the injected virtual selection column. Must be "select" —
+ * the ui DataTable special-cases that id (sticky, non-draggable checkbox cell).
+ */
+export const SELECT_COLUMN_FIELD = "select"
+
+/**
+ * Build the synthetic selection column. Injected as an API-shaped column (like
+ * the actions column) so it participates in column ordering/visibility state;
+ * its very low `default_order` keeps it first. Rendered as the ui select column
+ * by `useConfigurableTableColumns`.
+ */
+export function createSelectColumn(): HttpTypes.AdminColumn {
+  return {
+    id: SELECT_COLUMN_FIELD,
+    name: "",
+    field: SELECT_COLUMN_FIELD,
+    sortable: false,
+    hideable: false,
+    default_visible: true,
+    data_type: "string",
+    semantic_type: "select",
+    context: "display",
+    render_mode: "select",
+    // Always first.
+    default_order: 0,
+    filter: { enabled: false },
+    category: "computed",
+  }
 }
 
 /**
