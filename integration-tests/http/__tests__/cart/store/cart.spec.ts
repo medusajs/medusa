@@ -4477,6 +4477,61 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should refresh tax lines when the shipping address is switched to a different address id", async () => {
+          // cart (beforeEach) has a US/CA address (CA Default Rate). Create a
+          // second cart with a US/NY address to obtain a different,
+          // tax-different address id.
+          const otherCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: {
+                  ...shippingAddressData,
+                  country_code: "us",
+                  province: "NY",
+                },
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Switch the cart to the other address by id alone (the payload
+          // carries no tax-relevant fields), so only the changed address id can
+          // trigger the refresh. The referenced address is in a different tax
+          // region (NY), so tax lines must be recalculated.
+          const updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { shipping_address: { id: otherCart.shipping_address.id } },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_address: expect.objectContaining({
+                id: otherCart.shipping_address.id,
+                province: "NY",
+              }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "NY Default Rate",
+                      code: "NYDEFAULT",
+                      rate: 6,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
         it("should not generate tax lines for gift card products", async () => {
           const giftCardProduct = (
             await api.post(

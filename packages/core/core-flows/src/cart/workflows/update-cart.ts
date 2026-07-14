@@ -253,42 +253,35 @@ export const updateCartWorkflow = createWorkflow(
     const taxRelevantAddressChanged = transform(
       { input, cartToUpdate },
       ({ input, cartToUpdate }) => {
-        const nextAddress = input.shipping_address as
-          | Record<string, unknown>
-          | null
-          | undefined
+        const next = input.shipping_address
 
-        if (!nextAddress) {
+        if (!next) {
           return false
         }
 
-        const prevAddress = (cartToUpdate?.shipping_address ??
-          {}) as Record<string, unknown>
+        const prev = cartToUpdate?.shipping_address
 
-        const taxRelevantKeys = [
-          "country_code",
-          "province",
-          "postal_code",
-          "city",
-        ]
+        // A provided field only counts as a change when it differs from the
+        // current address. Country codes are persisted in lower-case, so we
+        // compare them case-insensitively to avoid forcing a refresh when an
+        // unchanged address is resent with a different casing.
+        const changed = (nextValue?: string, prevValue?: string) =>
+          nextValue !== undefined && nextValue !== prevValue
 
-        return taxRelevantKeys.some((key) => {
-          const nextValue = nextAddress[key]
+        // When the address is referenced by id, that id may point to a
+        // different (tax-relevant) address than the one currently on the cart.
+        const nextId = "id" in next ? next.id : undefined
 
-          if (nextValue === undefined) {
-            return false
-          }
-
-          // Country codes are persisted in lower-case, so compare them
-          // case-insensitively to avoid forcing a refresh when an unchanged
-          // address is resent with a different casing.
-          const normalize = (value: unknown) =>
-            key === "country_code" && typeof value === "string"
-              ? value.toLowerCase()
-              : value
-
-          return normalize(nextValue) !== normalize(prevAddress[key])
-        })
+        return (
+          changed(nextId, prev?.id) ||
+          changed(
+            next.country_code?.toLowerCase(),
+            prev?.country_code?.toLowerCase()
+          ) ||
+          changed(next.province, prev?.province) ||
+          changed(next.postal_code, prev?.postal_code) ||
+          changed(next.city, prev?.city)
+        )
       }
     )
 
