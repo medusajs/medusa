@@ -59,6 +59,9 @@ export type CompleteCartWorkflowInput = {
   id: string
 }
 
+/**
+ * The output of the complete cart workflow.
+ */
 export type CompleteCartWorkflowOutput = {
   /**
    * The ID of the order that was created.
