@@ -173,8 +173,12 @@ export class S3FileService extends AbstractFileProviderService {
 
     const parsedFilename = path.parse(file.filename)
 
+    // Preserve any directory structure supplied in the filename (e.g.
+    // "vendor_123/logo.png") so it is not flattened out of the object key.
+    const fileDirectory = parsedFilename.dir ? `${parsedFilename.dir}/` : ""
+
     // TODO: Allow passing a full path for storage per request, not as a global config.
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+    const fileKey = `${this.config_.prefix}${fileDirectory}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
 
     const content = decodeFileContent(file.content, file.mimeType)
@@ -230,7 +234,12 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const parsedFilename = path.parse(fileData.filename)
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+
+    // Preserve any directory structure supplied in the filename (e.g.
+    // "vendor_123/logo.png") so it is not flattened out of the object key.
+    const fileDirectory = parsedFilename.dir ? `${parsedFilename.dir}/` : ""
+
+    const fileKey = `${this.config_.prefix}${fileDirectory}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
 
     const pass = new PassThrough()

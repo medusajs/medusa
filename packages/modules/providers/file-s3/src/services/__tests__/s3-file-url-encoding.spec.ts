@@ -118,6 +118,61 @@ describe("S3FileService URL encoding", () => {
     expect(command.input.Key).toMatch(/^docs\/Q&A file-/)
   })
 
+  it("preserves a directory supplied in the filename when building the upload() object key", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const result = await service.upload({
+      filename: "vendor_123/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^public\/vendor_123\/logo-[^/]+\.png$/)
+    expect(result.key).toMatch(/^public\/vendor_123\/logo-[^/]+\.png$/)
+    expect(result.url).not.toContain("%2F")
+    expect(result.url).toMatch(/public\/vendor_123\/logo-[^/]+\.png$/)
+  })
+
+  it("leaves the upload() object key unchanged when the filename has no directory", async () => {
+    const service = new S3FileService({ logger } as any, baseOptions)
+
+    await service.upload({
+      filename: "logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^logo-[^/]+\.png$/)
+  })
+
+  it("preserves a directory supplied in the filename when building the getUploadStream() object key", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const { writeStream, promise } = await service.getUploadStream({
+      filename: "vendor_123/logo.png",
+      mimeType: "image/png",
+      access: "public",
+    })
+
+    writeStream.end()
+    const result = await promise
+
+    const uploadArgs = UploadMock.mock.calls[0][0] as { params: { Key: string } }
+    expect(uploadArgs.params.Key).toMatch(/^public\/vendor_123\/logo-[^/]+\.png$/)
+    expect(result.key).toMatch(/^public\/vendor_123\/logo-[^/]+\.png$/)
+    expect(result.url).not.toContain("%2F")
+  })
+
   it("preserves path separators in getUploadStream() URLs (no %2F) and encodes special characters in segments", async () => {
     const service = new S3FileService({ logger } as any, {
       ...baseOptions,
