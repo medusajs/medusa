@@ -23,6 +23,8 @@ import { createOrderChangeActionsWorkflow } from "../create-order-change-actions
 
 /**
  * The details of the guest order transfer to validate.
+ *
+ * @since 2.18.0
  */
 export type TransferOrderToGuestValidationStepInput = {
   /**
@@ -40,6 +42,8 @@ export type TransferOrderToGuestValidationStepInput = {
  * The step throws an error if the order is cancelled, if the resolved customer
  * is the one already linked to the order, or if the resolved customer is a
  * registered (non-guest) customer.
+ *
+ * @since 2.18.0
  *
  * @example
  * const data = transferOrderToGuestValidationStep({
@@ -80,7 +84,9 @@ export const transferOrderToGuestValidationStep = createStep(
 export const transferOrderToGuestWorkflowId = "transfer-order-to-guest-workflow"
 /**
  * This workflow transfers an order from its current customer to a
- * guest customer, identified by email. If no customer exists with the given
+ * guest customer, identified by email. It's executed by the
+ * [Transfer Order to Guest](https://docs.medusajs.com/api/admin#orders_postordersidtransferguest)
+ * API route. If no customer exists with the given
  * email, a guest customer is created. Unlike {@link requestOrderTransferWorkflow},
  * this workflow is intended for admin users and applies the transfer immediately
  * without requiring the recipient to accept it. If you need to transfer an order
@@ -98,6 +104,8 @@ export const transferOrderToGuestWorkflowId = "transfer-order-to-guest-workflow"
  *     logged_in_user: "user_123",
  *   }
  * })
+ *
+ * @since 2.18.0
  *
  * @summary
  *
