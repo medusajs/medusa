@@ -161,6 +161,15 @@ export const AdminTransferOrder = z.object({
   update_order_email: z.boolean().optional(),
 })
 
+export type AdminTransferOrderToGuestType = z.infer<
+  typeof AdminTransferOrderToGuest
+>
+export const AdminTransferOrderToGuest = z.object({
+  email: z.email(),
+  description: z.string().optional(),
+  internal_note: z.string().optional(),
+})
+
 export type AdminUpdateOrderType = z.infer<typeof AdminUpdateOrder>
 export const AdminUpdateOrder = z.object({
   email: z.string().optional(),

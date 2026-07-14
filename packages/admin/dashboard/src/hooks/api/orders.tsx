@@ -369,6 +369,36 @@ export const useRequestTransferOrder = (
   })
 }
 
+export const useTransferOrderToGuest = (
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderResponse,
+    FetchError,
+    HttpTypes.AdminTransferOrderToGuest
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminTransferOrderToGuest) =>
+      sdk.admin.order.transferToGuest(orderId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.changes(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.detail(orderId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useCancelOrderTransfer = (
   orderId: string,
   options?: UseMutationOptions<any, FetchError, void>
