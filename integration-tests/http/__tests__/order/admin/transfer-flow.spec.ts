@@ -17,9 +17,8 @@ medusaIntegrationTestRunner({
     let user
 
     beforeAll(async () => {
-      user = (
-        await createAdminUser(dbConnection, adminHeaders, getContainer())
-      ).user
+      user = (await createAdminUser(dbConnection, adminHeaders, getContainer()))
+        .user
 
       await dbUtils.snapshot({ templateName: adminTemplateName })
     })
@@ -777,6 +776,31 @@ medusaIntegrationTestRunner({
 
         expect(orderResult.customer_id).toEqual(existingGuest.id)
         expect(orderResult.email).toEqual(existingGuest.email)
+
+        const orderChangesResult = (
+          await api.get(`/admin/orders/${order.id}/changes`, adminHeaders)
+        ).data.order_changes
+
+        expect(orderChangesResult.length).toEqual(1)
+        expect(orderChangesResult[0]).toEqual(
+          expect.objectContaining({
+            change_type: "transfer",
+            status: "confirmed",
+            created_by: user.id,
+            confirmed_by: user.id,
+            actions: expect.arrayContaining([
+              expect.objectContaining({
+                action: "TRANSFER_CUSTOMER",
+                reference: "customer",
+                reference_id: existingGuest.id,
+                details: expect.objectContaining({
+                  original_email: "tony@stark-industries.com",
+                  new_email: existingGuest.email,
+                }),
+              }),
+            ]),
+          })
+        )
       })
 
       it("should fail to transfer an order to a registered customer", async () => {
