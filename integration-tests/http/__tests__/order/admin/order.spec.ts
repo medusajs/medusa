@@ -85,7 +85,15 @@ medusaIntegrationTestRunner({
       })
 
       describe("non-sortable fields", () => {
-        it.each(["total", "-payment_status", "fulfillment_status"])(
+        it.each([
+          "total",
+          "-payment_status",
+          "fulfillment_status",
+          "subtotal",
+          "-shipping_total",
+          "credit_line_tax_total",
+          "original_item_subtotal",
+        ])(
           "should return 400 when sorting by computed field '%s'",
           async (sort) => {
             const response = await api
