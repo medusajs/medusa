@@ -20,6 +20,14 @@ export const metadata = {
 
 In this guide, you'll learn how to complete the cart and place the order. This is the last step of your checkout flow.
 
+<Note title="Warning" type="warning">
+
+Don't use the `validate` hook of `completeCartWorkflow` to mutate the cart's line items, shipping methods, or totals. The workflow retrieves the cart once before any hook runs and builds the order from that snapshot. If you mutate the cart in a hook, the created order and the authorized payment amount won't reflect the change.
+
+If you need to change the cart before completing it, run a separate step or workflow before `completeCartWorkflow`, then refresh the cart's payment collection so that the payment session amount matches the new total.
+
+</Note>
+
 ## How to Complete Cart in Storefront Checkout
 
 Once you finish any required actions with the third-party payment provider, you can complete the cart and place the order.
