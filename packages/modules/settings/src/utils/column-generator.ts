@@ -24,6 +24,7 @@ import {
   getFieldOrdering,
   getFieldRenderModes,
   getNonFilterableFields,
+  getNonSortableFields,
 } from "./entity-overrides"
 import {
   buildFilterConfig,
@@ -131,6 +132,7 @@ export function generateEntityColumns(
   const fieldRenderModes = getFieldRenderModes(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
   const nonFilterableFields = getNonFilterableFields(entity.name, override)
+  const nonSortableFields = getNonSortableFields(entity.name, override)
 
   const schemaTypeMap = entityDiscovery.getSchemaTypeMap()
   const columns: ViewConfigurationColumn[] = []
@@ -148,6 +150,7 @@ export function generateEntityColumns(
     fieldOrdering,
     fieldRenderModes,
     nonFilterableFields,
+    nonSortableFields,
     propertyLabels
   )
 
@@ -166,6 +169,7 @@ export function generateEntityColumns(
         fieldOrdering,
         fieldRenderModes,
         nonFilterableFields,
+        nonSortableFields,
         propertyLabels
       )
     }
@@ -234,6 +238,7 @@ function processEntityType(
   fieldOrdering: Record<string, number>,
   fieldRenderModes: Record<string, RenderMode>,
   nonFilterableFields: string[],
+  nonSortableFields: string[],
   propertyLabels?: Map<string, PropertyLabel>,
   parentPath: string = ""
 ): void {
@@ -313,7 +318,10 @@ function processEntityType(
         name: label?.label || formatFieldName(fieldName),
         description: label?.description || undefined,
         field: fullPath,
-        sortable: !parentPath && dataType !== "object", // Only top-level fields are sortable
+        sortable:
+          !parentPath &&
+          dataType !== "object" &&
+          !nonSortableFields.includes(fullPath), // Only top-level fields are sortable
         hideable: true,
         default_visible: defaultVisibleFields.includes(fullPath),
         data_type: dataType,

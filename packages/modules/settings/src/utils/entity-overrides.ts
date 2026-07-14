@@ -57,6 +57,16 @@ export interface EntityOverride {
   nonFilterableFields?: string[]
 
   /**
+   * Fields that should be displayed as columns but cannot be sorted on.
+   * Use for fields that exist on the entity (e.g. computed enums like
+   * `payment_status`) but are not accepted by the corresponding list API.
+   * Dotted paths are supported (e.g. `customer.email`) to target
+   * nested-relationship scalar fields, matching the convention used by
+   * `defaultVisibleFields` and `fieldOrdering`.
+   */
+  nonSortableFields?: string[]
+
+  /**
    * Computed columns specific to this entity.
    * Note: Computed columns can also be defined in the ComputedColumnRegistry.
    */
@@ -373,6 +383,19 @@ export function getNonFilterableFields(
 ): string[] {
   const resolvedOverride = override ?? getEntityOverride(entityName)
   return resolvedOverride?.nonFilterableFields || []
+}
+
+/**
+ * Get fields that should be displayed but not sortable for an entity.
+ * @param entityName - The entity name (used if override is not provided)
+ * @param override - Optional pre-resolved override to use instead of looking up by entity name
+ */
+export function getNonSortableFields(
+  entityName: string,
+  override?: EntityOverride
+): string[] {
+  const resolvedOverride = override ?? getEntityOverride(entityName)
+  return resolvedOverride?.nonSortableFields || []
 }
 
 /**
