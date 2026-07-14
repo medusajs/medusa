@@ -87,16 +87,12 @@ const TextRenderer: CellRenderer = (value, _row, _column, _t) => {
 }
 
 const CountRenderer: CellRenderer = (value, _row, _column, t) => {
-  if (Array.isArray(value)) {
-    const count = value.length
-    return t("general.items", { count })
-  }
-
-  if (typeof value === "number") {
-    return t("general.items", { count: value })
-  }
-
-  return t("general.items", { count: 0 })
+  const count = Array.isArray(value)
+    ? value.length
+    : typeof value === "number"
+    ? value
+    : 0
+  return t("general.items", { count })
 }
 
 // TODO: if we expect users to use this renderer for their statuses, we need to provide a way for them to pass some
@@ -398,7 +394,6 @@ const BooleanRenderer: CellRenderer = (value, _row, _column, t) => {
   )
 }
 
-// TODO: ask Ludvig how we want to show this renderer
 const IdRenderer: CellRenderer = (value, _row, _column, _t) => {
   return TextRenderer(value, _row, _column, _t)
 }
