@@ -82,7 +82,7 @@ const getNestedValue = (obj: any, path: string) => {
 }
 
 const TextRenderer: CellRenderer = (value, _row, _column, _t) => {
-  if (value === null || value === undefined) {
+  if (value === null || value === undefined || value === "") {
     return "-"
   }
   return String(value)
