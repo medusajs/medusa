@@ -4358,7 +4358,7 @@ medusaIntegrationTestRunner({
               {
                 name: "Europe",
                 currency_code: "eur",
-                countries: ["de", "dk"],
+                countries: ["de", "ca"],
               },
               adminHeaders
             )
@@ -4418,7 +4418,7 @@ medusaIntegrationTestRunner({
               {
                 name: "Europe",
                 currency_code: "eur",
-                countries: ["de", "dk"],
+                countries: ["de", "ca"],
               },
               adminHeaders
             )
@@ -4453,7 +4453,7 @@ medusaIntegrationTestRunner({
           // country's rate.
           const updated = await api.post(
             `/store/carts/${euCart.id}`,
-            { shipping_address: { country_code: "dk" } },
+            { shipping_address: { country_code: "ca" } },
             storeHeaders
           )
 
@@ -4461,14 +4461,14 @@ medusaIntegrationTestRunner({
           expect(updated.data.cart).toEqual(
             expect.objectContaining({
               id: euCart.id,
-              shipping_address: expect.objectContaining({ country_code: "dk" }),
+              shipping_address: expect.objectContaining({ country_code: "ca" }),
               items: [
                 expect.objectContaining({
                   tax_lines: [
                     expect.objectContaining({
-                      description: "Denmark Default Rate",
-                      code: "DK_DEF",
-                      rate: 25,
+                      description: "Canada Default Rate",
+                      code: "CA_DEF",
+                      rate: 5,
                     }),
                   ],
                 }),
