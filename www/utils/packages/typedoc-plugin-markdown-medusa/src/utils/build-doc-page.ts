@@ -236,10 +236,14 @@ function buildMemberBlocks(
     ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
   )
 
-  // DML entity (data model) pages list the entity's properties directly,
-  // rather than wrapping them under the `DmlEntity<...>` type (mirrors the
-  // `dmlProperties` helper / `member.dml` template).
+  // DML entity (data model) pages show a source-code link then list the
+  // entity's properties directly, rather than wrapping them under the
+  // `DmlEntity<...>` type (mirrors the `member.dml` template).
   if (isDmlEntity(model) && model.type?.type === "reference") {
+    const source = extractSourceLink(model)
+    if (source) {
+      blocks.push({ kind: "sourceCodeLink", link: source })
+    }
     const types = buildTypeListItems(
       getDmlProperties(model.type),
       model.project
@@ -390,6 +394,14 @@ export function deprecatedNoteBlocks(reflection: Reflection): DocBlock[] {
     return []
   }
   return splitContentBlocks(String(Handlebars.helpers.commentTag(tag) || ""))
+}
+
+/** Extracts the GitHub source URL from the `sourceCodeLink` helper output. */
+function extractSourceLink(reflection: Reflection): string | undefined {
+  const rendered = String(
+    Handlebars.helpers.sourceCodeLink.call(reflection) || ""
+  )
+  return rendered.match(/link="([^"]+)"/)?.[1]
 }
 
 function getCommentMarkdown(reflection: Reflection): string {
