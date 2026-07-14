@@ -221,6 +221,45 @@ To fix this error:
 
 ---
 
+## Yarn Berry Frozen Lockfile Errors (YN0028/YN0086)
+
+If your build fails with the following error, your `yarn.lock` file is out of sync with `package.json`:
+
+```bash
+YN0028: The lockfile would have been modified by this install,
+which is explicitly forbidden.
+```
+
+or
+
+```bash
+YN0086: Some peer dependencies are incorrectly met by your project;
+run yarn explain peer-requirements <hash> for details, where <hash>
+is the six-letter p-prefixed code.
+```
+
+Yarn Berry uses `--frozen-lockfile` (also known as immutable installs) during Cloud builds to ensure reproducible deployments. This means the `yarn.lock` file must be committed and kept in sync with your `package.json`. The error occurs when you add or update a dependency in `package.json` without running `yarn install` locally and committing the updated lockfile.
+
+To fix this error:
+
+1. Run `yarn install` locally to update the lockfile:
+
+```bash
+yarn install
+```
+
+2. Commit the updated `yarn.lock` file:
+
+```bash
+git add yarn.lock
+git commit -m "Update yarn.lock"
+git push
+```
+
+3. Push the changes to trigger a new deployment.
+
+---
+
 ## Storefront Build Failed with Empty Logs
 
 If your storefront build fails with a `build-failed` status but the build logs are empty or show minimal output, the cause is usually one of the following:
