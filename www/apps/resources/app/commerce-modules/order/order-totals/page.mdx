@@ -129,7 +129,90 @@ const { data: [order] } = await query.graph({
   </CodeTab>
 </CodeTabs>
 
-The returned `order` object will look like this:
+The shape of the returned `order` object depends on where you access it. Server-side, each total is a [BigNumber](!docs!/learn/fundamentals/data-models/big-numbers) instance. In an API route's response, each total is a plain number.
+
+<Note>
+
+Learn how to use a big-number total in the [Perform Arithmetic or Display Order Totals](#perform-arithmetic-or-display-order-totals) section.
+
+</Note>
+
+<CodeTabs group="value-shape">
+  <CodeTab label="Server-side" value="server">
+
+```ts
+// each total is a BigNumber instance
+{
+  id: "order_01K1GEZ6Y1V9651AJNYG1WV3TC",
+  currency_code: "eur",
+  total: BigNumber { numeric_: 20 },
+  subtotal: BigNumber { numeric_: 20 },
+  tax_total: BigNumber { numeric_: 0 },
+  original_total: BigNumber { numeric_: 20 },
+  original_tax_total: BigNumber { numeric_: 0 },
+  discount_total: BigNumber { numeric_: 0 },
+  discount_tax_total: BigNumber { numeric_: 0 },
+  shipping_total: BigNumber { numeric_: 10 },
+  shipping_subtotal: BigNumber { numeric_: 10 },
+  shipping_tax_total: BigNumber { numeric_: 0 },
+  original_shipping_total: BigNumber { numeric_: 10 },
+  original_shipping_subtotal: BigNumber { numeric_: 10 },
+  original_shipping_tax_total: BigNumber { numeric_: 0 },
+  item_total: BigNumber { numeric_: 10 },
+  item_tax_total: BigNumber { numeric_: 0 },
+  item_subtotal: BigNumber { numeric_: 10 },
+  original_item_total: BigNumber { numeric_: 10 },
+  original_item_tax_total: BigNumber { numeric_: 0 },
+  original_item_subtotal: BigNumber { numeric_: 10 },
+  items: [
+    {
+      subtotal: BigNumber { numeric_: 10 },
+      total: BigNumber { numeric_: 10 },
+      original_total: BigNumber { numeric_: 10 },
+      discount_total: BigNumber { numeric_: 0 },
+      discount_subtotal: BigNumber { numeric_: 0 },
+      discount_tax_total: BigNumber { numeric_: 0 },
+      tax_total: BigNumber { numeric_: 0 },
+      original_tax_total: BigNumber { numeric_: 0 },
+      refundable_total_per_unit: BigNumber { numeric_: 10 },
+      refundable_total: BigNumber { numeric_: 10 },
+      fulfilled_total: BigNumber { numeric_: 0 },
+      shipped_total: BigNumber { numeric_: 0 },
+      return_requested_total: BigNumber { numeric_: 0 },
+      return_received_total: BigNumber { numeric_: 0 },
+      return_dismissed_total: BigNumber { numeric_: 0 },
+      write_off_total: BigNumber { numeric_: 0 },
+      // ...
+    }
+  ],
+  shipping_methods: [
+    {
+      subtotal: BigNumber { numeric_: 10 },
+      total: BigNumber { numeric_: 10 },
+      original_total: BigNumber { numeric_: 10 },
+      discount_total: BigNumber { numeric_: 0 },
+      discount_subtotal: BigNumber { numeric_: 0 },
+      discount_tax_total: BigNumber { numeric_: 0 },
+      tax_total: BigNumber { numeric_: 0 },
+      original_tax_total: BigNumber { numeric_: 0 },
+      // ...
+    }
+  ],
+  summary: {
+    paid_total: BigNumber { numeric_: 0 },
+    refunded_total: BigNumber { numeric_: 0 },
+    accounting_total: BigNumber { numeric_: 20 },
+    credit_line_total: BigNumber { numeric_: 0 },
+    transaction_total: BigNumber { numeric_: 0 },
+    pending_difference: BigNumber { numeric_: 20 },
+    current_order_total: BigNumber { numeric_: 20 },
+    original_order_total: BigNumber { numeric_: 20 },
+  },
+}
+```
+
+  </CodeTab>
+  <CodeTab label="API Response" value="api">
 
 ```json
 {
@@ -200,6 +283,15 @@ The returned `order` object will look like this:
   }
 }
 ```
+
+  </CodeTab>
+</CodeTabs>
+
+<Note title="Using the Order Module's service">
+
+You get the same `BigNumber` totals if you resolve the Order Module's service and call a method like `retrieveOrder` or `listOrders`, passing a total field in the `select` option. Query uses these service methods internally, so the returned shape is the same.
+
+</Note>
 
 ### Order Totals
 
@@ -278,6 +370,48 @@ The `summary` object in the `order` object provides an overview of the order's t
 - `pending_difference`: The difference between the order's total and the paid total.
 - `current_order_total`: The current total of the order. It's useful if the order has been edited or modified.
 - `original_order_total`: The original total of the order before any modifications.
+
+---
+
+## Perform Arithmetic or Display Order Totals
+
+When you retrieve order totals with Query in server-side code, computed totals like `total` are instances of [BigNumber](!docs!/learn/fundamentals/data-models/big-numbers), not plain numbers.
+
+To perform arithmetic on these totals without losing precision, use the `MathBN` utility from `@medusajs/framework/utils`. Don't use JavaScript's arithmetic operators, as they can introduce rounding errors:
+
+```ts
+import { MathBN } from "@medusajs/framework/utils"
+
+// order retrieved with Query
+
+const totalWithoutTax = MathBN.sub(
+  order.total,
+  order.tax_total
+)
+
+// use the result as a plain number
+const totalNumber = totalWithoutTax.toNumber()
+```
+
+To display an order total, convert it to a plain number and format it. Since Medusa stores prices in major currency units, you can format the value directly:
+
+```ts
+import { BigNumber } from "@medusajs/framework/utils"
+
+const total =
+  order.total instanceof BigNumber
+    ? order.total.numeric
+    : order.total
+
+const formatted = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: order.currency_code,
+}).format(total)
+
+// formatted is "€20.00"
+```
+
+Learn more in the [Big Numbers](!docs!/learn/fundamentals/data-models/big-numbers) documentation.
 
 ---
 
