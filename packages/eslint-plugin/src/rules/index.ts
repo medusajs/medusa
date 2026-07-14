@@ -31,6 +31,7 @@ import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
+import { rule as noWildcardWithSpecificFields } from "./no-wildcard-with-specific-fields"
 import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-field"
 import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
 import { rule as routeFileNaming } from "./route-file-naming"
@@ -101,6 +102,7 @@ export const rules = {
   "no-throw-in-transform": noThrowInTransform,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
+  "no-wildcard-with-specific-fields": noWildcardWithSpecificFields,
   "read-only-link-requires-field": readOnlyLinkRequiresField,
   "route-dynamic-folder-syntax": routeDynamicFolderSyntax,
   "route-file-naming": routeFileNaming,
