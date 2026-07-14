@@ -1,22 +1,13 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Container,
-  createDataTableColumnHelper,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { useCallback, useMemo } from "react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import { DataTable } from "../../../../components/data-table"
 import * as hooks from "../../../../components/data-table/helpers/sales-channels"
 import { useStore } from "../../../../hooks/api"
-import {
-  useDeleteSalesChannelLazy,
-  useSalesChannels,
-} from "../../../../hooks/api/sales-channels"
+import { useSalesChannels } from "../../../../hooks/api/sales-channels"
+import { SalesChannelListTableActions } from "./sales-channel-list-table-actions"
 
 type SalesChannelWithIsDefault = HttpTypes.AdminSalesChannel & {
   is_default?: boolean
@@ -84,75 +75,18 @@ const columnHelper = createDataTableColumnHelper<
 >()
 
 const useColumns = () => {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const navigate = useNavigate()
   const base = hooks.useSalesChannelTableColumns()
-
-  const { mutateAsync } = useDeleteSalesChannelLazy()
-
-  const handleDelete = useCallback(
-    async (salesChannel: HttpTypes.AdminSalesChannel) => {
-      const confirm = await prompt({
-        title: t("general.areYouSure"),
-        description: t("salesChannels.deleteSalesChannelWarning", {
-          name: salesChannel.name,
-        }),
-        verificationInstruction: t("general.typeToConfirm"),
-        verificationText: salesChannel.name,
-        confirmText: t("actions.delete"),
-        cancelText: t("actions.cancel"),
-      })
-
-      if (!confirm) {
-        return
-      }
-
-      await mutateAsync(salesChannel.id, {
-        onSuccess: () => {
-          toast.success(t("salesChannels.toast.delete"))
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      })
-    },
-    [t, prompt, mutateAsync]
-  )
 
   return useMemo(
     () => [
       ...base,
-      columnHelper.action({
-        actions: (ctx) => {
-          const disabledTooltip = ctx.row.original.is_default
-            ? t("salesChannels.tooltip.cannotDeleteDefault")
-            : undefined
-
-          return [
-            [
-              {
-                icon: <PencilSquare />,
-                label: t("actions.edit"),
-                onClick: () =>
-                  navigate(
-                    `/settings/sales-channels/${ctx.row.original.id}/edit`
-                  ),
-              },
-            ],
-            [
-              {
-                icon: <Trash />,
-                label: t("actions.delete"),
-                onClick: () => handleDelete(ctx.row.original),
-                disabled: ctx.row.original.is_default,
-                disabledTooltip,
-              },
-            ],
-          ]
-        },
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => (
+          <SalesChannelListTableActions salesChannel={row.original} />
+        ),
       }),
     ],
-    [base, handleDelete, navigate, t]
+    [base]
   )
 }
