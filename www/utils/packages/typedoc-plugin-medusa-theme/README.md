@@ -1,4 +1,4 @@
-# typedoc-plugin-markdown-medusa
+# typedoc-plugin-medusa-theme
 
 A plugin that forks and customizes the [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/typedoc-plugin-markdown) to create a theme with more formatting options.
 

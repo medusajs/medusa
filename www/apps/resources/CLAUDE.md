@@ -42,7 +42,7 @@ Two phases, both TypeDoc:
    and render the doc-model into `www/apps/resources/references/` (`page.json`).
 
 The renderer is the **`json` theme** in
-`www/utils/packages/typedoc-plugin-markdown-medusa`:
+`www/utils/packages/typedoc-plugin-medusa-theme`:
 
 - `src/json-theme.ts` — `JsonTheme extends MarkdownTheme`. It **reuses**
   `MarkdownTheme`'s URL/slug/mapping logic, the registered Handlebars helpers,

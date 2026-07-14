@@ -8628,7 +8628,7 @@ __metadata:
     ts-node: ^10.9.1
     typedoc: ^0.27.5
     typedoc-plugin-custom: "*"
-    typedoc-plugin-markdown-medusa: "*"
+    typedoc-plugin-medusa-theme: "*"
     typedoc-plugin-rename-defaults: ^0.7.1
     typedoc-plugin-workflows: "*"
     types: "*"
@@ -8658,9 +8658,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"typedoc-plugin-markdown-medusa@*, typedoc-plugin-markdown-medusa@workspace:packages/typedoc-plugin-markdown-medusa":
+"typedoc-plugin-medusa-theme@*, typedoc-plugin-medusa-theme@workspace:packages/typedoc-plugin-medusa-theme":
   version: 0.0.0-use.local
-  resolution: "typedoc-plugin-markdown-medusa@workspace:packages/typedoc-plugin-markdown-medusa"
+  resolution: "typedoc-plugin-medusa-theme@workspace:packages/typedoc-plugin-medusa-theme"
   dependencies:
     "@types/js-beautify": ^1.14.3
     "@types/node": ^20.12.10

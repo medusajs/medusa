@@ -63,7 +63,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
   out: path.join(rootPathPrefix, "www", "apps", "resources", "references"),
   name: "references",
   indexTitle: "Medusa References",
-  plugin: [...(baseOptions.plugin || []), "typedoc-plugin-markdown-medusa"],
+  plugin: [...(baseOptions.plugin || []), "typedoc-plugin-medusa-theme"],
   excludeReferences: true,
   excludeNotDocumented: true,
   hideInPageTOC: true,

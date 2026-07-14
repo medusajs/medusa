@@ -11,7 +11,7 @@ import mergerOptions from "./merger-options.js"
  * It reuses every setting from {@link mergerOptions} (entry points, the
  * regex-keyed `formatting` map, `allowedProjectDocuments`, `maxLevel`, ...) for
  * content shaping / page slugs, and overrides:
- *  - `theme`: selects `JsonTheme` (registered by typedoc-plugin-markdown-medusa)
+ *  - `theme`: selects `JsonTheme` (registered by typedoc-plugin-medusa-theme)
  *  - `entryDocument`: the JSON index document name
  *  - `out`: the canonical `references` directory (now holding `page.json`)
  */

@@ -1,5 +1,5 @@
 {
-  "name": "typedoc-plugin-markdown-medusa",
+  "name": "typedoc-plugin-medusa-theme",
   "private": true,
   "license": "MIT",
   "publishConfig": {
