@@ -61,7 +61,7 @@ const propertyLabelSchema: z.ZodType<PropertyLabelSchema> = z.lazy(() =>
         if (typedValue.description && typedValue.description.trim() !== "") {
           if (!typedValue.label || typedValue.label.trim() === "") {
             ctx.addIssue({
-              code: z.ZodIssueCode.custom,
+              code: "custom",
               message: "Label is required when description is provided",
               path: [key, "label"],
             })
@@ -96,7 +96,6 @@ export const PropertyLabelsEditForm = ({
   const { handleSuccess } = useRouteModal()
   const batchMutation = useBatchPropertyLabels()
 
-  // TODO: move this into a utility function
   const buildNestedInitialData = (
     labels: HttpTypes.AdminPropertyLabel[]
   ): PropertyLabelSchema => {
@@ -186,7 +185,6 @@ export const PropertyLabelsEditForm = ({
     ]
   }, [t])
 
-  // TODO: move this into a utility function
   const flattenData = (
     obj: any,
     prefix = ""
