@@ -380,6 +380,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/transactions"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/transfer-to-guest/page.mdx",
+    "pathname": "/commerce-modules/order/transfer-to-guest"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/workflows/page.mdx",
     "pathname": "/commerce-modules/order/workflows"
   },
