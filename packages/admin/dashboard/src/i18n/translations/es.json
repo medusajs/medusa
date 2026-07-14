@@ -347,6 +347,7 @@
   },
   "filters": {
     "sortLabel": "Ordenar",
+    "columnsLabel": "Columnas",
     "collapse": {
       "all": "Colapsar todo"
     },
@@ -1852,6 +1853,17 @@
     },
     "tooltip": {
       "type": "Introduce el tipo de perfil de envío, por ejemplo: Pesado, Sobredimensionado, Solo carga, etc."
+    }
+  },
+  "propertyLabels": {
+    "domain": "Etiquetas de Propiedades",
+    "title": "Etiquetas de Propiedades",
+    "subtitle": "Gestiona etiquetas de propiedades personalizadas para tablas configurables de tus entidades.",
+    "fields": {
+      "module": "Módulo",
+      "model": "Modelo",
+      "propertyCount": "Cantidad de Propiedades",
+      "hasOverrides": "Tiene Sobrescrituras"
     }
   },
   "taxRegions": {
