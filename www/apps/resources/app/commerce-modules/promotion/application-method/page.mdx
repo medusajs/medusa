@@ -97,6 +97,12 @@ The `ApplicationMethod` data model has a collection of [PromotionRule](/referenc
 
 In this example, the promotion is only applied to product variants in the cart that have the SKU `SHIRT`.
 
+<Note title="Warning" type="warning">
+
+A target rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to target a product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](../concepts/page.mdx#rule-attributes) for the full list of supported keys.
+
+</Note>
+
 ---
 
 ## Buy Promotion Rules
@@ -108,6 +114,14 @@ The application method has a collection of `PromotionRule` items to define the â
 ![A diagram showcasing the buy_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898453/Medusa%20Resources/application-method-buy-rules_djjuhw.jpg)
 
 In this example, the cart must have two product variants with the SKU `SHIRT` for the promotion to be applied.
+
+<Note title="Warning" type="warning">
+
+Like target rules, a buy rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to require a specific product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](../concepts/page.mdx#rule-attributes) for the full list of supported keys.
+
+</Note>
+
+A `buyget` promotion only discounts a matching "Get Y" item that is already in the cart. It doesn't add the free product to the cart automatically. If the target item isn't in the cart, Medusa doesn't apply the promotion. This is true whether the promotion is automatic or the customer applies it with a code.
 
 ---
 
