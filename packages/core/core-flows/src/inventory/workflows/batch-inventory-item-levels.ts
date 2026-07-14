@@ -119,15 +119,16 @@ export const batchInventoryItemLevelsWorkflow = createWorkflow(
     })
 
     // Delete event is emitted by the deleteInventoryLevelsWorkflow, so we don't need to emit it here.
-    emitEventStep({
-      eventName: InventoryLevelWorkflowEvents.CREATED,
-      data: createdEvents,
-    }).config({ name: "emit-inventory-level-created" })
-
-    emitEventStep({
-      eventName: InventoryLevelWorkflowEvents.UPDATED,
-      data: updatedEvents,
-    }).config({ name: "emit-inventory-level-updated" })
+    parallelize(
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.CREATED,
+        data: createdEvents,
+      }).config({ name: "emit-inventory-level-created" }),
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.UPDATED,
+        data: updatedEvents,
+      }).config({ name: "emit-inventory-level-updated" })
+    )
 
     return new WorkflowResponse(
       transform({ res, input }, (data) => {

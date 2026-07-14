@@ -17,6 +17,7 @@ import {
   createWorkflow,
   transform,
   WorkflowResponse,
+  parallelize,
 } from "@medusajs/framework/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import {
@@ -295,15 +296,16 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       }
     )
 
-    emitEventStep({
-      eventName: ReservationItemWorkflowEvents.DELETED,
-      data: reservationDeletedEvents,
-    }).config({ name: "emit-reservation-item-deleted" })
-
-    emitEventStep({
-      eventName: ReservationItemWorkflowEvents.CREATED,
-      data: reservationCreatedEvents,
-    }).config({ name: "emit-reservation-item-created" })
+    parallelize(
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.DELETED,
+        data: reservationDeletedEvents,
+      }).config({ name: "emit-reservation-item-deleted" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
+    )
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
       input: {
