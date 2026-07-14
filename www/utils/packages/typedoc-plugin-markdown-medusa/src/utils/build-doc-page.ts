@@ -232,18 +232,15 @@ function buildMemberBlocks(
   }
   blocks.push(...deprecatedNoteBlocks(model))
   blocks.push(...versionNoteBlocks(model))
+  blocks.push(...sourceCodeLinkBlocks(theme, model))
   blocks.push(
     ...splitContentBlocks(String(Handlebars.helpers.example(model) || ""))
   )
 
-  // DML entity (data model) pages show a source-code link then list the
-  // entity's properties directly, rather than wrapping them under the
-  // `DmlEntity<...>` type (mirrors the `member.dml` template).
+  // DML entity (data model) pages list the entity's properties directly,
+  // rather than wrapping them under the `DmlEntity<...>` type (mirrors the
+  // `member.dml` template).
   if (isDmlEntity(model) && model.type?.type === "reference") {
-    const source = extractSourceLink(model)
-    if (source) {
-      blocks.push({ kind: "sourceCodeLink", link: source })
-    }
     const types = buildTypeListItems(
       getDmlProperties(model.type),
       model.project
@@ -280,6 +277,7 @@ function buildSignatureBlocks(
   // @deprecated + @since notes.
   blocks.push(...deprecatedNoteBlocks(signature))
   blocks.push(...versionNoteBlocks(signature))
+  blocks.push(...sourceCodeLinkBlocks(theme, signature))
 
   // @example (may embed <CodeTabs>).
   blocks.push(
@@ -402,6 +400,23 @@ function extractSourceLink(reflection: Reflection): string | undefined {
     Handlebars.helpers.sourceCodeLink.call(reflection) || ""
   )
   return rendered.match(/link="([^"]+)"/)?.[1]
+}
+
+/**
+ * Emits a `sourceCodeLink` block when the location's formatting enables it
+ * (`showSourceCodeLink`) and the reflection has a source. This replaces the
+ * per-template hardcoding — the option is set in the merge config for the
+ * references that showed the link (DML models, workflows).
+ */
+function sourceCodeLinkBlocks(
+  theme: MarkdownTheme,
+  reflection: Reflection
+): DocBlock[] {
+  if (!theme.getFormattingOptionsForLocation().showSourceCodeLink) {
+    return []
+  }
+  const source = extractSourceLink(reflection)
+  return source ? [{ kind: "sourceCodeLink", link: source }] : []
 }
 
 function getCommentMarkdown(reflection: Reflection): string {

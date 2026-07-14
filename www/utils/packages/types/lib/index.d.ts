@@ -104,6 +104,8 @@ export type FormattingOptionType = {
   isEventsReference?: boolean
   sortMembers?: boolean
   internalType?: string
+  /** Whether to show the GitHub source-code link for the member. */
+  showSourceCodeLink?: boolean
 }
 
 export type AllowedProjectDocumentsOption = {

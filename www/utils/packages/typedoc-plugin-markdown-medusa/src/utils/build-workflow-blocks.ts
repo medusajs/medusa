@@ -50,9 +50,11 @@ export function buildWorkflowBlocks(
     )
   )
 
-  const source = extractSourceLink(signature)
-  if (source) {
-    blocks.push({ kind: "sourceCodeLink", link: source })
+  if (theme.getFormattingOptionsForLocation().showSourceCodeLink) {
+    const source = extractSourceLink(signature)
+    if (source) {
+      blocks.push({ kind: "sourceCodeLink", link: source })
+    }
   }
 
   const examples = String(

@@ -167,6 +167,7 @@ You should only use the methods in this reference when implementing complex cust
 
         // module's model config
         [`^${snakeCaseModuleName}_models`]: {
+          showSourceCodeLink: true,
           frontmatterData: {
             displayed_sidebar: `${camelCaseModuleName}ModelReference`,
             slug: `/references/${moduleName}/models/{{alias}}`,
