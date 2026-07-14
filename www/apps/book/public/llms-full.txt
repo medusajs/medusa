@@ -13104,7 +13104,7 @@ A big number is a numeric value that Medusa stores with high precision to avoid 
 
 Prices in Medusa are stored as major currency units. For example, a price of $10.99 is stored as `10.99`, not `1099`. This is different from some other systems that store prices in minor currency units (for example, cents).
 
-You define a big-number property in a data model with the [bigNumber](https://docs.medusajs.com/learn/fundamentals/data-models/properties#bignumber/index.html.md) method:
+You define a big-number property in a data model with the [bigNumber](undefined/learn/fundamentals/data-models/properties#bignumber) method:
 
 ```ts highlights={modelHighlights}
 import { model } from "@medusajs/framework/utils"
@@ -13117,7 +13117,7 @@ const CustomProduct = model.define("custom_product", {
 export default CustomProduct
 ```
 
-Use a big-number property when you need high precision for numbers that can have many decimal places. For less precision, use the [float property](https://docs.medusajs.com/learn/fundamentals/data-models/properties#float/index.html.md) instead.
+Use a big-number property when you need high precision for numbers that can have many decimal places. For less precision, use the [float property](undefined/learn/fundamentals/data-models/properties#float) instead.
 
 ***
 
@@ -13156,7 +13156,7 @@ The following table summarizes the shape of a big-number value:
 The difference in server-side code comes down to how the value is produced:
 
 - Medusa reads a stored `bigNumber` property back as its numeric value, so you get a plain number. The precise value is available in the property's `raw_` field when you request it, as explained in the next section.
-- Commerce Modules compute some totals, such as an order's `total`, and wrap them in a `BigNumber` instance. For example, if you retrieve an order's total with [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query/index.html.md), the `total` property is a `BigNumber` instance:
+- Commerce Modules compute some totals, such as an order's `total`, and wrap them in a `BigNumber` instance. For example, if you retrieve an order's total with [Query](undefined/learn/fundamentals/module-links/query), the `total` property is a `BigNumber` instance:
 
 ```ts
 const { data: orders } = await query.graph({
@@ -13327,7 +13327,7 @@ const pricedProducts = products.filter(
 
 ## How to Store Big Numbers in a Service
 
-When you store a big-number field with a [module service's](https://docs.medusajs.com/learn/fundamentals/modules#2-create-service/index.html.md) generated methods, such as `createCustomProducts` or `updateCustomProducts`, pass a plain number. Medusa converts it to a big number and maintains the `raw_` column automatically.
+When you store a big-number field with a [module service's](undefined/learn/fundamentals/modules#2-create-service) generated methods, such as `createCustomProducts` or `updateCustomProducts`, pass a plain number. Medusa converts it to a big number and maintains the `raw_` column automatically.
 
 For example:
 
@@ -17347,7 +17347,7 @@ info:    [Index engine] syncing entity 'SalesChannel' done (+7.00ms)
 
 The Index Module automatically updates its data store when data in the ingested data models change. So, you don't need to do anything to keep the data in sync.
 
-Incremental sync requires a Redis-based event bus. If you're using the in-memory event bus (the default when no `event-bus-redis` module is configured), the Index Module will not receive change events and the data store will only be updated on the next server startup. To enable incremental sync, configure the [Redis Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event/redis/index.html.md).
+Incremental sync requires a Redis-based event bus. If you're using the in-memory event bus (the default when no `event-bus-redis` module is configured), the Index Module will not receive change events and the data store will only be updated on the next server startup. To enable incremental sync, configure the [Redis Event Module](undefined/resources/infrastructure-modules/event/redis).
 
 For example, if you create a new product, the Index Module will ingest it into its data store.
 
@@ -30149,7 +30149,7 @@ Our team will perform a general review on your PR and merge it if no issues are 
 
 Thank you for your interest in contributing to Medusa's codebase! This guide walks you through setting up a local development environment, linking your fork to a test project, and iterating on changes with hot reload.
 
-This guide is specific to contributing to Medusa's codebase. If you're interested in contributing to the documentation, check out the [Docs Contribution Guidelines](https://docs.medusajs.com/learn/resources/contribution-guidelines/docs/index.html.md).
+This guide is specific to contributing to Medusa's codebase. If you're interested in contributing to the documentation, check out the [Docs Contribution Guidelines](undefined/learn/resources/contribution-guidelines/docs).
 
 ## What Can You Contribute?
 
@@ -34179,7 +34179,7 @@ const { data: [cart] } = await query.graph({
 })
 ```
 
-The shape of the returned `cart` object depends on where you access it. Server-side, each total is a [BigNumber](https://docs.medusajs.com/docs/learn/fundamentals/data-models/big-numbers/index.html.md) instance. In an API route's response, each total is a plain number.
+The shape of the returned `cart` object depends on where you access it. Server-side, each total is a [BigNumber](undefined/docs/learn/fundamentals/data-models/big-numbers) instance. In an API route's response, each total is a plain number.
 
 Learn how to use a big-number total in the [Perform Arithmetic or Display Cart Totals](#perform-arithmetic-or-display-cart-totals) section.
 
@@ -34376,7 +34376,7 @@ The `shipping_methods` array in the `cart` object contains total fields for each
 
 ## Perform Arithmetic or Display Cart Totals
 
-When you retrieve cart totals with Query in server-side code, computed totals like `total` are instances of [BigNumber](https://docs.medusajs.com/docs/learn/fundamentals/data-models/big-numbers/index.html.md), not plain numbers.
+When you retrieve cart totals with Query in server-side code, computed totals like `total` are instances of [BigNumber](undefined/docs/learn/fundamentals/data-models/big-numbers), not plain numbers.
 
 To perform arithmetic on these totals without losing precision, use the `MathBN` utility from `@medusajs/framework/utils`. Don't use JavaScript's arithmetic operators, as they can introduce rounding errors:
 
@@ -34412,7 +34412,7 @@ const formatted = new Intl.NumberFormat("en-US", {
 // formatted is "$10.00"
 ```
 
-Learn more in the [Big Numbers](https://docs.medusajs.com/docs/learn/fundamentals/data-models/big-numbers/index.html.md) documentation.
+Learn more in the [Big Numbers](undefined/docs/learn/fundamentals/data-models/big-numbers) documentation.
 
 ***
 
@@ -35336,10 +35336,10 @@ For example, if a line item's amount is `5000`, the tax rate is `10`, and tax in
 
 When you use the Cart Module in the Medusa application, Medusa recalculates a cart's tax lines automatically as the customer builds and updates their cart. So, in most cases, you don't need to manually recalculate them.
 
-Whether Medusa recalculates the tax lines depends on the `automatic_taxes` setting of the cart's [region](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region/index.html.md):
+Whether Medusa recalculates the tax lines depends on the `automatic_taxes` setting of the cart's [region](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/region):
 
 - If `automatic_taxes` is enabled, Medusa recalculates the affected tax lines automatically when the cart changes.
-- If `automatic_taxes` is disabled, Medusa only calculates tax lines when you send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store#carts_postcartsidtaxes).
+- If `automatic_taxes` is disabled, Medusa only calculates tax lines when you send a request to the [Calculate Cart Taxes API route](undefined/api/store#carts_postcartsidtaxes).
 
 ### Tax Recalculation by Cart Operation
 
@@ -35353,7 +35353,7 @@ The following table explains how each cart operation affects the cart's tax line
 |Update a line item's quantity|Medusa doesn't recalculate tax lines. Instead, it derives the new tax amounts from the item's existing tax rates.|
 |Remove a line item|Medusa doesn't recalculate the tax lines of the cart's other items.|
 
-To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store#carts_postcartsidtaxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
+To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](undefined/api/store#carts_postcartsidtaxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
 
 ***
 
@@ -39407,7 +39407,7 @@ const { data: [order] } = await query.graph({
 })
 ```
 
-The shape of the returned `order` object depends on where you access it. Server-side, each total is a [BigNumber](https://docs.medusajs.com/docs/learn/fundamentals/data-models/big-numbers/index.html.md) instance. In an API route's response, each total is a plain number.
+The shape of the returned `order` object depends on where you access it. Server-side, each total is a [BigNumber](undefined/docs/learn/fundamentals/data-models/big-numbers) instance. In an API route's response, each total is a plain number.
 
 Learn how to use a big-number total in the [Perform Arithmetic or Display Order Totals](#perform-arithmetic-or-display-order-totals) section.
 
@@ -39640,7 +39640,7 @@ The `summary` object in the `order` object provides an overview of the order's t
 
 ## Perform Arithmetic or Display Order Totals
 
-When you retrieve order totals with Query in server-side code, computed totals like `total` are instances of [BigNumber](https://docs.medusajs.com/docs/learn/fundamentals/data-models/big-numbers/index.html.md), not plain numbers.
+When you retrieve order totals with Query in server-side code, computed totals like `total` are instances of [BigNumber](undefined/docs/learn/fundamentals/data-models/big-numbers), not plain numbers.
 
 To perform arithmetic on these totals without losing precision, use the `MathBN` utility from `@medusajs/framework/utils`. Don't use JavaScript's arithmetic operators, as they can introduce rounding errors:
 
@@ -39676,7 +39676,7 @@ const formatted = new Intl.NumberFormat("en-US", {
 // formatted is "â‚¬20.00"
 ```
 
-Learn more in the [Big Numbers](https://docs.medusajs.com/docs/learn/fundamentals/data-models/big-numbers/index.html.md) documentation.
+Learn more in the [Big Numbers](undefined/docs/learn/fundamentals/data-models/big-numbers) documentation.
 
 ***
 
@@ -40908,6 +40908,18 @@ The payment flow consists of the following steps:
 - [Complete Cart](undefined/api/store#carts_postcartsidcomplete): Once the customer places the order, complete the cart, which involves:
   - Authorizing the payment session with the third-party payment provider.
   - If the third-party payment provider requires performing additional actions, show them to the customer, then retry cart completion.
+
+***
+
+## Payment Validation During Cart Completion
+
+When a customer completes their cart, Medusa validates the cart's payment sessions but doesn't validate payment amounts.
+
+The cart's payment collection must have at least one payment session in a processable status: `pending`, `requires_more`, `authorized`, `captured`, or `pending_authorization`. If the payment collection hasn't been initiated, or no payment session is in a processable status, the cart completion fails with an error.
+
+Medusa doesn't compare the authorized or captured amount against the cart's total. It neither requires the amount to equal the cart's total nor enforces a minimum amount. The payment session's amount is set to the cart's total when the payment collection is created or refreshed. So, if the cart changes after its payment collection is created without the payment collection being refreshed, Medusa authorizes or captures the payment session's existing amount and records it in the order's transactions as-is.
+
+If the cart's total is zero and covered by credit lines, Medusa can complete the cart without a payment session.
 
 ***
 
@@ -44755,7 +44767,7 @@ The `ApplicationMethod` data model has a collection of [PromotionRule](undefined
 
 In this example, the promotion is only applied to product variants in the cart that have the SKU `SHIRT`.
 
-A target rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to target a product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/promotion/concepts#rule-attributes/index.html.md) for the full list of supported keys.
+A target rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to target a product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/promotion/concepts#rule-attributes) for the full list of supported keys.
 
 ***
 
@@ -44769,7 +44781,7 @@ The application method has a collection of `PromotionRule` items to define the â
 
 In this example, the cart must have two product variants with the SKU `SHIRT` for the promotion to be applied.
 
-Like target rules, a buy rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to require a specific product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/promotion/concepts#rule-attributes/index.html.md) for the full list of supported keys.
+Like target rules, a buy rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to require a specific product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/promotion/concepts#rule-attributes) for the full list of supported keys.
 
 A `buyget` promotion only discounts a matching "Get Y" item that is already in the cart. It doesn't add the free product to the cart automatically. If the target item isn't in the cart, Medusa doesn't apply the promotion. This is true whether the promotion is automatic or the customer applies it with a code.
 
@@ -45094,7 +45106,7 @@ The following table lists the supported attributes for each rule scope:
 |Cart items|The application method's |\`items.product.id\`|
 |Shipping methods|The application method's |\`shipping\_methods.shipping\_option.shipping\_option\_type\_id\`|
 
-To retrieve the supported attributes programmatically, use the [listRuleAttributes](https://docs.medusajs.com/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes/index.html.md) JS SDK method or the [List Rule Attribute Options](https://docs.medusajs.com/api/admin#promotions_getpromotionsruleattributeoptionsrule_type) Admin API route.
+To retrieve the supported attributes programmatically, use the [listRuleAttributes](undefined/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes) JS SDK method or the [List Rule Attribute Options](undefined/api/admin#promotions_getpromotionsruleattributeoptionsrule_type) Admin API route.
 
 ***
 
