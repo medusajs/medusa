@@ -181,6 +181,19 @@ export function useTableConfiguration({
     handleViewChange: originalHandleViewChange,
   } = useColumnState(columnsToRender, currentActiveView)
 
+  // Re-sync only when the content of the active view or the column set changes
+  const activeViewSignature = currentActiveView
+    ? `${currentActiveView.id}:${JSON.stringify(
+        currentActiveView.configuration
+      )}`
+    : ""
+  const columnsSignature = columnsToRender
+    ? columnsToRender
+        .map((column) => column.field)
+        .sort()
+        .join(",")
+    : ""
+
   // Sync view configuration with URL and column state
   useEffect(() => {
     if (!columnsToRender) {
@@ -224,12 +237,14 @@ export function useTableConfiguration({
 
       return prev
     })
-    // Intentionally only re-syncs when the active view or columns change. Must
-    // NOT depend on setSearchParams (its identity changes on every URL change)
-    // or it re-runs on each filter edit and clears the just-applied filter.
-    // applyDefaultFilters is stable, so it is safe to call without listing it.
+    // Intentionally keyed on value signatures, not object identity: re-sync
+    // only when the active view or the column set actually changes. Must NOT
+    // depend on setSearchParams (its identity changes on every URL change) or
+    // on the raw columnsToRender/currentActiveView objects (their identity can
+    // churn every render), or it re-runs on each render and clears the
+    // just-applied filter. applyDefaultFilters is stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentActiveView, columnsToRender])
+  }, [activeViewSignature, columnsSignature])
 
   // Current configuration from URL
   const currentConfiguration = useMemo(() => {
@@ -348,7 +363,7 @@ export function useTableConfiguration({
           return true
         }
 
-        const defaultOrder = columnsToRender
+        const defaultOrder = [...columnsToRender]
           .sort((a, b) => (a.default_order ?? 500) - (b.default_order ?? 500))
           .map((col) => col.field)
 

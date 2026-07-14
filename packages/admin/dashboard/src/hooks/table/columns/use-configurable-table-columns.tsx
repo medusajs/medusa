@@ -12,7 +12,7 @@ export function useConfigurableTableColumns<TData = any>(
   apiColumns: HttpTypes.AdminColumn[] | undefined,
   adapter?: TableAdapter<TData>
 ) {
-  const columnHelper = createDataTableColumnHelper<TData>()
+  const columnHelper = useMemo(() => createDataTableColumnHelper<TData>(), [])
   const { t } = useTranslation()
 
   return useMemo(() => {
