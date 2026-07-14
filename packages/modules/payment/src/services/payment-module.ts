@@ -756,7 +756,17 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(payment)
+    // Re-fetch the payment so the freshly created capture is reflected in the
+    // returned payload. `refresh` is required because, under the select-in load
+    // strategy, the capture created above is not automatically re-populated on
+    // the managed payment entity within the same context.
+    const capturedPayment = await this.paymentService_.retrieve(
+      payment.id,
+      { relations: ["captures"], options: { refresh: true } },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(capturedPayment)
   }
 
   @InjectTransactionManager()
@@ -1030,14 +1040,15 @@ export default class PaymentModuleService
       paymentCollectionId,
       {
         select: ["amount", "raw_amount", "status", "currency_code"],
-        relations: [
-          "payment_sessions.amount",
-          "payment_sessions.raw_amount",
-          "payments.captures.amount",
-          "payments.captures.raw_amount",
-          "payments.refunds.amount",
-          "payments.refunds.raw_amount",
-        ],
+        // Use relation paths (not scalar field paths such as
+        // "payment_sessions.amount") so the select-in load strategy populates
+        // the nested collections. `refresh` forces the collections to be
+        // re-hydrated from the database: this runs inside the write transaction
+        // right after sessions/captures/refunds were created, and select-in
+        // does not otherwise re-populate collections that are already loaded on
+        // the managed entities in the shared context.
+        relations: ["payment_sessions", "payments.captures", "payments.refunds"],
+        options: { refresh: true },
       },
       sharedContext
     )
