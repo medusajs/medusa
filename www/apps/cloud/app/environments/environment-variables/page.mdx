@@ -60,6 +60,29 @@ These variables are automatically set by Cloud and don't need to be configured m
 
 ---
 
+## Search and Filter Environment Variables
+
+You can search and filter the environment variables using the toolbar above the environment variables table:
+
+- **Search**: Enter a key name or value in the search field to filter the list in real time.
+- **Build / Runtime toggles**: Show only variables available at build time, only those available at runtime, or both at once.
+- **System Variables toggle**: Show or hide system-managed variables. System variables are hidden by default.
+
+---
+
+## System Environment Variables Visibility
+
+In addition to the [system environment variables](#system-environment-variables) documented above, the backend tab displays all system-provided variables alongside your user-defined ones when the **System Variables** toggle is enabled. These are variables that Medusa adds to your environment, such as database URL, Redis URL, and other relevant variables.
+
+System variables are visually distinguished from user-defined variables with a subtle background and muted text. Because Medusa manages those:
+
+- The edit and delete actions are not available for system variables.
+- Secret system variables do not show the reveal (eye) icon.
+
+System variables are useful to understand what variables Medusa sets for you so that you don't add them as well.
+
+---
+
 ## Add Environment Variables on Cloud
 
 To add environment variables to an environment:

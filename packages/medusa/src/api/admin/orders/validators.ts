@@ -165,7 +165,7 @@ export type AdminTransferOrderToGuestType = z.infer<
   typeof AdminTransferOrderToGuest
 >
 export const AdminTransferOrderToGuest = z.object({
-  email: z.email(),
+  email: z.string().email(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
 })

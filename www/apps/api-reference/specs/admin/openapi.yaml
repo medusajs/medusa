@@ -1325,7 +1325,7 @@ components:
     api_token:
       type: http
       x-displayName: API Token
-      scheme: bearer
+      scheme: basic
     jwt_token:
       type: http
       x-displayName: JWT Token

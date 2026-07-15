@@ -32,6 +32,18 @@ export const updateShippingOptionsWorkflowId =
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * update shipping options within your custom flows.
+ * 
+ * ### Updating Shipping Option Prices
+ *
+ * When you provide the `prices` array, it replaces the shipping option's existing flat-rate prices:
+ * 
+ * - A price with a matching `id` is updated.
+ * - A price without an `id` is created.
+ * - Any existing price whose `id` isn't included in the array is deleted.
+ * 
+ * The `rules` you provide for a price similarly replace that price's existing rules, so omit a rule to remove it.
+ * 
+ * Omitting the `prices` property entirely leaves the existing prices unchanged, whereas setting `price_type` to `calculated` removes all flat-rate prices.
  *
  * :::note
  *
