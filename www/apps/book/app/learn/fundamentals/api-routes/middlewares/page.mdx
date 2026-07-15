@@ -146,7 +146,7 @@ export default defineMiddlewares({
 
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
-- `matcher`: a string indicating the API route path to apply the middleware on. The string must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
+- `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
 - `middlewares`: An array of global and route middleware functions.
 - `method`: (optional) By default, a middleware is applied on all HTTP methods for a route. You can specify one or more HTTP methods to apply the middleware to in this option, making it a route middleware.
 
