@@ -1,5 +1,7 @@
 import {
+  BigNumber,
   flattenObjectToKeyValuePairs,
+  isObject,
   isPresent,
   MedusaError,
   MikroOrmBase,
@@ -18,6 +20,68 @@ import {
   PricingFilters,
   PricingRepositoryService,
 } from "@medusajs/framework/types"
+
+// Plain numbers, or numeric strings without a leading zero (e.g. "2500",
+// "25.5"). Identifier-like values such as zip codes ("01234") are intentionally
+// excluded so they keep using exact-match semantics.
+const NUMERIC_STRING_REGEX = /^-?(0|[1-9]\d*)(\.\d+)?$/
+
+/**
+ * Returns the numeric representation of a rule-matching context value, or
+ * `undefined` when the value should not be treated as a number. This is what
+ * enables numeric operators (gt, gte, lt, lte) to be applied to values such as
+ * a cart's `item_total`, even when they arrive as a numeric string.
+ */
+function toNumericContextValue(value: unknown): number | undefined {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : undefined
+  }
+
+  if (typeof value === "string" && NUMERIC_STRING_REGEX.test(value.trim())) {
+    const parsed = Number(value.trim())
+    return Number.isFinite(parsed) ? parsed : undefined
+  }
+
+  return undefined
+}
+
+/**
+ * Recursively unwraps BigNumber instances in the pricing context to their
+ * numeric value. Cart amount fields such as `item_total` are BigNumber
+ * instances when the context isn't serialized (e.g. resolved directly from a
+ * module service). Without this, flattening the context would destructure the
+ * BigNumber into its internal fields, so a numeric rule (e.g. `item_total gte
+ * 100`) would never match. Unchanged branches keep their original reference to
+ * avoid needless allocation on the common (already-serialized) path.
+ */
+function normalizeContextBigNumbers(value: any): any {
+  if (value instanceof BigNumber) {
+    return value.numeric
+  }
+
+  if (Array.isArray(value)) {
+    let changed = false
+    const next = value.map((item) => {
+      const normalized = normalizeContextBigNumbers(item)
+      changed ||= normalized !== item
+      return normalized
+    })
+    return changed ? next : value
+  }
+
+  if (isObject(value)) {
+    let changed = false
+    const next: Record<string, any> = {}
+    for (const key of Object.keys(value)) {
+      const normalized = normalizeContextBigNumbers(value[key])
+      changed ||= normalized !== value[key]
+      next[key] = normalized
+    }
+    return changed ? next : value
+  }
+
+  return value
+}
 
 export class PricingRepository
   extends MikroOrmBase
@@ -87,8 +151,12 @@ export class PricingRepository
       )
     }
 
-    // Generate flatten key-value pairs for rule matching
-    const flattenedKeyValuePairs = flattenObjectToKeyValuePairs(context)
+    // Generate flatten key-value pairs for rule matching. BigNumber instances
+    // (e.g. a cart's item_total) are unwrapped to their numeric value first so
+    // numeric rules aren't lost when flattening the context.
+    const flattenedKeyValuePairs = flattenObjectToKeyValuePairs(
+      normalizeContextBigNumbers(context)
+    )
 
     // First filter by value presence
     let flattenedContext = Object.entries(flattenedKeyValuePairs).filter(
@@ -179,7 +247,7 @@ export class PricingRepository
       // Build match conditions for LATERAL join
       const priceRuleMatchConditions = flattenedContext
         .map(([_key, value]) => {
-          if (typeof value === "number") {
+          if (toNumericContextValue(value) !== undefined) {
             return `
               (pr.attribute = ? AND (
                 (pr.operator = 'eq' AND pr.value = ?) OR
@@ -198,8 +266,16 @@ export class PricingRepository
         .join(" OR ")
 
       const priceRuleMatchParams = flattenedContext.flatMap(([key, value]) => {
-        if (typeof value === "number") {
-          return [key, value.toString(), value, value, value, value]
+        const numericValue = toNumericContextValue(value)
+        if (numericValue !== undefined) {
+          return [
+            key,
+            numericValue.toString(),
+            numericValue,
+            numericValue,
+            numericValue,
+            numericValue,
+          ]
         } else {
           const normalizeValue = Array.isArray(value) ? value : [value]
           return [key, ...normalizeValue]

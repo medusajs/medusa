@@ -5,6 +5,7 @@ import {
   PricingTypes,
 } from "@medusajs/framework/types"
 import {
+  BigNumber,
   Modules,
   PriceListStatus,
   PriceListType,
@@ -2733,6 +2734,65 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([])
+        })
+
+        it("should match numeric operator rules when item_total is a BigNumber instance or a numeric string", async () => {
+          // Models a "free shipping above threshold" shipping option: a default
+          // price of 10, and a free (0) price when item_total >= 100.
+          const shippingPriceSet = await service.createPriceSets({
+            prices: [
+              {
+                amount: 10,
+                currency_code: "usd",
+                rules: {},
+              },
+              {
+                amount: 0,
+                currency_code: "usd",
+                rules: {
+                  item_total: [{ operator: "gte", value: 100 }],
+                },
+              },
+            ],
+          })
+
+          // A cart's item_total can reach the pricing context as a plain number
+          // (serialized), a BigNumber instance (resolved from a module), or a
+          // numeric string. All three must select the free price above the
+          // threshold and fall back to the default below it.
+          const aboveThreshold = [150, new BigNumber(150), "150"]
+          for (const itemTotal of aboveThreshold) {
+            const result = await service.calculatePrices(
+              { id: [shippingPriceSet.id] },
+              {
+                context: {
+                  currency_code: "usd",
+                  item_total: itemTotal,
+                } as any,
+              }
+            )
+
+            expect(result).toEqual([
+              expect.objectContaining({ calculated_amount: 0 }),
+            ])
+          }
+
+          const belowThreshold = [50, new BigNumber(50), "50"]
+          for (const itemTotal of belowThreshold) {
+            const result = await service.calculatePrices(
+              { id: [shippingPriceSet.id] },
+              {
+                context: {
+                  currency_code: "usd",
+                  item_total: itemTotal,
+                } as any,
+              }
+            )
+
+            expect(result).toEqual([
+              expect.objectContaining({ calculated_amount: 10 }),
+            ])
+          }
         })
       })
     })
