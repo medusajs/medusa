@@ -14,7 +14,7 @@ In this guide, you'll learn how Medusa handles transferring an order to a guest 
 
 ## Overview
 
-An admin user can transfer an order from its current customer to a guest customer identified by email. Unlike the [request order transfer flow](/references/core_flows/Order/functions/core_flows.Order.requestOrderTransferWorkflow), this transfer is applied immediately without requiring the recipient to accept it.
+An admin user can transfer an order from its current customer to a guest customer identified by email. Unlike the request order transfer flow, this transfer is applied immediately without requiring the recipient to accept it.
 
 If no customer exists with the given email address, Medusa creates a new guest customer. The transfer can only be made to guest (non-registered) customers.
 
@@ -74,4 +74,4 @@ The workflow performs the following steps:
 
 The `transferOrderToGuestWorkflow` is intended for admin users and applies the transfer immediately.
 
-The [requestOrderTransferWorkflow](/references/core_flows/Order/functions/core_flows.Order.requestOrderTransferWorkflow), on the other hand, sends a transfer request that the recipient customer must accept before the transfer is applied. Use that workflow when transferring an order to a registered customer account.
+The `requestOrderTransferWorkflow`, on the other hand, sends a transfer request that the recipient customer must accept before the transfer is applied. Use that workflow when transferring an order to a registered customer account.
