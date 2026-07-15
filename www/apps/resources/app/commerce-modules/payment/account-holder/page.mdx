@@ -29,6 +29,10 @@ The Medusa application creates a link between the [Customer](/references/custome
 
 This link indicates that a customer can have more than one account holder, each representing saved payment methods in different payment providers.
 
+While a customer can have many account holders, each account holder belongs to only one customer. If you try to link an account holder that already belongs to another customer, Medusa throws a `Cannot create multiple links between 'customer' and 'payment'` error.
+
+So, to move an account holder to a different customer, such as when transferring saved payment methods from a guest customer to a newly registered customer, remove the existing link first, then create the new link. This is a move, not an addition: the original customer loses access to that account holder's saved payment methods once you remove its link.
+
 Learn more about this link in the [Link to Other Modules](../links-to-other-modules/page.mdx) guide.
 
 ---
