@@ -983,6 +983,88 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should combine root and expand cross-module filters", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const cartService: any = container.resolve(Modules.CART)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const { data: products } = await query.graph({
+            entity: "product",
+            fields: ["id", "title", "handle"],
+          })
+
+          const productOne = products.find(
+            (product) => product.title === "Product 1"
+          )
+          const productTwo = products.find(
+            (product) => product.title === "Product 2"
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Retail Store",
+          })
+          const wholesaleChannel = await salesChannelService.createSalesChannels(
+            {
+              name: "Wholesale Store",
+            }
+          )
+
+          const buildCart = (
+            email: string,
+            channelId: string,
+            product: { title: string; id: string }
+          ) => ({
+            currency_code: "usd",
+            email,
+            sales_channel_id: channelId,
+            items: [
+              {
+                title: product.title,
+                product_id: product.id,
+                quantity: 1,
+                unit_price: 100,
+              },
+            ],
+          })
+
+          await cartService.createCarts([
+            // Matches both filters.
+            buildCart("match@test.com", retailChannel.id, productOne!),
+            // Matches only the root filter (retail channel, other product).
+            buildCart("root-only@test.com", retailChannel.id, productTwo!),
+            // Matches only the expand filter (other channel, right product).
+            buildCart("expand-only@test.com", wholesaleChannel.id, productOne!),
+          ])
+
+          // `sales_channel` is filtered at the root level (read-only link on
+          // the cart itself), while `items.product` lands on an expand node —
+          // both must be pushed down and intersect.
+          const { data: filteredCarts } = await query.graph({
+            entity: "cart",
+            fields: ["id", "email"],
+            filters: {
+              sales_channel: {
+                name: "Retail Store",
+              },
+              items: {
+                product: {
+                  handle: productOne!.handle,
+                },
+              },
+            },
+          })
+
+          expect(filteredCarts).toHaveLength(1)
+          expect(filteredCarts[0]).toEqual(
+            expect.objectContaining({
+              email: "match@test.com",
+            })
+          )
+        })
+
         it("should filter through an inverse read-only link and an internal relation", async () => {
           const container = getContainer()
           const query = container.resolve("query")
