@@ -56,7 +56,7 @@
  *   amount:
  *     type: number
  *     title: amount
- *     description: The shipping option's amount.
+ *     description: The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
  *   is_tax_inclusive:
  *     type: boolean
  *     title: is_tax_inclusive
