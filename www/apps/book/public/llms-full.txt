@@ -11311,8 +11311,12 @@ export default defineMiddlewares({
 
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
-- `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
+- `matcher`: the API route path to apply the middleware on. Its value can be one of the following:
+  - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`.
+  - A regular expression (`RegExp`), which Medusa matches against the request path directly. For example, `/^\/custom(\/.*)?$/`.
+
 - `middlewares`: An array of global and route middleware functions.
+
 - `method`: (optional) By default, a middleware is applied on all HTTP methods for a route. You can specify one or more HTTP methods to apply the middleware to in this option, making it a route middleware.
 
 ### Test the Middleware
@@ -11335,6 +11339,45 @@ Received a request!
 ### Troubleshooting
 
 If the middleware didn't run, make sure you've correctly created the middleware at `src/api/middlewares.ts` (with correct spelling). This is a common mistake that can lead to the middleware not being applied, resulting in unexpected behavior.
+
+***
+
+## Apply a Middleware Using a Regular Expression
+
+You can set the `matcher` property to a regular expression (`RegExp`) to apply a middleware to routes matching a pattern.
+
+A `RegExp` matcher must account for the full request path, including the leading slash. How Medusa matches the pattern depends on whether the middleware is a global or route middleware.
+
+### Global Middleware
+
+For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/4x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
+
+So, you must anchor the pattern with `^` and include the leading slash:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: /^\/custom(\/.*)?$/,
+      middlewares: [
+        // ...
+      ],
+    },
+  ],
+})
+```
+
+This middleware applies to `/custom` and any route starting with `/custom/`.
+
+An unanchored pattern like `/custom/` doesn't match any route for a global middleware, since its match doesn't start at the beginning of the path. Always anchor a global middleware's pattern with `^\/`.
+
+### Route Middleware
+
+For a route middleware (a middleware with a `method`), Medusa matches the `RegExp` against the full request path. So, an unanchored pattern like `/custom/` matches routes containing `custom`.
+
+To keep the same behavior across both middleware types, always anchor a `RegExp` matcher with `^\/`.
 
 ***
 
@@ -35793,6 +35836,8 @@ createRemoteLinkStep({
 })
 ```
 
+A customer can have many account holders, but each account holder belongs to only one customer. If you try to link an account holder that already belongs to another customer, Medusa throws a `Cannot create multiple links between 'customer' and 'payment'` error. To transfer an account holder to a different customer, remove the existing link first, then create the new one.
+
 ***
 
 ## Cart Module
@@ -36853,14 +36898,14 @@ A shipping option is represented by the [ShippingOption data model](undefined/re
 
 A shipping option's `price_type` property determines how its price is resolved:
 
-- `flat`: The price is a fixed amount stored in the [Pricing Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/index.html.md). You set the prices per currency or region when you create the shipping option. In the Medusa Admin dashboard, this type is labeled **Fixed**.
+- `flat`: The price is a fixed amount stored in the [Pricing Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/pricing). You set the prices per currency or region when you create the shipping option. In the Medusa Admin dashboard, this type is labeled **Fixed**.
 - `calculated`: The shipping option has no stored price. Instead, its price is calculated during checkout by the shipping option's fulfillment provider. This is useful when the price depends on the cart's contents, the customer's location, or a rate returned by a third-party service.
 
 ### How Calculated Prices are Resolved
 
-For a shipping option of type `calculated`, Medusa invokes the [calculatePrice method](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) of the associated fulfillment provider to resolve the price against the cart. This happens when:
+For a shipping option of type `calculated`, Medusa invokes the [calculatePrice method](undefined/references/fulfillment/provider) of the associated fulfillment provider to resolve the price against the cart. This happens when:
 
-- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
+- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](undefined/api/store#shipping-options_postshippingoptionsidcalculate).
 - The shipping method is added to the cart.
 - The cart is refreshed. Medusa refreshes the cart after most cart changes, such as adding a line item or updating the cart's address, so the price may be recalculated frequently.
 
@@ -36868,7 +36913,7 @@ Medusa doesn't recalculate the price when the cart is completed and converted to
 
 If the fulfillment provider's `calculatePrice` method throws an error, or returns a price without an amount, Medusa can't resolve the shipping option's price. This blocks the operation that triggered the calculation, such as adding the shipping method or refreshing the cart, which can prevent the customer from completing checkout. So, if you implement a custom fulfillment provider, handle errors gracefully, such as by falling back to a default price, if you don't want a failure in a third-party service to block checkout.
 
-You learn more about implementing calculated prices in a fulfillment provider in the [Create Fulfillment Module Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) reference, and how to use them during checkout in the [Storefront Shipping guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/checkout/shipping/index.html.md).
+You learn more about implementing calculated prices in a fulfillment provider in the [Create Fulfillment Module Provider](undefined/references/fulfillment/provider) reference, and how to use them during checkout in the [Storefront Shipping guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/checkout/shipping).
 
 ***
 
@@ -40265,7 +40310,7 @@ In this guide, you'll learn how Medusa handles transferring an order to a guest 
 
 ## Overview
 
-An admin user can transfer an order from its current customer to a guest customer identified by email. Unlike the [request order transfer flow](undefined/references/core_flows/Order/functions/core_flows.Order.requestOrderTransferWorkflow), this transfer is applied immediately without requiring the recipient to accept it.
+An admin user can transfer an order from its current customer to a guest customer identified by email. Unlike the request order transfer flow, this transfer is applied immediately without requiring the recipient to accept it.
 
 If no customer exists with the given email address, Medusa creates a new guest customer. The transfer can only be made to guest (non-registered) customers.
 
@@ -40325,7 +40370,7 @@ The workflow performs the following steps:
 
 The `transferOrderToGuestWorkflow` is intended for admin users and applies the transfer immediately.
 
-The [requestOrderTransferWorkflow](undefined/references/core_flows/Order/functions/core_flows.Order.requestOrderTransferWorkflow), on the other hand, sends a transfer request that the recipient customer must accept before the transfer is applied. Use that workflow when transferring an order to a registered customer account.
+The `requestOrderTransferWorkflow`, on the other hand, sends a transfer request that the recipient customer must accept before the transfer is applied. Use that workflow when transferring an order to a registered customer account.
 
 
 # Commerce Modules
@@ -40394,6 +40439,10 @@ A payment provider that supports saving payment methods for customers would crea
 The Medusa application creates a link between the [Customer](undefined/references/customer/models/Customer) data model of the [Customer Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/customer) and the `AccountHolder` data model of the Payment Module.
 
 This link indicates that a customer can have more than one account holder, each representing saved payment methods in different payment providers.
+
+While a customer can have many account holders, each account holder belongs to only one customer. If you try to link an account holder that already belongs to another customer, Medusa throws a `Cannot create multiple links between 'customer' and 'payment'` error.
+
+So, to move an account holder to a different customer, such as when transferring saved payment methods from a guest customer to a newly registered customer, remove the existing link first, then create the new link. This is a move, not an addition: the original customer loses access to that account holder's saved payment methods once you remove its link.
 
 Learn more about this link in the [Link to Other Modules](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/links-to-other-modules) guide.
 
@@ -40600,6 +40649,8 @@ createRemoteLinkStep({
   },
 })
 ```
+
+A customer can have many account holders, but each account holder belongs to only one customer. If you try to link an account holder that already belongs to another customer, Medusa throws a `Cannot create multiple links between 'customer' and 'payment'` error. To transfer an account holder to a different customer, remove the existing link first, then create the new one.
 
 ***
 
@@ -44934,7 +44985,7 @@ When a `currency_code` is set, Medusa only applies the promotion if the cart's c
 
 For example, a `fixed` promotion with a `value` of `10` and a `currency_code` of `usd` discounts `$10` off carts using the US dollar. It isn't applied to a cart using the Euro.
 
-If the promotion belongs to a [campaign](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/promotion/campaign/index.html.md) with a spend-based budget, the campaign budget's `currency_code` must match the application method's `currency_code`.
+If the promotion belongs to a [campaign](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/promotion/campaign) with a spend-based budget, the campaign budget's `currency_code` must match the application method's `currency_code`.
 
 ## Target Promotion Rules
 
@@ -162467,7 +162518,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface GetPaymentMethodStepInput {
   customer?: CustomerDTO & {
-    account_holder: AccountHolderDTO
+    account_holders: AccountHolderDTO[]
   }
 }
 
@@ -162489,7 +162540,7 @@ export const getPaymentMethodStep = createStep(
 
 You create a `getLatestPaymentMethod` function that receives an array of payment methods and returns the latest one based on the `created` date in the `data` field. This is based off of Stripe's payment method data, so if you're using a different payment provider, you may need to adjust this function.
 
-Then, you create the `getPaymentMethodStep` that receives the customer's data and account holder as an input.
+Then, you create the `getPaymentMethodStep` that receives the customer's data and account holders as an input.
 
 Next, you'll add the implementation of the step. Replace `getPaymentMethodStep` with the following:
 
@@ -162499,7 +162550,12 @@ export const getPaymentMethodStep = createStep(
   async ({ customer }: GetPaymentMethodStepInput, { container }) => {
     const paymentModuleService = container.resolve(Modules.PAYMENT)
 
-    if (!customer?.account_holder) {
+    const providerId = "pp_stripe_stripe"
+    const accountHolder = customer?.account_holders?.find(
+      (ah) => ah.provider_id === providerId
+    )
+
+    if (!accountHolder) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "No account holder found for the customer while retrieving payment method"
@@ -162509,9 +162565,9 @@ export const getPaymentMethodStep = createStep(
     const paymentMethods = await paymentModuleService.listPaymentMethods(
       {
         // you can change to other payment provider
-        provider_id: "pp_stripe_stripe",
+        provider_id: providerId,
         context: {
-          account_holder: customer.account_holder,
+          account_holder: accountHolder,
         },
       }
     )
@@ -162527,13 +162583,13 @@ export const getPaymentMethodStep = createStep(
 
     return new StepResponse(
       paymentMethodToUse,
-      customer.account_holder
+      accountHolder
     )
   }
 )
 ```
 
-In the step, you first check that the customer has an account holder, and throw an error otherwise. Then, you list the customer's payment methods using the Payment Module service's `listPaymentMethods` method. You filter the payment methods to retrieve only the ones from the Stripe provider. So, if you're using a different payment provider, you may need to adjust the `provider_id` value.
+In the step, you first find the account holder for the Stripe payment provider from the customer's `account_holders` list, and throw an error if none is found. Then, you list the customer's payment methods using the Payment Module service's `listPaymentMethods` method. If you're using a different payment provider, adjust the `provider_id` value.
 
 If the customer doesn't have any payment methods, you throw an error. Otherwise, you return the latest payment method found using the `getLatestPaymentMethod` function.
 
@@ -162838,7 +162894,7 @@ const createSubscriptionOrderWorkflow = createWorkflow(
         "cart.payment_collection.*",
         "cart.payment_collection.payment_sessions.*",
         "cart.customer.*",
-        "cart.customer.account_holder.*",
+        "cart.customer.account_holders.*",
       ],
       filters: {
         id: input.subscription.id,
