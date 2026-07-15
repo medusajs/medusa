@@ -36,6 +36,39 @@ export interface JoinerServiceConfigAlias {
      * push into EXISTS-based cross-module filters.
      */
     crossjoinable?: string[]
+    /**
+     * Physical table name (without PG schema) backing the alias entity.
+     * Required to build cross-module SQL joins against the entity's table.
+     */
+    tableName?: string
+    /**
+     * PG schema of the entity's table, when the DML definition specifies one.
+     */
+    schema?: string
+    /**
+     * Module-internal DML relations of the alias entity, keyed by property
+     * name. Used to traverse own-model hops when building cross-module SQL
+     * joins (e.g. cart -> items -> product).
+     */
+    relations?: Record<
+      string,
+      {
+        /**
+         * Entity the relation points to.
+         */
+        entity: string
+        /**
+         * Join column name.
+         */
+        foreignKey: string
+        /**
+         * Which side of the relation holds the foreign key column: `self`
+         * for belongsTo, `target` for hasMany.
+         */
+        foreignKeyOwner: "self" | "target"
+        isList?: boolean
+      }
+    >
   }
   /**
    * Extra arguments to pass to the remoteFetchData callback
