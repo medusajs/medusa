@@ -187,19 +187,47 @@ function parseProperties(
       const fullPath = [BASE_PATH, ...currentPath, prop].join(".")
       const fullAliasPath = [BASE_PATH, ...currentAliasPath, prop].join(".")
 
-      let entity = currentServiceConfig.entity
-      if (entity) {
-        const completePath = fullPath.split(".")
-        for (let i = 1; i < completePath.length; i++) {
-          entity = catalog.getEntity(entity, completePath[i]) ?? entity
+      // Resolve the entity along the parent path (everything before `prop`).
+      let parentEntity = currentServiceConfig.entity
+      if (parentEntity) {
+        for (const pathSegment of currentPath) {
+          parentEntity =
+            catalog.getEntity(parentEntity, pathSegment) ?? parentEntity
         }
       }
+
+      // Known relations of the parent entity, from the schema relation map.
+      // A hit means `prop` is a relation; a miss on a known entity means
+      // `prop` addresses a scalar/JSON column rather than a relation.
+      const parentEntityRelations = parentEntity
+        ? catalog.getEntityRelations(parentEntity)
+        : undefined
+      const propEntity = parentEntityRelations?.get(prop)
+      const isKnownColumn = !!parentEntityRelations && !propEntity
+      let entity = propEntity ?? parentEntity
 
       const relationship = catalog.getEntityRelationship({
         parentServiceConfig: currentServiceConfig,
         property: prop,
         entity,
       })
+
+      if (!relationship && isKnownColumn) {
+        // `prop` is not a relationship (cross-module) nor a schema relation
+        // of a known entity, so it is a property of the current entity —
+        // most commonly a nested access into a JSON/object column such as
+        // `metadata.test`. Modules cannot select individual keys of a JSON
+        // column, so we select the whole column on the parent entity and
+        // stop descending; any deeper segments address keys inside the
+        // returned value. Without this the segment is misresolved as a
+        // (non-existent) relation and the value is dropped from the result.
+        const parentExpand =
+          parsedExpands.get([BASE_PATH, ...currentPath].join(".")) ||
+          (query as any)
+        parentExpand.fields ??= []
+        parentExpand.fields = deduplicate(parentExpand.fields.concat(prop))
+        break
+      }
 
       const isCurrentProp =
         fullPath === BASE_PATH + "." + expand.property ||

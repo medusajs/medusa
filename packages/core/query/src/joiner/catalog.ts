@@ -77,6 +77,16 @@ export class GraphCatalog {
   }
 
   /**
+   * Schema relations of an entity from the relation map (relation name ->
+   * target entity), or `undefined` when the entity is not present in the map.
+   * A present map with no entry for a property means that property is a
+   * scalar/JSON column rather than a relation.
+   */
+  getEntityRelations(entity: string): Map<string, string> | undefined {
+    return this.relationMap.get(entity)
+  }
+
+  /**
    * Internal cross-module join metadata (crossjoinable fields, physical table
    * name) attached to the alias entry matching the given entity.
    */
