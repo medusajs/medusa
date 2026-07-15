@@ -3,6 +3,9 @@ import { StoreCalculatedPrice, StorePrice } from "../../price-preference/store/e
 
 // TODO: The way the cart shipping options are listed now differs from most other endpoints as it is fetched in a workflow.
 // We should consider refactoring this to be more consistent with other endpoints.
+/**
+ * The details of a shipping option available for a cart during checkout.
+ */
 export interface StoreCartShippingOption {
   /**
    * The shipping option's ID.
@@ -95,6 +98,9 @@ export interface StoreCartShippingOption {
   insufficient_inventory: boolean
 }
 
+/**
+ * A cart shipping option with its associated service zone details.
+ */
 export type StoreCartShippingOptionWithServiceZone = StoreCartShippingOption & {
   /**
    * The associated service zone.
