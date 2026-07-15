@@ -2188,6 +2188,16 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "list": {
+      "empty": {
+        "heading": "No promotions",
+        "description": "There are no promotions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No promotions match the current filter criteria."
+      }
+    },
     "sections": {
       "details": "Promotion Details"
     },
@@ -2414,6 +2424,16 @@
   },
   "campaigns": {
     "domain": "Campaigns",
+    "list": {
+      "empty": {
+        "heading": "No campaigns",
+        "description": "There are no campaigns to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No campaigns match the current filter criteria."
+      }
+    },
     "details": "Campaign details",
     "status": {
       "active": "Active",
@@ -2956,7 +2976,15 @@
     "flatRate": "Flat Rate",
     "calculated": "Calculated",
     "list": {
-      "noRecordsMessage": "Create a region for the areas that you sell in."
+      "noRecordsMessage": "Create a region for the areas that you sell in.",
+      "empty": {
+        "heading": "No regions",
+        "description": "There are no regions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No regions match the current filter criteria."
+      }
     },
     "toast": {
       "delete": "Region deleted successfully",
