@@ -59,6 +59,19 @@ const DataTableTable = (props: DataTableTableProps) => {
   const hasSelect = columns.find((c) => c.id === "select")
   const hasActions = columns.find((c) => c.id === "action")
 
+  // Width strategy for data columns (excluding the pinned select/action
+  // columns): a column with an explicit `size` keeps it; the rest split the
+  // remaining width equally as a percentage, so the table always fills
+  // regardless of column count (auto-layout with equal px widths under-fills
+  // when there are few columns). Counts only the rendered/visible columns.
+  const visibleDataColumns = (instance.getHeaderGroups()[0]?.headers ?? [])
+    .map((h) => h.column)
+    .filter((c) => c.id !== "select" && c.id !== "action")
+  const autoFillCount = visibleDataColumns.filter(
+    (c) => c.columnDef.size == null
+  ).length
+  const colWidth = autoFillCount > 0 ? 100 / autoFillCount : undefined
+
   // Create list of all column IDs for SortableContext
   // Use current order if available, otherwise use default order
   const sortableItems = React.useMemo(() => {
@@ -258,7 +271,12 @@ const DataTableTable = (props: DataTableTableProps) => {
                               style={
                                 !isSpecialHeader
                                   ? {
-                                      width: header.column.columnDef.size,
+                                      width:
+                                        header.column.columnDef.size != null
+                                          ? header.column.columnDef.size
+                                          : colWidth !== undefined
+                                            ? `${colWidth}%`
+                                            : undefined,
                                       maxWidth: header.column.columnDef.maxSize,
                                       minWidth: header.column.columnDef.minSize,
                                     }
@@ -354,7 +372,12 @@ const DataTableTable = (props: DataTableTableProps) => {
                               style={
                                 !isSpecialCell
                                   ? {
-                                      width: cell.column.columnDef.size,
+                                      width:
+                                        cell.column.columnDef.size != null
+                                          ? cell.column.columnDef.size
+                                          : colWidth !== undefined
+                                            ? `${colWidth}%`
+                                            : undefined,
                                       maxWidth: cell.column.columnDef.maxSize,
                                       minWidth: cell.column.columnDef.minSize,
                                     }

@@ -8,8 +8,6 @@ import {
 } from "../../../lib/table/cell-renderers"
 import { TableAdapter } from "../../../lib/table/table-adapters"
 
-const EQUAL_COLUMN_SIZE = 150
-
 export function useConfigurableTableColumns<TData = any>(
   apiColumns: HttpTypes.AdminColumn[] | undefined,
   adapter?: TableAdapter<TData>
@@ -92,7 +90,6 @@ export function useConfigurableTableColumns<TData = any>(
         enableSorting: apiColumn.sortable,
         sortLabel: apiColumn.name,
         align,
-        size: EQUAL_COLUMN_SIZE,
       } as any)
     })
 

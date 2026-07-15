@@ -585,7 +585,7 @@ const AddressRenderer: CellRenderer = (value, row, column, _t) => {
 cellRenderers.set("text", { render: TextRenderer })
 cellRenderers.set("handle", { render: HandleRenderer })
 cellRenderers.set("count", { render: CountRenderer })
-cellRenderers.set("status", { render: StatusRenderer, align: "center" })
+cellRenderers.set("status", { render: StatusRenderer })
 cellRenderers.set("badge_list", { render: BadgeListRenderer })
 cellRenderers.set("date", { render: DateRenderer })
 cellRenderers.set("timestamp", { render: DateRenderer })

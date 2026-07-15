@@ -184,7 +184,7 @@ export function createSelectColumn(): HttpTypes.AdminColumn {
 /**
  * Field/id used for the injected virtual actions column.
  */
-export const ACTIONS_COLUMN_FIELD = "actions"
+export const ACTIONS_COLUMN_FIELD = "action"
 
 /**
  * Build the synthetic column definition for the row actions column. It is
