@@ -30892,6 +30892,15 @@ In your Medusa application, a `publishable` API key is only useful to send reque
 
 In addition, a `secret` API key allows you to access the [Admin API routes](undefined/api/admin) and perform actions as the admin user that the key was created for. The `created_by` property of the [ApiKey data model](undefined/references/api-key/models/ApiKey) indicates the ID of the associated admin user.
 
+To authenticate using a secret API key, pass it with HTTP Basic authentication in the `Authorization` header:
+
+```bash
+curl -X GET http://localhost:9000/admin/products \
+-H 'Authorization: Basic {secret_api_key}'
+```
+
+Secret API keys must be sent using HTTP Basic authentication, not as a Bearer token. Sending a secret API key as `Authorization: Bearer {secret_api_key}` returns a `401` error.
+
 ***
 
 ## API Key Creation
