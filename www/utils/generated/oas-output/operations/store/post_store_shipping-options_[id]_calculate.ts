@@ -2,7 +2,10 @@
  * @oas [post] /store/shipping-options/{id}/calculate
  * operationId: PostShippingOptionsIdCalculate
  * summary: Calculate Shipping Option Price
- * description: Calculate the price of a shipping option in a cart.
+ * description: |
+ *   Calculate the price of a shipping option in a cart. Use this API route for shipping options whose `price_type` is `calculated`, as their price isn't stored but computed on the fly by the associated fulfillment provider against the cart.
+ *
+ *   If the fulfillment provider fails to calculate the price, this route returns an error.
  * x-authenticated: false
  * parameters:
  *   - name: id

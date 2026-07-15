@@ -36849,6 +36849,29 @@ A shipping option is represented by the [ShippingOption data model](undefined/re
 
 ***
 
+## Shipping Option Price Type
+
+A shipping option's `price_type` property determines how its price is resolved:
+
+- `flat`: The price is a fixed amount stored in the [Pricing Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/index.html.md). You set the prices per currency or region when you create the shipping option. In the Medusa Admin dashboard, this type is labeled **Fixed**.
+- `calculated`: The shipping option has no stored price. Instead, its price is calculated during checkout by the shipping option's fulfillment provider. This is useful when the price depends on the cart's contents, the customer's location, or a rate returned by a third-party service.
+
+### How Calculated Prices are Resolved
+
+For a shipping option of type `calculated`, Medusa invokes the [calculatePrice method](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) of the associated fulfillment provider to resolve the price against the cart. This happens when:
+
+- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
+- The shipping method is added to the cart.
+- The cart is refreshed. Medusa refreshes the cart after most cart changes, such as adding a line item or updating the cart's address, so the price may be recalculated frequently.
+
+Medusa doesn't recalculate the price when the cart is completed and converted to an order. The order uses the last price that was stored on the shipping method.
+
+If the fulfillment provider's `calculatePrice` method throws an error, or returns a price without an amount, Medusa can't resolve the shipping option's price. This blocks the operation that triggered the calculation, such as adding the shipping method or refreshing the cart, which can prevent the customer from completing checkout. So, if you implement a custom fulfillment provider, handle errors gracefully, such as by falling back to a default price, if you don't want a failure in a third-party service to block checkout.
+
+You learn more about implementing calculated prices in a fulfillment provider in the [Create Fulfillment Module Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) reference, and how to use them during checkout in the [Storefront Shipping guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/checkout/shipping/index.html.md).
+
+***
+
 ## Service Zone Restrictions
 
 A shipping option is restricted by a service zone, which limits the locations where the shipping option can be used.
@@ -42621,6 +42644,8 @@ const priceSet = await pricingModule.addPrices({
 
 In this example, you create a shipping option whose default price is `$10`. When the total of the cart or order using this shipping option is greater than `$100`, the shipping option's price becomes free.
 
+Price rules only affect shipping options whose `price_type` is `flat`. For options with a `price_type` of `calculated`, the fulfillment provider determines the price during checkout, so Medusa ignores any price rules you set. To offer free shipping above a threshold, use a flat-rate shipping option.
+
 ### How is the Price Rule Applied?
 
 The [price calculation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/pricing/price-calculation) mechanism considers a price applicable when the resource that this price is in matches the specified rules.
@@ -42641,6 +42666,8 @@ For example, a [cart object](undefined/api/store#carts_cart_schema) has an `item
 ```
 
 The shipping option's price is applied when the cart's `item_total` is greater than or equal to `$100`.
+
+The cart's `item_total` is the sum of its line-item totals after discounts and including taxes. It doesn't include shipping, so it can differ from the total shown to the customer at checkout. Set the rule's `value` based on the items' total, not the cart's grand total.
 
 You can also apply the rule on nested relations and properties. For example, to apply a shipping option's price based on the customer's group, you can apply a rule on the `customer.group.id` attribute:
 
@@ -44741,6 +44768,39 @@ Actions inform you what adjustment must be made to a cart item or shipping metho
 
 ***
 
+## How Promotions Stack
+
+When you pass more than one promotion to `computeActions`, Medusa applies them one after another and returns the combined actions.
+
+Medusa applies the promotions in the following order:
+
+1. `buyget` promotions, then `standard` promotions.
+2. Within each type, Medusa sorts promotions by their application method's `value` in descending order.
+
+Medusa computes each promotion against the remaining amount of a line item or shipping method: its original amount minus the amount that promotions earlier in the same computation already discounted. Medusa never discounts an item below `0`.
+
+This affects how percentages are calculated. A percentage promotion applies its percentage to the remaining amount, not the original amount. For example, if a `$30` discount already applied to a `$200` item, a following `10%` promotion discounts `10%` of the remaining `$170`, which is `$17`.
+
+Medusa tracks the remaining amount within a single `computeActions` call. Across separate calls, Medusa reflects previously applied adjustments in the item's amount.
+
+### Order-Level Promotions
+
+Medusa always distributes a promotion whose application method's `target_type` is `order` across the cart's applicable items, whether its value is a percentage or a fixed amount. Medusa distributes the discount proportionally based on each item's remaining amount.
+
+For example, consider a cart with two items:
+
+- Item A: `$250`
+- Item B: `$150`
+
+If you apply a `$100` fixed discount on the order, Medusa distributes it proportionally across the two items based on their share of the `$400` total:
+
+- Item A: `$100 x (250 / 400) = $62.5`
+- Item B: `$100 x (150 / 400) = $37.5`
+
+If another order-level promotion applies afterward, Medusa recalculates each item's share using its remaining amount (`$187.5` and `$112.5`).
+
+***
+
 ## Action Types
 
 ### `addItemAdjustment` Action
@@ -44854,6 +44914,27 @@ The [ApplicationMethod data model](undefined/references/promotion/models/Applica
 |\`type\`|Does the promotion discount a fixed amount or a percentage?|\`fixed\`|
 |\`target\_type\`|Is the promotion applied to a cart item, shipping method, or the entire order?|\`items\`|
 |\`allocation\`|Is the discounted amount applied to each item, split between the applicable items, or applied on specific number of items?|\`each\`|
+|\`value\`|How much is discounted? Its meaning depends on the |A number, such as |
+|\`currency\_code\`|Which currency does the promotion apply to? Only carts whose currency matches receive the discount. Required for |A currency code, such as |
+
+***
+
+## Discount Value and Currency
+
+The `value` and `currency_code` properties work together based on the application method's `type`:
+
+|\`type\`|Meaning of |Role of |
+|---|---|---|
+|\`fixed\`|A fixed amount to discount, such as |Set the |
+|\`percentage\`|A percentage between |The |
+
+### How the Currency Match Works
+
+When a `currency_code` is set, Medusa only applies the promotion if the cart's currency matches the application method's `currency_code`. If you don't set a `currency_code`, the promotion applies to carts of any currency.
+
+For example, a `fixed` promotion with a `value` of `10` and a `currency_code` of `usd` discounts `$10` off carts using the US dollar. It isn't applied to a cart using the Euro.
+
+If the promotion belongs to a [campaign](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/promotion/campaign/index.html.md) with a spend-based budget, the campaign budget's `currency_code` must match the application method's `currency_code`.
 
 ## Target Promotion Rules
 
@@ -45205,6 +45286,43 @@ The following table lists the supported attributes for each rule scope:
 |Shipping methods|The application method's |\`shipping\_methods.shipping\_option.shipping\_option\_type\_id\`|
 
 To retrieve the supported attributes programmatically, use the [listRuleAttributes](undefined/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes) JS SDK method or the [List Rule Attribute Options](undefined/api/admin#promotions_getpromotionsruleattributeoptionsrule_type) Admin API route.
+
+### Restrict a Promotion by Order Value
+
+Along with the attributes in the table above, the cart context includes the cart's computed totals, such as `item_subtotal`, `subtotal`, `item_total`, and `total`. You can create a rule on one of these attributes using a numeric operator (`gte`, `lte`, `gt`, or `lt`) to restrict a promotion by order value, such as a minimum spend.
+
+These numeric conditions aren't available in the Medusa Admin dashboard. Create them using workflows or the Admin API.
+
+For example, to only apply a promotion when the cart's items subtotal is at least `$100`:
+
+```ts
+const { result } = await createPromotionsWorkflow(container)
+  .run({
+    input: {
+      promotionsData: [{
+        code: "SPEND100",
+        type: "standard",
+        status: "active",
+        application_method: {
+          type: "percentage",
+          target_type: "items",
+          allocation: "across",
+          value: 10,
+          currency_code: "usd",
+        },
+        rules: [
+          {
+            attribute: "item_subtotal",
+            operator: "gte",
+            values: ["100"],
+          },
+        ],
+      }],
+    },
+  })
+```
+
+Medusa evaluates the rule against the cart's total when the promotion is applied. Within a single computation, the total doesn't reflect discounts from other promotions applied in the same computation.
 
 ***
 

@@ -4,8 +4,10 @@
  * summary: List Shipping Options for Cart
  * description: |
  *   Retrieve a list of shipping options for a cart. The cart's ID is set in the required `cart_id` query parameter.
- * 
+ *
  *   The shipping options also be sorted or paginated.
+ *
+ *   For a shipping option whose `price_type` is `calculated`, the returned `amount` isn't reliable, as its price is computed on the fly by the fulfillment provider. To retrieve its price, use the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
  * externalDocs:
  *   url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
  *   description: "Storefront guide: How to implement shipping during checkout."
