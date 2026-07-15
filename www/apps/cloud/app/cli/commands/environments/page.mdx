@@ -124,7 +124,7 @@ List all environments in a project.
 
 ## environments get
 
-Retrieve a single environment by its handle. This is useful if you want to retrieve the environment's details, such as its status or tracked branch.
+Retrieve a single environment by its ID or handle. This is useful if you want to retrieve the environment's details, such as its status or tracked branch.
 
 <CodeTabs group="cli-auth">
   <CodeTab label="With Flags" value="flags">
@@ -151,17 +151,16 @@ Returns the following information:
   <CodeTab label="Plaintext" value="plaintext">
 
   ```bash
-  ID:                 <environment-id>
-  Name:               Production
-  Handle:             <environment-handle>
-  Type:               production / long-lived / preview
-  Status:             ready
-  Default subdomain:  trusting-soft-form
-  Custom subdomain:   acme
-  Custom domain:      acme.com
-  Tracked branch:     main
-  Project:            <project-id>
-  Created at:         2024-10-10T08:24:32.382Z
+  Name:            Production
+  Handle:          <environment-handle>
+  Type:            production
+  Status:          ready
+  Medusa domain:   https://trusting-soft-form.medusajs.app
+  Custom domain:   https://acme.com
+  Tracked branch:  main
+  Project Name:    My Store
+  Project Handle:  <project-handle>
+  Created at:      Apr 1, 2026, 11:44 AM GMT+2
   ```
 
   </CodeTab>
@@ -245,7 +244,7 @@ Returns the following information:
       </Table.Cell>
       <Table.Cell>
 
-      The handle of the environment to retrieve.
+      The ID or handle of the environment to retrieve.
 
       </Table.Cell>
       <Table.Cell>
@@ -537,7 +536,7 @@ Create a new [long-lived environment](../../../environments/long-lived/page.mdx)
 
 ## environments delete
 
-Delete an environment by its handle.
+Delete an environment by its ID or handle.
 
 <Note type="warning">
 
@@ -590,7 +589,7 @@ deployments and resources. Production environments cannot be deleted.
       </Table.Cell>
       <Table.Cell>
 
-      The handle of the environment to delete.
+      The ID or handle of the environment to delete.
 
       </Table.Cell>
       <Table.Cell>
@@ -766,7 +765,7 @@ The environment must already have an active deployment. If it doesn't, run [`mcl
       </Table.Cell>
       <Table.Cell>
 
-      The handle of the environment to redeploy.
+      The ID or handle of the environment to redeploy.
 
       </Table.Cell>
       <Table.Cell>
@@ -917,7 +916,7 @@ Start a new build for an environment from its tracked branch. This is the equiva
       </Table.Cell>
       <Table.Cell>
 
-      The handle of the environment to build.
+      The ID or handle of the environment to build.
 
       </Table.Cell>
       <Table.Cell>
