@@ -426,7 +426,7 @@ Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducib
 
 - **Lockfile drift**: The `pnpm-lock.yaml` file was not committed after updating `package.json`.
 - **pnpm version mismatch**: The version of pnpm used locally differs from the one used in Cloud builds.
-- **Native build dependencies**: A package with native binaries fails to build in the Cloud environment.
+- **Native build dependencies**: A package with native binaries fails to build in the Cloud environment. See [Native Module Build Failures](#native-module-build-failures-gyp-err) for solutions.
 - **Registry connectivity issues**: A package registry is unreachable during the build.
 
 ### Retrieve Full Build Logs
@@ -460,6 +460,66 @@ If the logs show a lockfile error, regenerate the lockfile locally:
 1. Run `pnpm install` locally to update the lockfile.
 2. Commit the updated `pnpm-lock.yaml`.
 3. Push the changes to trigger a new deployment.
+
+---
+
+## Native Module Build Failures (gyp ERR!)
+
+If your build fails with an error similar to:
+
+```bash
+gyp ERR! find Python
+You need to install the latest version of Python 3.
+```
+
+or:
+
+```bash
+node-pre-gyp ERR! build error
+make: Entering directory
+```
+
+This happens when a package with native binaries (such as `better-sqlite3`, `bcrypt`, or `sharp`) is in your dependency tree and the Cloud build environment does not have the required build tools (Python, C compiler, or node-gyp).
+
+### Identify the failing package
+
+Check the build logs to find the package name triggering the error. The logs typically show which package's install script failed.
+
+### Move the package to optionalDependencies
+
+If the native package is used only for local development (for example, `better-sqlite3` is used for local SQLite development but not needed in production with PostgreSQL), move it to `optionalDependencies` in your `package.json`:
+
+```json title="package.json"
+{
+  "dependencies": {
+    "@medusajs/medusa": "..."
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^9.0.0"
+  }
+}
+```
+
+For pnpm, you can also configure the `.npmrc` file to skip lifecycle scripts for optional packages and prevent the build from failing:
+
+```bash title=".npmrc"
+optional=true
+```
+
+<Note type="warning">
+
+If you set `ignore-scripts=true` in `.npmrc`, this skips all lifecycle scripts for all packages. Only use this if you have confirmed that skipping scripts does not break other packages in your project.
+
+</Note>
+
+### Monorepo: isolate native dependencies from the backend build
+
+If you're using a monorepo and the native package belongs to a sibling application (for example, a frontend workspace that pulls in `better-sqlite3`), the native package should not affect the Medusa backend build context.
+
+To confirm whether the native package belongs to the Medusa backend or a sibling workspace, check which workspace declares it as a dependency. If the native package is only a dependency of a non-Medusa workspace, consider:
+
+- Moving it to `optionalDependencies` in that workspace's `package.json`.
+- Using your monorepo tool's pruning feature (for example, Turborepo's `turbo prune`) to build the Medusa backend in isolation, so only the backend's dependencies are installed.
 
 ---
 

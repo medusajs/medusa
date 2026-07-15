@@ -146,7 +146,7 @@ export default defineMiddlewares({
 
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
-- `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
+- `matcher`: a string indicating the API route path to apply the middleware on. The string must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
 - `middlewares`: An array of global and route middleware functions.
 - `method`: (optional) By default, a middleware is applied on all HTTP methods for a route. You can specify one or more HTTP methods to apply the middleware to in this option, making it a route middleware.
 
@@ -386,7 +386,7 @@ The global middleware runs first, then the route middleware, and finally the rou
 On top of the previous ordering, Medusa sorts global and route middlewares based on their matcher pattern in the following order:
 
 1. Wildcard matchers. For example, `/custom*`.
-2. Regex matchers. For example, `/custom/(products|collections)`.
+2. Pattern matchers. For example, `/custom/(products|collections)`.
 3. Static matchers without parameters. For example, `/custom`.
 4. Static matchers with parameters. For example, `/custom/:id`.
 
