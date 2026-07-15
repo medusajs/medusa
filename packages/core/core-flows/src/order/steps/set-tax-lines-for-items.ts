@@ -71,16 +71,6 @@ export const setOrderTaxLinesForItemsStep = createStep(
       data
     const orderService = container.resolve<IOrderModuleService>(Modules.ORDER)
 
-    const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
-      await promiseAll([
-        orderService.listOrderShippingMethodTaxLines({
-          shipping_method_id: shipping_tax_lines.map((t) => t.shipping_line_id),
-        }),
-        orderService.listOrderLineItemTaxLines({
-          item_id: item_tax_lines.map((t) => t.line_item_id),
-        }),
-      ])
-
     const itemsTaxLinesData = normalizeItemTaxLinesForOrder(item_tax_lines)
     const shippingTaxLinesData =
       normalizeShippingTaxLinesForOrder(shipping_tax_lines)
@@ -105,6 +95,33 @@ export const setOrderTaxLinesForItemsStep = createStep(
         ? "upsert"
         : "none"
 
+    // Capture the tax lines the compensation may need to restore. A "replace"
+    // spans the whole order (so any entity's stale line can be restored), an
+    // "upsert" only affects the entities referenced in the input, and a "none"
+    // modifies nothing (so there's nothing to capture).
+    const affectedItemIds =
+      itemsOp === "replace" && order.items?.length
+        ? order.items.map((i) => i.id)
+        : item_tax_lines.map((t) => t.line_item_id)
+    const affectedShippingIds =
+      shippingOp === "replace" && order.shipping_methods?.length
+        ? order.shipping_methods.map((s) => s.id)
+        : shipping_tax_lines.map((t) => t.shipping_line_id)
+
+    const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
+      await promiseAll([
+        affectedShippingIds.length
+          ? orderService.listOrderShippingMethodTaxLines({
+              shipping_method_id: affectedShippingIds,
+            })
+          : [],
+        affectedItemIds.length
+          ? orderService.listOrderLineItemTaxLines({
+              item_id: affectedItemIds,
+            })
+          : [],
+      ])
+
     await promiseAll([
       itemsOp === "replace"
         ? orderService.setOrderLineItemTaxLines(order.id, itemsTaxLinesData)
@@ -125,6 +142,8 @@ export const setOrderTaxLinesForItemsStep = createStep(
       order,
       existingLineItemTaxLines,
       existingShippingMethodTaxLines,
+      affectedItemIds,
+      affectedShippingIds,
       itemsOp,
       shippingOp,
     })
@@ -138,6 +157,8 @@ export const setOrderTaxLinesForItemsStep = createStep(
       order,
       existingLineItemTaxLines,
       existingShippingMethodTaxLines,
+      affectedItemIds,
+      affectedShippingIds,
       itemsOp,
       shippingOp,
     } = revertData
@@ -168,20 +189,49 @@ export const setOrderTaxLinesForItemsStep = createStep(
       })
     )
 
-    await promiseAll([
-      // Only undo the entities we actually modified. A "replace" is undone by
-      // restoring the previous full set (which also removes the lines we set).
-      itemsOp === "replace"
-        ? orderService.setOrderLineItemTaxLines(order.id, itemTaxLines)
-        : itemsOp === "upsert" && itemTaxLines.length
-        ? orderService.upsertOrderLineItemTaxLines(itemTaxLines)
-        : Promise.resolve(void 0),
-      shippingOp === "replace"
-        ? orderService.setOrderShippingMethodTaxLines(order.id, shippingTaxLines)
-        : shippingOp === "upsert"
-        ? orderService.upsertOrderShippingMethodTaxLines(shippingTaxLines)
-        : Promise.resolve(void 0),
-    ])
+    // Restore each entity to its pre-step state. Both "replace" and "upsert"
+    // create new tax lines in the forward step, so the compensation must remove
+    // whatever is currently attached before restoring the captured tax lines —
+    // otherwise the created lines would be left behind.
+    const revertItemTaxLines = async () => {
+      if (itemsOp === "replace") {
+        // Whole-order restore: also deletes the lines we set.
+        await orderService.setOrderLineItemTaxLines(order.id, itemTaxLines)
+      } else if (itemsOp === "upsert") {
+        // The forward step's tax lines never carry an `id`, so the "upsert"
+        // only ever inserts new rows (it never updates in place). We therefore
+        // can't undo it by updating rows back; we delete every tax line
+        // currently on the affected items (removing the inserted ones) and
+        // recreate the captured pre-step snapshot.
+        await orderService.deleteOrderLineItemTaxLines({
+          item_id: affectedItemIds,
+        })
+        if (itemTaxLines.length) {
+          await orderService.createOrderLineItemTaxLines(itemTaxLines)
+        }
+      }
+    }
+
+    const revertShippingTaxLines = async () => {
+      if (shippingOp === "replace") {
+        await orderService.setOrderShippingMethodTaxLines(
+          order.id,
+          shippingTaxLines
+        )
+      } else if (shippingOp === "upsert") {
+        // See the note in revertItemTaxLines: the "upsert" only inserts, so we
+        // delete the affected shipping methods' current tax lines and recreate
+        // the captured pre-step snapshot rather than updating rows back.
+        await orderService.deleteOrderShippingMethodTaxLines({
+          shipping_method_id: affectedShippingIds,
+        })
+        if (shippingTaxLines.length) {
+          await orderService.createOrderShippingMethodTaxLines(shippingTaxLines)
+        }
+      }
+    }
+
+    await promiseAll([revertItemTaxLines(), revertShippingTaxLines()])
   }
 )
 
