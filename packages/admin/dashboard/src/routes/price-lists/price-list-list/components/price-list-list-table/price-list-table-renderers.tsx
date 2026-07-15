@@ -1,23 +1,16 @@
 import { HttpTypes } from "@medusajs/types"
-import { registerCellRenderer } from "../../../../../lib/table/cell-renderers"
+import {
+  registerCellRenderer,
+  registerCellResolver,
+} from "../../../../../lib/table/cell-renderers"
 import { getPriceListStatus } from "../../../common/utils"
 import { PriceCountCell } from "./price-count-cell"
-import { DataTableStatusIndicator } from "../../../../../components/data-table/components/data-table-status-cell/data-table-status-cell"
 
-// Status is derived from the raw status plus start/end dates.
-// Use the shrink-to-fit indicator (not the w-full cell) so the column's
-// center alignment can actually center it.
-registerCellRenderer("price_list_status", {
-  render: (_value, row, _column, t) => {
-    const { color, text } = getPriceListStatus(
-      t,
-      row as HttpTypes.AdminPriceList
-    )
-    return (
-      <DataTableStatusIndicator color={color}>{text}</DataTableStatusIndicator>
-    )
-  },
-  align: "center",
+// Status is derived from the raw status plus start/end dates. Value resolver:
+// returns the { color, label } variant; the generic status renderer draws the pill.
+registerCellResolver("price_list_status", (_value, row, t) => {
+  const { color, text } = getPriceListStatus(t, row as HttpTypes.AdminPriceList)
+  return { color, label: text }
 })
 
 // Price override count is fetched per row by PriceCountCell.

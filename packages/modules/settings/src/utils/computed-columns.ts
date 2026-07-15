@@ -321,7 +321,7 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
   {
     id: "status_display",
     name: "Status",
-    renderMode: "promotion_status",
+    renderMode: "status",
     requiredFields: [
       "status",
       "campaign.starts_at",
@@ -333,6 +333,7 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     entities: ["Promotion"],
     defaultVisible: true,
     description: "Promotion status (derived from status and campaign)",
+    metadata: { resolver: "promotion_status" },
     category: "computed",
   },
 

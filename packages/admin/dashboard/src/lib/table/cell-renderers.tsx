@@ -1,5 +1,5 @@
 import React from "react"
-import { Badge, StatusBadge, Tooltip } from "@medusajs/ui"
+import { Badge, Tooltip } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
 import ReactCountryFlag from "react-country-flag"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
@@ -73,6 +73,35 @@ export type RendererRegistry = Map<string, CellRendererDefinition>
 
 const cellRenderers: RendererRegistry = new Map()
 
+/**
+ * A resolver supplies the domain-specific input a *generic, predefined*
+ * renderer needs — either the renderer's expected VALUE (e.g. a status
+ * `{ color, label }`) or a fully custom ReactNode — while the renderer keeps
+ * ownership of the shared presentation (pill markup, empty state, alignment).
+ * A column opts in via `metadata.resolver: "<key>"`. This lets a consumer inject
+ * logic/labels a static config can't express WITHOUT re-implementing the cell.
+ */
+export type CellResolver<TData = any> = (
+  value: any,
+  row: TData,
+  t: TFunction
+) => any
+
+const cellResolvers: Map<string, CellResolver> = new Map()
+
+/**
+ * Register a named resolver that generic renderers can consult via
+ * `column.metadata.resolver`. Overriding an existing key replaces it (lets a
+ * consuming app swap a built-in resolver).
+ */
+export function registerCellResolver(key: string, resolver: CellResolver) {
+  cellResolvers.set(key, resolver)
+}
+
+export function getCellResolver(key?: string): CellResolver | undefined {
+  return key ? cellResolvers.get(key) : undefined
+}
+
 const getNestedValue = (obj: any, path: string) => {
   return path.split(".").reduce((current, key) => current?.[key], obj)
 }
@@ -116,87 +145,80 @@ const CountRenderer: CellRenderer = (value, row, column, t) => {
   return showItemsLabel ? t("general.items", { count: 0 }) : 0
 }
 
-// TODO: if we expect users to use this renderer for their statuses, we need to provide a way for them to pass some
-// sort of registry that passes the context field and resolves the status label and color based on it.
-// Also, use translated value if available and remove hardcoded field conditional
+type StatusColor = "green" | "red" | "blue" | "orange" | "grey" | "purple"
+
+type StatusVariant = {
+  color?: StatusColor
+  /** Literal label. */
+  label?: string
+  /** i18n key; translated with `label` (or the raw value) as fallback. */
+  label_key?: string
+}
+
+const renderStatusPill = (
+  variant: StatusVariant,
+  fallbackLabel: string,
+  t: TFunction
+): React.ReactNode => {
+  const label = variant.label_key
+    ? (t(variant.label_key, variant.label ?? fallbackLabel) as string)
+    : variant.label ?? fallbackLabel
+  return (
+    <DataTableStatusIndicator color={variant.color ?? "grey"}>
+      {label}
+    </DataTableStatusIndicator>
+  )
+}
+
+/**
+ * Generic, data-driven status renderer. Resolution order:
+ * 1. `metadata.resolver` — a registered resolver returning either a variant
+ *    `{ color, label|label_key }` or a custom ReactNode. Use for dynamic
+ *    statuses (derived from the row / runtime) or bespoke pills.
+ * 2. `metadata.status_variants` — a static `value -> { color, label|label_key }`
+ *    map (zero-code path for known enums). `metadata.value_field` reads the
+ *    status off a different field/path when needed.
+ * 3. Neutral grey pill showing the raw value.
+ */
 const StatusRenderer: CellRenderer = (value, row, column, t) => {
-  if (!value) {
+  const metadata = column.metadata ?? {}
+  const rawValue =
+    metadata.value_field !== undefined
+      ? getNestedValue(row, metadata.value_field)
+      : value
+
+  const resolver = getCellResolver(metadata.resolver)
+  if (resolver) {
+    const resolved = resolver(rawValue, row, t)
+    if (resolved === null || resolved === undefined) {
+      return "-"
+    }
+    if (React.isValidElement(resolved)) {
+      return resolved
+    }
+    return renderStatusPill(
+      resolved as StatusVariant,
+      String(rawValue ?? ""),
+      t
+    )
+  }
+
+  const variants = metadata.status_variants as
+    | Record<string, StatusVariant>
+    | undefined
+  if (variants) {
+    const variant = variants[String(rawValue)]
+    if (variant) {
+      return renderStatusPill(variant, String(rawValue), t)
+    }
+  }
+
+  if (rawValue === null || rawValue === undefined || rawValue === "") {
     return "-"
   }
-
-  if (
-    column.field === "status" &&
-    row.status &&
-    (row.handle || row.is_giftcard !== undefined)
-  ) {
-    return <ProductStatusCell status={row.status} />
-  }
-
-  if (column.field === "payment_status" && t) {
-    const { label, color } = getOrderPaymentStatus(t, value)
-    return <StatusBadge color={color}>{label}</StatusBadge>
-  }
-
-  if (column.field === "fulfillment_status" && t) {
-    const { label, color } = getOrderFulfillmentStatus(t, value)
-    return <StatusBadge color={color}>{label}</StatusBadge>
-  }
-
-  // Generic status badge for other status types
-  const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case "active":
-      case "published":
-      case "fulfilled":
-      case "paid":
-        return "green"
-      case "pending":
-      case "proposed":
-      case "processing":
-        return "orange"
-      case "draft":
-        return "grey"
-      case "rejected":
-      case "failed":
-      case "canceled":
-        return "red"
-      default:
-        return "grey"
-    }
-  }
-
-  // Use existing translation keys where available
-  const getTranslatedStatus = (status: string): string => {
-    if (!t) {
-      return status
-    }
-
-    const lowerStatus = status.toLowerCase()
-    switch (lowerStatus) {
-      case "active":
-        return t("general.active", "Active") as string
-      case "published":
-        return t("products.productStatus.published", "Published") as string
-      case "draft":
-        return t("orders.status.draft", "Draft") as string
-      case "pending":
-        return t("orders.status.pending", "Pending") as string
-      case "canceled":
-        return t("orders.status.canceled", "Canceled") as string
-      default:
-        // Try generic status translation with fallback
-        return t(`status.${lowerStatus}`, status) as string
-    }
-  }
-
-  const translatedValue = getTranslatedStatus(value)
-
   return (
-    <DataTableStatusIndicator
-      className="w-[92px]"
-      color={getStatusColor(value)}
-    >
-      {translatedValue}
+    <DataTableStatusIndicator color="grey">
+      {String(rawValue)}
     </DataTableStatusIndicator>
   )
 }
@@ -576,6 +598,20 @@ cellRenderers.set("variants", { render: VariantsRenderer })
 
 // Register order-specific renderers
 cellRenderers.set("display_id", { render: DisplayIdRenderer })
+
+// Core status resolvers, consumed by the generic `status` renderer via a
+// column's `metadata.resolver`. They reuse the same helpers/cells the rest of
+// the admin uses (single source of truth) — product returns a component, the
+// order ones return a { color, label } variant.
+registerCellResolver("product_status", (value) => (
+  <ProductStatusCell status={value} />
+))
+registerCellResolver("order_payment_status", (value, _row, t) => {
+  return value ? getOrderPaymentStatus(t, value) : null
+})
+registerCellResolver("order_fulfillment_status", (value, _row, t) => {
+  return value ? getOrderFulfillmentStatus(t, value) : null
+})
 
 export function getCellRenderer(
   renderType?: string,

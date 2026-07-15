@@ -1,6 +1,7 @@
 import { FieldFilterRules } from "./filter-rules"
 import { ComputedColumnDefinition } from "./computed-columns"
 import { RenderMode } from "./render-mode-mapper"
+import { deduplicate } from "@medusajs/framework/utils"
 
 /**
  * Override configuration for an entity.
@@ -113,6 +114,10 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       order_shipping_country_display: 800,
     },
     nonFilterableFields: ["payment_status", "fulfillment_status"],
+    fieldMetadata: {
+      payment_status: { resolver: "order_payment_status" },
+      fulfillment_status: { resolver: "order_fulfillment_status" },
+    },
   },
   Product: {
     excludeSuffixes: ["_link"],
@@ -131,6 +136,9 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       sales_channels_display: 300,
       variants_count: 400,
       status: 500,
+    },
+    fieldMetadata: {
+      status: { resolver: "product_status" },
     },
   },
   Customer: {
@@ -177,10 +185,8 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       status: 200,
       price_overrides: 300,
     },
-    // The price list status is derived from status + start/end dates, so it
-    // needs the dedicated renderer registered by the price list table.
-    fieldRenderModes: {
-      status: "price_list_status",
+    fieldMetadata: {
+      status: { resolver: "price_list_status" },
     },
   },
   ProductCollection: {
@@ -319,8 +325,13 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       created_at: 400,
       updated_at: 500,
     },
+    // is_disabled would infer as boolean; force the status renderer and route
+    // it through the sales_channel_status resolver.
     fieldRenderModes: {
-      is_disabled: "sales_channel_status",
+      is_disabled: "status",
+    },
+    fieldMetadata: {
+      is_disabled: { resolver: "sales_channel_status" },
     },
   },
   ReturnReason: {
@@ -457,7 +468,11 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     fieldRenderModes: {
       redacted: "api_key_token",
       type: "api_key_type",
-      revoked_at: "api_key_status",
+      revoked_at: "status",
+    },
+    // revoked_at drives active/revoked via the api_key_status resolver.
+    fieldMetadata: {
+      revoked_at: { resolver: "api_key_status" },
     },
   },
 }
@@ -487,10 +502,10 @@ export class EntityOverrideRegistry {
     if (existing) {
       // Merge overrides - new values take precedence
       this.overrides.set(entityName, {
-        excludeFields: [
+        excludeFields: deduplicate([
           ...(existing.excludeFields || []),
           ...(override.excludeFields || []),
-        ],
+        ]),
         excludeSuffixes: override.excludeSuffixes ?? existing.excludeSuffixes,
         excludePrefixes: override.excludePrefixes ?? existing.excludePrefixes,
         defaultVisibleFields:
@@ -503,18 +518,26 @@ export class EntityOverrideRegistry {
           ...(existing.fieldRenderModes || {}),
           ...(override.fieldRenderModes || {}),
         },
-        additionalTypes: [
+        additionalTypes: deduplicate([
           ...(existing.additionalTypes || []),
           ...(override.additionalTypes || []),
-        ],
-        nonFilterableFields: [
+        ]),
+        nonFilterableFields: deduplicate([
           ...(existing.nonFilterableFields || []),
           ...(override.nonFilterableFields || []),
-        ],
-        computedColumns: [
+        ]),
+        nonSortableFields: deduplicate([
+          ...(existing.nonSortableFields || []),
+          ...(override.nonSortableFields || []),
+        ]),
+        fieldMetadata: {
+          ...(existing.fieldMetadata || {}),
+          ...(override.fieldMetadata || {}),
+        },
+        computedColumns: deduplicate([
           ...(existing.computedColumns || []),
           ...(override.computedColumns || []),
-        ],
+        ]),
       })
     } else {
       this.overrides.set(entityName, override)

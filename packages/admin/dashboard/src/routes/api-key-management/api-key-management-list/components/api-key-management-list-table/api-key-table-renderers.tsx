@@ -1,7 +1,9 @@
 import { Badge } from "@medusajs/ui"
-import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
 import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
-import { registerCellRenderer } from "../../../../../lib/table/cell-renderers"
+import {
+  registerCellRenderer,
+  registerCellResolver,
+} from "../../../../../lib/table/cell-renderers"
 import {
   getApiKeyStatusProps,
   getApiKeyTypeProps,
@@ -28,11 +30,8 @@ registerCellRenderer("api_key_type", {
   ),
 })
 
-// Active / revoked status derived from revoked_at.
-registerCellRenderer("api_key_status", {
-  render: (value, _row, _column, t) => {
-    const { color, label } = getApiKeyStatusProps(value, t)
-    return <StatusCell color={color}>{label}</StatusCell>
-  },
-  align: "center",
+// Active / revoked status derived from revoked_at. Value resolver.
+registerCellResolver("api_key_status", (value, _row, t) => {
+  const { color, label } = getApiKeyStatusProps(value, t)
+  return { color, label }
 })

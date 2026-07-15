@@ -1,7 +1,10 @@
 import { HttpTypes } from "@medusajs/types"
 import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/promotion/status-cell"
-import { registerCellRenderer } from "../../../../../lib/table/cell-renderers"
+import {
+  registerCellRenderer,
+  registerCellResolver,
+} from "../../../../../lib/table/cell-renderers"
 
 /**
  * Promotion-specific cell renderers, registered in the GLOBAL registry so
@@ -25,8 +28,7 @@ registerCellRenderer("promotion_method", {
 })
 
 // Status derived from the promotion status + its campaign window/budget.
-registerCellRenderer("promotion_status", {
-  render: (_value, row) => (
-    <StatusCell promotion={row as HttpTypes.AdminPromotion} />
-  ),
-})
+// Component resolver: reuses the shared promotion StatusCell as-is.
+registerCellResolver("promotion_status", (_value, row) => (
+  <StatusCell promotion={row as HttpTypes.AdminPromotion} />
+))
