@@ -7,12 +7,14 @@ const countries: StaticCountry[] = [
     name: "Brazil",
     display_name: "Brazil",
     iso_2: "br",
+    iso_3: "bra",
     num_code: "076",
   },
   {
     name: "Argentina",
     display_name: "Argentina",
     iso_2: "ar",
+    iso_3: "arg",
     num_code: "032",
   },
 ]

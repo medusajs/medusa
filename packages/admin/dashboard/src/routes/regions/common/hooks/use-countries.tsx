@@ -3,6 +3,11 @@ import { json } from "react-router-dom"
 import { StaticCountry } from "../../../../lib/data/countries"
 
 const acceptedOrderKeys = ["name", "code", "display_name", "iso_2"] as const
+type AcceptedOrderKey = (typeof acceptedOrderKeys)[number]
+
+const isAcceptedOrderKey = (key: string): key is AcceptedOrderKey => {
+  return acceptedOrderKeys.includes(key as AcceptedOrderKey)
+}
 
 /**
  * Since countries cannot be retrieved from the API, we need to create a hook
@@ -27,13 +32,17 @@ export const useCountries = ({
     const direction = order.startsWith("-") ? -1 : 1
     const key = order.replace("-", "")
 
-    if (!acceptedOrderKeys.includes(key)) {
+    if (!isAcceptedOrderKey(key)) {
       console.log(`The key ${key} is not a valid order key`)
       throw json(`The key ${key} is not a valid order key`, 500)
     }
 
     const sortKey: keyof RegionCountryDTO =
-      key === "code" || key === "iso_2" ? "iso_2" : "name"
+      key === "code" || key === "iso_2"
+        ? "iso_2"
+        : key === "display_name"
+          ? "display_name"
+          : "name"
 
     data.sort((a, b) => {
       if (a[sortKey] === null && b[sortKey] === null) {
