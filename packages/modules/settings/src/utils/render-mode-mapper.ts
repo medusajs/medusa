@@ -15,8 +15,7 @@ export type RenderMode =
   | "datetime"
   | "boolean"
   | "status"
-  | "badge"
-  | "badge_list"
+  | "badges"
   | "count"
   | "id"
   | "display_id"
@@ -27,10 +26,8 @@ export type RenderMode =
   | "json"
   | "country_code"
   | "address"
-  | "customer_name"
+  | "name"
   | "product_info"
-  | "address_summary"
-  | "sales_channels_list"
   | string
 
 /**

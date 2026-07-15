@@ -106,7 +106,7 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
   {
     id: "customer_display",
     name: "Customer",
-    renderMode: "customer_name",
+    renderMode: "name",
     requiredFields: [
       "customer.first_name",
       "customer.last_name",
@@ -117,11 +117,17 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     defaultVisible: true,
     description: "Customer name and contact information",
     category: "relationship",
+    metadata: {
+      name_source: "customer",
+      fallback_fields: ["customer.email", "customer.phone"],
+      empty_label_key: "customers.guest",
+      empty_label: "Guest",
+    },
   },
   {
     id: "shipping_address_display",
     name: "Shipping Address",
-    renderMode: "address_summary",
+    renderMode: "address",
     requiredFields: ["shipping_address.city", "shipping_address.country_code"],
     optionalFields: [
       "shipping_address.address_1",
@@ -139,7 +145,7 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
   {
     id: "billing_address_display",
     name: "Billing Address",
-    renderMode: "address_summary",
+    renderMode: "address",
     requiredFields: ["billing_address.city", "billing_address.country_code"],
     optionalFields: [
       "billing_address.address_1",
@@ -198,7 +204,7 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
   {
     id: "categories_display",
     name: "Categories",
-    renderMode: "badge_list",
+    renderMode: "badges",
     requiredFields: ["categories.name"],
     optionalFields: [],
     entities: ["Product"],
@@ -213,20 +219,24 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
   {
     id: "sales_channels_display",
     name: "Sales Channels",
-    renderMode: "sales_channels_list",
-    requiredFields: ["sales_channels.*"],
+    renderMode: "badges",
+    requiredFields: ["sales_channels.name"],
     optionalFields: [],
     entities: ["Product"],
     defaultVisible: true,
     description: "Sales channels the product is available in",
     category: "relationship",
+    metadata: {
+      list_field: "sales_channels",
+      display_field: "name",
+    },
   },
 
   // Customer computed columns
   {
     id: "customer_name",
     name: "Name",
-    renderMode: "full_name",
+    renderMode: "name",
     requiredFields: ["first_name", "last_name"],
     optionalFields: [],
     entities: ["Customer"],
@@ -354,7 +364,7 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
   {
     id: "location_address_display",
     name: "Address",
-    renderMode: "address_summary",
+    renderMode: "address",
     requiredFields: ["address.*"],
     optionalFields: [],
     metadata: {

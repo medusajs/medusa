@@ -6,7 +6,6 @@ import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { getCountryByIso2 } from "../data/countries"
 import { ProductCell } from "../../components/table/table-cells/product/product-cell"
 import { CollectionCell } from "../../components/table/table-cells/product/collection-cell"
-import { SalesChannelsCell } from "../../components/table/table-cells/product/sales-channels-cell"
 import { VariantCell } from "../../components/table/table-cells/product/variant-cell"
 import { ProductStatusCell } from "../../components/table/table-cells/product/product-status-cell"
 import { DateCell } from "../../components/table/table-cells/common/date-cell"
@@ -36,8 +35,7 @@ export type BuiltInRenderMode =
   | "handle"
   | "count"
   | "status"
-  | "badge"
-  | "badge_list"
+  | "badges"
   | "date"
   | "datetime"
   | "timestamp"
@@ -53,11 +51,8 @@ export type BuiltInRenderMode =
   | "product_info"
   | "collection"
   | "variants"
-  | "sales_channels_list"
-  | "customer_name"
-  | "full_name"
+  | "name"
   | "address"
-  | "address_summary"
   | "country_code"
   | "display_id"
 
@@ -206,55 +201,59 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
   )
 }
 
-const BadgeListRenderer: CellRenderer = (value, row, column, t) => {
-  // Note: leaving for backwards compatibility, since it is how sales channels for products are visualized in many products tables
-  // across the UI. Ideally we use the resolution below, so we unify how list of values in tables are visualized across the UI.
-  if (column.render_mode === "sales_channels_list") {
-    return <SalesChannelsCell salesChannels={row.sales_channels} />
+/**
+ * Generic badge renderer for a single value or a list. Metadata:
+ * - `list_field`: read the array from `row[list_field]` instead of the cell value.
+ * - `display_field`: label to read off object items (else name/title/value).
+ * - `max_visible`: how many badges to show before collapsing to "+N more" (default 2).
+ */
+const BadgesRenderer: CellRenderer = (value, row, column, t) => {
+  const metadata = column.metadata ?? {}
+  const maxVisible: number =
+    typeof metadata.max_visible === "number" ? metadata.max_visible : 2
+
+  const resolveLabel = (item: any): string => {
+    if (item === null || item === undefined) {
+      return ""
+    }
+    if (typeof item === "string" || typeof item === "number") {
+      return String(item)
+    }
+    if (metadata.display_field) {
+      return item[metadata.display_field] ?? ""
+    }
+    return item.name || item.title || item.value || ""
   }
 
-  let resolvedValue = value
-  const computedMetadata = column.metadata ?? {}
+  const resolved = metadata.list_field ? row[metadata.list_field] : value
 
-  if (computedMetadata.list_field) {
-    resolvedValue = row[computedMetadata.list_field]
+  // Single (scalar/object) value -> one badge.
+  if (!Array.isArray(resolved)) {
+    const label = resolveLabel(resolved)
+    return label ? <Badge size="xsmall">{label}</Badge> : "-"
   }
 
-  // Generic badge list
-  if (!Array.isArray(resolvedValue) || resolvedValue.length === 0) {
+  const items = resolved.filter((item) => item !== null && item !== undefined)
+  if (items.length === 0) {
     return "-"
   }
 
-  const items = resolvedValue.slice(0, 2)
-  const remaining = resolvedValue.length - 2
-
-  const resolveBadgeValue = (item: any) => {
-    if (typeof item === "string") {
-      return item
-    }
-
-    if (Object.keys(computedMetadata).length > 0) {
-      return item[computedMetadata.display_field]
-    }
-
-    return item.name || item.title || item.value || "-"
-  }
+  const visible = items.slice(0, maxVisible)
+  const remaining = items.length - maxVisible
 
   return (
     <div className="flex gap-1">
-      {items.map((item, index) => {
-        return (
-          <Badge key={index} size="xsmall">
-            {resolveBadgeValue(item)}
-          </Badge>
-        )
-      })}
+      {visible.map((item, index) => (
+        <Badge key={index} size="xsmall">
+          {resolveLabel(item)}
+        </Badge>
+      ))}
       {remaining > 0 && (
         <Tooltip
           content={
             <ul>
-              {resolvedValue.slice(2).map((item) => (
-                <li key={item}>{resolveBadgeValue(item)}</li>
+              {items.slice(maxVisible).map((item, index) => (
+                <li key={index}>{resolveLabel(item)}</li>
               ))}
             </ul>
           }
@@ -284,73 +283,92 @@ const VariantsRenderer: CellRenderer = (_, row, _column, _t) => {
   return <VariantCell variants={row.variants} />
 }
 
-// Order-specific renderers
-const CustomerNameRenderer: CellRenderer = (_, row, _column, t) => {
-  if (row.customer?.first_name || row.customer?.last_name) {
-    const fullName = `${row.customer.first_name || ""} ${
-      row.customer.last_name || ""
-    }`.trim()
-    if (fullName) {
-      return fullName
+/**
+ * Generic name renderer. Builds "first last" from `first_name`/`last_name`,
+ * with metadata:
+ * - `name_source`: dotted path to the object holding the name fields (e.g.
+ *   "customer"). Omit to read them off the row itself (e.g. Customer, User).
+ * - `fallback_fields`: ordered dotted paths (relative to the row) to try when
+ *   there is no name (e.g. ["customer.email", "customer.phone"]).
+ * - `empty_label_key` / `empty_label`: i18n key + fallback for the empty case.
+ */
+const NameRenderer: CellRenderer = (_, row, column, t) => {
+  const metadata = column.metadata ?? {}
+  const source = metadata.name_source
+    ? getNestedValue(row, metadata.name_source)
+    : row
+
+  const name = [source?.first_name, source?.last_name]
+    .filter(Boolean)
+    .join(" ")
+    .trim()
+  if (name) {
+    return name
+  }
+
+  const fallbackFields: string[] = metadata.fallback_fields ?? []
+  for (const path of fallbackFields) {
+    const fallbackValue = getNestedValue(row, path)
+    if (fallbackValue) {
+      return fallbackValue
     }
   }
 
-  // Fall back to email
-  if (row.customer?.email) {
-    return row.customer.email
+  if (metadata.empty_label_key && t) {
+    return t(metadata.empty_label_key, metadata.empty_label ?? "-") as string
   }
-
-  // Fall back to phone
-  if (row.customer?.phone) {
-    return row.customer.phone
-  }
-
-  return t ? t("customers.guest", "Guest") : "Guest"
+  return "-"
 }
 
-// Full name for entities that expose first_name/last_name at the top level
-// (e.g. Customer, User).
-const FullNameRenderer: CellRenderer = (_, row, _column, _t) => {
-  const name = [row.first_name, row.last_name].filter(Boolean).join(" ")
-  return name || "-"
-}
+/**
+ * Generic address renderer. Reads the address object from
+ * `metadata.address_field` (dotted path) and formats it. Metadata:
+ * - `address_field` (required): path to the address object on the row.
+ * - `separator`: joins the address parts (default " • ").
+ * Long results truncate with a tooltip showing the full address.
+ */
+const AddressRenderer: CellRenderer = (_, row, column, _t) => {
+  const address: Record<string, string> | undefined = column.metadata
+    ?.address_field
+    ? getNestedValue(row, column.metadata.address_field)
+    : undefined
 
-const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
-  const address: Record<string, string> | undefined = getNestedValue(
-    row,
-    column.metadata?.address_field ?? ""
-  )
-
-  if (!address) {
+  if (!address || typeof address !== "object") {
     return "-"
   }
 
-  const parts: string[] = []
+  const separator: string = column.metadata?.separator ?? " • "
 
+  const parts: string[] = []
   if (address.address_1) {
     parts.push(address.address_1)
   }
-
-  const locationParts: string[] = []
-  if (address.city) {
-    locationParts.push(address.city)
-  }
-  if (address.province) {
-    locationParts.push(address.province)
-  }
-  if (address.postal_code) {
-    locationParts.push(address.postal_code)
+  if (address.address_2) {
+    parts.push(address.address_2)
   }
 
-  if (locationParts.length > 0) {
-    parts.push(locationParts.join(", "))
+  const locality = [address.city, address.province, address.postal_code]
+    .filter(Boolean)
+    .join(", ")
+  if (locality) {
+    parts.push(locality)
   }
 
   if (address.country_code) {
     parts.push(address.country_code.toUpperCase())
   }
 
-  return parts.join(" • ") || "-"
+  const full = parts.join(separator)
+  if (!full) {
+    return "-"
+  }
+
+  const truncated = full.length > 40 ? full.substring(0, 37) + "..." : full
+  return (
+    <Tooltip hidden={truncated.length === full.length} content={full}>
+      <span className="max-w-[220px] truncate">{truncated}</span>
+    </Tooltip>
+  )
 }
 
 const CountryCodeRenderer: CellRenderer = (_, row, column, _t) => {
@@ -526,66 +544,11 @@ const JsonRenderer: CellRenderer = (value, _row, _column, _t) => {
   )
 }
 
-const BadgeRenderer: CellRenderer = (value, _row, _column, _t) => {
-  if (!value) {
-    return "-"
-  }
-
-  return <Badge size="xsmall">{String(value)}</Badge>
-}
-
-// TODO: improve based on how we receive the data, probably targetting row
-const AddressRenderer: CellRenderer = (value, row, column, _t) => {
-  let address = value
-  if (!address && column.field.includes("address")) {
-    address = row[column.field.replace("_display", "")]
-  }
-
-  if (!address || typeof address !== "object") {
-    return "-"
-  }
-
-  const parts: string[] = []
-  if (address.address_1) {
-    parts.push(address.address_1)
-  }
-  if (address.address_2) {
-    parts.push(address.address_2)
-  }
-  if (address.city) {
-    parts.push(address.city)
-  }
-  if (address.province) {
-    parts.push(address.province)
-  }
-  if (address.postal_code) {
-    parts.push(address.postal_code)
-  }
-  if (address.country_code) {
-    parts.push(address.country_code.toUpperCase())
-  }
-
-  if (parts.length === 0) {
-    return "-"
-  }
-
-  const fullAddress = parts.join(", ")
-  const truncated =
-    fullAddress.length > 40 ? fullAddress.substring(0, 37) + "..." : fullAddress
-
-  return (
-    <Tooltip content={fullAddress}>
-      <span className="max-w-[200px] truncate">{truncated}</span>
-    </Tooltip>
-  )
-}
-
 // Register built-in renderers
 cellRenderers.set("text", { render: TextRenderer })
 cellRenderers.set("handle", { render: HandleRenderer })
 cellRenderers.set("count", { render: CountRenderer })
 cellRenderers.set("status", { render: StatusRenderer })
-cellRenderers.set("badge_list", { render: BadgeListRenderer })
 cellRenderers.set("date", { render: DateRenderer })
 cellRenderers.set("timestamp", { render: DateRenderer })
 cellRenderers.set("currency", { render: CurrencyRenderer, align: "right" })
@@ -597,26 +560,22 @@ cellRenderers.set("phone", { render: PhoneRenderer })
 cellRenderers.set("url", { render: UrlRenderer })
 cellRenderers.set("image", { render: ImageRenderer, align: "center" })
 cellRenderers.set("json", { render: JsonRenderer })
-cellRenderers.set("badge", { render: BadgeRenderer, align: "center" })
 cellRenderers.set("datetime", { render: DateRenderer })
-
-// Register product-specific renderers
-cellRenderers.set("product_info", { render: ProductInfoRenderer })
-cellRenderers.set("collection", { render: CollectionRenderer })
-cellRenderers.set("variants", { render: VariantsRenderer })
-cellRenderers.set("sales_channels_list", { render: BadgeListRenderer })
-
-// Register order-specific renderers
-cellRenderers.set("customer_name", { render: CustomerNameRenderer })
-cellRenderers.set("full_name", { render: FullNameRenderer })
-cellRenderers.set("address_summary", { render: AddressSummaryRenderer })
-cellRenderers.set("display_id", { render: DisplayIdRenderer })
-
+cellRenderers.set("badges", { render: BadgesRenderer })
+cellRenderers.set("name", { render: NameRenderer })
 cellRenderers.set("address", { render: AddressRenderer })
 cellRenderers.set("country_code", {
   render: CountryCodeRenderer,
   align: "center",
 })
+
+// Register product-specific renderers
+cellRenderers.set("product_info", { render: ProductInfoRenderer })
+cellRenderers.set("collection", { render: CollectionRenderer })
+cellRenderers.set("variants", { render: VariantsRenderer })
+
+// Register order-specific renderers
+cellRenderers.set("display_id", { render: DisplayIdRenderer })
 
 export function getCellRenderer(
   renderType?: string,
