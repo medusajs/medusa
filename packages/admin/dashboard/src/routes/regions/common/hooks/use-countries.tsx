@@ -2,7 +2,7 @@ import { RegionCountryDTO } from "@medusajs/types"
 import { json } from "react-router-dom"
 import { StaticCountry } from "../../../../lib/data/countries"
 
-const acceptedOrderKeys = ["name", "code"]
+const acceptedOrderKeys = ["name", "code", "display_name", "iso_2"] as const
 
 /**
  * Since countries cannot be retrieved from the API, we need to create a hook
@@ -28,11 +28,12 @@ export const useCountries = ({
     const key = order.replace("-", "")
 
     if (!acceptedOrderKeys.includes(key)) {
-      console.log("The key ${key} is not a valid order key")
+      console.log(`The key ${key} is not a valid order key`)
       throw json(`The key ${key} is not a valid order key`, 500)
     }
 
-    const sortKey: keyof RegionCountryDTO = key === "code" ? "iso_2" : "name"
+    const sortKey: keyof RegionCountryDTO =
+      key === "code" || key === "iso_2" ? "iso_2" : "name"
 
     data.sort((a, b) => {
       if (a[sortKey] === null && b[sortKey] === null) {
