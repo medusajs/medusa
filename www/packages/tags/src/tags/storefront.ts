@@ -156,6 +156,10 @@ export const storefront = [
     "path": "https://docs.medusajs.com/resources/storefront-development/products/list"
   },
   {
+    "title": "Use Product Options in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/products/options"
+  },
+  {
     "title": "Example: Show Sale Price",
     "path": "https://docs.medusajs.com/resources/storefront-development/products/price/examples/sale-price"
   },
@@ -198,45 +202,5 @@ export const storefront = [
   {
     "title": "Connect Your Storefront to Medusa",
     "path": "https://docs.medusajs.com/resources/storefront-development/tips"
-  },
-  {
-    "title": "cart",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/cart"
-  },
-  {
-    "title": "category",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/category"
-  },
-  {
-    "title": "collection",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/collection"
-  },
-  {
-    "title": "customer",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/customer"
-  },
-  {
-    "title": "fulfillment",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/fulfillment"
-  },
-  {
-    "title": "locale",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/locale"
-  },
-  {
-    "title": "order",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/order"
-  },
-  {
-    "title": "payment",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/payment"
-  },
-  {
-    "title": "product",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
-  },
-  {
-    "title": "region",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/region"
   }
 ]

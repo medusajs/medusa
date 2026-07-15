@@ -291,6 +291,24 @@
       }
     }
   },
+  "layout": {
+    "customizeTopbar": "Personalizar barra superior",
+    "customizeSidebar": "Personalizar barra lateral",
+    "customizeSettingsSidebar": "Personalizar barra de configuración",
+    "customizePage": "Personalizar página",
+    "customizeLayout": "Personalizar layout",
+    "viewingPersonalLayout": "Estás viendo un layout personal",
+    "viewingSystemLayout": "Estás viendo un layout predeterminado",
+    "personalView": "Personal",
+    "defaultView": "Predeterminado",
+    "empty": "Vacio",
+    "dropToSectionEnd": "Suelta aquí para mover al final",
+    "dragToReorder": "Arrastra para reordenar",
+    "saveForEveryone": "Guardar para todos",
+    "saveForEveryoneTitle": "Guardar layout para todos",
+    "saveForEveryoneDescription": "Esto actualiza el layout predeterminado para esta página para todos los usuarios que no lo han personalizado. ¿Deseas continuar?",
+    "saveSuccess": "Layout guardado"
+  },
   "dataGrid": {
     "columns": {
       "view": "Ver",
@@ -329,6 +347,7 @@
   },
   "filters": {
     "sortLabel": "Ordenar",
+    "columnsLabel": "Columnas",
     "collapse": {
       "all": "Colapsar todo"
     },
@@ -839,6 +858,56 @@
       }
     }
   },
+  "productOptions": {
+    "domain": "Opciones",
+    "subtitle": "Gestiona las opciones de producto y sus valores asociados.",
+    "values": {
+      "header": "Valores",
+      "list": {
+        "noRecords": "No hay valores para esta opción."
+      },
+      "delete": {
+        "confirmation": "Estás a punto de eliminar el valor de opción \"{{value}}\". Esta acción no puede deshacerse.",
+        "successToast": "El valor de opción se eliminó correctamente."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "No hay productos con esta opción."
+      }
+    },
+    "create": {
+      "header": "Crear opción de producto",
+      "hint": "Crea una nueva opción de producto y gestiona sus valores.",
+      "successToast": "La opción de producto \"{{title}}\" se creó correctamente.",
+      "tabs": {
+        "details": "Detalles",
+        "organize": "Organizar clasificaciones"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Opción exclusiva del producto"
+    },
+    "edit": {
+      "header": "Editar opción de producto",
+      "description": "Edita la opción de producto para actualizar sus detalles y valores asociados.",
+      "successToast": "La opción de producto \"{{title}}\" se actualizó correctamente."
+    },
+    "delete": {
+      "confirmation": "Estás a punto de eliminar la opción de producto \"{{title}}\". Esta acción no puede deshacerse.",
+      "successToast": "La opción de producto se eliminó correctamente."
+    },
+    "fields": {
+      "title": {
+        "label": "Título",
+        "placeholder": "Talla"
+      },
+      "values": {
+        "label": "Valores",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
   "inventory": {
     "domain": "Inventario",
     "subtitle": "Gestiona tus ítems de inventario",
@@ -1124,10 +1193,18 @@
     "transfer": {
       "title": "Transferir propiedad",
       "requestSuccess": "Solicitud de transferencia de pedido enviada a: {{email}}.",
+      "guestSuccess": "Pedido transferido al cliente invitado: {{email}}.",
+      "ownerType": "Tipo de cuenta",
+      "registered": "Registrado",
+      "registeredDescription": "Transferir a un cliente registrado, que debe aceptar la solicitud.",
+      "guest": "Invitado",
+      "guestDescription": "Transferir a un cliente invitado por correo electrónico. Se aplica de inmediato.",
       "currentOwner": "Propietario actual",
       "newOwner": "Nuevo propietario",
+      "newGuestOwner": "Correo electrónico del nuevo propietario",
       "currentOwnerDescription": "El cliente actualmente relacionado con este pedido.",
-      "newOwnerDescription": "El cliente a quien se transferirá este pedido."
+      "newOwnerDescription": "El cliente a quien se transferirá este pedido.",
+      "newGuestOwnerDescription": "El correo electrónico del cliente invitado a quien se transferirá este pedido. Se crea un cliente invitado si no existe."
     },
     "payment": {
       "title": "Pagos",
@@ -1776,6 +1853,17 @@
     },
     "tooltip": {
       "type": "Introduce el tipo de perfil de envío, por ejemplo: Pesado, Sobredimensionado, Solo carga, etc."
+    }
+  },
+  "propertyLabels": {
+    "domain": "Etiquetas de Propiedades",
+    "title": "Etiquetas de Propiedades",
+    "subtitle": "Gestiona etiquetas de propiedades personalizadas para tablas configurables de tus entidades.",
+    "fields": {
+      "module": "Módulo",
+      "model": "Modelo",
+      "propertyCount": "Cantidad de Propiedades",
+      "hasOverrides": "Tiene Sobrescrituras"
     }
   },
   "taxRegions": {

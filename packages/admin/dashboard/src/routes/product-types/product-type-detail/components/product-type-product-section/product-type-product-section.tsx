@@ -34,7 +34,7 @@ export const ProductTypeProductSection = ({
   const { table } = useDataTable({
     columns,
     data: products,
-    count: products?.length || 0,
+    count: count ?? 0,
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
   })

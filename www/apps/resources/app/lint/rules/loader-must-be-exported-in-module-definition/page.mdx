@@ -1,0 +1,79 @@
+---
+sidebar_label: "loader-must-be-exported-in-module-definition"
+---
+
+export const metadata = {
+  title: `loader-must-be-exported-in-module-definition - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that loader files under a module's `loaders` directory are registered in the module's `loaders` array.
+
+## Severity
+
+`warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets loader files under `src/modules/<module>/loaders/`. It reports a loader file that isn't referenced in the `loaders` array of the module's definition in `index.ts`.
+
+The following loader is reported by the rule when it isn't registered in the module definition in `index.ts`:
+
+```ts title="src/modules/blog/loaders/my-loader.ts"
+import { LoaderOptions } from "@medusajs/framework/types"
+
+export default async function myLoader({
+  container,
+}: LoaderOptions) {
+  // ...
+}
+```
+
+Instead, register the loader in the module's `loaders` array in `index.ts`:
+
+```ts title="src/modules/blog/index.ts"
+import { Module } from "@medusajs/framework/utils"
+import BlogModuleService from "./service"
+import myLoader from "./loaders/my-loader"
+
+export default Module("blog", {
+  service: BlogModuleService,
+  loaders: [myLoader],
+})
+```
+
+## Why it's Important
+
+A loader only runs when it's registered in the module's `loaders` array. An unregistered loader file is dead code that never executes, which often points to a forgotten registration.
+
+Learn more in the [Modules documentation](!docs!/learn/fundamentals/modules).
+
+## Fixable
+
+This rule isn't auto-fixable.
+
+## Turn it Off
+
+To turn off this rule, set it to `off` in your ESLint configuration:
+
+```ts title="eslint.config.ts"
+import { defineConfig } from "eslint/config"
+import medusa from "@medusajs/eslint-plugin"
+
+export default defineConfig([
+  ...medusa.configs.recommended,
+  {
+    rules: {
+      "@medusajs/loader-must-be-exported-in-module-definition": "off",
+    },
+  },
+])
+```
+
+Or disable it for a single line using an inline comment:
+
+```ts
+// eslint-disable-next-line @medusajs/loader-must-be-exported-in-module-definition
+export default async function myLoader() {}
+```

@@ -73,14 +73,25 @@ export type DataTableSortableColumnDef = {
   enableSorting?: boolean
 }
 
-export type DataTableHeaderAlignment = 'left' | 'center' | 'right'
+export type DataTableColumnAlignment = 'left' | 'center' | 'right'
+
+/**
+ * @deprecated Use {@link DataTableColumnAlignment} instead.
+ */
+export type DataTableHeaderAlignment = DataTableColumnAlignment
 
 export type DataTableAlignableColumnDef = {
   /**
    * The alignment of the header content.
    * @default 'left'
+   * @deprecated Use `align`, which aligns both the header and the body cell.
    */
-  headerAlign?: DataTableHeaderAlignment
+  headerAlign?: DataTableColumnAlignment
+  /**
+   * The alignment of both the header and the body cell content.
+   * @default 'left'
+   */
+  align?: DataTableColumnAlignment
 }
 
 export type DataTableSortableColumnDefMeta = {

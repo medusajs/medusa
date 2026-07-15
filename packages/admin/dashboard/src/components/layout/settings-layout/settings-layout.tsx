@@ -1,11 +1,13 @@
-import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
-import { clx, Divider, IconButton, Text } from "@medusajs/ui"
-import { Collapsible as RadixCollapsible } from "radix-ui"
-import { Fragment, useEffect, useMemo, useState } from "react"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+import { ArrowUturnLeft } from "@medusajs/icons"
+import { clx, Divider, Text } from "@medusajs/ui"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
 import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../layout-composer"
+import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
@@ -18,6 +20,7 @@ import {
   useRbacRolePermissions,
   useRefundReasonPermissions,
   useRegionPermissions,
+  useResourcePermissions,
   useReturnReasonPermissions,
   useSalesChannelPermissions,
   useStockLocationPermissions,
@@ -51,6 +54,8 @@ const useSettingRoutes = (): INavItem[] => {
   const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
   const { canRead: canReadTaxRegions } = useTaxRegionPermissions()
   const { canRead: canReadStockLocations } = useStockLocationPermissions()
+  const { canRead: canReadPropertyLabels } =
+    useResourcePermissions("property_label")
   const { canRead: canReadStore } = useStorePermissions()
   const { canRead: canReadUsers } = useUserPermissions()
   const { canRead: canReadTranslations } = useTranslationPermissions()
@@ -156,6 +161,14 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
+      ...(canReadPropertyLabels
+        ? [
+            {
+              label: t("propertyLabels.domain", "Property Labels"),
+              to: "/settings/property-labels",
+            },
+          ]
+        : []),
       ...(isTranslationsEnabled && canReadTranslations
         ? [
             {
@@ -179,6 +192,7 @@ const useSettingRoutes = (): INavItem[] => {
       canReadSalesChannels,
       canReadTaxRegions,
       canReadStockLocations,
+      canReadPropertyLabels,
       canReadStore,
       canReadUsers,
     ]
@@ -244,6 +258,13 @@ const getSafeFromValue = (from: string) => {
   return from
 }
 
+const toNavEntries = (items: INavItem[]) =>
+  items.map((item) => (
+    <LayoutComposer.Entry id={`settings-nav:${item.to}`} key={item.to}>
+      <NavItem key={item.to} type="setting" {...item} />
+    </LayoutComposer.Entry>
+  ))
+
 const SettingsSidebar = () => {
   const { getMenu } = useExtension()
 
@@ -251,8 +272,6 @@ const SettingsSidebar = () => {
   const developerRoutes = useDeveloperRoutes()
   const myAccountRoutes = useMyAccountRoutes()
   const extensionRoutes = getMenu("settingsExtensions")
-
-  const { t } = useTranslation()
 
   return (
     <aside className="relative flex flex-1 flex-col justify-between overflow-y-auto">
@@ -264,43 +283,20 @@ const SettingsSidebar = () => {
       </div>
       <div className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col overflow-y-auto">
-          {routes.length > 0 && (
-            <Fragment>
-              <RadixCollapsibleSection
-                label={t("app.nav.settings.general")}
-                items={routes}
-              />
-              <div className="flex items-center justify-center px-3">
-                <Divider variant="dashed" />
-              </div>
-            </Fragment>
-          )}
-          {developerRoutes.length > 0 && (
-            <Fragment>
-              <RadixCollapsibleSection
-                label={t("app.nav.settings.developer")}
-                items={developerRoutes}
-              />
-              <div className="flex items-center justify-center px-3">
-                <Divider variant="dashed" />
-              </div>
-            </Fragment>
-          )}
-          <RadixCollapsibleSection
-            label={t("app.nav.settings.myAccount")}
-            items={myAccountRoutes}
+          <LayoutComposer
+            widgetsZonePrefix="settings.sidebar"
+            preferredLayoutId={CORE_LAYOUT_IDS.SETTINGS_SIDEBAR}
+            hasOutlet={false}
+            disableWidgets
+            customizeId={CUSTOMIZE_IDS.SETTINGS_SIDEBAR}
+            controlSize="small"
+            sections={{
+              general: toNavEntries(routes),
+              developer: toNavEntries(developerRoutes),
+              myAccount: toNavEntries(myAccountRoutes),
+              extensions: toNavEntries(extensionRoutes),
+            }}
           />
-          {extensionRoutes.length > 0 && (
-            <Fragment>
-              <div className="flex items-center justify-center px-3">
-                <Divider variant="dashed" />
-              </div>
-              <RadixCollapsibleSection
-                label={t("app.nav.common.extensions")}
-                items={extensionRoutes}
-              />
-            </Fragment>
-          )}
         </div>
         <div className="bg-ui-bg-subtle sticky bottom-0">
           <UserSection />
@@ -343,40 +339,6 @@ const Header = () => {
         </div>
       </Link>
     </div>
-  )
-}
-
-const RadixCollapsibleSection = ({
-  label,
-  items,
-}: {
-  label: string
-  items: INavItem[]
-}) => {
-  return (
-    <RadixCollapsible.Root defaultOpen className="py-3">
-      <div className="px-3">
-        <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
-          <Text size="small" leading="compact">
-            {label}
-          </Text>
-          <RadixCollapsible.Trigger asChild>
-            <IconButton size="2xsmall" variant="transparent" className="static">
-              <MinusMini className="text-ui-fg-muted" />
-            </IconButton>
-          </RadixCollapsible.Trigger>
-        </div>
-      </div>
-      <RadixCollapsible.Content>
-        <div className="pt-0.5">
-          <nav className="flex flex-col gap-y-0.5">
-            {items.map((setting) => (
-              <NavItem key={setting.to} type="setting" {...setting} />
-            ))}
-          </nav>
-        </div>
-      </RadixCollapsible.Content>
-    </RadixCollapsible.Root>
   )
 }
 

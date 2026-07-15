@@ -11,6 +11,7 @@ import {
   OrderStatus,
   OrderWorkflowEvents,
   PaymentCollectionStatus,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -178,7 +179,7 @@ export const cancelOrderWorkflow = createWorkflow(
       return order.items?.map((i) => i.id)
     })
 
-    const [refundedPayments] = parallelize(
+    const [refundedPayments, deletedReservationIds] = parallelize(
       refundCapturedPaymentsWorkflow.runAsStep({
         input: { order_id: order.id, created_by: input.canceled_by },
       }),
@@ -189,6 +190,21 @@ export const cancelOrderWorkflow = createWorkflow(
         data: { id: order.id },
       })
     )
+
+    const reservationDeletedEvents = transform(
+      { deletedReservationIds, order },
+      ({ deletedReservationIds, order }) => {
+        return (deletedReservationIds ?? []).map((id) => ({
+          id,
+          order_id: order.id,
+        }))
+      }
+    )
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.DELETED,
+      data: reservationDeletedEvents,
+    }).config({ name: "emit-reservation-item-deleted" })
 
     const refundedPaymentIds = transform(
       { refundedPayments },

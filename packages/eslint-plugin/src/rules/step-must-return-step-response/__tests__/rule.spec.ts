@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("step-must-return-step-response", rule, {
   valid: [
@@ -66,6 +61,60 @@ ruleTester.run("step-must-return-step-response", rule, {
         import { createStep, StepResponse as SR } from "@medusajs/framework/workflows-sdk"
         createStep("s", (input) => {
           return new SR({ ok: true })
+        })
+      `,
+    },
+    // `StepResponse.skip()` is a valid step return.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.skip()
+        })
+      `,
+    },
+    // `StepResponse.skip()` via an aliased import.
+    {
+      code: `
+        import { createStep, StepResponse as SR } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return SR.skip()
+        })
+      `,
+    },
+    // `StepResponse.skip()` with a TS type assertion (`as any`) is still valid.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.skip() as any
+        })
+      `,
+    },
+    // `StepResponse.permanentFailure()` is a valid step return.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.permanentFailure("failed")
+        })
+      `,
+    },
+    // `StepResponse.permanentFailure()` via an aliased import.
+    {
+      code: `
+        import { createStep, StepResponse as SR } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return SR.permanentFailure("failed")
+        })
+      `,
+    },
+    // `new StepResponse(...)` with a TS type assertion is still valid.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return new StepResponse({ ok: true }) as any
         })
       `,
     },
@@ -198,6 +247,22 @@ ruleTester.run("step-must-return-step-response", rule, {
         class Other {}
         createStep("s", (input) => {
           return new StepResponse(new Other())
+        })
+      `,
+    },
+    // A non-\`skip\` static call on StepResponse is not a valid return — wrapped.
+    {
+      code: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return StepResponse.from(input)
+        })
+      `,
+      errors: [{ messageId: "missingStepResponse" }],
+      output: `
+        import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+        createStep("s", (input) => {
+          return new StepResponse(StepResponse.from(input))
         })
       `,
     },

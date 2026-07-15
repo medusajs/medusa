@@ -1,0 +1,41 @@
+---
+sidebar_label: "scheduled-job-default-export-async"
+---
+
+export const metadata = {
+  title: `scheduled-job-default-export-async - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires the default-exported scheduled job function to be async.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/jobs` directory. It reports a default-exported scheduled job that isn't an async function.
+
+The following code is reported by the rule:
+
+```ts title="src/jobs/sync-products.ts"
+export default function syncProducts() {}
+```
+
+Instead, make the job function async:
+
+```ts title="src/jobs/sync-products.ts"
+export default async function syncProducts() {}
+```
+
+## Why it's Important
+
+Scheduled jobs receive the Medusa container and are always awaited by Medusa. Making the job async ensures Medusa can wait for its work to finish before continuing.
+
+Learn more in the [Scheduled Jobs documentation](!docs!/learn/fundamentals/scheduled-jobs).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

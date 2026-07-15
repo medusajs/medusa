@@ -1,13 +1,13 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useCollection } from "../../../hooks/api/collections"
-import { useExtension } from "../../../providers/extension-provider"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
 import { collectionLoader } from "./loader"
-import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const CollectionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -19,8 +19,6 @@ export const CollectionDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !collection) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -30,20 +28,25 @@ export const CollectionDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("product_collection.details.after"),
-        before: getWidgets("product_collection.details.before"),
-      }}
-      showJSON
-      showMetadata
-      showRequiredPermissions
+    <LayoutComposer
+      widgetsZonePrefix="product_collection.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={collection}
-    >
-      <CollectionGeneralSection collection={collection} />
-      <PermissionGuard permission="product:read">
-        <CollectionProductSection collection={collection} />
-      </PermissionGuard>
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="CollectionGeneralSection">
+              <CollectionGeneralSection collection={collection} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CollectionProductSection">
+              <PermissionGuard permission="product:read">
+                <CollectionProductSection collection={collection} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(collection, { permissions: false })}
+          </>
+        ),
+      }}
+    />
   )
 }

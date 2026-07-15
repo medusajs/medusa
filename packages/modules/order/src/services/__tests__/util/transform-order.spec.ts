@@ -63,6 +63,7 @@ describe("formatOrder: item metadata resolution", function () {
     const result = formatOrder(rawOrder, { entity: orderEntity }) as any
 
     expect(result.items[0].metadata).toEqual(lineItemMetadata)
+    expect(result.items[0].line_item_metadata).toEqual(lineItemMetadata)
   })
 
   it("should use order_item metadata when it has been explicitly set", function () {
@@ -74,6 +75,7 @@ describe("formatOrder: item metadata resolution", function () {
     const result = formatOrder(rawOrder, { entity: orderEntity }) as any
 
     expect(result.items[0].metadata).toEqual(orderItemMetadata)
+    expect(result.items[0].line_item_metadata).toEqual(lineItemMetadata)
   })
 
   it("should use null when both order_item and order_line_item metadata are null", function () {
@@ -85,6 +87,7 @@ describe("formatOrder: item metadata resolution", function () {
     const result = formatOrder(rawOrder, { entity: orderEntity }) as any
 
     expect(result.items[0].metadata).toBeNull()
+    expect(result.items[0].line_item_metadata).toBeNull()
   })
 
   it("should place the OrderItem record in items[].detail", function () {
@@ -100,5 +103,6 @@ describe("formatOrder: item metadata resolution", function () {
     expect(item.detail.fulfilled_quantity).toBeDefined()
     expect(item.id).toBe("ordli_1") // top-level id is from OrderLineItem
     expect(item.detail.id).toBe("orditem_1") // detail id is from OrderItem
+    expect(item.line_item_metadata).toBeNull()
   })
 })

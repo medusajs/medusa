@@ -7,6 +7,10 @@ import {
   InjectionZone,
   NESTED_ROUTE_POSITIONS,
 } from "@medusajs/admin-shared"
+import {
+  LayoutDefinition,
+  SectionWidgetMap,
+} from "../components/layout-composer/types"
 import * as React from "react"
 import {
   createBrowserRouter,
@@ -20,6 +24,7 @@ import { getRouteMap } from "./routes/get-route.map"
 import { createRouteMap, getRouteExtensions } from "./routes/utils"
 import { wrapRouteLoaders } from "./routes/wrap-route-loaders"
 import { sortMenuItemsByRank } from "./utils/sort-menu-items-by-rank"
+import { CORE_LAYOUTS } from "../components/layout-composer/core-layouts"
 import {
   ConfigExtension,
   ConfigField,
@@ -27,15 +32,18 @@ import {
   DashboardPlugin,
   DisplayExtension,
   DisplayMap,
+  ExtensionApi,
   FormExtension,
   FormField,
   FormFieldExtension,
   FormFieldMap,
   FormZoneMap,
   I18nExtension,
+  LayoutMap,
   MenuItemExtension,
   MenuItemKey,
   MenuMap,
+  WidgetExtension,
   WidgetMap,
   ZoneStructure,
 } from "./types"
@@ -53,6 +61,7 @@ const OPTIONAL_LAST_SEGMENT_MATCH = /\/([^/])+\?$/
 
 export class DashboardApp {
   private widgets: WidgetMap
+  private layouts: LayoutMap
   private menus: MenuMap
   private fields: FormFieldMap
   private configs: ConfigFieldMap
@@ -63,6 +72,7 @@ export class DashboardApp {
 
   constructor({ plugins }: DashboardAppProps) {
     this.widgets = this.populateWidgets(plugins)
+    this.layouts = this.populateLayouts(plugins)
     this.menus = this.populateMenus(plugins)
 
     const { coreRoutes, settingsRoutes } = this.populateRoutes(plugins)
@@ -98,7 +108,7 @@ export class DashboardApp {
   }
 
   private populateWidgets(plugins: DashboardPlugin[]) {
-    const registry = new Map<InjectionZone, React.ComponentType[]>()
+    const registry = new Map<InjectionZone, WidgetExtension[]>()
 
     plugins.forEach((plugin) => {
       const widgets = plugin.widgetModule.widgets
@@ -111,8 +121,22 @@ export class DashboardApp {
           if (!registry.has(zone)) {
             registry.set(zone, [])
           }
-          registry.get(zone)!.push(widget.Component)
+          registry.get(zone)!.push(widget)
         })
+      })
+    })
+
+    return registry
+  }
+
+  private populateLayouts(plugins: DashboardPlugin[]) {
+    const registry = new Map<string, LayoutDefinition>()
+
+    CORE_LAYOUTS.forEach((layout) => registry.set(layout.id, layout))
+
+    plugins.forEach((plugin) => {
+      plugin.layoutModule?.layouts?.forEach((layout) => {
+        registry.set(layout.id, layout)
       })
     })
 
@@ -434,8 +458,75 @@ export class DashboardApp {
     return this.menus.get(path) || []
   }
 
-  private getWidgets(zone: InjectionZone) {
-    return this.widgets.get(zone) || []
+  private getWidgets(zone: InjectionZone): React.ComponentType[] {
+    return (this.widgets.get(zone) || []).map((w) => w.Component)
+  }
+
+  private getLayout(layoutId: string): LayoutDefinition | undefined {
+    return this.layouts.get(layoutId)
+  }
+
+  /**
+   * Returns widgets for a given base zone grouped by layout section.
+   * The legacy `.before`/`.after` ordering suffixes are stripped and
+   * ignored. Widgets are returned inregistration order and will be
+   * assigned a default order of 0 in the LayoutComposer.
+   */
+  private getWidgetsForSections(
+    route: string,
+    sections: string[]
+  ): SectionWidgetMap {
+    const result: SectionWidgetMap = {}
+
+    for (const [zone, extensions] of this.widgets.entries()) {
+      if (!zone.startsWith(route)) {
+        continue
+      }
+
+      const suffix = zone
+        .slice(route.length + 1)
+        .replace(/\.?(before|after)$/, "")
+
+      const mainSection = sections.includes("main") ? "main" : sections[0]
+      const section = suffix || mainSection
+
+      if (!result[section]) {
+        result[section] = []
+      }
+
+      extensions.forEach((ext, i) => {
+        // `ext.widgetId` is the build-time stable id (author id or file hash).
+        // The positional `${zone}:${i}` is only a defensive fallback for
+        // widgets registered without one (e.g. legacy/unbuilt bundles).
+        const sourceId = ext.widgetId ?? `${zone}:${i}`
+        result[section].push({
+          Component: ext.Component,
+          // The id intentionally omits the section so a widget keeps its
+          // identity (and saved preference) when its zone moves to a different
+          // section of the same route.
+          widgetId: `widget:${sourceId}`,
+        })
+      })
+    }
+
+    // Two widgets resolving to the same id (e.g. one source file injected into
+    // two zones) would collide as React keys, sortable ids, and preference
+    // keys. Suffix later occurrences deterministically so each entry stays
+    // addressable. Deduped across all sections — not per-section — since ids no
+    // longer carry their section, so the same source injected into two
+    // different sections would otherwise produce identical ids.
+    const seen = new Map<string, number>()
+    for (const section of Object.keys(result)) {
+      for (const entry of result[section]) {
+        const count = seen.get(entry.widgetId) ?? 0
+        seen.set(entry.widgetId, count + 1)
+        if (count > 0) {
+          entry.widgetId = `${entry.widgetId}#${count + 1}`
+        }
+      }
+    }
+
+    return result
   }
 
   private getFormFields(
@@ -468,10 +559,12 @@ export class DashboardApp {
     return this.i18nResources
   }
 
-  get api() {
+  get api(): ExtensionApi {
     return {
       getMenu: this.getMenu.bind(this),
       getWidgets: this.getWidgets.bind(this),
+      getLayout: this.getLayout.bind(this),
+      getWidgetsForSections: this.getWidgetsForSections.bind(this),
       getFormFields: this.getFormFields.bind(this),
       getFormConfigs: this.getFormConfigs.bind(this),
       getDisplays: this.getDisplays.bind(this),

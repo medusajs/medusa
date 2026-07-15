@@ -21,6 +21,7 @@ export const sidebar = [
         type: "category",
         title: "Tips",
         autogenerate_path: "/tips",
+        initialOpen: true,
       },
       {
         type: "category",
@@ -135,6 +136,11 @@ export const sidebar = [
             type: "link",
             title: "Manage Categories",
             path: "/products/categories",
+          },
+          {
+            type: "link",
+            title: "Manage Product Options",
+            path: "/products/options",
           },
           {
             type: "link",

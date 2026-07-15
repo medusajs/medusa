@@ -13,21 +13,18 @@ import { useNavigate } from "react-router-dom"
 
 import { DataTable } from "../../../../../components/data-table"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
-import { SingleColumnPage } from "../../../../../components/layout/pages"
 import {
   useCustomerGroups,
   useDeleteCustomerGroupLazy,
 } from "../../../../../hooks/api"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { useExtension } from "../../../../../providers/extension-provider"
 import { useCustomerGroupPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 10
 
 export const CustomerGroupListTable = () => {
   const { t } = useTranslation()
-  const { getWidgets } = useExtension()
   const { canCreate, canUpdate, canDelete } = useCustomerGroupPermissions()
 
   const { q, order, offset, created_at, updated_at } = useQueryParams([
@@ -62,44 +59,37 @@ export const CustomerGroupListTable = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("customer_group.list.before"),
-        after: getWidgets("customer_group.list.after"),
-      }}
-    >
-      <Container className="overflow-hidden p-0">
-        <DataTable
-          data={customer_groups}
-          columns={columns}
-          filters={filters}
-          heading={t("customerGroups.domain")}
-          rowCount={count}
-          getRowId={(row) => row.id}
-          rowHref={(row) => `/customer-groups/${row.id}`}
-          action={
-            canCreate
-              ? {
-                  label: t("actions.create"),
-                  to: "/customer-groups/create",
-                }
-              : undefined
-          }
-          emptyState={{
-            empty: {
-              heading: t("customerGroups.list.empty.heading"),
-              description: t("customerGroups.list.empty.description"),
-            },
-            filtered: {
-              heading: t("customerGroups.list.filtered.heading"),
-              description: t("customerGroups.list.filtered.description"),
-            },
-          }}
-          pageSize={PAGE_SIZE}
-          isLoading={isPending}
-        />
-      </Container>
-    </SingleColumnPage>
+    <Container className="overflow-hidden p-0">
+      <DataTable
+        data={customer_groups}
+        columns={columns}
+        filters={filters}
+        heading={t("customerGroups.domain")}
+        rowCount={count}
+        getRowId={(row) => row.id}
+        rowHref={(row) => `/customer-groups/${row.id}`}
+        action={
+          canCreate
+            ? {
+                label: t("actions.create"),
+                to: "/customer-groups/create",
+              }
+            : undefined
+        }
+        emptyState={{
+          empty: {
+            heading: t("customerGroups.list.empty.heading"),
+            description: t("customerGroups.list.empty.description"),
+          },
+          filtered: {
+            heading: t("customerGroups.list.filtered.heading"),
+            description: t("customerGroups.list.filtered.description"),
+          },
+        }}
+        pageSize={PAGE_SIZE}
+        isLoading={isPending}
+      />
+    </Container>
   )
 }
 

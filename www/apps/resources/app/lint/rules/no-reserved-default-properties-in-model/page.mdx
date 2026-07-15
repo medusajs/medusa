@@ -1,0 +1,50 @@
+---
+sidebar_label: "no-reserved-default-properties-in-model"
+---
+
+export const metadata = {
+  title: `no-reserved-default-properties-in-model - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows redefining the reserved default properties `created_at`, `updated_at`, and `deleted_at` in `model.define`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets data model files in your project's `src/modules` directory. It reports a `created_at`, `updated_at`, or `deleted_at` property in a `model.define` schema, since Medusa adds these automatically.
+
+The following code is reported by the rule:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  created_at: model.dateTime(),
+})
+```
+
+Instead, remove the reserved property:
+
+```ts title="src/modules/blog/models/post.ts"
+import { model } from "@medusajs/framework/utils"
+
+export const Post = model.define("post", {
+  id: model.id().primaryKey(),
+})
+```
+
+## Why it's Important
+
+Medusa automatically adds `created_at`, `updated_at`, and `deleted_at` to every data model. Redefining them in your schema is redundant and can conflict with the auto-added columns.
+
+Learn more in the [Data Models documentation](!docs!/learn/fundamentals/data-models).
+
+## Fixable
+
+This rule is auto-fixable. Run the linter with the `--fix` option to apply the fix automatically.

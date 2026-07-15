@@ -103,7 +103,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -126,7 +126,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -170,7 +170,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 3,
               backoff: 5000,
@@ -213,7 +213,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: 5,
@@ -232,16 +232,23 @@ describe("RedisEventBusService", () => {
           metadata: { eventGroupId: "test-group-1" },
         }
 
-        const [builtEvent] = (eventBus as any).buildEvents([event], options)
-
         await eventBus.emit(event, options)
 
         expect(queue.addBulk).toHaveBeenCalledTimes(0)
         expect(redis.rpush).toHaveBeenCalledTimes(1)
         expect(redis.rpush).toHaveBeenCalledWith(
           "staging:test-group-1",
-          JSON.stringify(builtEvent)
+          expect.any(String)
         )
+
+        const stagedEvent = JSON.parse(redis.rpush.mock.calls[0][1])
+        expect(stagedEvent.data.metadata).toEqual(
+          expect.objectContaining({
+            eventGroupId: "test-group-1",
+            created_at: expect.any(String),
+          })
+        )
+        expect(stagedEvent.data.metadata.published_at).toBeUndefined()
       })
 
       it("should successfully group, release and clear events", async () => {
@@ -294,16 +301,20 @@ describe("RedisEventBusService", () => {
           options
         )
 
+        const stagedGroup1Event = redis.rpush.mock.calls.find(
+          (call) => call[0] === "staging:test-group-1"
+        )![1]
+        const stagedGroup2Events = redis.rpush.mock.calls
+          .filter((call) => call[0] === "staging:test-group-2")
+          .flatMap((call) => call.slice(1))
+
         redis.lrange = jest.fn((key) => {
           if (key === "staging:test-group-1") {
-            return Promise.resolve([JSON.stringify(testGroup1Event)])
+            return Promise.resolve([stagedGroup1Event])
           }
 
           if (key === "staging:test-group-2") {
-            return Promise.resolve([
-              JSON.stringify(testGroup2Event),
-              JSON.stringify(testGroup2Event2),
-            ])
+            return Promise.resolve(stagedGroup2Events)
           }
 
           return
@@ -315,7 +326,20 @@ describe("RedisEventBusService", () => {
         await eventBus.releaseGroupedEvents("test-group-1")
 
         expect(queue.addBulk).toHaveBeenCalledTimes(1)
-        expect(queue.addBulk).toHaveBeenCalledWith([testGroup1Event])
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          expect.objectContaining({
+            name: testGroup1Event.name,
+            data: {
+              data: testGroup1Event.data.data,
+              metadata: expect.objectContaining({
+                eventGroupId: "test-group-1",
+                created_at: expect.any(String),
+                published_at: expect.any(Date),
+              }),
+            },
+            opts: testGroup1Event.opts,
+          }),
+        ])
         expect(redis.unlink).toHaveBeenCalledTimes(1)
         expect(redis.unlink).toHaveBeenCalledWith("staging:test-group-1")
 
@@ -327,8 +351,30 @@ describe("RedisEventBusService", () => {
 
         expect(queue.addBulk).toHaveBeenCalledTimes(1)
         expect(queue.addBulk).toHaveBeenCalledWith([
-          testGroup2Event,
-          testGroup2Event2,
+          expect.objectContaining({
+            name: testGroup2Event.name,
+            data: {
+              data: testGroup2Event.data.data,
+              metadata: expect.objectContaining({
+                eventGroupId: "test-group-2",
+                created_at: expect.any(String),
+                published_at: expect.any(Date),
+              }),
+            },
+            opts: testGroup2Event.opts,
+          }),
+          expect.objectContaining({
+            name: testGroup2Event2.name,
+            data: {
+              data: testGroup2Event2.data.data,
+              metadata: expect.objectContaining({
+                eventGroupId: "test-group-2",
+                created_at: expect.any(String),
+                published_at: expect.any(Date),
+              }),
+            },
+            opts: testGroup2Event2.opts,
+          }),
         ])
         expect(redis.unlink).toHaveBeenCalledTimes(1)
         expect(redis.unlink).toHaveBeenCalledWith("staging:test-group-2")
@@ -361,7 +407,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -388,7 +434,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -416,7 +462,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -454,7 +500,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -495,7 +541,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -536,7 +582,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -564,7 +610,7 @@ describe("RedisEventBusService", () => {
         expect(queue.addBulk).toHaveBeenCalledWith([
           {
             name: "eventName",
-            data: { data: { hi: "1234" }, metadata: undefined },
+            data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
             opts: {
               attempts: 1,
               removeOnComplete: true,
@@ -594,7 +640,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName",
-              data: { data: { hi: "1234" }, metadata: undefined },
+              data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -634,7 +680,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName1",
-              data: { data: { id: "1" }, metadata: undefined },
+              data: { data: { id: "1" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -643,7 +689,7 @@ describe("RedisEventBusService", () => {
             },
             {
               name: "eventName2",
-              data: { data: { id: "2" }, metadata: undefined },
+              data: { data: { id: "2" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -652,7 +698,7 @@ describe("RedisEventBusService", () => {
             },
             {
               name: "eventName3",
-              data: { data: { id: "3" }, metadata: undefined },
+              data: { data: { id: "3" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -691,7 +737,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName",
-              data: { data: { hi: "1234" }, metadata: undefined },
+              data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -719,7 +765,7 @@ describe("RedisEventBusService", () => {
           expect(queue.addBulk).toHaveBeenCalledWith([
             {
               name: "eventName",
-              data: { data: { hi: "1234" }, metadata: undefined },
+              data: { data: { hi: "1234" }, metadata: { created_at: expect.any(Date), published_at: expect.any(Date) } },
               opts: {
                 attempts: 1,
                 removeOnComplete: true,
@@ -788,15 +834,18 @@ describe("RedisEventBusService", () => {
             metadata: { eventGroupId: "test-group-priority" },
           }
 
-          const [builtEvent] = (eventBus as any).buildEvents([event], {
-            priority: 75,
-          })
-
           eventBus.subscribe("grouped-event", () => Promise.resolve())
+
+          await eventBus.emit(event, { priority: 75 })
+
+          const stagedEvent = redis.rpush.mock.calls.find(
+            (call) => call[0] === "staging:test-group-priority"
+          )![1]
+          const builtEvent = JSON.parse(stagedEvent)
 
           redis.lrange = jest.fn((key) => {
             if (key === "staging:test-group-priority") {
-              return Promise.resolve([JSON.stringify(builtEvent)])
+              return Promise.resolve([stagedEvent])
             }
             return Promise.resolve([])
           })
@@ -805,7 +854,20 @@ describe("RedisEventBusService", () => {
           await eventBus.releaseGroupedEvents("test-group-priority")
 
           expect(queue.addBulk).toHaveBeenCalledTimes(1)
-          expect(queue.addBulk).toHaveBeenCalledWith([builtEvent])
+          expect(queue.addBulk).toHaveBeenCalledWith([
+            expect.objectContaining({
+              name: builtEvent.name,
+              data: {
+                data: builtEvent.data.data,
+                metadata: expect.objectContaining({
+                  eventGroupId: "test-group-priority",
+                  created_at: expect.any(String),
+                  published_at: expect.any(Date),
+                }),
+              },
+              opts: builtEvent.opts,
+            }),
+          ])
           expect(builtEvent.opts.priority).toBe(75)
         })
 
@@ -906,6 +968,9 @@ describe("RedisEventBusService", () => {
           {
             name: "eventWithoutSubscribers",
             data: { test: "data" },
+            metadata: {
+              created_at: expect.any(Date),
+            },
           },
           { isGrouped: false }
         )
@@ -970,11 +1035,13 @@ describe("RedisEventBusService", () => {
 
         await eventBus.emit(event, options)
 
-        const [builtEvent] = (eventBus as any).buildEvents([event], options)
+        const stagedEvent = redis.rpush.mock.calls.find(
+          (call) => call[0] === "staging:test-group-no-sub-2"
+        )![1]
 
         redis.lrange = jest.fn((key) => {
           if (key === "staging:test-group-no-sub-2") {
-            return Promise.resolve([JSON.stringify(builtEvent)])
+            return Promise.resolve([stagedEvent])
           }
           return Promise.resolve([])
         })
@@ -993,6 +1060,10 @@ describe("RedisEventBusService", () => {
         expect(callInterceptorsSpy).toHaveBeenCalledWith(
           expect.objectContaining({
             name: "grouped-event-no-sub-2",
+            metadata: expect.objectContaining({
+              eventGroupId: "test-group-no-sub-2",
+              created_at: expect.any(String),
+            }),
           }),
           {
             isGrouped: true,
@@ -1036,6 +1107,33 @@ describe("RedisEventBusService", () => {
         )
 
         expect(test).toEqual(["success"])
+      })
+
+      it("should parse published_at and created_at as Dates after JSON serialization", async () => {
+        const publishedAt = "2026-06-20T12:00:00.000Z"
+        const createdAt = "2026-06-20T11:00:00.000Z"
+        let receivedPublishedAt: unknown
+        let receivedCreatedAt: unknown
+
+        eventBus.subscribe("eventName", (event) => {
+          receivedPublishedAt = event.metadata?.published_at
+          receivedCreatedAt = event.metadata?.created_at
+          return Promise.resolve()
+        })
+
+        await eventBus.worker_({
+          name: "eventName",
+          data: {
+            data: { test: 1 },
+            metadata: { published_at: publishedAt, created_at: createdAt },
+          },
+          opts: { attempts: 1 },
+        } as any)
+
+        expect(receivedPublishedAt).toBeInstanceOf(Date)
+        expect(receivedPublishedAt).toEqual(new Date(publishedAt))
+        expect(receivedCreatedAt).toBeInstanceOf(Date)
+        expect(receivedCreatedAt).toEqual(new Date(createdAt))
       })
 
       it("should process event with failing subscribers", async () => {

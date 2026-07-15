@@ -31,16 +31,22 @@ type ValidationMap = {
 
 function getApiRoutePath(filename: string): string | null {
   const segments = getApiRouteSegments(filename)
-  if (!segments) return null
+  if (!segments) {
+    return null
+  }
   return "/" + segments.join("/")
 }
 
 function findMiddlewaresFile(filename: string): string | null {
   const apiRoot = findApiRoot(filename)
-  if (!apiRoot) return null
+  if (!apiRoot) {
+    return null
+  }
   for (const base of MIDDLEWARE_BASENAMES) {
     const candidate = `${apiRoot}/${base}`
-    if (fs.existsSync(candidate)) return candidate
+    if (fs.existsSync(candidate)) {
+      return candidate
+    }
   }
   return null
 }
@@ -57,7 +63,9 @@ function matcherToRegex(matcher: string): RegExp {
     if (c === ":") {
       // skip param name
       i++
-      while (i < matcher.length && /[A-Za-z0-9_]/.test(matcher[i])) i++
+      while (i < matcher.length && /[A-Za-z0-9_]/.test(matcher[i])) {
+        i++
+      }
       out += "[^/]+"
       continue
     }
@@ -93,7 +101,11 @@ function collectValidationFromMiddlewaresFile(
   }
   let ast: ReturnType<typeof parse>
   try {
-    ast = parse(source, { jsx: filePath.endsWith("x"), loc: false, range: false })
+    ast = parse(source, {
+      jsx: filePath.endsWith("x"),
+      loc: false,
+      range: false,
+    })
   } catch {
     return null
   }
@@ -104,7 +116,9 @@ function collectValidationFromMiddlewaresFile(
   const defineMiddlewaresNames = new Set<string>()
 
   for (const node of ast.body) {
-    if (node.type !== "ImportDeclaration") continue
+    if (node.type !== "ImportDeclaration") {
+      continue
+    }
     if (
       typeof node.source.value !== "string" ||
       node.source.value !== FRAMEWORK_HTTP_SOURCE
@@ -132,7 +146,9 @@ function collectValidationFromMiddlewaresFile(
   const matchable = routePathToMatchable(routePath)
 
   const extractMethods = (node: any): string[] => {
-    if (!node) return []
+    if (!node) {
+      return []
+    }
     if (node.type === "Literal" && typeof node.value === "string") {
       return [node.value.toUpperCase()]
     }
@@ -149,7 +165,9 @@ function collectValidationFromMiddlewaresFile(
   }
 
   const handleRouteEntry = (entry: any): void => {
-    if (!entry || entry.type !== "ObjectExpression") return
+    if (!entry || entry.type !== "ObjectExpression") {
+      return
+    }
     let matcher: string | null = null
     let methods: string[] = []
     let middlewares: any[] = []
@@ -162,9 +180,7 @@ function collectValidationFromMiddlewaresFile(
         continue
       }
       const keyName =
-        prop.key.type === "Identifier"
-          ? prop.key.name
-          : String(prop.key.value)
+        prop.key.type === "Identifier" ? prop.key.name : String(prop.key.value)
       if (keyName === "matcher") {
         if (
           prop.value.type === "Literal" &&
@@ -180,7 +196,9 @@ function collectValidationFromMiddlewaresFile(
         }
       }
     }
-    if (!matcher) return
+    if (!matcher) {
+      return
+    }
 
     let regex: RegExp
     try {
@@ -188,25 +206,47 @@ function collectValidationFromMiddlewaresFile(
     } catch {
       return
     }
-    if (!regex.test(matchable)) return
+    if (!regex.test(matchable)) {
+      return
+    }
 
     const targets = methods.length ? methods : ["*"]
     let hasBody = false
     let hasQuery = false
     for (const mw of middlewares) {
-      if (!mw || mw.type !== "CallExpression") continue
-      if (mw.callee.type !== "Identifier") continue
-      if (bodyValidatorNames.has(mw.callee.name)) hasBody = true
-      if (queryValidatorNames.has(mw.callee.name)) hasQuery = true
+      if (!mw || mw.type !== "CallExpression") {
+        continue
+      }
+      if (mw.callee.type !== "Identifier") {
+        continue
+      }
+      if (bodyValidatorNames.has(mw.callee.name)) {
+        hasBody = true
+      }
+      if (queryValidatorNames.has(mw.callee.name)) {
+        hasQuery = true
+      }
     }
-    if (hasBody) for (const m of targets) result.body.add(m)
-    if (hasQuery) for (const m of targets) result.query.add(m)
+    if (hasBody) {
+      for (const m of targets) {
+        result.body.add(m)
+      }
+    }
+    if (hasQuery) {
+      for (const m of targets) {
+        result.query.add(m)
+      }
+    }
   }
 
   const walk = (node: unknown): void => {
-    if (!node || typeof node !== "object") return
+    if (!node || typeof node !== "object") {
+      return
+    }
     if (Array.isArray(node)) {
-      for (const child of node) walk(child)
+      for (const child of node) {
+        walk(child)
+      }
       return
     }
     const n = node as { type?: string; [k: string]: unknown }
@@ -237,7 +277,9 @@ function collectValidationFromMiddlewaresFile(
       }
     }
     for (const key of Object.keys(n)) {
-      if (key === "parent" || key === "loc" || key === "range") continue
+      if (key === "parent" || key === "loc" || key === "range") {
+        continue
+      }
       walk(n[key])
     }
   }
@@ -249,7 +291,9 @@ function getHandlerFunction(
   node: TSESTree.ExportNamedDeclaration
 ): { fn: TSESTree.Node; method: string } | null {
   const decl = node.declaration
-  if (!decl) return null
+  if (!decl) {
+    return null
+  }
   if (decl.type === AST_NODE_TYPES.VariableDeclaration) {
     for (const d of decl.declarations) {
       if (
@@ -276,7 +320,10 @@ function getHandlerFunction(
 
 function getFirstParamName(
   fn: TSESTree.Node
-): { name: string; pattern: false } | { node: TSESTree.ObjectPattern; pattern: true } | null {
+):
+  | { name: string; pattern: false }
+  | { node: TSESTree.ObjectPattern; pattern: true }
+  | null {
   if (
     fn.type !== AST_NODE_TYPES.ArrowFunctionExpression &&
     fn.type !== AST_NODE_TYPES.FunctionExpression &&
@@ -285,7 +332,9 @@ function getFirstParamName(
     return null
   }
   const first = fn.params[0]
-  if (!first) return null
+  if (!first) {
+    return null
+  }
   if (first.type === AST_NODE_TYPES.Identifier) {
     return { name: first.name, pattern: false }
   }
@@ -317,23 +366,33 @@ export const rule = createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     const filename = context.filename
-    if (!filename || filename.startsWith("<")) return {}
+    if (!filename || filename.startsWith("<")) {
+      return {}
+    }
     const base = path.basename(filename)
     if (base !== "route.ts" && base !== "route.js" && base !== "route.tsx") {
       return {}
     }
     const routePath = getApiRoutePath(filename)
-    if (!routePath) return {}
+    if (!routePath) {
+      return {}
+    }
 
     const middlewaresFile = findMiddlewaresFile(filename)
-    if (!middlewaresFile) return {}
+    if (!middlewaresFile) {
+      return {}
+    }
 
     const validation = collectValidationFromMiddlewaresFile(
       middlewaresFile,
       routePath
     )
-    if (!validation) return {}
-    if (validation.body.size === 0 && validation.query.size === 0) return {}
+    if (!validation) {
+      return {}
+    }
+    if (validation.body.size === 0 && validation.query.size === 0) {
+      return {}
+    }
 
     const methodApplies = (set: Set<string>, method: string): boolean =>
       set.has("*") || set.has(method)
@@ -347,9 +406,13 @@ export const rule = createRule<[], MessageIds>({
     return {
       ExportNamedDeclaration(node) {
         const handler = getHandlerFunction(node)
-        if (!handler) return
+        if (!handler) {
+          return
+        }
         const param = getFirstParamName(handler.fn)
-        if (!param || param.pattern) return
+        if (!param || param.pattern) {
+          return
+        }
         handlerFns.push({
           fn: handler.fn,
           paramName: param.name,
@@ -361,7 +424,9 @@ export const rule = createRule<[], MessageIds>({
           const reqName = h.paramName
           const flagBody = methodApplies(validation.body, h.method)
           const flagQuery = methodApplies(validation.query, h.method)
-          if (!flagBody && !flagQuery) continue
+          if (!flagBody && !flagQuery) {
+            continue
+          }
           const visit = (node: TSESTree.Node): void => {
             if (
               node.type === AST_NODE_TYPES.MemberExpression &&
@@ -387,18 +452,18 @@ export const rule = createRule<[], MessageIds>({
               }
             }
             for (const key of Object.keys(node) as Array<keyof typeof node>) {
-              if (key === "parent") continue
+              if (key === "parent") {
+                continue
+              }
               const value = (node as unknown as Record<string, unknown>)[
                 key as string
               ]
-              if (!value) continue
+              if (!value) {
+                continue
+              }
               if (Array.isArray(value)) {
                 for (const child of value) {
-                  if (
-                    child &&
-                    typeof child === "object" &&
-                    "type" in child
-                  ) {
+                  if (child && typeof child === "object" && "type" in child) {
                     visit(child as TSESTree.Node)
                   }
                 }

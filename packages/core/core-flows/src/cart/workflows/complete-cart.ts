@@ -11,6 +11,7 @@ import {
   Modules,
   OrderStatus,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -77,6 +78,37 @@ export const completeCartWorkflowId = "complete-cart"
  * You can use this workflow within your own customizations or custom workflows, allowing you to wrap custom logic around completing a cart.
  * For example, in the [Subscriptions recipe](https://docs.medusajs.com/resources/recipes/subscriptions/examples/standard#create-workflow),
  * this workflow is used within another workflow that creates a subscription order.
+ *
+ * ## Payment Validation
+ *
+ * When completing a cart, this workflow validates the cart's payment sessions, but it doesn't validate payment amounts.
+ *
+ * The workflow requires the cart's payment collection to have at least one payment session in a processable status: `pending`,
+ * `requires_more`, `authorized`, `captured`, or `pending_authorization` (used for asynchronous or deferred authorization, such as
+ * bank transfers). If the payment collection hasn't been initiated, or no payment session is in a processable status, the workflow
+ * throws an error.
+ *
+ * The workflow doesn't compare the authorized or captured amount against the cart's total. It neither requires the amount to equal
+ * the cart's total nor enforces a minimum amount. The amount that's authorized or captured is the payment session's own amount, which
+ * is set to the cart's total when the payment collection is created or refreshed. So, if the cart changes after its payment collection
+ * is created without the payment collection being refreshed, the workflow authorizes or captures the payment session's existing amount
+ * and records it in the order's transactions as-is.
+ *
+ * If the cart's total is zero and covered by credit lines, the workflow can complete the cart without a payment session.
+ *
+ * ### Don't Mutate the Cart in Hooks
+ *
+ * Don't use this workflow's hooks (such as the `validate` hook) to mutate the cart's line items, shipping methods, or totals.
+ * The workflow retrieves the cart once at the beginning, before any hook runs, and builds the order from that snapshot. It doesn't
+ * re-retrieve the cart or refresh the payment collection afterwards. So, a mutation made in a hook has two consequences that leave
+ * the order and payment inconsistent with the change:
+ *
+ * - The created order is built from the initial cart snapshot, so the mutation isn't reflected in the order.
+ * - As explained in the previous section, the authorized or captured amount is the payment session's own amount, which was set to the
+ * cart's total when the payment collection was created or refreshed. So, the payment amount doesn't account for the mutation either.
+ *
+ * If you need to change the cart before completing it, do so in a separate step or workflow that runs before `completeCartWorkflow`,
+ * and refresh the cart's payment collection so that the payment session's amount matches the new total.
  *
  * ## Cart Completion Idempotency
  *
@@ -298,7 +330,7 @@ export const completeCartWorkflowId = "complete-cart"
  *
  * Complete a cart and place an order.
  *
- * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+ * @property hooks.validate - This hook is executed before the order is created and the payment is authorized. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution. Don't use this hook to mutate the cart's line items or totals, as explained in the Don't Mutate the Cart in Hooks section.
  */
 export const completeCartWorkflow = createWorkflow(
   {
@@ -594,7 +626,7 @@ export const completeCartWorkflow = createWorkflow(
         }
       )
 
-      parallelize(
+      const [, , createdReservations] = parallelize(
         createRemoteLinkStep(linksToCreate),
         updateCartsStep([updateCompletedAt]),
         reserveInventoryStep(formatedInventoryItems),
@@ -607,6 +639,21 @@ export const completeCartWorkflow = createWorkflow(
           },
         })
       )
+
+      const reservationCreatedEvents = transform(
+        { createdReservations, createdOrder },
+        ({ createdReservations, createdOrder }) => {
+          return (createdReservations ?? []).map((reservation) => ({
+            id: reservation.id,
+            order_id: createdOrder.id,
+          }))
+        }
+      )
+
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
 
       /**
        * @ignore

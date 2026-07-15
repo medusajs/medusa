@@ -29,7 +29,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "unique": true,
+          "unique": false,
           "length": null,
           "precision": null,
           "scale": null,
@@ -120,7 +120,7 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -136,7 +136,7 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -152,7 +152,7 @@
         },
         "deleted_at": {
           "name": "deleted_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -171,64 +171,55 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "constraint": false,
           "keyName": "IDX_rbac_policy_deleted_at",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_policy_deleted_at\" ON public.rbac_policy USING btree (deleted_at) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "key"
-          ],
+          "columnNames": [],
           "composite": false,
           "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_policy_deleted_at\" ON \"rbac_policy\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "IDX_rbac_policy_key_unique",
-          "unique": true,
-          "primary": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_rbac_policy_key_unique\" ON public.rbac_policy USING btree (key) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "operation"
-          ],
+          "columnNames": [],
           "composite": false,
           "constraint": false,
-          "keyName": "IDX_rbac_policy_operation",
+          "primary": false,
           "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_policy_operation\" ON public.rbac_policy USING btree (operation) WHERE (deleted_at IS NULL)"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_policy_key_unique\" ON \"rbac_policy\" (\"key\") WHERE deleted_at IS NULL"
         },
         {
-          "columnNames": [
-            "resource"
-          ],
-          "composite": false,
-          "constraint": false,
           "keyName": "IDX_rbac_policy_resource",
-          "unique": false,
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
           "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_policy_resource\" ON public.rbac_policy USING btree (resource) WHERE (deleted_at IS NULL)"
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_policy_resource\" ON \"rbac_policy\" (\"resource\") WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_rbac_policy_operation",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_policy_operation\" ON \"rbac_policy\" (\"operation\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "rbac_policy_pkey",
           "columnNames": [
             "id"
           ],
           "composite": false,
-          "constraint": false,
-          "keyName": "rbac_policy_pkey",
-          "unique": true,
-          "primary": true
+          "constraint": true,
+          "primary": true,
+          "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {},
-      "nativeEnums": {},
-      "comment": null
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -255,7 +246,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "unique": true,
+          "unique": false,
           "length": null,
           "precision": null,
           "scale": null,
@@ -298,7 +289,7 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -314,7 +305,7 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -330,7 +321,7 @@
         },
         "deleted_at": {
           "name": "deleted_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -349,42 +340,37 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "constraint": false,
           "keyName": "IDX_rbac_role_deleted_at",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_deleted_at\" ON public.rbac_role USING btree (deleted_at) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "name"
-          ],
+          "columnNames": [],
           "composite": false,
           "constraint": false,
-          "keyName": "IDX_rbac_role_name_unique",
-          "unique": true,
           "primary": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_rbac_role_name_unique\" ON public.rbac_role USING btree (name) WHERE (deleted_at IS NULL)"
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_deleted_at\" ON \"rbac_role\" (\"deleted_at\") WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_rbac_role_name_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_role_name_unique\" ON \"rbac_role\" (\"name\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "rbac_role_pkey",
           "columnNames": [
             "id"
           ],
           "composite": false,
-          "constraint": false,
-          "keyName": "rbac_role_pkey",
-          "unique": true,
-          "primary": true
+          "constraint": true,
+          "primary": true,
+          "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {},
-      "nativeEnums": {},
-      "comment": null
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -411,7 +397,201 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "unique": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "inherited_role_id": {
+          "name": "inherited_role_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "now()",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "rbac_role_inheritance",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_rbac_role_inheritance_role_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_role_id\" ON \"rbac_role_inheritance\" (\"role_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_inheritance_inherited_role_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_inherited_role_id\" ON \"rbac_role_inheritance\" (\"inherited_role_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_inheritance_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_deleted_at\" ON \"rbac_role_inheritance\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_inheritance_role_id_inherited_role_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_role_inheritance_role_id_inherited_role_id_unique\" ON \"rbac_role_inheritance\" (\"role_id\", \"inherited_role_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "rbac_role_inheritance_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "rbac_role_inheritance_role_id_foreign": {
+          "constraintName": "rbac_role_inheritance_role_id_foreign",
+          "columnNames": [
+            "role_id"
+          ],
+          "localTableName": "public.rbac_role_inheritance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rbac_role",
+          "updateRule": "cascade"
+        },
+        "rbac_role_inheritance_inherited_role_id_foreign": {
+          "constraintName": "rbac_role_inheritance_inherited_role_id_foreign",
+          "columnNames": [
+            "inherited_role_id"
+          ],
+          "localTableName": "public.rbac_role_inheritance",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rbac_role",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "role_id": {
+          "name": "role_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
           "length": null,
           "precision": null,
           "scale": null,
@@ -454,7 +634,7 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -470,7 +650,7 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -486,7 +666,7 @@
         },
         "deleted_at": {
           "name": "deleted_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -505,92 +685,80 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "constraint": false,
-          "keyName": "IDX_rbac_role_parent_deleted_at",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_parent_deleted_at\" ON public.rbac_role_parent USING btree (deleted_at) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "parent_id"
-          ],
-          "composite": false,
-          "constraint": false,
-          "keyName": "IDX_rbac_role_parent_parent_id",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_parent_parent_id\" ON public.rbac_role_parent USING btree (parent_id) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "role_id"
-          ],
-          "composite": false,
-          "constraint": false,
           "keyName": "IDX_rbac_role_parent_role_id",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_parent_role_id\" ON public.rbac_role_parent USING btree (role_id) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "role_id",
-            "parent_id"
-          ],
-          "composite": true,
+          "columnNames": [],
+          "composite": false,
           "constraint": false,
-          "keyName": "IDX_rbac_role_parent_role_id_parent_id_unique",
-          "unique": true,
           "primary": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_rbac_role_parent_role_id_parent_id_unique\" ON public.rbac_role_parent USING btree (role_id, parent_id) WHERE (deleted_at IS NULL)"
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_parent_role_id\" ON \"rbac_role_parent\" (\"role_id\") WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_rbac_role_parent_parent_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_parent_parent_id\" ON \"rbac_role_parent\" (\"parent_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_parent_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_parent_deleted_at\" ON \"rbac_role_parent\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_parent_role_id_parent_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_role_parent_role_id_parent_id_unique\" ON \"rbac_role_parent\" (\"role_id\", \"parent_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "rbac_role_parent_pkey",
           "columnNames": [
             "id"
           ],
           "composite": false,
-          "constraint": false,
-          "keyName": "rbac_role_parent_pkey",
-          "unique": true,
-          "primary": true
+          "constraint": true,
+          "primary": true,
+          "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "rbac_role_parent_parent_id_foreign": {
-          "columnNames": [
-            "parent_id"
-          ],
-          "constraintName": "rbac_role_parent_parent_id_foreign",
-          "localTableName": "public.rbac_role_parent",
-          "referencedTableName": "public.rbac_role",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "updateRule": "cascade",
-          "deleteRule": "cascade"
-        },
         "rbac_role_parent_role_id_foreign": {
+          "constraintName": "rbac_role_parent_role_id_foreign",
           "columnNames": [
             "role_id"
           ],
-          "constraintName": "rbac_role_parent_role_id_foreign",
           "localTableName": "public.rbac_role_parent",
-          "referencedTableName": "public.rbac_role",
           "referencedColumnNames": [
             "id"
           ],
-          "updateRule": "cascade",
-          "deleteRule": "cascade"
+          "referencedTableName": "public.rbac_role",
+          "updateRule": "cascade"
+        },
+        "rbac_role_parent_parent_id_foreign": {
+          "constraintName": "rbac_role_parent_parent_id_foreign",
+          "columnNames": [
+            "parent_id"
+          ],
+          "localTableName": "public.rbac_role_parent",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rbac_role",
+          "updateRule": "cascade"
         }
       },
-      "nativeEnums": {},
-      "comment": null
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -617,7 +785,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "unique": true,
+          "unique": false,
           "length": null,
           "precision": null,
           "scale": null,
@@ -660,7 +828,7 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -676,7 +844,7 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -692,7 +860,7 @@
         },
         "deleted_at": {
           "name": "deleted_at",
-          "type": "timestamptz(6)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -711,92 +879,80 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
-          "composite": false,
-          "constraint": false,
-          "keyName": "IDX_rbac_role_policy_deleted_at",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_policy_deleted_at\" ON public.rbac_role_policy USING btree (deleted_at) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "policy_id"
-          ],
-          "composite": false,
-          "constraint": false,
-          "keyName": "IDX_rbac_role_policy_policy_id",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_policy_policy_id\" ON public.rbac_role_policy USING btree (policy_id) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "role_id"
-          ],
-          "composite": false,
-          "constraint": false,
           "keyName": "IDX_rbac_role_policy_role_id",
-          "unique": false,
-          "primary": false,
-          "expression": "CREATE INDEX \"IDX_rbac_role_policy_role_id\" ON public.rbac_role_policy USING btree (role_id) WHERE (deleted_at IS NULL)"
-        },
-        {
-          "columnNames": [
-            "role_id",
-            "policy_id"
-          ],
-          "composite": true,
+          "columnNames": [],
+          "composite": false,
           "constraint": false,
-          "keyName": "IDX_rbac_role_policy_role_id_policy_id_unique",
-          "unique": true,
           "primary": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_rbac_role_policy_role_id_policy_id_unique\" ON public.rbac_role_policy USING btree (role_id, policy_id) WHERE (deleted_at IS NULL)"
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_policy_role_id\" ON \"rbac_role_policy\" (\"role_id\") WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_rbac_role_policy_policy_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_policy_policy_id\" ON \"rbac_role_policy\" (\"policy_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_policy_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_rbac_role_policy_deleted_at\" ON \"rbac_role_policy\" (\"deleted_at\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_rbac_role_policy_role_id_policy_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_rbac_role_policy_role_id_policy_id_unique\" ON \"rbac_role_policy\" (\"role_id\", \"policy_id\") WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "rbac_role_policy_pkey",
           "columnNames": [
             "id"
           ],
           "composite": false,
-          "constraint": false,
-          "keyName": "rbac_role_policy_pkey",
-          "unique": true,
-          "primary": true
+          "constraint": true,
+          "primary": true,
+          "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "rbac_role_policy_policy_id_foreign": {
-          "columnNames": [
-            "policy_id"
-          ],
-          "constraintName": "rbac_role_policy_policy_id_foreign",
-          "localTableName": "public.rbac_role_policy",
-          "referencedTableName": "public.rbac_policy",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "updateRule": "cascade",
-          "deleteRule": "no action"
-        },
         "rbac_role_policy_role_id_foreign": {
+          "constraintName": "rbac_role_policy_role_id_foreign",
           "columnNames": [
             "role_id"
           ],
-          "constraintName": "rbac_role_policy_role_id_foreign",
           "localTableName": "public.rbac_role_policy",
-          "referencedTableName": "public.rbac_role",
           "referencedColumnNames": [
             "id"
           ],
-          "updateRule": "cascade",
-          "deleteRule": "cascade"
+          "referencedTableName": "public.rbac_role",
+          "updateRule": "cascade"
+        },
+        "rbac_role_policy_policy_id_foreign": {
+          "constraintName": "rbac_role_policy_policy_id_foreign",
+          "columnNames": [
+            "policy_id"
+          ],
+          "localTableName": "public.rbac_role_policy",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rbac_policy",
+          "updateRule": "cascade"
         }
       },
-      "nativeEnums": {},
-      "comment": null
+      "nativeEnums": {}
     }
   ],
   "nativeEnums": {}

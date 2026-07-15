@@ -290,6 +290,12 @@ const priceSet = await pricingModule.addPrices({
 
 In this example, you create a shipping option whose default price is `$10`. When the total of the cart or order using this shipping option is greater than `$100`, the shipping option's price becomes free.
 
+<Note title="Price rules apply to flat-rate options only">
+
+Price rules only affect shipping options whose `price_type` is `flat`. For options with a `price_type` of `calculated`, the fulfillment provider determines the price during checkout, so Medusa ignores any price rules you set. To offer free shipping above a threshold, use a flat-rate shipping option.
+
+</Note>
+
 ### How is the Price Rule Applied?
 
 The [price calculation](../price-calculation/page.mdx) mechanism considers a price applicable when the resource that this price is in matches the specified rules.
@@ -310,6 +316,12 @@ For example, a [cart object](!api!/store#carts_cart_schema) has an `item_total` 
 ```
 
 The shipping option's price is applied when the cart's `item_total` is greater than or equal to `$100`.
+
+<Note title="What item_total represents">
+
+The cart's `item_total` is the sum of its line-item totals after discounts and including taxes. It doesn't include shipping, so it can differ from the total shown to the customer at checkout. Set the rule's `value` based on the items' total, not the cart's grand total.
+
+</Note>
 
 You can also apply the rule on nested relations and properties. For example, to apply a shipping option's price based on the customer's group, you can apply a rule on the `customer.group.id` attribute:
 

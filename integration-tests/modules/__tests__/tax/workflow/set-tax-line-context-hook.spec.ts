@@ -61,9 +61,7 @@ medusaIntegrationTestRunner({
        * region.
        */
       const spyOnGetTaxLines = () => {
-        return jest
-          .spyOn(taxModuleService, "getTaxLines")
-          .mockResolvedValue([])
+        return jest.spyOn(taxModuleService, "getTaxLines").mockResolvedValue([])
       }
 
       describe("updateTaxLinesWorkflow (cart)", () => {
@@ -123,7 +121,6 @@ medusaIntegrationTestRunner({
           )
           expect(receivedInput).toHaveProperty("shipping_methods")
         })
-
       })
 
       describe("upsertTaxLinesWorkflow (cart)", () => {
@@ -194,6 +191,87 @@ medusaIntegrationTestRunner({
           expect(calculationContext.additional_context).toEqual(
             additionalContext
           )
+        })
+
+        it("forwards shipping method names to the tax provider for full-order calculations", async () => {
+          const order = await orderModuleService.createOrders({
+            currency_code: "usd",
+            email: "test@medusajs.com",
+            shipping_address: {
+              first_name: "Test",
+              last_name: "Test",
+              address_1: "Test",
+              city: "Test",
+              country_code: "us",
+              postal_code: "12345",
+            },
+            items: [{ quantity: 1, unit_price: 5000, title: "Test item" }],
+            shipping_methods: [
+              {
+                name: "Standard Shipping",
+                amount: 1000,
+                data: {},
+              },
+            ],
+          })
+
+          const getTaxLinesSpy = spyOnGetTaxLines()
+
+          await updateOrderTaxLinesWorkflow(appContainer).run({
+            input: { order_id: order.id, force_tax_calculation: true },
+            throwOnError: true,
+          })
+
+          expect(getTaxLinesSpy).toHaveBeenCalled()
+          const [, calculationContext] = getTaxLinesSpy.mock.calls[0]
+          expect(calculationContext.shipping_methods).toEqual([
+            expect.objectContaining({
+              name: "Standard Shipping",
+            }),
+          ])
+        })
+
+        it("forwards shipping method names to the tax provider for partial shipping calculations", async () => {
+          const order = await orderModuleService.createOrders({
+            currency_code: "usd",
+            email: "test@medusajs.com",
+            shipping_address: {
+              first_name: "Test",
+              last_name: "Test",
+              address_1: "Test",
+              city: "Test",
+              country_code: "us",
+              postal_code: "12345",
+            },
+            items: [{ quantity: 1, unit_price: 5000, title: "Test item" }],
+            shipping_methods: [
+              {
+                name: "Express Shipping",
+                amount: 1500,
+                data: {},
+              },
+            ],
+          })
+
+          const shippingMethod = order.shipping_methods![0]
+          const getTaxLinesSpy = spyOnGetTaxLines()
+
+          await updateOrderTaxLinesWorkflow(appContainer).run({
+            input: {
+              order_id: order.id,
+              shipping_method_ids: [shippingMethod.id],
+              force_tax_calculation: true,
+            },
+            throwOnError: true,
+          })
+
+          expect(getTaxLinesSpy).toHaveBeenCalled()
+          const [, calculationContext] = getTaxLinesSpy.mock.calls[0]
+          expect(calculationContext.shipping_methods).toEqual([
+            expect.objectContaining({
+              name: "Express Shipping",
+            }),
+          ])
         })
 
         it("exposes the order, items and shipping_methods to the hook", async () => {

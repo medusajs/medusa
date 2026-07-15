@@ -21,17 +21,15 @@ import {
   AdminBatchUpdateVariantInventoryItem,
   AdminBatchVariantImages,
   AdminCreateProduct,
-  AdminCreateProductOption,
   AdminCreateProductVariant,
   AdminCreateVariantInventoryItem,
-  AdminGetProductOptionParams,
   AdminGetProductOptionsParams,
   AdminGetProductParams,
   AdminGetProductsParams,
   AdminGetProductVariantParams,
   AdminImportProducts,
+  AdminLinkProductOptions,
   AdminUpdateProduct,
-  AdminUpdateProductOption,
   AdminUpdateProductVariant,
   AdminUpdateVariantInventoryItem,
   CreateProduct,
@@ -395,22 +393,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
-  // Note: New endpoint in v2
-  {
-    method: ["GET"],
-    matcher: "/admin/products/:id/options/:option_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetProductOptionParams,
-        QueryConfig.retrieveOptionConfig
-      ),
-    ],
-  },
   {
     method: ["POST"],
-    matcher: "/admin/products/:id/options",
+    matcher: "/admin/products/:id/options/batch",
     middlewares: [
-      validateAndTransformBody(AdminCreateProductOption),
+      validateAndTransformBody(AdminLinkProductOptions),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
@@ -419,48 +406,11 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     policies: [
       {
         resource: Entities.product_option,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/products/:id/options/:option_id",
-    middlewares: [
-      validateAndTransformBody(AdminUpdateProductOption),
-      validateAndTransformQuery(
-        AdminGetProductParams,
-        QueryConfig.retrieveProductQueryConfig
-      ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_option,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
-    ],
-  },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/products/:id/options/:option_id",
-    middlewares: [
-      validateAndTransformQuery(
-        AdminGetProductParams,
-        QueryConfig.retrieveProductQueryConfig
-      ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_option,
-        operation: PolicyOperation.delete,
+        operation: [
+          PolicyOperation.delete,
+          PolicyOperation.create,
+          PolicyOperation.update,
+        ],
       },
       {
         resource: Entities.product,

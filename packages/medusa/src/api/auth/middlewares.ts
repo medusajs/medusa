@@ -25,28 +25,35 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/auth/session",
-    middlewares: [authenticate("*", ["session"])],
+    middlewares: [authenticate("*", ["session"], { allowUnregistered: true })],
   },
   {
     method: ["POST"],
     matcher: "/auth/token/refresh",
-    middlewares: [authenticate("*", "bearer", { allowUnregistered: true })],
+    middlewares: [
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/auth/mfa/challenges/:id/verify",
-    middlewares: [validateAndTransformBody(AuthMfaVerifyChallengeRequest)],
+    middlewares: [
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+      validateAndTransformBody(AuthMfaVerifyChallengeRequest),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/auth/mfa/factors",
-    middlewares: [authenticate("*", ["session", "bearer"])],
+    middlewares: [
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/auth/mfa/factors",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaCreateFactorRequest),
     ],
   },
@@ -54,7 +61,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/factors/:id/verify",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaVerifyFactorRequest),
     ],
   },
@@ -62,7 +69,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/auth/mfa/factors/:id",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaDisableFactorRequest),
     ],
   },
@@ -70,7 +77,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/mfa/recovery-codes",
     middlewares: [
-      authenticate("*", ["session", "bearer"]),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
     ],
   },
@@ -104,23 +111,26 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/auth/:actor_type/:auth_provider/verification/request",
+    matcher: "/auth/:actor_type/:auth_provider/update",
+    middlewares: [validateScopeProviderAssociation(), validateToken()],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/verification/request",
     middlewares: [
-      validateScopeProviderAssociation(),
+      authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(VerificationRequest),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/auth/:actor_type/:auth_provider/verification/confirm",
+    matcher: "/auth/verification/confirm",
     middlewares: [
-      validateScopeProviderAssociation(),
+      authenticate("*", ["session", "bearer"], {
+        allowUnregistered: true,
+        allowUnauthenticated: true,
+      }),
       validateAndTransformBody(VerificationConfirmRequest),
     ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/auth/:actor_type/:auth_provider/update",
-    middlewares: [validateScopeProviderAssociation(), validateToken()],
   },
 ]

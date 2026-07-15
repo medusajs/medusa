@@ -1,0 +1,45 @@
+---
+sidebar_label: "subscriber-default-export-required"
+---
+
+export const metadata = {
+  title: `subscriber-default-export-required - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires subscriber files to default-export the subscriber function.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/subscribers` directory. It reports a subscriber file that has no default export.
+
+The following code is reported by the rule:
+
+```ts title="src/subscribers/order-placed.ts"
+export const orderPlacedHandler = async () => {}
+```
+
+Instead, default-export the subscriber handler function:
+
+```ts title="src/subscribers/order-placed.ts"
+export default async function orderPlacedHandler() {}
+
+export const config = {
+  event: "order.placed",
+}
+```
+
+## Why it's Important
+
+Medusa registers and runs the subscriber's default export when its event is emitted. Without a default export, the subscriber never runs.
+
+Learn more in the [Subscribers documentation](!docs!/learn/fundamentals/events-and-subscribers).
+
+## Fixable
+
+This rule isn't auto-fixable.

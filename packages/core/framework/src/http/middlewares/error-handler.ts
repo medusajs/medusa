@@ -1,4 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Response } from "express"
+import createHttpError from "http-errors"
 import { fromZodIssue } from "zod-validation-error"
 
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
@@ -28,6 +29,22 @@ export function errorHandler() {
       logger.error(
         "req.scope is missing unexpectedly. It should be defined in all the cases"
       )
+    }
+
+    // handle errors from body-parser
+    if (createHttpError.isHttpError(err)) {
+      if (err.statusCode >= 500) {
+        logger.error(`Error ${err.statusCode} at ${req.path}`, err)
+      } else {
+        logger.info(`Error ${err.statusCode} at ${req.path}: ${err.message}`)
+      }
+
+      res.status(err.statusCode).json({
+        message:
+          err.statusCode < 500 ? err.message : "An unknown error occurred.",
+        type: mapStatusCodeToErrorType(err.statusCode),
+      })
+      return
     }
 
     err = formatException(err)
@@ -101,6 +118,25 @@ export function errorHandler() {
 
     res.status(statusCode).json(errObj)
   } as unknown as ErrorRequestHandler
+}
+
+// This is just to keep the promise of returning a type, but for bodyparse or other http errors,
+// we probably don't need to return a type
+const mapStatusCodeToErrorType = (statusCode: number) => {
+  switch (statusCode) {
+    case 400:
+      return MedusaError.Types.INVALID_DATA
+    case 401:
+      return MedusaError.Types.UNAUTHORIZED
+    case 403:
+      return MedusaError.Types.FORBIDDEN
+    case 404:
+      return MedusaError.Types.NOT_FOUND
+    case 409:
+      return MedusaError.Types.CONFLICT
+    default:
+      return "unknown_error"
+  }
 }
 
 /**

@@ -1,15 +1,14 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { PermissionGuard } from "../../../components/common/permission-guard"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useCustomerGroup } from "../../../hooks/api/customer-groups"
 import { CustomerGroupCustomerSection } from "./components/customer-group-customer-section"
 import { CustomerGroupGeneralSection } from "./components/customer-group-general-section"
-import { customerGroupLoader } from "./loader"
-
-import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { PermissionGuard } from "../../../components/common/permission-guard"
-import { useExtension } from "../../../providers/extension-provider"
 import { CUSTOMER_GROUP_DETAIL_FIELDS } from "./constants"
+import { customerGroupLoader } from "./loader"
 
 export const CustomerGroupDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -25,8 +24,6 @@ export const CustomerGroupDetail = () => {
     { initialData }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !customer_group) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
@@ -36,20 +33,25 @@ export const CustomerGroupDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("customer_group.details.before"),
-        after: getWidgets("customer_group.details.after"),
-      }}
-      showJSON
-      showMetadata
-      showRequiredPermissions
+    <LayoutComposer
+      widgetsZonePrefix="customer_group.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={customer_group}
-    >
-      <CustomerGroupGeneralSection group={customer_group} />
-      <PermissionGuard permission="customer:read">
-        <CustomerGroupCustomerSection group={customer_group} />
-      </PermissionGuard>
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="CustomerGroupGeneralSection">
+              <CustomerGroupGeneralSection group={customer_group} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CustomerGroupCustomerSection">
+              <PermissionGuard permission="customer:read">
+                <CustomerGroupCustomerSection group={customer_group} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(customer_group, { permissions: false })}
+          </>
+        ),
+      }}
+    />
   )
 }

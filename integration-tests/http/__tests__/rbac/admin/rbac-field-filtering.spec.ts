@@ -12,7 +12,7 @@ process.env.MEDUSA_FF_RBAC = "true"
 process.env.MEDUSA_FF_RBAC_FILTER_FIELDS = "true"
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     let container
     let baseProduct
     let testUser
@@ -22,7 +22,7 @@ medusaIntegrationTestRunner({
     let priceSetReadPolicy
     let priceReadPolicy
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       const { user } = await createAdminUser(
         dbConnection,
@@ -206,6 +206,8 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
       baseProduct = productResponse.data.product
+
+      await dbUtils.snapshot()
     })
 
     afterAll(async () => {

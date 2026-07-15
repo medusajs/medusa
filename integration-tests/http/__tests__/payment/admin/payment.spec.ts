@@ -10,7 +10,7 @@ import { createOrderSeeder } from "../../fixtures/order"
 jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let container
     let order
 
@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
       )
     }
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -90,6 +90,8 @@ medusaIntegrationTestRunner({
         { items: [{ id: order.items[0].id, quantity: 1 }] },
         adminHeaders
       )
+
+      await dbUtils.snapshot()
     })
 
     describe("with outstanding amount due to claim", () => {
@@ -262,6 +264,46 @@ medusaIntegrationTestRunner({
             amount: 100,
           })
         )
+      })
+
+      it("should reject a refund with an amount of 0", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        const error = await api
+          .post(
+            `/admin/payments/${payment.id}/refund`,
+            { amount: 0 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+      })
+
+      it("should reject a refund with a negative amount", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        const error = await api
+          .post(
+            `/admin/payments/${payment.id}/refund`,
+            { amount: -50 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
       })
 
       it("should issue multiple refunds", async () => {

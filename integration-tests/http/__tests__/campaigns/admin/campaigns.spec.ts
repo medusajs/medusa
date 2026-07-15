@@ -83,7 +83,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Campaigns API", () => {
       let appContainer
       let campaign1
@@ -92,9 +92,6 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
-
-      beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
         campaign1 = (
           await api.post(`/admin/campaigns`, campaignsData[0], adminHeaders)
@@ -105,6 +102,8 @@ medusaIntegrationTestRunner({
         promotion = (
           await api.post(`/admin/promotions`, promotionData, adminHeaders)
         ).data.promotion
+
+        await dbUtils.snapshot()
       })
 
       const generatePromotionData = () => {

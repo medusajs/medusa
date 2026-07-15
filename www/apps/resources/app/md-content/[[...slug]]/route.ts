@@ -1,4 +1,4 @@
-import { addExtraToMd, getCleanMd } from "docs-utils"
+import { addExtraToMd, docPageToMarkdown, getCleanMd } from "docs-utils"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -37,39 +37,43 @@ export async function GET(req: NextRequest, { params }: Params) {
     return notFound()
   }
 
-  const cleanMdContent = await getCleanMd_(fileContent, {
-    before: [
-      [
-        crossProjectLinksPlugin,
-        {
-          baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-          projectUrls: {
-            docs: {
-              url: process.env.NEXT_PUBLIC_DOCS_URL,
-              path: "",
+  // Reference pages are the JSON doc-model (page.json) — convert the DocPage to
+  // Markdown directly rather than running the MDX cleaner over it.
+  const cleanMdContent = filePathFromMap.endsWith("page.json")
+    ? await docPageToMarkdown_(fileContent)
+    : await getCleanMd_(fileContent, {
+        before: [
+          [
+            crossProjectLinksPlugin,
+            {
+              baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+              projectUrls: {
+                docs: {
+                  url: process.env.NEXT_PUBLIC_DOCS_URL,
+                  path: "",
+                },
+                "user-guide": {
+                  url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
+                },
+                ui: {
+                  url: process.env.NEXT_PUBLIC_UI_URL,
+                },
+                api: {
+                  url: process.env.NEXT_PUBLIC_API_URL,
+                },
+              },
+              useBaseUrl:
+                process.env.NODE_ENV === "production" ||
+                process.env.VERCEL_ENV === "production" ||
+                !!process.env.CLOUDFLARE_ENV,
             },
-            "user-guide": {
-              url: process.env.NEXT_PUBLIC_USER_GUIDE_URL,
-            },
-            ui: {
-              url: process.env.NEXT_PUBLIC_UI_URL,
-            },
-            api: {
-              url: process.env.NEXT_PUBLIC_API_URL,
-            },
-          },
-          useBaseUrl:
-            process.env.NODE_ENV === "production" ||
-            process.env.VERCEL_ENV === "production" ||
-            !!process.env.CLOUDFLARE_ENV,
-        },
-      ],
-      [localLinksRehypePlugin],
-    ] as unknown as Plugin[],
-    after: [
-      [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
-    ] as unknown as Plugin[],
-  })
+          ],
+          [localLinksRehypePlugin],
+        ] as unknown as Plugin[],
+        after: [
+          [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
+        ] as unknown as Plugin[],
+      })
 
   const acceptHeader = req.headers.get("accept") || ""
   if (
@@ -89,6 +93,10 @@ export async function GET(req: NextRequest, { params }: Params) {
       properties: {
         $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
+        $ip:
+          req.headers.get("cf-connecting-ip") ||
+          req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          undefined,
       },
     })
 
@@ -114,6 +122,23 @@ const getCleanMd_ = unstable_cache(
   async (content: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
     getCleanMd({ file: content, type: "content", plugins }),
   ["clean-md"],
+  {
+    revalidate: 3600,
+  }
+)
+
+/** Converts a reference DocPage JSON string to Markdown. */
+const docPageToMarkdown_ = unstable_cache(
+  async (content: string): Promise<string> => {
+    try {
+      return docPageToMarkdown(JSON.parse(content), {
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+      })
+    } catch {
+      return ""
+    }
+  },
+  ["doc-page-md"],
   {
     revalidate: 3600,
   }

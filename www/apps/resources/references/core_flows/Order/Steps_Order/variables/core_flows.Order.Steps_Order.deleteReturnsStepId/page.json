@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Order/Steps_Order/variables/core_flows.Order.Steps_Order.deleteReturnsStepId","title":"deleteReturnsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteReturnsStepId","type":"`\"delete-return\"`","description":"","optional":false,"defaultValue":"\"delete-return\"","expandable":false,"children":[]}]}]}

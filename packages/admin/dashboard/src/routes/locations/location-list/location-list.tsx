@@ -7,10 +7,10 @@ import { LOCATION_LIST_FIELDS } from "./constants"
 import { useLocationListTableColumns } from "./use-location-list-table-columns"
 import { useLocationListTableQuery } from "./use-location-list-table-query"
 
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { DataTable } from "../../../components/data-table"
 import { SidebarLink } from "../../../components/common/sidebar-link/sidebar-link"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../../components/layout-composer"
 import { useStockLocationPermissions } from "../../../hooks/use-resource-permissions"
 import { keepPreviousData } from "@tanstack/react-query"
 import { PermissionGuard } from "../../../components/common/permission-guard"
@@ -44,69 +44,75 @@ export function LocationList() {
   )
 
   const columns = useLocationListTableColumns()
-  const { getWidgets } = useExtension()
 
   if (isError) {
     throw error
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        after: getWidgets("location.list.after"),
-        before: getWidgets("location.list.before"),
-        sideAfter: getWidgets("location.list.side.after"),
-        sideBefore: getWidgets("location.list.side.before"),
-      }}
-      showJSON
-      showRequiredPermissions
-    >
-      <TwoColumnPage.Main>
-        <Container className="flex flex-col divide-y p-0">
-          <DataTable
-            data={stockLocations}
-            columns={columns}
-            rowCount={count}
-            pageSize={PAGE_SIZE}
-            getRowId={(row) => row.id}
-            heading={t("stockLocations.domain")}
-            subHeading={t("stockLocations.list.description")}
-            emptyState={{
-              empty: {
-                heading: t("stockLocations.list.noRecordsMessage"),
-                description: t("stockLocations.list.noRecordsMessageEmpty"),
-              },
-              filtered: {
-                heading: t("stockLocations.list.noRecordsMessage"),
-                description: t("stockLocations.list.noRecordsMessageFiltered"),
-              },
-            }}
-            actions={
-              canCreate
-                ? [
-                    {
-                      label: t("actions.create"),
-                      to: "create",
+    <LayoutComposer
+      widgetsZonePrefix="location.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="stock-locations-table">
+              <Container className="flex flex-col divide-y p-0">
+                <DataTable
+                  data={stockLocations}
+                  columns={columns}
+                  rowCount={count}
+                  pageSize={PAGE_SIZE}
+                  getRowId={(row) => row.id}
+                  heading={t("stockLocations.domain")}
+                  subHeading={t("stockLocations.list.description")}
+                  emptyState={{
+                    empty: {
+                      heading: t("stockLocations.list.noRecordsMessage"),
+                      description: t(
+                        "stockLocations.list.noRecordsMessageEmpty"
+                      ),
                     },
-                  ]
-                : []
-            }
-            isLoading={isLoading}
-            rowHref={(row) => `/settings/locations/${row.id}`}
-            enableSearch={true}
-            prefix={PREFIX}
-            layout="fill"
-          />
-        </Container>
-      </TwoColumnPage.Main>
-      <PermissionGuard
-        permissions={["shipping_option_type:read", "shipping_profile:read"]}
-      >
-        <TwoColumnPage.Sidebar>
-          <LinksSection />
-        </TwoColumnPage.Sidebar>
-      </PermissionGuard>
-    </TwoColumnPage>
+                    filtered: {
+                      heading: t("stockLocations.list.noRecordsMessage"),
+                      description: t(
+                        "stockLocations.list.noRecordsMessageFiltered"
+                      ),
+                    },
+                  }}
+                  actions={
+                    canCreate
+                      ? [
+                          {
+                            label: t("actions.create"),
+                            to: "create",
+                          },
+                        ]
+                      : []
+                  }
+                  isLoading={isLoading}
+                  rowHref={(row) => `/settings/locations/${row.id}`}
+                  enableSearch={true}
+                  prefix={PREFIX}
+                  layout="fill"
+                />
+              </Container>
+            </LayoutComposer.Entry>
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="LinksSection">
+              <PermissionGuard
+                permissions={["shipping_option_type:read", "shipping_profile:read"]}
+              >
+                <LinksSection />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+          </>
+        ),
+      }}
+    />
   )
 }
 

@@ -1,3 +1,4 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 import { useProductCategory } from "../../../hooks/api/categories"
 import { CategoryGeneralSection } from "./components/category-general-section"
@@ -5,10 +6,9 @@ import { CategoryOrganizeSection } from "./components/category-organize-section"
 import { CategoryProductSection } from "./components/category-product-section"
 import { categoryLoader } from "./loader"
 
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
 import { PermissionGuard } from "../../../components/common/permission-guard"
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 
 export const CategoryDetail = () => {
   const { id } = useParams()
@@ -16,8 +16,6 @@ export const CategoryDetail = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof categoryLoader>
   >
-
-  const { getWidgets } = useExtension()
 
   const { product_category, isLoading, isError, error } = useProductCategory(
     id!,
@@ -43,29 +41,34 @@ export const CategoryDetail = () => {
   }
 
   return (
-    <TwoColumnPage
-      widgets={{
-        after: getWidgets("product_category.details.after"),
-        before: getWidgets("product_category.details.before"),
-        sideAfter: getWidgets("product_category.details.side.after"),
-        sideBefore: getWidgets("product_category.details.side.before"),
-      }}
-      showJSON
-      showMetadata
-      showRequiredPermissions
+    <LayoutComposer
+      widgetsZonePrefix="product_category.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={product_category}
-    >
-      <TwoColumnPage.Main>
-        <CategoryGeneralSection category={product_category} />
-        <PermissionGuard permission="product:read">
-          <CategoryProductSection category={product_category} />
-        </PermissionGuard>
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <PermissionGuard permission="product_category:update">
-          <CategoryOrganizeSection category={product_category} />
-        </PermissionGuard>
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="CategoryGeneralSection">
+              <CategoryGeneralSection category={product_category} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="CategoryProductSection">
+              <PermissionGuard permission="product:read">
+                <CategoryProductSection category={product_category} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(product_category)}
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="CategoryOrganizeSection">
+              <PermissionGuard permission="product_category:update">
+                <CategoryOrganizeSection category={product_category} />
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+          </>
+        ),
+      }}
+    />
   )
 }

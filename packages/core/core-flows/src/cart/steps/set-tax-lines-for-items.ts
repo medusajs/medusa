@@ -116,6 +116,8 @@ export const setTaxLinesForItemsStep = createStep(
           rate: taxLine.rate,
           provider_id: taxLine.provider_id,
           item_id: taxLine.item_id,
+          metadata: taxLine.metadata,
+          data: taxLine.data,
         }))
       )
     }
@@ -129,6 +131,8 @@ export const setTaxLinesForItemsStep = createStep(
         rate: taxLine.rate,
         provider_id: taxLine.provider_id,
         shipping_method_id: taxLine.shipping_method_id,
+        metadata: taxLine.metadata,
+        data: taxLine.data,
       }))
     )
   }
@@ -144,6 +148,7 @@ function normalizeItemTaxLinesForCart(
     rate: taxLine.rate!,
     provider_id: taxLine.provider_id,
     item_id: taxLine.line_item_id,
+    data: taxLine.data,
   }))
 }
 
@@ -157,5 +162,6 @@ function normalizeShippingTaxLinesForCart(
     rate: taxLine.rate!,
     provider_id: taxLine.provider_id,
     shipping_method_id: taxLine.shipping_line_id,
+    data: taxLine.data,
   }))
 }

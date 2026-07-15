@@ -1,0 +1,1 @@
+{"slug":"/references/medusa/types/medusa.ClassConstructor","title":"ClassConstructor","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"ClassConstructor","type":"(...`args`: `unknown`[]) => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

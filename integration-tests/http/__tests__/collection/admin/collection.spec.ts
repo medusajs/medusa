@@ -8,7 +8,7 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseCollection
     let baseCollection1
     let baseCollection2
@@ -18,7 +18,7 @@ medusaIntegrationTestRunner({
 
     let shippingProfile
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -77,6 +77,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product
+
+      await dbUtils.snapshot()
     })
 
     describe("/admin/collections", () => {
@@ -170,7 +172,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it('filters collection by external_id', async () => {
+      it("filters collection by external_id", async () => {
         const response = await api.get(
           "/admin/collections?external_id=ext-collection-01",
           adminHeaders
@@ -192,7 +194,7 @@ medusaIntegrationTestRunner({
             ]),
           })
         )
-      });
+      })
       // BREAKING: There is no longer discount condition ID filtering for collections (test case: "returns a list of collections filtered by discount condition id")
     })
 

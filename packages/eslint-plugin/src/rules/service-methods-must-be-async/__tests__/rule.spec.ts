@@ -1,12 +1,7 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
+import { createRuleTester } from "../../../test-utils"
 import { rule } from "../rule"
 
-RuleTester.afterAll = afterAll
-RuleTester.describe = describe
-RuleTester.it = it
-RuleTester.itOnly = it.only
-
-const ruleTester = new RuleTester()
+const ruleTester = createRuleTester()
 
 ruleTester.run("service-methods-must-be-async", rule, {
   valid: [
@@ -64,12 +59,15 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
     },
-    // Getter with Promise return type is fine (caller can await the property access).
+    // Getters and setters are exempt — they can't be async and are accessed as
+    // properties, not invoked like service methods.
     {
       code: `
         import { MedusaService } from "@medusajs/framework/utils"
         class FooService extends MedusaService({}) {
-          get pending(): Promise<void> { return Promise.resolve() }
+          get name() { return "foo" }
+          set name(v: string) {}
+          get model() { return this.model_ }
           async run() {}
         }
       `,
@@ -82,12 +80,33 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
     },
-    // Service class (name ends in "Service") with all async methods is fine.
+    // A `*Service`-named class that doesn't extend `MedusaService` is NOT
+    // treated as a service — its sync methods are allowed, regardless of file
+    // location. (Fixes false positives on helper classes like
+    // `EntityDiscoveryService`.)
     {
+      filename: "/repo/packages/modules/settings/src/utils/entity-discovery.ts",
       code: `
-        class FooService {
-          async create() {}
-          async update() {}
+        export class EntityDiscoveryService {
+          discover() {}
+        }
+      `,
+    },
+    // A plain class in a module's service location that doesn't extend
+    // `MedusaService` is not checked, even when its methods are sync.
+    {
+      filename: "/repo/packages/modules/order/src/services/order.ts",
+      code: `
+        class OrderHelper {
+          create() {}
+        }
+      `,
+    },
+    {
+      filename: "/repo/packages/modules/order/src/service.ts",
+      code: `
+        class OrderModuleService {
+          create() {}
         }
       `,
     },
@@ -206,20 +225,6 @@ ruleTester.run("service-methods-must-be-async", rule, {
       `,
       errors: [{ messageId: "methodMustBeAsync" }],
     },
-    // Service class detected by name suffix alone (no MedusaService extension).
-    {
-      code: `
-        class OrderService {
-          create() {}
-        }
-      `,
-      output: `
-        class OrderService {
-          async create() {}
-        }
-      `,
-      errors: [{ messageId: "methodMustBeAsync" }],
-    },
     // Static methods are invocable from outside the service, so they must be async too.
     {
       code: `
@@ -235,22 +240,6 @@ ruleTester.run("service-methods-must-be-async", rule, {
         }
       `,
       errors: [{ messageId: "methodMustBeAsync" }],
-    },
-    // Getters and setters are invocable from outside the service — flagged, but no autofix
-    // (you can't make a getter/setter async). Getter passes only with a Promise return type.
-    {
-      code: `
-        import { MedusaService } from "@medusajs/framework/utils"
-        class FooService extends MedusaService({}) {
-          get name() { return "foo" }
-          set name(v: string) {}
-        }
-      `,
-      output: null,
-      errors: [
-        { messageId: "methodMustBeAsync" },
-        { messageId: "methodMustBeAsync" },
-      ],
     },
   ],
 })

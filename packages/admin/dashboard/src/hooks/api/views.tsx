@@ -14,13 +14,14 @@ import { queryKeysFactory, TQueryKey } from "../../lib/query-key-factory"
 
 const VIEWS_QUERY_KEY = "views" as const
 const _viewsKeys = queryKeysFactory(VIEWS_QUERY_KEY) as TQueryKey<"views"> & {
-  columns: (entity: string) => any
+  columns: (entity?: string) => any
   active: (entity: string) => any
   configurations: (entity: string, query?: any) => any
+  entities: (entity?: string, query?: any) => any
 }
 
-_viewsKeys.columns = function (entity: string) {
-  return [this.all, "columns", entity]
+_viewsKeys.columns = function (entity?: string) {
+  return [this.all, "columns", entity].filter((k) => !!k)
 }
 
 _viewsKeys.active = function (entity: string) {
@@ -35,7 +36,31 @@ _viewsKeys.configurations = function (entity: string, query?: any) {
   return key
 }
 
+_viewsKeys.entities = function (entity?: string, query?: any) {
+  return [(this.all, "entities", entity, query)].filter((k) => !!k)
+}
+
 export const viewsQueryKeys = _viewsKeys
+
+export const useEntities = (
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminEntityListResponse,
+      FetchError,
+      HttpTypes.AdminEntityListResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.views.listEntities(),
+    queryKey: viewsQueryKeys.entities(),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
 
 // Generic hook to get columns for any entity
 export const useEntityColumns = (

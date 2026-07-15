@@ -537,7 +537,7 @@ export default class PaymentModuleService
     id: string,
     context: Record<string, unknown>,
     @MedusaContext() sharedContext?: Context
-  ): Promise<PaymentDTO> {
+  ): Promise<PaymentDTO | null> {
     const session = await this.paymentSessionService_.retrieve(
       id,
       {
@@ -558,7 +558,7 @@ export default class PaymentModuleService
 
     // this method needs to be idempotent
     if (session.payment && session.authorized_at) {
-      return await this.baseRepository_.serialize(session.payment)
+      return await this.baseRepository_.serialize<PaymentDTO>(session.payment)
     }
 
     let { data, status } = await this.paymentProviderService_.authorizePayment(
@@ -568,6 +568,24 @@ export default class PaymentModuleService
         context: { idempotency_key: session.id, ...context },
       }
     )
+
+    if (status === PaymentSessionStatus.PENDING_AUTHORIZATION) {
+      await this.paymentSessionService_.update(
+        {
+          id: session.id,
+          status,
+          data,
+        },
+        sharedContext
+      )
+
+      await this.maybeUpdatePaymentCollection_(
+        session.payment_collection_id,
+        sharedContext
+      )
+
+      return null
+    }
 
     if (
       status !== PaymentSessionStatus.AUTHORIZED &&
@@ -612,7 +630,7 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(payment)
+    return await this.baseRepository_.serialize<PaymentDTO>(payment)
   }
 
   @InjectTransactionManager()
@@ -738,7 +756,17 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(payment)
+    // Re-fetch the payment so the freshly created capture is reflected in the
+    // returned payload. `refresh` is required because, under the select-in load
+    // strategy, the capture created above is not automatically re-populated on
+    // the managed payment entity within the same context.
+    const capturedPayment = await this.paymentService_.retrieve(
+      payment.id,
+      { relations: ["captures"], options: { refresh: true } },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(capturedPayment)
   }
 
   @InjectTransactionManager()
@@ -761,9 +789,15 @@ export default class PaymentModuleService
       return { isFullyCaptured: true }
     }
 
-    // If no custom amount is passed, we assume the full amount needs to be captured
-    if (!data.amount) {
+    // If no custom amount is passed, we assume the full amount needs to be
+    // captured. An explicit amount, however, must be strictly positive.
+    if (data.amount == null) {
       data.amount = payment.amount as number
+    } else if (MathBN.lte(data.amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Capture amount must be greater than 0.`
+      )
     }
 
     const capturedAmount = payment.captures.reduce((captureAmount, next) => {
@@ -902,8 +936,15 @@ export default class PaymentModuleService
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof Refund>> {
-    if (!data.amount) {
+    // If no amount is passed, we assume the full payment amount needs to be
+    // refunded. An explicit amount, however, must be strictly positive.
+    if (data.amount == null) {
       data.amount = payment.amount as BigNumberInput
+    } else if (MathBN.lte(data.amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Refund amount must be greater than 0.`
+      )
     }
 
     const capturedAmount = payment.captures.reduce((captureAmount, next) => {
@@ -1012,14 +1053,15 @@ export default class PaymentModuleService
       paymentCollectionId,
       {
         select: ["amount", "raw_amount", "status", "currency_code"],
-        relations: [
-          "payment_sessions.amount",
-          "payment_sessions.raw_amount",
-          "payments.captures.amount",
-          "payments.captures.raw_amount",
-          "payments.refunds.amount",
-          "payments.refunds.raw_amount",
-        ],
+        // Use relation paths (not scalar field paths such as
+        // "payment_sessions.amount") so the select-in load strategy populates
+        // the nested collections. `refresh` forces the collections to be
+        // re-hydrated from the database: this runs inside the write transaction
+        // right after sessions/captures/refunds were created, and select-in
+        // does not otherwise re-populate collections that are already loaded on
+        // the managed entities in the shared context.
+        relations: ["payment_sessions", "payments.captures", "payments.refunds"],
+        options: { refresh: true },
       },
       sharedContext
     )

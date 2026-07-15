@@ -15,7 +15,7 @@ import {
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order, order2, storeOrder
     let returnShippingOption
     let shippingProfile
@@ -25,7 +25,7 @@ medusaIntegrationTestRunner({
     let location
     let storeHeaders
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
@@ -330,6 +330,8 @@ medusaIntegrationTestRunner({
         },
         adminHeaders
       )
+
+      await dbUtils.snapshot()
     })
 
     describe("Admin Returns lifecycle", () => {

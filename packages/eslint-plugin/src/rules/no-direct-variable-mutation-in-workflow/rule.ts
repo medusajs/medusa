@@ -36,27 +36,51 @@ export const rule = createRule<[], MessageIds>({
         trackWorkflowSdkImports(node, bindings)
       },
       AssignmentExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({ node, messageId: "mutateInWorkflow" })
       },
       UpdateExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({ node, messageId: "mutateInWorkflow" })
       },
       BinaryExpression(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (!ARITHMETIC_OPERATORS.has(node.operator)) return
-        if (!isNonLiteralRef(node.left) && !isNonLiteralRef(node.right)) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (!ARITHMETIC_OPERATORS.has(node.operator)) {
+          return
+        }
+        if (!isNonLiteralRef(node.left) && !isNonLiteralRef(node.right)) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({ node, messageId: "recomputeInWorkflow" })
       },
       TemplateLiteral(node) {
-        if (bindings.createWorkflow.size === 0) return
-        if (node.expressions.length === 0) return
-        if (!node.expressions.some((expr) => isNonLiteralRef(expr))) return
-        if (!isInWorkflowDefinitionScope(node, bindings)) return
+        if (bindings.createWorkflow.size === 0) {
+          return
+        }
+        if (node.expressions.length === 0) {
+          return
+        }
+        if (!node.expressions.some((expr) => isNonLiteralRef(expr))) {
+          return
+        }
+        if (!isInWorkflowDefinitionScope(node, bindings)) {
+          return
+        }
         context.report({ node, messageId: "recomputeInWorkflow" })
       },
     }

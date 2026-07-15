@@ -1,0 +1,353 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Big Numbers in Data Models`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn what big numbers are, how Medusa stores them, and how to handle their values when you retrieve or compute them.
+
+## What is a Big Number?
+
+A big number is a numeric value that Medusa stores with high precision to avoid the rounding errors of JavaScript's floating-point numbers. Medusa uses big numbers for monetary and other precision-sensitive values, such as prices, order totals, tax amounts, and payment amounts.
+
+<Note title="Tip">
+
+Prices in Medusa are stored as major currency units. For example, a price of $10.99 is stored as `10.99`, not `1099`. This is different from some other systems that store prices in minor currency units (for example, cents).
+
+</Note>
+
+You define a big-number property in a data model with the [bigNumber](../properties/page.mdx#bignumber) method:
+
+export const modelHighlights = [
+  ["5", "bigNumber", "Define a `bigNumber` property."],
+]
+
+```ts highlights={modelHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const CustomProduct = model.define("custom_product", {
+  id: model.id().primaryKey(),
+  price: model.bigNumber(),
+})
+
+export default CustomProduct
+```
+
+<Note title="Tip">
+
+Use a big-number property when you need high precision for numbers that can have many decimal places. For less precision, use the [float property](../properties/page.mdx#float) instead.
+
+</Note>
+
+---
+
+## How Medusa Stores Big Numbers
+
+For each big-number property, Medusa stores two columns in the database:
+
+- A `numeric` column with the same name as the property (for example, `price`). This holds the value as a number for convenience and querying.
+- A `raw_` column prefixed with the property's name (for example, `raw_price`). This holds an object with the value as a string and its precision, which is the source of truth for the precise value.
+
+For example, the `raw_price` column stores an object like this:
+
+```json title="raw_price"
+{
+  "value": "10.99",
+  "precision": 20
+}
+```
+
+The `value` is a string to preserve precision, since a string doesn't lose precision the way a JavaScript number can.
+
+---
+
+## When Does Medusa Return a Big Number Value
+
+The shape of a big-number value depends on where you retrieve it and how the value is produced. Medusa reduces the value to a plain number only when it serializes the value to JSON for an HTTP response (that is, when the data is returned from an API route).
+
+The following table summarizes the shape of a big-number value:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Where and How You Retrieve the Value
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Shape
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+Server-side code (such as `query.graph`, a workflow, or a module service), retrieving a stored `bigNumber` property directly. For example, your custom `price` property, or a payment's `amount`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+A plain number. You can also request the property's `raw_` field (such as `raw_price`) to retrieve the precise value.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Server-side code, retrieving a total that a Commerce Module computes and wraps in a `BigNumber`. For example, an order's or cart's `total` or `subtotal`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+A `BigNumber` instance.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+A client consuming the response of an API route.
+
+      </Table.Cell>
+      <Table.Cell>
+
+A plain number.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The difference in server-side code comes down to how the value is produced:
+
+- Medusa reads a stored `bigNumber` property back as its numeric value, so you get a plain number. The precise value is available in the property's `raw_` field when you request it, as explained in the next section.
+- Commerce Modules compute some totals, such as an order's `total`, and wrap them in a `BigNumber` instance. For example, if you retrieve an order's total with [Query](../../module-links/query/page.mdx), the `total` property is a `BigNumber` instance:
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: ["total"],
+})
+
+// orders[0].total is a BigNumber instance
+```
+
+<Note title="Tip">
+
+In server-side code, don't assume whether a big-number value is a plain number or a `BigNumber` instance. Handle it as explained in the next sections, which work for both shapes.
+
+</Note>
+
+### Retrieve the Precise Value of a Stored Property
+
+By default, `query.graph` returns only the fields you request, and a stored `bigNumber` property returns a plain number. To also retrieve the precise value, add the `raw_` field to the `fields` array:
+
+export const rawHighlights = [
+  ["3", "raw_price", "Request the precise value explicitly."],
+]
+
+```ts highlights={rawHighlights}
+const { data: products } = await query.graph({
+  entity: "custom_product",
+  fields: ["price", "raw_price"],
+})
+```
+
+Each product now has a `raw_price` property with the precise value:
+
+```json title="Result"
+[
+  {
+    "price": 10.99,
+    "raw_price": {
+      "value": "10.99",
+      "precision": 20
+    }
+  }
+]
+```
+
+---
+
+## How to Handle Retrieved Big Numbers
+
+### Display a Big Number
+
+When a client consumes an API route's response, the big-number value is a plain number that you can format and display directly.
+
+In server-side code, a big-number value is either a plain number (for a stored property like `price`) or a `BigNumber` instance (for a computed total like an order's `total`). To get a plain number from either shape, check its type. If it's a `BigNumber` instance, use its `numeric` property. Otherwise, it's already a plain number, so use it as-is:
+
+```ts
+import { BigNumber } from "@medusajs/framework/utils"
+
+const price =
+  customProduct.price instanceof BigNumber
+    ? customProduct.price.numeric
+    : customProduct.price
+```
+
+You can also use the value in string interpolation, since a `BigNumber` instance supports numeric coercion:
+
+```ts
+const message = `The price is ${customProduct.price}`
+```
+
+To display a price with its currency, pass the plain number and the currency code to JavaScript's [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat). Medusa stores prices in major currency units, so you can format the value directly:
+
+export const formatHighlights = [
+  ["2", "style: \"currency\"", "Format the number as a currency."],
+  ["3", "currency", "Pass the price's currency code."],
+]
+
+```ts highlights={formatHighlights}
+const formatted = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "usd",
+}).format(Number(customProduct.price))
+
+// formatted is "$10.99"
+```
+
+<Note type="warning">
+
+Don't use a big-number's plain-number value as an input to further calculations, as it can lose precision. Instead, use the `MathBN` utility explained next.
+
+</Note>
+
+### Perform Arithmetic with MathBN
+
+To perform arithmetic on big numbers without losing precision, use the `MathBN` utility from `@medusajs/framework/utils`. Don't use JavaScript's arithmetic and comparison operators, such as `+` or `>`, as they reintroduce floating-point errors.
+
+`MathBN` has the following methods for arithmetic operations:
+
+- `MathBN.add(...nums)`: Add two or more numbers.
+- `MathBN.sub(...nums)`: Subtract numbers from the first number.
+- `MathBN.mult(n1, n2)`: Multiply two numbers.
+- `MathBN.div(n1, n2)`: Divide the first number by the second.
+- `MathBN.sum(...nums)`: Add all numbers, starting from `0`.
+- `MathBN.abs(n)`: Get the absolute value of a number.
+- `MathBN.min(...nums)` and `MathBN.max(...nums)`: Get the smallest or largest number.
+
+Each method accepts big-number values in any shape, including a `BigNumber` instance, a plain number, a numeric string, or a `raw_` object. So, you can pass values retrieved from Query directly to `MathBN`.
+
+`MathBN` performs exact decimal arithmetic, so it doesn't introduce the floating-point errors that JavaScript operators do.
+
+For full precision, request and pass the `raw_` value. Query types the `raw_` field as `Record<string, unknown>`, so cast it to `BigNumberRawValue` from `@medusajs/framework/types`. You can also pass the plain number property, which is exact for typical values.
+
+For example, to add two prices:
+
+export const addHighlights = [
+  ["10", "as BigNumberRawValue", "Cast the raw value to satisfy the type."],
+  ["9", "MathBN.add", "Add the two prices precisely."],
+  ["15", "toNumber", "Convert the result to a plain number."],
+]
+
+```ts highlights={addHighlights}
+import { MathBN } from "@medusajs/framework/utils"
+import { BigNumberRawValue } from "@medusajs/framework/types"
+
+const { data: products } = await query.graph({
+  entity: "custom_product",
+  fields: ["price", "raw_price"],
+})
+
+const total = MathBN.add(
+  products[0].raw_price as BigNumberRawValue,
+  products[1].raw_price as BigNumberRawValue
+)
+
+// use the result as a plain number
+const totalNumber = total.toNumber()
+```
+
+A `MathBN` method returns a big-number instance from the underlying `bignumber.js` library. To use the result as a plain number, call its `toNumber` method or pass it to the `Number` function, as shown above.
+
+### Sum an Array of Big Numbers
+
+To sum an array of big-number values, use JavaScript's `reduce` method with `MathBN.sum`. Start the accumulator with `MathBN.convert(0)`, which creates a big-number `0`:
+
+export const reduceHighlights = [
+  ["15", "MathBN.convert(0)", "Start the sum with a big-number `0`."],
+  ["11", "MathBN.sum", "Add each price to the running sum."],
+  ["13", "as BigNumberRawValue", "Cast the raw value to satisfy the type."],
+]
+
+```ts highlights={reduceHighlights}
+import { MathBN } from "@medusajs/framework/utils"
+import { BigNumberRawValue } from "@medusajs/framework/types"
+
+const { data: products } = await query.graph({
+  entity: "custom_product",
+  fields: ["price", "raw_price"],
+})
+
+const total = products.reduce(
+  (sum, product) =>
+    MathBN.sum(
+      sum,
+      product.raw_price as BigNumberRawValue
+    ),
+  MathBN.convert(0)
+)
+```
+
+<Note title="Tip">
+
+`MathBN.convert(value)` normalizes any big-number shape to an instance you can use in calculations. `MathBN.convert(0)` is the common way to create a big-number `0`.
+
+</Note>
+
+### Compare Big Numbers
+
+To compare big-number values, use the following `MathBN` methods, which each return a boolean:
+
+- `MathBN.gt(n1, n2)`: Whether the first number is greater than the second.
+- `MathBN.gte(n1, n2)`: Whether the first is greater than or equal to the second.
+- `MathBN.lt(n1, n2)`: Whether the first number is less than the second.
+- `MathBN.lte(n1, n2)`: Whether the first is less than or equal to the second.
+- `MathBN.eq(n1, n2)`: Whether the two numbers are equal.
+
+For example:
+
+export const compareHighlights = [
+  ["5", "MathBN.gt", "Keep products with a price above `0`."],
+  ["6", "as BigNumberRawValue", "Cast the raw value to satisfy the type."],
+]
+
+```ts highlights={compareHighlights}
+import { BigNumberRawValue } from "@medusajs/framework/types"
+
+const pricedProducts = products.filter(
+  (product) =>
+    MathBN.gt(
+      product.raw_price as BigNumberRawValue,
+      0
+    )
+)
+```
+
+---
+
+## How to Store Big Numbers in a Service
+
+When you store a big-number field with a [module service's](../../modules/page.mdx#2-create-service) generated methods, such as `createCustomProducts` or `updateCustomProducts`, pass a plain number. Medusa converts it to a big number and maintains the `raw_` column automatically.
+
+For example:
+
+```ts
+const customProduct =
+  await customProductModuleService.createCustomProducts({
+    price: 10.99,
+  })
+```
+
+The created record will have a `price` of `10.99` and a `raw_price` of:
+
+```json title="raw_price"
+{
+  "value": "10.99",
+  "precision": 20
+}
+```

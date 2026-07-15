@@ -29,9 +29,6 @@ const withMDX = mdx({
           },
           hasGeneratedSlugs: true,
           crossProjects: {
-            bloom: {
-              projectPath: path.resolve("..", "bloom"),
-            },
             docs: {
               projectPath: path.resolve("..", "book"),
             },
@@ -255,8 +252,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/storefront-development/customer",
-        destination: "/storefront-development/customer/register",
+        source: "/storefront-development/customers",
+        destination: "/storefront-development/customers/register",
         permanent: true,
       },
       {

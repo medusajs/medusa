@@ -10,17 +10,16 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("POST /admin/customer-groups", () => {
       let appContainer
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
+          await createAdminUser(dbConnection, adminHeaders, appContainer)
+          // await adminSeeder(dbConnection)
 
-      beforeEach(async () => {
-        await createAdminUser(dbConnection, adminHeaders, appContainer)
-        // await adminSeeder(dbConnection)
+        await dbUtils.snapshot()
       })
 
       it("should create a customer group", async () => {

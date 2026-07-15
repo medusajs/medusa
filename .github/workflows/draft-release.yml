@@ -233,6 +233,7 @@ jobs:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           prompt: ${{ steps.prompt.outputs.CLAUDE_PROMPT }}
           allowed_tools: "Skill,Read,Write,Bash(cat /tmp/commits.json,git show:*)"
+          model: claude-sonnet-4-6
           max_turns: 25
 
       - name: Create draft GitHub release

@@ -1,7 +1,11 @@
 import type { TSESTree, TSESLint } from "@typescript-eslint/utils"
 import { AST_NODE_TYPES } from "@typescript-eslint/utils"
 import { createRule } from "../../create-rule"
-import { FRAMEWORK_UTILS_SOURCE } from "../../constants"
+import {
+  FRAMEWORK_UTILS_SOURCE,
+  MODULES_BY_VALUE,
+  MODULES_ENUM as MODULES,
+} from "../../constants"
 
 type MessageIds = "preferEnumKey"
 
@@ -14,50 +18,12 @@ const REMOTE_LINK_STEPS = new Set([
   "updateRemoteLinksStep",
 ])
 
-/**
- * Map of known `Modules.*` string values → enum member name.
- * Sourced from `packages/core/utils/src/modules-sdk/definition.ts`.
- */
-const MODULES_BY_VALUE: Record<string, string> = {
-  analytics: "ANALYTICS",
-  auth: "AUTH",
-  cache: "CACHE",
-  cart: "CART",
-  customer: "CUSTOMER",
-  event_bus: "EVENT_BUS",
-  inventory: "INVENTORY",
-  link_modules: "LINK",
-  payment: "PAYMENT",
-  pricing: "PRICING",
-  product: "PRODUCT",
-  promotion: "PROMOTION",
-  sales_channel: "SALES_CHANNEL",
-  tax: "TAX",
-  fulfillment: "FULFILLMENT",
-  stock_location: "STOCK_LOCATION",
-  user: "USER",
-  workflows: "WORKFLOW_ENGINE",
-  region: "REGION",
-  order: "ORDER",
-  api_key: "API_KEY",
-  store: "STORE",
-  currency: "CURRENCY",
-  file: "FILE",
-  notification: "NOTIFICATION",
-  index: "INDEX",
-  locking: "LOCKING",
-  settings: "SETTINGS",
-  caching: "CACHING",
-  translation: "TRANSLATION",
-  rbac: "RBAC",
-}
-
-const MODULES = "Modules"
-
 function getStaticKey(
   prop: TSESTree.Property
 ): { value: string; node: TSESTree.Node; isLiteral: boolean } | null {
-  if (prop.computed) return null
+  if (prop.computed) {
+    return null
+  }
   if (prop.key.type === AST_NODE_TYPES.Identifier) {
     return { value: prop.key.name, node: prop.key, isLiteral: false }
   }
@@ -109,11 +75,17 @@ export const rule = createRule<[], MessageIds>({
 
     function checkObject(obj: TSESTree.ObjectExpression) {
       for (const prop of obj.properties) {
-        if (prop.type !== AST_NODE_TYPES.Property) continue
+        if (prop.type !== AST_NODE_TYPES.Property) {
+          continue
+        }
         const key = getStaticKey(prop)
-        if (!key) continue
+        if (!key) {
+          continue
+        }
         const enumMember = MODULES_BY_VALUE[key.value]
-        if (!enumMember) continue
+        if (!enumMember) {
+          continue
+        }
 
         context.report({
           node: key.node,
@@ -139,7 +111,9 @@ export const rule = createRule<[], MessageIds>({
 
             if (modulesLocalNames.size === 0) {
               const importFix = addModulesImport(fixer)
-              if (!importFix) return null
+              if (!importFix) {
+                return null
+              }
               fixes.push(importFix)
               modulesLocalNames.add(MODULES)
             }
@@ -158,7 +132,9 @@ export const rule = createRule<[], MessageIds>({
           (s): s is TSESTree.ImportSpecifier =>
             s.type === AST_NODE_TYPES.ImportSpecifier
         )
-        if (specifiers.length === 0) return null
+        if (specifiers.length === 0) {
+          return null
+        }
         const last = specifiers[specifiers.length - 1]
         return fixer.insertTextAfter(last, `, ${MODULES}`)
       }
@@ -215,7 +191,9 @@ export const rule = createRule<[], MessageIds>({
       CallExpression(node) {
         if (isLinkMethodCall(node.callee) || isStepCall(node.callee)) {
           const arg = node.arguments[0]
-          if (arg) checkFirstArg(arg)
+          if (arg) {
+            checkFirstArg(arg)
+          }
         }
       },
     }

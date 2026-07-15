@@ -1,10 +1,10 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { SingleColumnPage } from "../../../components/layout/pages"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useApiKey } from "../../../hooks/api/api-keys"
-import { useExtension } from "../../../providers/extension-provider"
 import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
 import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
@@ -16,7 +16,6 @@ export const ApiKeyManagementDetail = () => {
   >
 
   const { id } = useParams()
-  const { getWidgets } = useExtension()
 
   const { api_key, isLoading, isError, error } = useApiKey(id!, {
     initialData: initialData,
@@ -33,22 +32,27 @@ export const ApiKeyManagementDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      hasOutlet
-      showJSON
-      showRequiredPermissions
-      widgets={{
-        before: getWidgets("api_key.details.before"),
-        after: getWidgets("api_key.details.after"),
-      }}
+    <LayoutComposer
+      widgetsZonePrefix="api_key.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={api_key}
-    >
-      <ApiKeyGeneralSection apiKey={api_key} />
-      {isPublishable && (
-        <PermissionGuard permission="sales_channel:read">
-          <ApiKeySalesChannelSection apiKey={api_key} />
-        </PermissionGuard>
-      )}
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="ApiKeyGeneralSection">
+              <ApiKeyGeneralSection apiKey={api_key} />
+            </LayoutComposer.Entry>
+            {isPublishable && (
+              <LayoutComposer.Entry id="ApiKeySalesChannelSection">
+                <PermissionGuard permission="sales_channel:read">
+                  <ApiKeySalesChannelSection apiKey={api_key} />
+                </PermissionGuard>
+              </LayoutComposer.Entry>
+            )}
+            {detailPageDefaultEntries(api_key, { metadata: false, permissions: false })}
+          </>
+        ),
+      }}
+    />
   )
 }

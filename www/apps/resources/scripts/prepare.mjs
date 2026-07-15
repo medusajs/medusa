@@ -15,7 +15,7 @@ async function main() {
   await generateSlugChanges()
   await generateFilesMap()
   await generateEditedDates()
-  if (!!process.env.CLOUDFLARE_ENV) {
+  if (process.env.CLOUDFLARE_ENV) {
     await copyMdxToPublic({
       srcDir: path.join(process.cwd(), "app"),
       destDir: path.join(process.cwd(), "public", "raw-mdx"),
