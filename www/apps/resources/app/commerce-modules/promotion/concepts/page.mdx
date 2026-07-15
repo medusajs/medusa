@@ -233,6 +233,47 @@ The following table lists the supported attributes for each rule scope:
 
 To retrieve the supported attributes programmatically, use the [listRuleAttributes](/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes) JS SDK method or the [List Rule Attribute Options](!api!/admin#promotions_getpromotionsruleattributeoptionsrule_type) Admin API route.
 
+### Restrict a Promotion by Order Value
+
+Along with the attributes in the table above, the cart context includes the cart's computed totals, such as `item_subtotal`, `subtotal`, `item_total`, and `total`. You can create a rule on one of these attributes using a numeric operator (`gte`, `lte`, `gt`, or `lt`) to restrict a promotion by order value, such as a minimum spend.
+
+<Note>
+
+These numeric conditions aren't available in the Medusa Admin dashboard. Create them using workflows or the Admin API.
+
+</Note>
+
+For example, to only apply a promotion when the cart's items subtotal is at least `$100`:
+
+```ts
+const { result } = await createPromotionsWorkflow(container)
+  .run({
+    input: {
+      promotionsData: [{
+        code: "SPEND100",
+        type: "standard",
+        status: "active",
+        application_method: {
+          type: "percentage",
+          target_type: "items",
+          allocation: "across",
+          value: 10,
+          currency_code: "usd",
+        },
+        rules: [
+          {
+            attribute: "item_subtotal",
+            operator: "gte",
+            values: ["100"],
+          },
+        ],
+      }],
+    },
+  })
+```
+
+Medusa evaluates the rule against the cart's total when the promotion is applied. Within a single computation, the total doesn't reflect discounts from other promotions applied in the same computation.
+
 ---
 
 ## How to Apply Rules on a Promotion?
