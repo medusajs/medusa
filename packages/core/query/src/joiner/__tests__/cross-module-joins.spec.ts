@@ -576,6 +576,75 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       })
     })
 
+    it("supports inverse read-only links (join column on the target table)", () => {
+      const { plan } = compile({
+        entity: "sales_channel",
+        fields: ["id", "name"],
+        filters: {
+          carts: { email: "retail-cart@test.com" },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([
+        {
+          link: {
+            table: "cart",
+            sourceKey: "sales_channel_id",
+            targetKey: "id",
+          },
+          target: {
+            table: "cart",
+            primaryKey: "id",
+            filters: { email: "retail-cart@test.com" },
+          },
+        },
+      ])
+      expect(plan.residualCrossModuleFilters).toEqual([])
+    })
+
+    it("chains internal relations after an inverse read-only link", () => {
+      // Mirrors organization -> project (inverse read-only) -> environments
+      // (module-internal): deeper levels must correlate on the target's real
+      // PK, not the inverse join column.
+      const { plan } = compile({
+        entity: "sales_channel",
+        fields: ["id"],
+        filters: {
+          carts: {
+            items: { title: "Product 1" },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([
+        {
+          link: {
+            table: "cart",
+            sourceKey: "sales_channel_id",
+            targetKey: "id",
+          },
+          target: {
+            table: "cart",
+            primaryKey: "id",
+          },
+        },
+        {
+          parent: "cart",
+          link: {
+            table: "cart_line_item",
+            sourceKey: "cart_id",
+            targetKey: "id",
+          },
+          target: {
+            table: "cart_line_item",
+            primaryKey: "id",
+            filters: { title: "Product 1" },
+          },
+        },
+      ])
+      expect(plan.residualCrossModuleFilters).toEqual([])
+    })
+
     it("rejects read-only links whose FK prefix does not match the traversed path", () => {
       // `product` on cart resolves to the read-only link declared for line
       // items (FK `items.product_id`), which is not reachable from the root.

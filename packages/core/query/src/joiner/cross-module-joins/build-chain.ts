@@ -277,19 +277,25 @@ function buildInternalRelationStep(
         return undefined
       }
 
-      return {
-        spec: {
-          link: {
-            table: tableMetadata.tableName,
-            sourceKey: relation.foreignKey,
-            targetKey: fkHop.column,
+      // Only forward read-only links fuse (their FK column lives on this
+      // internal child table). Inverse ones chain off the child's own PK, so
+      // the standalone self-join below is emitted and the loop consumes the
+      // read-only hop on its own.
+      if (fkHop.direction === "forward") {
+        return {
+          spec: {
+            link: {
+              table: tableMetadata.tableName,
+              sourceKey: relation.foreignKey,
+              targetKey: fkHop.column,
+            },
+            target: fkHop.target,
           },
-          target: fkHop.target,
-        },
-        entity: next.entity,
-        properties: [hop.property, next.property],
-        serviceName: next.serviceConfig.serviceName,
-        consumedHops: 2,
+          entity: next.entity,
+          properties: [hop.property, next.property],
+          serviceName: next.serviceConfig.serviceName,
+          consumedHops: 2,
+        }
       }
     }
 
@@ -416,7 +422,7 @@ function buildLinkModuleStep(
 }
 
 /**
- * Read-only link hop directly off the current position's table.
+ * Read-only link hop directly off the current position.
  */
 function buildReadOnlyLinkStep(
   hop: Hop,
@@ -425,7 +431,31 @@ function buildReadOnlyLinkStep(
 ): ChainStep | undefined {
   const fkHop = resolveFkHopParts(hop, position, context)
 
-  if (!fkHop || !position.currentTable) {
+  if (!fkHop) {
+    return undefined
+  }
+
+  if (fkHop.direction === "inverse") {
+    // Self-join on the target table: the target-side column correlates to
+    // the current position while deeper levels chain on the target's PK.
+    return {
+      spec: {
+        link: {
+          table: fkHop.target.table,
+          ...(fkHop.target.schema ? { schema: fkHop.target.schema } : {}),
+          sourceKey: fkHop.targetColumn,
+          targetKey: "id",
+        },
+        target: fkHop.target,
+      },
+      entity: hop.entity,
+      properties: [hop.property],
+      serviceName: hop.serviceConfig.serviceName,
+      consumedHops: 1,
+    }
+  }
+
+  if (!position.currentTable) {
     return undefined
   }
 
@@ -445,16 +475,36 @@ function buildReadOnlyLinkStep(
   }
 }
 
+type FkHopParts =
+  | {
+      /** The FK column lives on the current position's side. */
+      direction: "forward"
+      column: string
+      target: CrossModuleJoinSpec["target"]
+    }
+  | {
+      /** The join column lives on the target table. */
+      direction: "inverse"
+      targetColumn: string
+      target: CrossModuleJoinSpec["target"]
+    }
+
 /**
- * Validates a read-only link hop — an FK column on the current position's
- * table referencing another module's entity — and resolves its join column
- * and target table.
+ * Validates a read-only link hop and resolves its join columns and target
+ * table. Read-only links come in two directions:
+ *
+ * - forward: the FK column lives on the current position's side and the
+ *   relationship's `primaryKey` is the target's PK (e.g.
+ *   `cart_line_item.product_id -> product.id`).
+ * - inverse: the join column lives on the target table (e.g.
+ *   `organization.id -> project.organization_id`), in which case the parent
+ *   side must be the current correlate column.
  */
 function resolveFkHopParts(
   hop: Hop,
   position: ChainPosition,
   context: ChainContext
-): { column: string; target: CrossModuleJoinSpec["target"] } | undefined {
+): FkHopParts | undefined {
   const { rootConfig, catalog } = context
   const relationship = hop.relationship!
 
@@ -501,13 +551,28 @@ function resolveFkHopParts(
     return undefined
   }
 
+  // The target's PK is always "id" for the spec so deeper levels chain on
+  // the real primary key regardless of the link direction.
+  const target = {
+    table: targetMetadata.tableName,
+    ...(targetMetadata.schema ? { schema: targetMetadata.schema } : {}),
+    primaryKey: "id",
+  }
+
+  if (relationship.primaryKey === "id") {
+    return { direction: "forward", column, target }
+  }
+
+  // Inverse: `primaryKey` is the join column on the target table, and the
+  // parent-side column must correlate directly to the current position.
+  if (column !== position.correlateKey) {
+    return undefined
+  }
+
   return {
-    column,
-    target: {
-      table: targetMetadata.tableName,
-      ...(targetMetadata.schema ? { schema: targetMetadata.schema } : {}),
-      primaryKey: relationship.primaryKey,
-    },
+    direction: "inverse",
+    targetColumn: relationship.primaryKey,
+    target,
   }
 }
 

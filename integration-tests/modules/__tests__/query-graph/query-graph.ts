@@ -983,6 +983,83 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should filter through an inverse read-only link and an internal relation", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const cartService: any = container.resolve(Modules.CART)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Retail Store",
+          })
+          const wholesaleChannel = await salesChannelService.createSalesChannels(
+            {
+              name: "Wholesale Store",
+            }
+          )
+
+          await cartService.createCarts([
+            {
+              currency_code: "usd",
+              email: "retail-cart@test.com",
+              sales_channel_id: retailChannel.id,
+              items: [
+                {
+                  title: "Retail Item",
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+            {
+              currency_code: "usd",
+              email: "wholesale-cart@test.com",
+              sales_channel_id: wholesaleChannel.id,
+              items: [
+                {
+                  title: "Wholesale Item",
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+          ])
+
+          // Inverse read-only link: the join column (cart.sales_channel_id)
+          // lives on the target table.
+          const { data: channelsByCartEmail } = await query.graph({
+            entity: "sales_channel",
+            fields: ["id", "name"],
+            filters: {
+              carts: { email: "retail-cart@test.com" },
+            },
+          })
+
+          expect(channelsByCartEmail).toHaveLength(1)
+          expect(channelsByCartEmail[0]).toEqual(
+            expect.objectContaining({ name: "Retail Store" })
+          )
+
+          // Internal relation chained after the inverse link must correlate
+          // on the cart's PK, not the inverse join column.
+          const { data: channelsByItemTitle } = await query.graph({
+            entity: "sales_channel",
+            fields: ["id", "name"],
+            filters: {
+              carts: {
+                items: { title: "Wholesale Item" },
+              },
+            },
+          })
+
+          expect(channelsByItemTitle).toHaveLength(1)
+          expect(channelsByItemTitle[0]).toEqual(
+            expect.objectContaining({ name: "Wholesale Store" })
+          )
+        })
+
         it("should sort by a cross-module field", async () => {
           const container = getContainer()
           const query = container.resolve("query")

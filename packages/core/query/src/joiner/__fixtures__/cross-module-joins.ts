@@ -334,6 +334,23 @@ const cartProductReadonlyLink: ModuleJoinerConfig = {
         },
       },
     },
+    // Inverse direction: the join column (sales_channel_id) lives on the
+    // cart table, i.e. the target side of the relation.
+    {
+      serviceName: "sales_channel",
+      entity: "SalesChannel",
+      relationship: {
+        serviceName: "cart",
+        entity: "Cart",
+        primaryKey: "sales_channel_id",
+        foreignKey: "id",
+        alias: "carts",
+        isList: true,
+        args: {
+          methodSuffix: "Carts",
+        },
+      },
+    },
   ],
 }
 
