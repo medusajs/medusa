@@ -247,6 +247,98 @@ describe("prepareListQuery", () => {
       })
     })
 
+    it("should throw error when order field is in forbiddenOrderBy", async () => {
+      const validated: RequestQueryFields = {
+        order: "total",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        forbiddenOrderBy: ["total", "payment_status"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field total is not valid"
+      )
+    })
+
+    it("should throw error when descending order field is in forbiddenOrderBy", async () => {
+      const validated: RequestQueryFields = {
+        order: "-payment_status",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        forbiddenOrderBy: ["total", "payment_status"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field payment_status is not valid"
+      )
+    })
+
+    it("should allow order field when it is not in forbiddenOrderBy", async () => {
+      const validated: RequestQueryFields = {
+        order: "-created_at",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        forbiddenOrderBy: ["total", "payment_status"],
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.listConfig.order).toEqual({ created_at: "DESC" })
+      expect(result.remoteQueryConfig.pagination.order).toEqual({
+        created_at: "DESC",
+      })
+    })
+
+    it("should reject a forbiddenOrderBy field even when it is in allowed", async () => {
+      // `total` is selectable (in `allowed`) but forbidden as a sort key —
+      // sorting is decoupled from field selection.
+      const validated: RequestQueryFields = {
+        order: "total",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        allowed: ["id", "total", "created_at"],
+        forbiddenOrderBy: ["total"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field total is not valid"
+      )
+    })
+
+    it("should still enforce allowed when forbiddenOrderBy is set", async () => {
+      const validated: RequestQueryFields = {
+        order: "email",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        isList: true,
+        allowed: ["id", "created_at"],
+        forbiddenOrderBy: ["total"],
+      }
+
+      await expect(prepareListQuery(validated, queryConfig)).rejects.toThrow(
+        "Order field email is not valid"
+      )
+    })
+
     it("should allow nested order field when parent relation is in allowed fields", async () => {
       const validated: RequestQueryFields = {
         order: "product.title",
