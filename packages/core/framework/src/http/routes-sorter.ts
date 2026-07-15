@@ -7,9 +7,9 @@ import { MiddlewareVerb, RouteVerb } from "./types"
  */
 type Route = {
   /**
-   * The route path.
+   * The route path. Either a string or a regular expression.
    */
-  matcher: string
+  matcher: string | RegExp
 
   /**
    * Function to handle the request
@@ -175,8 +175,31 @@ export class RoutesSorter<T extends Route> {
    * ```
    */
   #processRoute(route: T) {
-    const segments = route.matcher.split("/").filter((s) => s.length)
     let parent = this.#routesTree["root"]
+
+    /**
+     * A regular expression matcher cannot be split into segments, so it is
+     * placed directly into the "regex" node of the root branch. This keeps it
+     * in the route tree (rather than being dropped) and preserves its priority
+     * relative to string based matchers.
+     */
+    if (route.matcher instanceof RegExp) {
+      parent.regex.routes.push(route)
+      return
+    }
+
+    const segments = route.matcher.split("/").filter((s) => s.length)
+
+    /**
+     * A matcher without any segments (e.g. "/") targets the root. Placing it
+     * directly on the root branch ensures it is not dropped from the tree.
+     */
+    if (!segments.length) {
+      const bucket: keyof RoutesBranch<T> =
+        !route.methods && !route.method ? "global" : "static"
+      parent[bucket].routes.push(route)
+      return
+    }
 
     segments.forEach((segment, index) => {
       let bucket: keyof RoutesBranch<T> = "static"
