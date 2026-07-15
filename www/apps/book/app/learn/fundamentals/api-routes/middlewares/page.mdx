@@ -386,7 +386,7 @@ The global middleware runs first, then the route middleware, and finally the rou
 On top of the previous ordering, Medusa sorts global and route middlewares based on their matcher pattern in the following order:
 
 1. Wildcard matchers. For example, `/custom*`.
-2. Pattern matchers. For example, `/custom/(products|collections)`.
+2. Regex matchers. For example, `/custom/(products|collections)`.
 3. Static matchers without parameters. For example, `/custom`.
 4. Static matchers with parameters. For example, `/custom/:id`.
 
