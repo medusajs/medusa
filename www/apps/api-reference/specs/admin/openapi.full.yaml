@@ -29276,7 +29276,10 @@ paths:
     post:
       operationId: PostOrdersId
       summary: Update Order
-      description: Update an order's details.
+      description: |-
+        Update an order's details.
+
+        Updating the order's shipping or billing address doesn't recalculate the order's taxes or totals; the existing tax lines are preserved as-is. You also can't change the address's `country_code`.
       x-authenticated: true
       parameters:
         - name: id
@@ -97649,7 +97652,7 @@ components:
     api_token:
       type: http
       x-displayName: API Token
-      scheme: bearer
+      scheme: basic
     jwt_token:
       type: http
       x-displayName: JWT Token

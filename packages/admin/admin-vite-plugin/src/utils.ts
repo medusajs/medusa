@@ -182,6 +182,7 @@ const ADMIN_SUBDIRECTORIES = [
   "widgets",
   "i18n",
   "layouts",
+  "cell-renderers.tsx",
 ] as const
 
 export type AdminSubdirectory = (typeof ADMIN_SUBDIRECTORIES)[number]
@@ -191,6 +192,11 @@ export function isFileInAdminSubdirectory(
   subdirectory: AdminSubdirectory
 ): boolean {
   const normalizedPath = normalizePath(file)
+  // Handle file-based subdirectories (e.g., cell-renderers.tsx)
+  if (subdirectory.endsWith(".tsx") || subdirectory.endsWith(".ts") || subdirectory.endsWith(".jsx") || subdirectory.endsWith(".js")) {
+    return normalizedPath.endsWith(`/src/admin/${subdirectory}`)
+  }
+  // Handle directory-based subdirectories
   return normalizedPath.includes(`/src/admin/${subdirectory}/`)
 }
 

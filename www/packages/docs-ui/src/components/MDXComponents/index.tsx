@@ -112,10 +112,9 @@ export const MDXComponents: MDXComponentsType = {
       HTMLImageElement
     >
   ) => {
-    // omit key to resolve errors
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { key, ...rest } = props
-    return <ZoomImg {...rest} />
+    // NOTE: don't destructure `key` here — React 19 strips it from props and
+    // warns when it's accessed ("key is not a prop").
+    return <ZoomImg {...props} />
   },
   a: (props) => <Link {...props} variant="content" />,
   strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {

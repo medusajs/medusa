@@ -56,7 +56,7 @@ export const DataTableSortableHeaderCell = React.forwardRef<
     <Table.HeaderCell
       ref={combineRefs}
       style={style}
-      className={clx(className, "group/header-cell bg-ui-bg-base")}
+      className={clx(className, "group/header-cell bg-ui-bg-subtle")}
       {...attributes}
       {...listeners}
       {...props}

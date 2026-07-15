@@ -1,0 +1,1 @@
+{"slug":"/references/workflows/types/workflows.Constructor","title":"Constructor","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}
