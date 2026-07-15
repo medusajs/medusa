@@ -1,10 +1,10 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { useProductVariant } from "../../../hooks/api/products"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { VariantGeneralSection } from "./components/variant-general-section"
 import {
   InventorySectionPlaceholder,
@@ -30,8 +30,6 @@ export const ProductVariantDetail = () => {
     }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !variant) {
     return (
       <TwoColumnPageSkeleton
@@ -48,40 +46,47 @@ export const ProductVariantDetail = () => {
   }
 
   return (
-    <TwoColumnPage
+    <LayoutComposer
+      widgetsZonePrefix="product_variant.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
       data={variant}
-      hasOutlet
-      showJSON
-      showMetadata
-      widgets={{
-        after: getWidgets("product_variant.details.after"),
-        before: getWidgets("product_variant.details.before"),
-        sideAfter: getWidgets("product_variant.details.side.after"),
-        sideBefore: getWidgets("product_variant.details.side.before"),
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="VariantGeneralSection">
+              <VariantGeneralSection variant={variant as ExtendedVariant} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="VariantMediaSection">
+              <VariantMediaSection variant={variant as ExtendedVariant} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="VariantInventorySection">
+              {!variant.manage_inventory ? (
+                <InventorySectionPlaceholder />
+              ) : (
+                <VariantInventorySection
+                  inventoryItems={(variant.inventory_items ?? [])
+                    .filter((i) => i.inventory)
+                    .map((i) => {
+                      return {
+                        ...i.inventory!,
+                        required_quantity: i.required_quantity,
+                        variant,
+                      }
+                    })}
+                />
+              )}
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(variant)}
+          </>
+        ),
+        side: (
+          <>
+            <LayoutComposer.Entry id="VariantPricesSection">
+              <VariantPricesSection variant={variant as ExtendedVariant} />
+            </LayoutComposer.Entry>
+          </>
+        ),
       }}
-    >
-      <TwoColumnPage.Main>
-        <VariantGeneralSection variant={variant as ExtendedVariant} />
-        <VariantMediaSection variant={variant as ExtendedVariant} />
-        {!variant.manage_inventory ? (
-          <InventorySectionPlaceholder />
-        ) : (
-          <VariantInventorySection
-            inventoryItems={(variant.inventory_items ?? [])
-              .filter((i) => i.inventory)
-              .map((i) => {
-                return {
-                  ...i.inventory!,
-                  required_quantity: i.required_quantity,
-                  variant,
-                }
-              })}
-          />
-        )}
-      </TwoColumnPage.Main>
-      <TwoColumnPage.Sidebar>
-        <VariantPricesSection variant={variant as ExtendedVariant} />
-      </TwoColumnPage.Sidebar>
-    </TwoColumnPage>
+    />
   )
 }

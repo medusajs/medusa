@@ -32,6 +32,10 @@ export const product = [
     "path": "https://docs.medusajs.com/user-guide/products/import"
   },
   {
+    "title": "Manage Product Options",
+    "path": "https://docs.medusajs.com/user-guide/products/options"
+  },
+  {
     "title": "Products Overview",
     "path": "https://docs.medusajs.com/user-guide/products"
   },
@@ -58,6 +62,10 @@ export const product = [
   {
     "title": "Extend Product",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/extend"
+  },
+  {
+    "title": "Filter Products",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
   {
     "title": "Get Variant Prices",
@@ -172,6 +180,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/storefront-development/products/list"
   },
   {
+    "title": "Use Product Options in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/products/options"
+  },
+  {
     "title": "Example: Show Sale Price",
     "path": "https://docs.medusajs.com/resources/storefront-development/products/price/examples/sale-price"
   },
@@ -194,257 +206,5 @@ export const product = [
   {
     "title": "Select Product Variants in Storefront",
     "path": "https://docs.medusajs.com/resources/storefront-development/products/variants"
-  },
-  {
-    "title": "addImageToVariantsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addImageToVariantsStep"
-  },
-  {
-    "title": "addImagesToVariantStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addImagesToVariantStep"
-  },
-  {
-    "title": "batchLinkProductsToCategoryStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/batchLinkProductsToCategoryStep"
-  },
-  {
-    "title": "batchLinkProductsToCollectionStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/batchLinkProductsToCollectionStep"
-  },
-  {
-    "title": "createCollectionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createCollectionsStep"
-  },
-  {
-    "title": "createProductOptionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductOptionsStep"
-  },
-  {
-    "title": "createProductTagsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductTagsStep"
-  },
-  {
-    "title": "createProductTypesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductTypesStep"
-  },
-  {
-    "title": "createProductVariantsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsStep"
-  },
-  {
-    "title": "createProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductsStep"
-  },
-  {
-    "title": "deleteCollectionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteCollectionsStep"
-  },
-  {
-    "title": "deleteProductOptionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductOptionsStep"
-  },
-  {
-    "title": "deleteProductTagsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductTagsStep"
-  },
-  {
-    "title": "deleteProductTypesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductTypesStep"
-  },
-  {
-    "title": "deleteProductVariantsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductVariantsStep"
-  },
-  {
-    "title": "deleteProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductsStep"
-  },
-  {
-    "title": "getProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getProductsStep"
-  },
-  {
-    "title": "removeImageFromVariantsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeImageFromVariantsStep"
-  },
-  {
-    "title": "removeImagesFromVariantStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeImagesFromVariantStep"
-  },
-  {
-    "title": "updateCollectionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateCollectionsStep"
-  },
-  {
-    "title": "updateProductOptionsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionsStep"
-  },
-  {
-    "title": "updateProductTagsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductTagsStep"
-  },
-  {
-    "title": "updateProductTypesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductTypesStep"
-  },
-  {
-    "title": "updateProductVariantsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductVariantsStep"
-  },
-  {
-    "title": "updateProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductsStep"
-  },
-  {
-    "title": "batchImageVariantsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchImageVariantsWorkflow"
-  },
-  {
-    "title": "batchLinkProductsToCategoryWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchLinkProductsToCategoryWorkflow"
-  },
-  {
-    "title": "batchLinkProductsToCollectionWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchLinkProductsToCollectionWorkflow"
-  },
-  {
-    "title": "batchProductVariantsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductVariantsWorkflow"
-  },
-  {
-    "title": "batchVariantImagesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchVariantImagesWorkflow"
-  },
-  {
-    "title": "createCollectionsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCollectionsWorkflow"
-  },
-  {
-    "title": "createProductOptionsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductOptionsWorkflow"
-  },
-  {
-    "title": "createProductTagsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductTagsWorkflow"
-  },
-  {
-    "title": "createProductTypesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductTypesWorkflow"
-  },
-  {
-    "title": "createProductVariantsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductVariantsWorkflow"
-  },
-  {
-    "title": "createProductsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductsWorkflow"
-  },
-  {
-    "title": "deleteCollectionsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteCollectionsWorkflow"
-  },
-  {
-    "title": "deleteProductOptionsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionsWorkflow"
-  },
-  {
-    "title": "deleteProductTagsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductTagsWorkflow"
-  },
-  {
-    "title": "deleteProductTypesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductTypesWorkflow"
-  },
-  {
-    "title": "deleteProductVariantsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductVariantsWorkflow"
-  },
-  {
-    "title": "deleteProductsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductsWorkflow"
-  },
-  {
-    "title": "updateCollectionsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCollectionsWorkflow"
-  },
-  {
-    "title": "updateProductOptionsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductOptionsWorkflow"
-  },
-  {
-    "title": "updateProductTagsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductTagsWorkflow"
-  },
-  {
-    "title": "updateProductTypesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductTypesWorkflow"
-  },
-  {
-    "title": "updateProductVariantsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductVariantsWorkflow"
-  },
-  {
-    "title": "updateProductsWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductsWorkflow"
-  },
-  {
-    "title": "createProductCategoriesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductCategoriesStep"
-  },
-  {
-    "title": "deleteProductCategoriesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductCategoriesStep"
-  },
-  {
-    "title": "updateProductCategoriesStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductCategoriesStep"
-  },
-  {
-    "title": "createProductCategoriesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductCategoriesWorkflow"
-  },
-  {
-    "title": "deleteProductCategoriesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductCategoriesWorkflow"
-  },
-  {
-    "title": "updateProductCategoriesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductCategoriesWorkflow"
-  },
-  {
-    "title": "product",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/product"
-  },
-  {
-    "title": "productCategory",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productCategory"
-  },
-  {
-    "title": "productCollection",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productCollection"
-  },
-  {
-    "title": "productTag",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productTag"
-  },
-  {
-    "title": "productType",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productType"
-  },
-  {
-    "title": "productVariant",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productVariant"
-  },
-  {
-    "title": "category",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/category"
-  },
-  {
-    "title": "collection",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/collection"
-  },
-  {
-    "title": "product",
-    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
   }
 ]

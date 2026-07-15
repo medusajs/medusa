@@ -41,6 +41,16 @@ class Entity1 {
   @Property({ nullable: true })
   deleted_at: Date | null
 
+  @Property({
+    columnType: "timestamptz",
+    type: "date",
+    nullable: false,
+    defaultRaw: "now()",
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+  })
+  updated_at: Date
+
   @OneToMany(() => Entity2, (entity2) => entity2.entity1)
   entity2 = new Collection<Entity2>(this)
 
@@ -233,12 +243,44 @@ class Entity6 {
   }
 }
 
+// Entity whose primary key is a custom (non-id) column
+@Entity()
+class CustomPkEntity {
+  @PrimaryKey({ columnType: "text" })
+  code: string
+
+  @Property()
+  title: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+}
+
+// Entity with a composite primary key
+@Entity()
+class CompositePkEntity {
+  @PrimaryKey({ columnType: "text" })
+  foo: string
+
+  @PrimaryKey({ columnType: "text" })
+  bar: string
+
+  @Property()
+  title: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+}
+
 const Entity1Repository = mikroOrmBaseRepositoryFactory(Entity1)
 const Entity2Repository = mikroOrmBaseRepositoryFactory(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory(Entity3)
 const Entity4Repository = mikroOrmBaseRepositoryFactory(Entity4)
 const Entity5Repository = mikroOrmBaseRepositoryFactory(Entity5)
 const Entity6Repository = mikroOrmBaseRepositoryFactory(Entity6)
+const CustomPkEntityRepository = mikroOrmBaseRepositoryFactory(CustomPkEntity)
+const CompositePkEntityRepository =
+  mikroOrmBaseRepositoryFactory(CompositePkEntity)
 
 describe("mikroOrmRepository", () => {
   let orm!: MikroORM
@@ -263,6 +305,12 @@ describe("mikroOrmRepository", () => {
   const manager6 = () => {
     return new Entity6Repository({ manager: manager.fork() })
   }
+  const customPkManager = () => {
+    return new CustomPkEntityRepository({ manager: manager.fork() })
+  }
+  const compositePkManager = () => {
+    return new CompositePkEntityRepository({ manager: manager.fork() })
+  }
 
   beforeEach(async () => {
     await dropDatabase(
@@ -272,7 +320,16 @@ describe("mikroOrmRepository", () => {
 
     orm = await MikroORM.init(
       defineConfig({
-        entities: [Entity1, Entity2, Entity3, Entity4, Entity5, Entity6],
+        entities: [
+          Entity1,
+          Entity2,
+          Entity3,
+          Entity4,
+          Entity5,
+          Entity6,
+          CustomPkEntity,
+          CompositePkEntity,
+        ],
         clientUrl: getDatabaseURL(dbName),
       })
     )
@@ -285,9 +342,16 @@ describe("mikroOrmRepository", () => {
   })
 
   afterEach(async () => {
-    const generator = orm.getSchemaGenerator()
-    await generator.dropSchema()
-    await orm.close(true)
+    if (orm) {
+      const generator = orm.getSchemaGenerator()
+      await generator.dropSchema()
+      await orm.close(true)
+    }
+
+    await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
   })
 
   it("should successfully update a many to many collection providing an empty array", async () => {
@@ -454,6 +518,44 @@ describe("mikroOrmRepository", () => {
           id: "1",
           title: "en1",
         })
+      )
+    })
+
+    it("should apply onUpdate hooks when batch updating entities", async () => {
+      const entity1 = { id: "1", title: "en1" }
+      const originalUpdatedAt = new Date("2020-01-01T00:00:00.000Z")
+
+      await manager1().upsertWithReplace([
+        { ...entity1, updated_at: originalUpdatedAt },
+      ])
+
+      const [createdEntity] = await manager1().find({
+        where: { id: "1" },
+      })
+
+      expect(createdEntity.updated_at.getTime()).toEqual(
+        originalUpdatedAt.getTime()
+      )
+
+      entity1.title = "en1-update"
+
+      const { performedActions } = await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions).toEqual({
+        created: {},
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        deleted: {},
+      })
+
+      const [updatedEntity] = await manager1().find({
+        where: { id: "1" },
+      })
+
+      expect(updatedEntity.title).toBe("en1-update")
+      expect(updatedEntity.updated_at.getTime()).toBeGreaterThan(
+        createdEntity.updated_at.getTime()
       )
     })
 
@@ -1345,6 +1447,72 @@ describe("mikroOrmRepository", () => {
       expect(listedEntities[0].entity3.getItems()).toEqual(
         listedEntities[1].entity3.getItems()
       )
+    })
+  })
+
+  describe("delete", () => {
+    it("should delete an entity with a standard id primary key and return the ids", async () => {
+      const seedManager = orm.em.fork()
+      await manager1().create(
+        [
+          { id: "1", title: "en1" },
+          { id: "2", title: "en2" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await manager1().delete({ id: "1" })
+
+      expect(deleted).toEqual(["1"])
+
+      const remaining = await manager1().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].id).toEqual("2")
+    })
+
+    it("should delete an entity with a custom (non-id) primary key and return the primary key values", async () => {
+      const seedManager = orm.em.fork()
+      await customPkManager().create(
+        [
+          { code: "code-1", title: "first" },
+          { code: "code-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await customPkManager().delete({ code: "code-1" })
+
+      expect(deleted).toEqual(["code-1"])
+
+      const remaining = await customPkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].code).toEqual("code-2")
+    })
+
+    it("should delete an entity with a composite primary key and return the primary key values keyed by property name", async () => {
+      const seedManager = orm.em.fork()
+      await compositePkManager().create(
+        [
+          { foo: "foo-1", bar: "bar-1", title: "first" },
+          { foo: "foo-2", bar: "bar-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await compositePkManager().delete({
+        foo: "foo-1",
+        bar: "bar-1",
+      })
+
+      expect(deleted).toEqual([{ foo: "foo-1", bar: "bar-1" }])
+
+      const remaining = await compositePkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].foo).toEqual("foo-2")
+      expect(remaining[0].bar).toEqual("bar-2")
     })
   })
 

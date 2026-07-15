@@ -2,9 +2,12 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
 
 import type { InventoryTypes } from "@medusajs/framework/types"
+import { InventoryItemWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { updateInventoryItemsStep } from "../steps"
 
 /**
@@ -53,6 +56,17 @@ export const updateInventoryItemsWorkflow = createWorkflow(
   (
     input: WorkflowData<UpdateInventoryItemsWorkflowInput>
   ): WorkflowResponse<UpdateInventoryItemsWorkflowOutput> => {
-    return new WorkflowResponse(updateInventoryItemsStep(input.updates))
+    const updatedItems = updateInventoryItemsStep(input.updates)
+
+    const itemIdEvents = transform({ updatedItems }, ({ updatedItems }) => {
+      return updatedItems.map((item) => ({ id: item.id }))
+    })
+
+    emitEventStep({
+      eventName: InventoryItemWorkflowEvents.UPDATED,
+      data: itemIdEvents,
+    })
+
+    return new WorkflowResponse(updatedItems)
   }
 )

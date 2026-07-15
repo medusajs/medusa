@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Notification/core_flows.Notification.Steps_Notification","title":"Steps_Notification","frontmatter":{},"toc":[],"blocks":[{"kind":"linkList","items":[{"title":"notifyOnFailureStep","href":"/references/medusa-workflows/steps/notifyOnFailureStep"},{"title":"sendNotificationsStep","href":"/references/medusa-workflows/steps/sendNotificationsStep"}]}]}

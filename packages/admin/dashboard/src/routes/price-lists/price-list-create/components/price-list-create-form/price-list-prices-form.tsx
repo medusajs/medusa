@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { DataGrid } from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
@@ -8,6 +8,7 @@ import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-gr
 import { PriceListCreateProductVariantsSchema } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
 import { PricingCreateSchemaType } from "./schema"
+import { QuantityPriceModal } from "../../../common/components/quantity-price-modal/quantity-price-modal"
 
 type PriceListPricesFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -32,10 +33,11 @@ export const PriceListPricesForm = ({
     name: "products",
   })
 
+  const productIds = useMemo(() => ids.map((id) => id.id), [ids])
+
   const { products, isLoading, isError, error } = useProducts({
-    id: ids.map((id) => id.id),
-    limit: ids.length,
-    // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
+    id: productIds,
+    limit: productIds.length,
     fields:
       "title,thumbnail,*variants,-type,-collection,-options,-tags,-images,-sales_channels",
   })
@@ -50,7 +52,7 @@ export const PriceListPricesForm = ({
         /**
          * If the product already exists in the form, we don't want to overwrite it.
          */
-        if (existingProducts[product.id] || !product.variants) {
+        if (existingProducts?.[product.id] || !product.variants) {
           return
         }
 
@@ -78,19 +80,24 @@ export const PriceListPricesForm = ({
   }
 
   return (
-    <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGrid
-        isLoading={isLoading}
-        columns={columns}
-        data={products}
-        getSubRows={(row) => {
-          if (isProductRow(row) && row.variants) {
-            return row.variants
-          }
-        }}
-        state={form}
-        onEditingChange={(editing) => setCloseOnEscape(!editing)}
-      />
-    </div>
+    <QuantityPriceModal form={form} products={products} regions={regions}>
+      {({ isModalOpen }) => (
+        <div className="flex size-full flex-col divide-y overflow-hidden">
+          <DataGrid
+            isLoading={isLoading}
+            columns={columns}
+            data={products}
+            getSubRows={(row) => {
+              if (isProductRow(row) && row.variants) {
+                return row.variants
+              }
+            }}
+            state={form}
+            onEditingChange={(editing) => setCloseOnEscape(!editing)}
+            disableInteractions={isModalOpen}
+          />
+        </div>
+      )}
+    </QuantityPriceModal>
   )
 }

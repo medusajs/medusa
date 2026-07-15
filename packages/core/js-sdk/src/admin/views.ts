@@ -7,6 +7,20 @@ export class Views {
   constructor(private client: Client) {}
 
   /**
+   * List available entities for view configuration
+   * @since 2.18.0
+   * @featureFlag view_configurations
+   */
+  async listEntities(
+    headers?: ClientHeaders
+  ): Promise<HttpTypes.AdminEntityListResponse> {
+    return await this.client.fetch("/admin/views/entities", {
+      method: "GET",
+      headers,
+    })
+  }
+
+  /**
    * @since 2.10.3
    * @featureFlag view_configurations
    */

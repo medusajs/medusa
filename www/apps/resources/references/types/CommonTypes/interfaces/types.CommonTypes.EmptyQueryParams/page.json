@@ -1,0 +1,1 @@
+{"slug":"/references/types/CommonTypes/interfaces/types.CommonTypes.EmptyQueryParams","title":"EmptyQueryParams","frontmatter":{},"toc":[],"blocks":[{"kind":"markdown","html":"Requests that don't accept any query parameters can use this type."}]}

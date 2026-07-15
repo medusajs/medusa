@@ -12,10 +12,12 @@ import {
   ShippingProfileDTO,
 } from "@medusajs/framework/types"
 import {
+  InventoryLevelWorkflowEvents,
   MathBN,
   MedusaError,
   Modules,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -567,7 +569,32 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
-    adjustInventoryLevelsStep(inventoryAdjustment)
+    const adjustedLevels = adjustInventoryLevelsStep(inventoryAdjustment)
+
+    const {
+      levelUpdatedEvents,
+      reservationUpdatedEvents,
+      reservationDeletedEvents,
+    } = transform(
+      { adjustedLevels, toUpdate, toDelete, input },
+      ({ adjustedLevels, toUpdate, toDelete, input }) => {
+        return {
+          levelUpdatedEvents: adjustedLevels.map((level) => ({
+            id: level.id,
+            order_id: input.order_id,
+          })),
+          reservationUpdatedEvents: toUpdate.map((reservation) => ({
+            id: reservation.id,
+            order_id: input.order_id,
+          })),
+          reservationDeletedEvents: toDelete.map((id) => ({
+            id,
+            order_id: input.order_id,
+          })),
+        }
+      }
+    )
+
     parallelize(
       registerOrderFulfillmentStep(registerOrderFulfillmentData),
       createRemoteLinkStep(link),
@@ -581,6 +608,22 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
           no_notification: input.no_notification,
         },
       })
+    )
+
+    // Emitted after the reservations are updated and deleted.
+    parallelize(
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.UPDATED,
+        data: levelUpdatedEvents,
+      }).config({ name: "emit-inventory-level-updated" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.UPDATED,
+        data: reservationUpdatedEvents,
+      }).config({ name: "emit-reservation-item-updated" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.DELETED,
+        data: reservationDeletedEvents,
+      }).config({ name: "emit-reservation-item-deleted" })
     )
 
     const fulfillmentCreated = createHook("fulfillmentCreated", {

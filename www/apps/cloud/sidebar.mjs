@@ -212,6 +212,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "local",
+            path: "/cli/commands/local",
+          },
+          {
+            type: "link",
             title: "version",
             path: "/cli/commands/version",
           },

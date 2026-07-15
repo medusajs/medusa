@@ -84,8 +84,118 @@ The [ApplicationMethod data model](/references/promotion/models/ApplicationMetho
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `value`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      How much is discounted? Its meaning depends on the `type`: a fixed amount when `type` is `fixed`, or a percentage between `0` and `100` when `type` is `percentage`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A number, such as `10`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `currency_code`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Which currency does the promotion apply to? Only carts whose currency matches receive the discount. Required for `fixed` promotions, as explained in the [Discount Value and Currency section](#discount-value-and-currency).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A currency code, such as `usd`.
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
+
+---
+
+## Discount Value and Currency
+
+The `value` and `currency_code` properties work together based on the application method's `type`:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      `type`
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Meaning of `value`
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Role of `currency_code`
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `fixed`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A fixed amount to discount, such as `10` to discount `$10`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Set the `currency_code` to specify the currency of the discounted amount. A fixed amount is only meaningful in a specific currency, so set the `currency_code` for `fixed` promotions.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `percentage`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A percentage between `0` and `100` to discount, such as `10` to discount `10%`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The `currency_code` isn't relevant to the discounted amount, since a percentage applies to any currency. You can still set it to restrict the promotion to a single currency.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### How the Currency Match Works
+
+When a `currency_code` is set, Medusa only applies the promotion if the cart's currency matches the application method's `currency_code`. If you don't set a `currency_code`, the promotion applies to carts of any currency.
+
+For example, a `fixed` promotion with a `value` of `10` and a `currency_code` of `usd` discounts `$10` off carts using the US dollar. It isn't applied to a cart using the Euro.
+
+<Note>
+
+If the promotion belongs to a [campaign](../campaign/page.mdx) with a spend-based budget, the campaign budget's `currency_code` must match the application method's `currency_code`.
+
+</Note>
 
 ## Target Promotion Rules
 
@@ -96,6 +206,12 @@ The `ApplicationMethod` data model has a collection of [PromotionRule](/referenc
 ![A diagram showcasing the target_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898273/Medusa%20Resources/application-method-target-rules_hqaymz.jpg)
 
 In this example, the promotion is only applied to product variants in the cart that have the SKU `SHIRT`.
+
+<Note title="Warning" type="warning">
+
+A target rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to target a product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](../concepts/page.mdx#rule-attributes) for the full list of supported keys.
+
+</Note>
 
 ---
 
@@ -108,6 +224,14 @@ The application method has a collection of `PromotionRule` items to define the â
 ![A diagram showcasing the buy_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898453/Medusa%20Resources/application-method-buy-rules_djjuhw.jpg)
 
 In this example, the cart must have two product variants with the SKU `SHIRT` for the promotion to be applied.
+
+<Note title="Warning" type="warning">
+
+Like target rules, a buy rule's `attribute` must be prefixed based on the `target_type`: use `items.` for item rules and `shipping_methods.` for shipping-method rules. For example, to require a specific product, set the `attribute` to `items.product.id`, not `product_id`. Refer to [Rule Attributes](../concepts/page.mdx#rule-attributes) for the full list of supported keys.
+
+</Note>
+
+A `buyget` promotion only discounts a matching "Get Y" item that is already in the cart. It doesn't add the free product to the cart automatically. If the target item isn't in the cart, Medusa doesn't apply the promotion. This is true whether the promotion is automatic or the customer applies it with a code.
 
 ---
 

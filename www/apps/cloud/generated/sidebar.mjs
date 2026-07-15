@@ -324,6 +324,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "local",
+            "path": "/cli/commands/local",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "version",
             "path": "/cli/commands/version",
             "children": []

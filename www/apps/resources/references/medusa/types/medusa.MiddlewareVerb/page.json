@@ -1,0 +1,1 @@
+{"slug":"/references/medusa/types/medusa.MiddlewareVerb","title":"MiddlewareVerb","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"MiddlewareVerb","type":"`\"USE\"` \\| `\"ALL\"` \\| [RouteVerb](/references/medusa/types/medusa.RouteVerb)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}
