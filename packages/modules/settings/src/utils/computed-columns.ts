@@ -1,7 +1,26 @@
+import { RelationshipFilterConfig } from "./relationship-filters"
 import { RenderMode } from "./render-mode-mapper"
 
 /**
- * Definition of a computed column.
+ * Filter configuration for an injected column.
+ */
+export interface ComputedColumnFilter {
+  enabled: boolean
+  operators?: string[]
+  /**
+   * Relationship dropdown filter. `filter_key` overrides the query-param key
+   * the filter posts (e.g. `"location_id"`); options are fetched from
+   * `endpoint`. Omit for a plain scalar/enum filter.
+   */
+  relationship?: RelationshipFilterConfig
+  enumValues?: string[]
+}
+
+/**
+ * Definition of a column injected for an entity, in addition to the columns
+ * discovered from its schema. Can be a computed DISPLAY column (provide
+ * `renderMode` + `requiredFields`), a FILTER-only column (set `context:
+ * "filter"` + `filter`), or both.
  */
 export interface ComputedColumnDefinition {
   /**
@@ -15,14 +34,15 @@ export interface ComputedColumnDefinition {
   name: string
 
   /**
-   * Render mode/type for the column.
+   * Render mode/type for the column. Required for display columns; omit for
+   * filter-only columns.
    */
-  renderMode: RenderMode
+  renderMode?: RenderMode
 
   /**
-   * Fields required to render this column.
+   * Fields required to render this column. Omit for filter-only columns.
    */
-  requiredFields: string[]
+  requiredFields?: string[]
 
   /**
    * Optional fields that enhance the rendering.
@@ -53,6 +73,29 @@ export interface ComputedColumnDefinition {
    * Metadata for the column.
    */
   metadata?: Record<string, any>
+
+  /**
+   * Column context: "display" (default), "filter" (filter-only, not rendered),
+   * or "both".
+   */
+  context?: "display" | "filter" | "both"
+
+  /**
+   * Filter configuration. When provided with `enabled: true`, the column is
+   * filterable (used for injecting filters the schema doesn't expose, e.g. a
+   * field inside an array relationship).
+   */
+  filter?: ComputedColumnFilter
+
+  /**
+   * Column data type (default "string").
+   */
+  dataType?: string
+
+  /**
+   * Whether the column is sortable (default false).
+   */
+  sortable?: boolean
 }
 
 /**
@@ -85,6 +128,9 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
       "shipping_address.province",
       "shipping_address.postal_code",
     ],
+    metadata: {
+      address_field: "shipping_address",
+    },
     entities: ["Order"],
     defaultVisible: false,
     description: "Shipping address summary",
@@ -100,13 +146,16 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
       "billing_address.province",
       "billing_address.postal_code",
     ],
+    metadata: {
+      address_field: "billing_address",
+    },
     entities: ["Order"],
     defaultVisible: false,
     description: "Billing address summary",
     category: "relationship",
   },
   {
-    id: "country",
+    id: "order_shipping_country_display",
     name: "Country",
     renderMode: "country_code",
     requiredFields: ["shipping_address.country_code"],
@@ -115,6 +164,9 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     defaultVisible: true,
     description: "Shipping country",
     category: "metadata",
+    metadata: {
+      country_code_field: "shipping_address.country_code",
+    },
   },
 
   // Product computed columns
@@ -241,6 +293,168 @@ export const BUILTIN_COMPUTED_COLUMNS: ComputedColumnDefinition[] = [
     category: "metric",
     metadata: {
       list_field: "values",
+    },
+  },
+
+  // Promotion computed columns
+  {
+    id: "method",
+    name: "Method",
+    renderMode: "promotion_method",
+    requiredFields: ["is_automatic"],
+    optionalFields: [],
+    entities: ["Promotion"],
+    defaultVisible: true,
+    description: "Whether the promotion is automatic or code based",
+    category: "computed",
+  },
+  {
+    id: "status_display",
+    name: "Status",
+    renderMode: "promotion_status",
+    requiredFields: [
+      "status",
+      "campaign.starts_at",
+      "campaign.ends_at",
+      "campaign.budget.limit",
+      "campaign.budget.used",
+    ],
+    optionalFields: [],
+    entities: ["Promotion"],
+    defaultVisible: true,
+    description: "Promotion status (derived from status and campaign)",
+    category: "computed",
+  },
+
+  // Region computed columns
+  {
+    id: "region_country_display",
+    name: "Countries",
+    renderMode: "region_countries",
+    requiredFields: ["countries.iso_2"],
+    optionalFields: [],
+    entities: ["Region"],
+    defaultVisible: true,
+    description: "Countries in the region",
+    category: "relationship",
+  },
+  {
+    id: "payment_providers_display",
+    name: "Payment providers",
+    renderMode: "region_payment_providers",
+    requiredFields: ["payment_providers.id"],
+    optionalFields: [],
+    entities: ["Region"],
+    defaultVisible: true,
+    description: "Payment providers enabled for the region",
+    category: "relationship",
+  },
+
+  // Stock location computed columns
+  {
+    id: "location_address_display",
+    name: "Address",
+    renderMode: "address_summary",
+    requiredFields: ["address.*"],
+    optionalFields: [],
+    metadata: {
+      address_field: "address",
+    },
+    entities: ["StockLocation"],
+    defaultVisible: true,
+    description: "Formatted stock location address",
+    category: "relationship",
+  },
+  {
+    id: "location_country_display",
+    name: "Country",
+    renderMode: "country_code",
+    requiredFields: ["address.country_code"],
+    optionalFields: [],
+    entities: ["StockLocation"],
+    defaultVisible: true,
+    description: "Stock location country",
+    category: "metadata",
+    metadata: {
+      country_code_field: "address.country_code",
+    },
+  },
+  {
+    id: "shipping_fulfillment",
+    name: "Shipping",
+    renderMode: "stock_location_shipping",
+    requiredFields: ["fulfillment_sets.type"],
+    optionalFields: [],
+    entities: ["StockLocation"],
+    defaultVisible: true,
+    description: "Whether shipping fulfillment is enabled",
+    category: "metadata",
+  },
+  {
+    id: "pickup_fulfillment",
+    name: "Pickup",
+    renderMode: "stock_location_pickup",
+    requiredFields: ["fulfillment_sets.type"],
+    optionalFields: [],
+    entities: ["StockLocation"],
+    defaultVisible: true,
+    description: "Whether pickup fulfillment is enabled",
+    category: "metadata",
+  },
+  {
+    id: "location_sales_channels",
+    name: "Connected sales channels",
+    renderMode: "stock_location_sales_channels",
+    requiredFields: ["sales_channels.name"],
+    optionalFields: [],
+    entities: ["StockLocation"],
+    defaultVisible: true,
+    description: "Sales channels served by the location",
+    category: "relationship",
+  },
+  {
+    // Filter-only injected column: inventory items reach a location through the
+    // `location_levels` array relationship, which the generator can't turn into
+    // a usable "location" filter.
+    id: "inventory_location_filter",
+    name: "Location",
+    entities: ["InventoryItem"],
+    context: "filter",
+    defaultVisible: false,
+    description: "Stock location",
+    category: "relationship",
+    filter: {
+      enabled: true,
+      operators: ["in"],
+      relationship: {
+        entity: "StockLocation",
+        value_field: "id",
+        display_field: "name",
+        multiple: true,
+        endpoint: "/admin/stock-locations",
+        filter_key: "location_levels.location_id",
+      },
+    },
+  },
+  {
+    id: "reservation_location_filter",
+    name: "Location",
+    entities: ["ReservationItem"],
+    context: "filter",
+    defaultVisible: false,
+    description: "Stock location",
+    category: "relationship",
+    filter: {
+      enabled: true,
+      operators: ["in"],
+      relationship: {
+        entity: "StockLocation",
+        value_field: "id",
+        display_field: "name",
+        multiple: true,
+        endpoint: "/admin/stock-locations",
+        filter_key: "location_id",
+      },
     },
   },
 ]
