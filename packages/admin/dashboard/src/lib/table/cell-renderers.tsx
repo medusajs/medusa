@@ -98,8 +98,8 @@ const HandleRenderer: CellRenderer = (value, _row, _column, _t) => {
 
 const CountRenderer: CellRenderer = (value, row, column, t) => {
   let resolvedValue = value
-  const listField = column?.computed?.metadata?.list_field
-  const showItemsLabel = column?.computed?.metadata?.show_items_label === true
+  const listField = column?.metadata?.list_field
+  const showItemsLabel = column?.metadata?.show_items_label === true
 
   if (listField) {
     const relation = row[listField]
@@ -214,10 +214,9 @@ const BadgeListRenderer: CellRenderer = (value, row, column, t) => {
   }
 
   let resolvedValue = value
-  let computedMetadata = {} as Record<string, any>
+  const computedMetadata = column.metadata ?? {}
 
-  if (column.computed) {
-    computedMetadata = column.computed.metadata ?? {}
+  if (computedMetadata.list_field) {
     resolvedValue = row[computedMetadata.list_field]
   }
 
@@ -319,7 +318,7 @@ const FullNameRenderer: CellRenderer = (_, row, _column, _t) => {
 const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
   const address: Record<string, string> | undefined = getNestedValue(
     row,
-    column.computed?.metadata?.address_field ?? ""
+    column.metadata?.address_field ?? ""
   )
 
   if (!address) {
@@ -357,7 +356,7 @@ const AddressSummaryRenderer: CellRenderer = (_, row, column, _t) => {
 const CountryCodeRenderer: CellRenderer = (_, row, column, _t) => {
   const countryCode = getNestedValue(
     row,
-    column.computed?.metadata?.country_code_field ?? ""
+    column.metadata?.country_code_field ?? ""
   )
 
   if (!countryCode) {

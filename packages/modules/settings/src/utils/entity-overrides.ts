@@ -42,6 +42,14 @@ export interface EntityOverride {
   fieldRenderModes?: Record<string, RenderMode>
 
   /**
+   * Per-column renderer configuration (field path -> metadata). Attached to the
+   * column's top-level `metadata`. Useful to drive generic renderers without hardcoding
+   * them (e.g. a `status` field's value->variant map, or the field path a renderer should
+   * read). Supports dotted paths, matching `fieldRenderModes` / `fieldOrdering`.
+   */
+  fieldMetadata?: Record<string, Record<string, any>>
+
+  /**
    * Additional GraphQL types to include fields from.
    */
   additionalTypes?: string[]
@@ -638,6 +646,19 @@ export function getFieldRenderModes(
 ): Record<string, RenderMode> {
   const resolvedOverride = override ?? getEntityOverride(entityName)
   return resolvedOverride?.fieldRenderModes || {}
+}
+
+/**
+ * Get the per-column metadata overrides for an entity.
+ * @param entityName - The entity name (used if override is not provided)
+ * @param override - Optional pre-resolved override to use instead of looking up by entity name
+ */
+export function getFieldMetadata(
+  entityName: string,
+  override?: EntityOverride
+): Record<string, Record<string, any>> {
+  const resolvedOverride = override ?? getEntityOverride(entityName)
+  return resolvedOverride?.fieldMetadata || {}
 }
 
 /**
