@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next"
 
-import { StatusCell } from "../../common/status-cell"
 import { HttpTypes } from "@medusajs/types"
+import { DataTableStatusIndicator } from "../../../../data-table/components/data-table-status-cell/data-table-status-cell"
 
 type ProductStatusCellProps = {
   status: HttpTypes.AdminProductStatus
@@ -17,7 +17,11 @@ export const ProductStatusCell = ({ status }: ProductStatusCellProps) => {
     rejected: ["red", t("products.productStatus.rejected")],
   }[status] as ["grey" | "orange" | "green" | "red", string]
 
-  return <StatusCell color={color}>{text}</StatusCell>
+  return (
+    <DataTableStatusIndicator className="w-[92px]" color={color}>
+      {text}
+    </DataTableStatusIndicator>
+  )
 }
 
 export const ProductStatusHeader = () => {

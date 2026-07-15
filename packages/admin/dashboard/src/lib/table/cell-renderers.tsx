@@ -17,6 +17,7 @@ import {
   getOrderPaymentStatus,
   getOrderFulfillmentStatus,
 } from "../order-helpers"
+import { DataTableStatusIndicator } from "../../components/data-table/components/data-table-status-cell/data-table-status-cell"
 
 export type CellRenderer<TData = any> = (
   value: any,
@@ -196,7 +197,12 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
   const translatedValue = getTranslatedStatus(value)
 
   return (
-    <StatusBadge color={getStatusColor(value)}>{translatedValue}</StatusBadge>
+    <DataTableStatusIndicator
+      className="w-[92px]"
+      color={getStatusColor(value)}
+    >
+      {translatedValue}
+    </DataTableStatusIndicator>
   )
 }
 
