@@ -30649,7 +30649,7 @@ The following data is being collected on your Medusa application:
 - Operating system information including Node version or operating system platform used.
 - The version of the Medusa application and Medusa CLI are used.
 
-Data is only collected when the Medusa application is run with the command `medusa start`.
+Telemetry data is collected when Medusa CLI commands that emit telemetry events are run. For example, `medusa start` and some other CLI commands send usage events.
 
 ### How to Opt Out
 
