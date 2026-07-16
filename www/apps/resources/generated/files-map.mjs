@@ -120,6 +120,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/js-sdk"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/link-provider-identity/page.mdx",
+    "pathname": "/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/mfa/page.mdx",
     "pathname": "/commerce-modules/auth/mfa"
   },
