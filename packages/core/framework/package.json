@@ -99,8 +99,8 @@
     "http-errors": "2.0.0",
     "jsonwebtoken": "^9.0.2",
     "lodash.memoize": "^4.1.2",
-    "morgan": "^1.9.1",
-    "path-to-regexp": "^8.2.0",
+    "morgan": "^1.11.0",
+    "path-to-regexp": "^8.4.0",
     "tsconfig-paths": "^4.2.0",
     "zod-validation-error": "5.0.0"
   },
