@@ -157,12 +157,19 @@ medusaIntegrationTestRunner({
             operation: "create",
             name: "Create Customers",
           })
+          const rbacRoleCreate = await ensureRbacPolicy(rbacModule, {
+            key: "rbac_role:create",
+            resource: "rbac_role",
+            operation: "create",
+            name: "Create RBAC Roles",
+          })
 
           const scopedRole = await rbacModule.createRbacRoles({
             name: "Product Reader Only",
           })
           await rbacModule.createRbacRolePolicies([
             { role_id: scopedRole.id, policy_id: productRead.id },
+            { role_id: scopedRole.id, policy_id: rbacRoleCreate.id },
           ])
 
           const scopedActorHeaders = { headers: { ...adminHeaders.headers } }
