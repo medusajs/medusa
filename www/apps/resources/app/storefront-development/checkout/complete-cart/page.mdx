@@ -63,6 +63,23 @@ In the response of the request, the `type` field determines whether the cart com
 
 When the cart completion is successful, it's important to unset the cart ID from the `localStorage`, as the cart is no longer usable.
 
+<Note title="Tip">
+
+Check `type === "order"` to confirm cart completion. Don't assume the payment was charged based on calling the complete cart endpoint alone.
+
+</Note>
+
+---
+
+## Payment Failure Handling
+
+When cart completion fails after the payment was authorized or captured, the `completeCartWorkflow` automatically reverts the payment so the customer isn't charged for an incomplete order:
+
+- An authorized payment that wasn't yet captured is canceled.
+- A captured payment is refunded, unless another concurrent completion attempt already placed an order for the same cart. In that case, the refund is skipped so that the successful order keeps its payment.
+
+Because the payment is reverted before the response is returned, a storefront doesn't need to issue a refund itself when completion fails. The `type: "cart"` response signals that completion failed and the payment was rolled back.
+
 ---
 
 ## Order's Locale after Cart Completion
