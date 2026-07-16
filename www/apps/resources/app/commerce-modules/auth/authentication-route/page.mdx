@@ -208,6 +208,12 @@ If the authentication requires more action with a third-party service, you'll re
 
 Redirect to that URL in the frontend to continue the authentication process with the third-party service.
 
+#### Customizing the Response Body
+
+A custom auth provider can't change the shape of this route's response body. The provider's [authenticate method](/references/auth/provider#authenticate) returns an [AuthenticationResponse](/references/auth/interfaces/auth.AuthenticationResponse) object, but this route only uses its `success`, `authIdentity`, `location`, and `error` fields to build the response. Any other fields you return from the provider are ignored.
+
+If you need to return a custom response body, create a [custom API route](!docs!/learn/fundamentals/api-routes) that calls the [Auth Module's authenticate method](/references/auth/authenticate), then shape the response as you need.
+
 <Note title="Example">
 
 [How to login Customers using the authentication route](../../../storefront-development/customers/login/page.mdx).

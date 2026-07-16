@@ -4,6 +4,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
   },
   {
+    "title": "Link Provider to Existing User",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "title": "Reset Password",
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
