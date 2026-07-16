@@ -86,6 +86,12 @@ If a request's body parameters don't pass the validation, the `validateAndTransf
 
 If a request's body parameters are validated successfully, the middleware sets the validated body parameters in the `validatedBody` property of `MedusaRequest`.
 
+<Note title="Warning" type="warning">
+
+`validateAndTransformBody` enforces strict schema validation. Fields present in the request body that are not defined in your Zod schema are rejected with an `unrecognized_keys` error. If you apply this middleware to a route that also has its own validation, make sure both schemas accept the same fields, or the request will always fail.
+
+</Note>
+
 ### Step 3: Use Validated Body in API Route
 
 In your API route, consume the validated body using the `validatedBody` property of `MedusaRequest`.

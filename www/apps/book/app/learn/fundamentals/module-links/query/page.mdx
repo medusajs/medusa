@@ -697,6 +697,12 @@ To paginate the returned records, pass the following properties to `pagination`:
 - `skip`: (required to apply pagination) The number of records to skip before fetching the results.
 - `take`: The number of records to fetch.
 
+<Note>
+
+The `metadata` property is only returned when `skip` is provided. Passing `take` without `skip` returns records but no `metadata`.
+
+</Note>
+
 When you provide the pagination fields, the `query.graph` method's returned object has a `metadata` property. Its value is an object having the following properties:
 
 <TypeList types={[
@@ -716,6 +722,49 @@ When you provide the pagination fields, the `query.graph` method's returned obje
     description: "The total number of records."
   }
 ]} sectionTitle="Apply Pagination" />
+
+### Retrieve Only the Count
+
+To retrieve only the total count of records without loading any rows, use `{ skip: 0, take: 0 }`. This is useful for building dashboards or checking set size before deciding how to fetch data.
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts
+const {
+  metadata: { count } = {},
+} = await query.graph({
+  entity: "post",
+  fields: ["id"],
+  pagination: {
+    skip: 0,
+    take: 0,
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const {
+  metadata,
+} = useQueryGraphStep({
+  entity: "post",
+  fields: ["id"],
+  pagination: {
+    skip: 0,
+    take: 0,
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+This emits a `SELECT COUNT(*)` query and returns `metadata.count` with the total record count. No rows are loaded, keeping memory usage low regardless of catalog size.
+
+---
 
 ### Sort Records
 
