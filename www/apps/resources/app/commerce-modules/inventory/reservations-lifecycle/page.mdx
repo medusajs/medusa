@@ -45,9 +45,9 @@ Medusa creates a reservation for each of the order's inventory items when an ord
 
 The reservation is created in the location associated with the order's sales channel, and its quantity is the ordered quantity.
 
-<Note title="Tip">
+<Note>
 
-Some workflows that create an order, such as the [createOrderWorkflow](/references/medusa-workflows/createOrderWorkflow), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, create the reservations manually before fulfilling the order, as explained in the next section.
+Some workflows that create an order, such as the [createOrderWorkflow](/references/medusa-workflows/createOrderWorkflow), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, the [createOrderFulfillmentWorkflow](/references/medusa-workflows/createOrderFulfillmentWorkflow) throws an error for items whose variants have `manage_inventory` enabled, since they don't have an associated reservation. Create the reservations manually before fulfilling the order, as explained in the next section.
 
 </Note>
 

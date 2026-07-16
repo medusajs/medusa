@@ -29,7 +29,7 @@ export const generatedEditDates = {
   "app/commerce-modules/inventory/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/inventory/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/inventory/concepts/page.mdx": "2025-09-16T16:03:29.634Z",
-  "app/commerce-modules/inventory/inventory-in-flows/page.mdx": "2025-01-08T12:21:12.157Z",
+  "app/commerce-modules/inventory/inventory-in-flows/page.mdx": "2026-07-16T11:09:23.038Z",
   "app/commerce-modules/inventory/page.mdx": "2025-04-17T08:48:24.991Z",
   "app/commerce-modules/order/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/order/_events/page.mdx": "2024-07-03T19:27:13+03:00",
@@ -7620,5 +7620,5 @@ export const generatedEditDates = {
   "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z",
   "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
   "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",
-  "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T09:48:42.878Z"
+  "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T11:09:31.735Z"
 }

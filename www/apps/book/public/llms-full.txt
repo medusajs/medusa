@@ -19199,6 +19199,58 @@ const { data: posts } = useQueryGraphStep({
 
 In the example above, you retrieve all products linked to a post.
 
+### Retrieve Nested Relations
+
+You can chain relations and links across multiple levels by separating each relation's name with a dot (`.`) in the `fields` array. There's no limit on how deep the chain can be, and a chain can traverse relations within the same module and links between different modules.
+
+For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone`, which belongs to a `FulfillmentSet`, which [links to a stock location](undefined/resources/commerce-modules/fulfillment/links-to-other-modules#stock-location-module) in the Stock Location Module. To retrieve a shipping option along with its service zone, fulfillment set, and the fulfillment set's stock location in a single query:
+
+### query.graph
+
+```ts highlights={[["4"]]}
+const { data: shippingOptions } = await query.graph({
+  entity: "shipping_option",
+  fields: [
+    "id",
+    "service_zone.fulfillment_set.location.*",
+  ],
+})
+```
+
+### useQueryGraphStep
+
+```ts highlights={[["4"]]}
+const { data: shippingOptions } = useQueryGraphStep({
+  entity: "shipping_option",
+  fields: [
+    "id",
+    "service_zone.fulfillment_set.location.*",
+  ],
+})
+```
+
+In the example above, each level in the `service_zone.fulfillment_set.location.*` path is a relation or link that Query resolves in order. You can also select specific properties at any level, such as `service_zone.fulfillment_set.location.id`, instead of using `.*`.
+
+The returned `data` nests each level under the previous one. For example:
+
+```json title="Example Result"
+[{
+  "id": "so_123",
+  "service_zone": {
+    "id": "serzo_123",
+    "fulfillment_set": {
+      "id": "fuset_123",
+      "location": {
+        "id": "sloc_123",
+        // other stock location fields...
+      }
+    }
+  }
+}]
+```
+
+Filtering by a linked data model's property isn't supported at any level of the chain. Refer to the [Apply Filters](#apply-filters) section for details.
+
 ### Apply Filters and Pagination on Linked Records
 
 Consider that you want to apply filters or pagination configurations on the product(s) linked to a `post`. To do that, you must query the module link's table instead.
@@ -19689,6 +19741,8 @@ The `order` property is an object whose keys are property names, and values are 
 
 - `ASC` to sort records by that property in ascending order.
 - `DESC` to sort records by that property in descending order.
+
+The `order` object shown above applies when you call `query.graph` or `useQueryGraphStep` in your code. When clients sort through an API route that uses the [`validateAndTransformQuery` middleware](#request-query-configurations), they pass a top-level `order` query parameter instead. Its value is a string set to the field name to sort by, and the sort order is ascending by default. To sort in descending order, prefix the field name with `-`, as in `?order=-created_at`. Learn more in the [Request Query Configurations](#request-query-configurations) section.
 
 ***
 
@@ -37107,6 +37161,8 @@ When an item in an order is fulfilled and the associated variant has its `manage
 
 This flow is implemented within the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow)
 
+Each fulfilled item whose variant has `manage_inventory` enabled must have an associated inventory reservation, otherwise the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow) throws an error. Reservations are created automatically when an order is placed through the [completeCartWorkflow](undefined/references/medusa-workflows/completeCartWorkflow). If you create an order with a workflow that doesn't create reservations, such as [createOrderWorkflow](undefined/references/medusa-workflows/createOrderWorkflow), use the [createReservationsWorkflow](undefined/references/medusa-workflows/createReservationsWorkflow) to create reservations before fulfilling the order, and set each reservation's `line_item_id` to the order item's ID.
+
 ![A diagram showcasing how the Inventory Module is used in the order fulfillment flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709712390/Medusa%20Resources/inventory-order-fulfillment_o9wdxh.jpg)
 
 ***
@@ -37797,6 +37853,84 @@ export const config = {
 Learn more about workflows in [this documentation](undefined/docs/learn/fundamentals/workflows).
 
 ***
+
+
+# Reservations Lifecycle
+
+In this guide, you'll learn about the lifecycle of a reservation in Medusa: when Medusa creates a reservation, how a reservation affects available stock, and when Medusa releases or deletes a reservation.
+
+## What is a Reservation?
+
+A reservation, represented by the [ReservationItem data model](undefined/references/inventory-next/models/ReservationItem), is a reserved quantity of an inventory item in a location. A reservation holds stock for a purchase that isn't fulfilled yet.
+
+A reservation affects the [InventoryLevel](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/concepts#inventorylevel) of the reserved inventory item in the associated location:
+
+- Its `reserved_quantity` increases by the reserved amount.
+- Its `stocked_quantity` stays the same. The reserved quantity is still physically in stock, but it's unavailable when Medusa checks whether an item can be purchased.
+
+So, the available quantity of an inventory item in a location is its `stocked_quantity` minus its `reserved_quantity`.
+
+Medusa only manages reservations for inventory items whose variants have `manage_inventory` enabled. Variants with `manage_inventory` disabled don't have reservations, and Medusa doesn't track their stock.
+
+***
+
+## When Medusa Creates a Reservation
+
+### Order Placement
+
+Medusa creates a reservation for each of the order's inventory items when an order is placed by completing a cart. This is implemented in the [completeCartWorkflow](undefined/references/medusa-workflows/completeCartWorkflow).
+
+The reservation is created in the location associated with the order's sales channel, and its quantity is the ordered quantity.
+
+Some workflows that create an order, such as the [createOrderWorkflow](undefined/references/medusa-workflows/createOrderWorkflow), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow) throws an error for items whose variants have `manage_inventory` enabled, since they don't have an associated reservation. Create the reservations manually before fulfilling the order, as explained in the next section.
+
+### Custom Reservations
+
+You can also create a reservation for custom use cases, such as reserving stock for an offline sale. Use the [createReservationsWorkflow](undefined/references/medusa-workflows/createReservationsWorkflow) to create one or more reservations.
+
+To associate a reservation with an order's item so that the fulfillment flow can find it, set the reservation's `line_item_id` to the order item's ID.
+
+***
+
+## When Medusa Releases a Reservation
+
+A reservation is temporary. Medusa releases the reservation, making the quantity available again, in the following cases.
+
+### Order Fulfillment
+
+When an order's item is fulfilled, Medusa performs the following for each of the item's inventory items, as implemented in the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow):
+
+- Subtracts the fulfilled quantity from the `stocked_quantity` of the inventory level.
+- Decreases the `reserved_quantity` of the inventory level by the fulfilled quantity.
+- Deletes the reservation if its full quantity is fulfilled, or decreases the reservation's quantity if only part of it is fulfilled.
+
+So, fulfillment turns reserved stock into consumed stock: the quantity leaves both the stocked and reserved counts.
+
+These inventory changes are managed by Medusa's core workflow, independent of the fulfillment provider. The fulfillment provider handles the shipping side of the fulfillment, such as creating a shipping label, but it doesn't affect how Medusa decrements stock or deletes reservations. So, the stock changes happen the same way regardless of the fulfillment provider you use.
+
+### Order or Item Cancellation
+
+When an order or its items are canceled before fulfillment, Medusa deletes the associated reservations. The reserved quantity becomes available again for other purchases.
+
+If a fulfillment is canceled, Medusa restores the reservations that were released when the fulfillment was created.
+
+### Custom Deletion
+
+You can also delete reservations manually, such as when a custom reservation is no longer needed. Use the [deleteReservationsWorkflow](undefined/references/medusa-workflows/deleteReservationsWorkflow) to delete one or more reservations.
+
+***
+
+## Reservations for Inventory Kits
+
+A variant can be linked to multiple inventory items, forming an [inventory kit](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-kit). This is useful for use cases like multi-part or bundled products.
+
+When a variant has an inventory kit, Medusa creates a reservation for each of the variant's inventory items. The reserved quantity of each inventory item is the ordered quantity multiplied by the inventory item's `required_quantity`.
+
+For example, if a bicycle variant requires two wheel inventory items, ordering one bicycle reserves two units of the wheel inventory item.
+
+The same lifecycle applies to each reservation in the kit: Medusa releases every reservation of the kit when the item is fulfilled or canceled.
+
+Since inventory items can be shared across variants and products, a reservation on a shared inventory item reduces the available quantity for all variants that use that inventory item.
 
 
 # Gift Cards Concepts
