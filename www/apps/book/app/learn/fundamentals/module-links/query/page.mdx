@@ -223,6 +223,67 @@ const { data: posts } = useQueryGraphStep({
 
 In the example above, you retrieve all products linked to a post.
 
+### Retrieve Nested Relations
+
+You can chain relations and links across multiple levels by separating each relation's name with a dot (`.`) in the `fields` array. There's no limit on how deep the chain can be, and a chain can traverse relations within the same module and links between different modules.
+
+For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone`, which belongs to a `FulfillmentSet`, which [links to a stock location](!resources!/commerce-modules/fulfillment/links-to-other-modules#stock-location-module) in the Stock Location Module. To retrieve a shipping option along with its service zone, fulfillment set, and the fulfillment set's stock location in a single query:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["4"]]}
+const { data: shippingOptions } = await query.graph({
+  entity: "shipping_option",
+  fields: [
+    "id",
+    "service_zone.fulfillment_set.location.*",
+  ],
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"]]}
+const { data: shippingOptions } = useQueryGraphStep({
+  entity: "shipping_option",
+  fields: [
+    "id",
+    "service_zone.fulfillment_set.location.*",
+  ],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, each level in the `service_zone.fulfillment_set.location.*` path is a relation or link that Query resolves in order. You can also select specific properties at any level, such as `service_zone.fulfillment_set.location.id`, instead of using `.*`.
+
+The returned `data` nests each level under the previous one. For example:
+
+```json title="Example Result"
+[{
+  "id": "so_123",
+  "service_zone": {
+    "id": "serzo_123",
+    "fulfillment_set": {
+      "id": "fuset_123",
+      "location": {
+        "id": "sloc_123",
+        // other stock location fields...
+      }
+    }
+  }
+}]
+```
+
+<Note>
+
+Filtering by a linked data model's property isn't supported at any level of the chain. Refer to the [Apply Filters](#apply-filters) section for details.
+
+</Note>
+
 ### Apply Filters and Pagination on Linked Records
 
 Consider that you want to apply filters or pagination configurations on the product(s) linked to a `post`. To do that, you must query the module link's table instead.
@@ -764,6 +825,12 @@ The `order` property is an object whose keys are property names, and values are 
 
 - `ASC` to sort records by that property in ascending order.
 - `DESC` to sort records by that property in descending order.
+
+<Note title="Sorting in API routes">
+
+The `order` object shown above applies when you call `query.graph` or `useQueryGraphStep` in your code. When clients sort through an API route that uses the [`validateAndTransformQuery` middleware](#request-query-configurations), they pass a top-level `order` query parameter instead. Its value is a string set to the field name to sort by, and the sort order is ascending by default. To sort in descending order, prefix the field name with `-`, as in `?order=-created_at`. Learn more in the [Request Query Configurations](#request-query-configurations) section.
+
+</Note>
 
 ---
 

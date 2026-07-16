@@ -7619,5 +7619,6 @@ export const generatedEditDates = {
   "app/infrastructure-modules/caching/concepts/page.mdx": "2026-06-19T13:06:59.981Z",
   "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z",
   "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
-  "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z"
+  "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",
+  "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T09:48:42.878Z"
 }
