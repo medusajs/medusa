@@ -3033,6 +3033,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Reservations Lifecycle",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Shipping Option Price Rules",
               "path": "https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules",
               "children": []
@@ -4120,6 +4128,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/inventory/inventory-in-flows",
               "title": "Inventory in Flows",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/inventory/reservations-lifecycle",
+              "title": "Reservations Lifecycle",
               "children": []
             },
             {
