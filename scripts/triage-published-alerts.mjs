@@ -18,6 +18,11 @@ const REPO = "medusajs/medusa"
 const ROOT = process.cwd()
 const DISMISS = process.argv.includes("--dismiss")
 
+// Published packages that are developer tooling, not consumed as app dependencies.
+// They are excluded from the production closure so alerts reachable only through
+// them are treated as irrelevant (dismissable).
+const IGNORED_PACKAGES = new Set(["medusa-dev-cli"])
+
 // 1. Discover published workspaces (private !== true) and map name -> dir
 const workspaces = execSync("yarn workspaces list --json", { encoding: "utf8" })
   .trim().split("\n").map((l) => JSON.parse(l))
@@ -29,7 +34,8 @@ for (const ws of workspaces) {
   if (!existsSync(pjPath)) continue
   const pj = JSON.parse(readFileSync(pjPath, "utf8"))
   if (pj.name) nameToDir.set(pj.name, ws.location)
-  if (pj.private !== true && pj.name) publishedDirs.push({ name: pj.name, dir: ws.location })
+  if (pj.private !== true && pj.name && !IGNORED_PACKAGES.has(pj.name))
+    publishedDirs.push({ name: pj.name, dir: ws.location })
 }
 
 // 2. Resolve a package's package.json + its directory. We read package.json off
