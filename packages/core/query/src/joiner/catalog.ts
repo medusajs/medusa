@@ -76,6 +76,28 @@ export class GraphCatalog {
     return this.relationMap.get(entity)?.get(prop)
   }
 
+  /**
+   * Internal cross-module join metadata (crossjoinable fields, physical table
+   * name) attached to the alias entry matching the given entity.
+   */
+  getAliasMetadata(
+    entity: string | undefined
+  ): NonNullable<JoinerServiceConfigAlias["__internal"]> | undefined {
+    if (!entity) {
+      return undefined
+    }
+
+    const serviceConfig = this.getServiceConfig({ entity })
+    const aliases = serviceConfig?.alias
+
+    if (!Array.isArray(aliases)) {
+      return undefined
+    }
+
+    return aliases.find((alias) => alias.entity === entity && alias.__internal)
+      ?.__internal
+  }
+
   getEntityRelationship(params: {
     parentServiceConfig: InternalJoinerServiceConfig
     property: string
@@ -174,6 +196,7 @@ export class GraphCatalog {
           name,
           entity: alias.entity,
           args: alias.args,
+          __internal: alias.__internal,
         })
       }
       service_.alias.splice(idx, 1)
