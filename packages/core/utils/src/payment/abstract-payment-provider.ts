@@ -22,6 +22,9 @@ import {
   UpdatePaymentOutput,
 } from "@medusajs/types"
 
+/**
+ * An abstract class for payment providers. Extend this class to create a payment provider.
+ */
 export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   implements IPaymentProvider
 {
