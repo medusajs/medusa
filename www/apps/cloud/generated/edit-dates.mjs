@@ -115,5 +115,6 @@ export const generatedEditDates = {
   "app/deployments/fix-with-ai/page.mdx": "2026-05-22T09:18:36.373Z",
   "app/get-started/page.mdx": "2026-05-27T00:36:28.665Z",
   "app/first-project/page.mdx": "2026-06-08T14:16:09.467Z",
-  "app/cli/commands/local/page.mdx": "2026-07-15T14:40:50.690Z"
+  "app/cli/commands/local/page.mdx": "2026-07-15T14:40:50.690Z",
+  "app/cli/changelog/page.mdx": "2026-07-16T08:38:24.232Z"
 }

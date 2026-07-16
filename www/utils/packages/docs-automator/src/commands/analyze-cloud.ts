@@ -37,9 +37,14 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
   const raw = readFileSync(dispatchFile, "utf8")
   const payload: CloudDispatchPayload = JSON.parse(raw)
 
-  if (!payload.descriptions || payload.descriptions.trim().length === 0) {
+  const hasDescriptions = !!payload.descriptions?.trim()
+  const hasChangelog = !!payload.releaseNotes?.trim() && !!payload.version
+
+  if (!hasDescriptions && !hasChangelog) {
     console.error(
-      chalk.yellow("No feature descriptions found in dispatch payload.")
+      chalk.yellow(
+        "No feature descriptions or changelog found in dispatch payload."
+      )
     )
     if (output) {
       writeFileSync(
@@ -58,10 +63,26 @@ async function runAnalyzeCloud(options: AnalyzeCloudOptions) {
     process.exit(2)
   }
 
+  if (payload.releaseNotes?.trim() && !payload.version) {
+    console.error(
+      chalk.yellow(
+        "Release notes present but no version provided — skipping changelog step."
+      )
+    )
+  }
+
   console.log(chalk.green(`Building cloud docs prompt`))
 
+  // The automation runs right after a deployment, so the current date is the
+  // release date shown alongside the version in the changelog.
+  const releaseDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
+
   const builder = new CloudContextBuilder()
-  const result = builder.build(payload)
+  const result = builder.build(payload, releaseDate)
 
   if (dryRun) {
     console.log(chalk.cyan("Dry run — prompt preview:"))
