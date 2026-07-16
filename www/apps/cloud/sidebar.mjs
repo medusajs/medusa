@@ -162,6 +162,12 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Changelog",
+            path: "/cli/changelog",
+            hideFromChildItems: true,
+          },
+          {
+            type: "link",
             title: "login",
             path: "/cli/commands/login",
           },
