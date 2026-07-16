@@ -10,7 +10,11 @@
 
 /**
  * Resources that can have permissions applied to them.
- * These map to Medusa commerce domains.
+ *
+ * The listed values map to Medusa's built-in commerce domains and drive editor
+ * autocomplete. Custom resources (e.g. from an application's own models) are
+ * also accepted via the trailing `string` member, so consuming projects can
+ * check permissions for their own `resource:operation` policies.
  */
 export type PermissionResource =
   | "customer"
@@ -74,6 +78,9 @@ export type PermissionResource =
   | "file"
   | "store_locale"
   | "property_label"
+  // Allow custom resources from consuming projects' customizations while
+  // preserving autocomplete for the built-in resources above.
+  | (string & {})
 
 /**
  * Operations that can be performed on resources.
