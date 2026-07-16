@@ -4,6 +4,10 @@ export const concept = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/inventory-kit"
   },
   {
+    "title": "Reservations Lifecycle",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle"
+  },
+  {
     "title": "Price Tiers and Rules",
     "path": "https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules"
   },

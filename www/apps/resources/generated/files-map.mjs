@@ -284,6 +284,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/inventory"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/inventory/reservations-lifecycle/page.mdx",
+    "pathname": "/commerce-modules/inventory/reservations-lifecycle"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/workflows/page.mdx",
     "pathname": "/commerce-modules/inventory/workflows"
   },
