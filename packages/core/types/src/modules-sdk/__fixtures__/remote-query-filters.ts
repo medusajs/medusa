@@ -48,7 +48,7 @@ type OrganizationFilters = RemoteQueryFilters<
  * Operators must be accepted on scalar fields at every nesting level,
  * including through nullable to-one relations.
  *
- * @since 2.17.3
+ * @since 2.18.0
  */
 export const operatorsThroughToOneRelations: OrganizationFilters = {
   status: "active",
