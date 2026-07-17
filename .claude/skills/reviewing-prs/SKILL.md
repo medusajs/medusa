@@ -300,6 +300,27 @@ Load `reference/conventions.md` and verify the changed files follow Medusa's con
 
 > **CRITICAL — Only flag new code:** Only raise issues about added/new lines (`+`). Never flag removed (`-`) or unchanged context lines.
 
+### Step 9b — Issue/PR References in Code Comments (ALL PRs)
+
+> **CRITICAL:** Applies to **all PRs**, including team members. Only flag added (`+`) lines.
+
+Scan the added lines of the diff for **code comments** that reference a
+GitHub issue or PR — e.g. `// fixes #1234`, `// see PR #5678`,
+`/* related to https://github.com/medusajs/medusa/issues/1234 */`, or a
+comment naming an issue/PR number in prose. The link between a change and
+an issue belongs in the PR body and commit messages, not in the source —
+in the code it goes stale, loses context, and adds noise.
+
+Only flag references inside **comments** in changed source files. Do not
+flag issue/PR references in the PR body, commit messages, changelog files,
+test fixtures, or strings that are legitimately data.
+
+Each such comment is a **required change**: emit
+`review_template: "needs-changes"` with `"requires-more"` in
+`labels_to_add`, `"initial-approval"` in `labels_to_remove`, and a
+`blocking_points` entry of the form:
+*"\<file\>:\<approximate location\>: comment references issue/PR #\<n\> — remove the reference (move any needed context into a plain comment or the PR description)."*
+
 ### Step 10 — Security Analysis (ALL PRs)
 
 > **CRITICAL:** Applies to **all PRs**, including team members. Read the actual diff; before flagging, read the full file. Only flag issues in added (`+`) lines.
@@ -461,6 +482,8 @@ the workflow event — never from JSON-supplied numbers.
 - [ ] Skipping performance analysis — always check for N+1 queries and unbounded queries
 - [ ] Setting `review_template: "approve"` while listing a confirmed security or blocking performance issue
 - [ ] Flagging style/code smell as bugs
+- [ ] Missing a code comment that references an issue/PR number (Step 9b) — those must be flagged as a required change
+- [ ] Flagging an issue/PR reference that lives in the PR body, commit message, or a changelog file rather than a code comment
 - [ ] Flagging issues in removed (`-`) or unchanged context lines
 - [ ] Requesting a change that the PR already makes
 - [ ] Setting `labels_to_add: ["initial-approval"]` without also setting `labels_to_remove: ["requires-more"]` (and vice versa)
