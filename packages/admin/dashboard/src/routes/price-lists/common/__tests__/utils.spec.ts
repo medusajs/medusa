@@ -342,7 +342,7 @@ describe("comparePrices", () => {
   it("should not attach an empty rules object to plain currency prices", () => {
     // A plain currency price (no region, no quantity rules) must send
     // `rules: undefined` — an empty `rules: {}` breaks the batch endpoint for
-    // updates of existing prices (#15927).
+    // updates of existing prices.
     const initial = [
       {
         variantId: "var_1",
