@@ -19,19 +19,26 @@ const buildWebhookPayload = (): ProviderWebhookPayload["payload"] => ({
 })
 
 const buildEvent = (
-  metadata: Stripe.PaymentIntent["metadata"]
-): Stripe.Event =>
-  ({
-    type: "payment_intent.succeeded",
+  metadata: Stripe.PaymentIntent["metadata"],
+  type: string = "payment_intent.succeeded"
+): Stripe.Event => {
+  const base: Record<string, any> = {
+    amount: 1000,
+    currency: "usd",
+    metadata,
+  }
+
+  if (type === "payment_intent.succeeded") {
+    base.amount_received = 1000
+  }
+
+  return {
+    type,
     data: {
-      object: {
-        amount: 1000,
-        amount_received: 1000,
-        currency: "usd",
-        metadata,
-      },
+      object: base,
     },
-  } as unknown as Stripe.Event)
+  } as unknown as Stripe.Event
+}
 
 describe("StripeBase: getWebhookActionAndData", () => {
   it("returns NOT_SUPPORTED when the payment intent has no session_id in its metadata", async () => {
@@ -56,6 +63,22 @@ describe("StripeBase: getWebhookActionAndData", () => {
     jest
       .spyOn(provider, "constructWebhookEvent")
       .mockReturnValue(buildEvent(undefined as any))
+
+    const result = await provider.getWebhookActionAndData(
+      buildWebhookPayload()
+    )
+
+    expect(result).toEqual({ action: PaymentActions.NOT_SUPPORTED })
+  })
+
+  it("returns NOT_SUPPORTED for payment_intent.created even when session_id is present", async () => {
+    const provider = buildProvider()
+
+    jest
+      .spyOn(provider, "constructWebhookEvent")
+      .mockReturnValue(
+        buildEvent({ session_id: "payses_123" }, "payment_intent.created")
+      )
 
     const result = await provider.getWebhookActionAndData(
       buildWebhookPayload()
