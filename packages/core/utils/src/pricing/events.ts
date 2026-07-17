@@ -1,7 +1,7 @@
 // TODO: Comment temporarely and we will re enable it in the near future #14478
 // import { EventOptions } from "@medusajs/types"
 import { buildEventNamesFromEntityName } from "../event-bus"
-import { Modules } from "../modules-sdk"
+
 
 const eventBaseNames: [
   "priceListRule",
@@ -12,8 +12,7 @@ const eventBaseNames: [
 ] = ["priceListRule", "priceList", "priceRule", "priceSet", "price"]
 
 export const PricingEvents = buildEventNamesFromEntityName(
-  eventBaseNames,
-  Modules.PRICING
+  eventBaseNames
 )
 
 // TODO: Comment temporarely and we will re enable it in the near future #14478

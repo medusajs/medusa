@@ -6,7 +6,7 @@ import { Modules } from "../modules-sdk"
 const eventBaseNames: ["user", "invite"] = ["user", "invite"]
 
 export const UserEvents = {
-  ...buildEventNamesFromEntityName(eventBaseNames, Modules.USER),
+  ...buildEventNamesFromEntityName(eventBaseNames),
   INVITE_TOKEN_GENERATED: `${Modules.USER}.user.invite.token_generated`,
 } as const
 
