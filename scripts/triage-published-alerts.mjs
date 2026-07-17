@@ -21,7 +21,7 @@ const DISMISS = process.argv.includes("--dismiss")
 // Published packages that are developer tooling, not consumed as app dependencies.
 // They are excluded from the production closure so alerts reachable only through
 // them are treated as irrelevant (dismissable).
-const IGNORED_PACKAGES = new Set(["medusa-dev-cli"])
+const IGNORED_PACKAGES = new Set([])
 
 // 1. Discover published workspaces (private !== true) and map name -> dir
 const workspaces = execSync("yarn workspaces list --json", { encoding: "utf8" })

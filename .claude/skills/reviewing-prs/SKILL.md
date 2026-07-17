@@ -40,6 +40,7 @@ ignored.
 
 - **Checking contribution guidelines?** → MUST load `reference/contribution-types.md` first
 - **Verifying code conventions?** → MUST load `reference/conventions.md` first
+- **Reviewing a dependency-update PR (Dependabot / Renovate / lockfile bump)?** → MUST load `reference/dependency-review.md` first
 - **Writing the review summary / blocking points?** → MUST load `reference/comment-guidelines.md` first (includes bug, security, and performance reporting formats)
 
 **Minimum requirement:** Load at least the relevant reference file(s) before completing the review.
@@ -67,6 +68,7 @@ bash scripts/get_linked_issues.sh <pr_number>  # Issues linked with closing keyw
 bash scripts/get_comments.sh <pr_number>       # Existing comments on the PR
 bash scripts/get_labels.sh <pr_number>         # Current labels on the PR
 bash scripts/get_issue.sh <issue_number>       # A linked issue's details
+bash scripts/get_dependency_releases.sh <owner/repo> [changelog_path]  # Release notes / changelog for a dependency (GitHub API, read-only)
 ```
 
 There are no `add_comment.sh`, `labels.sh`, or `close_issue.sh` available
@@ -130,6 +132,8 @@ Rules:
 | PR is missing information (template, repro, context) | `needs-info` | `requires-more` | `initial-approval` |
 | PR is spam / off-topic, close it | `close-spam` | `[]` | `initial-approval` |
 | PR contains likely malicious code, close it | `close-malicious` | `requires-team` | `initial-approval` |
+| Dependency-update PR, no breaking change hits Medusa | `approve` | `initial-approval` | `requires-more`, `requires-team` |
+| Dependency-update PR, a breaking/behavior change hits a Medusa call site | `needs-changes` | `requires-more` | `initial-approval` |
 | Re-review with no new findings | `null` | `[]` | `[]` |
 
 Use `requires-team` (in addition to the relevant label above) when the PR
@@ -182,6 +186,40 @@ Read the existing comments fetched in Step 1. Identify any previous bot review c
 
 Read `.github/teams.yml`. If the PR author's login appears in the list, they are a **team member** — **skip steps 5 and 6** entirely and proceed directly to step 7.
 
+### Step 4b — Dependency-Update PRs (branch early)
+
+Determine whether this is a **dependency-update PR**. Treat it as one when **any**
+of these hold:
+
+- The author is a dependency bot: `dependabot[bot]` or `renovate[bot]`.
+- The PR carries the `dependencies` label (from Step 1's labels).
+- The diff (from Step 1) only touches dependency manifests / lockfiles:
+  `package.json`, `yarn.lock`, `package-lock.json`, `pnpm-lock.yaml`.
+
+If it **is** a dependency-update PR:
+
+1. **Load `reference/dependency-review.md`** and follow that flow. It covers
+   enumerating the version deltas, retrieving each package's release notes via
+   `bash scripts/get_dependency_releases.sh`, classifying breaking vs. behavior
+   vs. safe changes, and mapping them to how Medusa actually uses each package.
+2. **Skip Step 5 (template compliance) and Step 6 (massive changes).** Bots do
+   not fill the PR template, and lockfile diffs are legitimately large — do not
+   emit `needs-info` or block for either reason.
+3. **Still run Step 10 (security)** — its "Dependencies & Supply Chain" checks
+   (typosquats, unexpected lifecycle scripts, lockfile/manifest mismatches) are
+   the most important checks for this PR type.
+4. Compose the decision per `reference/dependency-review.md` (Step F): default to
+   `approve` with a concise per-package verdict and an **"areas to test"** note
+   in `summary`; use `needs-changes` / `requires-team` only when a real breaking
+   or behavior change lands on a Medusa call site.
+
+After the dependency flow, run **Step 10 (security)** for the supply-chain
+checks, then go straight to **Step 14 (compose the decision)**. Skip the other
+code-oriented passes (Steps 8, 9, 11, 12, 13) — they are tuned for hand-written
+source changes, not dependency bumps.
+
+If it is **not** a dependency-update PR, continue with Step 5 as normal.
+
 ### Step 5 — Template Compliance (non-team members only)
 
 The PR body must follow `.github/pull_request_template.md` and have the
@@ -220,6 +258,7 @@ Inspect the changed file paths and load the relevant reference section:
 | `www/apps/` or `www/packages/docs-ui/` | Docs → load `reference/contribution-types.md` Docs section |
 | `packages/admin/dashboard/src/i18n/translations/` | Admin translation → load `reference/contribution-types.md` Admin Translations section |
 | `packages/`, `integration-tests/`, or other | Code → load `reference/contribution-types.md` Code section |
+| Only `package.json` / `yarn.lock` / other lockfiles | Dependency update → this should have been branched at Step 4b; load `reference/dependency-review.md` |
 
 For mixed PRs, apply all relevant types.
 
@@ -397,11 +436,16 @@ the workflow event — never from JSON-supplied numbers.
 - [ ] Setting `labels_to_add: ["initial-approval"]` without also setting `labels_to_remove: ["requires-more"]` (and vice versa)
 - [ ] Skipping the duplicate-PR check
 - [ ] Blocking a PR solely because a duplicate was found
+- [ ] Nagging a Dependabot/Renovate PR for a missing PR template or blocking it for lockfile size — branch to the dependency-update flow (Step 4b) instead
+- [ ] Approving a dependency-update PR without retrieving the release notes and stating the areas to test
+- [ ] Reviewing a dependency-update PR without running the supply-chain security checks (typosquats, lifecycle scripts, lockfile/manifest mismatch)
+- [ ] Inventing release-note content when `get_dependency_releases.sh` and the PR body return nothing — say so instead
 
 ## Reference Files
 
 ```
 reference/conventions.md           - Medusa coding conventions to verify
 reference/contribution-types.md    - How to verify code, docs, and admin translation contributions
+reference/dependency-review.md     - How to review dependency-update PRs (release notes, breaking changes, Medusa usage, test areas)
 reference/comment-guidelines.md    - Tone and phrasing rules; use as guidance for `summary` and `blocking_points`
 ```
