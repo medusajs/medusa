@@ -32,6 +32,8 @@ import {
   ModulesSdkUtils,
   promiseAll,
   registerFeatureFlag,
+  withDbTroubleshootingLink,
+  DBTroubleshootingSection,
 } from "@medusajs/utils"
 import { Link } from "./link"
 import {
@@ -44,9 +46,6 @@ import { createQuery } from "./remote-query"
 import { MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
-
-const DB_TROUBLESHOOTING_URL =
-  "https://docs.medusajs.com/resources/troubleshooting/database-errors#error-while-running-migrations"
 
 function getMigrationConnectionTimeout(): number {
   return process.env.MEDUSA_DB_MIGRATION_CONNECTION_TIMEOUT
@@ -72,9 +71,12 @@ export async function verifyMigrationConnection(
       reject(
         new MedusaError(
           MedusaError.Types.DB_ERROR,
-          `Could not connect to the database while running migrations. The connection timed out after ${
-            connectionTimeout / 1000
-          } seconds, which usually indicates an incorrect database URL or an SSL configuration issue. Refer to ${DB_TROUBLESHOOTING_URL} for troubleshooting steps.`
+          withDbTroubleshootingLink(
+            `Could not connect to the database while running migrations. The connection timed out after ${
+              connectionTimeout / 1000
+            } seconds, which usually indicates an incorrect database URL or an SSL configuration issue.`,
+            DBTroubleshootingSection.MIGRATIONS
+          )
         )
       )
     }, connectionTimeout)
@@ -89,9 +91,12 @@ export async function verifyMigrationConnection(
 
     throw new MedusaError(
       MedusaError.Types.DB_ERROR,
-      `Could not connect to the database while running migrations: ${
-        error?.message ?? error
-      }. This usually indicates an incorrect database URL or an SSL configuration issue. Refer to ${DB_TROUBLESHOOTING_URL} for troubleshooting steps.`
+      withDbTroubleshootingLink(
+        `Could not connect to the database while running migrations: ${
+          error?.message ?? error
+        }. This usually indicates an incorrect database URL or an SSL configuration issue.`,
+        DBTroubleshootingSection.MIGRATIONS
+      )
     )
   } finally {
     if (timeoutHandle) {

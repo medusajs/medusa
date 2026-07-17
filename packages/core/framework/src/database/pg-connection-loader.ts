@@ -3,6 +3,7 @@ import {
   ModulesSdkUtils,
   retryExecution,
   stringifyCircular,
+  withDbTroubleshootingLink,
 } from "@medusajs/utils"
 import { asValue } from "../deps/awilix"
 import { configManager } from "../config"
@@ -160,8 +161,14 @@ export async function pgConnectionLoader(): Promise<
     })
   } catch (error) {
     if (lastConnectionError) {
-      lastConnectionError.message = `Failed to connect to the database: ${lastConnectionError.message}`
+      lastConnectionError.message = withDbTroubleshootingLink(
+        `Failed to connect to the database: ${lastConnectionError.message}`
+      )
       throw lastConnectionError
+    }
+
+    if (error instanceof Error) {
+      error.message = withDbTroubleshootingLink(error.message)
     }
     throw error
   }
