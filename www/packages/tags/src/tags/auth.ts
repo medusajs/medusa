@@ -4,7 +4,7 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
   },
   {
-    "title": "Link Provider to Existing User",
+    "title": "Link Auth Provider to Existing Actor",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
   },
   {
