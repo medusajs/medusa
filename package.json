@@ -181,8 +181,10 @@
     "axios": "^1.13.1",
     "esbuild": "^0.25.0",
     "on-headers": "^1.1.0",
+    "postcss": "^8.5.10",
     "validator": "^13.15.20",
     "@opentelemetry/core": "^2.7.0",
+    "@rushstack/node-core-library/ajv": "^8.18.0",
     "@changesets/assemble-release-plan@^6.0.9": "patch:@changesets/assemble-release-plan@npm:^6.0.9#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch"
   },
   "packageManager": "yarn@3.2.1"
