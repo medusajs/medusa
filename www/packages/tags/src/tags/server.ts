@@ -8,7 +8,7 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
   },
   {
-    "title": "Link Provider to Existing User",
+    "title": "Link Auth Provider to Existing Actor",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
   },
   {

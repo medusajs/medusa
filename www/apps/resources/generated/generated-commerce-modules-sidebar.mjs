@@ -442,7 +442,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/auth/link-provider-identity",
-              "title": "Link Provider to Existing User",
+              "title": "Link Provider to Existing Actor",
               "children": []
             },
             {
