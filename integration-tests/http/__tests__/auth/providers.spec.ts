@@ -12,6 +12,7 @@ medusaIntegrationTestRunner({
         id: "emailpass",
         identifier: "emailpass",
         display_name: "Email/Password Authentication",
+        flow: "credentials",
       }
 
       it("lists the auth providers for the user actor type without authentication", async () => {
@@ -34,6 +35,7 @@ medusaIntegrationTestRunner({
         for (const provider of response.data.providers) {
           expect(Object.keys(provider).sort()).toEqual([
             "display_name",
+            "flow",
             "id",
             "identifier",
           ])

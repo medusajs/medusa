@@ -65,6 +65,20 @@ export type AuthProviderInfoDTO = {
    * The name to display for the provider in a frontend application.
    */
   display_name: string
+
+  /**
+   * The authentication flow the provider uses:
+   *
+   * - `credentials`: the client submits credentials (for example, email and
+   * password) directly to the authentication route.
+   * - `redirect`: the client is redirected to the provider (for example, an
+   * OIDC identity provider) and returns through a callback. A provider is
+   * considered `redirect` when it implements `validateCallback`.
+   *
+   * This value is derived and can be used by a frontend to decide whether to
+   * render a credentials form or a "Continue with ..." redirect button.
+   */
+  flow: "credentials" | "redirect"
 }
 
 /**

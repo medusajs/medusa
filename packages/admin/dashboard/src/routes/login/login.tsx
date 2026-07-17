@@ -1,7 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Spinner } from "@medusajs/icons"
 import type { AuthTypes } from "@medusajs/types"
-import { Alert, Button, Heading, Hint, Input, Text } from "@medusajs/ui"
-import { useState } from "react"
+import {
+  Alert,
+  Button,
+  Heading,
+  Hint,
+  InlineTip,
+  Input,
+  Text,
+} from "@medusajs/ui"
+import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -9,11 +18,13 @@ import * as z from "zod"
 
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
-import { useSignInWithEmailPass } from "../../hooks/api"
+import { useAuthProviders, useSignInWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
 import { useExtension } from "../../providers/extension-provider"
 import { CloudAuthLogin } from "./components/cloud-auth-login"
 import { MfaChallengeCard } from "./components/mfa-challenge-card"
+import { SsoLogin } from "./components/sso-login"
+import { hasEmailPassProvider } from "./utils"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -42,6 +53,13 @@ export const Login = () => {
   })
 
   const { mutateAsync, isPending } = useSignInWithEmailPass()
+  const { providers, isLoading: isProvidersLoading } = useAuthProviders()
+
+  const providerList = useMemo(() => providers ?? [], [providers])
+  const isEmailPassInstalled = useMemo(
+    () => hasEmailPassProvider(providerList),
+    [providerList]
+  )
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
     await mutateAsync(
@@ -122,72 +140,90 @@ export const Login = () => {
           {getWidgets("login.before").map((Component, i) => {
             return <Component key={i} />
           })}
-          <Form {...form}>
-            <form
-              onSubmit={handleSubmit}
-              className="flex w-full flex-col gap-y-6"
-            >
-              <div className="flex flex-col gap-y-1">
-                <Form.Field
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Control>
-                          <Input
-                            autoComplete="email"
-                            {...field}
-                            className="bg-ui-bg-field-component"
-                            placeholder={t("fields.email")}
-                          />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>{}</Form.Label>
-                        <Form.Control>
-                          <Input
-                            type="password"
-                            autoComplete="current-password"
-                            {...field}
-                            className="bg-ui-bg-field-component"
-                            placeholder={t("fields.password")}
-                          />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-              </div>
-              {validationError && (
-                <div className="text-center">
-                  <Hint className="inline-flex" variant={"error"}>
-                    {validationError}
-                  </Hint>
-                </div>
-              )}
-              {serverError && (
-                <Alert
-                  className="bg-ui-bg-base items-center p-2"
-                  dismissible
-                  variant="error"
+          {isProvidersLoading ? (
+            <div className="flex w-full items-center justify-center py-6">
+              <Spinner className="text-ui-fg-subtle animate-spin" />
+            </div>
+          ) : !providerList.length ? (
+            <div>
+              <InlineTip label={t("general.tip")}>
+                {t("auth.login.noProviders")}
+              </InlineTip>
+            </div>
+          ) : (
+            isEmailPassInstalled && (
+              <Form {...form}>
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex w-full flex-col gap-y-6"
                 >
-                  {serverError}
-                </Alert>
-              )}
-              <Button className="w-full" type="submit" isLoading={isPending}>
-                {t("actions.continueWithEmail")}
-              </Button>
-            </form>
-          </Form>
+                  <div className="flex flex-col gap-y-1">
+                    <Form.Field
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Control>
+                              <Input
+                                autoComplete="email"
+                                {...field}
+                                className="bg-ui-bg-field-component"
+                                placeholder={t("fields.email")}
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                    <Form.Field
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label>{}</Form.Label>
+                            <Form.Control>
+                              <Input
+                                type="password"
+                                autoComplete="current-password"
+                                {...field}
+                                className="bg-ui-bg-field-component"
+                                placeholder={t("fields.password")}
+                              />
+                            </Form.Control>
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  </div>
+                  {validationError && (
+                    <div className="text-center">
+                      <Hint className="inline-flex" variant={"error"}>
+                        {validationError}
+                      </Hint>
+                    </div>
+                  )}
+                  {serverError && (
+                    <Alert
+                      className="bg-ui-bg-base items-center p-2"
+                      dismissible
+                      variant="error"
+                    >
+                      {serverError}
+                    </Alert>
+                  )}
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    isLoading={isPending}
+                  >
+                    {t("actions.continueWithEmail")}
+                  </Button>
+                </form>
+              </Form>
+            )
+          )}
           {getWidgets("login.after").map((Component, i) => {
             return <Component key={i} />
           })}
@@ -197,19 +233,28 @@ export const Login = () => {
               setMfaSuccessHandler(() => onSuccess)
             }}
           />
-        </div>
-        <span className="text-ui-fg-muted txt-small my-6">
-          <Trans
-            i18nKey="login.forgotPassword"
-            components={[
-              <Link
-                key="reset-password-link"
-                to="/reset-password"
-                className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
-              />,
-            ]}
+          <SsoLogin
+            providers={providerList}
+            onMfaChallenge={(challenge, onSuccess) => {
+              setMfaChallenge(challenge)
+              setMfaSuccessHandler(() => onSuccess)
+            }}
           />
-        </span>
+        </div>
+        {isEmailPassInstalled && (
+          <span className="text-ui-fg-muted txt-small my-6">
+            <Trans
+              i18nKey="login.forgotPassword"
+              components={[
+                <Link
+                  key="reset-password-link"
+                  to="/reset-password"
+                  className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
+                />,
+              ]}
+            />
+          </span>
+        )}
       </div>
     </div>
   )

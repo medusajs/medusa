@@ -950,6 +950,65 @@ export class Auth {
   }
 
   /**
+   * This method lists the authentication providers available for an actor type.
+   * It sends a request to the [List Auth Providers API route](https://docs.medusajs.com/api/admin#auth_getactor_typeproviders).
+   *
+   * This is a public, pre-authentication endpoint. A frontend can use it to
+   * render the available login options, such as an email/password form or
+   * "Continue with ..." redirect buttons, based on each provider's `flow`.
+   *
+   * @param actor - The actor type. For example, `user` for admin user, or `customer` for customer.
+   * @param headers - Headers to pass in the request.
+   * @returns The list of available auth providers.
+   *
+   * @tags auth
+   *
+   * @example
+   * const { providers } = await sdk.auth.listProviders("user")
+   */
+  listProviders = async (actor: string, headers?: ClientHeaders) => {
+    return await this.client.fetch<HttpTypes.AuthProvidersListResponse>(
+      `/auth/${actor}/providers`,
+      {
+        method: "GET",
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method creates or links the `user` (admin) actor for a redirect-based
+   * authentication provider after a successful callback. An existing user with
+   * a matching, identity-provider-verified email is linked; otherwise a new
+   * user is created. It sends a request to the [Provision Auth User API route](https://docs.medusajs.com/api/admin#auth_postauth_provideruser).
+   *
+   * The token returned by {@link callback} is actorless until the user is
+   * provisioned. Pass that token in the `Authorization` header, then call
+   * {@link refresh} to obtain a token bound to the newly linked user.
+   *
+   * @param provider - The authentication provider instance ID. For example, `okta`.
+   * @param headers - Headers to pass in the request, typically the `Authorization`
+   * bearer token returned by the callback.
+   * @returns The created or linked user.
+   *
+   * @tags auth
+   *
+   * @example
+   * const token = await sdk.auth.callback("user", "okta", queryParams)
+   * await sdk.auth.createUser("okta", { Authorization: `Bearer ${token}` })
+   * await sdk.auth.refresh()
+   */
+  createUser = async (provider: string, headers?: ClientHeaders) => {
+    return await this.client.fetch<HttpTypes.AdminUserResponse>(
+      `/auth/${provider}/user`,
+      {
+        method: "POST",
+        headers,
+      }
+    )
+  }
+
+  /**
    * @ignore
    */
   private setToken_ = async (token: string) => {

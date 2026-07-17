@@ -29,6 +29,7 @@ export const GET = async (
       id: provider.id,
       identifier: provider.identifier,
       display_name: provider.display_name,
+      flow: provider.flow,
     })),
   })
 }

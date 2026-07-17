@@ -13954,9 +13954,12 @@
             },
             "cloud": {
               "type": "string"
+            },
+            "noProviders": {
+              "type": "string"
             }
           },
-          "required": ["authenticationFailed", "cloud"],
+          "required": ["authenticationFailed", "cloud", "noProviders"],
           "additionalProperties": false
         }
       },

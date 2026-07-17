@@ -5,6 +5,7 @@ import {
   AuthTypes,
   Logger,
 } from "@medusajs/framework/types"
+import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
 import {
   AuthIdentifiersRegistrationName,
   AuthProviderRegistrationPrefix,
@@ -101,12 +102,30 @@ Please make sure that the provider is registered in the container and it is conf
           id,
           identifier: provider?.identifier ?? id,
           display_name: provider?.displayName ?? id,
+          flow: this.deriveFlow(provider),
         }
       })
       .filter(
         (provider): provider is AuthTypes.AuthProviderInfoDTO =>
           provider !== null
       )
+  }
+
+  /**
+   * Derives the authentication flow of a provider instance. A provider is
+   * `redirect`-based if it implements `validateCallback`, which exists
+   * solely for the redirect/callback flow.
+   */
+  protected deriveFlow(
+    provider?: AuthTypes.IAuthProvider
+  ): "credentials" | "redirect" {
+    const validateCallback = provider?.validateCallback
+
+    const isRedirect =
+      typeof validateCallback === "function" &&
+      validateCallback !== AbstractAuthModuleProvider.prototype.validateCallback
+
+    return isRedirect ? "redirect" : "credentials"
   }
 
   async authenticate(
