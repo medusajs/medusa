@@ -970,6 +970,14 @@ export default class PricingModuleService
       if (hasRulesInput) {
         entry.price_rules = rules
         entry.rules_count = rules.length
+      }
+
+      // Remove the raw `rules` object from the payload so it is not
+      // persisted — the `rules` column does not exist on the price table.
+      // This must happen whenever `rules` was explicitly provided, even
+      // when it is an empty object `{}`, otherwise the DB write fails with
+      // "column 'rules' of relation 'price' does not exist".
+      if (isDefined(price.rules)) {
         delete (entry as CreatePricesDTO).rules
       }
 

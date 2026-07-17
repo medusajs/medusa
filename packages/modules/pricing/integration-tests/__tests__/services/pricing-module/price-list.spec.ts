@@ -651,6 +651,48 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
         })
+
+        it("should create a price list with prices that have an empty rules object", async () => {
+          const [created] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+              starts_at: "10/10/2010",
+              ends_at: "10/20/2030",
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "eur",
+                  price_set_id: "price-set-1",
+                  rules: {},
+                },
+              ],
+            },
+          ])
+
+          const [priceList] = await service.listPriceLists(
+            {
+              id: [created.id],
+            },
+            {
+              relations: ["prices", "prices.price_rules"],
+            }
+          )
+
+          expect(priceList).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              prices: [
+                expect.objectContaining({
+                  rules_count: 0,
+                  price_rules: [],
+                  amount: 400,
+                  currency_code: "eur",
+                }),
+              ],
+            })
+          )
+        })
       })
 
       describe("addPriceListPrices", () => {
