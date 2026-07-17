@@ -70,7 +70,6 @@ describe("registerCompressionIfEnabled", () => {
     })
 
     expect(compression).toHaveBeenCalledWith({
-      enabled: true,
       level: 6,
       memLevel: 8,
       threshold: 1024,
