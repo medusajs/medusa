@@ -321,8 +321,10 @@ export default class PromotionModuleService
     // both pass the limit guard below and both write, over-spending a spend
     // budget or exceeding a usage limit. Lock the promotion and budget rows for
     // the remainder of this transaction, then re-read the usage totals under the
-    // lock (clearing the identity map first so the values are read fresh from the
-    // database) before the guards run.
+    // lock so the guards see committed values. Rows are locked in a stable id
+    // order to avoid deadlocks between concurrent multi-promotion registrations,
+    // and the re-read uses `refresh: true` (rather than detaching the identity
+    // map) so a surrounding transaction's pending state is preserved.
     const lockPromotionIds = existingPromotions.map((promotion) => promotion.id)
     const lockBudgetIds = Array.from(
       new Set(
@@ -337,20 +339,24 @@ export default class PromotionModuleService
     if (lockPromotionIds.length) {
       await knex("promotion")
         .whereIn("id", lockPromotionIds)
+        .orderBy("id")
         .forUpdate()
         .select("id")
     }
     if (lockBudgetIds.length) {
       await knex("promotion_campaign_budget")
         .whereIn("id", lockBudgetIds)
+        .orderBy("id")
         .forUpdate()
         .select("id")
     }
 
-    manager.clear()
     existingPromotions = await this.listActivePromotions_(
       { code: promotionCodes },
-      { relations: ["campaign", "campaign.budget", "campaign.budget.usages"] },
+      {
+        relations: ["campaign", "campaign.budget", "campaign.budget.usages"],
+        options: { refresh: true },
+      },
       sharedContext
     )
 
