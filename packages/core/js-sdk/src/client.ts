@@ -114,9 +114,20 @@ const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
  * Error class for HTTP fetch operations that includes status information.
  */
 export class FetchError extends Error {
+  /**
+   * The HTTP status code of the error response.
+   */
   status: number | undefined
+  /**
+   * The HTTP status text of the error response.
+   */
   statusText: string | undefined
 
+  /**
+   * @param {string} message - The error message.
+   * @param {string} statusText - The HTTP status text.
+   * @param {number} status - The HTTP status code.
+   */
   constructor(message: string, statusText?: string, status?: number) {
     super(message)
     this.statusText = statusText
@@ -128,6 +139,9 @@ export class FetchError extends Error {
  * The main HTTP client for the Medusa JS SDK.
  */
 export class Client {
+  /**
+   * The underlying fetch function used by the client.
+   */
   public fetch_: ClientFetch
   private config: Config
   private logger: Logger
@@ -137,6 +151,9 @@ export class Client {
 
   private locale_ = ""
 
+  /**
+   * The current locale used in requests, retrieved from localStorage if available.
+   */
   get locale() {
     if (hasStorage("localStorage")) {
       const storedLocale = window.localStorage.getItem(LOCALE_STORAGE_KEY)
@@ -147,6 +164,9 @@ export class Client {
     return this.locale_
   }
 
+  /**
+   * @param {Config} config - The configuration for the client.
+   */
   constructor(config: Config) {
     this.config = { ...config, baseUrl: getBaseUrl(config.baseUrl) }
     const logger = config.logger || {
@@ -168,6 +188,11 @@ export class Client {
     this.fetch_ = this.initClient()
   }
 
+  /**
+   * This method sets the locale used in subsequent requests.
+   *
+   * @param {string} locale - The locale to set.
+   */
   setLocale(locale: string) {
     if (!window) {
       this.logger.warn(
@@ -238,14 +263,30 @@ export class Client {
     }
   }
 
+  /**
+   * This method stores an authentication token using the configured storage method.
+   *
+   * @param {string} token - The JWT token to store.
+   * @returns {Promise<void>} Resolves when the token has been stored.
+   */
   async setToken(token: string) {
     await this.setToken_(token)
   }
 
+  /**
+   * This method retrieves the stored authentication token.
+   *
+   * @returns {Promise<string | null | undefined>} The stored token, or null/undefined if none is set.
+   */
   async getToken() {
     return await this.getToken_()
   }
 
+  /**
+   * This method removes the stored authentication token.
+   *
+   * @returns {Promise<void>} Resolves when the token has been cleared.
+   */
   async clearToken() {
     await this.clearToken_()
   }
