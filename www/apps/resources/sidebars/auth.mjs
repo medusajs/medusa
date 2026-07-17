@@ -66,7 +66,7 @@ export const authSidebar = [
           {
             type: "link",
             path: "/commerce-modules/auth/link-provider-identity",
-            title: "Link Provider to Existing Customer",
+            title: "Link Provider to Existing Actor",
           },
           {
             type: "link",
