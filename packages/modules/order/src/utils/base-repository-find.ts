@@ -1,10 +1,11 @@
+import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
 import {
+  augmentFindOptionsWithCrossModuleJoins,
   MikroOrmBaseRepository,
   pruneFindOptionsAgainstMetadata,
   toMikroORMEntity,
 } from "@medusajs/framework/utils"
-import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
 import {
   Order,
   OrderClaim,
@@ -13,6 +14,46 @@ import {
 } from "@models"
 
 import { mapRepositoryToOrderModel } from "."
+
+/**
+ * The order module replaces MikroORM repository `find`/`findAndCount` with
+ * version-aware implementations, so it must apply cross-module join filters
+ * itself — the base repository's `prepareFindOptions` is never called.
+ */
+function applyCrossModuleJoins(
+  repository: {
+    entity: { name?: string; meta?: { className?: string } }
+    tableName: string
+  },
+  findOptions: DAL.FindOptions<any>,
+  manager: {
+    schema?: string
+    config?: { get?: (key: string) => unknown }
+  }
+): DAL.FindOptions<any> {
+  const entityName =
+    repository.entity.name ?? repository.entity.meta?.className ?? "Order"
+  const primaryKey =
+    MikroOrmBaseRepository.retrievePrimaryKeys(repository.entity as any)[0] ??
+    "id"
+  const defaultSchema =
+    manager.schema ?? (manager.config?.get?.("schema") as string) ?? undefined
+
+  const augmented = augmentFindOptionsWithCrossModuleJoins(findOptions, {
+    entityName,
+    entityTable: repository.tableName,
+    primaryKey,
+    defaultSchema,
+  })
+
+  // Match MikroOrmBaseRepository.prepareFindOptions: strip residual internal
+  // metadata before handing options to MikroORM.
+  if (augmented.options?.__internal) {
+    delete augmented.options.__internal
+  }
+
+  return augmented
+}
 
 function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   const populate = config.options?.populate ?? []
@@ -64,9 +105,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     const manager = this.getActiveManager(context)
     const knex = manager.getKnex()
 
-    const findOptions_ = { ...options } as any
+    let findOptions_ = { ...options } as any
     findOptions_.options ??= {}
     findOptions_.where ??= {}
+
+    findOptions_ = applyCrossModuleJoins(this, findOptions_, manager)
 
     if (!("strategy" in findOptions_.options)) {
       if (findOptions_.options.limit != null || findOptions_.options.offset) {
@@ -234,9 +277,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     const manager = this.getActiveManager(context)
     const knex = manager.getKnex()
 
-    const findOptions_ = { ...findOptions } as any
+    let findOptions_ = { ...findOptions } as any
     findOptions_.options ??= {}
     findOptions_.where ??= {}
+
+    findOptions_ = applyCrossModuleJoins(this, findOptions_, manager)
 
     if (!("strategy" in findOptions_.options)) {
       Object.assign(findOptions_.options, {
