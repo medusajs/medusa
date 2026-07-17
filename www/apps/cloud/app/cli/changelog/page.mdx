@@ -6,6 +6,28 @@ export const metadata = {
 
 In this guide, you'll find the notable changes to the Cloud CLI (`mcloud`) for each release, with the newest version listed first.
 
+## 0.1.11 (July 17, 2026)
+
+### Environments
+
+- `mcloud environments get`, `mcloud environments delete`, `mcloud environments redeploy`, and `mcloud environments trigger-build` now accept the target environment via a new `--environment` (`-e`) flag in addition to the existing positional argument
+- The environment positional argument is now optional and falls back to the environment set in the context configuration
+
+### Projects
+
+- `mcloud projects get` and `mcloud projects delete` now accept the target project via a new `--project` (`-p`) flag in addition to the existing positional argument
+- The project positional argument is now optional and falls back to the project set in the context configuration
+
+### Organizations
+
+- `mcloud organizations get` now accepts the target organization via an `--organization` (`-o`) flag; the positional argument is now optional and falls back to the organization set in the context configuration
+
+### Local
+
+- Fixed a typo in the `mcloud local build` help examples (`--typet` → `--type`)
+
+---
+
 ## 0.1.10 (July 15, 2026)
 
 ### Variables
