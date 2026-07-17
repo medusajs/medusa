@@ -65,6 +65,7 @@ bash scripts/get_pr.sh <pr_number>             # PR details (title, body, author
 bash scripts/get_pr_files.sh <pr_number>       # List files changed (metadata only)
 bash scripts/get_pr_diff.sh <pr_number>        # Full unified diff (required for code review)
 bash scripts/get_linked_issues.sh <pr_number>  # Issues linked with closing keywords
+bash scripts/search_prs.sh <issue_number>      # Open PRs whose body references #<issue_number> (mentions, not just linked)
 bash scripts/get_comments.sh <pr_number>       # Existing comments on the PR
 bash scripts/get_labels.sh <pr_number>         # Current labels on the PR
 bash scripts/get_issue.sh <issue_number>       # A linked issue's details
@@ -157,19 +158,48 @@ bash scripts/get_pr_diff.sh <pr_number>
 bash scripts/get_comments.sh <pr_number>
 ```
 
-### Step 2 — Check for Duplicate PRs
+### Step 2 — Check for a Previous PR Resolving the Same Issue
 
-If the PR body links an issue (from Step 1's PR details), search for other open PRs that reference the same issue. Use `bash scripts/get_linked_issues.sh` for the linked issue numbers, then optionally `gh pr list` (read-only).
+If the PR body links an issue (from Step 1's PR details), determine whether
+an **earlier** PR already resolves the same issue:
 
-If another open PR is found that links the same issue, prepend a
-**Heads up** line to your `summary` (e.g.
-*"Heads up: PR #N also references issue #M; team should coordinate."*).
-This is **informational only** — it does not change the label outcome
-and does not by itself add a blocking point.
+1. Get the linked issue numbers with `bash scripts/get_linked_issues.sh <pr_number>`.
+2. For each linked issue number `M`, run
+   `bash scripts/search_prs.sh M` (bare number, e.g.
+   `bash scripts/search_prs.sh 1234`). This searches open PR **bodies**
+   for a `#M` reference, so it catches PRs that merely **mention** the
+   issue — many PRs reference an issue without linking it via a closing
+   keyword, and those would be missed by only looking at the issue's
+   linked/closing PRs. (The script post-filters the search so a PR that
+   happens to contain the number `M` in an unrelated context is not
+   returned.)
+3. From the result, keep only PRs that are **not** the PR under review and
+   have a **lower number** than it (a lower PR number means it was opened
+   earlier — i.e. a *previous* PR). The search already returns only open
+   PRs.
 
-If the PR doesn't link an issue, skip this step.
+If one or more such previous PRs exist, the PR under review is the likely
+duplicate. Flag it **once** by adding a **Heads up** line to your
+`summary`, naming the earliest previous PR and the shared issue, e.g.:
 
-> **CRITICAL:** Do not block the PR solely because a duplicate was found.
+> *"Heads up: PR #N already references issue #M and was opened earlier;
+> if #N is merged first, this PR may be closed as a duplicate."*
+
+This is **informational only** — it does not change the label outcome and
+does not add a blocking point.
+
+**Flag it only once per PR — at the first review.** Before adding the
+line, scan the prior bot comments fetched in Step 1: if a previous review
+already flagged the same duplicate (mentions the same previous PR /
+issue), do **not** repeat it. Re-add the line only if the previous PR
+changed (a different or newly-opened earlier PR now resolves the issue).
+
+If the PR doesn't link an issue, or no earlier open PR references the same
+issue, skip this step.
+
+> **CRITICAL:** Do not block the PR solely because a previous PR was found.
+> Only the earlier PR's author (or the team) decides which one wins — the
+> heads-up is a coordination note, never a blocking point or label change.
 
 ### Step 3 — Review Prior Comments
 
@@ -434,8 +464,10 @@ the workflow event — never from JSON-supplied numbers.
 - [ ] Flagging issues in removed (`-`) or unchanged context lines
 - [ ] Requesting a change that the PR already makes
 - [ ] Setting `labels_to_add: ["initial-approval"]` without also setting `labels_to_remove: ["requires-more"]` (and vice versa)
-- [ ] Skipping the duplicate-PR check
-- [ ] Blocking a PR solely because a duplicate was found
+- [ ] Skipping the previous-PR check (Step 2)
+- [ ] Blocking a PR solely because a previous PR resolves the same issue
+- [ ] Repeating the previous-PR heads-up on every re-review — flag it only once, at the first review
+- [ ] Flagging a *later* PR (higher number) as the one that may close this PR — the heads-up applies only when an *earlier* open PR resolves the same issue
 - [ ] Nagging a Dependabot/Renovate PR for a missing PR template or blocking it for lockfile size — branch to the dependency-update flow (Step 4b) instead
 - [ ] Approving a dependency-update PR without retrieving the release notes and stating the areas to test
 - [ ] Reviewing a dependency-update PR without running the supply-chain security checks (typosquats, lifecycle scripts, lockfile/manifest mismatch)
