@@ -17,6 +17,7 @@ import {
   getOrderFulfillmentStatus,
 } from "../order-helpers"
 import { DataTableStatusIndicator } from "../../components/data-table/components/data-table-status-cell/data-table-status-cell"
+import { isEmpty } from "../is-empty"
 
 export type CellRenderer<TData = any> = (
   value: any,
@@ -107,14 +108,14 @@ const getNestedValue = (obj: any, path: string) => {
 }
 
 const TextRenderer: CellRenderer = (value, _row, _column, _t) => {
-  if (value === null || value === undefined || value === "") {
+  if (isEmpty(value)) {
     return "-"
   }
   return String(value)
 }
 
 const HandleRenderer: CellRenderer = (value, _row, _column, _t) => {
-  if (value === null || value === undefined || value === "") {
+  if (isEmpty(value)) {
     return "-"
   }
   return `/${value}`
@@ -190,7 +191,7 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
   const resolver = getCellResolver(metadata.resolver)
   if (resolver) {
     const resolved = resolver(rawValue, row, t)
-    if (resolved === null || resolved === undefined) {
+    if (isEmpty(resolved)) {
       return "-"
     }
     if (React.isValidElement(resolved)) {
@@ -213,7 +214,7 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
     }
   }
 
-  if (rawValue === null || rawValue === undefined || rawValue === "") {
+  if (isEmpty(rawValue)) {
     return "-"
   }
   return (
@@ -235,7 +236,7 @@ const BadgesRenderer: CellRenderer = (value, row, column, t) => {
     typeof metadata.max_visible === "number" ? metadata.max_visible : 2
 
   const resolveLabel = (item: any): string => {
-    if (item === null || item === undefined) {
+    if (isEmpty(item)) {
       return ""
     }
     if (typeof item === "string" || typeof item === "number") {
@@ -436,7 +437,7 @@ const CurrencyRenderer: CellRenderer = (value, row, _column, _t) => {
 }
 
 const NumberRenderer: CellRenderer = (value, _row, _column, _t) => {
-  if (value === null || value === undefined) {
+  if (isEmpty(value)) {
     return "-"
   }
 
@@ -449,7 +450,7 @@ const NumberRenderer: CellRenderer = (value, _row, _column, _t) => {
 }
 
 const BooleanRenderer: CellRenderer = (value, _row, _column, t) => {
-  if (value === null || value === undefined) {
+  if (isEmpty(value)) {
     return "-"
   }
 
@@ -543,7 +544,7 @@ const ImageRenderer: CellRenderer = (value, _row, _column, _t) => {
 }
 
 const JsonRenderer: CellRenderer = (value, _row, _column, _t) => {
-  if (value === null || value === undefined) {
+  if (isEmpty(value)) {
     return "-"
   }
 

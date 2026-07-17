@@ -86,9 +86,7 @@ export function generateFiltersFromColumns(
       }
     }
 
-    // For number filters, enable operators if the API provides them
-    // Note: DataTable only supports includeOperators boolean, not custom operator lists
-    if (filterType === "number" && column.filter?.operators) {
+    if (filterType === "number") {
       filterConfig.includeOperators = true
     }
 
