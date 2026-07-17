@@ -17,7 +17,7 @@ restricted.
 
 The terms of an applicable commercial agreement control if they conflict with
 this notice. To obtain a commercial license, contact Medusa through
-https://medusajs.com/enterprise.
+https://medusajs.com/contact.
 
 This notice applies prospectively and does not withdraw rights already granted
 for earlier versions of any material under the MIT License. Those earlier
