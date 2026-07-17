@@ -33206,11 +33206,11 @@ In this guide, you'll learn how to allow an existing actor (such as a customer) 
 
 ### Prerequisites
 
-- [Custom authentication provider registered for the actor type.](https://docs.medusajs.com/references/auth/provider/index.html.md)
+- [Custom authentication provider registered for the actor type.](undefined/references/auth/provider)
 
 ## Why an Additional Provider Doesn't Resolve to the Actor
 
-Each authentication provider creates its own [auth identity](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types/index.html.md) for an actor. The auth identity holds an `app_metadata` property that associates it with an actor, such as a customer, using the key `{actor_type}_id`:
+Each authentication provider creates its own [auth identity](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) for an actor. The auth identity holds an `app_metadata` property that associates it with an actor, such as a customer, using the key `{actor_type}_id`:
 
 ```json
 {
@@ -33232,7 +33232,7 @@ However, when the same actor authenticates with a different provider for the fir
 
 Since the new auth identity isn't associated with an actor, Medusa treats the authentication as if a new actor is registering, rather than an existing actor logging in. So, authenticating with the new provider returns a token that has an `auth_identity_id` but no `actor_id`. As a result, requests to protected routes, such as `GET /store/customers/me`, are rejected with a `401` error.
 
-To allow the new provider to resolve to the existing customer, you must set the `{actor_type}_id` key of the new auth identity's `app_metadata` to the existing actor's ID. You do that with the [setAuthAppMetadataStep](https://docs.medusajs.com/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md).
+To allow the new provider to resolve to the existing customer, you must set the `{actor_type}_id` key of the new auth identity's `app_metadata` to the existing actor's ID. You do that with the [setAuthAppMetadataStep](undefined/references/medusa-workflows/steps/setAuthAppMetadataStep).
 
 The rest of this guide uses the `customer` actor type as an example, but the same approach applies to admin users and [custom actor types](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type). Replace `customer` with the relevant actor type.
 
