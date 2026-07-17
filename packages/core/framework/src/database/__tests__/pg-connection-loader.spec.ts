@@ -108,6 +108,27 @@ describe("pgConnectionLoader", () => {
     expect(mockContainer.register).not.toHaveBeenCalled()
   })
 
+  it("fails fast on a fatal connection error without retrying", async () => {
+    const realError = Object.assign(
+      new Error(`database "medusa" does not exist`),
+      { code: "3D000" }
+    )
+    const connection = buildFakeConnection({
+      realError,
+      rawError: timeoutError(),
+    })
+    mockCreatePgConnection.mockReturnValue(connection)
+
+    await expect(pgConnectionLoader()).rejects.toMatchObject({
+      code: "3D000",
+      message: `Failed to connect to the database: database "medusa" does not exist`,
+    })
+    // A permanent misconfiguration must not be retried.
+    expect(connection.raw).toHaveBeenCalledTimes(1)
+    expect(mockLogger.warn).not.toHaveBeenCalled()
+    expect(mockContainer.register).not.toHaveBeenCalled()
+  })
+
   it("logs the real cause and demotes the pool-reported message on each retry", async () => {
     const realError = Object.assign(new Error("connect ECONNREFUSED"), {
       code: "ECONNREFUSED",

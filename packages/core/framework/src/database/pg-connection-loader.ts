@@ -10,6 +10,22 @@ import { container } from "../container"
 import { logger } from "../logger"
 
 /**
+ * PostgreSQL error codes that indicate a permanent misconfiguration. Retrying
+ * these is pointless and only delays surfacing the actual problem.
+ */
+const FATAL_PG_CONNECTION_ERROR_CODES = new Set([
+  "3D000", // database does not exist
+  "28P01", // invalid password
+  "28000", // invalid authorization specification
+  "42501", // insufficient privilege
+])
+
+const isFatalConnectionError = (error: unknown): boolean => {
+  const code = (error as { code?: string })?.code
+  return !!code && FATAL_PG_CONNECTION_ERROR_CODES.has(code)
+}
+
+/**
  * Initialize a knex connection that can then be shared to any resources if needed
  */
 export async function pgConnectionLoader(): Promise<
@@ -70,10 +86,14 @@ export async function pgConnectionLoader(): Promise<
     : 1000
 
   let lastConnectionError: Error | undefined
+  let fatalConnectionError: Error | undefined
   pgConnection.client?.pool?.on?.(
     "createFail",
     (_eventId: unknown, error: Error) => {
       lastConnectionError = error
+      if (isFatalConnectionError(error)) {
+        fatalConnectionError = error
+      }
     }
   )
 
@@ -86,23 +106,58 @@ export async function pgConnectionLoader(): Promise<
     return stringifyCircular(lastConnectionError ?? error)
   }
 
-  try {
-    await retryExecution(
-      async () => {
-        await pgConnection.raw("SELECT 1")
-      },
-      {
-        maxRetries,
-        retryDelay,
-        onRetry: (error) => {
-          logger.warn(
-            `Pg connection failed to connect to the database. Retrying...\n${formatConnectionError(
-              error
-            )}`
-          )
-        },
+  /**
+   * A permanent misconfiguration (for example, a non-existent database or
+   * invalid credentials) surfaces on the pool's `createFail` event almost
+   * immediately, while `raw` stays pending until knex's acquire timeout (~60s)
+   * because of `propagateCreateError: false`. Reject as soon as such a fatal
+   * error is observed so the migrator/runtime doesn't wait for the full acquire
+   * timeout on every retry.
+   */
+  const probeConnection = () => {
+    if (fatalConnectionError) {
+      return Promise.reject(fatalConnectionError)
+    }
+
+    return new Promise<void>((resolve, reject) => {
+      let settled = false
+      const settle = (fn: () => void) => {
+        if (settled) {
+          return
+        }
+        settled = true
+        pgConnection.client?.pool?.removeListener?.("createFail", onFatal)
+        fn()
       }
-    )
+
+      const onFatal = (_eventId: unknown, error: Error) => {
+        if (isFatalConnectionError(error)) {
+          settle(() => reject(error))
+        }
+      }
+
+      pgConnection.client?.pool?.on?.("createFail", onFatal)
+
+      Promise.resolve(pgConnection.raw("SELECT 1"))
+        .then(() => settle(resolve))
+        .catch((error) => settle(() => reject(error)))
+    })
+  }
+
+  try {
+    await retryExecution(probeConnection, {
+      maxRetries,
+      retryDelay,
+      shouldRetry: (error) =>
+        !isFatalConnectionError(error) && !fatalConnectionError,
+      onRetry: (error) => {
+        logger.warn(
+          `Pg connection failed to connect to the database. Retrying...\n${formatConnectionError(
+            error
+          )}`
+        )
+      },
+    })
   } catch (error) {
     if (lastConnectionError) {
       lastConnectionError.message = `Failed to connect to the database: ${lastConnectionError.message}`
