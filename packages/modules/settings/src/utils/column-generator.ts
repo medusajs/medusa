@@ -129,7 +129,7 @@ export function generateEntityColumns(
   const override = customOverride || getEntityOverride(entity.name)
   const filterRules = getFieldFilterRules(entity.name, override)
   const defaultVisibleFields = getDefaultVisibleFields(entity.name, override)
-  const fieldOrdering = getFieldOrdering(entity.name, override)
+  const defaultFieldOrdering = getFieldOrdering(entity.name, override)
   const fieldRenderModes = getFieldRenderModes(entity.name, override)
   const fieldMetadata = getFieldMetadata(entity.name, override)
   const additionalTypes = getAdditionalTypes(entity.name, override)
@@ -149,7 +149,7 @@ export function generateEntityColumns(
     processedFields,
     filterRules,
     defaultVisibleFields,
-    fieldOrdering,
+    defaultFieldOrdering,
     fieldRenderModes,
     fieldMetadata,
     nonFilterableFields,
@@ -169,7 +169,7 @@ export function generateEntityColumns(
         processedFields,
         filterRules,
         defaultVisibleFields,
-        fieldOrdering,
+        defaultFieldOrdering,
         fieldRenderModes,
         fieldMetadata,
         nonFilterableFields,
@@ -216,7 +216,7 @@ export function generateEntityColumns(
         : undefined,
       metadata: computed.metadata,
       render_mode: computed.renderMode,
-      default_order: fieldOrdering[columnId] || 850,
+      default_order: defaultFieldOrdering[columnId] || 850,
       category:
         (computed.category as ViewConfigurationColumn["category"]) ||
         "computed",
@@ -244,7 +244,7 @@ function processEntityType(
   processedFields: Set<string>,
   filterRules: FieldFilterRules,
   defaultVisibleFields: string[],
-  fieldOrdering: Record<string, number>,
+  defaultFieldOrdering: Record<string, number>,
   fieldRenderModes: Record<string, RenderMode>,
   fieldMetadata: Record<string, Record<string, any>>,
   nonFilterableFields: string[],
@@ -339,7 +339,7 @@ function processEntityType(
         context: "both",
         render_mode: renderMode,
         metadata: fieldMetadata[fullPath],
-        default_order: fieldOrdering[fullPath] || 900,
+        default_order: defaultFieldOrdering[fullPath] || 900,
         category: parentPath
           ? "relationship"
           : semanticTypeToCategory(semanticType),
@@ -433,7 +433,7 @@ function processEntityType(
               context: "both",
               render_mode: renderMode,
               metadata: fieldMetadata[nestedPath],
-              default_order: fieldOrdering[nestedPath] || 950,
+              default_order: defaultFieldOrdering[nestedPath] || 950,
               category: "relationship",
               filter,
               source: { module: entity.module, entity: entity.name },

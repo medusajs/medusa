@@ -19,7 +19,7 @@ export type InitializeModuleInjectableDependencies = {
  *           {
  *             entity: "Brand",
  *             defaultVisibleFields: ["name", "products_count"],
- *             fieldOrdering: { name: 100 },
+ *             defaultFieldOrdering: { name: 100 },
  *             computedColumns: [
  *                {
  *                  id: "products_count",

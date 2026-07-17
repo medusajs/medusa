@@ -696,8 +696,8 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
           })
         })
 
-        describe("fieldOrdering", function () {
-          it("should order Order fields according to fieldOrdering", async () => {
+        describe("defaultFieldOrdering", function () {
+          it("should order Order fields according to defaultFieldOrdering", async () => {
             const columns = await service.generateEntityColumns("Order")
 
             expect(columns).not.toBeNull()
@@ -713,7 +713,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             )
             const total = columns!.find((c) => c.id === "total")
 
-            // Verify fieldOrdering is applied (lower number = earlier in list)
+            // Verify defaultFieldOrdering is applied (lower number = earlier in list)
             expect(displayId?.default_order).toBeLessThan(
               createdAt?.default_order || Infinity
             )
@@ -916,7 +916,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
               excludeFields: ["internal_field"],
               excludePrefixes: ["_"],
               defaultVisibleFields: ["name", "status"],
-              fieldOrdering: { name: 100, status: 200 },
+              defaultFieldOrdering: { name: 100, status: 200 },
             }
 
             registry.register("CustomEntity", customOverride)
@@ -933,15 +933,15 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
 
             registry.register("Order", {
               excludeFields: ["new_excluded_field"],
-              fieldOrdering: { new_field: 50 },
+              defaultFieldOrdering: { new_field: 50 },
             })
 
             const merged = registry.get("Order")
 
             expect(merged?.excludeFields).toContain("order_change")
             expect(merged?.excludeFields).toContain("new_excluded_field")
-            expect(merged?.fieldOrdering?.display_id).toBe(100)
-            expect(merged?.fieldOrdering?.new_field).toBe(50)
+            expect(merged?.defaultFieldOrdering?.display_id).toBe(100)
+            expect(merged?.defaultFieldOrdering?.new_field).toBe(50)
           })
 
           it("should prefer new values for non-array fields", () => {
@@ -980,7 +980,9 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
 
             expect(merged?.nonFilterableFields).toContain("payment_status")
             expect(merged?.nonFilterableFields).toContain("fulfillment_status")
-            expect(merged?.nonFilterableFields).toContain("custom_computed_field")
+            expect(merged?.nonFilterableFields).toContain(
+              "custom_computed_field"
+            )
           })
         })
 
@@ -1110,7 +1112,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             const registry = getEntityOverrideRegistry()
 
             registry.register("OrderingTestEntity", {
-              fieldOrdering: { name: 100, status: 200, created_at: 300 },
+              defaultFieldOrdering: { name: 100, status: 200, created_at: 300 },
             })
 
             const ordering = getFieldOrdering("OrderingTestEntity")

@@ -32,7 +32,7 @@ export interface EntityOverride {
    * Custom ordering for fields (field name -> order number).
    * Lower numbers appear first.
    */
-  fieldOrdering?: Record<string, number>
+  defaultFieldOrdering?: Record<string, number>
 
   /**
    * Override the render mode for specific field paths (field path -> render mode).
@@ -46,7 +46,7 @@ export interface EntityOverride {
    * Per-column renderer configuration (field path -> metadata). Attached to the
    * column's top-level `metadata`. Useful to drive generic renderers without hardcoding
    * them (e.g. a `status` field's value->variant map, or the field path a renderer should
-   * read). Supports dotted paths, matching `fieldRenderModes` / `fieldOrdering`.
+   * read). Supports dotted paths, matching `fieldRenderModes` / `defaultFieldOrdering`.
    */
   fieldMetadata?: Record<string, Record<string, any>>
 
@@ -61,7 +61,7 @@ export interface EntityOverride {
    * `payment_status`) but are not accepted by the corresponding list API.
    * Dotted paths are supported (e.g. `customer.email`) to target
    * nested-relationship scalar fields, matching the convention used by
-   * `defaultVisibleFields` and `fieldOrdering`.
+   * `defaultVisibleFields` and `defaultFieldOrdering`.
    */
   nonFilterableFields?: string[]
 
@@ -71,7 +71,7 @@ export interface EntityOverride {
    * `payment_status`) but are not accepted by the corresponding list API.
    * Dotted paths are supported (e.g. `customer.email`) to target
    * nested-relationship scalar fields, matching the convention used by
-   * `defaultVisibleFields` and `fieldOrdering`.
+   * `defaultVisibleFields` and `defaultFieldOrdering`.
    */
   nonSortableFields?: string[]
 
@@ -102,7 +102,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "order_shipping_country_display",
       "sales_channel.name",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       display_id: 100,
       custom_display_id: 101,
       created_at: 200,
@@ -130,7 +130,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "variants_count",
       "status",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       product_display: 100,
       "collection.title": 200,
       sales_channels_display: 300,
@@ -151,7 +151,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "has_account",
       "created_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       email: 100,
       customer_name: 200,
       has_account: 300,
@@ -168,7 +168,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "created_at",
       "updated_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       name: 100,
       customers_count: 200,
       created_at: 300,
@@ -180,7 +180,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["title", "status", "price_overrides"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       title: 100,
       status: 200,
       price_overrides: 300,
@@ -194,7 +194,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["title", "handle", "products_count"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       title: 100,
       handle: 200,
       products_count: 300,
@@ -208,7 +208,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["title", "values_count", "is_exclusive"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       title: 100,
       values_count: 200,
       is_exclusive: 300,
@@ -222,7 +222,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["value"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       value: 100,
     },
   },
@@ -236,7 +236,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "reserved_quantity",
       "stocked_quantity",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       title: 100,
       sku: 200,
       reserved_quantity: 300,
@@ -254,7 +254,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "created_at",
       "updated_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       email: 100,
       first_name: 200,
       last_name: 300,
@@ -271,7 +271,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "region_country_display",
       "payment_providers_display",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       name: 100,
       region_country_display: 200,
       payment_providers_display: 300,
@@ -282,7 +282,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["code", "method", "status_display"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       code: 100,
       method: 200,
       status_display: 300,
@@ -299,7 +299,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "starts_at",
       "ends_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       name: 100,
       description: 200,
       campaign_identifier: 300,
@@ -318,7 +318,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "created_at",
       "updated_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       name: 100,
       description: 200,
       is_disabled: 300,
@@ -339,7 +339,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["label", "value", "description"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       label: 100,
       value: 200,
       description: 300,
@@ -350,7 +350,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["label", "code", "description"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       label: 100,
       code: 200,
       description: 300,
@@ -361,7 +361,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["value", "created_at", "updated_at"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       value: 100,
       created_at: 200,
       updated_at: 300,
@@ -372,7 +372,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["value", "created_at", "updated_at"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       value: 100,
       created_at: 200,
       updated_at: 300,
@@ -383,7 +383,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
     excludePrefixes: ["raw_"],
     excludeFields: [],
     defaultVisibleFields: ["name", "type"],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       name: 100,
       type: 200,
     },
@@ -399,7 +399,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "created_at",
       "updated_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       label: 100,
       code: 200,
       description: 300,
@@ -417,7 +417,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "created_at",
       "quantity",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       "inventory_item.sku": 100,
       description: 200,
       created_at: 300,
@@ -435,7 +435,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "pickup_fulfillment",
       "location_sales_channels",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       name: 100,
       location_address_display: 200,
       shipping_fulfillment: 300,
@@ -455,7 +455,7 @@ export const BUILTIN_ENTITY_OVERRIDES: Record<string, EntityOverride> = {
       "last_used_at",
       "created_at",
     ],
-    fieldOrdering: {
+    defaultFieldOrdering: {
       title: 100,
       redacted: 200,
       type: 300,
@@ -510,9 +510,9 @@ export class EntityOverrideRegistry {
         excludePrefixes: override.excludePrefixes ?? existing.excludePrefixes,
         defaultVisibleFields:
           override.defaultVisibleFields ?? existing.defaultVisibleFields,
-        fieldOrdering: {
-          ...(existing.fieldOrdering || {}),
-          ...(override.fieldOrdering || {}),
+        defaultFieldOrdering: {
+          ...(existing.defaultFieldOrdering || {}),
+          ...(override.defaultFieldOrdering || {}),
         },
         fieldRenderModes: {
           ...(existing.fieldRenderModes || {}),
@@ -655,7 +655,7 @@ export function getFieldOrdering(
   override?: EntityOverride
 ): Record<string, number> {
   const resolvedOverride = override ?? getEntityOverride(entityName)
-  return resolvedOverride?.fieldOrdering || {}
+  return resolvedOverride?.defaultFieldOrdering || {}
 }
 
 /**
