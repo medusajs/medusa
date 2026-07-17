@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Link Provider to Existing Customer"
+sidebar_label: "Link Auth Provider to Existing Actor"
 tags:
     - auth
     - how to
@@ -9,29 +9,28 @@ tags:
 import { Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `Link an Additional Auth Provider to an Existing Customer`,
+  title: `Link an Additional Auth Provider to an Existing Actor`,
 }
 
 # {metadata.title}
 
-In this guide, you'll learn how to allow an existing customer to authenticate with an additional authentication provider, such as letting a customer who registered with the Emailpass provider also log in with Google or a Magic Link.
+In this guide, you'll learn how to allow an existing actor (such as a customer) to authenticate with an additional authentication provider. This is useful when you want to let a customer who registered with the Emailpass provider also log in with Google or a Magic Link, for example.
 
 <Prerequisites
   items={[
     {
-      text: "Existing customer.",
-      link: "/commerce-modules/customer",
+      text: "Existing user of the actor.",
     },
     {
-      text: "Custom authentication provider registered for the customer actor type.",
+      text: "Custom authentication provider registered for the actor type.",
       link: "/references/auth/provider",
     },
   ]}
 />
 
-## Why an Additional Provider Doesn't Resolve to the Customer
+## Why an Additional Provider Doesn't Resolve to the Actor
 
-Each authentication provider creates its own [auth identity](../auth-identity-and-actor-types/page.mdx) for a customer. The auth identity holds an `app_metadata` property that associates it with an actor, such as a customer, using the key `{actor_type}_id`:
+Each authentication provider creates its own [auth identity](../auth-identity-and-actor-types/page.mdx) for an actor. The auth identity holds an `app_metadata` property that associates it with an actor, such as a customer, using the key `{actor_type}_id`:
 
 ```json
 {
@@ -41,9 +40,9 @@ Each authentication provider creates its own [auth identity](../auth-identity-an
 }
 ```
 
-When a customer registers with the Emailpass provider, its auth identity has the `customer_id` key set to the associated customer's ID. So, authenticating with Emailpass resolves to that customer.
+When an actor registers with the Emailpass provider, its auth identity has the `{actor_type}_id` key set to the associated actor's ID. So, authenticating with Emailpass resolves to that actor.
 
-However, when the same customer authenticates with a different provider for the first time, that provider creates a *separate* auth identity. This new auth identity has an empty `app_metadata`, so it isn't associated with any customer yet:
+However, when the same actor authenticates with a different provider for the first time, that provider creates a separate auth identity. This new auth identity has an empty `app_metadata`, so it isn't associated with any actor yet:
 
 ```json
 {
@@ -51,9 +50,9 @@ However, when the same customer authenticates with a different provider for the 
 }
 ```
 
-Since the new auth identity isn't associated with a customer, Medusa treats the authentication as if a new customer is registering, rather than an existing customer logging in. So, authenticating with the new provider returns a token that has an `auth_identity_id` but no `actor_id`. As a result, requests to protected routes, such as `GET /store/customers/me`, are rejected with a `401` error.
+Since the new auth identity isn't associated with an actor, Medusa treats the authentication as if a new actor is registering, rather than an existing actor logging in. So, authenticating with the new provider returns a token that has an `auth_identity_id` but no `actor_id`. As a result, requests to protected routes, such as `GET /store/customers/me`, are rejected with a `401` error.
 
-To allow the new provider to resolve to the existing customer, you must set the `{actor_type}_id` key of the new auth identity's `app_metadata` to the existing customer's ID. You do that with the [setAuthAppMetadataStep](/references/medusa-workflows/steps/setAuthAppMetadataStep).
+To allow the new provider to resolve to the existing customer, you must set the `{actor_type}_id` key of the new auth identity's `app_metadata` to the existing actor's ID. You do that with the [setAuthAppMetadataStep](/references/medusa-workflows/steps/setAuthAppMetadataStep).
 
 <Note>
 
