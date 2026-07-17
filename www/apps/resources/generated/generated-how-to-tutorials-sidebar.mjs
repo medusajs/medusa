@@ -106,7 +106,7 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
-              "title": "Link Provider to Existing User",
+              "title": "Link Provider to Existing Customer",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity",
               "children": []
             },

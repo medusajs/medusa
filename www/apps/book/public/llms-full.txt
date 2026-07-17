@@ -14374,7 +14374,7 @@ const Post = model.define("post", {
 export default Post
 ```
 
-Medusa stores along the `bigNumber` property a `raw_{property_name}` property that contains its raw value. Learn more in the [Big Number documentation](https://docs.medusajs.com/learn/fundamentals/data-models/big-numbers/index.html.md).
+Medusa stores along the `bigNumber` property a `raw_{property_name}` property that contains its raw value. Learn more in the [Big Number documentation](undefined/learn/fundamentals/data-models/big-numbers).
 
 ### boolean
 
@@ -15069,7 +15069,7 @@ The migration class in the file extends the `Migration` class imported from `@me
 
 In the example above, the `up` method creates the table `author`, and the `down` method drops the table if the migration is reverted.
 
-When you write a migration manually for a data model defined with [model.define](https://docs.medusajs.com/learn/fundamentals/data-models/index.html.md), make sure the created table includes the `created_at`, `updated_at`, and `deleted_at` columns. Medusa adds these [default properties](https://docs.medusajs.com/learn/fundamentals/data-models/properties#data-models-default-properties/index.html.md) to every data model, and the module's service relies on them in its queries. For example, the service filters out soft-deleted records using the `deleted_at` column, so queries fail at runtime if the column doesn't exist.
+When you write a migration manually for a data model defined with [model.define](undefined/learn/fundamentals/data-models), make sure the created table includes the `created_at`, `updated_at`, and `deleted_at` columns. Medusa adds these [default properties](undefined/learn/fundamentals/data-models/properties#data-models-default-properties) to every data model, and the module's service relies on them in its queries. For example, the service filters out soft-deleted records using the `deleted_at` column, so queries fail at runtime if the column doesn't exist.
 
 Refer to [MikroORM's documentation](https://mikro-orm.io/docs/migrations#migration-class) for more details on writing migrations.
 
@@ -19207,7 +19207,7 @@ In the example above, you retrieve all products linked to a post.
 
 You can chain relations and links across multiple levels by separating each relation's name with a dot (`.`) in the `fields` array. There's no limit on how deep the chain can be, and a chain can traverse relations within the same module and links between different modules.
 
-For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone`, which belongs to a `FulfillmentSet`, which [links to a stock location](https://docs.medusajs.com/resources/commerce-modules/fulfillment/links-to-other-modules#stock-location-module/index.html.md) in the Stock Location Module. To retrieve a shipping option along with its service zone, fulfillment set, and the fulfillment set's stock location in a single query:
+For example, the Fulfillment Module's `ShippingOption` belongs to a `ServiceZone`, which belongs to a `FulfillmentSet`, which [links to a stock location](undefined/resources/commerce-modules/fulfillment/links-to-other-modules#stock-location-module) in the Stock Location Module. To retrieve a shipping option along with its service zone, fulfillment set, and the fulfillment set's stock location in a single query:
 
 ### query.graph
 
@@ -32121,11 +32121,11 @@ Redirect to that URL in the frontend to continue the authentication process with
 
 #### Customizing the Response Body
 
-A custom auth provider can't change the shape of this route's response body. The provider's [authenticate method](https://docs.medusajs.com/references/auth/provider#authenticate/index.html.md) returns an [AuthenticationResponse](https://docs.medusajs.com/references/auth/interfaces/auth.AuthenticationResponse/index.html.md) object, but this route only uses its `success`, `authIdentity`, `location`, and `error` fields to build the response. Any other fields you return from the provider are ignored.
+A custom auth provider can't change the shape of this route's response body. The provider's [authenticate method](undefined/references/auth/provider#authenticate) returns an [AuthenticationResponse](undefined/references/auth/interfaces/auth.AuthenticationResponse) object, but this route only uses its `success`, `authIdentity`, `location`, and `error` fields to build the response. Any other fields you return from the provider are ignored.
 
-If you need to return a custom response body, create a [custom API route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) that calls the [Auth Module's authenticate method](https://docs.medusajs.com/references/auth/authenticate/index.html.md), then shape the response as you need.
+If you need to return a custom response body, create a [custom API route](undefined/docs/learn/fundamentals/api-routes) that calls the [Auth Module's authenticate method](undefined/references/auth/authenticate), then shape the response as you need.
 
-[How to login Customers using the authentication route](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/customers/login/index.html.md).
+[How to login Customers using the authentication route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/customers/login).
 
 ***
 
@@ -33206,12 +33206,12 @@ In this guide, you'll learn how to allow an existing customer to authenticate wi
 
 ### Prerequisites
 
-- [Existing customer.](https://docs.medusajs.com/commerce-modules/customer/index.html.md)
-- [Custom authentication provider registered for the customer actor type.](https://docs.medusajs.com/references/auth/provider/index.html.md)
+- [Existing customer.](undefined/commerce-modules/customer)
+- [Custom authentication provider registered for the customer actor type.](undefined/references/auth/provider)
 
 ## Why an Additional Provider Doesn't Resolve to the Customer
 
-Each authentication provider creates its own [auth identity](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types/index.html.md) for a customer. The auth identity holds an `app_metadata` property that associates it with an actor, such as a customer, using the key `{actor_type}_id`:
+Each authentication provider creates its own [auth identity](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) for a customer. The auth identity holds an `app_metadata` property that associates it with an actor, such as a customer, using the key `{actor_type}_id`:
 
 ```json
 {
@@ -33233,15 +33233,15 @@ However, when the same customer authenticates with a different provider for the 
 
 Since the new auth identity isn't associated with a customer, Medusa treats the authentication as if a new customer is registering, rather than an existing customer logging in. So, authenticating with the new provider returns a token that has an `auth_identity_id` but no `actor_id`. As a result, requests to protected routes, such as `GET /store/customers/me`, are rejected with a `401` error.
 
-To allow the new provider to resolve to the existing customer, you must set the `{actor_type}_id` key of the new auth identity's `app_metadata` to the existing customer's ID. You do that with the [setAuthAppMetadataStep](https://docs.medusajs.com/references/medusa-workflows/steps/setAuthAppMetadataStep/index.html.md).
+To allow the new provider to resolve to the existing customer, you must set the `{actor_type}_id` key of the new auth identity's `app_metadata` to the existing customer's ID. You do that with the [setAuthAppMetadataStep](undefined/references/medusa-workflows/steps/setAuthAppMetadataStep).
 
-The rest of this guide uses the `customer` actor type as an example, but the same approach applies to admin users and [custom actor types](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type/index.html.md). Replace `customer` with the relevant actor type.
+The rest of this guide uses the `customer` actor type as an example, but the same approach applies to admin users and [custom actor types](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/create-actor-type). Replace `customer` with the relevant actor type.
 
 ***
 
 ## Step 1: Create the Linking Workflow
 
-Create a [workflow](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md) that finds the existing customer matching the new auth identity and associates the auth identity with that customer.
+Create a [workflow](undefined/docs/learn/fundamentals/workflows) that finds the existing customer matching the new auth identity and associates the auth identity with that customer.
 
 Create the file `src/workflows/link-customer-identity.ts` with the following content:
 
@@ -33351,7 +33351,7 @@ export const linkCustomerIdentityWorkflow = createWorkflow(
 
 The workflow accepts the ID of the auth identity created by the new provider. Then, it:
 
-1. Retrieves the auth identity with its provider identity using [useQueryGraphStep](https://docs.medusajs.com/references/helper-steps/useQueryGraphStep/index.html.md). The provider identity's `entity_id` holds the identifier the provider authenticated the customer with, such as the email.
+1. Retrieves the auth identity with its provider identity using [useQueryGraphStep](undefined/references/helper-steps/useQueryGraphStep). The provider identity's `entity_id` holds the identifier the provider authenticated the customer with, such as the email.
 2. Extracts and validates the email using the `getIdentityEmailStep`, throwing an error if the identity has no email.
 3. Finds the existing customer by that email using `useQueryGraphStep` again. Adjust the `filters` if your provider identifies customers by a property other than the email.
 4. Validates that a customer was found using the `validateCustomerExistsStep`, throwing an error if not.
@@ -33367,7 +33367,7 @@ The `setAuthAppMetadataStep` throws an error if the auth identity is already ass
 
 ## Step 2: Create the Linking API Route
 
-Next, create an [API route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) that executes the workflow after the customer authenticates with the new provider.
+Next, create an [API route](undefined/docs/learn/fundamentals/api-routes) that executes the workflow after the customer authenticates with the new provider.
 
 Create the file `src/api/auth/link/route.ts` with the following content:
 
@@ -33407,7 +33407,7 @@ In the API route, you:
 1. Reject the request if the auth identity is already linked to a customer, indicated by the `actor_id` property in the request's `auth_context`.
 2. Execute the `linkCustomerIdentityWorkflow`, passing it the authenticated auth identity's ID from the request's `auth_context`.
 
-Refer to the [Auth Flow with Routes](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route/index.html.md) guide to learn how the `auth_context` is set on the request.
+Refer to the [Auth Flow with Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route) guide to learn how the `auth_context` is set on the request.
 
 ***
 
@@ -33415,7 +33415,7 @@ Refer to the [Auth Flow with Routes](https://docs.medusajs.com/Users/shahednasse
 
 The customer hasn't been linked to an actor yet when they access the linking route, so you must allow unregistered auth identities to access it.
 
-To do that, apply the [authenticate middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes/index.html.md) to the route with the `allowUnregistered` option enabled.
+To do that, apply the [authenticate middleware](undefined/docs/learn/fundamentals/api-routes/protected-routes) to the route with the `allowUnregistered` option enabled.
 
 Create the file `src/api/middlewares.ts` with the following content, or add the route to your existing middlewares:
 
@@ -33448,7 +33448,7 @@ This protects the `/auth/link` route so that only auth identities of the `custom
 
 To link the new provider to an existing customer:
 
-1. Authenticate the customer with the new provider to obtain a token. Refer to the [Auth Flow with Routes](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route/index.html.md) guide for the authentication steps.
+1. Authenticate the customer with the new provider to obtain a token. Refer to the [Auth Flow with Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route) guide for the authentication steps.
 2. Send a `POST` request to `/auth/link` with the token in the `Authorization` header:
 
 ```bash
@@ -33474,7 +33474,7 @@ setAuthAppMetadataStep({
 })
 ```
 
-Learn more about the `setAuthAppMetadataStep` in the [setAuthAppMetadataWorkflow reference](https://docs.medusajs.com/references/medusa-workflows/setAuthAppMetadataWorkflow/index.html.md).
+Learn more about the `setAuthAppMetadataStep` in the [setAuthAppMetadataWorkflow reference](undefined/references/medusa-workflows/setAuthAppMetadataWorkflow).
 
 
 # Multi-Factor Authentication
@@ -35812,7 +35812,7 @@ Whether Medusa recalculates the tax lines depends on the `automatic_taxes` setti
 
 Regardless of the `automatic_taxes` setting, Medusa only calculates tax lines once the cart's shipping address has a country code. Until you set the shipping address's country, the cart's line items and shipping methods have no tax lines.
 
-Medusa determines the tax rates from the country in the cart's shipping address, not from the list of countries in the cart's [region](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region/index.html.md). So, a region with multiple countries doesn't have a default country for tax calculation. Medusa calculates each customer's taxes based on the country they set in their shipping address.
+Medusa determines the tax rates from the country in the cart's shipping address, not from the list of countries in the cart's [region](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/region). So, a region with multiple countries doesn't have a default country for tax calculation. Medusa calculates each customer's taxes based on the country they set in their shipping address.
 
 If the cart's region has only one country, Medusa sets that country as the cart's shipping address country when creating the cart. So, Medusa can calculate tax lines without the customer setting their address. For a region with multiple countries, the customer must set their shipping address's country before Medusa calculates tax lines.
 
@@ -38198,9 +38198,9 @@ In this guide, you'll learn about the lifecycle of a reservation in Medusa: when
 
 ## What is a Reservation?
 
-A reservation, represented by the [ReservationItem data model](https://docs.medusajs.com/references/inventory-next/models/ReservationItem/index.html.md), is a reserved quantity of an inventory item in a location. A reservation holds stock for a purchase that isn't fulfilled yet.
+A reservation, represented by the [ReservationItem data model](undefined/references/inventory-next/models/ReservationItem), is a reserved quantity of an inventory item in a location. A reservation holds stock for a purchase that isn't fulfilled yet.
 
-A reservation affects the [InventoryLevel](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory/concepts#inventorylevel/index.html.md) of the reserved inventory item in the associated location:
+A reservation affects the [InventoryLevel](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/concepts#inventorylevel) of the reserved inventory item in the associated location:
 
 - Its `reserved_quantity` increases by the reserved amount.
 - Its `stocked_quantity` stays the same. The reserved quantity is still physically in stock, but it's unavailable when Medusa checks whether an item can be purchased.
@@ -38215,15 +38215,15 @@ Medusa only manages reservations for inventory items whose variants have `manage
 
 ### Order Placement
 
-Medusa creates a reservation for each of the order's inventory items when an order is placed by completing a cart. This is implemented in the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md).
+Medusa creates a reservation for each of the order's inventory items when an order is placed by completing a cart. This is implemented in the [completeCartWorkflow](undefined/references/medusa-workflows/completeCartWorkflow).
 
 The reservation is created in the location associated with the order's sales channel, and its quantity is the ordered quantity.
 
-Some workflows that create an order, such as the [createOrderWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderWorkflow/index.html.md), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, create the reservations manually before fulfilling the order, as explained in the next section.
+Some workflows that create an order, such as the [createOrderWorkflow](undefined/references/medusa-workflows/createOrderWorkflow), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow) throws an error for items whose variants have `manage_inventory` enabled, since they don't have an associated reservation. Create the reservations manually before fulfilling the order, as explained in the next section.
 
 ### Custom Reservations
 
-You can also create a reservation for custom use cases, such as reserving stock for an offline sale. Use the [createReservationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createReservationsWorkflow/index.html.md) to create one or more reservations.
+You can also create a reservation for custom use cases, such as reserving stock for an offline sale. Use the [createReservationsWorkflow](undefined/references/medusa-workflows/createReservationsWorkflow) to create one or more reservations.
 
 To associate a reservation with an order's item so that the fulfillment flow can find it, set the reservation's `line_item_id` to the order item's ID.
 
@@ -38235,7 +38235,7 @@ A reservation is temporary. Medusa releases the reservation, making the quantity
 
 ### Order Fulfillment
 
-When an order's item is fulfilled, Medusa performs the following for each of the item's inventory items, as implemented in the [createOrderFulfillmentWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderFulfillmentWorkflow/index.html.md):
+When an order's item is fulfilled, Medusa performs the following for each of the item's inventory items, as implemented in the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow):
 
 - Subtracts the fulfilled quantity from the `stocked_quantity` of the inventory level.
 - Decreases the `reserved_quantity` of the inventory level by the fulfilled quantity.
@@ -38253,13 +38253,13 @@ If a fulfillment is canceled, Medusa restores the reservations that were release
 
 ### Custom Deletion
 
-You can also delete reservations manually, such as when a custom reservation is no longer needed. Use the [deleteReservationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/deleteReservationsWorkflow/index.html.md) to delete one or more reservations.
+You can also delete reservations manually, such as when a custom reservation is no longer needed. Use the [deleteReservationsWorkflow](undefined/references/medusa-workflows/deleteReservationsWorkflow) to delete one or more reservations.
 
 ***
 
 ## Reservations for Inventory Kits
 
-A variant can be linked to multiple inventory items, forming an [inventory kit](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-kit/index.html.md). This is useful for use cases like multi-part or bundled products.
+A variant can be linked to multiple inventory items, forming an [inventory kit](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-kit). This is useful for use cases like multi-part or bundled products.
 
 When a variant has an inventory kit, Medusa creates a reservation for each of the variant's inventory items. The reserved quantity of each inventory item is the ordered quantity multiplied by the inventory item's `required_quantity`.
 
@@ -40956,7 +40956,7 @@ While a customer can have many account holders, each account holder belongs to o
 
 So, to move an account holder to a different customer, such as when transferring saved payment methods from a guest customer to a newly registered customer, remove the existing link first, then create the new link. This is a move, not an addition: the original customer loses access to that account holder's saved payment methods once you remove its link.
 
-Learn more about this link in the [Link to Other Modules](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/links-to-other-modules/index.html.md) guide.
+Learn more about this link in the [Link to Other Modules](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/links-to-other-modules) guide.
 
 ***
 
