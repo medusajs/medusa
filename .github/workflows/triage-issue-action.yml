@@ -106,7 +106,7 @@ jobs:
                 {
                   "labels_to_add": [<zero or more of: "type: bug", "requires-more", "requires-team", "help-wanted", "good first issue", "feedback">],
                   "comment_template": "ack-bug" | "needs-repro" | "needs-info" | "ack-feature" | "close-spam" | "close-invalid" | "close-duplicate" | null,
-                  "comment_params": { "summary": "<short string, max 280 chars>" }
+                  "comment_params": { "summary": "<short string, max 1000 chars>" }
                 }
 
                - Only labels from the allowlist above are allowed.
@@ -270,6 +270,9 @@ jobs:
           # chars, cap length); backtick stripping and HTML-escaping are
           # done once inside add_comment.sh (its sanitize function) to
           # avoid double-escaping benign text such as "A & B".
+          # When the summary exceeds the cap we trim back to the last word
+          # boundary and append an ellipsis, so an over-length summary
+          # never gets sliced mid-word into a broken-looking comment.
           # NOTE: apostrophes inside this jq block would close the outer
           # bash single-quote, so the wording above avoids them.
           jq '
@@ -279,7 +282,10 @@ jobs:
                 | tostring
                 | gsub("\r"; "")
                 | gsub("[\u0000-\u001f]"; " ")
-                | .[0:280]
+                | if (length > 1000)
+                  then (.[0:1000] | sub("\\s+\\S*$"; "")) + "…"
+                  else .
+                  end
               )
             }
           ' triage-decision.json > comment_params.json
