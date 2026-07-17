@@ -58,6 +58,7 @@ import {
   PaymentSessionStatus,
   promiseAll,
 } from "@medusajs/framework/utils"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   AccountHolder,
   Capture,
@@ -800,7 +801,24 @@ export default class PaymentModuleService
       )
     }
 
-    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+    // Serialize concurrent captures on the same payment: lock the payment row
+    // for the remainder of this transaction so the read-check-write below runs
+    // as a critical section, then re-read the captures under the lock so the
+    // guard sees the committed total. Without this, two concurrent captures both
+    // read a stale total and each pass the guard, over-capturing the payment.
+    // The provider is called afterwards from `capturePaymentFromProvider_` in a
+    // separate context, so the lock is never held across the provider call.
+    const manager = (sharedContext.transactionManager ??
+      sharedContext.manager) as SqlEntityManager
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    await knex("payment").where("id", payment.id).forUpdate().select("id")
+
+    const lockedPayment = await this.paymentService_.retrieve(
+      data.payment_id,
+      { select: ["id"], relations: ["captures.raw_amount"] },
+      sharedContext
+    )
+    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
       return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 
@@ -947,11 +965,31 @@ export default class PaymentModuleService
       )
     }
 
-    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+    // Serialize concurrent refunds on the same payment: lock the payment row for
+    // the remainder of this transaction so the read-check-write below runs as a
+    // critical section, then re-read captures and refunds under the lock so the
+    // guard sees committed totals. Without this, two concurrent refunds both read
+    // a stale refunded total and each pass the guard, over-refunding the payment.
+    // The provider is called afterwards from `refundPaymentFromProvider_` in a
+    // separate context, so the lock is never held across the provider call.
+    const manager = (sharedContext.transactionManager ??
+      sharedContext.manager) as SqlEntityManager
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    await knex("payment").where("id", payment.id).forUpdate().select("id")
+
+    const lockedPayment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        select: ["id"],
+        relations: ["captures.raw_amount", "refunds.raw_amount"],
+      },
+      sharedContext
+    )
+    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
       const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
-    const refundedAmount = payment.refunds.reduce((refundedAmount, next) => {
+    const refundedAmount = lockedPayment.refunds.reduce((refundedAmount, next) => {
       return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 

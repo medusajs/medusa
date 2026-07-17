@@ -48,6 +48,93 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should not allow concurrent registrations to exceed a spend budget", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {})
+
+          await service.updateCampaigns({
+            id: "campaign-id-1",
+            budget: { used: 900, limit: 1000 },
+          })
+
+          // Two concurrent +100 registrations: each sees used=900 and passes the
+          // 1000 limit in isolation, but together they would spend 1100.
+          const outcomes = await Promise.all([
+            service
+              .registerUsage(
+                [{ amount: 100, code: createdPromotion.code! }],
+                { customer_email: null, customer_id: null }
+              )
+              .then(() => "ok", () => "threw"),
+            service
+              .registerUsage(
+                [{ amount: 100, code: createdPromotion.code! }],
+                { customer_email: null, customer_id: null }
+              )
+              .then(() => "ok", () => "threw"),
+          ])
+
+          // Budget had room for a single +100; the other registration must be rejected.
+          expect(outcomes.filter((o) => o === "threw")).toHaveLength(1)
+
+          const campaign = await service.retrieveCampaign("campaign-id-1", {
+            relations: ["budget"],
+          })
+          expect(campaign.budget!.used).toBeLessThanOrEqual(1000)
+        })
+
+        it("should not allow concurrent per-attribute registrations to exceed the limit", async () => {
+          const [createdCampaign] = await service.createCampaigns([
+            {
+              name: "attr-concurrency",
+              campaign_identifier: "attr-concurrency",
+              budget: {
+                type: CampaignBudgetType.USE_BY_ATTRIBUTE,
+                attribute: "customer_id",
+                limit: 2,
+              },
+            },
+          ])
+
+          const createdPromotion = await createDefaultPromotion(service, {
+            campaign_id: createdCampaign.id,
+          })
+
+          // Prime the per-customer usage row (used=1) so the concurrent calls take
+          // the UPDATE branch; the INSERT branch is already serialized by a unique
+          // index on (attribute_value, budget_id).
+          await service.registerUsage(
+            [{ amount: 1, code: createdPromotion.code! }],
+            { customer_id: "customer-id-1", customer_email: "c1@email.com" }
+          )
+
+          // Two concurrent uses for the same customer: each reads used=1 and passes
+          // the limit of 2 in isolation, but together they would reach 3.
+          const outcomes = await Promise.all([
+            service
+              .registerUsage(
+                [{ amount: 1, code: createdPromotion.code! }],
+                { customer_id: "customer-id-1", customer_email: "c1@email.com" }
+              )
+              .then(() => "ok", () => "threw"),
+            service
+              .registerUsage(
+                [{ amount: 1, code: createdPromotion.code! }],
+                { customer_id: "customer-id-1", customer_email: "c1@email.com" }
+              )
+              .then(() => "ok", () => "threw"),
+          ])
+
+          expect(outcomes.filter((o) => o === "threw")).toHaveLength(1)
+
+          const campaign = await service.retrieveCampaign(createdCampaign.id, {
+            relations: ["budget", "budget.usages"],
+          })
+          const usage = campaign.budget!.usages!.find(
+            (u) => u.attribute_value === "customer-id-1"
+          )
+          expect(usage!.used).toBeLessThanOrEqual(2)
+        })
+
         it("should register usage for type usage", async () => {
           const createdPromotion = await createDefaultPromotion(service, {
             campaign_id: "campaign-id-2",

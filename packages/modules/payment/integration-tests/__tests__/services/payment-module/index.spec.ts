@@ -1586,6 +1586,66 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should not allow concurrent captures to exceed the authorized amount", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 500,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 500,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const payment = await service.authorizePaymentSession(session.id, {})
+
+            // Two concurrent captures that each pass the guard in isolation
+            // (500 - 0 = 500 remaining seen by both) but together capture 600.
+            await promiseAll([
+              service.capturePayment({ amount: 300, payment_id: payment.id }),
+              service.capturePayment({ amount: 300, payment_id: payment.id }),
+            ]).catch(() => void 0)
+
+            const [finalCollection] = await service.listPaymentCollections({
+              id: collection.id,
+            })
+
+            expect(finalCollection.captured_amount).toBeLessThanOrEqual(500)
+          })
+
+          it("should not allow concurrent refunds to exceed the captured amount", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 500,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 500,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const payment = await service.authorizePaymentSession(session.id, {})
+
+            await service.capturePayment({ amount: 500, payment_id: payment.id })
+
+            // Two concurrent refunds that each pass the guard in isolation
+            // (500 captured, 0 refunded seen by both) but together refund 600.
+            await promiseAll([
+              service.refundPayment({ amount: 300, payment_id: payment.id }),
+              service.refundPayment({ amount: 300, payment_id: payment.id }),
+            ]).catch(() => void 0)
+
+            const [finalCollection] = await service.listPaymentCollections({
+              id: collection.id,
+            })
+
+            expect(finalCollection.refunded_amount).toBeLessThanOrEqual(500)
+          })
         })
       })
     })

@@ -33,6 +33,7 @@ import {
   toMikroORMEntity,
   transformPropertiesToBigNumber,
 } from "@medusajs/framework/utils"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   ApplicationMethod,
   Campaign,
@@ -309,7 +310,45 @@ export default class PromotionModuleService
     const promotionCodeUsageMap = new Map<string, boolean>()
     const promotionUsageMap = new Map<string, { id: string; used: number }>()
 
-    const existingPromotions = await this.listActivePromotions_(
+    let existingPromotions = await this.listActivePromotions_(
+      { code: promotionCodes },
+      { relations: ["campaign", "campaign.budget", "campaign.budget.usages"] },
+      sharedContext
+    )
+
+    // Serialize concurrent usage registration against the same promotions and
+    // budgets. Two concurrent registrations that read the same used value would
+    // both pass the limit guard below and both write, over-spending a spend
+    // budget or exceeding a usage limit. Lock the promotion and budget rows for
+    // the remainder of this transaction, then re-read the usage totals under the
+    // lock (clearing the identity map first so the values are read fresh from the
+    // database) before the guards run.
+    const lockPromotionIds = existingPromotions.map((promotion) => promotion.id)
+    const lockBudgetIds = Array.from(
+      new Set(
+        existingPromotions
+          .map((promotion) => promotion.campaign?.budget?.id)
+          .filter(Boolean) as string[]
+      )
+    )
+    const manager = (sharedContext.transactionManager ??
+      sharedContext.manager) as SqlEntityManager
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    if (lockPromotionIds.length) {
+      await knex("promotion")
+        .whereIn("id", lockPromotionIds)
+        .forUpdate()
+        .select("id")
+    }
+    if (lockBudgetIds.length) {
+      await knex("promotion_campaign_budget")
+        .whereIn("id", lockBudgetIds)
+        .forUpdate()
+        .select("id")
+    }
+
+    manager.clear()
+    existingPromotions = await this.listActivePromotions_(
       { code: promotionCodes },
       { relations: ["campaign", "campaign.budget", "campaign.budget.usages"] },
       sharedContext
