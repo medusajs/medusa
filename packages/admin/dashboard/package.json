@@ -80,7 +80,7 @@
     "match-sorter": "^6.3.4",
     "motion": "^11.15.0",
     "qrcode": "^1.5.4",
-    "qs": "^6.12.1",
+    "qs": "^6.15.2",
     "radix-ui": "1.1.2",
     "react": "^18.3.1",
     "react-country-flag": "^3.1.0",

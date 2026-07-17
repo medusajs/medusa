@@ -56732,6 +56732,20 @@ The method returns a Promise that, when resolved, has the data returned by the r
 
 ***
 
+## Migrating from Fetch API to JS SDK
+
+Prefer `sdk.client.fetch` over the raw [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) when sending requests to your Medusa backend.
+
+The JS SDK's `fetch` method automatically appends authentication headers and other configurations, such as the `globalHeaders` configuration, to your request. It also automatically parses the response to a JavaScript object if the response is a JSON object.
+
+### Changes in Error Handling
+
+The raw `fetch` function only rejects its Promise on network errors. For error responses, such as a `404` or `500` status, the Promise still resolves, so a chained `then` callback runs as if the request succeeded. You must manually check the response's `ok` or `status` property to detect the error, and it's easy to forget to do so.
+
+`sdk.client.fetch` instead throws a `FetchError` for any non-success status, so failures propagate to your `catch` block or `try...catch` statement. Learn how to handle these errors in the [Handle Errors](#handle-errors) section.
+
+***
+
 ## Stream Server-Sent Events
 
 The JS SDK supports streaming server-sent events (SSE) using the `client.fetchStream` method. This method is useful when you want to receive real-time updates from the server.
@@ -143966,6 +143980,32 @@ const currencies = [
   },
 ]
 
+```
+
+### Empty Values
+
+A `Select.Item` can't have an empty string as its `value` prop. If you do, you'll get the error `A <Select.Item /> must have a value prop that is not an empty string`. This is because the Select reserves the empty string to clear the selection and show the placeholder.
+
+To add an option like `None`, use a non-empty placeholder value, then convert it in your change handler:
+
+```tsx
+<Select
+  onValueChange={(value) =>
+    handleChange(value === "none" ? null : value)
+  }
+>
+  <Select.Trigger>
+    <Select.Value placeholder="Placeholder" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Item value="none">None</Select.Item>
+    {items.map((item) => (
+      <Select.Item key={item.value} value={item.value}>
+        {item.label}
+      </Select.Item>
+    ))}
+  </Select.Content>
+</Select>
 ```
 
 
