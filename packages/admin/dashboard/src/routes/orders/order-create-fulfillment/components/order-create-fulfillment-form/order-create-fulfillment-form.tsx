@@ -26,6 +26,7 @@ import { sdk } from "../../../../../lib/client"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
+import { getInitialFulfillmentLocationId } from "./utils"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder & {
@@ -170,10 +171,14 @@ export function OrderCreateFulfillmentForm({
         )
 
         if (shippingOption) {
-          const locationId =
-            shippingOption.service_zone.fulfillment_set.location.id
+          const locationId = getInitialFulfillmentLocationId(
+            shippingOption.service_zone.fulfillment_set.location,
+            selectedLocationId
+          )
 
-          form.setValue("location_id", locationId)
+          if (locationId && locationId !== selectedLocationId) {
+            form.setValue("location_id", locationId)
+          }
           form.setValue(
             "shipping_option_id",
             initialShippingOptionId || undefined
@@ -181,7 +186,7 @@ export function OrderCreateFulfillmentForm({
         } // else -> TODO: what if original shipping option is deleted?
       }
     }
-  }, [shipping_options])
+  }, [shipping_options, selectedLocationId])
 
   const fulfilledQuantityArray = (order.items || []).map(
     (item) =>
