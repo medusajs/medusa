@@ -16,21 +16,26 @@ agreement, no rights are granted except those that cannot lawfully be
 restricted.
 
 The terms of an applicable commercial agreement control if they conflict with
-this notice. To obtain a commercial license, contact Medusa through
+this notice. To obtain a commercial license, contact MedusaJS, Inc. at
 https://medusajs.com/contact.
 
 This notice applies prospectively and does not withdraw rights already granted
 for earlier versions of any material under the MIT License. Those earlier
 versions remain available under their original license terms.
 
-THE ENTERPRISE MATERIALS ARE PROVIDED "AS IS" TO THE MAXIMUM EXTENT PERMITTED
-BY LAW, UNLESS A COMMERCIAL AGREEMENT EXPRESSLY STATES OTHERWISE. MEDUSAJS,
-INC. DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY,
-INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND
-NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED BY LAW, MEDUSAJS, INC. WILL
-NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
-PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, REVENUE, OR BUSINESS, ARISING
-FROM THE ENTERPRISE MATERIALS.
+## Unlicensed use and reservation of rights
+
+Any use, reproduction, modification, or distribution of the Enterprise
+Materials without a valid commercial agreement is unlicensed and constitutes
+an infringement of MedusaJS, Inc.'s copyright. Circumventing, disabling, or
+removing any license validation or feature-gating mechanism does not create a
+license and is itself a violation of this notice. Enabling any Enterprise
+feature flag constitutes a representation that you hold a valid commercial
+agreement with MedusaJS, Inc.
+
+MedusaJS, Inc. reserves all rights and remedies available at law and in
+equity, including injunctive relief, monetary damages, and recovery of costs
+and attorneys' fees where available.
 
 ## Enterprise Materials
 
@@ -96,3 +101,14 @@ Files outside this list remain under the MIT License in `LICENSE`, including
 generic authentication, generic user and invite management, shared HTTP and
 workflow infrastructure, and incidental integration points that only register,
 configure, export, or display the availability of the RBAC feature.
+
+UNLESS A COMMERCIAL AGREEMENT WITH MEDUSAJS, INC. EXPRESSLY STATES OTHERWISE:
+THE ENTERPRISE MATERIALS ARE PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT
+WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, MEDUSAJS, INC.
+DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE,
+AND NON-INFRINGEMENT. TO THE SAME EXTENT, MEDUSAJS, INC. WILL NOT BE LIABLE
+FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE
+DAMAGES, OR FOR ANY LOSS OF DATA, PROFITS, REVENUE, GOODWILL, OR BUSINESS,
+ARISING OUT OF OR RELATING TO THE ENTERPRISE MATERIALS OR THEIR USE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
