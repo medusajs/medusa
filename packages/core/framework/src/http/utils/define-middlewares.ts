@@ -29,6 +29,9 @@ export function defineMiddlewares<
       res: MedusaResponse,
       next: MedusaNextFunction
     ) => any)[]
+    policies?:
+      | { resource: string; operation: string }
+      | Array<{ resource: string; operation: string | string[] }>
   }
 >(
   config:
