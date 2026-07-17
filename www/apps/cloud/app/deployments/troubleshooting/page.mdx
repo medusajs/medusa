@@ -463,6 +463,39 @@ If the logs show a lockfile error, regenerate the lockfile locally:
 
 ---
 
+## pnpm ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING
+
+If your Cloud build fails during the `pnpm install` step with the following error:
+
+```bash
+TypeError [ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING]:
+A dynamic import callback was not specified
+```
+
+This is caused by a known compatibility issue between pnpm 11.13.0 and Node.js v20.x. The combination of that specific pnpm release and the Node.js v20 ESM module handling triggers this error.
+
+### Resolve the Compatibility Issue
+
+Downgrade pnpm to a version that is compatible with Node.js v20, such as pnpm 10.0.0 or 11.6.0. Update the `packageManager` field in your root `package.json` to reflect the new version:
+
+```json title="package.json"
+{
+  "packageManager": "pnpm@11.6.0"
+}
+```
+
+Then regenerate the lockfile locally and commit the changes:
+
+1. Run `pnpm install` locally to regenerate `pnpm-lock.yaml`.
+2. Commit both `package.json` and `pnpm-lock.yaml`.
+3. Push the changes to trigger a new deployment.
+
+### Monorepo Consistency
+
+In a monorepo, ensure the `packageManager` field is consistent across all `package.json` files. A mismatch between the root and workspace packages can cause the wrong pnpm version to be used during the build, which may also trigger this error.
+
+---
+
 ## Next.js 16 Middlewares Not Supported on Cloud
 
 If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:

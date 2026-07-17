@@ -1,4 +1,4 @@
-import { Prerequisites, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { Prerequisites, InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper, Note } from "docs-ui"
 import { ChevronUpDown } from "@medusajs/icons"
 
 export const metadata = {
@@ -294,6 +294,27 @@ Then, to add a storefront to an existing project:
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
 
 You can also set a custom domain for the storefront, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
+
+---
+
+## Remove Storefront from Existing Project
+
+If you want to stop building and deploying your storefront, you can do so by removing the storefront root directory configuration from your project's settings. This causes Cloud to skip storefront builds and deployments on subsequent pushes.
+
+To remove a storefront from an existing project:
+
+1. Open the project's dashboard.
+2. Click on the **Settings** tab.
+3. In the **General** tab of the Settings page, clear the **Storefront root directory** field.
+4. Click the **Save changes** button next to the field.
+
+After saving, Cloud will no longer build or deploy the storefront for new deployments. Existing storefront deployments remain accessible until you delete the environment or the project.
+
+<Note>
+
+If clearing the storefront root directory is not available in your project settings, you can stop storefront builds by removing or renaming the storefront directory in your repository, or by setting the **Storefront root directory** field to a path that does not exist in the repository (for example, `disabled-storefront`). Cloud will then fail to locate the storefront source and skip the storefront build.
+
+</Note>
 
 ---
 
