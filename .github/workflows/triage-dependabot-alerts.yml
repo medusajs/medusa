@@ -1,0 +1,46 @@
+name: Triage Dependabot Alerts
+
+# Dismisses open Dependabot alerts on the root yarn.lock whose vulnerable package
+# is NOT in the production dependency tree of any published @medusajs/* package
+# (i.e. build tooling, integration-tests, devDependencies). Runs weekly and on demand.
+
+on:
+  schedule:
+    - cron: "0 3 * * 1" # Every Monday at 03:00 UTC
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      dismiss:
+        description: "Actually dismiss irrelevant alerts (false = dry run)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  triage:
+    name: Triage published-package alerts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      # node_modules must be present so the script can resolve each dependency's
+      # package.json when computing the production closure. Skip build scripts:
+      # we only need the installed manifests, not compiled output.
+      - name: Install dependencies
+        run: yarn install --immutable --mode=skip-build
+
+      - name: Triage alerts
+        # Schedule always dismisses; manual runs dismiss unless "dismiss" input is false.
+        run: node scripts/triage-published-alerts.mjs ${{ (github.event_name == 'workflow_dispatch' && inputs.dismiss == false) && '' || '--dismiss' }}
+        env:
+          # Built-in GITHUB_TOKEN cannot write Dependabot alerts (PATCH 403s).
+          # Provide a PAT / App token with "Dependabot alerts: write" as this secret.
+          GH_TOKEN: ${{ secrets.DEPENDABOT_TRIAGE_TOKEN }}

@@ -371,6 +371,16 @@ export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
  *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around creating a fulfillment.
  *
+ * :::note
+ *
+ * Each fulfilled item whose variant has `manage_inventory` enabled must have an associated inventory reservation, otherwise the workflow throws an error.
+ * Reservations are created automatically when an order is placed through the [completeCartWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/completeCartWorkflow).
+ * However, if you create an order with a workflow that doesn't create reservations, such as {@link createOrderWorkflow}, you must create the reservations
+ * using the [createReservationsWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/createReservationsWorkflow) before creating the fulfillment,
+ * passing each reservation the `line_item_id` of the order's item so that this workflow can find it.
+ *
+ * :::
+ *
  * @example
  * const { result } = await createOrderFulfillmentWorkflow(container)
  * .run({

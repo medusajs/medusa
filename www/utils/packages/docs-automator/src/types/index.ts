@@ -52,6 +52,10 @@ export interface CloudDispatchPayload {
    * Populated by the cloud deployment analyzer; may be empty or absent.
    */
   featureFlaggedFeatures?: string[]
+  /** Markdown release notes for a CLI release. Present only for CLI releases; may be empty. */
+  releaseNotes?: string
+  /** CLI release version, e.g. "0.1.11". Present only for CLI releases. */
+  version?: string
 }
 
 export interface CloudAnalysisResult {
@@ -60,6 +64,8 @@ export interface CloudAnalysisResult {
   claudePrompt: string
   /** Carried through from the dispatch payload for PR body generation */
   featureFlaggedFeatures: string[]
+  /** Present only when a CLI-release changelog entry should be written. */
+  changelog?: { version: string; notes: string; date?: string }
 }
 
 export interface AnalyzeCloudOptions {

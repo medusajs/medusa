@@ -40,6 +40,7 @@ ignored.
 
 - **Checking contribution guidelines?** → MUST load `reference/contribution-types.md` first
 - **Verifying code conventions?** → MUST load `reference/conventions.md` first
+- **Reviewing a dependency-update PR (Dependabot / Renovate / lockfile bump)?** → MUST load `reference/dependency-review.md` first
 - **Writing the review summary / blocking points?** → MUST load `reference/comment-guidelines.md` first (includes bug, security, and performance reporting formats)
 
 **Minimum requirement:** Load at least the relevant reference file(s) before completing the review.
@@ -64,9 +65,11 @@ bash scripts/get_pr.sh <pr_number>             # PR details (title, body, author
 bash scripts/get_pr_files.sh <pr_number>       # List files changed (metadata only)
 bash scripts/get_pr_diff.sh <pr_number>        # Full unified diff (required for code review)
 bash scripts/get_linked_issues.sh <pr_number>  # Issues linked with closing keywords
+bash scripts/search_prs.sh <issue_number>      # Open PRs whose body references #<issue_number> (mentions, not just linked)
 bash scripts/get_comments.sh <pr_number>       # Existing comments on the PR
 bash scripts/get_labels.sh <pr_number>         # Current labels on the PR
 bash scripts/get_issue.sh <issue_number>       # A linked issue's details
+bash scripts/get_dependency_releases.sh <owner/repo> [changelog_path]  # Release notes / changelog for a dependency (GitHub API, read-only)
 ```
 
 There are no `add_comment.sh`, `labels.sh`, or `close_issue.sh` available
@@ -130,6 +133,8 @@ Rules:
 | PR is missing information (template, repro, context) | `needs-info` | `requires-more` | `initial-approval` |
 | PR is spam / off-topic, close it | `close-spam` | `[]` | `initial-approval` |
 | PR contains likely malicious code, close it | `close-malicious` | `requires-team` | `initial-approval` |
+| Dependency-update PR, no breaking change hits Medusa | `approve` | `initial-approval` | `requires-more`, `requires-team` |
+| Dependency-update PR, a breaking/behavior change hits a Medusa call site | `needs-changes` | `requires-more` | `initial-approval` |
 | Re-review with no new findings | `null` | `[]` | `[]` |
 
 Use `requires-team` (in addition to the relevant label above) when the PR
@@ -153,19 +158,48 @@ bash scripts/get_pr_diff.sh <pr_number>
 bash scripts/get_comments.sh <pr_number>
 ```
 
-### Step 2 — Check for Duplicate PRs
+### Step 2 — Check for a Previous PR Resolving the Same Issue
 
-If the PR body links an issue (from Step 1's PR details), search for other open PRs that reference the same issue. Use `bash scripts/get_linked_issues.sh` for the linked issue numbers, then optionally `gh pr list` (read-only).
+If the PR body links an issue (from Step 1's PR details), determine whether
+an **earlier** PR already resolves the same issue:
 
-If another open PR is found that links the same issue, prepend a
-**Heads up** line to your `summary` (e.g.
-*"Heads up: PR #N also references issue #M; team should coordinate."*).
-This is **informational only** — it does not change the label outcome
-and does not by itself add a blocking point.
+1. Get the linked issue numbers with `bash scripts/get_linked_issues.sh <pr_number>`.
+2. For each linked issue number `M`, run
+   `bash scripts/search_prs.sh M` (bare number, e.g.
+   `bash scripts/search_prs.sh 1234`). This searches open PR **bodies**
+   for a `#M` reference, so it catches PRs that merely **mention** the
+   issue — many PRs reference an issue without linking it via a closing
+   keyword, and those would be missed by only looking at the issue's
+   linked/closing PRs. (The script post-filters the search so a PR that
+   happens to contain the number `M` in an unrelated context is not
+   returned.)
+3. From the result, keep only PRs that are **not** the PR under review and
+   have a **lower number** than it (a lower PR number means it was opened
+   earlier — i.e. a *previous* PR). The search already returns only open
+   PRs.
 
-If the PR doesn't link an issue, skip this step.
+If one or more such previous PRs exist, the PR under review is the likely
+duplicate. Flag it **once** by adding a **Heads up** line to your
+`summary`, naming the earliest previous PR and the shared issue, e.g.:
 
-> **CRITICAL:** Do not block the PR solely because a duplicate was found.
+> *"Heads up: PR #N already references issue #M and was opened earlier;
+> if #N is merged first, this PR may be closed as a duplicate."*
+
+This is **informational only** — it does not change the label outcome and
+does not add a blocking point.
+
+**Flag it only once per PR — at the first review.** Before adding the
+line, scan the prior bot comments fetched in Step 1: if a previous review
+already flagged the same duplicate (mentions the same previous PR /
+issue), do **not** repeat it. Re-add the line only if the previous PR
+changed (a different or newly-opened earlier PR now resolves the issue).
+
+If the PR doesn't link an issue, or no earlier open PR references the same
+issue, skip this step.
+
+> **CRITICAL:** Do not block the PR solely because a previous PR was found.
+> Only the earlier PR's author (or the team) decides which one wins — the
+> heads-up is a coordination note, never a blocking point or label change.
 
 ### Step 3 — Review Prior Comments
 
@@ -181,6 +215,40 @@ Read the existing comments fetched in Step 1. Identify any previous bot review c
 ### Step 4 — Check Team Membership
 
 Read `.github/teams.yml`. If the PR author's login appears in the list, they are a **team member** — **skip steps 5 and 6** entirely and proceed directly to step 7.
+
+### Step 4b — Dependency-Update PRs (branch early)
+
+Determine whether this is a **dependency-update PR**. Treat it as one when **any**
+of these hold:
+
+- The author is a dependency bot: `dependabot[bot]` or `renovate[bot]`.
+- The PR carries the `dependencies` label (from Step 1's labels).
+- The diff (from Step 1) only touches dependency manifests / lockfiles:
+  `package.json`, `yarn.lock`, `package-lock.json`, `pnpm-lock.yaml`.
+
+If it **is** a dependency-update PR:
+
+1. **Load `reference/dependency-review.md`** and follow that flow. It covers
+   enumerating the version deltas, retrieving each package's release notes via
+   `bash scripts/get_dependency_releases.sh`, classifying breaking vs. behavior
+   vs. safe changes, and mapping them to how Medusa actually uses each package.
+2. **Skip Step 5 (template compliance) and Step 6 (massive changes).** Bots do
+   not fill the PR template, and lockfile diffs are legitimately large — do not
+   emit `needs-info` or block for either reason.
+3. **Still run Step 10 (security)** — its "Dependencies & Supply Chain" checks
+   (typosquats, unexpected lifecycle scripts, lockfile/manifest mismatches) are
+   the most important checks for this PR type.
+4. Compose the decision per `reference/dependency-review.md` (Step F): default to
+   `approve` with a concise per-package verdict and an **"areas to test"** note
+   in `summary`; use `needs-changes` / `requires-team` only when a real breaking
+   or behavior change lands on a Medusa call site.
+
+After the dependency flow, run **Step 10 (security)** for the supply-chain
+checks, then go straight to **Step 14 (compose the decision)**. Skip the other
+code-oriented passes (Steps 8, 9, 11, 12, 13) — they are tuned for hand-written
+source changes, not dependency bumps.
+
+If it is **not** a dependency-update PR, continue with Step 5 as normal.
 
 ### Step 5 — Template Compliance (non-team members only)
 
@@ -220,6 +288,7 @@ Inspect the changed file paths and load the relevant reference section:
 | `www/apps/` or `www/packages/docs-ui/` | Docs → load `reference/contribution-types.md` Docs section |
 | `packages/admin/dashboard/src/i18n/translations/` | Admin translation → load `reference/contribution-types.md` Admin Translations section |
 | `packages/`, `integration-tests/`, or other | Code → load `reference/contribution-types.md` Code section |
+| Only `package.json` / `yarn.lock` / other lockfiles | Dependency update → this should have been branched at Step 4b; load `reference/dependency-review.md` |
 
 For mixed PRs, apply all relevant types.
 
@@ -230,6 +299,27 @@ Load `reference/conventions.md` and verify the changed files follow Medusa's con
 > **CRITICAL — Read full file context:** For every file you intend to flag, read the **entire file** before raising a concern. A pattern that looks wrong in isolation may be handled correctly elsewhere.
 
 > **CRITICAL — Only flag new code:** Only raise issues about added/new lines (`+`). Never flag removed (`-`) or unchanged context lines.
+
+### Step 9b — Issue/PR References in Code Comments (ALL PRs)
+
+> **CRITICAL:** Applies to **all PRs**, including team members. Only flag added (`+`) lines.
+
+Scan the added lines of the diff for **code comments** that reference a
+GitHub issue or PR — e.g. `// fixes #1234`, `// see PR #5678`,
+`/* related to https://github.com/medusajs/medusa/issues/1234 */`, or a
+comment naming an issue/PR number in prose. The link between a change and
+an issue belongs in the PR body and commit messages, not in the source —
+in the code it goes stale, loses context, and adds noise.
+
+Only flag references inside **comments** in changed source files. Do not
+flag issue/PR references in the PR body, commit messages, changelog files,
+test fixtures, or strings that are legitimately data.
+
+Each such comment is a **required change**: emit
+`review_template: "needs-changes"` with `"requires-more"` in
+`labels_to_add`, `"initial-approval"` in `labels_to_remove`, and a
+`blocking_points` entry of the form:
+*"\<file\>:\<approximate location\>: comment references issue/PR #\<n\> — remove the reference (move any needed context into a plain comment or the PR description)."*
 
 ### Step 10 — Security Analysis (ALL PRs)
 
@@ -392,16 +482,25 @@ the workflow event — never from JSON-supplied numbers.
 - [ ] Skipping performance analysis — always check for N+1 queries and unbounded queries
 - [ ] Setting `review_template: "approve"` while listing a confirmed security or blocking performance issue
 - [ ] Flagging style/code smell as bugs
+- [ ] Missing a code comment that references an issue/PR number (Step 9b) — those must be flagged as a required change
+- [ ] Flagging an issue/PR reference that lives in the PR body, commit message, or a changelog file rather than a code comment
 - [ ] Flagging issues in removed (`-`) or unchanged context lines
 - [ ] Requesting a change that the PR already makes
 - [ ] Setting `labels_to_add: ["initial-approval"]` without also setting `labels_to_remove: ["requires-more"]` (and vice versa)
-- [ ] Skipping the duplicate-PR check
-- [ ] Blocking a PR solely because a duplicate was found
+- [ ] Skipping the previous-PR check (Step 2)
+- [ ] Blocking a PR solely because a previous PR resolves the same issue
+- [ ] Repeating the previous-PR heads-up on every re-review — flag it only once, at the first review
+- [ ] Flagging a *later* PR (higher number) as the one that may close this PR — the heads-up applies only when an *earlier* open PR resolves the same issue
+- [ ] Nagging a Dependabot/Renovate PR for a missing PR template or blocking it for lockfile size — branch to the dependency-update flow (Step 4b) instead
+- [ ] Approving a dependency-update PR without retrieving the release notes and stating the areas to test
+- [ ] Reviewing a dependency-update PR without running the supply-chain security checks (typosquats, lifecycle scripts, lockfile/manifest mismatch)
+- [ ] Inventing release-note content when `get_dependency_releases.sh` and the PR body return nothing — say so instead
 
 ## Reference Files
 
 ```
 reference/conventions.md           - Medusa coding conventions to verify
 reference/contribution-types.md    - How to verify code, docs, and admin translation contributions
+reference/dependency-review.md     - How to review dependency-update PRs (release notes, breaking changes, Medusa usage, test areas)
 reference/comment-guidelines.md    - Tone and phrasing rules; use as guidance for `summary` and `blocking_points`
 ```

@@ -120,6 +120,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/js-sdk"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/link-provider-identity/page.mdx",
+    "pathname": "/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/mfa/page.mdx",
     "pathname": "/commerce-modules/auth/mfa"
   },
@@ -282,6 +286,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/page.mdx",
     "pathname": "/commerce-modules/inventory"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/inventory/reservations-lifecycle/page.mdx",
+    "pathname": "/commerce-modules/inventory/reservations-lifecycle"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/workflows/page.mdx",

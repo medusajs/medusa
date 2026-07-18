@@ -1,0 +1,58 @@
+name: Nudge Preview Bump
+
+# Nudges the medusajs/dtc-starter repo to bump its `@medusajs/*` dependencies to
+# the latest `preview` version and verify the resulting Medusa Cloud deployment.
+# All of that logic lives in dtc-starter's own `bump-preview.yml` workflow, which
+# is triggered by pushing a `bump-preview-*` tag and deletes the tag when it
+# finishes. This workflow's only job is to create such a tag pointing at
+# dtc-starter's current `preview` HEAD.
+#
+# Triggered on a daily schedule, manually via workflow_dispatch, and by the
+# release job in `trigger-release.yml` after a successful preview publish.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *" # daily at 06:00 UTC
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read # we only read this repo; the cross-repo write uses DTC_STARTER_TOKEN
+
+jobs:
+  nudge:
+    name: Tag dtc-starter to bump preview
+    runs-on: ubuntu-latest
+    steps:
+      # The default GITHUB_TOKEN cannot write to another repository. Mint a
+      # short-lived installation token from the Medusa OS Bot GitHub App instead,
+      # scoped to medusajs/dtc-starter. The app must be installed on that repo
+      # with `contents: write`.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          owner: medusajs
+          repositories: dtc-starter
+
+      - name: Create bump-preview tag on dtc-starter
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET_REPO: medusajs/dtc-starter
+        run: |
+          SHA=$(gh api "repos/$TARGET_REPO/git/ref/heads/preview" --jq '.object.sha')
+          if [ -z "$SHA" ]; then
+            echo "::error::Could not resolve the preview HEAD of $TARGET_REPO."
+            exit 1
+          fi
+          TAG="bump-preview-$(date -u +%Y%m%d%H%M%S)"
+          gh api --method POST "repos/$TARGET_REPO/git/refs" \
+            -f ref="refs/tags/$TAG" \
+            -f sha="$SHA"
+          echo "Created tag $TAG on $TARGET_REPO at $SHA"
+          echo "dtc-starter's bump-preview workflow will run and delete the tag when finished."

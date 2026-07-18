@@ -1,7 +1,7 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-06-05T10:32:43.628Z",
   "app/commerce-modules/auth/auth-providers/page.mdx": "2025-05-20T07:51:40.707Z",
-  "app/commerce-modules/auth/authentication-route/page.mdx": "2025-11-24T07:39:10.358Z",
+  "app/commerce-modules/auth/authentication-route/page.mdx": "2026-07-16T11:13:16.231Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-10-15T15:02:13.794Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
   "app/commerce-modules/auth/page.mdx": "2026-06-09T08:33:36.509Z",
@@ -9,7 +9,7 @@ export const generatedEditDates = {
   "app/commerce-modules/cart/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/cart/concepts/page.mdx": "2026-06-05T14:56:18.897Z",
   "app/commerce-modules/cart/promotions/page.mdx": "2024-10-08T07:54:31.120Z",
-  "app/commerce-modules/cart/tax-lines/page.mdx": "2026-07-05T20:54:38.618Z",
+  "app/commerce-modules/cart/tax-lines/page.mdx": "2026-07-16T10:51:03.732Z",
   "app/commerce-modules/cart/page.mdx": "2025-04-17T08:48:27.822Z",
   "app/commerce-modules/currency/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/currency/_events/page.mdx": "2024-07-03T19:27:13+03:00",
@@ -179,7 +179,7 @@ export const generatedEditDates = {
   "app/storefront-development/page.mdx": "2026-02-02T12:34:41.022Z",
   "app/troubleshooting/cors-errors/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/create-medusa-app-errors/page.mdx": "2026-01-14T08:32:33.242Z",
-  "app/troubleshooting/database-errors/page.mdx": "2025-12-04T14:14:46.745Z",
+  "app/troubleshooting/database-errors/page.mdx": "2026-07-17T10:41:52.166Z",
   "app/troubleshooting/eaddrinuse/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/errors-after-upgrading/page.mdx": "2026-01-12T12:30:41.431Z",
   "app/troubleshooting/errors-installing-cli/page.mdx": "2025-12-04T14:12:46.607Z",
@@ -7619,5 +7619,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/caching/concepts/page.mdx": "2026-06-19T13:06:59.981Z",
   "app/admin-components/components/layout-composer/page.mdx": "2026-06-30T17:38:59.125Z",
   "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
-  "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z"
+  "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",
+  "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T09:48:42.878Z",
+  "app/commerce-modules/auth/link-provider-identity/page.mdx": "2026-07-16T11:48:10.582Z"
 }
