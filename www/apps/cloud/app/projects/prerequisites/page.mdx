@@ -196,11 +196,17 @@ If you're using `npm` as your package manager with Turbo, you must add the `pack
 
 ```json title="package.json"
 {
-  "packageManager": "npm@10.9.2"
+  "packageManager": "npm@11.0.0"
 }
 ```
 
-Replace `10.9.2` with your installed npm version (run `npm --version` to check). Turborepo requires this field when pruning with NPM workspaces. Without it, the build will fail with a `Missing 'packageManager' field` error.
+Replace `11.0.0` with your installed npm version (run `npm --version` to check). Turborepo requires this field when pruning with NPM workspaces. Without it, the build will fail with a `Missing 'packageManager' field` error.
+
+<Note type="warning">
+
+npm v10.9.x has a known crash in arborist dedupe that affects Medusa monorepos. Use npm v11 or later to avoid this issue.
+
+</Note>
 
 If you're also using the [Next.js Starter Storefront](!resources!/nextjs-starter) as your storefront, add the following override in the storefront's `package.json`:
 
