@@ -17,3 +17,33 @@ export const operatorsMap = {
     label: "Not In",
   },
 }
+
+// Numeric comparison operators are kept separate from operatorsMap, as the
+// latter is spread into every multiselect attribute's operator options.
+export const numericOperatorsMap = {
+  [RuleOperator.GT]: {
+    id: RuleOperator.GT,
+    value: RuleOperator.GT,
+    label: "Greater than",
+  },
+  [RuleOperator.GTE]: {
+    id: RuleOperator.GTE,
+    value: RuleOperator.GTE,
+    label: "Greater than or equal to",
+  },
+  [RuleOperator.LT]: {
+    id: RuleOperator.LT,
+    value: RuleOperator.LT,
+    label: "Less than",
+  },
+  [RuleOperator.LTE]: {
+    id: RuleOperator.LTE,
+    value: RuleOperator.LTE,
+    label: "Less than or equal to",
+  },
+}
+
+export const allOperatorsMap = {
+  ...operatorsMap,
+  ...numericOperatorsMap,
+}

@@ -102,7 +102,7 @@ export const RuleValueFormField = ({
       return
     }
 
-    if (watchOperator === "eq") {
+    if (watchOperator === "eq" || attribute?.field_type === "number") {
       form.setValue(name, "")
     } else {
       form.setValue(name, [])

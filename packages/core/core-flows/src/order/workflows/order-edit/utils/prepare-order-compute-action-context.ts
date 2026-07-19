@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, MathBN } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import type {
   ComputeActionContext,
@@ -191,6 +191,16 @@ export const prepareOrderComputeActionContextStep = createStep(
       ? { country_code: shippingAddress.country_code }
       : undefined
 
+    // The previewed order doesn't carry decorated totals, so the item
+    // subtotal is derived from the items to support minimum purchase
+    // requirement rules (e.g. `item_subtotal gte 100`).
+    const itemSubtotal = computedItems
+      .reduce(
+        (acc, item) => MathBN.add(acc, (item as any).subtotal ?? 0),
+        MathBN.convert(0)
+      )
+      .toNumber()
+
     return new StepResponse({
       currency_code: previewedOrder.currency_code ?? order.currency_code,
       customer,
@@ -199,6 +209,7 @@ export const prepareOrderComputeActionContextStep = createStep(
       sales_channel_id:
         previewedOrder.sales_channel_id ?? order.sales_channel_id,
       email: previewedOrder.email ?? order.email,
+      item_subtotal: itemSubtotal,
       items: computedItems,
       shipping_methods: computedShippingMethods,
     })

@@ -10,6 +10,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import {
+  allOperatorsMap,
   getRuleAttributesMap,
   operatorsMap,
   ruleQueryConfigurations,
@@ -103,6 +104,26 @@ export const GET = async (
     const queryConfig = ruleQueryConfigurations[currentRuleAttribute.id]
 
     if (!queryConfig) {
+      // Attributes without an entity-backed query configuration (e.g. numeric
+      // attributes like item_subtotal) have nothing to hydrate labels from,
+      // so the raw values double as labels. Disguised rules without a query
+      // configuration are already fully transformed above.
+      if (!promotionRule.disguised) {
+        transformedRules.push({
+          ...currentRuleAttribute,
+          ...promotionRule,
+          attribute_label: currentRuleAttribute.label,
+          operator_label:
+            allOperatorsMap[promotionRule.operator]?.label ||
+            promotionRule.operator,
+          values:
+            promotionRule.values?.map((value) => ({
+              value: value.value,
+              label: value.value,
+            })) || promotionRule.values,
+        })
+      }
+
       continue
     }
 
@@ -137,7 +158,8 @@ export const GET = async (
         ...promotionRule,
         attribute_label: currentRuleAttribute.label,
         operator_label:
-          operatorsMap[promotionRule.operator]?.label || promotionRule.operator,
+          allOperatorsMap[promotionRule.operator]?.label ||
+          promotionRule.operator,
       })
     }
   }

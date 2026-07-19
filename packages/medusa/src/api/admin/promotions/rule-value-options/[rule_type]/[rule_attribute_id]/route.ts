@@ -6,6 +6,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
+  MedusaError,
 } from "@medusajs/framework/utils"
 import {
   ruleQueryConfigurations,
@@ -54,6 +55,15 @@ export const GET = async (
         | ApplicationMethodTargetTypeValues
         | undefined,
   })
+
+  if (!queryConfig) {
+    // Attributes like item_subtotal accept free-form (numeric) values and
+    // are not backed by an entity to list value options from.
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Rule attribute - ${ruleAttributeId} does not support value options`
+    )
+  }
 
   if (filterableFields.value) {
     filterableFields[queryConfig.valueAttr] = filterableFields.value

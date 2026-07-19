@@ -4,7 +4,7 @@ import {
   PromotionType,
   RuleOperator,
 } from "@medusajs/framework/utils"
-import { operatorsMap } from "./operators-map"
+import { numericOperatorsMap, operatorsMap } from "./operators-map"
 import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
@@ -49,6 +49,23 @@ const ruleAttributes = [
     required: false,
     field_type: "multiselect",
     operators: Object.values(operatorsMap),
+  },
+  // Enables minimum purchase requirements, e.g. a rule of
+  // `item_subtotal gte 100` applies the promotion only when the cart's
+  // item subtotal (excluding shipping) is at least 100.
+  {
+    id: "item_subtotal",
+    value: "item_subtotal",
+    label: "Item Subtotal",
+    required: false,
+    field_type: "number",
+    operators: [
+      numericOperatorsMap[RuleOperator.GTE],
+      numericOperatorsMap[RuleOperator.GT],
+      operatorsMap[RuleOperator.EQ],
+      numericOperatorsMap[RuleOperator.LTE],
+      numericOperatorsMap[RuleOperator.LT],
+    ],
   },
 ]
 

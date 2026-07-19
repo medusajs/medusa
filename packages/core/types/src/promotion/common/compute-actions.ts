@@ -327,6 +327,15 @@ export interface ComputeActionContext extends Record<string, unknown> {
   email?: string
 
   /**
+   * The sum of the cart's item subtotals, excluding shipping. Used to
+   * evaluate minimum purchase requirements configured as promotion rules
+   * on the `item_subtotal` attribute.
+   *
+   * @since 2.18.0
+   */
+  item_subtotal?: BigNumberInput
+
+  /**
    * The cart's line items.
    */
   items?: ComputeActionItemLine[]
