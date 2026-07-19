@@ -106,8 +106,9 @@ export const GET = async (
     if (!queryConfig) {
       // Attributes without an entity-backed query configuration (e.g. numeric
       // attributes like item_subtotal) have nothing to hydrate labels from,
-      // so the raw values double as labels. Disguised rules without a query
-      // configuration are already fully transformed above.
+      // so the raw values double as labels. Number rules keep a scalar value,
+      // matching how disguised number rules are returned. Disguised rules
+      // without a query configuration are already fully transformed above.
       if (!promotionRule.disguised) {
         transformedRules.push({
           ...currentRuleAttribute,
@@ -117,10 +118,12 @@ export const GET = async (
             allOperatorsMap[promotionRule.operator]?.label ||
             promotionRule.operator,
           values:
-            promotionRule.values?.map((value) => ({
-              value: value.value,
-              label: value.value,
-            })) || promotionRule.values,
+            currentRuleAttribute.field_type === "number"
+              ? promotionRule.values?.[0]?.value
+              : promotionRule.values?.map((value) => ({
+                  value: value.value,
+                  label: value.value,
+                })) || promotionRule.values,
         })
       }
 

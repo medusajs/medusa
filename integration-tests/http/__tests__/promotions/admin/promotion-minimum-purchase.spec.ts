@@ -227,7 +227,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it("returns item_subtotal rules of a promotion with value labels", async () => {
+        it("returns item_subtotal rules of a promotion with a scalar value", async () => {
           const promotion = (
             await api.post(
               "/admin/promotions",
@@ -261,9 +261,9 @@ medusaIntegrationTestRunner({
                 operator: "gte",
                 operator_label: "Greater than or equal to",
                 field_type: "number",
-                values: expect.arrayContaining([
-                  expect.objectContaining({ value: "100", label: "100" }),
-                ]),
+                // Number rules return a scalar value, matching how the
+                // dashboard renders number-based conditions.
+                values: "100",
               }),
             ])
           )
