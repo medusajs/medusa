@@ -1,5 +1,5 @@
 import type { OrderChangeActionDTO } from "@medusajs/framework/types"
-import { isDefined } from "@medusajs/framework/utils"
+import { isDefined, MedusaError } from "@medusajs/framework/utils"
 
 export function prepareShippingMethod(relatedEntityField?: string) {
   return function (data) {
@@ -7,6 +7,19 @@ export function prepareShippingMethod(relatedEntityField?: string) {
     const orderChange = data.orderChange
 
     const isCustomPrice = isDefined(data.customPrice)
+
+    if (
+      !isCustomPrice &&
+      !isDefined(option.calculated_price?.calculated_amount)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Shipping option "${
+          option.name ?? option.id
+        }" does not have a price for the provided context. Calculated shipping options must be added with a custom amount.`
+      )
+    }
+
     const obj = {
       shipping_option_id: option.id,
       amount: isCustomPrice
@@ -49,6 +62,19 @@ export function prepareShippingMethodUpdate({
   const option = shippingOptions?.[0]
 
   const isCustomPrice = !isDefined(shippingOptions)
+
+  if (
+    !isCustomPrice &&
+    !isDefined(option?.calculated_price?.calculated_amount)
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Shipping option "${
+        option?.name ?? option?.id
+      }" does not have a price for the provided context. Calculated shipping options must be added with a custom amount.`
+    )
+  }
+
   const price = isCustomPrice
     ? data.custom_amount
     : option.calculated_price.calculated_amount
