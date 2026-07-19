@@ -645,9 +645,19 @@ medusaIntegrationTestRunner({
               },
             }),
           ({ data }) => data.length > 0,
+          // The product<->brand link is created after the products have already
+          // been indexed, which triggers an asynchronous re-index of the linked
+          // product. `waitForIndexedEntities` above only waits for the brand and
+          // link rows to be replicated, not for that product re-index to be
+          // reflected in the catalog. Unlike the other brand-filtered test, this
+          // filter has no title fallback, so it strictly depends on the link
+          // being queryable and returns an empty set until the re-index lands.
+          // Under CI load that window can exceed a tight retry budget, causing
+          // intermittent failures, so align it with the 30s
+          // `waitForIndexedEntities` timeout used above.
           {
-            retries: 5,
-            waitSeconds: 1.5,
+            retries: 10,
+            waitSeconds: 3,
           }
         )
 
