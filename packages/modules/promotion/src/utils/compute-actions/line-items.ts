@@ -86,6 +86,11 @@ function applyPromotionToItems(
   const maxQuantity = applicationMethod?.max_quantity!
   let remainingQuota = maxQuantity ?? 0
 
+  // Caps the total amount this promotion can discount across all items,
+  // e.g. 10% off capped at a maximum of 50.
+  const maxAmount = applicationMethod?.max_amount
+  let capRemaining = maxAmount != null ? MathBN.convert(maxAmount) : null
+
   let lineItemsAmount = MathBN.convert(0)
   if (allocation === ApplicationMethodAllocation.ACROSS) {
     lineItemsAmount = applicableItems.reduce((acc, item) => {
@@ -137,7 +142,7 @@ function applyPromotionToItems(
         ? ApplicationMethodAllocation.EACH
         : allocation
 
-    const amount = calculateAdjustmentAmountFromPromotion(
+    let amount = calculateAdjustmentAmountFromPromotion(
       item,
       {
         value: promotionValue,
@@ -149,6 +154,10 @@ function applyPromotionToItems(
       },
       lineItemsAmount
     )
+
+    if (capRemaining !== null) {
+      amount = MathBN.min(amount, capRemaining)
+    }
 
     if (MathBN.lte(amount, 0)) {
       continue
@@ -172,6 +181,10 @@ function applyPromotionToItems(
       item.id,
       MathBN.add(appliedPromoValue, appliedAmountExclTax)
     )
+
+    if (capRemaining !== null) {
+      capRemaining = MathBN.sub(capRemaining, amount)
+    }
 
     if (allocation === ApplicationMethodAllocation.ONCE) {
       // We already know exactly how many units we applied via effectiveMaxQuantity

@@ -154,6 +154,9 @@ export const CreatePromotionForm = () => {
             ...applicationMethodData,
             ...applicationMethodRuleData,
             value: parseFloat(applicationMethodData.value as string) as number,
+            max_amount: applicationMethodData.max_amount
+              ? parseFloat(applicationMethodData.max_amount as string)
+              : undefined,
             target_rules: buildRulesData(targetRulesData),
             buy_rules: buildRulesData(buyRulesData),
           },
@@ -834,6 +837,73 @@ export const CreatePromotionForm = () => {
                       />
                     </>
                   )}
+
+                  {!isFixedValueType &&
+                    isTypeStandard &&
+                    !currentTemplate?.hiddenFields?.includes(
+                      "application_method.value"
+                    ) && (
+                      <Form.Field
+                        control={form.control}
+                        name="application_method.max_amount"
+                        render={({
+                          field: { onChange, value, ...field },
+                        }) => {
+                          const currencyCode =
+                            form.getValues().application_method.currency_code
+
+                          const currencyInfo =
+                            currencies[currencyCode?.toUpperCase() || "USD"]
+
+                          return (
+                            <Form.Item className="basis-1/2">
+                              <Form.Label
+                                optional
+                                tooltip={
+                                  currencyCode
+                                    ? undefined
+                                    : t("promotions.fields.amount.tooltip")
+                                }
+                              >
+                                {t("promotions.form.max_amount.title")}
+                              </Form.Label>
+
+                              <Form.Control>
+                                <CurrencyInput
+                                  {...field}
+                                  min={0}
+                                  code={currencyCode || "USD"}
+                                  onValueChange={(_value, _name, values) =>
+                                    onChange(values?.value ?? null)
+                                  }
+                                  decimalScale={
+                                    currencyInfo?.decimal_digits ?? 2
+                                  }
+                                  decimalsLimit={
+                                    currencyInfo?.decimal_digits ?? 2
+                                  }
+                                  symbol={
+                                    currencyCode
+                                      ? getCurrencySymbol(currencyCode)
+                                      : "$"
+                                  }
+                                  value={value ?? undefined}
+                                  disabled={!currencyCode}
+                                />
+                              </Form.Control>
+                              <Text
+                                size="small"
+                                leading="compact"
+                                className="text-ui-fg-subtle"
+                              >
+                                {t("promotions.form.max_amount.description")}
+                              </Text>
+                              <Form.ErrorMessage />
+                            </Form.Item>
+                          )
+                        }}
+                      />
+                    )}
 
                   {((isTypeStandard &&
                     (watchAllocation === "each" ||

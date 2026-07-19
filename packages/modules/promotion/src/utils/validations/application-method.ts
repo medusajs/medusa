@@ -56,6 +56,44 @@ export function validateApplicationMethodAttributes(
     )
   }
 
+  const maxAmount = isDefined(data.max_amount)
+    ? data.max_amount
+    : applicationMethod.max_amount
+
+  if (isPresent(maxAmount)) {
+    if (type !== ApplicationMethodType.PERCENTAGE) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.max_amount can only be set when application_method.type is '${ApplicationMethodType.PERCENTAGE}'`
+      )
+    }
+
+    if (promotion?.type === PromotionType.BUYGET) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.max_amount is not allowed for Promotion type of ${PromotionType.BUYGET}`
+      )
+    }
+
+    if (MathBN.lte(maxAmount!, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.max_amount should be a positive number`
+      )
+    }
+
+    const currencyCode = isDefined(data.currency_code)
+      ? data.currency_code
+      : applicationMethod.currency_code
+
+    if (!isPresent(currencyCode)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.currency_code is required when application_method.max_amount is set`
+      )
+    }
+  }
+
   if (promotion?.type === PromotionType.BUYGET) {
     if (!isPresent(applyToQuantity)) {
       throw new MedusaError(

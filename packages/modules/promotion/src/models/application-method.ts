@@ -10,6 +10,7 @@ const ApplicationMethod = model
       value: model.bigNumber().nullable(),
       currency_code: model.text().nullable(),
       max_quantity: model.number().nullable(),
+      max_amount: model.bigNumber().nullable(),
       apply_to_quantity: model.number().nullable(),
       buy_rules_min_quantity: model.number().nullable(),
       type: model

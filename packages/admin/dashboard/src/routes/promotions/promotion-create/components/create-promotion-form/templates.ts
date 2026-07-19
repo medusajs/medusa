@@ -118,6 +118,22 @@ export const templates = [
     },
   },
   {
+    id: "amount_off_shipping",
+    type: "standard",
+    title: "promotions.templates.amount_off_shipping.title",
+    description: "promotions.templates.amount_off_shipping.description",
+    hiddenFields: amountOfOrderHiddenFields,
+    defaults: {
+      is_automatic: "false",
+      type: "standard",
+      application_method: {
+        allocation: "across",
+        target_type: "shipping_methods",
+        type: "fixed",
+      },
+    },
+  },
+  {
     id: "shipping_discount",
     type: "standard",
     title: "promotions.templates.shipping_discount.title",

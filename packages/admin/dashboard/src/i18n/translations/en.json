@@ -2311,6 +2311,10 @@
         "title": "Maximum Quantity",
         "description": "Maximum quantity of items this promotion applies to."
       },
+      "max_amount": {
+        "title": "Maximum Discount Amount",
+        "description": "Caps the total amount this promotion can discount, e.g. 10% off up to this amount."
+      },
       "type": {
         "standard": {
           "title": "Standard",
@@ -2382,6 +2386,10 @@
       "shipping_discount": {
         "title": "Free shipping",
         "description": "Applies a 100% discount to shipping fees"
+      },
+      "amount_off_shipping": {
+        "title": "Amount off shipping",
+        "description": "Discounts a fixed amount off shipping fees"
       }
     },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",

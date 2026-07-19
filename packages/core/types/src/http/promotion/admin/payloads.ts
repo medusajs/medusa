@@ -64,6 +64,13 @@ export interface AdminCreateApplicationMethod {
    */
   max_quantity?: number | null
   /**
+   * The maximum total amount the promotion can discount, e.g. 10% off
+   * capped at a maximum of 50. Only applicable when `type` is `percentage`.
+   *
+   * @since 2.18.0
+   */
+  max_amount?: number | null
+  /**
    * The type of the application method.
    */
   type: ApplicationMethodTypeValues
@@ -109,6 +116,13 @@ export interface AdminUpdateApplicationMethod {
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
+  /**
+   * The maximum total amount the promotion can discount, e.g. 10% off
+   * capped at a maximum of 50. Only applicable when `type` is `percentage`.
+   *
+   * @since 2.18.0
+   */
+  max_amount?: number | null
   /**
    * The currency code of the application method.
    *

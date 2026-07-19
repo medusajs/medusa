@@ -70,6 +70,11 @@ export function applyPromotionToShippingMethods(
   const maxQuantity = applicationMethod?.max_quantity ?? 0
   let remainingQuota = maxQuantity
 
+  // Caps the total amount this promotion can discount across all shipping
+  // methods, e.g. 10% off capped at a maximum of 50.
+  const maxAmount = applicationMethod?.max_amount
+  let capRemaining = maxAmount != null ? MathBN.convert(maxAmount) : null
+
   if (
     allocation === ApplicationMethodAllocation.EACH ||
     allocation === ApplicationMethodAllocation.ONCE
@@ -96,7 +101,11 @@ export function applyPromotionToShippingMethods(
         )
       }
 
-      const amount = MathBN.min(promotionValue, applicableTotal)
+      let amount = MathBN.min(promotionValue, applicableTotal)
+
+      if (capRemaining !== null) {
+        amount = MathBN.min(amount, capRemaining)
+      }
 
       if (MathBN.lte(amount, 0)) {
         continue
@@ -117,6 +126,10 @@ export function applyPromotionToShippingMethods(
         method.id,
         MathBN.add(appliedPromoValue, amount)
       )
+
+      if (capRemaining !== null) {
+        capRemaining = MathBN.sub(capRemaining, amount)
+      }
 
       if (allocation === ApplicationMethodAllocation.ONCE) {
         remainingQuota -= 1
@@ -166,7 +179,11 @@ export function applyPromotionToShippingMethods(
         )
       }
 
-      const amount = MathBN.min(applicablePromotionValue, applicableTotal)
+      let amount = MathBN.min(applicablePromotionValue, applicableTotal)
+
+      if (capRemaining !== null) {
+        amount = MathBN.min(amount, capRemaining)
+      }
 
       if (MathBN.lte(amount, 0)) {
         continue
@@ -187,6 +204,10 @@ export function applyPromotionToShippingMethods(
         method.id,
         MathBN.add(appliedPromoValue, amount)
       )
+
+      if (capRemaining !== null) {
+        capRemaining = MathBN.sub(capRemaining, amount)
+      }
 
       computedActions.push({
         action: ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,

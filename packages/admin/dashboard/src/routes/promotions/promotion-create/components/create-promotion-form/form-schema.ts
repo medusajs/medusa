@@ -34,6 +34,7 @@ export const CreatePromotionSchema = z
       value: z.number().min(0).or(z.string().min(1)),
       currency_code: z.string().optional(),
       max_quantity: z.number().optional().nullable(),
+      max_amount: z.number().or(z.string()).optional().nullable(),
       target_rules: RuleSchema,
       buy_rules: RuleSchema,
       type: z.enum(["fixed", "percentage"]),

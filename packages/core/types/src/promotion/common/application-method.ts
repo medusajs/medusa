@@ -64,6 +64,14 @@ export interface ApplicationMethodDTO {
   max_quantity?: number | null
 
   /**
+   * The maximum total amount the promotion can discount, e.g. 10% off
+   * capped at a maximum of 50. Only applicable when `type` is `percentage`.
+   *
+   * @since 2.18.0
+   */
+  max_amount?: number | null
+
+  /**
    * The minimum quantity required for a `buyget` promotion to be applied.
    * For example, if the promotion is a "Buy 2 shirts get 1 free", the
    * value of this attribute is `2`.
@@ -130,6 +138,14 @@ export interface CreateApplicationMethodDTO {
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
+
+  /**
+   * The maximum total amount the promotion can discount, e.g. 10% off
+   * capped at a maximum of 50. Only applicable when `type` is `percentage`.
+   *
+   * @since 2.18.0
+   */
+  max_amount?: number | null
 
   /**
    * The minimum quantity required for a `buyget` promotion to be applied.
@@ -203,6 +219,14 @@ export interface UpdateApplicationMethodDTO {
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
+
+  /**
+   * The maximum total amount the promotion can discount, e.g. 10% off
+   * capped at a maximum of 50. Only applicable when `type` is `percentage`.
+   *
+   * @since 2.18.0
+   */
+  max_amount?: number | null
 
   /**
    * The minimum quantity required for a `buyget` promotion to be applied.
