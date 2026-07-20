@@ -11,6 +11,9 @@ import {
  */
 export interface ComputedColumnFilter {
   enabled: boolean
+  /**
+   * Useful for customizations where you want to control the operators that are available for the filter.
+   */
   operators?: FilterOperator[]
   /**
    * Relationship dropdown filter. `filter_key` overrides the query-param key
