@@ -192,7 +192,17 @@ This configuration ensures that specific dependencies are hoisted to the root `n
 
 ### Prerequisites for NPM Workspaces
 
-If you're using `npm` as your package manager, and you're using the [Next.js Starter Storefront](!resources!/nextjs-starter) as your storefront, add the following override in the storefront's `package.json`:
+If you're using `npm` as your package manager with Turbo, you must add the `packageManager` field to your root `package.json`:
+
+```json title="package.json"
+{
+  "packageManager": "npm@10.9.2"
+}
+```
+
+Replace `10.9.2` with your installed npm version (run `npm --version` to check). Turborepo requires this field when pruning with NPM workspaces. Without it, the build will fail with a `Missing 'packageManager' field` error.
+
+If you're also using the [Next.js Starter Storefront](!resources!/nextjs-starter) as your storefront, add the following override in the storefront's `package.json`:
 
 ```json title="apps/storefront/package.json"
 {

@@ -3,7 +3,10 @@
  * operationId: PostCartsIdShippingMethods
  * summary: Add Shipping Method to Cart
  * x-sidebar-summary: Add Shipping Method
- * description: Add a shipping method to a cart. Use this API route when the customer chooses their preferred shipping option.
+ * description: |
+ *   Add a shipping method to a cart. Use this API route when the customer chooses their preferred shipping option.
+ *
+ *   If the chosen shipping option's `price_type` is `calculated`, its price is computed by the associated fulfillment provider when it's added to the cart. If the provider fails to calculate the price, this route returns an error.
  * externalDocs:
  *   url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
  *   description: "Storefront guide: How to implement shipping during checkout."

@@ -302,6 +302,11 @@ export const sidebars = [
               },
               {
                 type: "link",
+                path: "/learn/fundamentals/data-models/big-numbers",
+                title: "Big Numbers",
+              },
+              {
+                type: "link",
                 path: "/learn/fundamentals/data-models/relationships",
                 title: "Relationships",
               },
@@ -810,6 +815,11 @@ export const sidebars = [
             type: "sub-category",
             title: "Contribution Guidelines",
             children: [
+              {
+                type: "link",
+                path: "/learn/resources/contribution-guidelines/code",
+                title: "Code",
+              },
               {
                 type: "link",
                 path: "/learn/resources/contribution-guidelines/docs",

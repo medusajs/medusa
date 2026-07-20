@@ -9,6 +9,7 @@ import * as Icons from "@medusajs/icons"
 import * as HookValues from "@/specs/hook-values"
 import { colors as allColors } from "@/config/colors"
 import { PostHog } from "posthog-node"
+import { fetchFromAssetsBinding } from "../../../utils/fetch-from-assets-binding"
 
 type Params = {
   params: Promise<{ slug?: string[] }>
@@ -21,24 +22,27 @@ export async function GET(req: NextRequest, { params }: Params) {
   const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
-  const fileContent = await workerCompatibleFetch<string | null>({
-    url: `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`,
-    responseTransformer: async (res) => {
-      return res.ok ? res.text() : null
-    },
-    fallbackAction: async () => {
-      try {
-        const { promises: fs } = await import("fs")
-        return await fs.readFile(
-          path.join(process.cwd(), "app", ...slug, "page.mdx"),
-          "utf-8"
-        )
-      } catch {
-        return null
-      }
-    },
-    useRemote: !!process.env.CLOUDFLARE_ENV,
-  })
+  const rawMdxUrl = `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`
+  const fileContent =
+    (await fetchFromAssetsBinding(rawMdxUrl)) ??
+    (await workerCompatibleFetch<string | null>({
+      url: rawMdxUrl,
+      responseTransformer: async (res) => {
+        return res.ok ? res.text() : null
+      },
+      fallbackAction: async () => {
+        try {
+          const { promises: fs } = await import("fs")
+          return await fs.readFile(
+            path.join(process.cwd(), "app", ...slug, "page.mdx"),
+            "utf-8"
+          )
+        } catch {
+          return null
+        }
+      },
+      useRemote: !!process.env.CLOUDFLARE_ENV,
+    }))
 
   if (!fileContent) {
     return notFound()

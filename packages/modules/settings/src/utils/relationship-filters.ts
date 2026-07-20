@@ -43,6 +43,11 @@ export interface RelationshipFilterDefinition {
    * API endpoint to fetch options (e.g., "/admin/sales-channels").
    */
   endpoint?: string
+
+  /**
+   * Key to use for filtering the relationship. If not provided, the column field is used.
+   */
+  filterKey?: string
 }
 
 /**
@@ -54,6 +59,7 @@ export interface RelationshipFilterConfig {
   display_field: string
   multiple: boolean
   endpoint: string
+  filter_key?: string
 }
 
 /**
@@ -96,20 +102,23 @@ export const RELATIONSHIP_FILTER_OVERRIDES: Record<
       valueField: "id",
       displayField: "name",
       multiple: true,
+      filterKey: "sales_channel_id",
     },
     {
       field: "collection",
       relatedEntity: "ProductCollection",
       valueField: "id",
       displayField: "title",
-      multiple: false,
+      multiple: true,
+      filterKey: "collection_id",
     },
     {
       field: "type",
       relatedEntity: "ProductType",
       valueField: "id",
       displayField: "value",
-      multiple: false,
+      multiple: true,
+      filterKey: "type_id",
     },
     {
       field: "tags",
@@ -117,6 +126,15 @@ export const RELATIONSHIP_FILTER_OVERRIDES: Record<
       valueField: "id",
       displayField: "value",
       multiple: true,
+      filterKey: "tag_id",
+    },
+    {
+      field: "categories",
+      relatedEntity: "ProductCategory",
+      valueField: "id",
+      displayField: "name",
+      multiple: true,
+      filterKey: "category_id",
     },
   ],
   Order: [
@@ -125,7 +143,24 @@ export const RELATIONSHIP_FILTER_OVERRIDES: Record<
       relatedEntity: "Region",
       valueField: "id",
       displayField: "name",
-      multiple: false,
+      multiple: true,
+      filterKey: "region_id",
+    },
+    {
+      field: "customer",
+      relatedEntity: "Customer",
+      valueField: "id",
+      displayField: "email",
+      multiple: true,
+      filterKey: "customer_id",
+    },
+    {
+      field: "sales_channel",
+      relatedEntity: "SalesChannel",
+      valueField: "id",
+      displayField: "name",
+      multiple: true,
+      filterKey: "sales_channel_id",
     },
   ],
   Customer: [
@@ -215,6 +250,7 @@ export function getRelationshipFilterConfig(
         multiple: override.multiple,
         endpoint:
           override.endpoint ?? inferOptionsEndpoint(override.relatedEntity),
+        filter_key: override.filterKey,
       }
     }
   }

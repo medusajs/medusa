@@ -73,24 +73,27 @@ export const useActiveOnScroll = ({
     }
     const headings = getHeadingsInElm()
     const itemsToSet: ActiveOnScrollItem[] = []
-    let lastLevel2HeadingIndex = -1
 
+    // Nest headings by their level so deeper headings become children of the
+    // nearest preceding shallower one (e.g. an h4 nests under its h3, which
+    // nests under its h2). The TOC renders `children` recursively.
+    const stack: { level: number; item: ActiveOnScrollItem }[] = []
     headings?.forEach((heading) => {
       const level = parseInt(heading.tagName.replace("H", ""))
-      const isLevel2 = level === 2
       const headingItem: ActiveOnScrollItem = {
         heading: heading as HTMLHeadingElement,
         children: [],
       }
 
-      if (isLevel2 || lastLevel2HeadingIndex === -1) {
-        itemsToSet.push(headingItem)
-        if (isLevel2) {
-          lastLevel2HeadingIndex = itemsToSet.length - 1
-        }
-      } else if (lastLevel2HeadingIndex !== -1) {
-        itemsToSet[lastLevel2HeadingIndex].children?.push(headingItem)
+      while (stack.length && stack[stack.length - 1].level >= level) {
+        stack.pop()
       }
+      if (stack.length) {
+        stack[stack.length - 1].item.children?.push(headingItem)
+      } else {
+        itemsToSet.push(headingItem)
+      }
+      stack.push({ level, item: headingItem })
     })
 
     setItems(itemsToSet)

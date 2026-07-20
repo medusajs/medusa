@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Locking/Steps_Locking/variables/core_flows.Locking.Steps_Locking.acquireLockStepId","title":"acquireLockStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"acquireLockStepId","type":"`\"acquire-lock-step\"`","description":"","optional":false,"defaultValue":"\"acquire-lock-step\"","expandable":false,"children":[]}]}]}

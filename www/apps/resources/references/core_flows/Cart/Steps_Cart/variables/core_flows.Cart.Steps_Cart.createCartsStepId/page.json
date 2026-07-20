@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.createCartsStepId","title":"createCartsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"createCartsStepId","type":"`\"create-carts\"`","description":"","optional":false,"defaultValue":"\"create-carts\"","expandable":false,"children":[]}]}]}

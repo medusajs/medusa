@@ -16,6 +16,33 @@ A shipping option is represented by the [ShippingOption data model](/references/
 
 ---
 
+## Shipping Option Price Type
+
+A shipping option's `price_type` property determines how its price is resolved:
+
+- `flat`: The price is a fixed amount stored in the [Pricing Module](../../pricing/page.mdx). You set the prices per currency or region when you create the shipping option. In the Medusa Admin dashboard, this type is labeled **Fixed**.
+- `calculated`: The shipping option has no stored price. Instead, its price is calculated during checkout by the shipping option's fulfillment provider. This is useful when the price depends on the cart's contents, the customer's location, or a rate returned by a third-party service.
+
+### How Calculated Prices are Resolved
+
+For a shipping option of type `calculated`, Medusa invokes the [calculatePrice method](/references/fulfillment/provider) of the associated fulfillment provider to resolve the price against the cart. This happens when:
+
+- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](!api!/store#shipping-options_postshippingoptionsidcalculate).
+- The shipping method is added to the cart.
+- The cart is refreshed. Medusa refreshes the cart after most cart changes, such as adding a line item or updating the cart's address, so the price may be recalculated frequently.
+
+Medusa doesn't recalculate the price when the cart is completed and converted to an order. The order uses the last price that was stored on the shipping method.
+
+<Note title="Warning" type="warning">
+
+If the fulfillment provider's `calculatePrice` method throws an error, or returns a price without an amount, Medusa can't resolve the shipping option's price. This blocks the operation that triggered the calculation, such as adding the shipping method or refreshing the cart, which can prevent the customer from completing checkout. So, if you implement a custom fulfillment provider, handle errors gracefully, such as by falling back to a default price, if you don't want a failure in a third-party service to block checkout.
+
+</Note>
+
+You learn more about implementing calculated prices in a fulfillment provider in the [Create Fulfillment Module Provider](/references/fulfillment/provider) reference, and how to use them during checkout in the [Storefront Shipping guide](../../../storefront-development/checkout/shipping/page.mdx).
+
+---
+
 ## Service Zone Restrictions
 
 A shipping option is restricted by a service zone, which limits the locations where the shipping option can be used.

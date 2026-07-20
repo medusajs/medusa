@@ -1,6 +1,7 @@
 import path from "path"
 import { workerCompatibleFetch } from "docs-utils"
 import { getPathForEnv } from "../../../utils/get-path-for-env"
+import { readSpecFromBinding } from "../../../utils/read-spec-from-binding"
 
 type DownloadParams = {
   params: Promise<{
@@ -25,7 +26,14 @@ export async function GET(request: Request, props: DownloadParams) {
     ? getPathForEnv(basePath, "versions", version, area, "openapi.full.yaml")
     : null
 
-  const fileContent: string = await workerCompatibleFetch<string>({
+  // Read through the R2 binding when available, preferring the versioned
+  // spec and falling back to the default one, like the filesystem path does.
+  let fileContent: string | null = versionedUrl
+    ? await readSpecFromBinding(versionedUrl)
+    : null
+  fileContent ??= await readSpecFromBinding(defaultUrl)
+
+  fileContent ??= await workerCompatibleFetch<string>({
     url: versionedUrl || defaultUrl,
     responseTransformer: async (res) => {
       if (!res.ok) {

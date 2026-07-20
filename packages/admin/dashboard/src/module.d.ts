@@ -45,3 +45,7 @@ declare module "virtual:medusa/layouts" {
   const layoutModule: LayoutModule
   export default layoutModule
 }
+
+declare module "virtual:medusa/cell-renderers" {
+  // Side-effect only module: registers custom cell renderers.
+}
