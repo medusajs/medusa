@@ -105,6 +105,70 @@ export async function verifyMigrationConnection(
   }
 }
 
+/**
+ * Run a migration inside a transaction, but bound only the transaction *open*
+ * with a timeout. Some environments (notably aarch64/ARM64 Linux) can hang
+ * indefinitely while opening the migration transaction: the connection is
+ * established and the server responds, but the client-side read completion is
+ * never delivered, so the promise that starts the transaction never settles.
+ * Without this guard the migrator hangs forever with no error.
+ *
+ * The timeout covers only acquiring the connection and issuing `BEGIN`. Once
+ * the transaction is open, `work` (the advisory lock and the migrations
+ * themselves) runs with no timeout, since migrations may legitimately take a
+ * long time and the advisory lock may legitimately block on a concurrent
+ * migrator.
+ */
+export async function runMigrationTransaction(
+  knex: ReturnType<typeof ModulesSdkUtils.createPgConnection>,
+  work: (trx: any) => Promise<void>
+): Promise<void> {
+  const connectionTimeout = getMigrationConnectionTimeout()
+  let timeoutHandle: ReturnType<typeof setTimeout> | undefined
+  let markOpened: () => void
+
+  const opened = new Promise<void>((resolve) => {
+    markOpened = resolve
+  })
+
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutHandle = setTimeout(() => {
+      reject(
+        new MedusaError(
+          MedusaError.Types.DB_ERROR,
+          withDbTroubleshootingLink(
+            `Timed out after ${
+              connectionTimeout / 1000
+            } seconds while opening the migration transaction. The database connection was established but the transaction never started, which usually indicates an incorrect database URL or an SSL configuration issue.`,
+            DBTroubleshootingSection.MIGRATIONS
+          )
+        )
+      )
+    }, connectionTimeout)
+  })
+
+  // The callback is invoked by knex only after the transaction is established
+  // (connection acquired and `BEGIN` issued), so entering it signals "opened".
+  const txPromise = knex.transaction(async (trx) => {
+    markOpened()
+    await work(trx)
+  })
+
+  // If the timeout wins the race below, `txPromise` stays pending (the
+  // underlying transaction is hung); swallow its eventual rejection so it does
+  // not surface as an unhandled rejection. The pool is destroyed by the caller.
+  txPromise.catch(() => {})
+
+  try {
+    await Promise.race([opened, timeout])
+    await txPromise
+  } finally {
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle)
+    }
+  }
+}
+
 export type RunMigrationFn = (options?: {
   allOrNothing?: boolean
 }) => Promise<void>
@@ -626,7 +690,7 @@ async function MedusaApp_({
 
       const lockKey = `db-module-migration:${migrationOptions.moduleKey}`
 
-      await lockKnex.transaction(async (trx) => {
+      await runMigrationTransaction(lockKnex, async (trx) => {
         await trx.raw(`SELECT pg_advisory_xact_lock(hashtext(?))`, [lockKey])
 
         if (action === "revert") {
