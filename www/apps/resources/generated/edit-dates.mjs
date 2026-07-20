@@ -5661,7 +5661,7 @@ export const generatedEditDates = {
   "references/core_flows/Order/Steps_Order/variables/core_flows.Order.Steps_Order.updateOrderChangesStepId/page.mdx": "2025-01-27T11:43:49.278Z",
   "app/commerce-modules/payment/account-holder/page.mdx": "2026-06-08T10:33:47.663Z",
   "app/troubleshooting/test-errors/page.mdx": "2025-12-04T14:15:45.524Z",
-  "app/commerce-modules/product/variant-inventory/page.mdx": "2025-04-25T13:25:02.408Z",
+  "app/commerce-modules/product/variant-inventory/page.mdx": "2026-07-20T12:16:49.481Z",
   "app/examples/guides/custom-item-price/page.mdx": "2026-01-12T12:17:46.402Z",
   "references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateShippingStep/page.mdx": "2026-04-23T12:32:58.516Z",
   "references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateShippingStepId/page.mdx": "2025-02-11T11:36:39.228Z",
@@ -7621,5 +7621,6 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/page.mdx": "2026-06-30T20:48:15.888Z",
   "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",
   "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T09:48:42.878Z",
-  "app/commerce-modules/auth/link-provider-identity/page.mdx": "2026-07-16T11:48:10.582Z"
+  "app/commerce-modules/auth/link-provider-identity/page.mdx": "2026-07-16T11:48:10.582Z",
+  "app/commerce-modules/product/physical-customs-attributes/page.mdx": "2026-07-20T12:29:50.832Z"
 }

@@ -528,6 +528,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/product"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/product/physical-customs-attributes/page.mdx",
+    "pathname": "/commerce-modules/product/physical-customs-attributes"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/selling-products/page.mdx",
     "pathname": "/commerce-modules/product/selling-products"
   },

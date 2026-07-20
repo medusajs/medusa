@@ -80,6 +80,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
   },
   {
+    "title": "Physical and Customs Attributes",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes"
+  },
+  {
     "title": "Implement Custom Line Item Pricing in Medusa",
     "path": "https://docs.medusajs.com/resources/examples/guides/custom-item-price"
   },
