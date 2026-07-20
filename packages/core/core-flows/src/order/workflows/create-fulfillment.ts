@@ -521,7 +521,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "location_id",
       ],
       variables: {
-        filter: {
+        filters: {
           line_item_id: lineItemIds,
         },
       },
