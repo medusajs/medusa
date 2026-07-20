@@ -195,7 +195,7 @@ const DataTableTable = (props: DataTableTableProps) => {
               onScroll={handleHorizontalScroll}
               className="min-h-0 w-full flex-1 overflow-auto overscroll-auto border-y"
             >
-              <Table className="relative isolate w-full">
+              <Table className="relative isolate w-full table-fixed">
                 <Table.Header
                   className="shadow-ui-border-base sticky inset-x-0 top-0 z-[1] w-full border-b-0 border-t-0 shadow-[0_1px_1px_0]"
                   style={{ transform: "translate3d(0,0,0)" }}
@@ -275,8 +275,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                                         header.column.columnDef.size != null
                                           ? header.column.columnDef.size
                                           : colWidth !== undefined
-                                            ? `${colWidth}%`
-                                            : undefined,
+                                          ? `${colWidth}%`
+                                          : undefined,
                                       maxWidth: header.column.columnDef.maxSize,
                                       minWidth: header.column.columnDef.minSize,
                                     }
@@ -376,8 +376,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                                         cell.column.columnDef.size != null
                                           ? cell.column.columnDef.size
                                           : colWidth !== undefined
-                                            ? `${colWidth}%`
-                                            : undefined,
+                                          ? `${colWidth}%`
+                                          : undefined,
                                       maxWidth: cell.column.columnDef.maxSize,
                                       minWidth: cell.column.columnDef.minSize,
                                     }
