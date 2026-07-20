@@ -720,10 +720,10 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             expect(createdAt?.default_order).toBeLessThan(
               fulfillmentStatus?.default_order || Infinity
             )
-            expect(fulfillmentStatus?.default_order).toBeLessThan(
-              paymentStatus?.default_order || Infinity
-            )
             expect(paymentStatus?.default_order).toBeLessThan(
+              fulfillmentStatus?.default_order || Infinity
+            )
+            expect(fulfillmentStatus?.default_order).toBeLessThan(
               total?.default_order || Infinity
             )
           })
@@ -818,15 +818,12 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             expect(emailColumn).toBeDefined()
             expect(emailColumn?.default_visible).toBe(true)
 
-            // first_name should be default visible for Customer
-            const firstNameColumn = columns!.find((c) => c.id === "first_name")
-            expect(firstNameColumn).toBeDefined()
-            expect(firstNameColumn?.default_visible).toBe(true)
-
-            // last_name should be default visible for Customer
-            const lastNameColumn = columns!.find((c) => c.id === "last_name")
-            expect(lastNameColumn).toBeDefined()
-            expect(lastNameColumn?.default_visible).toBe(true)
+            // customer_name should be default visible for Customer
+            const customerNameColumn = columns!.find(
+              (c) => c.id === "customer_name"
+            )
+            expect(customerNameColumn).toBeDefined()
+            expect(customerNameColumn?.default_visible).toBe(true)
           })
 
           it("should apply filter rules for Customer", async () => {

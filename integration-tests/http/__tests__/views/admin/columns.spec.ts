@@ -134,13 +134,13 @@ medusaIntegrationTestRunner({
 
           // Check that we have the country computed column
           const countryField = response.data.columns.find(
-            (c) => c.id === "country"
+            (c) => c.id === "order_shipping_country_display"
           )
           expect(countryField).toBeDefined()
           expect(countryField).toMatchObject({
-            id: "country",
+            id: "order_shipping_country_display",
             name: "Country",
-            field: "country",
+            field: "order_shipping_country_display",
             data_type: "string",
             semantic_type: "computed",
             context: "display",
