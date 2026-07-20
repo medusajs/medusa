@@ -45183,7 +45183,7 @@ In this guide, you'll learn how physical and customs attributes behave when set 
 
 ## Overview of Physical and Customs Attributes
 
-Both the [Product](https://docs.medusajs.com/references/product/models/Product/index.html.md) and [ProductVariant](https://docs.medusajs.com/references/product/models/ProductVariant/index.html.md) data models define the following physical and customs attributes:
+Both the [Product](undefined/references/product/models/Product) and [ProductVariant](undefined/references/product/models/ProductVariant) data models define the following physical and customs attributes:
 
 |Attribute|Description|
 |---|---|
@@ -45217,7 +45217,7 @@ Set physical and customs attributes on your variants if you use them for fulfill
 
 ## Attributes in the Automatically Created Inventory Item
 
-When you create a variant that has `manage_inventory` enabled without specifying inventory items, Medusa automatically creates an [inventory item](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/variant-inventory/index.html.md) and links it to the variant.
+When you create a variant that has `manage_inventory` enabled without specifying inventory items, Medusa automatically creates an [inventory item](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/variant-inventory) and links it to the variant.
 
 Medusa copies the following attributes from the variant to the created inventory item:
 
@@ -45246,7 +45246,7 @@ When Medusa creates a fulfillment, it passes the order to the fulfillment provid
 
 Since Medusa doesn't apply a fallback, a fulfillment provider that wants to use a product's value when a variant's value isn't set must implement that fallback itself. For example, a provider can read `variant.weight ?? product.weight`.
 
-Learn how to create a fulfillment provider in the [Create Fulfillment Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) guide.
+Learn how to create a fulfillment provider in the [Create Fulfillment Provider](undefined/references/fulfillment/provider) guide.
 
 
 # Configure Selling Products
@@ -45383,11 +45383,11 @@ You can also allow customers to subscribe to restock notifications of a product 
 
 The following guides provide more details on inventory management in the Medusa application:
 
-- [Physical and Customs Attributes](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/physical-customs-attributes/index.html.md): Learn how physical and customs attributes on products and variants relate to the inventory item created for a variant.
-- [Inventory Kits in the Inventory Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-kit/index.html.md): Learn how you can implement bundled or multi-part products through the Inventory Module.
-- [Retrieve Product Variant Inventory Quantity](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/guides/variant-inventory/index.html.md): Learn how to retrieve the available inventory quantity of a product variant.
-- [Configure Selling Products](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/selling-products/index.html.md): Learn how to use inventory management to support different use cases when selling products.
-- [Inventory in Flows](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-in-flows/index.html.md): Learn how Medusa utilizes inventory management in different flows.
+- [Physical and Customs Attributes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/physical-customs-attributes): Learn how physical and customs attributes on products and variants relate to the inventory item created for a variant.
+- [Inventory Kits in the Inventory Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-kit): Learn how you can implement bundled or multi-part products through the Inventory Module.
+- [Retrieve Product Variant Inventory Quantity](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/guides/variant-inventory): Learn how to retrieve the available inventory quantity of a product variant.
+- [Configure Selling Products](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/selling-products): Learn how to use inventory management to support different use cases when selling products.
+- [Inventory in Flows](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/inventory-in-flows): Learn how Medusa utilizes inventory management in different flows.
 - [Storefront guide: how to retrieve a product variant's inventory details](https://docs.medusajs.com/resources/storefront-development/products/inventory/index.html.md).
 
 
