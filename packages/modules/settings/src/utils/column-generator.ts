@@ -181,7 +181,7 @@ export function generateEntityColumns(
 
   // Add computed columns
   const computedColumnRegistry = getComputedColumnRegistry()
-  const computedColumns = computedColumnRegistry.getForEntity(entity.name)
+  const computedColumns = computedColumnRegistry.get(entity.name)
 
   for (const computed of computedColumns) {
     const columnId = computed.id

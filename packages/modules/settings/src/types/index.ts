@@ -15,9 +15,8 @@ export type InitializeModuleInjectableDependencies = {
  *     {
  *       resolve: "@medusajs/medusa/settings",
  *       options: {
- *         entityOverrides: [
- *           {
- *             entity: "Brand",
+ *         entityOverrides: {
+ *           Brand: {
  *             defaultVisibleFields: ["name", "products_count"],
  *             defaultFieldOrdering: { name: 100 },
  *             computedColumns: [
@@ -26,11 +25,10 @@ export type InitializeModuleInjectableDependencies = {
  *                  name: "Product Count",
  *                  renderMode: "count",
  *                  requiredFields: ["products"],
- *                  entities: ["Brand"],
  *                },
  *              ],
  *           },
- *         ],
+ *         },
  *       },
  *     },
  *   ],

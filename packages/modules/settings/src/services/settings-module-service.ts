@@ -100,9 +100,7 @@ export default class SettingsModuleService
         ...override,
       })
       if (override.computedColumns?.length) {
-        for (const computedColumn of override.computedColumns) {
-          computedColumnRegistry.register(computedColumn)
-        }
+        computedColumnRegistry.register(entity, override.computedColumns)
       }
     }
   }
