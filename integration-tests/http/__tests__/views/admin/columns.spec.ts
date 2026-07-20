@@ -24,7 +24,8 @@ medusaIntegrationTestRunner({
 
     describe("GET /admin/views/:entity/columns", () => {
       describe("orders entity", () => {
-        let order, seeder
+        let order
+        let seeder
 
         beforeEach(async () => {
           // Create an order with all relationships
@@ -119,7 +120,7 @@ medusaIntegrationTestRunner({
             default_visible: true,
             sortable: false,
             computed: {
-              type: "customer_name",
+              type: "name",
               required_fields: [
                 "customer.first_name",
                 "customer.last_name",
