@@ -217,6 +217,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                         {headerGroup.headers.map((header, idx) => {
                           const canSort = header.column.getCanSort()
                           const sortDirection = header.column.getIsSorted()
+                          const firstSortDirection =
+                            header.column.getFirstSortDir()
                           const sortHandler =
                             header.column.getToggleSortingHandler()
 
@@ -306,6 +308,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 {canSort && isRightAligned && (
                                   <DataTableSortingIcon
                                     direction={sortDirection}
+                                    firstDirection={firstSortDirection}
                                   />
                                 )}
                                 {flexRender(
@@ -315,6 +318,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 {canSort && !isRightAligned && (
                                   <DataTableSortingIcon
                                     direction={sortDirection}
+                                    firstDirection={firstSortDirection}
                                   />
                                 )}
                               </Wrapper>
@@ -419,6 +423,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                     {headerGroup.headers.map((header, idx) => {
                       const canSort = header.column.getCanSort()
                       const sortDirection = header.column.getIsSorted()
+                      const firstSortDirection = header.column.getFirstSortDir()
                       const sortHandler =
                         header.column.getToggleSortingHandler()
 
@@ -486,14 +491,20 @@ const DataTableTable = (props: DataTableTableProps) => {
                             )}
                           >
                             {canSort && isRightAligned && (
-                              <DataTableSortingIcon direction={sortDirection} />
+                              <DataTableSortingIcon
+                                direction={sortDirection}
+                                firstDirection={firstSortDirection}
+                              />
                             )}
                             {flexRender(
                               header.column.columnDef.header,
                               header.getContext()
                             )}
                             {canSort && !isRightAligned && (
-                              <DataTableSortingIcon direction={sortDirection} />
+                              <DataTableSortingIcon
+                                direction={sortDirection}
+                                firstDirection={firstSortDirection}
+                              />
                             )}
                           </Wrapper>
                         </Table.HeaderCell>
