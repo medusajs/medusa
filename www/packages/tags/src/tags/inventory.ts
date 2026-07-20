@@ -24,6 +24,10 @@ export const inventory = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
   },
   {
+    "title": "Physical and Customs Attributes",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes"
+  },
+  {
     "title": "Product Variant Inventory",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/variant-inventory"
   },
