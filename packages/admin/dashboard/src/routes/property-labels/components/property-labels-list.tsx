@@ -17,13 +17,25 @@ export const PropertyLabelsList = () => {
   const { entities, isPending, isError, error } = useEntities()
   const columns = usePropertyLabelsTableColumns()
 
-  const { offset } = useQueryParams(["offset"], PREFIX)
+  const { offset, order } = useQueryParams(["offset", "order"], PREFIX)
   const start = offset ? parseInt(offset, 10) : 0
 
-  const paginatedEntities = useMemo(
-    () => (entities ?? []).slice(start, start + PAGE_SIZE),
-    [entities, start]
-  )
+  const { field, desc } = useMemo(() => {
+    const value = order || "module"
+    return value.startsWith("-")
+      ? { field: value.slice(1), desc: true }
+      : { field: value, desc: false }
+  }, [order])
+
+  const paginatedEntities = useMemo(() => {
+    const sorted = [...(entities ?? [])].sort((a, b) => {
+      const comparison = String(a[field] ?? "").localeCompare(
+        String(b[field] ?? "")
+      )
+      return desc ? -comparison : comparison
+    })
+    return sorted.slice(start, start + PAGE_SIZE)
+  }, [entities, field, desc, start])
 
   if (isError) {
     throw error

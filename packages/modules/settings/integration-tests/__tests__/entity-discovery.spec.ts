@@ -28,14 +28,14 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
     describe("EntityDiscovery", function () {
       describe("listDiscoverableEntities", function () {
         it("should return list of discoverable entities", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
 
           expect(Array.isArray(entities)).toBe(true)
           expect(entities.length).toBeGreaterThan(0)
         })
 
         it("should return entities with correct AdminEntityInfo shape", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
 
           const entity = entities[0]
 
@@ -55,7 +55,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         it("should include Product entity from fixture", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
           const productEntity = entities.find((e) => e.name === "Product")
 
           expect(productEntity).toBeDefined()
@@ -64,7 +64,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         it("should include Order entity from fixture", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
           const orderEntity = entities.find((e) => e.name === "Order")
 
           expect(orderEntity).toBeDefined()
@@ -73,7 +73,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         it("should include Customer entity from fixture", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
           const customerEntity = entities.find((e) => e.name === "Customer")
 
           expect(customerEntity).toBeDefined()
@@ -846,19 +846,23 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         describe("hasOverrides in entity info", function () {
-          it("should report hasOverrides=true for entities with custom overrides", async () => {
-            const entities = service.listDiscoverableEntities()
+          it("should report hasOverrides=true only for entities with at least one property label", async () => {
+            await service.createPropertyLabels([
+              { entity: "Product", property: "title", label: "Title" },
+            ])
 
-            const orderEntity = entities.find((e) => e.name === "Order")
+            const entities = await service.listDiscoverableEntities()
+
             const productEntity = entities.find((e) => e.name === "Product")
+            const orderEntity = entities.find((e) => e.name === "Order")
 
-            // Order and Product have explicit overrides in ENTITY_OVERRIDES
-            expect(orderEntity?.hasOverrides).toBe(true)
+            // Product has a property label; Order does not.
             expect(productEntity?.hasOverrides).toBe(true)
+            expect(orderEntity?.hasOverrides).toBe(false)
           })
 
           it("should report hasOverrides accurately for all entities", async () => {
-            const entities = service.listDiscoverableEntities()
+            const entities = await service.listDiscoverableEntities()
 
             for (const entity of entities) {
               expect(typeof entity.hasOverrides).toBe("boolean")

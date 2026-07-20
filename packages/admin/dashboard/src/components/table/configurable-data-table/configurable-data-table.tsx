@@ -276,7 +276,10 @@ export function ConfigurableDataTable<TData>({
         emptyState={
           adapter.emptyState || {
             empty: {
-              heading: t(`${entity}.list.noRecordsMessage` as any),
+              heading: t(
+                `${entity}.list.noRecordsMessage` as any,
+                "There are no records to show"
+              ),
             },
           }
         }
