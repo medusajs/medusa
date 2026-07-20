@@ -40,6 +40,7 @@ export interface AdminColumn {
     | "currency"
     | "enum"
     | "object"
+    | (string & {})
   /**
    * The semantic type provides additional context about the data.
    */
