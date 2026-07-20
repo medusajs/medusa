@@ -208,6 +208,21 @@ medusaIntegrationTestRunner({
         expect(response.data.draft_order.email).toBe("test2@test.com")
         expect(response.data.draft_order.region_id).toBe(region.id)
       })
+
+      it("should create a draft order without an email or customer_id", async () => {
+        const response = await api.post(
+          "/admin/draft-orders",
+          {
+            region_id: region.id,
+          },
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.draft_order.email).toBeFalsy()
+        expect(response.data.draft_order.customer_id).toBeFalsy()
+        expect(response.data.draft_order.region_id).toBe(region.id)
+      })
     })
 
     describe("GET /draft-orders/:id", () => {
