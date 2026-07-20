@@ -2062,12 +2062,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:3.4.2":
-  version: 3.4.2
-  resolution: "@hookform/resolvers@npm:3.4.2"
+"@hookform/resolvers@npm:^5.2.2":
+  version: 5.4.0
+  resolution: "@hookform/resolvers@npm:5.4.0"
+  dependencies:
+    "@standard-schema/utils": ^0.3.0
   peerDependencies:
-    react-hook-form: ^7.0.0
-  checksum: cb8a3e0cc1c9aeaf2adad585f29badf342a96da9cfdf4efa1168aadb7ef52f440cac5cc6fedf0fda6a52effd27a5c859692c89bb99ed5c76d03064aea1f0d684
+    react-hook-form: ^7.55.0
+  checksum: ea312948a8ee4dd711287295c95ddd4cefc69d3e01ecf196477aaf5179fbb28b10801486cb3e909abaea169ee7199ce9e725fcded8a98a539ba07aa278753a42
   languageName: node
   linkType: hard
 
@@ -3125,7 +3127,7 @@ __metadata:
     "@dnd-kit/sortable": ^8.0.0
     "@dnd-kit/utilities": ^3.2.2
     "@hookform/error-message": ^2.0.1
-    "@hookform/resolvers": 3.4.2
+    "@hookform/resolvers": ^5.2.2
     "@medusajs/admin-shared": 2.17.2
     "@medusajs/admin-vite-plugin": 2.17.2
     "@medusajs/icons": 2.17.2
@@ -3159,7 +3161,7 @@ __metadata:
     react-currency-input-field: ^3.6.11
     react-dom: ^18.3.1
     react-helmet-async: ^2.0.5
-    react-hook-form: 7.49.1
+    react-hook-form: ^7.55.0
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
     react-router-dom: 6.30.4
@@ -3194,7 +3196,7 @@ __metadata:
   dependencies:
     "@ariakit/react": ^0.4.15
     "@babel/runtime": ^7.26.10
-    "@hookform/resolvers": 3.4.2
+    "@hookform/resolvers": ^5.2.2
     "@medusajs/admin-sdk": 2.17.2
     "@medusajs/cli": 2.17.2
     "@medusajs/dashboard": 2.17.2
@@ -3212,7 +3214,7 @@ __metadata:
     lodash.isequal: ^4.5.0
     match-sorter: ^6.3.4
     radix-ui: 1.1.2
-    react-hook-form: 7.49.1
+    react-hook-form: ^7.55.0
   peerDependencies:
     "@medusajs/admin-sdk": 2.17.2
     "@medusajs/cli": 2.17.2
@@ -9451,6 +9453,13 @@ __metadata:
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
   checksum: d90f55acde4b2deb983529c87e8025fa693de1a5e8b49ecc6eb84d1fd96328add0e03d7d551442156c7432fd78165b2c26ff561b970a9a881f046abb78d6a526
+  languageName: node
+  linkType: hard
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 6eb74cd13e52d5fc74054df51e37d947ef53f3ab9e02c085665dcca3c38c60ece8d735cebbdf18fbb13c775fbcb9becb3f53109b0e092a63f0f7389ce0993fd0
   languageName: node
   linkType: hard
 
@@ -22337,12 +22346,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.49.1":
-  version: 7.49.1
-  resolution: "react-hook-form@npm:7.49.1"
+"react-hook-form@npm:^7.55.0":
+  version: 7.82.0
+  resolution: "react-hook-form@npm:7.82.0"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 9496155273220a432f897fbe1c393f11b273cd1c9c2ede70e301df95190e2cac6479bdaed7479612c027954b0da35b01c4eec7a428c0dfafcd04b915a170fc8c
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 89a3f775a9f2503a2ba4586e6080ddcb435331ef2fcf8cb3d2b29e69386fe21c387b94d8b7000d968357c354dcbf38f650bedeec319971d99c67249a6eec9137
   languageName: node
   linkType: hard
 
