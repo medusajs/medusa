@@ -3,7 +3,14 @@ import { GraphCatalog } from "../catalog"
 import {
   InternalJoinerServiceConfig,
   ResidualCrossModuleFilter,
+  ResidualHiddenProperty,
+  ResidualOrderBy,
 } from "../types"
+import {
+  consumeResidualFilters,
+  createConsumeContext,
+} from "./residual-filters"
+import { consumeResidualOrderBy } from "./residual-order"
 import {
   rewriteExpandFilters,
   rewriteRootFilters,
@@ -52,16 +59,50 @@ export function extractCrossModuleJoins(
 ): {
   crossModuleJoins: CrossModuleJoinSpec[]
   residualCrossModuleFilters: ResidualCrossModuleFilter[]
+  residualOrderBy: ResidualOrderBy[]
 } {
   const registry: SpecRegistry = {}
   const residual: ResidualCrossModuleFilter[] = []
 
   rewriteRootFilters({ query, serviceConfig, catalog, registry, residual })
   rewriteExpandFilters({ query, serviceConfig, catalog, registry, residual })
-  rewriteRootOrder({ query, serviceConfig, catalog, registry })
+  const residualOrderBy = rewriteRootOrder({
+    query,
+    serviceConfig,
+    catalog,
+    registry,
+  })
 
   return {
     crossModuleJoins: Object.values(registry),
     residualCrossModuleFilters: residual,
+    residualOrderBy,
   }
+}
+
+/**
+ * Stage-2 compile step: consumes the residual filters and order keys reported
+ * by {@link extractCrossModuleJoins}. Strips the filters from the query,
+ * loads the data both need through injected expands (see `residual-filters.ts`
+ * and `residual-order.ts`), and returns the properties added only for
+ * in-memory evaluation so executePlan can hide them.
+ */
+export function consumeResiduals(
+  params: {
+    query: RemoteJoinerQuery
+    serviceConfig: InternalJoinerServiceConfig
+    residualFilters: ResidualCrossModuleFilter[]
+    residualOrderBy: ResidualOrderBy[]
+  },
+  catalog: GraphCatalog
+): ResidualHiddenProperty[] {
+  const context = createConsumeContext(
+    { query: params.query, serviceConfig: params.serviceConfig },
+    catalog
+  )
+
+  consumeResidualFilters(context, params.residualFilters)
+  consumeResidualOrderBy(context, params.residualOrderBy)
+
+  return context.hidden
 }

@@ -1,8 +1,10 @@
 import { RemoteJoinerQuery } from "@medusajs/types"
 import { deduplicate, isDefined } from "@medusajs/utils"
 import { GraphCatalog } from "./catalog"
-import { extractCrossModuleJoins } from "./cross-module-joins"
-import { consumeResidualFilters } from "./cross-module-joins/residual-filters"
+import {
+  consumeResiduals,
+  extractCrossModuleJoins,
+} from "./cross-module-joins"
 import {
   getNestedItems,
   resolveFieldAliasEntry,
@@ -52,7 +54,7 @@ export function compileQuery(
   { query, serviceConfig, options, initialData }: CompileInput,
   catalog: GraphCatalog
 ): QueryPlan {
-  const { crossModuleJoins, residualCrossModuleFilters } =
+  const { crossModuleJoins, residualCrossModuleFilters, residualOrderBy } =
     extractCrossModuleJoins({ query, serviceConfig }, catalog)
 
   if (crossModuleJoins.length) {
@@ -60,15 +62,21 @@ export function compileQuery(
     query.args.push({ name: "__internal", value: { crossModuleJoins } })
   }
 
-  // Stage 2: residual filters are stripped from the query here (with the data
-  // they need injected as regular expands) and completed in memory by
+  // Stage 2: residual filters/orderings are consumed here (stripped from the
+  // query, their data loaded via injected expands) and completed in memory by
   // executePlan after the fetch.
-  const residualHiddenProperties = residualCrossModuleFilters.length
-    ? consumeResidualFilters(
-        { query, serviceConfig, residuals: residualCrossModuleFilters },
-        catalog
-      )
-    : []
+  const residualHiddenProperties =
+    residualCrossModuleFilters.length || residualOrderBy.length
+      ? consumeResiduals(
+          {
+            query,
+            serviceConfig,
+            residualFilters: residualCrossModuleFilters,
+            residualOrderBy,
+          },
+          catalog
+        )
+      : []
 
   const { primaryKeyArg, otherArgs, pkName } = getPrimaryKeysAndOtherFilters({
     serviceConfig,
@@ -121,6 +129,7 @@ export function compileQuery(
     crossModuleJoins,
     residualCrossModuleFilters,
     residualHiddenProperties,
+    residualOrderBy,
   }
 }
 

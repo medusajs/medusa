@@ -10,6 +10,7 @@ import {
   applyResidualFilters,
   hideResidualProperties,
 } from "./cross-module-joins/residual-filters"
+import { sortByResidualOrder } from "./cross-module-joins/residual-order"
 import { getNestedItems } from "./helpers"
 import {
   BASE_PATH,
@@ -58,9 +59,11 @@ export async function executePlan({
   const { options } = plan
 
   const residuals = plan.residualCrossModuleFilters ?? []
-  // Residual filters are completed in memory below, so pagination must move
-  // after filtering: pull it off the root fetch and re-apply it at the end.
-  const pagination = residuals.length
+  const residualOrderBy = plan.residualOrderBy ?? []
+  const hasResiduals = residuals.length > 0 || residualOrderBy.length > 0
+  // Residuals are completed in memory below, so pagination moves with them:
+  // pull it off the root fetch and re-apply after filtering/sorting.
+  const pagination = hasResiduals
     ? extractRootPagination(plan.root)
     : undefined
 
@@ -97,8 +100,14 @@ export async function executePlan({
     catalog,
   })
 
-  if (residuals.length) {
-    data = applyResidualFilters({ items: data, residuals })
+  if (hasResiduals) {
+    if (residuals.length) {
+      data = applyResidualFilters({ items: data, residuals })
+    }
+
+    if (residualOrderBy.length) {
+      sortByResidualOrder({ items: data, orderBy: residualOrderBy })
+    }
 
     if (plan.residualHiddenProperties?.length) {
       hideResidualProperties({
@@ -148,10 +157,10 @@ export async function executePlan({
 }
 
 /**
- * Removes pagination args from the root fetch so residual filtering can run
- * against the full (stage-1 filtered) root set. `withMetadata` mirrors the
- * data fetcher's pagination detection (skip/cursor presence), which decides
- * whether the response is wrapped in a `{ rows, metadata }` envelope.
+ * Removes pagination args from the root fetch so residuals evaluate against
+ * the full (stage-1 filtered) root set. `withMetadata` mirrors the data
+ * fetcher's skip/cursor detection, which decides whether the response gets a
+ * `{ rows, metadata }` envelope.
  */
 function extractRootPagination(root: RemoteExpandProperty):
   | {

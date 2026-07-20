@@ -1,14 +1,13 @@
 import { isObject, MedusaError } from "@medusajs/utils"
 
 /**
- * In-memory evaluation of Medusa filter objects against loaded records, used
- * by stage 2 of cross-module filtering to complete filters that could not be
- * pushed down to SQL.
+ * In-memory evaluation of Medusa filter objects against loaded records —
+ * stage 2's counterpart to the SQL that stage 1 pushes down.
  *
- * Semantics mirror the SQL pushdown (correlated EXISTS): a nested object
- * condition on a to-many value matches when ANY element matches. Operators
- * follow their MikroORM/Postgres counterparts as closely as the loaded data
- * allows ($fulltext degrades to a per-token case-insensitive contains).
+ * Semantics mirror that SQL: a nested object condition on a to-many value
+ * matches when any element matches (EXISTS), and operators follow their
+ * MikroORM/Postgres counterparts as closely as loaded data allows
+ * ($fulltext degrades to per-token case-insensitive contains).
  */
 
 /** A plain object whose keys are all operators (e.g. `{ $gt: 100 }`). */
@@ -22,9 +21,9 @@ export function isOperatorMap(value: unknown): boolean {
 }
 
 /**
- * Whether a record satisfies a filters object. Non-operator keys with plain
- * object values recurse into the record's own value (relations and JSON
- * columns alike), so no catalog metadata is needed at evaluation time.
+ * Whether a record satisfies a filters object. Keys with plain-object values
+ * recurse into the record's value — relations and JSON columns alike — so
+ * evaluation needs no catalog metadata.
  */
 export function matchesFilters(
   record: unknown,
@@ -106,25 +105,29 @@ function applyOperator(
     case "$eq":
       return equals(value, arg)
     case "$ne":
-      return !equals(value, arg)
+      // SQL three-valued logic: null never satisfies a comparison. The guard
+      // also gives `$ne: null` its IS NOT NULL meaning.
+      return value == null ? false : !equals(value, arg)
     case "$in":
-      return toArray(arg).some((entry) => equals(value, entry))
+      return value != null && toArray(arg).some((entry) => equals(value, entry))
     case "$nin":
-      return !toArray(arg).some((entry) => equals(value, entry))
+      return (
+        value != null && !toArray(arg).some((entry) => equals(value, entry))
+      )
     case "$gt": {
-      const result = compare(value, arg)
+      const result = compareValues(value, arg)
       return result !== null && result > 0
     }
     case "$gte": {
-      const result = compare(value, arg)
+      const result = compareValues(value, arg)
       return result !== null && result >= 0
     }
     case "$lt": {
-      const result = compare(value, arg)
+      const result = compareValues(value, arg)
       return result !== null && result < 0
     }
     case "$lte": {
-      const result = compare(value, arg)
+      const result = compareValues(value, arg)
       return result !== null && result <= 0
     }
     case "$like":
@@ -193,7 +196,7 @@ function equals(value: unknown, expected: unknown): boolean {
 }
 
 /** Three-way comparison; null when the values are not comparable. */
-function compare(value: unknown, expected: unknown): number | null {
+export function compareValues(value: unknown, expected: unknown): number | null {
   if (value == null || expected == null) {
     return null
   }

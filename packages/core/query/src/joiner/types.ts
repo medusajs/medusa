@@ -54,6 +54,16 @@ export type ResidualHiddenProperty = {
 }
 
 /**
+ * One root ordering key applied in memory (stage 2). When any key cannot be
+ * pushed down to SQL, the whole ordering moves in memory in this order.
+ */
+export type ResidualOrderBy = {
+  /** Alias-form path from the query root, including the sorted field. */
+  segments: string[]
+  direction: "ASC" | "DESC"
+}
+
+/**
  * Nested expand tree attached to a fetch node so a single module call can
  * load same-service relations in one round-trip.
  *
@@ -138,6 +148,11 @@ export type QueryPlan = {
    * hidden from the returned payload.
    */
   residualHiddenProperties?: ResidualHiddenProperty[]
+  /**
+   * Root ordering applied in memory after the fetch because at least one sort
+   * key could not be pushed down to SQL.
+   */
+  residualOrderBy?: ResidualOrderBy[]
 }
 
 /** Contract for loading module data during join execution. */

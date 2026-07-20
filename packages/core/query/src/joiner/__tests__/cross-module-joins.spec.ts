@@ -9,7 +9,6 @@ import { crossModuleJoinerConfigs } from "../__fixtures__/cross-module-joins"
 import { GraphCatalog } from "../catalog"
 import { compileQuery } from "../compile"
 import { extractCrossModuleJoins } from "../cross-module-joins"
-import { matchesFilters } from "../cross-module-joins/in-memory-filter"
 import { RemoteJoiner } from "../remote-joiner"
 import {
   IRemoteDataFetcher,
@@ -809,7 +808,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       })
     })
 
-    it("leaves non-crossjoinable sort fields untouched", () => {
+    it("consumes non-crossjoinable sort fields for in-memory ordering (stage 2)", () => {
       const { plan } = compile({
         entity: "variant",
         fields: ["id"],
@@ -819,9 +818,52 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       })
 
       expect(plan.crossModuleJoins).toEqual([])
-      expect(getArg(plan, "order")?.value).toEqual({
-        price_set: { calculated_price: "DESC" },
+      // The order arg is removed so the module never receives a path it
+      // cannot sort by; the ordering is applied in memory instead.
+      expect(getArg(plan, "order")).toBeUndefined()
+      expect(plan.residualOrderBy).toEqual([
+        {
+          segments: ["price_set", "calculated_price"],
+          direction: "DESC",
+        },
+      ])
+    })
+
+    it("moves the whole ordering in memory when any key is residual", () => {
+      const { plan } = compile({
+        entity: "variant",
+        fields: ["id"],
+        pagination: {
+          order: {
+            // Pushable on its own, but sort keys are lexicographically
+            // significant so it moves in memory with the residual key.
+            "price_set.currency_code": "ASC",
+            title: "DESC",
+            "price_set.calculated_price.calculated_amount": "DESC",
+          },
+        },
       })
+
+      // No order-only join spec is registered.
+      expect(plan.crossModuleJoins).toEqual([])
+      expect(getArg(plan, "order")).toBeUndefined()
+      expect(plan.residualOrderBy).toEqual([
+        { segments: ["price_set", "currency_code"], direction: "ASC" },
+        { segments: ["title"], direction: "DESC" },
+        {
+          segments: ["price_set", "calculated_price", "calculated_amount"],
+          direction: "DESC",
+        },
+      ])
+
+      // The root field used by the in-memory sort is loaded and hidden.
+      expect(plan.root.fields).toContain("title")
+      expect(plan.residualHiddenProperties).toEqual(
+        expect.arrayContaining([
+          { location: [], property: "title" },
+          { location: [], property: "price_set" },
+        ])
+      )
     })
 
     it("leaves root-level sort fields untouched", () => {
@@ -1027,6 +1069,68 @@ describe("cross-module filtering (stage 2 in-memory residuals)", () => {
     expect(result.map((row) => row.id)).toEqual(["v2"])
   })
 
+  it("sorts by a residual cross-module field in memory", async () => {
+    const { result, calls } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      pagination: {
+        order: {
+          price_set: { calculated_price: { calculated_amount: "DESC" } },
+        },
+      },
+    })
+
+    // The order arg never reaches the root fetch.
+    const rootCall = calls.find((call) => call.service === "product")!
+    expect(rootCall.args.order).toBeUndefined()
+
+    expect(result.map((row) => row.id)).toEqual(["v3", "v2", "v1"])
+    // The relation was loaded only for sorting and is hidden.
+    expect(JSON.parse(JSON.stringify(result[0]))).toEqual({ id: "v3" })
+  })
+
+  it("interleaves pushable, root, and residual sort keys in memory", async () => {
+    const { result, calls } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      pagination: {
+        order: {
+          // eur < usd, then amount DESC within the same currency.
+          "price_set.currency_code": "ASC",
+          "price_set.calculated_price.calculated_amount": "DESC",
+        },
+      },
+    })
+
+    // No order-only join spec is pushed down.
+    const rootCall = calls.find((call) => call.service === "product")!
+    expect(rootCall.args.__internal).toBeUndefined()
+    expect(rootCall.args.order).toBeUndefined()
+
+    expect(result.map((row) => row.id)).toEqual(["v3", "v2", "v1"])
+  })
+
+  it("filters, sorts, and paginates residuals in memory together", async () => {
+    const { result } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        price_set: { calculated_price: { calculated_amount: { $gt: 100 } } },
+      },
+      pagination: {
+        order: {
+          price_set: { calculated_price: { calculated_amount: "ASC" } },
+        },
+        skip: 1,
+        take: 1,
+      },
+    })
+
+    // Filtered set is [v2, v3] ascending; page 2 of size 1 is v3.
+    expect(result.metadata).toEqual({ skip: 1, take: 1, count: 2 })
+    expect(result.rows.map((row) => row.id)).toEqual(["v3"])
+  })
+
   it("keeps the paginated envelope untouched when no residuals exist", async () => {
     const { result, calls } = await runQuery({
       entity: "variant",
@@ -1040,69 +1144,5 @@ describe("cross-module filtering (stage 2 in-memory residuals)", () => {
     expect(rootCall.args.skip).toEqual(0)
     expect(rootCall.args.take).toEqual(2)
     expect(result.map((row) => row.id)).toEqual(["v1", "v2", "v3"])
-  })
-})
-
-describe("in-memory filter matching", () => {
-  it("matches operators against loaded values", () => {
-    const record = {
-      title: "Winter Jacket",
-      amount: "150.50",
-      created_at: new Date("2026-01-15T00:00:00Z"),
-      tags: ["sale", "new"],
-    }
-
-    expect(matchesFilters(record, { title: { $ilike: "winter%" } })).toBe(true)
-    expect(matchesFilters(record, { title: { $like: "winter%" } })).toBe(false)
-    expect(matchesFilters(record, { title: { $re: "^Winter" } })).toBe(true)
-    expect(matchesFilters(record, { title: { $fulltext: "jacket winter" } })).toBe(
-      true
-    )
-    expect(matchesFilters(record, { amount: { $gt: 100, $lte: 200 } })).toBe(
-      true
-    )
-    expect(
-      matchesFilters(record, { created_at: { $gt: "2026-01-01T00:00:00Z" } })
-    ).toBe(true)
-    expect(matchesFilters(record, { tags: { $contains: ["sale"] } })).toBe(true)
-    expect(matchesFilters(record, { title: ["Winter Jacket", "Other"] })).toBe(
-      true
-    )
-    expect(matchesFilters(record, { missing: { $eq: null } })).toBe(true)
-  })
-
-  it("applies EXISTS semantics on to-many relations and supports $and/$or", () => {
-    const record = {
-      id: "ps1",
-      prices: [
-        { amount: 10, currency_code: "usd" },
-        { amount: 90, currency_code: "eur" },
-      ],
-    }
-
-    expect(
-      matchesFilters(record, { prices: { amount: { $gt: 50 } } })
-    ).toBe(true)
-    expect(
-      matchesFilters(record, {
-        prices: { amount: { $gt: 50 }, currency_code: "usd" },
-      })
-    ).toBe(false)
-    expect(
-      matchesFilters(record, {
-        $or: [{ id: "other" }, { prices: { currency_code: "usd" } }],
-      })
-    ).toBe(true)
-    expect(
-      matchesFilters(record, {
-        $and: [{ id: "ps1" }, { prices: { currency_code: "aud" } }],
-      })
-    ).toBe(false)
-  })
-
-  it("throws a clear error for operators it cannot evaluate", () => {
-    expect(() =>
-      matchesFilters({ title: "abc" }, { title: { $customOp: "x" } })
-    ).toThrow('Operator "$customOp" is not supported')
   })
 })

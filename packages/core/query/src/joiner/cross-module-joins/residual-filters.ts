@@ -11,27 +11,27 @@ import { resolvePathHops } from "./build-chain"
 import { isOperatorMap, matchesFilters } from "./in-memory-filter"
 
 /**
- * Stage-2 cross-module filtering: residual filters (reported by
- * {@link extractCrossModuleJoins}) cannot be pushed down to SQL, so they are
- * completed in memory after execution.
+ * Stage 2 of cross-module filtering: completes in memory the filters stage 1
+ * could not push down to SQL.
  *
- * Compile side ({@link consumeResidualFilters}): the residual filters are
- * stripped from the query so no module DAL receives filter fields it cannot
- * handle, and the relation paths/fields the filters reference are injected as
- * regular expand entries. The existing expand machinery then loads the data —
- * child fetches are keyed by parent ids and never paginated, so the full
- * related sets needed for evaluation are available. Every property added
- * solely for evaluation is recorded so the execute stage can hide it from the
- * returned payload.
+ * At compile time, {@link consumeResidualFilters} removes each residual
+ * filter from the query (so no module receives a field it cannot handle) and
+ * injects expand entries for the data the filter reads — the regular expand
+ * machinery then loads it, unpaginated. Properties added only for evaluation
+ * are recorded for hiding.
  *
- * Execute side ({@link applyResidualFilters} / {@link hideResidualProperties}):
- * after all expands are joined and fieldAlias shortcuts collapsed, root items
- * are filtered with EXISTS semantics along each residual path, and synthetic
- * properties are hidden. Pagination is re-applied by the caller afterwards so
- * page boundaries match the filtered set.
+ * At execute time, {@link applyResidualFilters} keeps the root items whose
+ * related data matches (EXISTS semantics, same as the SQL pushdown), and
+ * {@link hideResidualProperties} hides the synthetic properties. The caller
+ * re-applies pagination afterwards so pages reflect the filtered set.
+ *
+ * Residual ordering lives in `residual-order.ts` and reuses the loading and
+ * hiding helpers exported here; `consumeResiduals` in the module index runs
+ * both.
  */
 
-type ConsumeContext = {
+/** Shared state for one residual-consumption pass at compile time. */
+export type ConsumeContext = {
   query: RemoteJoinerQuery
   serviceConfig: InternalJoinerServiceConfig
   catalog: GraphCatalog
@@ -41,37 +41,41 @@ type ConsumeContext = {
   hiddenKeys: Set<string>
 }
 
-export function consumeResidualFilters(
+export function createConsumeContext(
   params: {
     query: RemoteJoinerQuery
     serviceConfig: InternalJoinerServiceConfig
-    residuals: ResidualCrossModuleFilter[]
   },
   catalog: GraphCatalog
-): ResidualHiddenProperty[] {
-  const { query, serviceConfig, residuals } = params
-
-  const context: ConsumeContext = {
-    query,
-    serviceConfig,
+): ConsumeContext {
+  return {
+    query: params.query,
+    serviceConfig: params.serviceConfig,
     catalog,
-    visiblePaths: collectVisiblePaths(query),
+    visiblePaths: collectVisiblePaths(params.query),
     hidden: [],
     hiddenKeys: new Set(),
   }
-
-  for (const residual of residuals) {
-    stripResidualFilters(query, residual)
-    ensureResidualData(context, residual.path.split("."), residual.filters)
-  }
-
-  return context.hidden
 }
 
 /**
- * Alias paths (and their prefixes) that carry user-requested content: fields
- * or non-filter args. Anything loaded outside this set exists only for
- * residual evaluation and gets hidden from the payload.
+ * Strips each residual filter from the query and loads the data it evaluates
+ * against.
+ */
+export function consumeResidualFilters(
+  context: ConsumeContext,
+  residualFilters: ResidualCrossModuleFilter[]
+): void {
+  for (const residual of residualFilters) {
+    stripResidualFilters(context.query, residual)
+    ensureResidualData(context, residual.path.split("."), residual.filters)
+  }
+}
+
+/**
+ * The alias paths (and their prefixes) the user's query actually requests —
+ * fields or non-filter args. Anything loaded outside this set is hidden from
+ * the payload.
  */
 function collectVisiblePaths(query: RemoteJoinerQuery): Set<string> {
   const visible = new Set<string>()
@@ -95,8 +99,8 @@ function collectVisiblePaths(query: RemoteJoinerQuery): Set<string> {
 }
 
 /**
- * Removes the residual filters from wherever they live on the query: the
- * expand node that carried them, or the root filters arg.
+ * Removes the residual filters from where they live: the expand node that
+ * carried them, or the root filters arg.
  */
 function stripResidualFilters(
   query: RemoteJoinerQuery,
@@ -130,13 +134,12 @@ function stripResidualFilters(
 }
 
 /**
- * Walks a residual filters object and makes sure everything it references is
- * loaded: plain fields become select fields on the path's expand, computed
- * (non-crossjoinable) fields become child value nodes — the mechanism modules
- * use to serve computed fields like `calculated_price` — and relation keys
- * recurse deeper.
+ * Loads everything a residual filters object reads. Each key at a level is
+ * either a plain field (selected on the level's expand), a computed field
+ * like `calculated_price` (fetched as a child value node, the way modules
+ * serve computed fields), or a relation (recursed into).
  */
-function ensureResidualData(
+export function ensureResidualData(
   context: ConsumeContext,
   segments: string[],
   filters: Record<string, unknown>
@@ -190,8 +193,8 @@ function ensureResidualData(
 
   collect(filters)
 
-  // Parent entries must exist before deeper ones: parseProperties expects the
-  // fieldAlias-bearing entry to be walked before entries that continue past it.
+  // Parents first: parseProperties must walk a fieldAlias entry before any
+  // entry that continues past it.
   ensureExpandPath(context, segments, selectFields)
 
   for (const key of childValueNodes) {
@@ -204,11 +207,11 @@ function ensureResidualData(
 }
 
 /**
- * Ensures expand entries exist for the path (and each prefix) and merges the
- * given fields onto the leaf entry, recording hidden properties for anything
- * the user's query did not request itself.
+ * Ensures an expand entry exists for the path and each of its prefixes,
+ * merging `fields` onto the leaf. Anything the user did not request is
+ * recorded as hidden.
  */
-function ensureExpandPath(
+export function ensureExpandPath(
   context: ConsumeContext,
   segments: string[],
   fields: string[]
@@ -225,8 +228,8 @@ function ensureExpandEntry(
   segments: string[],
   fields: string[]
 ): void {
-  // The shallowest prefix the user did not request is hidden; hiding it hides
-  // the whole subtree, so deeper entries need no bookkeeping of their own.
+  // Hiding the shallowest prefix the user did not request hides the whole
+  // subtree, so deeper entries need no bookkeeping of their own.
   let subtreeHidden = false
   for (let i = 1; i <= segments.length; i++) {
     if (!context.visiblePaths.has(segments.slice(0, i).join("."))) {
@@ -254,9 +257,9 @@ function ensureExpandEntry(
 
   for (const field of fields) {
     if (field === "*") {
-      // Value-object nodes (computed fields) need their full value loaded.
-      // When the user requested a subset of the node this widens what is
-      // returned for it, which we accept for a property the user already sees.
+      // Computed value nodes need their full value. If the user requested
+      // only a subset of the node this widens it — acceptable for a property
+      // they already see.
       expand.fields = ["*"]
       return
     }
@@ -273,7 +276,7 @@ function ensureExpandEntry(
   }
 }
 
-function addHidden(
+export function addHidden(
   context: ConsumeContext,
   location: string[],
   property: string
@@ -287,7 +290,7 @@ function addHidden(
   context.hidden.push({ location, property })
 }
 
-function resolvesToRelations(
+export function resolvesToRelations(
   context: ConsumeContext,
   segments: string[]
 ): boolean {
@@ -314,10 +317,9 @@ function getFiltersArg(args?: JoinerArgument[]): JoinerArgument | undefined {
 }
 
 /**
- * Filters root items against the residual cross-module filters. An item
- * matches when, for every residual, some related record at the end of the
- * residual's path satisfies its filters (EXISTS semantics, matching the SQL
- * pushdown of stage 1).
+ * Keeps the root items that satisfy every residual filter: some related
+ * record at the end of the residual's path must match its filters (EXISTS
+ * semantics, same as the SQL pushdown).
  */
 export function applyResidualFilters(params: {
   items: any[]
@@ -362,8 +364,8 @@ function matchesRelatedPath(
 }
 
 /**
- * Hides properties that were loaded solely to evaluate residual filters, the
- * same way applyShortcuts hides intermediate alias nodes.
+ * Hides properties loaded only for residual evaluation, the same way
+ * applyShortcuts hides intermediate alias nodes.
  */
 export function hideResidualProperties(params: {
   items: any[]

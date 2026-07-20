@@ -121,17 +121,21 @@ export function rewriteExpandFilters(params: {
       continue
     }
 
-    const candidates =
-      resolution.outcome === "pushable" &&
-      collectCandidates(
-        {
-          pathSegments,
-          levels: resolution.levels,
-          filters,
-          rootConfig: serviceConfig,
-        },
-        catalog
-      )
+    // Paths that cross modules but cannot be pushed down are residual.
+    if (resolution.outcome === "residual") {
+      residual.push({ path: expand.property, filters })
+      continue
+    }
+
+    const candidates = collectCandidates(
+      {
+        pathSegments,
+        levels: resolution.levels,
+        filters,
+        rootConfig: serviceConfig,
+      },
+      catalog
+    )
 
     if (!candidates || !registerCandidates(registry, candidates)) {
       residual.push({ path: expand.property, filters })

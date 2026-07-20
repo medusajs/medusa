@@ -1439,6 +1439,76 @@ medusaIntegrationTestRunner({
             expect(filteredVariants[0].price_set).toBeUndefined()
           })
 
+          it("should filter and sort variants by calculated price", async () => {
+            const container = getContainer()
+            const query = container.resolve("query")
+
+            // The seeded products all price their variants at 10/20 usd; add
+            // one with distinct prices so the ordering is observable.
+            await createProductsWorkflow(container).run({
+              input: {
+                products: [
+                  {
+                    title: "Product 4",
+                    options: [{ title: "size", values: ["small", "large"] }],
+                    variants: [
+                      {
+                        title: "P4 Variant 1",
+                        options: { size: "small" },
+                        prices: [{ amount: 5, currency_code: "usd" }],
+                      },
+                      {
+                        title: "P4 Variant 2",
+                        options: { size: "large" },
+                        prices: [{ amount: 30, currency_code: "usd" }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            })
+
+            // Both the filter and the primary sort key target the computed
+            // calculated_price, so filtering, sorting, and pagination all
+            // complete in memory (title breaks ties between equal amounts).
+            const { data: variants, metadata } = await query.graph({
+              entity: "variant",
+              fields: ["id", "title", "calculated_price.calculated_amount"],
+              filters: {
+                price_set: {
+                  calculated_price: { calculated_amount: { $gt: 8 } },
+                },
+              },
+              pagination: {
+                order: {
+                  price_set: {
+                    calculated_price: { calculated_amount: "DESC" },
+                  },
+                  title: "ASC",
+                },
+                skip: 0,
+                take: 4,
+              },
+              context: {
+                calculated_price: QueryContext({ currency_code: "usd" }),
+              },
+            })
+
+            // 5 usd is filtered out; 30, 20, 20, 20, 10, 10, 10 remain.
+            expect(metadata?.count).toEqual(7)
+            expect(variants.map((variant) => variant.title)).toEqual([
+              "P4 Variant 2",
+              "P1 Variant 2",
+              "P2 Variant 2",
+              "P3 Variant 2",
+            ])
+            expect(
+              variants.map(
+                (variant) => variant.calculated_price?.calculated_amount
+              )
+            ).toEqual([30, 20, 20, 20])
+          })
+
           it("should paginate after in-memory filtering", async () => {
             const container = getContainer()
             const query = container.resolve("query")
