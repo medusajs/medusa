@@ -7,6 +7,7 @@ import {
 } from "@medusajs/utils"
 import { GraphCatalog } from "./catalog"
 import { getNestedItems } from "./helpers"
+import { matchesAllResidualFilters } from "./residual-filters"
 import {
   BASE_PATH,
   ComputedJoinerRelationship,
@@ -28,10 +29,21 @@ type PathCtx = {
   ids: Set<any>
 }
 
+type DeferredPagination = {
+  skip?: number
+  take?: number | null
+  /** True when the original query used skip/cursor (listAndCount shape). */
+  wrapAsPaginated: boolean
+}
+
 /**
  * Executes a compiled {@link QueryPlan}: fetch root, merge seed data, walk
  * depth stages fetching related rows and joining them onto parents, then
  * collapse fieldAlias shortcuts.
+ *
+ * When the plan still has residual cross-module filters (stage 2), root
+ * pagination is deferred: related data along residual paths is loaded, rows
+ * are filtered in memory, then skip/take is applied to the filtered set.
  */
 
 export async function executePlan({
@@ -52,6 +64,9 @@ export async function executePlan({
   wasArray: boolean
 }> {
   const { options } = plan
+  const residuals = plan.residualCrossModuleFilters ?? []
+  const deferredPagination =
+    residuals.length > 0 ? deferRootPagination(plan) : null
 
   const response = await fetchData({
     dataFetcher,
@@ -86,10 +101,113 @@ export async function executePlan({
     catalog,
   })
 
+  if (residuals.length) {
+    data = data.filter((item) => matchesAllResidualFilters(item, residuals))
+
+    if (deferredPagination) {
+      return applyDeferredPagination({
+        data,
+        pagination: deferredPagination,
+        wasArray,
+      })
+    }
+  }
+
   return {
     data,
     responsePath: response.path,
     rawResponse: response,
+    wasArray,
+  }
+}
+
+/**
+ * Strips root skip/take so the root fetch returns the full stage-1 candidate
+ * set. Returns the deferred values for post-filter pagination, or null when
+ * the query was not paginated.
+ */
+function deferRootPagination(plan: QueryPlan): DeferredPagination | null {
+  const args = plan.root.args ?? []
+  const paginationArgNames = new Set(["skip", "offset", "take", "limit"])
+
+  let skip: number | undefined
+  let take: number | null | undefined
+  let hasSkipOrCursor = false
+
+  for (const arg of args) {
+    if (arg.name === "skip" || arg.name === "offset") {
+      skip = arg.value
+      hasSkipOrCursor = true
+    } else if (arg.name === "cursor") {
+      hasSkipOrCursor = true
+    } else if (arg.name === "take" || arg.name === "limit") {
+      take = arg.value
+    }
+  }
+
+  // ModuleDataFetcher only switches to listAndCount when skip/cursor is set.
+  // Defer whenever that shape was requested, or when take alone needs
+  // post-filter slicing.
+  if (!hasSkipOrCursor && take == null) {
+    return null
+  }
+
+  plan.root.args = args.filter((arg) => !paginationArgNames.has(arg.name))
+
+  return {
+    skip: skip ?? 0,
+    take,
+    wrapAsPaginated: hasSkipOrCursor,
+  }
+}
+
+function applyDeferredPagination({
+  data,
+  pagination,
+  wasArray,
+}: {
+  data: any[]
+  pagination: DeferredPagination
+  wasArray: boolean
+}): {
+  data: any[]
+  responsePath?: string
+  rawResponse: {
+    data: unknown[] | { [path: string]: unknown }
+    path?: string
+  }
+  wasArray: boolean
+} {
+  const skip = pagination.skip ?? 0
+  const take = pagination.take
+  const count = data.length
+  const page =
+    take == null || take < 0 ? data.slice(skip) : data.slice(skip, skip + take)
+
+  if (!pagination.wrapAsPaginated) {
+    return {
+      data: page,
+      rawResponse: { data: page },
+      wasArray,
+    }
+  }
+
+  const metadata = {
+    skip,
+    take: take ?? null,
+    count,
+  }
+
+  return {
+    data: page,
+    responsePath: "rows",
+    rawResponse: {
+      data: {
+        rows: page,
+        metadata,
+      },
+      path: "rows",
+    },
     wasArray,
   }
 }

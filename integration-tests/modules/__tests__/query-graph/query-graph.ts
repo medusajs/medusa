@@ -1250,6 +1250,86 @@ medusaIntegrationTestRunner({
             filteredCarts.every((cart) => cart.email.startsWith("retail-cart-"))
           ).toBe(true)
         })
+
+        // Stage 2: residual filters (unsupported for SQL pushdown) are applied
+        // in memory after related data is loaded.
+        it("should filter with residual operators via in-memory stage 2", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: variants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title", "price_set.id"],
+          })
+
+          const withPriceSet = variants.filter((variant) => variant.price_set?.id)
+          expect(withPriceSet.length).toBeGreaterThan(1)
+
+          const excludedId = withPriceSet[0].price_set!.id
+
+          const { data: filteredVariants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title", "price_set.id"],
+            filters: {
+              // `$not` is not in the stage-1 pushdown operator set, so this
+              // path is residual and completed in memory.
+              price_set: {
+                id: { $not: excludedId },
+              },
+            },
+          })
+
+          expect(filteredVariants.length).toBeGreaterThan(0)
+          expect(
+            filteredVariants.every(
+              (variant) => variant.price_set?.id !== excludedId
+            )
+          ).toBe(true)
+          expect(filteredVariants.map((variant) => variant.id)).not.toContain(
+            withPriceSet[0].id
+          )
+        })
+
+        it("should paginate after residual in-memory filtering", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: variants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "price_set.id"],
+          })
+
+          const withPriceSet = variants.filter((variant) => variant.price_set?.id)
+          const excludedId = withPriceSet[0].price_set!.id
+          const expectedCount = withPriceSet.filter(
+            (variant) => variant.price_set!.id !== excludedId
+          ).length
+
+          expect(expectedCount).toBeGreaterThan(1)
+
+          const { data: page, metadata } = await query.graph({
+            entity: "variant",
+            fields: ["id", "price_set.id"],
+            filters: {
+              price_set: {
+                id: { $not: excludedId },
+              },
+            },
+            pagination: {
+              skip: 0,
+              take: 1,
+            },
+          })
+
+          expect(page).toHaveLength(1)
+          expect(metadata?.count).toEqual(expectedCount)
+          expect(page[0].price_set?.id).not.toEqual(excludedId)
+        })
+
+        it.skip("should filter by computed calculated_price (stage 2)", async () => {
+          // Requires pricing QueryContext wiring for calculated_price values on
+          // linked price sets; covered by unit tests with mocked related data.
+        })
       })
     })
   },

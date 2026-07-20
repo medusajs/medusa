@@ -59,15 +59,6 @@ export function compileQuery(
     query.args.push({ name: "__internal", value: { crossModuleJoins } })
   }
 
-  // TODO: Once we implement the second stage of cross-module filtering/sorting, we can remove this check.
-  if (residualCrossModuleFilters.length) {
-    throw new Error(
-      `Unsupported cross-module filter/sort paths: ${residualCrossModuleFilters
-        .map((f) => f.path)
-        .join(", ")}`
-    )
-  }
-
   const { primaryKeyArg, otherArgs, pkName } = getPrimaryKeysAndOtherFilters({
     serviceConfig,
     queryObj: query,

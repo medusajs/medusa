@@ -6,6 +6,10 @@ import {
   ResidualCrossModuleFilter,
 } from "../types"
 import { resolveChain } from "./build-chain"
+import {
+  ensureResidualExpand,
+  stripExpandFilters,
+} from "./ensure-residual-expands"
 import { registerCandidates } from "./spec-registry"
 import { ChainLevel, PushdownCandidate, SpecRegistry } from "./types"
 
@@ -36,11 +40,13 @@ export function rewriteRootFilters(params: {
   residual: ResidualCrossModuleFilter[]
 }): void {
   const { query, serviceConfig, catalog, registry, residual } = params
-  const rootFilters = getFiltersArg(query.args)?.value
+  const rootFiltersArg = getFiltersArg(query.args)?.value
 
-  if (!isObject(rootFilters)) {
+  if (!isObject(rootFiltersArg)) {
     return
   }
+
+  const rootFilters = rootFiltersArg as Record<string, unknown>
 
   for (const [key, value] of Object.entries(rootFilters)) {
     if (key.startsWith("$") || !isObject(value)) {
@@ -58,12 +64,16 @@ export function rewriteRootFilters(params: {
       continue
     }
 
-    // Paths that cross modules but cannot be pushed down are residual.
+    // Paths that cross modules but cannot be pushed down are residual:
+    // strip from root filters and ensure expands so stage 2 can load + match.
     if (resolution.outcome === "residual") {
-      residual.push({
-        path: key,
-        filters: value as Record<string, unknown>,
-      })
+      registerRootResidual(
+        query,
+        residual,
+        key,
+        value as Record<string, unknown>,
+        rootFilters
+      )
       continue
     }
 
@@ -78,12 +88,30 @@ export function rewriteRootFilters(params: {
     )
 
     if (!candidates || !registerCandidates(registry, candidates)) {
-      residual.push({ path: key, filters: value as Record<string, unknown> })
+      registerRootResidual(
+        query,
+        residual,
+        key,
+        value as Record<string, unknown>,
+        rootFilters
+      )
       continue
     }
 
     delete rootFilters[key]
   }
+}
+
+function registerRootResidual(
+  query: RemoteJoinerQuery,
+  residual: ResidualCrossModuleFilter[],
+  path: string,
+  filters: Record<string, unknown>,
+  rootFilters: Record<string, unknown>
+): void {
+  residual.push({ path, filters })
+  ensureResidualExpand(query, path, filters)
+  delete rootFilters[path]
 }
 
 /**
@@ -135,6 +163,8 @@ export function rewriteExpandFilters(params: {
 
     if (!candidates || !registerCandidates(registry, candidates)) {
       residual.push({ path: expand.property, filters })
+      ensureResidualExpand(query, expand.property, filters)
+      stripExpandFilters(expand)
       continue
     }
 

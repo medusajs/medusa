@@ -52,8 +52,8 @@ const compile = (
 }
 
 /**
- * Runs the extraction alone, without compile's throw-on-residual guard, so
- * residual contents and untouched filters can be asserted directly.
+ * Runs the extraction alone so residual contents and expand rewrites can be
+ * asserted without going through compile.
  */
 const extract = (
   graphInput: Parameters<typeof toRemoteQuery>[0],
@@ -209,7 +209,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
     expect(plan.residualCrossModuleFilters).toEqual([])
   })
 
-  it("reports non-crossjoinable (computed) fields as residual and leaves the filter untouched", () => {
+  it("reports non-crossjoinable (computed) fields as residual and moves them onto expands", () => {
     const { crossModuleJoins, residualCrossModuleFilters, query } = extract({
       entity: "variant",
       fields: ["id"],
@@ -226,23 +226,36 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       },
     ])
     expect(getQueryArg(query, "__internal")).toBeUndefined()
-    expect(getQueryArg(query, "filters")?.value).toEqual({
-      price_set: { calculated_price: { $gt: 100 } },
-    })
+    // Root filters are cleared so the root module never sees the nested path.
+    expect(getQueryArg(query, "filters")?.value ?? {}).toEqual({})
+
+    const priceSetExpand = query.expands?.find(
+      (expand) => expand.property === "price_set"
+    )
+    expect(priceSetExpand?.fields).toEqual(
+      expect.arrayContaining(["calculated_price"])
+    )
+    expect(
+      priceSetExpand?.args?.find((arg) => arg.name === "filters")
+    ).toBeUndefined()
   })
 
-  it("throws when compiling a query with residual cross-module filters", () => {
-    // TODO: Becomes a passing pushdown once stage 2 (in-memory filtering)
-    // consumes residual filters instead of compile rejecting them.
-    expect(() =>
-      compile({
-        entity: "variant",
-        fields: ["id"],
-        filters: {
-          price_set: { calculated_price: { $gt: 100 } },
-        },
-      })
-    ).toThrow("Unsupported cross-module filter/sort paths: price_set")
+  it("compiles residual cross-module filters onto the plan for stage 2", () => {
+    const { plan } = compile({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        price_set: { calculated_price: { $gt: 100 } },
+      },
+    })
+
+    expect(plan.crossModuleJoins).toEqual([])
+    expect(plan.residualCrossModuleFilters).toEqual([
+      {
+        path: "price_set",
+        filters: { calculated_price: { $gt: 100 } },
+      },
+    ])
   })
 
   it("reports unsupported operators as residual", () => {
@@ -388,12 +401,13 @@ describe("cross-module joins (stage 1 pushdown)", () => {
         },
       },
     ])
-    expect(getQueryArg(query, "filters")?.value).toEqual({
-      price_set: {
-        currency_code: "usd",
-        calculated_price: { $gt: 100 },
-      },
-    })
+    expect(getQueryArg(query, "filters")?.value ?? {}).toEqual({})
+    const priceSetExpand = query.expands?.find(
+      (expand) => expand.property === "price_set"
+    )
+    expect(priceSetExpand?.fields).toEqual(
+      expect.arrayContaining(["currency_code", "calculated_price"])
+    )
   })
 
   it("rejects a second join to an already-used target table", () => {
@@ -426,9 +440,11 @@ describe("cross-module joins (stage 1 pushdown)", () => {
         filters: { id: "pset_2" },
       },
     ])
-    expect(getQueryArg(query, "filters")?.value).toEqual({
-      backup_price_set: { id: "pset_2" },
-    })
+    expect(getQueryArg(query, "filters")?.value ?? {}).toEqual({})
+    const backupExpand = query.expands?.find(
+      (expand) => expand.property === "backup_price_set"
+    )
+    expect(backupExpand?.fields).toEqual(expect.arrayContaining(["id"]))
   })
 
   it("does not push down joins across different databases", () => {
@@ -660,9 +676,11 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       expect(residualCrossModuleFilters).toEqual([
         { path: "product", filters: { handle: "shirt" } },
       ])
-      expect(getQueryArg(query, "filters")?.value).toEqual({
-        product: { handle: "shirt" },
-      })
+      expect(getQueryArg(query, "filters")?.value ?? {}).toEqual({})
+      const productExpand = query.expands?.find(
+        (expand) => expand.property === "product"
+      )
+      expect(productExpand?.fields).toEqual(expect.arrayContaining(["handle"]))
     })
 
     it("bails when the graph schema disagrees with the DML relation", () => {
@@ -687,6 +705,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       )
 
       expect(plan.crossModuleJoins).toEqual([])
+      expect(plan.residualCrossModuleFilters).toEqual([])
       // The filter stays on the expand and keeps today's behavior.
       const productExpand = query.expands!.find(
         (expand) => expand.property === "items.product"
