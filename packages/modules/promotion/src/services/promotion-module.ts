@@ -206,13 +206,18 @@ export default class PromotionModuleService
     attributeValue: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
+    // Re-read the per-attribute usage row under the budget row lock held by the
+    // caller (`registerUsage`). The lock lives on `promotion_campaign_budget`,
+    // not on this usage row, so `refresh: true` is required to read the
+    // committed value rather than a stale identity-map copy; otherwise a
+    // concurrent registration's guard could pass on a stale count.
     const [campaignBudgetUsagePerAttributeValue] =
       await this.campaignBudgetUsageService_.list(
         {
           budget_id: budgetId,
           attribute_value: attributeValue,
         },
-        { relations: ["budget"] },
+        { relations: ["budget"], options: { refresh: true } },
         sharedContext
       )
 
@@ -333,9 +338,17 @@ export default class PromotionModuleService
           .filter(Boolean) as string[]
       )
     )
-    const manager = (sharedContext.transactionManager ??
-      sharedContext.manager) as SqlEntityManager
-    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "registerUsage must run inside a transaction to serialize concurrent usage registration."
+      )
+    }
     if (lockPromotionIds.length) {
       await knex("promotion")
         .whereIn("id", lockPromotionIds)

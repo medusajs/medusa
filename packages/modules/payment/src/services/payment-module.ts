@@ -808,9 +808,17 @@ export default class PaymentModuleService
     // read a stale total and each pass the guard, over-capturing the payment.
     // The provider is called afterwards from `capturePaymentFromProvider_` in a
     // separate context, so the lock is never held across the provider call.
-    const manager = (sharedContext.transactionManager ??
-      sharedContext.manager) as SqlEntityManager
-    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "capturePayment_ must run inside a transaction to serialize concurrent captures."
+      )
+    }
     await knex("payment").where("id", payment.id).forUpdate().select("id")
 
     const lockedPayment = await this.paymentService_.retrieve(
@@ -972,9 +980,17 @@ export default class PaymentModuleService
     // a stale refunded total and each pass the guard, over-refunding the payment.
     // The provider is called afterwards from `refundPaymentFromProvider_` in a
     // separate context, so the lock is never held across the provider call.
-    const manager = (sharedContext.transactionManager ??
-      sharedContext.manager) as SqlEntityManager
-    const knex = manager.getTransactionContext() ?? manager.getKnex()
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "refundPayment_ must run inside a transaction to serialize concurrent refunds."
+      )
+    }
     await knex("payment").where("id", payment.id).forUpdate().select("id")
 
     const lockedPayment = await this.paymentService_.retrieve(
