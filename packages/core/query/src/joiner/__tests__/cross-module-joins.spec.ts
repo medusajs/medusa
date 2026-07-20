@@ -9,7 +9,14 @@ import { crossModuleJoinerConfigs } from "../__fixtures__/cross-module-joins"
 import { GraphCatalog } from "../catalog"
 import { compileQuery } from "../compile"
 import { extractCrossModuleJoins } from "../cross-module-joins"
-import { QueryPlan, ResidualCrossModuleFilter } from "../types"
+import { matchesFilters } from "../cross-module-joins/in-memory-filter"
+import { RemoteJoiner } from "../remote-joiner"
+import {
+  IRemoteDataFetcher,
+  QueryPlan,
+  RemoteExpandProperty,
+  ResidualCrossModuleFilter,
+} from "../types"
 
 type RelationMap = Map<string, Map<string, string>>
 
@@ -52,7 +59,7 @@ const compile = (
 }
 
 /**
- * Runs the extraction alone, without compile's throw-on-residual guard, so
+ * Runs the extraction alone, without compile's residual consumption, so
  * residual contents and untouched filters can be asserted directly.
  */
 const extract = (
@@ -231,18 +238,73 @@ describe("cross-module joins (stage 1 pushdown)", () => {
     })
   })
 
-  it("throws when compiling a query with residual cross-module filters", () => {
-    // TODO: Becomes a passing pushdown once stage 2 (in-memory filtering)
-    // consumes residual filters instead of compile rejecting them.
-    expect(() =>
-      compile({
-        entity: "variant",
-        fields: ["id"],
-        filters: {
-          price_set: { calculated_price: { $gt: 100 } },
+  it("compiles residual filters for in-memory completion (stage 2)", () => {
+    const { plan } = compile({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        price_set: { calculated_price: { $gt: 100 } },
+      },
+    })
+
+    expect(plan.crossModuleJoins).toEqual([])
+    expect(plan.residualCrossModuleFilters).toEqual([
+      {
+        path: "price_set",
+        filters: { calculated_price: { $gt: 100 } },
+      },
+    ])
+
+    // The filter is stripped from the root fetch so the module never sees it.
+    expect(getArg(plan, "filters")?.value ?? {}).toEqual({})
+
+    // The relation is loaded for evaluation through the regular expand
+    // machinery, with the computed field fetched as a child value node.
+    const priceSetExpand = plan.expands.get("_root.price_set_link.price_set")
+    expect(priceSetExpand).toBeDefined()
+    expect(priceSetExpand!.expands?.calculated_price?.fields).toEqual(["*"])
+
+    // The synthetic relation is hidden from the returned payload.
+    expect(plan.residualHiddenProperties).toEqual([
+      { location: [], property: "price_set" },
+    ])
+  })
+
+  it("strips residual filters from the expand fetch they were assigned to", () => {
+    const { plan } = compileJoinerQuery({
+      alias: "variant",
+      fields: ["id"],
+      expands: [
+        {
+          property: "price_set",
+          fields: ["id"],
+          args: [
+            {
+              name: "filters",
+              value: { calculated_price: { $gt: 100 } },
+            },
+          ],
         },
-      })
-    ).toThrow("Unsupported cross-module filter/sort paths: price_set")
+      ],
+    })
+
+    expect(plan.residualCrossModuleFilters).toEqual([
+      {
+        path: "price_set",
+        filters: { calculated_price: { $gt: 100 } },
+      },
+    ])
+
+    const priceSetExpand = plan.expands.get("_root.price_set_link.price_set")!
+    expect(
+      priceSetExpand.args?.find((arg) => arg.name === "filters")
+    ).toBeUndefined()
+
+    // The user requested price_set.id, so only the field added for
+    // evaluation is hidden — not the relation itself.
+    expect(plan.residualHiddenProperties).toEqual([
+      { location: ["price_set"], property: "calculated_price" },
+    ])
   })
 
   it("reports unsupported operators as residual", () => {
@@ -774,5 +836,273 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       expect(plan.crossModuleJoins).toEqual([])
       expect(getArg(plan, "order")?.value).toEqual({ title: "ASC" })
     })
+  })
+})
+
+describe("cross-module filtering (stage 2 in-memory residuals)", () => {
+  type FetchCall = {
+    service: string
+    keyField: string
+    ids?: unknown[]
+    args: Record<string, unknown>
+  }
+
+  const variants = [
+    { id: "v1", title: "Variant 1" },
+    { id: "v2", title: "Variant 2" },
+    { id: "v3", title: "Variant 3" },
+  ]
+  const links = [
+    { id: "link_1", variant_id: "v1", price_set_id: "ps1" },
+    { id: "link_2", variant_id: "v2", price_set_id: "ps2" },
+    { id: "link_3", variant_id: "v3", price_set_id: "ps3" },
+  ]
+  const backupLinks = [
+    { id: "blink_1", variant_id: "v1", price_set_id: "bps1" },
+    { id: "blink_2", variant_id: "v2", price_set_id: "bps2" },
+  ]
+  // calculated_price mirrors the CalculatedPriceSet object shape computed by
+  // the pricing module.
+  const priceSets = [
+    { id: "ps1", currency_code: "usd", calculated_price: { calculated_amount: 50 } },
+    { id: "ps2", currency_code: "usd", calculated_price: { calculated_amount: 150 } },
+    { id: "ps3", currency_code: "eur", calculated_price: { calculated_amount: 250 } },
+    { id: "bps1", currency_code: "usd", calculated_price: { calculated_amount: 10 } },
+    { id: "bps2", currency_code: "usd", calculated_price: { calculated_amount: 20 } },
+  ]
+
+  const serviceData: Record<string, any[]> = {
+    product: variants,
+    "link-product-variant-price-set": links,
+    "link-product-variant-backup-price-set": backupLinks,
+    pricing: priceSets,
+  }
+
+  const createFetcher = (): {
+    dataFetcher: IRemoteDataFetcher
+    calls: FetchCall[]
+  } => {
+    const calls: FetchCall[] = []
+
+    const dataFetcher: IRemoteDataFetcher = {
+      async fetch(
+        expand: RemoteExpandProperty,
+        keyField: string,
+        ids?: (unknown | unknown[])[]
+      ) {
+        const service = expand.serviceConfig.serviceName
+        const args = Object.fromEntries(
+          (expand.args ?? []).map((arg) => [arg.name, arg.value])
+        )
+        calls.push({ service, keyField, ids: ids as unknown[], args })
+
+        let rows = (serviceData[service] ?? []).map((row) => ({ ...row }))
+        if (ids) {
+          const idSet = new Set((ids as unknown[]).flat())
+          rows = rows.filter((row) => idSet.has(row[keyField]))
+        }
+
+        return { data: rows }
+      },
+    }
+
+    return { dataFetcher, calls }
+  }
+
+  const runQuery = async (
+    graphInput: Parameters<typeof toRemoteQuery>[0]
+  ): Promise<{ result: any; calls: FetchCall[] }> => {
+    const { dataFetcher, calls } = createFetcher()
+    const joiner = new RemoteJoiner(crossModuleJoinerConfigs, dataFetcher, {
+      autoCreateServiceNameAlias: false,
+    })
+
+    const query = toRemoteJoinerQuery(
+      toRemoteQuery(graphInput, crossModuleJoinerConfigs)
+    )
+
+    const result = await joiner.query(query)
+    return { result, calls }
+  }
+
+  it("filters root rows in memory and hides the synthetic relation", async () => {
+    const { result } = await runQuery({
+      entity: "variant",
+      fields: ["id", "title"],
+      filters: {
+        price_set: { calculated_price: { calculated_amount: { $gt: 100 } } },
+      },
+    })
+
+    expect(result.map((row) => row.id)).toEqual(["v2", "v3"])
+    // The price_set relation was loaded only for evaluation and is hidden.
+    expect(JSON.parse(JSON.stringify(result[0]))).toEqual({
+      id: "v2",
+      title: "Variant 2",
+    })
+  })
+
+  it("keeps requested fields on the residual path and hides only added ones", async () => {
+    const { result } = await runQuery({
+      entity: "variant",
+      fields: ["id", "price_set.id"],
+      filters: {
+        price_set: { calculated_price: { calculated_amount: { $gt: 100 } } },
+      },
+    })
+
+    expect(result.map((row) => row.id)).toEqual(["v2", "v3"])
+    expect(JSON.parse(JSON.stringify(result[0].price_set))).toEqual({
+      id: "ps2",
+    })
+  })
+
+  it("combines stage-1 pushdown with in-memory residuals", async () => {
+    const { result, calls } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        // Pushable: becomes a cross-module join on the root fetch.
+        price_set: { currency_code: "usd" },
+        // Residual: second join to the same target table is rejected.
+        backup_price_set: { id: "bps1" },
+      },
+    })
+
+    const rootCall = calls.find((call) => call.service === "product")!
+    expect(rootCall.args.__internal).toEqual({
+      crossModuleJoins: [
+        {
+          link: {
+            table: "product_variant_price_set",
+            sourceKey: "variant_id",
+            targetKey: "price_set_id",
+          },
+          target: {
+            table: "price_set",
+            primaryKey: "id",
+            filters: { currency_code: "usd" },
+          },
+        },
+      ],
+    })
+    // The residual filter never reaches a module fetch.
+    expect(rootCall.args.filters ?? {}).toEqual({})
+
+    expect(result.map((row) => row.id)).toEqual(["v1"])
+    expect(JSON.parse(JSON.stringify(result[0]))).toEqual({ id: "v1" })
+  })
+
+  it("applies pagination after in-memory filtering and reports the filtered count", async () => {
+    const { result, calls } = await runQuery({
+      entity: "variant",
+      fields: ["id", "title"],
+      filters: {
+        price_set: { calculated_price: { calculated_amount: { $gt: 100 } } },
+      },
+      pagination: { skip: 1, take: 1 },
+    })
+
+    // Pagination is moved off the root fetch so all candidate rows load.
+    const rootCall = calls.find((call) => call.service === "product")!
+    expect(rootCall.args.skip).toBeUndefined()
+    expect(rootCall.args.take).toBeUndefined()
+
+    expect(result.metadata).toEqual({ skip: 1, take: 1, count: 2 })
+    expect(result.rows.map((row) => row.id)).toEqual(["v3"])
+  })
+
+  it("applies take-only pagination after in-memory filtering", async () => {
+    const { result } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        price_set: { calculated_price: { calculated_amount: { $gt: 100 } } },
+      },
+      pagination: { take: 1 },
+    })
+
+    // No skip means no pagination envelope, matching the SQL-only path.
+    expect(Array.isArray(result)).toBe(true)
+    expect(result.map((row) => row.id)).toEqual(["v2"])
+  })
+
+  it("keeps the paginated envelope untouched when no residuals exist", async () => {
+    const { result, calls } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      pagination: { skip: 0, take: 2 },
+    })
+
+    // Without residuals the pagination args stay on the root fetch; the mock
+    // fetcher ignores them, so all rows come back as a plain list.
+    const rootCall = calls.find((call) => call.service === "product")!
+    expect(rootCall.args.skip).toEqual(0)
+    expect(rootCall.args.take).toEqual(2)
+    expect(result.map((row) => row.id)).toEqual(["v1", "v2", "v3"])
+  })
+})
+
+describe("in-memory filter matching", () => {
+  it("matches operators against loaded values", () => {
+    const record = {
+      title: "Winter Jacket",
+      amount: "150.50",
+      created_at: new Date("2026-01-15T00:00:00Z"),
+      tags: ["sale", "new"],
+    }
+
+    expect(matchesFilters(record, { title: { $ilike: "winter%" } })).toBe(true)
+    expect(matchesFilters(record, { title: { $like: "winter%" } })).toBe(false)
+    expect(matchesFilters(record, { title: { $re: "^Winter" } })).toBe(true)
+    expect(matchesFilters(record, { title: { $fulltext: "jacket winter" } })).toBe(
+      true
+    )
+    expect(matchesFilters(record, { amount: { $gt: 100, $lte: 200 } })).toBe(
+      true
+    )
+    expect(
+      matchesFilters(record, { created_at: { $gt: "2026-01-01T00:00:00Z" } })
+    ).toBe(true)
+    expect(matchesFilters(record, { tags: { $contains: ["sale"] } })).toBe(true)
+    expect(matchesFilters(record, { title: ["Winter Jacket", "Other"] })).toBe(
+      true
+    )
+    expect(matchesFilters(record, { missing: { $eq: null } })).toBe(true)
+  })
+
+  it("applies EXISTS semantics on to-many relations and supports $and/$or", () => {
+    const record = {
+      id: "ps1",
+      prices: [
+        { amount: 10, currency_code: "usd" },
+        { amount: 90, currency_code: "eur" },
+      ],
+    }
+
+    expect(
+      matchesFilters(record, { prices: { amount: { $gt: 50 } } })
+    ).toBe(true)
+    expect(
+      matchesFilters(record, {
+        prices: { amount: { $gt: 50 }, currency_code: "usd" },
+      })
+    ).toBe(false)
+    expect(
+      matchesFilters(record, {
+        $or: [{ id: "other" }, { prices: { currency_code: "usd" } }],
+      })
+    ).toBe(true)
+    expect(
+      matchesFilters(record, {
+        $and: [{ id: "ps1" }, { prices: { currency_code: "aud" } }],
+      })
+    ).toBe(false)
+  })
+
+  it("throws a clear error for operators it cannot evaluate", () => {
+    expect(() =>
+      matchesFilters({ title: "abc" }, { title: { $customOp: "x" } })
+    ).toThrow('Operator "$customOp" is not supported')
   })
 })

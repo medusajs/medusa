@@ -2,6 +2,7 @@ import { RemoteJoinerQuery } from "@medusajs/types"
 import { deduplicate, isDefined } from "@medusajs/utils"
 import { GraphCatalog } from "./catalog"
 import { extractCrossModuleJoins } from "./cross-module-joins"
+import { consumeResidualFilters } from "./cross-module-joins/residual-filters"
 import {
   getNestedItems,
   resolveFieldAliasEntry,
@@ -59,14 +60,15 @@ export function compileQuery(
     query.args.push({ name: "__internal", value: { crossModuleJoins } })
   }
 
-  // TODO: Once we implement the second stage of cross-module filtering/sorting, we can remove this check.
-  if (residualCrossModuleFilters.length) {
-    throw new Error(
-      `Unsupported cross-module filter/sort paths: ${residualCrossModuleFilters
-        .map((f) => f.path)
-        .join(", ")}`
-    )
-  }
+  // Stage 2: residual filters are stripped from the query here (with the data
+  // they need injected as regular expands) and completed in memory by
+  // executePlan after the fetch.
+  const residualHiddenProperties = residualCrossModuleFilters.length
+    ? consumeResidualFilters(
+        { query, serviceConfig, residuals: residualCrossModuleFilters },
+        catalog
+      )
+    : []
 
   const { primaryKeyArg, otherArgs, pkName } = getPrimaryKeysAndOtherFilters({
     serviceConfig,
@@ -118,6 +120,7 @@ export function compileQuery(
     options,
     crossModuleJoins,
     residualCrossModuleFilters,
+    residualHiddenProperties,
   }
 }
 

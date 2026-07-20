@@ -28,9 +28,10 @@ import { SpecRegistry } from "./types"
  * every filtered/sorted field is `crossjoinable` (a non-computed DML column)
  * on its target entity. Anything else — computed fields, unsupported
  * operators, missing metadata, schema-remapped relations — is reported as
- * residual and left untouched on the query. The in-memory stage (stage 2)
- * will consume `residualCrossModuleFilters` to complete filtering; until then
- * those filters keep today's behavior.
+ * residual and left untouched on the query. Compile then hands
+ * `residualCrossModuleFilters` to the in-memory stage (stage 2, see
+ * `residual-filters.ts`), which strips them from the query and completes
+ * them after the fetch.
  *
  * Pipeline per filter/sort location:
  *

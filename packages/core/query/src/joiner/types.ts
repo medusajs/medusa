@@ -44,6 +44,16 @@ export type ResidualCrossModuleFilter = {
 }
 
 /**
+ * A property that was loaded solely to evaluate residual cross-module filters
+ * in memory. Hidden from the returned payload after evaluation.
+ */
+export type ResidualHiddenProperty = {
+  /** Alias-form path to the parent objects holding the property. */
+  location: string[]
+  property: string
+}
+
+/**
  * Nested expand tree attached to a fetch node so a single module call can
  * load same-service relations in one round-trip.
  *
@@ -119,9 +129,15 @@ export type QueryPlan = {
    */
   crossModuleJoins?: CrossModuleJoinSpec[]
   /**
-   * Cross-module filters that could not be pushed down to SQL.
+   * Cross-module filters that could not be pushed down to SQL. Completed in
+   * memory by executePlan after the fetch (stage 2).
    */
   residualCrossModuleFilters?: ResidualCrossModuleFilter[]
+  /**
+   * Properties added to the query solely to evaluate residual filters,
+   * hidden from the returned payload.
+   */
+  residualHiddenProperties?: ResidualHiddenProperty[]
 }
 
 /** Contract for loading module data during join execution. */
