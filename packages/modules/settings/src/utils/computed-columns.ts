@@ -1,12 +1,17 @@
 import { RelationshipFilterConfig } from "./relationship-filters"
-import { RenderMode } from "./render-mode-mapper"
+import {
+  ColumnCategory,
+  ColumnDataType,
+  FilterOperator,
+  RenderMode,
+} from "./render-mode-mapper"
 
 /**
  * Filter configuration for an injected column.
  */
 export interface ComputedColumnFilter {
   enabled: boolean
-  operators?: string[]
+  operators?: FilterOperator[]
   /**
    * Relationship dropdown filter. `filter_key` overrides the query-param key
    * the filter posts (e.g. `"location_id"`); options are fetched from
@@ -62,7 +67,7 @@ export interface ComputedColumnDefinition {
   /**
    * Category for grouping columns (e.g., "relationship", "metadata", "computed").
    */
-  category?: string
+  category?: ColumnCategory
 
   /**
    * Metadata for the column.
@@ -85,7 +90,7 @@ export interface ComputedColumnDefinition {
   /**
    * Column data type (default "string").
    */
-  dataType?: string
+  dataType?: ColumnDataType
 
   /**
    * Whether the column is sortable (default false).

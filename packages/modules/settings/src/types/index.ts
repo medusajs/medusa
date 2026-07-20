@@ -41,3 +41,10 @@ export interface SettingsModuleOptions {
    */
   entityOverrides?: Record<string, EntityOverride>
 }
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/settings": SettingsModuleOptions
+    "@medusajs/medusa/settings": SettingsModuleOptions
+  }
+}
