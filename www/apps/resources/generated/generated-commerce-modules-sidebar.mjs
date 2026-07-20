@@ -440,6 +440,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/link-provider-identity",
+              "title": "Link Provider to Existing Actor",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
               "type": "ref",
               "title": "Phone Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth",
@@ -3033,8 +3041,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Reservations Lifecycle",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Shipping Option Price Rules",
               "path": "https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Physical and Customs Attributes",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes",
               "children": []
             },
             {
@@ -4126,6 +4150,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/commerce-modules/inventory/reservations-lifecycle",
+              "title": "Reservations Lifecycle",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/inventory/inventory-kit",
               "title": "Inventory Kit",
               "children": []
@@ -4136,6 +4168,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/inventory/links-to-other-modules",
               "title": "Links to Modules",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Physical and Customs Attributes",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes",
               "children": []
             },
             {
@@ -8558,6 +8598,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/product/variant-inventory",
               "title": "Variant Inventory",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/product/physical-customs-attributes",
+              "title": "Physical and Customs Attributes",
               "children": []
             },
             {

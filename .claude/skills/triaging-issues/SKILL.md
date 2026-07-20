@@ -69,7 +69,7 @@ root. The file MUST be valid JSON matching this schema **exactly**:
 {
   "labels_to_add": ["type: bug" | "requires-more" | "requires-team" | "help-wanted" | "good first issue" | "feedback"],
   "comment_template": "ack-bug" | "needs-repro" | "needs-info" | "ack-feature" | "close-spam" | "close-invalid" | "close-duplicate" | null,
-  "comment_params": { "summary": "<short string, max 280 chars>" }
+  "comment_params": { "summary": "<short string, max 1000 chars>" }
 }
 ```
 
@@ -83,7 +83,7 @@ Rules:
   when no comment should be posted (e.g., low-signal comment-only events).
 - `comment_params.summary` is a **short, neutral, paraphrased summary**
   written for maintainers. Do NOT echo attacker-controlled text verbatim.
-  Hard cap: 280 characters.
+  Hard cap: 1000 characters.
 - Picking a `close-*` template tells the downstream step to **post the
   closing comment and then close the issue**. The close target is always
   the issue the workflow was triggered for — it cannot be redirected.
@@ -249,7 +249,7 @@ bugs as `type: bug` with an explanatory summary.)
 The `summary` field is the only free-text the agent contributes; the
 template provides the rest. Keep it:
 
-- **Short** — one paragraph, ≤ 280 chars.
+- **Short** — one paragraph, ≤ 1000 chars.
 - **Neutral** — factual, no marketing tone, no apologies for problems you
   didn't cause.
 - **Paraphrased** — do not paste attacker-controlled strings verbatim;
@@ -284,7 +284,7 @@ from JSON-supplied numbers.
 - [ ] Missing the Cloud platform exception in support issues
 - [ ] Not fetching issue details when they weren't passed as arguments
 - [ ] Adding `good first issue` or `help-wanted` when a PR is already linked to the issue
-- [ ] Producing a `summary` longer than 280 characters (it will be truncated)
+- [ ] Producing a `summary` longer than 1000 characters (it will be truncated at a word boundary with an ellipsis)
 
 ## Reference Files
 
