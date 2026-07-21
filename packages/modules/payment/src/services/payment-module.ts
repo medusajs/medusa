@@ -789,9 +789,15 @@ export default class PaymentModuleService
       return { isFullyCaptured: true }
     }
 
-    // If no custom amount is passed, we assume the full amount needs to be captured
-    if (!data.amount) {
+    // If no custom amount is passed, we assume the full amount needs to be
+    // captured. An explicit amount, however, must be strictly positive.
+    if (data.amount == null) {
       data.amount = payment.amount as number
+    } else if (MathBN.lte(data.amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Capture amount must be greater than 0.`
+      )
     }
 
     const capturedAmount = payment.captures.reduce((captureAmount, next) => {
@@ -930,8 +936,15 @@ export default class PaymentModuleService
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof Refund>> {
-    if (!data.amount) {
+    // If no amount is passed, we assume the full payment amount needs to be
+    // refunded. An explicit amount, however, must be strictly positive.
+    if (data.amount == null) {
       data.amount = payment.amount as BigNumberInput
+    } else if (MathBN.lte(data.amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Refund amount must be greater than 0.`
+      )
     }
 
     const capturedAmount = payment.captures.reduce((captureAmount, next) => {

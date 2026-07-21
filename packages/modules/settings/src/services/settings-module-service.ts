@@ -25,9 +25,12 @@ import {
 import {
   EntityDiscoveryService,
   generateEntityColumns,
+  getComputedColumnRegistry,
+  getEntityOverrideRegistry,
   hasEntityOverride,
   PropertyLabel as PropertyLabelType,
 } from "@/utils"
+import { SettingsModuleOptions } from "@/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -66,6 +69,7 @@ export default class SettingsModuleService
       propertyLabelService,
       layoutConfigurationService,
     }: InjectedDependencies,
+    options: SettingsModuleOptions = {},
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     super(...arguments)
@@ -74,6 +78,34 @@ export default class SettingsModuleService
     this.propertyLabelService_ = propertyLabelService
     this.layoutConfigurationService_ = layoutConfigurationService
     this.entityDiscoveryService_ = new EntityDiscoveryService()
+
+    this.registerColumnCustomizations_(options)
+  }
+
+  /**
+   * Merge module-provided entity overrides and computed columns into the shared
+   * registries so generated columns reflect user customizations.
+   */
+  protected registerColumnCustomizations_(
+    options: SettingsModuleOptions
+  ): void {
+    const overrideRegistry = getEntityOverrideRegistry()
+    const computedColumnRegistry = getComputedColumnRegistry()
+
+    for (const [entity, override] of Object.entries(
+      options.entityOverrides ?? {}
+    )) {
+      const existingOverride = overrideRegistry.get(entity) ?? {}
+      overrideRegistry.register(entity, {
+        ...existingOverride,
+        ...override,
+      })
+      if (override.computedColumns?.length) {
+        for (const computedColumn of override.computedColumns) {
+          computedColumnRegistry.register(computedColumn)
+        }
+      }
+    }
   }
 
   __hooks = {

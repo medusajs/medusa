@@ -889,6 +889,58 @@ This returns the variants and options of each product, but the variants only hav
 
 </DividedMarkdownLayout>
 
+<DividedMarkdownLayout addYSpacing codeContentClassName="mt-3">
+
+<DividedMarkdownContent>
+
+### Select Nested Relations
+
+A relation can have relations of its own. To select a nested relation, chain the relation names with a dot (`.`), prefixing the deepest relation with `*` to select all its fields. For example, `*variants.prices`.
+
+</DividedMarkdownContent>
+
+</DividedMarkdownLayout>
+
+<DividedMarkdownLayout addYSpacing>
+
+<DividedMarkdownContent>
+
+Prefixing a relation with `*` only selects that relation's own fields, not its nested relations. So, to retrieve a nested relation, you must reference it explicitly through its parent, as shown in the example.
+
+You can chain more relations to select deeper levels, such as `*items.variant.product`.
+
+</DividedMarkdownContent>
+
+<DividedMarkdownCode>
+
+<CodeTabs group="request-examples">
+
+<CodeTab label="JS SDK" value="js-sdk">
+
+```js title="Select nested relations"
+sdk.store.product.list({
+  fields: "*variants.prices"
+})
+```
+
+</CodeTab>
+
+<CodeTab label="cURL" value="curl">
+
+```bash title="Select nested relations"
+curl 'localhost:9000/store/products?fields=*variants.prices'
+```
+
+</CodeTab>
+
+</CodeTabs>
+
+This returns the variants of each product, each with its `prices` relation populated.
+
+</DividedMarkdownCode>
+
+</DividedMarkdownLayout>
+
 <DividedMarkdownLayout>
 
 <DividedMarkdownContent>

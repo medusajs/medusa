@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Order/Steps_Order/variables/core_flows.Order.Steps_Order.cancelOrdersStepId","title":"cancelOrdersStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"cancelOrdersStepId","type":"`\"cancel-orders\"`","description":"","optional":false,"defaultValue":"\"cancel-orders\"","expandable":false,"children":[]}]}]}

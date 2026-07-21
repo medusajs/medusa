@@ -1,7 +1,9 @@
 import {
+  CrossModuleJoinSpec,
   JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
+  ModuleJoinerConfig,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
 } from "@medusajs/types"
@@ -25,6 +27,20 @@ export type InternalJoinerServiceConfig = Omit<
   relationships?: Map<string, JoinerRelationship | JoinerRelationship[]>
   entity?: string
   entryPoint?: string
+  isLink?: boolean
+  databaseConfig?: ModuleJoinerConfig["databaseConfig"]
+  databaseClientUrl?: string
+}
+
+/**
+ * A cross-module filter that could not be pushed down to SQL during
+ * compilation. Kept on the plan so the in-memory filtering stage (stage 2)
+ * can complete it.
+ */
+export type ResidualCrossModuleFilter = {
+  /** Dotted relation path relative to the query root, in alias form. */
+  path: string
+  filters: Record<string, unknown>
 }
 
 /**
@@ -97,6 +113,15 @@ export type QueryPlan = {
   initialData: any[]
   initialDataOnly?: boolean
   options?: RemoteJoinerOptions
+  /**
+   * Cross-module joins pushed down to the root module fetch. Applied as
+   * correlated EXISTS/scalar subqueries by the module's DAL.
+   */
+  crossModuleJoins?: CrossModuleJoinSpec[]
+  /**
+   * Cross-module filters that could not be pushed down to SQL.
+   */
+  residualCrossModuleFilters?: ResidualCrossModuleFilter[]
 }
 
 /** Contract for loading module data during join execution. */

@@ -17,7 +17,7 @@
     "upload:r2": "node ./scripts/upload-specs-to-r2.mjs",
     "test": "vitest",
     "preview": "yarn build:cloudflare && opennextjs-cloudflare preview",
-    "deploy": "wrangler deploy",
+    "deploy": "OPEN_NEXT_DEPLOY=true wrangler deploy",
     "upload": "wrangler versions upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
@@ -41,7 +41,7 @@
     "next-mdx-remote": "5.0.0",
     "openapi-sampler": "^1.3.1",
     "pluralize": "^8.0.0",
-    "postcss": "8.4.27",
+    "postcss": "^8.5.10",
     "posthog-js": "^1.298.1",
     "prism-react-renderer": "2.4.0",
     "react": "19.2.5",
