@@ -53103,7 +53103,9 @@ module.exports = defineConfig({
             is_default: true,
             options: {
               redisUrl: process.env.CACHE_REDIS_URL,
-              // more options...
+              redisOptions: {
+                // ioredis options...
+              },
             },
           },
           // other caching providers...
@@ -53132,6 +53134,7 @@ CACHE_REDIS_URL=redis://localhost:6379
 |\`ttl\`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.|\`3600\`|
 |\`prefix\`|A string to prefix all cache keys with. This is useful for namespacing your cache keys, especially when sharing a Redis instance with other applications or modules.|No prefix by default|
 |\`compressionThreshold\`|A number indicating the size threshold in bytes above which cached items will be compressed before being stored in Redis. This helps save memory when caching large items.|\`1024\`|
+|\`redisOptions\`|An object of ||
 
 ***
 

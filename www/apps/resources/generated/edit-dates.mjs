@@ -7622,5 +7622,6 @@ export const generatedEditDates = {
   "app/commerce-modules/loyalty/module-options/page.mdx": "2026-06-30T20:47:59.438Z",
   "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T09:48:42.878Z",
   "app/commerce-modules/auth/link-provider-identity/page.mdx": "2026-07-16T11:48:10.582Z",
-  "app/commerce-modules/product/physical-customs-attributes/page.mdx": "2026-07-20T12:29:50.832Z"
+  "app/commerce-modules/product/physical-customs-attributes/page.mdx": "2026-07-20T12:29:50.832Z",
+  "app/infrastructure-modules/caching/providers/redis/page.mdx": "2026-07-21T12:10:33.620Z"
 }
