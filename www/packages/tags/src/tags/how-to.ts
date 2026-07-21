@@ -8,6 +8,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
   },
   {
+    "title": "Link Auth Provider to Existing Actor",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },

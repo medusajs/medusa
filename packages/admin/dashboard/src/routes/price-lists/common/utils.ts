@@ -329,6 +329,18 @@ function createMapKey(obj: PriceObject) {
   }-${obj.minQuantity || "none"}-${obj.maxQuantity || "none"}`
 }
 
+function buildPriceRules(price: PriceObject): Record<string, string> {
+  return {
+    ...(price.regionId ? { region_id: price.regionId } : {}),
+    ...(price.minQuantity
+      ? { min_quantity: price.minQuantity.toString() }
+      : {}),
+    ...(price.maxQuantity
+      ? { max_quantity: price.maxQuantity.toString() }
+      : {}),
+  }
+}
+
 export function comparePrices(
   initialPrices: PriceObject[],
   newPrices: PriceObject[]
@@ -365,39 +377,27 @@ export function comparePrices(
         initialPrice.maxQuantity !== newPrice.maxQuantity
       ) {
         if (newPrice.id) {
+          const rules = buildPriceRules(newPrice)
+
           pricesToUpdate.push({
             id: newPrice.id,
             variant_id: newPrice.variantId,
             currency_code: newPrice.currencyCode,
             amount: newPrice.amount,
-            rules: {
-              ...(newPrice.regionId ? { region_id: newPrice.regionId } : {}),
-              ...(newPrice.minQuantity
-                ? { min_quantity: newPrice.minQuantity.toString() }
-                : {}),
-              ...(newPrice.maxQuantity
-                ? { max_quantity: newPrice.maxQuantity.toString() }
-                : {}),
-            },
+            rules: Object.keys(rules).length > 0 ? rules : undefined,
           })
         }
       }
     }
 
     if (!initialPrice && newPrice) {
+      const rules = buildPriceRules(newPrice)
+
       pricesToCreate.push({
         variant_id: newPrice.variantId,
         currency_code: newPrice.currencyCode,
         amount: newPrice.amount,
-        rules: {
-          ...(newPrice.regionId ? { region_id: newPrice.regionId } : {}),
-          ...(newPrice.minQuantity
-            ? { min_quantity: newPrice.minQuantity.toString() }
-            : {}),
-          ...(newPrice.maxQuantity
-            ? { max_quantity: newPrice.maxQuantity.toString() }
-            : {}),
-        },
+        rules: Object.keys(rules).length > 0 ? rules : undefined,
       })
     }
 

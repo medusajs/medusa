@@ -16,7 +16,7 @@ export const generatedEditDates = {
   "app/environments/long-lived/page.mdx": "2026-06-18T13:40:26.814Z",
   "app/environments/preview/page.mdx": "2026-05-20T13:20:57.494Z",
   "app/faq/page.mdx": "2026-04-14T10:44:08.191Z",
-  "app/billing/page.mdx": "2025-12-17T12:39:37.397Z",
+  "app/billing/page.mdx": "2026-07-21T15:38:18.865Z",
   "app/usage/page.mdx": "2026-04-10T10:22:15.211Z",
   "app/billing/manage/page.mdx": "2026-05-27T00:37:24.600Z",
   "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
@@ -40,12 +40,12 @@ export const generatedEditDates = {
   "app/monitoring/page.mdx": "2026-06-08T14:16:22.810Z",
   "app/monitoring/servers/page.mdx": "2026-04-17T09:52:51.174Z",
   "app/monitoring/workers/page.mdx": "2026-04-17T09:52:32.919Z",
-  "app/cli/commands/environments/page.mdx": "2026-07-15T14:21:12.954Z",
+  "app/cli/commands/environments/page.mdx": "2026-07-17T13:52:45.199Z",
   "app/cli/commands/login/page.mdx": "2026-04-29T09:10:36.671Z",
   "app/cli/commands/logout/page.mdx": "2026-04-23T11:41:28.947Z",
   "app/cli/commands/logs/page.mdx": "2026-07-15T15:03:26.331Z",
-  "app/cli/commands/organizations/page.mdx": "2026-07-15T14:21:29.940Z",
-  "app/cli/commands/projects/page.mdx": "2026-07-15T14:44:04.022Z",
+  "app/cli/commands/organizations/page.mdx": "2026-07-17T13:54:32.532Z",
+  "app/cli/commands/projects/page.mdx": "2026-07-17T13:53:46.402Z",
   "app/cli/commands/signup/page.mdx": "2026-04-24T07:15:31.040Z",
   "app/cli/page.mdx": "2026-05-05T10:42:00.594Z",
   "app/cli/commands/deployments/page.mdx": "2026-04-29T08:11:42.521Z",
@@ -115,5 +115,6 @@ export const generatedEditDates = {
   "app/deployments/fix-with-ai/page.mdx": "2026-05-22T09:18:36.373Z",
   "app/get-started/page.mdx": "2026-05-27T00:36:28.665Z",
   "app/first-project/page.mdx": "2026-06-08T14:16:09.467Z",
-  "app/cli/commands/local/page.mdx": "2026-07-15T14:40:50.690Z"
+  "app/cli/commands/local/page.mdx": "2026-07-15T14:40:50.690Z",
+  "app/cli/changelog/page.mdx": "2026-07-17T13:50:03.511Z"
 }

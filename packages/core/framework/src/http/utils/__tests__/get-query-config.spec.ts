@@ -573,4 +573,99 @@ describe("prepareListQuery", () => {
       })
     })
   })
+
+  describe("disallowed fields", () => {
+    it("should strip a disallowed top-level relation and its entire subtree", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,orders.email,orders.customer.first_name",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "region",
+        disallowed: ["orders", "customer"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id"])
+    })
+
+    it("should strip a disallowed segment appearing at any depth", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,variants.order_items.order.total",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "product",
+        disallowed: ["order_items"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id"])
+    })
+
+    it("should strip disallowed star fields", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,*orders",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "region",
+        disallowed: ["orders"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id"])
+    })
+
+    it("should keep allowed fields that only share a prefix with a disallowed segment", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,order_id,customer_id",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "order",
+        disallowed: ["orders", "customer"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual([
+        "id",
+        "order_id",
+        "customer_id",
+      ])
+    })
+
+    it("should not remove anything when no disallowed fields are configured", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,orders.email",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "region",
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id", "orders.email"])
+    })
+  })
 })

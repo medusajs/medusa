@@ -56,6 +56,10 @@ export const order = [
     "path": "https://docs.medusajs.com/user-guide/settings/return-reasons"
   },
   {
+    "title": "Reservations Lifecycle",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle"
+  },
+  {
     "title": "Retrieve Order Totals Using Query",
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
   },

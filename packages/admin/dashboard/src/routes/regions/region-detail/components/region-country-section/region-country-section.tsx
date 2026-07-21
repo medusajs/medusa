@@ -126,7 +126,7 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
         pageSize={PAGE_SIZE}
         count={count}
         orderBy={[
-          { key: "display_name", label: t("fields.name") },
+          { key: "name", label: t("fields.name") },
           { key: "iso_2", label: t("fields.code") },
         ]}
         search

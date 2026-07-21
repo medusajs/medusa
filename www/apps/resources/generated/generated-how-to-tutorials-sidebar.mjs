@@ -106,6 +106,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Link Auth Provider to Existing Actor",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Reset Password Email",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password",
               "children": []
