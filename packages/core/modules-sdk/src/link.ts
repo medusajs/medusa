@@ -246,7 +246,7 @@ export class Link {
                 processedIds[processedHash].add(id)
               })
 
-              let cascadeDelKeys: DeleteEntities = {}
+              const cascadeDelKeys: DeleteEntities = {}
               cascadeDelKeys[primaryKey] = unprocessedIds
               const service: ILinkModule = this.modulesMap.get(serviceName)!
 
@@ -406,6 +406,7 @@ export class Link {
           filters: { [key: string]: any }[]
           services: string[]
         }
+        uniquePairsInBatch: Map<string, unknown>
       }
     >()
 
@@ -434,6 +435,14 @@ export class Link {
             filters: [],
             services: relationships?.map((r) => r.serviceName) ?? [],
           },
+
+          /**
+           * Tracks, within this same create() call, which "other side" value
+           * a constrained foreign key value has already been paired with, so
+           * that two links in the same batch can't create an illegal
+           * many-to-one/one-to-one violation before either is persisted.
+           */
+          uniquePairsInBatch: new Map(),
         })
       }
 
@@ -451,12 +460,36 @@ export class Link {
        * once in the pivot table that is used for tracking "brand<>products"
        * relationship.
        */
-      const linksToValidateForUniqueness = serviceLinks.get(
-        service.__definition.key
-      )!.linksToValidateForUniqueness!
+      const { linksToValidateForUniqueness, uniquePairsInBatch } =
+        serviceLinks.get(service.__definition.key)!
 
       const modA = relationships?.[0]!
       const modB = relationships?.[1]!
+
+      const assertUniqueInBatch = (
+        constrainedForeignKey: string,
+        constrainedValue: unknown,
+        pairValue: unknown
+      ) => {
+        const mapKey = `${constrainedForeignKey}:${constrainedValue}`
+        const existingPairValue = uniquePairsInBatch.get(mapKey)
+
+        if (
+          existingPairValue !== undefined &&
+          existingPairValue !== pairValue
+        ) {
+          const serviceA = linksToValidateForUniqueness.services[0]
+          const serviceB = linksToValidateForUniqueness.services[1]
+
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create multiple links between '${serviceA}' and '${serviceB}'`
+          )
+        }
+
+        uniquePairsInBatch.set(mapKey, pairValue)
+      }
+
       if (!modA.hasMany || !modB.hasMany) {
         if (!modA.hasMany && !modB.hasMany) {
           linksToValidateForUniqueness.filters.push({
@@ -465,16 +498,39 @@ export class Link {
               { [modB.foreignKey]: link[moduleB][modB.foreignKey] },
             ],
           })
+
+          assertUniqueInBatch(
+            modA.foreignKey,
+            link[moduleA][modA.foreignKey],
+            link[moduleB][modB.foreignKey]
+          )
+          assertUniqueInBatch(
+            modB.foreignKey,
+            link[moduleB][modB.foreignKey],
+            link[moduleA][modA.foreignKey]
+          )
         } else if (!modA.hasMany) {
           linksToValidateForUniqueness.filters.push({
             [modA.foreignKey]: { $ne: link[moduleA][modA.foreignKey] },
             [modB.foreignKey]: link[moduleB][modB.foreignKey],
           })
+
+          assertUniqueInBatch(
+            modB.foreignKey,
+            link[moduleB][modB.foreignKey],
+            link[moduleA][modA.foreignKey]
+          )
         } else if (!modB.hasMany) {
           linksToValidateForUniqueness.filters.push({
             [modB.foreignKey]: { $ne: link[moduleB][modB.foreignKey] },
             [modA.foreignKey]: link[moduleA][modA.foreignKey],
           })
+
+          assertUniqueInBatch(
+            modA.foreignKey,
+            link[moduleA][modA.foreignKey],
+            link[moduleB][modB.foreignKey]
+          )
         }
       }
 
