@@ -1,4 +1,4 @@
-import { MedusaInternalService } from "../medusa-internal-service"
+import { DEFAULT_LIMIT, MedusaInternalService } from "../medusa-internal-service"
 import { lowerCaseFirst } from "../../common"
 
 const defaultContext = { __type: "MedusaContext" }
@@ -153,6 +153,26 @@ describe("Internal Module Service Factory", () => {
       )
     })
 
+    it("should apply the default take when none is provided on list", async () => {
+      await instance.list()
+      expect(containerMock[modelRepositoryName].find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          options: expect.objectContaining({ limit: DEFAULT_LIMIT }),
+        }),
+        expect.any(Object)
+      )
+    })
+
+    it("should keep the provided take on list", async () => {
+      await instance.list({}, { take: 50 })
+      expect(containerMock[modelRepositoryName].find).toHaveBeenCalledWith(
+        expect.objectContaining({
+          options: expect.objectContaining({ limit: 50 }),
+        }),
+        expect.any(Object)
+      )
+    })
+
     it("should list and count entities successfully", async () => {
       const entities = [
         { id: "1", name: "Item" },
@@ -166,6 +186,40 @@ describe("Internal Module Service Factory", () => {
 
       const result = await instance.listAndCount()
       expect(result).toEqual([entities, count])
+    })
+
+    it("should apply the default take when none is provided on listAndCount", async () => {
+      containerMock[modelRepositoryName].findAndCount.mockResolvedValueOnce([
+        [],
+        0,
+      ])
+
+      await instance.listAndCount()
+      expect(
+        containerMock[modelRepositoryName].findAndCount
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          options: expect.objectContaining({ limit: DEFAULT_LIMIT }),
+        }),
+        expect.any(Object)
+      )
+    })
+
+    it("should keep the provided take on listAndCount", async () => {
+      containerMock[modelRepositoryName].findAndCount.mockResolvedValueOnce([
+        [],
+        0,
+      ])
+
+      await instance.listAndCount({}, { take: 50 })
+      expect(
+        containerMock[modelRepositoryName].findAndCount
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          options: expect.objectContaining({ limit: 50 }),
+        }),
+        expect.any(Object)
+      )
     })
 
     it("should create entity successfully", async () => {

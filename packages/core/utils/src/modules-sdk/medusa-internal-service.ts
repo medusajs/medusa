@@ -79,6 +79,8 @@ export function isMedusaInternalService(value: any): value is InternalService {
   )
 }
 
+export const DEFAULT_LIMIT = 15
+
 export function MedusaInternalService<
   TContainer extends object = object,
   TEntity extends object = any
@@ -225,6 +227,10 @@ export function MedusaInternalService<
       AbstractService_.applyDefaultOrdering(config)
       AbstractService_.applyFreeTextSearchFilter(filters, config)
 
+      if (!isDefined(config.take)) {
+        config.take = DEFAULT_LIMIT
+      }
+
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].find(
@@ -241,6 +247,10 @@ export function MedusaInternalService<
     ): Promise<[InferEntityType<TEntity>[], number]> {
       AbstractService_.applyDefaultOrdering(config)
       AbstractService_.applyFreeTextSearchFilter(filters, config)
+
+      if (!isDefined(config.take)) {
+        config.take = DEFAULT_LIMIT
+      }
 
       const queryOptions = buildQuery(filters, config)
 
