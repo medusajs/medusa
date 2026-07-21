@@ -1,1 +1,1 @@
-export { createQuery, Query, RemoteQuery } from "@medusajs/query"
+export { createQuery, Query } from "@medusajs/query"

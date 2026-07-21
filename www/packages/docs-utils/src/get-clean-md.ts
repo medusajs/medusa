@@ -9,6 +9,7 @@ import {
   ComponentParser,
   parseCard,
   parseCardList,
+  parseChildDocs,
   parseCodeTabs,
   parseColors,
   parseComponentExample,
@@ -33,6 +34,7 @@ import { matter } from "vfile-matter"
 const parsers: Record<string, ComponentParser> = {
   Card: parseCard,
   CardList: parseCardList,
+  ChildDocs: parseChildDocs,
   CodeTabs: parseCodeTabs,
   Details: parseDetails,
   Note: parseNote,

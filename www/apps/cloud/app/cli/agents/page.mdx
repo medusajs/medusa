@@ -51,7 +51,7 @@ AI agents should follow these defaults whenever they operate the CLI:
 - **Confirm context before acting.** Run [`mcloud whoami`](../commands/whoami/page.mdx) before any state change so you know which organization, project, and environment you'll affect.
 - **Set context once, not per command.** Use [`mcloud use`](../commands/use/page.mdx) to persist organization, project, and environment, then drop the flags from subsequent commands.
 - **Read before you write.** Run a `get` or `list` before any `delete`, `redeploy`, or `trigger-build` to verify you're targeting the right resource.
-- **Use `--yes` for irreversible operations.** [`mcloud projects delete`](../commands/projects/page.mdx#projects-delete) and [`mcloud environments delete`](../commands/environments/page.mdx#environments-delete) require confirmation in interactive mode and refuse to run without `--yes` in non-interactive mode.
+- **Use `--yes` for irreversible operations.** [`mcloud projects delete`](../commands/projects/page.mdx#projects-delete), [`mcloud environments delete`](../commands/environments/page.mdx#environments-delete), and [`mcloud variables delete`](../commands/variables/page.mdx#variables-delete) require confirmation in interactive mode and refuse to run without `--yes` in non-interactive mode.
 - **Production environments cannot be deleted.** [`mcloud environments delete`](../commands/environments/page.mdx#environments-delete) errors on production environments by design. Do not attempt to bypass it.
 - **Pipe to `jq` for extraction.** Avoid string-parsing JSON; pipe `--json` output into `jq` for structured access.
 
@@ -332,6 +332,52 @@ mcloud deployments build-logs "$DEPLOYMENT_ID" --type storefront
 ```
 
 `build-logs` returns a `build_status` field (`created`, `in-progress`, `succeeded`, `failed`, `timed-out`, `canceled`). When `failed`, check the build's `metadata.failed_docker_layer` (visible via `mcloud deployments get --json`) to identify the failing layer.
+
+### Reproduce a Build Failure Locally
+
+When `build-logs` alone isn't enough to pinpoint a build failure, reproduce the Cloud build on the local machine with [`mcloud local build`](../commands/local/page.mdx). It runs the same Docker build Cloud runs and infers the root path and build variables from the linked project and environment, so an agent can iterate on a fix without pushing to the tracked branch and waiting for a full Cloud build each time.
+
+<Note>
+
+`mcloud local build` requires Docker installed and running, and must run from inside the project's Git repository. Unlike every other command, it has **no `--json` flag**: it streams plaintext build output and signals the result through its exit code (`0` means the build succeeded). Do not parse its output as JSON. It reproduces `build-failed` failures only, not `deployment-failed` (runtime) failures.
+
+</Note>
+
+To match the failure exactly, check out the same commit the failed deployment built, then reproduce the build:
+
+```bash
+# Identify the failing deployment and the commit it built
+DEPLOYMENT_ID=$(
+  mcloud deployments list --json \
+    | jq -r '[.[] | select(.backend_status == "build-failed")][0].id'
+)
+COMMIT=$(mcloud deployments get "$DEPLOYMENT_ID" --json | jq -r '.commit_hash')
+
+# Check out the same commit so the local build matches the failed one
+git checkout "$COMMIT"
+
+# Reproduce the backend build locally, then route on the exit code
+if mcloud local build; then
+  echo "Build succeeded locally; the failure is not reproducible from this commit."
+else
+  echo "Build failed locally; inspect the streamed output above for the failing step."
+fi
+
+# For a storefront build failure, build the storefront instead
+mcloud local build --type storefront
+```
+
+If the failure only involves environment variables, reproduce and test a fix without editing code by overriding them:
+
+```bash
+# Override a single build variable
+mcloud local build --var NODE_ENV=production
+
+# Or build against a local .env file
+mcloud local build --env-file .env
+```
+
+Once the local build exits `0`, push the fix to the tracked branch and start a fresh Cloud build with [`mcloud environments trigger-build`](#rerun-a-deployment).
 
 ### Deployment Failure Recipe
 

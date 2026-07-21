@@ -1,9 +1,9 @@
-import { BigNumberRawValue } from "@medusajs/types"
 import {
   BeforeCreate,
   Collection,
   Entity,
   EntityManager,
+  Filter,
   ManyToMany,
   ManyToOne,
   MikroORM,
@@ -15,15 +15,18 @@ import {
   wrap,
 } from "@medusajs/deps/mikro-orm/core"
 import { defineConfig } from "@medusajs/deps/mikro-orm/postgresql"
+import { BigNumberRawValue } from "@medusajs/types"
 import BigNumber from "bignumber.js"
 import { dropDatabase } from "pg-god"
 import { MikroOrmBigNumberProperty } from "../../big-number-field"
 import { mikroOrmBaseRepositoryFactory } from "../../mikro-orm-repository"
+import { mikroOrmSoftDeletableFilterOptions } from "../../mikro-orm-soft-deletable-filter"
 import { getDatabaseURL, pgGodCredentials } from "../__fixtures__/database"
 
 const dbName = "mikroorm-integration-1"
 
 jest.setTimeout(300000)
+@Filter(mikroOrmSoftDeletableFilterOptions)
 @Entity()
 class Entity1 {
   @PrimaryKey()
@@ -40,6 +43,16 @@ class Entity1 {
 
   @Property({ nullable: true })
   deleted_at: Date | null
+
+  @Property({
+    columnType: "timestamptz",
+    type: "date",
+    nullable: false,
+    defaultRaw: "now()",
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+  })
+  updated_at: Date
 
   @OneToMany(() => Entity2, (entity2) => entity2.entity1)
   entity2 = new Collection<Entity2>(this)
@@ -233,12 +246,84 @@ class Entity6 {
   }
 }
 
+// Entity with a non-nullable foreign key
+@Entity()
+class Entity7 {
+  @PrimaryKey()
+  id: string
+
+  @Property()
+  title: string
+
+  @Unique()
+  @Property()
+  handle: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @ManyToOne(() => Entity1, {
+    columnType: "text",
+    nullable: false,
+    mapToPk: true,
+    fieldName: "entity1_id",
+    deleteRule: "set null",
+  })
+  entity1_id: string
+
+  @ManyToOne(() => Entity1, { persist: false, nullable: false })
+  entity1: Entity1 | null
+
+  @OnInit()
+  @BeforeCreate()
+  onInit() {
+    if (!this.id) {
+      this.id = Math.random().toString(36).substring(7)
+    }
+
+    this.entity1_id ??= this.entity1?.id!
+  }
+}
+
+// Entity whose primary key is a custom (non-id) column
+@Entity()
+class CustomPkEntity {
+  @PrimaryKey({ columnType: "text" })
+  code: string
+
+  @Property()
+  title: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+}
+
+// Entity with a composite primary key
+@Entity()
+class CompositePkEntity {
+  @PrimaryKey({ columnType: "text" })
+  foo: string
+
+  @PrimaryKey({ columnType: "text" })
+  bar: string
+
+  @Property()
+  title: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+}
+
 const Entity1Repository = mikroOrmBaseRepositoryFactory(Entity1)
 const Entity2Repository = mikroOrmBaseRepositoryFactory(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory(Entity3)
 const Entity4Repository = mikroOrmBaseRepositoryFactory(Entity4)
 const Entity5Repository = mikroOrmBaseRepositoryFactory(Entity5)
 const Entity6Repository = mikroOrmBaseRepositoryFactory(Entity6)
+const Entity7Repository = mikroOrmBaseRepositoryFactory(Entity7)
+const CustomPkEntityRepository = mikroOrmBaseRepositoryFactory(CustomPkEntity)
+const CompositePkEntityRepository =
+  mikroOrmBaseRepositoryFactory(CompositePkEntity)
 
 describe("mikroOrmRepository", () => {
   let orm!: MikroORM
@@ -259,9 +344,18 @@ describe("mikroOrmRepository", () => {
   const manager5 = () => {
     return new Entity5Repository({ manager: manager.fork() })
   }
+  const manager7 = () => {
+    return new Entity7Repository({ manager: manager.fork() })
+  }
   // @ts-expect-error
   const manager6 = () => {
     return new Entity6Repository({ manager: manager.fork() })
+  }
+  const customPkManager = () => {
+    return new CustomPkEntityRepository({ manager: manager.fork() })
+  }
+  const compositePkManager = () => {
+    return new CompositePkEntityRepository({ manager: manager.fork() })
   }
 
   beforeEach(async () => {
@@ -272,8 +366,21 @@ describe("mikroOrmRepository", () => {
 
     orm = await MikroORM.init(
       defineConfig({
-        entities: [Entity1, Entity2, Entity3, Entity4, Entity5, Entity6],
+        entities: [
+          Entity1,
+          Entity2,
+          Entity3,
+          Entity4,
+          Entity5,
+          Entity6,
+          Entity7,
+          CustomPkEntity,
+          CompositePkEntity,
+        ],
         clientUrl: getDatabaseURL(dbName),
+        // Match Medusa's production config: soft-delete filters are not
+        // auto-joined onto referenced entities unless they are populated.
+        autoJoinRefsForFilters: false,
       })
     )
 
@@ -285,9 +392,16 @@ describe("mikroOrmRepository", () => {
   })
 
   afterEach(async () => {
-    const generator = orm.getSchemaGenerator()
-    await generator.dropSchema()
-    await orm.close(true)
+    if (orm) {
+      const generator = orm.getSchemaGenerator()
+      await generator.dropSchema()
+      await orm.close(true)
+    }
+
+    await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
   })
 
   it("should successfully update a many to many collection providing an empty array", async () => {
@@ -324,6 +438,33 @@ describe("mikroOrmRepository", () => {
 
     expect(updatedEntity1).toHaveLength(1)
     expect(updatedEntity1[0].entity3.getItems()).toHaveLength(0)
+  })
+
+  it("should return rows even when a populated relation is soft-deleted", async () => {
+    await manager1().upsertWithReplace([{ id: "1", title: "en1" }])
+    await manager7().upsertWithReplace([
+      { id: "2", title: "en2", handle: "handle-2", entity1: { id: "1" } },
+      { id: "3", title: "en3", handle: "handle-3", entity1: { id: "1" } },
+    ])
+
+    const softDeleteManager = orm.em.fork()
+    await new Entity1Repository({ manager: softDeleteManager }).softDelete(
+      ["1"],
+      { transactionManager: softDeleteManager }
+    )
+    await softDeleteManager.flush()
+
+    const afterSoftDelete = await manager7().find({
+      where: {},
+      options: {
+        fields: ["entity1.id"],
+      },
+    })
+    expect(afterSoftDelete).toHaveLength(2)
+    expect(afterSoftDelete[0].id).toBe("2")
+    expect(afterSoftDelete[0].entity1).toBeNull()
+    expect(afterSoftDelete[1].id).toBe("3")
+    expect(afterSoftDelete[1].entity1).toBeNull()
   })
 
   describe("upsert with replace", () => {
@@ -454,6 +595,44 @@ describe("mikroOrmRepository", () => {
           id: "1",
           title: "en1",
         })
+      )
+    })
+
+    it("should apply onUpdate hooks when batch updating entities", async () => {
+      const entity1 = { id: "1", title: "en1" }
+      const originalUpdatedAt = new Date("2020-01-01T00:00:00.000Z")
+
+      await manager1().upsertWithReplace([
+        { ...entity1, updated_at: originalUpdatedAt },
+      ])
+
+      const [createdEntity] = await manager1().find({
+        where: { id: "1" },
+      })
+
+      expect(createdEntity.updated_at.getTime()).toEqual(
+        originalUpdatedAt.getTime()
+      )
+
+      entity1.title = "en1-update"
+
+      const { performedActions } = await manager1().upsertWithReplace([entity1])
+
+      expect(performedActions).toEqual({
+        created: {},
+        updated: {
+          [Entity1.name]: [expect.objectContaining({ id: entity1.id })],
+        },
+        deleted: {},
+      })
+
+      const [updatedEntity] = await manager1().find({
+        where: { id: "1" },
+      })
+
+      expect(updatedEntity.title).toBe("en1-update")
+      expect(updatedEntity.updated_at.getTime()).toBeGreaterThan(
+        createdEntity.updated_at.getTime()
       )
     })
 
@@ -1348,6 +1527,72 @@ describe("mikroOrmRepository", () => {
     })
   })
 
+  describe("delete", () => {
+    it("should delete an entity with a standard id primary key and return the ids", async () => {
+      const seedManager = orm.em.fork()
+      await manager1().create(
+        [
+          { id: "1", title: "en1" },
+          { id: "2", title: "en2" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await manager1().delete({ id: "1" })
+
+      expect(deleted).toEqual(["1"])
+
+      const remaining = await manager1().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].id).toEqual("2")
+    })
+
+    it("should delete an entity with a custom (non-id) primary key and return the primary key values", async () => {
+      const seedManager = orm.em.fork()
+      await customPkManager().create(
+        [
+          { code: "code-1", title: "first" },
+          { code: "code-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await customPkManager().delete({ code: "code-1" })
+
+      expect(deleted).toEqual(["code-1"])
+
+      const remaining = await customPkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].code).toEqual("code-2")
+    })
+
+    it("should delete an entity with a composite primary key and return the primary key values keyed by property name", async () => {
+      const seedManager = orm.em.fork()
+      await compositePkManager().create(
+        [
+          { foo: "foo-1", bar: "bar-1", title: "first" },
+          { foo: "foo-2", bar: "bar-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await compositePkManager().delete({
+        foo: "foo-1",
+        bar: "bar-1",
+      })
+
+      expect(deleted).toEqual([{ foo: "foo-1", bar: "bar-1" }])
+
+      const remaining = await compositePkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].foo).toEqual("foo-2")
+      expect(remaining[0].bar).toEqual("bar-2")
+    })
+  })
+
   describe("error mapping", () => {
     it("should map UniqueConstraintViolationException to MedusaError on upsertWithReplace", async () => {
       const entity3 = { title: "en3" }
@@ -1522,7 +1767,7 @@ describe("mikroOrmRepository", () => {
       expect(e5InsertCalls).toBe(2) // One batch insert for Entity5s, one for Entity6s
 
       // Check that the expected batch sizes exist (order may vary)
-      const e5BatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      const e5BatchSizes = qbInsertSpy.mock.calls.map((call) => call[0].length)
       expect(e5BatchSizes).toContain(800) // entity5 25 * 8 * 4
       expect(e5BatchSizes).toContain(2400) // entity6 25 * 8 * 4 * 3
 
@@ -1554,7 +1799,7 @@ describe("mikroOrmRepository", () => {
       expect(e3InsertCalls).toBe(3) // One batch insert for Entity3s, one for Entity4s and one pivot entity3 -> entity5
 
       // Check that the expected batch sizes exist (order may vary)
-      const e3BatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      const e3BatchSizes = qbInsertSpy.mock.calls.map((call) => call[0].length)
       expect(e3BatchSizes).toContain(200) // entity3: 25 * 8
       expect(e3BatchSizes).toContain(800) // pivot entity3 -> entity5: 25 * 8 * 4
       expect(e3BatchSizes).toContain(1000) // entity4: 25 * 8 * 5
@@ -1585,7 +1830,9 @@ describe("mikroOrmRepository", () => {
       expect(mainInsertCalls).toBe(3) // One batch insert for Entity1s, one for Entity2s, one for Entity3s
 
       // Check that the expected batch sizes exist (order may vary)
-      const mainBatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      const mainBatchSizes = qbInsertSpy.mock.calls.map(
+        (call) => call[0].length
+      )
       expect(mainBatchSizes).toContain(25) // entity1: 25
       expect(mainBatchSizes).toContain(200) // entity3: 25 * 8
       expect(mainBatchSizes).toContain(250) // entity2: 25 * 10
@@ -1665,7 +1912,9 @@ describe("mikroOrmRepository", () => {
       // Should use batch inserts for new entities and pivot relationships
       expect(updateInsertCalls).toBe(2) // pivot Entity1 - Entity3 (with conflict resolution) + new Entity2s
       // Check that the expected batch sizes exist (order may vary)
-      const updateBatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      const updateBatchSizes = qbInsertSpy.mock.calls.map(
+        (call) => call[0].length
+      )
       expect(updateBatchSizes).toContain(100) // pivot Entity1 - Entity3: 25 parents × 4 entity3s each (uses onConflict().ignore())
       expect(updateBatchSizes).toContain(50) // New Entity2s: 25 parents × 2 new each
 

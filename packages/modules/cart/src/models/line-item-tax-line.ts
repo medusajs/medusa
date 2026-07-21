@@ -1,6 +1,9 @@
 import { model } from "@medusajs/framework/utils"
 import LineItem from "./line-item"
 
+/**
+ * A tax line applied to a cart line item.
+ */
 const LineItemTaxLine = model
   .define(
     {
@@ -9,12 +12,39 @@ const LineItemTaxLine = model
     },
     {
       id: model.id({ prefix: "calitxl" }).primaryKey(),
+      /**
+       * The description of the tax line.
+       */
       description: model.text().nullable(),
+      /**
+       * The code of the tax line.
+       */
       code: model.text(),
+      /**
+       * The rate of the tax line.
+       */
       rate: model.float(),
+      /**
+       * The ID of the associated tax provider.
+       */
       provider_id: model.text().nullable(),
+      /**
+       * Holds custom data in key-value pairs.
+       */
       metadata: model.json().nullable(),
+      /**
+       * Holds data returned by the tax provider in key-value pairs.
+       *
+       * @since 2.17.3
+       */
+      data: model.json().nullable(),
+      /**
+       * The ID of the associated tax rate.
+       */
       tax_rate_id: model.text().nullable(),
+      /**
+       * The associated line item.
+       */
       item: model.belongsTo(() => LineItem, {
         mappedBy: "tax_lines",
       }),

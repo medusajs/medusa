@@ -140,6 +140,27 @@ export interface AdminRequestOrderTransfer {
   update_order_email?: boolean
 }
 
+/**
+ * The data to transfer an order to a guest customer.
+ *
+ * @since 2.18.0
+ */
+export interface AdminTransferOrderToGuest {
+  /**
+   * The email of the guest customer to transfer the order to.
+   * If no customer exists with this email, a guest customer is created.
+   */
+  email: string
+  /**
+   * An internal note viewed by admins only.
+   */
+  internal_note?: string
+  /**
+   * A description for the transfer.
+   */
+  description?: string
+}
+
 export interface OrderAddress {
   /**
    * The first name of the address.

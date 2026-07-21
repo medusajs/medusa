@@ -1,0 +1,18 @@
+type: object
+description: The details for a layout configuration response.
+x-schemaName: AdminLayoutConfigurationResponse
+required:
+  - personal_configuration
+  - default_configuration
+  - active_scope
+properties:
+  personal_configuration:
+    $ref: ./AdminLayoutConfiguration.yaml
+  default_configuration:
+    $ref: ./AdminLayoutConfiguration.yaml
+  active_scope:
+    type: string
+    description: The active scope of the layout configuration.
+    enum:
+      - default
+      - personal

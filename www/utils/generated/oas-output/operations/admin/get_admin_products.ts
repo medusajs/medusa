@@ -1054,6 +1054,34 @@
  *             type: string
  *             title: tag_id
  *             description: The tag ID.
+ *   - name: option_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_id
+ *           description: Filter by an option ID to retrieve the products that have the option.
+ *         - type: array
+ *           description: Filter by option IDs to retrieve the products that have the options.
+ *           items:
+ *             type: string
+ *             title: option_id
+ *             description: The option ID.
+ *   - name: option_value_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_value_id
+ *           description: Filter by an option value ID to retrieve the products that have the option value.
+ *         - type: array
+ *           description: Filter by option value IDs to retrieve the products that have the option values.
+ *           items:
+ *             type: string
+ *             title: option_value_id
+ *             description: The option value ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

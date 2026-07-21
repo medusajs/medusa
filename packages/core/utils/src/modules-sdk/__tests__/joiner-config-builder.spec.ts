@@ -355,6 +355,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["fulfillment_set", "fulfillment_sets"],
             entity: FulfillmentSet.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "fulfillment_set",
+            },
             args: {
               methodSuffix: "FulfillmentSets",
             },
@@ -362,6 +366,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["shipping_option", "shipping_options"],
             entity: ShippingOption.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "shipping_option",
+            },
             args: {
               methodSuffix: "ShippingOptions",
             },
@@ -369,6 +377,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["shipping_profile", "shipping_profiles"],
             entity: ShippingProfile.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "shipping_profile",
+            },
             args: {
               methodSuffix: "ShippingProfiles",
             },
@@ -376,6 +388,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["fulfillment", "fulfillments"],
             entity: Fulfillment.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "fulfillment",
+            },
             args: {
               methodSuffix: "Fulfillments",
             },
@@ -383,6 +399,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["fulfillment_provider", "fulfillment_providers"],
             entity: FulfillmentProvider.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "fulfillment_provider",
+            },
             args: {
               methodSuffix: "FulfillmentProviders",
             },
@@ -390,6 +410,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["service_zone", "service_zones"],
             entity: ServiceZone.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "service_zone",
+            },
             args: {
               methodSuffix: "ServiceZones",
             },
@@ -397,6 +421,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["geo_zone", "geo_zones"],
             entity: GeoZone.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "geo_zone",
+            },
             args: {
               methodSuffix: "GeoZones",
             },
@@ -404,6 +432,10 @@ describe("joiner-config-builder", () => {
           {
             name: ["shipping_option_rule", "shipping_option_rules"],
             entity: ShippingOptionRule.name,
+            __internal: {
+              crossjoinable: ["id", "created_at", "updated_at", "deleted_at"],
+              tableName: "shipping_option_rule",
+            },
             args: {
               methodSuffix: "ShippingOptionRules",
             },
@@ -466,6 +498,143 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig.schema!.replace(/\s/g, "")).toEqual(
         schemaExpected.replace(/\s/g, "")
       )
+    })
+
+    it("should derive internal relation metadata for hasMany and belongsTo", () => {
+      const lineItem: any = model.define(
+        { name: "LineItem", tableName: "cart_line_item" },
+        {
+          id: model.id().primaryKey(),
+          title: model.text(),
+          cart: model.belongsTo(() => cart, { mappedBy: "items" }),
+        }
+      )
+
+      const cart: any = model.define("cart", {
+        id: model.id().primaryKey(),
+        email: model.text().nullable(),
+        items: model.hasMany(() => lineItem, { mappedBy: "cart" }),
+        billing_address: model.hasOne(() => address).nullable(),
+      })
+
+      const address: any = model.define("address", {
+        id: model.id().primaryKey(),
+        city: model.text(),
+      })
+
+      const joinerConfig = defineJoinerConfig("cart", {
+        models: [cart, lineItem, address],
+      })
+
+      const aliases = joinerConfig.alias as any[]
+      const cartAlias = aliases.find((alias) => alias.entity === "Cart")
+      const lineItemAlias = aliases.find(
+        (alias) => alias.entity === "LineItem"
+      )
+      const addressAlias = aliases.find((alias) => alias.entity === "Address")
+
+      expect(cartAlias.__internal).toEqual({
+        crossjoinable: [
+          "id",
+          "email",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+        ],
+        tableName: "cart",
+        relations: {
+          items: {
+            entity: "LineItem",
+            foreignKey: "cart_id",
+            foreignKeyOwner: "target",
+            isList: true,
+          },
+        },
+      })
+
+      expect(lineItemAlias.__internal).toEqual({
+        crossjoinable: [
+          "id",
+          "title",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+        ],
+        tableName: "cart_line_item",
+        relations: {
+          cart: {
+            entity: "Cart",
+            foreignKey: "cart_id",
+            foreignKeyOwner: "self",
+          },
+        },
+      })
+
+      // hasOne is not derivable and Address has no relations at all.
+      expect(addressAlias.__internal.relations).toBeUndefined()
+    })
+
+    it("should emit table name and PG schema in __internal", () => {
+      const audit = model.define(
+        { name: "auditLog", tableName: "platform.audit_log" },
+        {
+          id: model.id().primaryKey(),
+          action: model.text(),
+        }
+      )
+
+      const joinerConfig = defineJoinerConfig("audit", {
+        models: [audit],
+      })
+
+      expect(joinerConfig.alias).toEqual([
+        expect.objectContaining({
+          entity: "AuditLog",
+          __internal: {
+            crossjoinable: [
+              "id",
+              "action",
+              "created_at",
+              "updated_at",
+              "deleted_at",
+            ],
+            tableName: "audit_log",
+            schema: "platform",
+          },
+        }),
+      ])
+    })
+
+    it("should exclude computed fields from __internal.crossjoinable", () => {
+      const product = model.define("product", {
+        id: model.id().primaryKey(),
+        title: model.text(),
+        slug: model.text().computed(),
+      })
+
+      const joinerConfig = defineJoinerConfig("product", {
+        models: [product],
+      })
+
+      expect(joinerConfig.alias).toEqual([
+        {
+          name: ["product", "products"],
+          entity: "Product",
+          __internal: {
+            crossjoinable: [
+              "id",
+              "title",
+              "created_at",
+              "updated_at",
+              "deleted_at",
+            ],
+            tableName: "product",
+          },
+          args: {
+            methodSuffix: "Products",
+          },
+        },
+      ])
     })
   })
 

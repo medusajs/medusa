@@ -6,7 +6,7 @@ import { SaveViewDialog } from "../save-view-dialog"
 import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
-import { getEntityAdapter } from "../../../lib/table/entity-adapters"
+import { parseFilterParam } from "../../../hooks/table/query"
 import { TableAdapter } from "../../../lib/table/table-adapters"
 
 type DataTableActionProps = {
@@ -46,14 +46,6 @@ export function ConfigurableDataTable<TData>({
 
   const entity = adapter.entity
   const entityName = adapter.entityName
-  const rawFilters = adapter.filters || []
-  const filters = rawFilters.map((filter) => {
-    // If filter has 'key' but no 'id', use 'key' as 'id' for compatibility
-    if ((filter as any).key && !(filter as any).id) {
-      return { ...filter, id: (filter as any).key as string }
-    }
-    return filter
-  })
   const pageSize = pageSizeProp || adapter.pageSize || 20
   const queryPrefix = queryPrefixProp || adapter.queryPrefix || ""
 
@@ -71,24 +63,27 @@ export function ConfigurableDataTable<TData>({
     hasConfigurationChanged,
     handleClearConfiguration,
     isLoadingColumns,
+    isLoadingFilterOptions,
     apiColumns,
+    filters,
     requiredFields,
     queryParams,
   } = useTableConfiguration({
     entity,
     pageSize,
     queryPrefix,
-    filters,
+    transformColumns: adapter.transformColumns,
   })
 
   const parsedQueryParams = { ...queryParams }
   filters.forEach((filter) => {
     const filterKey = filter.id
     if (filterKey && parsedQueryParams[filterKey] !== undefined) {
-      try {
-        parsedQueryParams[filterKey] = JSON.parse(parsedQueryParams[filterKey])
-      } catch {
-        // If parsing fails, keep the original value
+      const value = parseFilterParam(parsedQueryParams[filterKey])
+      if (value === undefined) {
+        delete parsedQueryParams[filterKey]
+      } else {
+        parsedQueryParams[filterKey] = value
       }
     }
   })
@@ -102,16 +97,11 @@ export function ConfigurableDataTable<TData>({
 
   const fetchResult = adapter.useData(requiredFields, searchParams)
 
-  const columnAdapter = adapter.columnAdapter || getEntityAdapter(entity)
   const generatedColumns = useConfigurableTableColumns(
-    entity,
     apiColumns || [],
-    columnAdapter
+    adapter
   )
-  const columns =
-    adapter.getColumns && apiColumns
-      ? adapter.getColumns(apiColumns)
-      : generatedColumns
+  const columns = generatedColumns
 
   if (fetchResult.isError) {
     throw fetchResult.error
@@ -208,7 +198,9 @@ export function ConfigurableDataTable<TData>({
         enablePagination
         enableSearch
         pageSize={pageSize}
-        isLoading={fetchResult.isLoading || isLoadingColumns}
+        isLoading={
+          fetchResult.isLoading || isLoadingColumns || isLoadingFilterOptions
+        }
         layout={layout}
         heading={
           heading || entityName || (entity ? t(`${entity}.domain` as any) : "")
@@ -233,7 +225,6 @@ export function ConfigurableDataTable<TData>({
         }
         prefix={queryPrefix}
         actions={actions}
-        enableFilterMenu={false}
       />
 
       {saveDialogOpen && (

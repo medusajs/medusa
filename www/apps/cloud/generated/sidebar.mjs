@@ -244,6 +244,15 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Changelog",
+            "path": "/cli/changelog",
+            "hideFromChildItems": true,
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "login",
             "path": "/cli/commands/login",
             "children": []
@@ -318,6 +327,14 @@ export const generatedSidebars = [
             "type": "link",
             "title": "logs",
             "path": "/cli/commands/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "local",
+            "path": "/cli/commands/local",
             "children": []
           },
           {

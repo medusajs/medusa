@@ -988,12 +988,12 @@ export default class ContentfulModuleService {
               fields: {
                 ...valueEntry.fields,
                 value: {
-                  [this.options.default_locale!]: value.value
+                  [this.options.default_locale!]: value.value,
                 },
                 medusaId: {
-                  [this.options.default_locale!]: value.id
+                  [this.options.default_locale!]: value.id,
                 },
-              }
+              },
             }
           )
         } catch (e) {
@@ -1006,12 +1006,12 @@ export default class ContentfulModuleService {
             {
               fields: {
                 value: {
-                  [this.options.default_locale!]: value.value
+                  [this.options.default_locale!]: value.value,
                 },
                 medusaId: {
-                  [this.options.default_locale!]: value.id
+                  [this.options.default_locale!]: value.id,
                 },
-              }
+              },
             }
           )
         }
@@ -1020,8 +1020,8 @@ export default class ContentfulModuleService {
           sys: {
             type: "Link",
             linkType: "Entry",
-            id: value.id
-          }
+            id: value.id,
+          },
         })
       }
       
@@ -1035,15 +1035,15 @@ export default class ContentfulModuleService {
           fields: {
             ...optionEntry.fields,
             medusaId: {
-              [this.options.default_locale!]: option.id
+              [this.options.default_locale!]: option.id,
             },
             title: {
-              [this.options.default_locale!]: option.title
+              [this.options.default_locale!]: option.title,
             },
             values: {
-              [this.options.default_locale!]: valueIds
-            }
-          }
+              [this.options.default_locale!]: valueIds,
+            },
+          },
         }
       )
       
@@ -1068,12 +1068,12 @@ export default class ContentfulModuleService {
           {
             fields: {
               value: {
-                [this.options.default_locale!]: value.value
+                [this.options.default_locale!]: value.value,
               },
               medusaId: {
-                [this.options.default_locale!]: value.id
+                [this.options.default_locale!]: value.id,
               },
-            }
+            },
           }
         )
         
@@ -1081,8 +1081,8 @@ export default class ContentfulModuleService {
           sys: {
             type: "Link",
             linkType: "Entry",
-            id: value.id
-          }
+            id: value.id,
+          },
         })
       }
       
@@ -1095,15 +1095,15 @@ export default class ContentfulModuleService {
         {
           fields: {
             medusaId: {
-              [this.options.default_locale!]: option.id
+              [this.options.default_locale!]: option.id,
             },
             title: {
-              [this.options.default_locale!]: option.title
+              [this.options.default_locale!]: option.title,
             },
             values: {
-              [this.options.default_locale!]: valueIds
-            }
-          }
+              [this.options.default_locale!]: valueIds,
+            },
+          },
         }
       )
       
@@ -1296,8 +1296,8 @@ export default class ContentfulModuleService {
             sys: {
               type: "Link",
               linkType: "Entry",
-              id: option.id
-            }
+              id: option.id,
+            },
           })
         } catch (e) {
           // Option doesn't exist yet, skip it (should be created separately)
@@ -1329,7 +1329,7 @@ export default class ContentfulModuleService {
             })),
           },
           productOptions: {
-            [this.options.default_locale!]: optionLinks
+            [this.options.default_locale!]: optionLinks,
           },
         },
       }
@@ -1360,10 +1360,6 @@ export const deleteProductHighlights = [
   ["24", "delete", "Delete the product entry."],
   ["31", "unpublish", "Unpublish the product variant entries."],
   ["36", "delete", "Delete the product variant entries."],
-  ["45", "unpublish", "Unpublish the product option value entries."],
-  ["50", "delete", "Delete the product option value entries."],
-  ["56", "unpublish", "Unpublish the product option entries."],
-  ["61", "delete", "Delete the product option entries."],
 ]
 
 ```ts title="src/modules/contentful/service.ts" highlights={deleteProductHighlights}
@@ -1758,7 +1754,7 @@ export const createProductsContentfulWorkflow = createWorkflow(
     const newOptions = transform(
       { uniqueOptions, existingOptions },
       (data) => {
-        const existingIdsSet = new Set(data.existingOptions.map(option => option.sys.id))
+        const existingIdsSet = new Set(data.existingOptions.map((option) => option.sys.id))
         return data.uniqueOptions.filter(
           (option) => !existingIdsSet.has(option.id)
         )
@@ -3255,7 +3251,7 @@ export const prepareUpdateDataStep = createStep(
           (optionLink: { sys: { id: string } }) => optionLink.sys.id
         )
         const options = await contentfulModuleService.getOptions(optionEntryIds)
-        const optionsMedusaIds = options.map(option => option.fields.medusaId[defaultLocale!])
+        const optionsMedusaIds = options.map((option) => option.fields.medusaId[defaultLocale!])
         
         data = {
           id: entry.fields.medusaId[defaultLocale!],

@@ -22,8 +22,8 @@ import {
   createHook,
   createStep,
   createWorkflow,
-  parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { pricingContextResult } from "../../../cart/utils/schemas"
 import {
@@ -463,14 +463,15 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     )
     receiveReturnStep(receiveItems)
 
-    parallelize(
-      emitEventStep({
-        eventName: OrderWorkflowEvents.RETURN_REQUESTED,
-        data: {
-          order_id: order.id,
-          return_id: returnCreated.id,
-        },
-      }).config({ name: "emit-return-requested-event" }),
+    emitEventStep({
+      eventName: OrderWorkflowEvents.RETURN_REQUESTED,
+      data: {
+        order_id: order.id,
+        return_id: returnCreated.id,
+      },
+    }).config({ name: "emit-return-requested-event" })
+
+    when({ input }, ({ input }) => input.receive_now === true).then(() =>
       emitEventStep({
         eventName: OrderWorkflowEvents.RETURN_RECEIVED,
         data: {

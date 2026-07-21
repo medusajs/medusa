@@ -32,6 +32,8 @@ import {
   ModulesSdkUtils,
   promiseAll,
   registerFeatureFlag,
+  withDbTroubleshootingLink,
+  DBTroubleshootingSection,
 } from "@medusajs/utils"
 import { Link } from "./link"
 import {
@@ -40,10 +42,68 @@ import {
   ModuleBootstrapOptions,
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
-import { createQuery, RemoteQuery } from "./remote-query"
+import { createQuery } from "./remote-query"
 import { MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
+
+function getMigrationConnectionTimeout(): number {
+  return process.env.MEDUSA_DB_MIGRATION_CONNECTION_TIMEOUT
+    ? parseInt(process.env.MEDUSA_DB_MIGRATION_CONNECTION_TIMEOUT)
+    : 10000
+}
+
+/**
+ * Verify that a database connection can be established before running
+ * migrations. Without this check, a stalled connection (for example, a wrong
+ * database URL or an SSL handshake that never completes) hangs the migrator
+ * indefinitely with no error. This fails fast with an actionable message
+ * instead.
+ */
+export async function verifyMigrationConnection(
+  knex: ReturnType<typeof ModulesSdkUtils.createPgConnection>
+): Promise<void> {
+  const connectionTimeout = getMigrationConnectionTimeout()
+  let timeoutHandle: ReturnType<typeof setTimeout> | undefined
+
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutHandle = setTimeout(() => {
+      reject(
+        new MedusaError(
+          MedusaError.Types.DB_ERROR,
+          withDbTroubleshootingLink(
+            `Could not connect to the database while running migrations. The connection timed out after ${
+              connectionTimeout / 1000
+            } seconds, which usually indicates an incorrect database URL or an SSL configuration issue.`,
+            DBTroubleshootingSection.MIGRATIONS
+          )
+        )
+      )
+    }, connectionTimeout)
+  })
+
+  try {
+    await Promise.race([knex.raw("SELECT 1"), timeout])
+  } catch (error) {
+    if (error instanceof MedusaError) {
+      throw error
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.DB_ERROR,
+      withDbTroubleshootingLink(
+        `Could not connect to the database while running migrations: ${
+          error?.message ?? error
+        }. This usually indicates an incorrect database URL or an SSL configuration issue.`,
+        DBTroubleshootingSection.MIGRATIONS
+      )
+    )
+  } finally {
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle)
+    }
+  }
+}
 
 export type RunMigrationFn = (options?: {
   allOrNothing?: boolean
@@ -498,11 +558,6 @@ async function MedusaApp_({
     (mod) => Object.values(mod)[0]
   )
 
-  const remoteQuery = new RemoteQuery({
-    modulesLoaded,
-    relationMap,
-  })
-
   const applyMigration = async ({
     modulesNames,
     action = "run",
@@ -594,6 +649,8 @@ async function MedusaApp_({
 
     const concurrency = parseInt(process.env.DB_MIGRATION_CONCURRENCY ?? "1")
     try {
+      await verifyMigrationConnection(lockKnex)
+
       const results = await executeWithConcurrency(
         moduleResolutions.map((a) => () => run(a)),
         concurrency
@@ -682,7 +739,8 @@ async function MedusaApp_({
     modules: allModules,
     link: remoteLink,
     query: createQuery({
-      remoteQuery,
+      modulesLoaded,
+      relationMap,
       indexModule,
       container: sharedContainer_,
     }) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,

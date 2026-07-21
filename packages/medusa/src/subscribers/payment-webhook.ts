@@ -50,7 +50,10 @@ export default async function paymentWebhookhandler({
     processedEvent?.action === PaymentActions.CANCELED ||
     processedEvent?.action === PaymentActions.FAILED ||
     processedEvent?.action === PaymentActions.REQUIRES_MORE ||
-    processedEvent?.action === PaymentActions.PENDING_AUTHORIZATION
+    processedEvent?.action === PaymentActions.PENDING_AUTHORIZATION ||
+    // Intermediate events (e.g. Stripe `payment_intent.created`/`processing`)
+    // must not trigger the workflow's cart completion.
+    processedEvent?.action === PaymentActions.PENDING
   ) {
     return
   }
