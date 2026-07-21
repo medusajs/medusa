@@ -137,9 +137,11 @@ jobs:
             Bash(bash scripts/get_pr_files.sh:*),
             Bash(bash scripts/get_pr_diff.sh:*),
             Bash(bash scripts/get_linked_issues.sh:*),
+            Bash(bash scripts/search_prs.sh:*),
             Bash(bash scripts/get_comments.sh:*),
             Bash(bash scripts/get_labels.sh:*),
             Bash(bash scripts/get_issue.sh:*),
+            Bash(bash scripts/get_dependency_releases.sh:*),
             Read,
             Write"
 

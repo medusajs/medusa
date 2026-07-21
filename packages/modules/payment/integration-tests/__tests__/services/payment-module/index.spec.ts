@@ -1200,6 +1200,65 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should throw if refund amount is 0", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 0,
+                payment_id: "pay-id-2",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "Refund amount must be greater than 0."
+            )
+          })
+
+          it("should throw if refund amount is negative", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: -50,
+                payment_id: "pay-id-2",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "Refund amount must be greater than 0."
+            )
+          })
+
+          it("should fully refund the captured amount when no amount is passed", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              })
+            )
+          })
+
           it("should throw if total refunded amount is greater than captured amount", async () => {
             await service.capturePayment({
               amount: 100,

@@ -1,0 +1,1 @@
+{"slug":"/references/types/HttpTypes/types/types.HttpTypes.AdminLayoutScope","title":"AdminLayoutScope","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"AdminLayoutScope","type":"`\"personal\"` \\| `\"default\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

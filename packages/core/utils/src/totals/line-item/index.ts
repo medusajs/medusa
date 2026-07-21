@@ -77,6 +77,7 @@ export function getLineItemsTotals(
 function setRefundableTotal(
   item: GetItemTotalInput,
   discountsTotal: BigNumberInput,
+  discountsSubtotal: BigNumberInput,
   totals: GetItemTotalOutput
 ) {
   const itemDetail = item.detail!
@@ -86,7 +87,13 @@ function setRefundableTotal(
     itemDetail.return_dismissed_quantity ?? 0
   )
   const currentQuantity = MathBN.sub(item.quantity, totalReturnedQuantity)
-  const discountPerUnit = MathBN.div(discountsTotal, item.quantity)
+  // For tax-inclusive items the unit price already includes tax, so the
+  // discount is subtracted in tax-inclusive terms and no tax is added back
+  // below. For non-tax-inclusive items the discount is pre-tax and tax is
+  // applied to the resulting net amount, so subtracting the tax-inclusive
+  // discount here would tax the discount a second time.
+  const discount = item.is_tax_inclusive ? discountsTotal : discountsSubtotal
+  const discountPerUnit = MathBN.div(discount, item.quantity)
 
   const refundableSubTotal = MathBN.sub(
     MathBN.mult(currentQuantity, item.unit_price),
@@ -223,7 +230,7 @@ export function getLineItemTotals(
     isDefined(item.detail?.return_received_quantity) ||
     isDefined(item.detail?.return_dismissed_quantity)
   ) {
-    setRefundableTotal(item, discountsTotal, totals)
+    setRefundableTotal(item, discountsTotal, discountsSubtotalFull, totals)
   }
 
   // Per-unit total should be based on full-quantity net total to support lifecycle totals consistently

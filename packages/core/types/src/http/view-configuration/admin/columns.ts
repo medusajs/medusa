@@ -55,6 +55,7 @@ export interface AdminColumn {
     type: string
     required_fields: string[]
     optional_fields: string[]
+    metadata: Record<string, any>
   }
   /**
    * Information about relationship columns.

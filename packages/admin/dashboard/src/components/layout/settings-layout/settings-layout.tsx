@@ -89,6 +89,10 @@ const useSettingRoutes = (): INavItem[] => {
         label: t("stockLocations.domain"),
         to: "/settings/locations",
       },
+      {
+        label: t("propertyLabels.domain", "Property Labels"),
+        to: "/settings/property-labels",
+      },
       ...(isTranslationsEnabled
         ? [
             {
