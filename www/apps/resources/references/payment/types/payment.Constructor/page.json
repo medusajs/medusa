@@ -1,0 +1,1 @@
+{"slug":"/references/payment/types/payment.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"paymentReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

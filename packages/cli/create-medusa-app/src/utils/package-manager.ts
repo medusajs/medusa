@@ -180,12 +180,34 @@ export default class PackageManager {
   }
 
   private applyNpmWorkspaceChanges(packageJson: Record<string, unknown>): void {
-    // npm's flat hoisting can install ajv v6 where v8 is expected, causing
-    // "Cannot find module 'ajv/dist/core'" at runtime. The `dist/core` export
-    // only exists in ajv v8+, so we force all transitive resolutions to v8.
+    // npm's flat hoisting can only keep a single ajv major at the workspace
+    // root, but Medusa's stack needs two: the backend's migration tooling
+    // (@mikro-orm/migrations -> umzug -> @rushstack/node-core-library ->
+    // ajv-draft-04) does `require('ajv/dist/core')`, which only exists in ajv
+    // v8+, while ESLint (`eslint` core and `@eslint/eslintrc`) needs ajv v6.
+    // Both `ajv-draft-04` and `eslint` hoist to the root and resolve `ajv`
+    // from there, so whichever major loses the root slot breaks. We pin v8 to
+    // the root with a direct devDependency (this is what the hoisted
+    // `ajv-draft-04` resolves against) and scope v6 back under ESLint via
+    // overrides, which npm then nests. This lets both the backend
+    // (`medusa db:migrate`/`build`) and the storefront (`next lint`) resolve a
+    // compatible ajv from a single npm install.
+    packageJson.devDependencies = {
+      ...(packageJson.devDependencies as Record<string, unknown>),
+      ajv: "^8.13.0",
+    }
     packageJson.overrides = {
       ...(packageJson.overrides as Record<string, unknown>),
-      ajv: "^8.0.0",
+      eslint: {
+        ...((packageJson.overrides as Record<string, any>)?.eslint ?? {}),
+        ajv: "^6.12.4",
+      },
+      "@eslint/eslintrc": {
+        ...((packageJson.overrides as Record<string, any>)?.[
+          "@eslint/eslintrc"
+        ] ?? {}),
+        ajv: "^6.12.4",
+      },
     }
   }
 

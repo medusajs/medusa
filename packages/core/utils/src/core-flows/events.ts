@@ -1007,6 +1007,149 @@ export const TranslationWorkflowEvents = {
   DELETED: "translation.deleted",
 } as const
 
+/**
+ * @category Inventory Item
+ * @customNamespace Inventory
+ */
+export const InventoryItemWorkflowEvents = {
+  /**
+   * Emitted when inventory items are created.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory item
+   * }
+   * ```
+   */
+  CREATED: "inventory-item.created",
+  /**
+   * Emitted when inventory items are updated.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory item
+   * }
+   * ```
+   */
+  UPDATED: "inventory-item.updated",
+  /**
+   * Emitted when inventory items are deleted.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory item
+   * }
+   * ```
+   */
+  DELETED: "inventory-item.deleted",
+} as const
+
+/**
+ * @category Inventory Level
+ * @customNamespace Inventory
+ */
+export const InventoryLevelWorkflowEvents = {
+  /**
+   * Emitted when inventory levels are created.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory level
+   * }
+   * ```
+   */
+  CREATED: "inventory-level.created",
+  /**
+   * Emitted when inventory levels are updated. This includes adjustments to
+   * the stocked or reserved quantity, such as during order fulfillment.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory level
+   *   order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+   * }
+   * ```
+   */
+  UPDATED: "inventory-level.updated",
+  /**
+   * Emitted when inventory levels are deleted.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory level
+   * }
+   * ```
+   */
+  DELETED: "inventory-level.deleted",
+} as const
+
+/**
+ * @category Reservation Item
+ * @customNamespace Inventory
+ */
+export const ReservationItemWorkflowEvents = {
+  /**
+   * Emitted when reservations are created.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the reservation
+   *   order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+   * }
+   * ```
+   */
+  CREATED: "reservation-item.created",
+  /**
+   * Emitted when reservations are updated.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the reservation
+   *   order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+   * }
+   * ```
+   */
+  UPDATED: "reservation-item.updated",
+  /**
+   * Emitted when reservations are deleted.
+   *
+   * @since 2.17.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the reservation
+   *   order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+   * }
+   * ```
+   */
+  DELETED: "reservation-item.deleted",
+} as const
+
 // TODO: Comment temporarely and we will re enable it in the near future #14478
 // declare module "@medusajs/types" {
 //   export interface EventBusEventsOptions {

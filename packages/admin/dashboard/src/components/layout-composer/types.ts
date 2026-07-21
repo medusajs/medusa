@@ -10,6 +10,7 @@ export type { LayoutSection, Layouts, SectionNameFor }
 export type LayoutComponentProps = {
   sections: Record<string, ReactNode>
   data?: unknown
+  className?: string
 }
 
 export type LayoutControlSize = "default" | "small" | "xsmall"

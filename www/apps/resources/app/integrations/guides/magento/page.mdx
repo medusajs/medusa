@@ -925,7 +925,7 @@ Next, you'll create the Magento attributes as product options. Replace the `TODO
 
 ```ts title="src/workflows/migrate-products-from-magento.ts"
 const attributeExternalIds = transform({
-  attributes
+  attributes,
 }, (data) => {
   return data.attributes.map((attr) => attr.attribute_id.toString())
 })
@@ -935,14 +935,14 @@ const { data: existingOptions } = useQueryGraphStep({
   fields: ["id", "title", "metadata", "values.id", "values.value"],
   filters: {
     metadata: {
-      external_id: attributeExternalIds
-    }
-  }
+      external_id: attributeExternalIds,
+    },
+  },
 }).config({ name: "get-existing-options" })
 
 const { optionsToCreate } = transform({
   attributes,
-  existingOptions
+  existingOptions,
 }, (data) => {
   const optionsToCreate = new Map<
     string, 
@@ -963,29 +963,29 @@ const { optionsToCreate } = transform({
       title: attr.default_frontend_label,
       values: attr.options.map((opt) => opt.label),
       metadata: {
-        external_id: attr.attribute_id.toString()
-      }
+        external_id: attr.attribute_id.toString(),
+      },
     }
 
     optionsToCreate.set(attr.attribute_id.toString(), optionData)
   })
 
   return {
-    optionsToCreate: Array.from(optionsToCreate.values())
+    optionsToCreate: Array.from(optionsToCreate.values()),
   }
 })
 
 // Create missing options if any
 const newOptions = createProductOptionsWorkflow.runAsStep({
   input: {
-    product_options: optionsToCreate
-  }
+    product_options: optionsToCreate,
+  },
 })
 
 // Merge existing and newly created options
 const allOptions = transform({
   existingOptions,
-  newOptions
+  newOptions,
 }, (data) => {
   return [...(data.existingOptions || []), ...(data.newOptions || [])]
 })
@@ -1007,23 +1007,17 @@ export const prepareHighlights = [
   ["2", "productsToCreate", "The products to create."],
   ["3", "productsToUpdate", "The products to update."],
   ["4", "transform", "Prepare the product data."],
-  ["11", "productsToCreate", "Create a map to store the products to create."],
-  ["12", "productsToUpdate", "Create a map to store the products to update."],
-  ["17", "description", "Try to retrieve description from the Magento product's custom attributes."],
-  ["21", "handle", "Try to retrieve the product's handle from the Magento product's custom attributes."],
-  ["24", "external_id", "Set the Magento product's ID in the Medusa product's `external_id` property."],
-  ["25", "thumbnail", "Try to retrieve the product's thumbnail from the Magento product's media gallery entries."],
-  ["28", "sales_channels", "Associate the product with the default sales channel."],
-  ["31", "shipping_profile_id", "Associate the product with a shipping profile."],
-  ["33", "existingProduct", "Find the existing product in Medusa that matches the Magento product's ID."],
-  ["39", "options", "Map the Magento product's configurable product options to Medusa product options."],
-  ["49", "variants", "Map the Magento product's children to Medusa product variants."],
-  ["62", "existingVariant", "Find the existing variant in the existing product, if set."],
-  ["68", "prices", "Set the variant's prices based on the Magento child's price for every supported currency in the Medusa store."],
-  ["77", "id", "Set the ID of the existing variant, if available."],
-  ["81", "images", "Map the Magento product's media gallery entries to Medusa product images."],
-  ["91", "set", "Add to the products to update."],
-  ["93", "set", "Add to the products to create."],
+  ["12", "productsToCreate", "Create a map to store the products to create."],
+  ["13", "productsToUpdate", "Create a map to store the products to update."],
+  ["18", "description", "Try to retrieve description from the Magento product's custom attributes."],
+  ["22", "handle", "Try to retrieve the product's handle from the Magento product's custom attributes."],
+  ["25", "external_id", "Set the Magento product's ID in the Medusa product's `external_id` property."],
+  ["26", "thumbnail", "Try to retrieve the product's thumbnail from the Magento product's media gallery entries."],
+  ["29", "sales_channels", "Associate the product with the default sales channel."],
+  ["32", "shipping_profile_id", "Associate the product with a shipping profile."],
+  ["34", "existingProduct", "Find the existing product in Medusa that matches the Magento product's ID."],
+  ["40", "options", "Map the Magento product's configurable product options to Medusa product options."],
+  ["77", "variants", "Map the Magento product's children to Medusa product variants."],
 ]
 
 ```ts title="src/workflows/migrate-products-from-magento.ts" highlights={prepareHighlights}
@@ -1036,7 +1030,7 @@ const {
   stores,
   shippingProfiles,
   existingProducts,
-  allOptions
+  allOptions,
 }, (data) => {
   const productsToCreate = new Map<string, CreateProductWorkflowInputDTO>()
   const productsToUpdate = new Map<string, UpsertProductDTO>()
@@ -1098,7 +1092,7 @@ const {
 
         return {
           id: existingOption.id,
-          value_ids: valueIds
+          value_ids: valueIds,
         }
       })
       .filter((opt): opt is { id: string; value_ids: string[] } => opt !== null) || []

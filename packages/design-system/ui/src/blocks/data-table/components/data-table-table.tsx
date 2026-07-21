@@ -218,10 +218,14 @@ const DataTableTable = (props: DataTableTableProps) => {
                             ? idx === 1
                             : idx === 0
 
-                          // Get header alignment from column metadata
+                          // Get header alignment from column metadata.
+                          // `align` drives both header and cell; `headerAlign`
+                          // is the legacy header-only fallback.
+                          const alignMeta = (
+                            header.column.columnDef.meta as any
+                          )?.___alignMetaData
                           const headerAlign =
-                            (header.column.columnDef.meta as any)
-                              ?.___alignMetaData?.headerAlign || "left"
+                            alignMeta?.align ?? alignMeta?.headerAlign ?? "left"
                           const isRightAligned = headerAlign === "right"
                           const isCenterAligned = headerAlign === "center"
 
@@ -357,10 +361,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                   : undefined
                               }
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
+                              {renderAlignedCell(cell)}
                             </Table.Cell>
                           )
                         })}
@@ -405,10 +406,13 @@ const DataTableTable = (props: DataTableTableProps) => {
                       const Wrapper = canSort ? "button" : "div"
                       const isFirstColumn = hasSelect ? idx === 1 : idx === 0
 
-                      // Get header alignment from column metadata
+                      // Get header alignment from column metadata.
+                      // `align` drives both header and cell; `headerAlign`
+                      // is the legacy header-only fallback.
+                      const alignMeta = (header.column.columnDef.meta as any)
+                        ?.___alignMetaData
                       const headerAlign =
-                        (header.column.columnDef.meta as any)?.___alignMetaData
-                          ?.headerAlign || "left"
+                        alignMeta?.align ?? alignMeta?.headerAlign ?? "left"
                       const isRightAligned = headerAlign === "right"
                       const isCenterAligned = headerAlign === "center"
 
@@ -526,10 +530,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 : undefined
                             }
                           >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                            {renderAlignedCell(cell)}
                           </Table.Cell>
                         )
                       })}
@@ -606,6 +607,29 @@ const DataTableTableSkeleton = ({
           ))}
         </div>
       </div>
+    </div>
+  )
+}
+
+// Renders a body cell's content, applying horizontal alignment from the
+// column's `align` meta. Left-aligned (or unset) cells render bare; only
+// center/right wrap in an alignment flex row.
+function renderAlignedCell(cell: any) {
+  const align = (cell.column.columnDef.meta as any)?.___alignMetaData?.align
+  const content = flexRender(cell.column.columnDef.cell, cell.getContext())
+
+  if (!["right", "center"].includes(align)) {
+    return content
+  }
+
+  return (
+    <div
+      className={clx("flex items-center", {
+        "justify-end": align === "right",
+        "justify-center": align === "center",
+      })}
+    >
+      {content}
     </div>
   )
 }

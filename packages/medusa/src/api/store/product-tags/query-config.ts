@@ -1,3 +1,5 @@
+import { disallowedStoreFields } from "../utils/disallowed-fields"
+
 export const defaults = [
   "id",
   "value",
@@ -10,11 +12,13 @@ export const defaults = [
 
 export const retrieveProductTagConfig = {
   defaults,
+  disallowed: disallowedStoreFields,
   isList: false,
 }
 
 export const listProductTagConfig = {
   defaults,
+  disallowed: disallowedStoreFields,
   defaultLimit: 50,
   isList: true,
 }

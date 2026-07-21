@@ -43,6 +43,9 @@ const getConfigurations = async (
   }
 }
 
+/**
+ * @since 2.17.2
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminLayoutConfigurationResponse>
@@ -58,6 +61,9 @@ export const GET = async (
   )
 }
 
+/**
+ * @since 2.17.2
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminSetLayoutConfiguration>,
   res: MedusaResponse<HttpTypes.AdminLayoutConfigurationResponse>
@@ -82,6 +88,9 @@ export const POST = async (
   )
 }
 
+/**
+ * @since 2.17.2
+ */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<{ success: boolean }>

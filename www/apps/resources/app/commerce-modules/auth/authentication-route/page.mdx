@@ -208,6 +208,12 @@ If the authentication requires more action with a third-party service, you'll re
 
 Redirect to that URL in the frontend to continue the authentication process with the third-party service.
 
+#### Customizing the Response Body
+
+A custom auth provider can't change the shape of this route's response body. The provider's [authenticate method](/references/auth/provider#authenticate) returns an [AuthenticationResponse](/references/auth/interfaces/auth.AuthenticationResponse) object, but this route only uses its `success`, `authIdentity`, `location`, and `error` fields to build the response. Any other fields you return from the provider are ignored.
+
+If you need to return a custom response body, create a [custom API route](!docs!/learn/fundamentals/api-routes) that calls the [Auth Module's authenticate method](/references/auth/authenticate), then shape the response as you need.
+
 <Note title="Example">
 
 [How to login Customers using the authentication route](../../../storefront-development/customers/login/page.mdx).
@@ -312,6 +318,12 @@ To reset a user's password:
 </Note>
 
 ### Generate Reset Password Token Route
+
+<Note>
+
+This route is available since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). On earlier versions, the route does not exist.
+
+</Note>
 
 The Medusa application defines an API route at `/auth/{actor_type}/{auth_provider}/reset-password` that emits the `auth.password_reset` event, passing the token in the payload.
 

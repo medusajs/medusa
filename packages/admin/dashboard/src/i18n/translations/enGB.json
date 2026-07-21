@@ -310,6 +310,7 @@
   },
   "filters": {
     "sortLabel": "Sort",
+    "columnsLabel": "Columns",
     "collapse": {
       "all": "Collapse all"
     },

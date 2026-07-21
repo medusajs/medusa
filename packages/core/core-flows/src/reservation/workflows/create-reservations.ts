@@ -2,9 +2,12 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
 
 import type { WorkflowTypes } from "@medusajs/framework/types"
+import { ReservationItemWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { createReservationsStep } from "../steps"
 
 export const createReservationsWorkflowId = "create-reservations-workflow"
@@ -38,6 +41,20 @@ export const createReservationsWorkflow = createWorkflow(
   (
     input: WorkflowData<WorkflowTypes.ReservationWorkflow.CreateReservationsWorkflowInput>
   ): WorkflowResponse<WorkflowTypes.ReservationWorkflow.CreateReservationsWorkflowOutput> => {
-    return new WorkflowResponse(createReservationsStep(input.reservations))
+    const reservations = createReservationsStep(input.reservations)
+
+    const reservationIdEvents = transform(
+      { reservations },
+      ({ reservations }) => {
+        return reservations.map((reservation) => ({ id: reservation.id }))
+      }
+    )
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.CREATED,
+      data: reservationIdEvents,
+    })
+
+    return new WorkflowResponse(reservations)
   }
 )

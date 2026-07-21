@@ -937,7 +937,7 @@ export default class OrderModuleService
       (orderShipping) => orderShipping.shipping_method_id
     )
 
-    const deletions: Promise<string[]>[] = []
+    const deletions: Promise<unknown>[] = []
 
     if (orderAddressIds.length) {
       deletions.push(
