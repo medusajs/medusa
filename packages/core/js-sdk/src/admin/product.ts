@@ -22,6 +22,15 @@ export class Product {
    * [Create Product Import](https://docs.medusajs.com/api/admin#products_postproductsimport)
    * API route.
    *
+   * @privateRemarks
+   * NOTE: Declared as a class-field arrow function rather than a method
+   * (`async import(...) {}`). Bundlers like Vite scan compiled output for the
+   * literal token sequence `import(` to detect dynamic imports. A method
+   * named `import` compiles to that same sequence and gets corrupted by
+   * Vite's import-analysis rewrite. An arrow function field instead compiles
+   * to `this.import = async (...) => {...}` in the constructor, which avoids
+   * the false positive. See: https://github.com/medusajs/medusa/issues/15892
+   *
    * @param body - The import's details.
    * @param query - Query parameters to pass to the request.
    * @param headers - Headers to pass in the request.
@@ -35,11 +44,11 @@ export class Product {
    *   console.log(transaction_id)
    * })
    */
-  async import(
+  import = async (
     body: HttpTypes.AdminImportProductRequest,
     query?: {},
     headers?: ClientHeaders
-  ) {
+  ) => {
     const form = new FormData()
     form.append("file", body.file)
 
