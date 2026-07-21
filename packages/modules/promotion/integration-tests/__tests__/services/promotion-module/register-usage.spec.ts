@@ -135,6 +135,48 @@ moduleIntegrationTestRunner({
           expect(usage!.used).toBeLessThanOrEqual(2)
         })
 
+        it("should not deadlock when concurrent registrations lock overlapping promotions in different orders", async () => {
+          // Two promotions with a numeric usage limit (so both `promotion` rows
+          // are locked) applied by two concurrent registrations in opposite
+          // order. Locking the rows in a stable id order (orderBy("id")) is what
+          // keeps this deadlock-free: without it each transaction could hold one
+          // row and wait on the other. Limits are ample so neither guard rejects,
+          // so the only way a call fails here is a deadlock.
+          const promotionA = await createDefaultPromotion(service, {
+            code: "PROMO_A",
+            limit: 100,
+            campaign_id: "campaign-id-1",
+          })
+          const promotionB = await createDefaultPromotion(service, {
+            code: "PROMO_B",
+            limit: 100,
+            campaign_id: "campaign-id-1",
+          })
+
+          const outcomes = await Promise.all([
+            service
+              .registerUsage(
+                [
+                  { amount: 1, code: promotionA.code! },
+                  { amount: 1, code: promotionB.code! },
+                ],
+                { customer_email: null, customer_id: null }
+              )
+              .then(() => "ok", (e) => e.message),
+            service
+              .registerUsage(
+                [
+                  { amount: 1, code: promotionB.code! },
+                  { amount: 1, code: promotionA.code! },
+                ],
+                { customer_email: null, customer_id: null }
+              )
+              .then(() => "ok", (e) => e.message),
+          ])
+
+          expect(outcomes).toEqual(["ok", "ok"])
+        })
+
         it("should register usage for type usage", async () => {
           const createdPromotion = await createDefaultPromotion(service, {
             campaign_id: "campaign-id-2",

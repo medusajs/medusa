@@ -330,7 +330,12 @@ export default class PromotionModuleService
     // order to avoid deadlocks between concurrent multi-promotion registrations,
     // and the re-read uses `refresh: true` (rather than detaching the identity
     // map) so a surrounding transaction's pending state is preserved.
-    const lockPromotionIds = existingPromotions.map((promotion) => promotion.id)
+    // Only promotions with a numeric usage limit have their `promotion` row
+    // updated below (see the `typeof promotion.limit === "number"` guard), so
+    // lock only those rows; budgets are locked separately just below.
+    const lockPromotionIds = existingPromotions
+      .filter((promotion) => typeof promotion.limit === "number")
+      .map((promotion) => promotion.id)
     const lockBudgetIds = Array.from(
       new Set(
         existingPromotions
@@ -349,6 +354,9 @@ export default class PromotionModuleService
         "registerUsage must run inside a transaction to serialize concurrent usage registration."
       )
     }
+    // Bound the wait for these row locks so a contended registration fails fast
+    // instead of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
     if (lockPromotionIds.length) {
       await knex("promotion")
         .whereIn("id", lockPromotionIds)

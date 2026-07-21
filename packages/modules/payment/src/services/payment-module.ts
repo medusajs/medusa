@@ -819,6 +819,9 @@ export default class PaymentModuleService
         "capturePayment_ must run inside a transaction to serialize concurrent captures."
       )
     }
+    // Bound the wait for the row lock so a contended capture fails fast instead
+    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
     await knex("payment").where("id", payment.id).forUpdate().select("id")
 
     const lockedPayment = await this.paymentService_.retrieve(
@@ -991,6 +994,9 @@ export default class PaymentModuleService
         "refundPayment_ must run inside a transaction to serialize concurrent refunds."
       )
     }
+    // Bound the wait for the row lock so a contended refund fails fast instead
+    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
     await knex("payment").where("id", payment.id).forUpdate().select("id")
 
     const lockedPayment = await this.paymentService_.retrieve(
