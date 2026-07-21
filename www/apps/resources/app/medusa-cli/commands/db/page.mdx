@@ -3,7 +3,7 @@ sidebar_label: "db"
 sidebar_position: 5
 ---
 
-import { Table } from "docs-ui"
+import { Table, Note } from "docs-ui"
 
 export const metadata = {
   title: `db Commands - Medusa CLI Reference`,
@@ -502,3 +502,27 @@ npx medusa db:sync-links
     </Table.Row>
   </Table.Body>
 </Table>
+
+---
+
+## Reset the Database
+
+The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+
+<Note title="Warning" type="warning">
+
+Dropping the database permanently deletes all data. Make sure to back up any data you want to keep before running these commands.
+
+</Note>
+
+For example, using the `psql` command:
+
+```bash
+psql -c "DROP DATABASE <db_name>;"
+```
+
+Then, run `db:setup` to create the database and run all migrations:
+
+```bash npx2yarn
+npx medusa db:setup --db <db_name>
+```

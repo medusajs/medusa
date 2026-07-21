@@ -87,6 +87,16 @@ describe("load internal", () => {
               {
                 name: ["dml_entity", "dml_entities"],
                 entity: "DmlEntity",
+                __internal: {
+                  crossjoinable: [
+                    "id",
+                    "name",
+                    "created_at",
+                    "updated_at",
+                    "deleted_at",
+                  ],
+                  tableName: "dml_entity",
+                },
                 args: {
                   methodSuffix: "DmlEntities",
                 },
@@ -170,6 +180,16 @@ describe("load internal", () => {
               {
                 name: ["entity_model", "entity_models"],
                 entity: "EntityModel",
+                __internal: {
+                  crossjoinable: [
+                    "id",
+                    "name",
+                    "created_at",
+                    "updated_at",
+                    "deleted_at",
+                  ],
+                  tableName: "entity_model",
+                },
                 args: {
                   methodSuffix: "EntityModels",
                 },
@@ -177,6 +197,16 @@ describe("load internal", () => {
               {
                 name: ["dml_entity", "dml_entities"],
                 entity: "DmlEntity",
+                __internal: {
+                  crossjoinable: [
+                    "id",
+                    "name",
+                    "created_at",
+                    "updated_at",
+                    "deleted_at",
+                  ],
+                  tableName: "dml_entity",
+                },
                 args: {
                   methodSuffix: "DmlEntities",
                 },

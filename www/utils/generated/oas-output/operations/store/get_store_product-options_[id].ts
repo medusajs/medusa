@@ -19,7 +19,7 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
- *   - name: Content-Language
+ *   - name: x-medusa-locale
  *     in: header
  *     description: The locale in BCP 47 format to retrieve localized content.
  *     required: false
@@ -99,7 +99,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.13.0
+ * x-since: 2.16.0
  * 
 */
 

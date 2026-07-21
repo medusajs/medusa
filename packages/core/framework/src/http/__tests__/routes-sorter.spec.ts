@@ -265,6 +265,48 @@ describe("Routes sorter", () => {
     `)
   })
 
+  it("should keep RegExp matchers in the tree instead of dropping them", () => {
+    const regexMatcher = /^\/admin\/foo(\/.*)?$/
+    const sorter = new RoutesSorter([
+      {
+        matcher: "/admin/products",
+        methods: ["GET"],
+        handler: () => {},
+      },
+      {
+        matcher: regexMatcher,
+        methods: ["GET"],
+        handler: () => {},
+      },
+    ])
+
+    const sorted = sorter.sort()
+
+    // The RegExp matcher must survive sorting (previously it was dropped)
+    expect(sorted).toHaveLength(2)
+    expect(sorted.some((route) => route.matcher === regexMatcher)).toBe(true)
+  })
+
+  it(`should keep a root ("/") matcher in the tree instead of dropping it`, () => {
+    const sorter = new RoutesSorter([
+      {
+        matcher: "/",
+        handler: () => {},
+      },
+      {
+        matcher: "/admin/products",
+        methods: ["GET"],
+        handler: () => {},
+      },
+    ])
+
+    const sorted = sorter.sort()
+
+    // The zero-segment matcher must survive sorting (previously it was dropped)
+    expect(sorted).toHaveLength(2)
+    expect(sorted.some((route) => route.matcher === "/")).toBe(true)
+  })
+
   it("should handle routes with multiple params", () => {
     const sorter = new RoutesSorter([
       {

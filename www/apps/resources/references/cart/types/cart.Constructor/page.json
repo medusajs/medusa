@@ -1,0 +1,1 @@
+{"slug":"/references/cart/types/cart.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"cartReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

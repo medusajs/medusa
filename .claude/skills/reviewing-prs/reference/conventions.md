@@ -19,6 +19,18 @@ Conventions to verify when reviewing code contributions. Focus on areas relevant
   export const POST = async (req: AuthenticatedMedusaRequest, res: MedusaResponse) => { ... }
   ```
 
+## Code Comments
+
+- **No issue/PR references in code**: Comments in source files must not reference GitHub issue or PR numbers, or link to issues/PRs. The relationship between a change and an issue belongs in the PR body and commit messages — not in the code, where it becomes stale, meaningless out of context, and noise for future readers. Flag any added comment that references an issue/PR, such as:
+  ```typescript
+  // ❌ Wrong — references an issue/PR
+  // fixes #1234
+  // see PR #5678
+  // related to https://github.com/medusajs/medusa/issues/1234
+  // this handles the edge case reported in issue 4321
+  ```
+  Ask the author to remove the reference (moving any needed context into the comment as a plain explanation, or into the PR description). This is a required change.
+
 ## Naming Conventions
 
 - **Object properties**: snake_case (`region_id`, `created_at`)

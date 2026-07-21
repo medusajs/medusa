@@ -37,7 +37,7 @@ const { data: products } = await query.graph({
   fields: [
     "id",
     "title",
-    "handle"
+    "handle",
   ],
   filters: {
     id: [
@@ -57,7 +57,7 @@ const { data: products } = useQueryGraphStep({
   fields: [
     "id",
     "title",
-    "handle"
+    "handle",
   ],
   filters: {
     id: [ 
@@ -95,12 +95,12 @@ const { data: products } = await query.graph({
     "id",
     "title",
     "handle",
-    "options"
+    "options",
   ],
   filters: {
     options: {
       id: ["opt_123", "opt_456"],
-    }
+    },
   },
 })
 ```
@@ -115,12 +115,12 @@ const { data: products } = useQueryGraphStep({
     "id",
     "title",
     "handle",
-    "options"
+    "options",
   ],
   filters: {
     options: {
       id: ["opt_123", "opt_456"],
-    }
+    },
   },
 })
 ```
@@ -154,14 +154,14 @@ const { data: products } = await query.graph({
     "id",
     "title",
     "handle",
-    "options.values.*"
+    "options.values.*",
   ],
   filters: {
     options: {
       values: {
         id: ["optval_123", "optval_456"],
-      }
-    }
+      },
+    },
   },
 })
 ```
@@ -176,14 +176,14 @@ const { data: products } = useQueryGraphStep({
     "id",
     "title",
     "handle",
-    "options.values.*"
+    "options.values.*",
   ],
   filters: {
     options: {
       values: {
         id: ["optval_123", "optval_456"],
-      }
-    }
+      },
+    },
   },
 })
 ```
@@ -210,7 +210,7 @@ const { data: products } = await query.graph({
   fields: [
     "id",
     "title",
-    "handle"
+    "handle",
   ],
   filters: {
     // @ts-ignore
@@ -228,7 +228,7 @@ const { data: products } = useQueryGraphStep({
   fields: [
     "id",
     "title",
-    "handle"
+    "handle",
   ],
   filters: {
     // @ts-ignore

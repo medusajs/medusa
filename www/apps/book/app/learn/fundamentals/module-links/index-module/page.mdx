@@ -97,6 +97,12 @@ info:    [Index engine] syncing entity 'SalesChannel' done (+7.00ms)
 
 The Index Module automatically updates its data store when data in the ingested data models change. So, you don't need to do anything to keep the data in sync.
 
+<Note type="warning">
+
+Incremental sync requires a Redis-based event bus. If you're using the in-memory event bus (the default when no `event-bus-redis` module is configured), the Index Module will not receive change events and the data store will only be updated on the next server startup. To enable incremental sync, configure the [Redis Event Module](!resources!/infrastructure-modules/event/redis).
+
+</Note>
+
 For example, if you create a new product, the Index Module will ingest it into its data store.
 
 ### Enable Index Module Feature Flag

@@ -1,9 +1,0 @@
-import { TypeList } from "docs-ui"
-
-# WebhookActionResult
-
-The actions that the payment provider informs the Payment Module to perform.
-
-## Properties
-
-<TypeList types={[{"name":"action","type":"[PaymentActions](../../types/types.PaymentActions/page.mdx)","description":"The action that was performed so that Medusa can handle it internally.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[WebhookActionData](../types.WebhookActionData/page.mdx)","description":"The webhook action's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"session_id","type":"`string`","description":"The ID of the payment session in Medusa.\nMake sure to store this ID in the third-party payment provider\nto be able to retrieve the payment session later.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberValue](../../types/types.BigNumberValue/page.mdx)","description":"The amount to be captured or authorized (based on the action's type.)","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../types/types.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="WebhookActionResult"/>

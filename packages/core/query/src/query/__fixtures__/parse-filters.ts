@@ -80,6 +80,9 @@ const pricingJoinerConfig = defineJoinerConfig("pricing", {
     {
       name: ["price_set", "price_sets"],
       entity: "PriceSet",
+      __internal: {
+        crossjoinable: ["id", "prices"],
+      },
       args: {
         methodSuffix: "priceSet",
       },

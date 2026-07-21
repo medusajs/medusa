@@ -2,11 +2,13 @@ import {
   JoinerArgument,
   JoinerRelationship,
   LoadedModule,
-  RemoteExpandProperty,
-  RemoteNestedExpands,
 } from "@medusajs/types"
 import { isPresent, toPascalCase } from "@medusajs/utils"
-import { IRemoteDataFetcher } from "../joiner/remote-data-fetcher"
+import {
+  IRemoteDataFetcher,
+  RemoteExpandProperty,
+  RemoteNestedExpands,
+} from "../joiner/types"
 
 const BASE_PREFIX = ""
 const MAX_BATCH_SIZE = 4000
@@ -179,9 +181,7 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
     const service = this.modulesMap.get(serviceConfig.serviceName)!
 
     let filters = {}
-    const options = {
-      ...getAllFieldsAndRelations(expand),
-    }
+    const options = getAllFieldsAndRelations(expand)
 
     const availableOptions = [
       "skip",
@@ -193,6 +193,7 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
       "order",
       "withDeleted",
       "options",
+      "__internal",
     ]
     const availableOptionsAlias = new Map([
       ["limit", "take"],

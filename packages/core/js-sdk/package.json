@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",
-    "qs": "^6.12.1"
+    "qs": "^6.15.2"
   },
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc -p tsconfig.json && yarn run -T tsc -p tsconfig.esm.json",

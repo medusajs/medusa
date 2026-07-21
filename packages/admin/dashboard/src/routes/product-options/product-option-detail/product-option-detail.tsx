@@ -2,7 +2,10 @@ import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { useProductOption } from "../../../hooks/api"
 import { productOptionLoader } from "./loader.ts"
 import { ProductOptionGeneralSection } from "./components/product-option-general-section"
@@ -47,7 +50,9 @@ export const ProductOptionDetail = () => {
               <ProductOptionValuesSection productOption={product_option} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionProductSection">
-              <ProductOptionProductSection productOptionId={product_option.id} />
+              <ProductOptionProductSection
+                productOptionId={product_option.id}
+              />
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_option, { permissions: false })}
           </>

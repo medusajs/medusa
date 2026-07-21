@@ -75,7 +75,6 @@ interface DataTableProps<TData> {
   enablePagination?: boolean
   enableSearch?: boolean
   autoFocusSearch?: boolean
-  enableFilterMenu?: boolean
   rowHref?: (row: TData) => string
   emptyState?: DataTableEmptyStateProps
   heading?: string
@@ -117,7 +116,6 @@ export const DataTable = <TData,>({
   enablePagination = true,
   enableSearch = true,
   autoFocusSearch = false,
-  enableFilterMenu,
   rowHref,
   heading,
   headingLevel = "h1",
@@ -147,10 +145,15 @@ export const DataTable = <TData,>({
   const effectiveEnableViewSelector = isViewConfigEnabled && enableViewSelector
 
   const enableFiltering = filters && filters.length > 0
-  const showFilterMenu =
-    enableFilterMenu !== undefined ? enableFilterMenu : enableFiltering
   const enableCommands = commands && commands.length > 0
   const enableSorting = columns.some((column) => column.enableSorting)
+
+  // Reserve the filter bar row whenever it can gain content — active filter
+  // chips, or the view-config save controls that appear on sort/column changes
+  // — so toggling those doesn't shift the layout.
+  const alwaysShowFilterBar = Boolean(
+    enableFiltering || effectiveEnableColumnVisibility
+  )
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialColumnVisibility)
@@ -385,6 +388,7 @@ export const DataTable = <TData,>({
         className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center"
         translations={toolbarTranslations}
         filterBarContent={filterBarContent}
+        alwaysShowFilterBar={alwaysShowFilterBar}
       >
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex items-center gap-x-4">
@@ -407,8 +411,17 @@ export const DataTable = <TData,>({
             )}
           </div>
           <div className="flex items-center gap-x-2">
-            {showFilterMenu && <UiDataTable.FilterMenu />}
-            {enableSorting && <UiDataTable.SortingMenu />}
+            {enableFiltering && (
+              <UiDataTable.FilterMenu tooltip={toolbarTranslations.filter} />
+            )}
+            {enableSorting && (
+              <UiDataTable.SortingMenu tooltip={toolbarTranslations.sort} />
+            )}
+            {effectiveEnableColumnVisibility && (
+              <UiDataTable.ColumnVisibilityMenu
+                tooltip={toolbarTranslations.columns}
+              />
+            )}
             {enableSearch && (
               <div className="w-full md:w-auto">
                 <UiDataTable.Search
@@ -513,7 +526,8 @@ const useDataTableTranslations = () => {
   const toolbarTranslations = {
     clearAll: t("actions.clearAll"),
     sort: t("filters.sortLabel"),
-    columns: "Columns",
+    filter: t("filters.filterLabel"),
+    columns: t("filters.columnsLabel"),
   }
 
   return {

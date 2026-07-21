@@ -317,6 +317,42 @@ export class Order {
   }
 
   /**
+   * This method transfers an order to a guest customer, identified by email. If no
+   * customer exists with the given email, a guest customer is created. Unlike
+   * {@link requestTransfer}, the transfer is applied immediately without requiring
+   * the recipient to accept it. It sends a request to the
+   * `/admin/orders/:id/transfer/guest` API route.
+   *
+   * @param id - The order's ID.
+   * @param body - The transfer's details - the email of the guest customer.
+   * @param headers - Headers to pass in the request.
+   * @returns The order's details.
+   *
+   * @example
+   * sdk.admin.order.transferToGuest("order_123", {
+   *   email: "customer@example.com",
+   *   internal_note: "Internal note",
+   * })
+   * .then(({ order }) => {
+   *   console.log(order)
+   * })
+   */
+  async transferToGuest(
+    id: string,
+    body: HttpTypes.AdminTransferOrderToGuest,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminOrderResponse>(
+      `/admin/orders/${id}/transfer/guest`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
    * This method cancels an order transfer request. It sends a request to the
    * [Cancel Order Transfer Request](https://docs.medusajs.com/api/admin#orders_postordersidcanceltransferrequest)
    * API route.

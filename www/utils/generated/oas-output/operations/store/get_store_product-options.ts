@@ -13,7 +13,7 @@
  *       type: string
  *       externalDocs:
  *         url: https://docs.medusajs.com/api/store#publishable-api-key
- *   - name: Content-Language
+ *   - name: x-medusa-locale
  *     in: header
  *     description: The locale in BCP 47 format to retrieve localized content.
  *     required: false
@@ -182,6 +182,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: created_at
  *   - name: updated_at
  *     in: query
  *     description: Filter by a product option's update date.
@@ -301,6 +302,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: updated_at
  *   - name: deleted_at
  *     in: query
  *     description: Filter by a product option's deletion date.
@@ -420,6 +422,7 @@
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
+ *       title: deleted_at
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -490,6 +493,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: Filter by a product option's ID.
+ *         - type: array
+ *           description: Filter by product option IDs.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: The product option's ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -572,7 +589,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-since: 2.13.0
+ * x-since: 2.16.0
  * 
 */
 
