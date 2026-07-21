@@ -148,7 +148,7 @@ export class BigNumber implements IBigNumber {
    * consistent.
    */
   toString(): string {
-    return this.raw?.value ?? this.numeric.toString()
+    return `${this.raw?.value ?? this.numeric}`
   }
 
   [Symbol.toPrimitive](hint) {
