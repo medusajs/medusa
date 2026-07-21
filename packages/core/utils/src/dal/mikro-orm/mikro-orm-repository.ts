@@ -25,16 +25,18 @@ import {
 } from "@medusajs/types"
 import {
   arrayDifference,
+  isObject,
   isString,
   MedusaError,
   promiseAll,
 } from "../../common"
 import { toMikroORMEntity } from "../../dml"
 import { buildQuery } from "../../modules-sdk/build-query"
-import { augmentFindOptionsWithCrossModuleJoins } from "./cross-module-query"
 import { transactionWrapper } from "../utils"
+import { augmentFindOptionsWithCrossModuleJoins } from "./cross-module-query"
 import { dbErrorMapper } from "./db-error-mapper"
 import { mikroOrmSerializer } from "./mikro-orm-serializer"
+import { SoftDeletableFilterKey } from "./mikro-orm-soft-deletable-filter"
 import { pruneFindOptionsAgainstMetadata } from "./prune-find-options-against-metadata"
 import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
@@ -1547,7 +1549,76 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         findOptions: findOptions_,
       })
 
+      // Soft-deleted related entities must not exclude parent entities. Force LEFT JOIN
+      // for populated relations so softDeletable filters on related tables do not
+      // remove owning rows (MikroORM defaults to INNER JOIN for non-nullable FKs).
+      const softDeletableFilter = (
+        findOptions_.options.filters as Record<string, unknown> | undefined
+      )?.[SoftDeletableFilterKey]
+      const withDeleted =
+        isObject(softDeletableFilter) &&
+        (softDeletableFilter as { withDeleted?: boolean }).withDeleted === true
+      if (!withDeleted) {
+        // Override populate to force LEFT JOINs.
+        findOptions_.options.populate = this.forceLeftJoinPopulate(
+          findOptions_.options.populate,
+          findOptions_.options.fields
+        )
+      }
+
       return findOptions_
+    }
+
+    /**
+     * Ensure every populated relation uses a LEFT JOIN.
+     * Infers populate from nested fields when populate is omitted, then rewrites
+     * all populate hints (including nested children) to `joinType: "left join"`.
+     */
+    private forceLeftJoinPopulate(populate: unknown, fields?: unknown): any {
+      let populateHints = populate
+
+      if (
+        (!Array.isArray(populateHints) || !populateHints.length) &&
+        Array.isArray(fields)
+      ) {
+        const relationPaths = new Set<string>()
+        for (const field of fields) {
+          if (!isString(field) || !field.includes(".")) {
+            continue
+          }
+
+          // Drop the trailing scalar (e.g. "entity1.id" -> "entity1").
+          relationPaths.add(field.split(".").slice(0, -1).join("."))
+        }
+
+        if (relationPaths.size) {
+          populateHints = [...relationPaths]
+        }
+      }
+
+      if (!Array.isArray(populateHints)) {
+        return populateHints
+      }
+
+      return populateHints.map((item) => {
+        if (isString(item)) {
+          return { field: item, joinType: "left join" }
+        }
+
+        if (item && typeof item === "object") {
+          // This is an internal representation of populate in mikro-orm.
+          // In v7, this is exposed publicly.
+          return {
+            ...item,
+            joinType: "left join",
+            children: item.children
+              ? this.forceLeftJoinPopulate(item.children)
+              : item.children,
+          }
+        }
+
+        return item
+      })
     }
 
     private normalizeFilters(

@@ -1,9 +1,21 @@
 import { RedisOptions } from "ioredis"
-export interface RedisCacheModuleOptions extends RedisOptions {
+
+/**
+ * @deprecated Pass ioredis options in `redisOptions` instead of at the top
+ * level, for consistency with the other Redis modules.
+ */
+type DeprecatedTopLevelRedisOptions = RedisOptions
+
+export interface RedisCacheModuleOptions
+  extends DeprecatedTopLevelRedisOptions {
   /**
    * Redis connection string
    */
   redisUrl?: string
+  /**
+   * Options passed to the ioredis client
+   */
+  redisOptions?: RedisOptions
   /**
    * TTL in milliseconds
    */
