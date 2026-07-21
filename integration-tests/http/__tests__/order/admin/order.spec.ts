@@ -502,7 +502,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    // Regression for #15919: shipping-method adjustments must be version-scoped
+    // shipping-method adjustments must be version-scoped
     // in the list (findAndCount) path, as they already are in the retrieve
     // (find) path. Before the fix, GET /admin/orders summed the free-shipping
     // waiver once per order version, yielding a negative shipping_total and an
