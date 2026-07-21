@@ -12,6 +12,10 @@ export const concept = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules"
   },
   {
+    "title": "Physical and Customs Attributes",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes"
+  },
+  {
     "title": "Product Shipping Requirement",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/selling-products"
   },
