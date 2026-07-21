@@ -56589,6 +56589,40 @@ The method returns a Promise that, when resolved, has the data returned by the r
 
 ***
 
+## Download Binary or File Responses
+
+By default, the `fetch` method sets the `accept` header of the request to `application/json`, so it parses the response as JSON and returns a JavaScript object.
+
+The `fetch` method decides whether to parse the response as JSON based on the request's `accept` header, not the response's content type. So, if your custom route returns a binary or file response, such as a PDF or an image, you must override the `accept` header to a value other than `application/json`. The method then returns the raw [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) object without parsing it.
+
+For example, to download a PDF file returned by a custom route:
+
+```tsx
+const response: Response = await sdk.client.fetch(
+  `/admin/orders/${orderId}/invoice`,
+  {
+    method: "GET",
+    headers: {
+      accept: "application/pdf",
+    },
+  }
+)
+
+const blob = await response.blob()
+const url = window.URL.createObjectURL(blob)
+const link = document.createElement("a")
+link.href = url
+link.download = `invoice-${orderId}.pdf`
+link.click()
+window.URL.revokeObjectURL(url)
+```
+
+In this example, you set the `accept` header to `application/pdf`, so the `fetch` method returns the raw `Response` object. You then use the [Response.blob](https://developer.mozilla.org/en-US/docs/Web/API/Response/blob) method to read the response as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), which you can download in the browser.
+
+Since the method returns the raw `Response` object in this case, type the returned value as `Response`. You're then responsible for reading the response's body, using methods like `blob`, [arrayBuffer](https://developer.mozilla.org/en-US/docs/Web/API/Response/arrayBuffer), or [text](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
+
+***
+
 ## Migrating from Fetch API to JS SDK
 
 Prefer `sdk.client.fetch` over the raw [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) when sending requests to your Medusa backend.
