@@ -65,16 +65,25 @@ jobs:
           # Read-only default token. The agent has no App token in this job.
           GH_TOKEN: ${{ github.token }}
           GITHUB_EVENT_NUMBER: ${{ inputs.issue_number }}
-          # Claude Code's Bash sandbox (bwrap) masks `$HOME/.mcp.json` by
-          # bind-mounting /dev/null over it, creating the target file first.
-          # The runner's default HOME (/home) is not writable, so that aborts
-          # with "bwrap: Can't create file at /home/.mcp.json". Point HOME at
-          # the per-job writable temp dir so the sandbox stays enabled and
-          # can create its mask target. Kept off the repo checkout (which
-          # holds the read-only scripts/ dir) on purpose.
-          HOME: ${{ runner.temp }}
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          # Disable Claude Code's Bash sandbox (bubblewrap). On the runner it
+          # aborts every Bash command during setup with
+          # "bwrap: Can't mkdir /home/.claude" (and, earlier, .mcp.json): the
+          # sandbox builds an isolated home under /home inside its own bwrap
+          # namespace and then cannot create files in it (upstream bug
+          # anthropics/claude-code#17727). The /home path originates inside
+          # the sandbox, not from the runner HOME, so no external HOME
+          # override reaches it -- disabling the sandbox is the only
+          # workflow-side fix. Isolation for this job is still enforced by:
+          # the tight --allowedTools allowlist below (only specific
+          # `bash scripts/*.sh` + Read + Write, no arbitrary Bash), the
+          # read-only default token with NO App token in this job, the
+          # `chmod -R a-w scripts` step above, and CLAUDE_CODE_SUBPROCESS_ENV_SCRUB
+          # (auto-enabled by the action because allowed_non_write_users is set),
+          # which strips the Anthropic API token from every subprocess env.
+          settings: |
+            { "sandbox": { "enabled": false } }
           github_token: ${{ github.token }}
           model: claude-sonnet-4-6
           # Safe in this job because the job genuinely has no write power.
