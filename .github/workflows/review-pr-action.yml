@@ -57,11 +57,23 @@ jobs:
           chmod a-w scripts
 
       - name: Review analysis
-        uses: anthropics/claude-code-action@v1
+        # Pinned to the commit the v1 tag currently resolves to. A floating
+        # `@v1` tag let an upstream release silently roll into CI (a change
+        # that enabled the bwrap Bash sandbox broke every allowlisted script
+        # call), so we pin to a SHA and bump deliberately.
+        uses: anthropics/claude-code-action@b76a0776ae74036e77cd11018083743453d7ad35 # v1
         env:
           # Read-only default token. The agent has no App token in this job.
           GH_TOKEN: ${{ github.token }}
           GITHUB_EVENT_NUMBER: ${{ inputs.pr_number }}
+          # Claude Code's Bash sandbox (bwrap) masks `$HOME/.mcp.json` by
+          # bind-mounting /dev/null over it, creating the target file first.
+          # The runner's default HOME (/home) is not writable, so that aborts
+          # with "bwrap: Can't create file at /home/.mcp.json". Point HOME at
+          # the per-job writable temp dir so the sandbox stays enabled and
+          # can create its mask target. Kept off the repo checkout (which
+          # holds the read-only scripts/ dir) on purpose.
+          HOME: ${{ runner.temp }}
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           github_token: ${{ github.token }}

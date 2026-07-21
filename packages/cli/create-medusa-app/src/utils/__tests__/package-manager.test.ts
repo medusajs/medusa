@@ -479,22 +479,33 @@ describe("PackageManager", () => {
     })
 
     describe("npm-specific changes", () => {
-      it("should add ajv override to package.json", async () => {
+      it("should pin ajv v8 at the root and scope v6 to ESLint", async () => {
         const pm = new PackageManager(processManager)
         pm["packageManager"] = "npm"
 
         await pm.transformWorkspaceConfig("/test/path")
 
         const written = getWrittenPackageJson()
-        expect(written.overrides).toEqual(expect.objectContaining({ ajv: "^8.0.0" }))
+        expect(written.devDependencies).toEqual(
+          expect.objectContaining({ ajv: "^8.13.0" })
+        )
+        expect(written.overrides).toEqual(
+          expect.objectContaining({
+            eslint: { ajv: "^6.12.4" },
+            "@eslint/eslintrc": { ajv: "^6.12.4" },
+          })
+        )
       })
 
-      it("should preserve existing overrides when adding ajv", async () => {
+      it("should preserve existing overrides and devDependencies when adding ajv", async () => {
         mockReadFileSync
           .mockReset()
           .mockReturnValueOnce(YAML_CONTENT)
           .mockReturnValueOnce(
-            makePackageJson({ overrides: { someOtherPackage: "^1.0.0" } })
+            makePackageJson({
+              devDependencies: { typescript: "^5.0.0" },
+              overrides: { someOtherPackage: "^1.0.0" },
+            })
           )
 
         const pm = new PackageManager(processManager)
@@ -503,9 +514,14 @@ describe("PackageManager", () => {
         await pm.transformWorkspaceConfig("/test/path")
 
         const written = getWrittenPackageJson()
+        expect(written.devDependencies).toEqual({
+          typescript: "^5.0.0",
+          ajv: "^8.13.0",
+        })
         expect(written.overrides).toEqual({
           someOtherPackage: "^1.0.0",
-          ajv: "^8.0.0",
+          eslint: { ajv: "^6.12.4" },
+          "@eslint/eslintrc": { ajv: "^6.12.4" },
         })
       })
 
