@@ -456,11 +456,7 @@ medusaIntegrationTestRunner({
         )
 
         const completedCart = (
-          await api.post(
-            `/store/carts/${cart.id}/complete`,
-            {},
-            storeHeaders
-          )
+          await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
         ).data
 
         expect(completedCart.type).toBe("order")
@@ -533,11 +529,7 @@ medusaIntegrationTestRunner({
         )
 
         const completedCart = (
-          await api.post(
-            `/store/carts/${cart.id}/complete`,
-            {},
-            storeHeaders
-          )
+          await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
         ).data
 
         expect(completedCart.type).toBe("order")
@@ -591,6 +583,61 @@ medusaIntegrationTestRunner({
           orderAfter.payment_collections[0].payments[0].captures
         ).toHaveLength(1)
         expect(orderAfter.payment_collections[0].status).toBe("completed")
+      })
+
+      it("should NOT complete the cart on an intermediate (PENDING) webhook action when no order exists yet", async () => {
+        const paymentCollection = (
+          await api.post(
+            "/store/payment-collections",
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.payment_collection
+
+        const sessionId = (
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: pendingAuthProviderId },
+            storeHeaders
+          )
+        ).data.payment_collection.payment_sessions[0].id
+
+        // Make the session authorizable so that, without the action guard,
+        // the webhook-driven completion would succeed and complete the cart.
+        const paymentModule = appContainer.resolve(Modules.PAYMENT)
+        await paymentModule.updatePaymentSession({
+          id: sessionId,
+          currency_code: "usd",
+          amount: paymentCollection.amount,
+          data: { payment_received: true },
+        })
+
+        const cartBefore = (
+          await api.get(`/store/carts/${cart.id}`, storeHeaders)
+        ).data.cart
+        expect(cartBefore.completed_at).toBeNull()
+
+        const webhookRes = await api.post(
+          `/hooks/payment/${webhookProviderPath}`,
+          {
+            action: PaymentActions.PENDING,
+            session_id: sessionId,
+            amount: paymentCollection.amount,
+          }
+        )
+        expect(webhookRes.status).toBe(200)
+
+        // The webhook is processed asynchronously. Keep checking for long
+        // enough that a (wrongly) triggered completion would have landed —
+        // the sibling webhook tests take ~6s for their effects to appear.
+        const deadline = Date.now() + 8000
+        while (Date.now() < deadline) {
+          const cartAfter = (
+            await api.get(`/store/carts/${cart.id}`, storeHeaders)
+          ).data.cart
+          expect(cartAfter.completed_at).toBeNull()
+          await setTimeout(500)
+        }
       })
     })
   },

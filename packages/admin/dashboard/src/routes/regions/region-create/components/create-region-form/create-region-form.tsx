@@ -373,7 +373,7 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
                           count={count}
                           pageSize={PAGE_SIZE}
                           orderBy={[
-                            { key: "display_name", label: t("fields.name") },
+                            { key: "name", label: t("fields.name") },
                             { key: "iso_2", label: t("fields.code") },
                           ]}
                           pagination

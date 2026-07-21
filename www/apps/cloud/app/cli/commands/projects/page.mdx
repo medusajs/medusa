@@ -222,6 +222,9 @@ Returns the following information:
       <Table.HeaderCell>
         Required
       </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -233,13 +236,17 @@ Returns the following information:
       </Table.Cell>
       <Table.Cell>
 
-      The ID or handle of the project to retrieve.
-
+      The ID, handle, or name of the project to retrieve.
 
       </Table.Cell>
       <Table.Cell>
 
-      Yes
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
 
       </Table.Cell>
     </Table.Row>
@@ -266,6 +273,28 @@ Returns the following information:
     </Table.Row>
   </Table.Header>
   <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-handle-or-name>`, `--project <id-handle-or-name>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID, handle, or name of the project to retrieve. Interchangeable with the positional argument.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
     <Table.Row>
       <Table.Cell>
 
@@ -359,6 +388,9 @@ deployments, and resources.
       <Table.HeaderCell>
         Required
       </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -370,13 +402,17 @@ deployments, and resources.
       </Table.Cell>
       <Table.Cell>
 
-      The ID or handle of the project to delete.
-
+      The ID, handle, or name of the project to delete.
 
       </Table.Cell>
       <Table.Cell>
 
-      Yes
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
 
       </Table.Cell>
     </Table.Row>
@@ -403,6 +439,28 @@ deployments, and resources.
     </Table.Row>
   </Table.Header>
   <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `-p <id-handle-or-name>`, `--project <id-handle-or-name>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The ID, handle, or name of the project to delete. Interchangeable with the positional argument.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the project in the [active context](../use/page.mdx#set-the-active-context), if set.
+
+      </Table.Cell>
+    </Table.Row>
     <Table.Row>
       <Table.Cell>
 

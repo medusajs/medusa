@@ -12,6 +12,7 @@ import { filesMap } from "../../../generated/files-map.mjs"
 import { slugChanges } from "../../../generated/slug-changes.mjs"
 import { PostHog } from "posthog-node"
 import { fetchMdxContent } from "../../../utils/fetch-mdx-content"
+import { getSidebarForPath } from "../../../utils/get-sidebar-for-path"
 
 type Params = {
   params: Promise<{ slug?: string[] }>
@@ -39,9 +40,13 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   // Reference pages are the JSON doc-model (page.json) — convert the DocPage to
   // Markdown directly rather than running the MDX cleaner over it.
+  // the app directory that holds the source MDX pages, used to resolve
+  // relative `page.mdx` links against the current page's path
+  const appDir = filePathFromMap.replace(/\/app\/.*$/, "/app")
+
   const cleanMdContent = filePathFromMap.endsWith("page.json")
     ? await docPageToMarkdown_(fileContent)
-    : await getCleanMd_(fileContent, {
+    : await getCleanMd_(fileContent, `/${slug.join("/")}`, {
         before: [
           [
             crossProjectLinksPlugin,
@@ -68,10 +73,20 @@ export async function GET(req: NextRequest, { params }: Params) {
                 !!process.env.CLOUDFLARE_ENV,
             },
           ],
-          [localLinksRehypePlugin],
+          // in "content" mode there is no vfile path, so pass the current
+          // page's file path explicitly to resolve relative `page.mdx` links
+          [
+            localLinksRehypePlugin,
+            { filePath: filePathFromMap, basePath: appDir },
+          ],
         ] as unknown as Plugin[],
         after: [
-          [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
+          // links in the doc are app-relative (without the base path), so
+          // prepend both the base URL and the base path to make them absolute
+          [
+            addUrlToRelativeLink,
+            { url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${basePath}` },
+          ],
         ] as unknown as Plugin[],
       })
 
@@ -119,8 +134,27 @@ export async function GET(req: NextRequest, { params }: Params) {
 }
 
 const getCleanMd_ = unstable_cache(
-  async (content: string, plugins?: { before?: Plugin[]; after?: Plugin[] }) =>
-    getCleanMd({ file: content, type: "content", plugins }),
+  async (
+    content: string,
+    currentPath: string,
+    plugins?: { before?: Plugin[]; after?: Plugin[] }
+  ) => {
+    // `ChildDocs` renders the child items of the current sidebar, so resolve
+    // the sidebar for this path and pass it (along with the path and base path)
+    // to the parser that reproduces the component's output as Markdown.
+    const sidebar = await getSidebarForPath(currentPath)
+    return getCleanMd({
+      file: content,
+      type: "content",
+      plugins,
+      parserOptions: {
+        ChildDocs: {
+          sidebar,
+          activePath: currentPath,
+        },
+      },
+    })
+  },
   ["clean-md"],
   {
     revalidate: 3600,

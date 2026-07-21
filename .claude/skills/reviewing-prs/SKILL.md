@@ -41,6 +41,7 @@ ignored.
 - **Checking contribution guidelines?** → MUST load `reference/contribution-types.md` first
 - **Verifying code conventions?** → MUST load `reference/conventions.md` first
 - **Reviewing a dependency-update PR (Dependabot / Renovate / lockfile bump)?** → MUST load `reference/dependency-review.md` first
+- **Running the security analysis (Step 10)?** → MUST load `reference/security-review.md` first (trust-boundary heuristic + Medusa-specific patterns)
 - **Writing the review summary / blocking points?** → MUST load `reference/comment-guidelines.md` first (includes bug, security, and performance reporting formats)
 
 **Minimum requirement:** Load at least the relevant reference file(s) before completing the review.
@@ -65,6 +66,7 @@ bash scripts/get_pr.sh <pr_number>             # PR details (title, body, author
 bash scripts/get_pr_files.sh <pr_number>       # List files changed (metadata only)
 bash scripts/get_pr_diff.sh <pr_number>        # Full unified diff (required for code review)
 bash scripts/get_linked_issues.sh <pr_number>  # Issues linked with closing keywords
+bash scripts/search_prs.sh <issue_number>      # Open PRs whose body references #<issue_number> (mentions, not just linked)
 bash scripts/get_comments.sh <pr_number>       # Existing comments on the PR
 bash scripts/get_labels.sh <pr_number>         # Current labels on the PR
 bash scripts/get_issue.sh <issue_number>       # A linked issue's details
@@ -157,19 +159,48 @@ bash scripts/get_pr_diff.sh <pr_number>
 bash scripts/get_comments.sh <pr_number>
 ```
 
-### Step 2 — Check for Duplicate PRs
+### Step 2 — Check for a Previous PR Resolving the Same Issue
 
-If the PR body links an issue (from Step 1's PR details), search for other open PRs that reference the same issue. Use `bash scripts/get_linked_issues.sh` for the linked issue numbers, then optionally `gh pr list` (read-only).
+If the PR body links an issue (from Step 1's PR details), determine whether
+an **earlier** PR already resolves the same issue:
 
-If another open PR is found that links the same issue, prepend a
-**Heads up** line to your `summary` (e.g.
-*"Heads up: PR #N also references issue #M; team should coordinate."*).
-This is **informational only** — it does not change the label outcome
-and does not by itself add a blocking point.
+1. Get the linked issue numbers with `bash scripts/get_linked_issues.sh <pr_number>`.
+2. For each linked issue number `M`, run
+   `bash scripts/search_prs.sh M` (bare number, e.g.
+   `bash scripts/search_prs.sh 1234`). This searches open PR **bodies**
+   for a `#M` reference, so it catches PRs that merely **mention** the
+   issue — many PRs reference an issue without linking it via a closing
+   keyword, and those would be missed by only looking at the issue's
+   linked/closing PRs. (The script post-filters the search so a PR that
+   happens to contain the number `M` in an unrelated context is not
+   returned.)
+3. From the result, keep only PRs that are **not** the PR under review and
+   have a **lower number** than it (a lower PR number means it was opened
+   earlier — i.e. a *previous* PR). The search already returns only open
+   PRs.
 
-If the PR doesn't link an issue, skip this step.
+If one or more such previous PRs exist, the PR under review is the likely
+duplicate. Flag it **once** by adding a **Heads up** line to your
+`summary`, naming the earliest previous PR and the shared issue, e.g.:
 
-> **CRITICAL:** Do not block the PR solely because a duplicate was found.
+> *"Heads up: PR #N already references issue #M and was opened earlier;
+> if #N is merged first, this PR may be closed as a duplicate."*
+
+This is **informational only** — it does not change the label outcome and
+does not add a blocking point.
+
+**Flag it only once per PR — at the first review.** Before adding the
+line, scan the prior bot comments fetched in Step 1: if a previous review
+already flagged the same duplicate (mentions the same previous PR /
+issue), do **not** repeat it. Re-add the line only if the previous PR
+changed (a different or newly-opened earlier PR now resolves the issue).
+
+If the PR doesn't link an issue, or no earlier open PR references the same
+issue, skip this step.
+
+> **CRITICAL:** Do not block the PR solely because a previous PR was found.
+> Only the earlier PR's author (or the team) decides which one wins — the
+> heads-up is a coordination note, never a blocking point or label change.
 
 ### Step 3 — Review Prior Comments
 
@@ -270,9 +301,54 @@ Load `reference/conventions.md` and verify the changed files follow Medusa's con
 
 > **CRITICAL — Only flag new code:** Only raise issues about added/new lines (`+`). Never flag removed (`-`) or unchanged context lines.
 
+### Step 9b — Issue/PR References in Code Comments (ALL PRs)
+
+> **CRITICAL:** Applies to **all PRs**, including team members. Only flag added (`+`) lines.
+
+Scan the added lines of the diff for **code comments** that reference a
+GitHub issue or PR — e.g. `// fixes #1234`, `// see PR #5678`,
+`/* related to https://github.com/medusajs/medusa/issues/1234 */`, or a
+comment naming an issue/PR number in prose. The link between a change and
+an issue belongs in the PR body and commit messages, not in the source —
+in the code it goes stale, loses context, and adds noise.
+
+Only flag references inside **comments** in changed source files. Do not
+flag issue/PR references in the PR body, commit messages, changelog files,
+test fixtures, or strings that are legitimately data.
+
+Each such comment is a **required change**: emit
+`review_template: "needs-changes"` with `"requires-more"` in
+`labels_to_add`, `"initial-approval"` in `labels_to_remove`, and a
+`blocking_points` entry of the form:
+*"\<file\>:\<approximate location\>: comment references issue/PR #\<n\> — remove the reference (move any needed context into a plain comment or the PR description)."*
+
 ### Step 10 — Security Analysis (ALL PRs)
 
 > **CRITICAL:** Applies to **all PRs**, including team members. Read the actual diff; before flagging, read the full file. Only flag issues in added (`+`) lines.
+
+> **MUST load `reference/security-review.md` before this step.** It explains
+> the trust-boundary / taint-tracing method and Medusa-specific patterns
+> (object-storage key traversal, DB/query-filter injection, unescaped
+> JSON/HTML output, the "widened input" red flag). The checklist below is a
+> reminder, not a substitute.
+
+**How to look, not just what to look for:** for the changed code, trace
+**tainted input** (request bodies/params/headers, uploaded file names and
+contents, webhook payloads, and any entity field set from them) to a
+**sensitive sink** (path/key construction, URL fetch, SQL/query filter, shell,
+`eval`, response, log). A finding is: tainted value reaches a sink without
+validation in between. Read callers/types when you can't tell if a value is
+tainted — a "filename" or "key" is frequently set straight from an upload
+request.
+
+**Highest-value red flag — a diff that WIDENS what user input reaches a sink.**
+The most-missed security bug is not new dangerous code but the *removal of an
+implicit protection*: code that used to use only a sanitized fragment of an
+input now uses more of it (e.g. it kept only a filename's base name and now
+also prepends the parsed **directory**), or a `basename`/allow-list/regex/cap/
+`encodeURIComponent` is dropped, or a fixed value becomes request-configurable.
+When the diff routes more of an input into a path/key/URL/query, ask *"what is
+the worst string an attacker can put here, and where does it end up?"*
 
 Check for:
 
@@ -281,15 +357,51 @@ Check for:
 - Authorization checks missing — any route that accesses or mutates data scoped to a user/store must verify ownership
 - Privilege escalation
 
-**Injection & Execution:**
-- Raw SQL constructed from user input (SQL injection)
+**Database injection (not just raw SQL):**
+- Raw SQL / MikroORM / Knex from user input — string-interpolated `em.execute()`,
+  `knex.raw()`, `.raw()` fragments instead of bound parameters
+- **Query-filter / operator injection** — `req.body` / `req.query` /
+  `req.filterableFields` passed straight into a service `.list*()`, repository,
+  or `query.graph({ filters })` without a validator, letting a caller inject
+  operators (`$ne`, `$or`, `$like`, …) or filter on unintended columns to read
+  or bypass scoped data. Routes must validate/whitelist the request (Zod /
+  `validateAndTransformBody`) and pass only known fields into the filter.
+- Dynamic column / order / table names from user input without an allow-list
+
+**Other injection & execution:**
 - `eval()`, `new Function()`, `vm.runInContext()` with untrusted data
 - Dynamic `require()`/`import()` with user-controlled paths
 - Shell command construction with user input
 
-**Input Validation:**
-- User-controlled input to filesystem operations without sanitization → path traversal
-- Missing size/length limits → DoS
+**Output encoding — unescaped JSON / HTML (commonly missed):**
+- **Unescaped JSON in an HTML/`<script>` context (XSS)** — interpolating
+  `JSON.stringify(data)` into an HTML string or inline script. `JSON.stringify`
+  does NOT escape HTML, so a value with `</script>` (or `<!--`, U+2028/U+2029)
+  breaks out and injects markup. Escape `<`/`>`/`&`/line separators, or use a
+  `data-*`/DOM API instead of string concatenation.
+- User input reflected into any HTML/markup response (pages, emails, invoices,
+  SVGs, redirect params) without escaping → XSS/HTML injection
+- Hand-built JSON via string concatenation instead of `JSON.stringify`
+- `JSON.parse` on untrusted input without try/catch; parsed objects merged via
+  `Object.assign`/spread/deep-merge without guarding `__proto__` →
+  prototype pollution
+- Returning user-controlled text as `text/html` (or a sniffable missing
+  `Content-Type`) when it should be `application/json`/`text/plain`
+
+**Path / key traversal (NOT just `fs.*`):**
+- User-controlled input built into a **filesystem path** without sanitization
+- User-controlled input built into an **object-storage key / bucket path**
+  (S3/GCS/R2 `Key`, `Upload`, presigned URLs) — cloud SDKs treat the key as an
+  opaque string, so `..` or a leading `/` in a filename can **escape a
+  configured prefix and cross a tenant/namespace boundary or overwrite another
+  object.** Prefixing a string does NOT stop `..` from climbing out of it.
+- `..` / leading `/` (and encoded forms `%2e%2e`, `%2f`) reaching a cache key,
+  URL path, redirect target, or archive entry name (zip-slip)
+- Fix expectation: strip/reject `..` and leading `/` (or derive the safe part
+  via `path.basename`/an allow-list) **before** building the path/key
+
+**Other input validation:**
+- Missing size/length/pagination limits → DoS
 - Unvalidated external URLs in server-side fetches → SSRF
 
 **Data Exposure:**
@@ -428,14 +540,25 @@ the workflow event — never from JSON-supplied numbers.
 - [ ] Skipping the integration test check for API route changes in `packages/medusa/src/api/`
 - [ ] Not fetching PR details when they weren't passed as arguments
 - [ ] Skipping security analysis for team member PRs — security analysis applies to ALL PRs
+- [ ] Running Step 10 without loading `reference/security-review.md`
+- [ ] Treating path traversal as a filesystem-only issue — object-storage keys, cache keys, and URL paths are equally vulnerable to `..` / leading `/`
+- [ ] Missing a change that widens what user input reaches a path/key/URL (e.g. a filename's directory now prepended to a storage key) — trace the tainted value to its sink
+- [ ] Assuming a configured prefix/base dir contains the final path — it does not stop `..` from climbing out
+- [ ] Treating DB injection as raw-SQL-only — unvalidated `req.body`/`req.query` passed into a service `.list*()`/repository/`query.graph({ filters })` allows operator injection and reading unscoped data
+- [ ] Missing unescaped JSON/HTML — `JSON.stringify(userData)` interpolated into an HTML/`<script>` context is XSS; user input reflected into any markup response must be escaped
+- [ ] Overlooking prototype pollution — a parsed JSON body merged via `Object.assign`/spread/deep-merge without guarding `__proto__`
 - [ ] Skipping performance analysis — always check for N+1 queries and unbounded queries
 - [ ] Setting `review_template: "approve"` while listing a confirmed security or blocking performance issue
 - [ ] Flagging style/code smell as bugs
+- [ ] Missing a code comment that references an issue/PR number (Step 9b) — those must be flagged as a required change
+- [ ] Flagging an issue/PR reference that lives in the PR body, commit message, or a changelog file rather than a code comment
 - [ ] Flagging issues in removed (`-`) or unchanged context lines
 - [ ] Requesting a change that the PR already makes
 - [ ] Setting `labels_to_add: ["initial-approval"]` without also setting `labels_to_remove: ["requires-more"]` (and vice versa)
-- [ ] Skipping the duplicate-PR check
-- [ ] Blocking a PR solely because a duplicate was found
+- [ ] Skipping the previous-PR check (Step 2)
+- [ ] Blocking a PR solely because a previous PR resolves the same issue
+- [ ] Repeating the previous-PR heads-up on every re-review — flag it only once, at the first review
+- [ ] Flagging a *later* PR (higher number) as the one that may close this PR — the heads-up applies only when an *earlier* open PR resolves the same issue
 - [ ] Nagging a Dependabot/Renovate PR for a missing PR template or blocking it for lockfile size — branch to the dependency-update flow (Step 4b) instead
 - [ ] Approving a dependency-update PR without retrieving the release notes and stating the areas to test
 - [ ] Reviewing a dependency-update PR without running the supply-chain security checks (typosquats, lifecycle scripts, lockfile/manifest mismatch)
@@ -447,5 +570,6 @@ the workflow event — never from JSON-supplied numbers.
 reference/conventions.md           - Medusa coding conventions to verify
 reference/contribution-types.md    - How to verify code, docs, and admin translation contributions
 reference/dependency-review.md     - How to review dependency-update PRs (release notes, breaking changes, Medusa usage, test areas)
+reference/security-review.md       - Trust-boundary/taint method + Medusa security patterns (path/key traversal, DB/filter injection, unescaped JSON/HTML); load before Step 10
 reference/comment-guidelines.md    - Tone and phrasing rules; use as guidance for `summary` and `blocking_points`
 ```

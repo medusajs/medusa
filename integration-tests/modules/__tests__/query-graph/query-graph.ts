@@ -919,6 +919,70 @@ medusaIntegrationTestRunner({
           )
         })
 
+        // Order uses a custom find/findAndCount that bypasses the base
+        // repository prepareFindOptions — this covers that those methods apply
+        // cross-module join filters themselves.
+        it("should filter orders by a read-only linked sales channel", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const orderService: any = container.resolve(Modules.ORDER)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Order Retail Channel",
+          })
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
+              name: "Order Wholesale Channel",
+            })
+
+          await orderService.createOrders([
+            {
+              currency_code: "usd",
+              email: "retail-order@test.com",
+              sales_channel_id: retailChannel.id,
+              items: [
+                {
+                  title: "Retail item",
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+            {
+              currency_code: "usd",
+              email: "wholesale-order@test.com",
+              sales_channel_id: wholesaleChannel.id,
+              items: [
+                {
+                  title: "Wholesale item",
+                  quantity: 1,
+                  unit_price: 100,
+                },
+              ],
+            },
+          ])
+
+          const { data: filteredOrders } = await query.graph({
+            entity: "order",
+            fields: ["id", "email"],
+            filters: {
+              sales_channel: {
+                name: "Order Retail Channel",
+              },
+            },
+          })
+
+          expect(filteredOrders).toHaveLength(1)
+          expect(filteredOrders[0]).toEqual(
+            expect.objectContaining({
+              email: "retail-order@test.com",
+            })
+          )
+        })
+
         it("should filter carts by a field of the read-only linked product", async () => {
           const container = getContainer()
           const query = container.resolve("query")

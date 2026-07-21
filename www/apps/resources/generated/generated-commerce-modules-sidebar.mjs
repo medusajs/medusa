@@ -442,7 +442,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "isPathHref": true,
               "type": "link",
               "path": "/commerce-modules/auth/link-provider-identity",
-              "title": "Link Provider to Existing User",
+              "title": "Link Provider to Existing Actor",
               "children": []
             },
             {
@@ -3057,6 +3057,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Physical and Customs Attributes",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Product Shipping Requirement",
               "path": "https://docs.medusajs.com/resources/commerce-modules/product/selling-products",
               "children": []
@@ -4160,6 +4168,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/inventory/links-to-other-modules",
               "title": "Links to Modules",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Physical and Customs Attributes",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes",
               "children": []
             },
             {
@@ -8582,6 +8598,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/product/variant-inventory",
               "title": "Variant Inventory",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/product/physical-customs-attributes",
+              "title": "Physical and Customs Attributes",
               "children": []
             },
             {
