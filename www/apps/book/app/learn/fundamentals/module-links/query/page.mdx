@@ -1748,6 +1748,7 @@ The `validateAndTransformQuery` accepts two parameters:
     2. `isList`: A boolean indicating whether a list of items is returned in the response.
     3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
     4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
+    5. `disallowed`: An array of field path segments that are always stripped from the query, regardless of what the client requests. Any requested field whose path contains one of these segments is removed before the query executes. Unlike `allowed`, this is a hard security boundary that middleware cannot override. Use it to keep sensitive relations off unauthenticated endpoints.
 
 ### Step 2: Use Configurations in API Route
 

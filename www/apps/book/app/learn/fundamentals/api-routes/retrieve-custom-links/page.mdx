@@ -95,3 +95,44 @@ In this example, you retrieve the `b2b_company` relation of the customer using t
 This approach only works using a global middleware. It doesn't work in a route middleware.
 
 </Note>
+
+---
+
+## API Routes that Hard-Block Retrievable Fields
+
+Some of Medusa's API routes block specific field path segments as a hard security boundary. These fields are removed before the query executes, regardless of what the client requests or what you set in a middleware.
+
+Unlike `allowed` fields, you cannot override `disallowed` fields from a middleware. This is intentional: disallowed fields guard sensitive relations (such as orders, customers, and payment data) on unauthenticated Store API endpoints to prevent a caller from pivoting into private data.
+
+For example, a Store API route for products may block the `orders` segment, so a request like `GET /store/products?fields=orders.customer.email` returns products without the `orders` relation, even if the caller explicitly requests it.
+
+If you create a custom Store API route and want to apply the same protection, pass a `disallowed` array to the `validateAndTransformQuery` configuration:
+
+```ts title="src/api/middlewares.ts"
+import {
+  validateAndTransformQuery,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(
+          createFindParams(),
+          {
+            defaults: ["id", "title"],
+            isList: true,
+            disallowed: ["orders", "customer"],
+          }
+        ),
+      ],
+    },
+  ],
+})
+```
+
+Any field path that contains `orders` or `customer` as a segment will be stripped from the query before it executes.
