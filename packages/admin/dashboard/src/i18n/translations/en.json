@@ -1035,6 +1035,24 @@
       "hint": "Create a new customer and manage their details.",
       "successToast": "Customer {{email}} was successfully created."
     },
+    "export": {
+      "header": "Export Customer List",
+      "description": "Export the customer list to a file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Choose the format of the exported file. JSON captures nested data across modules without loss, which is recommended for data subject access requests.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      }
+    },
     "groups": {
       "label": "Customer groups",
       "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",

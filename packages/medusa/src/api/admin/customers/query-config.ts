@@ -48,6 +48,13 @@ export const listTransformQueryConfig = {
   entity: Entities.customer,
 }
 
+export const exportTransformQueryConfig = {
+  defaults: defaultAdminCustomerFields,
+  allowed,
+  isList: true,
+  entity: Entities.customer,
+}
+
 export const defaultAdminCustomerAddressFields = [
   "id",
   "address_name",
