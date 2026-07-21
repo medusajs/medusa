@@ -122,7 +122,7 @@ jobs:
             Do not print the JSON to stdout. Only write the file.
 
           claude_args: >-
-            --max-turns 30
+            --max-turns 50
             --allowedTools
             "Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_comments.sh:*),
