@@ -67,25 +67,35 @@ jobs:
           GITHUB_EVENT_NUMBER: ${{ inputs.issue_number }}
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          # Disable Claude Code's Bash sandbox (bubblewrap). On the runner it
-          # aborts every Bash command during setup with
-          # "bwrap: Can't mkdir /home/.claude" (and, earlier, .mcp.json): the
-          # sandbox builds an isolated home under /home inside its own bwrap
-          # namespace and then cannot create files in it (upstream bug
-          # anthropics/claude-code#17727). The /home path originates inside
-          # the sandbox, not from the runner HOME, so no external HOME
-          # override reaches it -- disabling the sandbox is the only
-          # workflow-side fix. Isolation for this job is still enforced by:
-          # the tight --allowedTools allowlist below (only specific
-          # `bash scripts/*.sh` + Read + Write, no arbitrary Bash), the
-          # read-only default token with NO App token in this job, the
-          # `chmod -R a-w scripts` step above, and CLAUDE_CODE_SUBPROCESS_ENV_SCRUB
-          # (auto-enabled by the action because allowed_non_write_users is set),
-          # which strips the Anthropic API token from every subprocess env.
+          # Work around Claude Code's Bash sandbox (bubblewrap) failing on the
+          # runner: it aborts every Bash command during sandbox setup with
+          # "bwrap: Can't create file at /home/.mcp.json" / "Can't mkdir
+          # /home/.claude". The sandbox builds an isolated home under /home
+          # inside its own bwrap namespace and cannot create files in it
+          # (upstream bug anthropics/claude-code#17727).
+          #
+          # `sandbox.enabled: false` alone does NOT help: this action runs
+          # Claude via the Agent SDK in headless bypass-permissions mode, which
+          # force-enables the sandbox regardless of that flag (confirmed: the
+          # action loads user settings via settingSources but the sandbox still
+          # ran). The reliable lever is `excludedCommands`, which runs matching
+          # commands OUTSIDE the sandbox so bwrap never wraps them. Every tool
+          # this job can run is `bash scripts/*.sh` (see --allowedTools below),
+          # so excluding `bash *` covers them all.
+          #
+          # Isolation for this job is still enforced by: the tight
+          # --allowedTools allowlist (only specific `bash scripts/*.sh` + Read +
+          # Write, no arbitrary Bash), the read-only default token with NO App
+          # token in this job, the `chmod -R a-w scripts` step above, and
+          # CLAUDE_CODE_SUBPROCESS_ENV_SCRUB (auto-enabled by the action because
+          # allowed_non_write_users is set), which strips the Anthropic API
+          # token from every subprocess env.
           settings: |
-            { "sandbox": { "enabled": false } }
+            { "sandbox": { "enabled": false, "excludedCommands": ["bash *"] } }
           github_token: ${{ github.token }}
-          model: claude-sonnet-4-6
+          # NOTE: this action version has no `model` input (it is silently
+          # ignored with an "Unexpected input(s) 'model'" warning); the model
+          # must be passed via `--model` in claude_args below.
           # Safe in this job because the job genuinely has no write power.
           allowed_non_write_users: "*"
           allowed_bots: "*"
@@ -143,6 +153,7 @@ jobs:
             Do not print the JSON to stdout. Only write the file.
 
           claude_args: >-
+            --model claude-sonnet-4-6
             --max-turns 50
             --allowedTools
             "Bash(bash scripts/get_issue.sh:*),
