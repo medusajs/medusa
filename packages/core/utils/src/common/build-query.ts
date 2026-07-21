@@ -26,6 +26,8 @@ function buildRelationsOrSelect(collection: string[]): Selects | Relations {
   return objectFromStringPath(collection)
 }
 
+const UNSAFE_ORDER_KEYS = new Set(["__proto__", "constructor", "prototype"])
+
 /**
  * Convert an order of dot string into a nested object
  * @example
@@ -47,14 +49,22 @@ export function buildOrder(orderBy: { [k: string]: "ASC" | "DESC" }): Order {
   const orderKeys = Object.keys(orderBy)
 
   for (const order of orderKeys) {
-    if (order.indexOf(".") > -1) {
-      const nestedOrder = order.split(".")
+    const nestedOrder = order.split(".")
 
+    // Guard against prototype pollution through user-controlled order keys
+    if (nestedOrder.some((segment) => UNSAFE_ORDER_KEYS.has(segment))) {
+      continue
+    }
+
+    if (nestedOrder.length > 1) {
       let parent = output
 
       while (nestedOrder.length > 1) {
         const nestedRelation = nestedOrder.shift() as string
-        parent = (parent[nestedRelation] as Order) ??= {}
+        if (!Object.prototype.hasOwnProperty.call(parent, nestedRelation)) {
+          parent[nestedRelation] = {}
+        }
+        parent = parent[nestedRelation] as Order
       }
 
       parent[nestedOrder[0]] = orderBy[order]

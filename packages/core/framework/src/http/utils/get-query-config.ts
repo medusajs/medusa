@@ -13,6 +13,7 @@ import {
 import { AuthContext, MedusaRequest } from "../types"
 import {
   AllowedFieldFilter,
+  DisallowedFieldFilter,
   FieldParser,
   IFieldFilter,
   RestrictedFieldFilter,
@@ -43,9 +44,10 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     auth_context?: AuthContext
   }
 ) {
-  let {
+  const {
     allowed = [],
     restricted = [],
+    disallowed = [],
     defaults = [],
     defaultLimit = 50,
     isList,
@@ -97,12 +99,26 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     })
   }
 
+  // Disallowed fields are a hard security boundary and are always stripped,
+  // independent of any feature flag, so sensitive relations (order, customer,
+  // payment, ...) can never be resolved on the configured endpoint.
+  if (disallowed.length) {
+    const disallowedFields = new DisallowedFieldFilter({
+      disallowed,
+    }).getNotAllowedFields({ entity: entity as string, parsedFields })
+
+    disallowedFields.forEach((field) => {
+      allFields.delete(field)
+      starFields.delete(field)
+    })
+  }
+
   // TODO: maintain backward compatibility, remove in the future
   const { select, relations } = stringToSelectRelationObject(
     Array.from(allFields)
   )
 
-  let allRelations = new Set([...relations, ...Array.from(starFields)])
+  const allRelations = new Set([...relations, ...Array.from(starFields)])
 
   // End of expand compatibility
 
@@ -135,7 +151,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
       withDeleted: with_deleted,
     },
     remoteQueryConfig: {
-      ...(!!entity ? { entity } : {}),
+      ...(entity ? { entity } : {}),
       // Add starFields that are relations only on which we want all properties with a dedicated format to the remote query
       fields: [
         ...Array.from(allFields),
