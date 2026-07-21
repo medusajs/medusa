@@ -2125,7 +2125,7 @@ export const generatedEditDates = {
   "app/commerce-modules/store/links-to-other-modules/page.mdx": "2025-12-16T06:36:58.256Z",
   "app/examples/page.mdx": "2026-03-27T12:55:32.030Z",
   "app/medusa-cli/commands/build/page.mdx": "2026-06-24T11:05:27.287Z",
-  "app/js-sdk/page.mdx": "2025-12-16T07:15:37.754Z",
+  "app/js-sdk/page.mdx": "2026-07-20T15:06:29.274Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.apiKey/page.mdx": "2026-04-30T16:36:41.141Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign/page.mdx": "2026-01-06T15:55:12.396Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.claim/page.mdx": "2026-04-30T16:36:40.978Z",
