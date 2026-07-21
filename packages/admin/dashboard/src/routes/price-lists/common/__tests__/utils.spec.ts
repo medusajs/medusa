@@ -30,10 +30,7 @@ const makeProduct = (
     variants: variantIds.map((vid) => ({ id: vid, product_id: id })),
   } as unknown as HttpTypes.AdminProduct)
 
-const makeRegion = (
-  id: string,
-  currencyCode: string
-): HttpTypes.AdminRegion =>
+const makeRegion = (id: string, currencyCode: string): HttpTypes.AdminRegion =>
   ({
     id,
     currency_code: currencyCode,
@@ -340,6 +337,71 @@ describe("comparePrices", () => {
     const { pricesToCreate, pricesToDelete } = comparePrices(initial, updated)
     expect(pricesToCreate).toHaveLength(0)
     expect(pricesToDelete).toEqual(["price_1"])
+  })
+
+  it("should not attach an empty rules object to plain currency prices", () => {
+    // A plain currency price (no region, no quantity rules) must send
+    // `rules: undefined` — an empty `rules: {}` breaks the batch endpoint for
+    // updates of existing prices.
+    const initial = [
+      {
+        variantId: "var_1",
+        currencyCode: "usd",
+        amount: 1000,
+        id: "price_1",
+      },
+    ]
+    const updated = [
+      {
+        variantId: "var_1",
+        currencyCode: "usd",
+        amount: 2000,
+        id: "price_1",
+      },
+      {
+        variantId: "var_1",
+        currencyCode: "eur",
+        amount: 3000,
+      },
+    ]
+
+    const { pricesToCreate, pricesToUpdate } = comparePrices(
+      initial as any,
+      updated as any
+    )
+    expect(pricesToUpdate).toHaveLength(1)
+    expect(pricesToUpdate[0].rules).toBeUndefined()
+    expect(pricesToCreate).toHaveLength(1)
+    expect(pricesToCreate[0].rules).toBeUndefined()
+  })
+
+  it("should keep region and quantity rules on prices that have them", () => {
+    const initial = [
+      {
+        variantId: "var_1",
+        currencyCode: "usd",
+        regionId: "reg_1",
+        amount: 1000,
+        id: "price_1",
+      },
+    ]
+    const updated = [
+      {
+        variantId: "var_1",
+        currencyCode: "usd",
+        regionId: "reg_1",
+        amount: 2000,
+        id: "price_1",
+        minQuantity: 5,
+      },
+    ]
+
+    const { pricesToUpdate } = comparePrices(initial as any, updated as any)
+    expect(pricesToUpdate).toHaveLength(1)
+    expect(pricesToUpdate[0].rules).toEqual({
+      region_id: "reg_1",
+      min_quantity: "5",
+    })
   })
 
   it("should detect updated prices", () => {
