@@ -202,4 +202,50 @@ describe("S3FileService URL encoding", () => {
     const uploadArgs = UploadMock.mock.calls[0][0] as { params: { Key: string } }
     expect(uploadArgs.params.Key).toMatch(/^uploads\/2024\/my document-/)
   })
+
+  it("sanitizes leading slashes, dot prefixes, and path traversals in filename", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    // Test 1: Leading slash `/vendor/logo.png`
+    const res1 = await service.upload({
+      filename: "/vendor/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res1.key).not.toContain("public//")
+    expect(res1.key).toMatch(/^public\/vendor\/logo-[^/]+\.png$/)
+
+    // Test 2: Dot prefix `./vendor/logo.png`
+    const res2 = await service.upload({
+      filename: "./vendor/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res2.key).not.toContain("/./")
+    expect(res2.key).toMatch(/^public\/vendor\/logo-[^/]+\.png$/)
+
+    // Test 3: Path traversal `../secret/logo.png` or `vendor/../../secret/logo.png`
+    const res3 = await service.upload({
+      filename: "../secret/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res3.key).not.toContain("..")
+    expect(res3.key).toMatch(/^public\/secret\/logo-[^/]+\.png$/)
+
+    const res4 = await service.upload({
+      filename: "vendor/../../secret/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res4.key).not.toContain("..")
+    expect(res4.key).toMatch(/^public\/secret\/logo-[^/]+\.png$/)
+  })
 })
