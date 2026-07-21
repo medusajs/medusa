@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Text } from "@medusajs/ui"
-import { useFieldArray, useForm } from "react-hook-form"
+import { Resolver, useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../components/common/form"
@@ -37,7 +37,7 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
     defaultValues: {
       prices: initialValues.length > 0 ? initialValues : [emptyRow],
     } as any,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as any) as unknown as Resolver<z.infer<T>>,
   })
 
   const { fields, append, remove } = useFieldArray({

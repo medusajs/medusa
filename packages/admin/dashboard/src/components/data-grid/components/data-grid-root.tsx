@@ -29,7 +29,7 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { FieldValues, UseFormReturn } from "react-hook-form"
+import { Control, FieldValues, UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { useCommandHistory } from "../../../hooks/use-command-history"
@@ -610,7 +610,7 @@ export const DataGridRoot = <
   const values = useMemo(
     () => ({
       anchor,
-      control,
+      control: control as Control<any>,
       trapActive,
       errors,
       setTrapActive,

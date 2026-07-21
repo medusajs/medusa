@@ -81,7 +81,7 @@ function createExtendedDefaultValues<TData>(
 export const useExtendableForm = <
   TSchema extends ZodObject<any>,
   TContext = any,
-  TTransformedValues extends FieldValues | undefined = undefined
+  TTransformedValues extends FieldValues = z.infer<TSchema>
 >({
   defaultValues: baseDefaultValues,
   schema: baseSchema,
@@ -97,9 +97,13 @@ export const useExtendableForm = <
     data
   )
 
+  // The extended schema (base + additional_data) validates a superset of
+  // `z.infer<TSchema>`, so its inferred output no longer matches the form's
+  // field values under @hookform/resolvers v5's stricter typing. The runtime
+  // behaviour is correct; cast the options to keep the declared form value types.
   return useForm<z.infer<TSchema>, TContext, TTransformedValues>({
     ...props,
     defaultValues,
     resolver: zodResolver(schema),
-  })
+  } as unknown as UseFormProps<z.infer<TSchema>, TContext, TTransformedValues>)
 }

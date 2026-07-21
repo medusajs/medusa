@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { useForm } from "react-hook-form"
+import { Resolver, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button, toast } from "@medusajs/ui"
@@ -126,7 +126,9 @@ export const PropertyLabelsEditForm = ({
   const initialData = buildNestedInitialData(propertyLabels)
 
   const form = useForm<PropertyLabelSchema>({
-    resolver: zodResolver(propertyLabelSchema),
+    resolver: zodResolver(propertyLabelSchema as any) as unknown as Resolver<
+      PropertyLabelSchema
+    >,
     defaultValues: initialData,
   })
 
