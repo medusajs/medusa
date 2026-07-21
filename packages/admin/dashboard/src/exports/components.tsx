@@ -60,5 +60,3 @@ export {
   createTableAdapter,
   type TableAdapter,
 } from "../lib/table/table-adapters"
-
-export { ProtectedRoute } from "../components/authentication/protected-route/protected-route"

@@ -3,9 +3,15 @@
  */
 
 export * from "../hooks/use-resource-permissions"
-
-export type {
-  Permission,
-  PermissionResource,
-  PermissionOperation,
-} from "../lib/permissions"
+export {
+  usePermissions,
+  useRegisterPermissions,
+  useRequiredPermissions,
+  PermissionsProvider,
+  PermissionsRequirement,
+} from "../providers/permissions-provider"
+export {
+  PermissionGuard,
+  type PermissionGuardProps,
+} from "../components/common/permission-guard/permission-guard"
+export { NoPermissions } from "../routes/no-permissions/no-permissions"
