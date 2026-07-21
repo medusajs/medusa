@@ -44,6 +44,7 @@ const coreFlowsOptions: FormattingOptionsType = {
   "^core_flows/.*/Workflows_.*/functions/.*/page\\.mdx": {
     reflectionDescription:
       "This documentation provides a reference to the `{{alias}}`. It belongs to the `@medusajs/medusa/core-flows` package.",
+    showSourceCodeLink: true,
     frontmatterData: {
       slug: "/references/medusa-workflows/{{alias}}",
       sidebar_label: "{{alias}}",

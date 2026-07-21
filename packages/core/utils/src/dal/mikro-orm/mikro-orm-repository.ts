@@ -161,7 +161,7 @@ export class MikroOrmBaseRepository<const T extends object = object>
   delete(
     idsOrPKs: FindOptions<T>["where"],
     context?: Context
-  ): Promise<string[]> {
+  ): Promise<string[] | Record<string, any>[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -279,7 +279,10 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  delete(ids: string[], context?: Context): Promise<string[]> {
+  delete(
+    ids: string[],
+    context?: Context
+  ): Promise<string[] | Record<string, any>[]> {
     throw new Error("Method not implemented.")
   }
 }
@@ -429,8 +432,19 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
     async delete(
       filters: FindOptions<T>["where"],
       context?: Context
-    ): Promise<string[]> {
+    ): Promise<string[] | Record<string, any>[]> {
       const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      // Resolve the model's real primary key(s) so the RETURNING clause and the
+      // returned values do not assume an "id" column, which breaks on models
+      // whose primary key is a custom (non-id) column or a composite key.
+      const primaryKeys = MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(
+        this.entity
+      )
+      const metadata = manager.getDriver().getMetadata().get(this.entity.name)
+      const primaryKeyColumns = primaryKeys.map(
+        (key) => metadata?.properties?.[key]?.fieldNames?.[0] ?? key
+      )
 
       const whereSqlInfo = manager
         .createQueryBuilder(this.entity.name, this.tableName)
@@ -452,9 +466,23 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         builder.where(manager.getKnex().raw(...where))
       }
 
-      return await builder.returning("id").then((rows: { id: string }[]) => {
-        return rows.map((row: { id: string }) => row.id)
-      })
+      return await builder
+        .returning(primaryKeyColumns)
+        .then((rows: Record<string, any>[]) => {
+          // For the common single primary key case, return a flat array of the
+          // primary key values. For composite keys, return an array of objects
+          // keyed by the real primary key property names.
+          if (primaryKeys.length === 1) {
+            return rows.map((row) => row[primaryKeyColumns[0]])
+          }
+
+          return rows.map((row) =>
+            primaryKeys.reduce((acc, key, index) => {
+              acc[key] = row[primaryKeyColumns[index]]
+              return acc
+            }, {} as Record<string, any>)
+          )
+        })
     }
 
     async find(
@@ -1503,12 +1531,11 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       }
 
       if (!("strategy" in findOptions_.options)) {
-        if (findOptions_.options.limit != null || findOptions_.options.offset) {
-          // TODO: from 7+ it will be the default strategy
-          Object.assign(findOptions_.options, {
-            strategy: LoadStrategy.SELECT_IN,
-          })
-        }
+        // MikroORM v7 defaults to BALANCED, so we are defaulting to it as it is a good
+        // balance between performance and behavior consistency
+        Object.assign(findOptions_.options, {
+          strategy: LoadStrategy.BALANCED,
+        })
       }
 
       pruneFindOptionsAgainstMetadata(

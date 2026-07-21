@@ -111,6 +111,21 @@ export const authenticate = (
       return next()
     }
 
+    // A common mistake is sending a secret API key as a Bearer token. Secret API
+    // keys are only accepted using HTTP Basic auth, so we return a helpful hint
+    // instead of a generic "Unauthorized" message when we detect this case.
+    if (
+      authTypes.includes(API_KEY_AUTH) &&
+      isExclusivelyUser &&
+      isBearerSecretApiKey(req.headers.authorization)
+    ) {
+      res.status(401).json({
+        message:
+          "A secret API key was passed as a Bearer token. Secret API keys must be sent using HTTP Basic authentication instead (Authorization: Basic <secret-api-key>).",
+      })
+      return
+    }
+
     res.status(401).json({ message: "Unauthorized" })
   }
 
@@ -158,6 +173,15 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
     console.error(error)
     return null
   }
+}
+
+const isBearerSecretApiKey = (authHeader: string | undefined): boolean => {
+  if (!authHeader) {
+    return false
+  }
+
+  const [tokenType, token] = authHeader.split(" ")
+  return tokenType?.toLowerCase() === BEARER_AUTH && !!token?.startsWith("sk_")
 }
 
 const getAuthContextFromSession = (

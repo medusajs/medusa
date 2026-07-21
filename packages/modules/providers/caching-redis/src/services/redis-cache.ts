@@ -300,7 +300,9 @@ export class RedisCachingProvider {
       } catch (error) {
         if (this.isConnectionError(error)) {
           this.logger.warn(
-            "Redis connection error during get operation, returning null to trigger fallback to original data source"
+            `[redis-cache] Redis connection error during get operation, returning empty array to trigger fallback to original data source. Error: ${
+              error?.message ?? error
+            }`
           )
           return null
         }
@@ -348,7 +350,7 @@ export class RedisCachingProvider {
                 return JSON.parse(finalData)
               } catch (e) {
                 // If JSON parsing fails, skip this entry (corrupted data)
-                this.logger.warn(`Skipping corrupted cache entry: ${e.message}`)
+                this.logger.warn(`[redis-cache] Skipping corrupted cache entry: ${e.message}`)
                 return null
               }
             }
@@ -363,7 +365,9 @@ export class RedisCachingProvider {
       } catch (error) {
         if (this.isConnectionError(error)) {
           this.logger.warn(
-            "Redis connection error during get operation, returning empty array to trigger fallback to original data source"
+            `[redis-cache] Redis connection error during get operation, returning empty array to trigger fallback to original data source. Error: ${
+              error?.message ?? error
+            }`
           )
           return null
         }
@@ -440,7 +444,9 @@ export class RedisCachingProvider {
     } catch (error) {
       if (this.isConnectionError(error)) {
         this.logger.warn(
-          "Redis connection error during set operation, relying on IORedis retry mechanism"
+          `[redis-cache] Redis connection error during set operation, relying on IORedis retry mechanism. Error: ${
+            error?.message ?? error
+          }`
         )
         return
       }
@@ -683,7 +689,9 @@ export class RedisCachingProvider {
     } catch (error) {
       if (this.isConnectionError(error)) {
         this.logger.warn(
-          "Redis connection error during clear operation, relying on IORedis retry mechanism"
+          `[redis-cache] Redis connection error during clear operation, relying on IORedis retry mechanism. Error: ${
+            error?.message ?? error
+          }`
         )
         return
       }
@@ -716,7 +724,9 @@ export class RedisCachingProvider {
     } catch (error) {
       if (this.isConnectionError(error)) {
         this.logger.warn(
-          "Redis connection error during flush operation, relying on IORedis retry mechanism"
+          `[redis-cache] Redis connection error during flush operation, relying on IORedis retry mechanism. Error: ${
+            error?.message ?? error
+          }`
         )
         return
       }

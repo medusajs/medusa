@@ -1143,6 +1143,29 @@ export function getRouteMap({
               ],
             },
             {
+              path: "property-labels",
+              errorElement: <ErrorBoundary />,
+              element: <Outlet />,
+              handle: {
+                breadcrumb: () => t("propertyLabels.domain", "Property Labels"),
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/property-labels"),
+                  children: [
+                    {
+                      path: ":entity/edit",
+                      lazy: () =>
+                        import(
+                          "../../routes/property-labels/property-labels-edit"
+                        ),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
               path: "store",
               errorElement: <ErrorBoundary />,
               lazy: () => import("../../routes/store/store-detail"),

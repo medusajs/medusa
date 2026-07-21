@@ -1,23 +1,47 @@
 import { CloudAnalysisResult, CloudDispatchPayload } from "../types/index.js"
 
 export class CloudContextBuilder {
-  build(payload: CloudDispatchPayload): CloudAnalysisResult {
-    const claudePrompt = this.buildPrompt(payload)
+  build(
+    payload: CloudDispatchPayload,
+    releaseDate?: string
+  ): CloudAnalysisResult {
+    const changelog = this.getChangelog(payload, releaseDate)
+    const claudePrompt = this.buildPrompt(payload, changelog)
 
     return {
       affectedProjects: [
         {
           project: "cloud",
-          reason:
-            "User-facing changes were deployed to Cloud Production",
+          reason: "User-facing changes were deployed to Cloud Production",
         },
       ],
       claudePrompt,
       featureFlaggedFeatures: payload.featureFlaggedFeatures ?? [],
+      ...(changelog ? { changelog } : {}),
     }
   }
 
-  private buildPrompt(payload: CloudDispatchPayload): string {
+  /**
+   * Returns the changelog entry to write only when the dispatch carries a CLI
+   * release with non-empty notes AND a version. Otherwise returns undefined so
+   * the dashboard/CLI-reference flow is left untouched.
+   */
+  private getChangelog(
+    payload: CloudDispatchPayload,
+    releaseDate?: string
+  ): { version: string; notes: string; date?: string } | undefined {
+    const notes = payload.releaseNotes?.trim()
+    if (!notes || !payload.version) {
+      return undefined
+    }
+
+    return { version: payload.version, notes, date: releaseDate }
+  }
+
+  private buildPrompt(
+    payload: CloudDispatchPayload,
+    changelog?: { version: string; notes: string; date?: string }
+  ): string {
     const sections: string[] = []
 
     sections.push(this.buildSkillSection())
@@ -28,6 +52,11 @@ export class CloudContextBuilder {
         payload.featureFlaggedFeatures ?? []
       )
     )
+
+    if (changelog) {
+      sections.push(this.buildChangelogSection(changelog))
+    }
+
     sections.push(this.buildAffectedProjectSection())
     sections.push(this.buildConstraintsSection())
 
@@ -74,6 +103,40 @@ Your job is to:
     }
 
     return lines.join("\n")
+  }
+
+  private buildChangelogSection(changelog: {
+    version: string
+    notes: string
+    date?: string
+  }): string {
+    const heading = changelog.date
+      ? `${changelog.version} (${changelog.date})`
+      : changelog.version
+
+    return `## Cloud CLI Changelog
+
+A new version of the Cloud CLI (\`mcloud\`) was released: **${changelog.version}**${changelog.date ? ` on **${changelog.date}**` : ""}. You must record it in the Cloud CLI changelog page.
+
+**Changelog page:** \`www/apps/cloud/app/cli/changelog/page.mdx\`
+
+Steps:
+1. If \`www/apps/cloud/app/cli/changelog/page.mdx\` does not exist, create it first following the format of other CLI pages (frontmatter with \`metadata.title\`, an \`# {metadata.title}\` heading, and a one-sentence intro explaining it lists notable changes to the Cloud CLI, newest first). Then add a sidebar entry for it in \`www/apps/cloud/sidebar.mjs\` under the CLI category, right after the "For Agents" entry:
+   \`\`\`js
+   {
+     type: "link",
+     title: "Changelog",
+     path: "/cli/changelog",
+     hideFromChildItems: true,
+   },
+   \`\`\`
+2. Add a section for version \`${changelog.version}\` using a \`## ${heading}\` heading, placed **newest-first** (above any existing version sections, directly below the intro). Keep the version and date together in the heading exactly as shown.
+3. Under that heading, render the release notes below **exactly as provided** — do not rewrite, summarize, invent commands/versions/dates, or add content not present in the notes.
+4. If a section for version \`${changelog.version}\` already exists (this release may be re-run), **update it in place** (including its heading and notes) instead of adding a duplicate section.
+
+Release notes for \`${changelog.version}\`:
+
+${changelog.notes}`
   }
 
   private buildAffectedProjectSection(): string {

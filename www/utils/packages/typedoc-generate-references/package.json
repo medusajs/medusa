@@ -27,7 +27,7 @@
     "ts-node": "^10.9.1",
     "typedoc": "^0.27.5",
     "typedoc-plugin-custom": "*",
-    "typedoc-plugin-markdown-medusa": "*",
+    "typedoc-plugin-medusa-theme": "*",
     "typedoc-plugin-rename-defaults": "^0.7.1",
     "typedoc-plugin-workflows": "*",
     "types": "*",
