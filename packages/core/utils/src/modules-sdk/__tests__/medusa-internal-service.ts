@@ -173,6 +173,20 @@ describe("Internal Module Service Factory", () => {
       )
     })
 
+    it("should not apply the default take when filtering by primary key on list", async () => {
+      const entities = Array.from({ length: 16 }, (_, i) => ({
+        id: `${i}`,
+        name: `Item${i}`,
+      }))
+      containerMock[modelRepositoryName].find.mockResolvedValueOnce(entities)
+
+      const result = await instance.list({ id: entities.map((e) => e.id) })
+
+      expect(result).toHaveLength(16)
+      const callArg = containerMock[modelRepositoryName].find.mock.calls[0][0]
+      expect(callArg.options.limit).toBeUndefined()
+    })
+
     it("should list and count entities successfully", async () => {
       const entities = [
         { id: "1", name: "Item" },
@@ -220,6 +234,27 @@ describe("Internal Module Service Factory", () => {
         }),
         expect.any(Object)
       )
+    })
+
+    it("should not apply the default take when filtering by primary key on listAndCount", async () => {
+      const entities = Array.from({ length: 16 }, (_, i) => ({
+        id: `${i}`,
+        name: `Item${i}`,
+      }))
+      containerMock[modelRepositoryName].findAndCount.mockResolvedValueOnce([
+        entities,
+        entities.length,
+      ])
+
+      const [result, count] = await instance.listAndCount({
+        id: entities.map((e) => e.id),
+      })
+
+      expect(result).toHaveLength(16)
+      expect(count).toBe(16)
+      const callArg =
+        containerMock[modelRepositoryName].findAndCount.mock.calls[0][0]
+      expect(callArg.options.limit).toBeUndefined()
     })
 
     it("should create entity successfully", async () => {

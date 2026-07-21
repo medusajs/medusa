@@ -137,6 +137,18 @@ export function MedusaInternalService<
     }
 
     /**
+     * The default limit is a guardrail for open-ended lists. It must not be
+     * applied when the caller targets a known set by primary key (e.g.
+     * `list({ id: [...] })`), otherwise the result would be silently truncated.
+     */
+    static filtersTargetPrimaryKey(
+      filters: FilterQuery<any> | BaseFilterable<FilterQuery<any>> = {}
+    ): boolean {
+      const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
+      return primaryKeys.some((key) => isPresent(filters[key]))
+    }
+
+    /**
      * Only apply top level default ordering as the relation
      * default ordering is already applied through the foreign key
      * @param config
@@ -227,7 +239,10 @@ export function MedusaInternalService<
       AbstractService_.applyDefaultOrdering(config)
       AbstractService_.applyFreeTextSearchFilter(filters, config)
 
-      if (!isDefined(config.take)) {
+      if (
+        !isDefined(config.take) &&
+        !AbstractService_.filtersTargetPrimaryKey(filters)
+      ) {
         config.take = DEFAULT_LIMIT
       }
 
@@ -248,7 +263,10 @@ export function MedusaInternalService<
       AbstractService_.applyDefaultOrdering(config)
       AbstractService_.applyFreeTextSearchFilter(filters, config)
 
-      if (!isDefined(config.take)) {
+      if (
+        !isDefined(config.take) &&
+        !AbstractService_.filtersTargetPrimaryKey(filters)
+      ) {
         config.take = DEFAULT_LIMIT
       }
 
