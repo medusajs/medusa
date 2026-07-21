@@ -3,6 +3,7 @@ import { z } from "../../../deps/zod"
 import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "../../types"
 import { defineMiddlewares } from "../../utils/define-middlewares"
 import {
+  adminRegexMiddlewareMock,
   customersCreateMiddlewareMock,
   customersCreateMiddlewareValidatorMock,
   customersGlobalMiddlewareMock,
@@ -39,6 +40,15 @@ const storeGlobal = (
   next()
 }
 
+const adminRegexMiddleware = (
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) => {
+  adminRegexMiddlewareMock()
+  next()
+}
+
 const middlewares = defineMiddlewares([
   {
     matcher: "/customers",
@@ -63,6 +73,10 @@ const middlewares = defineMiddlewares([
   {
     matcher: "/store/*",
     middlewares: [storeGlobal],
+  },
+  {
+    matcher: /^\/admin(\/.*)?$/,
+    middlewares: [adminRegexMiddleware],
   },
   {
     matcher: "/webhooks",

@@ -1,6 +1,6 @@
 import { DeleteResponse, PaginatedResponse } from "../../common"
 
-interface AdminViewConfiguration {
+export interface AdminViewConfiguration {
   /**
    * The view configuration's ID.
    */

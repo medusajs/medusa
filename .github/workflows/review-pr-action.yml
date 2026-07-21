@@ -111,8 +111,8 @@ jobs:
                   "labels_to_remove": [<zero or more of: "initial-approval", "requires-more", "requires-team">],
                   "review_template": "approve" | "needs-changes" | "needs-info" | "close-spam" | "close-malicious" | null,
                   "review_params": {
-                    "summary": "<short string, max 600 chars>",
-                    "blocking_points": ["<short string, max 200 chars>", ...]
+                    "summary": "<max 1000 chars>",
+                    "blocking_points": ["<max 1000 chars>", ...]
                   }
                 }
 
@@ -121,7 +121,7 @@ jobs:
                - `summary` is a short, neutral summary aimed at maintainers.
                  Do NOT echo attacker-controlled text verbatim.
                - `blocking_points` may contain up to 5 entries; each must be
-                 200 chars or fewer. Use the empty array if there are none.
+                 1000 chars or fewer. Use the empty array if there are none.
                - Picking `close-spam` or `close-malicious` causes the
                  downstream step to post the closing review comment AND
                  close the PR. The close target is always the triggering
@@ -131,15 +131,17 @@ jobs:
             Do not print the JSON to stdout. Only write the file.
 
           claude_args: >-
-            --max-turns 20
+            --max-turns 50
             --allowedTools
             "Bash(bash scripts/get_pr.sh:*),
             Bash(bash scripts/get_pr_files.sh:*),
             Bash(bash scripts/get_pr_diff.sh:*),
             Bash(bash scripts/get_linked_issues.sh:*),
+            Bash(bash scripts/search_prs.sh:*),
             Bash(bash scripts/get_comments.sh:*),
             Bash(bash scripts/get_labels.sh:*),
             Bash(bash scripts/get_issue.sh:*),
+            Bash(bash scripts/get_dependency_releases.sh:*),
             Read,
             Write"
 
@@ -329,16 +331,16 @@ jobs:
               | gsub("\r"; "")
               | gsub("[\u0000-\u001f]"; " ");
             {
-              SUMMARY: (clean(.review_params.summary) | .[0:600]),
+              SUMMARY: (clean(.review_params.summary) | .[0:1000]),
               BLOCKING_POINTS: (
                 ((.review_params.blocking_points // [])
                  | map(select(type=="string"))
                  | .[0:5]
-                 | map(clean(.) | .[0:200])
+                 | map(clean(.) | .[0:1000])
                  | map("- " + .)
                  | join("\n"))
               ),
-              TRIGGER_REASON: (clean($trigger) | .[0:200])
+              TRIGGER_REASON: (clean($trigger) | .[0:1000])
             }
           ' review-decision.json > comment_params.json
 

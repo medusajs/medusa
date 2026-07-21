@@ -59,7 +59,7 @@ mcloud organizations list
 
 ## organizations get
 
-Retrieve a single organization by its ID. Returns the organization's metadata, subscription details, and members.
+Retrieve a single organization by its ID, handle, or name. Returns the organization's metadata, subscription details, and members.
 
 ```bash
 mcloud organizations get <organization>
@@ -86,10 +86,10 @@ Returns the following information:
     Current period:  Apr 22, 2026, 5:10 PM GMT+3 → May 22, 2026, 5:10 PM GMT+3
 
   Members (3):
-    ID                EMAIL                NAME             CREATED
-    mem_01ABC         alice@example.com    Alice Example    Aug 30, 2024, 12:07 PM GMT+3
-    mem_01DEF         bob@example.com      Bob Example      Aug 30, 2024, 12:10 PM GMT+3
-    mem_01GHI         carol@example.com    Carol Example    Aug 30, 2024, 12:15 PM GMT+3
+    EMAIL              NAME           ID         CREATED
+    alice@example.com  Alice Example  mem_01ABC  Aug 30, 2024, 12:07 PM GMT+3
+    bob@example.com    Bob Example    mem_01DEF  Aug 30, 2024, 12:10 PM GMT+3
+    carol@example.com  Carol Example  mem_01GHI  Aug 30, 2024, 12:15 PM GMT+3
   ```
 
   </CodeTab>
@@ -243,6 +243,9 @@ Returns the following information:
       <Table.HeaderCell>
         Required
       </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -254,12 +257,17 @@ Returns the following information:
       </Table.Cell>
       <Table.Cell>
 
-      The ID of the organization to retrieve.
+      The ID, handle, or name of the organization to retrieve.
 
       </Table.Cell>
       <Table.Cell>
 
-      Yes
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Falls back to the organization in the [active context](../use/page.mdx#set-the-active-context), if set.
 
       </Table.Cell>
     </Table.Row>
@@ -289,12 +297,12 @@ Returns the following information:
     <Table.Row>
       <Table.Cell>
 
-      `-o <id>`, `--organization <id>`
+      `-o <id-handle-or-name>`, `--organization <id-handle-or-name>`
 
       </Table.Cell>
       <Table.Cell>
 
-      Override the organization in the [active context](../use/page.mdx#set-the-active-context). The argument and this flag must match.
+      The ID, handle, or name of the organization to retrieve. Interchangeable with the positional argument.
 
       </Table.Cell>
       <Table.Cell>

@@ -120,7 +120,15 @@ export class ApiLoader {
    * Checks if a route file is disabled for a given matcher and method
    * by trying to find the corresponding route file path
    */
-  #isRouteFileDisabled(matcher: string): boolean {
+  #isRouteFileDisabled(matcher: string | RegExp): boolean {
+    /**
+     * A regular expression matcher does not map to a single route file on the
+     * filesystem, so there is nothing to check for being disabled.
+     */
+    if (matcher instanceof RegExp) {
+      return false
+    }
+
     const routePathSegments = matcher
       .split("/")
       .filter(Boolean)
@@ -180,7 +188,7 @@ export class ApiLoader {
 
       const handler = ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(handlerToUse, {
-            route: route.matcher,
+            route: String(route.matcher),
           }) as RequestHandler)
         : (handlerToUse as RequestHandler)
 
@@ -211,7 +219,7 @@ export class ApiLoader {
 
       const handler = ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(wrapHandler(handlerToUse), {
-            route: route.matcher,
+            route: String(route.matcher),
             method: method,
           }) as RequestHandler)
         : wrapHandler(handlerToUse)

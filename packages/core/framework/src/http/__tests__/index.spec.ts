@@ -7,6 +7,7 @@ import express from "express"
 import { resolve } from "path"
 import { logger as defaultLogger } from "../../logger"
 import {
+  adminRegexMiddlewareMock,
   customersCreateMiddlewareMock,
   customersCreateMiddlewareValidatorMock,
   customersGlobalMiddlewareMock,
@@ -229,6 +230,22 @@ describe("RoutesLoader", function () {
 
       expect(customersGlobalMiddlewareMock).not.toHaveBeenCalled()
       expect(customersCreateMiddlewareMock).not.toHaveBeenCalled()
+    })
+
+    it("should call middleware registered with a RegExp matcher on matching routes", async function () {
+      const res = await request("GET", "/admin/unprotected")
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET /admin/unprotected")
+      expect(adminRegexMiddlewareMock).toHaveBeenCalled()
+    })
+
+    it("should not call middleware registered with a RegExp matcher on non-matching routes", async function () {
+      const res = await request("GET", "/customers")
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("list customers")
+      expect(adminRegexMiddlewareMock).not.toHaveBeenCalled()
     })
 
     it("should apply raw middleware on POST `/webhooks/payment` route", async function () {

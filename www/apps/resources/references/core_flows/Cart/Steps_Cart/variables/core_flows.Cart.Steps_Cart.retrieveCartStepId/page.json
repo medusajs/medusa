@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.retrieveCartStepId","title":"retrieveCartStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"retrieveCartStepId","type":"`\"retrieve-cart\"`","description":"","optional":false,"defaultValue":"\"retrieve-cart\"","expandable":false,"children":[]}]}]}

@@ -6,7 +6,10 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { InventoryLevelWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import {
   createInventoryLevelsStep,
   validateInventoryLocationsStep,
@@ -54,8 +57,20 @@ export const createInventoryLevelsWorkflow = createWorkflow(
   ): WorkflowResponse<InventoryLevelDTO[]> => {
     validateInventoryLocationsStep(input.inventory_levels)
 
-    return new WorkflowResponse(
-      createInventoryLevelsStep(input.inventory_levels)
+    const inventoryLevels = createInventoryLevelsStep(input.inventory_levels)
+
+    const levelIdEvents = transform(
+      { inventoryLevels },
+      ({ inventoryLevels }) => {
+        return inventoryLevels.map((level) => ({ id: level.id }))
+      }
     )
+
+    emitEventStep({
+      eventName: InventoryLevelWorkflowEvents.CREATED,
+      data: levelIdEvents,
+    })
+
+    return new WorkflowResponse(inventoryLevels)
   }
 )
