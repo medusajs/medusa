@@ -71,6 +71,12 @@ export function useConfigurableTableColumns<TData = any>(
 
       const renderer = getCellRenderer(renderType, apiColumn.data_type)
       const align = adapter?.getColumnAlignment?.(apiColumn) ?? renderer.align
+      // Per-column override wins; otherwise fall back to the renderer's default
+      // (renderers that self-handle overflow set this to false), then to `true`.
+      const truncateTooltip =
+        (apiColumn.metadata as any)?.truncate_tooltip ??
+        renderer.truncateTooltip ??
+        true
 
       const accessor = (row: TData) => getColumnValue(row, apiColumn)
 
@@ -90,6 +96,7 @@ export function useConfigurableTableColumns<TData = any>(
         enableSorting: apiColumn.sortable,
         sortLabel: apiColumn.name,
         align,
+        truncateTooltip,
       } as any)
     })
 

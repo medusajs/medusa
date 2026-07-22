@@ -68,6 +68,13 @@ export type RenderMode = BuiltInRenderMode | (string & {})
 export type CellRendererDefinition<TData = any> = {
   render: CellRenderer<TData>
   align?: CellAlignment
+  /**
+   * Whether the data table shows a hover tooltip with the full value when this
+   * cell's content is truncated. Set `false` for renderers that manage their
+   * own overflow (e.g. they already wrap content in a tooltip). Defaults to
+   * `true`. A column can override this via `metadata.truncate_tooltip`.
+   */
+  truncateTooltip?: boolean
 }
 
 export type RendererRegistry = Map<string, CellRendererDefinition>
@@ -578,31 +585,55 @@ const JsonRenderer: CellRenderer = (value, _row, _column, _t) => {
 cellRenderers.set("text", { render: TextRenderer })
 cellRenderers.set("handle", { render: HandleRenderer })
 cellRenderers.set("count", { render: CountRenderer })
-cellRenderers.set("status", { render: StatusRenderer })
+// `status`, `boolean` render pills/badges, `image` renders an <img>, and the
+// composite/self-tooltipping renderers below manage their own overflow — so
+// they opt out of the data-table's generic truncation tooltip.
+cellRenderers.set("status", { render: StatusRenderer, truncateTooltip: false })
 cellRenderers.set("date", { render: DateRenderer })
 cellRenderers.set("timestamp", { render: DateRenderer })
 cellRenderers.set("currency", { render: CurrencyRenderer, align: "right" })
 cellRenderers.set("number", { render: NumberRenderer, align: "right" })
-cellRenderers.set("boolean", { render: BooleanRenderer, align: "center" })
+cellRenderers.set("boolean", {
+  render: BooleanRenderer,
+  align: "center",
+  truncateTooltip: false,
+})
 cellRenderers.set("id", { render: IdRenderer })
 cellRenderers.set("email", { render: EmailRenderer })
 cellRenderers.set("phone", { render: PhoneRenderer })
-cellRenderers.set("url", { render: UrlRenderer })
-cellRenderers.set("image", { render: ImageRenderer, align: "center" })
-cellRenderers.set("json", { render: JsonRenderer })
+cellRenderers.set("url", { render: UrlRenderer, truncateTooltip: false })
+cellRenderers.set("image", {
+  render: ImageRenderer,
+  align: "center",
+  truncateTooltip: false,
+})
+cellRenderers.set("json", { render: JsonRenderer, truncateTooltip: false })
 cellRenderers.set("datetime", { render: DateRenderer })
-cellRenderers.set("badges", { render: BadgesRenderer })
+cellRenderers.set("badges", { render: BadgesRenderer, truncateTooltip: false })
 cellRenderers.set("name", { render: NameRenderer })
-cellRenderers.set("address", { render: AddressRenderer })
+cellRenderers.set("address", {
+  render: AddressRenderer,
+  truncateTooltip: false,
+})
 cellRenderers.set("country_code", {
   render: CountryCodeRenderer,
   align: "center",
+  truncateTooltip: false,
 })
 
 // Register product-specific renderers
-cellRenderers.set("product_info", { render: ProductInfoRenderer })
-cellRenderers.set("collection", { render: CollectionRenderer })
-cellRenderers.set("variants", { render: VariantsRenderer })
+cellRenderers.set("product_info", {
+  render: ProductInfoRenderer,
+  truncateTooltip: false,
+})
+cellRenderers.set("collection", {
+  render: CollectionRenderer,
+  truncateTooltip: false,
+})
+cellRenderers.set("variants", {
+  render: VariantsRenderer,
+  truncateTooltip: false,
+})
 
 // Register order-specific renderers
 cellRenderers.set("display_id", { render: DisplayIdRenderer })
@@ -651,7 +682,11 @@ export function registerCellRenderer(
   type: RenderMode,
   def: CellRendererDefinition
 ) {
-  cellRenderers.set(type, { render: def.render, align: def.align })
+  cellRenderers.set(type, {
+    render: def.render,
+    align: def.align,
+    truncateTooltip: def.truncateTooltip,
+  })
 }
 
 export function getColumnValue(row: any, column: HttpTypes.AdminColumn): any {

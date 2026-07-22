@@ -23,6 +23,7 @@ import {
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
 import { Skeleton } from "@/components/skeleton"
 import { Text } from "@/components/text"
+import { Tooltip } from "@/components/tooltip"
 import { clx } from "@/utils/clx"
 import {
   DataTableEmptyState,
@@ -533,25 +534,22 @@ const DataTableTable = (props: DataTableTableProps) => {
                         return (
                           <Table.Cell
                             key={cell.id}
-                            className={clx(
-                              "items-stretch truncate whitespace-nowrap",
-                              {
-                                "w-[calc(20px+24px+24px)] min-w-[calc(20px+24px+24px)] max-w-[calc(20px+24px+24px)]":
-                                  isSelectCell,
-                                "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
-                                  isActionCell,
-                                "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
-                                  isFirstColumn || isSelectCell,
-                                "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
-                                  isFirstColumn,
-                                "after:bg-ui-border-base":
-                                  showStickyBorder && isFirstColumn,
-                                "left-0":
-                                  isSelectCell || (isFirstColumn && !hasSelect),
-                                "left-[calc(20px+24px+24px)]":
-                                  isFirstColumn && hasSelect,
-                              }
-                            )}
+                            className={clx("items-stretch whitespace-nowrap", {
+                              "w-[calc(20px+24px+24px)] min-w-[calc(20px+24px+24px)] max-w-[calc(20px+24px+24px)]":
+                                isSelectCell,
+                              "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
+                                isActionCell,
+                              "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
+                                isFirstColumn || isSelectCell,
+                              "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                                isFirstColumn,
+                              "after:bg-ui-border-base":
+                                showStickyBorder && isFirstColumn,
+                              "left-0":
+                                isSelectCell || (isFirstColumn && !hasSelect),
+                              "left-[calc(20px+24px+24px)]":
+                                isFirstColumn && hasSelect,
+                            })}
                             style={
                               !isSpecialCell
                                 ? {
@@ -645,10 +643,20 @@ const DataTableTableSkeleton = ({
 
 // Renders a body cell's content, applying horizontal alignment from the
 // column's `align` meta. Left-aligned (or unset) cells render bare; only
-// center/right wrap in an alignment flex row.
+// center/right wrap in an alignment flex row. The content is clipped and (by
+// default) tooltipped by TruncatedCell.
 function renderAlignedCell(cell: any) {
-  const align = (cell.column.columnDef.meta as any)?.___alignMetaData?.align
-  const content = flexRender(cell.column.columnDef.cell, cell.getContext())
+  const meta = cell.column.columnDef.meta as any
+  const align = meta?.___alignMetaData?.align
+  // Opt-out is explicit `false`; anything else (incl. unset) truncates+tooltips.
+  const wantTooltip = meta?.___truncateTooltip !== false
+
+  const rendered = flexRender(cell.column.columnDef.cell, cell.getContext())
+  const content = wantTooltip ? (
+    <TruncatedCell>{rendered}</TruncatedCell>
+  ) : (
+    rendered
+  )
 
   if (!["right", "center"].includes(align)) {
     return content
@@ -656,13 +664,36 @@ function renderAlignedCell(cell: any) {
 
   return (
     <div
-      className={clx("flex items-center", {
+      className={clx("flex min-w-0 items-center", {
         "justify-end": align === "right",
         "justify-center": align === "center",
       })}
     >
       {content}
     </div>
+  )
+}
+
+function TruncatedCell({ children }: { children: React.ReactNode }) {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const [state, setState] = React.useState({ overflow: false, text: "" })
+
+  const check = () => {
+    const el = ref.current
+    if (el) {
+      setState({
+        overflow: el.scrollWidth > el.clientWidth,
+        text: el.textContent ?? "",
+      })
+    }
+  }
+
+  return (
+    <Tooltip content={state.text} hidden={!state.overflow}>
+      <div ref={ref} className="truncate" onMouseEnter={check}>
+        {children}
+      </div>
+    </Tooltip>
   )
 }
 
