@@ -689,7 +689,13 @@ function TruncatedCell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <Tooltip content={state.text} hidden={!state.overflow}>
+    // Cap the tooltip's width and break long unbroken strings so the text
+    // wraps inside the bubble instead of overflowing it.
+    <Tooltip
+      content={state.text}
+      hidden={!state.overflow}
+      className="max-w-[360px] break-words"
+    >
       <div ref={ref} className="truncate" onMouseEnter={check}>
         {children}
       </div>

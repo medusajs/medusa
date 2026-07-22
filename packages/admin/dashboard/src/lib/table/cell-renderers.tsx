@@ -17,6 +17,7 @@ import {
   getOrderFulfillmentStatus,
 } from "../order-helpers"
 import { DataTableStatusIndicator } from "../../components/data-table/components/data-table-status-cell/data-table-status-cell"
+import { TruncatedText } from "../../components/common/truncated-text"
 import { isEmpty } from "../is-empty"
 
 export type CellRenderer<TData = any> = (
@@ -262,7 +263,7 @@ const BadgesRenderer: CellRenderer = (value, row, column, t) => {
     return label ? (
       <div className="flex min-w-0">
         <Badge size="xsmall" className="min-w-0">
-          <span className="truncate">{label}</span>
+          <TruncatedText text={label} />
         </Badge>
       </div>
     ) : (
@@ -282,7 +283,7 @@ const BadgesRenderer: CellRenderer = (value, row, column, t) => {
     <div className="flex min-w-0 items-center gap-1">
       {visible.map((item, index) => (
         <Badge key={index} size="xsmall" className="min-w-0">
-          <span className="truncate">{resolveLabel(item)}</span>
+          <TruncatedText text={resolveLabel(item)} />
         </Badge>
       ))}
       {remaining > 0 && (
@@ -400,12 +401,7 @@ const AddressRenderer: CellRenderer = (_, row, column, _t) => {
     return "-"
   }
 
-  const truncated = full.length > 40 ? full.substring(0, 37) + "..." : full
-  return (
-    <Tooltip hidden={truncated.length === full.length} content={full}>
-      <span className="max-w-[220px] truncate">{truncated}</span>
-    </Tooltip>
-  )
+  return <TruncatedText text={full} className="max-w-[220px]" />
 }
 
 const CountryCodeRenderer: CellRenderer = (_, row, column, _t) => {
@@ -534,7 +530,7 @@ const UrlRenderer: CellRenderer = (value, _row, _column, _t) => {
       className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover flex items-center gap-1"
       onClick={(e) => e.stopPropagation()}
     >
-      <span className="max-w-[200px] truncate">{value}</span>
+      <TruncatedText text={value} className="max-w-[200px]" />
       <ArrowUpRightOnBox className="h-3 w-3 flex-shrink-0" />
     </a>
   )
