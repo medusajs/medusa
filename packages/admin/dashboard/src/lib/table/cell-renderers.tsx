@@ -250,10 +250,17 @@ const BadgesRenderer: CellRenderer = (value, row, column, t) => {
 
   const resolved = metadata.list_field ? row[metadata.list_field] : value
 
-  // Single (scalar/object) value -> one badge.
   if (!Array.isArray(resolved)) {
     const label = resolveLabel(resolved)
-    return label ? <Badge size="xsmall">{label}</Badge> : "-"
+    return label ? (
+      <div className="flex min-w-0">
+        <Badge size="xsmall" className="min-w-0">
+          <span className="truncate">{label}</span>
+        </Badge>
+      </div>
+    ) : (
+      "-"
+    )
   }
 
   const items = resolved.filter((item) => item !== null && item !== undefined)
@@ -265,10 +272,10 @@ const BadgesRenderer: CellRenderer = (value, row, column, t) => {
   const remaining = items.length - maxVisible
 
   return (
-    <div className="flex gap-1">
+    <div className="flex min-w-0 items-center gap-1">
       {visible.map((item, index) => (
-        <Badge key={index} size="xsmall">
-          {resolveLabel(item)}
+        <Badge key={index} size="xsmall" className="min-w-0">
+          <span className="truncate">{resolveLabel(item)}</span>
         </Badge>
       ))}
       {remaining > 0 && (
@@ -281,7 +288,7 @@ const BadgesRenderer: CellRenderer = (value, row, column, t) => {
             </ul>
           }
         >
-          <Badge size="xsmall" color="grey">
+          <Badge size="xsmall" color="grey" className="shrink-0">
             {t
               ? t("general.plusCountMore", "+ {{count}} more", {
                   count: remaining,
