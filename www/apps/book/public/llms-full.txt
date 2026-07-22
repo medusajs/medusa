@@ -28378,6 +28378,32 @@ claude
 
 If you're connecting with OAuth, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
 
+### Codex
+
+To connect to the Medusa MCP server in Codex, use one of the following methods:
+
+### OAuth
+
+```bash
+codex mcp add medusa --url https://docs.medusajs.com/mcp
+```
+
+### Personal Access Key
+
+```toml title="~/.codex/config.toml"
+[mcp_servers.medusa]
+url = "https://docs.medusajs.com/mcp"
+bearer_token_env_var = "{token}"
+```
+
+If you're connecting with OAuth, run the following command in your terminal to authenticate with your Cloud account:
+
+```bash
+codex mcp login medusa
+```
+
+This will open a browser window where you can log into your Cloud account to authenticate.
+
 ### Cursor
 
 Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
@@ -132164,7 +132190,11 @@ The method's name is `listDataModel`, where `DataModel` is the plural pascal-cas
 const posts = await postModuleService.listPosts()
 ```
 
-If no parameters are passed, the method returns an array of the first `15` records.
+If no parameters are passed, the method returns all matching records.
+
+When you call this method directly from a workflow step or a custom route handler without passing a `take` value, it returns all records from the database without any limit. Pass the `take` parameter to avoid unbounded fetches on large tables.
+
+The default limit of `50` records is enforced by the HTTP query-config middleware layer, not by the module service method itself. It only applies when the method is called through Medusa's built-in HTTP routes.
 
 ***
 
@@ -132184,7 +132214,7 @@ Refer to the [Filtering](https://docs.medusajs.com/Users/shahednasser/medusa/www
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ***
 
@@ -132204,7 +132234,7 @@ To retrieve records with their relations, pass an object with a `relations` prop
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ***
 
@@ -132224,7 +132254,7 @@ By default, retrieved records have all their properties. To select specific prop
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ***
 
@@ -132241,7 +132271,7 @@ const posts = await postModuleService.listPosts({}, {
 
 To paginate the returned records, the second object parameter accepts the following properties:
 
-- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `take`: a number indicating how many records to retrieve. When not specified, all matching records are returned.
 - `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
 
 ### Returns
@@ -132269,7 +132299,7 @@ To sort records by one or more properties, pass an `order` property in the secon
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 
 # listAndCount Method - Service Factory Reference
@@ -132286,8 +132316,12 @@ const [posts, count] = await postModuleService.listAndCountPosts()
 
 If no parameters are passed, the method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
+
+When you call this method directly from a workflow step or a custom route handler without passing a `take` value, it returns all records from the database without any limit. Pass the `take` parameter to avoid unbounded fetches on large tables.
+
+The default limit of `50` records is enforced by the HTTP query-config middleware layer, not by the module service method itself. It only applies when the method is called through Medusa's built-in HTTP routes.
 
 ***
 
@@ -132309,7 +132343,7 @@ Refer to the [Filtering](https://docs.medusajs.com/Users/shahednasser/medusa/www
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved matching the specified filters.
+1. The first is an array of all records retrieved matching the specified filters.
 2. The second is the total count of records matching the specified filters.
 
 ***
@@ -132332,7 +132366,7 @@ To retrieve records with their relations, pass an object with a `relations` prop
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
 
 ***
@@ -132355,7 +132389,7 @@ By default, retrieved records have all their properties. To select specific prop
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
 
 ***
@@ -132373,7 +132407,7 @@ const [posts, count] = await postModuleService.listAndCountPosts({}, {
 
 To paginate the returned records, the second object parameter accepts the following properties:
 
-- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `take`: a number indicating how many records to retrieve. When not specified, all matching records are returned.
 - `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
 
 ### Returns
@@ -132406,7 +132440,7 @@ To sort records by one or more properties, pass an `order` property in the secon
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
 
 
