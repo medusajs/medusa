@@ -204,10 +204,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                     <Table.Row
                       key={headerGroup.id}
                       className={clx("border-b-0", {
-                        "[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap":
-                          hasActions,
-                        "[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap":
-                          hasSelect,
+                        "[&_th:last-of-type]:whitespace-nowrap": hasActions,
+                        "[&_th:first-of-type]:whitespace-nowrap": hasSelect,
                       })}
                     >
                       <SortableContext
@@ -360,7 +358,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                     isSelectCell,
                                   "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
                                     isActionCell,
-                                  "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky h-full":
+                                  "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
                                     isFirstColumn || isSelectCell,
                                   "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                     isFirstColumn,
@@ -542,7 +540,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                   isSelectCell,
                                 "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
                                   isActionCell,
-                                "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky h-full":
+                                "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
                                   isFirstColumn || isSelectCell,
                                 "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                   isFirstColumn,
