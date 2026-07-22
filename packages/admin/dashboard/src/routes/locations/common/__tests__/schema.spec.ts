@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 import { CondtionalPriceRuleSchema } from "../schema"
 
-const getIssuePaths = (result: {
-  success: boolean
-  error?: { issues: { path: (string | number)[] }[] }
-}) => (result.success ? [] : result.error!.issues.map((i) => i.path.join(".")))
+type ParseResult = ReturnType<typeof CondtionalPriceRuleSchema.safeParse>
+
+const getIssuePaths = (result: ParseResult) =>
+  result.success ? [] : result.error.issues.map((i) => i.path.join("."))
 
 describe("CondtionalPriceRuleSchema - conditional shipping option prices", () => {
   it("allows the same amount for non-overlapping conditions", () => {
