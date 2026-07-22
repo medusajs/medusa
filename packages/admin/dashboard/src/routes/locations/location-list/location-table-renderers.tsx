@@ -3,7 +3,7 @@ import { StatusBadge } from "@medusajs/ui"
 
 import { ListSummary } from "../../../components/common/list-summary"
 import { PlaceholderCell } from "../../../components/table/table-cells/common/placeholder-cell"
-import { registerCellRenderer } from "../../../lib/table/cell-renderers"
+import { defineCellRenderer } from "../../../lib/table/cell-renderers"
 import { FulfillmentSetType } from "../common/constants"
 
 /**
@@ -25,16 +25,16 @@ const fulfillmentRenderer = (setType: FulfillmentSetType) => ({
   },
 })
 
-registerCellRenderer(
+defineCellRenderer(
   "stock_location_shipping",
   fulfillmentRenderer(FulfillmentSetType.Shipping)
 )
-registerCellRenderer(
+defineCellRenderer(
   "stock_location_pickup",
   fulfillmentRenderer(FulfillmentSetType.Pickup)
 )
 
-registerCellRenderer("stock_location_sales_channels", {
+defineCellRenderer("stock_location_sales_channels", {
   render: (_value, row) => {
     const location = row as HttpTypes.AdminStockLocation
     const salesChannels = location.sales_channels

@@ -43,7 +43,7 @@ export const LayoutComposer = Object.assign(LayoutComposerRoot, {
 export type { LayoutComponentProps } from "../components/layout-composer/types"
 
 export {
-  registerCellRenderer,
+  defineCellRenderer,
   type CellRenderer,
   type CellRendererDefinition,
   type CellAlignment,

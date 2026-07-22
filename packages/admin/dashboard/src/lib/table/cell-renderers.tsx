@@ -674,7 +674,7 @@ export function getCellRenderer(
 /**
  * Register a cell renderer for a render mode in the global registry.
  */
-export function registerCellRenderer(
+export function defineCellRenderer(
   type: RenderMode,
   def: CellRendererDefinition
 ) {

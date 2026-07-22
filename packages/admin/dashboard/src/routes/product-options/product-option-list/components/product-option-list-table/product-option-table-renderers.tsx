@@ -1,8 +1,8 @@
 import { Badge } from "@medusajs/ui"
-import { registerCellRenderer } from "../../../../../lib/table/cell-renderers"
+import { defineCellRenderer } from "../../../../../lib/table/cell-renderers"
 
 // "Global" vs "Product-specific" badge derived from is_exclusive.
-registerCellRenderer("product_option_exclusivity", {
+defineCellRenderer("product_option_exclusivity", {
   render: (value, _row, _column, t) => {
     const isExclusive = Boolean(value)
 

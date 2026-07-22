@@ -1,7 +1,7 @@
 import { Badge } from "@medusajs/ui"
 import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
 import {
-  registerCellRenderer,
+  defineCellRenderer,
   registerCellResolver,
 } from "../../../../../lib/table/cell-renderers"
 import {
@@ -17,14 +17,14 @@ import {
  */
 
 // Redacted token, shown as a badge.
-registerCellRenderer("api_key_token", {
+defineCellRenderer("api_key_token", {
   render: (value) => (
     <Badge size="2xsmall">{prettifyRedactedToken(String(value ?? ""))}</Badge>
   ),
 })
 
 // Publishable / secret type label.
-registerCellRenderer("api_key_type", {
+defineCellRenderer("api_key_type", {
   render: (value, _row, _column, t) => (
     <TextCell text={getApiKeyTypeProps(value, t).label} />
   ),

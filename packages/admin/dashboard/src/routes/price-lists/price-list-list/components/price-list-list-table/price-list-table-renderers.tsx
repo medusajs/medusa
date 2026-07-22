@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import {
-  registerCellRenderer,
+  defineCellRenderer,
   registerCellResolver,
 } from "../../../../../lib/table/cell-renderers"
 import { getPriceListStatus } from "../../../common/utils"
@@ -14,7 +14,7 @@ registerCellResolver("price_list_status", (_value, row, t) => {
 })
 
 // Price override count is fetched per row by PriceCountCell.
-registerCellRenderer("price_overrides_count", {
+defineCellRenderer("price_overrides_count", {
   render: (_value, row) => {
     return <PriceCountCell priceListId={(row as HttpTypes.AdminPriceList).id} />
   },

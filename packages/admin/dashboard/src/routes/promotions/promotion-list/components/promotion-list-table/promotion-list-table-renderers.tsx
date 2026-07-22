@@ -2,7 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { TextCell } from "../../../../../components/table/table-cells/common/text-cell"
 import { StatusCell } from "../../../../../components/table/table-cells/promotion/status-cell"
 import {
-  registerCellRenderer,
+  defineCellRenderer,
   registerCellResolver,
 } from "../../../../../lib/table/cell-renderers"
 
@@ -12,7 +12,7 @@ import {
  * its side effect by the configurable promotion table.
  */
 
-registerCellRenderer("promotion_method", {
+defineCellRenderer("promotion_method", {
   render: (_value, row, _column, t) => {
     const isAutomatic = (row as HttpTypes.AdminPromotion).is_automatic
     return (
