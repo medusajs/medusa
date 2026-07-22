@@ -105,6 +105,46 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(401)
         expect(response.data.message).toEqual("Unauthorized")
       })
+
+      describe("non-sortable fields", () => {
+        it.each([
+          "total",
+          "-payment_status",
+          "fulfillment_status",
+          "subtotal",
+          "-shipping_total",
+          "credit_line_tax_total",
+          "original_item_subtotal",
+        ])(
+          "should return 400 when sorting by computed field '%s'",
+          async (sort) => {
+            const response = await api
+              .get(`/store/orders?order=${sort}`, storeHeadersWithCustomer)
+              .catch((e) => e)
+
+            const field = sort.replace(/^-/, "")
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data.message).toEqual(
+              `Order field ${field} is not valid`
+            )
+          }
+        )
+
+        it.each(["-created_at", "display_id", "status"])(
+          "should sort by real column '%s' without error",
+          async (sort) => {
+            const response = await api.get(
+              `/store/orders?order=${sort}`,
+              storeHeadersWithCustomer
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.orders).toEqual([
+              expect.objectContaining({ id: order.id }),
+            ])
+          }
+        )
+      })
     })
 
     describe("GET /store/orders/:id", () => {
