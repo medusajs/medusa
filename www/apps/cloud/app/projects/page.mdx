@@ -329,14 +329,11 @@ To change the connected repository:
 2. Click on the **Settings** tab.
 3. Click on the **Connections** tab in the Settings page.
 4. Under the connected GitHub repository, click the **Change** button.
-5. In the modal that opens, select the GitHub installation and then choose the new repository.
+5. In the modal that opens, choose the new repository to connect.
+    - If you're not connected to GitHub yet, you'll need to connect first.
 6. Click **Save Changes**.
 
-<Note>
-
-**Save Changes** is disabled until you select a repository. If GitHub is not connected or no installation is available, connect GitHub first from the same Connections settings page.
-
-</Note>
+The next time you push to the new repository, your project will be built from there.
 
 ---
 
@@ -371,18 +368,21 @@ The project will then use the specifications defined in your organization's plan
 ## Delete Storefront
 
 <Note type="warning" title="Danger">
-  Deleting the storefront is irreversible. This action permanently removes the storefront associated with the project.
+
+Deleting the storefront is irreversible. This action permanently removes the storefront associated with the project. You can re-add the storefront if needed.
+
 </Note>
 
-If your project has a storefront deployed, you can permanently delete it from the project settings. The **Delete** button is disabled when no storefront exists on the project.
+If your project has a storefront deployed, you can permanently delete it from the project settings.
 
 To delete the storefront:
 
 1. Open the project's dashboard.
 2. Click on the **Settings** tab.
-3. In the **General** tab of the Settings page, scroll to the **Delete Storefront** section.
-4. Click the **Delete** button.
-5. Confirm the deletion by entering the verification phrase in the confirmation prompt, then click **Delete**.
+3. In the **General** tab of the Settings page, click the **Delete** button in the **Delete Storefront** section.
+4. Confirm the deletion by entering the verification phrase in the confirmation prompt, then click **Delete**.
+
+This will remove your storefront from the project. Future deployments include the backend only.
 
 ---
 
