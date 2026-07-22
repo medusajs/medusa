@@ -135,7 +135,8 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         isCustomPrice: isCustomPrice,
       }
 
-      if (variant && !isCustomPrice) {
+      
+      if (variant && !isCustomPrice && calculatedPriceSet) {
         input.unitPrice = calculatedPriceSet.calculated_amount
         input.isTaxInclusive =
           calculatedPriceSet.is_calculated_price_tax_inclusive

@@ -170,6 +170,43 @@ medusaIntegrationTestRunner({
       })
 
       describe("CreateCartWorkflow", () => {
+             it("should throw a 400 (not crash with a 500) when a variant has no price in the region's currency", async () => {
+  const salesChannel = await scModuleService.createSalesChannels({ name: "Webshop" })
+
+  const [product] = await productModule.createProducts([
+    { title: "Test product", status: ProductStatus.PUBLISHED, variants: [{ title: "Test variant" }] },
+  ])
+
+  const region = await regionModuleService.createRegions({ name: "US", currency_code: "usd" })
+
+  // Price only exists in EUR -> no USD price for this region
+  const priceSet = await pricingModule.createPriceSets({
+    prices: [{ amount: 3000, currency_code: "eur" }],
+  })
+
+  await remoteLink.create([
+    { [Modules.PRODUCT]: { variant_id: product.variants[0].id }, [Modules.PRICING]: { price_set_id: priceSet.id } },
+    { [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel.id } },
+  ])
+
+  const { errors } = await createCartWorkflow(appContainer).run({
+    input: {
+      region_id: region.id,
+      sales_channel_id: salesChannel.id,
+      items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+    },
+    throwOnError: false,
+  })
+
+  expect(errors).toEqual([
+    expect.objectContaining({
+      error: expect.objectContaining({
+        message: expect.stringContaining("do not have a price"),
+        type: "invalid_data",
+      }),
+    }),
+  ])
+})
         it("should create a cart", async () => {
           const region = await regionModuleService.createRegions({
             name: "US",
