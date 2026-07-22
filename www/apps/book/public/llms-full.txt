@@ -19294,7 +19294,7 @@ The returned `data` nests each level under the previous one. For example:
 }]
 ```
 
-Filtering by a linked data model's property isn't supported at any level of the chain. Refer to the [Apply Filters](#apply-filters) section for details.
+You can filter by a linked data model's property at any level of the chain. Refer to the [Apply Filters](#apply-filters) section for details.
 
 ### Apply Filters and Pagination on Linked Records
 
@@ -19417,7 +19417,7 @@ In the example above, you filter the `post` records by multiple IDs.
 
 This is available from [Medusa v2.17.3](https://github.com/medusajs/medusa/releases/tag/v2.17.3).
 
-You can filter by fields of linked data models from other modules when both modules share the same database. The linked field must be a non-computed DML column. For example:
+You can filter by fields of linked data models from other modules. For example:
 
 ```ts
 const { data: variants } = await query.graph({
@@ -19431,7 +19431,7 @@ const { data: variants } = await query.graph({
 })
 ```
 
-In the example above, you filter variants by the `currency_code` field of their linked `price_set`. Medusa pushes the filter down as a SQL subquery, so only variants matching the condition are returned.
+In the example above, you filter variants by the `currency_code` field of their linked `price_set`. When possible, Medusa pushes the filter down as a SQL subquery. Otherwise, Medusa loads the related data and applies the filter in memory before returning the result.
 
 ### Advanced Query Filters
 
@@ -19804,7 +19804,7 @@ const { data: posts } = useQueryGraphStep({
 
 This is available from [Medusa v2.17.3](https://github.com/medusajs/medusa/releases/tag/v2.17.3).
 
-You can sort by fields of linked data models from other modules when both modules share the same database and the field is a non-computed DML column. For example:
+You can sort by fields of linked data models from other modules. For example:
 
 ```ts
 const { data: variants } = await query.graph({
@@ -19819,6 +19819,8 @@ const { data: variants } = await query.graph({
   },
 })
 ```
+
+When possible, Medusa pushes the sort to SQL. Otherwise, Medusa loads the data and sorts in memory before returning the result.
 
 To sort returned records, pass an `order` property to `pagination`.
 
