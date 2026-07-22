@@ -73,16 +73,31 @@ export type UpdateConditionalPrice = z.infer<
   typeof UpdateConditionalPriceSchema
 >
 
+type RefinablePrice = {
+  amount: string | number
+  gte?: string | number | null | undefined
+  lte?: string | number | null | undefined
+  lt?: number | null | undefined
+  gt?: number | null | undefined
+  eq?: number | null | undefined
+}
+
+const parseBound = (value: string | number | null | undefined) => {
+  if (value === null || value === undefined || value === "") {
+    return undefined
+  }
+
+  return castNumber(value)
+}
+
+// Rules using eq/lt/gt operators can only be managed through the API, so we
+// don't validate overlaps for them in the dashboard.
+const hasCustomOperators = (price: RefinablePrice) =>
+  price.eq != null || price.lt != null || price.gt != null
+
 function refineDuplicates(
   data: {
-    prices: {
-      amount: string | number
-      gte?: string | number | null | undefined
-      lte?: string | number | null | undefined
-      lt?: number | null | undefined
-      gt?: number | null | undefined
-      eq?: number | null | undefined
-    }[]
+    prices: RefinablePrice[]
   },
   ctx: z.RefinementCtx
 ) {
@@ -93,56 +108,38 @@ function refineDuplicates(
       const price1 = prices[i]
       const price2 = prices[j]
 
-      if (price1.amount === "" || price2.amount === "") {
+      if (hasCustomOperators(price1) || hasCustomOperators(price2)) {
         continue
       }
 
-      const price1Amount = castNumber(price1.amount)
-      const price2Amount = castNumber(price2.amount)
+      const lower1 = parseBound(price1.gte)
+      const upper1 = parseBound(price1.lte)
+      const lower2 = parseBound(price2.gte)
+      const upper2 = parseBound(price2.lte)
 
-      if (price1Amount === price2Amount) {
-        addDuplicateAmountError(ctx, j)
+      // A rule without any bound is invalid on its own (handled by another
+      // refinement), so skip the overlap comparison for it.
+      if (
+        (lower1 === undefined && upper1 === undefined) ||
+        (lower2 === undefined && upper2 === undefined)
+      ) {
+        continue
       }
 
-      // Then check conditions separately
-      const conditions = [
-        { value: price1.gte, type: "gte" },
-        { value: price1.lte, type: "lte" },
-        { value: price1.eq, type: "eq" },
-        { value: price1.lt, type: "lt" },
-        { value: price1.gt, type: "gt" },
-      ] as const
+      const start1 = lower1 ?? Number.NEGATIVE_INFINITY
+      const end1 = upper1 ?? Number.POSITIVE_INFINITY
+      const start2 = lower2 ?? Number.NEGATIVE_INFINITY
+      const end2 = upper2 ?? Number.POSITIVE_INFINITY
 
-      conditions.forEach((condition1) => {
-        if (!condition1.value && condition1.value !== 0) {
-          return
-        }
+      // Two cart item total ranges conflict only when they share at least one
+      // value. The price amount is intentionally not part of this check: the
+      // same amount can legitimately apply to multiple non-overlapping
+      // conditions.
+      const overlaps = start1 <= end2 && start2 <= end1
 
-        const conditions2 = [
-          { value: price2.gte, type: "gte" },
-          { value: price2.lte, type: "lte" },
-          { value: price2.eq, type: "eq" },
-          { value: price2.lt, type: "lt" },
-          { value: price2.gt, type: "gt" },
-        ] as const
-
-        conditions2.forEach((condition2) => {
-          if (!condition2.value && condition2.value !== 0) {
-            return
-          }
-
-          const condition1Value = castNumber(
-            condition1.value as string | number
-          )
-          const condition2Value = castNumber(
-            condition2.value as string | number
-          )
-
-          if (condition1Value === condition2Value) {
-            addOverlappingConditionError(ctx, j, condition2.type)
-          }
-        })
-      })
+      if (overlaps) {
+        addOverlappingConditionError(ctx, j)
+      }
     }
   }
 }
@@ -167,26 +164,12 @@ export type UpdateConditionalPriceRuleSchemaType = z.infer<
   typeof UpdateConditionalPriceRuleSchema
 >
 
-const addDuplicateAmountError = (ctx: z.RefinementCtx, index: number) => {
-  ctx.addIssue({
-    code: z.ZodIssueCode.custom,
-    message: t(
-      "stockLocations.shippingOptions.conditionalPrices.errors.duplicateAmount"
-    ),
-    path: ["prices", index, "amount"],
-  })
-}
-
-const addOverlappingConditionError = (
-  ctx: z.RefinementCtx,
-  index: number,
-  type: "gte" | "lte" | "eq" | "lt" | "gt"
-) => {
+const addOverlappingConditionError = (ctx: z.RefinementCtx, index: number) => {
   ctx.addIssue({
     code: z.ZodIssueCode.custom,
     message: t(
       "stockLocations.shippingOptions.conditionalPrices.errors.overlappingConditions"
     ),
-    path: ["prices", index, type],
+    path: ["prices", index, "gte"],
   })
 }
