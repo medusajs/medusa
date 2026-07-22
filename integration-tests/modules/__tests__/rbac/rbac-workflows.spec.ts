@@ -827,7 +827,9 @@ medusaIntegrationTestRunner({
           }
 
           expect(error).toBeDefined()
-          expect(error.message).toContain("Forbidden")
+          expect(error.message).toContain(
+            "You do not have access to some of the policies you are trying to assign"
+          )
         })
 
         it("should prevent user from assigning policies they don't have access to", async () => {
