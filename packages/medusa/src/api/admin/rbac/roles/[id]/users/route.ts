@@ -1,6 +1,6 @@
 import {
-  assignUserRolesWorkflow,
-  removeUserRolesWorkflow,
+  assignActorRolesWorkflow,
+  removeActorRolesWorkflow,
 } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
@@ -73,12 +73,13 @@ export const POST = async (
     )
   }
 
-  await assignUserRolesWorkflow(req.scope).run({
+  await assignActorRolesWorkflow(req.scope).run({
     input: {
-      actor_id: req.auth_context.actor_id,
-      actor: req.auth_context.actor_type,
+      granting_actor_id: req.auth_context.actor_id,
+      granting_actor: req.auth_context.actor_type,
+      granted_actor: "user",
+      granted_actor_id: users,
       role_id: roleId,
-      user_ids: users,
     },
   })
 
@@ -120,12 +121,13 @@ export const DELETE = async (
     )
   }
 
-  await removeUserRolesWorkflow(req.scope).run({
+  await removeActorRolesWorkflow(req.scope).run({
     input: {
-      actor_id: req.auth_context.actor_id,
-      actor: req.auth_context.actor_type,
+      granting_actor_id: req.auth_context.actor_id,
+      granting_actor: req.auth_context.actor_type,
+      granted_actor: "user",
+      granted_actor_id: users,
       role_id: roleId,
-      user_ids: users,
     },
   })
 

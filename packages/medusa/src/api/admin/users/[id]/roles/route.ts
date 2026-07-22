@@ -1,6 +1,6 @@
 import {
-  assignUserRolesWorkflow,
-  removeUserRolesWorkflow,
+  assignActorRolesWorkflow,
+  removeActorRolesWorkflow,
 } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
@@ -10,7 +10,7 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 /**
  * @ignore
@@ -45,9 +45,7 @@ export const GET = async (
  * @featureFlag rbac
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<
-    HttpTypes.AdminAssignUserRoles
-  >,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminAssignUserRoles>,
   res: MedusaResponse
 ) => {
   const userId = req.params.id
@@ -69,12 +67,13 @@ export const POST = async (
     )
   }
 
-  await assignUserRolesWorkflow(req.scope).run({
+  await assignActorRolesWorkflow(req.scope).run({
     input: {
-      actor_id: req.auth_context.actor_id,
-      actor: req.auth_context.actor_type,
-      user_id: userId,
-      role_ids: roles,
+      granting_actor_id: req.auth_context.actor_id,
+      granting_actor: req.auth_context.actor_type,
+      granted_actor: "user",
+      granted_actor_id: userId,
+      role_id: roles,
     },
   })
 
@@ -116,12 +115,13 @@ export const DELETE = async (
     )
   }
 
-  await removeUserRolesWorkflow(req.scope).run({
+  await removeActorRolesWorkflow(req.scope).run({
     input: {
-      actor_id: req.auth_context.actor_id,
-      actor: req.auth_context.actor_type,
-      user_id: userId,
-      role_ids: roles,
+      granting_actor_id: req.auth_context.actor_id,
+      granting_actor: req.auth_context.actor_type,
+      granted_actor: "user",
+      granted_actor_id: userId,
+      role_id: roles,
     },
   })
 

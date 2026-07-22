@@ -8,7 +8,8 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
-import { createInviteStep, validateRolesExistStep } from "../steps"
+import { createInviteStep } from "../steps"
+import { validateRolesExistStep } from "../../rbac/steps"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more user invites. It's used by the

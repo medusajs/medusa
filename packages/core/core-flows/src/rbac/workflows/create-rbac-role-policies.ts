@@ -6,7 +6,7 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { createRbacRolePoliciesStep } from "../steps"
-import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
+import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
  * @ignore
@@ -52,7 +52,7 @@ export const createRbacRolePoliciesWorkflow = createWorkflow(
     when({ validationData }, ({ validationData }) => {
       return !!validationData?.actor_id && !!validationData?.policy_ids?.length
     }).then(() => {
-      validateUserPermissionsStep(validationData)
+      validateActorPermissionsStep(validationData)
     })
 
     const rolePolicies = createRbacRolePoliciesStep({

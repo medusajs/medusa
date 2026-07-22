@@ -1,9 +1,9 @@
 import {
-  assignUserRolesWorkflow,
+  assignActorRolesWorkflow,
   createRbacRolesWorkflow,
   createUsersWorkflow,
   getAssignableRolesWorkflow,
-  removeUserRolesWorkflow,
+  removeActorRolesWorkflow,
   updateRbacRolesWorkflow,
 } from "@medusajs/core-flows"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
@@ -983,7 +983,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        describe("assignUserRolesWorkflow / removeUserRolesWorkflow", () => {
+        describe("assignActorRolesWorkflow / removeActorRolesWorkflow", () => {
           // A role-with-policies fixture used as the target of assign/remove
           // operations. Built once per test from the shared policy IDs.
           let productReadRoleId: string
@@ -1027,12 +1027,13 @@ medusaIntegrationTestRunner({
               email: "admin@medusa.js",
             })
 
-            const { result } = await assignUserRolesWorkflow(container).run({
+            const { result } = await assignActorRolesWorkflow(container).run({
               input: {
-                actor_id: superAdminUser.id,
-                actor: "user",
-                user_id: assigneeUserId,
-                role_ids: [mixedRoleId],
+                granting_actor_id: superAdminUser.id,
+                granting_actor: "user",
+                granted_actor: "user",
+                granted_actor_id: assigneeUserId,
+                role_id: mixedRoleId,
               },
             })
 
@@ -1047,12 +1048,13 @@ medusaIntegrationTestRunner({
               email: "product-manager@medusa.js",
             })
 
-            const { result } = await assignUserRolesWorkflow(container).run({
+            const { result } = await assignActorRolesWorkflow(container).run({
               input: {
-                actor_id: productManager.id,
-                actor: "user",
-                user_id: assigneeUserId,
-                role_ids: [productReadRoleId],
+                granting_actor_id: productManager.id,
+                granting_actor: "user",
+                granted_actor: "user",
+                granted_actor_id: assigneeUserId,
+                role_id: productReadRoleId,
               },
             })
 
@@ -1067,13 +1069,14 @@ medusaIntegrationTestRunner({
               email: "product-manager@medusa.js",
             })
 
-            const error = await assignUserRolesWorkflow(container)
+            const error = await assignActorRolesWorkflow(container)
               .run({
                 input: {
-                  actor_id: productManager.id,
-                  actor: "user",
-                  user_id: assigneeUserId,
-                  role_ids: [mixedRoleId],
+                  granting_actor_id: productManager.id,
+                  granting_actor: "user",
+                  granted_actor: "user",
+                  granted_actor_id: assigneeUserId,
+                  role_id: mixedRoleId,
                 },
               })
               .catch((e) => e)
@@ -1091,13 +1094,14 @@ medusaIntegrationTestRunner({
               last_name: "User",
             })
 
-            const error = await assignUserRolesWorkflow(container)
+            const error = await assignActorRolesWorkflow(container)
               .run({
                 input: {
-                  actor_id: stray.id,
-                  actor: "user",
-                  user_id: assigneeUserId,
-                  role_ids: [productReadRoleId],
+                  granting_actor_id: stray.id,
+                  granting_actor: "user",
+                  granted_actor: "user",
+                  granted_actor_id: assigneeUserId,
+                  role_id: productReadRoleId,
                 },
               })
               .catch((e) => e)
@@ -1107,7 +1111,7 @@ medusaIntegrationTestRunner({
             )
           })
 
-          it("removeUserRolesWorkflow: super-admin can remove a role with policies", async () => {
+          it("removeActorRolesWorkflow: super-admin can remove a role with policies", async () => {
             const userModule = container.resolve(Modules.USER)
             const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
             const [superAdminUser] = await userModule.listUsers({
@@ -1119,12 +1123,13 @@ medusaIntegrationTestRunner({
               [Modules.RBAC]: { rbac_role_id: mixedRoleId },
             })
 
-            const { result } = await removeUserRolesWorkflow(container).run({
+            const { result } = await removeActorRolesWorkflow(container).run({
               input: {
-                actor_id: superAdminUser.id,
-                actor: "user",
-                user_id: assigneeUserId,
-                role_ids: [mixedRoleId],
+                granting_actor_id: superAdminUser.id,
+                granting_actor: "user",
+                granted_actor: "user",
+                granted_actor_id: assigneeUserId,
+                role_id: mixedRoleId,
               },
             })
 

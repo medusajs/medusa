@@ -8,7 +8,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
-import { validateRolesExistStep } from "../../invite/steps/validate-roles-exist"
+import { validateRolesExistStep } from "../../rbac/steps/validate-roles-exist"
 import { createUsersStep } from "../steps"
 
 export const createUsersWorkflowId = "create-users-workflow"
