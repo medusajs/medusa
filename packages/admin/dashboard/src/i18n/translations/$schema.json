@@ -4067,6 +4067,64 @@
           "required": ["header", "hint", "successToast"],
           "additionalProperties": false
         },
+        "export": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "success": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "format": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "json": {
+                  "type": "string"
+                },
+                "csv": {
+                  "type": "string"
+                }
+              },
+              "required": ["label", "description", "json", "csv"],
+              "additionalProperties": false
+            },
+            "filters": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "description", "success", "format", "filters"],
+          "additionalProperties": false
+        },
         "groups": {
           "type": "object",
           "properties": {
@@ -4284,6 +4342,7 @@
         "domain",
         "list",
         "create",
+        "export",
         "groups",
         "edit",
         "delete",
