@@ -3,5 +3,5 @@
 "@medusajs/medusa": patch
 ---
 
-fix(core-flows): refresh cart tax lines on any tax-relevant shipping address change
+fix(core-flows,medusa): refresh cart tax lines on any tax-relevant shipping address change
 
