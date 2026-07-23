@@ -242,7 +242,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       entity: "variant",
       fields: ["id"],
       filters: {
-        price_set: { calculated_price: { $gt: 100 } },
+        price_set: { calculated_price: { calculated_amount: { $gt: 100 } } },
       },
     })
 
@@ -250,7 +250,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
     expect(plan.residualCrossModuleFilters).toEqual([
       {
         path: "price_set",
-        filters: { calculated_price: { $gt: 100 } },
+        filters: { calculated_price: { calculated_amount: { $gt: 100 } } },
       },
     ])
 
@@ -258,7 +258,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
     expect(getArg(plan, "filters")?.value ?? {}).toEqual({})
 
     // The relation is loaded for evaluation through the regular expand
-    // machinery, with the computed field fetched as a child value node.
+    // machinery, with the computed value object fetched as a child node.
     const priceSetExpand = plan.expands.get("_root.price_set_link.price_set")
     expect(priceSetExpand).toBeDefined()
     expect(priceSetExpand!.expands?.calculated_price?.fields).toEqual(["*"])
@@ -267,6 +267,89 @@ describe("cross-module joins (stage 1 pushdown)", () => {
     expect(plan.residualHiddenProperties).toEqual([
       { location: [], property: "price_set" },
     ])
+  })
+
+  it("unwraps fieldAlias-nested filters and pushes them down", () => {
+    // toRemoteQuery wraps filters for fieldAliases that reach into a nested
+    // relation of the linked entity under the alias name itself: the
+    // `variants.prices` expand carries `filters: { prices: { ... } }`.
+    // Mirrors filtering products by price list.
+    const { plan } = compile({
+      entity: "product",
+      fields: ["id"],
+      filters: {
+        variants: {
+          prices: { price_list_id: ["plist_1"] },
+        },
+      },
+    })
+
+    expect(plan.residualCrossModuleFilters).toEqual([])
+    expect(plan.crossModuleJoins).toEqual([
+      {
+        link: {
+          table: "product_variant",
+          sourceKey: "product_id",
+          targetKey: "id",
+        },
+        target: {
+          table: "product_variant",
+          primaryKey: "id",
+        },
+      },
+      {
+        parent: "product_variant",
+        link: {
+          table: "product_variant_price_set",
+          sourceKey: "variant_id",
+          targetKey: "price_set_id",
+        },
+        target: {
+          table: "price_set",
+          primaryKey: "id",
+        },
+      },
+      {
+        parent: "price_set",
+        link: {
+          table: "price",
+          sourceKey: "price_set_id",
+          targetKey: "id",
+        },
+        target: {
+          table: "price",
+          primaryKey: "id",
+          filters: { price_list_id: ["plist_1"] },
+        },
+      },
+    ])
+
+    // The filter-only expands are pruned entirely.
+    expect(Array.from(plan.expands.keys())).toEqual(["_root"])
+  })
+
+  it("loads scalar residual conditions as select fields even when not crossjoinable", () => {
+    // region_id is not in PriceSet's crossjoinable metadata (mirrors
+    // belongsTo FK columns missing from it): scalar conditions must still be
+    // selected as plain columns, not fetched as child value nodes.
+    const { plan } = compile({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        price_set: {
+          region_id: "reg_1",
+          calculated_price: { $gt: 100 },
+        },
+      },
+    })
+
+    expect(plan.residualCrossModuleFilters).toHaveLength(1)
+
+    const priceSetExpand = plan.expands.get("_root.price_set_link.price_set")!
+    expect(priceSetExpand.fields).toEqual(
+      expect.arrayContaining(["region_id", "calculated_price"])
+    )
+    expect(priceSetExpand.expands).toBeUndefined()
   })
 
   it("strips residual filters from the expand fetch they were assigned to", () => {
@@ -904,11 +987,12 @@ describe("cross-module filtering (stage 2 in-memory residuals)", () => {
     { id: "blink_2", variant_id: "v2", price_set_id: "bps2" },
   ]
   // calculated_price mirrors the CalculatedPriceSet object shape computed by
-  // the pricing module.
+  // the pricing module; region_id mirrors a column missing from the
+  // crossjoinable metadata (like belongsTo FK columns).
   const priceSets = [
-    { id: "ps1", currency_code: "usd", calculated_price: { calculated_amount: 50 } },
-    { id: "ps2", currency_code: "usd", calculated_price: { calculated_amount: 150 } },
-    { id: "ps3", currency_code: "eur", calculated_price: { calculated_amount: 250 } },
+    { id: "ps1", currency_code: "usd", region_id: "reg_1", calculated_price: { calculated_amount: 50 } },
+    { id: "ps2", currency_code: "usd", region_id: "reg_2", calculated_price: { calculated_amount: 150 } },
+    { id: "ps3", currency_code: "eur", region_id: "reg_2", calculated_price: { calculated_amount: 250 } },
     { id: "bps1", currency_code: "usd", calculated_price: { calculated_amount: 10 } },
     { id: "bps2", currency_code: "usd", calculated_price: { calculated_amount: 20 } },
   ]
@@ -997,6 +1081,18 @@ describe("cross-module filtering (stage 2 in-memory residuals)", () => {
     expect(JSON.parse(JSON.stringify(result[0].price_set))).toEqual({
       id: "ps2",
     })
+  })
+
+  it("filters by residual scalar conditions on non-crossjoinable columns", async () => {
+    const { result } = await runQuery({
+      entity: "variant",
+      fields: ["id"],
+      filters: {
+        price_set: { region_id: "reg_2" },
+      },
+    })
+
+    expect(result.map((row) => row.id)).toEqual(["v2", "v3"])
   })
 
   it("combines stage-1 pushdown with in-memory residuals", async () => {
