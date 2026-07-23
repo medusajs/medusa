@@ -81,6 +81,95 @@ The `getActiveViewConfiguration` method of the module's service resolves the act
 
 ---
 
+## Manage View Configurations
+
+The Settings Module's service provides methods to create, retrieve, update, and delete view configurations programmatically. Resolve the service from the Medusa container using `Modules.SETTINGS`.
+
+### Create a View Configuration
+
+Use the `createViewConfigurations` method to create a new view configuration:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.createViewConfigurations({
+    entity: "product",
+    name: "My Products View",
+    configuration: {
+      visible_columns: ["title", "status"],
+      column_order: ["title", "status"],
+    },
+  })
+```
+
+### Retrieve a View Configuration
+
+Use the `retrieveViewConfiguration` method to retrieve a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.retrieveViewConfiguration("viewcfg_123")
+```
+
+### List View Configurations
+
+Use the `listViewConfigurations` method to list view configurations with optional filters:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations({
+    entity: "product",
+  })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountViewConfigurations`:
+
+```ts
+const [viewConfigurations, count] =
+  await settingsModuleService.listAndCountViewConfigurations(
+    { entity: "product" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update a View Configuration
+
+Use the `updateViewConfigurations` method to update a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.updateViewConfigurations("viewcfg_123", {
+    name: "Updated View",
+  })
+```
+
+### Delete a View Configuration
+
+Use the `deleteViewConfigurations` method to delete a view configuration by its ID:
+
+```ts
+await settingsModuleService.deleteViewConfigurations("viewcfg_123")
+```
+
+### Manage the Active View
+
+Use `getActiveViewConfiguration` to retrieve a user's active view for an entity, and `setActiveViewConfiguration` to change it:
+
+```ts
+const activeView =
+  await settingsModuleService.getActiveViewConfiguration(
+    "user_123",
+    "product"
+  )
+
+await settingsModuleService.setActiveViewConfiguration(
+  "user_123",
+  "product",
+  "viewcfg_123"
+)
+```
+
+---
+
 ## Configure View Configurations
 
 You can customize how columns are generated for an entity, add computed columns, and change how a column's value renders. You can also show a configurable data table in your admin customizations.

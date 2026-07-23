@@ -11552,6 +11552,82 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "loaded": true,
           "isPathHref": true,
           "type": "category",
+          "title": "Server Guides",
+          "autogenerate_tags": "server+settings",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to use the Settings Module in your customizations on the Medusa application server.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure View Configurations",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Admin Guides",
+          "autogenerate_tags": "admin+settings,-jsSdk",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize administrative features of the Settings Module.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure View Configurations",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Admin User Guides",
+          "autogenerate_tags": "userGuide+settings",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize and manage Settings features in the Medusa Admin dashboard.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure Layouts",
+              "path": "https://docs.medusajs.com/user-guide/tips/layout-configurations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure Table Views",
+              "path": "https://docs.medusajs.com/user-guide/tips/table-views",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Property Labels",
+              "path": "https://docs.medusajs.com/user-guide/settings/property-labels",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
           "title": "References",
           "description": "Find references for tools and resources related to the Settings Module, such as data models, methods, and more. These are useful for your customizations.",
           "children": [
@@ -11571,7 +11647,28 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "path": "/commerce-modules/settings/js-sdk",
               "title": "JS SDK",
               "hideChildren": true,
-              "children": []
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "sub-category",
+                  "title": "Admin",
+                  "autogenerate_tags": "jsSdk+admin+settings",
+                  "description": "The following methods or properties are used to send requests to Admin API Routes related to the Settings Module.",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "Configure View Configurations",
+                      "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
             },
             {
               "loaded": true,
