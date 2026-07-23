@@ -42,14 +42,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
-              "title": "Configure View Configurations",
-              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
               "title": "Create Actor Type",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type",
               "children": []
@@ -314,14 +306,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                   ]
                 }
               ]
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "ref",
-              "title": "Configure View Configurations",
-              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
-              "children": []
             },
             {
               "loaded": true,
