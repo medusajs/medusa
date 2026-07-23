@@ -25,6 +25,7 @@ export function buildQuery<const T = any>(
       Number.isSafeInteger(config.skip) && config.skip != null
         ? config.skip
         : undefined,
+    __internal: config.__internal,
   }
 
   if (config.order) {

@@ -4,7 +4,10 @@ import {
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ReservationItemWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
@@ -13,7 +16,7 @@ import {
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../../common"
 import { deleteReservationsByLineItemsStep } from "../../../reservation/steps/delete-reservations-by-line-items"
 import { cancelOrderClaimStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
@@ -141,7 +144,7 @@ export const cancelOrderClaimWorkflow = createWorkflow(
       return orderClaim.additional_items?.map((i) => i.item_id)
     })
 
-    parallelize(
+    const [, deletedReservationIds] = parallelize(
       cancelOrderClaimStep({
         claim_id: orderClaim.id,
         order_id: orderClaim.order_id,
@@ -149,6 +152,21 @@ export const cancelOrderClaimWorkflow = createWorkflow(
       }),
       deleteReservationsByLineItemsStep(lineItemIds)
     )
+
+    const reservationDeletedEvents = transform(
+      { deletedReservationIds, orderClaim },
+      ({ deletedReservationIds, orderClaim }) => {
+        return (deletedReservationIds ?? []).map((id) => ({
+          id,
+          order_id: orderClaim.order_id,
+        }))
+      }
+    )
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.DELETED,
+      data: reservationDeletedEvents,
+    })
 
     when({ orderClaim }, ({ orderClaim }) => {
       return !!orderClaim.return_id

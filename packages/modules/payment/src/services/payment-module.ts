@@ -58,6 +58,7 @@ import {
   PaymentSessionStatus,
   promiseAll,
 } from "@medusajs/framework/utils"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   AccountHolder,
   Capture,
@@ -756,7 +757,17 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize(payment)
+    // Re-fetch the payment so the freshly created capture is reflected in the
+    // returned payload. `refresh` is required because, under the select-in load
+    // strategy, the capture created above is not automatically re-populated on
+    // the managed payment entity within the same context.
+    const capturedPayment = await this.paymentService_.retrieve(
+      payment.id,
+      { relations: ["captures"], options: { refresh: true } },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(capturedPayment)
   }
 
   @InjectTransactionManager()
@@ -779,12 +790,46 @@ export default class PaymentModuleService
       return { isFullyCaptured: true }
     }
 
-    // If no custom amount is passed, we assume the full amount needs to be captured
-    if (!data.amount) {
+    // If no custom amount is passed, we assume the full amount needs to be
+    // captured. An explicit amount, however, must be strictly positive.
+    if (data.amount == null) {
       data.amount = payment.amount as number
+    } else if (MathBN.lte(data.amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Capture amount must be greater than 0.`
+      )
     }
 
-    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+    // Serialize concurrent captures on the same payment: lock the payment row
+    // for the remainder of this transaction so the read-check-write below runs
+    // as a critical section, then re-read the captures under the lock so the
+    // guard sees the committed total. Without this, two concurrent captures both
+    // read a stale total and each pass the guard, over-capturing the payment.
+    // The provider is called afterwards from `capturePaymentFromProvider_` in a
+    // separate context, so the lock is never held across the provider call.
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "capturePayment_ must run inside a transaction to serialize concurrent captures."
+      )
+    }
+    // Bound the wait for the row lock so a contended capture fails fast instead
+    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    await knex("payment").where("id", payment.id).forUpdate().select("id")
+
+    const lockedPayment = await this.paymentService_.retrieve(
+      data.payment_id,
+      { select: ["id"], relations: ["captures.raw_amount"] },
+      sharedContext
+    )
+    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
       return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 
@@ -920,15 +965,53 @@ export default class PaymentModuleService
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof Refund>> {
-    if (!data.amount) {
+    // If no amount is passed, we assume the full payment amount needs to be
+    // refunded. An explicit amount, however, must be strictly positive.
+    if (data.amount == null) {
       data.amount = payment.amount as BigNumberInput
+    } else if (MathBN.lte(data.amount, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Refund amount must be greater than 0.`
+      )
     }
 
-    const capturedAmount = payment.captures.reduce((captureAmount, next) => {
+    // Serialize concurrent refunds on the same payment: lock the payment row for
+    // the remainder of this transaction so the read-check-write below runs as a
+    // critical section, then re-read captures and refunds under the lock so the
+    // guard sees committed totals. Without this, two concurrent refunds both read
+    // a stale refunded total and each pass the guard, over-refunding the payment.
+    // The provider is called afterwards from `refundPaymentFromProvider_` in a
+    // separate context, so the lock is never held across the provider call.
+    // The transaction context is required: a FOR UPDATE issued on a pooled
+    // (autocommit) connection would release the lock immediately and silently
+    // stop serializing, so fail explicitly instead of falling back.
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "refundPayment_ must run inside a transaction to serialize concurrent refunds."
+      )
+    }
+    // Bound the wait for the row lock so a contended refund fails fast instead
+    // of hanging: `SET LOCAL` scopes the timeout to this transaction.
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    await knex("payment").where("id", payment.id).forUpdate().select("id")
+
+    const lockedPayment = await this.paymentService_.retrieve(
+      data.payment_id,
+      {
+        select: ["id"],
+        relations: ["captures.raw_amount", "refunds.raw_amount"],
+      },
+      sharedContext
+    )
+    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
       const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
-    const refundedAmount = payment.refunds.reduce((refundedAmount, next) => {
+    const refundedAmount = lockedPayment.refunds.reduce((refundedAmount, next) => {
       return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
     }, MathBN.convert(0))
 
@@ -1030,14 +1113,15 @@ export default class PaymentModuleService
       paymentCollectionId,
       {
         select: ["amount", "raw_amount", "status", "currency_code"],
-        relations: [
-          "payment_sessions.amount",
-          "payment_sessions.raw_amount",
-          "payments.captures.amount",
-          "payments.captures.raw_amount",
-          "payments.refunds.amount",
-          "payments.refunds.raw_amount",
-        ],
+        // Use relation paths (not scalar field paths such as
+        // "payment_sessions.amount") so the select-in load strategy populates
+        // the nested collections. `refresh` forces the collections to be
+        // re-hydrated from the database: this runs inside the write transaction
+        // right after sessions/captures/refunds were created, and select-in
+        // does not otherwise re-populate collections that are already loaded on
+        // the managed entities in the shared context.
+        relations: ["payment_sessions", "payments.captures", "payments.refunds"],
+        options: { refresh: true },
       },
       sharedContext
     )

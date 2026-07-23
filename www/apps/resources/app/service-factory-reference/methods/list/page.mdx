@@ -18,7 +18,15 @@ The method's name is `listDataModel`, where `DataModel` is the plural pascal-cas
 const posts = await postModuleService.listPosts()
 ```
 
-If no parameters are passed, the method returns an array of the first `15` records.
+If no parameters are passed, the method returns all matching records.
+
+<Note title="Warning" type="warning">
+
+When you call this method directly from a workflow step or a custom route handler without passing a `take` value, it returns all records from the database without any limit. Pass the `take` parameter to avoid unbounded fetches on large tables.
+
+The default limit of `50` records is enforced by the HTTP query-config middleware layer, not by the module service method itself. It only applies when the method is called through Medusa's built-in HTTP routes.
+
+</Note>
 
 ---
 
@@ -42,7 +50,7 @@ Refer to the [Filtering](../../tips/filtering/page.mdx) reference for more infor
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ---
 
@@ -66,7 +74,7 @@ To retrieve records with their relations, pass an object with a `relations` prop
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ---
 
@@ -86,7 +94,7 @@ By default, retrieved records have all their properties. To select specific prop
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ---
 
@@ -103,7 +111,7 @@ const posts = await postModuleService.listPosts({}, {
 
 To paginate the returned records, the second object parameter accepts the following properties:
 
-- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `take`: a number indicating how many records to retrieve. When not specified, all matching records are returned.
 - `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
 
 ### Returns
@@ -131,4 +139,4 @@ To sort records by one or more properties, pass an `order` property in the secon
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.

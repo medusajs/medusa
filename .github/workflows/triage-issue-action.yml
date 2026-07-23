@@ -56,15 +56,46 @@ jobs:
           chmod a-w scripts
 
       - name: Triage analysis
-        uses: anthropics/claude-code-action@v1
+        # Pinned to the commit the v1 tag currently resolves to. A floating
+        # `@v1` tag let an upstream release silently roll into CI (a change
+        # that enabled the bwrap Bash sandbox broke every allowlisted script
+        # call), so we pin to a SHA and bump deliberately.
+        uses: anthropics/claude-code-action@b76a0776ae74036e77cd11018083743453d7ad35 # v1
         env:
           # Read-only default token. The agent has no App token in this job.
           GH_TOKEN: ${{ github.token }}
           GITHUB_EVENT_NUMBER: ${{ inputs.issue_number }}
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          # Work around Claude Code's Bash sandbox (bubblewrap) failing on the
+          # runner: it aborts every Bash command during sandbox setup with
+          # "bwrap: Can't create file at /home/.mcp.json" / "Can't mkdir
+          # /home/.claude". The sandbox builds an isolated home under /home
+          # inside its own bwrap namespace and cannot create files in it
+          # (upstream bug anthropics/claude-code#17727).
+          #
+          # `sandbox.enabled: false` alone does NOT help: this action runs
+          # Claude via the Agent SDK in headless bypass-permissions mode, which
+          # force-enables the sandbox regardless of that flag (confirmed: the
+          # action loads user settings via settingSources but the sandbox still
+          # ran). The reliable lever is `excludedCommands`, which runs matching
+          # commands OUTSIDE the sandbox so bwrap never wraps them. Every tool
+          # this job can run is `bash scripts/*.sh` (see --allowedTools below),
+          # so excluding `bash *` covers them all.
+          #
+          # Isolation for this job is still enforced by: the tight
+          # --allowedTools allowlist (only specific `bash scripts/*.sh` + Read +
+          # Write, no arbitrary Bash), the read-only default token with NO App
+          # token in this job, the `chmod -R a-w scripts` step above, and
+          # CLAUDE_CODE_SUBPROCESS_ENV_SCRUB (auto-enabled by the action because
+          # allowed_non_write_users is set), which strips the Anthropic API
+          # token from every subprocess env.
+          settings: |
+            { "sandbox": { "enabled": false, "excludedCommands": ["bash *"] } }
           github_token: ${{ github.token }}
-          model: claude-sonnet-4-6
+          # NOTE: this action version has no `model` input (it is silently
+          # ignored with an "Unexpected input(s) 'model'" warning); the model
+          # must be passed via `--model` in claude_args below.
           # Safe in this job because the job genuinely has no write power.
           allowed_non_write_users: "*"
           allowed_bots: "*"
@@ -106,7 +137,7 @@ jobs:
                 {
                   "labels_to_add": [<zero or more of: "type: bug", "requires-more", "requires-team", "help-wanted", "good first issue", "feedback">],
                   "comment_template": "ack-bug" | "needs-repro" | "needs-info" | "ack-feature" | "close-spam" | "close-invalid" | "close-duplicate" | null,
-                  "comment_params": { "summary": "<short string, max 280 chars>" }
+                  "comment_params": { "summary": "<short string, max 1000 chars>" }
                 }
 
                - Only labels from the allowlist above are allowed.
@@ -122,7 +153,8 @@ jobs:
             Do not print the JSON to stdout. Only write the file.
 
           claude_args: >-
-            --max-turns 15
+            --model claude-sonnet-4-6
+            --max-turns 50
             --allowedTools
             "Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_comments.sh:*),
@@ -270,6 +302,9 @@ jobs:
           # chars, cap length); backtick stripping and HTML-escaping are
           # done once inside add_comment.sh (its sanitize function) to
           # avoid double-escaping benign text such as "A & B".
+          # When the summary exceeds the cap we trim back to the last word
+          # boundary and append an ellipsis, so an over-length summary
+          # never gets sliced mid-word into a broken-looking comment.
           # NOTE: apostrophes inside this jq block would close the outer
           # bash single-quote, so the wording above avoids them.
           jq '
@@ -279,7 +314,10 @@ jobs:
                 | tostring
                 | gsub("\r"; "")
                 | gsub("[\u0000-\u001f]"; " ")
-                | .[0:280]
+                | if (length > 1000)
+                  then (.[0:1000] | sub("\\s+\\S*$"; "")) + "…"
+                  else .
+                  end
               )
             }
           ' triage-decision.json > comment_params.json

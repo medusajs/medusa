@@ -1,0 +1,1 @@
+{"slug":"/references/order/types/order.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"orderReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

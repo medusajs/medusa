@@ -16,9 +16,7 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   const [open, setOpen] = useState(false)
   const [stackedModalOpen, onStackedModalOpen] = useState(false)
 
-  const to: string | Partial<Path> | number =
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    typeof prev === "number" ? prev : useStateAwareTo(prev)
+  const to: string | Partial<Path> | number = useStateAwareTo(prev)
 
   /**
    * Open the modal when the component mounts. This

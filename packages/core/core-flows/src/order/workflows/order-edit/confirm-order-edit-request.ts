@@ -10,12 +10,14 @@ import {
   MathBN,
   OrderChangeStatus,
   OrderEditWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
   transform,
   WorkflowResponse,
+  parallelize,
 } from "@medusajs/framework/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import {
@@ -271,8 +273,39 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       prepareConfirmInventoryInput
     )
 
-    deleteReservationsByLineItemsStep(toRemoveReservationLineItemIds)
-    reserveInventoryStep(formatedInventoryItems)
+    const deletedReservationIds = deleteReservationsByLineItemsStep(
+      toRemoveReservationLineItemIds
+    )
+    const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+    const { reservationDeletedEvents, reservationCreatedEvents } = transform(
+      { deletedReservationIds, createdReservations, order },
+      ({ deletedReservationIds, createdReservations, order }) => {
+        return {
+          reservationDeletedEvents: (deletedReservationIds ?? []).map((id) => ({
+            id,
+            order_id: order.id,
+          })),
+          reservationCreatedEvents: (createdReservations ?? []).map(
+            (reservation) => ({
+              id: reservation.id,
+              order_id: order.id,
+            })
+          ),
+        }
+      }
+    )
+
+    parallelize(
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.DELETED,
+        data: reservationDeletedEvents,
+      }).config({ name: "emit-reservation-item-deleted" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
+    )
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
       input: {

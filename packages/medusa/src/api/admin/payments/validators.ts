@@ -49,7 +49,7 @@ export type AdminCreatePaymentCaptureType = z.infer<
 >
 export const AdminCreatePaymentCapture = z
   .object({
-    amount: z.number().optional(),
+    amount: z.number().positive().optional(),
   })
   .strict()
 
@@ -58,7 +58,7 @@ export type AdminCreatePaymentRefundType = z.infer<
 >
 export const AdminCreatePaymentRefund = z
   .object({
-    amount: z.number().optional(),
+    amount: z.number().positive().optional(),
     refund_reason_id: z.string().optional(),
     note: z.string().optional(),
   })

@@ -1,5 +1,31 @@
 # @medusajs/dashboard
 
+## 2.17.2
+
+### Patch Changes
+
+- [#14426](https://github.com/medusajs/medusa/pull/14426) [`697fde7d4610a44b01a7c21711edacb46e7de856`](https://github.com/medusajs/medusa/commit/697fde7d4610a44b01a7c21711edacb46e7de856) Thanks [@bqst](https://github.com/bqst)! - feat(dashboard): add dynamic document titles for browser tabs
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- [#15258](https://github.com/medusajs/medusa/pull/15258) [`1eb56d1111c10cbd33da578e2c45da8b21cb93d7`](https://github.com/medusajs/medusa/commit/1eb56d1111c10cbd33da578e2c45da8b21cb93d7) Thanks [@laaibaQasim](https://github.com/laaibaQasim)! - feat(dashboard): Add quantity-based pricing support for price lists
+
+- [#15721](https://github.com/medusajs/medusa/pull/15721) [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9) Thanks [@leobenzol](https://github.com/leobenzol)! - feat: drag&drop LayoutComposer, settings db persistence
+
+- [#15862](https://github.com/medusajs/medusa/pull/15862) [`9e47b94b5fb9777b06f099d270bcb95df99c3214`](https://github.com/medusajs/medusa/commit/9e47b94b5fb9777b06f099d270bcb95df99c3214) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(admin-shared,dashboard): use layout composer in Topbar, Sidebar and settings Sidebar
+
+- [#15881](https://github.com/medusajs/medusa/pull/15881) [`92559c67035a98f5edb5159ae9da678e19edf709`](https://github.com/medusajs/medusa/commit/92559c67035a98f5edb5159ae9da678e19edf709) Thanks [@weknowyourgame](https://github.com/weknowyourgame)! - fix(dashboard): make product option and product option value translatable
+
+- [#15861](https://github.com/medusajs/medusa/pull/15861) [`f79afaaecdd5aaa84b31ddcdea14a43692e33eff`](https://github.com/medusajs/medusa/commit/f79afaaecdd5aaa84b31ddcdea14a43692e33eff) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(admin-shared,dashboard): apply new LayoutComposer approach across the admin dashboard
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c), [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51), [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9), [`9e47b94b5fb9777b06f099d270bcb95df99c3214`](https://github.com/medusajs/medusa/commit/9e47b94b5fb9777b06f099d270bcb95df99c3214), [`f79afaaecdd5aaa84b31ddcdea14a43692e33eff`](https://github.com/medusajs/medusa/commit/f79afaaecdd5aaa84b31ddcdea14a43692e33eff)]:
+  - @medusajs/admin-shared@2.17.2
+  - @medusajs/icons@2.17.2
+  - @medusajs/js-sdk@2.17.2
+  - @medusajs/ui@4.1.19
+
 ## 2.17.1
 
 ### Patch Changes

@@ -282,6 +282,58 @@ describe("mikroOrmSerializer", () => {
     )
   })
 
+  it("should preserve parent keys when nested serialization reuses the key buffer", async () => {
+    const parent = new Entity1WithUnDecoratedProp({
+      id: "parent_1",
+      deleted_at: null,
+    })
+    const child = new Entity2WithUnDecoratedProp({
+      id: "child_1",
+      deleted_at: null,
+      entity1: parent,
+    })
+
+    parent.entity2.add(child)
+
+    const parentProps: Record<string, string> = {}
+    // Use more than the optimized serializer's pre-allocated key buffer size
+    // to cover the path where the key list used to be returned by reference.
+    for (let i = 0; i < 110; i++) {
+      const key = `parent_runtime_${i}`
+      const value = `parent_value_${i}`
+      parentProps[key] = value
+      ;(parent as any)[key] = value
+    }
+
+    // Make the nested frame write enough keys to overwrite parent keys that
+    // have not been processed yet if the parent key list is shared.
+    for (let i = 0; i < 10; i++) {
+      ;(child as any)[`child_runtime_${i}`] = `child_value_${i}`
+    }
+
+    const serialized = mikroOrmSerializer<any>(parent)
+
+    expect(serialized).toEqual(
+      expect.objectContaining({
+        id: "parent_1",
+        deleted_at: null,
+      })
+    )
+    expect(serialized.entity2).toHaveLength(1)
+    expect(serialized.entity2[0]).toEqual(
+      expect.objectContaining({
+        id: "child_1",
+        deleted_at: null,
+      })
+    )
+
+    const missingOrChangedParentKeys = Object.entries(parentProps)
+      .filter(([key, value]) => serialized[key] !== value)
+      .map(([key]) => key)
+
+    expect(missingOrChangedParentKeys).toEqual([])
+  })
+
   it.skip("should benchmark serializers with autocannon load testing", async () => {
     const logs: string[] = []
     logs.push("🚀 Load Testing Serializers with Autocannon")

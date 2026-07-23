@@ -104,10 +104,6 @@ class RequestScopedSerializationContext {
   }
 
   getKeys(): string[] {
-    // Avoid slice allocation if buffer is exactly full
-    if (this.keyBufferIndex === this.keyCollectionBuffer.length) {
-      return this.keyCollectionBuffer
-    }
     return this.keyCollectionBuffer.slice(0, this.keyBufferIndex)
   }
 }

@@ -1,0 +1,1 @@
+{"slug":"/references/types/interfaces/types.ListPaymentMethodsOutput","title":"ListPaymentMethodsOutput","frontmatter":{},"toc":[],"blocks":[{"kind":"markdown","html":"The result of listing payment methods for an account holder in the third-party payment provider."}]}

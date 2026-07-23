@@ -27,6 +27,11 @@ const customPendingAuthPaymentProvider = {
   id: "pending-auth",
 }
 
+const customTaxDataProvider = {
+  resolve: require("./dist/utils/providers/tax-data-provider").default,
+  id: "data-provider",
+}
+
 // A second instance of the built-in system payment provider, registered under a
 // distinct id (`pp_system_default_2`) so tests can assert a non-default provider
 // is honored. The always-present `pp_system_default` is unaffected.
@@ -43,6 +48,12 @@ const customPaymentProviderAccountHolder = {
 }
 
 const modules = {
+  [Modules.TAX]: {
+    resolve: "@medusajs/tax",
+    options: {
+      providers: [customTaxDataProvider],
+    },
+  },
   [Modules.PAYMENT]: {
     resolve: "@medusajs/payment",
     /** @type {import('@medusajs/payment').PaymentModuleOptions} */
