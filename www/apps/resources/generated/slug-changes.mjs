@@ -2750,6 +2750,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.throwUnlessStatusIsNotPaid/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestValidationStep",
+    "newSlug": "/references/medusa-workflows/transferOrderToGuestValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestValidationStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflow",
+    "newSlug": "/references/medusa-workflows/transferOrderToGuestWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.transferOrderToGuestWorkflow/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.updateClaimAddItemValidationStep",
     "newSlug": "/references/medusa-workflows/updateClaimAddItemValidationStep",
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.updateClaimAddItemValidationStep/page.json"
@@ -5495,6 +5505,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.promotion/page.json"
   },
   {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.propertyLabel",
+    "newSlug": "/references/js-sdk/admin/propertyLabel",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.propertyLabel/page.json"
+  },
+  {
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.rbacPolicy",
     "newSlug": "/references/js-sdk/admin/rbacPolicy",
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.rbacPolicy/page.json"
@@ -5778,6 +5793,11 @@ export const slugChanges = [
     "origSlug": "/references/module_events/module_events.Fulfillment",
     "newSlug": "/references/fulfillment/events",
     "filePath": "/www/apps/resources/references/module_events/module_events.Fulfillment/page.json"
+  },
+  {
+    "origSlug": "/references/module_events/module_events.Inventory",
+    "newSlug": "/references/inventory/events",
+    "filePath": "/www/apps/resources/references/module_events/module_events.Inventory/page.json"
   },
   {
     "origSlug": "/references/module_events/module_events.Order",
