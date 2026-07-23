@@ -248,4 +248,40 @@ describe("S3FileService URL encoding", () => {
     expect(res4.key).not.toContain("..")
     expect(res4.key).toMatch(/^public\/secret\/logo-[^/]+\.png$/)
   })
+
+  it("rejects filenames that become empty or invalid after sanitization", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const invalidFilenames = ["..", "../..", ".", "./.", "/", "vendor/../.."]
+
+    for (const filename of invalidFilenames) {
+      await expect(
+        service.upload({
+          filename,
+          mimeType: "image/png",
+          content: Buffer.from("test").toString("base64"),
+          access: "public",
+        })
+      ).rejects.toThrow("Invalid filename")
+
+      await expect(
+        service.getUploadStream({
+          filename,
+          mimeType: "image/png",
+          access: "public",
+        })
+      ).rejects.toThrow("Invalid filename")
+
+      await expect(
+        service.getPresignedUploadUrl({
+          filename,
+          mimeType: "image/png",
+          access: "public",
+        })
+      ).rejects.toThrow("Invalid filename")
+    }
+  })
 })

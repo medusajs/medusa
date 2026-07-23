@@ -188,6 +188,12 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const sanitizedPath = sanitizeFilePath(file.filename)
+    if (!sanitizedPath) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid filename: ${file.filename}`
+      )
+    }
     const parsedFilename = path.posix.parse(sanitizedPath)
 
     // TODO: Allow passing a full path for storage per request, not as a global config.
@@ -247,6 +253,12 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const sanitizedPath = sanitizeFilePath(fileData.filename)
+    if (!sanitizedPath) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid filename: ${fileData.filename}`
+      )
+    }
     const parsedFilename = path.posix.parse(sanitizedPath)
     const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
@@ -344,6 +356,12 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const sanitizedFilename = sanitizeFilePath(fileData.filename)
+    if (!sanitizedFilename) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid filename: ${fileData.filename}`
+      )
+    }
     const fileKey = `${this.config_.prefix}${sanitizedFilename}`
 
     const acl = fileData.access
