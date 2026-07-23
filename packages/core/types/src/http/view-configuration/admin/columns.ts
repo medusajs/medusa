@@ -40,6 +40,7 @@ export interface AdminColumn {
     | "currency"
     | "enum"
     | "object"
+    | (string & {})
   /**
    * The semantic type provides additional context about the data.
    */
@@ -55,8 +56,14 @@ export interface AdminColumn {
     type: string
     required_fields: string[]
     optional_fields: string[]
-    metadata: Record<string, any>
   }
+  /**
+   * Arbitrary per-column configuration consumed by cell renderers (e.g. the
+   * field path a renderer reads, or a value->variant map). Populated from the
+   * settings entity override's `fieldMetadata` (any column) or a computed
+   * column definition's `metadata`.
+   */
+  metadata?: Record<string, any>
   /**
    * Information about relationship columns.
    */
