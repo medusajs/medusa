@@ -290,9 +290,9 @@ const ComboboxImpl = <T extends Value = string>(
                 <Badge
                   key={value}
                   size="2xsmall"
-                  className="transition-fg gap-x-0.5 pl-1.5 pr-1"
+                  className="transition-fg gap-x-0.5 pl-1.5 pr-1 max-w-full min-w-0 overflow-hidden"
                 >
-                  {option.label}
+                  <span className="truncate min-w-0">{option.label}</span>
                   <button
                     tabIndex={-1}
                     type="button"
@@ -300,7 +300,7 @@ const ComboboxImpl = <T extends Value = string>(
                       e.preventDefault()
                       handleRemoveValue(value)
                     }}
-                    className="text-ui-fg-subtle transition-fg outline-none"
+                    className="text-ui-fg-subtle transition-fg outline-none shrink-0"
                   >
                     <XMarkMini />
                   </button>
