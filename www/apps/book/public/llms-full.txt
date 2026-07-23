@@ -39220,12 +39220,27 @@ A draft order's `locale` can be set and updated before converting it to a regula
 
 When the draft order is converted to a regular order, it retains its `locale` property. The details of the order items will remain in the specified locale.
 
+### Tax Lines and Address Changes
+
+This behavior is available since Medusa [v2.18.1](https://github.com/medusajs/medusa/releases/tag/v2.18.1).
+
+When you update a draft order's shipping or billing address using the `updateDraftOrderWorkflow`, Medusa automatically recomputes the draft order's tax lines. This ensures the tax lines reflect the correct tax jurisdiction after the address change.
+
+Whether Medusa recomputes the tax lines depends on the region's `automatic_taxes` setting:
+
+- If `automatic_taxes` is enabled, Medusa recomputes the tax lines from the tax provider.
+- If `automatic_taxes` is disabled, the tax lines are not recomputed.
+
+This behavior is different from regular orders: updating a regular order's address using the `updateOrderWorkflow` does not trigger a tax recomputation.
+
 ### Converting Draft Orders to Regular Orders
 
 Once a draft order is finalized and ready for processing, it can be converted to a regular order. This involves:
 
 - Changing its `status` property to `pending`.
 - Changing its `is_draft_order` property to `false`.
+
+When converting a draft order using the `convertDraftOrderWorkflow`, Medusa recomputes the draft order's tax lines before placing the order. This ensures the order never carries stale tax lines, for example from a previous address change. The recomputation also respects the region's `automatic_taxes` setting.
 
 Admin users can then manage the order like any other regular order, including processing payments and fulfilling items.
 
@@ -40768,6 +40783,32 @@ The following diagram is a simplified showcase of how a subtotal is calculated f
 ![A diagram showcasing how a subtotal is calculated from the tax perspective](https://res.cloudinary.com/dza7lstvk/image/upload/v1712307395/Medusa%20Resources/order-tax-inclusive_oebdnm.jpg)
 
 For example, if a line item's amount is `5000`, the tax rate is `10`, and `is_tax_inclusive` is enabled, the tax amount is 10% of `5000`, which is `500`. The item's unit price becomes `4500`.
+
+***
+
+## When Are Tax Lines Recalculated?
+
+Unlike cart tax lines, which Medusa recalculates automatically as the customer builds their cart, order tax lines are only recomputed in specific situations.
+
+### Regular Orders
+
+For regular orders, Medusa does not automatically recompute tax lines when you update an order. For example, updating the order's shipping or billing address using the `updateOrderWorkflow` does not trigger a tax recomputation. The existing tax lines are preserved as-is.
+
+To recompute a regular order's tax lines, use the `updateOrderTaxLinesWorkflow`.
+
+### Draft Orders
+
+For draft orders, Medusa recomputes tax lines in two situations:
+
+- When you update the draft order's shipping or billing address using the `updateDraftOrderWorkflow`, Medusa recomputes the tax lines to reflect the correct tax jurisdiction.
+- When you convert a draft order to a regular order using the `convertDraftOrderWorkflow`, Medusa recomputes the tax lines before placing the order. This prevents stale tax lines from carrying over to the new order.
+
+In both cases, whether Medusa recomputes the tax lines depends on the region's `automatic_taxes` setting:
+
+- If `automatic_taxes` is enabled, Medusa recomputes the tax lines from the tax provider.
+- If `automatic_taxes` is disabled, the tax lines are not recomputed.
+
+The automatic tax recomputation for draft orders is available since Medusa [v2.18.1](https://github.com/medusajs/medusa/releases/tag/v2.18.1).
 
 
 # Transactions
@@ -138179,6 +138220,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/orders/{id}/shipping-options](undefined/api/admin#orders_getordersidshippingoptions)
 - [POST /admin/orders/{id}/transfer](undefined/api/admin#orders_postordersidtransfer)
 - [POST /admin/orders/{id}/transfer/cancel](undefined/api/admin#orders_postordersidtransfercancel)
+- [POST /admin/orders/{id}/transfer/guest](undefined/api/admin#orders_postordersidtransferguest)
 - [POST /admin/payment-collections](undefined/api/admin#payment-collections_postpaymentcollections)
 - [DELETE /admin/payment-collections/{id}](undefined/api/admin#payment-collections_deletepaymentcollectionsid)
 - [POST /admin/payment-collections/{id}/mark-as-paid](undefined/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid)
