@@ -5,6 +5,7 @@ import {
   TableAdapter,
 } from "../../../../../lib/table/table-adapters"
 import { useMemo } from "react"
+import { ProductActions } from "./product-list-table-actions"
 
 // eslint-disable-next-line max-len
 export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct> {
@@ -36,6 +37,7 @@ export function createProductTableAdapter(): TableAdapter<HttpTypes.AdminProduct
       return { data: products, count, isLoading, isError, error }
     },
     getRowHref: (row) => `/products/${row.id}`,
+    renderRowActions: (row) => <ProductActions product={row} />,
     transformColumns: (columns) => {
       const ALLOWED_FILTERS = [
         "id",

@@ -15,6 +15,8 @@ import {
   DataTableSortableColumnDefMeta,
   DataTableAlignableColumnDef,
   DataTableAlignableColumnDefMeta,
+  DataTableTruncatableColumnDef,
+  DataTableTruncatableColumnDefMeta,
 } from "../types"
 
 const createDataTableColumnHelper = <
@@ -31,14 +33,21 @@ const createDataTableColumnHelper = <
         sortDescLabel,
         headerAlign,
         align,
+        truncateTooltip,
         meta,
         enableSorting,
         ...rest
-      } = column as any & DataTableSortableColumnDef & DataTableAlignableColumnDef
+      } = column as any &
+        DataTableSortableColumnDef &
+        DataTableAlignableColumnDef &
+        DataTableTruncatableColumnDef
 
-      const extendedMeta: DataTableSortableColumnDefMeta & DataTableAlignableColumnDefMeta = {
+      const extendedMeta: DataTableSortableColumnDefMeta &
+        DataTableAlignableColumnDefMeta &
+        DataTableTruncatableColumnDefMeta = {
         ___sortMetaData: { sortLabel, sortAscLabel, sortDescLabel },
         ___alignMetaData: { headerAlign, align },
+        ___truncateTooltip: truncateTooltip,
         ...(meta || {}),
       }
 

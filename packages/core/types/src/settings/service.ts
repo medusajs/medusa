@@ -323,7 +323,7 @@ export interface ISettingsModuleService extends IModuleService {
    * List all discoverable entities from joiner configs.
    * Returns brief info about each entity.
    */
-  listDiscoverableEntities(): AdminEntityInfo[]
+  listDiscoverableEntities(): Promise<AdminEntityInfo[]>
 
   /**
    * Check if an entity exists by name.

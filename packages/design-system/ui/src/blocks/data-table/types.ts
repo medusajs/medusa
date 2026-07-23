@@ -73,7 +73,7 @@ export type DataTableSortableColumnDef = {
   enableSorting?: boolean
 }
 
-export type DataTableColumnAlignment = 'left' | 'center' | 'right'
+export type DataTableColumnAlignment = "left" | "center" | "right"
 
 /**
  * @deprecated Use {@link DataTableColumnAlignment} instead.
@@ -100,6 +100,20 @@ export type DataTableSortableColumnDefMeta = {
 
 export type DataTableAlignableColumnDefMeta = {
   ___alignMetaData?: DataTableAlignableColumnDef
+}
+
+export type DataTableTruncatableColumnDef = {
+  /**
+   * Whether a hover tooltip showing the full value is displayed when the body
+   * cell content is truncated. Disable it for cells that manage their own
+   * overflow.
+   * @default true
+   */
+  truncateTooltip?: boolean
+}
+
+export type DataTableTruncatableColumnDefMeta = {
+  ___truncateTooltip?: boolean
 }
 
 export type DataTableActionColumnDefMeta<TData> = {
@@ -176,8 +190,14 @@ export interface DataTableColumnHelper<TData> {
   >(
     accessor: TAccessor,
     column: TAccessor extends AccessorFn<TData>
-      ? DataTableDisplayColumnDef<TData, TValue> & DataTableSortableColumnDef & DataTableAlignableColumnDef
-      : DataTableIdentifiedColumnDef<TData, TValue> & DataTableSortableColumnDef & DataTableAlignableColumnDef
+      ? DataTableDisplayColumnDef<TData, TValue> &
+          DataTableSortableColumnDef &
+          DataTableAlignableColumnDef &
+          DataTableTruncatableColumnDef
+      : DataTableIdentifiedColumnDef<TData, TValue> &
+          DataTableSortableColumnDef &
+          DataTableAlignableColumnDef &
+          DataTableTruncatableColumnDef
   ) => TAccessor extends AccessorFn<TData>
     ? AccessorFnColumnDef<TData, TValue>
     : AccessorKeyColumnDef<TData, TValue>
@@ -217,7 +237,14 @@ export type DataTableFilteringState<
   [K in keyof T]: T[K]
 }
 
-export type DataTableFilterType = "radio" | "select" | "date" | "multiselect" | "string" | "number" | "custom"
+export type DataTableFilterType =
+  | "radio"
+  | "select"
+  | "date"
+  | "multiselect"
+  | "string"
+  | "number"
+  | "custom"
 export type DataTableFilterOption<T = string> = {
   label: string
   value: T
@@ -284,7 +311,8 @@ export interface DataTableDateFilterProps extends DataTableBaseFilterProps {
   options: DataTableFilterOption<DataTableDateComparisonOperator>[]
 }
 
-export interface DataTableMultiselectFilterProps extends DataTableBaseFilterProps {
+export interface DataTableMultiselectFilterProps
+  extends DataTableBaseFilterProps {
   type: "multiselect"
   options: DataTableFilterOption[]
   /**

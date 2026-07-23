@@ -34,6 +34,24 @@ export interface UseTableConfigurationOptions {
   pageSize?: number
   queryPrefix?: string
   transformColumns?: TableAdapter<unknown>["transformColumns"]
+  /**
+   * Extra client-side columns to append to the API columns (e.g. the virtual
+   * actions column). They participate in column state like any other column.
+   */
+  extraColumns?: HttpTypes.AdminColumn[]
+  /**
+   * Default filters (filter id -> value) applied only when there is no saved
+   * view configuration active. Once a view is active, its filters are used
+   * instead. Acts as the baseline for "unsaved changes" detection.
+   */
+  defaultFilters?: Record<string, any>
+  /**
+   * Key under which saved view configurations are stored/looked up. Columns
+   * always come from the real `entity`, but views are keyed independently so
+   * that multiple tables of the SAME entity each get their own views without
+   * clobbering each other. Defaults to `entity`.
+   */
+  viewConfigurationKey?: string
 }
 
 export interface UseTableConfigurationReturn {
@@ -70,14 +88,33 @@ export function useTableConfiguration({
   entity,
   queryPrefix = "",
   transformColumns,
+  extraColumns,
+  defaultFilters,
+  viewConfigurationKey,
 }: UseTableConfigurationOptions): UseTableConfigurationReturn {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const [_, setSearchParams] = useSearchParams()
 
-  const { activeView, createView } = useViewConfigurations(entity)
+  const viewConfigKey = viewConfigurationKey ?? entity
+
+  // Seed the adapter's default filters into the URL params. Used when no saved
+  // view is active, both on initial sync and when clearing.
+  const applyDefaultFilters = useCallback(
+    (params: URLSearchParams) => {
+      if (!defaultFilters) {
+        return
+      }
+      Object.entries(defaultFilters).forEach(([key, value]) => {
+        params.set(`${queryPrefix}_${key}`, JSON.stringify(value))
+      })
+    },
+    [defaultFilters, queryPrefix]
+  )
+
+  const { activeView, createView } = useViewConfigurations(viewConfigKey)
   const currentActiveView = activeView?.view_configuration || null
   const { updateView } = useViewConfiguration(
-    entity,
+    viewConfigKey,
     currentActiveView?.id || ""
   )
 
@@ -90,8 +127,13 @@ export function useTableConfiguration({
     if (!rawApiColumns) {
       return undefined
     }
-    return transformColumns ? transformColumns(rawApiColumns) : rawApiColumns
-  }, [rawApiColumns, transformColumns])
+    const transformed = transformColumns
+      ? transformColumns(rawApiColumns)
+      : rawApiColumns
+    return extraColumns?.length
+      ? [...transformed, ...extraColumns]
+      : transformed
+  }, [rawApiColumns, transformColumns, extraColumns])
 
   // Extract relationship filter configs from filterable columns only
   const relationshipFilterConfigs = useMemo(() => {
@@ -139,6 +181,19 @@ export function useTableConfiguration({
     handleViewChange: originalHandleViewChange,
   } = useColumnState(columnsToRender, currentActiveView)
 
+  // Re-sync only when the content of the active view or the column set changes
+  const activeViewSignature = currentActiveView
+    ? `${currentActiveView.id}:${JSON.stringify(
+        currentActiveView.configuration
+      )}`
+    : ""
+  const columnsSignature = columnsToRender
+    ? columnsToRender
+        .map((column) => column.field)
+        .sort()
+        .join(",")
+    : ""
+
   // Sync view configuration with URL and column state
   useEffect(() => {
     if (!columnsToRender) {
@@ -175,11 +230,21 @@ export function useTableConfiguration({
         if (viewConfig.search) {
           prev.set(`${queryPrefix}_q`, viewConfig.search)
         }
+      } else {
+        // No saved view: fall back to the adapter's default filters.
+        applyDefaultFilters(prev)
       }
 
       return prev
     })
-  }, [currentActiveView, columnsToRender])
+    // Intentionally keyed on value signatures, not object identity: re-sync
+    // only when the active view or the column set actually changes. Must NOT
+    // depend on setSearchParams (its identity changes on every URL change) or
+    // on the raw columnsToRender/currentActiveView objects (their identity can
+    // churn every render), or it re-runs on each render and clears the
+    // just-applied filter. applyDefaultFilters is stable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeViewSignature, columnsSignature])
 
   // Current configuration from URL
   const currentConfiguration = useMemo(() => {
@@ -261,9 +326,20 @@ export function useTableConfiguration({
         return true
       }
     } else {
-      // Check against defaults
-      if (Object.keys(currentFilters).length > 0) {
-        return true
+      // Check filters against the adapter's default filters (the baseline when
+      // no view is saved), not against "no filters".
+      const baselineFilters = defaultFilters ?? {}
+      const filterKeys = new Set([
+        ...Object.keys(currentFilters),
+        ...Object.keys(baselineFilters),
+      ])
+      for (const key of filterKeys) {
+        if (
+          JSON.stringify(currentFilters[key]) !==
+          JSON.stringify(baselineFilters[key])
+        ) {
+          return true
+        }
       }
       if (currentSorting !== null) {
         return true
@@ -287,7 +363,7 @@ export function useTableConfiguration({
           return true
         }
 
-        const defaultOrder = columnsToRender
+        const defaultOrder = [...columnsToRender]
           .sort((a, b) => (a.default_order ?? 500) - (b.default_order ?? 500))
           .map((col) => col.field)
 
@@ -304,6 +380,7 @@ export function useTableConfiguration({
     columnOrder,
     currentConfiguration,
     columnsToRender,
+    defaultFilters,
   ])
 
   // Debounce configuration change detection
@@ -349,10 +426,14 @@ export function useTableConfiguration({
         if (viewConfig.search) {
           prev.set(`${queryPrefix}_q`, viewConfig.search)
         }
+      } else {
+        // No saved view: clear back to the adapter's default filters.
+        applyDefaultFilters(prev)
       }
 
       return prev
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentActiveView, columnsToRender, queryPrefix])
 
   // Calculate required fields based on visible columns

@@ -32,6 +32,11 @@
       "import": "./dist/hooks.mjs",
       "require": "./dist/hooks.js"
     },
+    "./lib": {
+      "types": "./dist/lib.d.ts",
+      "import": "./dist/lib.mjs",
+      "require": "./dist/lib.js"
+    },
     "./css": {
       "import": "./dist/app.css",
       "require": "./dist/app.css"
