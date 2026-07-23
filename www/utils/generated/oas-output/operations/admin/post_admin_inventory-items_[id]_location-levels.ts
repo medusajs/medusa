@@ -75,7 +75,7 @@
  *       ```
  *     description: Emitted when inventory levels are created.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  * 
 */
 

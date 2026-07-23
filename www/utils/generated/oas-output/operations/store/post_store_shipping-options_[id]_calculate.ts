@@ -1,8 +1,11 @@
 /**
  * @oas [post] /store/shipping-options/{id}/calculate
  * operationId: PostShippingOptionsIdCalculate
- * summary: Add Calculate to Shipping Option
- * description: Add a Calculate to a shipping option
+ * summary: Calculate Shipping Option Price
+ * description: |
+ *   Calculate the price of a shipping option in a cart. Use this API route for shipping options whose `price_type` is `calculated`, as their price isn't stored but computed on the fly by the associated fulfillment provider against the cart.
+ *
+ *   If the fulfillment provider fails to calculate the price, this route returns an error.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -56,17 +59,19 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The calculation's details.
  *         required:
  *           - cart_id
  *         properties:
  *           cart_id:
  *             type: string
  *             title: cart_id
- *             description: The shipping option's cart id.
+ *             description: The ID of the cart the shipping option is used in.
  *           data:
  *             type: object
- *             description: The shipping option's data.
+ *             description: Custom data that's useful for the fulfillment provider to calculate the price.
+ *             externalDocs:
+ *               url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

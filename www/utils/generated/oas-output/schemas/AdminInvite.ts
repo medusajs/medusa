@@ -53,6 +53,7 @@
  *   rbac_roles:
  *     type: array
  *     description: The roles of the invited user.
+ *     x-featureFlag: rbac
  *     items:
  *       $ref: "#/components/schemas/AdminRbacRole"
  * 

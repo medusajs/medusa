@@ -116,13 +116,13 @@
  *       oneOf:
  *         - type: string
  *           title: to
- *           description: The notification's to.
+ *           description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
  *         - type: array
- *           description: The notification's to.
+ *           description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
  *           items:
  *             type: string
  *             title: to
- *             description: The to's details.
+ *             description: Who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

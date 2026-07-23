@@ -1,7 +1,7 @@
 /**
  * @schema StorePrice
  * type: object
- * description: The price's prices.
+ * description: The price's details.
  * x-schemaName: StorePrice
  * required:
  *   - id
@@ -17,7 +17,8 @@
  *   currency_code:
  *     type: string
  *     title: currency_code
- *     description: The price's currency code.
+ *     description: The price's ISO 2 currency code.
+ *     example: usd
  *   amount:
  *     type: number
  *     title: amount
@@ -25,14 +26,14 @@
  *   min_quantity:
  *     type: number
  *     title: min_quantity
- *     description: The price's min quantity.
+ *     description: The minimum quantity required in the cart for the price to apply.
  *   max_quantity:
  *     type: number
  *     title: max_quantity
- *     description: The price's max quantity.
+ *     description: The maximum quantity required in the cart for the price to apply.
  *   price_rules:
  *     type: array
- *     description: The price's price rules.
+ *     description: The price's rules.
  *     items:
  *       $ref: "#/components/schemas/StorePriceRule"
  * 

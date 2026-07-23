@@ -70,6 +70,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-since: 2.16.0
 post:
   operationId: PostProductOptionsIdValuesValue_id
   summary: Update Product Option Value
@@ -131,6 +132,7 @@ post:
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateProductOptionValuesWorkflow
   x-events: []
+  x-since: 2.17.0
 delete:
   operationId: DeleteProductOptionsIdValuesValue_id
   summary: Remove Value from Product Option
@@ -187,3 +189,4 @@ delete:
       $ref: ../components/responses/500_error.yaml
   x-workflow: deleteProductOptionValuesWorkflow
   x-events: []
+  x-since: 2.17.0

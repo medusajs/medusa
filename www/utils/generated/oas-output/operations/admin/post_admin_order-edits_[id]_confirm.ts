@@ -82,7 +82,7 @@
  *       ```
  *     description: Emitted when reservations are created.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  *   - name: reservation-item.deleted
  *     payload: |-
  *       ```ts
@@ -93,7 +93,7 @@
  *       ```
  *     description: Emitted when reservations are deleted.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  * 
 */
 

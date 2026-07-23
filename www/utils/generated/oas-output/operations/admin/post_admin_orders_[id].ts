@@ -1,8 +1,11 @@
 /**
  * @oas [post] /admin/orders/{id}
  * operationId: PostOrdersId
- * summary: Update a Order
- * description: Update a order's details.
+ * summary: Update Order
+ * description: |-
+ *   Update an order's details.
+ *
+ *   Updating the order's shipping or billing address doesn't recalculate the order's taxes or totals; the existing tax lines are preserved as-is. You also can't change the address's `country_code`.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +16,7 @@
  *       type: string
  *   - name: version
  *     in: query
- *     description: The order's version.
+ *     description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
  *     required: false
  *     schema:
  *       type: number

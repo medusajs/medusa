@@ -1,7 +1,7 @@
 /**
  * @schema BaseLineItemTaxLine
  * type: object
- * description: The tax line's tax lines.
+ * description: The tax line's details.
  * x-schemaName: BaseLineItemTaxLine
  * required:
  *   - item
@@ -19,15 +19,15 @@
  *   item_id:
  *     type: string
  *     title: item_id
- *     description: The tax line's item id.
+ *     description: The ID of the line item this tax line belongs to.
  *   total:
  *     type: number
  *     title: total
- *     description: The tax line's total.
+ *     description: The item's total including taxes and promotions.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The tax line's subtotal.
+ *     description: The item's total excluding taxes, including promotions.
  *   id:
  *     type: string
  *     title: id
@@ -39,29 +39,29 @@
  *   tax_rate_id:
  *     type: string
  *     title: tax_rate_id
- *     description: The tax line's tax rate id.
+ *     description: The ID of the applied tax rate.
  *   code:
  *     type: string
  *     title: code
- *     description: The tax line's code.
+ *     description: The code that the tax rate is identified by.
  *   rate:
  *     type: number
  *     title: rate
- *     description: The tax line's rate.
+ *     description: The charged rate.
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The tax line's provider id.
+ *     description: The ID of the tax provider used to calculate the tax line.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The tax line's created at.
+ *     description: The date the tax line was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The tax line's updated at.
+ *     description: The date the tax line was updated.
  * 
 */
 

@@ -67,7 +67,7 @@
  *     description: The tax line's data.
  *   metadata:
  *     type: object
- *     description: The tax line's metadata.
+ *     description: The tax line's metadata, can hold custom key-value pairs.
  * 
 */
 

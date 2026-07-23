@@ -1,7 +1,7 @@
 /**
  * @schema PriceRule
  * type: object
- * description: The rule's rules.
+ * description: The price rule's details.
  * x-schemaName: PriceRule
  * required:
  *   - attribute
@@ -14,6 +14,7 @@
  *     description: The rule's attribute.
  *   operator:
  *     type: string
+ *     title: operator
  *     description: The rule's operator.
  *     enum:
  *       - gt

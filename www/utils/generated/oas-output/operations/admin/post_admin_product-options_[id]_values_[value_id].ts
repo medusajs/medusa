@@ -74,6 +74,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateProductOptionValuesWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.0
 */
 

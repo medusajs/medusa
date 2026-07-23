@@ -97,7 +97,7 @@
  *       ```
  *     description: Emitted when inventory levels are created.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  *   - name: inventory-level.updated
  *     payload: |-
  *       ```ts
@@ -110,7 +110,7 @@
  *       Emitted when inventory levels are updated. This includes adjustments to
  *       the stocked or reserved quantity, such as during order fulfillment.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  *   - name: inventory-level.deleted
  *     payload: |-
  *       ```ts
@@ -120,7 +120,7 @@
  *       ```
  *     description: Emitted when inventory levels are deleted.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  * 
 */
 

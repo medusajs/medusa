@@ -51,5 +51,6 @@ properties:
   rbac_roles:
     type: array
     description: The roles of the invited user.
+    x-featureFlag: rbac
     items:
       $ref: ./AdminRbacRole.yaml

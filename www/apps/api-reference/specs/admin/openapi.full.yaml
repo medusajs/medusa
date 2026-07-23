@@ -571,6 +571,14 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminUser'
   - name: Views
+    description: |
+      A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+      These API routes allow admin users to manage the system default and personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminViewConfiguration'
   - name: Workflows Executions
     description: |
       These API routes allow you to track workflow executions in your Medusa application.
@@ -4377,7 +4385,7 @@ paths:
             ```
           description: Emitted when reservations are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/claims/{id}/claim-items:
     post:
       operationId: PostClaimsIdClaimItems
@@ -8879,7 +8887,7 @@ paths:
             ```
           description: Emitted when reservations are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
     delete:
       operationId: DeleteClaimsIdRequest
       summary: Cancel Claim Request
@@ -18277,7 +18285,7 @@ paths:
             ```
           description: Emitted when reservations are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
       requestBody:
         content:
           application/json:
@@ -20418,7 +20426,7 @@ paths:
             ```
           description: Emitted when reservations are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/exchanges/{id}/inbound/items:
     post:
       operationId: PostExchangesIdInboundItems
@@ -21537,7 +21545,7 @@ paths:
             ```
           description: Emitted when reservations are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
     delete:
       operationId: DeleteExchangesIdRequest
       summary: Cancel Exchange Request
@@ -23774,7 +23782,7 @@ paths:
             ```
           description: Emitted when inventory items are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.created
           payload: |-
             ```ts
@@ -23784,7 +23792,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/inventory-items/location-levels/batch:
     post:
       operationId: PostInventoryItemsLocationLevelsBatch
@@ -23884,7 +23892,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.updated
           payload: |-
             ```ts
@@ -23897,7 +23905,7 @@ paths:
             Emitted when inventory levels are updated. This includes adjustments to
             the stocked or reserved quantity, such as during order fulfillment.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.deleted
           payload: |-
             ```ts
@@ -23907,7 +23915,7 @@ paths:
             ```
           description: Emitted when inventory levels are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/inventory-items/{id}:
     get:
       operationId: GetInventoryItemsId
@@ -24083,7 +24091,7 @@ paths:
             ```
           description: Emitted when inventory items are updated.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
     delete:
       operationId: DeleteInventoryItemsId
       summary: Delete Inventory Item
@@ -24174,7 +24182,7 @@ paths:
             ```
           description: Emitted when inventory items are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels:
     get:
       operationId: GetInventoryItemsIdLocationLevels
@@ -24399,7 +24407,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels/batch:
     post:
       operationId: PostInventoryItemsIdLocationLevelsBatch
@@ -24480,7 +24488,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.updated
           payload: |-
             ```ts
@@ -24493,7 +24501,7 @@ paths:
             Emitted when inventory levels are updated. This includes adjustments to
             the stocked or reserved quantity, such as during order fulfillment.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.deleted
           payload: |-
             ```ts
@@ -24503,7 +24511,7 @@ paths:
             ```
           description: Emitted when inventory levels are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels/{location_id}:
     post:
       operationId: PostInventoryItemsIdLocationLevelsLocation_id
@@ -24607,7 +24615,7 @@ paths:
             Emitted when inventory levels are updated. This includes adjustments to
             the stocked or reserved quantity, such as during order fulfillment.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
     delete:
       operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
       summary: Remove Inventory Level of Inventory Item
@@ -24725,7 +24733,7 @@ paths:
             ```
           description: Emitted when inventory levels are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/invites:
     get:
       operationId: GetInvites
@@ -26427,13 +26435,13 @@ paths:
             oneOf:
               - type: string
                 title: to
-                description: The notification's to.
+                description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
               - type: array
-                description: The notification's to.
+                description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
                 items:
                   type: string
                   title: to
-                  description: The to's details.
+                  description: Who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
       security:
         - api_token: []
         - cookie_auth: []
@@ -27690,7 +27698,7 @@ paths:
             ```
           description: Emitted when reservations are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: reservation-item.deleted
           payload: |-
             ```ts
@@ -27701,7 +27709,7 @@ paths:
             ```
           description: Emitted when reservations are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/order-edits/{id}/items:
     post:
       operationId: PostOrderEditsIdItems
@@ -29519,8 +29527,11 @@ paths:
       x-events: []
     post:
       operationId: PostOrdersId
-      summary: Update a Order
-      description: Update a order's details.
+      summary: Update Order
+      description: |-
+        Update an order's details.
+
+        Updating the order's shipping or billing address doesn't recalculate the order's taxes or totals; the existing tax lines are preserved as-is. You also can't change the address's `country_code`.
       x-authenticated: true
       parameters:
         - name: id
@@ -29531,7 +29542,7 @@ paths:
             type: string
         - name: version
           in: query
-          description: The order's version.
+          description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
           required: false
           schema:
             type: number
@@ -29825,7 +29836,7 @@ paths:
             ```
           description: Emitted when reservations are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/orders/{id}/changes:
     get:
       operationId: GetOrdersIdChanges
@@ -31086,7 +31097,7 @@ paths:
             Emitted when inventory levels are updated. This includes adjustments to
             the stocked or reserved quantity, such as during order fulfillment.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: reservation-item.updated
           payload: |-
             ```ts
@@ -31097,7 +31108,7 @@ paths:
             ```
           description: Emitted when reservations are updated.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: reservation-item.deleted
           payload: |-
             ```ts
@@ -31108,7 +31119,7 @@ paths:
             ```
           description: Emitted when reservations are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idCancel
@@ -31226,7 +31237,7 @@ paths:
             Emitted when inventory levels are updated. This includes adjustments to
             the stocked or reserved quantity, such as during order fulfillment.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: reservation-item.created
           payload: |-
             ```ts
@@ -31237,7 +31248,7 @@ paths:
             ```
           description: Emitted when reservations are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: reservation-item.updated
           payload: |-
             ```ts
@@ -31248,7 +31259,7 @@ paths:
             ```
           description: Emitted when reservations are updated.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idMarkAsDelivered
@@ -31737,6 +31748,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: authorizePaymentSessionForOrderWorkflow
       x-events: []
+      x-since: 2.17.0
   /admin/orders/{id}/preview:
     get:
       operationId: GetOrdersIdPreview
@@ -32069,8 +32081,9 @@ paths:
   /admin/orders/{id}/transfer/guest:
     post:
       operationId: PostOrdersIdTransferGuest
-      summary: Add Guest to Order
-      description: Add a Guest to a order
+      summary: Transfer Order to Guest Customer
+      x-sidebar-summary: Transfer to Guest
+      description: Transfer an order to a guest customer. This is useful when the order email was incorrectly entered and you want to set it to a guest customer. The order will be transferred to a new guest customer with the provided email. For transferring orders to registered customer, check out the [Request Order Transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer) API route instead.
       x-authenticated: true
       parameters:
         - name: id
@@ -32081,7 +32094,7 @@ paths:
             type: string
         - name: version
           in: query
-          description: The order's version.
+          description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
           required: false
           schema:
             type: number
@@ -38664,6 +38677,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.16.0
   /admin/product-options/{id}/values/{value_id}:
     get:
       operationId: GetProductOptionsIdValuesValue_id
@@ -38741,6 +38755,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.16.0
     post:
       operationId: PostProductOptionsIdValuesValue_id
       summary: Update Product Option Value
@@ -38816,6 +38831,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: updateProductOptionValuesWorkflow
       x-events: []
+      x-since: 2.17.0
     delete:
       operationId: DeleteProductOptionsIdValuesValue_id
       summary: Remove Value from Product Option
@@ -38884,6 +38900,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: deleteProductOptionValuesWorkflow
       x-events: []
+      x-since: 2.17.0
   /admin/product-tags:
     get:
       operationId: GetProductTags
@@ -42478,7 +42495,7 @@ paths:
             ```
           description: Emitted when inventory items are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.created
           payload: |-
             ```ts
@@ -42488,7 +42505,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/products/batch:
     post:
       operationId: PostProductsBatch
@@ -42644,7 +42661,7 @@ paths:
             ```
           description: Emitted when inventory items are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-item.deleted
           payload: |-
             ```ts
@@ -42654,7 +42671,7 @@ paths:
             ```
           description: Emitted when inventory items are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.created
           payload: |-
             ```ts
@@ -42664,7 +42681,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/products/export:
     post:
       operationId: PostProductsExport
@@ -43988,7 +44005,7 @@ paths:
             ```
           description: Emitted when inventory items are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-item.deleted
           payload: |-
             ```ts
@@ -43998,7 +44015,7 @@ paths:
             ```
           description: Emitted when inventory items are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.created
           payload: |-
             ```ts
@@ -44008,7 +44025,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
       deprecated: true
       x-deprecated_message: use `POST /admin/products/imports` instead.
   /admin/products/import/{transaction_id}/confirm:
@@ -44456,7 +44473,7 @@ paths:
             ```
           description: Emitted when inventory items are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/products/{id}/images/{image_id}/variants/batch:
     post:
       operationId: PostProductsIdImagesImage_idVariantsBatch
@@ -44827,6 +44844,7 @@ paths:
             ```
           description: Emitted when products are updated.
           deprecated: false
+      x-since: 2.17.0
   /admin/products/{id}/variants:
     get:
       operationId: GetProductsIdVariants
@@ -45558,7 +45576,7 @@ paths:
             ```
           description: Emitted when inventory items are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.created
           payload: |-
             ```ts
@@ -45568,7 +45586,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/products/{id}/variants/batch:
     post:
       operationId: PostProductsIdVariantsBatch
@@ -45701,7 +45719,7 @@ paths:
             ```
           description: Emitted when inventory items are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-item.deleted
           payload: |-
             ```ts
@@ -45711,7 +45729,7 @@ paths:
             ```
           description: Emitted when inventory items are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
         - name: inventory-level.created
           payload: |-
             ```ts
@@ -45721,7 +45739,7 @@ paths:
             ```
           description: Emitted when inventory levels are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/products/{id}/variants/inventory-items/batch:
     post:
       operationId: PostProductsIdVariantsInventoryItemsBatch
@@ -46100,7 +46118,7 @@ paths:
             ```
           description: Emitted when inventory items are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/products/{id}/variants/{variant_id}/images/batch:
     post:
       operationId: PostProductsIdVariantsVariant_idImagesBatch
@@ -51183,7 +51201,7 @@ paths:
             ```
           description: Emitted when reservations are created.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/reservations/{id}:
     get:
       operationId: GetReservationsId
@@ -51349,7 +51367,7 @@ paths:
             ```
           description: Emitted when reservations are updated.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
     delete:
       operationId: DeleteReservationsId
       summary: Delete a Reservation
@@ -51441,7 +51459,7 @@ paths:
             ```
           description: Emitted when reservations are deleted.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/return-reasons:
     get:
       operationId: GetReturnReasons
@@ -55486,7 +55504,7 @@ paths:
             Emitted when inventory levels are updated. This includes adjustments to
             the stocked or reserved quantity, such as during order fulfillment.
           deprecated: false
-          since: 2.17.3
+          since: 2.18.0
   /admin/returns/{id}/request:
     post:
       operationId: PostReturnsIdRequest
@@ -60155,7 +60173,18 @@ paths:
     post:
       operationId: PostShippingOptionsId
       summary: Update a Shipping Option
-      description: Update a shipping option's details.
+      description: |
+        Update a shipping option's details.
+
+        When you provide the `prices` array, it replaces the shipping option's existing flat-rate prices:
+
+        - A price with a matching `id` is updated.
+        - A price without an `id` is created
+        - Any existing price whose `id` isn't included in the array is deleted.
+
+        The `rules` you provide for a price similarly replace that price's existing rules, so omit a rule to remove it.
+
+        Omitting the `prices` property entirely leaves the existing prices unchanged, whereas setting `price_type` to `calculated` removes all flat-rate prices.
       x-authenticated: true
       parameters:
         - name: id
@@ -73346,35 +73375,16 @@ components:
           title: default_visible
           description: Whether the column is visible by default.
         data_type:
-          oneOf:
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - type: string
-              title: data_type
-              description: The column's data type.
-            - allOf:
-                - type: string
-                  title: data_type
-                  description: The column's data type.
-                - type: object
-                  description: The column's data type.
+          type: string
           description: The data type of the column's value.
+          enum:
+            - string
+            - number
+            - boolean
+            - object
+            - date
+            - currency
+            - enum
         semantic_type:
           type: string
           title: semantic_type
@@ -75028,7 +75038,7 @@ components:
             description: Learn how to manage metadata
     AdminCreateShippingOptionRule:
       type: object
-      description: The rule's rules.
+      description: The details of the shipping option rule.
       x-schemaName: AdminCreateShippingOptionRule
       required:
         - operator
@@ -75037,7 +75047,7 @@ components:
       properties:
         operator:
           type: string
-          description: The rule's operator.
+          description: The operator used to check whether a rule applies.
           enum:
             - gt
             - lt
@@ -75050,18 +75060,21 @@ components:
         attribute:
           type: string
           title: attribute
-          description: The rule's attribute.
+          description: The name of a property or table that the rule applies to.
+          example: customer_group
         value:
           oneOf:
             - type: string
               title: value
-              description: The rule's value.
+              description: A value of the attribute that enables this rule.
+              example: cusgroup_123
             - type: array
-              description: The rule's value.
+              description: Values of the attribute that enable this rule.
               items:
                 type: string
                 title: value
-                description: The value's details.
+                description: A value of the attribute that enables this rule.
+                example: cusgroup_123
     AdminCreateShippingOptionType:
       type: object
       description: The shipping option type's details.
@@ -78540,6 +78553,7 @@ components:
         rbac_roles:
           type: array
           description: The roles of the invited user.
+          x-featureFlag: rbac
           items:
             $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
@@ -85325,7 +85339,7 @@ components:
           x-featureFlag: index_engine
     AdminTransferOrderToGuest:
       type: object
-      description: SUMMARY
+      description: The details of the order transfer to a guest.
       x-schemaName: AdminTransferOrderToGuest
       required:
         - email
@@ -85333,16 +85347,16 @@ components:
         email:
           type: string
           title: email
-          description: The order's email.
+          description: The email to which the order will be transferred.
           format: email
         internal_note:
           type: string
           title: internal_note
-          description: The order's internal note.
+          description: The internal note for the order transfer.
         description:
           type: string
           title: description
-          description: The order's description.
+          description: Details of the order transfer to a guest.
     AdminTranslation:
       type: object
       description: The translation's details.
@@ -86080,7 +86094,7 @@ components:
       x-schemaName: AdminUpdateInventoryLevel
     AdminUpdateOrder:
       type: object
-      description: SUMMARY
+      description: The details to update in the order.
       x-schemaName: AdminUpdateOrder
       properties:
         email:
@@ -86092,13 +86106,17 @@ components:
           $ref: '#/components/schemas/OrderAddress'
         billing_address:
           $ref: '#/components/schemas/OrderAddress'
+        metadata:
+          type: object
+          description: The order's metadata, can hold custom key-value pairs.
+          externalDocs:
+            url: https://docs.medusajs.com/api/admin#manage-metadata
+            description: Learn how to manage metadata
         locale:
           type: string
           title: locale
-          description: The order's locale.
-        metadata:
-          type: object
-          description: The order's metadata.
+          description: The order's locale in [BCP 47](https://gist.github.com/typpo/b2b828a35e683b9bf8db91b5404f1bd1) format.
+          example: en-US
     AdminUpdateOrderChange:
       type: object
       description: The data to update in the order change.
@@ -86850,8 +86868,7 @@ components:
             description: Learn how to manage metadata
     AdminUpdateShippingOption:
       type: object
-      description: SUMMARY
-      x-schemaName: AdminUpdateShippingOption
+      description: The properties to update in the shipping option type.
       properties:
         name:
           type: string
@@ -86864,8 +86881,8 @@ components:
           type: string
           description: The shipping option's price type.
           enum:
-            - calculated
             - flat
+            - calculated
         provider_id:
           type: string
           title: provider_id
@@ -86882,7 +86899,7 @@ components:
           description: The shipping option's type id.
         prices:
           type: array
-          description: The shipping option's prices.
+          description: The shipping option's prices. This array replaces the shipping option's existing prices - a price with a matching `id` is updated, a price without an `id` is created, and any existing price whose `id` isn't included is deleted. Omit this property to leave the existing prices unchanged.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminUpdateShippingOptionPriceWithCurrency'
@@ -86897,53 +86914,55 @@ components:
         metadata:
           type: object
           description: The shipping option's metadata.
+      x-schemaName: AdminUpdateShippingOption
     AdminUpdateShippingOptionPriceWithCurrency:
       type: object
-      description: The price's prices.
+      description: The properties to update in a shipping option price with a currency.
       x-schemaName: AdminUpdateShippingOptionPriceWithCurrency
       properties:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         currency_code:
           type: string
           title: currency_code
           description: The price's currency code.
+          example: usd
         amount:
           type: number
           title: amount
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionPriceWithRegion:
       type: object
-      description: The price's prices.
+      description: The properties to update in a shipping option price with a region.
       x-schemaName: AdminUpdateShippingOptionPriceWithRegion
       properties:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         region_id:
           type: string
           title: region_id
-          description: The price's region id.
+          description: The ID of the region the price is associated with.
         amount:
           type: number
           title: amount
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionRule:
       type: object
-      description: The rule's rules.
+      description: The properties to update in the shipping option rule.
       x-schemaName: AdminUpdateShippingOptionRule
       required:
         - id
@@ -86957,7 +86976,7 @@ components:
           description: The rule's ID.
         operator:
           type: string
-          description: The rule's operator.
+          description: The operator used to check whether a rule applies.
           enum:
             - gt
             - lt
@@ -86970,18 +86989,21 @@ components:
         attribute:
           type: string
           title: attribute
-          description: The rule's attribute.
+          description: The name of a property or table that the rule applies to.
+          example: customer_group
         value:
           oneOf:
             - type: string
               title: value
-              description: The rule's value.
+              description: A value of the attribute that enables this rule.
+              example: cusgroup_123
             - type: array
-              description: The rule's value.
+              description: Values of the attribute that enable this rule.
               items:
                 type: string
                 title: value
-                description: The value's details.
+                description: A value of the attribute that enables this rule.
+                example: cusgroup_123
     AdminUpdateShippingOptionType:
       type: object
       description: The properties to update in the shipping option type.
@@ -88045,6 +88067,9 @@ components:
         metadata:
           type: object
           description: The cart's metadata.
+          externalDocs:
+            url: https://docs.medusajs.com/api/store#manage-metadata
+            description: Learn how to manage metadata
         created_at:
           type: string
           format: date-time
@@ -88058,59 +88083,59 @@ components:
         original_item_total:
           type: number
           title: original_item_total
-          description: The cart's original item total.
+          description: The sum of all line items' original totals before discounts, including taxes.
         original_item_subtotal:
           type: number
           title: original_item_subtotal
-          description: The cart's original item subtotal.
+          description: The sum of all line items' original subtotals before discounts, excluding taxes.
         original_item_tax_total:
           type: number
           title: original_item_tax_total
-          description: The cart's original item tax total.
+          description: The sum of all line items' original tax totals before discounts.
         item_total:
           type: number
           title: item_total
-          description: The cart's item total.
+          description: The sum of all line items' totals after discounts, including taxes.
         item_subtotal:
           type: number
           title: item_subtotal
-          description: The cart's item subtotal.
+          description: The sum of all line items' subtotals before discounts, excluding taxes.
         item_tax_total:
           type: number
           title: item_tax_total
-          description: The cart's item tax total.
+          description: The sum of all line items' tax totals after discounts.
         original_total:
           type: number
           title: original_total
-          description: The cart's original total.
+          description: The cart's total before discounts, including taxes. Calculated as the sum of `original_item_total` and `original_shipping_total`.
         original_subtotal:
           type: number
           title: original_subtotal
-          description: The cart's original subtotal.
+          description: The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `original_item_subtotal` and `original_shipping_subtotal`.
         original_tax_total:
           type: number
           title: original_tax_total
-          description: The cart's original tax total.
+          description: The cart's tax total before discounts. Calculated as the sum of `original_item_tax_total` and `original_shipping_tax_total`.
         total:
           type: number
           title: total
-          description: The cart's total.
+          description: The cart's final total after discounts and credit lines, including taxes.
         subtotal:
           type: number
           title: subtotal
-          description: The cart's subtotal.
+          description: The cart's subtotal before discounts, excluding taxes. Calculated as the sum of `item_subtotal` and `shipping_subtotal`.
         tax_total:
           type: number
           title: tax_total
-          description: The cart's tax total.
+          description: The cart's tax total after discounts. Calculated as the sum of `item_tax_total` and `shipping_tax_total`.
         discount_total:
           type: number
           title: discount_total
-          description: The cart's discount total.
+          description: The total amount of discounts applied to the cart, including the tax portion of discounts.
         discount_tax_total:
           type: number
           title: discount_tax_total
-          description: The cart's discount tax total.
+          description: The total amount of discounts applied to the cart's tax. Represents the tax portion of discounts.
         gift_card_total:
           type: number
           title: gift_card_total
@@ -88122,31 +88147,31 @@ components:
         shipping_total:
           type: number
           title: shipping_total
-          description: The cart's shipping total.
+          description: The sum of all shipping methods' totals after discounts, including taxes.
         shipping_subtotal:
           type: number
           title: shipping_subtotal
-          description: The cart's shipping subtotal.
+          description: The sum of all shipping methods' subtotals before discounts, excluding taxes.
         shipping_tax_total:
           type: number
           title: shipping_tax_total
-          description: The cart's shipping tax total.
+          description: The sum of all shipping methods' tax totals after discounts.
         original_shipping_total:
           type: number
           title: original_shipping_total
-          description: The cart's original shipping total.
+          description: The sum of all shipping methods' original totals before discounts, including taxes.
         original_shipping_subtotal:
           type: number
           title: original_shipping_subtotal
-          description: The cart's original shipping subtotal.
+          description: The sum of all shipping methods' original subtotals before discounts, excluding taxes.
         original_shipping_tax_total:
           type: number
           title: original_shipping_tax_total
-          description: The cart's original shipping tax total.
+          description: The sum of all shipping methods' original tax totals before discounts.
         completed_at:
           type: string
           title: completed_at
-          description: The cart's completed at.
+          description: The date the cart was completed.
           format: date-time
     BaseCartAddress:
       type: object
@@ -88277,6 +88302,9 @@ components:
         metadata:
           type: object
           description: The item's metadata.
+          externalDocs:
+            url: https://docs.medusajs.com/api/store#manage-metadata
+            description: Learn how to manage metadata
         created_at:
           type: string
           format: date-time
@@ -88295,50 +88323,50 @@ components:
         original_total:
           type: number
           title: original_total
-          description: The item's original total.
+          description: The line item's original total before discounts, including taxes.
         original_subtotal:
           type: number
           title: original_subtotal
-          description: The item's original subtotal.
+          description: The line item's original subtotal before discounts, excluding taxes.
         original_tax_total:
           type: number
           title: original_tax_total
-          description: The item's original tax total.
+          description: The line item's original tax total before discounts.
         item_total:
           type: number
           title: item_total
-          description: The item's item total.
+          description: The line item's total after discounts, including taxes.
         item_subtotal:
           type: number
           title: item_subtotal
-          description: The item's item subtotal.
+          description: The line item's subtotal before discounts, excluding taxes.
         item_tax_total:
           type: number
           title: item_tax_total
-          description: The item's item tax total.
+          description: The line item's tax total after discounts.
         total:
           type: number
           title: total
-          description: The item's total.
+          description: The line item's total after discounts, including taxes.
         subtotal:
           type: number
           title: subtotal
-          description: The item's subtotal.
+          description: The line item's subtotal before discounts, excluding taxes.
         tax_total:
           type: number
           title: tax_total
-          description: The item's tax total.
+          description: The line item's tax total after discounts.
         discount_total:
           type: number
           title: discount_total
-          description: The item's discount total.
+          description: The total amount of discounts applied to the line item, including the tax portion of discounts.
         discount_tax_total:
           type: number
           title: discount_tax_total
-          description: The item's discount tax total.
+          description: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
     BaseCartShippingMethod:
       type: object
-      description: The tax line's shipping method.
+      description: A cart's shipping method.
       x-schemaName: BaseCartShippingMethod
       required:
         - id
@@ -88356,7 +88384,7 @@ components:
         cart_id:
           type: string
           title: cart_id
-          description: The shipping method's cart id.
+          description: The ID of the cart this shipping method belongs to.
         name:
           type: string
           title: name
@@ -88372,17 +88400,22 @@ components:
         is_tax_inclusive:
           type: boolean
           title: is_tax_inclusive
-          description: The shipping method's is tax inclusive.
+          description: Whether the shipping method's amount is tax inclusive.
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The shipping method's shipping option id.
+          description: The ID of the shipping option this method was created from.
         data:
           type: object
-          description: The shipping method's data.
+          description: The shipping method's data, useful for fulfillment handling by third-party services.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/concepts#data-property
         metadata:
           type: object
-          description: The shipping method's metadata.
+          description: The shipping method's metadata, can hold custom key-value pairs.
+          externalDocs:
+            url: https://docs.medusajs.com/api/store#manage-metadata
+            description: Learn how to manage metadata
         tax_lines:
           type: array
           description: The shipping method's tax lines.
@@ -88390,51 +88423,51 @@ components:
             $ref: '#/components/schemas/BaseShippingMethodTaxLine'
         adjustments:
           type: array
-          description: The shipping method's adjustments.
+          description: The shipping method's adjustments, such as applied promotions.
           items:
             $ref: '#/components/schemas/BaseShippingMethodAdjustment'
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The shipping method's created at.
+          description: The date the shipping method was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The shipping method's updated at.
+          description: The date the shipping method was updated.
         original_total:
           type: number
           title: original_total
-          description: The shipping method's original total.
+          description: The shipping method's original total before discounts, including taxes.
         original_subtotal:
           type: number
           title: original_subtotal
-          description: The shipping method's original subtotal.
+          description: The shipping method's original subtotal before discounts, excluding taxes.
         original_tax_total:
           type: number
           title: original_tax_total
-          description: The shipping method's original tax total.
+          description: The shipping method's original tax total before discounts.
         total:
           type: number
           title: total
-          description: The shipping method's total.
+          description: The shipping method's total after discounts, including taxes.
         subtotal:
           type: number
           title: subtotal
-          description: The shipping method's subtotal.
+          description: The shipping method's subtotal before discounts, excluding taxes.
         tax_total:
           type: number
           title: tax_total
-          description: The shipping method's tax total.
+          description: The shipping method's tax total after discounts.
         discount_total:
           type: number
           title: discount_total
-          description: The shipping method's discount total.
+          description: The total amount of discounts applied to the shipping method, including the tax portion of discounts.
         discount_tax_total:
           type: number
           title: discount_tax_total
-          description: The shipping method's discount tax total.
+          description: The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts.
     BaseClaimItem:
       type: object
       description: The claim item's details.
@@ -88632,7 +88665,7 @@ components:
           description: Whether the provider is enabled.
     BaseLineItemAdjustment:
       type: object
-      description: The adjustment's adjustments.
+      description: The adjustment's details.
       x-schemaName: BaseLineItemAdjustment
       required:
         - item
@@ -88648,7 +88681,7 @@ components:
         item_id:
           type: string
           title: item_id
-          description: The adjustment's item id.
+          description: The ID of the item this adjustment applies on.
         id:
           type: string
           title: id
@@ -88664,7 +88697,7 @@ components:
         cart_id:
           type: string
           title: cart_id
-          description: The adjustment's cart id.
+          description: The ID of the cart this adjustment belongs to.
         description:
           type: string
           title: description
@@ -88672,24 +88705,24 @@ components:
         promotion_id:
           type: string
           title: promotion_id
-          description: The adjustment's promotion id.
+          description: The ID of the promotion applied by this adjustment.
         provider_id:
           type: string
           title: provider_id
-          description: The adjustment's provider id.
+          description: The adjustment's provider ID.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The adjustment's created at.
+          description: The date the adjustment was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The adjustment's updated at.
+          description: The date the adjustment was updated.
     BaseLineItemTaxLine:
       type: object
-      description: The tax line's tax lines.
+      description: The tax line's details.
       x-schemaName: BaseLineItemTaxLine
       required:
         - item
@@ -88707,15 +88740,15 @@ components:
         item_id:
           type: string
           title: item_id
-          description: The tax line's item id.
+          description: The ID of the line item this tax line belongs to.
         total:
           type: number
           title: total
-          description: The tax line's total.
+          description: The item's total including taxes and promotions.
         subtotal:
           type: number
           title: subtotal
-          description: The tax line's subtotal.
+          description: The item's total excluding taxes, including promotions.
         id:
           type: string
           title: id
@@ -88727,29 +88760,29 @@ components:
         tax_rate_id:
           type: string
           title: tax_rate_id
-          description: The tax line's tax rate id.
+          description: The ID of the applied tax rate.
         code:
           type: string
           title: code
-          description: The tax line's code.
+          description: The code that the tax rate is identified by.
         rate:
           type: number
           title: rate
-          description: The tax line's rate.
+          description: The charged rate.
         provider_id:
           type: string
           title: provider_id
-          description: The tax line's provider id.
+          description: The ID of the tax provider used to calculate the tax line.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The tax line's created at.
+          description: The date the tax line was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The tax line's updated at.
+          description: The date the tax line was updated.
     BaseOrder:
       type: object
       description: The order's details.
@@ -90930,8 +90963,55 @@ components:
           description: The refund reason's code.
     BaseRegion:
       type: object
-      description: The cart's region.
+      description: The region's details.
       x-schemaName: BaseRegion
+      required:
+        - id
+        - name
+        - currency_code
+      properties:
+        id:
+          type: string
+          title: id
+          description: The region's ID.
+        name:
+          type: string
+          title: name
+          description: The region's name.
+        currency_code:
+          type: string
+          title: currency_code
+          description: The region's currency code.
+        automatic_taxes:
+          type: boolean
+          title: automatic_taxes
+          description: The region's automatic taxes.
+        countries:
+          type: array
+          description: The region's countries.
+          items:
+            $ref: '#/components/schemas/BaseRegionCountry'
+        payment_providers:
+          type: array
+          description: The region's payment providers.
+          items:
+            $ref: '#/components/schemas/AdminPaymentProvider'
+        metadata:
+          type: object
+          description: The region's metadata.
+          externalDocs:
+            url: https://docs.medusajs.com/api/store#manage-metadata
+            description: Learn how to manage metadata
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The region's created at.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The region's updated at.
     BaseRegionCountry:
       type: object
       description: The country's details.
@@ -90992,7 +91072,7 @@ components:
           example: In
     BaseShippingMethodAdjustment:
       type: object
-      description: The adjustment's adjustments.
+      description: The adjustment's details.
       x-schemaName: BaseShippingMethodAdjustment
       required:
         - shipping_method
@@ -91008,7 +91088,7 @@ components:
         shipping_method_id:
           type: string
           title: shipping_method_id
-          description: The adjustment's shipping method id.
+          description: The ID of the shipping method this adjustment applies on.
         id:
           type: string
           title: id
@@ -91024,7 +91104,7 @@ components:
         cart_id:
           type: string
           title: cart_id
-          description: The adjustment's cart id.
+          description: The ID of the associated cart.
         description:
           type: string
           title: description
@@ -91032,24 +91112,24 @@ components:
         promotion_id:
           type: string
           title: promotion_id
-          description: The adjustment's promotion id.
+          description: The ID of the applied promotion.
         provider_id:
           type: string
           title: provider_id
-          description: The adjustment's provider id.
+          description: The adjustment's provider ID.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The adjustment's created at.
+          description: The date the adjustment was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The adjustment's updated at.
+          description: The date the adjustment was updated.
     BaseShippingMethodTaxLine:
       type: object
-      description: The tax line's tax lines.
+      description: The tax line's details
       x-schemaName: BaseShippingMethodTaxLine
       required:
         - shipping_method
@@ -91067,15 +91147,15 @@ components:
         shipping_method_id:
           type: string
           title: shipping_method_id
-          description: The tax line's shipping method id.
+          description: The ID of the shipping method this tax line belongs to.
         total:
           type: number
           title: total
-          description: The tax line's total.
+          description: The method's total including taxes and promotions.
         subtotal:
           type: number
           title: subtotal
-          description: The tax line's subtotal.
+          description: The method's total excluding taxes, including promotions.
         id:
           type: string
           title: id
@@ -91087,29 +91167,29 @@ components:
         tax_rate_id:
           type: string
           title: tax_rate_id
-          description: The tax line's tax rate id.
+          description: The ID of the applied tax rate.
         code:
           type: string
           title: code
-          description: The tax line's code.
+          description: The code that the tax rate is identified by.
         rate:
           type: number
           title: rate
-          description: The tax line's rate.
+          description: The charged rate.
         provider_id:
           type: string
           title: provider_id
-          description: The tax line's provider id.
+          description: The ID of the tax provider used to calculate the tax line.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The tax line's created at.
+          description: The date the tax line was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The tax line's updated at.
+          description: The date the tax line was updated.
     CampaignResponse:
       type: object
       description: The campaign's details.
@@ -93104,7 +93184,7 @@ components:
           description: The tax line's data.
         metadata:
           type: object
-          description: The tax line's metadata.
+          description: The tax line's metadata, can hold custom key-value pairs.
     OrderReturnItem:
       type: object
       description: The item's items.
@@ -93406,7 +93486,7 @@ components:
           description: The tax line's data.
         metadata:
           type: object
-          description: The tax line's metadata.
+          description: The tax line's metadata. Can hold custom key-value pairs.
     OrderTransaction:
       type: object
       description: The transaction's details.
@@ -93476,7 +93556,7 @@ components:
           description: The order version that the transaction belongs to.
     PriceRule:
       type: object
-      description: The rule's rules.
+      description: The price rule's details.
       x-schemaName: PriceRule
       required:
         - attribute
@@ -93489,6 +93569,7 @@ components:
           description: The rule's attribute.
         operator:
           type: string
+          title: operator
           description: The rule's operator.
           enum:
             - gt
@@ -93684,7 +93765,7 @@ components:
           description: The order transfer's token issued when the transfer was requested.
     StoreAddCartShippingMethodsBase:
       type: object
-      description: SUMMARY
+      description: The shipping method's details.
       x-schemaName: StoreAddCartShippingMethodsBase
       required:
         - option_id
@@ -93692,10 +93773,13 @@ components:
         option_id:
           type: string
           title: option_id
-          description: The cart's option id.
+          description: The ID of the shipping option to add to the cart.
         data:
           type: object
-          description: The cart's data.
+          description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping#data-request-body-parameter
+            description: Learn more about the data parameter.
     StoreAddGiftCardToCart:
       type: object
       description: The details to add a gift card to the cart.
@@ -93733,51 +93817,47 @@ components:
         id:
           type: string
           title: id
-          description: The calculated price's ID.
+          description: The ID of the price set from which the price was selected.
         is_calculated_price_price_list:
           type: boolean
           title: is_calculated_price_price_list
-          description: The calculated price's is calculated price price list.
+          description: Whether the calculated price belongs to a price list.
         is_calculated_price_tax_inclusive:
           type: boolean
           title: is_calculated_price_tax_inclusive
-          description: The calculated price's is calculated price tax inclusive.
+          description: Whether the calculated price is tax inclusive.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/pricing/tax-inclusive-pricing
         calculated_amount:
           type: number
           title: calculated_amount
-          description: The calculated price's calculated amount.
+          description: The amount of the calculated price, or `null` if there isn't a calculated price. This is the amount shown to the customer.
         calculated_amount_with_tax:
           type: number
           title: calculated_amount_with_tax
-          description: The calculated price's calculated amount with tax.
+          description: The `calculated_amount` with taxes applied.
         calculated_amount_without_tax:
           type: number
           title: calculated_amount_without_tax
-          description: The calculated price's calculated amount without tax.
+          description: The `calculated_amount` without taxes applied.
         is_original_price_price_list:
           type: boolean
           title: is_original_price_price_list
-          description: The calculated price's is original price price list.
+          description: Whether the original price belongs to a price list.
         is_original_price_tax_inclusive:
           type: boolean
           title: is_original_price_tax_inclusive
-          description: The calculated price's is original price tax inclusive.
+          description: Whether the original price is tax inclusive.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/pricing/tax-inclusive-pricing
         original_amount:
           type: number
           title: original_amount
-          description: The calculated price's original amount.
-        original_amount_with_tax:
-          type: number
-          title: original_amount_with_tax
-          description: The calculated price's original amount with tax.
-        original_amount_without_tax:
-          type: number
-          title: original_amount_without_tax
-          description: The calculated price's original amount without tax.
+          description: The amount of the original price, or `null` if there isn't an original price. This amount is useful to compare with the `calculated_amount`, such as to check for discounted value.
         currency_code:
           type: string
           title: currency_code
-          description: The calculated price's currency code.
+          description: The currency code of the calculated price, or `null` if there isn't a calculated price.
         calculated_price:
           type: object
           description: The calculated price's details.
@@ -93791,26 +93871,26 @@ components:
             id:
               type: string
               title: id
-              description: The calculated price's ID.
+              description: The ID of the price.
             price_list_id:
               type: string
               title: price_list_id
-              description: The calculated price's price list id.
+              description: The ID of the associated price list.
             price_list_type:
               type: string
               title: price_list_type
-              description: The calculated price's price list type.
+              description: The price list's type. For example, `sale` or `override`.
             min_quantity:
               type: number
               title: min_quantity
-              description: The calculated price's min quantity.
+              description: The minimum quantity required in the cart for the price to apply.
             max_quantity:
               type: number
               title: max_quantity
-              description: The calculated price's max quantity.
+              description: The maximum quantity required in the cart for the price to apply.
         original_price:
           type: object
-          description: The calculated price's original price.
+          description: The origin price's details.
           required:
             - id
             - price_list_id
@@ -93821,23 +93901,31 @@ components:
             id:
               type: string
               title: id
-              description: The original price's ID.
+              description: The ID of the price.
             price_list_id:
               type: string
               title: price_list_id
-              description: The original price's price list id.
+              description: The ID of the associated price list.
             price_list_type:
               type: string
               title: price_list_type
-              description: The original price's price list type.
+              description: The price list's type. For example, `sale` or `override`.
             min_quantity:
               type: number
               title: min_quantity
-              description: The original price's min quantity.
+              description: The minimum quantity required in the cart for the price to apply.
             max_quantity:
               type: number
               title: max_quantity
-              description: The original price's max quantity.
+              description: The maximum quantity required in the cart for the price to apply.
+        original_amount_with_tax:
+          type: number
+          title: original_amount_with_tax
+          description: The original amount with taxes applied.
+        original_amount_without_tax:
+          type: number
+          title: original_amount_without_tax
+          description: The original amount without taxes.
     StoreCart:
       type: object
       description: The cart's details.
@@ -94522,7 +94610,7 @@ components:
           description: The total amount of discounts applied to the shipping method's tax. Represents the tax portion of discounts. This field is only available if you expand the `shipping_methods.*` relation. Learn more in the [Cart Totals](https://docs.medusajs.com/resources/storefront-development/cart/totals#retrieve-and-show-shipping-method-totals) guide.
     StoreCartShippingOption:
       type: object
-      description: The shipping option's shipping options.
+      description: The shipping option's details.
       x-schemaName: StoreCartShippingOption
       required:
         - id
@@ -94549,28 +94637,36 @@ components:
           description: The shipping option's name.
         price_type:
           type: string
-          description: The shipping option's price type.
+          description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.
           enum:
-            - calculated
             - flat
+            - calculated
         service_zone_id:
           type: string
           title: service_zone_id
-          description: The shipping option's service zone id.
-        shipping_profile_id:
-          type: string
-          title: shipping_profile_id
-          description: The shipping option's shipping profile id.
+          description: The ID of the service zone the shipping option belongs to.
         provider_id:
           type: string
           title: provider_id
-          description: The shipping option's provider id.
-        data:
+          description: The ID of the fulfillment provider handling this option.
+        provider:
           type: object
-          description: The shipping option's data.
+          description: The fulfillment provider's details.
+          required:
+            - id
+            - is_enabled
+          properties:
+            id:
+              type: string
+              title: id
+              description: The provider's ID.
+            is_enabled:
+              type: boolean
+              title: is_enabled
+              description: Whether the provider is enabled.
         type:
           type: object
-          description: The shipping option's type.
+          description: The shipping option type's details.
           required:
             - id
             - label
@@ -94593,25 +94689,19 @@ components:
               type: string
               title: code
               description: The type's code.
-        provider:
-          type: object
-          description: The shipping option's provider.
-          required:
-            - id
-            - is_enabled
-          properties:
-            id:
-              type: string
-              title: id
-              description: The provider's ID.
-            is_enabled:
-              type: boolean
-              title: is_enabled
-              description: The provider's is enabled.
+        shipping_profile_id:
+          type: string
+          title: shipping_profile_id
+          description: The ID of the associated shipping profile.
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount for the cart. For a shipping option whose `price_type` is `calculated`, this amount is computed on the fly by the fulfillment provider against the cart.
+        data:
+          type: object
+          description: The shipping option's data, useful for the provider handling fulfillment.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
         prices:
           type: array
           description: The shipping option's prices.
@@ -94622,7 +94712,7 @@ components:
         insufficient_inventory:
           type: boolean
           title: insufficient_inventory
-          description: The shipping option's insufficient inventory.
+          description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
     StoreClaimStoreCreditAccountParams:
       type: object
       description: The parameters required to claim a store credit account.
@@ -95260,7 +95350,7 @@ components:
           description: The order transfer's token issued when the transfer was requested.
     StoreFulfillmentAddress:
       type: object
-      description: The location's address.
+      description: The location's address details.
       x-schemaName: StoreFulfillmentAddress
       required:
         - id
@@ -95288,11 +95378,11 @@ components:
         address_1:
           type: string
           title: address_1
-          description: The address's address 1.
+          description: The first line of the address.
         address_2:
           type: string
           title: address_2
-          description: The address's address 2.
+          description: The second line of the address.
         city:
           type: string
           title: city
@@ -95301,6 +95391,7 @@ components:
           type: string
           title: country_code
           description: The address's country code.
+          example: us
         province:
           type: string
           title: province
@@ -95315,22 +95406,22 @@ components:
           description: The address's phone.
         metadata:
           type: object
-          description: The address's metadata.
+          description: The address's metadata. Can hold custom key-value pairs.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The address's created at.
+          description: The date the address was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The address's updated at.
+          description: The date the address was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The address's deleted at.
+          description: The date the address was deleted.
     StoreGiftCard:
       type: object
       description: The gift card's details.
@@ -96443,7 +96534,7 @@ components:
         - status
     StorePrice:
       type: object
-      description: The price's prices.
+      description: The price's details.
       x-schemaName: StorePrice
       required:
         - id
@@ -96459,7 +96550,8 @@ components:
         currency_code:
           type: string
           title: currency_code
-          description: The price's currency code.
+          description: The price's ISO 2 currency code.
+          example: usd
         amount:
           type: number
           title: amount
@@ -96467,19 +96559,19 @@ components:
         min_quantity:
           type: number
           title: min_quantity
-          description: The price's min quantity.
+          description: The minimum quantity required in the cart for the price to apply.
         max_quantity:
           type: number
           title: max_quantity
-          description: The price's max quantity.
+          description: The maximum quantity required in the cart for the price to apply.
         price_rules:
           type: array
-          description: The price's price rules.
+          description: The price's rules.
           items:
             $ref: '#/components/schemas/StorePriceRule'
     StorePriceRule:
       type: object
-      description: The price rule's price rules.
+      description: The price rule's details.
       x-schemaName: StorePriceRule
       required:
         - id
@@ -97679,19 +97771,19 @@ components:
             description: Learn how to manage metadata
     StoreShippingOptionListResponse:
       type: object
-      description: SUMMARY
+      description: The list of shipping options.
       x-schemaName: StoreShippingOptionListResponse
       required:
         - shipping_options
       properties:
         shipping_options:
           type: array
-          description: The shipping option's shipping options.
+          description: The list of shipping options.
           items:
             allOf:
               - $ref: '#/components/schemas/StoreCartShippingOption'
               - type: object
-                description: The shipping option's shipping options.
+                description: The shipping option's details.
                 required:
                   - service_zone
                 properties:
@@ -97710,7 +97802,7 @@ components:
                       fulfillment_set_id:
                         type: string
                         title: fulfillment_set_id
-                        description: The service zone's fulfillment set id.
+                        description: The ID of the service zone's fulfillment set.
                       fulfillment_set:
                         type: object
                         description: The service zone's fulfillment set.
@@ -97729,7 +97821,7 @@ components:
                             description: The fulfillment set's type.
                           location:
                             type: object
-                            description: The fulfillment set's location.
+                            description: The fulfillment set's location details.
                             required:
                               - id
                               - address
@@ -97740,9 +97832,10 @@ components:
                                 description: The location's ID.
                               address:
                                 $ref: '#/components/schemas/StoreFulfillmentAddress'
+            description: The shipping option's details.
     StoreShippingOptionResponse:
       type: object
-      description: SUMMARY
+      description: The shipping option's details.
       x-schemaName: StoreShippingOptionResponse
       required:
         - shipping_option

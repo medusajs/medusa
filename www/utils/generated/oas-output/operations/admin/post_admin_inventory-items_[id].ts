@@ -105,7 +105,7 @@
  *       ```
  *     description: Emitted when inventory items are updated.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  * 
 */
 

@@ -70,6 +70,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: authorizePaymentSessionForOrderWorkflow
  * x-events: []
- * 
+ * x-since: 2.17.0
 */
 

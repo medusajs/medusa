@@ -132,7 +132,7 @@
  *       ```
  *     description: Emitted when inventory items are created.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  *   - name: inventory-item.deleted
  *     payload: |-
  *       ```ts
@@ -142,7 +142,7 @@
  *       ```
  *     description: Emitted when inventory items are deleted.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  *   - name: inventory-level.created
  *     payload: |-
  *       ```ts
@@ -152,7 +152,7 @@
  *       ```
  *     description: Emitted when inventory levels are created.
  *     deprecated: false
- *     since: 2.17.3
+ *     since: 2.18.0
  * 
 */
 

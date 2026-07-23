@@ -1,7 +1,7 @@
 /**
  * @schema AdminTransferOrderToGuest
  * type: object
- * description: SUMMARY
+ * description: The details of the order transfer to a guest.
  * x-schemaName: AdminTransferOrderToGuest
  * required:
  *   - email
@@ -9,16 +9,16 @@
  *   email:
  *     type: string
  *     title: email
- *     description: The order's email.
+ *     description: The email to which the order will be transferred.
  *     format: email
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The order's internal note.
+ *     description: The internal note for the order transfer.
  *   description:
  *     type: string
  *     title: description
- *     description: The order's description.
+ *     description: Details of the order transfer to a guest.
  * 
 */
 

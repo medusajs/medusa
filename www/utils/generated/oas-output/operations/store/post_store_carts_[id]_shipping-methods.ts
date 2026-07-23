@@ -2,7 +2,14 @@
  * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: PostCartsIdShippingMethods
  * summary: Add Shipping Method to Cart
- * description: Add a Shipping Method to a cart
+ * x-sidebar-summary: Add Shipping Method
+ * description: |
+ *   Add a shipping method to a cart. Use this API route when the customer chooses their preferred shipping option.
+ *
+ *   If the chosen shipping option's `price_type` is `calculated`, its price is computed by the associated fulfillment provider when it's added to the cart. If the provider fails to calculate the price, this route returns an error.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
+ *   description: "Storefront guide: How to implement shipping during checkout."
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -59,22 +66,23 @@
  *           - allOf:
  *               - $ref: "#/components/schemas/StoreAddCartShippingMethodsBase"
  *               - type: object
- *                 description: SUMMARY
+ *                 description: The shipping method's details.
  *                 properties:
  *                   additional_data:
  *                     type: object
  *                     description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
  *           - allOf:
  *               - type: array
- *                 description: SUMMARY
+ *                 description: An array of shipping methods to add to the cart.
  *                 items:
  *                   $ref: "#/components/schemas/StoreAddCartShippingMethodsBase"
  *               - type: object
- *                 description: SUMMARY
+ *                 description: The shipping method's details.
  *                 properties:
  *                   additional_data:
  *                     type: object
  *                     description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
+ *         description: The shipping method's details.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -106,7 +114,11 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/store/carts/{id}/shipping-methods' \
- *       -H 'x-publishable-api-key: {your_publishable_api_key}'
+ *       -H 'Content-Type: application/json' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}' \
+ *       --data-raw '{
+ *         "option_id": "{value}"
+ *       }'
  * tags:
  *   - Carts
  * responses:

@@ -1,8 +1,12 @@
 /**
  * @oas [post] /store/carts/{id}/taxes
  * operationId: PostCartsIdTaxes
- * summary: Add Tax to Cart
- * description: Add a Tax to a cart
+ * summary: Calculate Cart Taxes
+ * x-sidebar-summary: Calculate Taxes
+ * description: |-
+ *   Calculate the cart's tax lines and amounts.
+ *
+ *   Medusa recalculates a cart's tax lines automatically on cart changes when the cart's region has `automatic_taxes` enabled, so you typically don't need to use this route. Use this route to force a recalculation, such as when `automatic_taxes` is disabled, which also triggers a fresh calculation from your third-party tax provider, if you use one.
  * x-authenticated: false
  * parameters:
  *   - name: id

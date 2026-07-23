@@ -1,7 +1,7 @@
 /**
  * @schema StorePriceRule
  * type: object
- * description: The price rule's price rules.
+ * description: The price rule's details.
  * x-schemaName: StorePriceRule
  * required:
  *   - id

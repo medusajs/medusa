@@ -41,35 +41,16 @@
  *     title: default_visible
  *     description: Whether the column is visible by default.
  *   data_type:
- *     oneOf:
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - type: string
- *         title: data_type
- *         description: The column's data type.
- *       - allOf:
- *           - type: string
- *             title: data_type
- *             description: The column's data type.
- *           - type: object
- *             description: The column's data type.
+ *     type: string
  *     description: The data type of the column's value.
+ *     enum:
+ *       - string
+ *       - number
+ *       - boolean
+ *       - object
+ *       - date
+ *       - currency
+ *       - enum
  *   semantic_type:
  *     type: string
  *     title: semantic_type
