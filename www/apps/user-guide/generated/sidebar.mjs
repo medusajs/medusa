@@ -65,6 +65,15 @@ export const generatedSidebars = [
             "title": "Lists",
             "description": "",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/tips/table-views",
+            "title": "Configure Table Views",
+            "description": "",
+            "children": []
           }
         ]
       },
@@ -566,6 +575,14 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Product Tags",
             "path": "/settings/product-tags",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Property Labels",
+            "path": "/settings/property-labels",
             "children": []
           },
           {

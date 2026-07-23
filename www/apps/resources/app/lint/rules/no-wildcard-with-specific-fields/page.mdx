@@ -10,13 +10,19 @@ export const metadata = {
 
 This rule disallows combining the `*` wildcard with specific top-level fields in a `query.graph` or `useQueryGraphStep` field selection, because `*` silently drops those specific field selections.
 
+<Note>
+
+This rule is available since Medusa [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
+
+</Note>
+
 ## Severity
 
 `warn`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
 
 ## What it Targets
 
-This rule targets calls to `query.graph` and `useQueryGraphStep` anywhere in your project. It reports a `fields` array that contains both the `*` wildcard and one or more specific top-level fields.
+This rule targets usages of `query.graph` and `useQueryGraphStep` anywhere in your project. It reports a `fields` array that contains both the `*` wildcard and one or more specific top-level fields.
 
 The following code is reported by the rule:
 
@@ -28,6 +34,12 @@ const { data } = await query.graph({
 ```
 
 Remove the specific top-level fields if you want all of the entity's own fields, since `*` already selects them:
+
+<Note title="Important">
+
+It's highly discouraged to use `*` in production code, as it can lead to performance issues with large data models. It's better to explicitly list the fields you need.
+
+</Note>
 
 ```ts title="src/workflows/example.ts"
 const { data } = await query.graph({

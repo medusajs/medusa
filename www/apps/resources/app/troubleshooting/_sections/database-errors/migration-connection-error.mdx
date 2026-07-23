@@ -66,17 +66,3 @@ module.exports = defineConfig({
 ```
 
 Refer to the [databaseDriverOptions configuration documentation](!docs!/learn/configurations/medusa-config#databaseDriverOptions) to learn more about configuring the database connection.
-
-#### Migration Connection Timeout
-
-By default, Medusa waits up to 10 seconds for a database connection before failing the migration. If your database takes longer to become available (for example, in a slow network environment), you can increase this timeout by setting the `MEDUSA_DB_MIGRATION_CONNECTION_TIMEOUT` environment variable to the number of milliseconds to wait:
-
-```bash
-MEDUSA_DB_MIGRATION_CONNECTION_TIMEOUT=30000
-```
-
-#### Fatal Connection Errors
-
-For certain configuration errors, such as a database that doesn't exist, an incorrect password, or insufficient privileges, Medusa fails immediately without retrying. This means you see the error right away rather than waiting for multiple retry attempts.
-
-If you encounter one of these errors, check your database URL and credentials, and make sure the database exists and the user has the necessary privileges.

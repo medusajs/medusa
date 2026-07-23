@@ -20,7 +20,7 @@ If no customer exists with the given email address, Medusa creates a new guest c
 
 ---
 
-## transferOrderToGuestWorkflow
+## Transfer Order to Guest Workflow
 
 The transfer is handled by the `transferOrderToGuestWorkflow`, which is executed by the [Transfer Order to Guest API route](https://docs.medusajs.com/api/admin#orders_postordersidtransferguest).
 
@@ -57,20 +57,9 @@ Before applying the transfer, the workflow validates that:
 - The resolved customer is not the same as the order's current customer.
 - The resolved customer is a guest customer. Transfers to registered customer accounts are not allowed.
 
-### How It Works
-
-The workflow performs the following steps:
-
-1. Retrieves the order by its ID.
-2. Finds an existing guest customer with the given email, or creates a new one.
-3. Validates the transfer using the rules above.
-4. Creates an order change of type `transfer`.
-5. Adds a `TRANSFER_CUSTOMER` order change action referencing the new customer.
-6. Confirms the order change immediately, applying the transfer to the order.
-
 ---
 
-## Difference from Request Order Transfer
+## Difference from Request Order Transfer Workflow
 
 The `transferOrderToGuestWorkflow` is intended for admin users and applies the transfer immediately.
 

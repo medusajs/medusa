@@ -27,18 +27,6 @@ The payment flow consists of the following steps:
 
 ---
 
-## Payment Validation During Cart Completion
-
-When a customer completes their cart, Medusa validates the cart's payment sessions but doesn't validate payment amounts.
-
-The cart's payment collection must have at least one payment session in a processable status: `pending`, `requires_more`, `authorized`, `captured`, or `pending_authorization`. If the payment collection hasn't been initiated, or no payment session is in a processable status, the cart completion fails with an error.
-
-Medusa doesn't compare the authorized or captured amount against the cart's total. It neither requires the amount to equal the cart's total nor enforces a minimum amount. The payment session's amount is set to the cart's total when the payment collection is created or refreshed. So, if the cart changes after its payment collection is created without the payment collection being refreshed, Medusa authorizes or captures the payment session's existing amount and records it in the order's transactions as-is.
-
-If the cart's total is zero and covered by credit lines, Medusa can complete the cart without a payment session.
-
----
-
 ## Implement Payment Checkout Step in Storefront
 
 If you're using the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), the checkout flow is already implemented with the payment step.

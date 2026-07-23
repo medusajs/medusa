@@ -632,6 +632,46 @@ export const filesMap = [
     "pathname": "/commerce-modules/sales-channel/workflows"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/admin-widget-zones/page.mdx",
+    "pathname": "/commerce-modules/settings/admin-widget-zones"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/concepts/page.mdx",
+    "pathname": "/commerce-modules/settings/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/configure-view-configurations/page.mdx",
+    "pathname": "/commerce-modules/settings/configure-view-configurations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/js-sdk/page.mdx",
+    "pathname": "/commerce-modules/settings/js-sdk"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/layout-configurations/page.mdx",
+    "pathname": "/commerce-modules/settings/layout-configurations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/page.mdx",
+    "pathname": "/commerce-modules/settings"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/property-labels/page.mdx",
+    "pathname": "/commerce-modules/settings/property-labels"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/user-preferences/page.mdx",
+    "pathname": "/commerce-modules/settings/user-preferences"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/view-configurations/page.mdx",
+    "pathname": "/commerce-modules/settings/view-configurations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/settings/workflows/page.mdx",
+    "pathname": "/commerce-modules/settings/workflows"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/stock-location/admin-widget-zones/page.mdx",
     "pathname": "/commerce-modules/stock-location/admin-widget-zones"
   },
@@ -16744,6 +16784,14 @@ export const filesMap = [
     "pathname": "/references/sales-channel/models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/settings/page.json",
+    "pathname": "/references/modules/settings"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/settings_models/page.json",
+    "pathname": "/references/settings/models"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/stock_location_next/page.json",
     "pathname": "/references/modules/stock_location_next"
   },
@@ -20798,6 +20846,422 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/sales_channel_models/variables/sales_channel_models.SalesChannel/page.json",
     "pathname": "/references/sales-channel/models/SalesChannel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.clearMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.getMessages/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.getMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.save/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.save"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.saveRawMessageData/page.json",
+    "pathname": "/references/settings/IMessageAggregator/methods/settings.IMessageAggregator.saveRawMessageData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/IModuleService/methods/settings.IModuleService.__joinerConfig/page.json",
+    "pathname": "/references/settings/IModuleService/methods/settings.IModuleService.__joinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearActiveViewConfiguration/page.json",
+    "pathname": "/references/settings/clearActiveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.clearLayoutConfiguration/page.json",
+    "pathname": "/references/settings/clearLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createLayoutConfigurations/page.json",
+    "pathname": "/references/settings/createLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createPropertyLabels/page.json",
+    "pathname": "/references/settings/createPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createUserPreferences/page.json",
+    "pathname": "/references/settings/createUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.createViewConfigurations/page.json",
+    "pathname": "/references/settings/createViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteLayoutConfigurations/page.json",
+    "pathname": "/references/settings/deleteLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deletePropertyLabels/page.json",
+    "pathname": "/references/settings/deletePropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteUserPreferences/page.json",
+    "pathname": "/references/settings/deleteUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.deleteViewConfigurations/page.json",
+    "pathname": "/references/settings/deleteViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.generateEntityColumns/page.json",
+    "pathname": "/references/settings/generateEntityColumns"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveLayoutScope/page.json",
+    "pathname": "/references/settings/getActiveLayoutScope"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getActiveViewConfiguration/page.json",
+    "pathname": "/references/settings/getActiveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultLayoutConfiguration/page.json",
+    "pathname": "/references/settings/getSystemDefaultLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getSystemDefaultViewConfiguration/page.json",
+    "pathname": "/references/settings/getSystemDefaultViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.getUserPreference/page.json",
+    "pathname": "/references/settings/getUserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.hasEntity/page.json",
+    "pathname": "/references/settings/hasEntity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.isEntityDiscoveryInitialized/page.json",
+    "pathname": "/references/settings/isEntityDiscoveryInitialized"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountLayoutConfigurations/page.json",
+    "pathname": "/references/settings/listAndCountLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountPropertyLabels/page.json",
+    "pathname": "/references/settings/listAndCountPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountUserPreferences/page.json",
+    "pathname": "/references/settings/listAndCountUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listAndCountViewConfigurations/page.json",
+    "pathname": "/references/settings/listAndCountViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listDiscoverableEntities/page.json",
+    "pathname": "/references/settings/listDiscoverableEntities"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listLayoutConfigurations/page.json",
+    "pathname": "/references/settings/listLayoutConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listPropertyLabels/page.json",
+    "pathname": "/references/settings/listPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listUserPreferences/page.json",
+    "pathname": "/references/settings/listUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.listViewConfigurations/page.json",
+    "pathname": "/references/settings/listViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveLayoutConfiguration/page.json",
+    "pathname": "/references/settings/retrieveLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrievePropertyLabel/page.json",
+    "pathname": "/references/settings/retrievePropertyLabel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveUserPreference/page.json",
+    "pathname": "/references/settings/retrieveUserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.retrieveViewConfiguration/page.json",
+    "pathname": "/references/settings/retrieveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveLayoutScope/page.json",
+    "pathname": "/references/settings/setActiveLayoutScope"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setActiveViewConfiguration/page.json",
+    "pathname": "/references/settings/setActiveViewConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setLayoutConfiguration/page.json",
+    "pathname": "/references/settings/setLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setSystemDefaultLayoutConfiguration/page.json",
+    "pathname": "/references/settings/setSystemDefaultLayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.setUserPreference/page.json",
+    "pathname": "/references/settings/setUserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updatePropertyLabels/page.json",
+    "pathname": "/references/settings/updatePropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateUserPreferences/page.json",
+    "pathname": "/references/settings/updateUserPreferences"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.updateViewConfigurations/page.json",
+    "pathname": "/references/settings/updateViewConfigurations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/ISettingsModuleService/methods/settings.ISettingsModuleService.upsertPropertyLabels/page.json",
+    "pathname": "/references/settings/upsertPropertyLabels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.AdminColumn/page.json",
+    "pathname": "/references/settings/interfaces/settings.AdminColumn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.AdminEntityInfo/page.json",
+    "pathname": "/references/settings/interfaces/settings.AdminEntityInfo"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.BaseFilterable/page.json",
+    "pathname": "/references/settings/interfaces/settings.BaseFilterable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.Context/page.json",
+    "pathname": "/references/settings/interfaces/settings.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.CreateLayoutConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.CreateLayoutConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.CreatePropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.CreatePropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.CreateViewConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.CreateViewConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FilterableLayoutConfigurationProps/page.json",
+    "pathname": "/references/settings/interfaces/settings.FilterableLayoutConfigurationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FilterableUserPreferenceProps/page.json",
+    "pathname": "/references/settings/interfaces/settings.FilterableUserPreferenceProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FilterableViewConfigurationProps/page.json",
+    "pathname": "/references/settings/interfaces/settings.FilterableViewConfigurationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.FindConfig/page.json",
+    "pathname": "/references/settings/interfaces/settings.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.IMessageAggregator/page.json",
+    "pathname": "/references/settings/interfaces/settings.IMessageAggregator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.IModuleService/page.json",
+    "pathname": "/references/settings/interfaces/settings.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ISettingsModuleService/page.json",
+    "pathname": "/references/settings"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.JoinerServiceConfig/page.json",
+    "pathname": "/references/settings/interfaces/settings.JoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.JoinerServiceConfigAlias/page.json",
+    "pathname": "/references/settings/interfaces/settings.JoinerServiceConfigAlias"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutConfigurationData/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutConfigurationData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutConfigurationFilterableFields/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutConfigurationFilterableFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.LayoutWidgetPreference/page.json",
+    "pathname": "/references/settings/interfaces/settings.LayoutWidgetPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.MessageAggregatorFormat/page.json",
+    "pathname": "/references/settings/interfaces/settings.MessageAggregatorFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.PropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.PropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.PropertyLabelFilterableFields/page.json",
+    "pathname": "/references/settings/interfaces/settings.PropertyLabelFilterableFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.RelationshipFilterConfig/page.json",
+    "pathname": "/references/settings/interfaces/settings.RelationshipFilterConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UpdatePropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UpdatePropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UpdateViewConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UpdateViewConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UpsertPropertyLabelDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UpsertPropertyLabelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.UserPreferenceDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.UserPreferenceDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ViewConfigurationDTO/page.json",
+    "pathname": "/references/settings/interfaces/settings.ViewConfigurationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/interfaces/settings.ViewConfigurationFilterableFields/page.json",
+    "pathname": "/references/settings/interfaces/settings.ViewConfigurationFilterableFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Constructor/page.json",
+    "pathname": "/references/settings/types/settings.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.CrossModuleJoinLink/page.json",
+    "pathname": "/references/settings/types/settings.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/settings/types/settings.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/settings/types/settings.CrossModuleJoinTarget"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Event/page.json",
+    "pathname": "/references/settings/types/settings.Event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.EventMetadata/page.json",
+    "pathname": "/references/settings/types/settings.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ExpandScalar/page.json",
+    "pathname": "/references/settings/types/settings.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterQuery/page.json",
+    "pathname": "/references/settings/types/settings.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterQueryProperties/page.json",
+    "pathname": "/references/settings/types/settings.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterValue/page.json",
+    "pathname": "/references/settings/types/settings.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FilterValue2/page.json",
+    "pathname": "/references/settings/types/settings.FilterValue2"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.FindConfigOrder/page.json",
+    "pathname": "/references/settings/types/settings.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.InternalQueryOptions/page.json",
+    "pathname": "/references/settings/types/settings.InternalQueryOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.JoinerRelationship/page.json",
+    "pathname": "/references/settings/types/settings.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.LinkModulesExtraFields/page.json",
+    "pathname": "/references/settings/types/settings.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Message/page.json",
+    "pathname": "/references/settings/types/settings.Message"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ModuleJoinerConfig/page.json",
+    "pathname": "/references/settings/types/settings.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ModuleJoinerRelationship/page.json",
+    "pathname": "/references/settings/types/settings.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.OperatorMap/page.json",
+    "pathname": "/references/settings/types/settings.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.PrevLimit/page.json",
+    "pathname": "/references/settings/types/settings.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Primary/page.json",
+    "pathname": "/references/settings/types/settings.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Query/page.json",
+    "pathname": "/references/settings/types/settings.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.RawMessageFormat/page.json",
+    "pathname": "/references/settings/types/settings.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.ReadonlyPrimary/page.json",
+    "pathname": "/references/settings/types/settings.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings/types/settings.Scalar/page.json",
+    "pathname": "/references/settings/types/settings.Scalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.LayoutConfiguration/page.json",
+    "pathname": "/references/settings/models/LayoutConfiguration"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.PropertyLabel/page.json",
+    "pathname": "/references/settings/models/PropertyLabel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.UserPreference/page.json",
+    "pathname": "/references/settings/models/UserPreference"
+  },
+  {
+    "filePath": "/www/apps/resources/references/settings_models/variables/settings_models.ViewConfiguration/page.json",
+    "pathname": "/references/settings/models/ViewConfiguration"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/IMessageAggregator/methods/stock_location_next.IMessageAggregator.clearMessages/page.json",
