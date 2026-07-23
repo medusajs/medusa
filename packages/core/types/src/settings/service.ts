@@ -34,6 +34,10 @@ export interface ISettingsModuleService extends IModuleService {
    * @param {FindConfig<ViewConfigurationDTO>} config - The configurations determining how the view configuration is retrieved.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ViewConfigurationDTO>} The retrieved view configuration.
+   *
+   * @example
+   * const viewConfiguration =
+   *   await settingsModuleService.retrieveViewConfiguration("viewcfg_123")
    */
   retrieveViewConfiguration(
     id: string,
@@ -48,6 +52,13 @@ export interface ISettingsModuleService extends IModuleService {
    * @param {FindConfig<ViewConfigurationDTO>} config - The configurations determining how the view configurations are retrieved.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<ViewConfigurationDTO[]>} The list of view configurations.
+   *
+   * @example
+   * const viewConfigurations =
+   *   await settingsModuleService.listViewConfigurations({
+   *     entity: "product",
+   *     user_id: "user_123",
+   *   })
    */
   listViewConfigurations(
     filters?: FilterableViewConfigurationProps,
