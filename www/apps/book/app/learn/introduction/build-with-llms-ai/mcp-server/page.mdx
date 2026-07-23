@@ -72,6 +72,39 @@ claude
 
 If you're connecting with OAuth, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
 
+### Codex
+
+To connect to the Medusa MCP server in Codex, use one of the following methods:
+
+<CodeTabs group="mcp-server-auth">
+  <CodeTab label="OAuth" value="oauth">
+
+Run the following command in your terminal:
+
+```bash
+codex mcp add medusa --url https://docs.medusajs.com/mcp
+```
+
+  </CodeTab>
+  <CodeTab label="Personal Access Key" value="personal-access-key">
+
+```toml title="~/.codex/config.toml"
+[mcp_servers.medusa]
+url = "https://docs.medusajs.com/mcp"
+bearer_token_env_var = "{token}"
+```
+
+  </CodeTab>
+</CodeTabs>
+
+If you're connecting with OAuth, run the following command in your terminal to authenticate with your Cloud account:
+
+```bash
+codex mcp login medusa
+```
+
+This will open a browser window where you can log into your Cloud account to authenticate.
+
 ### Cursor
 
 Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):

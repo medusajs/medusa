@@ -175,7 +175,7 @@ export const PriceListProductSection = ({
   )
 }
 
-const ProductRowAction = ({
+export const ProductRowAction = ({
   product,
   priceList,
 }: {

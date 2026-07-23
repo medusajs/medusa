@@ -2,18 +2,25 @@ import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { useCustomer } from "../../../hooks/api/customers"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { PermissionsRequirementsProvider } from "../../../providers/permissions-provider"
 import { CustomerAddressSection } from "./components/customer-address-section/customer-address-section"
 import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerGroupSection } from "./components/customer-group-section"
+import { ConfigurableCustomerGroupSection } from "./components/customer-group-section/configurable-customer-group-section"
 import { CustomerOrderSection } from "./components/customer-order-section"
+import { ConfigurableCustomerOrderSection } from "./components/customer-order-section/configurable-customer-order-section"
 import { customerLoader } from "./loader"
 import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof customerLoader>
@@ -46,12 +53,20 @@ export const CustomerDetail = () => {
               </LayoutComposer.Entry>
               <LayoutComposer.Entry id="CustomerOrderSection">
                 <PermissionGuard permission="order:read">
-                  <CustomerOrderSection customer={customer} />
+                  {isViewConfigEnabled ? (
+                    <ConfigurableCustomerOrderSection customer={customer} />
+                  ) : (
+                    <CustomerOrderSection customer={customer} />
+                  )}
                 </PermissionGuard>
               </LayoutComposer.Entry>
               <LayoutComposer.Entry id="CustomerGroupSection">
                 <PermissionGuard permission="customer_group:read">
-                  <CustomerGroupSection customer={customer} />
+                  {isViewConfigEnabled ? (
+                    <ConfigurableCustomerGroupSection customer={customer} />
+                  ) : (
+                    <CustomerGroupSection customer={customer} />
+                  )}
                 </PermissionGuard>
               </LayoutComposer.Entry>
               {detailPageDefaultEntries(customer)}

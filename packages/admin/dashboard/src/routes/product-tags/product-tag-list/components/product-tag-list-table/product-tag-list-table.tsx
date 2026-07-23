@@ -1,4 +1,3 @@
-import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -7,23 +6,15 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLoaderData } from "react-router-dom"
 
-import {
-  ActionGroup,
-  ActionMenu,
-} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useProductTags } from "../../../../../hooks/api"
 import { useProductTagTableColumns } from "../../../../../hooks/table/columns"
 import { useProductTagTableFilters } from "../../../../../hooks/table/filters"
 import { useProductTagTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 import { productTagListLoader } from "../../loader"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
-import {
-  useProductTagPermissions,
-  useTranslationPermissions,
-} from "../../../../../hooks/use-resource-permissions"
+import { useProductTagPermissions } from "../../../../../hooks/use-resource-permissions"
+import { ProductTagListTableActions } from "./product-tag-list-table-actions"
 
 const PAGE_SIZE = 20
 
@@ -92,65 +83,6 @@ export const ProductTagListTable = () => {
   )
 }
 
-const ProductTagRowActions = ({
-  productTag,
-}: {
-  productTag: HttpTypes.AdminProductTag
-}) => {
-  const { t } = useTranslation()
-  const handleDelete = useDeleteProductTagAction({ productTag })
-  const isTranslationsEnabled = useFeatureFlag("translation")
-  const { canUpdate, canDelete } = useProductTagPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
-
-  const canManageTranslations =
-    isTranslationsEnabled && canUpdateTranslations
-
-  const groups: ActionGroup[] = []
-
-  if (canUpdate) {
-    groups.push({
-      actions: [
-        {
-          icon: <PencilSquare />,
-          label: t("actions.edit"),
-          to: `${productTag.id}/edit`,
-        },
-      ],
-    })
-  }
-
-  if (canManageTranslations) {
-    groups.push({
-      actions: [
-        {
-          icon: <GlobeEurope />,
-          label: t("translations.actions.manage"),
-          to: `/settings/translations/edit?reference=product_tag&reference_id=${productTag.id}`,
-        },
-      ],
-    })
-  }
-
-  if (canDelete) {
-    groups.push({
-      actions: [
-        {
-          icon: <Trash />,
-          label: t("actions.delete"),
-          onClick: handleDelete,
-        },
-      ],
-    })
-  }
-
-  if (!groups.length) {
-    return null
-  }
-
-  return <ActionMenu groups={groups} />
-}
-
 const columnHelper = createColumnHelper<HttpTypes.AdminProductTag>()
 
 const useColumns = () => {
@@ -161,7 +93,9 @@ const useColumns = () => {
       ...base,
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <ProductTagRowActions productTag={row.original} />,
+        cell: ({ row }) => (
+          <ProductTagListTableActions productTag={row.original} />
+        ),
       }),
     ],
     [base]

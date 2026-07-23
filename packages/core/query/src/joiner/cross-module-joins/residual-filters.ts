@@ -182,7 +182,16 @@ export function ensureResidualData(
         continue
       }
 
-      if (crossjoinable && !crossjoinable.includes(key)) {
+      // Object conditions on non-column keys target computed value objects
+      // (e.g. calculated_price) served as child value nodes. Scalar and
+      // operator conditions always read plain columns — including ones the
+      // crossjoinable metadata does not list.
+      if (
+        isObject(value) &&
+        !isOperatorMap(value) &&
+        crossjoinable &&
+        !crossjoinable.includes(key)
+      ) {
         childValueNodes.add(key)
         continue
       }

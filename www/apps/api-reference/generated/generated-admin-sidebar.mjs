@@ -987,7 +987,18 @@ const generatedgeneratedAdminSidebarSidebar = {
     {
       "type": "category",
       "title": "Views",
-      "children": [],
+      "children": [
+        {
+          "type": "link",
+          "path": "views_view_schema",
+          "title": "View Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
       "loaded": false,
       "showLoadingIfEmpty": true
     },

@@ -183,7 +183,7 @@ export const CustomerGroupSection = ({
   )
 }
 
-const CustomerGroupRowActions = ({
+export const CustomerGroupRowActions = ({
   group,
   customerId,
 }: {

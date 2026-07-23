@@ -1,5 +1,49 @@
 # @medusajs/core-flows
 
+## 2.18.0
+
+### Patch Changes
+
+- [#15840](https://github.com/medusajs/medusa/pull/15840) [`dfdcdd7467ede40e1bb80ce866bfe2c256b8ff86`](https://github.com/medusajs/medusa/commit/dfdcdd7467ede40e1bb80ce866bfe2c256b8ff86) Thanks [@nam-stx](https://github.com/nam-stx)! - feat(core-flows,order,cart,types,medusa): Add data and metadata fields to tax line models
+
+- [`f0e86a06ada4e43cf61383a65603dab7ef5e8039`](undefined) - fix(core-flows): pass customer groups to pricing context in createCartWorkflow
+
+- [`83ec164e5e475880603188bdd29991964a8136d1`](undefined) - fix(core-flows): preserve `data` field in `prepareTaxLinesData` during cart completion
+
+  PR #15840 added the `data` column to tax line DTOs and the set/upsert steps, but `prepareTaxLinesData` in `cart/utils/prepare-line-item-data.ts` — which copies cart tax lines to order tax lines during `complete-cart` — was not updated. As a result the `data` field (used by providers like Stripe Tax to store jurisdiction breakdowns) was silently discarded on every order placement.
+
+- [#16083](https://github.com/medusajs/medusa/pull/16083) [`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(create-medusa-app, admin-bundler, dashboard, core-flows, framework, js-sdk, medusa): dependabot dependencies update
+
+- [#15926](https://github.com/medusajs/medusa/pull/15926) [`c2fc62507a54f0ab73367d4369c783bbbdccf022`](https://github.com/medusajs/medusa/commit/c2fc62507a54f0ab73367d4369c783bbbdccf022) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,medusa,types,js-sdk,dashboard): transfer order to guest customer
+
+- [`8078ac6c62994ebc6d279c2612472086c20ce346`](undefined) - feat(core-flows): automatically refresh taxes upon state change
+
+- [#15614](https://github.com/medusajs/medusa/pull/15614) [`3382c8189bfc9f44e86123496ef3665e92ac91c9`](https://github.com/medusajs/medusa/commit/3382c8189bfc9f44e86123496ef3665e92ac91c9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,types,utils,medusa): support global product options in imports
+
+- [`09abcfab45f44932450c18de4717a6ab3acc6b0b`](undefined) - fix(core-flows): filter reservations by line item in createOrderFulfillmentWorkflow
+
+  The get-reservations query in `createOrderFulfillmentWorkflow` passed its
+  `line_item_id` constraint under the variables key `filter`, which the remote
+  query layer does not recognize (it only honors `filters`). The constraint was
+  silently dropped and every reservation item in the database was fetched and
+  hydrated on each fulfillment creation, blocking the event loop for tens of
+  seconds on stores with large reservation tables.
+
+- [#15991](https://github.com/medusajs/medusa/pull/15991) [`e78ef6ce51a00e6b303b654c5046cd1e60c8dc68`](https://github.com/medusajs/medusa/commit/e78ef6ce51a00e6b303b654c5046cd1e60c8dc68) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows, utils): emit inventory-related events
+
+- [#16035](https://github.com/medusajs/medusa/pull/16035) [`dd5b3ee61ed5e4a8965c39eb34e2141908c664ce`](https://github.com/medusajs/medusa/commit/dd5b3ee61ed5e4a8965c39eb34e2141908c664ce) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows,medusa): refresh cart tax lines on any tax-relevant shipping address change
+
+- [`631c2f2311f1931fe4a688d8796a7a81c2191243`](undefined) - fix(core-flows): only emit RETURN_RECEIVED from createAndCompleteReturnOrderWorkflow when receive_now is true, so requested-only returns no longer trigger the received event
+
+- [`917ddbe0e56b4e739fa828140cd7973d823d1bbd`](undefined) - fix(core-flows): correctly clear a region payment providers
+
+- [`812687d1195645a2ae223553c400c9142c91f74c`](undefined) - fix(core-flows): translate line items when creating an order with items and a locale
+
+  `createOrderWorkflow` did not run `getTranslatedLineItemsStep`, so line items provided at order/draft-order creation kept their default-language titles even when a `locale` was set — while items added later (via `addOrderLineItemsWorkflow`) were translated. Line items are now translated on creation too, matching the add-items, cart, and add-to-cart paths.
+
+- Updated dependencies [[`1621e14330fe64a968510991408ace8fdac84ce9`](https://github.com/medusajs/medusa/commit/1621e14330fe64a968510991408ace8fdac84ce9), [`1359d1bf6237aa058910b805395932cd070d2043`](https://github.com/medusajs/medusa/commit/1359d1bf6237aa058910b805395932cd070d2043), [`3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09`](https://github.com/medusajs/medusa/commit/3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09), [`d76952b5b0e4b287747a7e08f2cb745510143aae`](https://github.com/medusajs/medusa/commit/d76952b5b0e4b287747a7e08f2cb745510143aae), [`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340), [`6ef16b6fdc6f04b900583a5f2714a863011ed19a`](https://github.com/medusajs/medusa/commit/6ef16b6fdc6f04b900583a5f2714a863011ed19a), [`70c122753875f3cca03ff49b8a0ea9fe2c5e1165`](https://github.com/medusajs/medusa/commit/70c122753875f3cca03ff49b8a0ea9fe2c5e1165), [`144c47aba88f6e08fb7c99634c9fec8474721b0a`](https://github.com/medusajs/medusa/commit/144c47aba88f6e08fb7c99634c9fec8474721b0a), [`513c01a5a7f587cb52c92677e2379e54bd990361`](https://github.com/medusajs/medusa/commit/513c01a5a7f587cb52c92677e2379e54bd990361)]:
+  - @medusajs/framework@2.18.0
+
 ## 2.17.2
 
 ### Patch Changes

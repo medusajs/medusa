@@ -1,24 +1,14 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Container,
-  createDataTableColumnHelper,
-  DataTableAction,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { useCallback, useMemo } from "react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import { DataTable } from "../../../../../components/data-table"
-import {
-  useDeleteRefundReasonLazy,
-  useRefundReasons,
-} from "../../../../../hooks/api"
+import { useRefundReasons } from "../../../../../hooks/api"
 import { useRefundReasonTableColumns } from "../../../../../hooks/table/columns"
 import { useRefundReasonTableQuery } from "../../../../../hooks/table/query"
 import { useRefundReasonPermissions } from "../../../../../hooks/use-resource-permissions"
+import { RefundReasonListTableActions } from "./refund-reason-list-table-actions"
 
 const PAGE_SIZE = 20
 
@@ -81,80 +71,18 @@ export const RefundReasonListTable = () => {
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminRefundReason>()
 
 const useColumns = () => {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const navigate = useNavigate()
   const base = useRefundReasonTableColumns()
-  const { canUpdate, canDelete } = useRefundReasonPermissions()
-
-  const { mutateAsync } = useDeleteRefundReasonLazy()
-
-  const handleDelete = useCallback(
-    async (refundReason: HttpTypes.AdminRefundReason) => {
-      const confirm = await prompt({
-        title: t("general.areYouSure"),
-        description: t("refundReasons.delete.confirmation", {
-          label: refundReason.label,
-        }),
-        confirmText: t("actions.delete"),
-        cancelText: t("actions.cancel"),
-      })
-
-      if (!confirm) {
-        return
-      }
-
-      await mutateAsync(refundReason.id, {
-        onSuccess: () => {
-          toast.success(t("refundReasons.delete.successToast"))
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      })
-    },
-    [t, prompt, mutateAsync]
-  )
 
   return useMemo(
     () => [
       ...base,
-      ...(canUpdate || canDelete
-        ? [
-            columnHelper.action({
-              actions: (ctx) => {
-                const groups: DataTableAction<HttpTypes.AdminRefundReason>[][] =
-                  []
-
-                if (canUpdate) {
-                  groups.push([
-                    {
-                      icon: <PencilSquare />,
-                      label: t("actions.edit"),
-                      onClick: () =>
-                        navigate(
-                          `/settings/refund-reasons/${ctx.row.original.id}/edit`
-                        ),
-                    },
-                  ])
-                }
-
-                if (canDelete) {
-                  groups.push([
-                    {
-                      icon: <Trash />,
-                      label: t("actions.delete"),
-                      onClick: () => handleDelete(ctx.row.original),
-                    },
-                  ])
-                }
-
-                return groups
-              },
-            }),
-          ]
-        : []),
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => (
+          <RefundReasonListTableActions refundReason={row.original} />
+        ),
+      }),
     ],
-    [base, handleDelete, navigate, t, canUpdate, canDelete]
+    [base]
   )
 }

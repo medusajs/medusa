@@ -1,14 +1,11 @@
-import { PencilSquare, Plus, Trash } from "@medusajs/icons"
+import { Plus } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import {
-  ActionGroup,
-  ActionMenu,
-} from "../../../../../components/common/action-menu"
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useUpdateCollectionProducts } from "../../../../../hooks/api/collections"
 import { useProducts } from "../../../../../hooks/api/products"
@@ -18,6 +15,7 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 import { usePermissions } from "../../../../../providers/permissions-provider"
+import { CollectionProductRowActions } from "./collection-product-row-actions"
 
 type CollectionProductSectionProps = {
   collection: HttpTypes.AdminCollection
@@ -163,90 +161,6 @@ export const CollectionProductSection = ({
   )
 }
 
-const ProductActions = ({
-  product,
-  collectionId,
-}: {
-  product: HttpTypes.AdminProduct
-  collectionId: string
-}) => {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const { hasAllPermissions } = usePermissions()
-  const { canUpdate: canEditProduct } = useProductPermissions()
-  const { mutateAsync } = useUpdateCollectionProducts(collectionId)
-
-  const canManageCollectionProducts = hasAllPermissions([
-    "product:update",
-    "product_collection:update",
-  ])
-
-  const handleRemove = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("collections.removeSingleProductWarning", {
-        title: product.title,
-      }),
-      confirmText: t("actions.remove"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync(
-      {
-        remove: [product.id],
-      },
-      {
-        onSuccess: () => {
-          toast.success(
-            t("collections.products.remove.successToast", {
-              count: 1,
-            })
-          )
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      }
-    )
-  }
-
-  const groups: ActionGroup[] = []
-
-  if (canEditProduct) {
-    groups.push({
-      actions: [
-        {
-          icon: <PencilSquare />,
-          label: t("actions.edit"),
-          to: `/products/${product.id}/edit`,
-        },
-      ],
-    })
-  }
-
-  if (canManageCollectionProducts) {
-    groups.push({
-      actions: [
-        {
-          icon: <Trash />,
-          label: t("actions.remove"),
-          onClick: handleRemove,
-        },
-      ],
-    })
-  }
-
-  if (!groups.length) {
-    return null
-  }
-
-  return <ActionMenu groups={groups} />
-}
-
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = ({
@@ -299,7 +213,7 @@ const useColumns = ({
           }
 
           return (
-            <ProductActions
+            <CollectionProductRowActions
               product={row.original}
               collectionId={collectionId}
             />

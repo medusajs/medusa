@@ -3,18 +3,14 @@ import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 
-import { PencilSquare } from "@medusajs/icons"
 import { DataTable } from "../../../../../components/data-table"
 import { useDataTableDateColumns } from "../../../../../components/data-table/helpers/general/use-data-table-date-columns"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
 import { useUsers } from "../../../../../hooks/api/users"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import {
-  useInvitePermissions,
-  useUserPermissions,
-} from "../../../../../hooks/use-resource-permissions"
+import { useInvitePermissions } from "../../../../../hooks/use-resource-permissions"
+import { UserListTableActions } from "./user-list-table-actions"
 
 const PAGE_SIZE = 20
 
@@ -81,8 +77,6 @@ const columnHelper = createDataTableColumnHelper<HttpTypes.AdminUser>()
 
 const useColumns = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
-  const { canUpdate } = useUserPermissions()
 
   const dateColumns = useDataTableDateColumns<HttpTypes.AdminUser>()
 
@@ -116,23 +110,12 @@ const useColumns = () => {
         sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
       }),
       ...dateColumns,
-      ...(canUpdate
-        ? [
-            columnHelper.action({
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  icon: <PencilSquare />,
-                  onClick: (ctx) => {
-                    navigate(`${ctx.row.original.id}/edit`)
-                  },
-                },
-              ],
-            }),
-          ]
-        : []),
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => <UserListTableActions user={row.original} />,
+      }),
     ],
-    [t, navigate, dateColumns, canUpdate]
+    [t, dateColumns]
   )
 }
 

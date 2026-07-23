@@ -3,11 +3,16 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { useApiKey } from "../../../hooks/api/api-keys"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
 import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
+import { ConfigurableApiKeySalesChannelSection } from "./components/api-key-sales-channel-section/configurable-api-key-sales-channel-section"
 import { apiKeyLoader } from "./loader"
 
 export const ApiKeyManagementDetail = () => {
@@ -16,6 +21,7 @@ export const ApiKeyManagementDetail = () => {
   >
 
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const { api_key, isLoading, isError, error } = useApiKey(id!, {
     initialData: initialData,
@@ -45,11 +51,18 @@ export const ApiKeyManagementDetail = () => {
             {isPublishable && (
               <LayoutComposer.Entry id="ApiKeySalesChannelSection">
                 <PermissionGuard permission="sales_channel:read">
-                  <ApiKeySalesChannelSection apiKey={api_key} />
+                  {isViewConfigEnabled ? (
+                    <ConfigurableApiKeySalesChannelSection apiKey={api_key} />
+                  ) : (
+                    <ApiKeySalesChannelSection apiKey={api_key} />
+                  )}
                 </PermissionGuard>
               </LayoutComposer.Entry>
             )}
-            {detailPageDefaultEntries(api_key, { metadata: false, permissions: false })}
+            {detailPageDefaultEntries(api_key, {
+              metadata: false,
+              permissions: false,
+            })}
           </>
         ),
       }}

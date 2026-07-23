@@ -5,13 +5,19 @@ import { usePriceList } from "../../../hooks/api/price-lists"
 import { PriceListConfigurationSection } from "./components/price-list-configuration-section"
 import { PriceListGeneralSection } from "./components/price-list-general-section"
 import { PriceListProductSection } from "./components/price-list-product-section"
+import { ConfigurablePriceListProductSection } from "./components/price-list-product-section/configurable-price-list-product-section"
 
 import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 export const PriceListDetails = () => {
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const { price_list, isLoading, isError, error } = usePriceList(id!)
 
@@ -43,7 +49,11 @@ export const PriceListDetails = () => {
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="PriceListProductSection">
               <PermissionGuard permission="product:read">
-                <PriceListProductSection priceList={price_list} />
+                {isViewConfigEnabled ? (
+                  <ConfigurablePriceListProductSection priceList={price_list} />
+                ) : (
+                  <PriceListProductSection priceList={price_list} />
+                )}
               </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(price_list)}

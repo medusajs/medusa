@@ -1,30 +1,19 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
 import type { HttpTypes } from "@medusajs/types"
-import {
-  Button,
-  Container,
-  Heading,
-  Text,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import {
-  ActionGroup,
-  ActionMenu,
-} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
-import { useDeleteRegion, useRegions } from "../../../../../hooks/api/regions"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-region-table-columns"
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useRegionPermissions } from "../../../../../hooks/use-resource-permissions"
+import { RegionListTableActions } from "./region-list-table-actions"
 
 const PAGE_SIZE = 20
 
@@ -107,72 +96,6 @@ export const RegionListTable = () => {
   )
 }
 
-const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const { canUpdate, canDelete } = useRegionPermissions()
-
-  const { mutateAsync } = useDeleteRegion(region.id)
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("regions.deleteRegionWarning", {
-        name: region.name,
-      }),
-      verificationText: region.name,
-      verificationInstruction: t("general.typeToConfirm"),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync(undefined, {
-      onSuccess: () => {
-        toast.success(t("regions.toast.delete"))
-      },
-      onError: (e) => {
-        toast.error(e.message)
-      },
-    })
-  }
-
-  const groups: ActionGroup[] = []
-
-  if (canUpdate) {
-    groups.push({
-      actions: [
-        {
-          label: t("actions.edit"),
-          to: `/settings/regions/${region.id}/edit`,
-          icon: <PencilSquare />,
-        },
-      ],
-    })
-  }
-
-  if (canDelete) {
-    groups.push({
-      actions: [
-        {
-          label: t("actions.delete"),
-          onClick: handleDelete,
-          icon: <Trash />,
-        },
-      ],
-    })
-  }
-
-  if (!groups.length) {
-    return null
-  }
-
-  return <ActionMenu groups={groups} />
-}
-
 const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()
 
 const useColumns = () => {
@@ -184,7 +107,7 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => {
-          return <RegionActions region={row.original} />
+          return <RegionListTableActions region={row.original} />
         },
       }),
     ],
