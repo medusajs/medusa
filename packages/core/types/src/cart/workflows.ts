@@ -405,24 +405,66 @@ export interface CartWorkflowDTO extends CartDTO {
   region?: RegionDTO
 }
 
+/**
+ * The details to list shipping options for a cart.
+ */
 export interface ListShippingOptionsForCartWorkflowInputDTO {
+  /**
+   * The ID of the cart to list shipping options for.
+   */
   cart_id: string
+  /**
+   * Whether to list return shipping options.
+   */
   is_return: boolean
+  /**
+   * The ID of the sales channel to filter shipping options by.
+   */
   sales_channel_id?: string
+  /**
+   * The ID of the region to filter shipping options by.
+   */
   region_id?: string
+  /**
+   * The currency code to use for pricing the shipping options.
+   */
   currency_code: string
+  /**
+   * The shipping address to use for filtering shipping options.
+   */
   shipping_address: {
+    /**
+     * The city of the shipping address.
+     */
     city?: string
+    /**
+     * The country code of the shipping address.
+     */
     country_code?: string
+    /**
+     * The province of the shipping address.
+     */
     province?: string
   }
 }
 
+/**
+ * A shipping option with its calculated price.
+ */
 export interface PricedShippingOptionDTO extends ShippingOptionDTO {
+  /**
+   * The calculated price of the shipping option.
+   */
   amount: BigNumberInput
 }
 
+/**
+ * The details to complete a cart.
+ */
 export interface CompleteCartWorkflowInputDTO {
+  /**
+   * The ID of the cart to complete.
+   */
   id: string
 }
 
@@ -543,11 +585,23 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
       }[]
 }
 
+/**
+ * A cart's workflow details including its payment collection.
+ */
 export interface CartWorkflowDTO {
+  /**
+   * The cart's ID.
+   */
   id: string
+  /**
+   * The cart's payment collection.
+   */
   payment_collection: PaymentCollectionDTO
 }
 
+/**
+ * The details to create credit lines for a cart.
+ */
 export type CreateCartCreditLinesWorkflowInput = {
   /**
    * The ID of the cart that the credit line belongs to.
