@@ -1,7 +1,7 @@
 /**
  * @schema StoreCartShippingOption
  * type: object
- * description: The shipping option's details.
+ * description: The shipping option's shipping options.
  * x-schemaName: StoreCartShippingOption
  * required:
  *   - id
@@ -28,37 +28,28 @@
  *     description: The shipping option's name.
  *   price_type:
  *     type: string
- *     description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated
- *       fulfillment provider.
+ *     description: The shipping option's price type.
  *     enum:
- *       - flat
  *       - calculated
+ *       - flat
  *   service_zone_id:
  *     type: string
  *     title: service_zone_id
- *     description: The ID of the service zone the shipping option belongs to.
+ *     description: The shipping option's service zone id.
+ *   shipping_profile_id:
+ *     type: string
+ *     title: shipping_profile_id
+ *     description: The shipping option's shipping profile id.
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The ID of the fulfillment provider handling this option.
- *   provider:
+ *     description: The shipping option's provider id.
+ *   data:
  *     type: object
- *     description: The fulfillment provider's details.
- *     required:
- *       - id
- *       - is_enabled
- *     properties:
- *       id:
- *         type: string
- *         title: id
- *         description: The provider's ID.
- *       is_enabled:
- *         type: boolean
- *         title: is_enabled
- *         description: Whether the provider is enabled.
+ *     description: The shipping option's data.
  *   type:
  *     type: object
- *     description: The shipping option type's details.
+ *     description: The shipping option's type.
  *     required:
  *       - id
  *       - label
@@ -81,19 +72,25 @@
  *         type: string
  *         title: code
  *         description: The type's code.
- *   shipping_profile_id:
- *     type: string
- *     title: shipping_profile_id
- *     description: The ID of the associated shipping profile.
+ *   provider:
+ *     type: object
+ *     description: The shipping option's provider.
+ *     required:
+ *       - id
+ *       - is_enabled
+ *     properties:
+ *       id:
+ *         type: string
+ *         title: id
+ *         description: The provider's ID.
+ *       is_enabled:
+ *         type: boolean
+ *         title: is_enabled
+ *         description: The provider's is enabled.
  *   amount:
  *     type: number
  *     title: amount
- *     description: The shipping option's amount for the cart. For a shipping option whose `price_type` is `calculated`, this amount is computed on the fly by the fulfillment provider against the cart.
- *   data:
- *     type: object
- *     description: The shipping option's data, useful for the provider handling fulfillment.
- *     externalDocs:
- *       url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
+ *     description: The shipping option's amount.
  *   prices:
  *     type: array
  *     description: The shipping option's prices.
@@ -104,7 +101,7 @@
  *   insufficient_inventory:
  *     type: boolean
  *     title: insufficient_inventory
- *     description: Whether the shipping option's location doesn't have sufficient quantity for any of the cart's items.
+ *     description: The shipping option's insufficient inventory.
  * 
 */
 

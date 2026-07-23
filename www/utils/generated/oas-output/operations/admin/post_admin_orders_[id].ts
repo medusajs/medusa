@@ -1,11 +1,8 @@
 /**
  * @oas [post] /admin/orders/{id}
  * operationId: PostOrdersId
- * summary: Update Order
- * description: |-
- *   Update an order's details.
- *
- *   Updating the order's shipping or billing address doesn't recalculate the order's taxes or totals; the existing tax lines are preserved as-is. You also can't change the address's `country_code`.
+ * summary: Update a Order
+ * description: Update a order's details.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,12 +11,18 @@
  *     required: true
  *     schema:
  *       type: string
+ *   - name: version
+ *     in: query
+ *     description: The order's version.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: version
+ *       description: The order's version.
  *   - name: fields
  *     in: query
- *     description: |-
- *       Comma-separated fields that should be included in the returned data.
- *       if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
- *       without prefix it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. Without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
@@ -28,14 +31,6 @@
  *         fields. Without prefix it will replace the entire default fields.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
- *   - name: version
- *     in: query
- *     description: The version of the order to retrieve.
- *     required: false
- *     schema:
- *       type: number
- *       title: version
- *       description: The version of the order to retrieve.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -77,7 +72,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/orders/{id}' \
- *       -H 'Authorization: Bearer {jwt_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Orders
  * responses:

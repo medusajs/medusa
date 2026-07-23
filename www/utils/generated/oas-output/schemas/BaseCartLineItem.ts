@@ -124,9 +124,6 @@
  *   metadata:
  *     type: object
  *     description: The item's metadata.
- *     externalDocs:
- *       url: https://docs.medusajs.com/api/store#manage-metadata
- *       description: Learn how to manage metadata
  *   created_at:
  *     type: string
  *     format: date-time
@@ -145,47 +142,47 @@
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The line item's original total before discounts, including taxes.
+ *     description: The item's original total.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The line item's original subtotal before discounts, excluding taxes.
+ *     description: The item's original subtotal.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The line item's original tax total before discounts.
+ *     description: The item's original tax total.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The line item's total after discounts, including taxes.
+ *     description: The item's item total.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The line item's subtotal before discounts, excluding taxes.
+ *     description: The item's item subtotal.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The line item's tax total after discounts.
+ *     description: The item's item tax total.
  *   total:
  *     type: number
  *     title: total
- *     description: The line item's total after discounts, including taxes.
+ *     description: The item's total.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The line item's subtotal before discounts, excluding taxes.
+ *     description: The item's subtotal.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The line item's tax total after discounts.
+ *     description: The item's tax total.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The total amount of discounts applied to the line item, including the tax portion of discounts.
+ *     description: The item's discount total.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The total amount of discounts applied to the line item's tax. Represents the tax portion of discounts.
+ *     description: The item's discount tax total.
  * 
 */
 

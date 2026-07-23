@@ -1027,6 +1027,8 @@ paths:
     $ref: paths/admin_orders_{id}_transfer.yaml
   /admin/orders/{id}/transfer/cancel:
     $ref: paths/admin_orders_{id}_transfer_cancel.yaml
+  /admin/orders/{id}/transfer/guest:
+    $ref: paths/admin_orders_{id}_transfer_guest.yaml
   /admin/payment-collections:
     $ref: paths/admin_payment-collections.yaml
   /admin/payment-collections/{id}:

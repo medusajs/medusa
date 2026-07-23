@@ -67,6 +67,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteProductOptionValuesWorkflow
  * x-events: []
- * x-since: 2.17.0
+ * 
 */
 

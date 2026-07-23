@@ -83,6 +83,17 @@
  *       ```
  *     description: Emitted when an exchange is created for an order.
  *     deprecated: false
+ *   - name: reservation-item.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are created.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

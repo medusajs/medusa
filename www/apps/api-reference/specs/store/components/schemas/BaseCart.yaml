@@ -73,9 +73,6 @@ properties:
   metadata:
     type: object
     description: The cart's metadata.
-    externalDocs:
-      url: https://docs.medusajs.com/api/store#manage-metadata
-      description: Learn how to manage metadata
   created_at:
     type: string
     format: date-time
@@ -89,77 +86,59 @@ properties:
   original_item_total:
     type: number
     title: original_item_total
-    description: >-
-      The sum of all line items' original totals before discounts, including
-      taxes.
+    description: The cart's original item total.
   original_item_subtotal:
     type: number
     title: original_item_subtotal
-    description: >-
-      The sum of all line items' original subtotals before discounts, excluding
-      taxes.
+    description: The cart's original item subtotal.
   original_item_tax_total:
     type: number
     title: original_item_tax_total
-    description: The sum of all line items' original tax totals before discounts.
+    description: The cart's original item tax total.
   item_total:
     type: number
     title: item_total
-    description: The sum of all line items' totals after discounts, including taxes.
+    description: The cart's item total.
   item_subtotal:
     type: number
     title: item_subtotal
-    description: The sum of all line items' subtotals before discounts, excluding taxes.
+    description: The cart's item subtotal.
   item_tax_total:
     type: number
     title: item_tax_total
-    description: The sum of all line items' tax totals after discounts.
+    description: The cart's item tax total.
   original_total:
     type: number
     title: original_total
-    description: >-
-      The cart's total before discounts, including taxes. Calculated as the sum
-      of `original_item_total` and `original_shipping_total`.
+    description: The cart's original total.
   original_subtotal:
     type: number
     title: original_subtotal
-    description: >-
-      The cart's subtotal before discounts, excluding taxes. Calculated as the
-      sum of `original_item_subtotal` and `original_shipping_subtotal`.
+    description: The cart's original subtotal.
   original_tax_total:
     type: number
     title: original_tax_total
-    description: >-
-      The cart's tax total before discounts. Calculated as the sum of
-      `original_item_tax_total` and `original_shipping_tax_total`.
+    description: The cart's original tax total.
   total:
     type: number
     title: total
-    description: The cart's final total after discounts and credit lines, including taxes.
+    description: The cart's total.
   subtotal:
     type: number
     title: subtotal
-    description: >-
-      The cart's subtotal before discounts, excluding taxes. Calculated as the
-      sum of `item_subtotal` and `shipping_subtotal`.
+    description: The cart's subtotal.
   tax_total:
     type: number
     title: tax_total
-    description: >-
-      The cart's tax total after discounts. Calculated as the sum of
-      `item_tax_total` and `shipping_tax_total`.
+    description: The cart's tax total.
   discount_total:
     type: number
     title: discount_total
-    description: >-
-      The total amount of discounts applied to the cart, including the tax
-      portion of discounts.
+    description: The cart's discount total.
   discount_tax_total:
     type: number
     title: discount_tax_total
-    description: >-
-      The total amount of discounts applied to the cart's tax. Represents the
-      tax portion of discounts.
+    description: The cart's discount tax total.
   gift_card_total:
     type: number
     title: gift_card_total
@@ -171,30 +150,29 @@ properties:
   shipping_total:
     type: number
     title: shipping_total
-    description: The sum of all shipping methods' totals after discounts, including taxes.
+    description: The cart's shipping total.
   shipping_subtotal:
     type: number
     title: shipping_subtotal
-    description: >-
-      The sum of all shipping methods' subtotals before discounts, excluding
-      taxes.
+    description: The cart's shipping subtotal.
   shipping_tax_total:
     type: number
     title: shipping_tax_total
-    description: The sum of all shipping methods' tax totals after discounts.
+    description: The cart's shipping tax total.
   original_shipping_total:
     type: number
     title: original_shipping_total
-    description: >-
-      The sum of all shipping methods' original totals before discounts,
-      including taxes.
+    description: The cart's original shipping total.
   original_shipping_subtotal:
     type: number
     title: original_shipping_subtotal
-    description: >-
-      The sum of all shipping methods' original subtotals before discounts,
-      excluding taxes.
+    description: The cart's original shipping subtotal.
   original_shipping_tax_total:
     type: number
     title: original_shipping_tax_total
-    description: The sum of all shipping methods' original tax totals before discounts.
+    description: The cart's original shipping tax total.
+  completed_at:
+    type: string
+    title: completed_at
+    description: The cart's completed at.
+    format: date-time

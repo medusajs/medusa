@@ -109,6 +109,20 @@
  *       type: boolean
  *       title: with_deleted
  *       description: Whether to include deleted records in the result.
+ *   - name: to
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: to
+ *           description: The notification's to.
+ *         - type: array
+ *           description: The notification's to.
+ *           items:
+ *             type: string
+ *             title: to
+ *             description: The to's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

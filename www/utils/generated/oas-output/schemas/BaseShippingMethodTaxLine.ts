@@ -1,7 +1,7 @@
 /**
  * @schema BaseShippingMethodTaxLine
  * type: object
- * description: The tax line's details
+ * description: The tax line's tax lines.
  * x-schemaName: BaseShippingMethodTaxLine
  * required:
  *   - shipping_method
@@ -15,21 +15,19 @@
  *   - updated_at
  * properties:
  *   shipping_method:
- *     type: object
- *     title: shipping_method
- *     description: The details of the method that the tax line belongs to.
+ *     $ref: "#/components/schemas/BaseCartShippingMethod"
  *   shipping_method_id:
  *     type: string
  *     title: shipping_method_id
- *     description: The ID of the shipping method this tax line belongs to.
+ *     description: The tax line's shipping method id.
  *   total:
  *     type: number
  *     title: total
- *     description: The method's total including taxes and promotions.
+ *     description: The tax line's total.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The method's total excluding taxes, including promotions.
+ *     description: The tax line's subtotal.
  *   id:
  *     type: string
  *     title: id
@@ -41,29 +39,29 @@
  *   tax_rate_id:
  *     type: string
  *     title: tax_rate_id
- *     description: The ID of the applied tax rate.
+ *     description: The tax line's tax rate id.
  *   code:
  *     type: string
  *     title: code
- *     description: The code that the tax rate is identified by.
+ *     description: The tax line's code.
  *   rate:
  *     type: number
  *     title: rate
- *     description: The charged rate.
+ *     description: The tax line's rate.
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The ID of the tax provider used to calculate the tax line.
+ *     description: The tax line's provider id.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the tax line was created.
+ *     description: The tax line's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the tax line was updated.
+ *     description: The tax line's updated at.
  * 
 */
 

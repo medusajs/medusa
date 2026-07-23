@@ -1,5 +1,6 @@
 type: object
-description: The properties to update in the shipping option type.
+description: SUMMARY
+x-schemaName: AdminUpdateShippingOption
 properties:
   name:
     type: string
@@ -12,8 +13,8 @@ properties:
     type: string
     description: The shipping option's price type.
     enum:
-      - flat
       - calculated
+      - flat
   provider_id:
     type: string
     title: provider_id
@@ -45,4 +46,3 @@ properties:
   metadata:
     type: object
     description: The shipping option's metadata.
-x-schemaName: AdminUpdateShippingOption

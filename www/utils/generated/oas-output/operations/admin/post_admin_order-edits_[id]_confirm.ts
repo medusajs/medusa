@@ -72,6 +72,28 @@
  *     description: Emitted when an order edit request is confirmed.
  *     deprecated: false
  *     since: 2.8.0
+ *   - name: reservation-item.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are created.
+ *     deprecated: false
+ *     since: 2.17.3
+ *   - name: reservation-item.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are deleted.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

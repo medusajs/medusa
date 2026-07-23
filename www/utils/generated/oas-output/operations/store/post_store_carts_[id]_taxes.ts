@@ -1,12 +1,8 @@
 /**
  * @oas [post] /store/carts/{id}/taxes
  * operationId: PostCartsIdTaxes
- * summary: Calculate Cart Taxes
- * x-sidebar-summary: Calculate Taxes
- * description: |-
- *   Calculate the cart's tax lines and amounts.
- *
- *   Medusa recalculates a cart's tax lines automatically on cart changes when the cart's region has `automatic_taxes` enabled, so you typically don't need to use this route. Use this route to force a recalculation, such as when `automatic_taxes` is disabled, which also triggers a fresh calculation from your third-party tax provider, if you use one.
+ * summary: Add Tax to Cart
+ * description: Add a Tax to a cart
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -33,18 +29,6 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
  *         description: Learn more in the Serve Translations in Storefront guide.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
- *       fields. without prefix it will replace the entire default fields.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
- *         fields. without prefix it will replace the entire default fields.
- *       externalDocs:
- *         url: "#select-fields-and-relations"
  *   - name: locale
  *     in: query
  *     description: The locale in BCP 47 format to retrieve localized content.
@@ -55,6 +39,18 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
  *         description: Learn more in the Serve Translations in Storefront guide.
+ *   - name: fields
+ *     in: query
+ *     description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. Without prefix it will replace the entire default fields.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: fields
+ *       description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. Without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

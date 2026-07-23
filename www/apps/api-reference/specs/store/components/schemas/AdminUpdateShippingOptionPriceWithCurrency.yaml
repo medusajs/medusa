@@ -1,5 +1,5 @@
 type: object
-description: The properties to update in a shipping option price with a currency.
+description: The price's prices.
 x-schemaName: AdminUpdateShippingOptionPriceWithCurrency
 properties:
   id:
@@ -10,7 +10,6 @@ properties:
     type: string
     title: currency_code
     description: The price's currency code.
-    example: usd
   amount:
     type: number
     title: amount

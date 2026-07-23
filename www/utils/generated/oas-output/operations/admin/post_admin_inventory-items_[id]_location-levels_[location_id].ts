@@ -90,7 +90,20 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateInventoryLevelsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: inventory-level.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory level
+ *         order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+ *       }
+ *       ```
+ *     description: |-
+ *       Emitted when inventory levels are updated. This includes adjustments to
+ *       the stocked or reserved quantity, such as during order fulfillment.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

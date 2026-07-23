@@ -1,7 +1,8 @@
 /**
  * @schema AdminUpdateShippingOption
  * type: object
- * description: The properties to update in the shipping option type.
+ * description: SUMMARY
+ * x-schemaName: AdminUpdateShippingOption
  * properties:
  *   name:
  *     type: string
@@ -14,8 +15,8 @@
  *     type: string
  *     description: The shipping option's price type.
  *     enum:
- *       - flat
  *       - calculated
+ *       - flat
  *   provider_id:
  *     type: string
  *     title: provider_id
@@ -32,7 +33,7 @@
  *     description: The shipping option's type id.
  *   prices:
  *     type: array
- *     description: The shipping option's prices. This array replaces the shipping option's existing prices - a price with a matching `id` is updated, a price without an `id` is created, and any existing price whose `id` isn't included is deleted. Omit this property to leave the existing prices unchanged.
+ *     description: The shipping option's prices.
  *     items:
  *       oneOf:
  *         - $ref: "#/components/schemas/AdminUpdateShippingOptionPriceWithCurrency"
@@ -47,7 +48,6 @@
  *   metadata:
  *     type: object
  *     description: The shipping option's metadata.
- * x-schemaName: AdminUpdateShippingOption
  * 
 */
 

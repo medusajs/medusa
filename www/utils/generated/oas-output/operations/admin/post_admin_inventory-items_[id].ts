@@ -95,7 +95,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateInventoryItemsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: inventory-item.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory item
+ *       }
+ *       ```
+ *     description: Emitted when inventory items are updated.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

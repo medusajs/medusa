@@ -103,6 +103,41 @@
  *       ```
  *     description: Emitted when an order's fulfillment is canceled.
  *     deprecated: false
+ *   - name: inventory-level.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory level
+ *         order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+ *       }
+ *       ```
+ *     description: |-
+ *       Emitted when inventory levels are updated. This includes adjustments to
+ *       the stocked or reserved quantity, such as during order fulfillment.
+ *     deprecated: false
+ *     since: 2.17.3
+ *   - name: reservation-item.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are created.
+ *     deprecated: false
+ *     since: 2.17.3
+ *   - name: reservation-item.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are updated.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

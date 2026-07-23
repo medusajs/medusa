@@ -79,6 +79,16 @@
  *       ```
  *     description: Emitted when product options are deleted.
  *     deprecated: false
+ *   - name: inventory-item.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory item
+ *       }
+ *       ```
+ *     description: Emitted when inventory items are deleted.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

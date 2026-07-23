@@ -1,19 +1,19 @@
 /**
  * @schema StoreShippingOptionListResponse
  * type: object
- * description: The list of shipping options.
+ * description: SUMMARY
  * x-schemaName: StoreShippingOptionListResponse
  * required:
  *   - shipping_options
  * properties:
  *   shipping_options:
  *     type: array
- *     description: The list of shipping options.
+ *     description: The shipping option's shipping options.
  *     items:
  *       allOf:
  *         - $ref: "#/components/schemas/StoreCartShippingOption"
  *         - type: object
- *           description: The shipping option's details.
+ *           description: The shipping option's shipping options.
  *           required:
  *             - service_zone
  *           properties:
@@ -32,7 +32,7 @@
  *                 fulfillment_set_id:
  *                   type: string
  *                   title: fulfillment_set_id
- *                   description: The ID of the service zone's fulfillment set.
+ *                   description: The service zone's fulfillment set id.
  *                 fulfillment_set:
  *                   type: object
  *                   description: The service zone's fulfillment set.
@@ -51,7 +51,7 @@
  *                       description: The fulfillment set's type.
  *                     location:
  *                       type: object
- *                       description: The fulfillment set's location details.
+ *                       description: The fulfillment set's location.
  *                       required:
  *                         - id
  *                         - address
@@ -62,7 +62,6 @@
  *                           description: The location's ID.
  *                         address:
  *                           $ref: "#/components/schemas/StoreFulfillmentAddress"
- *       description: The shipping option's details.
  * 
 */
 

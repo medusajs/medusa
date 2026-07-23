@@ -1,5 +1,5 @@
 type: object
-description: A cart's shipping method.
+description: The tax line's shipping method.
 x-schemaName: BaseCartShippingMethod
 required:
   - id
@@ -17,7 +17,7 @@ properties:
   cart_id:
     type: string
     title: cart_id
-    description: The ID of the cart this shipping method belongs to.
+    description: The shipping method's cart id.
   name:
     type: string
     title: name
@@ -33,25 +33,17 @@ properties:
   is_tax_inclusive:
     type: boolean
     title: is_tax_inclusive
-    description: Whether the shipping method's amount is tax inclusive.
+    description: The shipping method's is tax inclusive.
   shipping_option_id:
     type: string
     title: shipping_option_id
-    description: The ID of the shipping option this method was created from.
+    description: The shipping method's shipping option id.
   data:
     type: object
-    description: >-
-      The shipping method's data, useful for fulfillment handling by third-party
-      services.
-    externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/cart/concepts#data-property
+    description: The shipping method's data.
   metadata:
     type: object
-    description: The shipping method's metadata, can hold custom key-value pairs.
-    externalDocs:
-      url: https://docs.medusajs.com/api/store#manage-metadata
-      description: Learn how to manage metadata
+    description: The shipping method's metadata.
   tax_lines:
     type: array
     description: The shipping method's tax lines.
@@ -59,52 +51,48 @@ properties:
       $ref: ./BaseShippingMethodTaxLine.yaml
   adjustments:
     type: array
-    description: The shipping method's adjustments, such as applied promotions.
+    description: The shipping method's adjustments.
     items:
       $ref: ./BaseShippingMethodAdjustment.yaml
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The date the shipping method was created.
+    description: The shipping method's created at.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The date the shipping method was updated.
+    description: The shipping method's updated at.
   original_total:
     type: number
     title: original_total
-    description: The shipping method's original total before discounts, including taxes.
+    description: The shipping method's original total.
   original_subtotal:
     type: number
     title: original_subtotal
-    description: The shipping method's original subtotal before discounts, excluding taxes.
+    description: The shipping method's original subtotal.
   original_tax_total:
     type: number
     title: original_tax_total
-    description: The shipping method's original tax total before discounts.
+    description: The shipping method's original tax total.
   total:
     type: number
     title: total
-    description: The shipping method's total after discounts, including taxes.
+    description: The shipping method's total.
   subtotal:
     type: number
     title: subtotal
-    description: The shipping method's subtotal before discounts, excluding taxes.
+    description: The shipping method's subtotal.
   tax_total:
     type: number
     title: tax_total
-    description: The shipping method's tax total after discounts.
+    description: The shipping method's tax total.
   discount_total:
     type: number
     title: discount_total
-    description: >-
-      The total amount of discounts applied to the shipping method, including
-      the tax portion of discounts.
+    description: The shipping method's discount total.
   discount_tax_total:
     type: number
     title: discount_tax_total
-    description: >-
-      The total amount of discounts applied to the shipping method's tax.
-      Represents the tax portion of discounts.
+    description: The shipping method's discount tax total.

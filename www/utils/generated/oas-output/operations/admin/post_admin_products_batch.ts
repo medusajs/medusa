@@ -146,6 +146,36 @@
  *       ```
  *     description: Emitted when product options are deleted.
  *     deprecated: false
+ *   - name: inventory-item.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory item
+ *       }
+ *       ```
+ *     description: Emitted when inventory items are created.
+ *     deprecated: false
+ *     since: 2.17.3
+ *   - name: inventory-item.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory item
+ *       }
+ *       ```
+ *     description: Emitted when inventory items are deleted.
+ *     deprecated: false
+ *     since: 2.17.3
+ *   - name: inventory-level.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory level
+ *       }
+ *       ```
+ *     description: Emitted when inventory levels are created.
+ *     deprecated: false
+ *     since: 2.17.3
  * 
 */
 

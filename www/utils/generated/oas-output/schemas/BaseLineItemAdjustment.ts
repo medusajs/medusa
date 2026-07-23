@@ -1,7 +1,7 @@
 /**
  * @schema BaseLineItemAdjustment
  * type: object
- * description: The adjustment's details.
+ * description: The adjustment's adjustments.
  * x-schemaName: BaseLineItemAdjustment
  * required:
  *   - item
@@ -13,13 +13,11 @@
  *   - updated_at
  * properties:
  *   item:
- *     type: object
- *     title: item
- *     description: The details of the item that the adjustment belongs to.
+ *     $ref: "#/components/schemas/BaseCartLineItem"
  *   item_id:
  *     type: string
  *     title: item_id
- *     description: The ID of the item this adjustment applies on.
+ *     description: The adjustment's item id.
  *   id:
  *     type: string
  *     title: id
@@ -35,7 +33,7 @@
  *   cart_id:
  *     type: string
  *     title: cart_id
- *     description: The ID of the cart this adjustment belongs to.
+ *     description: The adjustment's cart id.
  *   description:
  *     type: string
  *     title: description
@@ -43,21 +41,21 @@
  *   promotion_id:
  *     type: string
  *     title: promotion_id
- *     description: The ID of the promotion applied by this adjustment.
+ *     description: The adjustment's promotion id.
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The adjustment's provider ID.
+ *     description: The adjustment's provider id.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the adjustment was created.
+ *     description: The adjustment's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the adjustment was updated.
+ *     description: The adjustment's updated at.
  * 
 */
 

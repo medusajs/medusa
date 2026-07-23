@@ -39,16 +39,35 @@ properties:
     title: default_visible
     description: Whether the column is visible by default.
   data_type:
-    type: string
+    oneOf:
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - type: string
+        title: data_type
+        description: The column's data type.
+      - allOf:
+          - type: string
+            title: data_type
+            description: The column's data type.
+          - type: object
+            description: The column's data type.
     description: The data type of the column's value.
-    enum:
-      - string
-      - number
-      - boolean
-      - object
-      - date
-      - currency
-      - enum
   semantic_type:
     type: string
     title: semantic_type
@@ -171,3 +190,6 @@ properties:
     type: string
     title: label_id
     description: The ID of the column's label, if it has a custom label.
+  metadata:
+    type: object
+    description: The column's metadata.

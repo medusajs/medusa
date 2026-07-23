@@ -1,7 +1,7 @@
 /**
  * @schema StoreFulfillmentAddress
  * type: object
- * description: The location's address details.
+ * description: The location's address.
  * x-schemaName: StoreFulfillmentAddress
  * required:
  *   - id
@@ -29,11 +29,11 @@
  *   address_1:
  *     type: string
  *     title: address_1
- *     description: The first line of the address.
+ *     description: The address's address 1.
  *   address_2:
  *     type: string
  *     title: address_2
- *     description: The second line of the address.
+ *     description: The address's address 2.
  *   city:
  *     type: string
  *     title: city
@@ -42,7 +42,6 @@
  *     type: string
  *     title: country_code
  *     description: The address's country code.
- *     example: us
  *   province:
  *     type: string
  *     title: province
@@ -57,22 +56,22 @@
  *     description: The address's phone.
  *   metadata:
  *     type: object
- *     description: The address's metadata. Can hold custom key-value pairs.
+ *     description: The address's metadata.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the address was created.
+ *     description: The address's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the address was updated.
+ *     description: The address's updated at.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The date the address was deleted.
+ *     description: The address's deleted at.
  * 
 */
 

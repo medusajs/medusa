@@ -1,5 +1,5 @@
 type: object
-description: The properties to update in a shipping option price with a region.
+description: The price's prices.
 x-schemaName: AdminUpdateShippingOptionPriceWithRegion
 properties:
   id:
@@ -9,7 +9,7 @@ properties:
   region_id:
     type: string
     title: region_id
-    description: The ID of the region the price is associated with.
+    description: The price's region id.
   amount:
     type: number
     title: amount
