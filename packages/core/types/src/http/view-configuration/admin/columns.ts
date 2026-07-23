@@ -1,5 +1,8 @@
 import { RelationshipFilterConfig, RenderMode } from "./property-descriptor"
 
+/**
+ * The details of a column available for an entity's data table view.
+ */
 export interface AdminColumn {
   /**
    * The column's unique identifier (e.g., "display_id", "customer.email").
@@ -135,6 +138,9 @@ export interface AdminColumn {
   label_id?: string
 }
 
+/**
+ * The response body of the List Entity Columns API route.
+ */
 export interface AdminViewsEntityColumnsResponse {
   /**
    * The list of available columns for the entity.

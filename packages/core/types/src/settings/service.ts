@@ -22,14 +22,33 @@ import {
   UpsertPropertyLabelDTO,
 } from "./mutations"
 
+/**
+ * The main service interface for the Settings Module.
+ */
 export interface ISettingsModuleService extends IModuleService {
   // View Configuration methods
+  /**
+   * This method retrieves a view configuration by its ID.
+   *
+   * @param {string} id - The ID of the view configuration to retrieve.
+   * @param {FindConfig<ViewConfigurationDTO>} config - The configurations determining how the view configuration is retrieved.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ViewConfigurationDTO>} The retrieved view configuration.
+   */
   retrieveViewConfiguration(
     id: string,
     config?: FindConfig<ViewConfigurationDTO>,
     sharedContext?: Context
   ): Promise<ViewConfigurationDTO>
 
+  /**
+   * This method retrieves a list of view configurations based on optional filters and configuration.
+   *
+   * @param {FilterableViewConfigurationProps} filters - The filters to apply on the retrieved view configurations.
+   * @param {FindConfig<ViewConfigurationDTO>} config - The configurations determining how the view configurations are retrieved.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ViewConfigurationDTO[]>} The list of view configurations.
+   */
   listViewConfigurations(
     filters?: FilterableViewConfigurationProps,
     config?: FindConfig<ViewConfigurationDTO>,
