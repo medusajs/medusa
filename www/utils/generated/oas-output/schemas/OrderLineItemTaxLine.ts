@@ -62,6 +62,12 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the tax line was updated.
+ *   data:
+ *     type: object
+ *     description: The tax line's data.
+ *   metadata:
+ *     type: object
+ *     description: The tax line's metadata, can hold custom key-value pairs.
  * 
 */
 

@@ -30,6 +30,10 @@
  *     type: string
  *     title: endpoint
  *     description: The relationship filter's endpoint.
+ *   filter_key:
+ *     type: string
+ *     title: filter_key
+ *     description: The relationship's filter key.
  * 
 */
 
