@@ -759,6 +759,15 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminUser"
   - name: Views
+    description: >
+      A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+
+      These API routes allow admin users to manage the system default and personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminViewConfiguration"
   - name: Workflows Executions
     description: >
       These API routes allow you to track workflow executions in your Medusa
