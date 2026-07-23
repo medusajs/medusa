@@ -10,13 +10,18 @@ import {
 } from "../../../../lib/table/table-adapters"
 import { INVENTORY_ITEM_IDS_KEY } from "../../common/constants"
 import { InventoryActions } from "./inventory-actions"
+import { useInventoryPermissions } from "../../../../hooks/use-resource-permissions"
 
 export function createInventoryTableAdapter({
   t,
   navigate,
+  canUpdate,
+  canDelete,
 }: {
   t: TFunction<"translation", undefined>
   navigate: NavigateFunction
+  canUpdate: boolean
+  canDelete: boolean
 }): TableAdapter<HttpTypes.AdminInventoryItem> {
   return createTableAdapter<HttpTypes.AdminInventoryItem>({
     entity: "inventory-items",
@@ -60,7 +65,13 @@ export function createInventoryTableAdapter({
       }
     },
     getRowHref: (row) => `/inventory/${row.id}`,
-    renderRowActions: (row) => <InventoryActions item={row} />,
+    renderRowActions: (row) => (
+      <InventoryActions
+        item={row}
+        canUpdate={canUpdate}
+        canDelete={canDelete}
+      />
+    ),
     transformColumns: (columns) => {
       const ALLOWED_FILTERS = [
         "id",
@@ -95,8 +106,9 @@ export function createInventoryTableAdapter({
 export function useInventoryTableAdapter(): TableAdapter<HttpTypes.AdminInventoryItem> {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = useInventoryPermissions()
   return useMemo(
-    () => createInventoryTableAdapter({ t, navigate }),
-    [t, navigate]
+    () => createInventoryTableAdapter({ t, navigate, canUpdate, canDelete }),
+    [t, navigate, canUpdate, canDelete]
   )
 }
