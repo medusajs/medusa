@@ -16,15 +16,98 @@ The [UserPreference](/references/settings/models/UserPreference) data model repr
 
 ## Manage User Preferences
 
-The module's service provides the `getUserPreference` method to retrieve a user's preference by key, and the `setUserPreference` method to create or update it.
+The Settings Module's service provides methods to create, retrieve, update, and delete user preferences. Resolve the service from the Medusa container using `Modules.SETTINGS`.
 
-For example:
+### Set a User Preference
+
+Use the `setUserPreference` method to create or update a user preference by its key:
 
 ```ts
-const preference = await settingsModuleService
-  .setUserPreference("user_123", "theme", {
-    mode: "dark",
+const preference = await settingsModuleService.setUserPreference(
+  "user_123",
+  "theme",
+  { mode: "dark" }
+)
+```
+
+### Get a User Preference
+
+Use the `getUserPreference` method to retrieve a user's preference by key:
+
+```ts
+const preference = await settingsModuleService.getUserPreference(
+  "user_123",
+  "theme"
+)
+```
+
+This returns `null` if no preference exists for the specified user and key.
+
+### Create User Preferences
+
+Use the `createUserPreferences` method to create one or more preferences at once:
+
+```ts
+const preferences =
+  await settingsModuleService.createUserPreferences([
+    {
+      user_id: "user_123",
+      key: "theme",
+      value: "dark",
+    },
+  ])
+```
+
+### Retrieve a User Preference by ID
+
+Use the `retrieveUserPreference` method to retrieve a preference by its ID:
+
+```ts
+const preference =
+  await settingsModuleService.retrieveUserPreference("uspref_123")
+```
+
+### List User Preferences
+
+Use the `listUserPreferences` method to list preferences with optional filters:
+
+```ts
+const preferences =
+  await settingsModuleService.listUserPreferences({
+    user_id: "user_123",
   })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountUserPreferences`:
+
+```ts
+const [preferences, count] =
+  await settingsModuleService.listAndCountUserPreferences(
+    { user_id: "user_123" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update User Preferences
+
+Use the `updateUserPreferences` method to update existing preferences by their IDs:
+
+```ts
+const preferences =
+  await settingsModuleService.updateUserPreferences([
+    {
+      id: "uspref_123",
+      value: "light",
+    },
+  ])
+```
+
+### Delete User Preferences
+
+Use the `deleteUserPreferences` method to delete preferences by their IDs:
+
+```ts
+await settingsModuleService.deleteUserPreferences("uspref_123")
 ```
 
 ---

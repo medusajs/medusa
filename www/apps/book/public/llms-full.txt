@@ -47741,7 +47741,7 @@ module.exports = defineConfig({
             fieldRenderModes: {
               asset: "image",
             },
-          }
+          },
         },
       },
     },
@@ -47768,8 +47768,8 @@ module.exports = defineConfig({
             },
             fieldMetadata: {
               country: { country_code_field: "country" },
-            }
-          }
+            },
+          },
         },
       },
     },
@@ -48153,15 +48153,98 @@ The [UserPreference](undefined/references/settings/models/UserPreference) data m
 
 ## Manage User Preferences
 
-The module's service provides the `getUserPreference` method to retrieve a user's preference by key, and the `setUserPreference` method to create or update it.
+The Settings Module's service provides methods to create, retrieve, update, and delete user preferences. Resolve the service from the Medusa container using `Modules.SETTINGS`.
 
-For example:
+### Set a User Preference
+
+Use the `setUserPreference` method to create or update a user preference by its key:
 
 ```ts
-const preference = await settingsModuleService
-  .setUserPreference("user_123", "theme", {
-    mode: "dark",
+const preference = await settingsModuleService.setUserPreference(
+  "user_123",
+  "theme",
+  { mode: "dark" }
+)
+```
+
+### Get a User Preference
+
+Use the `getUserPreference` method to retrieve a user's preference by key:
+
+```ts
+const preference = await settingsModuleService.getUserPreference(
+  "user_123",
+  "theme"
+)
+```
+
+This returns `null` if no preference exists for the specified user and key.
+
+### Create User Preferences
+
+Use the `createUserPreferences` method to create one or more preferences at once:
+
+```ts
+const preferences =
+  await settingsModuleService.createUserPreferences([
+    {
+      user_id: "user_123",
+      key: "theme",
+      value: "dark",
+    },
+  ])
+```
+
+### Retrieve a User Preference by ID
+
+Use the `retrieveUserPreference` method to retrieve a preference by its ID:
+
+```ts
+const preference =
+  await settingsModuleService.retrieveUserPreference("uspref_123")
+```
+
+### List User Preferences
+
+Use the `listUserPreferences` method to list preferences with optional filters:
+
+```ts
+const preferences =
+  await settingsModuleService.listUserPreferences({
+    user_id: "user_123",
   })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountUserPreferences`:
+
+```ts
+const [preferences, count] =
+  await settingsModuleService.listAndCountUserPreferences(
+    { user_id: "user_123" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update User Preferences
+
+Use the `updateUserPreferences` method to update existing preferences by their IDs:
+
+```ts
+const preferences =
+  await settingsModuleService.updateUserPreferences([
+    {
+      id: "uspref_123",
+      value: "light",
+    },
+  ])
+```
+
+### Delete User Preferences
+
+Use the `deleteUserPreferences` method to delete preferences by their IDs:
+
+```ts
+await settingsModuleService.deleteUserPreferences("uspref_123")
 ```
 
 ***
@@ -48238,6 +48321,95 @@ Each user has an active view for an entity, which is the view they're currently 
 3. The system default, if any.
 
 The `getActiveViewConfiguration` method of the module's service resolves the active view, and the `setActiveViewConfiguration` method sets it.
+
+***
+
+## Manage View Configurations
+
+The Settings Module's service provides methods to create, retrieve, update, and delete view configurations programmatically. Resolve the service from the Medusa container using `Modules.SETTINGS`.
+
+### Create a View Configuration
+
+Use the `createViewConfigurations` method to create a new view configuration:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.createViewConfigurations({
+    entity: "product",
+    name: "My Products View",
+    configuration: {
+      visible_columns: ["title", "status"],
+      column_order: ["title", "status"],
+    },
+  })
+```
+
+### Retrieve a View Configuration
+
+Use the `retrieveViewConfiguration` method to retrieve a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.retrieveViewConfiguration("viewcfg_123")
+```
+
+### List View Configurations
+
+Use the `listViewConfigurations` method to list view configurations with optional filters:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations({
+    entity: "product",
+  })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountViewConfigurations`:
+
+```ts
+const [viewConfigurations, count] =
+  await settingsModuleService.listAndCountViewConfigurations(
+    { entity: "product" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update a View Configuration
+
+Use the `updateViewConfigurations` method to update a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.updateViewConfigurations("viewcfg_123", {
+    name: "Updated View",
+  })
+```
+
+### Delete a View Configuration
+
+Use the `deleteViewConfigurations` method to delete a view configuration by its ID:
+
+```ts
+await settingsModuleService.deleteViewConfigurations("viewcfg_123")
+```
+
+### Manage the Active View
+
+Use `getActiveViewConfiguration` to retrieve a user's active view for an entity, and `setActiveViewConfiguration` to change it:
+
+```ts
+const activeView =
+  await settingsModuleService.getActiveViewConfiguration(
+    "user_123",
+    "product"
+  )
+
+await settingsModuleService.setActiveViewConfiguration(
+  "user_123",
+  "product",
+  "viewcfg_123"
+)
+```
 
 ***
 
