@@ -15,8 +15,7 @@ export type RenderMode =
   | "datetime"
   | "boolean"
   | "status"
-  | "badge"
-  | "badge_list"
+  | "badges"
   | "count"
   | "id"
   | "display_id"
@@ -27,11 +26,37 @@ export type RenderMode =
   | "json"
   | "country_code"
   | "address"
-  | "customer_name"
+  | "name"
   | "product_info"
-  | "address_summary"
-  | "sales_channels_list"
-  | string
+  | (string & {})
+
+/**
+ * Known filter operators. Mirrors the operators the generator emits per data
+ * type in {@link ./filter-rules.ts}.
+ */
+export type FilterOperator =
+  | "eq"
+  | "ne"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "contains"
+  | "startsWith"
+  | "endsWith"
+  | "in"
+  | "nin"
+  | (string & {})
+
+/**
+ * Known computed column categories used for grouping in the UI.
+ */
+export type ColumnCategory =
+  | "relationship"
+  | "metadata"
+  | "computed"
+  | "metric"
+  | (string & {})
 
 /**
  * Maps GraphQL scalar types to render modes.
@@ -227,7 +252,7 @@ export type ColumnDataType =
   | "currency"
   | "enum"
   | "object"
-
+  | (string & {})
 /**
  * Map a data type to its default render mode.
  */
