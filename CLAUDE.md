@@ -100,6 +100,15 @@ yarn test:integration:modules
 - Constants: SCREAMING_SNAKE_CASE
 - DB fields: snake_case
 
+**Branch Naming:**
+Branch names must be prefixed by type, since the prefix drives the labels automatically applied to the PR:
+- `feat/readable-name`: new features
+- `fix/readable-name`: bug fixes
+- `chore/readable-name`: refactors, clean-ups, and similar work
+- `docs/readable-name`: docs-only PRs
+
+`readable-name` must describe the PR's changes (kebab-case). Do NOT use just the ticket number (e.g. use `fix/loyalty-admin-auth-type`, not `dx-2801`).
+
 **Export Patterns:**
 - Barrel exports via `export * from`
 - Named re-exports for specific items
