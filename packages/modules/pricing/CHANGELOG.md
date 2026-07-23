@@ -1,5 +1,14 @@
 # @medusajs/pricing
 
+## 2.18.0
+
+### Patch Changes
+
+- [`3a51849b0d9aa754975c6d9654508961ce14f998`](undefined) - perf(pricing): pre-filter matching price lists in calculatePrices
+
+- Updated dependencies [[`1621e14330fe64a968510991408ace8fdac84ce9`](https://github.com/medusajs/medusa/commit/1621e14330fe64a968510991408ace8fdac84ce9), [`1359d1bf6237aa058910b805395932cd070d2043`](https://github.com/medusajs/medusa/commit/1359d1bf6237aa058910b805395932cd070d2043), [`3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09`](https://github.com/medusajs/medusa/commit/3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09), [`d76952b5b0e4b287747a7e08f2cb745510143aae`](https://github.com/medusajs/medusa/commit/d76952b5b0e4b287747a7e08f2cb745510143aae), [`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340), [`6ef16b6fdc6f04b900583a5f2714a863011ed19a`](https://github.com/medusajs/medusa/commit/6ef16b6fdc6f04b900583a5f2714a863011ed19a), [`70c122753875f3cca03ff49b8a0ea9fe2c5e1165`](https://github.com/medusajs/medusa/commit/70c122753875f3cca03ff49b8a0ea9fe2c5e1165), [`144c47aba88f6e08fb7c99634c9fec8474721b0a`](https://github.com/medusajs/medusa/commit/144c47aba88f6e08fb7c99634c9fec8474721b0a), [`513c01a5a7f587cb52c92677e2379e54bd990361`](https://github.com/medusajs/medusa/commit/513c01a5a7f587cb52c92677e2379e54bd990361)]:
+  - @medusajs/framework@2.18.0
+
 ## 2.17.2
 
 ### Patch Changes

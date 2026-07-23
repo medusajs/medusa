@@ -1,5 +1,16 @@
 # @medusajs/settings
 
+## 2.18.0
+
+### Patch Changes
+
+- [#16025](https://github.com/medusajs/medusa/pull/16025) [`e61285a935b0cae42603f8bb9e10569fd0a51169`](https://github.com/medusajs/medusa/commit/e61285a935b0cae42603f8bb9e10569fd0a51169) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,settings,ui,types): implement configurable data tables end to end in admin dashboard
+
+- [#14661](https://github.com/medusajs/medusa/pull/14661) [`8f97e3f3710a2bae662415dac7098e1c6e60c3c9`](https://github.com/medusajs/medusa/commit/8f97e3f3710a2bae662415dac7098e1c6e60c3c9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,admin-vite-plugin,admin-shared,ui,settings,js-sdk,types): view configuration UI enhancements — dynamic filter/sort resolution, custom cell renderer registration, property labels management UI
+
+- Updated dependencies [[`1621e14330fe64a968510991408ace8fdac84ce9`](https://github.com/medusajs/medusa/commit/1621e14330fe64a968510991408ace8fdac84ce9), [`1359d1bf6237aa058910b805395932cd070d2043`](https://github.com/medusajs/medusa/commit/1359d1bf6237aa058910b805395932cd070d2043), [`3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09`](https://github.com/medusajs/medusa/commit/3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09), [`d76952b5b0e4b287747a7e08f2cb745510143aae`](https://github.com/medusajs/medusa/commit/d76952b5b0e4b287747a7e08f2cb745510143aae), [`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340), [`6ef16b6fdc6f04b900583a5f2714a863011ed19a`](https://github.com/medusajs/medusa/commit/6ef16b6fdc6f04b900583a5f2714a863011ed19a), [`70c122753875f3cca03ff49b8a0ea9fe2c5e1165`](https://github.com/medusajs/medusa/commit/70c122753875f3cca03ff49b8a0ea9fe2c5e1165), [`144c47aba88f6e08fb7c99634c9fec8474721b0a`](https://github.com/medusajs/medusa/commit/144c47aba88f6e08fb7c99634c9fec8474721b0a), [`513c01a5a7f587cb52c92677e2379e54bd990361`](https://github.com/medusajs/medusa/commit/513c01a5a7f587cb52c92677e2379e54bd990361)]:
+  - @medusajs/framework@2.18.0
+
 ## 2.17.2
 
 ### Patch Changes
