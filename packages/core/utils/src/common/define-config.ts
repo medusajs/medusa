@@ -117,21 +117,15 @@ export function transformModules(
     delete moduleConfig.key
 
     if (!serviceName && "resolve" in moduleConfig) {
+      if (!moduleConfig.resolve) {
+        throw new Error(
+          `Module must have a 'resolve' property in medusa-config.ts and it can't be empty. Please provide a module name or path for the module.`
+        )
+      }
+
       const resolution = isString(moduleConfig.resolve!)
         ? normalizeImportPathWithSource(moduleConfig.resolve as string)
         : moduleConfig.resolve
-
-      if (!resolution) {
-        if (!moduleConfig.resolve) {
-          throw new Error(
-            `Module must have a 'resolve' property in medusa-config.ts and it can't be empty. Please provide a module name or path for the module.`
-          )
-        }
-
-        throw new Error(
-          `Module ${moduleConfig.resolve} could not be resolved. Please check the module name or path.`
-        )
-      }
 
       const moduleExport = isString(resolution)
         ? require(resolution)
