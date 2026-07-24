@@ -61,6 +61,13 @@ export const settingsSidebar = [
         sort_sidebar: "alphabetize",
         description:
           "Learn how to utilize administrative features of the Settings Module.",
+        children: [
+          {
+            type: "link",
+            path: "/commerce-modules/settings/configure-view-configurations",
+            title: "Configure View Configurations",
+          },
+        ],
       },
       {
         type: "category",
@@ -108,7 +115,7 @@ export const settingsSidebar = [
               {
                 type: "sub-category",
                 title: "Admin",
-                autogenerate_tags: "jsSdk+admin+settings",
+                autogenerate_tags: "jsSdk+admin+settings,jsSdk+admin+views",
                 description:
                   "The following methods or properties are used to send requests to Admin API Routes related to the Settings Module.",
                 autogenerate_as_ref: true,

@@ -18,5 +18,25 @@ export const loyalty = [
   {
     "title": "Loyalty Features in Medusa Admin",
     "path": "https://docs.medusajs.com/user-guide/loyalty"
+  },
+  {
+    "title": "createGiftCardsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createGiftCardsStep"
+  },
+  {
+    "title": "updateGiftCardsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateGiftCardsStep"
+  },
+  {
+    "title": "createGiftCardsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createGiftCardsWorkflow"
+  },
+  {
+    "title": "redeemGiftCardWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/redeemGiftCardWorkflow"
+  },
+  {
+    "title": "updateGiftCardsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateGiftCardsWorkflow"
   }
 ]
