@@ -17,7 +17,7 @@ export type CreateServiceZonesWorkflowOutput = ServiceZoneDTO[]
 export const createServiceZonesWorkflowId = "create-service-zones-workflow"
 /**
  * This workflow creates one or more service zones. It's used by the
- * [Add Service Zone to Fulfillment Set Admin API Route](https://docs.medusajs.com/api/admin#fulfillment-sets_postfulfillmentsetsidservicezones).
+ * [Add Service Zone to Fulfillment Set Admin API Route](https://docs.medusajs.com/api/admin/fulfillment-sets/add-service-zone).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * create service zones within your custom flows.

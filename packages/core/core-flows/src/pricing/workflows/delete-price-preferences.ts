@@ -11,7 +11,7 @@ export type DeletePricePreferencesWorkflowInput = string[]
 export const deletePricePreferencesWorkflowId = "delete-price-preferences"
 /**
  * This workflow deletes one or more price preferences. It's used by the
- * [Delete Price Preferences Admin API Route](https://docs.medusajs.com/api/admin#price-preferences_deletepricepreferencesid).
+ * [Delete Price Preferences Admin API Route](https://docs.medusajs.com/api/admin/price-preferences/delete-a-price-preference).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete price preferences in your custom flows.

@@ -292,7 +292,7 @@ export const createAndCompleteReturnOrderWorkflowId =
 /**
  * This workflow creates and completes a return from the storefront. The admin would receive the return and
  * process it from the dashboard. This workflow is used by the
- * [Create Return Store API Route](https://docs.medusajs.com/api/store#return_postreturn).
+ * [Create Return Store API Route](https://docs.medusajs.com/api/store/returns/create-return).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to create a return
  * for an order in your custom flow.

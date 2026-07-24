@@ -71,16 +71,16 @@ sequenceDiagram
 ```
 
 1. Show the customer a form to enter their details.
-2. Send a `POST` request to the `/auth/customer/emailpass/register` [Get Registration Token](!api!/store#auth_postactor_typeauth_provider_register) API route to obtain a registration JWT token.
+2. Send a `POST` request to the `/auth/customer/emailpass/register` [Get Registration Token](!api!/store/auth/retrieve-registration-jwt-token) API route to obtain a registration JWT token.
 3. Request returns a registration JWT token if the registration is successful.
 4. Redirect customer to login.
-5. Send a `POST` request to the `/auth/customer/emailpass` [Login Customer](!api!/store#auth_postactor_typeauth_provider) API route, passing the registration JWT token in the header.
+5. Send a `POST` request to the `/auth/customer/emailpass` [Login Customer](!api!/store/auth/authenticate-customer) API route, passing the registration JWT token in the header.
 6. Request returns an object indicating that verification is required.
 7. Send a `POST` request to the `/auth/verification/request` [Request Verification Email](!api!/store#auth_postactor_typeauth_provider_verification_request) API route to send the verification email to the customer.
 8. Customer receives the email and clicks the verification link, which is a page in the storefront.
-9. The verification page sends a `POST` request to the `/auth/verification/confirm` [Confirm Verification](!api!/store#auth_postactor_typeauth_provider_verification_confirm) API route to verify the customer's email using the `token` query parameter in the URL.
+9. The verification page sends a `POST` request to the `/auth/verification/confirm` [Confirm Verification](!api!/store/auth/verify-the-customers-email) API route to verify the customer's email using the `token` query parameter in the URL.
 10. Once the email is verified, the customer can log in.
-11. During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header.
+11. During login, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store/customers/register-customer) passing the login JWT token in the header.
 12. Login the customer again to obtain an active JWT token.
 
 This guide will cover how to:
@@ -265,7 +265,7 @@ The JS SDK automatically stores and re-uses the authentication headers or sessio
 
 The login page implements steps five to twelve of the [email verification flow](#register-customer-with-verification-flow). When the customer logs in, if verification is required, request the verification email and prompt the customer to check their inbox.
 
-After the customer verifies their email and logs in again, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store#customers_postcustomers) passing the login JWT token in the header, then log in the customer again to obtain an active JWT token.
+After the customer verifies their email and logs in again, if the email is verified but the customer's account is not active, send a request to the [Register Customer API route](!api!/store/customers/register-customer) passing the login JWT token in the header, then log in the customer again to obtain an active JWT token.
 
 The following example shows the updated login page:
 
@@ -538,7 +538,7 @@ This guide's examples are otherwise client-side and rely on `localStorage` and t
 
 ## Step 3: Create the Verify Account Page
 
-Next, create a page in your storefront at the path that the verification link points to (for example, `/verify-account`). The page reads the `token` from the query string and sends it to the [Confirm Verification API route](!api!/store#auth_postactor_typeauth_provider_verification_confirm) to verify the customer's email.
+Next, create a page in your storefront at the path that the verification link points to (for example, `/verify-account`). The page reads the `token` from the query string and sends it to the [Confirm Verification API route](!api!/store/auth/verify-the-customers-email) to verify the customer's email.
 
 For example, create the page at `src/app/verify-account/page.tsx` with the following content:
 

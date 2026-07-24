@@ -18,7 +18,7 @@ In this guide, you'll learn how to manage a cart's line items, including adding,
 
 ## Add Product Variant to Cart
 
-To add a product variant to a cart, use the [Add Line Item API route](!api!/store#carts_postcartsidlineitems).
+To add a product variant to a cart, use the [Add Line Item API route](!api!/store/carts/add-line-item).
 
 <Note title="Tip">
 
@@ -60,18 +60,18 @@ const addToCart = (variant_id: string) => {
 }
 ```
 
-The [Add Line Item API route](!api!/store#carts_postcartsidlineitems) requires two request body parameters:
+The [Add Line Item API route](!api!/store/carts/add-line-item) requires two request body parameters:
 
 - `variant_id`: The ID of the product variant to add to the cart. This is the variant selected by the customer.
 - `quantity`: The quantity to add to cart.
 
-The API route returns the updated [cart object](!api!/store#carts_cart_schema).
+The API route returns the updated [cart object](!api!/store/carts/schema).
 
 ---
 
 ## Update Line Item in Cart
 
-You can update the quantity of a line item in the cart using the [Update Line Item API route](!api!/store#carts_postcartsidlineitemsline_id).
+You can update the quantity of a line item in the cart using the [Update Line Item API route](!api!/store/carts/update-line-item).
 
 For example:
 
@@ -103,18 +103,18 @@ const updateQuantity = (
 }
 ```
 
-The [Update Line Item API route](!api!/store#carts_postcartsidlineitemsline_id) requires:
+The [Update Line Item API route](!api!/store/carts/update-line-item) requires:
 
 - The line item's ID to be passed as a path parameter.
 - The `quantity` request body parameter, which is the new quantity of the item.
 
-The API route returns the updated [cart object](!api!/store#carts_cart_schema).
+The API route returns the updated [cart object](!api!/store/carts/schema).
 
 ---
 
 ## Remove Line Item from Cart
 
-To remove a line item from the cart, send a request to the [Remove Line Item API route](!api!/store#carts_deletecartsidlineitemsline_id).
+To remove a line item from the cart, send a request to the [Remove Line Item API route](!api!/store/carts/remove-line-item).
 
 For example:
 
@@ -141,4 +141,4 @@ const removeItem = (itemId: string) => {
 }
 ```
 
-The [Delete Line Item API route](!api!/store#carts_deletecartsidlineitemsline_id) returns the updated [cart object](!api!/store#carts_cart_schema) as the `parent` field.
+The [Delete Line Item API route](!api!/store/carts/remove-line-item) returns the updated [cart object](!api!/store/carts/schema) as the `parent` field.

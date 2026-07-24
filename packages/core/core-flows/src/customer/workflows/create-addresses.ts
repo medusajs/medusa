@@ -28,8 +28,8 @@ export type CreateCustomerAddressesWorkflowInput = {
 
 export const createCustomerAddressesWorkflowId = "create-customer-addresses"
 /**
- * This workflow creates one or more addresses for customers. It's used by the [Add Customer Address Admin API Route](https://docs.medusajs.com/api/admin#customers_postcustomersidaddresses)
- * and the [Add Customer Address Store API Route](https://docs.medusajs.com/api/store#customers_postcustomersmeaddresses).
+ * This workflow creates one or more addresses for customers. It's used by the [Add Customer Address Admin API Route](https://docs.medusajs.com/api/admin/customers/add-address)
+ * and the [Add Customer Address Store API Route](https://docs.medusajs.com/api/store/customers/create-address).
  * 
  * This workflow has a hook that allows you to perform custom actions on the created customer addresses. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the addresses.

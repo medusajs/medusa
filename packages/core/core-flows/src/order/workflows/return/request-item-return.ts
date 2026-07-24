@@ -111,7 +111,7 @@ export const requestItemReturnValidationStep = createStep(
 export const requestItemReturnWorkflowId = "request-item-return"
 /**
  * This workflow adds items to a return. It's used by the
- * [Add Requested Items to Return Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidrequestitems).
+ * [Add Requested Items to Return Admin API Route](https://docs.medusajs.com/api/admin/returns/add-items).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to add items to a return
  * in your custom flows.

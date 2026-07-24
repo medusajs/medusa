@@ -14,49 +14,49 @@ Some of Medusa's API Routes accept an `additional_data` parameter whose type is 
 
 This is useful when you have a link from your custom module to a Commerce Module, and you want to perform an additional action when a request is sent to an existing API route.
 
-For example, the [Create Product API Route](!api!/admin#products_postproducts) accepts an `additional_data` parameter. If you have a data model linked to it, you consume the `productsCreated` hook to create a record of the data model using the custom data and link it to the product.
+For example, the [Create Product API Route](!api!/admin/products/create-product) accepts an `additional_data` parameter. If you have a data model linked to it, you consume the `productsCreated` hook to create a record of the data model using the custom data and link it to the product.
 
 ### API Routes Accepting Additional Data
 
 <Details summaryContent="API Routes List">
 
 - Campaigns
-    - [Create Campaign](!api!/admin#campaigns_postcampaigns)
-    - [Update Campaign](!api!/admin#campaigns_postcampaignsid)
+    - [Create Campaign](!api!/admin/campaigns/create-campaign)
+    - [Update Campaign](!api!/admin/campaigns/update-a-campaign)
 - Cart
-    - [Create Cart](!api!/store#carts_postcarts)
-    - [Update Cart](!api!/store#carts_postcartsid)
+    - [Create Cart](!api!/store/carts/create-cart)
+    - [Update Cart](!api!/store/carts/update-a-cart)
 - Collections
-    - [Create Collection](https://docs.medusajs.com/api/admin#collections_postcollections)
-    - [Update Collection](https://docs.medusajs.com/api/admin#collections_postcollectionsid)
+    - [Create Collection](https://docs.medusajs.com/api/admin/collections/create-collection)
+    - [Update Collection](https://docs.medusajs.com/api/admin/collections/update-a-collection)
 - Customers
-    - [Create Customer](!api!/admin#customers_postcustomers)
-    - [Update Customer](!api!/admin#customers_postcustomersid)
-    - [Create Address](!api!/admin#customers_postcustomersidaddresses)
-    - [Update Address](!api!/admin#customers_postcustomersidaddressesaddress_id)
+    - [Create Customer](!api!/admin/customers/create-customer)
+    - [Update Customer](!api!/admin/customers/update-a-customer)
+    - [Create Address](!api!/admin/customers/add-address)
+    - [Update Address](!api!/admin/customers/update-address)
 - Draft Orders
-    - [Create Draft Order](!api!/admin#draft-orders_postdraftorders)
+    - [Create Draft Order](!api!/admin/draft-orders/create-draft-order)
 - Orders
-    - [Complete Orders](!api!/admin#orders_postordersidcomplete)
-    - [Cancel Order's Fulfillment](!api!/admin#orders_postordersidfulfillmentsfulfillment_idcancel)
-    - [Create Shipment](!api!/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
-    - [Create Fulfillment](!api!/admin#orders_postordersidfulfillments)
+    - [Complete Orders](!api!/admin/orders/complete-order)
+    - [Cancel Order's Fulfillment](!api!/admin/orders/cancel-fulfillment)
+    - [Create Shipment](!api!/admin/orders/create-shipment)
+    - [Create Fulfillment](!api!/admin/orders/create-fulfillment)
 - Products
-    - [Create Product](!api!/admin#products_postproducts)
-    - [Update Product](!api!/admin#products_postproductsid)
-    - [Create Product Variant](!api!/admin#products_postproductsidvariants)
-    - [Update Product Variant](!api!/admin#products_postproductsidvariantsvariant_id)
+    - [Create Product](!api!/admin/products/create-product)
+    - [Update Product](!api!/admin/products/update-a-product)
+    - [Create Product Variant](!api!/admin/products/create-variant)
+    - [Update Product Variant](!api!/admin/products/update-variant)
     - [Create Product Option](!api!/admin#products_postproductsidoptions)
     - [Update Product Option](!api!/admin#products_postproductsidoptionsoption_id)
 - Product Tags
-    - [Create Product Tag](https://docs.medusajs.com/api/admin#product-tags_postproducttags)
-    - [Update Product Tag](https://docs.medusajs.com/api/admin#product-tags_postproducttagsid)
+    - [Create Product Tag](https://docs.medusajs.com/api/admin/product-tags/create-product-tag)
+    - [Update Product Tag](https://docs.medusajs.com/api/admin/product-tags/update-a-product-tag)
 - Product Types
-    - [Create Product Type](https://docs.medusajs.com/api/admin#product-types_postproducttypes)
-    - [Update Product Type](https://docs.medusajs.com/api/admin#product-types_postproducttypesid)
+    - [Create Product Type](https://docs.medusajs.com/api/admin/product-types/create-product-type)
+    - [Update Product Type](https://docs.medusajs.com/api/admin/product-types/update-a-product-type)
 - Promotions
-    - [Create Promotion](!api!/admin#promotions_postpromotions)
-    - [Update Promotion](!api!/admin#promotions_postpromotionsid)
+    - [Create Promotion](!api!/admin/promotions/create-promotion)
+    - [Update Promotion](!api!/admin/promotions/update-a-promotion)
 
 </Details>
 

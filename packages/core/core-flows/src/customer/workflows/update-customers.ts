@@ -30,8 +30,8 @@ export type UpdateCustomersWorkflowInput = {
 
 export const updateCustomersWorkflowId = "update-customers"
 /**
- * This workflow updates one or more customers. It's used by the [Update Customer Admin API Route](https://docs.medusajs.com/api/admin#customers_postcustomersid) and
- * the [Update Customer Store API Route](https://docs.medusajs.com/api/store#customers_postcustomersme).
+ * This workflow updates one or more customers. It's used by the [Update Customer Admin API Route](https://docs.medusajs.com/api/admin/customers/update-a-customer) and
+ * the [Update Customer Store API Route](https://docs.medusajs.com/api/store/customers/update-customer).
  * 
  * This workflow has a hook that allows you to perform custom actions on the updated customer. For example, you can pass under `additional_data` custom data to update
  * custom data models linked to the customers.

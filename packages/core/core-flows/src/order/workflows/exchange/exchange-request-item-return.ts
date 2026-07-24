@@ -136,7 +136,7 @@ export const orderExchangeRequestItemReturnWorkflowId =
   "exchange-request-item-return"
 /**
  * This workflow adds inbound items to be retuned as part of the exchange. It's used
- * by the [Add Inbound Items Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidinbounditems).
+ * by the [Add Inbound Items Admin API Route](https://docs.medusajs.com/api/admin/exchanges/add-inbound-items-to-an-exchange).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to add inbound items
  * to be returned as part of an exchange in your custom flow.

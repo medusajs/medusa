@@ -19,7 +19,7 @@ In this guide, you'll learn how to retrieve a collection's products in the store
 
 In your storefront, you may want to display a collection's products to the customers. To do so, you can retrieve the products that belong to a collection and display them in your storefront.
 
-To retrieve a collection's products in the storefront, send a request to the [List Products API route](!api!/store#products_getproducts) passing it the `collection_id` query parameter:
+To retrieve a collection's products in the storefront, send a request to the [List Products API route](!api!/store/products/list-products) passing it the `collection_id` query parameter:
 
 <Note title="Tip">
 
@@ -130,6 +130,6 @@ export const highlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve the products that belong to a collection by passing the collection's ID as a query parameter to the [List Products API route](!api!/store#products_getproducts). You can also pass other query parameters to filter or paginate the products, such as `limit` and `offset`.
+In this example, you retrieve the products that belong to a collection by passing the collection's ID as a query parameter to the [List Products API route](!api!/store/products/list-products). You can also pass other query parameters to filter or paginate the products, such as `limit` and `offset`.
 
-The response has a `products` field, which is an array of [products](!api!/store#products_product_schema).
+The response has a `products` field, which is an array of [products](!api!/store/products/schema).
