@@ -1,4 +1,5 @@
 export * from "./add-extra-to-md.js"
+export * from "./api-ref-paths.js"
 export * from "./doc-page-to-markdown.js"
 export * from "./worker-compatible-fetch.js"
 export * from "./estree-to-js.js"

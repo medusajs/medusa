@@ -20,6 +20,12 @@ export function calculateRequiredFields(
   const requiredFieldsSet = new Set<string>()
 
   visibleColumnObjects.forEach((column) => {
+    // Virtual columns (selection, actions) have no backing data field and must
+    // not be requested from the API.
+    if (column.render_mode === "select" || column.render_mode === "actions") {
+      return
+    }
+
     if (column.computed) {
       // For computed columns, add all required and optional fields
       column.computed.required_fields?.forEach((field: string) =>

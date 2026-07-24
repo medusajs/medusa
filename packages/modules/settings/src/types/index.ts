@@ -15,22 +15,20 @@ export type InitializeModuleInjectableDependencies = {
  *     {
  *       resolve: "@medusajs/medusa/settings",
  *       options: {
- *         entityOverrides: [
- *           {
- *             entity: "Brand",
+ *         entityOverrides: {
+ *           Brand: {
  *             defaultVisibleFields: ["name", "products_count"],
- *             fieldOrdering: { name: 100 },
+ *             defaultFieldOrdering: { name: 100 },
  *             computedColumns: [
  *                {
  *                  id: "products_count",
  *                  name: "Product Count",
  *                  renderMode: "count",
  *                  requiredFields: ["products"],
- *                  entities: ["Brand"],
  *                },
  *              ],
  *           },
- *         ],
+ *         },
  *       },
  *     },
  *   ],
@@ -42,4 +40,11 @@ export interface SettingsModuleOptions {
    * Merged with built-in overrides; provided values take precedence.
    */
   entityOverrides?: Record<string, EntityOverride>
+}
+
+declare module "@medusajs/types" {
+  interface ModuleOptions {
+    "@medusajs/settings": SettingsModuleOptions
+    "@medusajs/medusa/settings": SettingsModuleOptions
+  }
 }

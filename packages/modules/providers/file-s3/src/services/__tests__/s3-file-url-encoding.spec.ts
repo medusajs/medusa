@@ -118,6 +118,66 @@ describe("S3FileService URL encoding", () => {
     expect(command.input.Key).toMatch(/^docs\/Q&A file-/)
   })
 
+  it("preserves the directory segment of the filename in upload() object key", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const result = await service.upload({
+      filename: "vendor_123/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+
+    expect(result.key).toMatch(/^public\/vendor_123\/logo-[^/]+\.png$/)
+
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^public\/vendor_123\/logo-/)
+  })
+
+  it("leaves the object key unchanged when filename has no directory in upload()", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const result = await service.upload({
+      filename: "logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+
+    expect(result.key).toMatch(/^public\/logo-[^/]+\.png$/)
+
+    const command = mockS3Send.mock.calls[0][0] as InstanceType<typeof PutObjectCommand>
+    expect(command.input.Key).toMatch(/^public\/logo-/)
+  })
+
+  it("preserves the directory segment of the filename in getUploadStream() object key", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const { writeStream, promise } = await service.getUploadStream({
+      filename: "vendor_123/logo.png",
+      mimeType: "image/png",
+      access: "public",
+    })
+
+    writeStream.end()
+    const result = await promise
+
+    expect(result.key).toMatch(/^public\/vendor_123\/logo-[^/]+\.png$/)
+
+    expect(UploadMock).toHaveBeenCalledTimes(1)
+    const uploadArgs = UploadMock.mock.calls[0][0] as { params: { Key: string } }
+    expect(uploadArgs.params.Key).toMatch(/^public\/vendor_123\/logo-/)
+  })
+
   it("preserves path separators in getUploadStream() URLs (no %2F) and encodes special characters in segments", async () => {
     const service = new S3FileService({ logger } as any, {
       ...baseOptions,
@@ -141,5 +201,87 @@ describe("S3FileService URL encoding", () => {
     expect(UploadMock).toHaveBeenCalledTimes(1)
     const uploadArgs = UploadMock.mock.calls[0][0] as { params: { Key: string } }
     expect(uploadArgs.params.Key).toMatch(/^uploads\/2024\/my document-/)
+  })
+
+  it("sanitizes leading slashes, dot prefixes, and path traversals in filename", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    // Test 1: Leading slash `/vendor/logo.png`
+    const res1 = await service.upload({
+      filename: "/vendor/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res1.key).not.toContain("public//")
+    expect(res1.key).toMatch(/^public\/vendor\/logo-[^/]+\.png$/)
+
+    // Test 2: Dot prefix `./vendor/logo.png`
+    const res2 = await service.upload({
+      filename: "./vendor/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res2.key).not.toContain("/./")
+    expect(res2.key).toMatch(/^public\/vendor\/logo-[^/]+\.png$/)
+
+    // Test 3: Path traversal `../secret/logo.png` or `vendor/../../secret/logo.png`
+    const res3 = await service.upload({
+      filename: "../secret/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res3.key).not.toContain("..")
+    expect(res3.key).toMatch(/^public\/secret\/logo-[^/]+\.png$/)
+
+    const res4 = await service.upload({
+      filename: "vendor/../../secret/logo.png",
+      mimeType: "image/png",
+      content: Buffer.from("test").toString("base64"),
+      access: "public",
+    })
+    expect(res4.key).not.toContain("..")
+    expect(res4.key).toMatch(/^public\/secret\/logo-[^/]+\.png$/)
+  })
+
+  it("rejects filenames that become empty or invalid after sanitization", async () => {
+    const service = new S3FileService({ logger } as any, {
+      ...baseOptions,
+      prefix: "public/",
+    })
+
+    const invalidFilenames = ["..", "../..", ".", "./.", "/", "vendor/../.."]
+
+    for (const filename of invalidFilenames) {
+      await expect(
+        service.upload({
+          filename,
+          mimeType: "image/png",
+          content: Buffer.from("test").toString("base64"),
+          access: "public",
+        })
+      ).rejects.toThrow("Invalid filename")
+
+      await expect(
+        service.getUploadStream({
+          filename,
+          mimeType: "image/png",
+          access: "public",
+        })
+      ).rejects.toThrow("Invalid filename")
+
+      await expect(
+        service.getPresignedUploadUrl({
+          filename,
+          mimeType: "image/png",
+          access: "public",
+        })
+      ).rejects.toThrow("Invalid filename")
+    }
   })
 })

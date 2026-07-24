@@ -16,7 +16,7 @@ export class RefundReason {
 
   /**
    * This method retrieves a list of refund reasons. It sends a request to the
-   * [List Refund Reasons](https://docs.medusajs.com/api/admin#refund-reasons_getrefundreasons)
+   * [List Refund Reasons](https://docs.medusajs.com/api/admin/refund-reasons/list-refund-reasons)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -59,7 +59,7 @@ export class RefundReason {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    *
    */
   async list(
@@ -77,7 +77,7 @@ export class RefundReason {
 
   /**
    * This method retrieves a refund reason by ID. It sends a request to the
-   * [Get Refund Reason](https://docs.medusajs.com/api/admin#refund-reasons_getrefundreasonsid)
+   * [Get Refund Reason](https://docs.medusajs.com/api/admin/refund-reasons/get-a-refund-reason)
    * API route.
    *
    * @since 2.11.0
@@ -108,7 +108,7 @@ export class RefundReason {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -126,7 +126,7 @@ export class RefundReason {
 
   /**
    * This method creates a refund reason. It sends a request to the
-   * [Create Refund Reason](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasons)
+   * [Create Refund Reason](https://docs.medusajs.com/api/admin/refund-reasons/create-refund-reason)
    * API route.
    *
    * @since 2.11.0
@@ -163,7 +163,7 @@ export class RefundReason {
 
   /**
    * This method updates a refund reason. It sends a request to the
-   * [Update Refund Reason](https://docs.medusajs.com/api/admin#refund-reasons_postrefundreasonsid)
+   * [Update Refund Reason](https://docs.medusajs.com/api/admin/refund-reasons/update-a-refund-reason)
    * API route.
    *
    * @since 2.11.0
@@ -202,7 +202,7 @@ export class RefundReason {
 
   /**
    * This method deletes a refund reason. It sends a request to the
-   * [Delete Refund Reason](https://docs.medusajs.com/api/admin#refund-reasons_deleterefundreasonsid)
+   * [Delete Refund Reason](https://docs.medusajs.com/api/admin/refund-reasons/delete-a-refund-reason)
    * API route.
    *
    * @since 2.11.0

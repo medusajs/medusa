@@ -122,7 +122,7 @@ export const prepareCartToUpdateStep = createStep(
 export const updateCartWorkflowId = "update-cart"
 /**
  * This workflow updates a cart and returns it. You can update the cart's region, address, and more. This workflow is executed by the
- * [Update Cart Store API Route](https://docs.medusajs.com/api/store#carts_postcartsid).
+ * [Update Cart Store API Route](https://docs.medusajs.com/api/store/carts/update-a-cart).
  *
  * :::note
  *
@@ -245,9 +245,45 @@ export const updateCartWorkflow = createWorkflow(
       return newRegion
     })
 
-    const hasUpdatedState = transform({ input }, (data) => {
-      return !!data.input.shipping_address?.province
-    })
+    // The tax lines of a cart depend on its shipping address (primarily the
+    // country, but also province/postal code/city for regional rates). When
+    // any of these change, the taxes must be fully recomputed. Comparing
+    // against the current cart address avoids forcing a needless refresh when
+    // an unchanged address is resent alongside another update.
+    const taxRelevantAddressChanged = transform(
+      { input, cartToUpdate },
+      ({ input, cartToUpdate }) => {
+        const next = input.shipping_address
+
+        if (!next) {
+          return false
+        }
+
+        const prev = cartToUpdate?.shipping_address
+
+        // A provided field only counts as a change when it differs from the
+        // current address. Country codes are persisted in lower-case, so we
+        // compare them case-insensitively to avoid forcing a refresh when an
+        // unchanged address is resent with a different casing.
+        const changed = (nextValue?: string, prevValue?: string) =>
+          nextValue !== undefined && nextValue !== prevValue
+
+        // When the address is referenced by id, that id may point to a
+        // different (tax-relevant) address than the one currently on the cart.
+        const nextId = "id" in next ? next.id : undefined
+
+        return (
+          changed(nextId, prev?.id) ||
+          changed(
+            next.country_code?.toLowerCase(),
+            prev?.country_code?.toLowerCase()
+          ) ||
+          changed(next.province, prev?.province) ||
+          changed(next.postal_code, prev?.postal_code) ||
+          changed(next.city, prev?.city)
+        )
+      }
+    )
 
     const region = transform({ cartToUpdate, newRegion }, (data) => {
       return data.newRegion ?? data.cartToUpdate.region
@@ -341,12 +377,19 @@ export const updateCartWorkflow = createWorkflow(
     })
 
     const refreshCartItemsInput = transform(
-      { cartInput, input, newRegion, newLocaleCode, hasUpdatedState },
-      ({ cartInput, input, newRegion, newLocaleCode, hasUpdatedState }) => {
+      { cartInput, input, newRegion, newLocaleCode, taxRelevantAddressChanged },
+      ({
+        cartInput,
+        input,
+        newRegion,
+        newLocaleCode,
+        taxRelevantAddressChanged,
+      }) => {
         return {
           cart_id: cartInput.id,
           promo_codes: input.promo_codes,
-          force_refresh: !!newRegion || !!newLocaleCode || hasUpdatedState,
+          force_refresh:
+            !!newRegion || !!newLocaleCode || taxRelevantAddressChanged,
           locale: newLocaleCode || undefined,
           additional_data: input.additional_data,
         }

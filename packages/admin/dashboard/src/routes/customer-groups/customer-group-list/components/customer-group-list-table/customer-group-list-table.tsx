@@ -1,24 +1,15 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Container,
-  createDataTableColumnHelper,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { useCallback, useMemo } from "react"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 
 import { DataTable } from "../../../../../components/data-table"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
-import {
-  useCustomerGroups,
-  useDeleteCustomerGroupLazy,
-} from "../../../../../hooks/api"
+import { useCustomerGroups } from "../../../../../hooks/api"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { CustomerGroupListTableActions } from "./customer-group-list-table-actions"
 
 const PAGE_SIZE = 10
 
@@ -92,42 +83,6 @@ const columnHelper = createDataTableColumnHelper<HttpTypes.AdminCustomerGroup>()
 const useColumns = () => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
-  const navigate = useNavigate()
-  const prompt = usePrompt()
-
-  const { mutateAsync: deleteCustomerGroup } = useDeleteCustomerGroupLazy()
-
-  const handleDeleteCustomerGroup = useCallback(
-    async ({ id, name }: { id: string; name: string }) => {
-      const res = await prompt({
-        title: t("customerGroups.delete.title"),
-        description: t("customerGroups.delete.description", {
-          name,
-        }),
-        verificationText: name,
-        verificationInstruction: t("general.typeToConfirm"),
-        confirmText: t("actions.delete"),
-        cancelText: t("actions.cancel"),
-      })
-
-      if (!res) {
-        return
-      }
-
-      await deleteCustomerGroup(
-        { id },
-        {
-          onSuccess: () => {
-            toast.success(t("customerGroups.delete.successToast", { name }))
-          },
-          onError: (e) => {
-            toast.error(e.message)
-          },
-        }
-      )
-    },
-    [t, prompt, deleteCustomerGroup]
-  )
 
   return useMemo(() => {
     return [
@@ -175,33 +130,14 @@ const useColumns = () => {
         sortAscLabel: t("filters.sorting.dateAsc"),
         sortDescLabel: t("filters.sorting.dateDesc"),
       }),
-      columnHelper.action({
-        actions: [
-          [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: (row) => {
-                navigate(`/customer-groups/${row.row.original.id}/edit`)
-              },
-            },
-          ],
-          [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: (row) => {
-                handleDeleteCustomerGroup({
-                  id: row.row.original.id,
-                  name: row.row.original.name ?? "",
-                })
-              },
-            },
-          ],
-        ],
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => (
+          <CustomerGroupListTableActions customerGroup={row.original} />
+        ),
       }),
     ]
-  }, [t, navigate, getFullDate, handleDeleteCustomerGroup])
+  }, [t, getFullDate])
 }
 
 const useFilters = () => {

@@ -1,0 +1,1 @@
+{"slug":"/references/user/types/user.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"userReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

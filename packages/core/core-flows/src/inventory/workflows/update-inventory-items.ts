@@ -29,7 +29,7 @@ export type UpdateInventoryItemsWorkflowOutput =
 export const updateInventoryItemsWorkflowId = "update-inventory-items-workflow"
 /**
  * This workflow updates one or more inventory items. It's used by the
- * [Update an Inventory Item Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsid).
+ * [Update an Inventory Item Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/update-an-inventory-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update inventory items in your custom flows.

@@ -168,7 +168,7 @@ export type CreateOrderShipmentWorkflowInput =
 
 export const createOrderShipmentWorkflowId = "create-order-shipment"
 /**
- * This workflow creates a shipment for an order. It's used by the [Create Order Shipment Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idshipments).
+ * This workflow creates a shipment for an order. It's used by the [Create Order Shipment Admin API Route](https://docs.medusajs.com/api/admin/orders/create-shipment).
  *
  * This workflow has a hook that allows you to perform custom actions on the created shipment. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the shipment.
