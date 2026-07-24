@@ -83,6 +83,16 @@ const generatedgeneratedStoreSidebarSidebar = {
         },
         {
           "type": "link",
+          "path": "/store/auth/confirm-verification",
+          "title": "Confirm Verification",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
           "path": "/store/auth/generate-reset-password-token",
           "title": "Generate Reset Password Token",
           "loaded": true,
@@ -95,6 +105,16 @@ const generatedgeneratedStoreSidebarSidebar = {
           "type": "link",
           "path": "/store/auth/refresh-authentication-token",
           "title": "Refresh Authentication Token",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/store/auth/request-verification",
+          "title": "Request Verification",
           "loaded": true,
           "badge": {
             "variant": "blue",
