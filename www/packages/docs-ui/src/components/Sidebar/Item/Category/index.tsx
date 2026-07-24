@@ -7,6 +7,7 @@ import { Sidebar } from "types"
 import { Badge } from "@/components/Badge"
 import { Loading } from "@/components/Loading"
 import { SidebarItem } from "@/components/Sidebar/Item"
+import { SidebarItemTitle } from "@/components/Sidebar/Item/Title"
 import { useSidebar } from "@/providers/Sidebar"
 import clsx from "clsx"
 import { TriangleDownMini, TriangleUpMini } from "@medusajs/icons"
@@ -100,15 +101,11 @@ export const SidebarItemCategory = ({
           onClick={handleOpen}
           data-testid="sidebar-item-category"
         >
-          <span
-            className={clsx(
-              "text-compact-x-small-plus",
-              isTitleOneWord && "truncate"
-            )}
-            data-testid="sidebar-item-title"
-          >
-            {item.title}
-          </span>
+          <SidebarItemTitle
+            title={item.title}
+            isTitleOneWord={isTitleOneWord}
+            className="text-compact-x-small-plus"
+          />
           {item.additionalElms}
           {item.badge && (
             <Badge variant={item.badge.variant}>{item.badge.text}</Badge>
