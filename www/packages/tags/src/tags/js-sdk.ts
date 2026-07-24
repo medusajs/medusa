@@ -1,8 +1,4 @@
-export const admin = [
-  {
-    "title": "Configure View Configurations",
-    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
-  },
+export const jsSdk = [
   {
     "title": "apiKey",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/apiKey"
@@ -214,5 +210,81 @@ export const admin = [
   {
     "title": "workflowExecution",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/workflowExecution"
+  },
+  {
+    "title": "callback",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/callback"
+  },
+  {
+    "title": "login",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/login"
+  },
+  {
+    "title": "logout",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/logout"
+  },
+  {
+    "title": "refresh",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
+  },
+  {
+    "title": "register",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
+  },
+  {
+    "title": "resetPassword",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/resetPassword"
+  },
+  {
+    "title": "updateProvider",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/updateProvider"
+  },
+  {
+    "title": "JS SDK Auth Reference",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth"
+  },
+  {
+    "title": "cart",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/cart"
+  },
+  {
+    "title": "category",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/category"
+  },
+  {
+    "title": "collection",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/collection"
+  },
+  {
+    "title": "customer",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/customer"
+  },
+  {
+    "title": "fulfillment",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/fulfillment"
+  },
+  {
+    "title": "locale",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/locale"
+  },
+  {
+    "title": "order",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/order"
+  },
+  {
+    "title": "payment",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/payment"
+  },
+  {
+    "title": "product",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
+  },
+  {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/productOption"
+  },
+  {
+    "title": "region",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/region"
   }
 ]
