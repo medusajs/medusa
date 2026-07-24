@@ -70,7 +70,10 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       ? eventsData
       : [eventsData]
 
-    for (const eventData of normalizedEventsData) {
+    for (const eventData of normalizedEventsData.map((event) => ({
+      ...event,
+      metadata: this.withCreatedAtMetadata(event.metadata),
+    }))) {
       await this.groupOrEmitEvent({
         ...eventData,
         options,
@@ -102,12 +105,17 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         // Call interceptors before emitting
         void this.callInterceptors(eventData, { isGrouped: false })
 
+        const publishedEventBody = {
+          ...eventBody,
+          metadata: this.withPublishedAtMetadata(eventBody.metadata),
+        }
+
         if (eventListenersCount) {
-          this.eventEmitter_.emit(eventData.name, eventBody)
+          this.eventEmitter_.emit(eventData.name, publishedEventBody)
         }
 
         if (hasStarSubscriber) {
-          this.eventEmitter_.emit("*", eventBody)
+          this.eventEmitter_.emit("*", publishedEventBody)
         }
 
         const totalSubscribers =
@@ -147,12 +155,19 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         // Call interceptors before emitting grouped events
         void this.callInterceptors(event, { isGrouped: true, eventGroupId })
 
+        const publishedEventBody = {
+          ...eventBody,
+          metadata: this.withPublishedAtMetadata(
+            this.parseEventMetadataDates(eventBody.metadata) // necessary cause JSON.parse stringified created_at
+          ),
+        }
+
         if (eventListenersCount) {
-          this.eventEmitter_.emit(event.name, eventBody)
+          this.eventEmitter_.emit(event.name, publishedEventBody)
         }
 
         if (hasStarSubscriber) {
-          this.eventEmitter_.emit("*", eventBody)
+          this.eventEmitter_.emit("*", publishedEventBody)
         }
 
         const totalSubscribers =

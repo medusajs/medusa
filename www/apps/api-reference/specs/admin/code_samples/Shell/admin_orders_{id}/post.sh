@@ -1,2 +1,2 @@
 curl -X POST '{backend_url}/admin/orders/{id}' \
--H 'Authorization: Bearer {jwt_token}'
+-H 'Authorization: Bearer {access_token}'

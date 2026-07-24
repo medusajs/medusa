@@ -125,6 +125,26 @@ get:
         type: boolean
         title: with_deleted
         description: Whether to include deleted records in the result.
+    - name: to
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: to
+            description: >-
+              Filter by who the notification was sent to. Set to `""` to
+              retrieve notifications for all admin users.
+          - type: array
+            description: >-
+              Filter by who the notification was sent to. Set to `""` to
+              retrieve notifications for all admin users.
+            items:
+              type: string
+              title: to
+              description: >-
+                Who the notification was sent to. Set to `""` to retrieve
+                notifications for all admin users.
   security:
     - api_token: []
     - cookie_auth: []

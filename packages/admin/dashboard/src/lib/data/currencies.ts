@@ -49,6 +49,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "դր.",
     decimal_digits: 0,
   },
+  AOA: {
+    code: "AOA",
+    name: "Angolan Kwanza",
+    symbol_native: "Kz",
+    decimal_digits: 2,
+  },
   ARS: {
     code: "ARS",
     name: "Argentine Peso",
@@ -247,6 +253,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "GH₵",
     decimal_digits: 2,
   },
+  GMD: {
+    code: "GMD",
+    name: "Gambian Dalasi",
+    symbol_native: "D",
+    decimal_digits: 2,
+  },
   GNF: {
     code: "GNF",
     name: "Guinean Franc",
@@ -311,6 +323,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     code: "IRR",
     name: "Iranian Rial",
     symbol_native: "﷼",
+    decimal_digits: 0,
+  },
+  IRT: {
+    code: "IRT",
+    name: "Iranian Toman",
+    symbol_native: "تومان",
     decimal_digits: 0,
   },
   ISK: {
@@ -749,4 +767,8 @@ export const currencies: Record<string, CurrencyInfo> = {
 
 export function getCurrencySymbol(code: string) {
   return currencies[code.toUpperCase()].symbol_native
+}
+
+export function getCurrencyDecimalDigits(code: string) {
+  return currencies[code.toUpperCase()].decimal_digits
 }

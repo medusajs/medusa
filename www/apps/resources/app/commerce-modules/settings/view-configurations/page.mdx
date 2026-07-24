@@ -1,0 +1,177 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `View Configurations`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about view configurations in the Settings Module.
+
+<Note title="Experimental" type="warning">
+
+This feature is a work in progress, so it may change in future releases.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.18.0+",
+      href: "https://github.com/medusajs/medusa/releases/tag/v2.18.0",
+    }
+  ]}
+/>
+
+## Enable the Feature Flag
+
+View configurations are disabled by default. To enable them, set the `view_configurations` feature flag in your `medusa-config.ts` file:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    view_configurations: true,
+  },
+})
+```
+
+Alternatively, set the `MEDUSA_FF_VIEW_CONFIGURATIONS` environment variable:
+
+```bash
+MEDUSA_FF_VIEW_CONFIGURATIONS=true
+```
+
+---
+
+## What is a View Configuration?
+
+A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+
+The [ViewConfiguration](/references/settings/models/ViewConfiguration) data model stores a view's customizations in its `configuration` property, which includes:
+
+- `visible_columns`: The columns shown in the table.
+- `column_order`: The order of the columns.
+- `column_widths`: The width of each column.
+- `filters`: The applied filters.
+- `sorting`: The column and direction to sort by.
+- `search`: The search query.
+
+---
+
+## View Configuration Types
+
+There are three types of views for an entity:
+
+1. Code default: The default view built into the dashboard. It has no stored view configuration.
+2. System default: A stored view configuration that has its `is_system_default` property enabled and no `user_id`. It applies to all users that don't have a personal view. Only one system default can exist per entity.
+3. Personal view: A stored view configuration that has a `user_id`. It's private to the user that created it.
+
+---
+
+## Active View
+
+Each user has an active view for an entity, which is the view they're currently using. The Settings Module resolves a user's active view in the following order:
+
+1. The view set as active in the user's preferences.
+2. The user's first personal view, if any.
+3. The system default, if any.
+
+The `getActiveViewConfiguration` method of the module's service resolves the active view, and the `setActiveViewConfiguration` method sets it.
+
+---
+
+## Manage View Configurations
+
+The Settings Module's service provides methods to create, retrieve, update, and delete view configurations programmatically. Resolve the service from the Medusa container using `Modules.SETTINGS`.
+
+### Create a View Configuration
+
+Use the `createViewConfigurations` method to create a new view configuration:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.createViewConfigurations({
+    entity: "product",
+    name: "My Products View",
+    configuration: {
+      visible_columns: ["title", "status"],
+      column_order: ["title", "status"],
+    },
+  })
+```
+
+### Retrieve a View Configuration
+
+Use the `retrieveViewConfiguration` method to retrieve a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.retrieveViewConfiguration("viewcfg_123")
+```
+
+### List View Configurations
+
+Use the `listViewConfigurations` method to list view configurations with optional filters:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations({
+    entity: "product",
+  })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountViewConfigurations`:
+
+```ts
+const [viewConfigurations, count] =
+  await settingsModuleService.listAndCountViewConfigurations(
+    { entity: "product" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update a View Configuration
+
+Use the `updateViewConfigurations` method to update a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.updateViewConfigurations("viewcfg_123", {
+    name: "Updated View",
+  })
+```
+
+### Delete a View Configuration
+
+Use the `deleteViewConfigurations` method to delete a view configuration by its ID:
+
+```ts
+await settingsModuleService.deleteViewConfigurations("viewcfg_123")
+```
+
+### Manage the Active View
+
+Use `getActiveViewConfiguration` to retrieve a user's active view for an entity, and `setActiveViewConfiguration` to change it:
+
+```ts
+const activeView =
+  await settingsModuleService.getActiveViewConfiguration(
+    "user_123",
+    "product"
+  )
+
+await settingsModuleService.setActiveViewConfiguration(
+  "user_123",
+  "product",
+  "viewcfg_123"
+)
+```
+
+---
+
+## Configure View Configurations
+
+You can customize how columns are generated for an entity, add computed columns, and change how a column's value renders. You can also show a configurable data table in your admin customizations.
+
+Learn how in the [Configure View Configurations](../configure-view-configurations/page.mdx) guide.

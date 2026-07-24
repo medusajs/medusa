@@ -1,0 +1,45 @@
+---
+sidebar_label: "middlewares-file-location-and-name"
+---
+
+export const metadata = {
+  title: `middlewares-file-location-and-name - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires middlewares to be defined in `src/api/middlewares.ts` with a default export of `defineMiddlewares`.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets the `src/api/middlewares.ts` file. It reports a middleware file with the wrong name, such as a singular `middleware.ts`, a file in the wrong directory, or a canonical file that doesn't default-export `defineMiddlewares`.
+
+The following code is reported by the rule, since the file uses the singular name:
+
+```ts title="src/api/middleware.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({ routes: [] })
+```
+
+Instead, use the plural `middlewares.ts` name at the canonical location:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({ routes: [] })
+```
+
+## Why it's Important
+
+Medusa only loads middlewares from `src/api/middlewares.ts` with a default export of `defineMiddlewares`. A file with another name or location is ignored, so its middlewares never run.
+
+Learn more in the [Middlewares documentation](!docs!/learn/fundamentals/api-routes/middlewares).
+
+## Fixable
+
+This rule isn't auto-fixable.

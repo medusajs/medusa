@@ -75,7 +75,6 @@ interface DataTableProps<TData> {
   enablePagination?: boolean
   enableSearch?: boolean
   autoFocusSearch?: boolean
-  enableFilterMenu?: boolean
   rowHref?: (row: TData) => string
   emptyState?: DataTableEmptyStateProps
   heading?: string
@@ -117,7 +116,6 @@ export const DataTable = <TData,>({
   enablePagination = true,
   enableSearch = true,
   autoFocusSearch = false,
-  enableFilterMenu,
   rowHref,
   heading,
   headingLevel = "h1",
@@ -147,10 +145,15 @@ export const DataTable = <TData,>({
   const effectiveEnableViewSelector = isViewConfigEnabled && enableViewSelector
 
   const enableFiltering = filters && filters.length > 0
-  const showFilterMenu =
-    enableFilterMenu !== undefined ? enableFilterMenu : enableFiltering
   const enableCommands = commands && commands.length > 0
   const enableSorting = columns.some((column) => column.enableSorting)
+
+  // Reserve the filter bar row whenever it can gain content — active filter
+  // chips, or the view-config save controls that appear on sort/column changes
+  // — so toggling those doesn't shift the layout.
+  const alwaysShowFilterBar = Boolean(
+    enableFiltering || effectiveEnableColumnVisibility
+  )
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialColumnVisibility)
@@ -385,6 +388,7 @@ export const DataTable = <TData,>({
         className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center"
         translations={toolbarTranslations}
         filterBarContent={filterBarContent}
+        alwaysShowFilterBar={alwaysShowFilterBar}
       >
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex items-center gap-x-4">
@@ -407,8 +411,17 @@ export const DataTable = <TData,>({
             )}
           </div>
           <div className="flex items-center gap-x-2">
-            {showFilterMenu && <UiDataTable.FilterMenu />}
-            {enableSorting && <UiDataTable.SortingMenu />}
+            {enableFiltering && (
+              <UiDataTable.FilterMenu tooltip={toolbarTranslations.filter} />
+            )}
+            {enableSorting && (
+              <UiDataTable.SortingMenu tooltip={toolbarTranslations.sort} />
+            )}
+            {effectiveEnableColumnVisibility && (
+              <UiDataTable.ColumnVisibilityMenu
+                tooltip={toolbarTranslations.columns}
+              />
+            )}
             {enableSearch && (
               <div className="w-full md:w-auto">
                 <UiDataTable.Search
@@ -475,11 +488,24 @@ function parseFilterState(
     const filterValue = value[id]
 
     if (filterValue !== undefined) {
-      filters[id] = JSON.parse(filterValue)
+      filters[id] = parseFilterValue(filterValue)
     }
   }
 
   return filters
+}
+
+// Radio/select filters use string option values, but a URL written by hand
+// (e.g. `?is_exclusive=false`) JSON-parses to a boolean and no longer matches
+// those values, leaving the filter chip unhighlighted. Fall back to the raw
+// string in that case so manual URLs still highlight correctly.
+function parseFilterValue(raw: string): unknown {
+  try {
+    const parsed = JSON.parse(raw)
+    return typeof parsed === "boolean" ? raw : parsed
+  } catch {
+    return raw
+  }
 }
 
 function getQueryParamKey(key: string, prefix?: string) {
@@ -500,7 +526,8 @@ const useDataTableTranslations = () => {
   const toolbarTranslations = {
     clearAll: t("actions.clearAll"),
     sort: t("filters.sortLabel"),
-    columns: "Columns",
+    filter: t("filters.filterLabel"),
+    columns: t("filters.columnsLabel"),
   }
 
   return {

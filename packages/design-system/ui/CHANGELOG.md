@@ -1,5 +1,48 @@
 # @medusajs/ui
 
+## 4.2.0
+
+### Minor Changes
+
+- [#16025](https://github.com/medusajs/medusa/pull/16025) [`e61285a935b0cae42603f8bb9e10569fd0a51169`](https://github.com/medusajs/medusa/commit/e61285a935b0cae42603f8bb9e10569fd0a51169) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,settings,ui,types): implement configurable data tables end to end in admin dashboard
+
+### Patch Changes
+
+- [#14661](https://github.com/medusajs/medusa/pull/14661) [`8f97e3f3710a2bae662415dac7098e1c6e60c3c9`](https://github.com/medusajs/medusa/commit/8f97e3f3710a2bae662415dac7098e1c6e60c3c9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,admin-vite-plugin,admin-shared,ui,settings,js-sdk,types): view configuration UI enhancements — dynamic filter/sort resolution, custom cell renderer registration, property labels management UI
+
+- Updated dependencies []:
+  - @medusajs/icons@2.18.0
+
+## 4.1.19
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/icons@2.17.2
+
+## 4.1.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.17.1
+
+## 4.1.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.17.0
+
+## 4.1.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.16.0
+
 ## 4.1.15
 
 ### Patch Changes

@@ -11,6 +11,7 @@ export const AdminGetNotificationsParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   channel: z.union([z.string(), z.array(z.string())]).optional(),
+  to: z.union([z.string(), z.array(z.string())]).optional(),
 })
 
 export type AdminGetNotificationsParamsType = z.infer<
@@ -21,5 +22,5 @@ export const AdminGetNotificationsParams = createFindParams({
   offset: 0,
   order: "-created_at",
 })
-  .merge(AdminGetNotificationsParamsFields)
-  .merge(applyAndAndOrOperators(AdminGetNotificationsParamsFields))
+  .extend(AdminGetNotificationsParamsFields.shape)
+  .extend(applyAndAndOrOperators(AdminGetNotificationsParamsFields).shape)

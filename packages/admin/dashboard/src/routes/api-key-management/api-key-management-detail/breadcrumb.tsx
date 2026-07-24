@@ -22,3 +22,7 @@ export const ApiKeyManagementDetailBreadcrumb = (
 
   return <span>{api_key.title}</span>
 }
+
+export const seo = (match: UIMatch<HttpTypes.AdminApiKeyResponse>) => ({
+  title: match.data?.api_key?.title,
+})

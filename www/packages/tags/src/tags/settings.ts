@@ -1,5 +1,25 @@
 export const settings = [
   {
+    "title": "Manage Property Labels",
+    "path": "https://docs.medusajs.com/user-guide/settings/property-labels"
+  },
+  {
+    "title": "Configure Layouts",
+    "path": "https://docs.medusajs.com/user-guide/tips/layout-configurations"
+  },
+  {
+    "title": "Configure Table Views",
+    "path": "https://docs.medusajs.com/user-guide/tips/table-views"
+  },
+  {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
+  },
+  {
+    "title": "clearLayoutConfigurationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/clearLayoutConfigurationStep"
+  },
+  {
     "title": "createPropertyLabelsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPropertyLabelsStep"
   },
@@ -12,8 +32,16 @@ export const settings = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deletePropertyLabelsStep"
   },
   {
+    "title": "setActiveLayoutScopeStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveLayoutScopeStep"
+  },
+  {
     "title": "setActiveViewConfigurationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveViewConfigurationStep"
+  },
+  {
+    "title": "setLayoutConfigurationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setLayoutConfigurationStep"
   },
   {
     "title": "updatePropertyLabelsStep",
@@ -22,6 +50,10 @@ export const settings = [
   {
     "title": "updateViewConfigurationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateViewConfigurationStep"
+  },
+  {
+    "title": "clearLayoutConfigurationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/clearLayoutConfigurationWorkflow"
   },
   {
     "title": "createPropertyLabelsWorkflow",
@@ -34,6 +66,10 @@ export const settings = [
   {
     "title": "deletePropertyLabelsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deletePropertyLabelsWorkflow"
+  },
+  {
+    "title": "setLayoutConfigurationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setLayoutConfigurationWorkflow"
   },
   {
     "title": "updatePropertyLabelsWorkflow",

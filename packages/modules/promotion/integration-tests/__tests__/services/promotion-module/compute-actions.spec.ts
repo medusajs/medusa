@@ -5,6 +5,7 @@ import {
 import {
   ApplicationMethodType,
   CampaignBudgetType,
+  MathBN,
   Modules,
   PromotionStatus,
   PromotionType,
@@ -24,6 +25,97 @@ moduleIntegrationTestRunner({
     describe("Promotion Service: computeActions", () => {
       beforeEach(async () => {
         await createCampaigns(MikroOrmWrapper.forkManager())
+      })
+
+      // A non-tax-inclusive promotion records its adjustment excl-tax, but a
+      // later tax-inclusive promotion measures the remaining applicable amount
+      // against the incl-tax `original_total`. Without reconciling the two tax
+      // bases, the stacked discounts can exceed the item value and drive the
+      // taxable base negative.
+      describe("when mixing tax-inclusive and non-tax-inclusive promotions", () => {
+        // Stacks a non-tax-inclusive then a tax-inclusive promotion on a taxed
+        // line item and returns the resulting taxable base (excl-tax).
+        const computeStackedTaxableBase = async (
+          allocation: "each" | "across"
+        ) => {
+          // 20% VAT: subtotal 3.50 (excl), original_total 4.20 (incl)
+          const item = {
+            id: "item_taxed",
+            quantity: 1,
+            subtotal: 3.5,
+            original_total: 4.2,
+            is_discountable: true,
+            product: { id: "prod_taxed" },
+          }
+
+          // max_quantity is required for "each" but forbidden for "across".
+          const quantityField = allocation === "each" ? { max_quantity: 1 } : {}
+
+          // Higher application_method.value => applied first. 10% of 3.50 = 0.35 excl-tax.
+          await createDefaultPromotion(service, {
+            code: "PROMO_NON_TAX_INCL",
+            is_tax_inclusive: false,
+            application_method: {
+              type: "percentage",
+              target_type: "items",
+              allocation,
+              value: 10,
+              ...quantityField,
+            } as any,
+          })
+
+          // Applied second. Tax-inclusive fixed promotion.
+          await createDefaultPromotion(service, {
+            code: "PROMO_TAX_INCL",
+            is_tax_inclusive: true,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation,
+              value: 5,
+              ...quantityField,
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMO_NON_TAX_INCL", "PROMO_TAX_INCL"],
+            {
+              currency_code: "usd",
+              items: [item],
+            }
+          )
+
+          const actions = JSON.parse(JSON.stringify(result)) as any[]
+
+          // Normalize every adjustment to its tax-exclusive equivalent.
+          const taxRatio = MathBN.div(item.original_total, item.subtotal)
+          const totalDiscountExclTax = actions
+            .filter(
+              (a) => a.action === "addItemAdjustment" && a.item_id === item.id
+            )
+            .reduce(
+              (acc, a) =>
+                MathBN.add(
+                  acc,
+                  a.is_tax_inclusive
+                    ? MathBN.div(a.amount, taxRatio)
+                    : a.amount
+                ),
+              MathBN.convert(0)
+            )
+
+          return MathBN.sub(item.subtotal, totalDiscountExclTax)
+        }
+
+        it("should not drive the taxable base negative when stacking (each allocation)", async () => {
+          const taxableBase = await computeStackedTaxableBase("each")
+          expect(MathBN.gte(taxableBase, 0)).toBe(true)
+        })
+
+        it("should not drive the taxable base negative when stacking (across allocation)", async () => {
+          const taxableBase = await computeStackedTaxableBase("across")
+          expect(MathBN.gte(taxableBase, 0)).toBe(true)
+        })
       })
 
       it("edge case: should only return promotions with no rules when context has no attributes", async () => {

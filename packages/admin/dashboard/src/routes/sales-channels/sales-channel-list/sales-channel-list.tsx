@@ -1,20 +1,28 @@
-import { SalesChannelListTable } from "./components/sales-channel-list-table"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { LayoutComposer } from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { SalesChannelListTable } from "./components/sales-channel-list-table"
+import { ConfigurableSalesChannelListTable } from "./components/configurable-sales-channel-list-table"
 
 export const SalesChannelList = () => {
-  const { getWidgets } = useExtension()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("sales_channel.list.before"),
-        after: getWidgets("sales_channel.list.after"),
+    <LayoutComposer
+      widgetsZonePrefix="sales_channel.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="SalesChannelListTable">
+            {isViewConfigEnabled ? (
+              <ConfigurableSalesChannelListTable />
+            ) : (
+              <SalesChannelListTable />
+            )}
+          </LayoutComposer.Entry>
+        ),
       }}
-      hasOutlet
-    >
-      <SalesChannelListTable />
-    </SingleColumnPage>
+    />
   )
 }

@@ -1,0 +1,154 @@
+get:
+  operationId: GetLayoutsZoneConfiguration
+  summary: List Layout Configurations
+  description: >-
+    Retrieve a list of layout configurations for a specific zone. These are the
+    configurations made by the users for their admin dashboard layouts.
+  x-authenticated: true
+  parameters:
+    - name: zone
+      in: path
+      description: The zone for which the layout configurations should be retrieved.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_layouts_{zone}_configuration/get.sh
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminLayoutConfigurationResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-since: 2.17.2
+post:
+  operationId: PostLayoutsZoneConfiguration
+  summary: Add Layout Configuration
+  description: >-
+    Add a layout configuration for a specific zone. This allows you to customize
+    the layout of the admin dashboard for that zone, including the arrangement
+    of widgets and other UI elements.
+  x-authenticated: true
+  parameters:
+    - name: zone
+      in: path
+      description: The zone for which the layout configuration should be added.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminSetLayoutConfiguration.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_layouts_{zone}_configuration/post.sh
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminLayoutConfigurationResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: setLayoutConfigurationWorkflow
+  x-events: []
+  x-since: 2.17.2
+delete:
+  operationId: DeleteLayoutsZoneConfiguration
+  summary: Clear Configuration of Layout
+  description: >-
+    Clears all user layout configurations for a given zone. This action will
+    remove any customizations made by the user and revert to the system
+    defaults.
+  x-authenticated: true
+  parameters:
+    - name: zone
+      in: path
+      description: The zone for which the layout configuration should be cleared.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_layouts_{zone}_configuration/delete.sh
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The details of the layout configuration deletion result.
+            required:
+              - success
+            properties:
+              success:
+                type: boolean
+                title: success
+                description: Whether the layout configuration was successfully cleared.
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: clearLayoutConfigurationWorkflow
+  x-events: []
+  x-since: 2.17.2

@@ -18,7 +18,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin: Price Lists API", () => {
       let appContainer
       let product
@@ -39,7 +39,7 @@ medusaIntegrationTestRunner({
         regionModule = appContainer.resolve(Modules.REGION)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         customerGroup = await customerModule.createCustomerGroups({
@@ -65,6 +65,8 @@ medusaIntegrationTestRunner({
 
         variant = product.variants[0]
         variant2 = product.variants[1]
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /admin/price-lists", () => {

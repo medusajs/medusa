@@ -1,12 +1,15 @@
 {
   "name": "@medusajs/telemetry",
-  "version": "2.15.5",
+  "version": "2.18.0",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/medusa-telemetry"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
     "node": ">=16"

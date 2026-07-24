@@ -62,7 +62,7 @@ const standardPromotionPayload = {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let appContainer
     beforeAll(async () => {
       appContainer = getContainer()
@@ -79,7 +79,7 @@ medusaIntegrationTestRunner({
         values: ["old value"],
       }
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
         await setupTaxStructure(appContainer.resolve(Modules.TAX))
@@ -112,6 +112,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_profile
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /admin/promotions/:id", () => {
@@ -3891,6 +3893,21 @@ medusaIntegrationTestRunner({
           const { response } = await api
             .get(
               `/admin/promotions/rule-value-options/rules/does-not-exist`,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data).toEqual({
+            type: "invalid_data",
+            message: "Invalid rule attribute - does-not-exist",
+          })
+        })
+
+        it("should throw 400 (not 500) when ruleAttributeId is invalid and a value filter is provided", async () => {
+          const { response } = await api
+            .get(
+              `/admin/promotions/rule-value-options/rules/does-not-exist?value=test`,
               adminHeaders
             )
             .catch((e) => e)

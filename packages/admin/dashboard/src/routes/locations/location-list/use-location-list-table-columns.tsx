@@ -1,64 +1,18 @@
 import { HttpTypes } from "@medusajs/types"
-import { PencilSquare, Trash } from "@medusajs/icons"
-import {
-  createDataTableColumnHelper,
-  StatusBadge,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { createDataTableColumnHelper, StatusBadge } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useMemo } from "react"
-import { useNavigate } from "react-router-dom"
-import { FetchError } from "@medusajs/js-sdk"
 
 import { PlaceholderCell } from "../../../components/table/table-cells/common/placeholder-cell"
 import { getFormattedAddress } from "../../../lib/addresses"
 import { FulfillmentSetType } from "../common/constants"
-import { queryClient } from "../../../lib/query-client"
-import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
 import { ListSummary } from "../../../components/common/list-summary"
-import { sdk } from "../../../lib/client"
+import { LocationListTableActions } from "./location-list-table-actions"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminStockLocation>()
 
 export const useLocationListTableColumns = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
-  const prompt = usePrompt()
-
-  const handleDelete = async (location: HttpTypes.AdminStockLocation) => {
-    const result = await prompt({
-      title: t("general.areYouSure"),
-      description: t("stockLocations.delete.confirmation", {
-        name: location.name,
-      }),
-      confirmText: t("actions.remove"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!result) {
-      return
-    }
-
-    try {
-      await sdk.admin.stockLocation.delete(location.id)
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.lists(),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: stockLocationsQueryKeys.detail(location.id),
-      })
-
-      toast.success(
-        t("stockLocations.delete.successToast", {
-          name: location.name,
-        })
-      )
-    } catch (e) {
-      toast.error((e as FetchError).message)
-    }
-  }
 
   return useMemo(
     () => [
@@ -156,30 +110,11 @@ export const useLocationListTableColumns = () => {
           )
         },
       }),
-      columnHelper.action({
-        actions: (ctx) => {
-          const location = ctx.row.original
-          return [
-            [
-              {
-                icon: <PencilSquare />,
-                label: t("actions.edit"),
-                onClick: () => {
-                  navigate(`/settings/locations/${location.id}/edit`)
-                },
-              },
-            ],
-            [
-              {
-                icon: <Trash />,
-                label: t("actions.delete"),
-                onClick: () => handleDelete(location),
-              },
-            ],
-          ]
-        },
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => <LocationListTableActions location={row.original} />,
       }),
     ],
-    []
+    [t]
   )
 }

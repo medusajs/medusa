@@ -7,6 +7,7 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
 import {
+  AdminAuthorizeOrderPaymentSession,
   AdminCompleteOrder,
   AdminCreateOrderCreditLines,
   AdminGetOrderShippingOptionList,
@@ -19,6 +20,7 @@ import {
   AdminOrderCreateFulfillment,
   AdminOrderCreateShipment,
   AdminTransferOrder,
+  AdminTransferOrderToGuest,
   AdminUpdateOrder,
 } from "./validators"
 
@@ -183,6 +185,23 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/orders/:id/payment-sessions/authorize",
+    middlewares: [
+      validateAndTransformBody(AdminAuthorizeOrderPaymentSession),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/orders/:id/credit-lines",
     middlewares: [
       validateAndTransformBody(AdminCreateOrderCreditLines),
@@ -271,6 +290,23 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/orders/:id/transfer",
     middlewares: [
       validateAndTransformBody(AdminTransferOrder),
+      validateAndTransformQuery(
+        AdminGetOrdersOrderParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.order,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/orders/:id/transfer/guest",
+    middlewares: [
+      validateAndTransformBody(AdminTransferOrderToGuest),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

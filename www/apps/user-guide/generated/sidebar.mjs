@@ -28,7 +28,17 @@ export const generatedSidebars = [
         "type": "category",
         "title": "Tips",
         "autogenerate_path": "/tips",
+        "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/tips/layout-configurations",
+            "title": "Configure Layouts",
+            "description": "",
+            "children": []
+          },
           {
             "loaded": true,
             "isPathHref": true,
@@ -53,6 +63,15 @@ export const generatedSidebars = [
             "type": "link",
             "path": "/tips/lists",
             "title": "Lists",
+            "description": "",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/tips/table-views",
+            "title": "Configure Table Views",
             "description": "",
             "children": []
           }
@@ -232,6 +251,14 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Manage Categories",
             "path": "/products/categories",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Manage Product Options",
+            "path": "/products/options",
             "children": []
           },
           {
@@ -548,6 +575,14 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Product Tags",
             "path": "/settings/product-tags",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Property Labels",
+            "path": "/settings/property-labels",
             "children": []
           },
           {

@@ -99,6 +99,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
               "title": "Middleware Registration",
               "path": "/troubleshooting/api-routes/middleware-registration",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "title": "Route Registration Error",
+              "path": "/troubleshooting/api-routes/route-registration-error",
+              "children": []
             }
           ]
         },
@@ -124,6 +132,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
           "type": "link",
           "path": "/troubleshooting/dist-imports",
           "title": "Importing from /dist",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/troubleshooting/modules/resolve-path",
+          "title": "Module Provider Resolve Path Error",
           "children": []
         },
         {
@@ -326,6 +342,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
               "type": "link",
               "path": "/troubleshooting/nextjs-starter-rewrites",
               "title": "Google Cloud Run Error",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/troubleshooting/nextjs-build-404",
+              "title": "Dynamic Routes 404 During Build",
               "children": []
             }
           ]

@@ -35,11 +35,18 @@ For short-lived preview environments, Medusa creates a new environment and deplo
 
 Before deploying your application on Cloud, Medusa runs the `build` script defined in your project's `package.json` file, which must run the `medusa build` command, among other build steps you may have.
 
-For example, your `build` script may look like this:
+Cloud also supports optional lifecycle scripts that you can define in your backend and storefront `package.json` files:
+
+- `cloud:preinstall`: Executed before Cloud installs dependencies
+- `cloud:prebuild`: Executed after dependencies are installed but before the build process starts
+
+For example, your `package.json` scripts may look like this:
 
 ```json title="package.json"
 {
   "scripts": {
+    "cloud:preinstall": "echo 'Pre-install setup'",
+    "cloud:prebuild": "echo 'Pre-build setup'", 
     "build": "medusa build && npm run other-build-steps"
   }
 }

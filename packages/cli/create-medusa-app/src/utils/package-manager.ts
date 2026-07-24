@@ -5,7 +5,7 @@ import ProcessManager from "./process-manager.js"
 import { existsSync, readFileSync, rmSync, writeFileSync } from "fs"
 import { parse as parseYaml } from "yaml"
 
-export type PackageManagerType = "npm" | "yarn" | "pnpm"
+export type PackageManagerType = "npm" | "yarn" | "pnpm" | "nub"
 
 type PackageManagerOptions = {
   verbose?: boolean
@@ -48,7 +48,7 @@ export default class PackageManager {
     }
 
     // Extract package manager and version (e.g., "yarn/4.9.0" -> ["yarn", "4.9.0"])
-    const match = userAgent.match(/(pnpm|pnpx|yarn|npm)\/(\d+\.\d+\.\d+)/)
+    const match = userAgent.match(/(pnpm|pnpx|yarn|npm|nub)\/(\d+\.\d+\.\d+)/)
     if (match) {
       const [, manager, version] = match
 
@@ -74,6 +74,9 @@ export default class PackageManager {
     if (userAgent.includes("yarn")) {
       return { manager: "yarn" }
     }
+    if (userAgent.includes("nub")) {
+      return { manager: "nub" }
+    }
 
     return { manager: "npm" }
   }
@@ -86,6 +89,7 @@ export default class PackageManager {
       yarn: "yarn -v",
       pnpm: "pnpm -v",
       npm: "npm -v",
+      nub: "nub -v",
     }
 
     try {
@@ -180,12 +184,34 @@ export default class PackageManager {
   }
 
   private applyNpmWorkspaceChanges(packageJson: Record<string, unknown>): void {
-    // npm's flat hoisting can install ajv v6 where v8 is expected, causing
-    // "Cannot find module 'ajv/dist/core'" at runtime. The `dist/core` export
-    // only exists in ajv v8+, so we force all transitive resolutions to v8.
+    // npm's flat hoisting can only keep a single ajv major at the workspace
+    // root, but Medusa's stack needs two: the backend's migration tooling
+    // (@mikro-orm/migrations -> umzug -> @rushstack/node-core-library ->
+    // ajv-draft-04) does `require('ajv/dist/core')`, which only exists in ajv
+    // v8+, while ESLint (`eslint` core and `@eslint/eslintrc`) needs ajv v6.
+    // Both `ajv-draft-04` and `eslint` hoist to the root and resolve `ajv`
+    // from there, so whichever major loses the root slot breaks. We pin v8 to
+    // the root with a direct devDependency (this is what the hoisted
+    // `ajv-draft-04` resolves against) and scope v6 back under ESLint via
+    // overrides, which npm then nests. This lets both the backend
+    // (`medusa db:migrate`/`build`) and the storefront (`next lint`) resolve a
+    // compatible ajv from a single npm install.
+    packageJson.devDependencies = {
+      ...(packageJson.devDependencies as Record<string, unknown>),
+      ajv: "^8.13.0",
+    }
     packageJson.overrides = {
       ...(packageJson.overrides as Record<string, unknown>),
-      ajv: "^8.0.0",
+      eslint: {
+        ...((packageJson.overrides as Record<string, any>)?.eslint ?? {}),
+        ajv: "^6.12.4",
+      },
+      "@eslint/eslintrc": {
+        ...((packageJson.overrides as Record<string, any>)?.[
+          "@eslint/eslintrc"
+        ] ?? {}),
+        ajv: "^6.12.4",
+      },
     }
   }
 
@@ -236,6 +262,7 @@ export default class PackageManager {
       npm: ["yarn.lock", "pnpm-lock.yaml", ".yarn"],
       yarn: ["package-lock.json", "pnpm-lock.yaml"],
       pnpm: ["yarn.lock", "package-lock.json", ".yarn"],
+      nub: ["yarn.lock", "package-lock.json", "pnpm-lock.yaml", ".yarn"],
     }
 
     if (!this.packageManager) {
@@ -275,6 +302,7 @@ export default class PackageManager {
       npm: `npm install${
         installOptions?.installLegacyPeerDeps ? " --legacy-peer-deps" : ""
       }`,
+      nub: "nub install",
     }
 
     const command = commands[this.packageManager || "npm"]
@@ -363,6 +391,7 @@ export default class PackageManager {
       yarn: `yarn medusa ${command}`,
       pnpm: `pnpm medusa ${command}`,
       npm: `npx medusa ${command}`,
+      nub: `nubx medusa ${command}`,
     }
 
     const commandStr = formats[this.packageManager || "npm"]
@@ -387,6 +416,7 @@ export default class PackageManager {
       yarn: `yarn ${command}`,
       pnpm: `pnpm ${command}`,
       npm: `npm run ${command}`,
+      nub: `nub run ${command}`,
     }
 
     return formats[this.packageManager]

@@ -42,6 +42,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Configure View Configurations",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Actor Type",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type",
               "children": []
@@ -98,6 +106,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Notification Provider",
               "path": "https://docs.medusajs.com/resources/references/notification-provider-module",
               "children": []
@@ -114,8 +130,24 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Create Recovery Code MFA Provider",
+              "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Create Tax Provider",
               "path": "https://docs.medusajs.com/resources/references/tax/provider",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Filter Products",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products",
               "children": []
             },
             {
@@ -148,6 +180,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Invite User Email",
               "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Link Auth Provider to Existing Actor",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity",
               "children": []
             },
             {
@@ -376,6 +416,15 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/admin-components/components/layout-composer",
+                      "title": "LayoutComposer",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/admin-components/components/section-row",
                       "title": "Section Row",
                       "description": "",
@@ -393,6 +442,14 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
                   ]
                 }
               ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure View Configurations",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
+              "children": []
             },
             {
               "loaded": true,

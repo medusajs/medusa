@@ -14,6 +14,14 @@ export const loyaltySidebar = [
         type: "separator",
       },
       {
+        type: "link",
+        path: "/commerce-modules/loyalty/module-options",
+        title: "Plugin Options",
+      },
+      {
+        type: "separator",
+      },
+      {
         type: "category",
         title: "Concepts",
         children: [
@@ -92,6 +100,11 @@ export const loyaltySidebar = [
                 sort_sidebar: "alphabetize",
               },
             ],
+          },
+          {
+            type: "link",
+            path: "/commerce-modules/loyalty/admin-widget-zones",
+            title: "Admin Widget Zones",
           },
           {
             type: "sidebar",

@@ -15,9 +15,7 @@
  *   - updated_at
  * properties:
  *   item:
- *     type: object
- *     title: item
- *     description: The details of the item that the tax line belongs to.
+ *     $ref: "#/components/schemas/BaseCartLineItem"
  *   item_id:
  *     type: string
  *     title: item_id

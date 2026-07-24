@@ -6,9 +6,9 @@ import { CreateRegionForm } from "./components/create-region-form"
 export const RegionCreate = () => {
   const { store, isPending: isLoading, isError, error } = useStore()
 
-  const storeCurrencies = (store?.supported_currencies ?? []).map(
-    (c) => currencies[c.currency_code.toUpperCase()]
-  )
+  const storeCurrencies = (store?.supported_currencies ?? [])
+    .map((c) => currencies[c.currency_code.toUpperCase()])
+    .filter(Boolean)
 
   if (isError) {
     throw error

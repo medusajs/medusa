@@ -5,6 +5,7 @@ import path from "path"
 import { PostHog } from "posthog-node"
 import { getCleanMdCached } from "../../../utils/get-clean-md-cached"
 import { fetchRawMdx } from "../../../utils/fetch-raw-mdx"
+import { fetchFromAssetsBinding } from "../../../utils/fetch-from-assets-binding"
 
 type Params = {
   params: Promise<{ slug?: string[] }>
@@ -16,23 +17,26 @@ export async function GET(req: NextRequest, { params }: Params) {
   const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
 
   if (slug.length === 0) {
-    const homepageContent = await workerCompatibleFetch<string | null>({
-      url: `${origin}/homepage.md`,
-      responseTransformer: async (res) => {
-        return res.ok ? res.text() : null
-      },
-      fallbackAction: async () => {
-        try {
-          const { promises: fs } = await import("fs")
-          return await fs.readFile(
-            path.join(process.cwd(), "public", "homepage.md"),
-            "utf-8"
-          )
-        } catch {
-          return null
-        }
-      },
-    })
+    const homepageUrl = `${origin}/homepage.md`
+    const homepageContent =
+      (await fetchFromAssetsBinding(homepageUrl)) ??
+      (await workerCompatibleFetch<string | null>({
+        url: homepageUrl,
+        responseTransformer: async (res) => {
+          return res.ok ? res.text() : null
+        },
+        fallbackAction: async () => {
+          try {
+            const { promises: fs } = await import("fs")
+            return await fs.readFile(
+              path.join(process.cwd(), "public", "homepage.md"),
+              "utf-8"
+            )
+          } catch {
+            return null
+          }
+        },
+      }))
 
     if (!homepageContent) {
       return notFound()
@@ -81,6 +85,10 @@ export async function GET(req: NextRequest, { params }: Params) {
       properties: {
         $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
+        $ip:
+          req.headers.get("cf-connecting-ip") ||
+          req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          undefined,
       },
     })
 

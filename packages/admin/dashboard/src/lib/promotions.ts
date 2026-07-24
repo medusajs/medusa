@@ -42,8 +42,15 @@ export const getPromotionStatus = (promotion: HttpTypes.AdminPromotion) => {
   }
 
   const campaignBudget = campaign.budget
+  // For per-attribute budgets, `used` aggregates usage across all attribute
+  // values while `limit` applies to each attribute value individually, so
+  // comparing them cannot tell whether the budget is exhausted.
+  const isPerAttributeBudget =
+    campaignBudget?.type === "use_by_attribute" ||
+    campaignBudget?.type === "spend_by_attribute"
   const overBudget =
     campaignBudget &&
+    !isPerAttributeBudget &&
     campaignBudget.limit &&
     campaignBudget.used! > campaignBudget.limit!
 

@@ -10,10 +10,14 @@ import { Path, useLocation } from "react-router-dom"
  * This is useful if the modal needs to return to the original path, with
  * the params that were present when the modal was opened.
  */
-export const useStateAwareTo = (prev: string | Partial<Path>) => {
+export const useStateAwareTo = (prev: string | Partial<Path> | number) => {
   const location = useLocation()
 
   const to = useMemo(() => {
+    if (typeof prev === "number") {
+      return prev
+    }
+
     const params = location.state?.restore_params
 
     if (params) {

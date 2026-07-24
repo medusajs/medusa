@@ -1,18 +1,25 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { TwoColumnPage } from "../../../components/layout/pages"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { useCustomer } from "../../../hooks/api/customers"
-import { useExtension } from "../../../providers/extension-provider"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { PermissionsRequirementsProvider } from "../../../providers/permissions-provider"
 import { CustomerAddressSection } from "./components/customer-address-section/customer-address-section"
 import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerGroupSection } from "./components/customer-group-section"
+import { ConfigurableCustomerGroupSection } from "./components/customer-group-section/configurable-customer-group-section"
 import { CustomerOrderSection } from "./components/customer-order-section"
+import { ConfigurableCustomerOrderSection } from "./components/customer-order-section/configurable-customer-order-section"
 import { customerLoader } from "./loader"
 
 export const CustomerDetail = () => {
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof customerLoader>
@@ -22,8 +29,6 @@ export const CustomerDetail = () => {
     { fields: "+*addresses" },
     { initialData }
   )
-
-  const { getWidgets } = useExtension()
 
   if (isLoading || !customer) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
@@ -35,27 +40,42 @@ export const CustomerDetail = () => {
 
   return (
     <PermissionsRequirementsProvider>
-      <TwoColumnPage
-        widgets={{
-          before: getWidgets("customer.details.before"),
-          after: getWidgets("customer.details.after"),
-          sideAfter: getWidgets("customer.details.side.after"),
-          sideBefore: getWidgets("customer.details.side.before"),
-        }}
+      <LayoutComposer
+        widgetsZonePrefix="customer.details"
+        preferredLayoutId={CORE_LAYOUT_IDS.TWO_COLUMN}
         data={customer}
-        hasOutlet
-        showJSON
-        showMetadata
-      >
-        <TwoColumnPage.Main>
-          <CustomerGeneralSection customer={customer} />
-          <CustomerOrderSection customer={customer} />
-          <CustomerGroupSection customer={customer} />
-        </TwoColumnPage.Main>
-        <TwoColumnPage.Sidebar>
-          <CustomerAddressSection customer={customer} />
-        </TwoColumnPage.Sidebar>
-      </TwoColumnPage>
+        sections={{
+          main: (
+            <>
+              <LayoutComposer.Entry id="CustomerGeneralSection">
+                <CustomerGeneralSection customer={customer} />
+              </LayoutComposer.Entry>
+              <LayoutComposer.Entry id="CustomerOrderSection">
+                {isViewConfigEnabled ? (
+                  <ConfigurableCustomerOrderSection customer={customer} />
+                ) : (
+                  <CustomerOrderSection customer={customer} />
+                )}
+              </LayoutComposer.Entry>
+              <LayoutComposer.Entry id="CustomerGroupSection">
+                {isViewConfigEnabled ? (
+                  <ConfigurableCustomerGroupSection customer={customer} />
+                ) : (
+                  <CustomerGroupSection customer={customer} />
+                )}
+              </LayoutComposer.Entry>
+              {detailPageDefaultEntries(customer)}
+            </>
+          ),
+          side: (
+            <>
+              <LayoutComposer.Entry id="CustomerAddressSection">
+                <CustomerAddressSection customer={customer} />
+              </LayoutComposer.Entry>
+            </>
+          ),
+        }}
+      />
     </PermissionsRequirementsProvider>
   )
 }

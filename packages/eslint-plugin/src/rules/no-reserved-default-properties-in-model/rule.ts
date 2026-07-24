@@ -31,7 +31,9 @@ export const rule = createRule<[], MessageIds>({
 
     return {
       ImportDeclaration(node) {
-        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) return
+        if (node.source.value !== FRAMEWORK_UTILS_SOURCE) {
+          return
+        }
         for (const specifier of node.specifiers) {
           if (
             specifier.type === AST_NODE_TYPES.ImportSpecifier &&
@@ -44,7 +46,9 @@ export const rule = createRule<[], MessageIds>({
       },
 
       CallExpression(node) {
-        if (modelLocalNames.size === 0) return
+        if (modelLocalNames.size === 0) {
+          return
+        }
         const callee = node.callee
         if (
           callee.type !== AST_NODE_TYPES.MemberExpression ||
@@ -65,7 +69,9 @@ export const rule = createRule<[], MessageIds>({
         for (let i = 0; i < properties.length; i++) {
           const prop = properties[i]
           const keyName = getPropertyKeyName(prop)
-          if (!keyName || !RESERVED_PROPERTIES.has(keyName)) continue
+          if (!keyName || !RESERVED_PROPERTIES.has(keyName)) {
+            continue
+          }
 
           context.report({
             node: prop,
@@ -89,7 +95,9 @@ export const rule = createRule<[], MessageIds>({
                   break
                 } else if (ch === "\r") {
                   endRange++
-                  if (text[endRange] === "\n") endRange++
+                  if (text[endRange] === "\n") {
+                    endRange++
+                  }
                   break
                 } else {
                   break

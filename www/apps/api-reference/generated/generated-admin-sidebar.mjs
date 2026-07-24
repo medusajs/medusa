@@ -346,6 +346,13 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Layouts",
+      "children": [],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
       "title": "Locales",
       "children": [
         {
@@ -528,6 +535,24 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "product-categories_productcategory_schema",
           "title": "ProductCategory Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
+      "loaded": false,
+      "showLoadingIfEmpty": true
+    },
+    {
+      "type": "category",
+      "title": "Product Options",
+      "children": [
+        {
+          "type": "link",
+          "path": "product-options_productoption_schema",
+          "title": "ProductOption Object",
           "loaded": true,
           "badge": {
             "variant": "neutral",
@@ -962,7 +987,18 @@ const generatedgeneratedAdminSidebarSidebar = {
     {
       "type": "category",
       "title": "Views",
-      "children": [],
+      "children": [
+        {
+          "type": "link",
+          "path": "views_view_schema",
+          "title": "View Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        }
+      ],
       "loaded": false,
       "showLoadingIfEmpty": true
     },

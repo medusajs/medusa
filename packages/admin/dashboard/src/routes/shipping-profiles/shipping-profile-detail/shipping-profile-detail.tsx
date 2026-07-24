@@ -1,11 +1,11 @@
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useShippingProfile } from "../../../hooks/api/shipping-profiles"
 import { ShippingProfileGeneralSection } from "./components/shipping-profile-general-section"
 
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
 import { shippingProfileLoader } from "./loader"
 
 export const ShippingProfileDetail = () => {
@@ -21,8 +21,6 @@ export const ShippingProfileDetail = () => {
     { initialData }
   )
 
-  const { getWidgets } = useExtension()
-
   if (isLoading || !shipping_profile) {
     return <SingleColumnPageSkeleton sections={1} showJSON showMetadata />
   }
@@ -32,16 +30,20 @@ export const ShippingProfileDetail = () => {
   }
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("shipping_profile.details.before"),
-        after: getWidgets("shipping_profile.details.after"),
-      }}
-      showMetadata
-      showJSON
+    <LayoutComposer
+      widgetsZonePrefix="shipping_profile.details"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
       data={shipping_profile}
-    >
-      <ShippingProfileGeneralSection profile={shipping_profile} />
-    </SingleColumnPage>
+      sections={{
+        main: (
+          <>
+            <LayoutComposer.Entry id="ShippingProfileGeneralSection">
+              <ShippingProfileGeneralSection profile={shipping_profile} />
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(shipping_profile, { permissions: false })}
+          </>
+        ),
+      }}
+    />
   )
 }

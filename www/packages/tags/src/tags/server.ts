@@ -8,6 +8,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
   },
   {
+    "title": "Link Auth Provider to Existing Actor",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },
@@ -32,6 +36,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/extend"
   },
   {
+    "title": "Filter Products",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
+  },
+  {
     "title": "Get Variant Prices",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/price"
   },
@@ -46,6 +54,10 @@ export const server = [
   {
     "title": "Extend Promotion",
     "path": "https://docs.medusajs.com/resources/commerce-modules/promotion/extend"
+  },
+  {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Invite User Email",
@@ -226,6 +238,14 @@ export const server = [
   {
     "title": "Create Locking Provider",
     "path": "https://docs.medusajs.com/resources/references/locking-module-provider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
   },
   {
     "title": "Create Notification Provider",

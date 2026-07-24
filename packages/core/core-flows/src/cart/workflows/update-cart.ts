@@ -10,8 +10,10 @@ import {
 } from "@medusajs/framework/utils"
 import {
   createHook,
+  createStep,
   createWorkflow,
   parallelize,
+  StepResponse,
   transform,
   when,
   WorkflowData,
@@ -21,6 +23,7 @@ import { emitEventStep, useQueryGraphStep } from "../../common"
 import { deleteLineItemsStep } from "../../line-item"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
+  FindOrCreateCustomerOutputStepOutput,
   findOrCreateCustomerStep,
   findSalesChannelStep,
   updateCartsStep,
@@ -34,6 +37,87 @@ import { refreshCartItemsWorkflow } from "./refresh-cart-items"
  */
 export type UpdateCartWorkflowInput = UpdateCartWorkflowInputDTO &
   AdditionalData
+
+interface PrepareCartToUpdateStepInput {
+  input: UpdateCartWorkflowInput
+  region: any
+  customer: FindOrCreateCustomerOutputStepOutput
+  salesChannel: { id: string } | null
+  cartToUpdate: { region?: { id?: string } | null }
+}
+
+/**
+ * This step builds the cart update payload: it resolves the currency and region
+ * from the (possibly new) region, reconciles the shipping address against the
+ * region's countries, and applies customer and sales channel changes. It throws
+ * an error if the shipping address country isn't within the region.
+ */
+export const prepareCartToUpdateStep = createStep(
+  "prepare-cart-to-update",
+  async (data: PrepareCartToUpdateStepInput) => {
+    const { promo_codes, additional_data: _, ...updateCartData } = data.input
+
+    const data_ = {
+      ...updateCartData,
+      currency_code: data.region?.currency_code,
+      region_id: data.region?.id, // This is either the region from the input or the region from the cart or null
+    }
+
+    // When the region is updated, we do a few things:
+    // - We need to make sure the provided shipping address country code is in the new region
+    // - We clear the shipping address if the new region has more than one country
+    const regionIsNew = data.region?.id !== data.cartToUpdate.region?.id
+    const shippingAddress = data.input.shipping_address
+
+    if (shippingAddress?.country_code) {
+      const country = data.region.countries.find(
+        (c: { iso_2: string }) => c.iso_2 === shippingAddress.country_code
+      )
+
+      if (!country) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Country with code ${shippingAddress.country_code} is not within region ${data.region.name}`
+        )
+      }
+
+      data_.shipping_address = {
+        ...shippingAddress,
+        country_code: country.iso_2,
+      }
+    }
+
+    if (regionIsNew) {
+      if (data.region.countries.length === 1) {
+        data_.shipping_address = {
+          country_code: data.region.countries[0].iso_2,
+        }
+      }
+
+      if (!data_.shipping_address?.country_code) {
+        data_.shipping_address = null
+      }
+    }
+
+    if (isDefined(updateCartData.email) && data.customer?.customer) {
+      const currentCustomer = data.customer.customer!
+      data_.customer_id = currentCustomer.id
+
+      // registered customers can update the cart email
+      if (currentCustomer.has_account) {
+        data_.email = updateCartData.email
+      } else {
+        data_.email = data.customer.email
+      }
+    }
+
+    if (isDefined(updateCartData.sales_channel_id)) {
+      data_.sales_channel_id = data.salesChannel!.id
+    }
+
+    return new StepResponse(data_)
+  }
+)
 
 export const updateCartWorkflowId = "update-cart"
 /**
@@ -161,86 +245,57 @@ export const updateCartWorkflow = createWorkflow(
       return newRegion
     })
 
+    // The tax lines of a cart depend on its shipping address (primarily the
+    // country, but also province/postal code/city for regional rates). When
+    // any of these change, the taxes must be fully recomputed. Comparing
+    // against the current cart address avoids forcing a needless refresh when
+    // an unchanged address is resent alongside another update.
+    const taxRelevantAddressChanged = transform(
+      { input, cartToUpdate },
+      ({ input, cartToUpdate }) => {
+        const next = input.shipping_address
+
+        if (!next) {
+          return false
+        }
+
+        const prev = cartToUpdate?.shipping_address
+
+        // A provided field only counts as a change when it differs from the
+        // current address. Country codes are persisted in lower-case, so we
+        // compare them case-insensitively to avoid forcing a refresh when an
+        // unchanged address is resent with a different casing.
+        const changed = (nextValue?: string, prevValue?: string) =>
+          nextValue !== undefined && nextValue !== prevValue
+
+        // When the address is referenced by id, that id may point to a
+        // different (tax-relevant) address than the one currently on the cart.
+        const nextId = "id" in next ? next.id : undefined
+
+        return (
+          changed(nextId, prev?.id) ||
+          changed(
+            next.country_code?.toLowerCase(),
+            prev?.country_code?.toLowerCase()
+          ) ||
+          changed(next.province, prev?.province) ||
+          changed(next.postal_code, prev?.postal_code) ||
+          changed(next.city, prev?.city)
+        )
+      }
+    )
+
     const region = transform({ cartToUpdate, newRegion }, (data) => {
       return data.newRegion ?? data.cartToUpdate.region
     })
 
-    const cartInput = transform(
-      {
-        input,
-        region,
-        customer,
-        salesChannel,
-        cartToUpdate,
-      },
-      (data) => {
-        const {
-          promo_codes,
-          additional_data: _,
-          ...updateCartData
-        } = data.input
-
-        const data_ = {
-          ...updateCartData,
-          currency_code: data.region?.currency_code,
-          region_id: data.region?.id, // This is either the region from the input or the region from the cart or null
-        }
-
-        // When the region is updated, we do a few things:
-        // - We need to make sure the provided shipping address country code is in the new region
-        // - We clear the shipping address if the new region has more than one country
-        const regionIsNew = data.region?.id !== data.cartToUpdate.region?.id
-        const shippingAddress = data.input.shipping_address
-
-        if (shippingAddress?.country_code) {
-          const country = data.region.countries.find(
-            (c) => c.iso_2 === shippingAddress.country_code
-          )
-
-          if (!country) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Country with code ${shippingAddress.country_code} is not within region ${data.region.name}`
-            )
-          }
-
-          data_.shipping_address = {
-            ...shippingAddress,
-            country_code: country.iso_2,
-          }
-        }
-
-        if (regionIsNew) {
-          if (data.region.countries.length === 1) {
-            data_.shipping_address = {
-              country_code: data.region.countries[0].iso_2,
-            }
-          }
-
-          if (!data_.shipping_address?.country_code) {
-            data_.shipping_address = null
-          }
-        }
-
-        if (isDefined(updateCartData.email) && data.customer?.customer) {
-          const currentCustomer = data.customer.customer!
-          data_.customer_id = currentCustomer.id
-
-          // registered customers can update the cart email
-          if (currentCustomer.has_account) {
-            data_.email = updateCartData.email
-          } else {
-            data_.email = data.customer.email
-          }
-        }
-
-        if (isDefined(updateCartData.sales_channel_id)) {
-          data_.sales_channel_id = data.salesChannel!.id
-        }
-
-        return data_
-      }
-    )
+    const cartInput = prepareCartToUpdateStep({
+      input,
+      region,
+      customer,
+      salesChannel,
+      cartToUpdate,
+    })
 
     const validate = createHook("validate", {
       input: cartInput,
@@ -321,14 +376,28 @@ export const updateCartWorkflow = createWorkflow(
       deleteLineItemsStep(lineItemIds)
     })
 
+    const refreshCartItemsInput = transform(
+      { cartInput, input, newRegion, newLocaleCode, taxRelevantAddressChanged },
+      ({
+        cartInput,
+        input,
+        newRegion,
+        newLocaleCode,
+        taxRelevantAddressChanged,
+      }) => {
+        return {
+          cart_id: cartInput.id,
+          promo_codes: input.promo_codes,
+          force_refresh:
+            !!newRegion || !!newLocaleCode || taxRelevantAddressChanged,
+          locale: newLocaleCode || undefined,
+          additional_data: input.additional_data,
+        }
+      }
+    )
+
     const cart = refreshCartItemsWorkflow.runAsStep({
-      input: {
-        cart_id: cartInput.id,
-        promo_codes: input.promo_codes,
-        force_refresh: !!newRegion,
-        locale: newLocaleCode,
-        additional_data: input.additional_data,
-      },
+      input: refreshCartItemsInput,
     })
 
     const cartUpdated = createHook("cartUpdated", {

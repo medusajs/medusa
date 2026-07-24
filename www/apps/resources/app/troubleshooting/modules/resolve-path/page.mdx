@@ -1,0 +1,73 @@
+export const metadata = {
+  title: `Error: make sure your module has a default export of a service.`,
+}
+
+# {metadata.title}
+
+If you get the following error while building your Medusa application:
+
+```bash
+...doesn't seem to have a main service exported -- make sure your module has a default export of a service
+```
+
+## Why this Error Occurred
+
+This error occurs when you set the `resolve` path of a module provider to point directly to a service file instead of the module directory.
+
+For example, if you set the `resolve` path to `./src/modules/slack/service`:
+
+```ts title="medusa-config.ts" highlights={[["9"]]}
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/slack/service",
+            id: "slack",
+            options: {
+              channels: ["slack"],
+              webhook_url: process.env.SLACK_WEBHOOK_URL,
+              admin_url: process.env.SLACK_ADMIN_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+You'll get the error because the `resolve` path is pointing to the service file of the module provider, while it should point to the module directory.
+
+---
+
+## How to Fix it
+
+To fix the error, set the `resolve` path to point to the module directory instead of the service file. For example:
+
+```ts title="medusa-config.ts" highlights={[["9"]]}
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/slack",
+            id: "slack",
+            options: {
+              channels: ["slack"],
+              webhook_url: process.env.SLACK_WEBHOOK_URL,
+              admin_url: process.env.SLACK_ADMIN_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```

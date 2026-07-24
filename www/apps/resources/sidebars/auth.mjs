@@ -65,6 +65,11 @@ export const authSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/auth/link-provider-identity",
+            title: "Link Provider to Existing Actor",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/auth/reset-password",
             title: "Handle Password Reset Event",
           },

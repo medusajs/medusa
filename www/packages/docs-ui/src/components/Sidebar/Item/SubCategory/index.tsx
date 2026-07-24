@@ -6,6 +6,7 @@ import React, { useMemo, useRef } from "react"
 import { Sidebar } from "types"
 import { Badge } from "@/components/Badge"
 import { SidebarItem } from "@/components/Sidebar/Item"
+import { SidebarItemTitle } from "@/components/Sidebar/Item/Title"
 import clsx from "clsx"
 
 export type SidebarItemSubCategoryProps = {
@@ -46,15 +47,11 @@ export const SidebarItemSubCategory = ({
           )}
           data-testid="sidebar-item-container"
         >
-          <span
-            className={clsx(
-              isTitleOneWord && "truncate",
-              nested && "pl-docs_1.5"
-            )}
-            data-testid="sidebar-item-title"
-          >
-            {item.title}
-          </span>
+          <SidebarItemTitle
+            title={item.title}
+            isTitleOneWord={isTitleOneWord}
+            className={clsx(nested && "pl-docs_1.5")}
+          />
           {item.additionalElms}
           {item.badge && (
             <Badge variant={item.badge.variant}>{item.badge.text}</Badge>

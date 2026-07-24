@@ -1,18 +1,28 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { ShippingProfileListTable } from "./components/shipping-profile-list-table"
+import { ConfigurableShippingProfileListTable } from "./components/shipping-profile-list-table/configurable-shipping-profile-list-table"
 
 export const ShippingProfileList = () => {
-  const { getWidgets } = useExtension()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("shipping_profile.list.before"),
-        after: getWidgets("shipping_profile.list.after"),
+    <LayoutComposer
+      widgetsZonePrefix="shipping_profile.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="ShippingProfileListTable">
+            {isViewConfigEnabled ? (
+              <ConfigurableShippingProfileListTable />
+            ) : (
+              <ShippingProfileListTable />
+            )}
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <ShippingProfileListTable />
-    </SingleColumnPage>
+    />
   )
 }

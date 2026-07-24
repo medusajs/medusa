@@ -156,6 +156,10 @@ export const storefront = [
     "path": "https://docs.medusajs.com/resources/storefront-development/products/list"
   },
   {
+    "title": "Use Product Options in Storefront",
+    "path": "https://docs.medusajs.com/resources/storefront-development/products/options"
+  },
+  {
     "title": "Example: Show Sale Price",
     "path": "https://docs.medusajs.com/resources/storefront-development/products/price/examples/sale-price"
   },
@@ -234,6 +238,10 @@ export const storefront = [
   {
     "title": "product",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
+  },
+  {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/productOption"
   },
   {
     "title": "region",

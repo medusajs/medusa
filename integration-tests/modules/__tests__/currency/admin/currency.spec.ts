@@ -10,13 +10,15 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, api, getContainer }) => {
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     describe("Currency - Admin", () => {
       let container
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         container = getContainer()
         await createAdminUser(dbConnection, adminHeaders, container)
+
+        await dbUtils.snapshot()
       })
 
       it("should correctly retrieve and list currencies", async () => {

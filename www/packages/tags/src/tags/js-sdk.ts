@@ -52,6 +52,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/invite"
   },
   {
+    "title": "layouts",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/layouts"
+  },
+  {
     "title": "locale",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/locale"
   },
@@ -100,6 +104,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productCollection"
   },
   {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productOption"
+  },
+  {
     "title": "productTag",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productTag"
   },
@@ -114,6 +122,10 @@ export const jsSdk = [
   {
     "title": "promotion",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/promotion"
+  },
+  {
+    "title": "propertyLabel",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/propertyLabel"
   },
   {
     "title": "rbacPolicy",
@@ -216,6 +228,10 @@ export const jsSdk = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
   },
   {
+    "title": "register",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
+  },
+  {
     "title": "resetPassword",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/resetPassword"
   },
@@ -262,6 +278,10 @@ export const jsSdk = [
   {
     "title": "product",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
+  },
+  {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/productOption"
   },
   {
     "title": "region",

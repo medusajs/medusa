@@ -1,0 +1,41 @@
+---
+sidebar_label: "admin-no-medusa-utils-import"
+---
+
+export const metadata = {
+  title: `admin-no-medusa-utils-import - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule disallows importing Node-only modules from the Medusa Framework (`@medusajs/framework/utils`, `@medusajs/framework/http`, and `@medusajs/framework/workflows-sdk`) in admin code, since they break the browser bundle.
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets files in your project's `src/admin` directory. It reports an import or re-export of a Node-only module from the Medusa Framework.
+
+The following code is reported by the rule:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { MedusaError } from "@medusajs/framework/utils"
+```
+
+Instead, move the logic to the server and call it from the admin via the JS SDK:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { sdk } from "../lib/sdk"
+```
+
+## Why it's Important
+
+The admin dashboard is a browser bundle. Importing Node-only modules breaks the admin build or ships server-only code to the client.
+
+Learn more in the [Admin Development documentation](!docs!/learn/fundamentals/admin).
+
+## Fixable
+
+This rule isn't auto-fixable.

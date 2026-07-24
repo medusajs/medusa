@@ -13,6 +13,7 @@ export const modules = [
   "promotion",
   "region",
   "sales-channel",
+  "settings",
   "stock-location-next",
   "store",
   "tax",
@@ -47,6 +48,7 @@ const allReferences = [
   "module-events",
   "analytics",
   "analytics-provider",
+  "mfa",
 ]
 
 export default allReferences

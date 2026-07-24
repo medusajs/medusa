@@ -383,6 +383,9 @@
   "POST /admin/orders/{id}/transfer": {
     "js-sdk": "sdk.admin.order.requestTransfer(\"order_123\", {\n  customer_id: \"cus_123\",\n  internal_note: \"Internal note\",\n})\n.then(({ order }) => {\n  console.log(order)\n})"
   },
+  "POST /admin/orders/{id}/transfer/guest": {
+    "js-sdk": "sdk.admin.order.transferToGuest(\"order_123\", {\n  email: \"customer@example.com\",\n  internal_note: \"Internal note\",\n})\n.then(({ order }) => {\n  console.log(order)\n})"
+  },
   "POST /admin/orders/{id}/transfer/cancel": {
     "js-sdk": "sdk.admin.order.cancelTransfer(\"order_123\")\n.then(({ order }) => {\n  console.log(order)\n})"
   },
@@ -409,6 +412,9 @@
   },
   "POST /admin/orders/{orderid}/credit-lines": {
     "js-sdk": "sdk.admin.order.createCreditLine(\n  \"order_123\",\n  {\n    amount: 100,\n    reference: \"order\",\n    reference_id: \"order_123\",\n  }\n)\n.then(({ order }) => {\n  console.log(order)\n})"
+  },
+  "POST /admin/orders/{id}/payment-sessions/authorize": {
+    "js-sdk": "sdk.admin.order.authorizePaymentSession(\"order_123\", \"payses_123\")\n.then(({ order, is_authorized }) => {\n  console.log(order, is_authorized)\n})"
   },
   "POST /admin/order-changes/{id}": {
     "js-sdk": "sdk.admin.order.updateOrderChange(\n  \"ordch_123\",\n  {\n    carry_over_promotions: true\n  }\n)\n.then(({ order_change }) => {\n  console.log(order_change)\n})"
@@ -462,7 +468,7 @@
     "js-sdk": "sdk.admin.paymentCollection.delete(\"paycol_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "POST /admin/payment-collections/{id}/mark-as-paid": {
-    "js-sdk": "sdk.admin.paymentCollection.markAsPaid(\"paycol_123\", {\n  order_id: \"order_123\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
+    "js-sdk": "sdk.admin.paymentCollection.markAsPaid(\"paycol_123\", {\n  order_id: \"order_123\",\n  // optional: record the payment under a specific provider\n  provider_id: \"pp_system_default\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
   },
   "POST /admin/payment-collections/{id}/payment-sessions": {
     "js-sdk": "sdk.admin.paymentCollection.createPaymentSession(\"paycol_123\", {\n  provider_id: \"pp_stripe_stripe\"\n})\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
@@ -580,6 +586,9 @@
   },
   "POST /admin/products/{productid}/variants/{variantid}/images/batch": {
     "js-sdk": "sdk.admin.product.batchVariantImages(\"prod_123\", \"variant_123\", {\n  add: [\"img_123\", \"img_456\"],\n  remove: [\"img_789\"]\n})\n.then(({ added, removed }) => {\n  console.log(added, removed)\n})"
+  },
+  "POST /admin/products/{productid}/options/batch": {
+    "js-sdk": "sdk.admin.product.linkOptions(\"prod_123\", {\n  add: [\n      \"opt_123\",\n      {\n        id: \"opt_123\",\n        value_ids: [\"optval_1\", \"optval_2\"]\n      }\n    ],\n    remove: [\"opt_456\"]\n})\n.then(({ product }) => {\n  console.log(product)\n})"
   },
   "POST /admin/product-categories": {
     "js-sdk": "sdk.admin.productCategory.create({\n  name: \"Shirts\"\n})\n.then(({ product_category }) => {\n  console.log(product_category)\n})"
@@ -941,11 +950,53 @@
   "GET /admin/users/{id}": {
     "js-sdk": "sdk.admin.user.retrieve(\"user_123\")\n.then(({ user }) => {\n  console.log(user)\n})"
   },
+  "GET /admin/users/{id}/roles": {
+    "js-sdk": "sdk.admin.user.listRoles(\"user_123\")\n.then(({ roles, count, limit, offset }) => {\n  console.log(roles)\n})"
+  },
+  "POST /admin/users/{id}/roles": {
+    "js-sdk": "sdk.admin.user.addRoles(\"user_123\", {\n  roles: [\"role_123\"]\n})\n.then(({ roles }) => {\n  console.log(roles)\n})"
+  },
+  "DELETE /admin/users/{id}/roles/{roleid}": {
+    "js-sdk": "sdk.admin.user.removeRole(\"user_123\", \"role_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
+  "DELETE /admin/users/{id}/roles": {
+    "js-sdk": "sdk.admin.user.removeRoles(\"user_123\", {\n  roles: [\"role_123\"]\n})\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
   "DELETE /admin/users/{id}": {
     "js-sdk": "sdk.admin.user.delete(\"user_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "GET /admin/users/me": {
     "js-sdk": "sdk.admin.user.me()\n.then(({ user }) => {\n  console.log(user)\n})"
+  },
+  "GET /admin/views/entities": {
+    "js-sdk": "sdk.admin.views.listEntities()\n.then(({ entities }) => {\n  console.log(entities)\n})"
+  },
+  "GET /admin/views/{entity}/columns": {
+    "js-sdk": "const { columns } = await sdk.admin.views.columns(\"orders\")"
+  },
+  "GET /admin/views/{entity}/configurations": {
+    "js-sdk": "sdk.admin.views.listConfigurations(\"orders\")\n.then(({ view_configurations, count, limit, offset }) => {\n  console.log(view_configurations)\n})"
+  },
+  "POST /admin/views/{entity}/configurations": {
+    "js-sdk": "const { view_configuration } = await sdk.admin.views.createConfiguration(\n  \"orders\",\n  {\n    name: \"My Orders View\",\n    configuration: {\n      visible_columns: [\"display_id\", \"status\"],\n      column_order: [\"display_id\", \"status\"],\n    },\n  }\n)"
+  },
+  "GET /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "sdk.admin.views.retrieveConfiguration(\"orders\", \"viewconfig_123\")\n.then(({ view_configuration }) => {\n  console.log(view_configuration)\n})"
+  },
+  "POST /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "const { view_configuration } = await sdk.admin.views.updateConfiguration(\n  \"orders\",\n  \"viewconfig_123\",\n  {\n    name: \"Updated View\",\n  }\n)"
+  },
+  "DELETE /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "const { id, object, deleted } = await sdk.admin.views.deleteConfiguration(\n  \"orders\",\n  \"viewconfig_123\"\n)"
+  },
+  "GET /admin/views/{entity}/configurations/active": {
+    "js-sdk": "sdk.admin.views.retrieveActiveConfiguration(\"orders\")\n.then(({ view_configuration, active_view_configuration_id }) => {\n  console.log(view_configuration)\n})"
+  },
+  "POST /admin/views/{entity}/configurations/active": {
+    "js-sdk": "await sdk.admin.views.setActiveConfiguration(\"orders\", {\n  view_configuration_id: \"viewconfig_123\",\n})"
+  },
+  "GET /admin/layouts/configurations": {
+    "js-sdk": "const { layout_configurations } = await sdk.admin.layouts.listConfigurations()"
   },
   "GET /admin/workflows-executions": {
     "js-sdk": "sdk.admin.workflowExecution.list()\n.then(({ workflow_executions, count, limit, offset }) => {\n  console.log(workflow_executions)\n})"
@@ -992,6 +1043,33 @@
   "GET /admin/translations/statistics": {
     "js-sdk": "sdk.admin.translation.statistics({\n  entity_type: \"product\"\n})\n.then(({ statistics }) => {\n  console.log(statistics)\n})"
   },
+  "POST /admin/product-options": {
+    "js-sdk": "sdk.admin.productOption.create({\n  title: \"Size\",\n  values: [\"S\", \"M\"]\n})\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
+  },
+  "POST /admin/product-options/{id}": {
+    "js-sdk": "sdk.admin.productOption.update(\"opt_123\", {\n  title: \"Size\"\n})\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
+  },
+  "GET /admin/product-options": {
+    "js-sdk": "sdk.admin.productOption.list()\n.then(({ product_options, count, limit, offset }) => {\n  console.log(product_options)\n})"
+  },
+  "GET /admin/product-options/{id}": {
+    "js-sdk": "sdk.admin.productOption.retrieve(\"opt_123\")\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
+  },
+  "DELETE /admin/product-options/{id}": {
+    "js-sdk": "sdk.admin.productOption.delete(\"opt_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
+  "GET /admin/product-options/{optionid}/values": {
+    "js-sdk": "sdk.admin.productOption.listValues(\"opt_123\", { q: \"red\" })\n.then(({ product_option_values, count, limit, offset }) => {\n  console.log(product_option_values)\n})"
+  },
+  "GET /admin/product-options/{optionid}/values/{valueid}": {
+    "js-sdk": "sdk.admin.productOption.retrieveValue(\"opt_123\", \"optval_123\")\n.then(({ product_option_value }) => {\n  console.log(product_option_value)\n})"
+  },
+  "POST /admin/product-options/{optionid}/values/{valueid}": {
+    "js-sdk": "sdk.admin.productOption.updateValue(\"opt_123\", \"optval_123\", {\n  metadata: { is_default: true }\n})\n.then(({ product_option_value }) => {\n  console.log(product_option_value)\n})"
+  },
+  "DELETE /admin/product-options/{optionid}/values/{valueid}": {
+    "js-sdk": "sdk.admin.productOption.deleteValue(\"opt_123\", \"optval_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
+  },
   "GET /admin/rbac/roles": {
     "js-sdk": "sdk.admin.rbacRole.list()\n.then(({ roles, count, limit, offset }) => {\n  console.log(roles)\n})"
   },
@@ -1009,6 +1087,15 @@
   },
   "GET /admin/rbac/roles/{roleid}/policies": {
     "js-sdk": "sdk.admin.rbacRole.listPolicies(\"role_123\")\n.then(({ policies, count, limit, offset }) => {\n  console.log(policies)\n})"
+  },
+  "GET /admin/rbac/roles/{roleid}/users": {
+    "js-sdk": "sdk.admin.rbacRole.listUsers(\"role_123\")\n.then(({ users, count, limit, offset }) => {\n  console.log(users)\n})"
+  },
+  "POST /admin/rbac/roles/{roleid}/users": {
+    "js-sdk": "sdk.admin.rbacRole.addUsers(\"role_123\", {\n  users: [\"user_123\"]\n})\n.then(({ users }) => {\n  console.log(users)\n})"
+  },
+  "DELETE /admin/rbac/roles/{roleid}/users": {
+    "js-sdk": "sdk.admin.rbacRole.removeUsers(\"role_123\", {\n  users: [\"user_123\"]\n})\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "POST /admin/rbac/roles/{roleid}/policies": {
     "js-sdk": "sdk.admin.rbacRole.addPolicies(\"role_123\", {\n  policies: [\"policy_123\", \"policy_456\"]\n})\n.then(({ policies }) => {\n  console.log(policies)\n})"
@@ -1052,6 +1139,9 @@
   "POST /auth/mfa/challenges/{id}/verify": {
     "js-sdk": "const result = await sdk.auth.login(\"user\", \"emailpass\", {\n  email: \"user@example.com\",\n  password: \"secret\"\n})\n\nif (typeof result === \"object\" && \"mfa_challenge\" in result) {\n  await sdk.auth.mfa.verifyChallenge(result.mfa_challenge.id, {\n    method: \"totp\",\n    code: \"123456\"\n  })\n}"
   },
+  "POST /auth/{actor}/{method}/register": {
+    "js-sdk": "await sdk.auth.register(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.create({\n  email: \"customer@gmail.com\",\n  password: \"supersecret\"\n})"
+  },
   "POST /auth/{actor}/{method}": {
     "js-sdk": "const result = await sdk.auth.login(\n  \"customer\",\n  \"emailpass\",\n  {\n    email: \"customer@gmail.com\",\n    password: \"supersecret\"\n  }\n)\n\nif (typeof result !== \"string\") {\n  alert(\"Authentication requires additional steps\")\n  // replace with the redirect logic of your application\n  window.location.href = result.location\n  return\n}\n\n// customer is now authenticated\n// all subsequent requests will use the token in the header\nconst { customer } = await sdk.store.customer.retrieve()"
   },
@@ -1087,6 +1177,12 @@
   },
   "GET /store/product-categories/{id}": {
     "js-sdk": "sdk.store.category.retrieve(\"pcat_123\")\n.then(({ product_category }) => {\n  console.log(product_category)\n})"
+  },
+  "GET /store/product-options": {
+    "js-sdk": "sdk.store.productOption.list()\n.then(({ product_options, count, offset, limit }) => {\n  console.log(product_options)\n})"
+  },
+  "GET /store/product-options/{id}": {
+    "js-sdk": "sdk.store.productOption.retrieve(\"opt_123\")\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
   },
   "GET /store/products": {
     "js-sdk": "sdk.store.product.list()\n.then(({ products, count, offset, limit }) => {\n  console.log(products)\n})"
