@@ -58,3 +58,19 @@ In the Medusa application, when a payment session is created for a registered cu
 Consequently, the Payment Module uses the payment provider to create an account holder in the third-party service, then creates the account holder in Medusa.
 
 This flow is only supported if the chosen payment provider has implemented the necessary [save payment methods](#save-payment-methods).
+
+---
+
+## Account Holder Idempotency
+
+Account holder creation is idempotent per customer. When the Payment Module calls `createAccountHolder` on the payment provider, it passes `idempotency_key: customer.id` as part of the provider context. This means that if the same customer's account holder is created more than once, the payment provider returns the same result rather than creating a duplicate.
+
+<Note title="Warning" type="warning">
+
+Do not compensate account holder creation with a provider-side delete in your custom workflows. If you call `deleteAccountHolder` in a compensation step, a subsequent retry will ask the provider to create the account holder again. However, the provider may replay the original creation response for the same idempotency key, returning the already-deleted object. This results in an account holder in Medusa that points to a deleted provider-side customer, causing saved payment method flows to fail until the provider's idempotency window expires.
+
+</Note>
+
+The built-in [createPaymentSessionsWorkflow](/references/core_flows/Payment_Collection/functions/core_flows.Payment_Collection.createPaymentSessionsWorkflow) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
+
+If you build a custom workflow that creates account holders, use the same `noCompensation: true` config on `createPaymentAccountHolderStep`, or omit a compensation function that calls `deleteAccountHolder` on the provider.
