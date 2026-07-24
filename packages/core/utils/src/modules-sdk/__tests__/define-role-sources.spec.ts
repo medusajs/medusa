@@ -27,8 +27,8 @@ describe("defineRoleSources", function () {
       { reference: "end_user" },
       {
         reference: "membership",
-        path: "organization.memberships",
-        scope: { type: "organization", path: "organization.id" },
+        path: "memberships.organization.id",
+        scope: { type: "organization", path: "memberships.organization.id" },
       },
     ]
 
@@ -40,11 +40,11 @@ describe("defineRoleSources", function () {
   it("should replace, not merge, on re-registration", function () {
     defineRoleSources("end_user", [{ reference: "end_user" }])
     defineRoleSources("end_user", [
-      { reference: "membership", path: "organization.memberships" },
+      { reference: "membership", path: "memberships.organization.id" },
     ])
 
     expect(getRoleSources("end_user")).toEqual([
-      { reference: "membership", path: "organization.memberships" },
+      { reference: "membership", path: "memberships.organization.id" },
     ])
   })
 
