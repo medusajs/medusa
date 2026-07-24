@@ -140,7 +140,8 @@ You can track your domain's setup progress with the [Domain Status Indicators](#
 After adding a custom domain, you'll see a status below the domain name that help you track the setup progress:
 
 - **Pending** (gray clock icon): Domain has been added but DNS verification is pending
-- **Configured** (blue clock icon): DNS records are detected but verification is in progress  
+- **Configured** (blue clock icon): DNS records are detected but verification is in progress
+- **Finalizing** (blue clock icon): All DNS records are verified on your end but the platform has not yet confirmed the domain as active
 - **Verified** (green checkmark icon): Domain is fully configured and active
 
 Domain activation typically completes within a few minutes to 48 hours, depending on DNS propagation times.
@@ -168,13 +169,29 @@ To remove a custom domain:
 
 ## Troubleshooting
 
+### Re-verify DNS Records
+
+If you've updated your DNS records and want to trigger an immediate check, open the DNS records detail page for your domain and click the **Re-verify** button. This manually starts a fresh DNS check rather than waiting for the next automatic check.
+
+### Diagnose DNS Record Issues
+
+On the DNS records detail page, you can expand individual rows in the DNS records table to reveal troubleshooting details for that record. Expanding a row shows:
+
+- The actual DNS records currently found for that entry
+- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself
+- An `nslookup` command (Windows) you can copy and run in your terminal
+- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser
+
+The same expandable troubleshooting panel is available during the domain setup flow when you're configuring DNS records for a new domain.
+
 ### Domain Verification
 
 If your domain remains in **Pending** or **Configured** status:
 
-1. **Check DNS records**: Verify that you've added all required DNS records exactly as provided in the DNS setup instructions.
-2. **Wait for propagation**: DNS changes can take up to 48 hours to propagate globally.
-3. **Contact support**: If your domain hasn't verified after 48 hours, contact support for assistance.
+1. **Check DNS records**: Verify that you've added all required DNS records exactly as provided in the DNS setup instructions. Expand any rows marked as failed or unexpected in the DNS records table to see what records were found.
+2. **Re-verify**: Click the **Re-verify** button on the DNS records detail page to trigger a fresh check.
+3. **Wait for propagation**: DNS changes can take up to 48 hours to propagate globally.
+4. **Contact support**: If your domain hasn't verified after 48 hours, contact support for assistance.
 
 ### Storefront Not Connecting to Backend After Custom Domain Setup
 

@@ -225,9 +225,24 @@ The domain will then be added, and the system will periodically check the DNS re
 
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
-The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) with an inline status indicator showing whether verification succeeded, failed, or is still in progress.
+The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) with an inline status indicator per row showing whether verification succeeded, failed, or is still in progress. When all DKIM records pass but the domain is still pending platform confirmation, a **Finalizing** status is shown.
 
 ![Sender Domains page with the sender domain added](https://res.cloudinary.com/dza7lstvk/image/upload/v1762947495/Cloud/CleanShot_2025-11-12_at_13.36.59_2x_sbaf7y.png)
+
+### Re-verify DNS Records
+
+If you've updated your DNS records and want to trigger an immediate check, click the **Re-verify** button on the domain detail page. This manually starts a fresh DNS check rather than waiting for the next automatic check.
+
+### Diagnose DNS Record Issues
+
+On the domain detail page, you can expand individual rows in the DNS records tables (DKIM, SPF, and DMARC) to reveal troubleshooting details for that record. Expanding a row shows:
+
+- The actual DNS records currently found for that entry
+- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself
+- An `nslookup` command (Windows) you can copy and run in your terminal
+- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser
+
+The same expandable troubleshooting panel is available during the **Add Domain** setup flow when you're configuring DNS records for a new sender domain.
 
 ### Specify From Email
 
