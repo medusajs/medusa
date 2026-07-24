@@ -119,12 +119,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -162,12 +162,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the order:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -216,12 +216,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the order:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -270,12 +270,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -312,12 +312,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the return:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -365,12 +365,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the return:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -418,12 +418,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -460,12 +460,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the claim:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -513,12 +513,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the claim:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -566,12 +566,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -608,12 +608,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the exchange:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -661,12 +661,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the exchange:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -1067,12 +1067,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -1110,12 +1110,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the line item:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -1415,12 +1415,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the shipping method:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -1616,12 +1616,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the line item adjustment:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -1834,12 +1834,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the shipping method adjustment:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -2074,12 +2074,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the line item tax line:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -2203,6 +2203,13 @@ export interface IOrderModuleService extends IModuleService {
   /**
    * This method sets the line item tax lines of an order.
    *
+   * This method replaces the order's line item tax lines: any existing line item tax line on the order that
+   * isn't included in the `taxLines` parameter (by its `id`) is deleted. The scope is the entire order, not
+   * only the line items referenced in the input, so passing a partial set removes the tax lines of the line
+   * items you didn't include.
+   *
+   * To add or update line item tax lines without deleting others, use {@link upsertOrderLineItemTaxLines} instead.
+   *
    * @param {string} orderId - The order's ID.
    * @param {(CreateOrderLineItemTaxLineDTO | UpdateOrderLineItemTaxLineDTO)[]} taxLines - The line item tax lines to create or update. If the
    * tax line object has an `id` property, it'll be updated. Otherwise, a tax line is created.
@@ -2297,12 +2304,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the shipping method tax line:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -2431,7 +2438,15 @@ export interface IOrderModuleService extends IModuleService {
   ): Promise<OrderShippingMethodTaxLineDTO[]>
 
   /**
-   * This method set the shipping method tax lines of an order.
+   * This method sets the shipping method tax lines of an order.
+   *
+   * This method replaces the order's shipping method tax lines: any existing shipping method tax line on the
+   * order that isn't included in the `taxLines` parameter (by its `id`) is deleted. The scope is the entire
+   * order, not only the shipping methods referenced in the input, so passing a partial set removes the tax
+   * lines of the shipping methods you didn't include.
+   *
+   * To add or update shipping method tax lines without deleting others, use
+   * {@link upsertOrderShippingMethodTaxLines} instead.
    *
    * @param {string} orderId - The order's ID.
    * @param {(CreateOrderShippingMethodTaxLineDTO | UpdateOrderShippingMethodTaxLineDTO)[]} taxLines - The shipping method tax lines to create or update.
@@ -2534,12 +2549,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the exchange:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -2587,12 +2602,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -3104,12 +3119,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the shipping method tax line:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -3158,12 +3173,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -3748,12 +3763,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the transaction:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -3907,12 +3922,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -3949,12 +3964,12 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the return reason:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts

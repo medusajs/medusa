@@ -161,20 +161,6 @@ export class PricingRepository
       })
     }
 
-    query.leftJoin("price_list as pl", function (this: Knex.JoinClause) {
-      this.on("pl.id", "=", "price.price_list_id")
-        .andOn("pl.status", "=", knex.raw("?", [PriceListStatus.ACTIVE]))
-        .andOn(function (this: Knex.JoinClause) {
-          this.onNull("pl.deleted_at")
-        })
-        .andOn(function (this: Knex.JoinClause) {
-          this.onNull("pl.starts_at").orOn("pl.starts_at", "<=", knex.fn.now())
-        })
-        .andOn(function (this: Knex.JoinClause) {
-          this.onNull("pl.ends_at").orOn("pl.ends_at", ">=", knex.fn.now())
-        })
-    })
-
     if (hasComplexContext) {
       // Build match conditions for LATERAL join
       const priceRuleMatchConditions = flattenedContext
@@ -244,11 +230,41 @@ export class PricingRepository
         ...priceListRuleOverlapParams,
       ]
 
-      // Use LATERAL joins to compute matched and total counts in one go
-      query
-        .leftJoin(
-          knex.raw(
-            `LATERAL (
+      // Pre-resolve the active price lists whose rules all match the context
+      // in a single pass over price_list/price_list_rule, instead of running
+      // a LATERAL scan of price_list_rule for every candidate price row. With
+      // N price lists, the per-row LATERAL costs O(candidate prices x N);
+      // this derived table stays flat because prices of non-matching price
+      // lists are dropped by the join before rule evaluation.
+      query.leftJoin(
+        knex.raw(
+          `(
+            SELECT pl.id, pl.type, pl.rules_count
+            FROM price_list pl
+            WHERE pl.status = ?
+              AND pl.deleted_at IS NULL
+              AND (pl.starts_at IS NULL OR pl.starts_at <= now())
+              AND (pl.ends_at IS NULL OR pl.ends_at >= now())
+              AND (
+                pl.rules_count = 0
+                OR pl.rules_count = (
+                  SELECT COUNT(*) FILTER (WHERE ${priceListRuleMatchConditions})
+                  FROM price_list_rule plr
+                  WHERE plr.price_list_id = pl.id
+                    AND plr.deleted_at IS NULL
+                )
+              )
+          ) as pl`,
+          [PriceListStatus.ACTIVE, ...priceListRuleMatchParams]
+        ),
+        "pl.id",
+        "price.price_list_id"
+      )
+
+      // Use a LATERAL join to compute matched and total counts in one go
+      query.leftJoin(
+        knex.raw(
+          `LATERAL (
             SELECT
               COUNT(*) FILTER (WHERE ${priceRuleMatchConditions}) as matched_count,
               COUNT(*) as total_count
@@ -256,24 +272,10 @@ export class PricingRepository
             WHERE pr.price_id = price.id
               AND pr.deleted_at IS NULL
           ) pr_stats`,
-            priceRuleMatchParams
-          ),
-          knex.raw("true")
-        )
-        .leftJoin(
-          knex.raw(
-            `LATERAL (
-            SELECT
-              COUNT(*) FILTER (WHERE ${priceListRuleMatchConditions}) as matched_count,
-              COUNT(*) as total_count
-            FROM price_list_rule plr
-            WHERE plr.price_list_id = pl.id
-              AND plr.deleted_at IS NULL
-          ) plr_stats`,
-            priceListRuleMatchParams
-          ),
-          knex.raw("true")
-        )
+          priceRuleMatchParams
+        ),
+        knex.raw("true")
+      )
 
       query.where((qb) => {
         qb.where((qb2) => {
@@ -284,22 +286,37 @@ export class PricingRepository
               .orWhereRaw("pr_stats.matched_count = price.rules_count")
           })
         }).orWhere((qb2) => {
-          // Has price list: both price rules and price list rules must match
+          // Has price list: the list must have survived the pre-filtered join
+          // (all of its rules matched) and price rules must match or be zero
           qb2
             .whereNotNull("price.price_list_id")
+            .whereNotNull("pl.id")
             .andWhere((qb3) => {
               qb3
                 .where("price.rules_count", 0)
                 .orWhereRaw("pr_stats.matched_count = price.rules_count")
             })
-            .andWhere((qb3) => {
-              qb3
-                .where("pl.rules_count", 0)
-                .orWhereRaw("plr_stats.matched_count = pl.rules_count")
-            })
         })
       })
     } else {
+      query.leftJoin("price_list as pl", function (this: Knex.JoinClause) {
+        this.on("pl.id", "=", "price.price_list_id")
+          .andOn("pl.status", "=", knex.raw("?", [PriceListStatus.ACTIVE]))
+          .andOn(function (this: Knex.JoinClause) {
+            this.onNull("pl.deleted_at")
+          })
+          .andOn(function (this: Knex.JoinClause) {
+            this.onNull("pl.starts_at").orOn(
+              "pl.starts_at",
+              "<=",
+              knex.fn.now()
+            )
+          })
+          .andOn(function (this: Knex.JoinClause) {
+            this.onNull("pl.ends_at").orOn("pl.ends_at", ">=", knex.fn.now())
+          })
+      })
+
       query.where(function (this: Knex.QueryBuilder) {
         this.where(function (this: Knex.QueryBuilder) {
           this.whereNull("price.price_list_id").where("price.rules_count", 0)

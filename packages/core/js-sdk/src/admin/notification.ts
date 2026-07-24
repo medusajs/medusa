@@ -16,7 +16,7 @@ export class Notification {
 
   /**
    * This method retrieves a notification's details. It sends a request to the 
-   * [Get Notification](https://docs.medusajs.com/api/admin#notifications_getnotificationsid)
+   * [Get Notification](https://docs.medusajs.com/api/admin/notifications/get-a-notification)
    * API route.
    * 
    * @param id - The notification's ID.
@@ -45,7 +45,7 @@ export class Notification {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -64,7 +64,7 @@ export class Notification {
 
   /**
    * This method retrieves a paginated list of notifications. It sends a request to the 
-   * [List Notifications](https://docs.medusajs.com/api/admin#notifications_getnotifications)
+   * [List Notifications](https://docs.medusajs.com/api/admin/notifications/list-notifications)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -107,7 +107,7 @@ export class Notification {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminNotificationListParams,

@@ -347,6 +347,7 @@
   },
   "filters": {
     "sortLabel": "Ordenar",
+    "columnsLabel": "Columnas",
     "collapse": {
       "all": "Colapsar todo"
     },
@@ -770,6 +771,16 @@
   "collections": {
     "domain": "Colecciones",
     "subtitle": "Organiza los productos en colecciones.",
+    "list": {
+      "empty": {
+        "heading": "No hay colecciones",
+        "description": "No hay colecciones para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ninguna colección coincide con los criterios de filtro actuales."
+      }
+    },
     "createCollection": "Crear Colección",
     "createCollectionHint": "Crea una nueva colección para organizar tus productos.",
     "createSuccess": "Colección creada exitosamente.",
@@ -994,6 +1005,14 @@
   "customers": {
     "domain": "Clientes",
     "list": {
+      "empty": {
+        "heading": "No hay clientes",
+        "description": "No hay clientes para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ningún cliente coincide con los criterios de filtro actuales."
+      },
       "noRecordsMessage": "Tus clientes aparecerán aquí."
     },
     "create": {
@@ -1192,10 +1211,18 @@
     "transfer": {
       "title": "Transferir propiedad",
       "requestSuccess": "Solicitud de transferencia de pedido enviada a: {{email}}.",
+      "guestSuccess": "Pedido transferido al cliente invitado: {{email}}.",
+      "ownerType": "Tipo de cuenta",
+      "registered": "Registrado",
+      "registeredDescription": "Transferir a un cliente registrado, que debe aceptar la solicitud.",
+      "guest": "Invitado",
+      "guestDescription": "Transferir a un cliente invitado por correo electrónico. Se aplica de inmediato.",
       "currentOwner": "Propietario actual",
       "newOwner": "Nuevo propietario",
+      "newGuestOwner": "Correo electrónico del nuevo propietario",
       "currentOwnerDescription": "El cliente actualmente relacionado con este pedido.",
-      "newOwnerDescription": "El cliente a quien se transferirá este pedido."
+      "newOwnerDescription": "El cliente a quien se transferirá este pedido.",
+      "newGuestOwnerDescription": "El correo electrónico del cliente invitado a quien se transferirá este pedido. Se crea un cliente invitado si no existe."
     },
     "payment": {
       "title": "Pagos",
@@ -1846,6 +1873,17 @@
       "type": "Introduce el tipo de perfil de envío, por ejemplo: Pesado, Sobredimensionado, Solo carga, etc."
     }
   },
+  "propertyLabels": {
+    "domain": "Etiquetas de Propiedades",
+    "title": "Etiquetas de Propiedades",
+    "subtitle": "Gestiona etiquetas de propiedades personalizadas para tablas configurables de tus entidades.",
+    "fields": {
+      "module": "Módulo",
+      "model": "Modelo",
+      "propertyCount": "Cantidad de Propiedades",
+      "hasOverrides": "Tiene Sobrescrituras"
+    }
+  },
   "taxRegions": {
     "domain": "Regiones Impositivas",
     "list": {
@@ -2096,6 +2134,16 @@
   },
   "promotions": {
     "domain": "Promociones",
+    "list": {
+      "empty": {
+        "heading": "No hay promociones",
+        "description": "No hay promociones para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ninguna promoción coincide con los criterios de filtro actuales."
+      }
+    },
     "sections": {
       "details": "Detalles de la Promoción"
     },
@@ -2362,6 +2410,16 @@
   },
   "campaigns": {
     "domain": "Campañas",
+    "list": {
+      "empty": {
+        "heading": "No hay campañas",
+        "description": "No hay campañas para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ninguna campaña coincide con los criterios de filtro actuales."
+      }
+    },
     "details": "Detalles de la campaña",
     "status": {
       "active": "Activa",
@@ -2457,6 +2515,16 @@
   "priceLists": {
     "domain": "Listas de Precios",
     "subtitle": "Crea precios de venta o anula precios para condiciones específicas.",
+    "list": {
+      "empty": {
+        "heading": "No hay listas de precios",
+        "description": "No hay listas de precios para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "No hay listas de precios que coincidan con los criterios de filtro actuales."
+      }
+    },
     "delete": {
       "confirmation": "Estás a punto de eliminar la lista de precios {{title}}. Esta acción no puede deshacerse.",
       "successToast": "La lista de precios {{title}} fue eliminada exitosamente."
@@ -2704,7 +2772,15 @@
     "flatRate": "Tarifa Fija",
     "calculated": "Calculado",
     "list": {
-      "noRecordsMessage": "Crea una región para las áreas donde vendes."
+      "noRecordsMessage": "Crea una región para las áreas donde vendes.",
+      "empty": {
+        "heading": "No hay regiones",
+        "description": "No hay regiones para mostrar."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ninguna región coincide con los criterios de filtro actuales."
+      }
     },
     "toast": {
       "delete": "Región eliminada exitosamente",
@@ -3130,6 +3206,7 @@
     "selectValues": "Seleccionar valores"
   },
   "fields": {
+    "actions": "Acciones",
     "amount": "Monto",
     "by": "Por",
     "creditTotal": "Total de líneas de crédito",

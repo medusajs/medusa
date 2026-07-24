@@ -338,6 +338,7 @@
   },
   "filters": {
     "sortLabel": "Sort",
+    "columnsLabel": "Columns",
     "collapse": {
       "all": "Collapse all"
     },
@@ -803,6 +804,16 @@
   "collections": {
     "domain": "Collections",
     "subtitle": "Organize products into collections.",
+    "list": {
+      "empty": {
+        "heading": "No collections",
+        "description": "There are no collections to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No collections match the current filter criteria."
+      }
+    },
     "createCollection": "Create Collection",
     "createCollectionHint": "Create a new collection to organize your products.",
     "createSuccess": "Collection created successfully.",
@@ -1028,6 +1039,14 @@
   "customers": {
     "domain": "Customers",
     "list": {
+      "empty": {
+        "heading": "No customers",
+        "description": "There are no customers to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No customers match the current filter criteria."
+      },
       "noRecordsMessage": "Your customers will show up here."
     },
     "create": {
@@ -1219,10 +1238,18 @@
     "transfer": {
       "title": "Transfer ownership",
       "requestSuccess": "Order transfer request sent to: {{email}}.",
+      "guestSuccess": "Order transferred to guest customer: {{email}}.",
+      "ownerType": "Account type",
+      "registered": "Registered",
+      "registeredDescription": "Transfer to a registered customer, who must accept the request.",
+      "guest": "Guest",
+      "guestDescription": "Transfer to a guest customer by email. Applied immediately.",
       "currentOwner": "Current owner",
       "newOwner": "New owner",
+      "newGuestOwner": "New owner email",
       "currentOwnerDescription": "The customer currently related to this order.",
-      "newOwnerDescription": "The customer to transfer this order to."
+      "newOwnerDescription": "The customer to transfer this order to.",
+      "newGuestOwnerDescription": "The email of the guest customer to transfer this order to. A guest customer is created if none exists."
     },
     "payment": {
       "title": "Payments",
@@ -2162,6 +2189,16 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "list": {
+      "empty": {
+        "heading": "No promotions",
+        "description": "There are no promotions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No promotions match the current filter criteria."
+      }
+    },
     "sections": {
       "details": "Promotion Details"
     },
@@ -2388,6 +2425,16 @@
   },
   "campaigns": {
     "domain": "Campaigns",
+    "list": {
+      "empty": {
+        "heading": "No campaigns",
+        "description": "There are no campaigns to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No campaigns match the current filter criteria."
+      }
+    },
     "details": "Campaign details",
     "status": {
       "active": "Active",
@@ -2499,6 +2546,16 @@
   "priceLists": {
     "domain": "Price Lists",
     "subtitle": "Create sales or override prices for specific conditions.",
+    "list": {
+      "empty": {
+        "heading": "No price lists",
+        "description": "There are no price lists to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No price lists match the current filter criteria."
+      }
+    },
     "delete": {
       "confirmation": "You are about to delete the price list \"{{title}}\". This action cannot be undone.",
       "successToast": "Price list \"{{title}}\" was successfully deleted."
@@ -2920,7 +2977,15 @@
     "flatRate": "Flat Rate",
     "calculated": "Calculated",
     "list": {
-      "noRecordsMessage": "Create a region for the areas that you sell in."
+      "noRecordsMessage": "Create a region for the areas that you sell in.",
+      "empty": {
+        "heading": "No regions",
+        "description": "There are no regions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No regions match the current filter criteria."
+      }
     },
     "toast": {
       "delete": "Region deleted successfully",
@@ -3379,6 +3444,17 @@
       "value": "Value"
     }
   },
+  "propertyLabels": {
+    "domain": "Property Labels",
+    "title": "Property Labels",
+    "subtitle": "Manage custom property labels for configurable tables of your entities.",
+    "fields": {
+      "module": "Module",
+      "model": "Model",
+      "propertyCount": "Property Count",
+      "hasOverrides": "Has Overrides"
+    }
+  },
   "notifications": {
     "domain": "Notifications",
     "emptyState": {
@@ -3417,6 +3493,7 @@
     "selectValues": "Select Values"
   },
   "fields": {
+    "actions": "Actions",
     "amount": "Amount",
     "reference": "Reference",
     "reference_id": "Reference ID",

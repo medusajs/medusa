@@ -31,6 +31,7 @@ import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
+import { rule as noWildcardWithSpecificFields } from "./no-wildcard-with-specific-fields"
 import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-field"
 import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
 import { rule as routeFileNaming } from "./route-file-naming"
@@ -45,7 +46,6 @@ import { rule as serviceConstructorMustCallSuper } from "./service-constructor-m
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
 import { rule as useMedusaErrorNotGenericError } from "./use-medusa-error-not-generic-error"
-import { rule as useQueryContextUtility } from "./use-query-context-utility"
 import { rule as useValidatedBodyOrQuery } from "./use-validated-body-or-query"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeys } from "./prefer-container-registration-keys"
@@ -102,6 +102,7 @@ export const rules = {
   "no-throw-in-transform": noThrowInTransform,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
+  "no-wildcard-with-specific-fields": noWildcardWithSpecificFields,
   "read-only-link-requires-field": readOnlyLinkRequiresField,
   "route-dynamic-folder-syntax": routeDynamicFolderSyntax,
   "route-file-naming": routeFileNaming,
@@ -116,7 +117,6 @@ export const rules = {
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
   "use-medusa-error-not-generic-error": useMedusaErrorNotGenericError,
-  "use-query-context-utility": useQueryContextUtility,
   "use-validated-body-or-query": useValidatedBodyOrQuery,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
   "prefer-container-registration-keys": preferContainerRegistrationKeys,

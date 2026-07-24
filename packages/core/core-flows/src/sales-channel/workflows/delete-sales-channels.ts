@@ -22,7 +22,7 @@ export type DeleteSalesChannelsWorkflowInput = {
 export const deleteSalesChannelsWorkflowId = "delete-sales-channels"
 /**
  * This workflow deletes one or more sales channels. It's used by the
- * [Delete Sales Channel Admin API Route](https://docs.medusajs.com/api/admin#sales-channels_deletesaleschannelsid).
+ * [Delete Sales Channel Admin API Route](https://docs.medusajs.com/api/admin/sales-channels/delete-a-sales-channel).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete sales channels within your custom flows.

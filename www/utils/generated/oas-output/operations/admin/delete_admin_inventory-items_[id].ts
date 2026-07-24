@@ -79,7 +79,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteInventoryItemWorkflow
- * x-events: []
+ * x-events:
+ *   - name: inventory-item.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory item
+ *       }
+ *       ```
+ *     description: Emitted when inventory items are deleted.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

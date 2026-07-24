@@ -1,3 +1,5 @@
+import { disallowedStorePivotFields } from "../utils/disallowed-fields"
+
 // TODO: Global todo, review all default fields to prevent over fetching by default
 export const defaultStoreCartFields = [
   "id",
@@ -139,5 +141,9 @@ export const defaultStoreCartFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCartFields,
+  // The cart legitimately exposes the caller's own customer/address/payment
+  // data during checkout, but must not be usable to pivot into other
+  // resources' order or cart data (e.g. region.orders, customer.orders).
+  disallowed: disallowedStorePivotFields,
   isList: false,
 }

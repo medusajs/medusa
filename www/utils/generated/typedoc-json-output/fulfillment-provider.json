@@ -1,12 +1,12 @@
 {
-	"id": 40895,
+	"id": 43584,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 40896,
+			"id": 43585,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -25,7 +25,7 @@
 			},
 			"children": [
 				{
-					"id": 40897,
+					"id": 43586,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -88,7 +88,7 @@
 							"fileName": "provider.ts",
 							"line": 80,
 							"character": 9,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L80"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L80"
 						}
 					],
 					"type": {
@@ -97,21 +97,21 @@
 					}
 				},
 				{
-					"id": 40902,
+					"id": 43591,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 40903,
+							"id": 43592,
 							"name": "AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 40896,
+								"target": 43585,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -119,7 +119,7 @@
 					]
 				},
 				{
-					"id": 40906,
+					"id": 43595,
 					"name": "getFulfillmentOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -129,12 +129,12 @@
 							"fileName": "provider.ts",
 							"line": 131,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L131"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L131"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40907,
+							"id": 43596,
 							"name": "getFulfillmentOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -204,7 +204,7 @@
 									"fileName": "provider.ts",
 									"line": 131,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L131"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L131"
 								}
 							],
 							"type": {
@@ -244,7 +244,7 @@
 					}
 				},
 				{
-					"id": 40908,
+					"id": 43597,
 					"name": "validateFulfillmentData",
 					"variant": "declaration",
 					"kind": 2048,
@@ -254,12 +254,12 @@
 							"fileName": "provider.ts",
 							"line": 167,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L167"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L167"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40909,
+							"id": 43598,
 							"name": "validateFulfillmentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -329,12 +329,12 @@
 									"fileName": "provider.ts",
 									"line": 167,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L167"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L167"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40910,
+									"id": 43599,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -376,7 +376,7 @@
 									}
 								},
 								{
-									"id": 40911,
+									"id": 43600,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -418,7 +418,7 @@
 									}
 								},
 								{
-									"id": 40912,
+									"id": 43601,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -471,7 +471,7 @@
 					}
 				},
 				{
-					"id": 40913,
+					"id": 43602,
 					"name": "validateOption",
 					"variant": "declaration",
 					"kind": 2048,
@@ -481,12 +481,12 @@
 							"fileName": "provider.ts",
 							"line": 192,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L192"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L192"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40914,
+							"id": 43603,
 							"name": "validateOption",
 							"variant": "signature",
 							"kind": 4096,
@@ -548,12 +548,12 @@
 									"fileName": "provider.ts",
 									"line": 192,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L192"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L192"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40915,
+									"id": 43604,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -616,7 +616,7 @@
 					}
 				},
 				{
-					"id": 40916,
+					"id": 43605,
 					"name": "canCalculate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -626,12 +626,12 @@
 							"fileName": "provider.ts",
 							"line": 215,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L215"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L215"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40917,
+							"id": 43606,
 							"name": "canCalculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -678,7 +678,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "getFulfillmentOptions",
-										"target": 40906
+										"target": 43595
 									},
 									{
 										"kind": "text",
@@ -711,12 +711,12 @@
 									"fileName": "provider.ts",
 									"line": 215,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L215"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L215"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40918,
+									"id": 43607,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -777,7 +777,7 @@
 					}
 				},
 				{
-					"id": 40919,
+					"id": 43608,
 					"name": "calculatePrice",
 					"variant": "declaration",
 					"kind": 2048,
@@ -785,14 +785,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 257,
+							"line": 276,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L257"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L276"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40920,
+							"id": 43609,
 							"name": "calculatePrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -801,7 +801,23 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method calculates the price of a shipping method when it's created or its cart is refreshed.\n\nIn this method, you can send a request to your third-party provider to retrieve the prices. The first\nparameters holds the "
+										"text": "This method calculates the price of a shipping method whose shipping option has the\n"
+									},
+									{
+										"kind": "code",
+										"text": "`price_type`"
+									},
+									{
+										"kind": "text",
+										"text": " set to "
+									},
+									{
+										"kind": "code",
+										"text": "`calculated`"
+									},
+									{
+										"kind": "text",
+										"text": ".\n\nIn this method, you can send a request to your third-party provider to retrieve the prices. The first\nparameters holds the "
 									},
 									{
 										"kind": "code",
@@ -815,7 +831,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "getFulfillmentOptions",
-										"target": 40906
+										"target": 43595
 									},
 									{
 										"kind": "text",
@@ -833,11 +849,19 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "validateFulfillmentData",
-										"target": 40908
+										"target": 43597
 									},
 									{
 										"kind": "text",
-										"text": ".\nIt can also hold custom data passed from the frontend during checkout.\n\nSo, using both of these data, assuming you're storing in them data related to the third-party service,\nyou can retrieve the calculated price of the shipping method."
+										"text": ".\nIt can also hold custom data passed from the frontend during checkout.\n\nSo, using both of these data, assuming you're storing in them data related to the third-party service,\nyou can retrieve the calculated price of the shipping method.\n\n### When is this method invoked?\n\nThis method is invoked in Medusa whenever the calculated shipping option's price needs to be resolved\nagainst a cart:\n\n- When retrieving a cart's shipping options with their prices, such as when the customer views their shipping options during checkout.\n- When the shipping method is added to the cart.\n- Every time the cart is refreshed. A cart is refreshed after most cart changes, such as adding a line item or updating the cart's details, so this method may be invoked frequently for a cart that has a calculated shipping method.\n\nThe price isn't re-calculated when the cart is completed and converted to an order; the order uses the last price that was stored on the shipping method.\n\nIf this method throws an error, or returns a result without a "
+									},
+									{
+										"kind": "code",
+										"text": "`calculated_amount`"
+									},
+									{
+										"kind": "text",
+										"text": ", the shipping\noption's price can't be resolved. This blocks the operation that triggered the calculation,\nsuch as adding the shipping method to the cart or the cart refresh triggered by other cart\nchanges, which can prevent the customer from completing checkout. So, ensure to handle errors\ngracefully, such as by falling back to a default price, if you don't want a failure in the\nthird-party service to block checkout."
 									}
 								],
 								"blockTags": [
@@ -864,14 +888,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 257,
+									"line": 276,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L257"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L276"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40921,
+									"id": 43610,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -913,7 +937,7 @@
 									}
 								},
 								{
-									"id": 40922,
+									"id": 43611,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -955,7 +979,7 @@
 									}
 								},
 								{
-									"id": 40923,
+									"id": 43612,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -1022,7 +1046,7 @@
 					}
 				},
 				{
-					"id": 40924,
+					"id": 43613,
 					"name": "createFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1030,14 +1054,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 307,
+							"line": 326,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L307"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L326"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40925,
+							"id": 43614,
 							"name": "createFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1113,14 +1137,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 307,
+									"line": 326,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L307"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L326"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40926,
+									"id": 43615,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1162,7 +1186,7 @@
 									}
 								},
 								{
-									"id": 40927,
+									"id": 43616,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -1215,7 +1239,7 @@
 									}
 								},
 								{
-									"id": 40928,
+									"id": 43617,
 									"name": "order",
 									"variant": "param",
 									"kind": 32768,
@@ -1259,7 +1283,7 @@
 									}
 								},
 								{
-									"id": 40929,
+									"id": 43618,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -1356,7 +1380,7 @@
 					}
 				},
 				{
-					"id": 40930,
+					"id": 43619,
 					"name": "cancelFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1364,14 +1388,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 335,
+							"line": 354,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L335"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L354"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40931,
+							"id": 43620,
 							"name": "cancelFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1398,14 +1422,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 335,
+									"line": 354,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L335"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L354"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40932,
+									"id": 43621,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1476,7 +1500,7 @@
 					}
 				},
 				{
-					"id": 40933,
+					"id": 43622,
 					"name": "getFulfillmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1484,14 +1508,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 355,
+							"line": 374,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L355"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L374"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40934,
+							"id": 43623,
 							"name": "getFulfillmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1527,14 +1551,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 355,
+									"line": 374,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L355"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L374"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40935,
+									"id": 43624,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1608,7 +1632,7 @@
 					}
 				},
 				{
-					"id": 40936,
+					"id": 43625,
 					"name": "createReturnFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1616,14 +1640,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 392,
+							"line": 411,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L392"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L411"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40937,
+							"id": 43626,
 							"name": "createReturnFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1707,14 +1731,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 392,
+									"line": 411,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L392"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L411"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40938,
+									"id": 43627,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -1782,7 +1806,7 @@
 					}
 				},
 				{
-					"id": 40939,
+					"id": 43628,
 					"name": "getReturnDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1790,14 +1814,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 414,
+							"line": 433,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L414"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L433"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40940,
+							"id": 43629,
 							"name": "getReturnDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1833,14 +1857,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 414,
+									"line": 433,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L414"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L433"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40941,
+									"id": 43630,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1914,7 +1938,7 @@
 					}
 				},
 				{
-					"id": 40942,
+					"id": 43631,
 					"name": "getShipmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1922,14 +1946,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 435,
+							"line": 454,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L435"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L454"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40943,
+							"id": 43632,
 							"name": "getShipmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1965,14 +1989,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 435,
+									"line": 454,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L435"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L454"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40944,
+									"id": 43633,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -2046,7 +2070,7 @@
 					}
 				},
 				{
-					"id": 40945,
+					"id": 43634,
 					"name": "retrieveDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2054,14 +2078,14 @@
 					"sources": [
 						{
 							"fileName": "provider.ts",
-							"line": 462,
+							"line": 481,
 							"character": 8,
-							"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L462"
+							"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L481"
 						}
 					],
 					"signatures": [
 						{
-							"id": 40946,
+							"id": 43635,
 							"name": "retrieveDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -2097,14 +2121,14 @@
 							"sources": [
 								{
 									"fileName": "provider.ts",
-									"line": 462,
+									"line": 481,
 									"character": 8,
-									"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L462"
+									"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L481"
 								}
 							],
 							"parameters": [
 								{
-									"id": 40947,
+									"id": 43636,
 									"name": "fulfillmentData",
 									"variant": "param",
 									"kind": 32768,
@@ -2146,7 +2170,7 @@
 									}
 								},
 								{
-									"id": 40948,
+									"id": 43637,
 									"name": "documentType",
 									"variant": "param",
 									"kind": 32768,
@@ -2206,30 +2230,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						40902
+						43591
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						40897
+						43586
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						40906,
-						40908,
-						40913,
-						40916,
-						40919,
-						40924,
-						40930,
-						40933,
-						40936,
-						40939,
-						40942,
-						40945
+						43595,
+						43597,
+						43602,
+						43605,
+						43608,
+						43613,
+						43619,
+						43622,
+						43625,
+						43628,
+						43631,
+						43634
 					]
 				}
 			],
@@ -2238,7 +2262,7 @@
 					"fileName": "provider.ts",
 					"line": 65,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/699a9a85c795e13f9e787056e0fb65cfea0115dc/packages/core/utils/src/fulfillment/provider.ts#L65"
+					"url": "https://github.com/medusajs/medusa/blob/b574ef20cbd58bc6a3361a3da969070e6ca97846/packages/core/utils/src/fulfillment/provider.ts#L65"
 				}
 			],
 			"implementedTypes": [
@@ -2258,193 +2282,193 @@
 		{
 			"title": "Classes",
 			"children": [
-				40896
+				43585
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"40895": {
+		"43584": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"40896": {
+		"43585": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"40897": {
+		"43586": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"40906": {
+		"43595": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
 		},
-		"40907": {
+		"43596": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
 		},
-		"40908": {
+		"43597": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
 		},
-		"40909": {
+		"43598": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
 		},
-		"40910": {
+		"43599": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "optionData"
 		},
-		"40911": {
+		"43600": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40912": {
+		"43601": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "context"
 		},
-		"40913": {
+		"43602": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
 		},
-		"40914": {
+		"43603": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
 		},
-		"40915": {
+		"43604": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40916": {
+		"43605": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
 		},
-		"40917": {
+		"43606": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
 		},
-		"40918": {
+		"43607": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40919": {
+		"43608": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
 		},
-		"40920": {
+		"43609": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
 		},
-		"40921": {
+		"43610": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "optionData"
 		},
-		"40922": {
+		"43611": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40923": {
+		"43612": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "context"
 		},
-		"40924": {
+		"43613": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
 		},
-		"40925": {
+		"43614": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
 		},
-		"40926": {
+		"43615": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40927": {
+		"43616": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "items"
 		},
-		"40928": {
+		"43617": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "order"
 		},
-		"40929": {
+		"43618": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"40930": {
+		"43619": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
 		},
-		"40931": {
+		"43620": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
 		},
-		"40932": {
+		"43621": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40933": {
+		"43622": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
 		},
-		"40934": {
+		"43623": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
 		},
-		"40935": {
+		"43624": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40936": {
+		"43625": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
 		},
-		"40937": {
+		"43626": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
 		},
-		"40938": {
+		"43627": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"40939": {
+		"43628": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
 		},
-		"40940": {
+		"43629": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
 		},
-		"40941": {
+		"43630": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40942": {
+		"43631": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
 		},
-		"40943": {
+		"43632": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
 		},
-		"40944": {
+		"43633": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"40945": {
+		"43634": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
 		},
-		"40946": {
+		"43635": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
 		},
-		"40947": {
+		"43636": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillmentData"
 		},
-		"40948": {
+		"43637": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "documentType"
 		}
@@ -2454,7 +2478,7 @@
 			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
 		"reflections": {
-			"1": 40895
+			"1": 43584
 		}
 	}
 }

@@ -212,11 +212,20 @@ You can also navigate to the sender domains form from the [command palette](../c
 5. Click the "Add sender domain" button.
 6. In the form that opens, perform these two steps:
     - **Domain**: Enter the domain you want to add (for example, `yourdomain.com`).
-    - **DNS Records**: Add the provided DNS records to your domain's DNS settings. These records are necessary for verifying domain ownership and setting up email authentication.
+    - **DNS Records**: Add the provided DNS records to your domain's DNS settings. The form shows two categories of records:
+        - **DKIM** (labeled **Required**): DomainKeys Identified Mail records that authenticate your emails. You must add these records to send emails from your domain.
+        - **SPF** (labeled **Optional**): Sender Policy Framework records that help receiving mail servers verify your domain. Adding SPF records improves deliverability but is not required.
+        - **DMARC** (labeled **Optional**): Domain-based Message Authentication records that build on DKIM and SPF to protect against email spoofing. Adding DMARC records is recommended for improved email security but is not required.
         - If you're unsure how to add DNS records, refer to your domain registrar's documentation or support.
 7. Once you're done, click the "I've added the records" button.
 
 The domain will then be added, and the system will periodically check the DNS records to verify it. This process may take a few minutes to several hours, depending on your DNS provider.
+
+### View Domain Verification Status
+
+After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
+
+The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) with an inline status indicator showing whether verification succeeded, failed, or is still in progress.
 
 ![Sender Domains page with the sender domain added](https://res.cloudinary.com/dza7lstvk/image/upload/v1762947495/Cloud/CleanShot_2025-11-12_at_13.36.59_2x_sbaf7y.png)
 

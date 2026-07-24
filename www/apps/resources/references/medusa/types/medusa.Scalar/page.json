@@ -1,0 +1,1 @@
+{"slug":"/references/medusa/types/medusa.Scalar","title":"Scalar","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Scalar","type":"`boolean` \\| `number` \\| `string` \\| `bigint` \\| `symbol` \\| `Date` \\| `RegExp` \\| `Buffer` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

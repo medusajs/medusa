@@ -101,10 +101,39 @@ describe("pgConnectionLoader", () => {
       buildFakeConnection({ realError, rawError: timeoutError() })
     )
 
-    await expect(pgConnectionLoader()).rejects.toMatchObject({
-      code: "ECONNREFUSED",
-      message: "Failed to connect to the database: connect ECONNREFUSED",
+    const error = await pgConnectionLoader().catch((e) => e)
+    expect(error.code).toBe("ECONNREFUSED")
+    expect(error.message).toContain(
+      "Failed to connect to the database: connect ECONNREFUSED"
+    )
+    expect(error.message).toContain(
+      "https://docs.medusajs.com/resources/troubleshooting/database-errors"
+    )
+    expect(mockContainer.register).not.toHaveBeenCalled()
+  })
+
+  it("fails fast on a fatal connection error without retrying", async () => {
+    const realError = Object.assign(
+      new Error(`database "medusa" does not exist`),
+      { code: "3D000" }
+    )
+    const connection = buildFakeConnection({
+      realError,
+      rawError: timeoutError(),
     })
+    mockCreatePgConnection.mockReturnValue(connection)
+
+    const error = await pgConnectionLoader().catch((e) => e)
+    expect(error.code).toBe("3D000")
+    expect(error.message).toContain(
+      `Failed to connect to the database: database "medusa" does not exist`
+    )
+    expect(error.message).toContain(
+      "https://docs.medusajs.com/resources/troubleshooting/database-errors"
+    )
+    // A permanent misconfiguration must not be retried.
+    expect(connection.raw).toHaveBeenCalledTimes(1)
+    expect(mockLogger.warn).not.toHaveBeenCalled()
     expect(mockContainer.register).not.toHaveBeenCalled()
   })
 
@@ -129,9 +158,12 @@ describe("pgConnectionLoader", () => {
     mockCreatePgConnection.mockReturnValue(buildFakeConnection({ rawError }))
 
     await expect(pgConnectionLoader()).rejects.toBe(rawError)
-    // The original error is untouched (no "Failed to connect" prefix).
-    expect(rawError.message).toBe(
+    // No "Failed to connect" prefix, but the troubleshooting link is appended.
+    expect(rawError.message).toContain(
       "Knex: Timeout acquiring a connection. The pool is probably full."
+    )
+    expect(rawError.message).toContain(
+      "https://docs.medusajs.com/resources/troubleshooting/database-errors"
     )
   })
 

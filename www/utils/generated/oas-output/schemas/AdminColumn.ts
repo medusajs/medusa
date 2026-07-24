@@ -167,6 +167,9 @@
  *     type: string
  *     title: label_id
  *     description: The ID of the column's label, if it has a custom label.
+ *   metadata:
+ *     type: object
+ *     description: The column's metadata.
  * 
 */
 

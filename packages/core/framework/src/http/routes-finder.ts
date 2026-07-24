@@ -4,8 +4,8 @@ import { isString } from "@medusajs/utils"
 
 export class RoutesFinder<
   T extends
-    | { matcher: string; methods: MiddlewareVerb | MiddlewareVerb[] }
-    | { matcher: string; method: RouteVerb }
+    | { matcher: string | RegExp; methods: MiddlewareVerb | MiddlewareVerb[] }
+    | { matcher: string | RegExp; method: RouteVerb }
 > {
   /**
    * Cache of existing matches to avoid regex tests on every
@@ -36,6 +36,18 @@ export class RoutesFinder<
    * Register route for lookup
    */
   add(route: T) {
+    /**
+     * A regular expression matcher is used directly for matching, since
+     * path-to-regexp only compiles string paths.
+     */
+    if (route.matcher instanceof RegExp) {
+      this.#routes.push({
+        ...route,
+        matchRegex: route.matcher,
+      })
+      return
+    }
+
     // Doing a replacement for backwards compatibility with the old path-to-regexp with express 4
     let normalizedPath = route.matcher
     if (isString(route.matcher)) {

@@ -7,9 +7,10 @@ import {
   Options,
   SqlEntityManager,
 } from "@medusajs/framework/mikro-orm/postgresql"
-import { createDatabase, dropDatabase } from "pg-god"
 import {
+  createDatabase,
   createPostgresDatabaseTemplate,
+  dropDatabase,
   dropPostgresDatabaseTemplate,
   execOrTimeout,
   formatError,
@@ -22,7 +23,7 @@ const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
 const DB_PORT = process.env.DB_PORT ?? "5432"
 
-const pgGodCredentials = {
+const databaseCredentials = {
   user: DB_USERNAME,
   password: DB_PASSWORD,
   host: DB_HOST,
@@ -218,7 +219,7 @@ export const dbTestUtilFactory = (): any => ({
     try {
       await createDatabase(
         { databaseName: dbName, errorIfExist: false },
-        pgGodCredentials
+        databaseCredentials
       )
     } catch (error) {
       logger.error("Error creating database:", error)
@@ -364,7 +365,7 @@ export const dbTestUtilFactory = (): any => ({
 
       return await dropDatabase(
         { databaseName: dbName, errorIfNonExist: false },
-        pgGodCredentials
+        databaseCredentials
       )
     } catch (error) {
       logger.error("Error during database shutdown:", error)

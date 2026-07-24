@@ -115,7 +115,7 @@ export type UpdateTaxLinesWorkflowInput = {
 export const updateTaxLinesWorkflowId = "update-tax-lines"
 /**
  * This workflow updates a cart's tax lines that are applied on line items and shipping methods. You can update the line item's quantity, unit price, and more. This workflow is executed
- * by the [Calculate Taxes Store API Route](https://docs.medusajs.com/api/store#carts_postcartsidtaxes).
+ * by the [Calculate Taxes Store API Route](https://docs.medusajs.com/api/store/carts/calculate-taxes).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to update a cart's tax lines in your custom flows.
  *

@@ -34,7 +34,6 @@ export type InteractiveSidebarItemTypes =
 export type SidebarItemLink = SidebarItemCommon & {
   type: "link" | "ref" | "external"
   path: string
-  isPathHref?: boolean
   linkProps?: React.AllHTMLAttributes<HTMLAnchorElement>
   childrenSameLevel?: boolean
 }
@@ -49,6 +48,8 @@ export type SidebarItemCategory = SidebarItemCommon & {
   onOpen?: () => void
   initialOpen?: boolean
   showLoadingIfEmpty?: boolean
+  // when set, the category title links to this path (while still toggling children)
+  path?: string
 }
 
 export type SidebarItemSubCategory = SidebarItemCommon & {

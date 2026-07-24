@@ -7,7 +7,7 @@ export const batchLinkProductsToCollectionWorkflowId =
 
 /**
  * This workflow manages the links between a collection and products. It's used by the
- * [Manage Products of Collection Admin API Route](https://docs.medusajs.com/api/admin#collections_postcollectionsidproducts).
+ * [Manage Products of Collection Admin API Route](https://docs.medusajs.com/api/admin/collections/manage-products).
  *
  * You can use this workflow within your own customizations or custom workflows to manage the products in a collection.
  *

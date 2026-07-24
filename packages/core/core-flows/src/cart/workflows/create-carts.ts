@@ -112,7 +112,7 @@ export const prepareCartToCreateStep = createStep(
 export const createCartWorkflowId = "create-cart"
 /**
  * This workflow creates and returns a cart. You can set the cart's items, region, customer, and other details. This workflow is executed by the
- * [Create Cart Store API Route](https://docs.medusajs.com/api/store#carts_postcarts).
+ * [Create Cart Store API Route](https://docs.medusajs.com/api/store/carts/create-cart).
  *
  * This workflow has a hook that allows you to perform custom actions on the created cart. You can see an example in [this guide](https://docs.medusajs.com/resources/commerce-modules/cart/extend#step-4-consume-cartcreated-workflow-hook).
  *

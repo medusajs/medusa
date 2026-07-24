@@ -20,7 +20,6 @@ export default async function getCoreFlowsRefSidebarChildren(): Promise<
       title: "Overview",
       path: "/medusa-workflows-reference",
       loaded: true,
-      isPathHref: true,
     },
     {
       type: "separator",

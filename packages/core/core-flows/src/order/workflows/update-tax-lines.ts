@@ -298,6 +298,7 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       item_tax_lines: translatedTaxLines.itemTaxLines as ItemTaxLineDTO[],
       shipping_tax_lines:
         translatedTaxLines.shippingTaxLines as ShippingTaxLineDTO[],
+      is_full_replacement: isFullOrder,
     })
 
     return new WorkflowResponse(

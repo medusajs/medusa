@@ -1232,6 +1232,34 @@
  *             type: string
  *             title: external_id
  *             description: The external ID.
+ *   - name: option_value_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_value_id
+ *           description: Filter by a product option value ID to retrieve products that have variants with that option value.
+ *         - type: array
+ *           description: Filter by product option value IDs to retrieve products that have variants with those option values.
+ *           items:
+ *             type: string
+ *             title: option_value_id
+ *             description: The product option value ID.
+ *   - name: option_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: option_id
+ *           description: Filter by a product option ID to retrieve products that have variants with that option.
+ *         - type: array
+ *           description: Filter by product option IDs to retrieve products that have variants with those options.
+ *           items:
+ *             type: string
+ *             title: option_id
+ *             description: The product option ID.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

@@ -62,7 +62,7 @@ export const createPaymentCollectionForCartWorkflowId =
   "create-payment-collection-for-cart"
 /**
  * This workflow creates a payment collection for a cart. It's executed by the
- * [Create Payment Collection Store API Route](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollections).
+ * [Create Payment Collection Store API Route](https://docs.medusajs.com/api/store/payment-collections/create-payment-collection).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to wrap custom logic around adding creating a payment collection for a cart.
  *

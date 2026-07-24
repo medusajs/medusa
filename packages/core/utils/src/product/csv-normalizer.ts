@@ -346,7 +346,12 @@ const variantWildcardColumns: {
  */
 const optionColumns: {
   [columnName: string]: ColumnProcessor<{
-    options: { key: any; value: any }[]
+    options: {
+      key: any
+      value: any
+      id?: string
+      is_exclusive?: boolean
+    }[]
   }>
 } = {
   "variant option": (csvRow, rowColumns, rowNumber, output) => {
@@ -359,15 +364,30 @@ const optionColumns: {
       const [, , counter] = columnName.split(" ")
       const key = csvRow[columnName]
       const value = csvRow[`variant option ${counter} value`]
+      const id = csvRow[`variant option ${counter} id`]
+      const isExclusiveRaw = csvRow[`variant option ${counter} is exclusive`]
 
       if (!isPresent(value)) {
         throw createError(rowNumber, `Missing option value for "${columnName}"`)
       }
 
-      return {
-        key,
-        value,
+      const entry: {
+        key: any
+        value: any
+        id?: string
+        is_exclusive?: boolean
+      } = { key, value }
+
+      if (isPresent(id)) {
+        entry.id = String(id)
       }
+      if (isPresent(isExclusiveRaw)) {
+        const parsed = tryConvertToBoolean(isExclusiveRaw)
+        if (parsed !== undefined) {
+          entry.is_exclusive = parsed
+        }
+      }
+      return entry
     })
   },
 }
@@ -522,7 +542,14 @@ export class CSVNormalizer {
     /**
      * Process variant options as a standalone array
      */
-    const options: { options: { key: any; value: any }[] } = { options: [] }
+    const options: {
+      options: {
+        key: any
+        value: any
+        id?: string
+        is_exclusive?: boolean
+      }[]
+    } = { options: [] }
     Object.keys(optionColumns).forEach((column) => {
       optionColumns[column](row, rowColumns, rowNumber, options)
     })
@@ -530,7 +557,7 @@ export class CSVNormalizer {
     /**
      * Specify options on both the variant and the product
      */
-    options.options.forEach(({ key, value }) => {
+    options.options.forEach(({ key, value, id, is_exclusive }) => {
       variant.options = variant.options ?? {}
       variant.options[key] = value
 
@@ -539,9 +566,29 @@ export class CSVNormalizer {
         (option: any) => option.title === key
       )
       if (!matchingKey) {
-        product.options.push({ title: key, values: [value] })
-      } else if (!matchingKey.values.includes(value)) {
-        matchingKey.values.push(value)
+        const newOption: any = { title: key, values: [value] }
+        if (id !== undefined) {
+          newOption.id = id
+        }
+        if (is_exclusive !== undefined) {
+          newOption.is_exclusive = is_exclusive
+        }
+        product.options.push(newOption)
+      } else {
+        if (!matchingKey.values.includes(value)) {
+          matchingKey.values.push(value)
+        }
+        // First-seen meta wins so subsequent rows with empty Id/Is Exclusive
+        // columns don't clobber an earlier row that had them set.
+        if (matchingKey.id === undefined && id !== undefined) {
+          matchingKey.id = id
+        }
+        if (
+          matchingKey.is_exclusive === undefined &&
+          is_exclusive !== undefined
+        ) {
+          matchingKey.is_exclusive = is_exclusive
+        }
       }
     })
 

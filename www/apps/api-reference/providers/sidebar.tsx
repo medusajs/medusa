@@ -43,8 +43,8 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     <UiSidebarProvider
       isLoading={isLoading}
       setIsLoading={setIsLoading}
-      shouldHandleHashChange={true}
-      shouldHandlePathChange={false}
+      shouldHandleHashChange={false}
+      shouldHandlePathChange={true}
       scrollableElement={scrollableElement}
       sidebars={sidebar ? [sidebar] : config.sidebars}
       persistCategoryState={false}

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.17.2",
+  "version": "2.18.0",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -49,9 +49,9 @@
     "@mikro-orm/postgresql": "6.6.14",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/instrumentation-pg": "^0.52.0",
-    "@opentelemetry/resources": "^2.0.0",
-    "@opentelemetry/sdk-node": "^0.218.0",
-    "@opentelemetry/sdk-trace-node": "^2.0.0",
+    "@opentelemetry/resources": "^2.7.0",
+    "@opentelemetry/sdk-node": "^0.220.0",
+    "@opentelemetry/sdk-trace-node": "^2.7.0",
     "awilix": "^8.0.1",
     "pg": "^8.16.3",
     "zod": "4.2.0"

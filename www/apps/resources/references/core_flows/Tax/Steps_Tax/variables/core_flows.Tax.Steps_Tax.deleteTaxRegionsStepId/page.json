@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Tax/Steps_Tax/variables/core_flows.Tax.Steps_Tax.deleteTaxRegionsStepId","title":"deleteTaxRegionsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"deleteTaxRegionsStepId","type":"`\"delete-tax-regions\"`","description":"","optional":false,"defaultValue":"\"delete-tax-regions\"","expandable":false,"children":[]}]}]}

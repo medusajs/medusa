@@ -32,7 +32,7 @@ export type UpdateCustomerGroupsWorkflowOutput = CustomerGroupDTO[]
 export const updateCustomerGroupsWorkflowId = "update-customer-groups"
 /**
  * This workflow updates one or more customer groups. It's used by the
- * [Update Customer Group Admin API Route](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsid).
+ * [Update Customer Group Admin API Route](https://docs.medusajs.com/api/admin/customer-groups/update-a-customer-group).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update customer groups within your custom flows.

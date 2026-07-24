@@ -8,6 +8,7 @@ export type {
   DataTableAction,
   DataTableCellContext,
   DataTableColumn,
+  DataTableColumnAlignment,
   DataTableColumnDef,
   DataTableColumnFilter,
   DataTableCommand,

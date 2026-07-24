@@ -98,7 +98,7 @@ export const createOrderEditShippingMethodWorkflowId =
   "create-order-edit-shipping-method"
 /**
  * This workflow creates a shipping method for an order edit. It's used by the
- * [Add Shipping Method API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsidshippingmethod).
+ * [Add Shipping Method API Route](https://docs.medusajs.com/api/admin/order-edits/add-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to create a shipping method
  * for an order edit in your in your own custom flows.

@@ -16,7 +16,7 @@ import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-pro
 export const updateRegionsWorkflowId = "update-regions"
 /**
  * This workflow updates regions matching the specified filters. It's used by the
- * [Update Region Admin API Route](https://docs.medusajs.com/api/admin#regions_postregionsid).
+ * [Update Region Admin API Route](https://docs.medusajs.com/api/admin/regions/update-a-region).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update regions in your custom flows.
@@ -45,7 +45,7 @@ export const updateRegionsWorkflow = createWorkflow(
   ): WorkflowResponse<WorkflowTypes.RegionWorkflow.UpdateRegionsWorkflowOutput> => {
     const normalizedInput = transform(input, (data) => {
       const { selector, update } = data
-      const { payment_providers = [], is_tax_inclusive, ...rest } = update
+      const { payment_providers, is_tax_inclusive, ...rest } = update
       return {
         selector,
         update: rest,
