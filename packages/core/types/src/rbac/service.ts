@@ -4,20 +4,24 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   FilterableRbacPolicyProps,
+  FilterableRbacRoleAssignmentProps,
   FilterableRbacRoleParentProps,
   FilterableRbacRolePolicyProps,
   FilterableRbacRoleProps,
   RbacPolicyDTO,
+  RbacRoleAssignmentDTO,
   RbacRoleDTO,
   RbacRoleParentDTO,
   RbacRolePolicyDTO,
 } from "./common"
 import {
   CreateRbacPolicyDTO,
+  CreateRbacRoleAssignmentDTO,
   CreateRbacRoleDTO,
   CreateRbacRoleParentDTO,
   CreateRbacRolePolicyDTO,
   UpdateRbacPolicyDTO,
+  UpdateRbacRoleAssignmentDTO,
   UpdateRbacRoleDTO,
   UpdateRbacRoleParentDTO,
   UpdateRbacRolePolicyDTO,
@@ -188,6 +192,47 @@ export interface IRbacModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[RbacRoleParentDTO[], number]>
 
+  createRbacRoleAssignments(
+    data: CreateRbacRoleAssignmentDTO,
+    sharedContext?: Context
+  ): Promise<RbacRoleAssignmentDTO>
+  createRbacRoleAssignments(
+    data: CreateRbacRoleAssignmentDTO[],
+    sharedContext?: Context
+  ): Promise<RbacRoleAssignmentDTO[]>
+
+  updateRbacRoleAssignments(
+    data: UpdateRbacRoleAssignmentDTO,
+    sharedContext?: Context
+  ): Promise<RbacRoleAssignmentDTO>
+  updateRbacRoleAssignments(
+    data: UpdateRbacRoleAssignmentDTO[],
+    sharedContext?: Context
+  ): Promise<RbacRoleAssignmentDTO[]>
+
+  deleteRbacRoleAssignments(
+    ids: string | string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  retrieveRbacRoleAssignment(
+    id: string,
+    config?: FindConfig<RbacRoleAssignmentDTO>,
+    sharedContext?: Context
+  ): Promise<RbacRoleAssignmentDTO>
+
+  listRbacRoleAssignments(
+    filters?: FilterableRbacRoleAssignmentProps,
+    config?: FindConfig<RbacRoleAssignmentDTO>,
+    sharedContext?: Context
+  ): Promise<RbacRoleAssignmentDTO[]>
+
+  listAndCountRbacRoleAssignments(
+    filters?: FilterableRbacRoleAssignmentProps,
+    config?: FindConfig<RbacRoleAssignmentDTO>,
+    sharedContext?: Context
+  ): Promise<[RbacRoleAssignmentDTO[], number]>
+
   listPoliciesForRole(
     roleId: string,
     sharedContext?: Context
@@ -230,6 +275,18 @@ export interface IRbacModuleService extends IModuleService {
   ): Promise<Record<string, string[]> | void>
   restoreRbacRoleParents<TReturnableLinkableKeys extends string = string>(
     roleParentIds: string | string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+  softDeleteRbacRoleAssignments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    roleAssignmentIds: string | string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+  restoreRbacRoleAssignments<TReturnableLinkableKeys extends string = string>(
+    roleAssignmentIds: string | string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>

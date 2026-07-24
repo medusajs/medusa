@@ -58,3 +58,19 @@ export type FilterableRbacRoleParentProps = {
   role_id?: string | string[]
   parent_id?: string | string[]
 }
+
+export type RbacRoleAssignmentDTO = {
+  id: string
+  role_id: string
+  reference: string
+  reference_id: string
+  metadata?: Record<string, unknown> | null
+  deleted_at?: Date | string | null
+}
+
+export type FilterableRbacRoleAssignmentProps = {
+  id?: string | string[]
+  role_id?: string | string[]
+  reference?: string | string[]
+  reference_id?: string | string[]
+}

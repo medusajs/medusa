@@ -21,7 +21,13 @@ import {
   RbacRoleParentDTO,
   UpdateRbacRoleParentDTO,
 } from "@medusajs/types"
-import { RbacPolicy, RbacRole, RbacRoleParent, RbacRolePolicy } from "@models"
+import {
+  RbacPolicy,
+  RbacRole,
+  RbacRoleAssignment,
+  RbacRoleParent,
+  RbacRolePolicy,
+} from "@models"
 import { RbacRepository } from "../repositories"
 
 type InjectedDependencies = {
@@ -45,6 +51,7 @@ export default class RbacModuleService
     RbacPolicy,
     RbacRoleParent,
     RbacRolePolicy,
+    RbacRoleAssignment,
   })
   implements IRbacModuleService
 {

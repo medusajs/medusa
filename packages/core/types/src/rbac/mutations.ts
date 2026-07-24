@@ -40,3 +40,15 @@ export type CreateRbacRoleParentDTO = {
 export type UpdateRbacRoleParentDTO = Partial<CreateRbacRoleParentDTO> & {
   id: string
 }
+
+export type CreateRbacRoleAssignmentDTO = {
+  role_id: string
+  reference: string
+  reference_id: string
+  metadata?: Record<string, unknown> | null
+}
+
+export type UpdateRbacRoleAssignmentDTO =
+  Partial<CreateRbacRoleAssignmentDTO> & {
+    id: string
+  }
