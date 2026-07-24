@@ -109,6 +109,12 @@ export const updateOrderWorkflowId = "update-order-workflow"
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update an
  * order's details in your custom flows.
  *
+ * Updating the order's shipping or billing address doesn't recompute the order's tax lines or totals; the
+ * existing tax lines are preserved as-is. You also can't change the address's `country_code`, as the workflow
+ * throws an error in that case. Other address fields, such as `city`, `province`, or `postal_code`, can be
+ * changed, but they don't trigger a tax recomputation. If you need updated taxes after changing an address,
+ * recompute the tax lines separately, such as with the `updateOrderTaxLinesWorkflow`.
+ *
  * @example
  * const { result } = await updateOrderWorkflow(container)
  * .run({

@@ -27,12 +27,12 @@
  *     type: string
  *     title: resource
  *     description: The resource that the policy applies to.
- *     example: "product"
+ *     example: product
  *   operation:
  *     type: string
  *     title: operation
  *     description: The operation that the policy allows or denies.
- *     example: "create"
+ *     example: create
  *   name:
  *     type: string
  *     title: name

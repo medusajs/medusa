@@ -30,7 +30,8 @@
 			"provider_id": "The ID of the provider used to calculate the tax line.",
 			"metadata": "Holds custom data in key-value pairs.",
 			"tax_rate_id": "The ID of the applied tax rate.",
-			"item": "The associated line item.\n\n@expandable"
+			"item": "The associated line item.\n\n@expandable",
+			"data": "The data of the line item tax line\n\n@since 2.17.3"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -127,7 +128,8 @@
 			"provider_id": "The ID of the provider used to calculate the tax lines.",
 			"tax_rate_id": "The ID of the applied tax rate.",
 			"metadata": "Holds custom data in key-value pairs.",
-			"shipping_method": "The associated shipping_method.\n\n@expandable"
+			"shipping_method": "The associated shipping_method.\n\n@expandable",
+			"data": "The data of the shipping method tax line\n\n@since 2.17.3"
 		},
 		"deprecated": {
 			"is_deprecated": false

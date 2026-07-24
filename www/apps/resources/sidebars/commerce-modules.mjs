@@ -13,6 +13,7 @@ import { productSidebar } from "./product.mjs"
 import { promotionSidebar } from "./promotion.mjs"
 import { regionSidebar } from "./region.mjs"
 import { salesChannelSidebar } from "./sales-channel.mjs"
+import { settingsSidebar } from "./settings.mjs"
 import { stockLocationSidebar } from "./stock-location.mjs"
 import { storeSidebar } from "./store.mjs"
 import { storeCreditSidebar } from "./store-credit.mjs"
@@ -45,6 +46,7 @@ export const commerceModulesSidebar = [
   ...promotionSidebar,
   ...regionSidebar,
   ...salesChannelSidebar,
+  ...settingsSidebar,
   ...stockLocationSidebar,
   ...storeSidebar,
   ...storeCreditSidebar,

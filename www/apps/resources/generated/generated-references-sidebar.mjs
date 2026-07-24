@@ -3378,6 +3378,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "loaded": true,
                   "isPathHref": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/transferOrderToGuestWorkflow",
+                  "title": "transferOrderToGuestWorkflow",
+                  "description": "Transfer an order to a guest customer.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/updateClaimAddItemWorkflow",
                   "title": "updateClaimAddItemWorkflow",
                   "description": "Update a claim's new or outbound item.",
@@ -4450,6 +4459,15 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/throwUnlessStatusIsNotPaid",
                   "title": "throwUnlessStatusIsNotPaid",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/transferOrderToGuestValidationStep",
+                  "title": "transferOrderToGuestValidationStep",
                   "description": "",
                   "children": []
                 },
@@ -6575,7 +6593,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/clearLayoutConfigurationWorkflow",
                   "title": "clearLayoutConfigurationWorkflow",
-                  "description": "",
+                  "description": "Clear a user's layout configuration for a zone.",
                   "children": []
                 },
                 {
@@ -6593,7 +6611,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/createViewConfigurationWorkflow",
                   "title": "createViewConfigurationWorkflow",
-                  "description": "",
+                  "description": "Create a view configuration.",
                   "children": []
                 },
                 {
@@ -6611,7 +6629,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/setLayoutConfigurationWorkflow",
                   "title": "setLayoutConfigurationWorkflow",
-                  "description": "",
+                  "description": "Set a layout configuration for a zone.",
                   "children": []
                 },
                 {
@@ -6629,7 +6647,7 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/updateViewConfigurationWorkflow",
                   "title": "updateViewConfigurationWorkflow",
-                  "description": "",
+                  "description": "Update a view configuration.",
                   "children": []
                 }
               ]
