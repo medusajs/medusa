@@ -1407,7 +1407,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         schema: {
           type: "string",
           externalDocs: {
-            url: "https://docs.medusajs.com/api/store#publishable-api-key",
+            url: "https://docs.medusajs.com/api/store/publishable-api-key",
           },
         },
       }),
