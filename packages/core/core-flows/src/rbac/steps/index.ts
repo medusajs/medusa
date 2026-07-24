@@ -1,4 +1,6 @@
 export * from "./create-rbac-policies"
+export * from "./create-role-assignments"
+export * from "./delete-role-assignments"
 export * from "./create-rbac-role-parents"
 export * from "./create-rbac-role-policies"
 export * from "./create-rbac-roles"
