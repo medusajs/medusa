@@ -30,7 +30,7 @@ export type BatchTranslationsWorkflowInput = {
 }
 /**
  * This workflow creates, updates, and deletes translations. It's used by the
- * [Manage Translations Admin API Route](https://docs.medusajs.com/api/admin#translations_posttranslationsbatch).
+ * [Manage Translations Admin API Route](https://docs.medusajs.com/api/admin/translations/manage-translations).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create, update, and delete translations in your custom flows.

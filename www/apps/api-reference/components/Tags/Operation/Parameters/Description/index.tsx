@@ -5,6 +5,8 @@ import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { Fragment } from "react"
 import { Link, type InlineCodeProps, capitalize } from "docs-ui"
+import { useArea } from "@/providers/area"
+import { resolveApiRefDocUrl } from "@/utils/resolve-doc-url"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => (await import("docs-ui")).InlineCode
@@ -17,6 +19,7 @@ export type TagOperationParametersDescriptionProps = {
 const TagOperationParametersDescription = ({
   schema,
 }: TagOperationParametersDescriptionProps) => {
+  const { area } = useArea()
   return (
     <div className={clsx("pb-0.5 flex flex-col gap-0.25")}>
       {schema.default !== undefined && (
@@ -61,7 +64,7 @@ const TagOperationParametersDescription = ({
         <span data-testid="related-guide">
           Related guide:{" "}
           <Link
-            href={schema.externalDocs.url}
+            href={resolveApiRefDocUrl(schema.externalDocs.url, area)}
             target="_blank"
             variant="content"
           >

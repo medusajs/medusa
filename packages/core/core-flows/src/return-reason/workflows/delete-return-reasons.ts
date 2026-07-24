@@ -16,7 +16,7 @@ export type DeleteReturnReasonsWorkflowInput = {
 export const deleteReturnReasonsWorkflowId = "delete-return-reasons"
 /**
  * This workflow deletes one or more return reasons. It's used by the
- * [Delete Return Reasons Admin API Route](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreasonsid).
+ * [Delete Return Reasons Admin API Route](https://docs.medusajs.com/api/admin/return-reasons/delete-a-return-reason).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete return reasons within your custom flows.

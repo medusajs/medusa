@@ -122,7 +122,7 @@ export const prepareCartToUpdateStep = createStep(
 export const updateCartWorkflowId = "update-cart"
 /**
  * This workflow updates a cart and returns it. You can update the cart's region, address, and more. This workflow is executed by the
- * [Update Cart Store API Route](https://docs.medusajs.com/api/store#carts_postcartsid).
+ * [Update Cart Store API Route](https://docs.medusajs.com/api/store/carts/update-a-cart).
  *
  * :::note
  *

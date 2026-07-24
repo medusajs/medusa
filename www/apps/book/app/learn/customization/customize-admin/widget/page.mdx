@@ -146,7 +146,7 @@ A widget's file must export:
 
 Since the widget is injected at the top of the product details page, the widget receives the product's details as a parameter.
 
-In the widget, you use [Tanstack (React) Query](https://tanstack.com/query/latest) to query the Medusa server. Tanstack Query provides features like asynchronous state management and optimized caching. In the `queryFn` function that executes the query, you use the JS SDK to send a request to the [Get Product API Route](!api!/admin#products_getproductsid), passing `+brand.*` in the `fields` query parameter to retrieve the product's brand.
+In the widget, you use [Tanstack (React) Query](https://tanstack.com/query/latest) to query the Medusa server. Tanstack Query provides features like asynchronous state management and optimized caching. In the `queryFn` function that executes the query, you use the JS SDK to send a request to the [Get Product API Route](!api!/admin/products/get-a-product), passing `+brand.*` in the `fields` query parameter to retrieve the product's brand.
 
 <Note type="warning">
 

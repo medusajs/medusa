@@ -32,7 +32,7 @@ export interface UpdateStockLocationsWorkflowInput {
 export const updateStockLocationsWorkflowId = "update-stock-locations-workflow"
 /**
  * This workflow updates stock locations matching the specified filters. It's used by the
- * [Update Stock Location Admin API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocationsid).
+ * [Update Stock Location Admin API Route](https://docs.medusajs.com/api/admin/stock-locations/update-a-stock-location).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update stock locations in your custom flows.

@@ -78,7 +78,7 @@ export const createAndLinkProductOptionsToProductWorkflowId =
   "create-and-link-product-options-to-product"
 /**
  * This workflow manages one or more product options of a product. It's used by the
- * [Batch Product Product Options](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch).
+ * [Batch Product Product Options](https://docs.medusajs.com/api/admin/products/add-options-to-product).
  * This workflow also creates non-existing product options before adding them to the product.
  *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you

@@ -24,7 +24,7 @@ export type DeleteProductTypesWorkflowInput = {
 export const deleteProductTypesWorkflowId = "delete-product-types"
 /**
  * This workflow deletes one or more product types. It's used by the
- * [Delete Product Types Admin API Route](https://docs.medusajs.com/api/admin#product-types_deleteproducttypesid).
+ * [Delete Product Types Admin API Route](https://docs.medusajs.com/api/admin/product-types/delete-a-product-type).
  *
  * This workflow has a hook that allows you to perform custom actions after the product types are deleted. For example,
  * you can delete custom records linked to the product types.
