@@ -58,7 +58,7 @@ post:
       source:
         $ref: ../code_samples/Shell/auth_verification_request/post.sh
   tags:
-    - Verification
+    - Auth
   responses:
     '201':
       description: OK

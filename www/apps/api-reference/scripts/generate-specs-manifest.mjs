@@ -63,50 +63,59 @@ export async function generateSpecsPathsManifest() {
     let files = []
     try {
       const allFiles = await fs.readdir(pathsDir)
-      files = allFiles.filter((f) => f.endsWith(".yaml"))
+      // Sort the file list so the generated output is deterministic
+      // regardless of the OS/filesystem order that `readdir` returns.
+      files = allFiles.filter((f) => f.endsWith(".yaml")).sort()
     } catch {
       // paths dir doesn't exist yet
     }
     tagIndex[area] = {}
     operationsByTag[area] = {}
 
-    await Promise.all(
+    // Read and parse all files in parallel, but keep the results in the
+    // sorted `files` order (`Promise.all` preserves input order) so the
+    // arrays built below don't depend on I/O resolution timing.
+    const parsedFiles = await Promise.all(
       files.map(async (file) => {
         const filePath = path.join(pathsDir, file)
         try {
           const content = await fs.readFile(filePath, "utf-8")
-          const parsed = parseYaml(content)
-          for (const method of HTTP_METHODS) {
-            const operation = parsed?.[method]
-            if (!operation?.tags) {
-              continue
-            }
-            for (const tag of operation.tags) {
-              const sectionId = getSectionId([tag])
-              if (!tagIndex[area][sectionId]) {
-                tagIndex[area][sectionId] = []
-              }
-              if (!tagIndex[area][sectionId].includes(file)) {
-                tagIndex[area][sectionId].push(file)
-              }
-              if (!operationsByTag[area][tag]) {
-                operationsByTag[area][tag] = []
-              }
-              if (operation.operationId) {
-                operationsByTag[area][tag].push({
-                  operationId: operation.operationId,
-                  method,
-                  summary: operation.summary,
-                  "x-sidebar-summary": operation["x-sidebar-summary"],
-                })
-              }
-            }
-          }
+          return { file, parsed: parseYaml(content) }
         } catch {
           // skip unreadable files
+          return { file, parsed: null }
         }
       })
     )
+
+    for (const { file, parsed } of parsedFiles) {
+      for (const method of HTTP_METHODS) {
+        const operation = parsed?.[method]
+        if (!operation?.tags) {
+          continue
+        }
+        for (const tag of operation.tags) {
+          const sectionId = getSectionId([tag])
+          if (!tagIndex[area][sectionId]) {
+            tagIndex[area][sectionId] = []
+          }
+          if (!tagIndex[area][sectionId].includes(file)) {
+            tagIndex[area][sectionId].push(file)
+          }
+          if (!operationsByTag[area][tag]) {
+            operationsByTag[area][tag] = []
+          }
+          if (operation.operationId) {
+            operationsByTag[area][tag].push({
+              operationId: operation.operationId,
+              method,
+              summary: operation.summary,
+              "x-sidebar-summary": operation["x-sidebar-summary"],
+            })
+          }
+        }
+      }
+    }
   }
 
   // Read ordered tags (with x-associatedSchema) from each area's base spec.

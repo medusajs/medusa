@@ -7563,7 +7563,7 @@ export const generatedEditDates = {
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateRbacRole/page.mdx": "2026-06-01T09:05:14.493Z",
   "app/commerce-modules/auth/mfa/page.mdx": "2026-06-09T08:32:15.517Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-06-05T10:33:10.552Z",
-  "app/storefront-development/customers/verify-account/page.mdx": "2026-06-02T11:24:01.444Z",
+  "app/storefront-development/customers/verify-account/page.mdx": "2026-07-24T12:45:09.279Z",
   "references/events/Auth/variables/events.Auth.AuthEvents/page.mdx": "2026-06-03T06:24:01.642Z",
   "app/commerce-modules/product/guides/filter-products/page.mdx": "2026-06-04T06:31:12.858Z",
   "references/auth/IAuthModuleService/methods/auth.IAuthModuleService.consumePasswordResetToken/page.mdx": "2026-06-18T12:15:32.605Z",
