@@ -101,7 +101,7 @@ const TagOperationParamatersOneOf = ({
         </div>
 
         <TagOperationParameters
-          schemaObject={schema.oneOf![activeTab]}
+          schemaObject={schema.oneOf![activeTab] ?? schema.oneOf![0]}
           topLevel={true}
         />
       </>
