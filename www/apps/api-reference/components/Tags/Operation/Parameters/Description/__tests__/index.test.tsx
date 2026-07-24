@@ -30,6 +30,12 @@ vi.mock("@/components/MDXContent/Client", () => ({
     <div data-testid="mdx-content">{content}</div>
   ),
 }))
+vi.mock("@/providers/area", () => ({
+  useArea: () => ({ area: "store" }),
+}))
+vi.mock("@/utils/resolve-doc-url", () => ({
+  resolveApiRefDocUrl: (url: string) => url,
+}))
 
 import TagOperationParametersDescription from ".."
 

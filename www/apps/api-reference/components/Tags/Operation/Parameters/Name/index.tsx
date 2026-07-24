@@ -2,6 +2,7 @@ import React from "react"
 import type { OpenAPI } from "types"
 import { Badge, ExpandableNotice, FeatureFlagNotice } from "docs-ui"
 import { Fragment } from "react"
+import { useArea } from "@/providers/area"
 
 export type TagOperationParametersNameProps = {
   name: string
@@ -14,6 +15,7 @@ const TagOperationParametersName = ({
   isRequired,
   schema,
 }: TagOperationParametersNameProps) => {
+  const { area } = useArea()
   let typeDescription: React.ReactNode = <></>
   switch (true) {
     case schema.type === "object":
@@ -84,7 +86,10 @@ const TagOperationParametersName = ({
         </Badge>
       )}
       {schema["x-expandable"] && (
-        <ExpandableNotice type="request" link="#expanding-relations" />
+        <ExpandableNotice
+          type="request"
+          link={`/${area}/select-fields-and-relations`}
+        />
       )}
       {schema["x-featureFlag"] && (
         <FeatureFlagNotice featureFlag={schema["x-featureFlag"]} type="type" />

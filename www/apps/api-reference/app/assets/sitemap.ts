@@ -1,28 +1,28 @@
 import { MetadataRoute } from "next"
 import getUrl from "../../utils/get-url"
-import { config } from "../../config"
-import { specsSitemapData } from "@/generated/specs-sitemap-data.mjs"
+import { apiRefIntroSections, apiRefPaths } from "@/utils/api-ref-paths"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = config.baseUrl
-
-  const results: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}/api/admin`, lastModified: new Date() },
-    { url: `${baseUrl}/api/store`, lastModified: new Date() },
-  ]
+  const results: MetadataRoute.Sitemap = []
 
   for (const area of ["store", "admin"] as const) {
-    const tags = specsSitemapData[area] ?? []
-    for (const { tagSectionId, operationSectionIds } of tags) {
+    results.push({ url: getUrl(`/${area}`), lastModified: new Date() })
+
+    for (const section of apiRefIntroSections[area] ?? []) {
       results.push({
-        url: getUrl(area, tagSectionId),
+        url: getUrl(`/${area}/${section.slug}`),
         lastModified: new Date(),
       })
-      for (const opSectionId of operationSectionIds) {
-        results.push({
-          url: getUrl(area, opSectionId),
-          lastModified: new Date(),
-        })
+    }
+
+    const tags = apiRefPaths[area]?.tags ?? {}
+    for (const tag of Object.values(tags)) {
+      results.push({ url: getUrl(tag.path), lastModified: new Date() })
+      if (tag.schemaPath) {
+        results.push({ url: getUrl(tag.schemaPath), lastModified: new Date() })
+      }
+      for (const operation of Object.values(tag.operations)) {
+        results.push({ url: getUrl(operation.path), lastModified: new Date() })
       }
     }
   }

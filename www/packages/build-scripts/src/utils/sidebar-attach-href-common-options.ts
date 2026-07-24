@@ -2,7 +2,6 @@ import { Sidebar } from "types"
 
 const commonOptions: Partial<Sidebar.RawSidebarItem> = {
   loaded: true,
-  isPathHref: true,
 }
 
 export function sidebarAttachCommonOptions(

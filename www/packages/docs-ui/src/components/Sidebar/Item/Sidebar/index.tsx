@@ -33,9 +33,7 @@ export const SidebarItemSidebar = ({
     <li>
       <span className="block px-docs_0.75">
         <Link
-          href={
-            firstChild?.isPathHref ? firstChild.path : `#${firstChild?.path}`
-          }
+          href={firstChild?.path ?? "#"}
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
             "block w-full rounded-docs_sm",
