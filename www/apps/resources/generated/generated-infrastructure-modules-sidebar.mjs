@@ -4,7 +4,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
   "items": [
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "link",
       "path": "/infrastructure-modules",
       "title": "Overview",
@@ -15,14 +14,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Analytics Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/analytics",
           "title": "Overview",
@@ -30,13 +27,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Modules",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/analytics/local",
               "title": "Local",
@@ -44,7 +39,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/analytics/posthog",
               "title": "PostHog",
@@ -52,7 +46,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "path": "/integrations/guides/segment",
               "title": "Segment",
@@ -62,13 +55,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/analytics/provider",
               "title": "Create Analytics Module Provider",
@@ -76,7 +67,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/analytics/service",
               "title": "Use Analytics Module",
@@ -88,14 +78,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Caching Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/caching",
           "title": "Overview",
@@ -103,7 +91,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/caching/concepts",
           "title": "Concepts",
@@ -111,7 +98,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/caching/migrate-cache",
           "title": "Migrate from Cache Module",
@@ -119,14 +105,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "title": "Providers",
           "path": "/infrastructure-modules/caching/providers",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/caching/providers/redis",
               "title": "Redis",
@@ -134,7 +118,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/caching/guides/memcached",
               "title": "Memcached",
@@ -144,13 +127,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/caching/guides/clear-cache",
               "title": "Clear Cache",
@@ -158,7 +139,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/caching-module-provider",
               "title": "Create Caching Module Provider",
@@ -166,7 +146,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/caching-service",
               "title": "Use Caching Module",
@@ -178,7 +157,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Cache Module",
       "initialOpen": false,
@@ -189,7 +167,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/cache",
           "title": "Overview",
@@ -197,13 +174,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Modules",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/cache/in-memory",
               "title": "In-Memory",
@@ -211,7 +186,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/cache/redis",
               "title": "Redis",
@@ -221,13 +195,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/cache/create",
               "title": "Create Cache Module",
@@ -235,7 +207,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/cache-service",
               "title": "Use Cache Module",
@@ -247,14 +218,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Event Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/event",
           "title": "Overview",
@@ -262,13 +231,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Modules",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/event/local",
               "title": "Local",
@@ -276,7 +243,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/event/redis",
               "title": "Redis",
@@ -286,13 +252,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/event/create",
               "title": "Create Event Module",
@@ -300,7 +264,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/event-service",
               "title": "Use Event Module",
@@ -312,14 +275,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "File Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/file",
           "title": "Overview",
@@ -327,13 +288,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Providers",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/file/local",
               "title": "Local",
@@ -341,7 +300,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/file/s3",
               "title": "AWS S3 (and Compatible APIs)",
@@ -351,13 +309,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/file-provider-module",
               "title": "Create File Provider",
@@ -365,7 +321,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/file-service",
               "title": "Use File Module",
@@ -377,14 +332,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Locking Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/locking",
           "title": "Overview",
@@ -392,13 +345,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Providers",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/locking/redis",
               "title": "Redis",
@@ -406,7 +357,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/locking/postgres",
               "title": "PostgreSQL",
@@ -416,13 +366,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/locking-module-provider",
               "title": "Create Locking Provider",
@@ -430,7 +378,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/locking-service",
               "title": "Use Locking Module",
@@ -442,14 +389,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Notification Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/notification",
           "title": "Overview",
@@ -457,13 +402,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Providers",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/notification/local",
               "title": "Local",
@@ -471,7 +414,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/notification/sendgrid",
               "title": "SendGrid",
@@ -481,7 +423,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "autogenerate_tags": "notification+server",
@@ -490,7 +431,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Abandoned Cart Notification",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/abandoned-cart",
@@ -498,7 +438,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/notification-provider-module",
               "title": "Create Notification Provider",
@@ -506,7 +445,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Integrate Mailchimp",
               "path": "https://docs.medusajs.com/resources/integrations/guides/mailchimp",
@@ -514,7 +452,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "path": "/integrations/guides/resend",
               "title": "Integrate Resend",
@@ -522,7 +459,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Integrate Slack",
               "path": "https://docs.medusajs.com/resources/integrations/guides/slack",
@@ -530,7 +466,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Invite User Email",
               "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber",
@@ -538,7 +473,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Reset Password Email",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password",
@@ -546,7 +480,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "ref",
               "title": "Send Email Verification",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification",
@@ -554,7 +487,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/notification/send-notification",
               "title": "Send Notification",
@@ -562,7 +494,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/references/notification-service",
               "title": "Use Notification Module",
@@ -574,14 +505,12 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Workflow Engine Module",
       "initialOpen": true,
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/infrastructure-modules/workflow-engine",
           "title": "Overview",
@@ -589,13 +518,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Modules",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/workflow-engine/in-memory",
               "title": "In-Memory",
@@ -603,7 +530,6 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/workflow-engine/redis",
               "title": "Redis",
@@ -613,13 +539,11 @@ const generatedgeneratedInfrastructureModulesSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sub-category",
           "title": "Guides",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/infrastructure-modules/workflow-engine/how-to-use",
               "title": "Use Workflow Engine Module",

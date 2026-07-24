@@ -49,8 +49,8 @@ export type GetOrderDetailWorkflowInput = {
 export const getOrderDetailWorkflowId = "get-order-detail"
 /**
  * This workflow retrieves an order's details. It's used by many API routes, including
- * [Get an Order Admin API Route](https://docs.medusajs.com/api/admin#orders_getordersid), and
- * [Get an Order Store API Route](https://docs.medusajs.com/api/store#orders_getordersid).
+ * [Get an Order Admin API Route](https://docs.medusajs.com/api/admin/orders/get-an-order), and
+ * [Get an Order Store API Route](https://docs.medusajs.com/api/store/orders/get-an-order).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to retrieve an
  * order's details in your custom flows.

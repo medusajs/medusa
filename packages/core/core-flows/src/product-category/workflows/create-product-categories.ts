@@ -21,7 +21,7 @@ export type CreateProductCategoriesWorkflowOutput = ProductCategoryDTO[]
 export const createProductCategoriesWorkflowId = "create-product-categories"
 /**
  * This workflow creates one or more product categories. It's used by the
- * [Create Product Category Admin API Route](https://docs.medusajs.com/api/admin#product-categories_postproductcategories).
+ * [Create Product Category Admin API Route](https://docs.medusajs.com/api/admin/product-categories/create-product-category).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create product categories within your custom flows.

@@ -54,7 +54,7 @@ const variantFields = deduplicate([
 export const addToCartWorkflowId = "add-to-cart"
 /**
  * This workflow adds a product variant to a cart as a line item. It's executed by the
- * [Add Line Item Store API Route](https://docs.medusajs.com/api/store#carts_postcartsidlineitems).
+ * [Add Line Item Store API Route](https://docs.medusajs.com/api/store/carts/add-line-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to wrap custom logic around adding an item to the cart.
  * For example, you can use this workflow to add a line item to the cart with a custom price.

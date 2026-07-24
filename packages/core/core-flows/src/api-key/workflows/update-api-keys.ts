@@ -32,7 +32,7 @@ export type UpdateApiKeysWorkflowOutput = ApiKeyDTO[]
 export const updateApiKeysWorkflowId = "update-api-keys"
 /**
  * This workflow updates one or more secret or publishable API keys. It's used by the
- * [Update API Key Admin API Route](https://docs.medusajs.com/api/admin#api-keys_postapikeysid).
+ * [Update API Key Admin API Route](https://docs.medusajs.com/api/admin/api-keys/update-an-api-key).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update API keys within your custom flows.

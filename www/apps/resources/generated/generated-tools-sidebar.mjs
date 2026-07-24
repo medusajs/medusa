@@ -4,7 +4,6 @@ const generatedgeneratedToolsSidebarSidebar = {
   "items": [
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "link",
       "title": "Overview",
       "path": "/tools",
@@ -12,7 +11,6 @@ const generatedgeneratedToolsSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "CLI Tools",
       "initialOpen": true,
@@ -20,7 +18,6 @@ const generatedgeneratedToolsSidebarSidebar = {
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/create-medusa-app",
           "title": "create-medusa-app",
@@ -28,7 +25,6 @@ const generatedgeneratedToolsSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sidebar",
           "sidebar_id": "medusa-cli",
           "title": "Medusa CLI",
@@ -37,7 +33,6 @@ const generatedgeneratedToolsSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/medusa-cli",
               "title": "Overview",
@@ -48,14 +43,12 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "Commands",
               "autogenerate_path": "medusa-cli/commands",
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/new",
                   "title": "new",
@@ -64,7 +57,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/develop",
                   "title": "develop",
@@ -73,7 +65,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/start",
                   "title": "start",
@@ -82,7 +73,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/user",
                   "title": "user",
@@ -91,7 +81,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/build",
                   "title": "build",
@@ -100,7 +89,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/db",
                   "title": "db",
@@ -109,7 +97,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/lint",
                   "title": "lint",
@@ -118,7 +105,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/plugin",
                   "title": "plugin",
@@ -127,7 +113,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/exec",
                   "title": "exec",
@@ -136,7 +121,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/telemtry",
                   "title": "telemetry",
@@ -145,7 +129,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/medusa-cli/commands/codemod",
                   "title": "codemod",
@@ -158,7 +141,6 @@ const generatedgeneratedToolsSidebarSidebar = {
         },
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "link",
           "path": "/medusa-oas-cli",
           "title": "medusa-oas-cli",
@@ -168,7 +150,6 @@ const generatedgeneratedToolsSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Developer Tools",
       "initialOpen": true,
@@ -176,7 +157,6 @@ const generatedgeneratedToolsSidebarSidebar = {
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sidebar",
           "sidebar_id": "lint",
           "title": "ESLint Plugin",
@@ -185,7 +165,6 @@ const generatedgeneratedToolsSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/lint",
               "title": "Overview",
@@ -196,7 +175,6 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "Rules",
               "autogenerate_path": "lint/rules",
@@ -204,7 +182,6 @@ const generatedgeneratedToolsSidebarSidebar = {
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/lint/rules",
                   "title": "ESLint Plugin Rules",
@@ -212,7 +189,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "children": [
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/admin-component-must-be-arrow-function",
                       "title": "admin-component-must-be-arrow-function",
@@ -221,7 +197,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/admin-env-vars-import-meta",
                       "title": "admin-env-vars-import-meta",
@@ -230,7 +205,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/admin-no-medusa-utils-import",
                       "title": "admin-no-medusa-utils-import",
@@ -239,7 +213,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/authenticate-flag-name-and-type",
                       "title": "authenticate-flag-name-and-type",
@@ -248,7 +221,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/data-model-table-name-snake-case",
                       "title": "data-model-table-name-snake-case",
@@ -257,7 +229,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/import-from-framework-not-internal",
                       "title": "import-from-framework-not-internal",
@@ -266,7 +237,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/link-create-keys-modules-enum",
                       "title": "link-create-keys-modules-enum",
@@ -275,7 +245,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/link-no-cross-module-relationship",
                       "title": "link-no-cross-module-relationship",
@@ -284,7 +253,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/link-uses-linkable-properties",
                       "title": "link-uses-linkable-properties",
@@ -293,7 +261,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/loader-must-be-exported-in-module-definition",
                       "title": "loader-must-be-exported-in-module-definition",
@@ -302,7 +269,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/medusa-context-on-context-param",
                       "title": "medusa-context-on-context-param",
@@ -311,7 +277,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/middleware-must-call-next",
                       "title": "middleware-must-call-next",
@@ -320,7 +285,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/middlewares-file-location-and-name",
                       "title": "middlewares-file-location-and-name",
@@ -329,7 +293,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/module-name-snake-case",
                       "title": "module-name-snake-case",
@@ -338,7 +301,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-async-workflow-constructor",
                       "title": "no-async-workflow-constructor",
@@ -347,7 +309,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-conditional-expressions-in-workflow",
                       "title": "no-conditional-expressions-in-workflow",
@@ -356,7 +317,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-config-on-dynamic-ui-route",
                       "title": "no-config-on-dynamic-ui-route",
@@ -365,7 +325,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-console-log-in-workflow",
                       "title": "no-console-log-in-workflow",
@@ -374,7 +333,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-deprecated-remote-query-config",
                       "title": "no-deprecated-remote-query-config",
@@ -383,7 +341,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-direct-variable-mutation-in-workflow",
                       "title": "no-direct-variable-mutation-in-workflow",
@@ -392,7 +349,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-duplicate-step-id-in-workflow",
                       "title": "no-duplicate-step-id-in-workflow",
@@ -401,7 +357,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-if-in-workflow-constructor",
                       "title": "no-if-in-workflow-constructor",
@@ -410,7 +365,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-loops-in-workflow",
                       "title": "no-loops-in-workflow",
@@ -419,7 +373,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-mikroorm-direct-import",
                       "title": "no-mikroorm-direct-import",
@@ -428,7 +381,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-new-date-in-workflow",
                       "title": "no-new-date-in-workflow",
@@ -437,7 +389,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-non-serializable-step-return",
                       "title": "no-non-serializable-step-return",
@@ -446,7 +397,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-reserved-default-properties-in-model",
                       "title": "no-reserved-default-properties-in-model",
@@ -455,7 +405,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-service-mutations-in-api-route",
                       "title": "no-service-mutations-in-api-route",
@@ -464,7 +413,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-spread-in-workflow",
                       "title": "no-spread-in-workflow",
@@ -473,7 +421,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-throw-in-transform",
                       "title": "no-throw-in-transform",
@@ -482,7 +429,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-trailing-slash-in-route-matcher",
                       "title": "no-trailing-slash-in-route-matcher",
@@ -491,7 +437,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-try-catch-in-workflow",
                       "title": "no-try-catch-in-workflow",
@@ -500,7 +445,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-wildcard-with-specific-fields",
                       "title": "no-wildcard-with-specific-fields",
@@ -518,7 +462,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/prefer-container-registration-keys",
                       "title": "prefer-container-registration-keys",
@@ -527,7 +470,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/prefer-link-over-remote-link",
                       "title": "prefer-link-over-remote-link",
@@ -536,7 +478,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/prefer-modules-enum",
                       "title": "prefer-modules-enum",
@@ -545,7 +486,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/prices-in-major-units",
                       "title": "prices-in-major-units",
@@ -554,7 +494,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/primary-key-required",
                       "title": "primary-key-required",
@@ -563,7 +502,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/read-only-link-requires-field",
                       "title": "read-only-link-requires-field",
@@ -572,7 +510,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/route-dynamic-folder-syntax",
                       "title": "route-dynamic-folder-syntax",
@@ -581,7 +518,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/route-file-naming",
                       "title": "route-file-naming",
@@ -590,7 +526,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/route-handler-exports-uppercase",
                       "title": "route-handler-exports-uppercase",
@@ -599,7 +534,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/route-params-must-be-defined",
                       "title": "route-params-must-be-defined",
@@ -608,7 +542,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/scheduled-job-config-required",
                       "title": "scheduled-job-config-required",
@@ -617,7 +550,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/scheduled-job-default-export-async",
                       "title": "scheduled-job-default-export-async",
@@ -626,7 +558,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/scheduled-job-default-export-required",
                       "title": "scheduled-job-default-export-required",
@@ -635,7 +566,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/scheduled-job-name-unique",
                       "title": "scheduled-job-name-unique",
@@ -644,7 +574,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/scheduled-job-schedule-valid-cron",
                       "title": "scheduled-job-schedule-valid-cron",
@@ -653,7 +582,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/service-constructor-must-call-super",
                       "title": "service-constructor-must-call-super",
@@ -662,7 +590,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/service-methods-must-be-async",
                       "title": "service-methods-must-be-async",
@@ -671,7 +598,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/step-id-kebab-case",
                       "title": "step-id-kebab-case",
@@ -680,7 +606,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/step-must-return-step-response",
                       "title": "step-must-return-step-response",
@@ -689,7 +614,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/subscriber-config-export-required",
                       "title": "subscriber-config-export-required",
@@ -698,7 +622,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/subscriber-default-export-must-be-async",
                       "title": "subscriber-default-export-must-be-async",
@@ -707,7 +630,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/subscriber-default-export-required",
                       "title": "subscriber-default-export-required",
@@ -716,7 +638,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/ui-route-config-via-define-route-config",
                       "title": "ui-route-config-via-define-route-config",
@@ -725,7 +646,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/ui-route-file-name-page-tsx",
                       "title": "ui-route-file-name-page-tsx",
@@ -734,7 +654,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/ui-route-must-have-default-export",
                       "title": "ui-route-must-have-default-export",
@@ -743,7 +662,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/use-inject-manager-on-public-methods",
                       "title": "use-inject-manager-on-public-methods",
@@ -752,7 +670,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/use-medusa-error-not-generic-error",
                       "title": "use-medusa-error-not-generic-error",
@@ -761,7 +678,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/use-query-context-utility",
                       "title": "use-query-context-utility",
@@ -770,7 +686,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/use-validated-body-or-query",
                       "title": "use-validated-body-or-query",
@@ -779,7 +694,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/widget-must-export-config",
                       "title": "widget-must-export-config",
@@ -788,7 +702,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/widget-must-have-default-export",
                       "title": "widget-must-have-default-export",
@@ -797,7 +710,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/widget-zone-must-be-string-literal",
                       "title": "widget-zone-must-be-string-literal",
@@ -806,7 +718,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/workflow-id-matches-export-or-filename",
                       "title": "workflow-id-matches-export-or-filename",
@@ -815,7 +726,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/workflow-must-return-workflow-response",
                       "title": "workflow-must-return-workflow-response",
@@ -824,7 +734,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/zod-import-source",
                       "title": "zod-import-source",
@@ -841,7 +750,6 @@ const generatedgeneratedToolsSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "SDKs",
       "initialOpen": true,
@@ -849,7 +757,6 @@ const generatedgeneratedToolsSidebarSidebar = {
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sidebar",
           "sidebar_id": "js-sdk",
           "title": "JS SDK",
@@ -857,7 +764,6 @@ const generatedgeneratedToolsSidebarSidebar = {
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/js-sdk",
               "title": "Overview",
@@ -865,7 +771,6 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/js-sdk/auth/overview",
               "title": "Authentication",
@@ -876,14 +781,12 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "auth Methods",
               "autogenerate_path": "/references/js_sdk/auth/Auth/methods",
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/callback",
                   "title": "callback",
@@ -892,7 +795,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/login",
                   "title": "login",
@@ -901,7 +803,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/logout",
                   "title": "logout",
@@ -910,7 +811,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/refresh",
                   "title": "refresh",
@@ -919,7 +819,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/register",
                   "title": "register",
@@ -928,7 +827,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/resetPassword",
                   "title": "resetPassword",
@@ -937,7 +835,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/auth/updateProvider",
                   "title": "updateProvider",
@@ -948,14 +845,12 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "store Methods",
               "autogenerate_path": "/references/js_sdk/store/Store/properties",
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/cart",
                   "title": "cart",
@@ -964,7 +859,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/category",
                   "title": "category",
@@ -973,7 +867,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/collection",
                   "title": "collection",
@@ -982,7 +875,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/customer",
                   "title": "customer",
@@ -991,7 +883,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/fulfillment",
                   "title": "fulfillment",
@@ -1000,7 +891,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/locale",
                   "title": "locale",
@@ -1009,7 +899,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/order",
                   "title": "order",
@@ -1018,7 +907,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/payment",
                   "title": "payment",
@@ -1027,7 +915,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/product",
                   "title": "product",
@@ -1036,7 +923,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/productOption",
                   "title": "productOption",
@@ -1045,7 +931,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/store/region",
                   "title": "region",
@@ -1056,14 +941,12 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "admin Methods",
               "autogenerate_path": "/references/js_sdk/admin/Admin/properties",
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/apiKey",
                   "title": "apiKey",
@@ -1072,7 +955,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/campaign",
                   "title": "campaign",
@@ -1081,7 +963,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/claim",
                   "title": "claim",
@@ -1090,7 +971,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/currency",
                   "title": "currency",
@@ -1099,7 +979,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/customer",
                   "title": "customer",
@@ -1108,7 +987,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/customerGroup",
                   "title": "customerGroup",
@@ -1117,7 +995,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/draftOrder",
                   "title": "draftOrder",
@@ -1126,7 +1003,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/exchange",
                   "title": "exchange",
@@ -1135,7 +1011,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/fulfillment",
                   "title": "fulfillment",
@@ -1144,7 +1019,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/fulfillmentProvider",
                   "title": "fulfillmentProvider",
@@ -1153,7 +1027,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/fulfillmentSet",
                   "title": "fulfillmentSet",
@@ -1162,7 +1035,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/inventoryItem",
                   "title": "inventoryItem",
@@ -1171,7 +1043,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/invite",
                   "title": "invite",
@@ -1180,7 +1051,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/layouts",
                   "title": "layouts",
@@ -1189,7 +1059,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/locale",
                   "title": "locale",
@@ -1198,7 +1067,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/notification",
                   "title": "notification",
@@ -1207,7 +1075,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/order",
                   "title": "order",
@@ -1216,7 +1083,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/orderEdit",
                   "title": "orderEdit",
@@ -1225,7 +1091,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/payment",
                   "title": "payment",
@@ -1234,7 +1099,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/paymentCollection",
                   "title": "paymentCollection",
@@ -1243,7 +1107,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/plugin",
                   "title": "plugin",
@@ -1252,7 +1115,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/priceList",
                   "title": "priceList",
@@ -1261,7 +1123,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/pricePreference",
                   "title": "pricePreference",
@@ -1270,7 +1131,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/product",
                   "title": "product",
@@ -1279,7 +1139,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/productCategory",
                   "title": "productCategory",
@@ -1288,7 +1147,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/productCollection",
                   "title": "productCollection",
@@ -1297,7 +1155,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/productOption",
                   "title": "productOption",
@@ -1306,7 +1163,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/productTag",
                   "title": "productTag",
@@ -1315,7 +1171,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/productType",
                   "title": "productType",
@@ -1324,7 +1179,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/productVariant",
                   "title": "productVariant",
@@ -1333,7 +1187,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/promotion",
                   "title": "promotion",
@@ -1342,7 +1195,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/propertyLabel",
                   "title": "propertyLabel",
@@ -1360,7 +1212,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/rbacRole",
                   "title": "rbacRole",
@@ -1369,7 +1220,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/refundReason",
                   "title": "refundReason",
@@ -1378,7 +1228,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/region",
                   "title": "region",
@@ -1387,7 +1236,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/reservation",
                   "title": "reservation",
@@ -1396,7 +1244,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/return",
                   "title": "return",
@@ -1405,7 +1252,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/returnReason",
                   "title": "returnReason",
@@ -1414,7 +1260,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/salesChannel",
                   "title": "salesChannel",
@@ -1423,7 +1268,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/shippingOption",
                   "title": "shippingOption",
@@ -1432,7 +1276,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/shippingOptionType",
                   "title": "shippingOptionType",
@@ -1441,7 +1284,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/shippingProfile",
                   "title": "shippingProfile",
@@ -1450,7 +1292,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/stockLocation",
                   "title": "stockLocation",
@@ -1459,7 +1300,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/store",
                   "title": "store",
@@ -1468,7 +1308,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/taxProvider",
                   "title": "taxProvider",
@@ -1477,7 +1316,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/taxRate",
                   "title": "taxRate",
@@ -1486,7 +1324,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/taxRegion",
                   "title": "taxRegion",
@@ -1495,7 +1332,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/translation",
                   "title": "translation",
@@ -1504,7 +1340,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/upload",
                   "title": "upload",
@@ -1513,7 +1348,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/user",
                   "title": "user",
@@ -1522,7 +1356,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/views",
                   "title": "views",
@@ -1531,7 +1364,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/workflowExecution",
                   "title": "workflowExecution",
@@ -1546,7 +1378,6 @@ const generatedgeneratedToolsSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "category",
       "title": "Storefront Starters",
       "initialOpen": true,
@@ -1554,14 +1385,12 @@ const generatedgeneratedToolsSidebarSidebar = {
       "children": [
         {
           "loaded": true,
-          "isPathHref": true,
           "type": "sidebar",
           "sidebar_id": "nextjs-starter",
           "title": "Next.js Starter Storefront",
           "children": [
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "link",
               "path": "/nextjs-starter",
               "title": "Overview",
@@ -1569,14 +1398,12 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "How-to Guides",
               "initialOpen": true,
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/nextjs-starter/guides/revalidate-cache",
                   "title": "Revalidate Cache",
@@ -1584,7 +1411,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/nextjs-starter/guides/remove-country-code",
                   "title": "Remove Country Code from URLs",
@@ -1594,7 +1420,6 @@ const generatedgeneratedToolsSidebarSidebar = {
             },
             {
               "loaded": true,
-              "isPathHref": true,
               "type": "category",
               "title": "Tutorials",
               "autogenerate_tags": "nextjs+tutorial",
@@ -1603,7 +1428,6 @@ const generatedgeneratedToolsSidebarSidebar = {
               "children": [
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Add Gift Message",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/gift-message",
@@ -1611,7 +1435,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/nextjs-starter/guides/storefront-returns",
                   "title": "Create Order Returns",
@@ -1619,7 +1442,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Customer Tiers",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/customer-tiers",
@@ -1627,7 +1449,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "First-Purchase Discount",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/first-purchase-discounts",
@@ -1635,7 +1456,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Generate Invoices",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/invoice-generator",
@@ -1643,7 +1463,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Implement Pre-Orders",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/preorder",
@@ -1651,7 +1470,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Implement Product Builder",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-builder",
@@ -1659,7 +1477,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Implement Product Rentals",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-rentals",
@@ -1667,7 +1484,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Megamenu and Category Banner",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/category-images",
@@ -1675,7 +1491,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Saved Payment Methods",
                   "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/saved-payment-methods",
@@ -1683,7 +1498,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "ref",
                   "title": "Ticket Booking Storefront",
                   "path": "https://docs.medusajs.com/resources/recipes/ticket-booking/example/storefront",
@@ -1691,7 +1505,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/nextjs-starter/guides/customize-stripe",
                   "title": "Use Stripe's Payment Element",
@@ -1705,7 +1518,6 @@ const generatedgeneratedToolsSidebarSidebar = {
     },
     {
       "loaded": true,
-      "isPathHref": true,
       "type": "external",
       "title": "Medusa UI",
       "path": "https://docs.medusajs.com/ui",

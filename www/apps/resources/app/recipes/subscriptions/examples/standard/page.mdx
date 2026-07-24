@@ -893,7 +893,7 @@ To create a subscription when a customer completes their purchase, you need to e
 
 An [API Route](!docs!/learn/fundamentals/api-routes) is an endpoint that exposes commerce features to external applications and clients, such as storefronts.
 
-In this step, you’ll create a custom API route similar to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) that uses the workflow you previously created to complete the customer's purchase and create a subscription.
+In this step, you’ll create a custom API route similar to the [Complete Cart API route](!api!/store/carts/complete-cart) that uses the workflow you previously created to complete the customer's purchase and create a subscription.
 
 Create the file `src/api/store/carts/[id]/subscribe/route.ts` with the following content:
 
@@ -981,7 +981,7 @@ By default, the checkout flow requires you to create a [payment collection](../.
 
 ![Diagram showcasing payment flow overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1740657136/Medusa%20Resources/subscriptions-stripe_ycw4ig.jpg)
 
-To support subscriptions, you need to support capturing the payment each time the subscription renews. When creating the payment session using the [Initialize Payment Session API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions), you must pass the data that your payment provider requires to support capturing the payment again in the future. You can pass the data that the provider requires in the `data` property.
+To support subscriptions, you need to support capturing the payment each time the subscription renews. When creating the payment session using the [Initialize Payment Session API route](!api!/store/payment-collections/initialize-payment-session), you must pass the data that your payment provider requires to support capturing the payment again in the future. You can pass the data that the provider requires in the `data` property.
 
 <Note title="Tip">
 

@@ -16,7 +16,7 @@ export class Upload {
 
   /**
    * This method creates a new upload. It sends a request to the
-   * [Upload Files](https://docs.medusajs.com/api/admin#uploads_postuploads)
+   * [Upload Files](https://docs.medusajs.com/api/admin/uploads/upload-files)
    * API route.
    *
    * @param body - The details of the files to upload.
@@ -87,7 +87,7 @@ export class Upload {
 
   /**
    * This method retrieves a file's details by its ID. It sends a request to the
-   * [Get File](https://docs.medusajs.com/api/admin#uploads_getuploadsid)
+   * [Get File](https://docs.medusajs.com/api/admin/uploads/get-a-file)
    * API route.
    *
    * @param id - The ID of the file to retrieve.
@@ -113,7 +113,7 @@ export class Upload {
 
   /**
    * This method deletes a file by its ID from the configured File Module Provider. It sends a request to the
-   * [Delete File](https://docs.medusajs.com/api/admin#uploads_deleteuploadsid)
+   * [Delete File](https://docs.medusajs.com/api/admin/uploads/delete-a-file)
    * API route.
    *
    * @param id - The ID of the file to delete.

@@ -109,8 +109,8 @@ export const updateClaimShippingMethodWorkflowId =
   "update-claim-shipping-method"
 /**
  * This workflow updates a claim's inbound (return) or outbound (delivery of new items) shipping method.
- * It's used by the [Update Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidinboundshippingmethodaction_id),
- * and the [Update Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidoutboundshippingmethodaction_id).
+ * It's used by the [Update Inbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/claims/update-inbound-shipping),
+ * and the [Update Outbound Shipping Admin API Route](https://docs.medusajs.com/api/admin/claims/update-outbound-shipping).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update a claim's shipping method
  * in your own custom flows.

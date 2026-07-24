@@ -34,7 +34,7 @@ export const createViewConfigurationWorkflowId = "create-view-configuration"
  * admin dashboard. If `set_active` is enabled and a `user_id` is provided, the
  * created configuration is also set as the user's active view for the entity.
  *
- * This workflow is used by the [Create View Configuration](https://docs.medusajs.com/api/admin#views_postviewsentityconfigurations)
+ * This workflow is used by the [Create View Configuration](https://docs.medusajs.com/api/admin/views/create-view-configuration)
  * API route.
  *
  * You can use this workflow within your own customizations or custom workflows,

@@ -94,7 +94,7 @@ const orderFields = [
 export const orderExchangeAddNewItemWorkflowId = "exchange-add-new-item"
 /**
  * This workflow adds new or outbound items to an exchange. It's used by the
- * [Add Outbound Items Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidoutbounditems).
+ * [Add Outbound Items Admin API Route](https://docs.medusajs.com/api/admin/exchanges/add-outbound-items-to-exchange).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to add new or outbound items
  * to an exchange in your custom flow.

@@ -89,6 +89,16 @@
  *       ```
  *     description: Emitted when product variants are deleted.
  *     deprecated: false
+ *   - name: inventory-item.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory item
+ *       }
+ *       ```
+ *     description: Emitted when inventory items are deleted.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

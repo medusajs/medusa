@@ -138,6 +138,11 @@ export const inventorySidebar = [
           },
           {
             type: "link",
+            path: "/references/inventory/events",
+            title: "Events Reference",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/inventory/admin-widget-zones",
             title: "Admin Widget Zones",
           },

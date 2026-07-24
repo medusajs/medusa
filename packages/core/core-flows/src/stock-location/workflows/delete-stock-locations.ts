@@ -16,7 +16,7 @@ export interface DeleteStockLocationWorkflowInput {
 export const deleteStockLocationsWorkflowId = "delete-stock-locations-workflow"
 /**
  * This workflow deletes one or more stock locations. It's used by the
- * [Delete Stock Location Admin API Route](https://docs.medusajs.com/api/admin#stock-locations_deletestocklocationsid).
+ * [Delete Stock Location Admin API Route](https://docs.medusajs.com/api/admin/stock-locations/delete-a-stock-location).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete stock locations in your custom flows.

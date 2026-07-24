@@ -383,6 +383,9 @@
   "POST /admin/orders/{id}/transfer": {
     "js-sdk": "sdk.admin.order.requestTransfer(\"order_123\", {\n  customer_id: \"cus_123\",\n  internal_note: \"Internal note\",\n})\n.then(({ order }) => {\n  console.log(order)\n})"
   },
+  "POST /admin/orders/{id}/transfer/guest": {
+    "js-sdk": "sdk.admin.order.transferToGuest(\"order_123\", {\n  email: \"customer@example.com\",\n  internal_note: \"Internal note\",\n})\n.then(({ order }) => {\n  console.log(order)\n})"
+  },
   "POST /admin/orders/{id}/transfer/cancel": {
     "js-sdk": "sdk.admin.order.cancelTransfer(\"order_123\")\n.then(({ order }) => {\n  console.log(order)\n})"
   },
@@ -964,6 +967,36 @@
   },
   "GET /admin/users/me": {
     "js-sdk": "sdk.admin.user.me()\n.then(({ user }) => {\n  console.log(user)\n})"
+  },
+  "GET /admin/views/entities": {
+    "js-sdk": "sdk.admin.views.listEntities()\n.then(({ entities }) => {\n  console.log(entities)\n})"
+  },
+  "GET /admin/views/{entity}/columns": {
+    "js-sdk": "const { columns } = await sdk.admin.views.columns(\"orders\")"
+  },
+  "GET /admin/views/{entity}/configurations": {
+    "js-sdk": "sdk.admin.views.listConfigurations(\"orders\")\n.then(({ view_configurations, count, limit, offset }) => {\n  console.log(view_configurations)\n})"
+  },
+  "POST /admin/views/{entity}/configurations": {
+    "js-sdk": "const { view_configuration } = await sdk.admin.views.createConfiguration(\n  \"orders\",\n  {\n    name: \"My Orders View\",\n    configuration: {\n      visible_columns: [\"display_id\", \"status\"],\n      column_order: [\"display_id\", \"status\"],\n    },\n  }\n)"
+  },
+  "GET /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "sdk.admin.views.retrieveConfiguration(\"orders\", \"viewconfig_123\")\n.then(({ view_configuration }) => {\n  console.log(view_configuration)\n})"
+  },
+  "POST /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "const { view_configuration } = await sdk.admin.views.updateConfiguration(\n  \"orders\",\n  \"viewconfig_123\",\n  {\n    name: \"Updated View\",\n  }\n)"
+  },
+  "DELETE /admin/views/{entity}/configurations/{id}": {
+    "js-sdk": "const { id, object, deleted } = await sdk.admin.views.deleteConfiguration(\n  \"orders\",\n  \"viewconfig_123\"\n)"
+  },
+  "GET /admin/views/{entity}/configurations/active": {
+    "js-sdk": "sdk.admin.views.retrieveActiveConfiguration(\"orders\")\n.then(({ view_configuration, active_view_configuration_id }) => {\n  console.log(view_configuration)\n})"
+  },
+  "POST /admin/views/{entity}/configurations/active": {
+    "js-sdk": "await sdk.admin.views.setActiveConfiguration(\"orders\", {\n  view_configuration_id: \"viewconfig_123\",\n})"
+  },
+  "GET /admin/layouts/configurations": {
+    "js-sdk": "const { layout_configurations } = await sdk.admin.layouts.listConfigurations()"
   },
   "GET /admin/workflows-executions": {
     "js-sdk": "sdk.admin.workflowExecution.list()\n.then(({ workflow_executions, count, limit, offset }) => {\n  console.log(workflow_executions)\n})"

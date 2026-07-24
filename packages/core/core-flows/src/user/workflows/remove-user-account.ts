@@ -21,8 +21,8 @@ export type RemoveUserAccountWorkflowInput = {
 export const removeUserAccountWorkflowId = "remove-user-account"
 /**
  * This workflow deletes a user and remove the association to its auth identity. It's used
- * by the [Delete User Admin API Route](https://docs.medusajs.com/api/admin#users_deleteusersid).
- *
+ * by the [Delete User Admin API Route](https://docs.medusajs.com/api/admin/users/delete-a-user).
+ * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete users within your custom flows.
  *

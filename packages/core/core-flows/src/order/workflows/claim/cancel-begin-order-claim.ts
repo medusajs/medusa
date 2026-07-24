@@ -94,7 +94,7 @@ export type CancelBeginOrderClaimWorkflowInput = {
 export const cancelBeginOrderClaimWorkflowId = "cancel-begin-order-claim"
 /**
  * This workflow cancels a requested order claim. It's used by the
- * [Cancel Claim Request Admin API Route](https://docs.medusajs.com/api/admin#claims_deleteclaimsidrequest).
+ * [Cancel Claim Request Admin API Route](https://docs.medusajs.com/api/admin/claims/cancel-claim-request).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to cancel a claim
  * for an order in your custom flows.
