@@ -49,7 +49,7 @@ sdk.store.cart.update(cartId, {
 })
 ```
 
-The [Update Cart API route](!api!/store#carts_postcartsid) accepts a `region_id` request body parameter, whose value is the new region to associate with the cart.
+The [Update Cart API route](!api!/store/carts/update-a-cart) accepts a `region_id` request body parameter, whose value is the new region to associate with the cart.
 
 ---
 
@@ -102,7 +102,7 @@ When using the Fetch API to send the request, either use `credentials: include` 
 
 By default, items in the cart will have their associated product's original content. If your storefront supports [localization](../../localization/page.mdx), you can set the cart's locale to ensure that the item contents are in the customer's preferred language.
 
-You can set the cart's locale by passing the `locale` request body parameter to the [Update Cart API route](!api!/store#carts_postcarts). For example:
+You can set the cart's locale by passing the `locale` request body parameter to the [Update Cart API route](!api!/store/carts/create-cart). For example:
 
 ```ts
 sdk.store.cart.update(cartId, {

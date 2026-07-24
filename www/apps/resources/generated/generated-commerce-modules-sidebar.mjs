@@ -551,6 +551,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/auth/link-provider-identity",
+              "title": "Link Provider to Existing Actor",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
               "type": "ref",
               "title": "Phone Authentication",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth",
@@ -738,6 +746,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "generateResetPasswordTokenWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "removeCustomerAccountWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeCustomerAccountWorkflow",
                       "children": []
@@ -777,6 +793,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "autogenerate_as_ref": true,
                   "sort_sidebar": "alphabetize",
                   "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createPasswordResetTokenStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep",
+                      "children": []
+                    },
                     {
                       "loaded": true,
                       "isPathHref": true,
@@ -838,6 +862,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                   "type": "ref",
                   "title": "refresh",
                   "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "ref",
+                  "title": "register",
+                  "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register",
                   "children": []
                 },
                 {
@@ -949,15 +981,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
-                      "path": "/references/auth/createAuthVerificationToken",
-                      "title": "createAuthVerificationToken",
-                      "description": "",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "isPathHref": true,
-                      "type": "link",
                       "path": "/references/auth/createPasswordResetToken",
                       "title": "createPasswordResetToken",
                       "description": "",
@@ -1021,6 +1044,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/auth/listAndCountAuthVerifications",
+                      "title": "listAndCountAuthVerifications",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/auth/listAuthIdentities",
                       "title": "listAuthIdentities",
                       "description": "",
@@ -1032,6 +1064,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/listAuthMfa",
                       "title": "listAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/listAuthVerifications",
+                      "title": "listAuthVerifications",
                       "description": "",
                       "children": []
                     },
@@ -1077,6 +1118,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/retrieveAuthMfa",
                       "title": "retrieveAuthMfa",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/retrieveAuthVerification",
+                      "title": "retrieveAuthVerification",
                       "description": "",
                       "children": []
                     },
@@ -1131,6 +1181,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/useAuthMfaRecoveryCode",
                       "title": "useAuthMfaRecoveryCode",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/auth/validateAuthIdentity",
+                      "title": "validateAuthIdentity",
                       "description": "",
                       "children": []
                     },
@@ -1231,8 +1290,8 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
-                      "path": "/references/auth/models/AuthVerificationToken",
-                      "title": "AuthVerificationToken",
+                      "path": "/references/auth/models/AuthVerification",
+                      "title": "AuthVerification",
                       "description": "",
                       "children": []
                     },
@@ -3069,6 +3128,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "transferOrderToGuestWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferOrderToGuestWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "updateCartWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartWorkflow",
                       "children": []
@@ -3708,8 +3775,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Reservations Lifecycle",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Shipping Option Price Rules",
               "path": "https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Physical and Customs Attributes",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes",
               "children": []
             },
             {
@@ -5436,6 +5519,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/commerce-modules/inventory/reservations-lifecycle",
+              "title": "Reservations Lifecycle",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/inventory/inventory-kit",
               "title": "Inventory Kit",
               "children": []
@@ -5446,6 +5537,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "link",
               "path": "/commerce-modules/inventory/links-to-other-modules",
               "title": "Links to Modules",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Physical and Customs Attributes",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes",
               "children": []
             },
             {
@@ -6007,6 +6106,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/references/inventory/events",
+              "title": "Events Reference",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/inventory/admin-widget-zones",
               "title": "Admin Widget Zones",
               "children": []
@@ -6438,6 +6545,17 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
+          "type": "link",
+          "path": "/commerce-modules/loyalty/module-options",
+          "title": "Plugin Options",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
           "type": "category",
           "title": "Concepts",
           "children": [
@@ -6842,6 +6960,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/commerce-modules/order/transfer-to-guest",
+              "title": "Transfer Order to Guest",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/order/links-to-other-modules",
               "title": "Links to Other Modules",
               "children": []
@@ -7162,6 +7288,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "archiveOrderWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/archiveOrderWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "authorizePaymentSessionForOrderWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow",
                       "children": []
                     },
                     {
@@ -7810,6 +7944,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "requestOrderTransferWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestOrderTransferWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "transferOrderToGuestWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferOrderToGuestWorkflow",
                       "children": []
                     },
                     {
@@ -10247,6 +10389,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "authorizePaymentSessionForOrderWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "cancelOrderWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/cancelOrderWorkflow",
                       "children": []
@@ -12330,6 +12480,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "link",
+              "path": "/commerce-modules/product/physical-customs-attributes",
+              "title": "Physical and Customs Attributes",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
               "path": "/commerce-modules/product/selling-products",
               "title": "Selling Use Cases",
               "children": []
@@ -12848,6 +13006,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "batchProductsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "batchProductVariantsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductVariantsWorkflow",
                       "children": []
@@ -12858,6 +13024,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "batchVariantImagesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchVariantImagesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createAndLinkProductOptionsToProductWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow",
                       "children": []
                     },
                     {
@@ -12944,6 +13118,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "deleteProductOptionValuesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionValuesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "deleteProductsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductsWorkflow",
                       "children": []
@@ -12976,6 +13158,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "importProductsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/importProductsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "setProductProductOptionsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setProductProductOptionsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "updateCollectionsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCollectionsWorkflow",
                       "children": []
@@ -12994,6 +13192,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateProductOptionsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductOptionsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updateProductOptionValuesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductOptionValuesWorkflow",
                       "children": []
                     },
                     {
@@ -13053,6 +13259,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "addImageToVariantsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addImageToVariantsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "addProductOptionsToProductStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addProductOptionsToProductStep",
                       "children": []
                     },
                     {
@@ -13155,6 +13369,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
+                      "title": "deleteProductOptionValuesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductOptionValuesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
                       "title": "deleteProductsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductsStep",
                       "children": []
@@ -13187,8 +13409,8 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "ref",
-                      "title": "getProductsStep",
-                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getProductsStep",
+                      "title": "processProductOptionsForImportStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/processProductOptionsForImportStep",
                       "children": []
                     },
                     {
@@ -13205,6 +13427,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "removeImagesFromVariantStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeImagesFromVariantStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "removeProductOptionsFromProductStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeProductOptionsFromProductStep",
                       "children": []
                     },
                     {
@@ -13229,6 +13459,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateProductOptionsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updateProductOptionValuesOnProductStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionValuesOnProductStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updateProductOptionValuesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionValuesStep",
                       "children": []
                     },
                     {
@@ -13308,6 +13554,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "product",
                       "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "productOption",
+                      "path": "https://docs.medusajs.com/resources/references/js-sdk/store/productOption",
+                      "children": []
                     }
                   ]
                 },
@@ -13343,6 +13597,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "productCollection",
                       "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productCollection",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "productOption",
+                      "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productOption",
                       "children": []
                     },
                     {
@@ -13421,6 +13683,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/product/addImageToVariant",
                       "title": "addImageToVariant",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/product/addProductOptionToProduct",
+                      "title": "addProductOptionToProduct",
                       "description": "",
                       "children": []
                     },
@@ -13725,6 +13996,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/product/removeProductOptionFromProduct",
+                      "title": "removeProductOptionFromProduct",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/product/restoreProductCategories",
                       "title": "restoreProductCategories",
                       "description": "",
@@ -13968,6 +14248,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "loaded": true,
                       "isPathHref": true,
                       "type": "link",
+                      "path": "/references/product/updateProductOptionValuesOnProduct",
+                      "title": "updateProductOptionValuesOnProduct",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
                       "path": "/references/product/updateProductOptions",
                       "title": "updateProductOptions",
                       "description": "",
@@ -14154,6 +14443,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/product/models/ProductOptionValue",
                       "title": "ProductOptionValue",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/product/models/ProductProductOption",
+                      "title": "ProductProductOption",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/product/models/ProductProductOptionValue",
+                      "title": "ProductProductOptionValue",
                       "description": "",
                       "children": []
                     },
@@ -16283,6 +16590,815 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
       "loaded": true,
       "isPathHref": true,
       "type": "sidebar",
+      "sidebar_id": "settings",
+      "title": "Settings Module",
+      "children": [
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/commerce-modules/settings",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Concepts",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/concepts",
+              "title": "Concepts",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/view-configurations",
+              "title": "View Configurations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/layout-configurations",
+              "title": "Layout Configurations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/property-labels",
+              "title": "Property Labels",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/user-preferences",
+              "title": "User Preferences",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Server Guides",
+          "autogenerate_tags": "server+settings",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to use the Settings Module in your customizations on the Medusa application server.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure View Configurations",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Admin Guides",
+          "autogenerate_tags": "admin+settings,-jsSdk",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize administrative features of the Settings Module.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/configure-view-configurations",
+              "title": "Configure View Configurations",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "Admin User Guides",
+          "autogenerate_tags": "userGuide+settings",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize and manage Settings features in the Medusa Admin dashboard.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure Layouts",
+              "path": "https://docs.medusajs.com/user-guide/tips/layout-configurations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Configure Table Views",
+              "path": "https://docs.medusajs.com/user-guide/tips/table-views",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Manage Property Labels",
+              "path": "https://docs.medusajs.com/user-guide/settings/property-labels",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "category",
+          "title": "References",
+          "description": "Find references for tools and resources related to the Settings Module, such as data models, methods, and more. These are useful for your customizations.",
+          "children": [
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/workflows",
+              "title": "Workflows",
+              "hideChildren": true,
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Workflows",
+                  "autogenerate_tags": "workflow+settings",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "clearLayoutConfigurationWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/clearLayoutConfigurationWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createPropertyLabelsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createPropertyLabelsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createViewConfigurationWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createViewConfigurationWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "deletePropertyLabelsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deletePropertyLabelsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "setLayoutConfigurationWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setLayoutConfigurationWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updatePropertyLabelsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePropertyLabelsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updateViewConfigurationWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateViewConfigurationWorkflow",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Steps",
+                  "autogenerate_tags": "step+settings",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "clearLayoutConfigurationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/clearLayoutConfigurationStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createPropertyLabelsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPropertyLabelsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "createViewConfigurationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createViewConfigurationStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "deletePropertyLabelsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deletePropertyLabelsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "setActiveLayoutScopeStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveLayoutScopeStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "setActiveViewConfigurationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveViewConfigurationStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "setLayoutConfigurationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setLayoutConfigurationStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updatePropertyLabelsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePropertyLabelsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "updateViewConfigurationStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateViewConfigurationStep",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/js-sdk",
+              "title": "JS SDK",
+              "hideChildren": true,
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "sub-category",
+                  "title": "Admin",
+                  "autogenerate_tags": "jsSdk+admin+settings,jsSdk+admin+views",
+                  "description": "The following methods or properties are used to send requests to Admin API Routes related to the Settings Module.",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "views",
+                      "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/views",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "link",
+              "path": "/commerce-modules/settings/admin-widget-zones",
+              "title": "Admin Widget Zones",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "sidebar",
+              "sidebar_id": "settings-service-reference",
+              "title": "Main Service Reference",
+              "childSidebarTitle": "Settings Module's Main Service Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/settings",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Methods",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/settings/ISettingsModuleService/methods",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/clearActiveViewConfiguration",
+                      "title": "clearActiveViewConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/clearLayoutConfiguration",
+                      "title": "clearLayoutConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/createLayoutConfigurations",
+                      "title": "createLayoutConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/createPropertyLabels",
+                      "title": "createPropertyLabels",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/createUserPreferences",
+                      "title": "createUserPreferences",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/createViewConfigurations",
+                      "title": "createViewConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/deleteLayoutConfigurations",
+                      "title": "deleteLayoutConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/deletePropertyLabels",
+                      "title": "deletePropertyLabels",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/deleteUserPreferences",
+                      "title": "deleteUserPreferences",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/deleteViewConfigurations",
+                      "title": "deleteViewConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/generateEntityColumns",
+                      "title": "generateEntityColumns",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/getActiveLayoutScope",
+                      "title": "getActiveLayoutScope",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/getActiveViewConfiguration",
+                      "title": "getActiveViewConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/getSystemDefaultLayoutConfiguration",
+                      "title": "getSystemDefaultLayoutConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/getSystemDefaultViewConfiguration",
+                      "title": "getSystemDefaultViewConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/getUserPreference",
+                      "title": "getUserPreference",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/hasEntity",
+                      "title": "hasEntity",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/isEntityDiscoveryInitialized",
+                      "title": "isEntityDiscoveryInitialized",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listAndCountLayoutConfigurations",
+                      "title": "listAndCountLayoutConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listAndCountPropertyLabels",
+                      "title": "listAndCountPropertyLabels",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listAndCountUserPreferences",
+                      "title": "listAndCountUserPreferences",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listAndCountViewConfigurations",
+                      "title": "listAndCountViewConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listDiscoverableEntities",
+                      "title": "listDiscoverableEntities",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listLayoutConfigurations",
+                      "title": "listLayoutConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listPropertyLabels",
+                      "title": "listPropertyLabels",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listUserPreferences",
+                      "title": "listUserPreferences",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/listViewConfigurations",
+                      "title": "listViewConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/retrieveLayoutConfiguration",
+                      "title": "retrieveLayoutConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/retrievePropertyLabel",
+                      "title": "retrievePropertyLabel",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/retrieveUserPreference",
+                      "title": "retrieveUserPreference",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/retrieveViewConfiguration",
+                      "title": "retrieveViewConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/setActiveLayoutScope",
+                      "title": "setActiveLayoutScope",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/setActiveViewConfiguration",
+                      "title": "setActiveViewConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/setLayoutConfiguration",
+                      "title": "setLayoutConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/setSystemDefaultLayoutConfiguration",
+                      "title": "setSystemDefaultLayoutConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/setUserPreference",
+                      "title": "setUserPreference",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/updatePropertyLabels",
+                      "title": "updatePropertyLabels",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/updateUserPreferences",
+                      "title": "updateUserPreferences",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/updateViewConfigurations",
+                      "title": "updateViewConfigurations",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/upsertPropertyLabels",
+                      "title": "upsertPropertyLabels",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "sidebar",
+              "sidebar_id": "settings-models-reference",
+              "title": "Data Models Reference",
+              "childSidebarTitle": "Settings Module Data Models Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "link",
+                  "path": "/references/settings/models",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "isPathHref": true,
+                  "type": "category",
+                  "title": "Data Models",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/settings_models/variables",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/models/LayoutConfiguration",
+                      "title": "LayoutConfiguration",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/models/PropertyLabel",
+                      "title": "PropertyLabel",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/models/UserPreference",
+                      "title": "UserPreference",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "link",
+                      "path": "/references/settings/models/ViewConfiguration",
+                      "title": "ViewConfiguration",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "loaded": true,
+      "isPathHref": true,
+      "type": "sidebar",
       "sidebar_id": "stock-location",
       "title": "Stock Location Module",
       "children": [
@@ -17882,6 +18998,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateTaxRegionsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxRegionsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "isPathHref": true,
+                      "type": "ref",
+                      "title": "upsertTaxLinesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/upsertTaxLinesWorkflow",
                       "children": []
                     }
                   ]

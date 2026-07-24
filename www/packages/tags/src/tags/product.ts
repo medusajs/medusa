@@ -80,6 +80,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
   },
   {
+    "title": "Physical and Customs Attributes",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes"
+  },
+  {
     "title": "Implement Custom Line Item Pricing in Medusa",
     "path": "https://docs.medusajs.com/resources/examples/guides/custom-item-price"
   },
@@ -216,6 +220,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addImagesToVariantStep"
   },
   {
+    "title": "addProductOptionsToProductStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addProductOptionsToProductStep"
+  },
+  {
     "title": "batchLinkProductsToCategoryStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/batchLinkProductsToCategoryStep"
   },
@@ -252,6 +260,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteCollectionsStep"
   },
   {
+    "title": "deleteProductOptionValuesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductOptionValuesStep"
+  },
+  {
     "title": "deleteProductOptionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductOptionsStep"
   },
@@ -272,8 +284,8 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductsStep"
   },
   {
-    "title": "getProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getProductsStep"
+    "title": "processProductOptionsForImportStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/processProductOptionsForImportStep"
   },
   {
     "title": "removeImageFromVariantsStep",
@@ -284,8 +296,20 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeImagesFromVariantStep"
   },
   {
+    "title": "removeProductOptionsFromProductStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeProductOptionsFromProductStep"
+  },
+  {
     "title": "updateCollectionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateCollectionsStep"
+  },
+  {
+    "title": "updateProductOptionValuesOnProductStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionValuesOnProductStep"
+  },
+  {
+    "title": "updateProductOptionValuesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionValuesStep"
   },
   {
     "title": "updateProductOptionsStep",
@@ -324,8 +348,16 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductVariantsWorkflow"
   },
   {
+    "title": "batchProductsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductsWorkflow"
+  },
+  {
     "title": "batchVariantImagesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchVariantImagesWorkflow"
+  },
+  {
+    "title": "createAndLinkProductOptionsToProductWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow"
   },
   {
     "title": "createCollectionsWorkflow",
@@ -356,6 +388,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteCollectionsWorkflow"
   },
   {
+    "title": "deleteProductOptionValuesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionValuesWorkflow"
+  },
+  {
     "title": "deleteProductOptionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionsWorkflow"
   },
@@ -376,8 +412,20 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductsWorkflow"
   },
   {
+    "title": "importProductsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/importProductsWorkflow"
+  },
+  {
+    "title": "setProductProductOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setProductProductOptionsWorkflow"
+  },
+  {
     "title": "updateCollectionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCollectionsWorkflow"
+  },
+  {
+    "title": "updateProductOptionValuesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductOptionValuesWorkflow"
   },
   {
     "title": "updateProductOptionsWorkflow",
@@ -436,6 +484,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productCollection"
   },
   {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productOption"
+  },
+  {
     "title": "productTag",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productTag"
   },
@@ -458,5 +510,9 @@ export const product = [
   {
     "title": "product",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/store/product"
+  },
+  {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/store/productOption"
   }
 ]

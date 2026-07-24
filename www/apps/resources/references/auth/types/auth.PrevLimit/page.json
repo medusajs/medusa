@@ -1,0 +1,1 @@
+{"slug":"/references/auth/types/auth.PrevLimit","title":"PrevLimit","frontmatter":{"displayed_sidebar":"authReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"PrevLimit","type":"[`never`, `0`, `1`, `2`]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

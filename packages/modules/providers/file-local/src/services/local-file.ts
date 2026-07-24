@@ -8,6 +8,34 @@ import fs from "fs/promises"
 import path from "path"
 import type { Readable, Writable } from "stream"
 
+/**
+ * Decodes the string `content` of an uploaded file into a Buffer.
+ *
+ * Upload inputs arrive as a string that may be base64, UTF-8 text (e.g. a CSV
+ * with special characters, see #13649) or a binary/latin1 string (e.g. an image
+ * produced via `buffer.toString("binary")`, as the upload docs instruct).
+ * Decoding a binary string as UTF-8 corrupts every byte > 127 (a PNG's leading
+ * `0x89` becomes `0xC2 0x89`), so the encoding is chosen from the file's MIME
+ * type, defaulting to binary for non-text content.
+ */
+function decodeFileContent(content: string, mimeType?: string): Buffer {
+  const decodedBase64 = Buffer.from(content, "base64")
+  if (decodedBase64.toString("base64") === content) {
+    return decodedBase64
+  }
+
+  const isTextContent =
+    mimeType?.startsWith("text/") ||
+    mimeType?.includes("csv") ||
+    mimeType?.includes("json") ||
+    mimeType?.includes("xml")
+
+  return isTextContent
+    ? Buffer.from(content, "utf8")
+    : Buffer.from(content, "binary")
+}
+
+
 export class LocalFileService extends AbstractFileProviderService {
   static identifier = "localfs"
   protected uploadDir_: string
@@ -57,18 +85,7 @@ export class LocalFileService extends AbstractFileProviderService {
     const filePath = this.getUploadFilePath(baseDir, fileKey)
     const fileUrl = this.getUploadFileUrl(fileKey)
 
-    let content: Buffer
-    try {
-      const decoded = Buffer.from(file.content, "base64")
-      if (decoded.toString("base64") === file.content) {
-        content = decoded
-      } else {
-        content = Buffer.from(file.content, "utf8")
-      }
-    } catch {
-      // Last-resort fallback: binary
-      content = Buffer.from(file.content, "binary")
-    }
+    const content = decodeFileContent(file.content, file.mimeType)
 
     await fs.writeFile(filePath, content)
 

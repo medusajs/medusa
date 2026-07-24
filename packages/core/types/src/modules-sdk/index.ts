@@ -231,6 +231,12 @@ export type ModuleJoinerConfig = Omit<
    * If not explicitly defined, this array will be populated by databaseConfig.extraFields
    */
   extraDataFields?: string[]
+  /**
+   * Resolved database client URL for this module. This is used to determine if we can do in-DB cross module filtering
+   *
+   * @internal
+   */
+  databaseClientUrl?: string
   databaseConfig?: {
     /**
      * Name of the pivot table. If not provided it is auto generated

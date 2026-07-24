@@ -336,11 +336,11 @@ export const NavItem = ({
 
       return clx(BASE_NAV_LINK_CLASSES, {
         [NESTED_NAV_LINK_CLASSES]: isNested,
-        [ACTIVE_NAV_LINK_CLASSES]: isActive,
+        [ACTIVE_NAV_LINK_CLASSES]: isActive && !editMode,
         [SETTING_NAV_LINK_CLASSES]: isSetting,
       })
     },
-    [type, pathname]
+    [type, pathname, editMode]
   )
 
   const getLinkTarget = useCallback(

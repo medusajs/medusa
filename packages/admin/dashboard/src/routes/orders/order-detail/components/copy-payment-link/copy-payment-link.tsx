@@ -31,7 +31,7 @@ const CopyPaymentLink = React.forwardRef<any, CopyPaymentLinkProps>(
 
       setDone(true)
       copy(
-        `${MEDUSA_STOREFRONT_URL}/payment-collection/${paymentCollection.id}`
+        `${MEDUSA_STOREFRONT_URL}/payment-collection/${paymentCollection.id}?order_id=${order.id}`
       )
 
       setTimeout(() => {

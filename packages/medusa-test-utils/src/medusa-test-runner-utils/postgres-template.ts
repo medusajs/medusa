@@ -203,3 +203,101 @@ export async function dropPostgresDatabaseTemplate(templateName: string) {
   const client = await getWaitingroomClient()
   await dropDatabaseIfExists(client, templateName)
 }
+
+// Postgres error codes — see https://www.postgresql.org/docs/current/errcodes-appendix.html
+const DUPLICATE_DATABASE = "42P04" // database already exists
+const INVALID_CATALOG_NAME = "3D000" // database does not exist
+
+type DatabaseCredentials = {
+  user?: string
+  database?: string
+  password?: string
+  port?: number
+  host?: string
+}
+
+// Defaults mirror the previously used pg-god behavior: connect to the
+// maintenance `postgres` database to create/drop another database.
+const defaultDatabaseCredentials: Required<DatabaseCredentials> = {
+  user: "postgres",
+  database: "postgres",
+  password: "",
+  port: 5432,
+  host: "localhost",
+}
+
+/**
+ * Creates a database. When `errorIfExist` is false (the default), an already
+ * existing database is treated as success. Native replacement for the
+ * unmaintained `pg-god` `createDatabase`.
+ */
+export async function createDatabase(
+  {
+    databaseName,
+    errorIfExist = false,
+  }: { databaseName: string; errorIfExist?: boolean },
+  credentials: DatabaseCredentials = {}
+): Promise<void> {
+  const client = new Client({ ...defaultDatabaseCredentials, ...credentials })
+
+  try {
+    await client.connect()
+    // `CREATE DATABASE` cannot be parameterized, and the name is always
+    // internally generated (never user supplied), so it is safely quoted and
+    // interpolated.
+    await client.query(`CREATE DATABASE ${quoteIdentifier(databaseName)};`)
+  } catch (error) {
+    if (
+      !errorIfExist &&
+      (error as { code?: string })?.code === DUPLICATE_DATABASE
+    ) {
+      return
+    }
+
+    throw error
+  } finally {
+    await client.end()
+  }
+}
+
+/**
+ * Drops a database. When `errorIfNonExist` is false (the default), a missing
+ * database is treated as success. Active connections to the database are
+ * terminated first unless `dropConnections` is set to false. Native
+ * replacement for the unmaintained `pg-god` `dropDatabase`.
+ */
+export async function dropDatabase(
+  {
+    databaseName,
+    errorIfNonExist = false,
+    dropConnections = true,
+  }: {
+    databaseName: string
+    errorIfNonExist?: boolean
+    dropConnections?: boolean
+  },
+  credentials: DatabaseCredentials = {}
+): Promise<void> {
+  const client = new Client({ ...defaultDatabaseCredentials, ...credentials })
+
+  try {
+    await client.connect()
+
+    if (dropConnections) {
+      await terminateDatabaseConnections(client, databaseName)
+    }
+
+    await client.query(`DROP DATABASE ${quoteIdentifier(databaseName)};`)
+  } catch (error) {
+    if (
+      !errorIfNonExist &&
+      (error as { code?: string })?.code === INVALID_CATALOG_NAME
+    ) {
+      return
+    }
+
+    throw error
+  } finally {
+    await client.end()
+  }
+}

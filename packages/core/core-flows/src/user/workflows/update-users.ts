@@ -12,7 +12,7 @@ import { updateUsersStep } from "../steps"
 export const updateUsersWorkflowId = "update-users-workflow"
 /**
  * This workflow updates one or more users. It's used by the
- * [Update User Admin API Route](https://docs.medusajs.com/api/admin#users_postusersid).
+ * [Update User Admin API Route](https://docs.medusajs.com/api/admin/users/update-a-user).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update users within your custom flows.

@@ -9,6 +9,7 @@ import {
 } from "@medusajs/framework/types"
 import {
   ChangeActionType,
+  InventoryLevelWorkflowEvents,
   MathBN,
   OrderChangeStatus,
   OrderWorkflowEvents,
@@ -182,7 +183,7 @@ export type ConfirmReceiveReturnRequestWorkflowInput = {
 export const confirmReturnReceiveWorkflowId = "confirm-return-receive"
 /**
  * This workflow confirms a return receival request. It's used by the
- * [Confirm Return Receival Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidreceiveconfirm).
+ * [Confirm Return Receival Admin API Route](https://docs.medusajs.com/api/admin/returns/confirm-return-receival).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to confirm a return receival in your custom flow.
@@ -356,7 +357,7 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
 
     confirmReceiveReturnValidationStep({ order, orderReturn, orderChange })
 
-    parallelize(
+    const [, , , adjustedLevels] = parallelize(
       updateReturnsStep([updateReturn]),
       updateReturnItemsStep(updateReturnItem),
       confirmOrderChanges({
@@ -365,6 +366,16 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
         confirmed_by: input.confirmed_by,
       }),
       adjustInventoryLevelsStep(inventoryAdjustment)
+    )
+
+    const levelUpdatedEvents = transform(
+      { adjustedLevels, order },
+      ({ adjustedLevels, order }) => {
+        return adjustedLevels.map((level) => ({
+          id: level.id,
+          order_id: order.id,
+        }))
+      }
     )
 
     parallelize(
@@ -379,7 +390,11 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
           order_id: order.id,
           return_id: orderReturn.id,
         },
-      })
+      }),
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.UPDATED,
+        data: levelUpdatedEvents,
+      }).config({ name: "emit-inventory-level-updated" })
     )
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))

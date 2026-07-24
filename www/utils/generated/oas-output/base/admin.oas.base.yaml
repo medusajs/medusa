@@ -221,6 +221,12 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/user
     x-associatedSchema:
       $ref: "#/components/schemas/AdminInvite"
+  - name: Layouts
+    description: >
+      An admin can modify the layout of their admin dashboard. This allows admins to customize their
+      dashboard to their preferences and needs.
+
+      These API routes allow admin users to manage layouts.
   - name: Locales
     description: >
       A locale is a language that content is translated into for customers to
@@ -239,8 +245,8 @@ tags:
       accounts by requiring additional verification factors during login, such
       as a TOTP code or a recovery code.
 
-      These API routes allow admin users to manage their MFA factors, challenges,
-      and recovery codes.
+      These API routes allow admin users to manage their MFA factors,
+      challenges, and recovery codes.
     externalDocs:
       description: Learn more about MFA in Medusa
       url: https://docs.medusajs.com/resources/commerce-modules/auth/mfa
@@ -647,7 +653,8 @@ tags:
       <Note>
 
       Store Credit Account routes are only available for Cloud users using the
-      [Loyalty Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
+      [Loyalty
+      Plugin](https://docs.medusajs.com/resources/commerce-modules/loyalty).
 
       </Note>
     x-associatedSchema:
@@ -752,6 +759,15 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminUser"
   - name: Views
+    description: >
+      A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+
+      These API routes allow admin users to manage the system default and personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminViewConfiguration"
   - name: Workflows Executions
     description: >
       These API routes allow you to track workflow executions in your Medusa
@@ -933,7 +949,7 @@ components:
     api_token:
       type: http
       x-displayName: API Token
-      scheme: bearer
+      scheme: basic
     jwt_token:
       type: http
       x-displayName: JWT Token

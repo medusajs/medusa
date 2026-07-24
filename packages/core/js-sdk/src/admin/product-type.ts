@@ -16,7 +16,7 @@ export class ProductType {
 
   /**
    * This method creates a product type. It sends a request to the
-   * [Create Product Type](https://docs.medusajs.com/api/admin#product-types_postproducttypes)
+   * [Create Product Type](https://docs.medusajs.com/api/admin/product-types/create-product-type)
    * API route.
    * 
    * @param body - The product type's details.
@@ -50,7 +50,7 @@ export class ProductType {
 
   /**
    * This method updates a product type. It sends a request to the
-   * [Update Product Type](https://docs.medusajs.com/api/admin#product-types_postproducttypesid)
+   * [Update Product Type](https://docs.medusajs.com/api/admin/product-types/update-a-product-type)
    * API route.
    * 
    * @param id - The product type's ID.
@@ -86,7 +86,7 @@ export class ProductType {
 
   /**
    * This method retrieves a paginated list of product types. It sends a request to the 
-   * [List Product Types](https://docs.medusajs.com/api/admin#product-types_getproducttypes) API route.
+   * [List Product Types](https://docs.medusajs.com/api/admin/product-types/list-product-types) API route.
    * 
    * @param query - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -128,7 +128,7 @@ export class ProductType {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminProductTypeListParams,
@@ -145,7 +145,7 @@ export class ProductType {
 
   /**
    * This method retrieves a product type by its ID. It sends a request to the 
-   * [Get Product Type](https://docs.medusajs.com/api/admin#product-types_getproducttypesid)
+   * [Get Product Type](https://docs.medusajs.com/api/admin/product-types/get-a-product-type)
    * API route.
    * 
    * @param id - The product type's ID.
@@ -174,7 +174,7 @@ export class ProductType {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -192,7 +192,7 @@ export class ProductType {
 
   /**
    * This method deletes a product type. It sends a request to the 
-   * [Delete Product Type](https://docs.medusajs.com/api/admin#product-types_deleteproducttypesid)
+   * [Delete Product Type](https://docs.medusajs.com/api/admin/product-types/delete-a-product-type)
    * API route.
    * 
    * @param id - The product type's ID.

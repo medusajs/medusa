@@ -5,13 +5,11 @@ export const generatedSidebars = [
     "items": [
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "1. Getting Started",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn",
             "title": "Introduction",
@@ -21,14 +19,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/installation",
             "title": "Installation",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/installation/docker",
                 "title": "Install with Docker",
@@ -42,7 +38,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Architecture",
             "path": "/learn/introduction/architecture",
@@ -56,13 +51,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "2. Agentic Development",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Overview",
             "path": "/learn/introduction/build-with-llms-ai",
@@ -72,7 +65,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Cloud CLI",
             "path": "/learn/introduction/build-with-llms-ai/cloud-cli",
@@ -82,7 +74,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "MCP Server",
             "path": "/learn/introduction/build-with-llms-ai/mcp-server",
@@ -92,7 +83,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Agentic Skills",
             "path": "/learn/introduction/build-with-llms-ai/agentic-skills",
@@ -102,23 +92,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
-            "type": "link",
-            "title": "Bloom",
-            "path": "/learn/introduction/build-with-llms-ai/bloom",
-            "children": [],
-            "chapterTitle": "2.5. Bloom",
-            "number": "2.5."
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "AI-Friendly Docs",
             "path": "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
             "children": [],
-            "chapterTitle": "2.6. AI-Friendly Docs",
-            "number": "2.6."
+            "chapterTitle": "2.5. AI-Friendly Docs",
+            "number": "2.5."
           }
         ],
         "chapterTitle": "2. Agentic Development",
@@ -126,20 +105,17 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "3. Customization Tutorial",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Build Custom Features",
             "path": "/learn/customization/custom-features",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Brand Module",
                 "path": "/learn/customization/custom-features/module",
@@ -149,7 +125,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Brand Workflow",
                 "path": "/learn/customization/custom-features/workflow",
@@ -159,7 +134,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Brand API Route",
                 "path": "/learn/customization/custom-features/api-route",
@@ -173,14 +147,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Extend Features",
             "path": "/learn/customization/extend-features",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Link Brands and Products",
                 "path": "/learn/customization/extend-features/define-link",
@@ -190,7 +162,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Extend Core Flow",
                 "path": "/learn/customization/extend-features/extend-create-product",
@@ -200,7 +171,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Query Linked Records",
                 "path": "/learn/customization/extend-features/query-linked-records",
@@ -214,14 +184,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Customize Admin",
             "path": "/learn/customization/customize-admin",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Add Widget",
                 "path": "/learn/customization/customize-admin/widget",
@@ -231,7 +199,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Add UI Route",
                 "path": "/learn/customization/customize-admin/route",
@@ -245,14 +212,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Integrate Systems",
             "path": "/learn/customization/integrate-systems",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "CMS Module",
                 "path": "/learn/customization/integrate-systems/service",
@@ -262,7 +227,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Sync to CMS",
                 "path": "/learn/customization/integrate-systems/handle-event",
@@ -272,7 +236,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Schedule Syncing",
                 "path": "/learn/customization/integrate-systems/schedule-task",
@@ -286,7 +249,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Re-Use Customizations",
             "path": "/learn/customization/reuse-customizations",
@@ -296,7 +258,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Next Steps",
             "path": "/learn/customization/next-steps",
@@ -310,13 +271,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "4. Framework",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/framework",
             "title": "Overview",
@@ -326,7 +285,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/medusa-container",
             "title": "Medusa Container",
@@ -336,14 +294,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/modules",
             "title": "Modules",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/modules-directory-structure",
                 "title": "Directory Structure",
@@ -353,7 +309,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/loaders",
                 "title": "Loaders",
@@ -363,7 +318,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/isolation",
                 "title": "Module Isolation",
@@ -373,7 +327,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/container",
                 "title": "Module Container",
@@ -383,7 +336,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/options",
                 "title": "Module Options",
@@ -393,7 +345,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/service-factory",
                 "title": "Service Factory",
@@ -403,7 +354,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/service-constraints",
                 "title": "Service Constraints",
@@ -413,7 +363,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/db-operations",
                 "title": "Database Operations",
@@ -423,7 +372,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/multiple-services",
                 "title": "Multiple Services",
@@ -433,7 +381,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/commerce-modules",
                 "title": "Commerce Modules",
@@ -443,7 +390,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/modules/infrastructure-modules",
                 "title": "Infrastructure Modules",
@@ -457,14 +403,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/module-links",
             "title": "Module Links",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/directions",
                 "title": "Module Link Direction",
@@ -474,7 +418,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/link",
                 "title": "Link",
@@ -484,7 +427,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/query",
                 "title": "Query",
@@ -494,7 +436,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/index-module",
                 "title": "Index Module",
@@ -504,7 +445,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/custom-columns",
                 "title": "Add Custom Columns",
@@ -514,7 +454,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/read-only",
                 "title": "Read-Only Links",
@@ -524,7 +463,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/module-links/query-context",
                 "title": "Query Context",
@@ -538,14 +476,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/data-models",
             "title": "Data Models",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/data-models/infer-type",
                 "title": "Infer Type",
@@ -555,7 +491,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/data-models/properties",
                 "title": "Properties",
@@ -565,7 +500,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/data-models/json-properties",
                 "title": "JSON Properties",
@@ -575,53 +509,57 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/relationships",
-                "title": "Relationships",
+                "path": "/learn/fundamentals/data-models/big-numbers",
+                "title": "Big Numbers",
                 "children": [],
-                "chapterTitle": "4.5.4. Relationships",
+                "chapterTitle": "4.5.4. Big Numbers",
                 "number": "4.5.4."
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/manage-relationships",
-                "title": "Manage Relationships",
+                "path": "/learn/fundamentals/data-models/relationships",
+                "title": "Relationships",
                 "children": [],
-                "chapterTitle": "4.5.5. Manage Relationships",
+                "chapterTitle": "4.5.5. Relationships",
                 "number": "4.5.5."
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/indexes",
-                "title": "Define Index",
+                "path": "/learn/fundamentals/data-models/manage-relationships",
+                "title": "Manage Relationships",
                 "children": [],
-                "chapterTitle": "4.5.6. Define Index",
+                "chapterTitle": "4.5.6. Manage Relationships",
                 "number": "4.5.6."
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
-                "path": "/learn/fundamentals/data-models/check-constraints",
-                "title": "Check Constraints",
+                "path": "/learn/fundamentals/data-models/indexes",
+                "title": "Define Index",
                 "children": [],
-                "chapterTitle": "4.5.7. Check Constraints",
+                "chapterTitle": "4.5.7. Define Index",
                 "number": "4.5.7."
               },
               {
                 "loaded": true,
-                "isPathHref": true,
+                "type": "link",
+                "path": "/learn/fundamentals/data-models/check-constraints",
+                "title": "Check Constraints",
+                "children": [],
+                "chapterTitle": "4.5.8. Check Constraints",
+                "number": "4.5.8."
+              },
+              {
+                "loaded": true,
                 "type": "link",
                 "path": "/learn/fundamentals/data-models/write-migration",
                 "title": "Migrations",
                 "children": [],
-                "chapterTitle": "4.5.8. Migrations",
-                "number": "4.5.8."
+                "chapterTitle": "4.5.9. Migrations",
+                "number": "4.5.9."
               }
             ],
             "chapterTitle": "4.5. Data Models",
@@ -629,14 +567,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "API Routes",
             "path": "/learn/fundamentals/api-routes",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/http-methods",
                 "title": "HTTP Methods",
@@ -646,7 +582,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/parameters",
                 "title": "Parameters",
@@ -656,7 +591,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/responses",
                 "title": "Response",
@@ -666,7 +600,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/middlewares",
                 "title": "Middlewares",
@@ -676,7 +609,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/parse-body",
                 "title": "Body Parsing",
@@ -686,7 +618,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/validation",
                 "title": "Validation",
@@ -696,7 +627,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/protected-routes",
                 "title": "Protected Routes",
@@ -706,7 +636,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/errors",
                 "title": "Errors",
@@ -716,7 +645,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/cors",
                 "title": "Handling CORS",
@@ -726,7 +654,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/additional-data",
                 "title": "Pass Additional Data",
@@ -736,7 +663,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/retrieve-custom-links",
                 "title": "Retrieve Custom Links",
@@ -746,7 +672,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/localization",
                 "title": "Localization",
@@ -756,7 +681,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/api-routes/override",
                 "title": "Override API Routes",
@@ -770,14 +694,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/workflows",
             "title": "Workflows",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/constructor-constraints",
                 "title": "Constructor Constraints",
@@ -787,7 +709,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/compensation-function",
                 "title": "Compensation Function",
@@ -797,7 +718,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/variable-manipulation",
                 "title": "Transform Data",
@@ -807,7 +727,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/conditions",
                 "title": "When-Then Conditions",
@@ -817,7 +736,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/errors",
                 "title": "Error Handling",
@@ -827,7 +745,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/workflow-hooks",
                 "title": "Workflow Hooks",
@@ -837,7 +754,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/add-workflow-hook",
                 "title": "Expose a Hook",
@@ -847,7 +763,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/retry-failed-steps",
                 "title": "Retry Failed Steps",
@@ -857,7 +772,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/parallel-steps",
                 "title": "Run Steps in Parallel",
@@ -867,7 +781,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/workflow-timeout",
                 "title": "Workflow Timeout",
@@ -877,7 +790,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/store-executions",
                 "title": "Store Workflow Executions",
@@ -887,7 +799,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/long-running-workflow",
                 "title": "Long-Running Workflow",
@@ -897,7 +808,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/execute-another-workflow",
                 "title": "Nested Workflows",
@@ -907,7 +817,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/multiple-step-usage",
                 "title": "Multiple Step Usage",
@@ -917,7 +826,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/workflows/locks",
                 "title": "Using Locks",
@@ -927,7 +835,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "ref",
                 "path": "/learn/debugging-and-testing/debug-workflows",
                 "title": "Debug Workflows",
@@ -941,14 +848,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/events-and-subscribers",
             "title": "Events and Subscribers",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/events-and-subscribers/data-payload",
                 "title": "Events Data Payload",
@@ -958,7 +863,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/events-and-subscribers/emit-event",
                 "title": "Emit Event",
@@ -968,7 +872,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/events-and-subscribers/event-priority",
                 "title": "Event Priority",
@@ -982,14 +885,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/scheduled-jobs",
             "title": "Scheduled Jobs",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/scheduled-jobs/execution-number",
                 "title": "Execution Number",
@@ -999,7 +900,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/scheduled-jobs/interval",
                 "title": "Set Interval",
@@ -1013,14 +913,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/plugins",
             "title": "Plugins",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/plugins/create",
                 "title": "Create Plugin",
@@ -1034,14 +932,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/custom-cli-scripts",
             "title": "Custom CLI Scripts",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/fundamentals/custom-cli-scripts/seed-data",
                 "title": "Seed Data",
@@ -1055,7 +951,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/generated-types",
             "title": "Auto-Generated Types",
@@ -1069,13 +964,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "5. Admin Development",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin",
             "title": "Overview",
@@ -1085,7 +978,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/widgets",
             "title": "Admin Widgets",
@@ -1095,7 +987,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/custom-injection-zones",
             "title": "Custom Injection Zones",
@@ -1105,7 +996,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/ui-routes",
             "title": "Admin UI Routes",
@@ -1115,7 +1005,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/environment-variables",
             "title": "Environment Variables",
@@ -1125,7 +1014,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/routing",
             "title": "Routing Customizations",
@@ -1135,7 +1023,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/translations",
             "title": "Translations",
@@ -1145,7 +1032,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/constraints",
             "title": "Constraints",
@@ -1155,7 +1041,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/fundamentals/admin/tips",
             "title": "Tips",
@@ -1169,13 +1054,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "6. Storefront",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/storefront-development",
             "title": "Storefront Development",
@@ -1187,13 +1070,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "7. Configurations",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "pnpm",
             "path": "/learn/configurations/pnpm",
@@ -1203,7 +1084,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Environment Variables",
             "path": "/learn/fundamentals/environment-variables",
@@ -1213,14 +1093,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Medusa Configuations",
             "path": "/learn/configurations/medusa-config",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Asymmetric Encryption",
                 "path": "/learn/configurations/medusa-config/asymmetric-encryption",
@@ -1234,7 +1112,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Type Aliases",
             "path": "/learn/configurations/ts-aliases",
@@ -1248,13 +1125,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "8. Debugging & Testing",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/testing-tools",
             "title": "Testing Tools",
@@ -1264,14 +1139,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/testing-tools/integration-tests",
             "title": "Integration Tests",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/debugging-and-testing/testing-tools/integration-tests/api-routes",
                 "title": "Example: API Routes Tests",
@@ -1281,7 +1154,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/debugging-and-testing/testing-tools/integration-tests/workflows",
                 "title": "Example: Workflows Tests",
@@ -1295,7 +1167,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/testing-tools/modules-tests",
             "title": "Modules Tests",
@@ -1305,7 +1176,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/debug-workflows",
             "title": "Debug Workflows",
@@ -1315,14 +1185,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/instrumentation",
             "title": "Instrumentation",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "ref",
                 "path": "/resources/integrations/guides/sentry",
                 "title": "Guide: Sentry",
@@ -1336,14 +1204,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/logging",
             "title": "Logging",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/debugging-and-testing/logging/custom-logger",
                 "title": "Override Logger",
@@ -1357,14 +1223,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/debugging-and-testing/feature-flags",
             "title": "Feature Flags",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/debugging-and-testing/feature-flags/create",
                 "title": "Create Feature Flag",
@@ -1382,13 +1246,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "9. Best Practices",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/best-practices/third-party-sync",
             "title": "Third-Party Syncing",
@@ -1398,7 +1260,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "ref",
             "path": "/learn/fundamentals/scheduled-jobs/interval",
             "title": "Scheduled Job Intervals",
@@ -1412,13 +1273,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "10. Production",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/build",
             "title": "Build",
@@ -1428,7 +1287,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/production/worker-mode",
             "title": "Worker Modes",
@@ -1438,14 +1296,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/deployment",
             "title": "Deployment Overview",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "path": "/learn/deployment/general",
                 "title": "General Deployment",
@@ -1463,13 +1319,11 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "11. Upgrade",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/update",
             "title": "Update Medusa",
@@ -1479,7 +1333,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "external",
             "path": "https://github.com/medusajs/medusa/releases",
             "title": "Release Notes",
@@ -1489,14 +1342,12 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/codemods",
             "title": "Codemods",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Replace Imports (v2.11.0+)",
                 "path": "/learn/codemods/replace-imports",
@@ -1506,7 +1357,6 @@ export const generatedSidebars = [
               },
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
                 "title": "Replace Zod Imports (v2.13.0+)",
                 "path": "/learn/codemods/replace-zod-imports",
@@ -1520,7 +1370,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "From v1 to v2",
             "path": "/learn/introduction/from-v1-to-v2",
@@ -1534,35 +1383,40 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "12. Resources",
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "sub-category",
             "title": "Contribution Guidelines",
             "children": [
               {
                 "loaded": true,
-                "isPathHref": true,
                 "type": "link",
-                "path": "/learn/resources/contribution-guidelines/docs",
-                "title": "Docs",
+                "path": "/learn/resources/contribution-guidelines/code",
+                "title": "Code",
                 "children": [],
-                "chapterTitle": "12.1.1. Docs",
+                "chapterTitle": "12.1.1. Code",
                 "number": "12.1.1."
               },
               {
                 "loaded": true,
-                "isPathHref": true,
+                "type": "link",
+                "path": "/learn/resources/contribution-guidelines/docs",
+                "title": "Docs",
+                "children": [],
+                "chapterTitle": "12.1.2. Docs",
+                "number": "12.1.2."
+              },
+              {
+                "loaded": true,
                 "type": "link",
                 "path": "/learn/resources/contribution-guidelines/admin-translations",
                 "title": "Admin Translations",
                 "children": [],
-                "chapterTitle": "12.1.2. Admin Translations",
-                "number": "12.1.2."
+                "chapterTitle": "12.1.3. Admin Translations",
+                "number": "12.1.3."
               }
             ],
             "chapterTitle": "12.1. Contribution Guidelines",
@@ -1570,7 +1424,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/learn/resources/usage",
             "title": "Usage",

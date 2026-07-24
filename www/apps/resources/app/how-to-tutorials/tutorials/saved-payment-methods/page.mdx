@@ -399,9 +399,9 @@ cd apps/storefront
 
 </Note>
 
-During checkout, when the customer chooses a payment method, such as Stripe, the Next.js Starter Storefront creates a [payment session](../../../commerce-modules/payment/payment-session/page.mdx) in Medusa using the [Initialize Payment Session](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions) API route.
+During checkout, when the customer chooses a payment method, such as Stripe, the Next.js Starter Storefront creates a [payment session](../../../commerce-modules/payment/payment-session/page.mdx) in Medusa using the [Initialize Payment Session](!api!/store/payment-collections/initialize-payment-session) API route.
 
-Under the hood, Medusa uses the associated payment provider (Stripe) to initiate the payment process with the associated third-party payment provider. The [Initialize Payment Session](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions) API route accepts a `data` object parameter in the request body that allows you to pass data relevant to the third-party payment provider.
+Under the hood, Medusa uses the associated payment provider (Stripe) to initiate the payment process with the associated third-party payment provider. The [Initialize Payment Session](!api!/store/payment-collections/initialize-payment-session) API route accepts a `data` object parameter in the request body that allows you to pass data relevant to the third-party payment provider.
 
 So, to save the payment method that the customer uses during checkout with Stripe, you must pass the `setup_future_usage` property in the `data` object. The `setup_future_usage` property is a Stripe-specific property that allows you to save the payment method for future use.
 

@@ -25,9 +25,11 @@ import {
 import {
   EntityDiscoveryService,
   generateEntityColumns,
-  hasEntityOverride,
+  getComputedColumnRegistry,
+  getEntityOverrideRegistry,
   PropertyLabel as PropertyLabelType,
 } from "@/utils"
+import { SettingsModuleOptions } from "@/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -66,6 +68,7 @@ export default class SettingsModuleService
       propertyLabelService,
       layoutConfigurationService,
     }: InjectedDependencies,
+    options: SettingsModuleOptions = {},
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     super(...arguments)
@@ -74,6 +77,32 @@ export default class SettingsModuleService
     this.propertyLabelService_ = propertyLabelService
     this.layoutConfigurationService_ = layoutConfigurationService
     this.entityDiscoveryService_ = new EntityDiscoveryService()
+
+    this.registerColumnCustomizations_(options)
+  }
+
+  /**
+   * Merge module-provided entity overrides and computed columns into the shared
+   * registries so generated columns reflect user customizations.
+   */
+  protected registerColumnCustomizations_(
+    options: SettingsModuleOptions
+  ): void {
+    const overrideRegistry = getEntityOverrideRegistry()
+    const computedColumnRegistry = getComputedColumnRegistry()
+
+    for (const [entity, override] of Object.entries(
+      options.entityOverrides ?? {}
+    )) {
+      const existingOverride = overrideRegistry.get(entity) ?? {}
+      overrideRegistry.register(entity, {
+        ...existingOverride,
+        ...override,
+      })
+      if (override.computedColumns?.length) {
+        computedColumnRegistry.register(entity, override.computedColumns)
+      }
+    }
   }
 
   __hooks = {
@@ -569,17 +598,27 @@ export default class SettingsModuleService
   /**
    * List all discoverable entities.
    */
-  listDiscoverableEntities(): HttpTypes.AdminEntityInfo[] {
+  @InjectManager()
+  async listDiscoverableEntities(
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<HttpTypes.AdminEntityInfo[]> {
     if (!this.entityDiscoveryService_.isInitialized()) {
       return []
     }
 
     const entities = this.entityDiscoveryService_.discoverEntities()
 
+    const labels = await this.propertyLabelService_.list(
+      {},
+      { select: ["entity"] },
+      sharedContext
+    )
+    const entitiesWithLabels = new Set(labels.map((label) => label.entity))
+
     return entities.map((entity) =>
       this.entityDiscoveryService_.getEntityInfo(
         entity,
-        hasEntityOverride(entity.name)
+        entitiesWithLabels.has(entity.name)
       )
     )
   }

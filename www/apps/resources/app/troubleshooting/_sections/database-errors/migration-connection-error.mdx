@@ -1,0 +1,68 @@
+### Error While Running Migrations
+
+When you run the `db:migrate` or other commands that connect to the database, the command may hang or you may get the following error:
+
+```bash
+Could not connect to the database while running migrations. ...
+```
+
+This error means Medusa couldn't connect to your database while running migrations. It's usually caused by an incorrect database URL or an SSL configuration issue.
+
+#### Incorrect Database URL
+
+If the database URL is wrong, Medusa can't connect to the database. For example, the host name, port, or credentials are incorrect.
+
+Check that your `DATABASE_URL` environment variable is set correctly. The format is `postgres://[user][:password]@[host][:port]/[dbname]`. Make sure that the host, port, credentials, and database name are all correct.
+
+If you're using Docker, make sure the host matches your setup:
+
+- Inside a container, use the container's service name as the host.
+- Outside a container, use `localhost` or the host's IP address.
+
+Refer to the [databaseUrl configuration documentation](!docs!/learn/configurations/medusa-config#databaseUrl) to learn more about formatting the database URL.
+
+#### SSL Connection Issues
+
+When your database URL uses a host other than `localhost` or `127.0.0.1` without specifying an SSL mode, Medusa tries to connect to the database over SSL. This also may happen when running Medusa in a Docker container.
+
+If your PostgreSQL server doesn't support SSL, the connection fails. So, disable it explicitly by setting the `ssl` property to `false` in the `databaseDriverOptions.connection` configuration:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    databaseDriverOptions: {
+      connection: {
+        ssl: false,
+      },
+    },
+    // ...
+  },
+})
+```
+
+Alternatively, add the `sslmode=disable` query parameter to your database URL:
+
+```bash
+DATABASE_URL=postgres://user:password@host:5432/medusa?sslmode=disable
+```
+
+If your database requires SSL, such as a managed database that uses a self-signed certificate, enable SSL by setting the `ssl` property to an object instead:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+    databaseDriverOptions: {
+      connection: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
+    },
+    // ...
+  },
+})
+```
+
+Refer to the [databaseDriverOptions configuration documentation](!docs!/learn/configurations/medusa-config#databaseDriverOptions) to learn more about configuring the database connection.

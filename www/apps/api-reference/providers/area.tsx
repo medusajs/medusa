@@ -2,9 +2,8 @@
 
 import React from "react"
 import type { OpenAPI } from "types"
-import { capitalize, usePrevious, useSidebar } from "docs-ui"
-import { createContext, useContext, useEffect, useMemo, useState } from "react"
-import { usePathname } from "next/navigation"
+import { capitalize, usePrevious } from "docs-ui"
+import { createContext, useContext, useMemo, useState } from "react"
 
 type AreaContextType = {
   area: OpenAPI.Area
@@ -23,16 +22,10 @@ type AreaProviderProps = {
 const AreaProvider = ({ area: passedArea, children }: AreaProviderProps) => {
   const [area, setArea] = useState<OpenAPI.Area>(passedArea)
   const prevArea = usePrevious(area)
-  const { setActivePath } = useSidebar()
-  const pathname = usePathname()
 
   const displayedArea = useMemo(() => {
     return capitalize(area)
   }, [area])
-
-  useEffect(() => {
-    setActivePath(null)
-  }, [pathname])
 
   return (
     <AreaContext.Provider

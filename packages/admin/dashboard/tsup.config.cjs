@@ -8,6 +8,8 @@ export default defineConfig({
     components: "./src/exports/components.tsx",
     // `@medusajs/dashboard/hooks`
     hooks: "./src/exports/hooks.ts",
+    // `@medusajs/dashboard/lib`
+    lib: "./src/exports/lib.ts",
   },
   format: ["cjs", "esm"],
   external: [
@@ -18,6 +20,7 @@ export default defineConfig({
     "virtual:medusa/menu-items",
     "virtual:medusa/widgets",
     "virtual:medusa/i18n",
+    "virtual:medusa/cell-renderers",
     "virtual:medusa/layouts",
   ],
   tsconfig: "tsconfig.build.json",
@@ -26,6 +29,7 @@ export default defineConfig({
       index: "./src/index.ts",
       components: "./src/exports/components.tsx",
       hooks: "./src/exports/hooks.ts",
+      lib: "./src/exports/lib.ts",
     },
   },
   clean: true,

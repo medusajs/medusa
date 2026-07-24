@@ -23,7 +23,7 @@ export class Invite {
    * the {@link Auth.register}.
    * 
    * This method sends a request to the [Accept Invite]
-   * (https://docs.medusajs.com/api/admin#invites_postinvitesaccept)
+   * (https://docs.medusajs.com/api/admin/invites/accept-invite)
    * API route.
    * 
    * @param input - The details of the user to create.
@@ -71,7 +71,7 @@ export class Invite {
 
   /**
    * This method creates an invite. It sends a request to the
-   * [Create Invite](https://docs.medusajs.com/api/admin#invites_postinvites)
+   * [Create Invite](https://docs.medusajs.com/api/admin/invites/create-invite)
    * API route.
    * 
    * @param body - The invite's details.
@@ -105,7 +105,7 @@ export class Invite {
 
   /**
    * This method retrieves an invite by its ID. It sends a request to the
-   * [Get Invite](https://docs.medusajs.com/api/admin#invites_getinvitesid)
+   * [Get Invite](https://docs.medusajs.com/api/admin/invites/get-an-invite)
    * API route.
    * 
    * @param id - The invite's ID.
@@ -134,7 +134,7 @@ export class Invite {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminInviteResponse>(
@@ -148,7 +148,7 @@ export class Invite {
 
   /**
    * This method retrieves a paginated list of invites. It sends a request to the
-   * [List Invites](https://docs.medusajs.com/api/admin#invites_getinvites)
+   * [List Invites](https://docs.medusajs.com/api/admin/invites/list-invites)
    * API route.
    * 
    * @param queryParams - Filters and pagination configurations.
@@ -191,7 +191,7 @@ export class Invite {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(queryParams?: FindParams, headers?: ClientHeaders) {
     return await this.client.fetch<
@@ -204,7 +204,7 @@ export class Invite {
 
   /**
    * This method refreshes the token of an invite. It sends a request to the
-   * [Refresh Invite Token](https://docs.medusajs.com/api/admin#invites_postinvitesidresend)
+   * [Refresh Invite Token](https://docs.medusajs.com/api/admin/invites/refresh-invite-token)
    * API route.
    * 
    * @param id - The invite's ID.
@@ -229,7 +229,7 @@ export class Invite {
 
   /**
    * This method deletes an invite. It sends a request to the
-   * [Delete Invite](https://docs.medusajs.com/api/admin#invites_deleteinvitesid)
+   * [Delete Invite](https://docs.medusajs.com/api/admin/invites/delete-invite)
    * API route.
    * 
    * @param id - The invite's ID.

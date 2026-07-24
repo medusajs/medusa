@@ -1,10 +1,16 @@
-import { FindConfigOrder } from "@medusajs/types"
 import { raw } from "@medusajs/deps/mikro-orm/core"
+import { FindConfigOrder } from "@medusajs/types"
 import { isObject } from "../../../common"
 import {
-  buildJoinCorrelationSql,
-  buildJoinSoftDeleteSql,
+  buildLinkCorrelationSql,
+  buildLinkSoftDeleteSql,
   buildLinkToTargetJoinSql,
+  buildTargetCorrelationSql,
+  buildTargetSoftDeleteSql,
+  CorrelateSpec,
+  getTargetPrimaryKey,
+  inferLinkType,
+  LinkType,
   qualifyTable,
   quoteIdentifier,
   ResolvedCrossModuleJoinSpec,
@@ -13,8 +19,7 @@ import {
 export function transformOrderByForCrossModuleJoins(
   orderBy: FindConfigOrder | FindConfigOrder[] | undefined,
   crossModuleJoins: ResolvedCrossModuleJoinSpec[],
-  primaryKey: string,
-  rootAlias: string,
+  correlateSpec: CorrelateSpec,
   defaultSchema: string,
   withDeleted: boolean
 ): FindConfigOrder | FindConfigOrder[] | undefined {
@@ -27,8 +32,7 @@ export function transformOrderByForCrossModuleJoins(
       transformOrderByObject(
         entry,
         crossModuleJoins,
-        primaryKey,
-        rootAlias,
+        correlateSpec,
         defaultSchema,
         withDeleted
       )
@@ -38,8 +42,7 @@ export function transformOrderByForCrossModuleJoins(
   return transformOrderByObject(
     orderBy,
     crossModuleJoins,
-    primaryKey,
-    rootAlias,
+    correlateSpec,
     defaultSchema,
     withDeleted
   )
@@ -48,8 +51,7 @@ export function transformOrderByForCrossModuleJoins(
 function transformOrderByObject(
   orderBy: FindConfigOrder,
   crossModuleJoins: ResolvedCrossModuleJoinSpec[],
-  primaryKey: string,
-  rootAlias: string,
+  correlateSpec: CorrelateSpec,
   defaultSchema: string,
   withDeleted: boolean
 ): FindConfigOrder {
@@ -67,10 +69,9 @@ function transformOrderByObject(
         transformed[
           buildOrderByScalarSubquery(
             join.joinSpec,
+            correlateSpec,
             join.index,
             rest.join("."),
-            primaryKey,
-            rootAlias,
             defaultSchema,
             withDeleted
           ) as unknown as string
@@ -85,8 +86,7 @@ function transformOrderByObject(
       transformed[key] = transformOrderByObject(
         direction as FindConfigOrder,
         crossModuleJoins,
-        primaryKey,
-        rootAlias,
+        correlateSpec,
         defaultSchema,
         withDeleted
       )
@@ -98,54 +98,153 @@ function transformOrderByObject(
 
 function buildOrderByScalarSubquery(
   joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
   index: number,
   field: string,
-  primaryKey: string,
-  rootAlias: string,
+  defaultSchema: string,
+  withDeleted: boolean
+): ReturnType<typeof raw> {
+  const linkType = inferLinkType(joinSpec, correlateSpec)
+
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+  if (field === targetPrimaryKey && linkType === "pivot") {
+    return buildTargetIdOnlyOrderSql(
+      joinSpec,
+      correlateSpec,
+      index,
+      defaultSchema,
+      withDeleted
+    )
+  }
+
+  if (linkType === "pivot") {
+    return buildPivotLinkOrderSql(
+      joinSpec,
+      correlateSpec,
+      index,
+      field,
+      defaultSchema,
+      withDeleted
+    )
+  } else {
+    return buildNoLinkOrderSql(
+      joinSpec,
+      correlateSpec,
+      field,
+      defaultSchema,
+      withDeleted,
+      linkType
+    )
+  }
+}
+
+function buildTargetIdOnlyOrderSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  index: number,
   defaultSchema: string,
   withDeleted: boolean
 ): ReturnType<typeof raw> {
   const linkAlias = `cm_order_link_${index}`
-  const targetAlias = joinSpec.alias
   const linkTable = qualifyTable(
     joinSpec.link.schema,
     joinSpec.link.table,
     defaultSchema
   )
+
+  const clauses = [
+    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
+    buildLinkSoftDeleteSql(linkAlias, withDeleted),
+  ].filter(Boolean)
+
+  return raw(
+    `(select ${quoteIdentifier(linkAlias)}.${quoteIdentifier(
+      joinSpec.link.targetKey
+    )} from ${linkTable} as ${quoteIdentifier(linkAlias)} where ${clauses.join(
+      " and "
+    )} order by ${quoteIdentifier(linkAlias)}.${quoteIdentifier(
+      joinSpec.link.targetKey
+    )} limit 1)`
+  )
+}
+
+function buildPivotLinkOrderSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  index: number,
+  field: string,
+  defaultSchema: string,
+  withDeleted: boolean
+): ReturnType<typeof raw> {
+  const linkAlias = `cm_order_link_${index}`
+  const linkTable = qualifyTable(
+    joinSpec.link.schema,
+    joinSpec.link.table,
+    defaultSchema
+  )
+  const targetAlias = joinSpec.alias
   const targetTable = qualifyTable(
     joinSpec.target.schema,
     joinSpec.target.table,
     defaultSchema
   )
-  const targetPrimaryKey = joinSpec.target.primaryKey ?? "id"
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
 
-  const clauses = [
-    buildJoinCorrelationSql(joinSpec, linkAlias, rootAlias, primaryKey),
-    buildLinkToTargetJoinSql(
-      linkAlias,
-      targetAlias,
-      joinSpec.link.targetKey,
-      targetPrimaryKey
-    ),
-    buildJoinSoftDeleteSql(linkAlias, targetAlias, withDeleted),
-  ].filter(Boolean)
+  const clauses: string[] = [
+    buildLinkCorrelationSql(joinSpec, correlateSpec, linkAlias),
+    buildLinkToTargetJoinSql(joinSpec, linkAlias, targetAlias),
+    buildLinkSoftDeleteSql(linkAlias, withDeleted),
+    buildTargetSoftDeleteSql(targetAlias, withDeleted),
+  ]
 
   /*
    * Currently links always use a pivot table, even for 1-to-1 relationships, and the checks
    * on them are done in the application layer. Because of that, we essentially suport a to-many
    * sorting behavior, which is not ideal.
    */
-  const sql = `(select ${quoteIdentifier(targetAlias)}.${quoteIdentifier(
-    field
-  )} from ${linkTable} as ${quoteIdentifier(
-    linkAlias
-  )} inner join ${targetTable} as ${quoteIdentifier(
-    targetAlias
-  )} on true where ${clauses.join(" and ")} order by ${quoteIdentifier(
-    targetAlias
-  )}.${quoteIdentifier(targetPrimaryKey)} limit 1)`
+  return raw(
+    `(select ${quoteIdentifier(targetAlias)}.${quoteIdentifier(
+      field
+    )} from ${linkTable} as ${quoteIdentifier(
+      linkAlias
+    )} inner join ${targetTable} as ${quoteIdentifier(
+      targetAlias
+    )} on true where ${clauses.join(" and ")} order by ${quoteIdentifier(
+      targetAlias
+    )}.${quoteIdentifier(targetPrimaryKey)} limit 1)`
+  )
+}
 
-  return raw(sql)
+function buildNoLinkOrderSql(
+  joinSpec: ResolvedCrossModuleJoinSpec,
+  correlateSpec: CorrelateSpec,
+  field: string,
+  defaultSchema: string,
+  withDeleted: boolean,
+  linkType: Exclude<LinkType, "normal">
+): ReturnType<typeof raw> {
+  const targetAlias = joinSpec.alias
+  const targetTable = qualifyTable(
+    joinSpec.target.schema,
+    joinSpec.target.table,
+    defaultSchema
+  )
+  const targetPrimaryKey = getTargetPrimaryKey(joinSpec)
+
+  const clauses: string[] = [
+    buildTargetCorrelationSql(joinSpec, correlateSpec, targetAlias, linkType),
+    buildTargetSoftDeleteSql(targetAlias, withDeleted),
+  ]
+
+  return raw(
+    `(select ${quoteIdentifier(targetAlias)}.${quoteIdentifier(
+      field
+    )} from ${targetTable} as ${quoteIdentifier(
+      targetAlias
+    )} where ${clauses.join(" and ")} order by ${quoteIdentifier(
+      targetAlias
+    )}.${quoteIdentifier(targetPrimaryKey)} limit 1)`
+  )
 }
 
 function getJoinSpecByAlias(

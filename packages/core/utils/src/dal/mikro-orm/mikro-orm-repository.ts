@@ -25,16 +25,18 @@ import {
 } from "@medusajs/types"
 import {
   arrayDifference,
+  isObject,
   isString,
   MedusaError,
   promiseAll,
 } from "../../common"
 import { toMikroORMEntity } from "../../dml"
 import { buildQuery } from "../../modules-sdk/build-query"
-import { augmentFindOptionsWithCrossModuleJoins } from "./cross-module-query"
 import { transactionWrapper } from "../utils"
+import { augmentFindOptionsWithCrossModuleJoins } from "./cross-module-query"
 import { dbErrorMapper } from "./db-error-mapper"
 import { mikroOrmSerializer } from "./mikro-orm-serializer"
+import { SoftDeletableFilterKey } from "./mikro-orm-soft-deletable-filter"
 import { pruneFindOptionsAgainstMetadata } from "./prune-find-options-against-metadata"
 import { mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
@@ -161,7 +163,7 @@ export class MikroOrmBaseRepository<const T extends object = object>
   delete(
     idsOrPKs: FindOptions<T>["where"],
     context?: Context
-  ): Promise<string[]> {
+  ): Promise<string[] | Record<string, any>[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -279,7 +281,10 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  delete(ids: string[], context?: Context): Promise<string[]> {
+  delete(
+    ids: string[],
+    context?: Context
+  ): Promise<string[] | Record<string, any>[]> {
     throw new Error("Method not implemented.")
   }
 }
@@ -429,8 +434,19 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
     async delete(
       filters: FindOptions<T>["where"],
       context?: Context
-    ): Promise<string[]> {
+    ): Promise<string[] | Record<string, any>[]> {
       const manager = this.getActiveManager<SqlEntityManager>(context)
+
+      // Resolve the model's real primary key(s) so the RETURNING clause and the
+      // returned values do not assume an "id" column, which breaks on models
+      // whose primary key is a custom (non-id) column or a composite key.
+      const primaryKeys = MikroOrmAbstractBaseRepository_.retrievePrimaryKeys(
+        this.entity
+      )
+      const metadata = manager.getDriver().getMetadata().get(this.entity.name)
+      const primaryKeyColumns = primaryKeys.map(
+        (key) => metadata?.properties?.[key]?.fieldNames?.[0] ?? key
+      )
 
       const whereSqlInfo = manager
         .createQueryBuilder(this.entity.name, this.tableName)
@@ -452,9 +468,23 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         builder.where(manager.getKnex().raw(...where))
       }
 
-      return await builder.returning("id").then((rows: { id: string }[]) => {
-        return rows.map((row: { id: string }) => row.id)
-      })
+      return await builder
+        .returning(primaryKeyColumns)
+        .then((rows: Record<string, any>[]) => {
+          // For the common single primary key case, return a flat array of the
+          // primary key values. For composite keys, return an array of objects
+          // keyed by the real primary key property names.
+          if (primaryKeys.length === 1) {
+            return rows.map((row) => row[primaryKeyColumns[0]])
+          }
+
+          return rows.map((row) =>
+            primaryKeys.reduce((acc, key, index) => {
+              acc[key] = row[primaryKeyColumns[index]]
+              return acc
+            }, {} as Record<string, any>)
+          )
+        })
     }
 
     async find(
@@ -656,7 +686,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         return mainEntity
       })
 
-      let {
+      const {
         orderedEntities: upsertedTopLevelEntities,
         performedActions: performedActions_,
       } = await this.upsertMany_(manager, this.entity.name, toUpsert)
@@ -673,7 +703,9 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       config.relations?.forEach((relationName) => {
         const relation = allRelations?.find((r) => r.name === relationName)
-        if (!relation) return
+        if (!relation) {
+          return
+        }
 
         if (
           relation.kind === ReferenceKind.ONE_TO_ONE ||
@@ -1490,6 +1522,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       findOptions_ = augmentFindOptionsWithCrossModuleJoins(findOptions_, {
         entityName: this.getEntityName(),
+        entityTable: this.tableName,
         primaryKey: this.getPrimaryKeyField(),
         defaultSchema: this.getConnectionSchema(manager),
       })
@@ -1500,12 +1533,11 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       }
 
       if (!("strategy" in findOptions_.options)) {
-        if (findOptions_.options.limit != null || findOptions_.options.offset) {
-          // TODO: from 7+ it will be the default strategy
-          Object.assign(findOptions_.options, {
-            strategy: LoadStrategy.SELECT_IN,
-          })
-        }
+        // MikroORM v7 defaults to BALANCED, so we are defaulting to it as it is a good
+        // balance between performance and behavior consistency
+        Object.assign(findOptions_.options, {
+          strategy: LoadStrategy.BALANCED,
+        })
       }
 
       pruneFindOptionsAgainstMetadata(
@@ -1517,7 +1549,76 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         findOptions: findOptions_,
       })
 
+      // Soft-deleted related entities must not exclude parent entities. Force LEFT JOIN
+      // for populated relations so softDeletable filters on related tables do not
+      // remove owning rows (MikroORM defaults to INNER JOIN for non-nullable FKs).
+      const softDeletableFilter = (
+        findOptions_.options.filters as Record<string, unknown> | undefined
+      )?.[SoftDeletableFilterKey]
+      const withDeleted =
+        isObject(softDeletableFilter) &&
+        (softDeletableFilter as { withDeleted?: boolean }).withDeleted === true
+      if (!withDeleted) {
+        // Override populate to force LEFT JOINs.
+        findOptions_.options.populate = this.forceLeftJoinPopulate(
+          findOptions_.options.populate,
+          findOptions_.options.fields
+        )
+      }
+
       return findOptions_
+    }
+
+    /**
+     * Ensure every populated relation uses a LEFT JOIN.
+     * Infers populate from nested fields when populate is omitted, then rewrites
+     * all populate hints (including nested children) to `joinType: "left join"`.
+     */
+    private forceLeftJoinPopulate(populate: unknown, fields?: unknown): any {
+      let populateHints = populate
+
+      if (
+        (!Array.isArray(populateHints) || !populateHints.length) &&
+        Array.isArray(fields)
+      ) {
+        const relationPaths = new Set<string>()
+        for (const field of fields) {
+          if (!isString(field) || !field.includes(".")) {
+            continue
+          }
+
+          // Drop the trailing scalar (e.g. "entity1.id" -> "entity1").
+          relationPaths.add(field.split(".").slice(0, -1).join("."))
+        }
+
+        if (relationPaths.size) {
+          populateHints = [...relationPaths]
+        }
+      }
+
+      if (!Array.isArray(populateHints)) {
+        return populateHints
+      }
+
+      return populateHints.map((item) => {
+        if (isString(item)) {
+          return { field: item, joinType: "left join" }
+        }
+
+        if (item && typeof item === "object") {
+          // This is an internal representation of populate in mikro-orm.
+          // In v7, this is exposed publicly.
+          return {
+            ...item,
+            joinType: "left join",
+            children: item.children
+              ? this.forceLeftJoinPopulate(item.children)
+              : item.children,
+          }
+        }
+
+        return item
+      })
     }
 
     private normalizeFilters(
