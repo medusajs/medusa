@@ -11,7 +11,7 @@ import { deleteInvitesStep } from "../steps"
 export const deleteInvitesWorkflowId = "delete-invites-workflow"
 /**
  * This workflow deletes one or more user invites. It's used by the
- * [Delete Invites Admin API Route](https://docs.medusajs.com/api/admin#invites_deleteinvitesid).
+ * [Delete Invites Admin API Route](https://docs.medusajs.com/api/admin/invites/delete-invite).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete invites within your custom flows.

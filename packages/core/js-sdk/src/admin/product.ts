@@ -19,7 +19,7 @@ export class Product {
    * the import is confirmed using the {@link confirmImport} method.
    *
    * This method sends a request to the
-   * [Create Product Import](https://docs.medusajs.com/api/admin#products_postproductsimport)
+   * [Create Product Import](https://docs.medusajs.com/api/admin/products/create-product-import)
    * API route.
    *
    * @privateRemarks
@@ -72,7 +72,7 @@ export class Product {
    * the import is confirmed using the {@link confirmImport} method.
    *
    * This method sends a request to the
-   * [Create Product Import](https://docs.medusajs.com/api/admin#products_postproductsimports)
+   * [Create Product Import](https://docs.medusajs.com/api/admin/products/create-product-import-2)
    * API route.
    *
    * @since 2.8.5
@@ -178,7 +178,7 @@ export class Product {
   /**
    * This method confirms a product import created using the method {@link import}.
    * It sends a request to the
-   * [Confirm Product Import](https://docs.medusajs.com/api/admin#products_postproductsimporttransaction_idconfirm)
+   * [Confirm Product Import](https://docs.medusajs.com/api/admin/products/confirm-product-import)
    * API route.
    *
    * @since 2.8.5
@@ -221,7 +221,7 @@ export class Product {
    * You can retrieve the notifications using the `/admin/notification` API route to
    * retrieve the file's download URL.
    *
-   * This method sends a request to the [Export Product](https://docs.medusajs.com/api/admin#products_postproductsexport)
+   * This method sends a request to the [Export Product](https://docs.medusajs.com/api/admin/products/export-products)
    * API route.
    *
    * @param body - The export's details.
@@ -253,7 +253,7 @@ export class Product {
 
   /**
    * This method manages products to create, update, or delete them. It sends a request to the
-   * [Manage Products](https://docs.medusajs.com/api/admin#products_postproductsbatch)
+   * [Manage Products](https://docs.medusajs.com/api/admin/products/manage-products)
    * API route.
    *
    * @param body - The products to create, update, or delete.
@@ -309,7 +309,7 @@ export class Product {
 
   /**
    * This method creates a product. It sends a request to the
-   * [Create Product](https://docs.medusajs.com/api/admin#products_postproducts)
+   * [Create Product](https://docs.medusajs.com/api/admin/products/create-product)
    * API route.
    *
    * @param body - The product's details.
@@ -357,7 +357,7 @@ export class Product {
 
   /**
    * This method updates a product. It sends a request to the
-   * [Update Product](https://docs.medusajs.com/api/admin#products_postproductsid)
+   * [Update Product](https://docs.medusajs.com/api/admin/products/update-a-product)
    * API route.
    *
    * @param id - The product's ID.
@@ -393,7 +393,7 @@ export class Product {
 
   /**
    * This method retrieves a paginated list of products. It sends a request to the
-   * [List Products](https://docs.medusajs.com/api/admin#products_getproducts) API route.
+   * [List Products](https://docs.medusajs.com/api/admin/products/list-products) API route.
    *
    * @param queryParams - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -435,7 +435,7 @@ export class Product {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     queryParams?: HttpTypes.AdminProductListParams,
@@ -452,7 +452,7 @@ export class Product {
 
   /**
    * This method retrieves a product by its ID. It sends a request to the
-   * [Get Product](https://docs.medusajs.com/api/admin#products_getproductsid)
+   * [Get Product](https://docs.medusajs.com/api/admin/products/get-a-product)
    * API route.
    *
    * @param id - The product's ID.
@@ -481,7 +481,7 @@ export class Product {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminProductResponse>(
@@ -495,7 +495,7 @@ export class Product {
 
   /**
    * This method deletes a product. It sends a request to the
-   * [Delete Product](https://docs.medusajs.com/api/admin#products_deleteproductsid)
+   * [Delete Product](https://docs.medusajs.com/api/admin/products/delete-a-product)
    * API route.
    *
    * @param id - The product's ID.
@@ -520,7 +520,7 @@ export class Product {
 
   /**
    * This method manages the variants of a product. It sends a request to the
-   * [Manage Variants](https://docs.medusajs.com/api/admin#products_postproductsidvariantsbatch)
+   * [Manage Variants](https://docs.medusajs.com/api/admin/products/manage-variants-in-a-product)
    * API route.
    *
    * @param productId - The product's ID.
@@ -571,7 +571,7 @@ export class Product {
 
   /**
    * This method creates a variant for a product. It sends a request to the
-   * [Create Variant](https://docs.medusajs.com/api/admin#products_postproductsidvariants)
+   * [Create Variant](https://docs.medusajs.com/api/admin/products/create-variant)
    * API route.
    *
    * @param productId - The product's ID.
@@ -616,7 +616,7 @@ export class Product {
 
   /**
    * This method updates a variant of a product. It sends a request to the
-   * [Update Variant](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_id)
+   * [Update Variant](https://docs.medusajs.com/api/admin/products/update-variant)
    * API route.
    *
    * @param productId - The product's ID.
@@ -658,7 +658,7 @@ export class Product {
 
   /**
    * This method retrieves a paginated list of products. It sends a request to the
-   * [List Products](https://docs.medusajs.com/api/admin#products_getproductsidvariants) API route.
+   * [List Products](https://docs.medusajs.com/api/admin/products/list-variants) API route.
    *
    * @param productId - The ID of the product to retrieve its variants.
    * @param query - Filters and pagination configurations.
@@ -701,7 +701,7 @@ export class Product {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async listVariants(
     productId: string,
@@ -719,7 +719,7 @@ export class Product {
 
   /**
    * This method retrieves a product's variant. It sends a request to the
-   * [Retrieve Variant](https://docs.medusajs.com/api/admin#products_getproductsidvariantsvariant_id)
+   * [Retrieve Variant](https://docs.medusajs.com/api/admin/products/get-variant)
    * API route.
    *
    * @param productId - The product's ID.
@@ -756,7 +756,7 @@ export class Product {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieveVariant(
     productId: string,
@@ -775,7 +775,7 @@ export class Product {
 
   /**
    * This method deletes a product's variant. It sends a request to the
-   * [Delete Variant](https://docs.medusajs.com/api/admin#products_deleteproductsidvariantsvariant_id)
+   * [Delete Variant](https://docs.medusajs.com/api/admin/products/delete-variant)
    * API route.
    *
    * @param productId - The product's ID.
@@ -811,7 +811,7 @@ export class Product {
    * update their inventory items, or delete their association with inventory items.
    *
    * It sends a request to the
-   * [Manage Variant Inventory](https://docs.medusajs.com/api/admin#products_postproductsidvariantsinventoryitemsbatch)
+   * [Manage Variant Inventory](https://docs.medusajs.com/api/admin/products/manage-variants-inventory)
    * API route.
    *
    * @param productId - The ID of the product that the variant belongs to.
@@ -951,7 +951,7 @@ export class Product {
 
   /**
    * This method retrieves a paginated list of product options. It sends a request to the
-   * [List Options](https://docs.medusajs.com/api/admin#products_getproductsidoptions) API route.
+   * [List Options](https://docs.medusajs.com/api/admin/products/list-options) API route.
    *
    * @param productId - The ID of the product to retrieve its options
    * @param query - Filters and pagination configurations.
@@ -994,7 +994,7 @@ export class Product {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async listOptions(
     productId: string,
@@ -1049,7 +1049,7 @@ export class Product {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieveOption(
     productId: string,
@@ -1094,7 +1094,7 @@ export class Product {
 
   /**
    * This method manages image-variant associations for a specific image. It sends a request to the
-   * [Batch Image Variants](https://docs.medusajs.com/api/admin#products_postproductsidimagesimage_idvariantsbatch)
+   * [Batch Image Variants](https://docs.medusajs.com/api/admin/products/manage-variants-of-product-image)
    * API route.
    *
    * @since 2.11.2
@@ -1132,7 +1132,7 @@ export class Product {
 
   /**
    * This method manages variant-image associations for a specific variant. It sends a request to the
-   * [Batch Variant Images](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_idimagesbatch)
+   * [Batch Variant Images](https://docs.medusajs.com/api/admin/products/manage-images-of-product-variant)
    * API route.
    *
    * @since 2.11.2
@@ -1171,7 +1171,7 @@ export class Product {
   /**
    * This method links product options to a product. It allows adding new options,
    * removing existing ones, or updating option values. It sends a request to the
-   * [Batch Product Product Options](https://docs.medusajs.com/api/admin#products_postproductsidoptionsbatch)
+   * [Batch Product Product Options](https://docs.medusajs.com/api/admin/products/add-options-to-product)
    * API route.
    *
    * @since 2.16.0

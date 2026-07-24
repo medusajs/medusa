@@ -29,7 +29,7 @@ export type DeleteProductsWorkflowInput = {
 export const deleteProductsWorkflowId = "delete-products"
 /**
  * This workflow deletes one or more products. It's used by the
- * [Delete Products Admin API Route](https://docs.medusajs.com/api/admin#products_deleteproductsid).
+ * [Delete Products Admin API Route](https://docs.medusajs.com/api/admin/products/delete-a-product).
  *
  * This workflow has a hook that allows you to perform custom actions after the products are deleted. For example,
  * you can delete custom records linked to the products.

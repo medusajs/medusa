@@ -32,7 +32,7 @@ export const updateInventoryLevelsWorkflowId =
   "update-inventory-levels-workflow"
 /**
  * This workflow updates one or more inventory levels. It's used by the
- * [Update Inventory Level Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelslocation_id).
+ * [Update Inventory Level Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/update-inventory-level).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update inventory levels in your custom flows.

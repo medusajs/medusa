@@ -94,7 +94,7 @@ export const cancelExchangeValidateOrder = createStep(
 export const cancelOrderExchangeWorkflowId = "cancel-exchange"
 /**
  * This workflow cancels a confirmed exchange. It's used by the
- * [Cancel Exchange Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidcancel).
+ * [Cancel Exchange Admin API Route](https://docs.medusajs.com/api/admin/exchanges/cancel-an-exchange).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to cancel an exchange
  * for an order in your custom flow.

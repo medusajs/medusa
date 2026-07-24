@@ -16,7 +16,7 @@ export class ProductOption {
 
   /**
    * This method creates a product option. It sends a request to the
-   * [Create Option](https://docs.medusajs.com/api/admin#product-options_postproductoptions)
+   * [Create Option](https://docs.medusajs.com/api/admin/product-options/create-product-option)
    * API route.
    *
    * @param body - The details of the option to create.
@@ -51,7 +51,7 @@ export class ProductOption {
 
   /**
    * This method updates a product option. It sends a request to the
-   * [Update Option](https://docs.medusajs.com/api/admin#product-options_postproductoptionsid)
+   * [Update Option](https://docs.medusajs.com/api/admin/product-options/update-a-product-option)
    * API route.
    *
    * @param id - The product option's ID.
@@ -87,7 +87,7 @@ export class ProductOption {
 
   /**
    * This method retrieves a paginated list of product options. It sends a request to the
-   * [List Product Options API route](https://docs.medusajs.com/api/admin#product-options_getproductoptions).
+   * [List Product Options API route](https://docs.medusajs.com/api/admin/product-options/list-product-options).
    *
    * @param queryParams - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -129,7 +129,7 @@ export class ProductOption {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     queryParams?: HttpTypes.AdminProductOptionListParams,
@@ -146,7 +146,7 @@ export class ProductOption {
 
   /**
    * This method retrieves a product option by its ID. It sends a request to the
-   * [Get Product Option API route](https://docs.medusajs.com/api/admin#product-options_getproductoptionsid).
+   * [Get Product Option API route](https://docs.medusajs.com/api/admin/product-options/get-a-product-option).
    *
    * @param id - The product option's ID.
    * @param query - Configure the fields to retrieve in the product option.
@@ -174,7 +174,7 @@ export class ProductOption {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
     return this.client.fetch<HttpTypes.AdminProductOptionResponse>(
@@ -188,7 +188,7 @@ export class ProductOption {
 
   /**
    * This method deletes a product option. It sends a request to the
-   * [Delete Product Option API route](https://docs.medusajs.com/api/admin#product-options_deleteproductoptionsid).
+   * [Delete Product Option API route](https://docs.medusajs.com/api/admin/product-options/delete-a-product-option).
    *
    * @param id - The product option's ID.
    * @param headers - Headers to pass in the request
