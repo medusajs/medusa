@@ -9,27 +9,59 @@ export interface RoleSourceScope {
 /**
  * A declarative role source. Roles are resolved by counting
  * `rbac_role_assignment` rows for a reference entity reachable from the actor.
+ *
+ * @example
+ * ```ts
+ * {
+ *   reference: "user",
+ *   path: "memberships.organization.id",
+ *   scope: { type: "organization", path: "memberships.organization.id" },
+ * }
+ * ```
  */
 export interface DeclarativeRoleSource {
   /**
    * The query-graph entity name whose `rbac_role_assignment` rows count as
-   * roles for the actor (e.g. `user`, `invite`, `membership`).
+   * roles for the actor (e.g. `user`, `invite`, `custom`).
    */
   reference: string
   /**
    * An optional query-graph field path from the actor entity to the reference
-   * entity. When omitted, the actor itself is the reference (i.e.
-   * `reference_id = actor id`).
+   * entity's `id` (ending at the `id` field). When omitted, the actor itself is
+   * the reference (i.e. `reference_id = actor id`).
    */
   path?: string
   /**
-   * Optionally declares how to derive a scope id along the `path`.
+   * Optionally declares how to derive a scope id along the `path`. Its `path`
+   * must share a leading prefix with the source `path` and likewise end at an
+   * `id` field.
+   *
+   * @example
+   * ```ts
+   * {
+   *   type: "organization",
+   *   path: "organizations.id",
+   * }
+   * ```
    */
   scope?: RoleSourceScope
 }
 
 /**
  * A role resolved for an actor.
+ *
+ * @property role_id - The ID of the role.
+ * @property source - The assigned source entity for the role from which it was resolved.
+ * @property scope - The scope entity that was applied when resolving the role.
+ *
+ * @example
+ * ```ts
+ * {
+ *   role_id: "role_123",
+ *   source: { reference: "membership", reference_id: "mem_456" },
+ *   scope: { type: "organization", id: "org_xyz" },
+ * }
+ * ```
  */
 export interface ResolvedRole {
   role_id: string
@@ -49,9 +81,6 @@ export interface FunctionRoleSource {
   }) => Promise<ResolvedRole[]>
 }
 
-/**
- * A role source is either declarative or a resolver function.
- */
 export type RoleSource = DeclarativeRoleSource | FunctionRoleSource
 
 /**
@@ -84,7 +113,7 @@ function isFunctionRoleSource(
  *   { reference: "end_user" },
  *   {
  *     reference: "membership",
- *     path: "organization.memberships",
+ *     path: "memberships.organization.id",
  *     scope: { type: "organization", path: "organization.id" },
  *   },
  * ])
@@ -143,18 +172,6 @@ export function buildActorRolesCacheKey(
   actorId: string
 ): string {
   return `rbac:actor_roles:${actorType}:${actorId}`
-}
-
-// TODO: [rbac] isn't this redundant with buildActorRolesCacheKey?
-/**
- * Cache tag identifying an actor's resolved-roles cache entry, used to
- * invalidate a single actor directly.
- */
-export function buildActorRolesCacheTag(
-  actorType: string,
-  actorId: string
-): string {
-  return `rbac_actor_roles:${actorType}:${actorId}`
 }
 
 /**
