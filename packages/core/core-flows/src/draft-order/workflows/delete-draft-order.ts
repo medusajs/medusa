@@ -40,7 +40,7 @@ const validateDraftOrdersStep = createStep(
 
 export const deleteDraftOrderWorkflowId = "delete-draft-order"
 /**
- * This workflow deletes draft orders. It's used by the [Delete Draft Order API route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersid).
+ * This workflow deletes draft orders. It's used by the [Delete Draft Order API route](https://docs.medusajs.com/api/admin/draft-orders/delete-a-draft-order).
  *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around deleting a draft order.
  *

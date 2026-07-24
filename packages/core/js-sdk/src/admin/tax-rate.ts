@@ -18,7 +18,7 @@ export class TaxRate {
 
   /**
    * This method creates a tax rate. It sends a request to the
-   * [Create Tax Rate](https://docs.medusajs.com/api/admin#tax-rates_posttaxrates)
+   * [Create Tax Rate](https://docs.medusajs.com/api/admin/tax-rates/create-tax-rate)
    * API route.
    *
    * @param body - The details of the tax rate to create.
@@ -52,7 +52,7 @@ export class TaxRate {
 
   /**
    * This method updates a tax rate. It sends a request to the
-   * [Update Tax Rate](https://docs.medusajs.com/api/admin#tax-rates_posttaxratesid)
+   * [Update Tax Rate](https://docs.medusajs.com/api/admin/tax-rates/update-a-tax-rate)
    * API route.
    *
    * @param id - The ID of the tax rate to update.
@@ -89,7 +89,7 @@ export class TaxRate {
 
   /**
    * This method deletes a tax rate. It sends a request to the
-   * [Delete Tax Rate](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratesid)
+   * [Delete Tax Rate](https://docs.medusajs.com/api/admin/tax-rates/delete-a-tax-rate)
    * API route.
    *
    * @param id - The ID of the tax rate to delete.
@@ -114,7 +114,7 @@ export class TaxRate {
 
   /**
    * This method retrieves a tax rate. It sends a request to the
-   * [Get Tax Rate](https://docs.medusajs.com/api/admin#tax-rates_gettaxratesid)
+   * [Get Tax Rate](https://docs.medusajs.com/api/admin/tax-rates/get-a-tax-rate)
    * API route.
    *
    * @param id - The ID of the tax rate to retrieve.
@@ -143,7 +143,7 @@ export class TaxRate {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -162,7 +162,7 @@ export class TaxRate {
 
   /**
    * This method retrieves a list of tax rates. It sends a request to the
-   * [List Tax Rates](https://docs.medusajs.com/api/admin#tax-rates_gettaxrates)
+   * [List Tax Rates](https://docs.medusajs.com/api/admin/tax-rates/list-tax-rates)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -205,7 +205,7 @@ export class TaxRate {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminTaxRateListParams,

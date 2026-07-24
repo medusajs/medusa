@@ -15,7 +15,7 @@ export const linkCustomersToCustomerGroupWorkflowId =
   "link-customers-to-customer-group"
 /**
  * This workflow manages the customers of a customer group. It's used by the
- * [Manage Customers of Group Admin API Route](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsidcustomers).
+ * [Manage Customers of Group Admin API Route](https://docs.medusajs.com/api/admin/customer-groups/manage-customers).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * manage the customers of a customer group within your custom flows.

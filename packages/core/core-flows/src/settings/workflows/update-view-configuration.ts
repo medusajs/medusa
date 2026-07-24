@@ -37,7 +37,7 @@ export const updateViewConfigurationWorkflowId = "update-view-configuration"
  * configuration. If `set_active` is enabled and the configuration belongs to a
  * user, the configuration is also set as that user's active view for the entity.
  *
- * This workflow is used by the [Update View Configuration](https://docs.medusajs.com/api/admin#views_postviewsentityconfigurationsid)
+ * This workflow is used by the [Update View Configuration](https://docs.medusajs.com/api/admin/views/update-view-configuration)
  * API route.
  *
  * You can use this workflow within your own customizations or custom workflows,

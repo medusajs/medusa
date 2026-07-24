@@ -18,7 +18,7 @@ export type DeleteTaxRateRulesWorkflowInput = {
 export const deleteTaxRateRulesWorkflowId = "delete-tax-rate-rules"
 /**
  * This workflow deletes one or more tax rate rules. It's used by the
- * [Remove Rule of Tax Rate Admin API Route](https://docs.medusajs.com/api/admin#tax-rates_deletetaxratesidrulesrule_id).
+ * [Remove Rule of Tax Rate Admin API Route](https://docs.medusajs.com/api/admin/tax-rates/remove-rule).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete tax rate rules in your custom flows.
