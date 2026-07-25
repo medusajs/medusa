@@ -10,9 +10,15 @@ In this chapter, you’ll learn about Query and how to use it to fetch data from
 
 ## What is Query?
 
-Query fetches data across modules. It’s a set of methods registered in the Medusa container under the `query` key.
+Query fetches data across modules. It's a set of methods registered in the Medusa container under the `query` key.
 
-In all resources that can access the [Medusa Container](../../medusa-container/page.mdx), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa’s Commerce Modules.
+In all resources that can access the [Medusa Container](../../medusa-container/page.mdx), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
+
+<Note title="Tip">
+
+Prefer Query for read operations (list and retrieve) in API routes. It integrates with the [`validateAndTransformQuery` middleware](#request-query-configurations) and resolves cross-module links automatically. For mutations (create, update, and delete), use the module service's methods directly in your workflow steps.
+
+</Note>
 
 ---
 
