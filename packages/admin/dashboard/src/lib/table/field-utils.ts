@@ -26,6 +26,10 @@ export function calculateRequiredFields(
       return
     }
 
+    if (column.render_mode === "currency") {
+      requiredFieldsSet.add("currency_code")
+    }
+
     if (column.computed) {
       // For computed columns, add all required and optional fields
       column.computed.required_fields?.forEach((field: string) =>
