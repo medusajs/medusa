@@ -31,7 +31,7 @@ export default async (
   } = options?.redis as RedisWorkflowsOptions
 
   // Handle backward compatibility for deprecated options
-  const resolvedUrl = redisUrl ?? url
+  const resolvedUrl = redisUrl ?? url ?? process.env.REDIS_URL
   const redisOptions = newRedisOptions ?? deprecatedRedisOptions
 
   // Log deprecation warnings
@@ -46,7 +46,6 @@ export default async (
     )
   }
 
-  // TODO: get default from ENV VAR
   if (!resolvedUrl) {
     throw Error(
       "No `redis.redisUrl` (or deprecated `redis.url`) provided in `workflowOrchestrator` module options. It is required for the Workflow Orchestrator Redis."
