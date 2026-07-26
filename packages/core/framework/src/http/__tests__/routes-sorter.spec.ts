@@ -195,6 +195,24 @@ describe("Routes sorter", () => {
     `)
   })
 
+  it("should keep a root (\"/\") matcher in the tree instead of dropping it", () => {
+    const sorter = new RoutesSorter([
+      {
+        matcher: "/",
+        methods: ["GET"],
+        handler: () => {},
+      },
+    ])
+
+    expect(sorter.sort()).toEqual([
+      {
+        matcher: "/",
+        methods: ["GET"],
+        handler: expect.any(Function),
+      },
+    ])
+  })
+
   it("should handle all regex based routes", () => {
     const sorter = new RoutesSorter([
       {
