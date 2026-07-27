@@ -513,37 +513,13 @@ If the error persists across two or three consecutive builds, contact support to
 
 ## Database Connection Failures
 
-If your deployment fails with a database connection error such as `KnexTimeoutError` or `Pg connection failed to connect to the database`, the most common causes are a manually set `DATABASE_URL` environment variable or a hardcoded `databaseUrl` in `medusa-config.ts`.
+If your deployment fails with a database connection error such as `KnexTimeoutError` or `Pg connection failed to connect to the database`, the most common cause is a missing or misconfigured `DATABASE_URL` environment variable.
 
 <Note>
 
-Medusa automatically provisions and manages the database for each environment on Cloud. You do not need to create or configure a database yourself. The database connection is set automatically by Cloud when your environment is created.
+Medusa automatically provisions and manages the database for each environment on Cloud. You do not need to create or configure a database yourself. The `DATABASE_URL` is set automatically by Cloud when your environment is created.
 
 </Note>
-
-### Remove databaseUrl from medusa-config.ts
-
-If your `medusa-config.ts` file hardcodes the `databaseUrl` option, it overrides Cloud's automatically injected connection string and causes connection failures. This is a common mistake when carrying over a local development configuration to Cloud.
-
-Open your `medusa-config.ts` and remove any hardcoded `databaseUrl` value so Cloud can manage the connection:
-
-```ts title="medusa-config.ts"
-import { defineConfig } from "@medusajs/framework/utils"
-
-export default defineConfig({
-  projectConfig: {
-    // Do NOT set databaseUrl here on Cloud.
-    // Cloud injects the database connection automatically.
-  },
-  // ...
-})
-```
-
-Common symptoms of a hardcoded `databaseUrl` include:
-
-- `KnexTimeoutError` or `Pg connection failed` errors in deployment logs
-- Storefront builds failing with 500 errors when calling the backend API
-- Warnings about a fake Redis fallback appearing in runtime logs
 
 ### Check Your Environment Variables
 
@@ -560,12 +536,6 @@ If you have manually set a `DATABASE_URL` in your environment variables, it may 
 ## Custom start Script Not Executed on Cloud
 
 Cloud starts your Medusa application by invoking `medusa start` directly. It does not use the `start` script defined in your `package.json`. This means that any custom logic you place in your `package.json` `start` script, such as environment checks, maintenance-mode toggles, or initialization commands, is not executed on Cloud.
-
-<Note type="warning">
-
-Do not rely on a custom `package.json` `start` script for application initialization on Cloud. Cloud bypasses this script and calls `medusa start` directly.
-
-</Note>
 
 ### Use Loaders for Custom Initialization
 
@@ -588,12 +558,12 @@ export default async function maintenanceLoader(
 
 ### Reserved Cloud Environment Variables
 
-Cloud injects the following environment variables into every environment automatically. You cannot override them:
+Cloud injects the following environment variables into every environment automatically:
 
 - `MEDUSA_CLOUD_PROJECT_HANDLE`: The handle of your Cloud project.
 - `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`: The handle of the current Cloud environment.
 
-You can read these variables inside your loaders or middleware to apply environment-specific logic.
+You can read these variables inside your loaders to apply environment-specific logic.
 
 ---
 
