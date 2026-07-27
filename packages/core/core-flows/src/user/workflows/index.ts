@@ -1,7 +1,5 @@
 export * from "./create-user-account"
 export * from "./create-users"
 export * from "./delete-users"
-export * from "./get-assignable-policies"
-export * from "./get-assignable-roles"
 export * from "./remove-user-account"
 export * from "./update-users"

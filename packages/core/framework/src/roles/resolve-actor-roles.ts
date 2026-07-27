@@ -7,11 +7,13 @@ import {
   FunctionRoleSource,
   getRoleSources,
   Modules,
+  RbacScopeRef,
   ResolvedRole,
   RoleSource,
   useCache,
 } from "@medusajs/utils"
 import { FlagRouter } from "../feature-flags/flag-router"
+import { applicableRoles } from "./applicable-roles"
 import { collectRoleReferences } from "./resolve-role-references"
 
 /**
@@ -21,6 +23,15 @@ export type ResolveActorRolesInput = {
   actorType: string
   actorId: string
   container: MedusaContainer
+  /**
+   * The scope context the roles are resolved for. When provided — a single
+   * scope, several, or an empty set — only roles applicable within it are
+   * returned: unscoped roles always count, scoped roles only when their scope
+   * is in the set. Omitted = the actor's full scope-union policies.
+   *
+   * Must be derived server-side, never from an arbitrary client claim.
+   */
+  scope?: RbacScopeRef | RbacScopeRef[]
 }
 
 /**
@@ -200,12 +211,17 @@ async function resolveDeclarativeSource(
  * Roles are **not** deduplicated: the same `role_id` may appear more than once
  * (across sources or scopes) and those duplicates are meaningful.
  *
+ * This is the raw resolution pass: it omits `input.scope` and always returns
+ * every role and every consulted reference, since cache tagging must cover
+ * references regardless of the scope a given call cares about. Scope narrowing
+ * belongs to {@link resolveActorRoles} / {@link resolveActorRolesCached}.
+ *
  * Returns empty `roles`/`references` when the `rbac` feature flag is disabled.
  *
  * @param input - The actor type, actor id, and Medusa container.
  */
 export async function resolveActorRolesWithReferences(
-  input: ResolveActorRolesInput
+  input: Omit<ResolveActorRolesInput, "scope">
 ): Promise<ResolveActorRolesWithReferencesResult> {
   const { actorType, actorId, container } = input
 
@@ -258,22 +274,27 @@ export async function resolveActorRolesWithReferences(
 
 /**
  * Resolves the effective roles held by an actor across all of its registered
- * role sources. Thin wrapper around {@link resolveActorRolesWithReferences} that returns only
- * the roles.
+ * role sources, optionally narrowed to a scope context. Thin wrapper around
+ * {@link resolveActorRolesWithReferences} that returns only the roles.
+ *
+ * Pass `input.scope` to evaluate the actor within a scope (strict: unscoped
+ * roles always count, scoped roles only on a match); omit it for the full
+ * scope-union policies.
  *
  * Results are **not** deduplicated: the same `role_id` may appear more than once
  * (across sources or scopes) and those duplicates are meaningful. Callers that
  * only need role ids should use {@link resolveActorRoleIds}, which flattens and
  * dedupes.
  *
- * @param input - The actor type, actor id, and Medusa container.
+ * @param input - The actor type, actor id, Medusa container, and optional scope.
  *
  * @example
  * ```ts
  * const roles = await resolveActorRoles({
- *   actorType: "user",
- *   actorId: "usr_123",
+ *   actorType: "end_user",
+ *   actorId: "eu_123",
  *   container,
+ *   scope: { type: "organization", id: "org_A" },
  * })
  * ```
  */
@@ -281,15 +302,16 @@ export async function resolveActorRoles(
   input: ResolveActorRolesInput
 ): Promise<ResolvedRole[]> {
   const { roles } = await resolveActorRolesWithReferences(input)
-  return roles
+  return applicableRoles(roles, input.scope)
 }
 
 /**
  * Resolves the effective roles held by an actor and returns the unique set of
  * role ids. Convenience wrapper around {@link resolveActorRoles} for callers
- * that do not need source/scope information.
+ * that do not need source/scope information, honoring `input.scope` the same
+ * way.
  *
- * @param input - The actor type, actor id, and Medusa container.
+ * @param input - The actor type, actor id, Medusa container, and optional scope.
  */
 export async function resolveActorRoleIds(
   input: ResolveActorRolesInput
@@ -299,31 +321,41 @@ export async function resolveActorRoleIds(
 }
 
 /**
- * Resolves the unique role ids held by an actor.
+ * Resolves the roles held by an actor (with their scopes), cached.
  *
- * The cache entry is tagged with the actor's own tag plus one tag per reference
- * entity consulted during resolution — including references with zero
- * assignments — so assignment mutations can invalidate exactly the affected
- * actors.
+ * The cache entry is tagged with one tag per reference entity consulted during
+ * resolution — including references with zero assignments — so assignment
+ * mutations can invalidate exactly the affected actors.
  *
  * TTL defaults to 5 minutes and is overridable via
  * `MEDUSA_RBAC_ACTOR_ROLES_CACHE_TTL`. This bounds the freshness of indirect
  * (path-source) changes that cannot be tag-invalidated.
  *
- * @param input - The actor type, actor id, and Medusa container.
+ * Scope filtering happens **after** the cache: the cache key is scope-agnostic,
+ * so the entry always holds every resolved `(role, scope)` pair (and is tagged
+ * against every consulted reference), and `input.scope` narrows the returned
+ * roles per call.
+ *
+ * @param input - The actor type, actor id, Medusa container, and optional scope.
  */
 export async function resolveActorRolesCached(
   input: ResolveActorRolesInput
-): Promise<string[]> {
-  const { actorType, actorId, container } = input
+): Promise<ResolvedRole[]> {
+  const { actorType, actorId, container, scope } = input
 
   // Reference tags are appended inside the callback once resolution has
   // determined which references were consulted
   const tags: string[] = []
 
-  return await useCache<string[]>(
+  const roles = await useCache<ResolvedRole[]>(
     async () => {
-      const { roles, references } = await resolveActorRolesWithReferences(input)
+      // Resolve unscoped: the cached entry must hold every role and be tagged
+      // against every consulted reference, regardless of this call's scope.
+      const { roles, references } = await resolveActorRolesWithReferences({
+        actorType,
+        actorId,
+        container,
+      })
 
       for (const reference of references) {
         tags.push(
@@ -334,7 +366,7 @@ export async function resolveActorRolesCached(
         )
       }
 
-      return Array.from(new Set(roles.map((role) => role.role_id)))
+      return roles
     },
     {
       container,
@@ -344,4 +376,6 @@ export async function resolveActorRolesCached(
       enable: true,
     }
   )
+
+  return applicableRoles(roles, scope)
 }

@@ -1,5 +1,8 @@
-import { resolvePermissions } from "@medusajs/framework"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { resolveActorRoleIds, resolvePermissions } from "@medusajs/framework"
+import {
+  ContainerRegistrationKeys,
+  RbacScopeRef,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -16,6 +19,11 @@ export type GetAssignablePoliciesStepInput = {
    * Actor entity name. Defaults to "user".
    */
   actor?: string
+  /**
+   * Server-derived scope context the assignability is evaluated within.
+   * Omitted = the actor's full scope-union.
+   */
+  scope?: RbacScopeRef | RbacScopeRef[]
   /**
    * Optional filters forwarded to the `rbac_policy` query (e.g. `q`, `id`, `resource`, `operation`).
    */
@@ -64,18 +72,16 @@ export const getAssignablePoliciesStep = createStep(
     data: GetAssignablePoliciesStepInput,
     { container }
   ): Promise<StepResponse<GetAssignablePoliciesStepOutput>> => {
-    const { actor_id, actor, filters, pagination } = data
+    const { actor_id, actor, scope, filters, pagination } = data
 
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const { data: actors } = await query.graph({
-      entity: actor ?? "user",
-      fields: ["rbac_roles.id"],
-      filters: { id: actor_id },
+    const actorRoleIds = await resolveActorRoleIds({
+      actorType: actor ?? "user",
+      actorId: actor_id,
+      container,
+      scope,
     })
-
-    const actorRoleIds: string[] =
-      actors?.[0]?.rbac_roles?.map((r: any) => r.id).filter(Boolean) ?? []
 
     if (!actorRoleIds.length) {
       return new StepResponse({ policies: [], count: 0 })

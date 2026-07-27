@@ -1,4 +1,4 @@
-import { isDefined } from "@medusajs/framework/utils"
+import { isDefined, RbacScopeRef } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -18,6 +18,11 @@ import { validateActorPermissionsStep } from "../steps/validate-actor-permission
 export type UpdateRbacRolesWorkflowInput = {
   actor_id?: string
   actor?: string
+  /**
+   * Server-derived scope context the grant happens within. Omitted = the
+   * actor's full scope-union.
+   */
+  scope?: RbacScopeRef | RbacScopeRef[]
   selector: Record<string, any>
   update: Omit<UpdateRbacRoleDTO, "id"> & {
     parent_ids?: string[]
@@ -44,6 +49,7 @@ export const updateRbacRolesWorkflow = createWorkflow(
         actor_id: input.actor_id!,
         policy_ids: policyIds,
         actor: input.actor,
+        scope: input.scope,
       }
     })
 

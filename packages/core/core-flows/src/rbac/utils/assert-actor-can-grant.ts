@@ -1,9 +1,6 @@
-import { hasPermission } from "@medusajs/framework"
+import { hasPermission, resolveActorRoleIds } from "@medusajs/framework"
 import { MedusaContainer } from "@medusajs/framework/types"
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-} from "@medusajs/framework/utils"
+import { MedusaError, RbacScopeRef } from "@medusajs/framework/utils"
 
 /**
  * @ignore
@@ -15,10 +12,22 @@ export type AssertActorCanGrantInput = {
   actor?: string
   actions: { resource: string; operation: string }[]
   errorMessage: string
+  /**
+   * The scope context the grant happens within. When provided (including an
+   * empty set), the granting actor's privileges are evaluated strictly within
+   * it: unscoped roles always count, scoped roles only when their scope is in
+   * the set. When omitted, privileges are evaluated across the actor's full
+   * scope-union policies.
+   *
+   * Must be derived server-side (e.g. the request's resolved scope set), never
+   * from an arbitrary client claim.
+   */
+  scope?: RbacScopeRef | RbacScopeRef[]
 }
 
 /**
- * Asserts that the actor's own roles grant every action in `actions`.
+ * Asserts that the actor's own roles grant every action in `actions`,
+ * optionally evaluated within a scope context.
  * An actor can only grant permissions they themselves have.
  * @ignore
  * @featureFlag rbac
@@ -29,22 +38,18 @@ export const assertActorCanGrant = async ({
   actor,
   actions,
   errorMessage,
+  scope,
 }: AssertActorCanGrantInput): Promise<void> => {
   if (!actions.length) {
     return
   }
 
-  const query = container.resolve(ContainerRegistrationKeys.QUERY)
-
-  const { data: actors } = await query.graph({
-    entity: actor ?? "user",
-    fields: ["rbac_roles.id"],
-    filters: { id: actor_id },
+  const actorRoleIds = await resolveActorRoleIds({
+    actorType: actor ?? "user",
+    actorId: actor_id,
+    container,
+    scope,
   })
-
-  const actorRoleIds: string[] =
-    actors?.[0]?.rbac_roles?.map((r: { id: string }) => r.id).filter(Boolean) ??
-    []
 
   if (!actorRoleIds.length) {
     throw new MedusaError(MedusaError.Types.FORBIDDEN, errorMessage)

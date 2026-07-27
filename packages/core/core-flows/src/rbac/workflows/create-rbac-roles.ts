@@ -1,3 +1,4 @@
+import { RbacScopeRef } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -19,6 +20,11 @@ import { validateActorPermissionsStep } from "../steps/validate-actor-permission
 export type CreateRbacRolesWorkflowInput = {
   actor_id?: string
   actor?: string
+  /**
+   * Server-derived scope context the grant happens within. Omitted = the
+   * actor's full scope-union.
+   */
+  scope?: RbacScopeRef | RbacScopeRef[]
   roles: {
     name: string
     description?: string | null
@@ -50,6 +56,7 @@ export const createRbacRolesWorkflow = createWorkflow(
         actor_id: input.actor_id!,
         actor: input.actor,
         policy_ids: Array.from(allPolicyIds),
+        scope: input.scope,
       }
     })
 
