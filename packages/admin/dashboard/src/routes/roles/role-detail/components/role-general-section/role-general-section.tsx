@@ -11,19 +11,18 @@ import {
 } from "../../../../../components/common/action-menu"
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { SectionRow } from "../../../../../components/common/section"
-import { useDeleteRbacRole } from "../../../../../hooks/api/rbac-roles"
+import {
+  useDeleteRbacRole,
+  useRbacRoleUsers,
+} from "../../../../../hooks/api/rbac-roles"
 import {
   useRbacPolicyPermissions,
   useRbacRolePermissions,
   useUserPermissions,
 } from "../../../../../hooks/use-resource-permissions"
 
-type RoleWithUsers = HttpTypes.AdminRbacRole & {
-  users_link?: { user?: HttpTypes.AdminUser | null }[]
-}
-
 type RoleGeneralSectionProps = {
-  role: RoleWithUsers
+  role: HttpTypes.AdminRbacRole
 }
 
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
@@ -59,13 +58,11 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     }
   }
 
-  const users = useMemo(() => {
-    return (
-      role.users_link
-        ?.map((link) => link.user)
-        .filter((user): user is HttpTypes.AdminUser => !!user) ?? []
-    )
-  }, [role.users_link])
+  const { users = [] } = useRbacRoleUsers(
+    role.id,
+    {},
+    { enabled: canReadUsers }
+  )
 
   const userLabels = useMemo(() => {
     return users.map((user) => {
