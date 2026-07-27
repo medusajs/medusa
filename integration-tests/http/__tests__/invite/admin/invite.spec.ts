@@ -269,25 +269,16 @@ medusaIntegrationTestRunner({
 
         // Verify invite is linked to roles
         const container = getContainer()
-        const {
-          ContainerRegistrationKeys,
-          Modules,
-        } = require("@medusajs/framework/utils")
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
 
-        const inviteLinkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "invite_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
-        const inviteRoles = await inviteLinkService.list({
-          invite_id: createdInvite.id,
+        const inviteRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "invite",
+          reference_id: createdInvite.id,
         })
 
         expect(inviteRoles).toHaveLength(2)
-        expect(inviteRoles.map((link) => link.rbac_role_id)).toEqual(
+        expect(inviteRoles.map((assignment) => assignment.role_id)).toEqual(
           expect.arrayContaining([viewerRole.id, editorRole.id])
         )
 
@@ -318,20 +309,14 @@ medusaIntegrationTestRunner({
           })
         )
 
-        const userLinkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "user_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
         // Verify user was assigned the roles
-        const userRoles = await userLinkService.list({
-          user_id: acceptedUser.id,
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
         })
 
         expect(userRoles).toHaveLength(2)
-        expect(userRoles.map((link) => link.rbac_role_id)).toEqual(
+        expect(userRoles.map((assignment) => assignment.role_id)).toEqual(
           expect.arrayContaining([viewerRole.id, editorRole.id])
         )
       })
@@ -368,25 +353,16 @@ medusaIntegrationTestRunner({
 
         // Verify user was assigned the super admin role
         const container = getContainer()
-        const {
-          ContainerRegistrationKeys,
-          Modules,
-        } = require("@medusajs/framework/utils")
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
 
-        const linkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "user_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
-        const userRoles = await linkService.list({
-          user_id: acceptedUser.id,
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
         })
 
         expect(userRoles).toHaveLength(1)
-        expect(userRoles[0].rbac_role_id).toEqual(superAdminRole.id)
+        expect(userRoles[0].role_id).toEqual(superAdminRole.id)
       })
 
       it("should create invite without roles and work normally", async () => {
@@ -420,21 +396,12 @@ medusaIntegrationTestRunner({
 
         // Verify user has no roles assigned
         const container = getContainer()
-        const {
-          ContainerRegistrationKeys,
-          Modules,
-        } = require("@medusajs/framework/utils")
-        const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
 
-        const linkService = remoteLink.getLinkModule(
-          Modules.USER,
-          "user_id",
-          Modules.RBAC,
-          "rbac_role_id"
-        )
-
-        const userRoles = await linkService.list({
-          user_id: acceptedUser.id,
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
         })
 
         expect(userRoles).toHaveLength(0)

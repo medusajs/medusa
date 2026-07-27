@@ -72,20 +72,17 @@ export const createAdminUser = async (
       email,
     })
 
-    // Link user to RBAC roles
+    // Assign RBAC roles to the user
     if (rbacEnabled && userRoles?.length) {
-      const link = appContainer.resolve(ContainerRegistrationKeys.LINK)
+      const rbacModule = appContainer.resolve(Modules.RBAC)
 
-      const links = userRoles.map((role_id) => ({
-        [Modules.USER]: {
-          user_id: user.id,
-        },
-        [Modules.RBAC]: {
-          rbac_role_id: role_id,
-        },
-      }))
-
-      await link.create(links)
+      await rbacModule.createRbacRoleAssignments(
+        userRoles.map((role_id) => ({
+          role_id,
+          reference: "user",
+          reference_id: user.id,
+        }))
+      )
     }
 
     const hashConfig = { logN: 15, r: 8, p: 1 }
