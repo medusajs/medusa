@@ -533,6 +533,40 @@ If you have manually set a `DATABASE_URL` in your environment variables, it may 
 
 ---
 
+## Custom start Script Not Executed on Cloud
+
+Cloud starts your Medusa application by invoking `medusa start` directly. It does not use the `start` script defined in your `package.json`. This means that any custom logic you place in your `package.json` `start` script, such as environment checks, maintenance-mode toggles, or initialization commands, is not executed on Cloud.
+
+### Use Loaders for Custom Initialization
+
+To run custom initialization logic when your Medusa application starts on Cloud, use [loaders](!docs!/learn/fundamentals/modules/loaders). Loaders are executed by Medusa as part of its startup process regardless of how the application is started.
+
+For example, you can create a loader that checks an environment variable to enable maintenance mode or run any one-time setup logic:
+
+```ts title="src/loaders/maintenance.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+
+export default async function maintenanceLoader(
+  container: MedusaContainer
+) {
+  if (process.env.MAINTENANCE_MODE === "true") {
+    const logger = container.resolve("logger")
+    logger.info("Maintenance mode is enabled.")
+  }
+}
+```
+
+### Reserved Cloud Environment Variables
+
+Cloud injects the following environment variables into every environment automatically:
+
+- `MEDUSA_CLOUD_PROJECT_HANDLE`: The handle of your Cloud project.
+- `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`: The handle of the current Cloud environment.
+
+You can read these variables inside your loaders to apply environment-specific logic.
+
+---
+
 ## Troubleshooting Other Cloud Deployment Issues
 
 To troubleshoot other Cloud deployment issues, you can:
