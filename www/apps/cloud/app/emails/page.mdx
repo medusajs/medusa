@@ -233,6 +233,17 @@ The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) wi
 
 If you've updated your DNS records and want to trigger an immediate check, click the **Reverify records** button on the domain detail page. This manually starts a fresh DNS check rather than waiting for the next automatic check.
 
+### Diagnose DNS Record Issues
+
+On the domain detail page, you can click the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon for any record whose verification status is failing. This shows:
+
+- The actual DNS records currently found for that entry, if any.
+- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself.
+- An `nslookup` command (Windows) you can copy and run in your terminal.
+- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser.
+
+Use these diagnosis details to verify and fix any issues in your domain's DNS records. For example, if a different value is set for a record, make sure you set the correct value.
+
 ### Specify From Email
 
 After adding your email sender domain, specify a `from` property in the notification to set the sender email address.
