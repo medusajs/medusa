@@ -200,6 +200,46 @@ describe("resolveActorRoles", () => {
     expect(listRbacRoleAssignments).toHaveBeenCalledTimes(1)
   })
 
+  it("narrows to the roles applicable within input.scope", async () => {
+    defineRoleSources("narrowed_actor", [
+      {
+        reference: "membership",
+        path: "organizations.memberships.id",
+        scope: { type: "organization", path: "organizations.id" },
+      },
+    ])
+
+    const { container } = makeContainer({
+      graphData: [
+        {
+          organizations: [
+            { id: "org_1", memberships: [{ id: "mem_1" }] },
+            { id: "org_2", memberships: [{ id: "mem_2" }] },
+          ],
+        },
+      ],
+      assignments: [
+        { role_id: "rol_a", reference_id: "mem_1" },
+        { role_id: "rol_b", reference_id: "mem_2" },
+      ],
+    })
+
+    const roles = await resolveActorRoles({
+      actorType: "narrowed_actor",
+      actorId: "act_1",
+      container,
+      scope: { type: "organization", id: "org_1" },
+    })
+
+    expect(roles).toEqual([
+      {
+        role_id: "rol_a",
+        source: { reference: "membership", reference_id: "mem_1" },
+        scope: { type: "organization", id: "org_1" },
+      },
+    ])
+  })
+
   it("emits one role per scope when a reference is reached through multiple scoped branches", async () => {
     defineRoleSources("multi_scope_actor", [
       {
@@ -436,35 +476,62 @@ describe("resolveActorRolesCached", () => {
     }
   })
 
-  it("caches under a tag per consulted reference (incl. zero-assignment) and returns unique role ids", async () => {
+  it("caches under a tag per consulted reference (incl. zero-assignment) and returns the resolved roles", async () => {
     defineRoleSources("cached_actor", [
       { reference: "cached_actor" },
       { reference: "membership", path: "organizations.memberships.id" },
     ])
 
     const cachingModule = makeCachingModule()
-    const { container } = makeContainer({
+    const { container, listRbacRoleAssignments } = makeContainer({
       graphData: [
         {
           organizations: [{ memberships: [{ id: "mem_1" }, { id: "mem_2" }] }],
         },
       ],
-      // Direct reference (usr_1) and mem_2 have no assignments.
-      assignments: [
-        { role_id: "rol_a", reference_id: "usr_1" },
-        { role_id: "rol_b", reference_id: "mem_1" },
-        { role_id: "rol_a", reference_id: "mem_1" },
-      ],
       cachingModule,
     })
 
-    const roleIds = await resolveActorRolesCached({
+    // mem_2 and the membership-source usr_1 lookup have no assignments; honor
+    // the reference_id filter so each source only sees its own rows.
+    const allAssignments = [
+      { role_id: "rol_a", reference_id: "usr_1" },
+      { role_id: "rol_b", reference_id: "mem_1" },
+      { role_id: "rol_a", reference_id: "mem_1" },
+    ]
+    listRbacRoleAssignments.mockImplementation(
+      async (filters: { reference: string; reference_id: string[] }) =>
+        allAssignments.filter(
+          (assignment) =>
+            filters.reference_id.includes(assignment.reference_id) &&
+            (filters.reference === "cached_actor"
+              ? assignment.reference_id === "usr_1"
+              : assignment.reference_id !== "usr_1")
+        )
+    )
+
+    const roles = await resolveActorRolesCached({
       actorType: "cached_actor",
       actorId: "usr_1",
       container,
     })
 
-    expect(roleIds).toEqual(["rol_a", "rol_b"])
+    const expectedRoles = [
+      {
+        role_id: "rol_a",
+        source: { reference: "cached_actor", reference_id: "usr_1" },
+      },
+      {
+        role_id: "rol_b",
+        source: { reference: "membership", reference_id: "mem_1" },
+      },
+      {
+        role_id: "rol_a",
+        source: { reference: "membership", reference_id: "mem_1" },
+      },
+    ]
+
+    expect(roles).toEqual(expectedRoles)
 
     expect(cachingModule.get).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -476,7 +543,7 @@ describe("resolveActorRolesCached", () => {
     expect(cachingModule.set).toHaveBeenCalledTimes(1)
     const setArgs = cachingModule.set.mock.calls[0][0]
     expect(setArgs.key).toBe("rbac:actor_roles:cached_actor:usr_1")
-    expect(setArgs.data).toEqual(["rol_a", "rol_b"])
+    expect(setArgs.data).toEqual(expectedRoles)
     expect(new Set(setArgs.tags)).toEqual(
       new Set([
         "rbac_assignments:cached_actor:usr_1",
@@ -487,22 +554,75 @@ describe("resolveActorRolesCached", () => {
   })
 
   it("returns the cached value on a hit without resolving again", async () => {
+    const cachedRoles = [
+      {
+        role_id: "rol_cached",
+        source: { reference: "user", reference_id: "usr_1" },
+      },
+    ]
     const cachingModule = makeCachingModule()
-    cachingModule.get.mockResolvedValue(["rol_cached"])
+    cachingModule.get.mockResolvedValue(cachedRoles)
 
     const { container, listRbacRoleAssignments } = makeContainer({
       cachingModule,
     })
 
-    const roleIds = await resolveActorRolesCached({
+    const roles = await resolveActorRolesCached({
       actorType: "hit_actor",
       actorId: "usr_1",
       container,
     })
 
-    expect(roleIds).toEqual(["rol_cached"])
+    expect(roles).toEqual(cachedRoles)
     expect(listRbacRoleAssignments).not.toHaveBeenCalled()
     expect(cachingModule.set).not.toHaveBeenCalled()
+  })
+
+  it("applies input.scope after the cache, storing the unfiltered roles", async () => {
+    defineRoleSources("cached_scoped_actor", [
+      {
+        reference: "membership",
+        path: "organizations.memberships.id",
+        scope: { type: "organization", path: "organizations.id" },
+      },
+    ])
+
+    const cachingModule = makeCachingModule()
+    const { container } = makeContainer({
+      graphData: [
+        {
+          organizations: [
+            { id: "org_1", memberships: [{ id: "mem_1" }] },
+            { id: "org_2", memberships: [{ id: "mem_2" }] },
+          ],
+        },
+      ],
+      assignments: [
+        { role_id: "rol_a", reference_id: "mem_1" },
+        { role_id: "rol_b", reference_id: "mem_2" },
+      ],
+      cachingModule,
+    })
+
+    const roles = await resolveActorRolesCached({
+      actorType: "cached_scoped_actor",
+      actorId: "usr_1",
+      container,
+      scope: { type: "organization", id: "org_2" },
+    })
+
+    // Only the org_2 role is returned...
+    expect(roles).toEqual([
+      {
+        role_id: "rol_b",
+        source: { reference: "membership", reference_id: "mem_2" },
+        scope: { type: "organization", id: "org_2" },
+      },
+    ])
+
+    // ...while the cache entry keeps every resolved role, so a later call with
+    // a different scope is not poisoned by this one.
+    expect(cachingModule.set.mock.calls[0][0].data).toHaveLength(2)
   })
 
   it("uses the default ttl when the env override is missing or invalid", async () => {

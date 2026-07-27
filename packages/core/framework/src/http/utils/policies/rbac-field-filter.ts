@@ -403,20 +403,20 @@ function collectUniqueEntityPaths(
  */
 export class RBACFieldFilter implements IFieldFilter {
   private policies: PolicyDefinition[]
-  private userRoles: string[]
+  private getActorRoles: () => Promise<string[]>
   private container: MedusaContainer
 
   constructor({
     policies,
-    userRoles,
+    getActorRoles,
     container,
   }: {
     policies: PolicyDefinition[]
-    userRoles: string[]
+    getActorRoles: () => Promise<string[]>
     container: MedusaContainer
   }) {
     this.policies = policies
-    this.userRoles = userRoles
+    this.getActorRoles = getActorRoles
     this.container = container
   }
 
@@ -428,6 +428,8 @@ export class RBACFieldFilter implements IFieldFilter {
     if (!fieldsToCheck.length || !this.policies.length || !entity) {
       return []
     }
+
+    const actorRoles = await this.getActorRoles()
 
     const uniquePaths = collectUniqueEntityPaths(entity, fieldsToCheck)
 
@@ -441,7 +443,7 @@ export class RBACFieldFilter implements IFieldFilter {
     const permissionResults = await promiseAll(
       pathsNeedingCheck.map(async ({ path, entityName }) => {
         const hasAccess = await hasPermission({
-          roles: this.userRoles,
+          roles: actorRoles,
           actions: { resource: entityName, operation: "read" },
           container: this.container,
         })

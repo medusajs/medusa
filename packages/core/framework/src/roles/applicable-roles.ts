@@ -37,16 +37,3 @@ export function applicableRoles(
   const scopes = Array.isArray(scope) ? scope : [scope]
   return roles.filter((role) => roleAppliesToScopes(role, scopes))
 }
-
-/**
- * Returns the unique ids of the roles applicable within `scope`. See
- * {@link applicableRoles} for the scope semantics.
- */
-export function applicableRoleIds(
-  roles: ResolvedRole[],
-  scope?: RbacScopeRef | RbacScopeRef[]
-): string[] {
-  return Array.from(
-    new Set(applicableRoles(roles, scope).map((role) => role.role_id))
-  )
-}

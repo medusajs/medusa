@@ -1,4 +1,5 @@
 import { MedusaError } from "@medusajs/utils"
+import { getRequestActorRoleIds } from "../../roles/get-request-actor-roles"
 import { hasPermission } from "../../policies/has-permission"
 import type {
   AuthenticatedMedusaRequest,
@@ -26,9 +27,8 @@ async function checkPermissions(
     return
   }
 
-  const authContext = req.auth_context
-  // Get roles from JWT token's app_metadata
-  const roleIds = (authContext?.app_metadata?.roles as string[]) || []
+  // Resolve roles at request time (memoized per request) filtered to the request's scope set
+  const roleIds = await getRequestActorRoleIds(req)
 
   if (!roleIds.length) {
     throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")

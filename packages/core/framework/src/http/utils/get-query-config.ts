@@ -18,6 +18,7 @@ import {
   IFieldFilter,
   RestrictedFieldFilter,
 } from "./field-filtering"
+import { getRequestActorRoleIds } from "../../roles/get-request-actor-roles"
 import { RBACFieldFilter } from "./policies/rbac-field-filter"
 
 export function pickByConfig<TModel>(
@@ -73,7 +74,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     filters.push(
       new RBACFieldFilter({
         policies: req.policies,
-        userRoles: (req.auth_context?.app_metadata?.roles as string[]) || [],
+        getActorRoles: () => getRequestActorRoleIds(req),
         container: req.scope,
       })
     )

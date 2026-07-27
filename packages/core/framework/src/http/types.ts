@@ -11,6 +11,7 @@ import {
   MedusaPricingContext,
   RequestQueryFields,
 } from "@medusajs/types"
+import type { RbacScopeRef, ResolvedRole } from "@medusajs/utils"
 import { MedusaContainer } from "../container"
 import { PolicyAction } from "./middlewares/check-permissions"
 import { RestrictedFields } from "./utils/restricted-fields"
@@ -192,6 +193,23 @@ export interface MedusaRequest<
   context?: Record<string, any>
 
   /**
+   * Per-request memoized RBAC role resolution. Holds the in-flight (or settled)
+   * promise of the authenticated actor's resolved roles (with their scopes) so
+   * multiple guarded handlers in one request resolve once. Managed via
+   * `getRequestActorRoles`.
+   */
+  roles?: Promise<ResolvedRole[]>
+
+  /**
+   * The scope set this request acts within, used to select which of the
+   * actor's scoped roles apply. Resolved once per request via the
+   * application's `defineScopeResolver` (managed by `getRequestScopes`), or
+   * assigned directly by earlier application middleware — an assigned value
+   * wins over the resolver.
+   */
+  rbacScopes?: RbacScopeRef[] | Promise<RbacScopeRef[]>
+
+  /**
    * Custom validator to validate the `additional_data` property in
    * requests that allows for additional_data
    */
@@ -224,7 +242,7 @@ export interface PublishableKeyContext {
 }
 
 export interface SecretKeyContext {
-    created_by: string
+  created_by: string
 }
 
 export interface AuthenticatedMedusaRequest<
