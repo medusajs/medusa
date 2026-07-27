@@ -231,18 +231,7 @@ The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) wi
 
 ### Re-verify DNS Records
 
-If you've updated your DNS records and want to trigger an immediate check, click the **Re-verify** button on the domain detail page. This manually starts a fresh DNS check rather than waiting for the next automatic check.
-
-### Diagnose DNS Record Issues
-
-On the domain detail page, you can expand individual rows in the DNS records tables (DKIM, SPF, and DMARC) to reveal troubleshooting details for that record. Expanding a row shows:
-
-- The actual DNS records currently found for that entry
-- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself
-- An `nslookup` command (Windows) you can copy and run in your terminal
-- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser
-
-The same expandable troubleshooting panel is available during the **Add Domain** setup flow when you're configuring DNS records for a new sender domain.
+If you've updated your DNS records and want to trigger an immediate check, click the **Reverify records** button on the domain detail page. This manually starts a fresh DNS check rather than waiting for the next automatic check.
 
 ### Specify From Email
 
