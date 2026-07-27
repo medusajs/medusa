@@ -13,6 +13,7 @@ export const StoreGetOrdersParamsFields = z.object({
 export const StoreGetOrdersParams = createFindParams({
   offset: 0,
   limit: 50,
+  order: "-created_at",
 })
   .merge(StoreGetOrdersParamsFields)
   .merge(applyAndAndOrOperators(StoreGetOrdersParamsFields))

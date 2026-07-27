@@ -32,6 +32,7 @@ export type AdminGetDraftOrdersParamsType = z.infer<
 export const AdminGetDraftOrdersParams = createFindParams({
   limit: 50,
   offset: 0,
+  order: "-created_at",
 })
   .merge(AdminGetDraftOrdersParamsFields)
   .merge(applyAndAndOrOperators(AdminGetDraftOrdersParamsFields))

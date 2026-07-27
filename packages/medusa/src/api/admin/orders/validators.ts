@@ -49,6 +49,7 @@ export type AdminGetOrderShippingOptionListType = z.infer<
 const AdminGetOrdersParamsBase = createFindParams({
   limit: 15,
   offset: 0,
+  order: "-created_at",
 }).merge(
   z.object({
     id: z
