@@ -19053,7 +19053,7 @@ In this chapter, you’ll learn about Query and how to use it to fetch data from
 
 Query fetches data across modules. It's a set of methods registered in the Medusa container under the `query` key.
 
-In all resources that can access the [Medusa Container](undefined/learn/fundamentals/medusa-container), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
+In all resources that can access the [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
 
 Prefer Query for read operations (list and retrieve) in API routes. It integrates with the [`validateAndTransformQuery` middleware](#request-query-configurations) and resolves cross-module links automatically.
 
@@ -41061,7 +41061,7 @@ Account holder creation is idempotent per customer. When the Payment Module call
 
 Do not compensate account holder creation with a provider-side delete in your custom workflows. If you call `deleteAccountHolder` in a compensation step, a subsequent retry will ask the provider to create the account holder again. However, the provider may replay the original creation response for the same idempotency key, returning the already-deleted object. This results in an account holder in Medusa that points to a deleted provider-side customer, causing saved payment method flows to fail until the provider's idempotency window expires.
 
-The built-in [createPaymentSessionsWorkflow](undefined/references/medusa-workflows/createPaymentSessionsWorkflow) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
+The built-in [createPaymentSessionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createPaymentSessionsWorkflow/index.html.md) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
 
 If you build a custom workflow that creates account holders, use the same `noCompensation: true` config on `createPaymentAccountHolderStep`, or omit a compensation function that calls `deleteAccountHolder` on the provider.
 
