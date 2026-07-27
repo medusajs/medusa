@@ -9,6 +9,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
 import { emitEventStep } from "../../common/steps/emit-event"
+import { deleteRoleAssignmentsStep } from "../../rbac/steps"
 import { createUsersWorkflow } from "../../user"
 import { deleteInvitesStep, getInviteRolesStep } from "../steps"
 import { validateTokenStep } from "../steps/validate-token"
@@ -82,9 +83,18 @@ export const acceptInviteWorkflow = createWorkflow(
       }
     })
 
+    // The created user's role assignments are created by createUsersWorkflow
+    // from the invite's roles. Transfer completes by removing the invite's own
+    // assignments once the user has been created.
+    const inviteAssignmentsToDelete = transform({ invite }, ({ invite }) => ({
+      reference: "invite",
+      reference_id: [invite.id],
+    }))
+
     parallelize(
       setAuthAppMetadataStep(authUserInput),
       deleteInvitesStep([invite.id]),
+      deleteRoleAssignmentsStep(inviteAssignmentsToDelete),
       emitEventStep({
         eventName: InviteWorkflowEvents.ACCEPTED,
         data: { id: invite.id },
