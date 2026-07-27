@@ -2,6 +2,7 @@ import {
   arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
+  RbacScopeRef,
 } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { assertActorCanGrant } from "../utils/assert-actor-can-grant"
@@ -18,6 +19,11 @@ export type ValidateActorPermissionsStepInput = {
     resource: string
     operation: string
   }[]
+  /**
+   * Server-derived scope context the grant happens within. Omitted = the
+   * actor's full scope-union policies
+   */
+  scope?: RbacScopeRef | RbacScopeRef[]
 }
 
 /**
@@ -35,7 +41,7 @@ export const validateActorPermissionsStepId = "validate-actor-permissions"
 export const validateActorPermissionsStep = createStep(
   validateActorPermissionsStepId,
   async (data: ValidateActorPermissionsStepInput, { container }) => {
-    const { actor_id, actor, policy_ids, actions } = data
+    const { actor_id, actor, policy_ids, actions, scope } = data
 
     if (!policy_ids?.length && !actions?.length) {
       return
@@ -81,6 +87,7 @@ export const validateActorPermissionsStep = createStep(
       actions: actionsToCheck,
       errorMessage:
         "You do not have access to some of the policies you are trying to assign.",
+      scope,
     })
   }
 )

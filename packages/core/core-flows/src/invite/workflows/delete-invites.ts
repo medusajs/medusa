@@ -3,9 +3,11 @@ import { InviteWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
+import { deleteRoleAssignmentsStep } from "../../rbac/steps"
 import { deleteInvitesStep } from "../steps"
 
 export const deleteInvitesWorkflowId = "delete-invites-workflow"
@@ -41,9 +43,18 @@ export const deleteInvitesWorkflow = createWorkflow(
       })
     })
 
-    emitEventStep({
-      eventName: InviteWorkflowEvents.DELETED,
-      data: invitesIdEvents,
-    })
+    // Clean up any RBAC role assignments for the deleted invites.
+    const roleAssignmentsToDelete = transform({ input }, ({ input }) => ({
+      reference: "invite",
+      reference_id: input.ids ?? [],
+    }))
+
+    parallelize(
+      deleteRoleAssignmentsStep(roleAssignmentsToDelete),
+      emitEventStep({
+        eventName: InviteWorkflowEvents.DELETED,
+        data: invitesIdEvents,
+      })
+    )
   }
 )

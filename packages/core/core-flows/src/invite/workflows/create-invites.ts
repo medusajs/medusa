@@ -6,10 +6,12 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createInviteStep } from "../steps"
-import { validateRolesExistStep } from "../../rbac/steps"
+import {
+  createRoleAssignmentsStep,
+  validateRolesExistStep,
+} from "../../rbac/steps"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more user invites. It's used by the
@@ -56,26 +58,29 @@ export const createInvitesWorkflow = createWorkflow(
 
     const createdInvites = createInviteStep(input.invites)
 
-    const inviteRoleLinks = transform(
+    const inviteRoleAssignments = transform(
       { input, createdInvites },
       ({ input, createdInvites }) => {
-        const links: {
-          [key: string]: { invite_id?: string; rbac_role_id?: string }
+        const assignments: {
+          role_id: string
+          reference: string
+          reference_id: string
         }[] = []
         input.invites.forEach((invite, index) => {
           const inviteId = createdInvites[index].id
           for (const roleId of invite.roles || []) {
-            links.push({
-              user: { invite_id: inviteId },
-              rbac: { rbac_role_id: roleId },
+            assignments.push({
+              role_id: roleId,
+              reference: "invite",
+              reference_id: inviteId,
             })
           }
         })
-        return links
+        return assignments
       }
     )
 
-    createRemoteLinkStep(inviteRoleLinks)
+    createRoleAssignmentsStep(inviteRoleAssignments)
 
     const invitesIdEvents = transform(
       { createdInvites },

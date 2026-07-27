@@ -6,8 +6,8 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
+import { createRoleAssignmentsStep } from "../../rbac/steps/create-role-assignments"
 import { validateRolesExistStep } from "../../rbac/steps/validate-roles-exist"
 import { createUsersStep } from "../steps"
 
@@ -61,26 +61,29 @@ export const createUsersWorkflow = createWorkflow(
 
     const createdUsers = createUsersStep(input.users)
 
-    const userRoleLinks = transform(
+    const userRoleAssignments = transform(
       { input, createdUsers },
       ({ input, createdUsers }) => {
-        const links: {
-          [key: string]: { user_id?: string; rbac_role_id?: string }
+        const assignments: {
+          role_id: string
+          reference: string
+          reference_id: string
         }[] = []
         input.users.forEach((user, index) => {
           const userId = createdUsers[index].id
           for (const roleId of user.roles || []) {
-            links.push({
-              user: { user_id: userId },
-              rbac: { rbac_role_id: roleId },
+            assignments.push({
+              role_id: roleId,
+              reference: "user",
+              reference_id: userId,
             })
           }
         })
-        return links
+        return assignments
       }
     )
 
-    createRemoteLinkStep(userRoleLinks)
+    createRoleAssignmentsStep(userRoleAssignments)
 
     const userIdEvents = transform({ createdUsers }, ({ createdUsers }) => {
       return createdUsers.map((v) => {

@@ -7,6 +7,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, removeRemoteLinkStep } from "../../common"
+import { deleteRoleAssignmentsStep } from "../../rbac/steps"
 import { deleteUsersStep } from "../steps"
 
 export const deleteUsersWorkflowId = "delete-user"
@@ -45,12 +46,18 @@ export const deleteUsersWorkflow = createWorkflow(
       })
     })
 
+    const roleAssignmentsToDelete = transform({ input }, ({ input }) => ({
+      reference: "user",
+      reference_id: input.ids ?? [],
+    }))
+
     parallelize(
       removeRemoteLinkStep({
         [Modules.USER]: {
           user_id: input.ids,
         },
       }),
+      deleteRoleAssignmentsStep(roleAssignmentsToDelete),
       emitEventStep({
         eventName: UserWorkflowEvents.DELETED,
         data: userIdEvents,
