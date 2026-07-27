@@ -488,6 +488,7 @@ export const sitemapUrls = [
   "/troubleshooting/eaddrinuse",
   "/troubleshooting/errors-after-upgrading",
   "/troubleshooting/errors-installing-cli",
+  "/troubleshooting/esm-syntax-error",
   "/troubleshooting/general-errors",
   "/troubleshooting/medusa-admin/blocked-request",
   "/troubleshooting/medusa-admin/build-error",
