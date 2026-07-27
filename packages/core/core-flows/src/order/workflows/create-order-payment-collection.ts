@@ -26,7 +26,7 @@ export const createOrderPaymentCollectionWorkflowId =
   "create-order-payment-collection"
 /**
  * This workflow creates a payment collection for an order. It's used by the
- * [Create Payment Collection Admin API Route](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollections).
+ * [Create Payment Collection Admin API Route](https://docs.medusajs.com/api/admin/payment-collections/create-payment-collection).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * creating a payment collection for an order.

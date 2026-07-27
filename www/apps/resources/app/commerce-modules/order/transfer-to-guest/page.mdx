@@ -1,0 +1,66 @@
+export const metadata = {
+  title: `Transfer Order to Guest Customer`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This feature is available since Medusa [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
+
+</Note>
+
+In this guide, you'll learn how Medusa handles transferring an order to a guest customer.
+
+## Overview
+
+An admin user can transfer an order from its current customer to a guest customer identified by email. Unlike the request order transfer flow, this transfer is applied immediately without requiring the recipient to accept it.
+
+If no customer exists with the given email address, Medusa creates a new guest customer. The transfer can only be made to guest (non-registered) customers.
+
+---
+
+## Transfer Order to Guest Workflow
+
+The transfer is handled by the `transferOrderToGuestWorkflow`, which is executed by the [Transfer Order to Guest API route](https://docs.medusajs.com/api/admin/orders/transfer-to-guest).
+
+You can also use this workflow in your customizations:
+
+```ts title="src/workflows/transfer-to-guest.ts"
+import { transferOrderToGuestWorkflow } from "@medusajs/medusa/core-flows"
+
+const { result } = await transferOrderToGuestWorkflow(container)
+  .run({
+    input: {
+      order_id: "order_123",
+      email: "customer@example.com",
+      logged_in_user: "user_123",
+    },
+  })
+```
+
+### Input
+
+The workflow accepts the following input:
+
+- `order_id`: The ID of the order to transfer.
+- `email`: The email of the guest customer to transfer the order to. If no customer exists with this email, a guest customer is created.
+- `logged_in_user`: The ID of the admin user requesting the transfer.
+- `description` (optional): Details of the transfer.
+- `internal_note` (optional): A note visible to admin users only.
+
+### Validation
+
+Before applying the transfer, the workflow validates that:
+
+- The order is not cancelled.
+- The resolved customer is not the same as the order's current customer.
+- The resolved customer is a guest customer. Transfers to registered customer accounts are not allowed.
+
+---
+
+## Difference from Request Order Transfer Workflow
+
+The `transferOrderToGuestWorkflow` is intended for admin users and applies the transfer immediately.
+
+The `requestOrderTransferWorkflow`, on the other hand, sends a transfer request that the recipient customer must accept before the transfer is applied. Use that workflow when transferring an order to a registered customer account.

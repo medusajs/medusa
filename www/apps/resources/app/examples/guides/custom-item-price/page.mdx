@@ -753,7 +753,7 @@ Since you export a `POST` function in this file, you're exposing a `POST` API ro
 1. A request object with details and context on the request, such as path and body parameters.
 2. A response object to manipulate and send the response.
 
-In the function, you retrieve the cart's ID from the path parameter, and the item's details from the request body. This API route will accept the same request body parameters as Medusa's [Add Item to Cart API Route](!api!/store#carts_postcartsidlineitems).
+In the function, you retrieve the cart's ID from the path parameter, and the item's details from the request body. This API route will accept the same request body parameters as Medusa's [Add Item to Cart API Route](!api!/store/carts/add-line-item).
 
 Then, you execute the `addCustomToCartWorkflow` by invoking it, passing it the Medusa container, which is available in the request's `scope` property, then executing its `run` method. You pass the workflow's input object with the cart's ID and the item to add to the cart.
 
@@ -805,7 +805,7 @@ You pass in the `routes` array an object having the following properties:
 
 - `matcher`: The route to apply the middleware on.
 - `method`: The HTTP method to apply the middleware on for the specified API route.
-- `middlewares`: An array of the middlewares to apply. You apply the `validateAndTransformBody` middleware, which validates the request body based on the `StoreAddCartLineItem` schema. This validation schema is the same schema used for Medusa's [Add Item to Cart API Route](!api!/store#carts_postcartsidlineitems).
+- `middlewares`: An array of the middlewares to apply. You apply the `validateAndTransformBody` middleware, which validates the request body based on the `StoreAddCartLineItem` schema. This validation schema is the same schema used for Medusa's [Add Item to Cart API Route](!api!/store/carts/add-line-item).
 
 Any request sent to the `/store/carts/:id/line-items-metals` API route will now fail if it doesn't have the required parameters.
 

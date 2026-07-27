@@ -2537,6 +2537,40 @@ export default class ProductModuleService
     return categories
   }
 
+  @InjectManager()
+  @EmitEvents()
+  // @ts-expect-error
+  async softDeleteProductCategories<
+    TReturnableLinkableKeys extends string = string
+  >(
+    primaryKeyValues: string | object | string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    const primaryKeyValuesArray = Array.isArray(primaryKeyValues)
+      ? primaryKeyValues
+      : [primaryKeyValues]
+
+    const categoryIds = primaryKeyValuesArray.map((primaryKeyValue) =>
+      isString(primaryKeyValue)
+        ? primaryKeyValue
+        : (primaryKeyValue as { id: string }).id
+    )
+
+    const result = await super.softDeleteProductCategories(
+      primaryKeyValues,
+      config,
+      sharedContext
+    )
+
+    eventBuilders.deletedProductCategory({
+      data: categoryIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    return result
+  }
+
   //@ts-expect-error
   createProducts(
     data: ProductTypes.CreateProductDTO[],

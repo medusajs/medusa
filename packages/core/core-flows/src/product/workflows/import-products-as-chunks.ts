@@ -16,7 +16,7 @@ export const importProductsAsChunksWorkflowId = "import-products-as-chunks"
 
 /**
  * This workflow starts a product import from a CSV file in the background. It's used by the
- * [Import Products Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsimport).
+ * [Import Products Admin API Route](https://docs.medusajs.com/api/admin/products/create-product-import).
  *
  * You can use this workflow within your custom workflows, allowing you to wrap custom logic around product import.
  * For example, you can import products from another system.
@@ -80,7 +80,7 @@ export const importProductsAsChunksWorkflowId = "import-products-as-chunks"
  *
  * :::tip
  *
- * This example API route uses the same implementation as the [Confirm Product Import Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsimportstransaction_idconfirm).
+ * This example API route uses the same implementation as the [Confirm Product Import Admin API Route](https://docs.medusajs.com/api/admin/products/confirm-product-import-2).
  *
  * :::
  *

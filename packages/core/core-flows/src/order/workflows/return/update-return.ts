@@ -71,7 +71,7 @@ export const updateReturnValidationStep = createStep(
 export const updateReturnWorkflowId = "update-return"
 /**
  * This workflow updates a return's details. It's used by the
- * [Update Return Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsid).
+ * [Update Return Admin API Route](https://docs.medusajs.com/api/admin/returns/update-a-return).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to update a return in your custom flow.

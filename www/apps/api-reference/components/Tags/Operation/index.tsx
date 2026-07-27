@@ -3,7 +3,7 @@
 import React from "react"
 import type { OpenAPI } from "types"
 import clsx from "clsx"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import { InView } from "react-intersection-observer"
 import {
@@ -16,11 +16,14 @@ import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
 import { useLoading } from "@/providers/loading"
-import { useRouter } from "next/navigation"
-import checkElementInViewport from "../../../utils/check-element-in-viewport"
-import DividedLoading from "../../DividedLoading"
 import SectionContainer from "../../Section/Container"
 import { getSectionId } from "docs-utils"
+import basePathUrl from "../../../utils/base-path-url"
+import {
+  isScrollSpyLocked,
+  markScrollSpyNavigation,
+  scheduleScrollSpyUpdate,
+} from "@/utils/scroll-spy-lock"
 
 const TagOperationCodeSection = dynamic<TagOperationCodeSectionProps>(
   async () => import("./CodeSection")
@@ -32,6 +35,7 @@ export type TagOperationProps = {
   tag: OpenAPI.OpenAPIV3.TagObject
   endpointPath: string
   className?: string
+  noDivider?: boolean
 }
 
 const TagOperation = ({
@@ -39,17 +43,23 @@ const TagOperation = ({
   method,
   endpointPath,
   className,
+  noDivider,
 }: TagOperationProps) => {
   const { activePath, setActivePath } = useSidebar()
-  const router = useRouter()
-  const [show, setShow] = useState(false)
+  // The URL path (without basePath) for this operation, precomputed in the
+  // spec data (see `getPathsOfTag`). Falls back to the legacy section id.
   const path = useMemo(
-    () => getSectionId([...(operation.tags || []), operation.operationId]),
+    () =>
+      operation["x-path"] ||
+      getSectionId([...(operation.tags || []), operation.operationId]),
     [operation]
   )
-  const nodeRef = useRef(null)
-  const { loading, removeLoading } = useLoading()
-  const { scrollableElement, scrollToTop } = useScrollController()
+  const anchorId = useMemo(
+    () => operation["x-slug"] || path.split("/").pop() || path,
+    [operation, path]
+  )
+  const { removeLoading } = useLoading()
+  const { scrollableElement } = useScrollController()
   const { isBrowser } = useIsBrowser()
   const root = useMemo(() => {
     if (!isBrowser) {
@@ -59,95 +69,61 @@ const TagOperation = ({
     return isElmWindow(scrollableElement) ? document.body : scrollableElement
   }, [isBrowser, scrollableElement])
 
-  const scrollIntoView = useCallback(() => {
-    if (!isBrowser || !nodeRef.current) {
-      // repeat timeout
-      setTimeout(scrollIntoView, 200)
-      return
-    }
-    if (!checkElementInViewport(nodeRef.current, 0)) {
-      const elm = nodeRef.current as HTMLElement
-      scrollToTop(
-        elm.offsetTop + (elm.offsetParent as HTMLElement)?.offsetTop,
-        0
-      )
-    }
-    setShow(true)
-  }, [nodeRef, isBrowser, scrollToTop])
-
+  // clear the tag's loading indicator once the operations render
   useEffect(() => {
-    if (!nodeRef.current) {
-      return
-    }
-
     removeLoading()
-    const currentHash = location.hash.replace("#", "")
-    if (currentHash === path) {
-      setTimeout(scrollIntoView, 200)
-    } else if (currentHash.split("_")[0] === path.split("_")[0]) {
-      setShow(true)
-    }
-  }, [nodeRef, path, scrollIntoView])
+  }, [removeLoading])
 
   return (
     <InView
-      id={path}
-      threshold={0.3}
-      rootMargin={`112px 0px 112px 0px`}
+      id={anchorId}
+      // A thin band near the top of the scroll area, so the operation at the
+      // top is the single active one (stable highlight, no bounce). Scrolling to
+      // an operation on navigation is handled centrally by TagSection.
+      threshold={0}
+      rootMargin={`-112px 0px -80% 0px`}
       root={root}
-      onChange={(changedInView) => {
-        if (changedInView) {
-          if (!show) {
-            if (loading) {
-              removeLoading()
-            }
-            setShow(true)
-          }
-          if (location.hash !== path) {
-            router.push(`#${path}`, {
-              scroll: false,
-            })
-          }
-          if (activePath !== path) {
-            setActivePath(path)
-          }
-        } else if (
-          nodeRef.current &&
-          !checkElementInViewport(nodeRef.current, 0)
-        ) {
-          setShow(false)
+      onChange={(inView) => {
+        if (!inView || isScrollSpyLocked() || activePath === path) {
+          return
         }
+        // update the sidebar highlight and reflect the operation in the URL as
+        // it scrolls into the active band (debounced so fast scrolling applies a
+        // single update once it settles). Marked as a scroll-spy update so the
+        // deep-link controller ignores the resulting pathname change.
+        scheduleScrollSpyUpdate(() => {
+          if (isScrollSpyLocked()) {
+            return
+          }
+          setActivePath(path)
+          markScrollSpyNavigation(path)
+          if (isBrowser) {
+            window.history.replaceState(null, "", basePathUrl(path))
+          }
+        })
       }}
     >
       <SectionContainer
-        ref={nodeRef}
-        className={clsx("relative min-h-screen w-full pb-7", className)}
+        className={clsx("relative w-full pb-7", className)}
+        noDivider={noDivider}
       >
-        {!show && <DividedLoading className="mt-7" />}
-        {show && (
-          <div
-            className={clsx(
-              "flex w-full justify-between gap-1 opacity-0 animate-fadeIn"
-            )}
-            style={{
-              animationFillMode: "forwards",
-            }}
-            data-testid="operation-container"
-          >
-            <DividedLayout
-              mainContent={
-                <TagsOperationDescriptionSection operation={operation} />
-              }
-              codeContent={
-                <TagOperationCodeSection
-                  method={method || ""}
-                  operation={operation}
-                  endpointPath={endpointPath}
-                />
-              }
-            />
-          </div>
-        )}
+        <div
+          className={clsx("flex w-full justify-between gap-1")}
+          data-testid="operation-container"
+        >
+          <DividedLayout
+            mainContent={
+              <TagsOperationDescriptionSection operation={operation} />
+            }
+            codeContent={
+              <TagOperationCodeSection
+                method={method || ""}
+                operation={operation}
+                endpointPath={endpointPath}
+              />
+            }
+          />
+        </div>
       </SectionContainer>
     </InView>
   )

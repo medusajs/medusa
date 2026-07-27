@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { Container, Button } from "@medusajs/ui"
+import { useMemo, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+import { Container, Button, DataTableRowSelectionState } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../data-table"
 import { SaveViewDialog } from "../save-view-dialog"
@@ -7,7 +8,11 @@ import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
 import { parseFilterParam } from "../../../hooks/table/query"
-import { TableAdapter } from "../../../lib/table/table-adapters"
+import {
+  createActionsColumn,
+  createSelectColumn,
+  TableAdapter,
+} from "../../../lib/table/table-adapters"
 
 type DataTableActionProps = {
   label: string
@@ -20,6 +25,32 @@ type DataTableActionProps = {
       onClick: () => void
     }
 )
+
+/**
+ * Expand dotted param keys into nested objects so the SDK's qs serializer emits
+ * bracket notation the endpoint's nested filter schema expects, e.g.
+ * `{ "location_levels.location_id": ["x"] }` -> `{ location_levels: { location_id: ["x"] } }`
+ * -> `location_levels[location_id][0]=x`. Keys without a dot pass through.
+ */
+function expandDottedKeys(params: Record<string, any>): Record<string, any> {
+  const result: Record<string, any> = {}
+  for (const [key, value] of Object.entries(params)) {
+    if (!key.includes(".")) {
+      result[key] = value
+      continue
+    }
+    const parts = key.split(".")
+    let node = result
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (typeof node[parts[i]] !== "object" || node[parts[i]] === null) {
+        node[parts[i]] = {}
+      }
+      node = node[parts[i]]
+    }
+    node[parts[parts.length - 1]] = value
+  }
+  return result
+}
 
 export interface ConfigurableDataTableProps<TData> {
   adapter: TableAdapter<TData>
@@ -43,11 +74,28 @@ export function ConfigurableDataTable<TData>({
   const { t } = useTranslation()
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [editingView, setEditingView] = useState<any>(null)
+  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
+    {}
+  )
 
   const entity = adapter.entity
+  const viewConfigKey = adapter.viewConfigurationKey ?? adapter.entity
   const entityName = adapter.entityName
   const pageSize = pageSizeProp || adapter.pageSize || 20
   const queryPrefix = queryPrefixProp || adapter.queryPrefix || ""
+
+  // Inject virtual columns (selection + actions) as API-shaped columns so they
+  // flow through column ordering/visibility state. Their default_order keeps
+  // selection first and actions last.
+  const extraColumns = useMemo(() => {
+    const cols = [
+      adapter.enableRowSelection ? createSelectColumn() : null,
+      adapter.renderRowActions
+        ? createActionsColumn(t("fields.actions"))
+        : null,
+    ].filter((c): c is HttpTypes.AdminColumn => c !== null)
+    return cols.length ? cols : undefined
+  }, [adapter, t])
 
   const {
     activeView,
@@ -73,23 +121,32 @@ export function ConfigurableDataTable<TData>({
     pageSize,
     queryPrefix,
     transformColumns: adapter.transformColumns,
+    extraColumns,
+    defaultFilters: adapter.defaultFilters,
+    viewConfigurationKey: viewConfigKey,
   })
 
-  const parsedQueryParams = { ...queryParams }
+  const parsedQueryParams: Record<string, any> = { ...queryParams }
   filters.forEach((filter) => {
     const filterKey = filter.id
-    if (filterKey && parsedQueryParams[filterKey] !== undefined) {
-      const value = parseFilterParam(parsedQueryParams[filterKey])
-      if (value === undefined) {
-        delete parsedQueryParams[filterKey]
-      } else {
-        parsedQueryParams[filterKey] = value
-      }
+    if (!filterKey || parsedQueryParams[filterKey] === undefined) {
+      return
+    }
+    const value = parseFilterParam(parsedQueryParams[filterKey])
+
+    const paramKey = adapter.filterParamMap?.[filterKey] ?? filterKey
+    if (paramKey !== filterKey) {
+      delete parsedQueryParams[filterKey]
+    }
+    if (value === undefined) {
+      delete parsedQueryParams[paramKey]
+    } else {
+      parsedQueryParams[paramKey] = value
     }
   })
 
   const searchParams = {
-    ...parsedQueryParams,
+    ...expandDottedKeys(parsedQueryParams),
     fields: requiredFields,
     limit: pageSize,
     offset: parsedQueryParams.offset ? Number(parsedQueryParams.offset) : 0,
@@ -212,24 +269,37 @@ export function ConfigurableDataTable<TData>({
         columnOrder={columnOrder}
         onColumnOrderChange={setColumnOrder}
         enableViewSelector={isViewConfigEnabled}
-        entity={entity}
+        entity={viewConfigKey}
         currentColumns={currentColumns}
         filterBarContent={filterBarContent}
         rowHref={adapter.getRowHref as ((row: any) => string) | undefined}
         emptyState={
           adapter.emptyState || {
             empty: {
-              heading: t(`${entity}.list.noRecordsMessage` as any),
+              heading: t(
+                `${entity}.list.noRecordsMessage` as any,
+                "There are no records to show"
+              ),
             },
           }
         }
         prefix={queryPrefix}
         actions={actions}
+        commands={adapter.commands}
+        rowSelection={
+          adapter.enableRowSelection
+            ? {
+                state: rowSelection,
+                onRowSelectionChange: setRowSelection,
+                enableRowSelection: true,
+              }
+            : undefined
+        }
       />
 
       {saveDialogOpen && (
         <SaveViewDialog
-          entity={entity}
+          entity={viewConfigKey}
           currentColumns={currentColumns}
           currentConfiguration={currentConfiguration}
           editingView={editingView}

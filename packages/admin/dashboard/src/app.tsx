@@ -10,7 +10,7 @@ import routeModule from "virtual:medusa/routes"
 import widgetModule from "virtual:medusa/widgets"
 import "virtual:medusa/cell-renderers"
 
-import { registerCellRenderer } from "./lib/table/cell-renderers"
+import { defineCellRenderer } from "./lib/table/cell-renderers"
 
 import "./index.css"
 
@@ -36,5 +36,5 @@ function App({ plugins = [] }: AppProps) {
   return <div>{app.render()}</div>
 }
 
-export { registerCellRenderer }
+export { defineCellRenderer }
 export default App

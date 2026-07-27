@@ -109,7 +109,7 @@ export const validateRefundPaymentExceedsCapturedAmountStep = createStep(
 export const refundPaymentWorkflowId = "refund-payment-workflow"
 /**
  * This workflow refunds a payment. It's used by the
- * [Refund Payment Admin API Route](https://docs.medusajs.com/api/admin#payments_postpaymentsidrefund).
+ * [Refund Payment Admin API Route](https://docs.medusajs.com/api/admin/payments/refund-payment).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to refund a payment in your custom flows.

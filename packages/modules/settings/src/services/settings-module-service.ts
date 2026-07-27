@@ -27,7 +27,6 @@ import {
   generateEntityColumns,
   getComputedColumnRegistry,
   getEntityOverrideRegistry,
-  hasEntityOverride,
   PropertyLabel as PropertyLabelType,
 } from "@/utils"
 import { SettingsModuleOptions } from "@/types"
@@ -101,9 +100,7 @@ export default class SettingsModuleService
         ...override,
       })
       if (override.computedColumns?.length) {
-        for (const computedColumn of override.computedColumns) {
-          computedColumnRegistry.register(computedColumn)
-        }
+        computedColumnRegistry.register(entity, override.computedColumns)
       }
     }
   }
@@ -601,17 +598,27 @@ export default class SettingsModuleService
   /**
    * List all discoverable entities.
    */
-  listDiscoverableEntities(): HttpTypes.AdminEntityInfo[] {
+  @InjectManager()
+  async listDiscoverableEntities(
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<HttpTypes.AdminEntityInfo[]> {
     if (!this.entityDiscoveryService_.isInitialized()) {
       return []
     }
 
     const entities = this.entityDiscoveryService_.discoverEntities()
 
+    const labels = await this.propertyLabelService_.list(
+      {},
+      { select: ["entity"] },
+      sharedContext
+    )
+    const entitiesWithLabels = new Set(labels.map((label) => label.entity))
+
     return entities.map((entity) =>
       this.entityDiscoveryService_.getEntityInfo(
         entity,
-        hasEntityOverride(entity.name)
+        entitiesWithLabels.has(entity.name)
       )
     )
   }

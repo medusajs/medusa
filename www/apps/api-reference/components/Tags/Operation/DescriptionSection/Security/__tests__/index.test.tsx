@@ -18,6 +18,9 @@ vi.mock("@/providers/base-specs", () => ({
     getSecuritySchema: mockGetSecuritySchema,
   }),
 }))
+vi.mock("@/providers/area", () => ({
+  useArea: () => ({ area: "admin" }),
+}))
 vi.mock("docs-ui", () => ({
   Card: ({ title, text, href }: { title: string, text: string, href: string }) => (
     <div data-testid="card" data-title={title} data-href={href}>
@@ -42,7 +45,7 @@ describe("rendering", () => {
     const cardElement = container.querySelector("[data-testid='card']")
     expect(cardElement).toBeInTheDocument()
     expect(cardElement).toHaveTextContent("Bearer Token")
-    expect(cardElement).toHaveAttribute("data-href", "#authentication")
+    expect(cardElement).toHaveAttribute("data-href", "/admin/authentication")
   })
 
   test("renders security without authentication", () => {

@@ -10,9 +10,16 @@ import { useLayout } from "../../../providers/Layout"
 export type H2Props = React.HTMLAttributes<HTMLHeadingElement> & {
   id?: string
   passRef?: React.RefObject<HTMLHeadingElement | null>
+  hideAnchorLink?: boolean
 }
 
-export const H2 = ({ className, children, passRef, ...props }: H2Props) => {
+export const H2 = ({
+  className,
+  children,
+  passRef,
+  hideAnchorLink = false,
+  ...props
+}: H2Props) => {
   const { showCollapsedNavbar } = useLayout()
 
   const copyText = useHeadingUrl({
@@ -33,7 +40,7 @@ export const H2 = ({ className, children, passRef, ...props }: H2Props) => {
       ref={passRef}
     >
       {children}
-      {props.id && (
+      {props.id && !hideAnchorLink && (
         <CopyButton
           text={copyText}
           className="opacity-0 group-hover/h2:opacity-100 transition-opacity ml-docs_0.5 inline-block"

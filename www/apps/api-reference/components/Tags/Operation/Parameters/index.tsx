@@ -56,6 +56,13 @@ const TagOperationParameters = ({
   isRequired: originalIsRequired = false,
   isExpanded = false,
 }: TagOperationParametersProps) => {
+  // A nested schema can be absent — e.g. an out-of-range `oneOf` tab after
+  // navigating between operations, an empty `oneOf`/`allOf`, or a media type
+  // with no `schema` — so render nothing instead of dereferencing `undefined`.
+  if (!schemaObject) {
+    return null
+  }
+
   const isRequired =
     originalIsRequired || checkRequired(schemaObject, schemaObject.title)
   const propertyName = schemaObject.parameterName || schemaObject.title || ""

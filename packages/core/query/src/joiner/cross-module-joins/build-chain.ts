@@ -68,7 +68,7 @@ export function resolveChain(
  * undefined when a segment resolves to neither, or when the graph schema
  * disagrees with the DML relation metadata.
  */
-function resolvePathHops(
+export function resolvePathHops(
   params: {
     rootConfig: InternalJoinerServiceConfig
     pathSegments: string[]

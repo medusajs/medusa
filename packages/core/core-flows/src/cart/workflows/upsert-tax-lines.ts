@@ -108,7 +108,7 @@ export type UpsertTaxLinesWorkflowInput = {
 export const upsertTaxLinesWorkflowId = "upsert-tax-lines"
 /**
  * This workflow upserts a cart's tax lines that are applied on line items and shipping methods. You can upsert the line item's quantity, unit price, and more. This workflow is executed
- * by the [Calculate Taxes Store API Route](https://docs.medusajs.com/api/store#carts_postcartsidtaxes).
+ * by the [Calculate Taxes Store API Route](https://docs.medusajs.com/api/store/carts/calculate-taxes).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to upsert a cart's tax lines in your custom flows.
  *

@@ -304,7 +304,7 @@ export class Auth {
     /**
      * This method retrieves the MFA factors configured for the authenticated
      * identity. It sends a request to the
-     * [List MFA Factors](https://docs.medusajs.com/api/admin#auth_getmfa_factors)
+     * [List MFA Factors](https://docs.medusajs.com/api/admin/multi-factor-authentication/list-mfa-factors)
      * API route.
      *
      * @param headers - Headers to pass in the request.
@@ -324,7 +324,7 @@ export class Auth {
     /**
      * This method starts MFA setup for the authenticated identity. It sends a
      * request to the
-     * [Create MFA Factor](https://docs.medusajs.com/api/admin#auth_postmfa_factors)
+     * [Create MFA Factor](https://docs.medusajs.com/api/admin/multi-factor-authentication/start-mfa-factor-enrollment)
      * API route.
      *
      * @param body - The MFA setup details.
@@ -354,7 +354,7 @@ export class Auth {
 
     /**
      * This method verifies a pending MFA factor setup. It sends a request to the
-     * [Verify MFA Factor](https://docs.medusajs.com/api/admin#auth_postmfa_factorsidverify)
+     * [Verify MFA Factor](https://docs.medusajs.com/api/admin/multi-factor-authentication/verify-and-enable-mfa-factor)
      * API route.
      *
      * @param id - The ID of the MFA factor to verify.
@@ -387,7 +387,7 @@ export class Auth {
     /**
      * This method disables an MFA factor for the authenticated identity. It
      * sends a request to the
-     * [Delete MFA Factor](https://docs.medusajs.com/api/admin#auth_deletemfa_factorsid)
+     * [Delete MFA Factor](https://docs.medusajs.com/api/admin/auth/disable-mfa-factor)
      * API route.
      *
      * @param id - The ID of the MFA factor to disable.
@@ -418,7 +418,7 @@ export class Auth {
     /**
      * This method generates new recovery codes for the authenticated identity.
      * It sends a request to the
-     * [Generate MFA Recovery Codes](https://docs.medusajs.com/api/admin#auth_postmfa_recovery-codes)
+     * [Generate MFA Recovery Codes](https://docs.medusajs.com/api/admin/multi-factor-authentication/generate-mfa-recovery-codes)
      * API route.
      *
      * @param body - Optional recovery code generation details.
@@ -447,7 +447,7 @@ export class Auth {
     /**
      * This method verifies an MFA challenge returned from `sdk.auth.login` or
      * `sdk.auth.callback`. It sends a request to the
-     * [Verify MFA Challenge](https://docs.medusajs.com/api/admin#auth_postmfa_challengesidverify)
+     * [Verify MFA Challenge](https://docs.medusajs.com/api/admin/multi-factor-authentication/verify-mfa-challenge)
      * API route.
      *
      * If verification succeeds, the returned token is stored based on the SDK's
@@ -545,7 +545,7 @@ export class Auth {
 
   /**
    * This method is used to retrieve a registration JWT token for a user, customer, or custom actor type. It sends a request to the
-   * [Retrieve Registration Token API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register).
+   * [Retrieve Registration Token API route](https://docs.medusajs.com/api/store/auth/retrieve-registration-jwt-token).
    *
    * Then, it stores the returned token and passes it in the header of subsequent requests. So, you can call the
    * [store.customer.create](https://docs.medusajs.com/resources/references/js-sdk/store/customer#create) method,
@@ -603,7 +603,7 @@ export class Auth {
 
   /**
    * This method retrieves the JWT authenticated token for an admin user, customer, or custom
-   * actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_provider).
+   * actor type. It sends a request to the [Authenticate API Route](https://docs.medusajs.com/api/admin/auth/authenticate-user).
    *
    * ### Third-Party Authentication
    *
@@ -621,7 +621,7 @@ export class Auth {
    * ### Session Authentication
    *
    * If the `auth.type` of the SDK is set to `session`, this method will also send a request to the
-   * [Set Authentication Session API route](https://docs.medusajs.com/api/admin#auth_postsession).
+   * [Set Authentication Session API route](https://docs.medusajs.com/api/admin/auth/set-authentication-session).
    *
    * Learn more in the [JS SDK Authentication](https://docs.medusajs.com/resources/js-sdk/auth/overview) guide.
    *
@@ -714,7 +714,7 @@ export class Auth {
 
   /**
    * This method is used to validate an Oauth callback from a third-party service, such as Google, for an admin user, customer, or custom actor types.
-   * It sends a request to the [Validate Authentication Callback](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providercallback).
+   * It sends a request to the [Validate Authentication Callback](https://docs.medusajs.com/api/admin/auth/validate-authentication-callback).
    *
    * The method stores the returned token and passes it in the header of subsequent requests. So, you can call the
    * [store.customer.create](https://docs.medusajs.com/resources/references/js-sdk/store/customer#create) or {@link refresh} methods,
@@ -791,7 +791,7 @@ export class Auth {
 
   /**
    * This method refreshes a JWT authentication token, which is useful after validating the Oauth callback
-   * with {@link callback}. It sends a request to the [Refresh Authentication Token API route](https://docs.medusajs.com/api/admin#auth_postadminauthtokenrefresh).
+   * with {@link callback}. It sends a request to the [Refresh Authentication Token API route](https://docs.medusajs.com/api/admin/auth/refresh-authentication-token).
    *
    * The method stores the returned token and passes it in the header of subsequent requests. So, you can call other
    * methods that require authentication after calling this method.
@@ -832,7 +832,7 @@ export class Auth {
    * This method logs out the currently authenticated user based on your JS SDK authentication configurations.
    *
    * If the `auth.type` of the SDK is set to `session`, this method will also send a request to the
-   * [Delete Authentication Session API route](https://docs.medusajs.com/api/admin#auth_deletesession).
+   * [Delete Authentication Session API route](https://docs.medusajs.com/api/admin/auth/delete-authentication-session).
    *
    * The method also clears any stored tokens or sessions, based on your JS SDK authentication configurations.
    *
@@ -858,7 +858,7 @@ export class Auth {
 
   /**
    * This method requests a reset password token for an admin user, customer, or custom actor type.
-   * It sends a request to the [Generate Reset Password Token API route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerresetpassword).
+   * It sends a request to the [Generate Reset Password Token API route](https://docs.medusajs.com/api/admin/auth/generate-reset-password-token).
    *
    * To reset the password later using the token delivered to the user, use the {@link updateProvider} method.
    *
@@ -912,7 +912,7 @@ export class Auth {
    * More specifically, use this method when updating the password of an admin user, customer, or
    * custom actor type after requesting to reset their password with {@link resetPassword}.
    *
-   * This method sends a request to [this API route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerupdate).
+   * This method sends a request to [this API route](https://docs.medusajs.com/api/admin/auth/reset-password).
    *
    * Related guide: [How to allow customers to reset their passwords in a storefront](https://docs.medusajs.com/resources/storefront-development/customers/reset-password).
    *

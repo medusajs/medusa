@@ -16,7 +16,7 @@ export class ProductTag {
 
   /**
    * This method creates a product tag. It sends a request to the 
-   * [Create Product Tag](https://docs.medusajs.com/api/admin#product-tags_postproducttags)
+   * [Create Product Tag](https://docs.medusajs.com/api/admin/product-tags/create-product-tag)
    * API route.
    * 
    * @param body - The details of the product tag.
@@ -50,7 +50,7 @@ export class ProductTag {
 
   /**
    * This method updates a tag's details. It sends a request to the
-   * [Update Product Tag](https://docs.medusajs.com/api/admin#product-tags_postproducttagsid)
+   * [Update Product Tag](https://docs.medusajs.com/api/admin/product-tags/update-a-product-tag)
    * API route.
    * 
    * @param id - The tag's ID.
@@ -86,7 +86,7 @@ export class ProductTag {
 
   /**
    * This method retrieves a paginated list of product tags. It sends a request to the 
-   * [List Product Tags](https://docs.medusajs.com/api/admin#product-tags_getproducttags) API route.
+   * [List Product Tags](https://docs.medusajs.com/api/admin/product-tags/list-product-tags) API route.
    * 
    * @param query - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -128,7 +128,7 @@ export class ProductTag {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminProductTagListParams,
@@ -145,7 +145,7 @@ export class ProductTag {
 
   /**
    * This method retrieves a product tag by its ID. It sends a request to the 
-   * [Get Product Tag](https://docs.medusajs.com/api/admin#product-tags_getproducttagsid) API route.
+   * [Get Product Tag](https://docs.medusajs.com/api/admin/product-tags/get-a-product-tag) API route.
    * 
    * @param id - The product tag's ID.
    * @param query - Configure the fields to retrieve in the product tag.
@@ -173,7 +173,7 @@ export class ProductTag {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -191,7 +191,7 @@ export class ProductTag {
 
   /**
    * This method deletes a product tag. It sends a request to the
-   * [Delete Product Tag](https://docs.medusajs.com/api/admin#product-tags_deleteproducttagsid)
+   * [Delete Product Tag](https://docs.medusajs.com/api/admin/product-tags/delete-a-product-tag)
    * API route.
    * 
    * @param id - The tag's ID.

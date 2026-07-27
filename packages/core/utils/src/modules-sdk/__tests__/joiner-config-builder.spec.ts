@@ -556,6 +556,8 @@ describe("joiner-config-builder", () => {
         crossjoinable: [
           "id",
           "title",
+          // belongsTo foreign keys are filterable columns on the table.
+          "cart_id",
           "created_at",
           "updated_at",
           "deleted_at",

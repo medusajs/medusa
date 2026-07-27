@@ -1,7 +1,10 @@
 import { RemoteJoinerQuery } from "@medusajs/types"
 import { deduplicate, isDefined } from "@medusajs/utils"
 import { GraphCatalog } from "./catalog"
-import { extractCrossModuleJoins } from "./cross-module-joins"
+import {
+  consumeResiduals,
+  extractCrossModuleJoins,
+} from "./cross-module-joins"
 import {
   getNestedItems,
   resolveFieldAliasEntry,
@@ -51,7 +54,7 @@ export function compileQuery(
   { query, serviceConfig, options, initialData }: CompileInput,
   catalog: GraphCatalog
 ): QueryPlan {
-  const { crossModuleJoins, residualCrossModuleFilters } =
+  const { crossModuleJoins, residualCrossModuleFilters, residualOrderBy } =
     extractCrossModuleJoins({ query, serviceConfig }, catalog)
 
   if (crossModuleJoins.length) {
@@ -59,14 +62,21 @@ export function compileQuery(
     query.args.push({ name: "__internal", value: { crossModuleJoins } })
   }
 
-  // TODO: Once we implement the second stage of cross-module filtering/sorting, we can remove this check.
-  if (residualCrossModuleFilters.length) {
-    throw new Error(
-      `Unsupported cross-module filter/sort paths: ${residualCrossModuleFilters
-        .map((f) => f.path)
-        .join(", ")}`
-    )
-  }
+  // Stage 2: residual filters/orderings are consumed here (stripped from the
+  // query, their data loaded via injected expands) and completed in memory by
+  // executePlan after the fetch.
+  const residualHiddenProperties =
+    residualCrossModuleFilters.length || residualOrderBy.length
+      ? consumeResiduals(
+          {
+            query,
+            serviceConfig,
+            residualFilters: residualCrossModuleFilters,
+            residualOrderBy,
+          },
+          catalog
+        )
+      : []
 
   const { primaryKeyArg, otherArgs, pkName } = getPrimaryKeysAndOtherFilters({
     serviceConfig,
@@ -118,6 +128,8 @@ export function compileQuery(
     options,
     crossModuleJoins,
     residualCrossModuleFilters,
+    residualHiddenProperties,
+    residualOrderBy,
   }
 }
 

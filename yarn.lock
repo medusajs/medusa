@@ -2063,13 +2063,86 @@ __metadata:
   linkType: hard
 
 "@hookform/resolvers@npm:^5.2.2":
-  version: 5.4.0
-  resolution: "@hookform/resolvers@npm:5.4.0"
+  version: 5.5.7
+  resolution: "@hookform/resolvers@npm:5.5.7"
   dependencies:
     "@standard-schema/utils": ^0.3.0
   peerDependencies:
+    "@sinclair/typebox": ">=0.25.24"
+    "@standard-schema/spec": ^1.0.0
+    "@typeschema/main": ">=0.13.7"
+    "@vinejs/vine": ^2.0.0 || ^3.0.0
+    ajv: ^8.12.0
+    ajv-errors: ^3.0.0
+    ajv-formats: ^2.1.1
+    arktype: ^2.0.0
+    ata-validator: ^0.7.0
+    class-transformer: ">=0.4.0"
+    class-validator: ">=0.12.0"
+    computed-types: ^1.0.0
+    effect: ^3.10.3
+    fluentvalidation-ts: ^3.0.0
+    fp-ts: ^2.7.0
+    io-ts: ^2.0.0
+    joi: ^17.0.0
+    nope-validator: ">=0.12.0"
     react-hook-form: ^7.55.0
-  checksum: ea312948a8ee4dd711287295c95ddd4cefc69d3e01ecf196477aaf5179fbb28b10801486cb3e909abaea169ee7199ce9e725fcded8a98a539ba07aa278753a42
+    superstruct: ">=0.12.0"
+    typanion: ^3.3.2
+    valibot: ">=0.31.0 || ^1.0.0-beta.4 || ^1.0.0-rc"
+    vest: ">=3.0.0"
+    yup: ^1.0.0
+    zod: ^3.25.0 || ^4.0.0
+  peerDependenciesMeta:
+    "@sinclair/typebox":
+      optional: true
+    "@standard-schema/spec":
+      optional: true
+    "@typeschema/main":
+      optional: true
+    "@vinejs/vine":
+      optional: true
+    ajv:
+      optional: true
+    ajv-errors:
+      optional: true
+    ajv-formats:
+      optional: true
+    arktype:
+      optional: true
+    ata-validator:
+      optional: true
+    class-transformer:
+      optional: true
+    class-validator:
+      optional: true
+    computed-types:
+      optional: true
+    effect:
+      optional: true
+    fluentvalidation-ts:
+      optional: true
+    fp-ts:
+      optional: true
+    io-ts:
+      optional: true
+    joi:
+      optional: true
+    nope-validator:
+      optional: true
+    superstruct:
+      optional: true
+    typanion:
+      optional: true
+    valibot:
+      optional: true
+    vest:
+      optional: true
+    yup:
+      optional: true
+    zod:
+      optional: true
+  checksum: 412663923df939084e6370dcc3107910b12294559799197bebbc57d560ec6f27bd24e14a4fb7a498ee6b01b60d5c5e1b20cafbfe4e9e7ee6879e1479d51f5da0
   languageName: node
   linkType: hard
 
@@ -2841,14 +2914,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-bundler@2.17.2, @medusajs/admin-bundler@workspace:packages/admin/admin-bundler":
+"@medusajs/admin-bundler@2.18.0, @medusajs/admin-bundler@workspace:packages/admin/admin-bundler":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-bundler@workspace:packages/admin/admin-bundler"
   dependencies:
-    "@medusajs/admin-shared": 2.17.2
-    "@medusajs/admin-vite-plugin": 2.17.2
-    "@medusajs/dashboard": 2.17.2
-    "@medusajs/types": 2.17.2
+    "@medusajs/admin-shared": 2.18.0
+    "@medusajs/admin-vite-plugin": 2.18.0
+    "@medusajs/dashboard": 2.18.0
+    "@medusajs/types": 2.18.0
     "@vitejs/plugin-react": ^4.2.1
     autoprefixer: ^10.4.19
     compression: ^1.8.0
@@ -2862,29 +2935,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-sdk@2.17.2, @medusajs/admin-sdk@workspace:packages/admin/admin-sdk":
+"@medusajs/admin-sdk@2.18.0, @medusajs/admin-sdk@workspace:packages/admin/admin-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin/admin-sdk"
   dependencies:
-    "@medusajs/admin-shared": 2.17.2
+    "@medusajs/admin-shared": 2.18.0
     zod: 4.2.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-shared@2.17.2, @medusajs/admin-shared@workspace:packages/admin/admin-shared":
+"@medusajs/admin-shared@2.18.0, @medusajs/admin-shared@workspace:packages/admin/admin-shared":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-shared@workspace:packages/admin/admin-shared"
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-vite-plugin@2.17.2, @medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
+"@medusajs/admin-vite-plugin@2.18.0, @medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin"
   dependencies:
     "@babel/parser": 7.25.6
     "@babel/traverse": 7.25.6
     "@babel/types": 7.25.6
-    "@medusajs/admin-shared": 2.17.2
+    "@medusajs/admin-shared": 2.18.0
     chokidar: ^3.5.3
     fdir: 6.1.1
     magic-string: 0.30.5
@@ -2896,89 +2969,89 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/analytics-local@2.17.2, @medusajs/analytics-local@workspace:packages/modules/providers/analytics-local":
+"@medusajs/analytics-local@2.18.0, @medusajs/analytics-local@workspace:packages/modules/providers/analytics-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/analytics-local@workspace:packages/modules/providers/analytics-local"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/analytics-posthog@2.17.2, @medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog":
+"@medusajs/analytics-posthog@2.18.0, @medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog":
   version: 0.0.0-use.local
   resolution: "@medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     posthog-node: ^5.11.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     posthog-node: ^5.11.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/analytics@2.17.2, @medusajs/analytics@workspace:packages/modules/analytics":
+"@medusajs/analytics@2.18.0, @medusajs/analytics@workspace:packages/modules/analytics":
   version: 0.0.0-use.local
   resolution: "@medusajs/analytics@workspace:packages/modules/analytics"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/api-key@2.17.2, @medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
+"@medusajs/api-key@2.18.0, @medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-emailpass@2.17.2, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@medusajs/auth-emailpass@2.18.0, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     scrypt-kdf: ^2.0.1
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-github@2.17.2, @medusajs/auth-github@workspace:packages/modules/providers/auth-github":
+"@medusajs/auth-github@2.18.0, @medusajs/auth-github@workspace:packages/modules/providers/auth-github":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-github@workspace:packages/modules/providers/auth-github"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-google@2.17.2, @medusajs/auth-google@workspace:packages/modules/providers/auth-google":
+"@medusajs/auth-google@2.18.0, @medusajs/auth-google@workspace:packages/modules/providers/auth-google":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-google@workspace:packages/modules/providers/auth-google"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     jsonwebtoken: ^9.0.2
     jwks-rsa: ^3.1.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth@2.17.2, @medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
+"@medusajs/auth@2.18.0, @medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
     "@otplib/core": ^13.4.0
     "@otplib/plugin-crypto-node": ^13.4.0
     "@otplib/totp": ^13.4.0
@@ -2987,77 +3060,77 @@ __metadata:
     jwks-rsa: ^3.1.0
     scrypt-kdf: ^2.0.1
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-inmemory@2.17.2, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
+"@medusajs/cache-inmemory@2.18.0, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-redis@2.17.2, @medusajs/cache-redis@workspace:packages/modules/cache-redis":
+"@medusajs/cache-redis@2.18.0, @medusajs/cache-redis@workspace:packages/modules/cache-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-redis@workspace:packages/modules/cache-redis"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     ioredis: ^5.4.1
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/caching-redis@2.17.2, @medusajs/caching-redis@workspace:packages/modules/providers/caching-redis":
+"@medusajs/caching-redis@2.18.0, @medusajs/caching-redis@workspace:packages/modules/providers/caching-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/caching-redis@workspace:packages/modules/providers/caching-redis"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     ioredis: ^5.4.1
     xxhash-wasm: ^1.1.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/caching@2.17.2, @medusajs/caching@workspace:*, @medusajs/caching@workspace:packages/modules/caching":
+"@medusajs/caching@2.18.0, @medusajs/caching@workspace:*, @medusajs/caching@workspace:packages/modules/caching":
   version: 0.0.0-use.local
   resolution: "@medusajs/caching@workspace:packages/modules/caching"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
     awilix: ^8.0.1
     fast-json-stable-stringify: ^2.1.0
     node-cache: ^5.1.2
     xxhash-wasm: ^1.1.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
 
-"@medusajs/cart@2.17.2, @medusajs/cart@workspace:packages/modules/cart":
+"@medusajs/cart@2.18.0, @medusajs/cart@workspace:packages/modules/cart":
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/cli@2.17.2, @medusajs/cli@workspace:packages/cli/medusa-cli":
+"@medusajs/cli@2.18.0, @medusajs/cli@workspace:packages/cli/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/cli@workspace:packages/cli/medusa-cli"
   dependencies:
-    "@medusajs/deps": 2.17.2
-    "@medusajs/telemetry": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/telemetry": 2.18.0
+    "@medusajs/utils": 2.18.0
     "@types/express": ^4.17.21
     chalk: ^4.1.2
     configstore: ^5.0.1
@@ -3083,41 +3156,41 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@2.17.2, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
+"@medusajs/core-flows@2.18.0, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     csv-parse: ^5.6.0
     json-2-csv: ^5.5.11
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@2.17.2, @medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
+"@medusajs/currency@2.18.0, @medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/customer@2.17.2, @medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/modules/customer":
+"@medusajs/customer@2.18.0, @medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/modules/customer":
   version: 0.0.0-use.local
   resolution: "@medusajs/customer@workspace:packages/modules/customer"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/dashboard@2.17.2, @medusajs/dashboard@workspace:packages/admin/dashboard":
+"@medusajs/dashboard@2.18.0, @medusajs/dashboard@workspace:packages/admin/dashboard":
   version: 0.0.0-use.local
   resolution: "@medusajs/dashboard@workspace:packages/admin/dashboard"
   dependencies:
@@ -3128,13 +3201,13 @@ __metadata:
     "@dnd-kit/utilities": ^3.2.2
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": ^5.2.2
-    "@medusajs/admin-shared": 2.17.2
-    "@medusajs/admin-vite-plugin": 2.17.2
-    "@medusajs/icons": 2.17.2
-    "@medusajs/js-sdk": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/ui": 4.1.19
-    "@medusajs/ui-preset": 2.17.2
+    "@medusajs/admin-shared": 2.18.0
+    "@medusajs/admin-vite-plugin": 2.18.0
+    "@medusajs/icons": 2.18.0
+    "@medusajs/js-sdk": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/ui": 4.2.0
+    "@medusajs/ui-preset": 2.18.0
     "@radix-ui/react-dialog": 1.1.4
     "@radix-ui/react-dismissable-layer": 1.1.4
     "@tanstack/react-query": 5.64.2
@@ -3170,7 +3243,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/deps@2.17.2, @medusajs/deps@workspace:packages/deps":
+"@medusajs/deps@2.18.0, @medusajs/deps@workspace:packages/deps":
   version: 0.0.0-use.local
   resolution: "@medusajs/deps@workspace:packages/deps"
   dependencies:
@@ -3182,7 +3255,7 @@ __metadata:
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation-pg": ^0.52.0
     "@opentelemetry/resources": ^2.7.0
-    "@opentelemetry/sdk-node": ^0.218.0
+    "@opentelemetry/sdk-node": ^0.220.0
     "@opentelemetry/sdk-trace-node": ^2.7.0
     awilix: ^8.0.1
     pg: ^8.16.3
@@ -3190,23 +3263,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/draft-order@2.17.2, @medusajs/draft-order@workspace:packages/plugins/draft-order":
+"@medusajs/draft-order@2.18.0, @medusajs/draft-order@workspace:packages/plugins/draft-order":
   version: 0.0.0-use.local
   resolution: "@medusajs/draft-order@workspace:packages/plugins/draft-order"
   dependencies:
     "@ariakit/react": ^0.4.15
     "@babel/runtime": ^7.26.10
     "@hookform/resolvers": ^5.2.2
-    "@medusajs/admin-sdk": 2.17.2
-    "@medusajs/cli": 2.17.2
-    "@medusajs/dashboard": 2.17.2
-    "@medusajs/framework": 2.17.2
-    "@medusajs/icons": 2.17.2
-    "@medusajs/js-sdk": 2.17.2
-    "@medusajs/test-utils": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/ui": 4.1.19
-    "@medusajs/ui-preset": 2.17.2
+    "@medusajs/admin-sdk": 2.18.0
+    "@medusajs/cli": 2.18.0
+    "@medusajs/dashboard": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/icons": 2.18.0
+    "@medusajs/js-sdk": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/ui": 4.2.0
+    "@medusajs/ui-preset": 2.18.0
     "@tanstack/react-query": 5.64.2
     "@uiw/react-json-view": ^2.0.0-alpha.17
     date-fns: ^3.6.0
@@ -3216,13 +3289,13 @@ __metadata:
     radix-ui: 1.1.2
     react-hook-form: ^7.55.0
   peerDependencies:
-    "@medusajs/admin-sdk": 2.17.2
-    "@medusajs/cli": 2.17.2
-    "@medusajs/dashboard": 2.17.2
-    "@medusajs/framework": 2.17.2
-    "@medusajs/icons": 2.17.2
-    "@medusajs/test-utils": 2.17.2
-    "@medusajs/ui": 4.1.19
+    "@medusajs/admin-sdk": 2.18.0
+    "@medusajs/cli": 2.18.0
+    "@medusajs/dashboard": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/icons": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+    "@medusajs/ui": 4.2.0
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: 6.30.4
@@ -3265,79 +3338,79 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-local@2.17.2, @medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
+"@medusajs/event-bus-local@2.18.0, @medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-redis@2.17.2, @medusajs/event-bus-redis@workspace:*, @medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis":
+"@medusajs/event-bus-redis@2.18.0, @medusajs/event-bus-redis@workspace:*, @medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
     bullmq: 5.13.0
     ioredis: ^5.4.1
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-local@2.17.2, @medusajs/file-local@workspace:packages/modules/providers/file-local":
+"@medusajs/file-local@2.18.0, @medusajs/file-local@workspace:packages/modules/providers/file-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-local@workspace:packages/modules/providers/file-local"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-s3@2.17.2, @medusajs/file-s3@workspace:packages/modules/providers/file-s3":
+"@medusajs/file-s3@2.18.0, @medusajs/file-s3@workspace:packages/modules/providers/file-s3":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-s3@workspace:packages/modules/providers/file-s3"
   dependencies:
     "@aws-sdk/client-s3": ^3.980.0
     "@aws-sdk/lib-storage": ^3.980.0
     "@aws-sdk/s3-request-presigner": ^3.980.0
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/file@2.17.2, @medusajs/file@workspace:packages/modules/file":
+"@medusajs/file@2.18.0, @medusajs/file@workspace:packages/modules/file":
   version: 0.0.0-use.local
   resolution: "@medusajs/file@workspace:packages/modules/file"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@2.17.2, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
+"@medusajs/framework@2.18.0, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
     "@aws-sdk/client-dynamodb": ^3.980.0
     "@jercle/yargonaut": ^1.1.5
-    "@medusajs/cli": 2.17.2
-    "@medusajs/deps": 2.17.2
-    "@medusajs/modules-sdk": 2.17.2
-    "@medusajs/orchestration": 2.17.2
-    "@medusajs/telemetry": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
-    "@medusajs/workflows-sdk": 2.17.2
+    "@medusajs/cli": 2.18.0
+    "@medusajs/deps": 2.18.0
+    "@medusajs/modules-sdk": 2.18.0
+    "@medusajs/orchestration": 2.18.0
+    "@medusajs/telemetry": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
+    "@medusajs/workflows-sdk": 2.18.0
     "@types/express": ^4.17.21
     chokidar: ^4.0.3
     compression: ^1.8.1
@@ -3356,7 +3429,7 @@ __metadata:
     tsconfig-paths: ^4.2.0
     zod-validation-error: 5.0.0
   peerDependencies:
-    "@medusajs/cli": 2.17.2
+    "@medusajs/cli": 2.18.0
     ioredis: ^5.4.1
   peerDependenciesMeta:
     ioredis:
@@ -3368,24 +3441,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@2.17.2, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
+"@medusajs/fulfillment-manual@2.18.0, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment@2.17.2, @medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/modules/fulfillment":
+"@medusajs/fulfillment@2.18.0, @medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/modules/fulfillment":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/modules/fulfillment"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
@@ -3406,89 +3479,89 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@2.17.2, @medusajs/icons@workspace:packages/design-system/icons":
+"@medusajs/icons@2.18.0, @medusajs/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:
-    "@medusajs/toolbox": 2.17.2
+    "@medusajs/toolbox": 2.18.0
     react: ^18.3.1 || ^19.0.0
   peerDependencies:
     react: ^18.3.1 || ^19.0.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/index@2.17.2, @medusajs/index@workspace:packages/modules/index":
+"@medusajs/index@2.18.0, @medusajs/index@workspace:packages/modules/index":
   version: 0.0.0-use.local
   resolution: "@medusajs/index@workspace:packages/modules/index"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory@2.17.2, @medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/modules/inventory":
+"@medusajs/inventory@2.18.0, @medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/modules/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/modules/inventory"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/js-sdk@2.17.2, @medusajs/js-sdk@workspace:packages/core/js-sdk":
+"@medusajs/js-sdk@2.18.0, @medusajs/js-sdk@workspace:packages/core/js-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/js-sdk@workspace:packages/core/js-sdk"
   dependencies:
-    "@medusajs/types": 2.17.2
+    "@medusajs/types": 2.18.0
     fetch-event-stream: ^0.1.5
     qs: ^6.15.2
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@2.17.2, @medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/modules/link-modules":
+"@medusajs/link-modules@2.18.0, @medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/modules/link-modules"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking-postgres@2.17.2, @medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres":
+"@medusajs/locking-postgres@2.18.0, @medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking-redis@2.17.2, @medusajs/locking-redis@workspace:packages/modules/providers/locking-redis":
+"@medusajs/locking-redis@2.18.0, @medusajs/locking-redis@workspace:packages/modules/providers/locking-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking-redis@workspace:packages/modules/providers/locking-redis"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     ioredis: ^5.4.1
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking@2.17.2, @medusajs/locking@workspace:packages/modules/locking":
+"@medusajs/locking@2.18.0, @medusajs/locking@workspace:packages/modules/locking":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking@workspace:packages/modules/locking"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
@@ -3496,30 +3569,30 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/loyalty-plugin@workspace:packages/plugins/loyalty"
   dependencies:
-    "@medusajs/admin-sdk": 2.17.2
-    "@medusajs/cli": 2.17.2
-    "@medusajs/dashboard": 2.17.2
-    "@medusajs/framework": 2.17.2
-    "@medusajs/icons": 2.17.2
-    "@medusajs/medusa": 2.17.2
-    "@medusajs/test-utils": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/ui": 4.1.19
-    "@medusajs/ui-preset": 2.17.2
+    "@medusajs/admin-sdk": 2.18.0
+    "@medusajs/cli": 2.18.0
+    "@medusajs/dashboard": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/icons": 2.18.0
+    "@medusajs/medusa": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/ui": 4.2.0
+    "@medusajs/ui-preset": 2.18.0
     "@swc/core": 1.5.7
     "@types/node": ^20.0.0
     cross-env: ^7.0.3
     ts-node: ^10.9.2
     typescript: ^5.7.3
   peerDependencies:
-    "@medusajs/admin-sdk": 2.17.2
-    "@medusajs/cli": 2.17.2
-    "@medusajs/dashboard": 2.17.2
-    "@medusajs/framework": 2.17.2
-    "@medusajs/icons": 2.17.2
-    "@medusajs/medusa": 2.17.2
-    "@medusajs/test-utils": 2.17.2
-    "@medusajs/ui": 4.1.19
+    "@medusajs/admin-sdk": 2.18.0
+    "@medusajs/cli": 2.18.0
+    "@medusajs/dashboard": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/icons": 2.18.0
+    "@medusajs/medusa": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+    "@medusajs/ui": 4.2.0
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: 6.30.4
@@ -3545,13 +3618,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@2.17.2, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@2.18.0, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli"
   dependencies:
-    "@medusajs/medusa": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/medusa": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.25.3
@@ -3566,66 +3639,66 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@2.17.2, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@2.18.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
     "@inquirer/checkbox": ^2.3.11
     "@inquirer/confirm": ^2.0.17
     "@inquirer/input": ^2.2.9
-    "@medusajs/admin-bundler": 2.17.2
-    "@medusajs/analytics": 2.17.2
-    "@medusajs/analytics-local": 2.17.2
-    "@medusajs/analytics-posthog": 2.17.2
-    "@medusajs/api-key": 2.17.2
-    "@medusajs/auth": 2.17.2
-    "@medusajs/auth-emailpass": 2.17.2
-    "@medusajs/auth-github": 2.17.2
-    "@medusajs/auth-google": 2.17.2
-    "@medusajs/cache-inmemory": 2.17.2
-    "@medusajs/cache-redis": 2.17.2
-    "@medusajs/caching": 2.17.2
-    "@medusajs/caching-redis": 2.17.2
-    "@medusajs/cart": 2.17.2
-    "@medusajs/core-flows": 2.17.2
-    "@medusajs/currency": 2.17.2
-    "@medusajs/customer": 2.17.2
-    "@medusajs/draft-order": 2.17.2
-    "@medusajs/event-bus-local": 2.17.2
-    "@medusajs/event-bus-redis": 2.17.2
-    "@medusajs/file": 2.17.2
-    "@medusajs/file-local": 2.17.2
-    "@medusajs/file-s3": 2.17.2
-    "@medusajs/framework": 2.17.2
-    "@medusajs/fulfillment": 2.17.2
-    "@medusajs/fulfillment-manual": 2.17.2
-    "@medusajs/index": 2.17.2
-    "@medusajs/inventory": 2.17.2
-    "@medusajs/link-modules": 2.17.2
-    "@medusajs/locking": 2.17.2
-    "@medusajs/locking-postgres": 2.17.2
-    "@medusajs/locking-redis": 2.17.2
-    "@medusajs/notification": 2.17.2
-    "@medusajs/notification-local": 2.17.2
-    "@medusajs/notification-sendgrid": 2.17.2
-    "@medusajs/order": 2.17.2
-    "@medusajs/payment": 2.17.2
-    "@medusajs/payment-stripe": 2.17.2
-    "@medusajs/pricing": 2.17.2
-    "@medusajs/product": 2.17.2
-    "@medusajs/promotion": 2.17.2
-    "@medusajs/rbac": 2.17.2
-    "@medusajs/region": 2.17.2
-    "@medusajs/sales-channel": 2.17.2
-    "@medusajs/settings": 2.17.2
-    "@medusajs/stock-location": 2.17.2
-    "@medusajs/store": 2.17.2
-    "@medusajs/tax": 2.17.2
-    "@medusajs/telemetry": 2.17.2
-    "@medusajs/translation": 2.17.2
-    "@medusajs/user": 2.17.2
-    "@medusajs/workflow-engine-inmemory": 2.17.2
-    "@medusajs/workflow-engine-redis": 2.17.2
+    "@medusajs/admin-bundler": 2.18.0
+    "@medusajs/analytics": 2.18.0
+    "@medusajs/analytics-local": 2.18.0
+    "@medusajs/analytics-posthog": 2.18.0
+    "@medusajs/api-key": 2.18.0
+    "@medusajs/auth": 2.18.0
+    "@medusajs/auth-emailpass": 2.18.0
+    "@medusajs/auth-github": 2.18.0
+    "@medusajs/auth-google": 2.18.0
+    "@medusajs/cache-inmemory": 2.18.0
+    "@medusajs/cache-redis": 2.18.0
+    "@medusajs/caching": 2.18.0
+    "@medusajs/caching-redis": 2.18.0
+    "@medusajs/cart": 2.18.0
+    "@medusajs/core-flows": 2.18.0
+    "@medusajs/currency": 2.18.0
+    "@medusajs/customer": 2.18.0
+    "@medusajs/draft-order": 2.18.0
+    "@medusajs/event-bus-local": 2.18.0
+    "@medusajs/event-bus-redis": 2.18.0
+    "@medusajs/file": 2.18.0
+    "@medusajs/file-local": 2.18.0
+    "@medusajs/file-s3": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/fulfillment": 2.18.0
+    "@medusajs/fulfillment-manual": 2.18.0
+    "@medusajs/index": 2.18.0
+    "@medusajs/inventory": 2.18.0
+    "@medusajs/link-modules": 2.18.0
+    "@medusajs/locking": 2.18.0
+    "@medusajs/locking-postgres": 2.18.0
+    "@medusajs/locking-redis": 2.18.0
+    "@medusajs/notification": 2.18.0
+    "@medusajs/notification-local": 2.18.0
+    "@medusajs/notification-sendgrid": 2.18.0
+    "@medusajs/order": 2.18.0
+    "@medusajs/payment": 2.18.0
+    "@medusajs/payment-stripe": 2.18.0
+    "@medusajs/pricing": 2.18.0
+    "@medusajs/product": 2.18.0
+    "@medusajs/promotion": 2.18.0
+    "@medusajs/rbac": 2.18.0
+    "@medusajs/region": 2.18.0
+    "@medusajs/sales-channel": 2.18.0
+    "@medusajs/settings": 2.18.0
+    "@medusajs/stock-location": 2.18.0
+    "@medusajs/store": 2.18.0
+    "@medusajs/tax": 2.18.0
+    "@medusajs/telemetry": 2.18.0
+    "@medusajs/translation": 2.18.0
+    "@medusajs/user": 2.18.0
+    "@medusajs/workflow-engine-inmemory": 2.18.0
+    "@medusajs/workflow-engine-redis": 2.18.0
     boxen: ^5.0.1
     chalk: ^4.1.2
     chokidar: ^4.0.3
@@ -3640,7 +3713,7 @@ __metadata:
     slugify: ^1.6.6
     uuid: ^11.1.1
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     "@swc/core": ^1.7.28
     posthog-node: ^5.11.0
     react-dom: ^18.3.1
@@ -3657,46 +3730,46 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@2.17.2, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@2.18.0, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
-    "@medusajs/deps": 2.17.2
-    "@medusajs/query": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/query": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-local@2.17.2, @medusajs/notification-local@workspace:packages/modules/providers/notification-local":
+"@medusajs/notification-local@2.18.0, @medusajs/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-local@workspace:packages/modules/providers/notification-local"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-sendgrid@2.17.2, @medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
+"@medusajs/notification-sendgrid@2.18.0, @medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     "@sendgrid/mail": ^8.1.6
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification@2.17.2, @medusajs/notification@workspace:packages/modules/notification":
+"@medusajs/notification@2.18.0, @medusajs/notification@workspace:packages/modules/notification":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification@workspace:packages/modules/notification"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
@@ -3704,177 +3777,177 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/cli/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": 2.17.2
+    "@medusajs/medusa-oas-cli": 2.18.0
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
 
-"@medusajs/orchestration@2.17.2, @medusajs/orchestration@workspace:packages/core/orchestration":
+"@medusajs/orchestration@2.18.0, @medusajs/orchestration@workspace:packages/core/orchestration":
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/core/orchestration"
   dependencies:
-    "@medusajs/deps": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/order@2.17.2, @medusajs/order@workspace:packages/modules/order":
+"@medusajs/order@2.18.0, @medusajs/order@workspace:packages/modules/order":
   version: 0.0.0-use.local
   resolution: "@medusajs/order@workspace:packages/modules/order"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment-stripe@2.17.2, @medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
+"@medusajs/payment-stripe@2.18.0, @medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
     stripe: ^15.5.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment@2.17.2, @medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
+"@medusajs/payment@2.18.0, @medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/modules/payment"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
     stripe: 19.1.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/pricing@2.17.2, @medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/modules/pricing":
+"@medusajs/pricing@2.18.0, @medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/modules/pricing":
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/modules/pricing"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/product@2.17.2, @medusajs/product@workspace:^, @medusajs/product@workspace:packages/modules/product":
+"@medusajs/product@2.18.0, @medusajs/product@workspace:^, @medusajs/product@workspace:packages/modules/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/modules/product"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/promotion@2.17.2, @medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/modules/promotion":
+"@medusajs/promotion@2.18.0, @medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/modules/promotion":
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/modules/promotion"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/query@2.17.2, @medusajs/query@workspace:packages/core/query":
+"@medusajs/query@2.18.0, @medusajs/query@workspace:packages/core/query":
   version: 0.0.0-use.local
   resolution: "@medusajs/query@workspace:packages/core/query"
   dependencies:
-    "@medusajs/deps": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/rbac@2.17.2, @medusajs/rbac@workspace:packages/modules/rbac":
+"@medusajs/rbac@2.18.0, @medusajs/rbac@workspace:packages/modules/rbac":
   version: 0.0.0-use.local
   resolution: "@medusajs/rbac@workspace:packages/modules/rbac"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/region@2.17.2, @medusajs/region@workspace:^, @medusajs/region@workspace:packages/modules/region":
+"@medusajs/region@2.18.0, @medusajs/region@workspace:^, @medusajs/region@workspace:packages/modules/region":
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/modules/region"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/sales-channel@2.17.2, @medusajs/sales-channel@workspace:packages/modules/sales-channel":
+"@medusajs/sales-channel@2.18.0, @medusajs/sales-channel@workspace:packages/modules/sales-channel":
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/modules/sales-channel"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/settings@2.17.2, @medusajs/settings@workspace:packages/modules/settings":
+"@medusajs/settings@2.18.0, @medusajs/settings@workspace:packages/modules/settings":
   version: 0.0.0-use.local
   resolution: "@medusajs/settings@workspace:packages/modules/settings"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@2.17.2, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location":
+"@medusajs/stock-location@2.18.0, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location":
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/modules/stock-location"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/store@2.17.2, @medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
+"@medusajs/store@2.18.0, @medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/modules/store"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/tax@2.17.2, @medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/modules/tax":
+"@medusajs/tax@2.18.0, @medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/modules/tax":
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/modules/tax"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/telemetry@2.17.2, @medusajs/telemetry@workspace:packages/medusa-telemetry":
+"@medusajs/telemetry@2.18.0, @medusajs/telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "@medusajs/telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -3890,21 +3963,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/test-utils@2.17.2, @medusajs/test-utils@workspace:*, @medusajs/test-utils@workspace:packages/medusa-test-utils":
+"@medusajs/test-utils@2.18.0, @medusajs/test-utils@workspace:*, @medusajs/test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/test-utils@workspace:packages/medusa-test-utils"
   dependencies:
-    "@medusajs/core-flows": 2.17.2
-    "@medusajs/framework": 2.17.2
+    "@medusajs/core-flows": 2.18.0
+    "@medusajs/framework": 2.18.0
     "@types/express": ^4.17.21
     axios: ^1.13.1
     express: ^4.21.0
     get-port: ^5.1.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/core-flows": 2.17.2
-    "@medusajs/framework": 2.17.2
-    "@medusajs/medusa": 2.17.2
+    "@medusajs/core-flows": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/medusa": 2.18.0
   peerDependenciesMeta:
     "@medusajs/core-flows":
       optional: true
@@ -3913,7 +3986,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/toolbox@2.17.2, @medusajs/toolbox@workspace:packages/design-system/toolbox":
+"@medusajs/toolbox@2.18.0, @medusajs/toolbox@workspace:packages/design-system/toolbox":
   version: 0.0.0-use.local
   resolution: "@medusajs/toolbox@workspace:packages/design-system/toolbox"
   dependencies:
@@ -3933,22 +4006,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/translation@2.17.2, @medusajs/translation@workspace:*, @medusajs/translation@workspace:packages/modules/translation":
+"@medusajs/translation@2.18.0, @medusajs/translation@workspace:*, @medusajs/translation@workspace:packages/modules/translation":
   version: 0.0.0-use.local
   resolution: "@medusajs/translation@workspace:packages/modules/translation"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@2.17.2, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/core/types":
+"@medusajs/types@2.18.0, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/core/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
-    "@medusajs/deps": 2.17.2
+    "@medusajs/deps": 2.18.0
     bignumber.js: ^9.1.2
   peerDependencies:
     ioredis: ^5.4.1
@@ -3961,11 +4034,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@2.17.2, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
+"@medusajs/ui-preset@2.18.0, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui-preset@workspace:packages/design-system/ui-preset"
   dependencies:
-    "@medusajs/toolbox": 2.17.2
+    "@medusajs/toolbox": 2.18.0
     "@tailwindcss/forms": ^0.5.3
     tailwindcss: ^3.4.3
     tailwindcss-animate: ^1.0.6
@@ -3974,15 +4047,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui@4.1.19, @medusajs/ui@workspace:packages/design-system/ui":
+"@medusajs/ui@4.2.0, @medusajs/ui@workspace:packages/design-system/ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui@workspace:packages/design-system/ui"
   dependencies:
     "@dnd-kit/core": ^6.1.0
     "@dnd-kit/sortable": ^8.0.0
     "@dnd-kit/utilities": ^3.2.2
-    "@medusajs/icons": 2.17.2
-    "@medusajs/ui-preset": 2.17.2
+    "@medusajs/icons": 2.18.0
+    "@medusajs/ui-preset": 2.18.0
     "@radix-ui/react-dialog": 1.1.4
     "@radix-ui/react-dismissable-layer": 1.1.4
     "@tanstack/react-table": 8.20.5
@@ -4006,19 +4079,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@2.17.2, @medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
+"@medusajs/user@2.18.0, @medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/modules/user"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
     jsonwebtoken: ^9.0.2
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@2.17.2, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
+"@medusajs/utils@2.18.0, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:
@@ -4026,8 +4099,8 @@ __metadata:
     "@graphql-codegen/typescript": ^4.0.9
     "@graphql-tools/merge": ^9.0.7
     "@graphql-tools/schema": ^10.0.6
-    "@medusajs/deps": 2.17.2
-    "@medusajs/types": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/types": 2.18.0
     "@types/pluralize": ^0.0.33
     bignumber.js: ^9.1.2
     dotenv: ^16.4.5
@@ -4043,42 +4116,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@2.17.2, @medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@2.18.0, @medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
     cron-parser: ^4.9.0
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-redis@2.17.2, @medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
+"@medusajs/workflow-engine-redis@2.18.0, @medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis"
   dependencies:
-    "@medusajs/framework": 2.17.2
-    "@medusajs/test-utils": 2.17.2
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
     bullmq: 5.13.0
     ioredis: ^5.4.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/framework": 2.17.2
+    "@medusajs/framework": 2.18.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@2.17.2, @medusajs/workflows-sdk@workspace:packages/core/workflows-sdk":
+"@medusajs/workflows-sdk@2.18.0, @medusajs/workflows-sdk@workspace:packages/core/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/core/workflows-sdk"
   dependencies:
-    "@medusajs/deps": 2.17.2
-    "@medusajs/modules-sdk": 2.17.2
-    "@medusajs/orchestration": 2.17.2
-    "@medusajs/types": 2.17.2
-    "@medusajs/utils": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/modules-sdk": 2.18.0
+    "@medusajs/orchestration": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@medusajs/utils": 2.18.0
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
@@ -4473,12 +4546,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/api-logs@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/api-logs@npm:0.218.0"
+"@opentelemetry/api-logs@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/api-logs@npm:0.220.0"
   dependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 39ed739f6c9ef4b4a1d4c8afb18c388a0b4ee9527d4afcf16c2e7beacebcc256ff6407ae27042a4a39509fc78d87ecf991c3efbcbf7f339ea9e65a8fa39468cd
+  checksum: 0189cb2e610b64f75509724721b8b3ed31869a21a94254106330647eccc2a56dc13024a2aa93f4e07e1758b0af8f21952e65b4d7b3bbe9dc380f03810253ede6
   languageName: node
   linkType: hard
 
@@ -4489,24 +4562,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/configuration@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/configuration@npm:0.218.0"
+"@opentelemetry/configuration@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/configuration@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    yaml: ^2.0.0
+    "@opentelemetry/core": 2.9.0
+    yaml: ^2.8.3
   peerDependencies:
     "@opentelemetry/api": ^1.9.0
-  checksum: ce17781c0cd58219795e3bef55fde2e21adf849d94003a2442105852e914c6aeffa9e130c806d47f612fe85a993dbb0cfb5f73d929f9b47cd4e12f4c098bf4ef
-  languageName: node
-  linkType: hard
-
-"@opentelemetry/context-async-hooks@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/context-async-hooks@npm:2.7.1"
-  peerDependencies:
-    "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 7efa8fdec8b5dfb954a56bdfc2d521d440bb882e77449695a0eca20f514a8843a94e79e4f0d5aac50de7712b99e21996c69cfc13c7c1ec8f1ce3d868b4721073
+  checksum: 1eb7900ae62137ac2d94965996de1f4842b8ecd4943aa503b95c2284aa05fb7198fc728a7b5d7c98134836d91895e7e8acc2dde7053b9f6af5e5111255e03616
   languageName: node
   linkType: hard
 
@@ -4530,175 +4594,169 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-logs-otlp-grpc@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-logs-otlp-grpc@npm:0.218.0"
+"@opentelemetry/exporter-logs-otlp-grpc@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-logs-otlp-grpc@npm:0.220.0"
   dependencies:
     "@grpc/grpc-js": ^1.14.3
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-grpc-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/sdk-logs": 0.218.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-grpc-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/sdk-logs": 0.220.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 0e7f55d2b107edfeebb991b361791946af0a0f3ce852971fa12e6c372c9a66bd1d8bbff96488145b5ffbb1c597eb536d931f91d5dfb3c26567f3ac156284ea7e
+  checksum: 9b49e462a2cf90596fe5973386789cda852b6db899b53efe44aed3117afca717ac85e4361b8d46d1eb7610cc0b55ea2972e19b0378ab733f513f834e640ff7b6
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-logs-otlp-http@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-logs-otlp-http@npm:0.218.0"
+"@opentelemetry/exporter-logs-otlp-http@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-logs-otlp-http@npm:0.220.0"
   dependencies:
-    "@opentelemetry/api-logs": 0.218.0
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/sdk-logs": 0.218.0
+    "@opentelemetry/api-logs": 0.220.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/sdk-logs": 0.220.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 34f7a98dc5095b43ab7eef43aae140d00c4537d6b528917f151dcccb1fbfe73e5dd344424f743ee1d2ff992b5f37a10abf9d55ec940eb3736214da0ba81dc257
+  checksum: d5c257c29132e5eb707bae74058f35577f8815ab91d53ab20d8cb45120b326bf7ebe3454ec33abb3ff0f77f9d0a0d42bbbbbec05f8b390fff79bc5a1b042e234
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-logs-otlp-proto@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-logs-otlp-proto@npm:0.218.0"
+"@opentelemetry/exporter-logs-otlp-proto@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-logs-otlp-proto@npm:0.220.0"
   dependencies:
-    "@opentelemetry/api-logs": 0.218.0
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-logs": 0.218.0
-    "@opentelemetry/sdk-trace-base": 2.7.1
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/sdk-logs": 0.220.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: d8a9a2571665b76c48731feb9ba3515e02da8d0ea164b18ba23a3d0fb4204f584246380afbd6f300f1df170112daf34c47f79c6bf46aba4c71be752268679e0f
+  checksum: 26f8a3a08b7a50d1cfa9fd67e5970a9f8419239ed146bd5669f13b26cc196ed7312d9baa33732374c9786c2b7ed13758bb75f6afd68e740a27d4e6f9fd49f383
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-metrics-otlp-grpc@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-metrics-otlp-grpc@npm:0.218.0"
+"@opentelemetry/exporter-metrics-otlp-grpc@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-metrics-otlp-grpc@npm:0.220.0"
   dependencies:
     "@grpc/grpc-js": ^1.14.3
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/exporter-metrics-otlp-http": 0.218.0
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-grpc-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-metrics": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/exporter-metrics-otlp-http": 0.220.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-grpc-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-metrics": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: cc725c9162d94b8ac46e70a340d645bdf38c08725546cd4b701bdaa1c945ad7414832fd73b847172aacecbd671a1b0c71a76b141be1a1624c7ae72ffb3e80760
+  checksum: 495a804962c4e2f6de2378bb4a89f4ddd27043297868a68cb28242489550970879fdce82e192b587931f0ad20e96b0a14e0d7adecf4c0bd247bd255a0bab9c49
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-metrics-otlp-http@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-metrics-otlp-http@npm:0.218.0"
+"@opentelemetry/exporter-metrics-otlp-http@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-metrics-otlp-http@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-metrics": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-metrics": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 10894e3f58ad3565111db9e5c51f0026328d913a3521400a32766afd75da4ddfd8ab4af7dfd0ecbcb40a00361f76c2bff50f04078d6df95e65b45ced8274efc0
+  checksum: b3638556f6da337f0d7c5acf3c5d0fee616909b24742e84376da52cc31366dff86663a879b240c085e9e2c637a2767001b08cbeb134bca1f62f998578643e637
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-metrics-otlp-proto@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-metrics-otlp-proto@npm:0.218.0"
+"@opentelemetry/exporter-metrics-otlp-proto@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-metrics-otlp-proto@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/exporter-metrics-otlp-http": 0.218.0
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-metrics": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/exporter-metrics-otlp-http": 0.220.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-metrics": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 46173333d15af572d87b2e22e534eacefbe5acd883e28e807cc766b9c6b654d782c35a5db111ec735f868525e430ed5a95b678c9f2f888edebebf6b6cec278c2
+  checksum: ac17fdc51d0aed59b52c836e7b756f034f00b6e0688c591257f8b891e1f1d58f1ad231202fa32871ee3fad1557ae49ac1b7128732e14dc6f46fb01847b9f9e3d
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-prometheus@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-prometheus@npm:0.218.0"
+"@opentelemetry/exporter-prometheus@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-prometheus@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-metrics": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-metrics": 2.9.0
     "@opentelemetry/semantic-conventions": ^1.29.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 69e60d2fe200b83805f9ec198593a9389dc872fdc26fba706de93bf8e08f5fb06a4d3f79bfd06dd96cc57b1232107cef6bc397617bca24a82924f0b792517d90
+  checksum: df3acb9d6dbb00f0e0209715c15efe7d80977d36a5f208119a1ae9cf640e4270f08564c2f445a3e8e4ad2577e0fe88f7483b6cf0d4a7a3fbf444a432a1bd7196
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-trace-otlp-grpc@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-trace-otlp-grpc@npm:0.218.0"
+"@opentelemetry/exporter-trace-otlp-grpc@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-trace-otlp-grpc@npm:0.220.0"
   dependencies:
     "@grpc/grpc-js": ^1.14.3
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-grpc-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-grpc-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/sdk-trace": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: a4fc8ac3b7f7bcc010a90bf0ca4e78936a80a2270e5110aba7d52cb0be6241b2bbcb687bd7339489978928454209f83f9414d8489b97a7099f6d83d35a212f6f
+  checksum: 759b080a06cdb8ed336205cf541453b8db50654e7b1fab965f70067827b8d26e8cafe77b8fd748cde7960f28d89a9ff2b0ba41f292a5cde880eebc725bdc2e0e
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-trace-otlp-http@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-trace-otlp-http@npm:0.218.0"
+"@opentelemetry/exporter-trace-otlp-http@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-trace-otlp-http@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-trace": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 7e80ff74fdb0583e680f4e5371948268aec7241e8291e0f848348de11740a931421b0878995e9bb6268651cfda7c030c76aba5ae8ee9d73ac6ffdc5f47089e5e
+  checksum: fc9622a76db9322dbae0090d957ae884630c4d91847912ea269f8ba112d186fdca3a875a359715d2b0354fb0910f0fccb1f389d336c6b739dd174159580a4597
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-trace-otlp-proto@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/exporter-trace-otlp-proto@npm:0.218.0"
+"@opentelemetry/exporter-trace-otlp-proto@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/exporter-trace-otlp-proto@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-trace": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: eb47b7032983c8fa5b7c820d337974cb5046b3d6535b483dc831e8a698412d1a942d96059e5438f1ef4b1f9bc0dfa311c8106c975dbfe8c7b9ad1fa3ce5958ca
+  checksum: 066b51942fb413671c7961d371191ee499151d48e3684f07f6a71aa9def9707947a0c3d2f025f435a01da8ed7d337c8f8d36ae60975d2ec2987c6fbf15fdf8a2
   languageName: node
   linkType: hard
 
-"@opentelemetry/exporter-zipkin@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/exporter-zipkin@npm:2.7.1"
+"@opentelemetry/exporter-zipkin@npm:2.9.0":
+  version: 2.9.0
+  resolution: "@opentelemetry/exporter-zipkin@npm:2.9.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-trace": 2.9.0
     "@opentelemetry/semantic-conventions": ^1.29.0
   peerDependencies:
     "@opentelemetry/api": ^1.0.0
-  checksum: 4a29ff83455d9b18d73a1e40cc282565daf5214fce22024dd14b822b8d4f653e4325fddbc13efbc60fdc6e466b6b68b7da367cf571d8cf1aa24a8cd32f5c794a
+  checksum: d36f1e6ced10c6218e98aa989828bbc362f92fe162a8295db049526b90bf8aea0dce9c10fccca0f83d3ac5a5151ddba642b02b16f9483053ed258ad125237c03
   languageName: node
   linkType: hard
 
@@ -4718,16 +4776,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/instrumentation@npm:0.218.0"
+"@opentelemetry/instrumentation@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/instrumentation@npm:0.220.0"
   dependencies:
-    "@opentelemetry/api-logs": 0.218.0
+    "@opentelemetry/api-logs": 0.220.0
     import-in-the-middle: ^3.0.0
     require-in-the-middle: ^8.0.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 0539f7492c03a881126a2eff7da9871afcf59f1e12cee7e6427e5968a9eedd6c15158cbc29501eddcf3b81226adccefd8dd4f5a9689f787dcf0eb7e0571b7ebb
+  checksum: 4328e7a4c1be13b1aea9d266984bbc5cb1417aa2f95bc60f9b81596504cc6cd95f66f7dbb7bcda13cbdb2b3d1f1b8701d794c8a3f4b46544d1b5d4bfafbf7390
   languageName: node
   linkType: hard
 
@@ -4746,79 +4804,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/otlp-exporter-base@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/otlp-exporter-base@npm:0.218.0"
+"@opentelemetry/otlp-exporter-base@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/otlp-exporter-base@npm:0.220.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-transformer": 0.218.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-transformer": 0.220.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 7cb1a38491f38f9f204efcedb8982bd41ddd56b85ec0b5bfa90782c07bcd23afa5511d500061b197de4806f456f577d9df19c367ccd7b65334a160cabf5134a1
+  checksum: 726c4d11900946315f904b382056ae1ad0d2169eb3e3e79b1301c7dd8284477920293b456dd1cfa7c287838c8abd515afe844cc4c2859dc930307dc2b41cb241
   languageName: node
   linkType: hard
 
-"@opentelemetry/otlp-grpc-exporter-base@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/otlp-grpc-exporter-base@npm:0.218.0"
+"@opentelemetry/otlp-grpc-exporter-base@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/otlp-grpc-exporter-base@npm:0.220.0"
   dependencies:
     "@grpc/grpc-js": ^1.14.3
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/otlp-transformer": 0.218.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-transformer": 0.220.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: e28061d7f41cdde3478aafb5fc21ac7a0665946cd407ca01ec8c2f526eaa6ebb90580c27d45bc1b0f31d96a53344a9c7b40c874ea23f03a160e4777471ca076f
+  checksum: 9007f0be13cc8d6263bc7835c3ad18c1d0f174e1343c540ffebc67e44ae919966b47c85532c7cf1f107dd564d2fc73b05bb15f9b1a97a70d174cf8937af954ae
   languageName: node
   linkType: hard
 
-"@opentelemetry/otlp-transformer@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/otlp-transformer@npm:0.218.0"
+"@opentelemetry/otlp-transformer@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/otlp-transformer@npm:0.220.0"
   dependencies:
-    "@opentelemetry/api-logs": 0.218.0
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-logs": 0.218.0
-    "@opentelemetry/sdk-metrics": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
+    "@opentelemetry/api-logs": 0.220.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-logs": 0.220.0
+    "@opentelemetry/sdk-metrics": 2.9.0
+    "@opentelemetry/sdk-trace": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 0be6d38912945d7f44a141af08b27d3a20a117e5e732d06304dcb1b2b781c1a4096207a8855dadddf45c7d51db4938bd5bf764c9c55e71335bd1d3464e0d308f
+  checksum: 7c5014c17b2663f2c412a95df2507f1004c3f9c459d582a55db536156e83c6b7771c4d84cadac9e1e6023a827a07f6d164d84179e8048b687cd0843f3e5d012b
   languageName: node
   linkType: hard
 
-"@opentelemetry/propagator-b3@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/propagator-b3@npm:2.7.1"
+"@opentelemetry/propagator-b3@npm:2.9.0":
+  version: 2.9.0
+  resolution: "@opentelemetry/propagator-b3@npm:2.9.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
+    "@opentelemetry/core": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: cd43a7b06dcce76488b86a25fcde652f0b47039f499904b62af7c61d0d69c76fdf507c5a0aace91f5480daf531ce51864256b762cd5336f84a824c4de82f457a
+  checksum: 3a63e035b6ed698077fb67014061c2710f88824fabe3f7c7605ba3f7ee13827903d816a9f4ccc5cb0b6326d54eb84551466b861342c712ccfbc973d9c32367eb
   languageName: node
   linkType: hard
 
-"@opentelemetry/propagator-jaeger@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/propagator-jaeger@npm:2.7.1"
+"@opentelemetry/propagator-jaeger@npm:2.9.0":
+  version: 2.9.0
+  resolution: "@opentelemetry/propagator-jaeger@npm:2.9.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
+    "@opentelemetry/core": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 81fa3b81f2ef142734d7a485d747f96f3091b23a04b3eb2247265f92ba228e8e63e37ce151a9596ea8f6810b40bee04f8ed84f23f90d615500db459f5daebafc
-  languageName: node
-  linkType: hard
-
-"@opentelemetry/resources@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/resources@npm:2.7.1"
-  dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/semantic-conventions": ^1.29.0
-  peerDependencies:
-    "@opentelemetry/api": ">=1.3.0 <1.10.0"
-  checksum: f752c432ff9aaaec818dc5b5dc69bb22881bf20e6f361c917fce3715d7839274aacf94d2fe06e765cabc5e08193f65bfc438917c19ddf17f21b30252d9ad81ae
+  checksum: 8d7ef5cbc5ad03f62c5449f68730193a9534a5410a54eea9f5a39b2740c802ff1911228dbc173d1b5dcb3a1cbda8314e5c97c09450fcea9d6dd47f8cb2d0d629
   languageName: node
   linkType: hard
 
@@ -4834,77 +4880,66 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-logs@npm:0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/sdk-logs@npm:0.218.0"
+"@opentelemetry/sdk-logs@npm:0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/sdk-logs@npm:0.220.0"
   dependencies:
-    "@opentelemetry/api-logs": 0.218.0
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/resources": 2.7.1
+    "@opentelemetry/api-logs": 0.220.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/resources": 2.9.0
     "@opentelemetry/semantic-conventions": ^1.29.0
   peerDependencies:
     "@opentelemetry/api": ">=1.4.0 <1.10.0"
-  checksum: 2b65f32d59df0fdd712042029e459e544666a1848b8ef2b5bed25d68404e25dc46a67aec587b501e0e4d72f2967e355ffea162f6cbcf2a89c64e6e2971650392
+  checksum: 8e74f223e7e731f8c39259870c73190c9d3ec0094d1649fe67e3fe1eaefe576c8e4129930e324feeccb29bbe997a9d1ababd4d6c53fd8c17364d9d7ee0d92a43
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-metrics@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/sdk-metrics@npm:2.7.1"
+"@opentelemetry/sdk-metrics@npm:2.9.0":
+  version: 2.9.0
+  resolution: "@opentelemetry/sdk-metrics@npm:2.9.0"
   dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/resources": 2.7.1
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/resources": 2.9.0
   peerDependencies:
     "@opentelemetry/api": ">=1.9.0 <1.10.0"
-  checksum: 31e21e5b4357cb33a29ab180e0e1ad0bd7516ebeca4712285809c1b89f3069b94d7dbdd6b1877ac813c172eca1a1c87727f9c4bcbf1c4580b3dffb3559f671c2
+  checksum: 343d00af79c4234730349f7fa34c4f13776e4508401237c787048daf4fa1f94ae0ccb30df3ec6de3853b717c4efd4ef0ce52b162495476ab675c2ad810f1b1f8
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-node@npm:^0.218.0":
-  version: 0.218.0
-  resolution: "@opentelemetry/sdk-node@npm:0.218.0"
+"@opentelemetry/sdk-node@npm:^0.220.0":
+  version: 0.220.0
+  resolution: "@opentelemetry/sdk-node@npm:0.220.0"
   dependencies:
-    "@opentelemetry/api-logs": 0.218.0
-    "@opentelemetry/configuration": 0.218.0
-    "@opentelemetry/context-async-hooks": 2.7.1
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/exporter-logs-otlp-grpc": 0.218.0
-    "@opentelemetry/exporter-logs-otlp-http": 0.218.0
-    "@opentelemetry/exporter-logs-otlp-proto": 0.218.0
-    "@opentelemetry/exporter-metrics-otlp-grpc": 0.218.0
-    "@opentelemetry/exporter-metrics-otlp-http": 0.218.0
-    "@opentelemetry/exporter-metrics-otlp-proto": 0.218.0
-    "@opentelemetry/exporter-prometheus": 0.218.0
-    "@opentelemetry/exporter-trace-otlp-grpc": 0.218.0
-    "@opentelemetry/exporter-trace-otlp-http": 0.218.0
-    "@opentelemetry/exporter-trace-otlp-proto": 0.218.0
-    "@opentelemetry/exporter-zipkin": 2.7.1
-    "@opentelemetry/instrumentation": 0.218.0
-    "@opentelemetry/otlp-exporter-base": 0.218.0
-    "@opentelemetry/propagator-b3": 2.7.1
-    "@opentelemetry/propagator-jaeger": 2.7.1
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/sdk-logs": 0.218.0
-    "@opentelemetry/sdk-metrics": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
-    "@opentelemetry/sdk-trace-node": 2.7.1
+    "@opentelemetry/api-logs": 0.220.0
+    "@opentelemetry/configuration": 0.220.0
+    "@opentelemetry/context-async-hooks": 2.9.0
+    "@opentelemetry/core": 2.9.0
+    "@opentelemetry/exporter-logs-otlp-grpc": 0.220.0
+    "@opentelemetry/exporter-logs-otlp-http": 0.220.0
+    "@opentelemetry/exporter-logs-otlp-proto": 0.220.0
+    "@opentelemetry/exporter-metrics-otlp-grpc": 0.220.0
+    "@opentelemetry/exporter-metrics-otlp-http": 0.220.0
+    "@opentelemetry/exporter-metrics-otlp-proto": 0.220.0
+    "@opentelemetry/exporter-prometheus": 0.220.0
+    "@opentelemetry/exporter-trace-otlp-grpc": 0.220.0
+    "@opentelemetry/exporter-trace-otlp-http": 0.220.0
+    "@opentelemetry/exporter-trace-otlp-proto": 0.220.0
+    "@opentelemetry/exporter-zipkin": 2.9.0
+    "@opentelemetry/instrumentation": 0.220.0
+    "@opentelemetry/otlp-exporter-base": 0.220.0
+    "@opentelemetry/otlp-grpc-exporter-base": 0.220.0
+    "@opentelemetry/propagator-b3": 2.9.0
+    "@opentelemetry/propagator-jaeger": 2.9.0
+    "@opentelemetry/resources": 2.9.0
+    "@opentelemetry/sdk-logs": 0.220.0
+    "@opentelemetry/sdk-metrics": 2.9.0
+    "@opentelemetry/sdk-trace": 2.9.0
+    "@opentelemetry/sdk-trace-base": 2.9.0
+    "@opentelemetry/sdk-trace-node": 2.9.0
     "@opentelemetry/semantic-conventions": ^1.29.0
   peerDependencies:
     "@opentelemetry/api": ">=1.3.0 <1.10.0"
-  checksum: cdb1cb17c89c1a63337207ec222ba607fb66d871894d20bd1e9e9d5d638f6024dfcb15cf3c519c0659240ca52743f97b2eaace5901b5f01f70fd88ce48eb77b7
-  languageName: node
-  linkType: hard
-
-"@opentelemetry/sdk-trace-base@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/sdk-trace-base@npm:2.7.1"
-  dependencies:
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/resources": 2.7.1
-    "@opentelemetry/semantic-conventions": ^1.29.0
-  peerDependencies:
-    "@opentelemetry/api": ">=1.3.0 <1.10.0"
-  checksum: e33f46476a80ff58866ed29bdb687ed7a32e2d995664b96391c3bb8358c779792df0a1039503ae775464f55c8a1af3ae0e46319a482071bf4541a66da1c9b0ee
+  checksum: aa145fff118d777003da253ef56cb4f185ae831a68c82b243ff3b72bc3efc116e92e365860d20757e89c703abcab5832789b20e8e33b3a123e65e1de070c5638
   languageName: node
   linkType: hard
 
@@ -4922,20 +4957,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/sdk-trace-node@npm:2.7.1":
-  version: 2.7.1
-  resolution: "@opentelemetry/sdk-trace-node@npm:2.7.1"
-  dependencies:
-    "@opentelemetry/context-async-hooks": 2.7.1
-    "@opentelemetry/core": 2.7.1
-    "@opentelemetry/sdk-trace-base": 2.7.1
-  peerDependencies:
-    "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 3953cb48ba7b62c2e5a9420c5460e1e79a868f1b28a6ea362e6f5ca3679bd886a8a9a8de1000bd5823e0cee38c80a40b5ffed05d807ec51d2eebfc3a33e74897
-  languageName: node
-  linkType: hard
-
-"@opentelemetry/sdk-trace-node@npm:^2.7.0":
+"@opentelemetry/sdk-trace-node@npm:2.9.0, @opentelemetry/sdk-trace-node@npm:^2.7.0":
   version: 2.9.0
   resolution: "@opentelemetry/sdk-trace-node@npm:2.9.0"
   dependencies:
@@ -14196,8 +14218,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/cli/create-medusa-app"
   dependencies:
-    "@medusajs/deps": 2.17.2
-    "@medusajs/telemetry": 2.17.2
+    "@medusajs/deps": 2.18.0
+    "@medusajs/telemetry": 2.18.0
     boxen: ^5.0.1
     chalk: ^4.1.2
     commander: ^11.0.0
@@ -22347,11 +22369,11 @@ __metadata:
   linkType: hard
 
 "react-hook-form@npm:^7.55.0":
-  version: 7.82.0
-  resolution: "react-hook-form@npm:7.82.0"
+  version: 7.83.0
+  resolution: "react-hook-form@npm:7.83.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 89a3f775a9f2503a2ba4586e6080ddcb435331ef2fcf8cb3d2b29e69386fe21c387b94d8b7000d968357c354dcbf38f650bedeec319971d99c67249a6eec9137
+  checksum: 3a1cfbb6bd614833675e1db1c079e05dc51c4f26c5259424023846a380de22d51748a755032a9983af492d25cbe98c524eecadce3c75e6997ff136e7538be06e
   languageName: node
   linkType: hard
 
@@ -24759,15 +24781,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.2":
-  version: 7.5.2
-  resolution: "tar@npm:7.5.2"
+  version: 7.5.20
+  resolution: "tar@npm:7.5.20"
   dependencies:
     "@isaacs/fs-minipass": ^4.0.0
     chownr: ^3.0.0
     minipass: ^7.1.2
     minizlib: ^3.1.0
     yallist: ^5.0.0
-  checksum: a7d8b801139b52f93a7e34830db0de54c5aa45487c7cb551f6f3d44a112c67f1cb8ffdae856b05fd4f17b1749911f1c26f1e3a23bbe0279e17fd96077f13f467
+  checksum: 4df4335c6d958b76adf1eaced55889dec3ca1c51f450658a074af80694bb0d9c154a8e93fdf4da617372d1575b121295379993961bbe4cd4b0867c0e5689846a
   languageName: node
   linkType: hard
 
@@ -26575,7 +26597,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.0.0, yaml@npm:^2.2.1, yaml@npm:^2.8.4":
+"yaml@npm:^2.2.1, yaml@npm:^2.8.3, yaml@npm:^2.8.4":
   version: 2.9.0
   resolution: "yaml@npm:2.9.0"
   bin:

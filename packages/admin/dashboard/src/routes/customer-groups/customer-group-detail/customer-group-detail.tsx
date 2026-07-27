@@ -2,9 +2,14 @@ import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { useCustomerGroup } from "../../../hooks/api/customer-groups"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { CustomerGroupCustomerSection } from "./components/customer-group-customer-section"
+import { ConfigurableCustomerGroupCustomerSection } from "./components/customer-group-customer-section/configurable-customer-group-customer-section"
 import { CustomerGroupGeneralSection } from "./components/customer-group-general-section"
 import { CUSTOMER_GROUP_DETAIL_FIELDS } from "./constants"
 import { customerGroupLoader } from "./loader"
@@ -15,6 +20,7 @@ export const CustomerGroupDetail = () => {
   >
 
   const { id } = useParams()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { customer_group, isLoading, isError, error } = useCustomerGroup(
     id!,
     {
@@ -43,7 +49,13 @@ export const CustomerGroupDetail = () => {
               <CustomerGroupGeneralSection group={customer_group} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CustomerGroupCustomerSection">
-              <CustomerGroupCustomerSection group={customer_group} />
+              {isViewConfigEnabled ? (
+                <ConfigurableCustomerGroupCustomerSection
+                  group={customer_group}
+                />
+              ) : (
+                <CustomerGroupCustomerSection group={customer_group} />
+              )}
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(customer_group, { permissions: false })}
           </>

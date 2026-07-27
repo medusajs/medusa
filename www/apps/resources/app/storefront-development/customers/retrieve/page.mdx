@@ -32,7 +32,7 @@ You can learn more in the [Login Customer](../login/page.mdx) and [Third-Party L
 
 ## Retrieve Logged-In Customer
 
-To retrieve the logged-in customer, send a request to the [Get Customer API route](!api!/store#customers_getcustomersme):
+To retrieve the logged-in customer, send a request to the [Get Customer API route](!api!/store/customers/get-customer):
 
 ```ts
 sdk.store.customer.retrieve()
@@ -42,7 +42,7 @@ sdk.store.customer.retrieve()
 })
 ```
 
-This will retrieve the authenticated customer's details. The [Get Customer API route](!api!/store#customers_getcustomersme) returns a `customer` field, which is a [customer object](!api!/store#customers_customer_schema).
+This will retrieve the authenticated customer's details. The [Get Customer API route](!api!/store/customers/get-customer) returns a `customer` field, which is a [customer object](!api!/store/customers/schema).
 
 Notice that the JS SDK automatically passes the necessary authentication headers or cookies based on your authentication configurations, as explained in the [Login Customer](../login/page.mdx) guide.
 
