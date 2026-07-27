@@ -66,6 +66,21 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
     {
       "loaded": true,
       "type": "category",
+      "title": "Build and Deployment",
+      "initialOpen": true,
+      "children": [
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/troubleshooting/esm-syntax-error",
+          "title": "Unexpected token 'export' Error",
+          "children": []
+        }
+      ]
+    },
+    {
+      "loaded": true,
+      "type": "category",
       "title": "Framework",
       "initialOpen": true,
       "children": [

@@ -7636,5 +7636,6 @@ export const generatedEditDates = {
   "app/commerce-modules/order/transfer-to-guest/page.mdx": "2026-07-23T06:59:03.176Z",
   "app/lint/rules/no-wildcard-with-specific-fields/page.mdx": "2026-07-23T07:05:02.983Z",
   "app/lint/rules/use-query-context-utility/page.mdx": "2026-07-23T07:07:28.191Z",
-  "app/commerce-modules/settings/admin-widget-zones/page.mdx": "2026-07-23T12:47:37.342Z"
+  "app/commerce-modules/settings/admin-widget-zones/page.mdx": "2026-07-23T12:47:37.342Z",
+  "app/troubleshooting/esm-syntax-error/page.mdx": "2026-07-27T11:43:33.424Z"
 }
