@@ -43,6 +43,41 @@ export interface AdminRbacRole {
   deleted_at: string | null
 }
 
+export interface AdminRbacRoleAssignment {
+  /**
+   * The assignment's ID.
+   */
+  id: string
+  /**
+   * The ID of the role the assignment is for.
+   */
+  role_id: string
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The ID of the entity the role is assigned to.
+   */
+  reference_id: string
+  /**
+   * Custom key-value pairs that can be added to the assignment.
+   */
+  metadata: Record<string, unknown> | null
+  /**
+   * The date the assignment was created.
+   */
+  created_at: string
+  /**
+   * The date the assignment was updated.
+   */
+  updated_at: string
+  /**
+   * The date the assignment was deleted.
+   */
+  deleted_at: string | null
+}
+
 export interface AdminRbacPolicy {
   /**
    * The policy's ID.

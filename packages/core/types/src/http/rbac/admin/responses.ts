@@ -1,5 +1,9 @@
 import { DeleteResponse, PaginatedResponse } from "../../common"
-import { AdminRbacPolicy, AdminRbacRole } from "./entities"
+import {
+  AdminRbacPolicy,
+  AdminRbacRole,
+  AdminRbacRoleAssignment,
+} from "./entities"
 import { AdminUser } from "../../user"
 
 export interface AdminRbacRoleResponse {
@@ -64,6 +68,36 @@ export interface AdminRbacRoleUsersDeleteResponse {
   object: "role_user"
   /**
    * Whether the users were removed successfully.
+   */
+  deleted: boolean
+}
+
+export interface AdminRbacRoleAssignmentListResponse
+  extends PaginatedResponse<{
+    /**
+     * The list of role assignments.
+     */
+    assignments: AdminRbacRoleAssignment[]
+  }> {}
+
+export interface AdminRbacRoleAssignmentsResponse {
+  /**
+   * The list of role assignments.
+   */
+  assignments: AdminRbacRoleAssignment[]
+}
+
+export interface AdminRbacRoleAssignmentsDeleteResponse {
+  /**
+   * The IDs of the entities that were unassigned from the role.
+   */
+  ids: string[]
+  /**
+   * The type of the removed items.
+   */
+  object: "role_assignment"
+  /**
+   * Whether the assignments were removed successfully.
    */
   deleted: boolean
 }

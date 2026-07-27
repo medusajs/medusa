@@ -333,6 +333,106 @@ export class RbacRole {
   }
 
   /**
+   * This method retrieves a paginated list of an RBAC role's assignments. An
+   * assignment links the role to any entity (for example a user or an invite).
+   * It sends a request to the List Role Assignments API route.
+   *
+   * @param roleId - The role's ID.
+   * @param queryParams - Filters and pagination configurations.
+   * @param headers - Headers to pass in the request.
+   * @returns The paginated list of assignments.
+   *
+   * @example
+   * sdk.admin.rbacRole.listAssignments("role_123", {
+   *   reference: "user"
+   * })
+   * .then(({ assignments, count, limit, offset }) => {
+   *   console.log(assignments)
+   * })
+   */
+  async listAssignments(
+    roleId: string,
+    queryParams?: HttpTypes.AdminRbacRoleAssignmentListParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentListResponse>(
+      `/admin/rbac/roles/${roleId}/assignments`,
+      {
+        query: queryParams,
+        headers,
+      }
+    )
+  }
+
+  /**
+   * This method assigns an RBAC role to one or more entities of a given
+   * reference type. It sends a request to the Create Role Assignments API
+   * route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The reference type and the IDs of the entities to assign the role to.
+   * @param headers - Headers to pass in the request.
+   * @returns The role's assignments for the provided reference type.
+   *
+   * @example
+   * sdk.admin.rbacRole.addAssignments("role_123", {
+   *   reference: "user",
+   *   reference_ids: ["user_123"]
+   * })
+   * .then(({ assignments }) => {
+   *   console.log(assignments)
+   * })
+   */
+  async addAssignments(
+    roleId: string,
+    body: HttpTypes.AdminCreateRoleAssignments,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentsResponse>(
+      `/admin/rbac/roles/${roleId}/assignments`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
+   * This method removes an RBAC role from one or more entities of a given
+   * reference type. It sends a request to the Remove Role Assignments API
+   * route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The reference type and the IDs of the entities to remove the role from.
+   * @param headers - Headers to pass in the request.
+   * @returns The removal's details.
+   *
+   * @example
+   * sdk.admin.rbacRole.removeAssignments("role_123", {
+   *   reference: "user",
+   *   reference_ids: ["user_123"]
+   * })
+   * .then(({ deleted }) => {
+   *   console.log(deleted)
+   * })
+   */
+  async removeAssignments(
+    roleId: string,
+    body: HttpTypes.AdminRemoveRoleAssignments,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentsDeleteResponse>(
+      `/admin/rbac/roles/${roleId}/assignments`,
+      {
+        method: "DELETE",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
    * This method adds policies to an RBAC role. It sends a request to the
    * Add Role Policies API route.
    *

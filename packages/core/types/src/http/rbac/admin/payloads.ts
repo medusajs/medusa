@@ -63,6 +63,28 @@ export interface AdminRemoveRoleUsers {
   users: string[]
 }
 
+export interface AdminCreateRoleAssignments {
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The IDs of the entities to assign the role to.
+   */
+  reference_ids: string[]
+}
+
+export interface AdminRemoveRoleAssignments {
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The IDs of the entities to remove the role from.
+   */
+  reference_ids: string[]
+}
+
 export interface AdminCreateRbacPolicy {
   /**
    * The policy's unique key.

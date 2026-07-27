@@ -84,3 +84,14 @@ export interface AdminRbacRoleUserListParams extends FindParams {
 }
 
 export interface AdminRbacPolicyRoleListParams extends FindParams {}
+
+export interface AdminRbacRoleAssignmentListParams extends FindParams {
+  /**
+   * Filter by the type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference?: string | string[]
+  /**
+   * Filter by the ID of the entity the role is assigned to.
+   */
+  reference_id?: string | string[]
+}
