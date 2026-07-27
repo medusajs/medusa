@@ -151,11 +151,16 @@ For example, you can define environment variables that are common to all preview
 
 To manage the shared settings for preview environments:
 
-1. In a [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the "Settings" tab.
-2. Choose the "Previews" tab from the sidebar.
-3. In the Previews settings, you can:
-    - Manage environment variables, as explained in the [Manage Environment Variables](../environment-variables/page.mdx) guide. All preview environments created after making changes will inherit these variables.
-    - Specify which database to create the preview environment's database from. By default, a new database will be created from the Production environment's database. You can change this to use a different environment's database, such as Staging.
+1. In a [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the **Settings** tab.
+2. Choose **Previews** from the sidebar.
+3. Click on the **Backend** tab.
+
+In the Backend tab, you can configure the following:
+
+- **Provisioning Rules**: Define conditions that control when a preview environment is provisioned for a pull request. Available fields are **author**, **branch name**, **title**, **description**, and **label**. Use the **is**, **is not**, or **contains** operators and combine conditions with AND/OR logic. Click **Save** to apply changes.
+- **Deploy Rules**: Define conditions that control when a provisioned preview environment is deployed. Available fields are **author** and **commit message**. Use the same operators and logic options as provisioning rules. Click **Save** to apply changes.
+- **Environment variables**: Manage environment variables shared across all preview environments, as explained in the [Manage Environment Variables](../environment-variables/page.mdx) guide. All preview environments created after making changes will inherit these variables.
+- **Database base branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging.
 
 <Note>
 
