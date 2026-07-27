@@ -1,5 +1,5 @@
 import { Note, InlineIcon, CodeTab, CodeTabs } from "docs-ui"
-import { EllipsisHorizontal } from "@medusajs/icons"
+import { EllipsisHorizontal, TriangleRightMini } from "@medusajs/icons"
 
 export const metadata = {
   title: `Environment Custom Domains`,
@@ -171,16 +171,16 @@ To remove a custom domain:
 
 ### Re-verify DNS Records
 
-If you've updated your DNS records and want to trigger an immediate check, open the DNS records detail page for your domain and click the **Re-verify** button. This manually starts a fresh DNS check rather than waiting for the next automatic check.
+If you've updated your DNS records and want to trigger an immediate check, open the DNS records detail page for your domain and click the **Reverify records** button. This manually starts a fresh DNS check rather than waiting for the next automatic check.
 
 ### Diagnose DNS Record Issues
 
-On the DNS records detail page, you can expand individual rows in the DNS records table to reveal troubleshooting details for that record. Expanding a row shows:
+On the DNS records detail page, you can click the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon in any row in the DNS records table to reveal troubleshooting details for that record. This shows:
 
-- The actual DNS records currently found for that entry
-- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself
-- An `nslookup` command (Windows) you can copy and run in your terminal
-- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser
+- The actual DNS records currently found for that entry, if any.
+- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself.
+- An `nslookup` command (Windows) you can copy and run in your terminal.
+- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser.
 
 The same expandable troubleshooting panel is available during the domain setup flow when you're configuring DNS records for a new domain.
 
