@@ -2060,17 +2060,17 @@ export const apiRefPaths = {
             "title": "Create Product",
             "method": "post"
           },
-          "PostProductsImports": {
+          "PostProductsImport": {
             "slug": "create-product-import",
             "path": "/admin/products/create-product-import",
-            "oldHash": "products_postproductsimports",
+            "oldHash": "products_postproductsimport",
             "title": "Create Product Import",
             "method": "post"
           },
-          "PostProductsImport": {
+          "PostProductsImports": {
             "slug": "create-product-import-2",
             "path": "/admin/products/create-product-import-2",
-            "oldHash": "products_postproductsimport",
+            "oldHash": "products_postproductsimports",
             "title": "Create Product Import",
             "method": "post"
           },
@@ -2263,17 +2263,17 @@ export const apiRefPaths = {
             "title": "List Property Labels",
             "method": "get"
           },
-          "PostPropertyLabelsBatch": {
+          "PostPropertyLabels": {
             "slug": "create-property-label",
             "path": "/admin/property-labels/create-property-label",
-            "oldHash": "property-labels_postpropertylabelsbatch",
+            "oldHash": "property-labels_postpropertylabels",
             "title": "Create Property Label",
             "method": "post"
           },
-          "PostPropertyLabels": {
+          "PostPropertyLabelsBatch": {
             "slug": "create-property-label-2",
             "path": "/admin/property-labels/create-property-label-2",
-            "oldHash": "property-labels_postpropertylabels",
+            "oldHash": "property-labels_postpropertylabelsbatch",
             "title": "Create Property Label",
             "method": "post"
           },
@@ -3335,6 +3335,13 @@ export const apiRefPaths = {
             "title": "Authenticate Customer",
             "method": "post"
           },
+          "PostVerificationConfirm": {
+            "slug": "confirm-verification",
+            "path": "/store/auth/confirm-verification",
+            "oldHash": "auth_postverificationconfirm",
+            "title": "Confirm Verification",
+            "method": "post"
+          },
           "PostActor_typeAuth_providerResetPassword": {
             "slug": "generate-reset-password-token",
             "path": "/store/auth/generate-reset-password-token",
@@ -3347,6 +3354,13 @@ export const apiRefPaths = {
             "path": "/store/auth/refresh-authentication-token",
             "oldHash": "auth_postadminauthtokenrefresh",
             "title": "Refresh Authentication Token",
+            "method": "post"
+          },
+          "PostVerificationRequest": {
+            "slug": "request-verification",
+            "path": "/store/auth/request-verification",
+            "oldHash": "auth_postverificationrequest",
+            "title": "Request Verification",
             "method": "post"
           },
           "PostActor_typeAuth_providerUpdate": {
@@ -4319,8 +4333,8 @@ export const apiRefRedirects = {
     "products_postproductsimportstransaction_idconfirm": "/admin/products/confirm-product-import-2",
     "products_postproductsidvariants": "/admin/products/create-variant",
     "products_postproducts": "/admin/products/create-product",
-    "products_postproductsimports": "/admin/products/create-product-import",
-    "products_postproductsimport": "/admin/products/create-product-import-2",
+    "products_postproductsimport": "/admin/products/create-product-import",
+    "products_postproductsimports": "/admin/products/create-product-import-2",
     "products_postproductsexport": "/admin/products/export-products",
     "products_postproductsidvariantsvariant_idimagesbatch": "/admin/products/manage-images-of-product-variant",
     "products_postproductsbatch": "/admin/products/manage-products",
@@ -4350,8 +4364,8 @@ export const apiRefRedirects = {
     "promotions": "/admin/promotions",
     "property-labels_getpropertylabelsid": "/admin/property-labels/get-a-property-label",
     "property-labels_getpropertylabels": "/admin/property-labels/list-property-labels",
-    "property-labels_postpropertylabelsbatch": "/admin/property-labels/create-property-label",
-    "property-labels_postpropertylabels": "/admin/property-labels/create-property-label-2",
+    "property-labels_postpropertylabels": "/admin/property-labels/create-property-label",
+    "property-labels_postpropertylabelsbatch": "/admin/property-labels/create-property-label-2",
     "property-labels_postpropertylabelsid": "/admin/property-labels/update-a-property-label",
     "property-labels_deletepropertylabelsid": "/admin/property-labels/delete-a-property-label",
     "property-labels_propertylabel_schema": "/admin/property-labels/schema",
@@ -4531,8 +4545,10 @@ export const apiRefRedirects = {
     "workflows": "/store/workflows",
     "localization": "/store/localization",
     "auth_postactor_typeauth_provider": "/store/auth/authenticate-customer",
+    "auth_postverificationconfirm": "/store/auth/confirm-verification",
     "auth_postactor_typeauth_providerresetpassword": "/store/auth/generate-reset-password-token",
     "auth_postadminauthtokenrefresh": "/store/auth/refresh-authentication-token",
+    "auth_postverificationrequest": "/store/auth/request-verification",
     "auth_postactor_typeauth_providerupdate": "/store/auth/reset-password",
     "auth_postactor_typeauth_provider_register": "/store/auth/retrieve-registration-jwt-token",
     "auth_postsession": "/store/auth/set-authentication-session",
