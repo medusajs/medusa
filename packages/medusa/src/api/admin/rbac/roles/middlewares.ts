@@ -12,9 +12,13 @@ import {
   AdminAddRolePoliciesType,
   AdminAssignRoleUsers,
   AdminCreateRbacRole,
+  AdminCreateRoleAssignments,
   AdminGetRbacRoleParams,
+  AdminGetAssignableRbacRolesParams,
   AdminGetRbacRolesParams,
+  AdminGetRoleAssignmentsParams,
   AdminGetRoleUsersParams,
+  AdminRemoveRoleAssignments,
   AdminRemoveRoleUsers,
   AdminUpdateRbacRole,
 } from "./validators"
@@ -41,7 +45,7 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/rbac/roles/assignable",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetRbacRolesParams,
+        AdminGetAssignableRbacRolesParams,
         QueryConfig.listTransformQueryConfig
       ),
     ],
@@ -186,6 +190,50 @@ export const adminRbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         resource: Entities.user,
         operation: PolicyOperation.update,
       },
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/rbac/roles/:id/assignments",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetRoleAssignmentsParams,
+        QueryConfig.listRoleAssignmentsTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.read,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/rbac/roles/:id/assignments",
+    middlewares: [
+      validateAndTransformBody(AdminCreateRoleAssignments),
+      validateAndTransformQuery(
+        AdminGetRoleAssignmentsParams,
+        QueryConfig.listRoleAssignmentsTransformQueryConfig
+      ),
+    ],
+    policies: [
+      {
+        resource: Entities.rbac_role,
+        operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/rbac/roles/:id/assignments",
+    middlewares: [validateAndTransformBody(AdminRemoveRoleAssignments)],
+    policies: [
       {
         resource: Entities.rbac_role,
         operation: PolicyOperation.update,

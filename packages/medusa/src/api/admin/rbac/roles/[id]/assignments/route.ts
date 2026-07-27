@@ -3,6 +3,7 @@ import {
   assignRolesWorkflow,
   unassignRolesWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -15,54 +16,37 @@ import {
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../../feature-flags/rbac"
 import {
-  AdminAssignRoleUsersType,
-  AdminRemoveRoleUsersType,
+  AdminCreateRoleAssignmentsType,
+  AdminGetRoleAssignmentsParamsType,
+  AdminRemoveRoleAssignmentsType,
 } from "../../validators"
-import { HttpTypes } from "@medusajs/framework/types"
 
 /**
  * @ignore
  * @featureFlag rbac
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest<
-    undefined,
-    HttpTypes.AdminRbacRoleUserListParams
-  >,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<undefined, AdminGetRoleAssignmentsParamsType>,
+  res: MedusaResponse<HttpTypes.AdminRbacRoleAssignmentListResponse>
 ) => {
   const roleId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { user_id } = req.filterableFields
+  const { reference, reference_id: referenceId } = req.filterableFields
 
   const { data: assignments, metadata } = await query.graph({
     entity: "rbac_role_assignment",
-    fields: ["reference_id"],
+    fields: req.queryConfig.fields,
     filters: {
       role_id: roleId,
-      reference: "user",
-      ...(user_id ? { reference_id: user_id } : {}),
+      ...(reference ? { reference } : {}),
+      ...(referenceId ? { reference_id: referenceId } : {}),
     },
-    pagination: req.queryConfig?.pagination || {},
+    pagination: req.queryConfig.pagination,
   })
 
-  const referenceIds = assignments.map(
-    (assignment: any) => assignment.reference_id
-  )
-
-  let users: any[] = []
-  if (referenceIds.length) {
-    const { data } = await query.graph({
-      entity: "user",
-      fields: req.queryConfig?.fields,
-      filters: { id: referenceIds },
-    })
-    users = data
-  }
-
   res.status(200).json({
-    users,
+    assignments,
     count: metadata?.count ?? 0,
     offset: metadata?.skip ?? 0,
     limit: metadata?.take ?? 0,
@@ -74,11 +58,11 @@ export const GET = async (
  * @featureFlag rbac
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminAssignRoleUsersType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<AdminCreateRoleAssignmentsType>,
+  res: MedusaResponse<HttpTypes.AdminRbacRoleAssignmentsResponse>
 ) => {
   const roleId = req.params.id
-  const { users } = req.validatedBody
+  const { reference, reference_ids: referenceIds } = req.validatedBody
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const {
@@ -101,33 +85,19 @@ export const POST = async (
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
       scope: await getRequestScopes(req),
-      reference: "user",
-      reference_id: users,
+      reference,
+      reference_id: referenceIds,
       role_id: roleId,
     },
   })
 
   const { data: assignments } = await query.graph({
     entity: "rbac_role_assignment",
-    fields: ["reference_id"],
-    filters: { role_id: roleId, reference: "user" },
+    fields: req.queryConfig.fields,
+    filters: { role_id: roleId, reference },
   })
 
-  const referenceIds = assignments.map(
-    (assignment: any) => assignment.reference_id
-  )
-
-  let roleUsers: any[] = []
-  if (referenceIds.length) {
-    const { data } = await query.graph({
-      entity: "user",
-      fields: ["*"],
-      filters: { id: referenceIds },
-    })
-    roleUsers = data
-  }
-
-  res.status(200).json({ users: roleUsers })
+  res.status(200).json({ assignments })
 }
 
 /**
@@ -135,42 +105,26 @@ export const POST = async (
  * @featureFlag rbac
  */
 export const DELETE = async (
-  req: AuthenticatedMedusaRequest<AdminRemoveRoleUsersType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<AdminRemoveRoleAssignmentsType>,
+  res: MedusaResponse<HttpTypes.AdminRbacRoleAssignmentsDeleteResponse>
 ) => {
   const roleId = req.params.id
-  const { users } = req.validatedBody
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-
-  const {
-    data: [role],
-  } = await query.graph({
-    entity: "rbac_role",
-    fields: ["id"],
-    filters: { id: roleId },
-  })
-
-  if (!role) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Role with id "${roleId}" not found`
-    )
-  }
+  const { reference, reference_ids: referenceIds } = req.validatedBody
 
   await unassignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
       scope: await getRequestScopes(req),
-      reference: "user",
-      reference_id: users,
+      reference,
+      reference_id: referenceIds,
       role_id: roleId,
     },
   })
 
   res.status(200).json({
-    ids: users,
-    object: "role_user",
+    ids: referenceIds,
+    object: "role_assignment",
     deleted: true,
   })
 }

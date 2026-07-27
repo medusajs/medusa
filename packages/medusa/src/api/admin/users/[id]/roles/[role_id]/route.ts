@@ -1,4 +1,5 @@
-import { removeActorRolesWorkflow } from "@medusajs/core-flows"
+import { getRequestScopes } from "@medusajs/framework"
+import { unassignRolesWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -14,12 +15,13 @@ export const DELETE = async (
 ) => {
   const { id: userId, role_id: roleId } = req.params
 
-  await removeActorRolesWorkflow(req.scope).run({
+  await unassignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      granted_actor: "user",
-      granted_actor_id: userId,
+      scope: await getRequestScopes(req),
+      reference: "user",
+      reference_id: userId,
       role_id: roleId,
     },
   })

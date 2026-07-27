@@ -1,3 +1,4 @@
+import { getRequestScopes } from "@medusajs/framework"
 import { createRbacRolePoliciesWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
@@ -58,6 +59,7 @@ export const POST = async (
     input: {
       actor_id: req.auth_context.actor_id,
       actor: req.auth_context.actor_type,
+      scope: await getRequestScopes(req),
       policies: rolePolicies,
     },
   })

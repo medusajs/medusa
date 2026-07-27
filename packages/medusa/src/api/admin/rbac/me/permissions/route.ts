@@ -1,4 +1,4 @@
-import { resolvePermissions } from "@medusajs/framework"
+import { getRequestActorRoleIds, resolvePermissions } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -8,6 +8,7 @@ import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
+  isDefined,
   Policy,
   WILDCARD,
 } from "@medusajs/framework/utils"
@@ -31,7 +32,7 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  * @featureFlag rbac
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminRbacScopeParams>,
   res: MedusaResponse<HttpTypes.AdminRbacMePermissionsResponse>
 ) => {
   const actorId = req.auth_context.actor_id
@@ -44,15 +45,12 @@ export const GET = async (
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: actors } = await query.graph({
-    entity: actorType,
-    fields: ["id", "rbac_roles.id"],
-    filters: { id: actorId },
-  })
+  const { scope_type, scope_id } = req.validatedQuery
+  if (isDefined(scope_type) && isDefined(scope_id)) {
+    req.rbacScopes = [{ type: scope_type, id: scope_id }]
+  }
 
-  const roleIds: string[] =
-    actors?.[0]?.rbac_roles?.map((r: { id: string }) => r.id).filter(Boolean) ??
-    []
+  const roleIds = await getRequestActorRoleIds(req)
 
   // Build the universe from code-registered + DB-persisted policies.
   const universe: Array<{ resource: string; operation: string }> = []

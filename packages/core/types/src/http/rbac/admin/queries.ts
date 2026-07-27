@@ -1,6 +1,17 @@
 import { OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
+export interface AdminRbacScopeParams {
+  /**
+   * Filter by the type of scope.
+   */
+  scope_type?: string
+  /**
+   * Filter by the ID of the scope.
+   */
+  scope_id?: string
+}
+
 export interface AdminRbacRoleListParams extends FindParams {
   /**
    * Query or keywords to search the role's searchable fields.
@@ -39,7 +50,9 @@ export interface AdminRbacRoleParams extends SelectParams {
   policies?: string | string[]
 }
 
-export interface AdminRbacPolicyListParams extends FindParams {
+export interface AdminRbacPolicyListParams
+  extends FindParams,
+    AdminRbacScopeParams {
   /**
    * Query or keywords to search the policy's searchable fields.
    */
@@ -85,7 +98,9 @@ export interface AdminRbacRoleUserListParams extends FindParams {
 
 export interface AdminRbacPolicyRoleListParams extends FindParams {}
 
-export interface AdminRbacRoleAssignmentListParams extends FindParams {
+export interface AdminRbacRoleAssignmentListParams
+  extends FindParams,
+    AdminRbacScopeParams {
   /**
    * Filter by the type of entity the role is assigned to (e.g. `user`, `invite`).
    */

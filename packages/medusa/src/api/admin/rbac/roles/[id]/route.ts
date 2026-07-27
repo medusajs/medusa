@@ -1,3 +1,4 @@
+import { getRequestScopes } from "@medusajs/framework"
 import {
   deleteRbacRolesWorkflow,
   updateRbacRolesWorkflow,
@@ -67,6 +68,7 @@ export const POST = async (
     input: {
       actor_id: req.auth_context.actor_id,
       actor: req.auth_context.actor_type,
+      scope: await getRequestScopes(req),
       selector: { id: req.params.id },
       update: req.validatedBody,
     },

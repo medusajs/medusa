@@ -1,6 +1,7 @@
+import { getRequestScopes } from "@medusajs/framework"
 import {
-  assignActorRolesWorkflow,
-  removeActorRolesWorkflow,
+  assignRolesWorkflow,
+  unassignRolesWorkflow,
 } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
@@ -17,20 +18,26 @@ import { HttpTypes } from "@medusajs/framework/types"
  * @featureFlag rbac
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetUserRolesParams>,
+  req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminGetUserRolesParams>,
   res: MedusaResponse
 ) => {
   const userId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: links, metadata } = await query.graph({
-    entity: "user_rbac_role",
+  const { role_id } = req.filterableFields
+
+  const { data: assignments, metadata } = await query.graph({
+    entity: "rbac_role_assignment",
     fields: req.queryConfig?.fields,
-    filters: { ...req.filterableFields, user_id: userId },
+    filters: {
+      reference: "user",
+      reference_id: userId,
+      ...(role_id ? { role_id: role_id } : {}),
+    },
     pagination: req.queryConfig?.pagination || {},
   })
 
-  const roles = links.map((link: any) => link.rbac_role)
+  const roles = assignments.map((assignment: any) => assignment.role)
 
   res.status(200).json({
     roles,
@@ -67,23 +74,24 @@ export const POST = async (
     )
   }
 
-  await assignActorRolesWorkflow(req.scope).run({
+  await assignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      granted_actor: "user",
-      granted_actor_id: userId,
+      scope: await getRequestScopes(req),
+      reference: "user",
+      reference_id: userId,
       role_id: roles,
     },
   })
 
-  const { data: links } = await query.graph({
-    entity: "user_rbac_role",
-    fields: ["rbac_role.*"],
-    filters: { user_id: userId },
+  const { data: assignments } = await query.graph({
+    entity: "rbac_role_assignment",
+    fields: ["role.*"],
+    filters: { reference: "user", reference_id: userId },
   })
 
-  const userRoles = links.map((link: any) => link.rbac_role)
+  const userRoles = assignments.map((assignment: any) => assignment.role)
 
   res.status(200).json({ roles: userRoles })
 }
@@ -115,12 +123,13 @@ export const DELETE = async (
     )
   }
 
-  await removeActorRolesWorkflow(req.scope).run({
+  await unassignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      granted_actor: "user",
-      granted_actor_id: userId,
+      scope: await getRequestScopes(req),
+      reference: "user",
+      reference_id: userId,
       role_id: roles,
     },
   })

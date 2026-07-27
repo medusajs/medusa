@@ -1,5 +1,6 @@
 import { z } from "@medusajs/framework/zod"
 import { applyAndAndOrOperators } from "../../../utils/common-validators"
+import { RbacScopeParamsFields } from "../roles/validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -28,6 +29,11 @@ export type AdminGetRbacPoliciesParamsType = z.infer<
 export const AdminGetRbacPoliciesParams = createFindParams({})
   .extend(AdminGetRbacPoliciesParamsFields.shape)
   .extend(applyAndAndOrOperators(AdminGetRbacPoliciesParamsFields).shape)
+
+export type AdminGetAssignableRbacPoliciesParamsType =
+  AdminGetRbacPoliciesParamsType & z.infer<typeof RbacScopeParamsFields>
+export const AdminGetAssignableRbacPoliciesParams =
+  AdminGetRbacPoliciesParams.extend(RbacScopeParamsFields.shape)
 
 export type AdminCreateRbacPolicyType = z.infer<typeof AdminCreateRbacPolicy>
 export const AdminCreateRbacPolicy = z

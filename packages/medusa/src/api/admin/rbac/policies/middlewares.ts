@@ -9,6 +9,7 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 
 import {
   AdminCreateRbacPolicy,
+  AdminGetAssignableRbacPoliciesParams,
   AdminGetRbacPoliciesParams,
   AdminGetRbacPolicyParams,
   AdminGetRbacPolicyRolesParams,
@@ -37,7 +38,7 @@ export const adminRbacPolicyRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/rbac/policies/assignable",
     middlewares: [
       validateAndTransformQuery(
-        AdminGetRbacPoliciesParams,
+        AdminGetAssignableRbacPoliciesParams,
         QueryConfig.listTransformQueryConfig
       ),
     ],

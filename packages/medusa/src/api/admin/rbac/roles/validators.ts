@@ -33,6 +33,24 @@ export const AdminGetRbacRolesParams = createFindParams({
   .merge(AdminGetRbacRolesParamsFields)
   .merge(applyAndAndOrOperators(AdminGetRbacRolesParamsFields))
 
+/**
+ * Optional scope context for introspection endpoints. Both `scope_type` and
+ * `scope_id` must be provided together to take effect; when present they
+ * evaluate the actor's privileges within that scope instead of the request's
+ * ambient scope set.
+ */
+export const RbacScopeParamsFields = z.object({
+  scope_type: z.string().optional(),
+  scope_id: z.string().optional(),
+})
+
+export type AdminGetAssignableRbacRolesParamsType = z.infer<
+  typeof AdminGetAssignableRbacRolesParams
+>
+export const AdminGetAssignableRbacRolesParams = AdminGetRbacRolesParams.extend(
+  RbacScopeParamsFields.shape
+)
+
 export type AdminCreateRbacRoleType = z.infer<typeof AdminCreateRbacRole>
 export const AdminCreateRbacRole = z
   .object({
@@ -82,4 +100,35 @@ export const AdminAssignRoleUsers = z.object({
 export type AdminRemoveRoleUsersType = z.infer<typeof AdminRemoveRoleUsers>
 export const AdminRemoveRoleUsers = z.object({
   users: z.array(z.string().min(1)).min(1),
+})
+
+export const AdminGetRoleAssignmentsParamsFields = z.object({
+  reference: z.union([z.string(), z.array(z.string())]).optional(),
+  reference_id: z.union([z.string(), z.array(z.string())]).optional(),
+})
+
+export type AdminGetRoleAssignmentsParamsType = z.infer<
+  typeof AdminGetRoleAssignmentsParams
+>
+export const AdminGetRoleAssignmentsParams = createFindParams({
+  limit: 50,
+  offset: 0,
+})
+  .extend(AdminGetRoleAssignmentsParamsFields.shape)
+  .extend(applyAndAndOrOperators(AdminGetRoleAssignmentsParamsFields).shape)
+
+export type AdminCreateRoleAssignmentsType = z.infer<
+  typeof AdminCreateRoleAssignments
+>
+export const AdminCreateRoleAssignments = z.object({
+  reference: z.string().min(1),
+  reference_ids: z.array(z.string().min(1)).min(1),
+})
+
+export type AdminRemoveRoleAssignmentsType = z.infer<
+  typeof AdminRemoveRoleAssignments
+>
+export const AdminRemoveRoleAssignments = z.object({
+  reference: z.string().min(1),
+  reference_ids: z.array(z.string().min(1)).min(1),
 })
