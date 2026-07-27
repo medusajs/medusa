@@ -70,6 +70,58 @@ export const exportProductsStep = createStep(
     const fields = deduplicate(["id", "handle", ...input.select])
     const { sales_channel_id, ..._filters } = input.filter ?? {}
 
+    // Pass 1: Collect unified keys across all batches
+    const allKeys = new Set<string>()
+    while (true) {
+      if (!!sales_channel_id) {
+        const { data: salesChannelProducts } = await query.graph({
+          entity: "product_sales_channel",
+          filters: {
+            sales_channel_id,
+          },
+          fields: ["product_id"],
+          pagination: {
+            skip: page * pageSize,
+            take: pageSize,
+          },
+        })
+
+        _filters.id = salesChannelProducts.map((product) => product.product_id)
+      }
+
+      const { data: products } = await query.graph({
+        entity: "product",
+        fields,
+        filters: _filters,
+        // If sales channel is specified, we already paginated
+        pagination: sales_channel_id
+          ? undefined
+          : {
+              skip: page * pageSize,
+              take: pageSize,
+            },
+      })
+
+      if (products.length === 0) {
+        break
+      }
+
+      const normalizedProducts = normalizeForExport(products, { regions })
+      for (const p of normalizedProducts) {
+        Object.keys(p).forEach((k) => allKeys.add(k))
+      }
+
+      if (products.length < pageSize) {
+        break
+      }
+
+      page += 1
+    }
+
+    const keysArray = Array.from(allKeys)
+
+    // Pass 2: Stream data to CSV using the unified keys
+    page = 0
     while (true) {
       if (!!sales_channel_id) {
         const { data: salesChannelProducts } = await query.graph({
@@ -108,6 +160,7 @@ export const exportProductsStep = createStep(
 
       const batchCsv = json2csv(normalizedProducts, {
         prependHeader: !hasHeader,
+        keys: keysArray.length > 0 ? keysArray : undefined,
         arrayIndexesAsKeys: true,
         expandNestedObjects: true,
         expandArrayObjects: true,
