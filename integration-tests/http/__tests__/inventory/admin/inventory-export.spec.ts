@@ -367,12 +367,16 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               "Item Id": sharedItem.id,
               "Item Sku": "SHARED-ITEM",
+              "Variant Id": expect.stringContaining("variant_"),
+              "Variant Title": "Variant one",
               "Variant Barcode": 111111111111,
               "Location [Location 1] Stocked Quantity": 50,
             }),
             expect.objectContaining({
               "Item Id": sharedItem.id,
               "Item Sku": "SHARED-ITEM",
+              "Variant Id": expect.stringContaining("variant_"),
+              "Variant Title": "Variant two",
               "Variant Barcode": 222222222222,
               "Location [Location 1] Stocked Quantity": 50,
             }),

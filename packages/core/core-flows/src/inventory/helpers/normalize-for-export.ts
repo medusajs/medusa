@@ -73,6 +73,8 @@ export const normalizeForExport = (
 
     return rowVariants.map((variant) => ({
       ...itemFields,
+      "Variant Id": variant?.id ?? "",
+      "Variant Title": variant?.title ?? "",
       "Variant Barcode": variant?.barcode ?? "",
       "Variant Ean": variant?.ean ?? "",
       "Variant Upc": variant?.upc ?? "",

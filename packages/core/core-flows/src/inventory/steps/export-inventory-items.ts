@@ -74,7 +74,9 @@ export const exportInventoryItemsStep = createStep(
     const fields = deduplicate([
       "id",
       "sku",
-      // The barcodes live on the linked product variant.
+      // The export creates one row per linked product variant.
+      "variants.id",
+      "variants.title",
       "variants.barcode",
       "variants.ean",
       "variants.upc",
