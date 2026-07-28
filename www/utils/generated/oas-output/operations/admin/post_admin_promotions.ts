@@ -87,9 +87,8 @@
  *                     properties:
  *                       type:
  *                         type: string
- *                         description: >
- *                           The budget's type. This can't be edited later. Use `spend` to set a limit on the total amount discounted by the campaign's promotions. Use `usage` to set a limit on the total
- *                           number of times the campaign's promotions can be used.
+ *                         description: |
+ *                           The budget's type. This can't be edited later. Use `spend` to set a limit on the total amount discounted by the campaign's promotions. Use `usage` to set a limit on the total number of times the campaign's promotions can be used.
  *                         enum:
  *                           - spend
  *                           - usage
