@@ -4,7 +4,7 @@
  * summary: Update a Shipping Option
  * description: |
  *   Update a shipping option's details.
- *
+ * 
  *   When you provide the `prices` array, it replaces the shipping option's existing flat-rate prices:
  * 
  *   - A price with a matching `id` is updated.

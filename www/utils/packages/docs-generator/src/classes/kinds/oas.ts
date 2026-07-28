@@ -1,5 +1,6 @@
 import chalk from "chalk"
 import { readFileSync, writeFileSync } from "fs"
+import { STATUS_CODES } from "http"
 import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
 import ts, { SyntaxKind } from "typescript"
@@ -39,6 +40,10 @@ import {
 import { MedusaEvent } from "types"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
+// matches responses that only send a status code, such as `res.sendStatus(201)`
+// or the deprecated `res.send(200)`. Express sends the status code's message
+// as a plain text body in these cases.
+const RES_SEND_STATUS_REGEX = /^res[\s\S]*\.(?:sendStatus|send)\((\d+)\)/
 
 type SchemaDescriptionOptions = {
   symbol?: ts.Symbol
@@ -446,28 +451,16 @@ class OasKindGenerator extends FunctionKindGenerator {
       oas.tags = [tagName]
     }
 
-    // detect returned response status
-    const responseStatus = this.getResponseStatus(node)
+    // detect returned response status and content
+    const { status: responseStatus, content: responseContent } =
+      this.getResponseDetails(node)
 
     // add responses
     oas.responses = {
-      [responseStatus]: {
-        description: "OK",
-      },
-    }
-
-    if (responseSchema && Object.keys(responseSchema).length > 0) {
-      ;(oas.responses[responseStatus] as OpenAPIV3.ResponseObject).content = {
-        "application/json": {
-          schema:
-            this.oasSchemaHelper.namedSchemaToReference(responseSchema) ||
-            this.oasSchemaHelper.schemaChildrenToRefs(responseSchema),
-        },
-      }
-    }
-
-    oas.responses = {
-      ...(oas.responses || {}),
+      [responseStatus]: this.createSuccessResponse({
+        schema: responseSchema,
+        content: responseContent,
+      }),
       ...DEFAULT_OAS_RESPONSES,
     }
 
@@ -669,7 +662,8 @@ class OasKindGenerator extends FunctionKindGenerator {
     }
 
     // update response schema and status
-    const newStatus = this.getResponseStatus(node)
+    const { status: newStatus, content: newResponseContent } =
+      this.getResponseDetails(node)
     const newResponseSchema = this.getResponseSchema({
       node,
       tagName,
@@ -677,33 +671,26 @@ class OasKindGenerator extends FunctionKindGenerator {
     })
     let updatedResponseSchema: OpenApiSchema | undefined
 
-    if (!oas.responses && newResponseSchema) {
+    if (!oas.responses && (newResponseSchema || newResponseContent)) {
       // add response schema
       oas.responses = {
-        [newStatus]: {
-          description: "OK",
-          content: {
-            "application/json": {
-              schema:
-                this.oasSchemaHelper.namedSchemaToReference(
-                  newResponseSchema
-                ) ||
-                this.oasSchemaHelper.schemaChildrenToRefs(newResponseSchema),
-            },
-          },
-        },
+        [newStatus]: this.createSuccessResponse({
+          schema: newResponseSchema,
+          content: newResponseContent,
+        }),
         ...DEFAULT_OAS_RESPONSES,
       }
       updatedResponseSchema = newResponseSchema
     } else if (oas.responses && !newResponseSchema) {
-      // check if it has a success response of a type other than JSON
-      if (!this.hasResponseType(node, oas)) {
+      // the route doesn't send a JSON body, so only the generated content,
+      // if any, is kept. Manually added content types are kept as-is.
+      if (newResponseContent || !this.hasResponseType(node, oas)) {
         // remove response schema by only keeping the default responses
         oas.responses = {
           ...DEFAULT_OAS_RESPONSES,
-          [newStatus]: {
-            description: "OK",
-          },
+          [newStatus]: this.createSuccessResponse({
+            content: newResponseContent,
+          }),
         }
       }
     } else {
@@ -713,7 +700,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       )
       const oldResponseSchema = oldResponseStatus
         ? ((oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject)
-            .content?.["application/json"].schema as OpenApiSchema)
+            .content?.["application/json"]?.schema as OpenApiSchema)
         : undefined
 
       updatedResponseSchema = this.updateSchema({
@@ -728,21 +715,9 @@ class OasKindGenerator extends FunctionKindGenerator {
 
       if (updatedResponseSchema && Object.keys(updatedResponseSchema).length) {
         // update the response schema
-        oas.responses![newStatus] = {
-          description: "OK",
-          content: {
-            "application/json": {
-              schema: updatedResponseSchema
-                ? this.oasSchemaHelper.namedSchemaToReference(
-                    updatedResponseSchema
-                  ) ||
-                  this.oasSchemaHelper.schemaChildrenToRefs(
-                    updatedResponseSchema
-                  )
-                : updatedResponseSchema,
-            },
-          },
-        }
+        oas.responses![newStatus] = this.createSuccessResponse({
+          schema: updatedResponseSchema,
+        })
       } else if (oldResponseStatus) {
         // delete the old response schema
         delete oas.responses![oldResponseStatus]
@@ -1431,23 +1406,113 @@ class OasKindGenerator extends FunctionKindGenerator {
   }
 
   /**
-   * Retrieve the response's status.
+   * Retrieve the status and content of the response that the route sends.
    *
-   * @param node - The node to retrieve its response status.
-   * @returns The response's status.
+   * @param node - The node to retrieve its response details.
+   * @returns The response's status and, if the route doesn't send a JSON body,
+   * the response's content.
    */
-  getResponseStatus(node: FunctionNode): string {
-    let responseStatus = "200"
+  getResponseDetails(node: FunctionNode): {
+    /**
+     * The response's status.
+     */
+    status: string
+    /**
+     * The response's content, if the route sends a body that isn't JSON.
+     */
+    content?: OpenAPIV3.ResponseObject["content"]
+  } {
+    let status = "200"
+    let content: OpenAPIV3.ResponseObject["content"] | undefined
+
     if ("body" in node && node.body && "statements" in node.body) {
       node.body.statements.forEach((statement) => {
-        const matched = RES_STATUS_REGEX.exec(statement.getText())?.splice(1)
-        if (matched?.length === 1) {
-          responseStatus = matched[0]
+        const statementText = statement.getText()
+        const sendStatusMatched =
+          RES_SEND_STATUS_REGEX.exec(statementText)?.at(1)
+
+        if (sendStatusMatched) {
+          status = sendStatusMatched
+          content = this.getStatusMessageContent(status)
+          return
+        }
+
+        const statusMatched = RES_STATUS_REGEX.exec(statementText)?.at(1)
+
+        if (statusMatched) {
+          status = statusMatched
+          content = undefined
         }
       })
     }
 
-    return responseStatus
+    return { status, content }
+  }
+
+  /**
+   * Retrieve the content of a response whose body is the status code's message,
+   * such as `Created` for the `201` status code.
+   *
+   * @param status - The response's status.
+   * @returns The response's content, if the status has an associated message.
+   */
+  getStatusMessageContent(
+    status: string
+  ): OpenAPIV3.ResponseObject["content"] | undefined {
+    const statusMessage = STATUS_CODES[status]
+
+    if (!statusMessage) {
+      return
+    }
+
+    return {
+      "text/plain": {
+        schema: {
+          type: "string",
+          title: "message",
+          description: `The ${status} status code's message.`,
+          example: statusMessage,
+        },
+      },
+    }
+  }
+
+  /**
+   * Create the success response of an OAS operation.
+   *
+   * @param param0 - The response's details.
+   * @returns The success response.
+   */
+  createSuccessResponse({
+    schema,
+    content,
+  }: {
+    /**
+     * The JSON schema of the response's body, if available.
+     */
+    schema?: OpenApiSchema
+    /**
+     * The response's content, used if the response doesn't have a JSON body.
+     */
+    content?: OpenAPIV3.ResponseObject["content"]
+  }): OpenAPIV3.ResponseObject {
+    const response: OpenAPIV3.ResponseObject = {
+      description: "OK",
+    }
+
+    if (schema && Object.keys(schema).length > 0) {
+      response.content = {
+        "application/json": {
+          schema:
+            this.oasSchemaHelper.namedSchemaToReference(schema) ||
+            this.oasSchemaHelper.schemaChildrenToRefs(schema),
+        },
+      }
+    } else if (content) {
+      response.content = content
+    }
+
+    return response
   }
 
   /**
@@ -1575,13 +1640,17 @@ class OasKindGenerator extends FunctionKindGenerator {
     }
 
     const symbol = itemType.aliasSymbol || itemType.symbol
-    const description = descriptionOptions?.typeStr
-      ? this.getSchemaDescription(
-          descriptionOptions as SchemaDescriptionOptions
-        )
-      : title
-        ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
-        : SUMMARY_PLACEHOLDER
+    // the TSDoc comment of the property, if any, is more accurate than the
+    // description generated from the knowledge base.
+    const description =
+      this.getSymbolDescription(originalSymbol) ||
+      (descriptionOptions?.typeStr
+        ? this.getSchemaDescription(
+            descriptionOptions as SchemaDescriptionOptions
+          )
+        : title
+          ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
+          : SUMMARY_PLACEHOLDER)
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
@@ -1909,16 +1978,23 @@ class OasKindGenerator extends FunctionKindGenerator {
         const isDeleteResponse =
           baseType?.aliasSymbol?.getEscapedName() === "DeleteResponse"
 
+        const schemaName =
+          itemType.isClassOrInterface() ||
+          itemType.isTypeParameter() ||
+          (isZodObject(itemType) && zodObjectTypeName)
+            ? this.oasSchemaHelper.normalizeSchemaName(typeAsString)
+            : undefined
+
         const objSchema: OpenApiSchema = {
           type: "object",
-          description,
+          // a named schema is written to its own file and referenced with `$ref`,
+          // which discards the description of the property it was reached from.
+          // So, the type's description is used instead when available.
+          description: schemaName
+            ? this.getSymbolDescription(symbol) || description
+            : description,
           deprecated: isDeprecated,
-          "x-schemaName":
-            itemType.isClassOrInterface() ||
-            itemType.isTypeParameter() ||
-            (isZodObject(itemType) && zodObjectTypeName)
-              ? this.oasSchemaHelper.normalizeSchemaName(typeAsString)
-              : undefined,
+          "x-schemaName": schemaName,
           // this is changed later
           required: undefined,
           "x-featureFlag": featureFlag,
@@ -2064,6 +2140,22 @@ class OasKindGenerator extends FunctionKindGenerator {
       default:
         return {}
     }
+  }
+
+  /**
+   * Retrieve the description of a symbol from its TSDoc comment.
+   *
+   * @param symbol - The symbol to retrieve its description.
+   * @returns The symbol's description, if it has a TSDoc comment.
+   */
+  getSymbolDescription(symbol?: ts.Symbol): string | undefined {
+    const commentParts = symbol?.getDocumentationComment(this.checker)
+
+    if (!commentParts?.length) {
+      return
+    }
+
+    return ts.displayPartsToString(commentParts).trim() || undefined
   }
 
   /**

@@ -4,7 +4,7 @@
  * summary: Update Order
  * description: |-
  *   Update an order's details.
- *
+ * 
  *   Updating the order's shipping or billing address doesn't recalculate the order's taxes or totals; the existing tax lines are preserved as-is. You also can't change the address's `country_code`.
  * x-authenticated: true
  * parameters:

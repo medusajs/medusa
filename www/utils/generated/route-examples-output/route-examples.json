@@ -566,20 +566,8 @@
   "POST /admin/products/{productid}/variants/inventory-items/batch": {
     "js-sdk": "sdk.admin.product.batchVariantInventoryItems(\n  \"prod_123\",\n  {\n    create: [\n      {\n        inventory_item_id: \"iitem_123\",\n        variant_id: \"variant_123\",\n        required_quantity: 10\n      }\n    ],\n    update: [\n      {\n        inventory_item_id: \"iitem_1234\",\n        variant_id: \"variant_1234\",\n        required_quantity: 20\n      }\n    ],\n    delete: [\n      {\n        inventory_item_id: \"iitem_321\",\n        variant_id: \"variant_321\"\n      }\n    ]\n  }\n)\n.then(({ created, updated, deleted }) => {\n  console.log(created, updated, deleted)\n})"
   },
-  "POST /admin/products/{productid}/options": {
-    "js-sdk": "sdk.admin.product.createOption(\n  \"prod_123\",\n  {\n    title: \"Color\",\n    values: [\"Green\", \"Blue\"]\n  }\n)\n.then(({ product }) => {\n  console.log(product)\n})"
-  },
-  "POST /admin/products/{productid}/options/{id}": {
-    "js-sdk": "sdk.admin.product.updateOption(\n  \"prod_123\",\n  \"prodopt_123\",\n  {\n    title: \"Color\"\n  }\n)\n.then(({ product }) => {\n  console.log(product)\n})"
-  },
   "GET /admin/products/{productid}/options": {
     "js-sdk": "sdk.admin.product.listOptions(\"prod_123\")\n.then(({ product_options, count, limit, offset }) => {\n  console.log(product_options)\n})"
-  },
-  "GET /admin/products/{productid}/options/{id}": {
-    "js-sdk": "sdk.admin.product.retrieveOption(\n  \"prod_123\",\n  \"prodopt_123\"\n)\n.then(({ product_option }) => {\n  console.log(product_option)\n})"
-  },
-  "DELETE /admin/products/{productid}/options/{id}": {
-    "js-sdk": "sdk.admin.product.deleteOption(\"prod_123\", \"prodopt_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"
   },
   "POST /admin/products/{productid}/images/{imageid}/variants/batch": {
     "js-sdk": "sdk.admin.product.batchImageVariants(\"prod_123\", \"img_123\", {\n  add: [\"variant_123\", \"variant_456\"],\n  remove: [\"variant_789\"]\n})\n.then(({ added, removed }) => {\n  console.log(added, removed)\n})"

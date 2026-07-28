@@ -3,7 +3,9 @@
  * operationId: PostOrdersIdTransferGuest
  * summary: Transfer Order to Guest Customer
  * x-sidebar-summary: Transfer to Guest
- * description: Transfer an order to a guest customer. This is useful when the order email was incorrectly entered and you want to set it to a guest customer. The order will be transferred to a new guest customer with the provided email. For transferring orders to registered customer, check out the [Request Order Transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer) API route instead.
+ * description: Transfer an order to a guest customer. This is useful when the order email was incorrectly entered and you want to set it to a guest customer. The order will be transferred to a new guest
+ *   customer with the provided email. For transferring orders to registered customer, check out the [Request Order Transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer) API route
+ *   instead.
  * x-authenticated: true
  * parameters:
  *   - name: id
