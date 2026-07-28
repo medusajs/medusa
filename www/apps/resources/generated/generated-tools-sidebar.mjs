@@ -453,7 +453,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                     },
                     {
                       "loaded": true,
-                      "isPathHref": true,
                       "type": "link",
                       "path": "/lint/rules/no-workflow-call-without-container",
                       "title": "no-workflow-call-without-container",
@@ -1203,7 +1202,6 @@ const generatedgeneratedToolsSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/js-sdk/admin/rbacPolicy",
                   "title": "rbacPolicy",
