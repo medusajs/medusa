@@ -8711,7 +8711,7 @@ Custom injection zones should follow the pattern `{resource-name}.{page-context}
 - `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
 - `section`: The name of the layout section the zone belongs to, if it isn't the main one. For example, `side` for the side section of a two-column layout.
 
-Don't add a `.before` or `.after` suffix to your zone names. These suffixes are deprecated since [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2), as admin users now change a widget's placement with [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md).
+Don't add a `.before` or `.after` suffix to your zone names. These suffixes are deprecated since [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2), as admin users now change a widget's placement with [Layout Configurations](undefined/user-guide/tips/layout-configurations).
 
 This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
 
@@ -10441,9 +10441,9 @@ Then, open a product’s details page. You’ll find your custom widget at the e
 
 Prior to Medusa v2.17.2, widget zones ended with `.before` or `.after` to indicate whether the widget should be placed at the beginning or end of the zone. For example, `product.details.before` would place the widget at the top of the product details page, while `product.details.after` would place it at the bottom.
 
-As of Medusa v2.17.2, the `.before` and `.after` suffixes have been deprecated in favor of [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md). The login page is the only exception. It isn't part of the layout configurations, so its `login.before` and `login.after` zones still place the widget before or after the login form.
+As of Medusa v2.17.2, the `.before` and `.after` suffixes have been deprecated in favor of [Layout Configurations](undefined/user-guide/tips/layout-configurations). The login page is the only exception. It isn't part of the layout configurations, so its `login.before` and `login.after` zones still place the widget before or after the login form.
 
-Widgets are now placed at the end of the zone they're injected into. For example, if you inject a widget into the `product.details` zone, it will be placed at the end of the product details page. Then, users can customize the placement of the widget in the Medusa Admin dashboard using [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md). The widget can be moved to the top of the page or in between core components of the page.
+Widgets are now placed at the end of the zone they're injected into. For example, if you inject a widget into the `product.details` zone, it will be placed at the end of the product details page. Then, users can customize the placement of the widget in the Medusa Admin dashboard using [Layout Configurations](undefined/user-guide/tips/layout-configurations). The widget can be moved to the top of the page or in between core components of the page.
 
 If you're still using the `.before` or `.after` suffixes, you can continue to do so, but it's recommended to migrate to the new system. `.before` and `.after` (aside from the login page) have no effect on the placement of widgets in Medusa v2.17.2 and later, and may be removed in future versions.
 
@@ -19066,7 +19066,7 @@ In this chapter, you’ll learn about Query and how to use it to fetch data from
 
 Query fetches data across modules. It's a set of methods registered in the Medusa container under the `query` key.
 
-In all resources that can access the [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
+In all resources that can access the [Medusa Container](undefined/learn/fundamentals/medusa-container), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
 
 Prefer Query for read operations (list and retrieve) in API routes. It integrates with the [`validateAndTransformQuery` middleware](#request-query-configurations) and resolves cross-module links automatically.
 
@@ -41074,7 +41074,7 @@ Account holder creation is idempotent per customer. When the Payment Module call
 
 Do not compensate account holder creation with a provider-side delete in your custom workflows. If you call `deleteAccountHolder` in a compensation step, a subsequent retry will ask the provider to create the account holder again. However, the provider may replay the original creation response for the same idempotency key, returning the already-deleted object. This results in an account holder in Medusa that points to a deleted provider-side customer, causing saved payment method flows to fail until the provider's idempotency window expires.
 
-The built-in [createPaymentSessionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createPaymentSessionsWorkflow/index.html.md) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
+The built-in [createPaymentSessionsWorkflow](undefined/references/medusa-workflows/createPaymentSessionsWorkflow) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
 
 If you build a custom workflow that creates account holders, use the same `noCompensation: true` config on `createPaymentAccountHolderStep`, or omit a compensation function that calls `deleteAccountHolder` on the provider.
 
