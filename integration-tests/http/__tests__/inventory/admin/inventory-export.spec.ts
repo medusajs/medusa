@@ -276,10 +276,107 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             "Item Sku": "BARCODE-SHIRT",
             // csv2json parses digit-only values back as numbers
-            "Item Barcode": 123456789012,
-            "Item Ean": 4006381333931,
-            "Item Upc": "036000291452",
+            "Variant Barcode": 123456789012,
+            "Variant Ean": 4006381333931,
+            "Variant Upc": "036000291452",
           })
+        )
+      })
+
+      it("should fan out to one row per linked variant", async () => {
+        const sharedItem = (
+          await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "SHARED-ITEM",
+              title: "Shared item",
+              location_levels: [
+                { location_id: stockLocation1.id, stocked_quantity: 50 },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.inventory_item
+
+        const shippingProfile = (
+          await api.post(
+            `/admin/shipping-profiles`,
+            { name: "Test", type: "default" },
+            adminHeaders
+          )
+        ).data.shipping_profile
+
+        await api.post(
+          "/admin/products",
+          getProductFixture({
+            title: "Bundle product",
+            shipping_profile_id: shippingProfile.id,
+            variants: [
+              {
+                title: "Variant one",
+                sku: "BUNDLE-V1",
+                barcode: "111111111111",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "large", color: "green" },
+                manage_inventory: true,
+                inventory_items: [
+                  { inventory_item_id: sharedItem.id, required_quantity: 1 },
+                ],
+              },
+              {
+                title: "Variant two",
+                sku: "BUNDLE-V2",
+                barcode: "222222222222",
+                prices: [{ currency_code: "usd", amount: 200 }],
+                options: { size: "small", color: "green" },
+                manage_inventory: true,
+                inventory_items: [
+                  { inventory_item_id: sharedItem.id, required_quantity: 1 },
+                ],
+              },
+            ],
+          }),
+          adminHeaders
+        )
+
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
+          eventBus
+        )
+
+        const exportRes = await api.post(
+          `/admin/inventory-items/export?id=${sharedItem.id}`,
+          {},
+          adminHeaders
+        )
+
+        expect(exportRes.data.transaction_id).toBeTruthy()
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        const exportedFileContents = await getCSVContents(
+          notifications[0].data.file.url
+        )
+
+        expect(exportedFileContents).toHaveLength(2)
+        expect(exportedFileContents).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              "Item Id": sharedItem.id,
+              "Item Sku": "SHARED-ITEM",
+              "Variant Barcode": 111111111111,
+              "Location [Location 1] Stocked Quantity": 50,
+            }),
+            expect.objectContaining({
+              "Item Id": sharedItem.id,
+              "Item Sku": "SHARED-ITEM",
+              "Variant Barcode": 222222222222,
+              "Location [Location 1] Stocked Quantity": 50,
+            }),
+          ])
         )
       })
 

@@ -13,10 +13,10 @@ type ExportableInventoryItem = HttpTypes.AdminInventoryItem & {
 }
 
 /**
- * Normalizes inventory item data for export, creating one row per inventory item.
- * Each row contains the item's details, the barcodes of its linked product variant,
- * its total quantities, and the stocked, reserved, and available quantities for
- * each stock location.
+ * Normalizes inventory item data for export, creating one row per linked product
+ * variant. Items without a linked variant have a single row. Each row contains the
+ * item's details, the linked variant's barcodes, the item's total quantities, and
+ * the stocked, reserved, and available quantities for each stock location.
  *
  * @param items - The array of inventory items to normalize for export.
  * @param locations - Object containing an array of stock locations used to build the per-location columns.
@@ -32,42 +32,52 @@ export const normalizeForExport = (
   items: ExportableInventoryItem[],
   { locations }: { locations: StockLocationTypes.StockLocationDTO[] }
 ): object[] => {
-  return items.map((item) => {
+  return items.flatMap((item) => {
     const levelsByLocation = new Map(
       (item.location_levels ?? []).map((level) => [level.location_id, level])
     )
 
-    const variant = item.variants?.find(Boolean)
-
-    const res = {
+    const itemFields = {
       ...prefixFields(item, "item"),
     } as any
 
-    delete res["Item Location Levels"]
-    delete res["Item Metadata"]
-    delete res["Item Variants"]
+    delete itemFields["Item Location Levels"]
+    delete itemFields["Item Metadata"]
+    delete itemFields["Item Variants"]
 
-    res["Item Barcode"] = variant?.barcode ?? ""
-    res["Item Ean"] = variant?.ean ?? ""
-    res["Item Upc"] = variant?.upc ?? ""
-
+    const locationColumns: Record<string, number | string> = {}
     for (const location of locations) {
       const level = levelsByLocation.get(location.id)
       const locationColumn = (field: string) =>
         `Location [${location.name}] ${beautifyKey(field)}`
 
-      res[locationColumn("stocked_quantity")] = normalizeQuantity(
+      locationColumns[locationColumn("stocked_quantity")] = normalizeQuantity(
         level?.stocked_quantity
       )
-      res[locationColumn("reserved_quantity")] = normalizeQuantity(
+      locationColumns[locationColumn("reserved_quantity")] = normalizeQuantity(
         level?.reserved_quantity
       )
-      res[locationColumn("available_quantity")] = normalizeQuantity(
+      locationColumns[locationColumn("available_quantity")] = normalizeQuantity(
         level?.available_quantity
       )
     }
 
-    return res
+    const variants = (item.variants ?? []).filter(
+      (variant): variant is HttpTypes.AdminProductVariant => !!variant
+    )
+
+    // One row per linked variant, or a single row for unlinked items.
+    const rowVariants = variants.length
+      ? variants
+      : [null as HttpTypes.AdminProductVariant | null]
+
+    return rowVariants.map((variant) => ({
+      ...itemFields,
+      "Variant Barcode": variant?.barcode ?? "",
+      "Variant Ean": variant?.ean ?? "",
+      "Variant Upc": variant?.upc ?? "",
+      ...locationColumns,
+    }))
   })
 }
 
