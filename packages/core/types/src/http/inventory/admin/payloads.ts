@@ -1,3 +1,8 @@
+/**
+ * The request body for exporting inventory items.
+ *
+ * @since 2.18.1
+ */
 export interface AdminExportInventoryItemRequest {}
 
 export interface AdminCreateInventoryItem {
