@@ -1,13 +1,9 @@
 import type {
+  Context,
   IProductModuleService,
   ProductTypes,
 } from "@medusajs/framework/types"
-import {
-  arrayDifference,
-  MedusaError,
-  Modules,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/framework/utils"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -30,6 +26,211 @@ export type UpdateProductsStepInput =
        */
       products: ProductTypes.UpsertProductDTO[]
     }
+
+type ProductOptionValueCompensation = {
+  product_id: string
+  product_option_id: string
+  add?: {
+    value_id: string
+    link_id: string
+    known_link_ids: string[]
+  }[]
+  remove?: { value_id: string; link_id: string }[]
+}
+
+type ProductOptionLinkRestoration = ProductTypes.ProductOptionProductPair & {
+  link_id: string
+  known_link_ids: string[]
+  value_links: { id: string; value_id: string }[]
+}
+
+type ProductOptionLinkCompensation = {
+  add: ProductOptionLinkRestoration[]
+  remove: ProductTypes.ProductOptionProductPair[]
+}
+
+type VariantUpdateState = {
+  product_id: string
+  product_options: {
+    id: string
+    option_id: string
+    option_deleted: boolean
+    value_link_ids: string[]
+    value_ids: string[]
+  }[]
+  product_option_links: {
+    id: string
+    option_id: string
+    updated_at: string
+    version: string
+    deleted: boolean
+  }[]
+  watched_options: {
+    id: string
+    title: string
+    is_exclusive: boolean
+    metadata: Record<string, unknown> | null
+    version: string
+    deleted: boolean
+  }[]
+  variants: {
+    id: string
+    updated_at: string
+    option_value_ids: string[]
+  }[]
+  option_values: {
+    id: string
+    value: string
+    option_id: string
+    option_title: string
+    metadata: Record<string, unknown> | null
+    rank: number | null
+    value_deleted: boolean
+    option_deleted: boolean
+  }[]
+}
+
+type ProductOptionValueExpectedDeletion = {
+  id: string
+  option_id: string
+  updated_at: string
+}
+
+type ProductUpdateState = {
+  product_id: string
+  version: string
+  fields: Record<string, unknown>
+}
+
+type ProductOptionValueUpdateContext = Context & {
+  optionValueUpdateCompensation?: ProductOptionValueCompensation[]
+  variantUpdateExpectedState?: VariantUpdateState[]
+  variantUpdatePreviousProducts?: ProductTypes.ProductDTO[]
+  variantUpdateCondition?: VariantUpdateState[]
+  variantUpdateSkippedProductIds?: string[]
+  variantUpdateRequiredValueIdsByProductId?: Record<string, string[]>
+  optionLinkUpdateForwardCompensation?: ProductOptionLinkCompensation
+  optionLinkUpdateCompensation?: ProductOptionLinkCompensation
+  optionValueUpdateCreatedValueIds?: string[]
+  optionValueUpdateCreatedValues?: ProductOptionValueExpectedDeletion[]
+  optionValueUpdateExpectedDeletions?: ProductOptionValueExpectedDeletion[]
+  optionValueUpdateExpectedRestorations?: Array<{
+    product_id: string
+    product_option_id: string
+    value_id: string
+    link_id: string
+    known_link_ids: string[]
+  }>
+  optionValueUpdateExpectedRemovals?: Array<{
+    product_id: string
+    product_option_id: string
+    value_id: string
+    link_id: string
+  }>
+  productUpdateFieldsByProductId?: Record<string, string[]>
+  productUpdatePreviousProducts?: ProductTypes.ProductDTO[]
+  productUpdatePreviousState?: ProductUpdateState[]
+  productUpdateExpectedState?: ProductUpdateState[]
+  productUpdateCondition?: ProductUpdateState[]
+  skipMissingProducts?: boolean
+}
+
+type ProductOptionValueRestorationContext = Context & {
+  optionValueUpdateExpectedRestorations: Array<{
+    product_id: string
+    product_option_id: string
+    value_id: string
+    link_id: string
+    known_link_ids: string[]
+  }>
+}
+
+const structuralProductUpdateFields = new Set([
+  "id",
+  "option_ids",
+  "option_value_updates",
+  "variants",
+])
+
+const getCompensationFields = (update: object) => {
+  const aliases: Record<string, string> = {
+    category_ids: "categories",
+    tag_ids: "tags",
+  }
+  const fields = Object.keys(update)
+    .filter((field) => !structuralProductUpdateFields.has(field))
+    .map((field) => aliases[field] ?? field)
+
+  if (Object.prototype.hasOwnProperty.call(update, "is_giftcard")) {
+    fields.push("discountable")
+  }
+
+  return [...new Set(fields)]
+}
+
+const toProductUpdate = (
+  product: ProductTypes.ProductDTO,
+  includeVariants: boolean,
+  compensationFields: string[],
+  previousState?: ProductUpdateState,
+  expectedState?: ProductUpdateState
+) => {
+  const { variants } = product
+  const productFields = product as unknown as Record<string, unknown>
+  const fields = Object.fromEntries(
+    compensationFields.map((field) => [
+      field,
+      Object.prototype.hasOwnProperty.call(previousState?.fields ?? {}, field)
+        ? previousState!.fields[field]
+        : productFields[field],
+    ])
+  )
+  if (compensationFields.includes("metadata")) {
+    const previousMetadata = fields.metadata as
+      | Record<string, unknown>
+      | null
+      | undefined
+    const expectedMetadata = expectedState?.fields.metadata as
+      | Record<string, unknown>
+      | null
+      | undefined
+    if (previousMetadata === null) {
+      fields.metadata = null
+    } else if (previousMetadata !== undefined) {
+      fields.metadata = {
+        ...previousMetadata,
+        ...Object.fromEntries(
+          Object.keys(expectedMetadata ?? {})
+            .filter((key) => !(key in previousMetadata))
+            .map((key) => [key, ""])
+        ),
+      }
+    }
+  }
+  const optionTitleByValueId = new Map(
+    (product.options ?? []).flatMap((option) =>
+      (option.values ?? []).map((value) => [value.id, option.title] as const)
+    )
+  )
+
+  return {
+    id: product.id,
+    ...fields,
+    ...(includeVariants && variants !== undefined
+      ? {
+          variants: variants.map((variant) => ({
+            ...variant,
+            options: Object.fromEntries(
+              (variant.options ?? []).map((value) => [
+                optionTitleByValueId.get(value.id)!,
+                value.value,
+              ])
+            ),
+          })),
+        }
+      : {}),
+  }
+}
 
 export const updateProductsStepId = "update-products"
 /**
@@ -78,130 +279,275 @@ export const updateProductsStep = createStep(
       if (!data.products.length) {
         return new StepResponse([], {
           prevProducts: [],
-          targetOptionIdsByProductId: {},
+          optionValueCompensation: [],
+          optionLinkUpdateCompensation: { add: [], remove: [] },
+          variantUpdateExpectedState: [],
+          variantUpdatePreviousProducts: [],
+          optionValueUpdateCreatedValues: [],
+          touchedFieldsByProductId: {},
+          productUpdatePreviousState: [],
+          productUpdateExpectedState: [],
         })
       }
 
-      // Capture the prior option associations (with their value subsets) and
-      // the option_ids the update targets for compensation
-      const prevProducts = await service.listProducts(
-        {
-          id: data.products.map((p) => p.id) as string[],
-        },
-        { relations: ["options.values"] }
+      const touchedFieldsByProductId = Object.fromEntries(
+        data.products.map((product) => [
+          product.id as string,
+          getCompensationFields(product),
+        ])
       )
 
-      const targetOptionIdsByProductId: Record<string, string[]> = {}
-      for (const product of data.products) {
-        if (product.option_ids !== undefined) {
-          targetOptionIdsByProductId[product.id as string] = product.option_ids
-        }
+      const prevProducts: ProductTypes.ProductDTO[] = []
+      const optionValueCompensation: ProductOptionValueCompensation[] = []
+      const optionLinkUpdateCompensation: ProductOptionLinkCompensation = {
+        add: [],
+        remove: [],
       }
-
-      const products = await service.upsertProducts(data.products)
+      const variantUpdateExpectedState: VariantUpdateState[] = []
+      const variantUpdatePreviousProducts: ProductTypes.ProductDTO[] = []
+      const optionValueUpdateCreatedValueIds: string[] = []
+      const optionValueUpdateCreatedValues: ProductOptionValueExpectedDeletion[] =
+        []
+      const productUpdatePreviousState: ProductUpdateState[] = []
+      const productUpdateExpectedState: ProductUpdateState[] = []
+      const products = await service.upsertProducts(data.products, {
+        __type: "MedusaContext",
+        optionValueUpdateCompensation: optionValueCompensation,
+        optionLinkUpdateForwardCompensation: optionLinkUpdateCompensation,
+        variantUpdateExpectedState,
+        variantUpdatePreviousProducts,
+        optionValueUpdateCreatedValueIds,
+        optionValueUpdateCreatedValues,
+        productUpdateFieldsByProductId: touchedFieldsByProductId,
+        productUpdatePreviousProducts: prevProducts,
+        productUpdatePreviousState,
+        productUpdateExpectedState,
+      } as ProductOptionValueUpdateContext)
       return new StepResponse(products, {
         prevProducts,
-        targetOptionIdsByProductId,
+        optionValueCompensation,
+        optionLinkUpdateCompensation,
+        variantUpdateExpectedState,
+        variantUpdatePreviousProducts,
+        optionValueUpdateCreatedValues,
+        touchedFieldsByProductId,
+        productUpdatePreviousState,
+        productUpdateExpectedState,
       })
     }
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
-
-    const prevProducts = await service.listProducts(data.selector, {
-      select: selects,
-      relations: [...new Set([...relations, "options.values"])],
+    const matchedProducts = await service.listProducts(data.selector, {
+      select: ["id"],
     })
+    const touchedFields = getCompensationFields(data.update)
+    const touchedFieldsByProductId = Object.fromEntries(
+      matchedProducts.map((product) => [product.id, touchedFields])
+    )
 
-    const targetOptionIdsByProductId: Record<string, string[]> = {}
-    if (data.update.option_ids !== undefined) {
-      for (const product of prevProducts) {
-        targetOptionIdsByProductId[product.id] = data.update.option_ids
-      }
+    const prevProducts: ProductTypes.ProductDTO[] = []
+    const optionValueCompensation: ProductOptionValueCompensation[] = []
+    const optionLinkUpdateCompensation: ProductOptionLinkCompensation = {
+      add: [],
+      remove: [],
     }
-
-    const products = await service.updateProducts(data.selector, data.update)
+    const variantUpdateExpectedState: VariantUpdateState[] = []
+    const variantUpdatePreviousProducts: ProductTypes.ProductDTO[] = []
+    const optionValueUpdateCreatedValueIds: string[] = []
+    const optionValueUpdateCreatedValues: ProductOptionValueExpectedDeletion[] =
+      []
+    const productUpdatePreviousState: ProductUpdateState[] = []
+    const productUpdateExpectedState: ProductUpdateState[] = []
+    const products = await service.upsertProducts(
+      matchedProducts.map((product) => ({
+        ...data.update,
+        id: product.id,
+      })),
+      {
+        __type: "MedusaContext",
+        optionValueUpdateCompensation: optionValueCompensation,
+        optionLinkUpdateForwardCompensation: optionLinkUpdateCompensation,
+        variantUpdateExpectedState,
+        variantUpdatePreviousProducts,
+        optionValueUpdateCreatedValueIds,
+        optionValueUpdateCreatedValues,
+        productUpdateFieldsByProductId: touchedFieldsByProductId,
+        productUpdatePreviousProducts: prevProducts,
+        productUpdatePreviousState,
+        productUpdateExpectedState,
+      } as ProductOptionValueUpdateContext
+    )
     return new StepResponse(products, {
       prevProducts,
-      targetOptionIdsByProductId,
+      optionValueCompensation,
+      optionLinkUpdateCompensation,
+      variantUpdateExpectedState,
+      variantUpdatePreviousProducts,
+      optionValueUpdateCreatedValues,
+      touchedFieldsByProductId,
+      productUpdatePreviousState,
+      productUpdateExpectedState,
     })
   },
   async (compensationData, { container }) => {
     const prevProducts = compensationData?.prevProducts ?? []
-    const targetOptionIdsByProductId =
-      compensationData?.targetOptionIdsByProductId ?? {}
+    const optionValueCompensation =
+      compensationData?.optionValueCompensation ?? []
+    const optionLinkUpdateCompensation =
+      compensationData?.optionLinkUpdateCompensation ?? {
+        add: [],
+        remove: [],
+      }
+    const variantUpdateExpectedState =
+      compensationData?.variantUpdateExpectedState ?? []
+    const variantUpdatePreviousProducts =
+      compensationData?.variantUpdatePreviousProducts ?? []
+    const optionValueUpdateCreatedValues =
+      compensationData?.optionValueUpdateCreatedValues ?? []
+    const touchedFieldsByProductId =
+      compensationData?.touchedFieldsByProductId ?? {}
+    const productUpdatePreviousState =
+      compensationData?.productUpdatePreviousState ?? []
+    const productUpdateExpectedState =
+      compensationData?.productUpdateExpectedState ?? []
 
     if (!prevProducts.length) {
       return
     }
 
     const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
-
-    // Revert the products' scalar fields. We omit option links here and
-    // reconcile them explicitly below so we can restore the exact value subsets
-    await service.upsertProducts(
-      prevProducts.map((product) => {
-        const { options: _options, ...rest } = product
-        return rest
-      })
+    const previousVariantProductsById = new Map(
+      variantUpdatePreviousProducts.map((product) => [product.id, product])
+    )
+    const previousProductUpdateStateById = new Map(
+      productUpdatePreviousState.map((state) => [state.product_id, state])
+    )
+    const expectedProductUpdateStateById = new Map(
+      productUpdateExpectedState.map((state) => [state.product_id, state])
+    )
+    const variantUpdateRequiredValueIdsByProductId = Object.fromEntries(
+      variantUpdatePreviousProducts.map((product) => [
+        product.id,
+        [
+          ...new Set(
+            (product.variants ?? []).flatMap((variant) =>
+              (variant.options ?? []).map((value) => value.id)
+            )
+          ),
+        ],
+      ])
+    )
+    const guardedProductIds = new Set(
+      variantUpdateExpectedState.map((state) => state.product_id)
     )
 
-    // Reconcile option links by diffing the prior associations against the
-    // option_ids the update targeted (captured at invoke).
-    const unlinkPairs: { product_id: string; product_option_id: string }[] = []
-    const relinkLinks: {
-      product_id: string
-      product_option_id: string
-      product_option_value_ids: string[]
-    }[] = []
+    const valueLinksToRestore = optionValueCompensation
+      .filter((update) => update.add?.length)
+      .map((update) => ({
+        product_id: update.product_id,
+        product_option_id: update.product_option_id,
+        add: update.add!.map((link) => link.value_id),
+      }))
+    const expectedRestorations = optionValueCompensation.flatMap((update) =>
+      (update.add ?? []).map((link) => ({
+        product_id: update.product_id,
+        product_option_id: update.product_option_id,
+        ...link,
+      }))
+    )
+    const expectedRemovals = optionValueCompensation.flatMap((update) =>
+      (update.remove ?? []).map((link) => ({
+        product_id: update.product_id,
+        product_option_id: update.product_option_id,
+        value_id: link.value_id,
+        link_id: link.link_id,
+      }))
+    )
+    const unguardedValueLinksToRestore = valueLinksToRestore.filter(
+      (update) => !guardedProductIds.has(update.product_id)
+    )
+    if (unguardedValueLinksToRestore.length) {
+      await service.updateProductOptionValuesOnProduct(
+        unguardedValueLinksToRestore,
+        {
+          __type: "MedusaContext",
+          optionValueUpdateExpectedRestorations: expectedRestorations.filter(
+            (restoration) => !guardedProductIds.has(restoration.product_id)
+          ),
+        } as ProductOptionValueRestorationContext
+      )
+    }
 
-    for (const product of prevProducts) {
-      const targetOptionIds = targetOptionIdsByProductId[product.id]
-      if (!targetOptionIds) {
+    const guardedValueUpdatesByProductId = new Map<
+      string,
+      ProductTypes.ProductOptionProductValueUpdate[]
+    >()
+    for (const update of optionValueCompensation) {
+      if (!guardedProductIds.has(update.product_id)) {
         continue
       }
-
-      const priorOptions = product.options ?? []
-      const priorOptionIds = priorOptions.map((option) => option.id)
-
-      // Options the update added (in target, not before) → unlink.
-      for (const optionId of arrayDifference(targetOptionIds, priorOptionIds)) {
-        unlinkPairs.push({
-          product_id: product.id,
-          product_option_id: optionId,
-        })
+      const inverse = {
+        product_id: update.product_id,
+        product_option_id: update.product_option_id,
+        ...(update.add?.length
+          ? { add: update.add.map((link) => link.value_id) }
+          : {}),
+        ...(update.remove?.length
+          ? { remove: update.remove.map((link) => link.value_id) }
+          : {}),
       }
-
-      // Options the update dropped (before, not in target) → restore + re-link
-      // with the exact values the product had.
-      const droppedOptionIds = new Set(
-        arrayDifference(priorOptionIds, targetOptionIds)
-      )
-      for (const option of priorOptions) {
-        if (droppedOptionIds.has(option.id)) {
-          relinkLinks.push({
-            product_id: product.id,
-            product_option_id: option.id,
-            product_option_value_ids: (option.values ?? []).map(
-              (value) => value.id
-            ),
-          })
-        }
-      }
+      guardedValueUpdatesByProductId.set(update.product_id, [
+        ...(guardedValueUpdatesByProductId.get(update.product_id) ?? []),
+        inverse,
+      ])
     }
-
-    if (unlinkPairs.length) {
-      await service.removeProductOptionFromProduct(unlinkPairs)
-    }
-
-    if (relinkLinks.length) {
-      const optionIds = [
-        ...new Set(relinkLinks.map((link) => link.product_option_id)),
-      ]
-      // Restoring un-soft-deletes orphaned exclusive options; no-op otherwise.
-      await service.restoreProductOptions(optionIds)
-      await service.addProductOptionToProduct(relinkLinks)
-    }
+    const variantUpdateSkippedProductIds: string[] = []
+    await service.upsertProducts(
+      prevProducts.map((product) => {
+        const previousVariantProduct = previousVariantProductsById.get(
+          product.id
+        )
+        const compensationProduct = previousVariantProduct
+          ? {
+              ...product,
+              options: previousVariantProduct.options,
+              variants: previousVariantProduct.variants,
+            }
+          : product
+        const update = toProductUpdate(
+          compensationProduct,
+          !!previousVariantProduct,
+          touchedFieldsByProductId[product.id] ?? [],
+          previousProductUpdateStateById.get(product.id),
+          expectedProductUpdateStateById.get(product.id)
+        )
+        const guardedValueUpdates =
+          guardedValueUpdatesByProductId.get(product.id) ?? []
+        return guardedValueUpdates.length
+          ? {
+              ...update,
+              option_value_updates: guardedValueUpdates.map(
+                ({ product_id: _productId, ...valueUpdate }) => valueUpdate
+              ),
+            }
+          : update
+      }),
+      {
+        __type: "MedusaContext",
+        variantUpdateCondition: variantUpdateExpectedState,
+        variantUpdateSkippedProductIds,
+        variantUpdateRequiredValueIdsByProductId,
+        optionLinkUpdateCompensation,
+        productUpdateFieldsByProductId: touchedFieldsByProductId,
+        productUpdateCondition: productUpdateExpectedState,
+        optionValueUpdateExpectedRestorations: expectedRestorations.filter(
+          (restoration) => guardedProductIds.has(restoration.product_id)
+        ),
+        optionValueUpdateExpectedRemovals: expectedRemovals.filter((removal) =>
+          guardedProductIds.has(removal.product_id)
+        ),
+        optionValueUpdateExpectedDeletions: optionValueUpdateCreatedValues,
+        skipMissingProducts: true,
+      } as ProductOptionValueUpdateContext
+    )
   }
 )

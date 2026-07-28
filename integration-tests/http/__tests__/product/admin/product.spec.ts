@@ -1937,6 +1937,87 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("updates option values and variants in one request", async () => {
+          const sizeOption = baseProduct.options.find(
+            (option) => option.title === "size"
+          )
+          const largeValue = sizeOption.values.find(
+            (value) => value.value === "large"
+          )
+          const variant = baseProduct.variants[0]
+
+          const response = await api.post(
+            `/admin/products/${baseProduct.id}`,
+            {
+              option_value_updates: [
+                {
+                  product_option_id: sizeOption.id,
+                  add: [{ value: "medium" }],
+                  remove: [largeValue.id],
+                },
+              ],
+              variants: [
+                {
+                  id: variant.id,
+                  title: variant.title,
+                  options: { size: "medium", color: "green" },
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          const updatedProduct = (
+            await api.get(`/admin/products/${baseProduct.id}`, adminHeaders)
+          ).data.product
+          const updatedSizeOption = updatedProduct.options.find(
+            (option) => option.title === "size"
+          )
+
+          expect(
+            updatedSizeOption.values.map((value) => value.value).sort()
+          ).toEqual(["medium", "small"])
+          expect(updatedProduct.variants[0].options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ value: "medium" }),
+              expect.objectContaining({ value: "green" }),
+            ])
+          )
+        })
+
+        it("rejects option value updates without variants", async () => {
+          const sizeOption = baseProduct.options.find(
+            (option) => option.title === "size"
+          )
+
+          const error = await api
+            .post(
+              `/admin/products/${baseProduct.id}`,
+              {
+                option_value_updates: [
+                  {
+                    product_option_id: sizeOption.id,
+                    add: [{ value: "medium" }],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((cause) => cause)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual(
+            expect.objectContaining({
+              type: "invalid_data",
+              message: expect.stringContaining(
+                "Variants are required when updating product option values."
+              ),
+            })
+          )
+        })
+
         it("updates products relations and attributes", async () => {
           const shortsCategory = (
             await api.post(

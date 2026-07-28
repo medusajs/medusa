@@ -28,7 +28,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   // dbName: "product_update_performance",
   // debug: true,
-  testSuite: ({ MikroOrmWrapper, service }) => {
+  testSuite: ({ MikroOrmWrapper, medusaApp, service }) => {
     describe("ProductModuleService products", function () {
       let productCollectionOne: ProductCollection
       let productCollectionTwo: ProductCollection
@@ -174,6 +174,97 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productOne = res[0]
           productTwo = res[1]
         })
+
+        const runConcurrentValueAdds = async (values: [string, string]) => {
+          const option = productOne.options[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          let releaseFirst!: () => void
+          let firstUpdated!: () => void
+          const holdFirst = new Promise<void>((resolve) => {
+            releaseFirst = resolve
+          })
+          const firstUpdateComplete = new Promise<void>((resolve) => {
+            firstUpdated = resolve
+          })
+
+          const firstTransaction = managers[0].transactional(
+            async (manager) => {
+              await service.updateProductOptionValuesOnProduct(
+                {
+                  product_id: productOne.id,
+                  product_option_id: option.id,
+                  add: [{ value: values[0] }],
+                },
+                { manager, transactionManager: manager }
+              )
+              firstUpdated()
+              await holdFirst
+            }
+          )
+
+          await firstUpdateComplete
+
+          let secondPid!: number
+          let secondStarted!: () => void
+          const secondTransactionStarted = new Promise<void>((resolve) => {
+            secondStarted = resolve
+          })
+          const secondTransaction = managers[1].transactional(
+            async (manager) => {
+              const connection = await manager
+                .getTransactionContext()!
+                .raw("select pg_backend_pid() as pid")
+              secondPid = connection.rows[0].pid
+              secondStarted()
+
+              await service.updateProductOptionValuesOnProduct(
+                {
+                  product_id: productOne.id,
+                  product_option_id: option.id,
+                  add: [{ value: values[1] }],
+                },
+                { manager, transactionManager: manager }
+              )
+            }
+          )
+
+          await secondTransactionStarted
+
+          const observer = MikroOrmWrapper.forkManager()
+          let waitedOnLock = false
+          for (let attempt = 0; attempt < 100; attempt++) {
+            const [activity] = await observer
+              .getConnection()
+              .execute<{ wait_event_type: string | null }[]>(
+                "select wait_event_type from pg_stat_activity where pid = ?",
+                [secondPid]
+              )
+            if (activity?.wait_event_type === "Lock") {
+              waitedOnLock = true
+              break
+            }
+            await setTimeout(20)
+          }
+
+          releaseFirst()
+          const results = await Promise.allSettled([
+            firstTransaction,
+            secondTransaction,
+          ])
+
+          expect(waitedOnLock).toBe(true)
+          expect(results).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+
+          return service.retrieveProduct(productOne.id, {
+            relations: ["options.values"],
+          })
+        }
 
         it.skip("test update performance", async () => {
           const PRODUCT_COUNT = 1000
@@ -358,6 +449,36 @@ moduleIntegrationTestRunner<IProductModuleService>({
               }),
             ])
           )
+        })
+
+        it("should not mutate upsert product update inputs", async () => {
+          const updates: UpdateProductInput[] = [
+            {
+              id: productOne.id,
+              option_value_updates: [
+                {
+                  product_option_id: productOne.options[0].id,
+                  add: [{ value: "val-3" }],
+                },
+              ],
+              variants: [
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: { "opt-title": "val-1" },
+                },
+              ],
+            },
+            {
+              id: productTwo.id,
+              option_ids: productTwo.options.map((option) => option.id),
+            },
+          ]
+          const originalUpdates = structuredClone(updates)
+
+          await service.upsertProducts(updates)
+
+          expect(updates).toEqual(originalUpdates)
         })
 
         it("should update a product and upsert relations that are not created yet", async () => {
@@ -1012,6 +1133,2761 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
+        it("should atomically update option values and variants", async () => {
+          const option = productOne.options[0]
+          const removedValue = option.values.find(
+            (value) => value.value === "val-1"
+          )!
+          const variant = productOne.variants[0]
+
+          await service.updateProducts(productOne.id, {
+            option_value_updates: [
+              {
+                product_option_id: option.id,
+                add: [{ value: "val-3" }],
+                remove: [removedValue.id],
+              },
+            ],
+            variants: [
+              {
+                id: variant.id,
+                title: variant.title,
+                options: { "opt-title": "val-3" },
+              },
+            ],
+          })
+
+          const product = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+
+          expect(
+            product.options[0].values.map((value) => value.value).sort()
+          ).toEqual(["val-2", "val-3"])
+          expect(product.variants[0].options).toEqual([
+            expect.objectContaining({ value: "val-3" }),
+          ])
+        })
+
+        it("should roll back option value updates when variant update fails", async () => {
+          const option = productOne.options[0]
+          const removedValue = option.values.find(
+            (value) => value.value === "val-1"
+          )!
+
+          const error = await service
+            .updateProducts(productOne.id, {
+              option_value_updates: [
+                {
+                  product_option_id: option.id,
+                  add: [{ value: "val-rollback" }],
+                  remove: [removedValue.id],
+                },
+              ],
+              variants: [
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: { "opt-title": "missing-value" },
+                },
+              ],
+            })
+            .catch((cause) => cause)
+
+          expect(error.message).toEqual(
+            "Option value missing-value does not exist for option opt-title"
+          )
+
+          const product = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+          const reloadedOption = await service.retrieveProductOption(
+            option.id,
+            {
+              relations: ["values"],
+            }
+          )
+
+          expect(
+            product.options[0].values.map((value) => value.value).sort()
+          ).toEqual(["val-1", "val-2"])
+          expect(product.variants[0].options).toEqual([
+            expect.objectContaining({ value: "val-1" }),
+          ])
+          expect(
+            reloadedOption.values.map((value) => value.value).sort()
+          ).toEqual(["val-1", "val-2"])
+        })
+
+        it("should preserve concurrent different-name option value additions", async () => {
+          const product = await runConcurrentValueAdds([
+            "concurrent-a",
+            "concurrent-b",
+          ])
+
+          expect(
+            product.options[0].values.map((value) => value.value).sort()
+          ).toEqual(["concurrent-a", "concurrent-b", "val-1", "val-2"])
+        })
+
+        it("should converge concurrent same-name option value additions", async () => {
+          const product = await runConcurrentValueAdds([
+            "concurrent-same",
+            "concurrent-same",
+          ])
+
+          expect(
+            product.options[0].values.filter(
+              (value) => value.value === "concurrent-same"
+            )
+          ).toHaveLength(1)
+        })
+
+        it("should preserve an option value added after a stale transaction preload", async () => {
+          const option = await service.createProductOptions({
+            title: "Stale option values",
+            values: ["linked"],
+            is_exclusive: false,
+          })
+          await service.addProductOptionToProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            product_option_value_ids: [option.values[0].id],
+          })
+
+          const staleManager = MikroOrmWrapper.forkManager()
+          const writerManager = MikroOrmWrapper.forkManager()
+          let stalePreloaded!: () => void
+          let releaseStale!: () => void
+          const stalePreloadComplete = new Promise<void>((resolve) => {
+            stalePreloaded = resolve
+          })
+          const holdStale = new Promise<void>((resolve) => {
+            releaseStale = resolve
+          })
+          const staleTransaction = staleManager.transactional(
+            async (manager) => {
+              try {
+                await service.listProductOptions(
+                  { id: [option.id] },
+                  { relations: ["values"] },
+                  { manager, transactionManager: manager }
+                )
+              } finally {
+                stalePreloaded()
+              }
+
+              await holdStale
+              await service.updateProductOptionValuesOnProduct(
+                {
+                  product_id: productOne.id,
+                  product_option_id: option.id,
+                  add: [{ value: "requested" }],
+                },
+                { manager, transactionManager: manager }
+              )
+            }
+          )
+
+          await stalePreloadComplete
+          const writerResults = await Promise.allSettled([
+            writerManager.transactional(async (manager) => {
+              await service.updateProductOptions(
+                option.id,
+                { values: ["linked", "concurrent"] },
+                { manager, transactionManager: manager }
+              )
+            }),
+          ])
+          releaseStale()
+          const staleResults = await Promise.allSettled([staleTransaction])
+
+          expect([...writerResults, ...staleResults]).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+
+          const [reloadedProduct] = await service.listProducts(
+            { id: [productOne.id] },
+            { relations: ["options.values"] }
+          )
+          const linkedOption = reloadedProduct.options.find(
+            (productOption) => productOption.id === option.id
+          )!
+          expect(
+            linkedOption.values.map((value) => value.value).sort()
+          ).toEqual(["linked", "requested"])
+
+          const [reloadedOption] = await service.listProductOptions(
+            { id: [option.id] },
+            { relations: ["values"] }
+          )
+          expect(
+            reloadedOption.values.map((value) => value.value).sort()
+          ).toEqual(["concurrent", "linked", "requested"])
+        })
+
+        it("should serialize direct value renames with atomic value creation", async () => {
+          const option = await service.createProductOptions({
+            title: "Concurrent direct rename",
+            values: ["linked", "rename-me"],
+            is_exclusive: false,
+          })
+          const linkedValue = option.values.find(
+            (value) => value.value === "linked"
+          )!
+          const renamedValue = option.values.find(
+            (value) => value.value === "rename-me"
+          )!
+          await service.addProductOptionToProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            product_option_value_ids: [linkedValue.id],
+          })
+
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          const productModuleService = service as any
+          const productOptionService =
+            productModuleService.productOptionService_
+          const upsertWithReplace =
+            productOptionService.upsertWithReplace.bind(productOptionService)
+          let releaseAtomic!: () => void
+          let atomicReadComplete!: () => void
+          const holdAtomic = new Promise<void>((resolve) => {
+            releaseAtomic = resolve
+          })
+          const atomicRead = new Promise<void>((resolve) => {
+            atomicReadComplete = resolve
+          })
+          productOptionService.upsertWithReplace = async (...args: any[]) => {
+            if (
+              args[0]?.some((entry: { id: string }) => entry.id === option.id)
+            ) {
+              atomicReadComplete()
+              await holdAtomic
+            }
+            return await upsertWithReplace(...args)
+          }
+
+          const atomic = managers[0].transactional(async (manager) => {
+            await service.updateProductOptionValuesOnProduct(
+              {
+                product_id: productOne.id,
+                product_option_id: option.id,
+                add: [{ value: "requested" }],
+              },
+              { manager, transactionManager: manager }
+            )
+          })
+          let writer: Promise<void> | undefined
+
+          try {
+            await atomicRead
+            let writerPid!: number
+            let writerStarted!: () => void
+            const writerStart = new Promise<void>((resolve) => {
+              writerStarted = resolve
+            })
+            writer = managers[1].transactional(async (manager) => {
+              const backend = await manager
+                .getTransactionContext()!
+                .raw("select pg_backend_pid() as pid")
+              writerPid = backend.rows[0].pid
+              writerStarted()
+              await service.updateProductOptionValues(
+                renamedValue.id,
+                { value: "renamed" },
+                { manager, transactionManager: manager }
+              )
+            })
+
+            await writerStart
+            let writerWaitedOnOption = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event_type: string | null }[]>(
+                  "select wait_event_type from pg_stat_activity where pid = ?",
+                  [writerPid]
+                )
+              if (activity?.wait_event_type === "Lock") {
+                writerWaitedOnOption = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            releaseAtomic()
+            const results = await Promise.allSettled([atomic, writer])
+            const [reloadedOption] = await service.listProductOptions(
+              { id: [option.id] },
+              { relations: ["values"] }
+            )
+
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "fulfilled" }),
+            ])
+            expect(
+              reloadedOption.values.map((value) => value.value).sort()
+            ).toEqual(["linked", "renamed", "requested"])
+            expect(writerWaitedOnOption).toBe(true)
+          } finally {
+            releaseAtomic()
+            productOptionService.upsertWithReplace = upsertWithReplace
+            await Promise.allSettled([atomic, writer])
+          }
+        })
+
+        it("should serialize variant-only updates with option value removals", async () => {
+          const option = productOne.options[0]
+          const removedValue = option.values.find(
+            (value) => value.value === "val-1"
+          )!
+          const variant = productOne.variants[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          let releaseRemoval!: () => void
+          let removalUpdated!: () => void
+          const holdRemoval = new Promise<void>((resolve) => {
+            releaseRemoval = resolve
+          })
+          const removalUpdateComplete = new Promise<void>((resolve) => {
+            removalUpdated = resolve
+          })
+
+          const removalTransaction = managers[0].transactional(
+            async (manager) => {
+              await service.updateProducts(
+                productOne.id,
+                {
+                  option_value_updates: [
+                    {
+                      product_option_id: option.id,
+                      remove: [removedValue.id],
+                    },
+                  ],
+                  variants: [
+                    {
+                      id: variant.id,
+                      title: variant.title,
+                      options: { "opt-title": "val-2" },
+                    },
+                  ],
+                },
+                { manager, transactionManager: manager }
+              )
+              removalUpdated()
+              await holdRemoval
+            }
+          )
+
+          await removalUpdateComplete
+
+          let variantWriterPid!: number
+          let variantWriterStarted!: () => void
+          const variantWriterStart = new Promise<void>((resolve) => {
+            variantWriterStarted = resolve
+          })
+          const variantTransaction = managers[1].transactional(
+            async (manager) => {
+              const connection = await manager
+                .getTransactionContext()!
+                .raw("select pg_backend_pid() as pid")
+              variantWriterPid = connection.rows[0].pid
+              variantWriterStarted()
+
+              await service.updateProducts(
+                productOne.id,
+                {
+                  variants: [
+                    {
+                      id: variant.id,
+                      title: variant.title,
+                      options: { "opt-title": "val-1" },
+                    },
+                  ],
+                },
+                { manager, transactionManager: manager }
+              )
+            }
+          )
+
+          await variantWriterStart
+
+          const observer = MikroOrmWrapper.forkManager()
+          let waitedOnLock = false
+          for (let attempt = 0; attempt < 100; attempt++) {
+            const [activity] = await observer
+              .getConnection()
+              .execute<{ wait_event_type: string | null }[]>(
+                "select wait_event_type from pg_stat_activity where pid = ?",
+                [variantWriterPid]
+              )
+            if (activity?.wait_event_type === "Lock") {
+              waitedOnLock = true
+              break
+            }
+            await setTimeout(20)
+          }
+
+          releaseRemoval()
+          const results = await Promise.allSettled([
+            removalTransaction,
+            variantTransaction,
+          ])
+
+          expect(waitedOnLock).toBe(true)
+          expect(results[0]).toEqual(
+            expect.objectContaining({ status: "fulfilled" })
+          )
+          expect(results[1]).toEqual(
+            expect.objectContaining({
+              status: "rejected",
+              reason: expect.objectContaining({
+                message: expect.stringContaining(
+                  "Option value val-1 does not exist for option opt-title"
+                ),
+              }),
+            })
+          )
+
+          const product = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+          expect(
+            product.options[0].values.map((value) => value.value).sort()
+          ).toEqual(["val-2"])
+          expect(product.variants[0].options).toEqual([
+            expect.objectContaining({ value: "val-2" }),
+          ])
+        })
+
+        it("should lock scalar-only products in mixed structural update batches", async () => {
+          const productIds = [productOne.id, productTwo.id].sort()
+          const [scalarProduct, structuralProduct] = [productOne, productTwo]
+            .sort((left, right) => left.id.localeCompare(right.id))
+            .reverse()
+          const productModuleService = (medusaApp as any).modules[
+            Modules.PRODUCT
+          ]
+          const productRepository = productModuleService.productRepository_
+          const findMethodOwner = (target: any, method: string) => {
+            for (
+              let owner = target;
+              owner;
+              owner = Object.getPrototypeOf(owner)
+            ) {
+              if (Object.prototype.hasOwnProperty.call(owner, method)) {
+                return owner
+              }
+            }
+            throw new Error(`Method ${method} not found`)
+          }
+          const lockProductRowsOwner = findMethodOwner(
+            productModuleService,
+            "lockProductRows_"
+          )
+          const deepUpdateOwner = findMethodOwner(
+            productRepository,
+            "deepUpdate"
+          )
+          const lockProductRows = lockProductRowsOwner.lockProductRows_
+          const deepUpdate = deepUpdateOwner.deepUpdate
+          let invocationOrder = 0
+          let lockedProductIds: string[] | undefined
+          let lockCallOrder: number | undefined
+          let deepUpdateCallOrder: number | undefined
+
+          lockProductRowsOwner.lockProductRows_ = async function (
+            ...args: any[]
+          ) {
+            lockedProductIds = args[0]
+            lockCallOrder = ++invocationOrder
+            return await lockProductRows.apply(this, args)
+          }
+          deepUpdateOwner.deepUpdate = async function (...args: any[]) {
+            deepUpdateCallOrder = ++invocationOrder
+            return await deepUpdate.apply(this, args)
+          }
+
+          try {
+            await service.upsertProducts([
+              {
+                id: structuralProduct.id,
+                option_ids: structuralProduct.options.map(
+                  (option) => option.id
+                ),
+              },
+              {
+                id: scalarProduct.id,
+                title: "scalar-only batch update",
+              },
+            ])
+          } finally {
+            lockProductRowsOwner.lockProductRows_ = lockProductRows
+            deepUpdateOwner.deepUpdate = deepUpdate
+          }
+
+          expect(lockedProductIds).toEqual(productIds)
+          expect(lockCallOrder).toBeLessThan(deepUpdateCallOrder!)
+        })
+
+        it("should refresh a stale scalar preload after locking the product", async () => {
+          const staleManager = MikroOrmWrapper.forkManager()
+          const writerManager = MikroOrmWrapper.forkManager()
+          const productModuleService = (medusaApp as any).modules[
+            Modules.PRODUCT
+          ]
+          const productService = productModuleService.productService_
+          const listProducts = productService.list
+          const previousState: any[] = []
+          const expectedState: any[] = []
+          let stalePreloaded!: () => void
+          let releaseStale!: () => void
+          const stalePreloadComplete = new Promise<void>((resolve) => {
+            stalePreloaded = resolve
+          })
+          const holdStale = new Promise<void>((resolve) => {
+            releaseStale = resolve
+          })
+          productService.list = async (...args: any[]) => {
+            const result = await listProducts.apply(productService, args)
+            const config = args[1] ?? {}
+            if (config.select?.includes("title") && !config.options?.refresh) {
+              return result.map((product: any) =>
+                product.id === productOne.id
+                  ? { ...product, title: "product 1" }
+                  : product
+              )
+            }
+            return result
+          }
+
+          const staleUpdate = staleManager.transactional(async (manager) => {
+            await service.listProducts(
+              { id: [productOne.id] },
+              { select: ["id", "title"] },
+              { manager, transactionManager: manager }
+            )
+            stalePreloaded()
+            await holdStale
+            await service.upsertProducts(
+              { id: productOne.id, title: "forward scalar title" },
+              {
+                __type: "MedusaContext",
+                manager,
+                transactionManager: manager,
+                productUpdateFieldsByProductId: {
+                  [productOne.id]: ["title"],
+                },
+                productUpdatePreviousState: previousState,
+                productUpdateExpectedState: expectedState,
+              } as any
+            )
+          })
+
+          try {
+            await stalePreloadComplete
+            await writerManager.transactional(async (manager) => {
+              await service.updateProducts(
+                productOne.id,
+                { title: "concurrent scalar title" },
+                { manager, transactionManager: manager }
+              )
+            })
+            releaseStale()
+            await staleUpdate
+
+            expect(previousState).toEqual([
+              {
+                product_id: productOne.id,
+                version: expect.any(String),
+                fields: { title: "concurrent scalar title" },
+              },
+            ])
+          } finally {
+            releaseStale()
+            productService.list = listProducts
+            await staleUpdate.catch(() => undefined)
+          }
+        })
+
+        it("should refresh stale product options after locking the product", async () => {
+          const retainedOption = productOne.options[0]
+          const concurrentOption = await service.createProductOptions({
+            title: "Concurrent stale option",
+            values: ["concurrent"],
+            is_exclusive: false,
+          })
+          const staleManager = MikroOrmWrapper.forkManager()
+          const writerManager = MikroOrmWrapper.forkManager()
+          let stalePreloaded!: () => void
+          let releaseStale!: () => void
+          const stalePreloadComplete = new Promise<void>((resolve) => {
+            stalePreloaded = resolve
+          })
+          const holdStale = new Promise<void>((resolve) => {
+            releaseStale = resolve
+          })
+
+          const staleUpdate = staleManager.transactional(async (manager) => {
+            await service.listProducts(
+              { id: [productOne.id] },
+              { relations: ["options.values"] },
+              { manager, transactionManager: manager }
+            )
+            stalePreloaded()
+            await holdStale
+            await service.updateProducts(
+              productOne.id,
+              { option_ids: [retainedOption.id] },
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await stalePreloadComplete
+            await writerManager.transactional(async (manager) => {
+              await service.addProductOptionToProduct(
+                {
+                  product_id: productOne.id,
+                  product_option_id: concurrentOption.id,
+                },
+                { manager, transactionManager: manager }
+              )
+            })
+            releaseStale()
+            await staleUpdate
+
+            const activeLinks = await (
+              service as any
+            ).productProductOptionService_.list({
+              product_id: productOne.id,
+            })
+            expect(
+              activeLinks.map(
+                (link: { product_option_id: string }) => link.product_option_id
+              )
+            ).toEqual([retainedOption.id])
+          } finally {
+            releaseStale()
+            await staleUpdate.catch(() => undefined)
+          }
+        })
+
+        it("should serialize reversed option replacements without a crossed deadlock", async () => {
+          const [optionA, optionB] = await service.createProductOptions([
+            {
+              title: "Replacement A",
+              values: ["A"],
+              is_exclusive: false,
+            },
+            {
+              title: "Replacement B",
+              values: ["B"],
+              is_exclusive: false,
+            },
+          ])
+          const [productA, productB] = await service.createProducts([
+            { title: "Replacement product A" },
+            { title: "Replacement product B" },
+          ])
+          await service.addProductOptionToProduct([
+            {
+              product_id: productA.id,
+              product_option_id: optionA.id,
+            },
+            {
+              product_id: productB.id,
+              product_option_id: optionB.id,
+            },
+          ])
+
+          const productModuleService = (medusaApp as any).modules[
+            Modules.PRODUCT
+          ]
+          const findMethodOwner = (target: any, method: string) => {
+            for (
+              let owner = target;
+              owner;
+              owner = Object.getPrototypeOf(owner)
+            ) {
+              if (Object.prototype.hasOwnProperty.call(owner, method)) {
+                return owner
+              }
+            }
+            throw new Error(`Method ${method} not found`)
+          }
+          const lockOwner = findMethodOwner(
+            productModuleService,
+            "lockProductOptionRows_"
+          )
+          const lockProductOptionRows = lockOwner.lockProductOptionRows_
+          let initialLockCalls = 0
+          let releaseInitialLocks!: () => void
+          const bothInitialLocks = new Promise<void>((resolve) => {
+            releaseInitialLocks = resolve
+          })
+
+          lockOwner.lockProductOptionRows_ = async function (
+            optionIds: string[],
+            ...args: any[]
+          ) {
+            initialLockCalls++
+            if (initialLockCalls <= 2) {
+              if (initialLockCalls === 2) {
+                releaseInitialLocks()
+              }
+              await bothInitialLocks
+            }
+            return await lockProductOptionRows.call(this, optionIds, ...args)
+          }
+
+          try {
+            const managers = [
+              MikroOrmWrapper.forkManager(),
+              MikroOrmWrapper.forkManager(),
+            ]
+            const results = await Promise.allSettled([
+              managers[0].transactional(async (manager) => {
+                await service.updateProducts(
+                  productA.id,
+                  { option_ids: [optionB.id] },
+                  { manager, transactionManager: manager }
+                )
+              }),
+              managers[1].transactional(async (manager) => {
+                await service.updateProducts(
+                  productB.id,
+                  { option_ids: [optionA.id] },
+                  { manager, transactionManager: manager }
+                )
+              }),
+            ])
+
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "fulfilled" }),
+            ])
+            const reloaded = await (
+              service as any
+            ).productProductOptionService_.list({
+              product_id: [productA.id, productB.id],
+            })
+            expect(
+              reloaded.find(
+                (link: { product_id: string }) =>
+                  link.product_id === productA.id
+              )!.product_option_id
+            ).toBe(optionB.id)
+            expect(
+              reloaded.find(
+                (link: { product_id: string }) =>
+                  link.product_id === productB.id
+              )!.product_option_id
+            ).toBe(optionA.id)
+          } finally {
+            releaseInitialLocks()
+            lockOwner.lockProductOptionRows_ = lockProductOptionRows
+          }
+        })
+
+        it("should serialize reversed mixed upserts without a crossed deadlock", async () => {
+          const [optionA, optionB] = await service.createProductOptions([
+            {
+              title: "Mixed deadlock A",
+              values: ["A"],
+              is_exclusive: false,
+            },
+            {
+              title: "Mixed deadlock B",
+              values: ["B"],
+              is_exclusive: false,
+            },
+          ])
+          const [productA, productB] = await service.createProducts([
+            { title: "Mixed deadlock product A" },
+            { title: "Mixed deadlock product B" },
+          ])
+          await service.addProductOptionToProduct([
+            {
+              product_id: productA.id,
+              product_option_id: optionA.id,
+            },
+            {
+              product_id: productB.id,
+              product_option_id: optionB.id,
+            },
+          ])
+
+          const productModuleService = (medusaApp as any).modules[
+            Modules.PRODUCT
+          ]
+          const findMethodOwner = (target: any, method: string) => {
+            for (
+              let owner = target;
+              owner;
+              owner = Object.getPrototypeOf(owner)
+            ) {
+              if (Object.prototype.hasOwnProperty.call(owner, method)) {
+                return owner
+              }
+            }
+            throw new Error(`Method ${method} not found`)
+          }
+          const lockOwner = findMethodOwner(
+            productModuleService,
+            "lockProductOptionRows_"
+          )
+          const lockProductOptionRows = lockOwner.lockProductOptionRows_
+          let initialLockCalls = 0
+          let releaseInitialLocks!: () => void
+          const bothInitialLocks = new Promise<void>((resolve) => {
+            releaseInitialLocks = resolve
+          })
+
+          lockOwner.lockProductOptionRows_ = async function (
+            optionIds: string[],
+            ...args: any[]
+          ) {
+            initialLockCalls++
+            if (initialLockCalls <= 2) {
+              if (initialLockCalls === 2) {
+                releaseInitialLocks()
+              }
+              await bothInitialLocks
+            }
+            return await lockProductOptionRows.call(this, optionIds, ...args)
+          }
+
+          try {
+            const managers = [
+              MikroOrmWrapper.forkManager(),
+              MikroOrmWrapper.forkManager(),
+            ]
+            const results = await Promise.allSettled([
+              managers[0].transactional(async (manager) => {
+                await service.upsertProducts(
+                  [
+                    { id: productA.id, title: "Mixed update A" },
+                    {
+                      title: "Mixed create B",
+                      options: [{ id: optionB.id }],
+                    },
+                  ],
+                  { manager, transactionManager: manager }
+                )
+              }),
+              managers[1].transactional(async (manager) => {
+                await service.upsertProducts(
+                  [
+                    { id: productB.id, title: "Mixed update B" },
+                    {
+                      title: "Mixed create A",
+                      options: [{ id: optionA.id }],
+                    },
+                  ],
+                  { manager, transactionManager: manager }
+                )
+              }),
+            ])
+
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "fulfilled" }),
+            ])
+          } finally {
+            releaseInitialLocks()
+            lockOwner.lockProductOptionRows_ = lockProductOptionRows
+          }
+        })
+
+        it("should reject duplicate product IDs in one upsert batch", async () => {
+          await expect(
+            service.upsertProducts([
+              { id: productOne.id, title: "duplicate title" },
+              { id: productOne.id, subtitle: "duplicate subtitle" },
+            ])
+          ).rejects.toThrow("Duplicate product IDs are not allowed")
+        })
+
+        it("should acquire update locks before mixed upsert creates", async () => {
+          const sharedOption = await service.createProductOptions({
+            title: "Mixed upsert shared option",
+            values: ["Shared"],
+            is_exclusive: false,
+          })
+          const productModuleService = (medusaApp as any).modules[
+            Modules.PRODUCT
+          ]
+          const findMethodOwner = (target: any, method: string) => {
+            for (
+              let owner = target;
+              owner;
+              owner = Object.getPrototypeOf(owner)
+            ) {
+              if (Object.prototype.hasOwnProperty.call(owner, method)) {
+                return owner
+              }
+            }
+            throw new Error(`Method ${method} not found`)
+          }
+          const createOwner = findMethodOwner(
+            productModuleService,
+            "createProducts"
+          )
+          const updateOwner = findMethodOwner(
+            productModuleService,
+            "updateProducts_"
+          )
+          const createProducts = createOwner.createProducts
+          const updateProducts = updateOwner.updateProducts_
+          const order: string[] = []
+          createOwner.createProducts = async function (...args: any[]) {
+            order.push("create")
+            return await createProducts.apply(this, args)
+          }
+          updateOwner.updateProducts_ = async function (...args: any[]) {
+            order.push("update")
+            return await updateProducts.apply(this, args)
+          }
+
+          try {
+            const result = await service.upsertProducts([
+              {
+                title: "Mixed upsert created product",
+                options: [{ id: sharedOption.id }],
+              },
+              { id: productOne.id, title: "Mixed upsert updated product" },
+            ])
+
+            expect(order.slice(0, 2)).toEqual(["update", "create"])
+            expect(result.map((product) => product.title)).toEqual([
+              "Mixed upsert created product",
+              "Mixed upsert updated product",
+            ])
+          } finally {
+            createOwner.createProducts = createProducts
+            updateOwner.updateProducts_ = updateProducts
+          }
+        })
+
+        it("should preserve an outer transaction lock_timeout", async () => {
+          const manager = MikroOrmWrapper.forkManager()
+          await manager.transactional(async (transactionManager) => {
+            const knex = transactionManager.getTransactionContext()!
+            await knex.raw("select set_config('lock_timeout', ?, true)", ["9s"])
+            await service.upsertProducts(
+              { id: productOne.id, title: "Outer timeout update" },
+              {
+                manager: transactionManager,
+                transactionManager,
+              }
+            )
+            const timeout = await knex.raw("show lock_timeout")
+            expect(timeout.rows[0].lock_timeout).toBe("9s")
+          })
+        })
+
+        it("should reject option_value_updates on create upserts", async () => {
+          await expect(
+            service.upsertProducts({
+              title: "Invalid create option-value update",
+              option_value_updates: [],
+            } as any)
+          ).rejects.toThrow(
+            "Product option value updates require an existing product ID"
+          )
+        })
+
+        it("should lock variant-only products in mixed option value batches", async () => {
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          let releaseMixedUpdate!: () => void
+          let mixedUpdateFinished!: () => void
+          const holdMixedUpdate = new Promise<void>((resolve) => {
+            releaseMixedUpdate = resolve
+          })
+          const mixedUpdateComplete = new Promise<void>((resolve) => {
+            mixedUpdateFinished = resolve
+          })
+
+          const mixedUpdate = managers[0].transactional(async (manager) => {
+            await service.upsertProducts(
+              [
+                {
+                  id: productOne.id,
+                  option_value_updates: [
+                    {
+                      product_option_id: productOne.options[0].id,
+                      add: [{ value: "val-3" }],
+                    },
+                  ],
+                  variants: [
+                    {
+                      id: productOne.variants[0].id,
+                      title: productOne.variants[0].title,
+                      options: { "opt-title": "val-3" },
+                    },
+                  ],
+                },
+                {
+                  id: productTwo.id,
+                  variants: [
+                    {
+                      id: productTwo.variants[0].id,
+                      title: productTwo.variants[0].title,
+                      options: { size: "large", color: "blue" },
+                    },
+                  ],
+                },
+              ],
+              { manager, transactionManager: manager }
+            )
+            mixedUpdateFinished()
+            await holdMixedUpdate
+          })
+
+          await mixedUpdateComplete
+
+          let productWriterPid!: number
+          let productWriterStarted!: () => void
+          let releaseProductWriter!: () => void
+          const productWriterStart = new Promise<void>((resolve) => {
+            productWriterStarted = resolve
+          })
+          const holdProductWriter = new Promise<void>((resolve) => {
+            releaseProductWriter = resolve
+          })
+          const productWriter = managers[1].transactional(async (manager) => {
+            const connection = manager.getTransactionContext()!
+            const backend = await connection.raw(
+              "select pg_backend_pid() as pid"
+            )
+            productWriterPid = backend.rows[0].pid
+            productWriterStarted()
+            await connection.raw(
+              "select id from product where id = ? for update",
+              [productTwo.id]
+            )
+            await holdProductWriter
+          })
+
+          await productWriterStart
+
+          const observer = MikroOrmWrapper.forkManager()
+          let waitedOnLock = false
+          for (let attempt = 0; attempt < 100; attempt++) {
+            const [activity] = await observer
+              .getConnection()
+              .execute<{ wait_event_type: string | null }[]>(
+                "select wait_event_type from pg_stat_activity where pid = ?",
+                [productWriterPid]
+              )
+            if (activity?.wait_event_type === "Lock") {
+              waitedOnLock = true
+              break
+            }
+            await setTimeout(20)
+          }
+
+          releaseMixedUpdate()
+          releaseProductWriter()
+          const results = await Promise.allSettled([mixedUpdate, productWriter])
+
+          expect(waitedOnLock).toBe(true)
+          expect(results).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+        })
+
+        it("should lock products for empty and option-omitting variant replacements", async () => {
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          await observer.getConnection().execute(`
+            create or replace function test_delay_variant_replacement()
+            returns trigger as $$
+            begin
+              perform pg_sleep(3);
+              if TG_OP = 'DELETE' then
+                return OLD;
+              end if;
+              return NEW;
+            end;
+            $$ language plpgsql;
+            drop trigger if exists test_delay_variant_replacement on product_variant;
+            create trigger test_delay_variant_replacement
+              before update or delete on product_variant
+              for each row execute function test_delay_variant_replacement();
+          `)
+
+          let updatePid!: number
+          let updateStarted!: () => void
+          const started = new Promise<void>((resolve) => {
+            updateStarted = resolve
+          })
+          const update = managers[0].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            updatePid = backend.rows[0].pid
+            updateStarted()
+            await service.upsertProducts(
+              [
+                { id: productOne.id, variants: [] },
+                {
+                  id: productTwo.id,
+                  variants: [
+                    {
+                      id: productTwo.variants[0].id,
+                      title: "renamed variant",
+                    },
+                  ],
+                },
+              ],
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await started
+            let reachedVariantWrite = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event: string | null }[]>(
+                  "select wait_event from pg_stat_activity where pid = ?",
+                  [updatePid]
+                )
+              if (activity?.wait_event === "PgSleep") {
+                reachedVariantWrite = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            const lockResults = await Promise.allSettled(
+              [productOne.id, productTwo.id].map((productId, index) =>
+                managers[index + 1].transactional(async (manager) => {
+                  await manager
+                    .getTransactionContext()!
+                    .raw(
+                      "select id from product where id = ? for update nowait",
+                      [productId]
+                    )
+                })
+              )
+            )
+
+            expect(reachedVariantWrite).toBe(true)
+            expect(lockResults).toEqual([
+              expect.objectContaining({ status: "rejected" }),
+              expect.objectContaining({ status: "rejected" }),
+            ])
+          } finally {
+            await update
+            await observer.getConnection().execute(`
+              drop trigger if exists test_delay_variant_replacement on product_variant;
+              drop function if exists test_delay_variant_replacement();
+            `)
+          }
+        })
+
+        it("should preserve a scalar variant update that commits before compensation", async () => {
+          const variant = productOne.variants[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          const expectedState = await managers[2].transactional(
+            async (manager) =>
+              await (service as any).captureVariantUpdateState_(
+                [productOne.id],
+                { manager, transactionManager: manager }
+              )
+          )
+
+          let releaseWriter!: () => void
+          let writerLocked!: () => void
+          const holdWriter = new Promise<void>((resolve) => {
+            releaseWriter = resolve
+          })
+          const writerLockReady = new Promise<void>((resolve) => {
+            writerLocked = resolve
+          })
+          const writer = managers[0].transactional(async (manager) => {
+            await manager
+              .getTransactionContext()!
+              .raw("select id from product_variant where id = ? for update", [
+                variant.id,
+              ])
+            writerLocked()
+            await holdWriter
+            await service.updateProductVariants(
+              variant.id,
+              { title: "concurrent variant title" },
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await writerLockReady
+            let compensationPid!: number
+            let compensationStarted!: () => void
+            const compensationStart = new Promise<void>((resolve) => {
+              compensationStarted = resolve
+            })
+            const compensation = managers[1].transactional(async (manager) => {
+              const backend = await manager
+                .getTransactionContext()!
+                .raw("select pg_backend_pid() as pid")
+              compensationPid = backend.rows[0].pid
+              compensationStarted()
+              await (service as any).updateProducts_(
+                [
+                  {
+                    id: productOne.id,
+                    variants: [
+                      {
+                        id: variant.id,
+                        title: "compensated variant title",
+                        options: { "opt-title": "val-1" },
+                      },
+                    ],
+                  },
+                ],
+                {
+                  __type: "MedusaContext",
+                  manager,
+                  transactionManager: manager,
+                  variantUpdateCondition: expectedState,
+                } as any
+              )
+            })
+
+            await compensationStart
+            let compensationWaitedOnVariant = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event_type: string | null }[]>(
+                  "select wait_event_type from pg_stat_activity where pid = ?",
+                  [compensationPid]
+                )
+              if (activity?.wait_event_type === "Lock") {
+                compensationWaitedOnVariant = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            releaseWriter()
+            const results = await Promise.allSettled([writer, compensation])
+            const reloaded = await service.retrieveProductVariant(variant.id)
+
+            expect(compensationWaitedOnVariant).toBe(true)
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "fulfilled" }),
+            ])
+            expect(reloaded.title).toBe("concurrent variant title")
+          } finally {
+            releaseWriter()
+            await writer.catch(() => undefined)
+          }
+        })
+
+        it("should capture prior variants after an in-flight scalar update", async () => {
+          const variant = productOne.variants[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          let releaseWriter!: () => void
+          let writerLocked!: () => void
+          const holdWriter = new Promise<void>((resolve) => {
+            releaseWriter = resolve
+          })
+          const writerLockReady = new Promise<void>((resolve) => {
+            writerLocked = resolve
+          })
+          const writer = managers[0].transactional(async (manager) => {
+            await manager
+              .getTransactionContext()!
+              .raw("select id from product_variant where id = ? for update", [
+                variant.id,
+              ])
+            writerLocked()
+            await holdWriter
+            await service.updateProductVariants(
+              variant.id,
+              { title: "concurrent prior title" },
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await writerLockReady
+            const previousProducts: any[] = []
+            const expectedState: any[] = []
+            let updatePid!: number
+            let updateStarted!: () => void
+            const updateStart = new Promise<void>((resolve) => {
+              updateStarted = resolve
+            })
+            const update = managers[1].transactional(async (manager) => {
+              const backend = await manager
+                .getTransactionContext()!
+                .raw("select pg_backend_pid() as pid")
+              updatePid = backend.rows[0].pid
+              updateStarted()
+              await service.upsertProducts(
+                [
+                  {
+                    id: productOne.id,
+                    variants: [
+                      {
+                        id: variant.id,
+                        title: "forward title",
+                        options: { "opt-title": "val-1" },
+                      },
+                    ],
+                  },
+                ],
+                {
+                  __type: "MedusaContext",
+                  manager,
+                  transactionManager: manager,
+                  variantUpdatePreviousProducts: previousProducts,
+                  variantUpdateExpectedState: expectedState,
+                } as any
+              )
+            })
+
+            await updateStart
+            let updateWaitedOnVariant = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event_type: string | null }[]>(
+                  "select wait_event_type from pg_stat_activity where pid = ?",
+                  [updatePid]
+                )
+              if (activity?.wait_event_type === "Lock") {
+                updateWaitedOnVariant = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            releaseWriter()
+            const results = await Promise.allSettled([writer, update])
+            const reloaded = await service.retrieveProductVariant(variant.id)
+
+            expect(updateWaitedOnVariant).toBe(true)
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "fulfilled" }),
+            ])
+            expect(previousProducts[0].variants[0].title).toBe(
+              "concurrent prior title"
+            )
+            expect(reloaded.title).toBe("forward title")
+          } finally {
+            releaseWriter()
+            await writer.catch(() => undefined)
+          }
+        })
+
+        it("should skip variant compensation when option names drift", async () => {
+          const variant = productOne.variants[0]
+          const option = productOne.options[0]
+          const value = option.values.find((entry) => entry.value === "val-1")!
+
+          await service.updateProductVariants(variant.id, {
+            title: "forward variant title",
+          })
+          const manager = MikroOrmWrapper.forkManager()
+          const expectedState = await manager.transactional(
+            async (transactionManager) =>
+              await (service as any).captureVariantUpdateState_(
+                [productOne.id],
+                {
+                  manager: transactionManager,
+                  transactionManager,
+                }
+              )
+          )
+
+          await service.updateProductOptions(option.id, {
+            title: "renamed option",
+          })
+          await service.updateProductOptionValues(value.id, {
+            value: "renamed value",
+          })
+
+          await expect(
+            service.upsertProducts(
+              [
+                {
+                  id: productOne.id,
+                  variants: [
+                    {
+                      id: variant.id,
+                      title: "compensated variant title",
+                      options: { "opt-title": "val-1" },
+                    },
+                  ],
+                },
+              ],
+              {
+                __type: "MedusaContext",
+                variantUpdateCondition: expectedState,
+              } as any
+            )
+          ).resolves.toBeDefined()
+
+          const reloaded = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+          expect(reloaded.variants[0].title).toBe("forward variant title")
+          expect(reloaded.variants[0].options).toEqual([
+            expect.objectContaining({ value: "renamed value" }),
+          ])
+        })
+
+        it("should skip atomic compensation when a prior-only value drifts", async () => {
+          const variant = productOne.variants[0]
+          const option = productOne.options[0]
+          const priorValue = option.values.find(
+            (entry) => entry.value === "val-1"
+          )!
+          const linkCompensation: any[] = []
+          const previousProducts: any[] = []
+          const expectedState: any[] = []
+          const createdValueIds: string[] = []
+          const createdValues: any[] = []
+
+          await service.upsertProducts(
+            [
+              {
+                id: productOne.id,
+                option_value_updates: [
+                  {
+                    product_option_id: option.id,
+                    add: [{ value: "val-3" }],
+                    remove: [priorValue.id],
+                  },
+                ],
+                variants: [
+                  {
+                    id: variant.id,
+                    title: "forward variant title",
+                    options: { "opt-title": "val-3" },
+                  },
+                ],
+              },
+            ],
+            {
+              __type: "MedusaContext",
+              optionValueUpdateCompensation: linkCompensation,
+              variantUpdatePreviousProducts: previousProducts,
+              variantUpdateExpectedState: expectedState,
+              optionValueUpdateCreatedValueIds: createdValueIds,
+              optionValueUpdateCreatedValues: createdValues,
+            } as any
+          )
+          await service.updateProductOptionValues(priorValue.id, {
+            value: "renamed prior value",
+          })
+
+          const restoration = linkCompensation[0].add[0]
+          const skippedProductIds: string[] = []
+          await expect(
+            service.upsertProducts(
+              [
+                {
+                  id: productOne.id,
+                  option_value_updates: [
+                    {
+                      product_option_id: option.id,
+                      add: [priorValue.id],
+                    },
+                  ],
+                  variants: [
+                    {
+                      id: variant.id,
+                      title: previousProducts[0].variants[0].title,
+                      options: { "opt-title": "val-1" },
+                    },
+                  ],
+                },
+              ],
+              {
+                __type: "MedusaContext",
+                variantUpdateCondition: expectedState,
+                variantUpdateSkippedProductIds: skippedProductIds,
+                optionValueUpdateExpectedRestorations: [
+                  {
+                    product_id: productOne.id,
+                    product_option_id: option.id,
+                    ...restoration,
+                  },
+                ],
+              } as any
+            )
+          ).resolves.toBeDefined()
+
+          const reloaded = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+          expect(skippedProductIds).toEqual([productOne.id])
+          expect(reloaded.variants[0]).toEqual(
+            expect.objectContaining({
+              title: "forward variant title",
+              options: [expect.objectContaining({ value: "val-3" })],
+            })
+          )
+          expect(
+            reloaded.options[0].values.some(
+              (value) => value.id === priorValue.id
+            )
+          ).toBe(false)
+        })
+
+        it("should skip variant compensation when restoration link history drifts", async () => {
+          const variant = productOne.variants[0]
+          const option = productOne.options[0]
+          const priorValue = option.values.find(
+            (entry) => entry.value === "val-1"
+          )!
+          const linkCompensation: any[] = []
+          const previousProducts: any[] = []
+
+          await service.upsertProducts(
+            [
+              {
+                id: productOne.id,
+                option_value_updates: [
+                  {
+                    product_option_id: option.id,
+                    add: [{ value: "val-3" }],
+                    remove: [priorValue.id],
+                  },
+                ],
+                variants: [
+                  {
+                    id: variant.id,
+                    title: "forward variant title",
+                    options: { "opt-title": "val-3" },
+                  },
+                ],
+              },
+            ],
+            {
+              __type: "MedusaContext",
+              optionValueUpdateCompensation: linkCompensation,
+              variantUpdatePreviousProducts: previousProducts,
+            } as any
+          )
+          await service.updateProductOptionValuesOnProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            add: [priorValue.id],
+          })
+          await service.updateProductOptionValuesOnProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            remove: [priorValue.id],
+          })
+
+          const manager = MikroOrmWrapper.forkManager()
+          const currentState = await manager.transactional(
+            async (transactionManager) =>
+              await (service as any).captureVariantUpdateState_(
+                [productOne.id],
+                {
+                  manager: transactionManager,
+                  transactionManager,
+                }
+              )
+          )
+          const restoration = linkCompensation[0].add[0]
+          const skippedProductIds: string[] = []
+
+          await expect(
+            service.upsertProducts(
+              [
+                {
+                  id: productOne.id,
+                  option_value_updates: [
+                    {
+                      product_option_id: option.id,
+                      add: [priorValue.id],
+                    },
+                  ],
+                  variants: [
+                    {
+                      id: variant.id,
+                      title: previousProducts[0].variants[0].title,
+                      options: { "opt-title": "val-1" },
+                    },
+                  ],
+                },
+              ],
+              {
+                __type: "MedusaContext",
+                variantUpdateCondition: currentState,
+                variantUpdateSkippedProductIds: skippedProductIds,
+                optionValueUpdateExpectedRestorations: [
+                  {
+                    product_id: productOne.id,
+                    product_option_id: option.id,
+                    ...restoration,
+                  },
+                ],
+              } as any
+            )
+          ).resolves.toBeDefined()
+
+          const reloaded = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+          expect(skippedProductIds).toEqual([productOne.id])
+          expect(reloaded.variants[0]).toEqual(
+            expect.objectContaining({
+              title: "forward variant title",
+              options: [expect.objectContaining({ value: "val-3" })],
+            })
+          )
+          expect(
+            reloaded.options[0].values.some(
+              (value) => value.id === priorValue.id
+            )
+          ).toBe(false)
+        })
+
+        it("should lock products before options for option value updates", async () => {
+          const option = productOne.options[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          let releaseOptionLock!: () => void
+          let optionLocked!: () => void
+          const holdOptionLock = new Promise<void>((resolve) => {
+            releaseOptionLock = resolve
+          })
+          const optionLockReady = new Promise<void>((resolve) => {
+            optionLocked = resolve
+          })
+
+          const optionBlocker = managers[0].transactional(async (manager) => {
+            await manager
+              .getTransactionContext()!
+              .raw("select id from product_option where id = ? for update", [
+                option.id,
+              ])
+            optionLocked()
+            await holdOptionLock
+          })
+
+          await optionLockReady
+
+          let writerPid!: number
+          let writerStarted!: () => void
+          const writerStart = new Promise<void>((resolve) => {
+            writerStarted = resolve
+          })
+          const writer = managers[1].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            writerPid = backend.rows[0].pid
+            writerStarted()
+            await service.updateProductOptionValuesOnProduct(
+              {
+                product_id: productOne.id,
+                product_option_id: option.id,
+                add: [{ value: "lock-order-value" }],
+              },
+              { manager, transactionManager: manager }
+            )
+          })
+
+          await writerStart
+
+          let waitedOnOption = false
+          for (let attempt = 0; attempt < 100; attempt++) {
+            const [activity] = await observer
+              .getConnection()
+              .execute<{ wait_event_type: string | null }[]>(
+                "select wait_event_type from pg_stat_activity where pid = ?",
+                [writerPid]
+              )
+            if (activity?.wait_event_type === "Lock") {
+              waitedOnOption = true
+              break
+            }
+            await setTimeout(20)
+          }
+
+          const productLock = await Promise.allSettled([
+            managers[2].transactional(async (manager) => {
+              await manager
+                .getTransactionContext()!
+                .raw("select id from product where id = ? for update nowait", [
+                  productOne.id,
+                ])
+            }),
+          ])
+
+          releaseOptionLock()
+          const results = await Promise.allSettled([optionBlocker, writer])
+
+          expect(waitedOnOption).toBe(true)
+          expect(productLock[0]).toEqual(
+            expect.objectContaining({ status: "rejected" })
+          )
+          expect(results).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+        })
+
+        it("should lock options before deleting option value links", async () => {
+          const option = productOne.options[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          const [valueLink] = await observer
+            .getConnection()
+            .execute<{ id: string }[]>(
+              `select ppov.id
+             from product_product_option_value ppov
+             join product_product_option ppo
+               on ppo.id = ppov.product_product_option_id
+             where ppo.product_id = ?
+               and ppo.product_option_id = ?
+               and ppov.deleted_at is null
+             limit 1`,
+              [productOne.id, option.id]
+            )
+          let releaseOptionLock!: () => void
+          let optionLocked!: () => void
+          const holdOptionLock = new Promise<void>((resolve) => {
+            releaseOptionLock = resolve
+          })
+          const optionLockReady = new Promise<void>((resolve) => {
+            optionLocked = resolve
+          })
+
+          const optionBlocker = managers[0].transactional(async (manager) => {
+            await manager
+              .getTransactionContext()!
+              .raw("select id from product_option where id = ? for update", [
+                option.id,
+              ])
+            optionLocked()
+            await holdOptionLock
+          })
+
+          await optionLockReady
+
+          let unlinkPid!: number
+          let unlinkStarted!: () => void
+          const unlinkStart = new Promise<void>((resolve) => {
+            unlinkStarted = resolve
+          })
+          const unlink = managers[1].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            unlinkPid = backend.rows[0].pid
+            unlinkStarted()
+            await service.updateProducts(
+              productOne.id,
+              { option_ids: [], variants: [] },
+              { manager, transactionManager: manager }
+            )
+          })
+
+          await unlinkStart
+
+          let waitedOnOption = false
+          for (let attempt = 0; attempt < 100; attempt++) {
+            const [activity] = await observer
+              .getConnection()
+              .execute<{ wait_event_type: string | null }[]>(
+                "select wait_event_type from pg_stat_activity where pid = ?",
+                [unlinkPid]
+              )
+            if (activity?.wait_event_type === "Lock") {
+              waitedOnOption = true
+              break
+            }
+            await setTimeout(20)
+          }
+
+          const pivotLock = await Promise.allSettled([
+            managers[2].transactional(async (manager) => {
+              await manager
+                .getTransactionContext()!
+                .raw(
+                  "select id from product_product_option_value where id = ? for update nowait",
+                  [valueLink.id]
+                )
+            }),
+          ])
+
+          releaseOptionLock()
+          const results = await Promise.allSettled([optionBlocker, unlink])
+
+          expect(waitedOnOption).toBe(true)
+          expect(pivotLock[0]).toEqual(
+            expect.objectContaining({ status: "fulfilled" })
+          )
+          expect(results).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+        })
+
+        it("should lock every product and option in a mixed update batch upfront", async () => {
+          const firstProduct = await service.createProducts({
+            title: "mixed lock first",
+            options: [{ title: "mixed-first", values: ["one"] }],
+            variants: [],
+          })
+          const secondProduct = await service.createProducts({
+            title: "mixed lock second",
+            options: [{ title: "mixed-second", values: ["two"] }],
+            variants: [],
+          })
+          const [unlinkProduct, valueUpdateProduct] = [
+            firstProduct,
+            secondProduct,
+          ].sort((left, right) =>
+            left.options[0].id.localeCompare(right.options[0].id)
+          )
+          const unlinkOption = unlinkProduct.options[0]
+          const valueUpdateOption = valueUpdateProduct.options[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          let releaseOptionLock!: () => void
+          let optionLocked!: () => void
+          const holdOptionLock = new Promise<void>((resolve) => {
+            releaseOptionLock = resolve
+          })
+          const optionLockReady = new Promise<void>((resolve) => {
+            optionLocked = resolve
+          })
+
+          const optionBlocker = managers[0].transactional(async (manager) => {
+            await manager
+              .getTransactionContext()!
+              .raw("select id from product_option where id = ? for update", [
+                valueUpdateOption.id,
+              ])
+            optionLocked()
+            await holdOptionLock
+          })
+
+          await optionLockReady
+
+          let batchPid!: number
+          let batchStarted!: () => void
+          const batchStart = new Promise<void>((resolve) => {
+            batchStarted = resolve
+          })
+          const batch = managers[1].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            batchPid = backend.rows[0].pid
+            batchStarted()
+            await service.upsertProducts(
+              [
+                {
+                  id: valueUpdateProduct.id,
+                  option_value_updates: [
+                    {
+                      product_option_id: valueUpdateOption.id,
+                      add: [{ value: "three" }],
+                    },
+                  ],
+                  variants: [],
+                },
+                { id: unlinkProduct.id, option_ids: [] },
+              ],
+              { manager, transactionManager: manager }
+            )
+          })
+
+          await batchStart
+
+          let waitedOnOption = false
+          for (let attempt = 0; attempt < 100; attempt++) {
+            const [activity] = await observer
+              .getConnection()
+              .execute<{ wait_event_type: string | null }[]>(
+                "select wait_event_type from pg_stat_activity where pid = ?",
+                [batchPid]
+              )
+            if (activity?.wait_event_type === "Lock") {
+              waitedOnOption = true
+              break
+            }
+            await setTimeout(20)
+          }
+
+          const omittedLocks = await Promise.allSettled([
+            managers[2].transactional(async (manager) => {
+              await manager
+                .getTransactionContext()!
+                .raw("select id from product where id = ? for update nowait", [
+                  unlinkProduct.id,
+                ])
+            }),
+            managers[3].transactional(async (manager) => {
+              await manager
+                .getTransactionContext()!
+                .raw(
+                  "select id from product_option where id = ? for update nowait",
+                  [unlinkOption.id]
+                )
+            }),
+          ])
+
+          releaseOptionLock()
+          const results = await Promise.allSettled([optionBlocker, batch])
+
+          expect(waitedOnOption).toBe(true)
+          expect(omittedLocks).toEqual([
+            expect.objectContaining({ status: "rejected" }),
+            expect.objectContaining({ status: "rejected" }),
+          ])
+          expect(results).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+        })
+
+        it("should lock crossed upsert variant batches in one sorted set", async () => {
+          await service.updateProductOptionValuesOnProduct({
+            product_id: productOne.id,
+            product_option_id: productOne.options[0].id,
+            add: [{ value: "val-3" }],
+          })
+
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const connection = MikroOrmWrapper.forkManager().getConnection()
+          await connection.execute(`
+            create or replace function test_delay_crossed_variant_insert()
+            returns trigger as $$
+            begin
+              if new.title like 'crossed-lock-%' then
+                perform pg_sleep(0.5);
+              end if;
+              return new;
+            end;
+            $$ language plpgsql;
+            drop trigger if exists test_delay_crossed_variant_insert on product_variant;
+            create trigger test_delay_crossed_variant_insert
+              before insert on product_variant
+              for each row execute function test_delay_crossed_variant_insert();
+          `)
+
+          let ready = 0
+          let releaseBatches!: () => void
+          const batchGate = new Promise<void>((resolve) => {
+            releaseBatches = resolve
+          })
+          const waitForBothBatches = async () => {
+            ready++
+            if (ready === 2) {
+              releaseBatches()
+            }
+            await batchGate
+          }
+
+          const firstBatch = managers[0].transactional(async (manager) => {
+            await waitForBothBatches()
+            await service.upsertProductVariants(
+              [
+                {
+                  product_id: productOne.id,
+                  title: "crossed-lock-val-3",
+                  options: { "opt-title": "val-3" },
+                },
+                {
+                  id: productTwo.variants[0].id,
+                  title: productTwo.variants[0].title,
+                  options: { size: "small", color: "blue" },
+                },
+              ],
+              { manager, transactionManager: manager }
+            )
+          })
+
+          const secondBatch = managers[1].transactional(async (manager) => {
+            await waitForBothBatches()
+            await service.upsertProductVariants(
+              [
+                {
+                  product_id: productTwo.id,
+                  title: "crossed-lock-large-red",
+                  options: { size: "large", color: "red" },
+                },
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: { "opt-title": "val-2" },
+                },
+              ],
+              { manager, transactionManager: manager }
+            )
+          })
+
+          const results = await Promise.allSettled([
+            firstBatch,
+            secondBatch,
+          ]).finally(async () => {
+            await connection.execute(`
+              drop trigger if exists test_delay_crossed_variant_insert on product_variant;
+              drop function if exists test_delay_crossed_variant_insert();
+            `)
+          })
+
+          expect(results).toEqual([
+            expect.objectContaining({ status: "fulfilled" }),
+            expect.objectContaining({ status: "fulfilled" }),
+          ])
+        })
+
+        it("should skip validating a replacement pivot it does not own", async () => {
+          const option = productOne.options[0]
+          await service.updateProductOptionValuesOnProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            add: [{ value: "val-3" }],
+          })
+
+          const product = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values"],
+          })
+          const value = product.options[0].values.find(
+            (entry) => entry.value === "val-3"
+          )!
+          const manager = MikroOrmWrapper.forkManager()
+          const [originalLink] = await manager
+            .getConnection()
+            .execute<{ id: string }[]>(
+              `select ppov.id
+             from product_product_option_value ppov
+             join product_product_option ppo
+               on ppo.id = ppov.product_product_option_id
+             where ppo.product_id = ?
+               and ppo.product_option_id = ?
+               and ppov.product_option_value_id = ?
+               and ppov.deleted_at is null`,
+              [productOne.id, option.id, value.id]
+            )
+
+          await service.updateProductOptionValuesOnProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            remove: [value.id],
+          })
+          await service.updateProductOptionValuesOnProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            add: [value.id],
+          })
+          await service.updateProductVariants(productOne.variants[0].id, {
+            title: productOne.variants[0].title,
+            options: { "opt-title": "val-3" },
+          })
+
+          await expect(
+            service.updateProductOptionValuesOnProduct(
+              {
+                product_id: productOne.id,
+                product_option_id: option.id,
+                remove: [value.id],
+              },
+              {
+                optionValueUpdateExpectedRemovals: [
+                  {
+                    product_id: productOne.id,
+                    product_option_id: option.id,
+                    value_id: value.id,
+                    link_id: originalLink.id,
+                  },
+                ],
+              } as any
+            )
+          ).resolves.toBeUndefined()
+
+          const reloaded = await service.retrieveProduct(productOne.id, {
+            relations: ["options.values", "variants.options"],
+          })
+          expect(reloaded.options[0].values).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ value: "val-3" }),
+            ])
+          )
+          expect(reloaded.variants[0].options).toEqual([
+            expect.objectContaining({ value: "val-3" }),
+          ])
+        })
+
+        it("should restore the exact removed option value link during compensation", async () => {
+          const option = productOne.options[0]
+          const value = option.values.find((entry) => entry.value === "val-2")!
+          const manager = MikroOrmWrapper.forkManager()
+          const [originalLink] = await manager
+            .getConnection()
+            .execute<{ id: string }[]>(
+              `select ppov.id
+               from product_product_option_value ppov
+               join product_product_option ppo
+                 on ppo.id = ppov.product_product_option_id
+               where ppo.product_id = ?
+                 and ppo.product_option_id = ?
+                 and ppov.product_option_value_id = ?
+                 and ppov.deleted_at is null`,
+              [productOne.id, option.id, value.id]
+            )
+          const compensation: any[] = []
+
+          await service.updateProductOptionValuesOnProduct(
+            {
+              product_id: productOne.id,
+              product_option_id: option.id,
+              remove: [value.id],
+            },
+            { optionValueUpdateCompensation: compensation } as any
+          )
+
+          const removedLinks = await manager
+            .getConnection()
+            .execute<{ id: string; is_deleted: boolean }[]>(
+              `select ppov.id, ppov.deleted_at is not null as is_deleted
+               from product_product_option_value ppov
+               join product_product_option ppo
+                 on ppo.id = ppov.product_product_option_id
+               where ppo.product_id = ?
+                 and ppo.product_option_id = ?
+                 and ppov.product_option_value_id = ?`,
+              [productOne.id, option.id, value.id]
+            )
+
+          expect(removedLinks).toEqual([
+            { id: originalLink.id, is_deleted: true },
+          ])
+          expect(compensation).toEqual([
+            {
+              product_id: productOne.id,
+              product_option_id: option.id,
+              add: [
+                {
+                  value_id: value.id,
+                  link_id: originalLink.id,
+                  known_link_ids: [originalLink.id],
+                },
+              ],
+            },
+          ])
+
+          await service.updateProductOptionValuesOnProduct(
+            {
+              product_id: productOne.id,
+              product_option_id: option.id,
+              add: [value.id],
+            },
+            {
+              optionValueUpdateExpectedRestorations: [
+                {
+                  product_id: productOne.id,
+                  product_option_id: option.id,
+                  ...compensation[0].add[0],
+                },
+              ],
+            } as any
+          )
+
+          const activeLinks = await manager
+            .getConnection()
+            .execute<{ id: string }[]>(
+              `select ppov.id
+               from product_product_option_value ppov
+               join product_product_option ppo
+                 on ppo.id = ppov.product_product_option_id
+               where ppo.product_id = ?
+                 and ppo.product_option_id = ?
+                 and ppov.product_option_value_id = ?
+                 and ppov.deleted_at is null`,
+              [productOne.id, option.id, value.id]
+            )
+
+          expect(activeLinks).toEqual([{ id: originalLink.id }])
+        })
+
+        it("should remove every duplicate active option value link", async () => {
+          const option = productOne.options[0]
+          const value = option.values.find((entry) => entry.value === "val-2")!
+          const manager = MikroOrmWrapper.forkManager()
+          const connection = manager.getConnection()
+          const [productOption] = await connection.execute<{ id: string }[]>(
+            `select id
+             from product_product_option
+             where product_id = ?
+               and product_option_id = ?
+               and deleted_at is null`,
+            [productOne.id, option.id]
+          )
+          const duplicateId = `prodoptval_duplicate_${Date.now()}`
+          let activeCount: string | undefined
+
+          try {
+            await connection.execute(
+              `insert into product_product_option_value
+                 (id, product_product_option_id, product_option_value_id)
+               values (?, ?, ?)`,
+              [duplicateId, productOption.id, value.id]
+            )
+            await service.updateProductOptionValuesOnProduct({
+              product_id: productOne.id,
+              product_option_id: option.id,
+              remove: [value.id],
+            })
+            const [result] = await connection.execute<{ count: string }[]>(
+              `select count(*)::text as count
+               from product_product_option_value
+               where product_product_option_id = ?
+                 and product_option_value_id = ?
+                 and deleted_at is null`,
+              [productOption.id, value.id]
+            )
+            activeCount = result.count
+          } finally {
+            await connection.execute(
+              `delete from product_product_option_value
+               where product_product_option_id = ?
+                 and product_option_value_id = ?`,
+              [productOption.id, value.id]
+            )
+          }
+
+          expect(activeCount).toBe("0")
+        })
+
+        it("should reject linking an option after its concurrent soft deletion", async () => {
+          const option = await service.createProductOptions({
+            title: "Concurrent option deletion",
+            values: ["value"],
+            is_exclusive: false,
+          })
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          await observer.getConnection().execute(`
+            create or replace function test_delay_option_soft_delete()
+            returns trigger as $$
+            begin
+              perform pg_sleep(2);
+              return new;
+            end;
+            $$ language plpgsql;
+            drop trigger if exists test_delay_option_soft_delete on product_option;
+            create trigger test_delay_option_soft_delete
+              before update of deleted_at on product_option
+              for each row
+              when (new.deleted_at is not null and old.deleted_at is null)
+              execute function test_delay_option_soft_delete();
+          `)
+
+          let deletionPid!: number
+          let deletionStarted!: () => void
+          const deletionStart = new Promise<void>((resolve) => {
+            deletionStarted = resolve
+          })
+          const deletion = managers[0].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            deletionPid = backend.rows[0].pid
+            deletionStarted()
+            await (service as any).softDeleteProductOptions(
+              option.id,
+              undefined,
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await deletionStart
+            let reachedDelete = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event: string | null }[]>(
+                  "select wait_event from pg_stat_activity where pid = ?",
+                  [deletionPid]
+                )
+              if (activity?.wait_event === "PgSleep") {
+                reachedDelete = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            const link = managers[1].transactional(async (manager) => {
+              await service.addProductOptionToProduct(
+                {
+                  product_id: productOne.id,
+                  product_option_id: option.id,
+                },
+                { manager, transactionManager: manager }
+              )
+            })
+            const results = await Promise.allSettled([deletion, link])
+            const [activeLink] = await observer
+              .getConnection()
+              .execute<{ count: string }[]>(
+                `select count(*)::text as count
+               from product_product_option
+               where product_id = ?
+                 and product_option_id = ?
+                 and deleted_at is null`,
+                [productOne.id, option.id]
+              )
+
+            expect(reachedDelete).toBe(true)
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "rejected" }),
+            ])
+            expect(activeLink.count).toBe("0")
+          } finally {
+            await observer.getConnection().execute(`
+              drop trigger if exists test_delay_option_soft_delete on product_option;
+              drop function if exists test_delay_option_soft_delete();
+            `)
+          }
+        })
+
+        it("should reject linking an option value after its concurrent soft deletion", async () => {
+          const option = await service.createProductOptions({
+            title: "Concurrent option value deletion",
+            values: ["linked", "unlinked"],
+            is_exclusive: false,
+          })
+          const linkedValue = option.values.find(
+            (value) => value.value === "linked"
+          )!
+          const deletedValue = option.values.find(
+            (value) => value.value === "unlinked"
+          )!
+          await service.addProductOptionToProduct({
+            product_id: productOne.id,
+            product_option_id: option.id,
+            product_option_value_ids: [linkedValue.id],
+          })
+
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+          await observer.getConnection().execute(`
+            create or replace function test_delay_option_value_soft_delete()
+            returns trigger as $$
+            begin
+              perform pg_sleep(2);
+              return new;
+            end;
+            $$ language plpgsql;
+            drop trigger if exists test_delay_option_value_soft_delete on product_option_value;
+            create trigger test_delay_option_value_soft_delete
+              before update of deleted_at on product_option_value
+              for each row
+              when (new.deleted_at is not null and old.deleted_at is null)
+              execute function test_delay_option_value_soft_delete();
+          `)
+
+          let deletionPid!: number
+          let deletionStarted!: () => void
+          const deletionStart = new Promise<void>((resolve) => {
+            deletionStarted = resolve
+          })
+          const deletion = managers[0].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            deletionPid = backend.rows[0].pid
+            deletionStarted()
+            await (service as any).softDeleteProductOptionValues(
+              deletedValue.id,
+              undefined,
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await deletionStart
+            let reachedDelete = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event: string | null }[]>(
+                  "select wait_event from pg_stat_activity where pid = ?",
+                  [deletionPid]
+                )
+              if (activity?.wait_event === "PgSleep") {
+                reachedDelete = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            const link = managers[1].transactional(async (manager) => {
+              await service.updateProductOptionValuesOnProduct(
+                {
+                  product_id: productOne.id,
+                  product_option_id: option.id,
+                  add: [deletedValue.id],
+                },
+                { manager, transactionManager: manager }
+              )
+            })
+            const results = await Promise.allSettled([deletion, link])
+            const [activeLink] = await observer
+              .getConnection()
+              .execute<{ count: string }[]>(
+                `select count(*)::text as count
+               from product_product_option_value ppov
+               join product_product_option ppo
+                 on ppo.id = ppov.product_product_option_id
+               where ppo.product_id = ?
+                 and ppo.product_option_id = ?
+                 and ppov.product_option_value_id = ?
+                 and ppov.deleted_at is null`,
+                [productOne.id, option.id, deletedValue.id]
+              )
+
+            expect(reachedDelete).toBe(true)
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "rejected" }),
+            ])
+            expect(activeLink.count).toBe("0")
+          } finally {
+            await observer.getConnection().execute(`
+              drop trigger if exists test_delay_option_value_soft_delete on product_option_value;
+              drop function if exists test_delay_option_value_soft_delete();
+            `)
+          }
+        })
+
+        it("should preserve a concurrently changed value during guarded rollback deletion", async () => {
+          const option = await service.createProductOptions({
+            title: "Guarded rollback value",
+            values: ["created"],
+            is_exclusive: false,
+          })
+          const value = option.values[0]
+
+          await service.updateProductOptionValues(value.id, {
+            value: "concurrent edit",
+          })
+          await service.softDeleteProductOptionValues([value.id], undefined, {
+            optionValueUpdateExpectedDeletions: [
+              {
+                id: value.id,
+                option_id: option.id,
+                updated_at: new Date(value.updated_at).toISOString(),
+              },
+            ],
+          } as any)
+
+          expect(await service.retrieveProductOptionValue(value.id)).toEqual(
+            expect.objectContaining({ value: "concurrent edit" })
+          )
+        })
+
+        it("should preserve an option value edit racing guarded rollback deletion", async () => {
+          const option = await service.createProductOptions({
+            title: "Racing guarded rollback value",
+            values: ["created"],
+            is_exclusive: false,
+          })
+          const value = option.values[0]
+          const managers = [
+            MikroOrmWrapper.forkManager(),
+            MikroOrmWrapper.forkManager(),
+          ]
+          const observer = MikroOrmWrapper.forkManager()
+
+          await observer.getConnection().execute(`
+            create or replace function test_delay_guarded_value_edit()
+            returns trigger as $$
+            begin
+              if new.value = 'concurrent guarded edit' then
+                perform pg_sleep(2);
+              end if;
+              return new;
+            end;
+            $$ language plpgsql;
+            drop trigger if exists test_delay_guarded_value_edit on product_option_value;
+            create trigger test_delay_guarded_value_edit
+              before update of value on product_option_value
+              for each row execute function test_delay_guarded_value_edit();
+          `)
+
+          let writerPid!: number
+          let writerStarted!: () => void
+          const writerStart = new Promise<void>((resolve) => {
+            writerStarted = resolve
+          })
+          const writer = managers[0].transactional(async (manager) => {
+            const backend = await manager
+              .getTransactionContext()!
+              .raw("select pg_backend_pid() as pid")
+            writerPid = backend.rows[0].pid
+            writerStarted()
+            await service.updateProductOptionValues(
+              value.id,
+              { value: "concurrent guarded edit" },
+              { manager, transactionManager: manager }
+            )
+          })
+
+          try {
+            await writerStart
+            let reachedValueWrite = false
+            for (let attempt = 0; attempt < 100; attempt++) {
+              const [activity] = await observer
+                .getConnection()
+                .execute<{ wait_event: string | null }[]>(
+                  "select wait_event from pg_stat_activity where pid = ?",
+                  [writerPid]
+                )
+              if (activity?.wait_event === "PgSleep") {
+                reachedValueWrite = true
+                break
+              }
+              await setTimeout(20)
+            }
+
+            const deletion = managers[1].transactional(async (manager) => {
+              await service.softDeleteProductOptionValues(
+                [value.id],
+                undefined,
+                {
+                  manager,
+                  transactionManager: manager,
+                  optionValueUpdateExpectedDeletions: [
+                    {
+                      id: value.id,
+                      option_id: option.id,
+                      updated_at: new Date(value.updated_at).toISOString(),
+                    },
+                  ],
+                } as any
+              )
+            })
+
+            const results = await Promise.allSettled([writer, deletion])
+            const reloaded = await service.retrieveProductOptionValue(value.id)
+
+            expect(reachedValueWrite).toBe(true)
+            expect(results).toEqual([
+              expect.objectContaining({ status: "fulfilled" }),
+              expect.objectContaining({ status: "fulfilled" }),
+            ])
+            expect(reloaded.value).toBe("concurrent guarded edit")
+          } finally {
+            await writer.catch(() => undefined)
+            await observer.getConnection().execute(`
+              drop trigger if exists test_delay_guarded_value_edit on product_option_value;
+              drop function if exists test_delay_guarded_value_edit();
+            `)
+          }
+        })
+
+        it("should reject removing an option value still used after the variant update", async () => {
+          const option = productOne.options[0]
+          const value = option.values.find((entry) => entry.value === "val-1")!
+
+          const error = await service
+            .updateProducts(productOne.id, {
+              option_value_updates: [
+                {
+                  product_option_id: option.id,
+                  remove: [value.id],
+                },
+              ],
+              variants: [
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: { "opt-title": "val-1" },
+                },
+              ],
+            })
+            .catch((cause) => cause)
+
+          expect(error.message).toContain(
+            "Cannot unassign option values from product"
+          )
+        })
+
+        it("should reject an option value ID from another option", async () => {
+          const option = productOne.options[0]
+          const otherOption = await service.createProductOptions({
+            title: "other-option",
+            values: ["foreign-value"],
+          })
+
+          const error = await service
+            .updateProducts(productOne.id, {
+              option_value_updates: [
+                {
+                  product_option_id: option.id,
+                  add: [otherOption.values[0].id],
+                },
+              ],
+              variants: [
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: { "opt-title": "val-1" },
+                },
+              ],
+            })
+            .catch((cause) => cause)
+
+          expect(error.message).toEqual(
+            `Product option value ${otherOption.values[0].id} does not belong to option ${option.id}.`
+          )
+        })
+
+        it("should reject duplicate option value update pairs", async () => {
+          const option = productOne.options[0]
+
+          const error = await service
+            .updateProducts(productOne.id, {
+              option_value_updates: [
+                {
+                  product_option_id: option.id,
+                  add: [{ value: "duplicate-a" }],
+                },
+                {
+                  product_option_id: option.id,
+                  add: [{ value: "duplicate-b" }],
+                },
+              ],
+              variants: [
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: { "opt-title": "val-1" },
+                },
+              ],
+            })
+            .catch((cause) => cause)
+
+          expect(error.message).toEqual(
+            `Duplicate product option value update: ${productOne.id}:${option.id}`
+          )
+        })
+
+        it("should reject one option value ID targeting different options", async () => {
+          const option = productOne.options[0]
+          const value = option.values.find((entry) => entry.value === "val-1")!
+          const otherOption = await service.createProductOptions({
+            title: "other-option",
+            values: ["foreign-value"],
+          })
+
+          await service.updateProducts(productOne.id, {
+            option_ids: [option.id, otherOption.id],
+            variants: [
+              {
+                id: productOne.variants[0].id,
+                title: productOne.variants[0].title,
+                options: {
+                  "opt-title": "val-1",
+                  "other-option": "foreign-value",
+                },
+              },
+            ],
+          })
+
+          const error = await service
+            .updateProducts(productOne.id, {
+              option_value_updates: [
+                {
+                  product_option_id: otherOption.id,
+                  add: [value.id],
+                },
+                {
+                  product_option_id: option.id,
+                  add: [value.id],
+                },
+              ],
+              variants: [
+                {
+                  id: productOne.variants[0].id,
+                  title: productOne.variants[0].title,
+                  options: {
+                    "opt-title": "val-1",
+                    "other-option": "foreign-value",
+                  },
+                },
+              ],
+            })
+            .catch((cause) => cause)
+
+          expect(error.message).toEqual(
+            `Product option value ${value.id} cannot target multiple options.`
+          )
+        })
+
         it("should throw an error when some tag id does not exist", async () => {
           const error = await service
             .updateProducts(productOne.id, {
@@ -1325,9 +4201,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
               options: [
                 { id: sharedOption.id, value_ids: [valueA.id, valueB.id] },
               ],
-              variants: [
-                { title: "vA", options: { ExpandSubset: "e-a" } },
-              ],
+              variants: [{ title: "vA", options: { ExpandSubset: "e-a" } }],
             },
           ])
 
@@ -1368,9 +4242,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const reloaded = await service.retrieveProduct(created.id, {
             relations: ["variants.options", "options.values"],
           })
-          const variantValues = reloaded.variants[0].options.map(
-            (o) => o.value
-          )
+          const variantValues = reloaded.variants[0].options.map((o) => o.value)
           expect(variantValues).toEqual(["e-c"])
         })
       })

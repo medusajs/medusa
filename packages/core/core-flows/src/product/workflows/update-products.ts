@@ -88,8 +88,10 @@ export type UpdateProductWorkflowInput =
 
 function prepareUpdateProductInput({
   input,
+  previousProductsWithVariants,
 }: {
   input: UpdateProductWorkflowInput
+  previousProductsWithVariants: { id: string }[]
 }): UpdateProductWorkflowInput {
   if ("products" in input) {
     if (!input.products.length) {
@@ -110,16 +112,16 @@ function prepareUpdateProductInput({
   }
 
   return {
-    selector: input.selector,
-    update: {
+    products: previousProductsWithVariants.map((product) => ({
       ...input.update,
+      id: product.id,
       sales_channels: undefined,
       shipping_profile_id: undefined,
       variants: input.update?.variants?.map((v) => ({
         ...v,
         prices: undefined,
       })),
-    },
+    })),
   }
 }
 
@@ -423,26 +425,33 @@ export const updateProductsWorkflow = createWorkflow(
         }
       }
 
-      return {
-        filters: data.input.update?.variants ? data.input.selector : { id: [] },
-      }
+      return { filters: data.input.selector }
     })
     const previousProductsWithVariants = useRemoteQueryStep({
       entry_point: "product",
-      fields: ["variants.id"],
+      fields: ["id", "variants.id"],
       variables: variantIdsSelector,
     }).config({ name: "get-previous-products-variants-step" })
 
     const previousVariantIds = transform(
-      { previousProductsWithVariants },
+      { input, previousProductsWithVariants },
       (data) => {
+        if (
+          !("products" in data.input) &&
+          data.input.update?.variants === undefined
+        ) {
+          return []
+        }
         return data.previousProductsWithVariants.flatMap((p) =>
           p.variants?.map((v) => v.id)
         )
       }
     )
 
-    const toUpdateInput = transform({ input }, prepareUpdateProductInput)
+    const toUpdateInput = transform(
+      { input, previousProductsWithVariants },
+      prepareUpdateProductInput
+    )
     const updatedProducts = updateProductsStep(toUpdateInput)
 
     const variantsToDismissInventory = transform(

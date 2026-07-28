@@ -265,10 +265,7 @@ export interface AdminCreateProduct {
   /**
    * The product's options.
    */
-  options?: (
-    | AdminCreateProductOption
-    | AdminProductCreateLinkProductOption
-  )[]
+  options?: (AdminCreateProductOption | AdminProductCreateLinkProductOption)[]
   /**
    * The product's variants.
    */
@@ -499,6 +496,10 @@ export interface AdminUpdateProduct {
    * @since 2.16.0
    */
   option_ids?: string[]
+  /**
+   * The product option values to add or remove atomically with the variants.
+   */
+  option_value_updates?: AdminUpdateProductOptionValues[]
   /**
    * The product's variants.
    */

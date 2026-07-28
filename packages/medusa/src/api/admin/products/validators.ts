@@ -98,7 +98,7 @@ export const AdminUpdateProductOptionValues = z.object({
         z.string(),
         z
           .object({
-            value: z.string(),
+            value: z.string().trim().min(1),
           })
           .strict(),
       ])
@@ -293,6 +293,7 @@ export const UpdateProduct = z
       }
     }),
     option_ids: z.array(z.string()).optional(),
+    option_value_updates: z.array(AdminUpdateProductOptionValues).optional(),
     variants: z.array(UpdateProductVariant).optional(),
     status: statusEnum.optional(),
     subtitle: z.string().nullish(),
@@ -321,14 +322,41 @@ export const UpdateProduct = z
   })
   .strict()
 
-export const AdminUpdateProduct = WithAdditionalData(UpdateProduct)
+const validateOptionValueUpdates = (
+  data: z.infer<typeof UpdateProduct>,
+  ctx: z.RefinementCtx
+) => {
+  if (data.option_value_updates !== undefined && data.variants === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Variants are required when updating product option values.",
+      path: ["variants"],
+    })
+  }
+
+  if (
+    data.option_value_updates !== undefined &&
+    data.option_ids !== undefined
+  ) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message:
+        "Product option IDs and option value updates cannot be changed together.",
+      path: ["option_value_updates"],
+    })
+  }
+}
+
+export const AdminUpdateProduct = WithAdditionalData(UpdateProduct, (schema) =>
+  schema.superRefine(validateOptionValueUpdates)
+)
 
 export type AdminBatchUpdateProductType = z.infer<
   typeof AdminBatchUpdateProduct
 >
 export const AdminBatchUpdateProduct = UpdateProduct.extend({
   id: z.string(),
-})
+}).superRefine(validateOptionValueUpdates)
 
 export const AdminCreateVariantInventoryItem = z.object({
   required_quantity: z.number(),

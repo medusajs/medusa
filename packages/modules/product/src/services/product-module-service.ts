@@ -53,6 +53,7 @@ import {
   toHandle,
 } from "@medusajs/framework/utils"
 import { EntityManager } from "@medusajs/framework/mikro-orm/core"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import { ProductRepository } from "../repositories"
 import {
   UpdateCategoryInput,
@@ -88,6 +89,226 @@ type InjectedDependencies = {
   productVariantProductImageService: ModulesSdkTypes.IMedusaInternalService<any>
   [Modules.EVENT_BUS]?: IEventBusModuleService
 }
+
+type ProductOptionValueCompensation = {
+  product_id: string
+  product_option_id: string
+  add?: {
+    value_id: string
+    link_id: string
+    known_link_ids: string[]
+  }[]
+  remove?: { value_id: string; link_id: string }[]
+}
+
+type ProductOptionValueExpectedRemoval = {
+  product_id: string
+  product_option_id: string
+  value_id: string
+  link_id: string
+}
+
+type ProductOptionValueExpectedRestoration =
+  ProductOptionValueExpectedRemoval & {
+    known_link_ids: string[]
+  }
+
+type ProductOptionLinkRestoration = ProductTypes.ProductOptionProductPair & {
+  link_id: string
+  known_link_ids: string[]
+  value_links: { id: string; value_id: string }[]
+}
+
+type ProductOptionLinkCompensation = {
+  add: ProductOptionLinkRestoration[]
+  remove: ProductTypes.ProductOptionProductPair[]
+}
+
+type VariantUpdateState = {
+  product_id: string
+  product_options: {
+    id: string
+    option_id: string
+    option_deleted: boolean
+    value_link_ids: string[]
+    value_ids: string[]
+  }[]
+  product_option_links: {
+    id: string
+    option_id: string
+    updated_at: string
+    version: string
+    deleted: boolean
+  }[]
+  watched_options: {
+    id: string
+    title: string
+    is_exclusive: boolean
+    metadata: Record<string, unknown> | null
+    version: string
+    deleted: boolean
+  }[]
+  variants: {
+    id: string
+    updated_at: string
+    option_value_ids: string[]
+  }[]
+  option_values: {
+    id: string
+    value: string
+    option_id: string
+    option_title: string
+    metadata: Record<string, unknown> | null
+    rank: number | null
+    value_deleted: boolean
+    option_deleted: boolean
+  }[]
+}
+
+type ProductOptionValueExpectedDeletion = {
+  id: string
+  option_id: string
+  updated_at: string
+}
+
+type ProductUpdateState = {
+  product_id: string
+  version: string
+  fields: Record<string, unknown>
+}
+
+type ProductOptionValueUpdateContext = Context & {
+  optionValueUpdateCompensation?: ProductOptionValueCompensation[]
+  optionValueUpdateExpectedRemovals?: ProductOptionValueExpectedRemoval[]
+  optionValueUpdateExpectedRestorations?: ProductOptionValueExpectedRestoration[]
+  variantUpdateExpectedState?: VariantUpdateState[]
+  variantUpdatePreviousProducts?: ProductTypes.ProductDTO[]
+  variantUpdateCondition?: VariantUpdateState[]
+  variantUpdateSkippedProductIds?: string[]
+  variantUpdateRequiredValueIdsByProductId?: Record<string, string[]>
+  optionLinkUpdateForwardCompensation?: ProductOptionLinkCompensation
+  optionLinkUpdateCompensation?: ProductOptionLinkCompensation
+  optionValueUpdateSkippedProductIds?: string[]
+  optionValueUpdateCreatedValueIds?: string[]
+  optionValueUpdateCreatedValues?: ProductOptionValueExpectedDeletion[]
+  optionValueUpdateExpectedDeletions?: ProductOptionValueExpectedDeletion[]
+  productUpdateFieldsByProductId?: Record<string, string[]>
+  productUpdatePreviousProducts?: ProductTypes.ProductDTO[]
+  productUpdatePreviousState?: ProductUpdateState[]
+  productUpdateExpectedState?: ProductUpdateState[]
+  productUpdateCondition?: ProductUpdateState[]
+  skipMissingProducts?: boolean
+}
+
+const optionValueEntriesMatch = (
+  current: VariantUpdateState["option_values"],
+  expected: VariantUpdateState["option_values"]
+) =>
+  current.length === expected.length &&
+  current.every((value, index) => {
+    const expectedValue = expected[index]
+    return (
+      value.id === expectedValue.id &&
+      value.value === expectedValue.value &&
+      value.option_id === expectedValue.option_id &&
+      value.option_title === expectedValue.option_title &&
+      JSON.stringify(value.metadata) ===
+        JSON.stringify(expectedValue.metadata) &&
+      value.rank === expectedValue.rank &&
+      value.value_deleted === expectedValue.value_deleted &&
+      value.option_deleted === expectedValue.option_deleted
+    )
+  })
+
+const optionValueStatesMatch = (
+  current: VariantUpdateState,
+  expected: VariantUpdateState
+) => optionValueEntriesMatch(current.option_values, expected.option_values)
+
+const productOptionStatesMatch = (
+  current: VariantUpdateState,
+  expected: VariantUpdateState
+) =>
+  current.product_options.length === expected.product_options.length &&
+  current.product_options.every((option, index) => {
+    const expectedOption = expected.product_options[index]
+    return (
+      option.id === expectedOption.id &&
+      option.option_id === expectedOption.option_id &&
+      option.option_deleted === expectedOption.option_deleted
+    )
+  })
+
+const productOptionValueLinksMatch = (
+  current: VariantUpdateState["product_options"][number],
+  expected: VariantUpdateState["product_options"][number]
+) =>
+  current.value_link_ids.length === expected.value_link_ids.length &&
+  current.value_link_ids.every(
+    (linkId, index) => linkId === expected.value_link_ids[index]
+  )
+
+const watchedOptionStatesMatch = (
+  current: VariantUpdateState,
+  expected: VariantUpdateState
+) =>
+  current.watched_options.length === expected.watched_options.length &&
+  current.watched_options.every((option, index) => {
+    const expectedOption = expected.watched_options[index]
+    return (
+      option.id === expectedOption.id &&
+      option.title === expectedOption.title &&
+      option.is_exclusive === expectedOption.is_exclusive &&
+      JSON.stringify(option.metadata) ===
+        JSON.stringify(expectedOption.metadata) &&
+      option.deleted === expectedOption.deleted
+    )
+  })
+
+const comparableProductUpdateField = (field: string, value: unknown) => {
+  if ((field === "tags" || field === "categories") && Array.isArray(value)) {
+    return value
+      .map((entry) => (entry as { id: string }).id)
+      .sort((left, right) => left.localeCompare(right))
+  }
+  if (field === "images" && Array.isArray(value)) {
+    return value.map((entry) => {
+      const image = entry as { id: string; rank?: number; url?: string }
+      return { id: image.id, rank: image.rank, url: image.url }
+    })
+  }
+  return value
+}
+
+const productUpdateFieldMatches = (
+  field: string,
+  current: unknown,
+  expected: unknown
+) =>
+  JSON.stringify(comparableProductUpdateField(field, current)) ===
+  JSON.stringify(comparableProductUpdateField(field, expected))
+
+const variantStatesMatch = (
+  current: VariantUpdateState,
+  expected: VariantUpdateState
+) =>
+  current.variants.length === expected.variants.length &&
+  current.variants.every((variant, index) => {
+    const expectedVariant = expected.variants[index]
+    return (
+      variant.id === expectedVariant.id &&
+      variant.updated_at === expectedVariant.updated_at &&
+      variant.option_value_ids.length ===
+        expectedVariant.option_value_ids.length &&
+      variant.option_value_ids.every(
+        (valueId, valueIndex) =>
+          valueId === expectedVariant.option_value_ids[valueIndex]
+      )
+    )
+  }) &&
+  optionValueStatesMatch(current, expected) &&
+  productOptionStatesMatch(current, expected) &&
+  watchedOptionStatesMatch(current, expected)
 
 export default class ProductModuleService
   extends MedusaService<{
@@ -377,7 +598,7 @@ export default class ProductModuleService
     if (shouldLoadVariantImages) {
       await this.assignImagesToVariants(serializedProducts, sharedContext)
     }
-    
+
     if (shouldFilterOptionValues) {
       await this.filterOptionValues(serializedProducts, sharedContext)
     }
@@ -504,6 +725,7 @@ export default class ProductModuleService
     }
 
     const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
+    await this.lockProductRows_(productIds, sharedContext)
     const [variants, { optionsByProductId, valueIdsByProductId }] =
       await promiseAll([
         this.productVariantService_.list(
@@ -559,6 +781,24 @@ export default class ProductModuleService
     )
     const forCreate = input.filter(
       (variant): variant is ProductTypes.CreateProductVariantDTO => !variant.id
+    )
+
+    const updatedVariantsWithOptions = forUpdate.some(
+      (variant) => variant.options !== undefined
+    )
+    const currentVariants = updatedVariantsWithOptions
+      ? await this.productVariantService_.list(
+          { id: forUpdate.map((variant) => variant.id) },
+          {},
+          sharedContext
+        )
+      : []
+    await this.lockProductRows_(
+      [
+        ...forCreate.map((variant) => variant.product_id),
+        ...currentVariants.map((variant) => variant.product_id),
+      ].filter((productId): productId is string => !!productId),
+      sharedContext
     )
 
     let created: ProductTypes.ProductVariantDTO[] = []
@@ -654,6 +894,15 @@ export default class ProductModuleService
           variantIdsToUpdate,
           variants.map(({ id }) => id)
         ).join(", ")}`
+      )
+    }
+
+    if (hasOptions) {
+      await this.lockProductRows_(
+        variants
+          .map((variant) => variant.product_id)
+          .filter((productId): productId is string => !!productId),
+        sharedContext
       )
     }
 
@@ -1166,9 +1415,14 @@ export default class ProductModuleService
       )
     }
 
+    await this.lockProductOptionRows_(
+      data.map((option) => option.id),
+      sharedContext
+    )
+
     const dbOptions = await this.productOptionService_.list(
       { id: data.map(({ id }) => id) },
-      { relations: ["values"] },
+      { relations: ["values"], options: { refresh: true } },
       sharedContext
     )
 
@@ -1360,6 +1614,8 @@ export default class ProductModuleService
             : (primaryKeyValues as any).id,
         ]
 
+    await this.lockProductOptionRows_(optionIds, sharedContext)
+
     const canDelete = await this.productRepository_.canDeleteProductOption(
       optionIds,
       sharedContext
@@ -1449,6 +1705,80 @@ export default class ProductModuleService
     const valueIds = (
       Array.isArray(primaryKeyValues) ? primaryKeyValues : [primaryKeyValues]
     ).map((v) => (isString(v) ? v : (v as any).id))
+    const values = await this.productOptionValueService_.list(
+      { id: valueIds },
+      {
+        select: ["id", "option_id", "updated_at"],
+        options: { refresh: true },
+      },
+      sharedContext
+    )
+
+    const updateContext = sharedContext as ProductOptionValueUpdateContext
+    const expectedDeletions = updateContext.optionValueUpdateExpectedDeletions
+    const expectedById = new Map(
+      (expectedDeletions ?? []).map((value) => [value.id, value])
+    )
+    const optionIds = expectedDeletions?.length
+      ? expectedDeletions.map((value) => value.option_id)
+      : values
+          .map((value) => value.option_id)
+          .filter((optionId): optionId is string => !!optionId)
+    const activeOptionIds = new Set(
+      await this.lockProductOptionRows_(optionIds, sharedContext)
+    )
+
+    if (expectedById.size) {
+      const manager = sharedContext.transactionManager as SqlEntityManager
+      const knex = manager.getTransactionContext()
+      const currentValues: {
+        id: string
+        option_id: string
+        updated_at: Date | string
+      }[] = await knex("product_option_value")
+        .whereIn("id", valueIds)
+        .whereNull("deleted_at")
+        .orderBy("id")
+        .forUpdate()
+        .select("id", "option_id", "updated_at")
+      const linkedValueIds: { product_option_value_id: string }[] = await knex(
+        "product_product_option_value as value_link"
+      )
+        .join(
+          "product_product_option as option_link",
+          "option_link.id",
+          "value_link.product_product_option_id"
+        )
+        .whereIn("value_link.product_option_value_id", valueIds)
+        .whereNull("value_link.deleted_at")
+        .whereNull("option_link.deleted_at")
+        .select("value_link.product_option_value_id")
+      const linkedIds = new Set(
+        linkedValueIds.map((value) => value.product_option_value_id)
+      )
+      const safeValueIds = currentValues
+        .filter((value) => {
+          const expected = expectedById.get(value.id)
+          return (
+            expected &&
+            activeOptionIds.has(value.option_id) &&
+            expected.option_id === value.option_id &&
+            expected.updated_at === new Date(value.updated_at).toISOString() &&
+            !linkedIds.has(value.id)
+          )
+        })
+        .map((value) => value.id)
+
+      if (!safeValueIds.length) {
+        return
+      }
+
+      return await super.softDeleteProductOptionValues(
+        safeValueIds,
+        config,
+        sharedContext
+      )
+    }
 
     await this.validateOptionValuesNotAssociatedWithProducts_(
       valueIds,
@@ -1497,7 +1827,6 @@ export default class ProductModuleService
     )
 
     const productProductOptionIds = productProductOptions.map((ppo) => ppo.id)
-
     if (productProductOptionIds.length) {
       const productProductOptionValues =
         await this.productProductOptionValueService_.list(
@@ -1571,7 +1900,21 @@ export default class ProductModuleService
       return []
     }
 
+    await this.lockProductRows_(
+      pairs.map((pair) => pair.product_id),
+      sharedContext
+    )
     const uniqueOptionIds = [...new Set(pairs.map((p) => p.product_option_id))]
+    const activeOptionIds = await this.lockProductOptionRows_(
+      uniqueOptionIds,
+      sharedContext
+    )
+    if (activeOptionIds.length !== uniqueOptionIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Some product options were not found."
+      )
+    }
 
     // Read option values via a direct knex query rather than
     // productOptionService_.list({...,relations:["values"]}). That MikroORM
@@ -1680,6 +2023,9 @@ export default class ProductModuleService
         sharedContext
       )
     }
+    await knex("product_option")
+      .whereIn("id", uniqueOptionIds)
+      .update({ updated_at: knex.fn.now() })
 
     const result = pairs.map((pair) => ({
       id: ppoIdByKey.get(`${pair.product_id}_${pair.product_option_id}`)!,
@@ -1722,11 +2068,20 @@ export default class ProductModuleService
     @MedusaContext() sharedContext: Context = {}
   ): Promise<string[]> {
     const pairs = Array.isArray(data) ? data : [data]
+    await this.lockProductRows_(
+      pairs.map((pair) => pair.product_id),
+      sharedContext
+    )
+    await this.lockProductOptionRows_(
+      pairs.map((pair) => pair.product_option_id),
+      sharedContext
+    )
+
     const productOptionsProducts = await this.productProductOptionService_.list(
       {
         $or: pairs,
       },
-      {},
+      { options: { refresh: true } },
       sharedContext
     )
 
@@ -1758,15 +2113,38 @@ export default class ProductModuleService
       ),
     ]
 
-    await this.productProductOptionValueService_.delete(
-      productOptionsProductIds.map((id) => ({ product_product_option_id: id })),
-      sharedContext
-    )
-
-    await this.productProductOptionService_.delete(
-      productOptionsProductIds,
-      sharedContext
-    )
+    const preserveLinkHistory = !!(
+      sharedContext as ProductOptionValueUpdateContext
+    ).optionLinkUpdateForwardCompensation
+    const valueLinkSelector = productOptionsProductIds.map((id) => ({
+      product_product_option_id: id,
+    }))
+    if (preserveLinkHistory) {
+      await this.productProductOptionValueService_.softDelete(
+        valueLinkSelector,
+        sharedContext
+      )
+      await this.productProductOptionService_.softDelete(
+        productOptionsProductIds,
+        sharedContext
+      )
+    } else {
+      await this.productProductOptionValueService_.delete(
+        valueLinkSelector,
+        sharedContext
+      )
+      await this.productProductOptionService_.delete(
+        productOptionsProductIds,
+        sharedContext
+      )
+    }
+    if (unlinkedOptionIds.length) {
+      const manager = sharedContext.transactionManager as SqlEntityManager
+      const knex = manager.getTransactionContext()
+      await knex("product_option")
+        .whereIn("id", unlinkedOptionIds)
+        .update({ updated_at: knex.fn.now() })
+    }
 
     // Soft-delete exclusive options that are now orphaned.
     if (!unlinkedOptionIds.length) {
@@ -1806,6 +2184,552 @@ export default class ProductModuleService
     return orphanedExclusiveOptionIds
   }
 
+  protected async lockProductOptionRows_(
+    optionIds: string[],
+    sharedContext: Context,
+    includeDeleted = false
+  ): Promise<string[]> {
+    const ids = [...new Set(optionIds)].sort()
+    if (!ids.length) {
+      return []
+    }
+
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Product option updates must run inside a transaction."
+      )
+    }
+
+    let query = knex("product_option")
+      .whereIn("id", ids)
+      .orderBy("id")
+      .forUpdate()
+    if (!includeDeleted) {
+      query = query.whereNull("deleted_at")
+    }
+    const rows: { id: string }[] = await query.select("id")
+
+    return rows.map((row) => row.id)
+  }
+
+  protected async lockProductOptionValueUpdates_(
+    updates: ProductTypes.ProductOptionProductValueUpdate[],
+    sharedContext: Context
+  ): Promise<void> {
+    await this.lockProductRows_(
+      updates.map((update) => update.product_id),
+      sharedContext
+    )
+
+    await this.lockProductOptionRows_(
+      updates.map((update) => update.product_option_id),
+      sharedContext
+    )
+  }
+
+  protected async lockProductRows_(
+    productIds: string[],
+    sharedContext: Context
+  ): Promise<string[]> {
+    const ids = [...new Set(productIds)].sort()
+    if (!ids.length) {
+      return []
+    }
+
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager.getTransactionContext()
+    const rows: { id: string }[] = await knex("product")
+      .whereIn("id", ids)
+      .whereNull("deleted_at")
+      .orderBy("id")
+      .forUpdate()
+      .select("id")
+    return rows.map((row) => row.id)
+  }
+
+  protected async lockProductVariantRows_(
+    productIds: string[],
+    sharedContext: Context
+  ): Promise<void> {
+    const ids = [...new Set(productIds)].sort()
+    if (!ids.length) {
+      return
+    }
+
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager.getTransactionContext()
+    await knex("product_variant")
+      .whereIn("product_id", ids)
+      .orderBy("id")
+      .forUpdate()
+      .select("id")
+  }
+
+  protected async captureProductUpdateState_(
+    fieldsByProductId: Record<string, string[]>,
+    sharedContext: Context
+  ): Promise<ProductUpdateState[]> {
+    const productIds = Object.entries(fieldsByProductId)
+      .filter(([, fields]) => fields.length)
+      .map(([productId]) => productId)
+      .sort()
+    if (!productIds.length) {
+      return []
+    }
+
+    const relationFields = new Set(["categories", "images", "tags"])
+    const fields = [
+      ...new Set(
+        productIds.flatMap((productId) => fieldsByProductId[productId])
+      ),
+    ]
+    const products = await this.listProducts(
+      { id: productIds },
+      {
+        select: ["id", ...fields.filter((field) => !relationFields.has(field))],
+        relations: fields.filter((field) => relationFields.has(field)),
+        options: { refresh: true },
+      },
+      sharedContext
+    )
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager.getTransactionContext()
+    const productVersions: { id: string; version: string }[] = await knex(
+      "product"
+    )
+      .whereIn("id", productIds)
+      .select("id", knex.raw('xmin::text as "version"'))
+    const versionByProductId = new Map(
+      productVersions.map((product) => [product.id, product.version])
+    )
+
+    return products.map((product) => {
+      const productFields = product as unknown as Record<string, unknown>
+      return {
+        product_id: product.id,
+        version: versionByProductId.get(product.id)!,
+        fields: Object.fromEntries(
+          fieldsByProductId[product.id].map((field) => [
+            field,
+            productFields[field],
+          ])
+        ),
+      }
+    })
+  }
+
+  protected async captureVariantUpdateState_(
+    productIds: string[],
+    sharedContext: Context,
+    additionalOptionValueIdsByProductId = new Map<string, string[]>(),
+    includeVariantOptionValues = true,
+    additionalOptionIdsByProductId = new Map<string, string[]>()
+  ): Promise<VariantUpdateState[]> {
+    const ids = [...new Set(productIds)].sort()
+    if (!ids.length) {
+      return []
+    }
+
+    const manager = sharedContext.transactionManager as SqlEntityManager
+    const knex = manager.getTransactionContext()
+    await this.lockProductVariantRows_(ids, sharedContext)
+
+    const productOptionLinkRows: {
+      product_id: string
+      id: string
+      option_id: string
+      updated_at: Date | string
+      version: string
+      deleted_at: Date | string | null
+      option_deleted_at: Date | string | null
+    }[] = await knex("product_product_option as product_option_link")
+      .leftJoin(
+        "product_option as option",
+        "option.id",
+        "product_option_link.product_option_id"
+      )
+      .whereIn("product_option_link.product_id", ids)
+      .orderBy("product_option_link.id")
+      .select(
+        "product_option_link.product_id",
+        "product_option_link.id",
+        "product_option_link.product_option_id as option_id",
+        "product_option_link.updated_at",
+        knex.raw('product_option_link.xmin::text as "version"'),
+        "product_option_link.deleted_at",
+        "option.deleted_at as option_deleted_at"
+      )
+    const productOptionRows = productOptionLinkRows.filter(
+      (link) => !link.deleted_at
+    )
+    const productOptionsByProductId = new Map<
+      string,
+      VariantUpdateState["product_options"]
+    >()
+    const productOptionValueLinkRows: {
+      id: string
+      product_product_option_id: string
+      product_option_value_id: string
+    }[] = productOptionRows.length
+      ? await knex("product_product_option_value")
+          .whereIn(
+            "product_product_option_id",
+            productOptionRows.map((option) => option.id)
+          )
+          .whereNull("deleted_at")
+          .orderBy("id")
+          .select("id", "product_product_option_id", "product_option_value_id")
+      : []
+    const valueLinkIdsByProductOptionId = new Map<string, string[]>()
+    const linkedValueIdsByProductOptionId = new Map<string, string[]>()
+    for (const link of productOptionValueLinkRows) {
+      valueLinkIdsByProductOptionId.set(link.product_product_option_id, [
+        ...(valueLinkIdsByProductOptionId.get(link.product_product_option_id) ??
+          []),
+        link.id,
+      ])
+      linkedValueIdsByProductOptionId.set(link.product_product_option_id, [
+        ...(linkedValueIdsByProductOptionId.get(
+          link.product_product_option_id
+        ) ?? []),
+        link.product_option_value_id,
+      ])
+    }
+    for (const option of productOptionRows) {
+      productOptionsByProductId.set(option.product_id, [
+        ...(productOptionsByProductId.get(option.product_id) ?? []),
+        {
+          id: option.id,
+          option_id: option.option_id,
+          option_deleted: !!option.option_deleted_at,
+          value_link_ids: valueLinkIdsByProductOptionId.get(option.id) ?? [],
+          value_ids: linkedValueIdsByProductOptionId.get(option.id) ?? [],
+        },
+      ])
+    }
+
+    const relatedValues: {
+      product_id: string
+      id: string
+    }[] = includeVariantOptionValues
+      ? await knex("product_variant_option as variant_option")
+          .join(
+            "product_variant as variant",
+            "variant.id",
+            "variant_option.variant_id"
+          )
+          .join(
+            "product_option_value as option_value",
+            "option_value.id",
+            "variant_option.option_value_id"
+          )
+          .whereIn("variant.product_id", ids)
+          .whereNull("variant.deleted_at")
+          .select("variant.product_id", "option_value.id")
+      : []
+    const valueIdsByProductId = new Map<string, Set<string>>()
+    for (const value of relatedValues) {
+      const valueIds = valueIdsByProductId.get(value.product_id) ?? new Set()
+      valueIds.add(value.id)
+      valueIdsByProductId.set(value.product_id, valueIds)
+    }
+    if (includeVariantOptionValues) {
+      const productIdByProductOptionId = new Map(
+        productOptionRows.map((option) => [option.id, option.product_id])
+      )
+      for (const link of productOptionValueLinkRows) {
+        const productId = productIdByProductOptionId.get(
+          link.product_product_option_id
+        )
+        if (!productId) {
+          continue
+        }
+        const valueIds = valueIdsByProductId.get(productId) ?? new Set()
+        valueIds.add(link.product_option_value_id)
+        valueIdsByProductId.set(productId, valueIds)
+      }
+    }
+    for (const [
+      productId,
+      additionalValueIds,
+    ] of additionalOptionValueIdsByProductId) {
+      const valueIds = valueIdsByProductId.get(productId) ?? new Set()
+      additionalValueIds.forEach((valueId) => valueIds.add(valueId))
+      valueIdsByProductId.set(productId, valueIds)
+    }
+
+    const valueIds = [
+      ...new Set([...valueIdsByProductId.values()].flatMap((set) => [...set])),
+    ].sort()
+    const watchedValues: { id: string; option_id: string }[] = valueIds.length
+      ? await knex("product_option_value")
+          .whereIn("id", valueIds)
+          .select("id", "option_id")
+      : []
+    const optionIdByValueId = new Map(
+      watchedValues.map((value) => [value.id, value.option_id])
+    )
+    const optionIdsByProductId = new Map<string, Set<string>>()
+    for (const option of productOptionRows) {
+      const optionIds = optionIdsByProductId.get(option.product_id) ?? new Set()
+      optionIds.add(option.option_id)
+      optionIdsByProductId.set(option.product_id, optionIds)
+    }
+    for (const [
+      productId,
+      additionalOptionIds,
+    ] of additionalOptionIdsByProductId) {
+      const optionIds = optionIdsByProductId.get(productId) ?? new Set()
+      additionalOptionIds.forEach((optionId) => optionIds.add(optionId))
+      optionIdsByProductId.set(productId, optionIds)
+    }
+    for (const [productId, productValueIds] of valueIdsByProductId) {
+      const optionIds = optionIdsByProductId.get(productId) ?? new Set()
+      productValueIds.forEach((valueId) => {
+        const optionId = optionIdByValueId.get(valueId)
+        if (optionId) {
+          optionIds.add(optionId)
+        }
+      })
+      optionIdsByProductId.set(productId, optionIds)
+    }
+    const optionIds = [
+      ...new Set([...optionIdsByProductId.values()].flatMap((set) => [...set])),
+    ].sort()
+
+    const watchedOptionRows: {
+      id: string
+      title: string
+      is_exclusive: boolean
+      metadata: Record<string, unknown> | null
+      version: string
+      deleted_at: Date | string | null
+    }[] = optionIds.length
+      ? await knex("product_option")
+          .whereIn("id", optionIds)
+          .orderBy("id")
+          .forUpdate()
+          .select(
+            "id",
+            "title",
+            "is_exclusive",
+            "metadata",
+            knex.raw('xmin::text as "version"'),
+            "deleted_at"
+          )
+      : []
+    const watchedOptionStateById = new Map(
+      watchedOptionRows.map((option) => [
+        option.id,
+        {
+          id: option.id,
+          title: option.title,
+          is_exclusive: option.is_exclusive,
+          metadata: option.metadata,
+          version: option.version,
+          deleted: !!option.deleted_at,
+        },
+      ])
+    )
+    if (valueIds.length) {
+      await knex("product_option_value")
+        .whereIn("id", valueIds)
+        .orderBy("id")
+        .forUpdate()
+        .select("id")
+    }
+
+    const watchedValueStates: {
+      id: string
+      value: string
+      option_id: string
+      option_title: string
+      metadata: Record<string, unknown> | null
+      rank: number | null
+      value_deleted_at: Date | string | null
+      option_deleted_at: Date | string | null
+    }[] = valueIds.length
+      ? await knex("product_option_value as option_value")
+          .leftJoin(
+            "product_option as option",
+            "option.id",
+            "option_value.option_id"
+          )
+          .whereIn("option_value.id", valueIds)
+          .select(
+            "option_value.id",
+            "option_value.value",
+            "option_value.option_id",
+            "option.title as option_title",
+            "option_value.metadata",
+            "option_value.rank",
+            "option_value.deleted_at as value_deleted_at",
+            "option.deleted_at as option_deleted_at"
+          )
+      : []
+    const watchedValueStateById = new Map(
+      watchedValueStates.map((value) => [
+        value.id,
+        {
+          id: value.id,
+          value: value.value,
+          option_id: value.option_id,
+          option_title: value.option_title,
+          metadata: value.metadata,
+          rank: value.rank,
+          value_deleted: !!value.value_deleted_at,
+          option_deleted: !!value.option_deleted_at,
+        },
+      ])
+    )
+
+    const rows: {
+      product_id: string
+      id: string
+      updated_at: Date | string
+      option_value_id: string | null
+    }[] = await knex("product_variant as variant")
+      .leftJoin(
+        "product_variant_option as variant_option",
+        "variant.id",
+        "variant_option.variant_id"
+      )
+      .whereIn("variant.product_id", ids)
+      .whereNull("variant.deleted_at")
+      .orderBy("variant.id")
+      .select(
+        "variant.product_id",
+        "variant.id",
+        "variant.updated_at",
+        "variant_option.option_value_id"
+      )
+
+    const variantsByProductId = new Map<
+      string,
+      Map<
+        string,
+        {
+          id: string
+          updated_at: string
+          option_value_ids: string[]
+        }
+      >
+    >()
+    for (const row of rows) {
+      const variants = variantsByProductId.get(row.product_id) ?? new Map()
+      const variant = variants.get(row.id) ?? {
+        id: row.id,
+        updated_at: new Date(row.updated_at).toISOString(),
+        option_value_ids: [],
+      }
+      if (row.option_value_id) {
+        variant.option_value_ids.push(row.option_value_id)
+      }
+      variants.set(row.id, variant)
+      variantsByProductId.set(row.product_id, variants)
+    }
+
+    return ids.map((productId) => ({
+      product_id: productId,
+      product_options: productOptionsByProductId.get(productId) ?? [],
+      product_option_links: productOptionLinkRows
+        .filter((link) => link.product_id === productId)
+        .map((link) => ({
+          id: link.id,
+          option_id: link.option_id,
+          updated_at: new Date(link.updated_at).toISOString(),
+          version: link.version,
+          deleted: !!link.deleted_at,
+        })),
+      watched_options: [...(optionIdsByProductId.get(productId) ?? [])]
+        .map((optionId) => watchedOptionStateById.get(optionId))
+        .filter((option): option is NonNullable<typeof option> => !!option)
+        .sort((left, right) => left.id.localeCompare(right.id)),
+      variants: [...(variantsByProductId.get(productId)?.values() ?? [])]
+        .map((variant) => ({
+          ...variant,
+          option_value_ids: variant.option_value_ids.sort(),
+        }))
+        .sort((left, right) => left.id.localeCompare(right.id)),
+      option_values: [...(valueIdsByProductId.get(productId) ?? [])]
+        .map((valueId) => watchedValueStateById.get(valueId))
+        .filter((value): value is NonNullable<typeof value> => !!value)
+        .sort((left, right) => left.id.localeCompare(right.id)),
+    }))
+  }
+
+  protected async validateProductOptionValueUpdates_(
+    updates: ProductTypes.ProductOptionProductValueUpdate[],
+    sharedContext: Context
+  ): Promise<void> {
+    const pairKeys = new Set<string>()
+    const expectedOptionIdByValueId = new Map<string, string>()
+    const registerValueTarget = (valueId: string, optionId: string) => {
+      const existingOptionId = expectedOptionIdByValueId.get(valueId)
+      if (existingOptionId && existingOptionId !== optionId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product option value ${valueId} cannot target multiple options.`
+        )
+      }
+
+      expectedOptionIdByValueId.set(valueId, optionId)
+    }
+
+    for (const update of updates) {
+      const pairKey = `${update.product_id}_${update.product_option_id}`
+      if (pairKeys.has(pairKey)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Duplicate product option value update: ${update.product_id}:${update.product_option_id}`
+        )
+      }
+      pairKeys.add(pairKey)
+
+      for (const entry of update.add ?? []) {
+        if (!isString(entry)) {
+          if (!entry.value.trim()) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "Product option values cannot be blank."
+            )
+          }
+          continue
+        }
+
+        registerValueTarget(entry, update.product_option_id)
+      }
+
+      for (const valueId of update.remove ?? []) {
+        registerValueTarget(valueId, update.product_option_id)
+      }
+    }
+
+    if (!expectedOptionIdByValueId.size) {
+      return
+    }
+
+    const values = await this.productOptionValueService_.list(
+      { id: [...expectedOptionIdByValueId.keys()] },
+      { options: { refresh: true } },
+      sharedContext
+    )
+    const valuesById = new Map(values.map((value) => [value.id, value]))
+
+    for (const [valueId, expectedOptionId] of expectedOptionIdByValueId) {
+      const value = valuesById.get(valueId)
+      if (!value || value.option_id !== expectedOptionId) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product option value ${valueId} does not belong to option ${expectedOptionId}.`
+        )
+      }
+    }
+  }
+
   async updateProductOptionValuesOnProduct(
     update: ProductTypes.ProductOptionProductValueUpdate,
     sharedContext?: Context
@@ -1843,6 +2767,12 @@ export default class ProductModuleService
       return
     }
 
+    await this.lockProductOptionValueUpdates_(effectiveUpdates, sharedContext)
+    await this.validateProductOptionValueUpdates_(
+      effectiveUpdates,
+      sharedContext
+    )
+
     const existingProductOptions = await this.productProductOptionService_.list(
       {
         $or: effectiveUpdates.map((pair) => ({
@@ -1850,7 +2780,7 @@ export default class ProductModuleService
           product_option_id: pair.product_option_id,
         })),
       },
-      { relations: ["values"] },
+      { options: { refresh: true } },
       sharedContext
     )
 
@@ -1878,7 +2808,149 @@ export default class ProductModuleService
       )
     }
 
-    const validationPairs = effectiveUpdates
+    const updateContext = sharedContext as ProductOptionValueUpdateContext
+    const compensation = updateContext.optionValueUpdateCompensation
+    const expectedRemovalIds = new Map(
+      (updateContext.optionValueUpdateExpectedRemovals ?? []).map((removal) => [
+        `${removal.product_id}_${removal.product_option_id}_${removal.value_id}`,
+        removal.link_id,
+      ])
+    )
+    const expectedRestorations = new Map(
+      (updateContext.optionValueUpdateExpectedRestorations ?? []).map(
+        (restoration) => [
+          `${restoration.product_id}_${restoration.product_option_id}_${restoration.value_id}`,
+          restoration,
+        ]
+      )
+    )
+    const normalizedUpdates = await this.normalizeProductOptionValueUpdates_(
+      effectiveUpdates,
+      sharedContext
+    )
+    const touchedValueIds = [
+      ...new Set(
+        normalizedUpdates.flatMap((pair) => [
+          ...(pair.add ?? []),
+          ...(pair.remove ?? []),
+        ])
+      ),
+    ]
+    const needsLinkHistory = !!compensation || expectedRestorations.size > 0
+    const valueLinks = await this.productProductOptionValueService_.list(
+      {
+        product_product_option_id: existingProductOptions.map(
+          (productOption) => productOption.id
+        ),
+        product_option_value_id: touchedValueIds,
+      },
+      {
+        options: { refresh: true },
+        ...(needsLinkHistory ? { withDeleted: true } : {}),
+      },
+      sharedContext
+    )
+    const existingValueLinks = valueLinks.filter((link) => !link.deleted_at)
+    const activeValueLinksByPair = new Map<
+      string,
+      InferEntityType<typeof ProductProductOptionValue>[]
+    >()
+    existingValueLinks.forEach((link) => {
+      const key = `${link.product_product_option_id}_${link.product_option_value_id}`
+      activeValueLinksByPair.set(
+        key,
+        [...(activeValueLinksByPair.get(key) ?? []), link].sort((left, right) =>
+          left.id.localeCompare(right.id)
+        )
+      )
+    })
+    const existingValueLinksByPair = new Map<
+      string,
+      InferEntityType<typeof ProductProductOptionValue>
+    >(
+      existingValueLinks.map((link) => [
+        `${link.product_product_option_id}_${link.product_option_value_id}`,
+        link,
+      ])
+    )
+    const valueLinkIdsByPair = new Map<string, string[]>()
+    valueLinks.forEach((link) => {
+      const key = `${link.product_product_option_id}_${link.product_option_value_id}`
+      valueLinkIdsByPair.set(key, [
+        ...(valueLinkIdsByPair.get(key) ?? []),
+        link.id,
+      ])
+    })
+
+    const failedRestorationProductIds = new Set<string>()
+    for (const pair of normalizedUpdates) {
+      const existingPPO = existingPPOMap.get(
+        `${pair.product_id}_${pair.product_option_id}`
+      )!
+
+      for (const valueId of new Set(pair.add ?? [])) {
+        const expectedRestoration = expectedRestorations.get(
+          `${pair.product_id}_${pair.product_option_id}_${valueId}`
+        )
+        if (!expectedRestoration) {
+          continue
+        }
+
+        const currentLinkIds =
+          valueLinkIdsByPair.get(`${existingPPO.id}_${valueId}`) ?? []
+        const knownLinkIds = new Set(expectedRestoration.known_link_ids)
+        if (
+          !currentLinkIds.includes(expectedRestoration.link_id) ||
+          currentLinkIds.some((linkId) => !knownLinkIds.has(linkId))
+        ) {
+          failedRestorationProductIds.add(pair.product_id)
+        }
+      }
+    }
+
+    for (const productId of failedRestorationProductIds) {
+      if (
+        updateContext.variantUpdateSkippedProductIds &&
+        !updateContext.variantUpdateSkippedProductIds.includes(productId)
+      ) {
+        updateContext.variantUpdateSkippedProductIds.push(productId)
+      }
+      if (
+        updateContext.optionValueUpdateSkippedProductIds &&
+        !updateContext.optionValueUpdateSkippedProductIds.includes(productId)
+      ) {
+        updateContext.optionValueUpdateSkippedProductIds.push(productId)
+      }
+    }
+
+    const mutationUpdates = normalizedUpdates
+      .filter((pair) => !failedRestorationProductIds.has(pair.product_id))
+      .map((pair) => {
+        if (!pair.remove?.length) {
+          return pair
+        }
+
+        const existingPPO = existingPPOMap.get(
+          `${pair.product_id}_${pair.product_option_id}`
+        )!
+        return {
+          ...pair,
+          remove: pair.remove.filter((valueId) => {
+            const expectedRemovalId = expectedRemovalIds.get(
+              `${pair.product_id}_${pair.product_option_id}_${valueId}`
+            )
+            if (!expectedRemovalId) {
+              return true
+            }
+
+            return !!activeValueLinksByPair
+              .get(`${existingPPO.id}_${valueId}`)
+              ?.some((link) => link.id === expectedRemovalId)
+          }),
+        }
+      })
+
+    const validationPairs = mutationUpdates
       .filter((pair) => pair.remove?.length)
       .map((pair) => ({
         productId: pair.product_id,
@@ -1890,50 +2962,127 @@ export default class ProductModuleService
       await this.validateOptionRemoval_(validationPairs, sharedContext)
     }
 
-    // if some values are passed as a create object - create those option values first and return array of value ids to assign to PPOs
-    const normalizedUpdates = await this.normalizeProductOptionValueUpdates_(
-      effectiveUpdates,
-      sharedContext
-    )
-
     const ppovToCreate: Array<{
+      id: string
       product_product_option_id: string
       product_option_value_id: string
     }> = []
-    const ppovToDelete: Array<{
-      product_product_option_id: string
-      product_option_value_id: string
-    }> = []
+    const ppovToDelete: string[] = []
+    const ppovToRestore: string[] = []
 
-    normalizedUpdates.forEach((pair) => {
+    mutationUpdates.forEach((pair) => {
       const key = `${pair.product_id}_${pair.product_option_id}`
       const existingPPO = existingPPOMap.get(key)!
-      const existingValueIds = new Set(
-        (existingPPO.values ?? []).map((value) => value.id)
-      )
+      const createdValueLinks: { value_id: string; link_id: string }[] = []
+      const deletedValueLinks: {
+        value_id: string
+        link_id: string
+        known_link_ids: string[]
+      }[] = []
 
       Array.from(new Set(pair.add ?? [])).forEach((valueId) => {
-        if (existingValueIds.has(valueId)) {
+        const valueLinkKey = `${existingPPO.id}_${valueId}`
+        if (existingValueLinksByPair.has(valueLinkKey)) {
           return
         }
 
+        const expectedRestoration = expectedRestorations.get(
+          `${pair.product_id}_${pair.product_option_id}_${valueId}`
+        )
+        if (expectedRestoration) {
+          ppovToRestore.push(expectedRestoration.link_id)
+          return
+        }
+
+        const linkId = generateEntityId(undefined, "prodoptval")
         ppovToCreate.push({
+          id: linkId,
           product_product_option_id: existingPPO.id,
           product_option_value_id: valueId,
         })
+        createdValueLinks.push({ value_id: valueId, link_id: linkId })
       })
 
       Array.from(new Set(pair.remove ?? [])).forEach((valueId) => {
-        ppovToDelete.push({
-          product_product_option_id: existingPPO.id,
-          product_option_value_id: valueId,
+        const valueLinkKey = `${existingPPO.id}_${valueId}`
+        const activeValueLinks = activeValueLinksByPair.get(valueLinkKey) ?? []
+        if (!activeValueLinks.length) {
+          return
+        }
+
+        const expectedRemovalId = expectedRemovalIds.get(
+          `${pair.product_id}_${pair.product_option_id}_${valueId}`
+        )
+        const valueLinksToDelete = expectedRemovalId
+          ? activeValueLinks.filter((link) => link.id === expectedRemovalId)
+          : activeValueLinks
+        if (!valueLinksToDelete.length) {
+          return
+        }
+
+        ppovToDelete.push(...valueLinksToDelete.map((link) => link.id))
+        const valueLink = valueLinksToDelete[0]
+        deletedValueLinks.push({
+          value_id: valueId,
+          link_id: valueLink.id,
+          known_link_ids: valueLinkIdsByPair.get(
+            `${existingPPO.id}_${valueId}`
+          ) ?? [valueLink.id],
         })
       })
+
+      if (
+        !compensation ||
+        (!createdValueLinks.length && !deletedValueLinks.length)
+      ) {
+        return
+      }
+
+      let inverse = compensation.find(
+        (update) =>
+          update.product_id === pair.product_id &&
+          update.product_option_id === pair.product_option_id
+      )
+      if (!inverse) {
+        inverse = {
+          product_id: pair.product_id,
+          product_option_id: pair.product_option_id,
+        }
+        compensation.push(inverse)
+      }
+
+      if (deletedValueLinks.length) {
+        inverse.add = [
+          ...new Map(
+            [...(inverse.add ?? []), ...deletedValueLinks].map((link) => [
+              link.link_id,
+              link,
+            ])
+          ).values(),
+        ]
+      }
+      if (createdValueLinks.length) {
+        inverse.remove = [
+          ...new Map(
+            [...(inverse.remove ?? []), ...createdValueLinks].map((link) => [
+              link.link_id,
+              link,
+            ])
+          ).values(),
+        ]
+      }
     })
 
     if (ppovToDelete.length) {
-      await this.productProductOptionValueService_.delete(
+      await this.productProductOptionValueService_.softDelete(
         ppovToDelete,
+        sharedContext
+      )
+    }
+
+    if (ppovToRestore.length) {
+      await this.productProductOptionValueService_.restore(
+        ppovToRestore,
         sharedContext
       )
     }
@@ -2009,7 +3158,7 @@ export default class ProductModuleService
     const optionIds = [...valueNamesByOptionId.keys()]
     const options = await this.productOptionService_.list(
       { id: optionIds },
-      { relations: ["values"] },
+      { relations: ["values"], options: { refresh: true } },
       sharedContext
     )
 
@@ -2025,6 +3174,7 @@ export default class ProductModuleService
 
     const optionsById = new Map(options.map((option) => [option.id, option]))
     const updateOptionsInput: UpdateProductOptionInput[] = []
+    const createdValueNamesByOptionId = new Map<string, Set<string>>()
 
     valueNamesByOptionId.forEach((valueNames, optionId) => {
       const option = optionsById.get(optionId)
@@ -2043,6 +3193,7 @@ export default class ProductModuleService
         return
       }
 
+      createdValueNamesByOptionId.set(optionId, new Set(newValueNames))
       updateOptionsInput.push({
         id: optionId,
         values: [...existingValueNames, ...newValueNames],
@@ -2056,7 +3207,21 @@ export default class ProductModuleService
         sharedContext
       )
 
-      updatedOptions.forEach((option) => optionsById.set(option.id, option))
+      const createdValueIds = (sharedContext as ProductOptionValueUpdateContext)
+        .optionValueUpdateCreatedValueIds
+      updatedOptions.forEach((option) => {
+        optionsById.set(option.id, option)
+        if (!createdValueIds) {
+          return
+        }
+
+        const createdNames = createdValueNamesByOptionId.get(option.id)
+        for (const value of option.values ?? []) {
+          if (createdNames?.has(value.value)) {
+            createdValueIds.push(value.id)
+          }
+        }
+      })
     }
 
     const valueIdsByOptionId = new Map<string, Map<string, string>>(
@@ -2617,22 +3782,85 @@ export default class ProductModuleService
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[] | ProductTypes.ProductDTO> {
     const input = Array.isArray(data) ? data : [data]
+    const updateIds = input
+      .map((product) => product.id)
+      .filter((id): id is string => !!id)
+    if (new Set(updateIds).size !== updateIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Duplicate product IDs are not allowed in one upsert batch."
+      )
+    }
+    if (
+      input.some(
+        (product) => !product.id && product.option_value_updates !== undefined
+      )
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Product option value updates require an existing product ID."
+      )
+    }
     const forUpdate = input.filter(
       (product): product is UpdateProductInput => !!product.id
     )
     const forCreate = input.filter((product) => !product.id)
 
+    if (forUpdate.length && forCreate.length) {
+      await this.lockProductRows_(updateIds, sharedContext)
+      const updateContext = sharedContext as ProductOptionValueUpdateContext
+      const knex = (
+        sharedContext.transactionManager as SqlEntityManager
+      ).getTransactionContext()
+      const currentOptionLinks: { product_option_id: string }[] = await knex(
+        "product_product_option"
+      )
+        .whereIn("product_id", updateIds)
+        .whereNull("deleted_at")
+        .select("product_option_id")
+      const createOptionIds = (
+        forCreate as ProductTypes.CreateProductDTO[]
+      ).flatMap((product) =>
+        (product.options ?? []).flatMap((option) =>
+          "id" in option && isString(option.id) ? [option.id] : []
+        )
+      )
+      await this.lockProductOptionRows_(
+        [
+          ...currentOptionLinks.map((link) => link.product_option_id),
+          ...forUpdate.flatMap((product) => product.option_ids ?? []),
+          ...forUpdate.flatMap((product) =>
+            (product.option_value_updates ?? []).map(
+              (update) => update.product_option_id
+            )
+          ),
+          ...createOptionIds,
+          ...(updateContext.optionLinkUpdateCompensation?.add ?? []).map(
+            (pair) => pair.product_option_id
+          ),
+          ...(updateContext.optionLinkUpdateCompensation?.remove ?? []).map(
+            (pair) => pair.product_option_id
+          ),
+          ...(updateContext.variantUpdateCondition ?? []).flatMap((state) =>
+            state.watched_options.map((option) => option.id)
+          ),
+        ],
+        sharedContext,
+        true
+      )
+    }
+
     let created: ProductTypes.ProductDTO[] = []
     let updated: InferEntityType<typeof Product>[] = []
 
+    if (forUpdate.length) {
+      updated = await this.updateProducts_(forUpdate, sharedContext)
+    }
     if (forCreate.length) {
       created = await this.createProducts(
         forCreate as ProductTypes.CreateProductDTO[],
         sharedContext
       )
-    }
-    if (forUpdate.length) {
-      updated = await this.updateProducts_(forUpdate, sharedContext)
     }
 
     const result = [...created, ...updated]
@@ -2780,7 +4008,10 @@ export default class ProductModuleService
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productIdHydratedData = new Map<string, (typeof hydratedData)[number]>()
+    const productIdHydratedData = new Map<
+      string,
+      (typeof hydratedData)[number]
+    >()
     const productsToCreate = normalizedProducts.map((product, index) => {
       const productId = generateEntityId(product.id, "prod")
       product.id = productId
@@ -2958,6 +4189,8 @@ export default class ProductModuleService
     data: UpdateProductInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof Product>[]> {
+    data = data.map((product) => ({ ...product }))
+
     // We have to do that manually because this method is bypassing the product service and goes
     // directly to the custom product repository
     const manager = (sharedContext.transactionManager ??
@@ -2973,26 +4206,645 @@ export default class ProductModuleService
         .registerSubscriber(new subscriber(sharedContext))
     }
 
+    const updateContext = sharedContext as ProductOptionValueUpdateContext
+    const optionValueUpdates: ProductTypes.ProductOptionProductValueUpdate[] =
+      []
+    for (const product of data) {
+      if (product.option_value_updates === undefined) {
+        continue
+      }
+
+      if (product.variants === undefined) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Variants are required when updating product option values."
+        )
+      }
+
+      if (product.option_ids !== undefined) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Product option IDs and option value updates cannot be changed together."
+        )
+      }
+
+      optionValueUpdates.push(
+        ...product.option_value_updates.map((update) => ({
+          ...update,
+          product_id: product.id,
+        }))
+      )
+      delete product.option_value_updates
+    }
+
+    let variantProductIds = data
+      .filter((product) => product.variants !== undefined)
+      .map((product) => product.id)
+
+    let guardedProductIds = [
+      ...new Set([
+        ...data
+          .filter(
+            (product) =>
+              product.variants !== undefined || product.option_ids !== undefined
+          )
+          .map((product) => product.id),
+        ...(updateContext.variantUpdateCondition ?? []).map(
+          (state) => state.product_id
+        ),
+      ]),
+    ].sort()
+
+    let optionLinkUpdateCompensation =
+      updateContext.optionLinkUpdateCompensation ?? { add: [], remove: [] }
+    const affectedProductIds = [
+      ...new Set([
+        ...data.map((product) => product.id),
+        ...optionLinkUpdateCompensation.add.map((pair) => pair.product_id),
+        ...optionLinkUpdateCompensation.remove.map((pair) => pair.product_id),
+      ]),
+    ].sort()
+
+    const activeProductIds = affectedProductIds.length
+      ? await this.lockProductRows_(affectedProductIds, sharedContext)
+      : []
+    if (updateContext.skipMissingProducts) {
+      const activeProductIdSet = new Set(activeProductIds)
+      data = data.filter((product) => activeProductIdSet.has(product.id))
+      variantProductIds = variantProductIds.filter((productId) =>
+        activeProductIdSet.has(productId)
+      )
+      guardedProductIds = guardedProductIds.filter((productId) =>
+        activeProductIdSet.has(productId)
+      )
+      for (let index = optionValueUpdates.length - 1; index >= 0; index--) {
+        if (!activeProductIdSet.has(optionValueUpdates[index].product_id)) {
+          optionValueUpdates.splice(index, 1)
+        }
+      }
+      optionLinkUpdateCompensation = {
+        add: optionLinkUpdateCompensation.add.filter((pair) =>
+          activeProductIdSet.has(pair.product_id)
+        ),
+        remove: optionLinkUpdateCompensation.remove.filter((pair) =>
+          activeProductIdSet.has(pair.product_id)
+        ),
+      }
+    }
+
+    const knex = (
+      sharedContext.transactionManager as SqlEntityManager
+    ).getTransactionContext()
+    const currentOptionLinks: { product_option_id: string }[] =
+      affectedProductIds.length
+        ? await knex("product_product_option")
+            .whereIn("product_id", affectedProductIds)
+            .whereNull("deleted_at")
+            .select("product_option_id")
+        : []
+    await this.lockProductOptionRows_(
+      [
+        ...currentOptionLinks.map((link) => link.product_option_id),
+        ...data.flatMap((product) => product.option_ids ?? []),
+        ...optionValueUpdates.map((update) => update.product_option_id),
+        ...optionLinkUpdateCompensation.add.map(
+          (pair) => pair.product_option_id
+        ),
+        ...optionLinkUpdateCompensation.remove.map(
+          (pair) => pair.product_option_id
+        ),
+        ...(updateContext.variantUpdateCondition ?? []).flatMap((state) =>
+          state.watched_options.map((option) => option.id)
+        ),
+      ],
+      sharedContext,
+      true
+    )
+
+    const productUpdateFieldsByProductId =
+      updateContext.productUpdateFieldsByProductId ?? {}
+    const productUpdateStateBeforeUpdate =
+      await this.captureProductUpdateState_(
+        productUpdateFieldsByProductId,
+        sharedContext
+      )
+    if (updateContext.productUpdatePreviousState) {
+      updateContext.productUpdatePreviousState.push(
+        ...productUpdateStateBeforeUpdate
+      )
+    }
+    if (updateContext.productUpdateCondition?.length) {
+      const expectedProductUpdateStateById = new Map(
+        updateContext.productUpdateCondition.map((state) => [
+          state.product_id,
+          state,
+        ])
+      )
+      const currentProductUpdateStateById = new Map(
+        productUpdateStateBeforeUpdate.map((state) => [state.product_id, state])
+      )
+      const relationFields = new Set(["categories", "images", "tags"])
+      for (const product of data) {
+        const expected = expectedProductUpdateStateById.get(product.id)
+        const current = currentProductUpdateStateById.get(product.id)
+        if (!expected || !current) {
+          continue
+        }
+        const fields = productUpdateFieldsByProductId[product.id] ?? []
+        const scalarVersionMatches = current.version === expected.version
+        const giftCardFields = ["is_giftcard", "discountable"]
+        const giftCardStateMatches =
+          scalarVersionMatches &&
+          giftCardFields.every((field) =>
+            productUpdateFieldMatches(
+              field,
+              current.fields[field],
+              expected.fields[field]
+            )
+          )
+        if (fields.includes("is_giftcard") && !giftCardStateMatches) {
+          for (const field of giftCardFields) {
+            delete (product as unknown as Record<string, unknown>)[field]
+          }
+        }
+        for (const field of fields) {
+          if (
+            giftCardFields.includes(field) &&
+            fields.includes("is_giftcard")
+          ) {
+            continue
+          }
+          if (!relationFields.has(field) && !scalarVersionMatches) {
+            delete (product as unknown as Record<string, unknown>)[field]
+            continue
+          }
+          if (
+            !productUpdateFieldMatches(
+              field,
+              current.fields[field],
+              expected.fields[field]
+            )
+          ) {
+            delete (product as unknown as Record<string, unknown>)[field]
+          }
+        }
+      }
+    }
+
+    const optionValueUpdateSkippedProductIds =
+      updateContext.optionValueUpdateSkippedProductIds ?? []
+    updateContext.optionValueUpdateSkippedProductIds =
+      optionValueUpdateSkippedProductIds
+    const guardedValueIdsByProductId = new Map(
+      (updateContext.variantUpdateCondition ?? []).map((state) => [
+        state.product_id,
+        state.option_values.map((value) => value.id),
+      ])
+    )
+    const guardedOptionIdsByProductId = new Map(
+      (updateContext.variantUpdateCondition ?? []).map((state) => [
+        state.product_id,
+        state.watched_options.map((option) => option.id),
+      ])
+    )
+    const guardedStateBeforeUpdate = guardedProductIds.length
+      ? await this.captureVariantUpdateState_(
+          guardedProductIds,
+          sharedContext,
+          guardedValueIdsByProductId,
+          !updateContext.variantUpdateCondition?.length,
+          guardedOptionIdsByProductId
+        )
+      : []
+
+    const previousProductIds = updateContext.productUpdatePreviousProducts
+      ? data.map((product) => product.id)
+      : variantProductIds
+    const authoritativePreviousProducts = previousProductIds.length
+      ? await this.listProducts(
+          { id: [...new Set(previousProductIds)] },
+          {
+            relations: [
+              "options.values",
+              ...(variantProductIds.length ? ["variants.options"] : []),
+            ],
+            options: { refresh: true },
+          },
+          sharedContext
+        )
+      : []
+    updateContext.productUpdatePreviousProducts?.push(
+      ...authoritativePreviousProducts
+    )
+    if (updateContext.variantUpdatePreviousProducts) {
+      const variantProductIdSet = new Set(variantProductIds)
+      updateContext.variantUpdatePreviousProducts.push(
+        ...authoritativePreviousProducts.filter((product) =>
+          variantProductIdSet.has(product.id)
+        )
+      )
+    }
+
+    if (updateContext.optionLinkUpdateForwardCompensation) {
+      const priorStateByProductId = new Map(
+        guardedStateBeforeUpdate.map((state) => [state.product_id, state])
+      )
+      for (const product of data) {
+        if (product.option_ids === undefined) {
+          continue
+        }
+        const priorState = priorStateByProductId.get(product.id)
+        if (!priorState) {
+          continue
+        }
+        const targetOptionIds = new Set(product.option_ids)
+        const priorOptionIds = new Set(
+          priorState.product_options.map((option) => option.option_id)
+        )
+        for (const optionId of targetOptionIds) {
+          if (!priorOptionIds.has(optionId)) {
+            updateContext.optionLinkUpdateForwardCompensation.remove.push({
+              product_id: product.id,
+              product_option_id: optionId,
+            })
+          }
+        }
+        for (const option of priorState.product_options) {
+          if (targetOptionIds.has(option.option_id)) {
+            continue
+          }
+          updateContext.optionLinkUpdateForwardCompensation.add.push({
+            product_id: product.id,
+            product_option_id: option.option_id,
+            product_option_value_ids: option.value_ids,
+            link_id: option.id,
+            known_link_ids: priorState.product_option_links
+              .filter((link) => link.option_id === option.option_id)
+              .map((link) => link.id),
+            value_links: option.value_link_ids.map((id, index) => ({
+              id,
+              value_id: option.value_ids[index],
+            })),
+          })
+        }
+      }
+    }
+
+    const expectedByProductId = new Map(
+      (updateContext.variantUpdateCondition ?? []).map((state) => [
+        state.product_id,
+        state,
+      ])
+    )
+    const currentByProductId = new Map(
+      guardedStateBeforeUpdate.map((state) => [state.product_id, state])
+    )
+    const optionValueStateMatchesForPair = (
+      current: VariantUpdateState,
+      expected: VariantUpdateState,
+      optionId: string
+    ) =>
+      optionValueEntriesMatch(
+        current.option_values.filter((value) => value.option_id === optionId),
+        expected.option_values.filter((value) => value.option_id === optionId)
+      )
+    const optionStateMatchesForPair = (
+      current: VariantUpdateState,
+      expected: VariantUpdateState,
+      optionId: string
+    ) => {
+      const currentOption = current.watched_options.find(
+        (option) => option.id === optionId
+      )
+      const expectedOption = expected.watched_options.find(
+        (option) => option.id === optionId
+      )
+      return !!(
+        currentOption &&
+        expectedOption &&
+        currentOption.title === expectedOption.title &&
+        currentOption.is_exclusive === expectedOption.is_exclusive &&
+        JSON.stringify(currentOption.metadata) ===
+          JSON.stringify(expectedOption.metadata) &&
+        currentOption.version === expectedOption.version &&
+        currentOption.deleted === expectedOption.deleted
+      )
+    }
+    const optionLinkHistoryMatchesForPair = (
+      current: VariantUpdateState,
+      expected: VariantUpdateState,
+      optionId: string
+    ) => {
+      const currentLinks = current.product_option_links.filter(
+        (link) => link.option_id === optionId
+      )
+      const expectedLinks = expected.product_option_links.filter(
+        (link) => link.option_id === optionId
+      )
+      return (
+        currentLinks.length === expectedLinks.length &&
+        currentLinks.every((link, index) => {
+          const expectedLink = expectedLinks[index]
+          return (
+            link.id === expectedLink.id &&
+            link.updated_at === expectedLink.updated_at &&
+            link.version === expectedLink.version &&
+            link.deleted === expectedLink.deleted
+          )
+        })
+      )
+    }
+    const compensationLinkStateMatches = (
+      pair: ProductTypes.ProductOptionProductPair
+    ) => {
+      const expected = expectedByProductId.get(pair.product_id)
+      const current = currentByProductId.get(pair.product_id)
+      if (!expected || !current) {
+        return true
+      }
+      const hasExpectedLink = expected.product_options.some(
+        (option) => option.option_id === pair.product_option_id
+      )
+      const hasCurrentLink = current.product_options.some(
+        (option) => option.option_id === pair.product_option_id
+      )
+      const knownLinkIds = (pair as Partial<ProductOptionLinkRestoration>)
+        .known_link_ids
+      const expectedLinkIds = expected.product_option_links
+        .filter((link) => link.option_id === pair.product_option_id)
+        .map((link) => link.id)
+      return (
+        !hasExpectedLink &&
+        !hasCurrentLink &&
+        (!knownLinkIds ||
+          (knownLinkIds.length === expectedLinkIds.length &&
+            knownLinkIds.every(
+              (linkId, index) => linkId === expectedLinkIds[index]
+            ))) &&
+        optionLinkHistoryMatchesForPair(
+          current,
+          expected,
+          pair.product_option_id
+        ) &&
+        optionStateMatchesForPair(current, expected, pair.product_option_id) &&
+        optionValueStateMatchesForPair(
+          current,
+          expected,
+          pair.product_option_id
+        )
+      )
+    }
+    const restorableOptionLinkValueIdsByProductId = new Map<
+      string,
+      Set<string>
+    >()
+    for (const pair of optionLinkUpdateCompensation.add) {
+      if (!compensationLinkStateMatches(pair)) {
+        continue
+      }
+      const valueIds =
+        restorableOptionLinkValueIdsByProductId.get(pair.product_id) ??
+        new Set()
+      for (const valueId of pair.product_option_value_ids ?? []) {
+        valueIds.add(valueId)
+      }
+      restorableOptionLinkValueIdsByProductId.set(pair.product_id, valueIds)
+    }
+    const restorableValueIdsByProductId = new Map<string, Set<string>>()
+    for (const restoration of updateContext.optionValueUpdateExpectedRestorations ??
+      []) {
+      const valueIds =
+        restorableValueIdsByProductId.get(restoration.product_id) ?? new Set()
+      valueIds.add(restoration.value_id)
+      restorableValueIdsByProductId.set(restoration.product_id, valueIds)
+    }
+    if (expectedByProductId.size) {
+      for (const product of data) {
+        const expected = expectedByProductId.get(product.id)
+        const current = currentByProductId.get(product.id)
+        const availableValueIds = new Set([
+          ...(current?.product_options.flatMap((option) => option.value_ids) ??
+            []),
+          ...(restorableValueIdsByProductId.get(product.id) ?? []),
+          ...(restorableOptionLinkValueIdsByProductId.get(product.id) ?? []),
+        ])
+        const requiredValueIds =
+          updateContext.variantUpdateRequiredValueIdsByProductId?.[
+            product.id
+          ] ?? []
+        const requiredValueLinksMatch = requiredValueIds.every((valueId) =>
+          availableValueIds.has(valueId)
+        )
+        if (
+          expected &&
+          current &&
+          (!variantStatesMatch(current, expected) || !requiredValueLinksMatch)
+        ) {
+          delete product.variants
+          delete product.option_ids
+          updateContext.variantUpdateSkippedProductIds?.push(product.id)
+          if (
+            (!optionValueStatesMatch(current, expected) ||
+              !productOptionStatesMatch(current, expected)) &&
+            !optionValueUpdateSkippedProductIds.includes(product.id)
+          ) {
+            optionValueUpdateSkippedProductIds.push(product.id)
+          }
+        }
+      }
+    }
+
+    const skippedVariantProductIds = new Set<string>()
+    const skippedOptionValueProductIds = new Set<string>()
+    const removeSkippedVariantUpdates = () => {
+      for (const productId of updateContext.variantUpdateSkippedProductIds ??
+        []) {
+        skippedVariantProductIds.add(productId)
+      }
+      for (const productId of optionValueUpdateSkippedProductIds) {
+        skippedOptionValueProductIds.add(productId)
+      }
+      for (const product of data) {
+        if (skippedVariantProductIds.has(product.id)) {
+          delete product.variants
+          delete product.option_ids
+        }
+      }
+      for (let index = optionValueUpdates.length - 1; index >= 0; index--) {
+        const update = optionValueUpdates[index]
+        if (skippedOptionValueProductIds.has(update.product_id)) {
+          optionValueUpdates.splice(index, 1)
+          continue
+        }
+        if (skippedVariantProductIds.has(update.product_id) && update.remove) {
+          delete update.remove
+          if (!update.add?.length) {
+            optionValueUpdates.splice(index, 1)
+          }
+        }
+      }
+    }
+    removeSkippedVariantUpdates()
+    const additions = optionValueUpdates
+      .filter((update) => update.add?.length)
+      .map((update) => ({
+        product_id: update.product_id,
+        product_option_id: update.product_option_id,
+        add: update.add,
+      }))
+
     const allOptionIds = data
       .flatMap((p) => p.option_ids ?? [])
       .filter((id) => !!id)
 
-    const [originalProducts, existingOptions] = await promiseAll([
-      this.productService_.list(
-        { id: data.map((d) => d.id) },
-        {
-          relations: ["options", "options.values", "tags"],
-        },
-        sharedContext
-      ),
-      allOptionIds.length
-        ? this.productOptionService_.list(
-            { id: allOptionIds },
-            {},
-            sharedContext
+    const originalProducts = await this.productService_.list(
+      { id: data.map((d) => d.id) },
+      {
+        relations: ["options", "options.values", "tags"],
+        options: { refresh: true },
+      },
+      sharedContext
+    )
+
+    const { linkPairs, unlinkPairs, expectedOptionIdsMap } =
+      computeOptionLinkChanges(data, originalProducts)
+    const compensationLinkPairs = optionLinkUpdateCompensation.add.filter(
+      (pair) => {
+        const current = currentByProductId.get(pair.product_id)
+        if (
+          skippedVariantProductIds.has(pair.product_id) &&
+          current?.variants.length
+        ) {
+          return false
+        }
+        return compensationLinkStateMatches(pair)
+      }
+    )
+    const compensationUnlinkPairs = optionLinkUpdateCompensation.remove.filter(
+      (pair) => {
+        const expected = expectedByProductId.get(pair.product_id)
+        const current = currentByProductId.get(pair.product_id)
+        if (!expected || !current) {
+          return true
+        }
+        const expectedLink = expected.product_options.find(
+          (option) => option.option_id === pair.product_option_id
+        )
+        const currentLink = current.product_options.find(
+          (option) => option.option_id === pair.product_option_id
+        )
+        if (
+          skippedVariantProductIds.has(pair.product_id) &&
+          currentLink?.value_ids.some((valueId) =>
+            current.variants.some((variant) =>
+              variant.option_value_ids.includes(valueId)
+            )
           )
-        : Promise.resolve([]),
+        ) {
+          return false
+        }
+        return !!(
+          expectedLink &&
+          currentLink &&
+          expectedLink.id === currentLink.id &&
+          expectedLink.option_deleted === currentLink.option_deleted &&
+          optionLinkHistoryMatchesForPair(
+            current,
+            expected,
+            pair.product_option_id
+          ) &&
+          productOptionValueLinksMatch(currentLink, expectedLink) &&
+          optionStateMatchesForPair(
+            current,
+            expected,
+            pair.product_option_id
+          ) &&
+          optionValueStateMatchesForPair(
+            current,
+            expected,
+            pair.product_option_id
+          )
+        )
+      }
+    )
+    const compensatedOptionProductIds = new Set([
+      ...optionLinkUpdateCompensation.add.map((pair) => pair.product_id),
+      ...optionLinkUpdateCompensation.remove.map((pair) => pair.product_id),
     ])
+    for (const productId of compensatedOptionProductIds) {
+      if (skippedVariantProductIds.has(productId)) {
+        continue
+      }
+      const current = currentByProductId.get(productId)
+      if (!current) {
+        continue
+      }
+      const targetOptionIds = new Set(
+        current.product_options.map((option) => option.option_id)
+      )
+      for (const pair of compensationUnlinkPairs) {
+        if (pair.product_id === productId) {
+          targetOptionIds.delete(pair.product_option_id)
+        }
+      }
+      for (const pair of compensationLinkPairs) {
+        if (pair.product_id === productId) {
+          targetOptionIds.add(pair.product_option_id)
+        }
+      }
+      expectedOptionIdsMap.set(productId, new Set([...targetOptionIds].sort()))
+    }
+    const exactCompensationLinks = compensationLinkPairs.filter(
+      (pair) => !!pair.link_id
+    )
+    const createCompensationLinks = compensationLinkPairs.filter(
+      (pair) => !pair.link_id
+    )
+    linkPairs.push(...createCompensationLinks)
+    unlinkPairs.push(...compensationUnlinkPairs)
+
+    if (compensationLinkPairs.length) {
+      await this.productOptionService_.restore(
+        [
+          ...new Set(
+            compensationLinkPairs.map((pair) => pair.product_option_id)
+          ),
+        ],
+        sharedContext
+      )
+    }
+    if (exactCompensationLinks.length) {
+      await this.productProductOptionService_.restore(
+        exactCompensationLinks.map((pair) => pair.link_id),
+        sharedContext
+      )
+      const valueLinkIds = exactCompensationLinks.flatMap((pair) =>
+        pair.value_links.map((link) => link.id)
+      )
+      if (valueLinkIds.length) {
+        await this.productProductOptionValueService_.restore(
+          valueLinkIds,
+          sharedContext
+        )
+      }
+    }
+
+    await this.lockProductOptionRows_(
+      [
+        ...optionValueUpdates.map((update) => update.product_option_id),
+        ...linkPairs.map((pair) => pair.product_option_id),
+        ...unlinkPairs.map((pair) => pair.product_option_id),
+      ],
+      sharedContext
+    )
+
+    const existingOptions = allOptionIds.length
+      ? await this.productOptionService_.list(
+          { id: allOptionIds },
+          { options: { refresh: true } },
+          sharedContext
+        )
+      : []
 
     if (allOptionIds.length && existingOptions.length !== allOptionIds.length) {
       const found = new Set(existingOptions.map((opt) => opt.id))
@@ -3005,8 +4857,18 @@ export default class ProductModuleService
       }
     }
 
-    const { linkPairs, unlinkPairs, expectedOptionIdsMap } =
-      computeOptionLinkChanges(data, originalProducts)
+    if (optionValueUpdates.length) {
+      await this.validateProductOptionValueUpdates_(
+        optionValueUpdates,
+        sharedContext
+      )
+    }
+
+    if (additions.length) {
+      await this.updateProductOptionValuesOnProduct_(additions, sharedContext)
+      await (sharedContext.transactionManager as any).flush()
+      removeSkippedVariantUpdates()
+    }
 
     for (const product of data) {
       delete product.option_ids
@@ -3043,12 +4905,103 @@ export default class ProductModuleService
       sharedContext
     )
 
+    const removals = optionValueUpdates
+      .filter((update) => update.remove?.length)
+      .map((update) => ({
+        product_id: update.product_id,
+        product_option_id: update.product_option_id,
+        remove: update.remove,
+      }))
+
+    if (removals.length) {
+      await (sharedContext.transactionManager as any).flush()
+      await this.updateProductOptionValuesOnProduct_(removals, sharedContext)
+    }
+
     if (unlinkPairs.length) {
       const alreadyValidatedProductIds = new Set(expectedOptionIdsMap.keys())
       await this.removeProductOptionFromProduct_(
         unlinkPairs,
         alreadyValidatedProductIds,
         sharedContext
+      )
+    }
+
+    const expectedValueDeletions =
+      updateContext.optionValueUpdateExpectedDeletions ?? []
+    if (expectedValueDeletions.length) {
+      await (sharedContext.transactionManager as any).flush()
+      await this.softDeleteProductOptionValues_(
+        expectedValueDeletions.map((value) => value.id),
+        undefined,
+        sharedContext
+      )
+    }
+
+    const createdValueIds = [
+      ...new Set(updateContext.optionValueUpdateCreatedValueIds ?? []),
+    ]
+    if (
+      (updateContext.variantUpdateExpectedState && guardedProductIds.length) ||
+      (updateContext.optionValueUpdateCreatedValues && createdValueIds.length)
+    ) {
+      await (sharedContext.transactionManager as any).flush()
+    }
+
+    if (updateContext.variantUpdateExpectedState && guardedProductIds.length) {
+      const priorValueIdsByProductId = new Map(
+        guardedStateBeforeUpdate.map((state) => [
+          state.product_id,
+          state.option_values.map((value) => value.id),
+        ])
+      )
+      const priorOptionIdsByProductId = new Map(
+        guardedStateBeforeUpdate.map((state) => [
+          state.product_id,
+          state.watched_options.map((option) => option.id),
+        ])
+      )
+      updateContext.variantUpdateExpectedState.push(
+        ...(await this.captureVariantUpdateState_(
+          guardedProductIds,
+          sharedContext,
+          priorValueIdsByProductId,
+          true,
+          priorOptionIdsByProductId
+        ))
+      )
+    }
+
+    if (
+      updateContext.optionValueUpdateCreatedValues &&
+      createdValueIds.length
+    ) {
+      const knex = (
+        sharedContext.transactionManager as SqlEntityManager
+      ).getTransactionContext()
+      const createdValues: {
+        id: string
+        option_id: string
+        updated_at: Date | string
+      }[] = await knex("product_option_value")
+        .whereIn("id", createdValueIds)
+        .whereNull("deleted_at")
+        .select("id", "option_id", "updated_at")
+      updateContext.optionValueUpdateCreatedValues.push(
+        ...createdValues.map((value) => ({
+          ...value,
+          updated_at: new Date(value.updated_at).toISOString(),
+        }))
+      )
+    }
+
+    if (updateContext.productUpdateExpectedState) {
+      await (sharedContext.transactionManager as any).flush()
+      updateContext.productUpdateExpectedState.push(
+        ...(await this.captureProductUpdateState_(
+          productUpdateFieldsByProductId,
+          sharedContext
+        ))
       )
     }
 
@@ -3150,6 +5103,23 @@ export default class ProductModuleService
     } & ProductTypes.UpdateProductOptionValueDTO)[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof ProductOptionValue>[]> {
+    const valueIds = [...new Set(normalizedInput.map((value) => value.id))]
+    const values = await this.productOptionValueService_.list(
+      { id: valueIds },
+      { select: ["id", "option_id"], options: { refresh: true } },
+      sharedContext
+    )
+    await this.lockProductOptionRows_(
+      values
+        .map((value) => value.option_id)
+        .filter((optionId): optionId is string => isString(optionId)),
+      sharedContext
+    )
+    await this.productOptionValueService_.list(
+      { id: valueIds },
+      { options: { refresh: true } },
+      sharedContext
+    )
     return await this.productOptionValueService_.update(
       normalizedInput,
       sharedContext
@@ -3200,7 +5170,11 @@ export default class ProductModuleService
       if (duplicateOptionIds.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product "${productData.title}" has duplicate option assignments: [${duplicateOptionIds.join(", ")}]`
+          `Product "${
+            productData.title
+          }" has duplicate option assignments: [${duplicateOptionIds.join(
+            ", "
+          )}]`
         )
       }
     }
@@ -3422,8 +5396,7 @@ export default class ProductModuleService
         variant.options || {}
       ).length
 
-      const productsOptions =
-        optionsByProductId.get(variant.product_id) ?? []
+      const productsOptions = optionsByProductId.get(variant.product_id) ?? []
       const allowedValueIds = valueIdsByProductId?.get(variant.product_id)
 
       if (

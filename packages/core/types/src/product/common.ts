@@ -785,7 +785,6 @@ export interface FilterableProductProps
    * Filters on a product's variant properties.
    */
   variants?: {
-
     sku?: string | string[] | OperatorMap<string | string[]>
     ean?: string | string[] | OperatorMap<string | string[]>
     upc?: string | string[] | OperatorMap<string | string[]>
@@ -1011,8 +1010,7 @@ export interface FilterableProductVariantProps
   /**
    * The barcodes to filter product variants by.
    */
-  barcode?: string | string[] | OperatorMap<string | string[]>    
-   
+  barcode?: string | string[] | OperatorMap<string | string[]>
 
   /**
    * Filter the product variants by their associated products' IDs.
@@ -1720,17 +1718,6 @@ export interface CreateProductDTO {
 }
 
 /**
- * A product to be created or updated.
- */
-export interface UpsertProductDTO extends UpdateProductDTO {
-  /**
-   * The ID of the product to update. If not provided, a product
-   * is created instead. In that case, the `title` property is required.
-   */
-  id?: string
-}
-
-/**
  * @interface
  *
  * The data to update in a product.
@@ -1798,6 +1785,10 @@ export interface UpdateProductDTO {
    */
   option_ids?: string[]
   /**
+   * The option value links to update atomically with the product's variants.
+   */
+  option_value_updates?: Omit<ProductOptionProductValueUpdate, "product_id">[]
+  /**
    * The product variants to be created and associated with the product.
    * You can also update existing product variants associated with the product.
    */
@@ -1838,6 +1829,17 @@ export interface UpdateProductDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: MetadataType
+}
+
+/**
+ * A product to be created or updated.
+ */
+export interface UpsertProductDTO extends UpdateProductDTO {
+  /**
+   * The ID of the product to update. If not provided, a product
+   * is created instead. In that case, the `title` property is required.
+   */
+  id?: string
 }
 
 /**
