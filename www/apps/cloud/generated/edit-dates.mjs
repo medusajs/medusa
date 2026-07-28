@@ -48,7 +48,7 @@ export const generatedEditDates = {
   "app/cli/commands/projects/page.mdx": "2026-07-17T13:53:46.402Z",
   "app/cli/commands/signup/page.mdx": "2026-04-24T07:15:31.040Z",
   "app/cli/page.mdx": "2026-05-05T10:42:00.594Z",
-  "app/cli/commands/deployments/page.mdx": "2026-04-29T08:11:42.521Z",
+  "app/cli/commands/deployments/page.mdx": "2026-07-28T10:28:51.831Z",
   "app/cli/commands/use/page.mdx": "2026-04-29T08:11:05.829Z",
   "app/cli/commands/variables/page.mdx": "2026-07-15T14:55:03.520Z",
   "app/cli/commands/version/page.mdx": "2026-04-29T08:21:59.586Z",
@@ -115,6 +115,6 @@ export const generatedEditDates = {
   "app/deployments/fix-with-ai/page.mdx": "2026-05-22T09:18:36.373Z",
   "app/get-started/page.mdx": "2026-05-27T00:36:28.665Z",
   "app/first-project/page.mdx": "2026-06-08T14:16:09.467Z",
-  "app/cli/commands/local/page.mdx": "2026-07-15T14:40:50.690Z",
-  "app/cli/changelog/page.mdx": "2026-07-17T13:50:03.511Z"
+  "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
+  "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z"
 }
