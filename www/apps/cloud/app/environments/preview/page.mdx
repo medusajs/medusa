@@ -1,4 +1,5 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
+import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper, InlineIcon } from "docs-ui"
+import { XMark } from "@medusajs/icons"
 
 export const metadata = {
   title: `Preview Environments`,
@@ -149,26 +150,30 @@ While you can manage each preview environment's settings individually, you can a
 
 For example, you can define environment variables that are common to all preview environments.
 
+Shared settings are also useful to specify when preview environments are created for pull requests. For example, you can disable preview environments for pull requests of specific branches and authors.
+
 To manage the shared settings for preview environments:
 
 1. In a [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the **Settings** tab.
 2. Choose **Previews** from the sidebar.
-3. Click on the **Backend** tab.
-
-In the Backend tab, you can configure the following:
-
-- **Provisioning Rules**: Define conditions that control when a preview environment is provisioned for a pull request. Available fields are **author**, **branch name**, **title**, **description**, and **label**. Use the **is**, **is not**, or **contains** operators and combine conditions with AND/OR logic. Click **Save** to apply changes.
-- **Deploy Rules**: Define conditions that control when a provisioned preview environment is deployed. Available fields are **author** and **commit message**. Use the same operators and logic options as provisioning rules. Click **Save** to apply changes.
-- **Environment variables**: Manage environment variables shared across all preview environments, as explained in the [Manage Environment Variables](../environment-variables/page.mdx) guide. All preview environments created after making changes will inherit these variables.
-- **Database base branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging.
+3. This opens the shared settings page for both Backend and Storefront. You can change the view by toggling the **Backend** or **Storefront** tabs. It includes the following settings:
+  - **Environment variables**: Manage environment variables shared across all preview environments, as explained in the [Manage Environment Variables](../environment-variables/page.mdx) guide. All preview environments created after making changes will inherit these variables.
+  - **Provisioning Rules**: (Backend tab) Define conditions that control when a preview environment is provisioned for a pull request (PR). To add new conditions:
+    - Click **Add condition**.
+    - Choose a condition parameter from the first dropdown. It can be **Author** to apply conditions based on who opened the PR, **Branch** to apply conditions on the PR's branch, or **PR title**, **PR description**, and **PR label** to apply conditions on these PR attributes.
+    - Choose a condition operator from the second dropdown to specify how the condition value matches. It can be **is** for equality matching, **is not** for inequality matching, and **contains** for specifying a value that is contained in the parameter's value.
+    - Choose a condition value in the last input that is used for the condition matching. For example, enter the name of the author that the PR must have to provision a preview (**Author** **is** **example**), text that must be contained in a PR description (**PR description** **contains** **create preview**), or a branch name that preview environment must not be provisioned for (**Branch** **is not** **docs**)
+    - To remove an existing or new condition, click the <InlineIcon Icon={XMark} alt="X" /> icon.
+    - If you add multiple conditions, you can change how the conditions are joined by choosing between **and** to match all conditions, or **or** to match one of the conditions.
+    - Once you're done, click the **Save** button.
+  - **Deploy Rules**: Define conditions that control when a provisioned preview environment is deployed. Available fields are **Author** and **Commit message**. Use the same operators and logic options as provisioning rules. Click **Save** to apply changes.
+  - **Database base branch**: Specify which environment's database to create the preview environment's database from. By default, a new database is created from the Production environment's database. You can change this to use a different environment's database, such as Staging.
 
 <Note>
 
 Making changes to the shared settings will affect all preview environments created after the changes. Existing preview environments will not be affected by the changes.
 
 </Note>
-
-![Previews settings in the project's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1767790182/Cloud/CleanShot_2026-01-07_at_14.49.36_2x_vn8hej.png)
 
 ---
 
