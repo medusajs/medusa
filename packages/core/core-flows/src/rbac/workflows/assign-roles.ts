@@ -4,6 +4,7 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { createRoleAssignmentsStep } from "../steps/create-role-assignments"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
@@ -17,8 +18,8 @@ export type AssignRolesWorkflowInput = {
   reference: string
   reference_id: string | string[]
   role_id: string | string[]
-  granting_actor_id: string
-  granting_actor: string
+  granting_actor_id?: string
+  granting_actor?: string
   /**
    * Server-derived scope context the grant happens within. When provided, the
    * granting actor's privileges are evaluated strictly within it; omitted =
@@ -60,11 +61,16 @@ export const assignRolesWorkflow = createWorkflow(
 
     validateRolesExistStep(normalizedInput.roleIds)
 
-    validateActorRolePermissionsStep({
-      actor_id: normalizedInput.grantingActorId,
-      actor: normalizedInput.grantingActor,
-      role_ids: normalizedInput.roleIds,
-      scope: input.scope,
+    when(
+      { normalizedInput },
+      ({ normalizedInput }) => !!normalizedInput.grantingActorId
+    ).then(() => {
+      validateActorRolePermissionsStep({
+        actor_id: normalizedInput.grantingActorId!,
+        actor: normalizedInput.grantingActor,
+        role_ids: normalizedInput.roleIds,
+        scope: input.scope,
+      })
     })
 
     const assignments = transform(
