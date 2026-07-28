@@ -801,11 +801,15 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   constructWebhookEvent(data: ProviderWebhookPayload["payload"]): Stripe.Event {
     const signature = data.headers["stripe-signature"] as string
 
-    return this.stripe_.webhooks.constructEvent(
-      data.rawData as string | Buffer,
-      signature,
-      this.options_.webhookSecret
-    )
+    try {
+      return this.stripe_.webhooks.constructEvent(
+        data.rawData as string | Buffer,
+        signature,
+        this.options_.webhookSecret
+      )
+    } catch (error) {
+      throw this.buildError("An error occurred in constructWebhookEvent", error)
+    }
   }
   protected buildError(message: string, error: Error): Error {
     const errorDetails =

@@ -1,3 +1,4 @@
+import type { ProviderWebhookPayload } from "@medusajs/framework/types"
 import type { StripeOptions } from "../../types"
 
 import IdealProviderService from "../../services/stripe-ideal"
@@ -74,6 +75,19 @@ describe("StripeBase", () => {
 
       expect(params.payment_method_configuration).toBeUndefined()
       expect(params.capture_method).toBe("manual")
+    })
+  })
+
+  describe("constructWebhookEvent", () => {
+    it("wraps signature verification failures with a normalized error", () => {
+      const service = new StripeProviderService({}, defaultOptions)
+
+      expect(() =>
+        service.constructWebhookEvent({
+          rawData: "{}",
+          headers: { "stripe-signature": "invalid-signature" },
+        } as ProviderWebhookPayload["payload"])
+      ).toThrow("An error occurred in constructWebhookEvent")
     })
   })
 })
