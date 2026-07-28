@@ -1,0 +1,51 @@
+---
+sidebar_position: 3
+sidebar_label: "Export Inventory Items"
+tags:
+    - user guide
+    - inventory
+products:
+    - inventory
+---
+
+import { BellAlert, ArrowDownTray } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Export Inventory Items in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to export inventory items in your Medusa store.
+
+## Export Inventory Items as CSV
+
+When you export your inventory items, you download a CSV file with the items' details, including their quantities per stock location. This is useful to import into external systems, or for creating backups.
+
+---
+
+## Export Inventory Items
+
+To export inventory items:
+
+1. Go to the Inventory page from the sidebar.
+2. If you want to export a subset of inventory items matching filters, apply the filters first to the inventory items list.
+3. Click on the Export button in the main section's header.
+4. In the side window that opens, you can see any filters you've applied.
+5. Click on the Export button to start the export.
+6. To check the export's status, click the <InlineIcon Icon={BellAlert} alt="bell" /> notifications icon in the page's header. You should see your new export loading.
+7. Once the export is ready, click the <InlineIcon Icon={ArrowDownTray} alt="download" /> icon.
+
+---
+
+## Troubleshooting Export Errors
+
+If the export fails, either during creation of the CSV file or download, make sure that the [storage integration](!resources!/infrastructure-modules/file) is correctly set up in your Medusa application.
+
+You can also refer to the server logs of your Medusa application to get more information about the error.
+
+<Note title="Cloud User?">
+
+Learn more about troubleshooting in the [Logs guide](!cloud!/logs).
+
+</Note>
