@@ -2102,7 +2102,7 @@ export const widgetHighlights = [
   ["17", "useQuery", "Retrieve the wishlist count from the API route."],
   ["29", "", "Display the count."],
   ["36", "config", "Export the widget's content."],
-  ["37", "zone", "Inject the widget at the top of a product's details page."]
+  ["37", "zone", "Inject the widget into a product's details page."]
 ]
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={widgetHighlights}
@@ -2142,7 +2142,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -2178,9 +2178,7 @@ Then:
 
 ![Click on the "Products" in the sidebar on the right, then choose a product from the table shown in the middle](https://res.cloudinary.com/dza7lstvk/image/upload/v1737632826/Medusa%20Resources/Screenshot_2025-01-23_at_1.46.29_PM_xjsn8s.png)
 
-3. You should see the widget you created showing the number of wishlists the product is in at the top of the page.
-
-![The widget is shown at the top of the product page before other sections](https://res.cloudinary.com/dza7lstvk/image/upload/v1737632826/Medusa%20Resources/Screenshot_2025-01-23_at_1.46.05_PM_hfyz7u.png)
+3. You should see the widget you created showing the number of wishlists the product is in at the end of the page.
 
 ---
 

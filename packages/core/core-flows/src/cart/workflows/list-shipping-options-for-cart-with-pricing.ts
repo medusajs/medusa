@@ -61,8 +61,6 @@ const flatRateFields = [
 const cartFields = [
   ...cartFieldsForCalculateShippingOptionsPrices,
   "sales_channel_id",
-  "currency_code",
-  "region_id",
   "item_total",
   "total",
 ]

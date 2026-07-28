@@ -1,3 +1,5 @@
+import { Note } from "docs-ui"
+
 export const metadata = {
   title: `Prerequisites for New Projects`,
 }
@@ -120,6 +122,20 @@ You can structure your monorepo as you see fit. You'll be required to specify th
 Medusa uses Node.js v24.x (LTS) to build storefronts. You can't override this version.
 
 So, ensure that your storefront is compatible with Node.js v24.x.
+
+<Note type="warning">
+
+If your storefront's `package.json` has an `engines.node` field that restricts the Node.js version to a range that excludes v24.x (for example, `"22.x"`), the build will fail with a version incompatibility error. Update the field to accept v24.x, for example:
+
+```json title="apps/storefront/package.json"
+{
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
+```
+
+</Note>
 
 ### Root Build Script
 
