@@ -4281,7 +4281,7 @@ const ProductBrandWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductBrandWidget
@@ -4292,7 +4292,7 @@ A widget's file must export:
 - A React component to be rendered in the specified injection zone. The component must be the file's default export.
 - A configuration object created with `defineWidgetConfig` from the Admin Extension SDK. The function receives an object as a parameter that has a `zone` property, whose value is the zone to inject the widget to.
 
-Since the widget is injected at the top of the product details page, the widget receives the product's details as a parameter.
+Since the widget is injected into the product details page, the widget receives the product's details as a parameter.
 
 In the widget, you use [Tanstack (React) Query](https://tanstack.com/query/latest) to query the Medusa server. Tanstack Query provides features like asynchronous state management and optimized caching. In the `queryFn` function that executes the query, you use the JS SDK to send a request to the [Get Product API Route](undefined/api/admin/products/get-a-product), passing `+brand.*` in the `fields` query parameter to retrieve the product's brand.
 
@@ -6242,7 +6242,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -8591,18 +8591,18 @@ A widget zone's value must be wrapped in double or single quotes. It can't be a 
 ```ts highlights={zoneHighlights}
 // Don't
 export const config = defineWidgetConfig({
-  zone: `product.details.before`,
+  zone: `product.details`,
 })
 
 // Don't
-const ZONE = "product.details.after"
+const ZONE = "product.details"
 export const config = defineWidgetConfig({
   zone: ZONE,
 })
 
 // Do
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 ```
 
@@ -8705,11 +8705,13 @@ Refer to the [LayoutComposer](undefined/resources/admin-components/components/la
 
 ### Custom Zone Naming Convention
 
-Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+Custom injection zones should follow the pattern `{resource-name}.{page-context}` for the main section, and `{resource-name}.{page-context}.{section}` for other sections, where:
 
 - `resource-name`: The name of the resource being accessed in the page. For example, `brand` in the example above.
 - `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
-- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+- `section`: The name of the layout section the zone belongs to, if it isn't the main one. For example, `side` for the side section of a two-column layout.
+
+Don't add a `.before` or `.after` suffix to your zone names. These suffixes are deprecated since [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2), as admin users now change a widget's placement with [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md).
 
 This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
 
@@ -8724,10 +8726,9 @@ To register the injection zones, augment the `InjectionZoneRegistry` interface t
 ```ts title="index.d.ts"
 declare module "@medusajs/admin-shared" {
   interface InjectionZoneRegistry {
-    "brand.details.before": true
-    "brand.details.after": true
-    "brand.details.side.before": true
-    "brand.details.side.after": true
+    "brand.details": true
+    "brand.details.side": true
+    "brand.list": true
   }
 }
 ```
@@ -8770,15 +8771,15 @@ const BrandListWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "brand.list.before",
+  zone: "brand.list",
 })
 
 export default BrandListWidget
 ```
 
-In this example, the widget is injected into the `brand.list.before` zone, so it's rendered before the main content of the brand list page you added to your plugin.
+In this example, the widget is injected into the `brand.list` zone, so it's rendered in the main section of the brand list page you added to your plugin.
 
-If you don't see `brand.list.before` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
+If you don't see `brand.list` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
 
 ```json title="src/admin/tsconfig.json"
 "include": [
@@ -8823,13 +8824,13 @@ const BrandWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "brand.details.before",
+  zone: "brand.details",
 })
 
 export default BrandWidget
 ```
 
-In this example, the `BrandWidget` is injected into the `brand.details.before` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.
+In this example, the `BrandWidget` is injected into the `brand.details` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.
 
 
 # Environment Variables in Admin Customizations
@@ -8873,7 +8874,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -8954,7 +8955,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -8993,7 +8994,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9094,7 +9095,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9293,7 +9294,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -9331,7 +9332,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9493,7 +9494,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9586,7 +9587,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9672,7 +9673,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -10407,13 +10408,13 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
 ```
 
-In the example above, the widget is injected at the top of a product’s details.
+In the example above, the widget is injected at the end of a product’s details page.
 
 You export the `ProductWidget` component, which displays the heading `Product Widget`. In the widget, you use [Medusa UI](undefined/ui) to customize the dashboard with the same components used to build it.
 
@@ -10432,7 +10433,19 @@ To test out the widget, start the Medusa application:
 npm run dev
 ```
 
-Then, open a product’s details page. You’ll find your custom widget at the top of the page.
+Then, open a product’s details page. You’ll find your custom widget at the end of the page.
+
+***
+
+## Widget Placement
+
+Prior to Medusa v2.17.2, widget zones ended with `.before` or `.after` to indicate whether the widget should be placed at the beginning or end of the zone. For example, `product.details.before` would place the widget at the top of the product details page, while `product.details.after` would place it at the bottom.
+
+As of Medusa v2.17.2, the `.before` and `.after` suffixes have been deprecated in favor of [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md). The login page is the only exception. It isn't part of the layout configurations, so its `login.before` and `login.after` zones still place the widget before or after the login form.
+
+Widgets are now placed at the end of the zone they're injected into. For example, if you inject a widget into the `product.details` zone, it will be placed at the end of the product details page. Then, users can customize the placement of the widget in the Medusa Admin dashboard using [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md). The widget can be moved to the top of the page or in between core components of the page.
+
+If you're still using the `.before` or `.after` suffixes, you can continue to do so, but it's recommended to migrate to the new system. `.before` and `.after` (aside from the login page) have no effect on the placement of widgets in Medusa v2.17.2 and later, and may be removed in future versions.
 
 ***
 
@@ -10440,7 +10453,7 @@ Then, open a product’s details page. You’ll find your custom widget at the t
 
 Widgets that are injected into a detail page receive a `data` prop, which is the main data of the details page.
 
-For example, a widget injected into the `product.details.before` zone receives the product's details in the `data` prop:
+For example, a widget injected into the `product.details` zone receives the product's details in the `data` prop:
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={detailHighlights}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
@@ -10467,7 +10480,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -10534,7 +10547,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -29873,7 +29886,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -29975,7 +29988,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -58229,7 +58242,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -58267,7 +58280,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -65912,7 +65925,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -65922,7 +65935,7 @@ Learn more about widgets in [this documentation](undefined/docs/learn/fundamenta
 
 ### Receive Details Props in Widgets
 
-Widgets created in a details page, such as widgets in the `product.details.before` injection zone, receive a prop of the data of the details page (for example, the product):
+Widgets created in a details page, such as widgets in the `product.details` injection zone, receive a prop of the data of the details page (for example, the product):
 
 ```tsx highlights={[["10", "data"]]}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
@@ -65949,7 +65962,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -66089,7 +66102,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -66117,7 +66130,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -71814,7 +71827,7 @@ const CategoryMediaWidget = ({ data }: DetailWidgetProps<AdminProductCategory>) 
 }
 
 export const config = defineWidgetConfig({
-  zone: "product_category.details.after",
+  zone: "product_category.details",
 })
 
 export default CategoryMediaWidget
@@ -78981,7 +78994,7 @@ const OrderGiftItemsWidget = ({ data }: DetailWidgetProps<AdminOrder>) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default OrderGiftItemsWidget 
@@ -78992,7 +79005,7 @@ A widget file must export:
 - A React component that renders the widget content.
 - A configuration object created with `defineWidgetConfig` that defines the widget's [injection zone](undefined/admin-widget-injection-zones).
 
-You define the `OrderGiftItemsWidget` component that is injected in the `order.details.side.after` zone. Because it's injected in the order details page, it receives the order details as a `data` prop.
+You define the `OrderGiftItemsWidget` component that is injected in the `order.details.side` zone. Because it's injected in the order details page, it receives the order details as a `data` prop.
 
 In the component, you filter the order items to get only the gift items by checking if the `metadata.is_gift` property is set to `"true"`. Then, you render the gift items with their messages in a new "Gift Items & Messages" section.
 
@@ -80860,7 +80873,7 @@ const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.before",
+  zone: "order.details.side",
 })
 
 export default OrderInvoiceWidget 
@@ -86366,7 +86379,7 @@ const PreorderWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product_variant.details.side.after",
+  zone: "product_variant.details.side",
 })
 
 export default PreorderWidget
@@ -87498,7 +87511,7 @@ const getStatusBadgeColor = (status: string) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default PreordersWidget
@@ -91248,7 +91261,7 @@ const ProductBuilderWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.side.after",
+  zone: "product.details.side",
 })
 
 export default ProductBuilderWidget
@@ -94290,7 +94303,7 @@ const OrderBuilderDetailsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default OrderBuilderDetailsWidget
@@ -95750,7 +95763,7 @@ const ProductRentalConfigWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductRentalConfigWidget
@@ -98315,7 +98328,7 @@ const OrderRentalItemsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.after",
+  zone: "order.details",
 })
 
 export default OrderRentalItemsWidget
@@ -121746,7 +121759,7 @@ const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -130865,7 +130878,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -130893,9 +130906,7 @@ Then:
 
 ![Click on the "Products" in the sidebar on the right, then choose a product from the table shown in the middle](https://res.cloudinary.com/dza7lstvk/image/upload/v1737632826/Medusa%20Resources/Screenshot_2025-01-23_at_1.46.29_PM_xjsn8s.png)
 
-3. You should see the widget you created showing the number of wishlists the product is in at the top of the page.
-
-![The widget is shown at the top of the product page before other sections](https://res.cloudinary.com/dza7lstvk/image/upload/v1737632826/Medusa%20Resources/Screenshot_2025-01-23_at_1.46.05_PM_hfyz7u.png)
+3. You should see the widget you created showing the number of wishlists the product is in at the end of the page.
 
 ***
 
@@ -131085,7 +131096,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131137,7 +131148,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131196,7 +131207,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131985,7 +131996,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -132256,7 +132267,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -132408,7 +132419,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -132638,7 +132649,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -132876,7 +132887,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -133065,7 +133076,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -162335,7 +162346,7 @@ const PersonalizedOrderItemsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.after",
+  zone: "order.details",
 })
 
 export default PersonalizedOrderItemsWidget
