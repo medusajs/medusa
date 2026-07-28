@@ -1,5 +1,8 @@
 import { AdminRbacRole } from "../../rbac/admin/entities"
 
+/**
+ * The invite's details.
+ */
 export interface AdminInvite {
   /**
    * The invite's ID.
