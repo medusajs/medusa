@@ -531,12 +531,6 @@ Create or update one or more environment variables. Pass a single variable and v
 
 The CLI updates a variable when you reference it by ID (`var_...`) or by an existing key, and creates a new variable when the key doesn't exist yet. Creating or looking up a variable by key requires `--project` and `--environment` (or the equivalent values in the [active context](../use/page.mdx)).
 
-<Note type="warning">
-
-When creating a new variable, both `--build` and `--runtime` default to `false`. A variable with no scope is saved to the environment but is not injected into the build or the running container. Always pass `--runtime`, `--build`, or both when creating a new variable to ensure it is available where you need it.
-
-</Note>
-
 <CodeTabs group="cli-auth">
   <CodeTab label="With Flags" value="flags">
 
@@ -846,7 +840,7 @@ Setting a variable saves it to the environment but doesn't rebuild or redeploy y
       </Table.Cell>
       <Table.Cell>
 
-      `false` for new variables
+      `true` for new variables
 
       </Table.Cell>
     </Table.Row>
