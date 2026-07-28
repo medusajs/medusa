@@ -34,25 +34,25 @@ const ProductWidget = () => {
 A widget zone's value must be wrapped in double or single quotes. It can't be a template literal or a variable. Otherwise, Medusa doesn't register the widget correctly.
 
 export const zoneHighlights = [
-  ["3", "`product.details.before`", "Don't specify the value of `zone` as a template literal."],
+  ["3", "`product.details`", "Don't specify the value of `zone` as a template literal."],
   ["9", "ZONE", "Don't specify a variable as the value of `zone`."],
-  ["14", `"product.details.before"`, "Wrap the value of `zone` in double or single quotes."]
+  ["14", `"product.details"`, "Wrap the value of `zone` in double or single quotes."]
 ]
 
 ```ts highlights={zoneHighlights}
 // Don't
 export const config = defineWidgetConfig({
-  zone: `product.details.before`,
+  zone: `product.details`,
 })
 
 // Don't
-const ZONE = "product.details.after"
+const ZONE = "product.details"
 export const config = defineWidgetConfig({
   zone: ZONE,
 })
 
 // Do
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 ```
