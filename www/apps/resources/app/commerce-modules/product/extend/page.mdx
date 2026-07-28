@@ -126,7 +126,7 @@ A table for the link is now created in the database. You can now retrieve and ma
 
 When a product is created, you also want to create a `Custom` record and set the `custom_name` property, then create a link between the `Product` and `Custom` records.
 
-To do that, you'll consume the [productsCreated](/references/medusa-workflows/createProductsWorkflow#productscreated) hook of the [createProductsWorkflow](/references/medusa-workflows/createProductsWorkflow). This workflow is executed in the [Create Product Admin API route](!api!/admin#products_postproducts)
+To do that, you'll consume the [productsCreated](/references/medusa-workflows/createProductsWorkflow#productscreated) hook of the [createProductsWorkflow](/references/medusa-workflows/createProductsWorkflow). This workflow is executed in the [Create Product Admin API route](!api!/admin/products/create-product)
 
 <Note title="Tip">
 
@@ -343,7 +343,7 @@ curl -X POST 'localhost:9000/admin/products' \
 
 Make sure to replace `{token}` with an admin user's JWT token. Learn how to retrieve it in the [API reference](!api!/admin#1-bearer-authorization-with-jwt-tokens).
 
-Also, make sure to replace `{shipping_profile_id}` with an existing shipping profile's ID. You can retrieve one either from the Medusa Admin dashboard or using the [List Shipping Profiles API Route](!api!/admin#shipping-profiles_getshippingprofiles).
+Also, make sure to replace `{shipping_profile_id}` with an existing shipping profile's ID. You can retrieve one either from the Medusa Admin dashboard or using the [List Shipping Profiles API Route](!api!/admin/shipping-profiles/list-shipping-profiles).
 
 The request will return the product's details. You'll learn how to retrieve the `custom_name` property with the product's details in the next section.
 
@@ -355,11 +355,11 @@ When you extend an existing data model through links, you also want to retrieve 
 
 ### Retrieve in API Routes
 
-To retrieve the `custom_name` property when you're retrieving the product through API routes, such as the [Get Product API Route](!api!/admin#products_getproductsid), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
+To retrieve the `custom_name` property when you're retrieving the product through API routes, such as the [Get Product API Route](!api!/admin/products/get-a-product), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
 
 <Note title="Tip">
 
-The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default product fields. Learn more about selecting fields and relations in the [API reference](!api!/admin#select-fields-and-relations).
+The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default product fields. Learn more about selecting fields and relations in the [API reference](!api!/admin/select-fields-and-relations).
 
 </Note>
 
@@ -413,7 +413,7 @@ Learn more about how to use Query in [this guide](!docs!/learn/fundamentals/modu
 
 Similar to the `productsCreated` hook, you'll consume the [productsUpdated](/references/medusa-workflows/updateProductsWorkflow#productsUpdated) hook of the [updateProductsWorkflow](/references/medusa-workflows/updateProductsWorkflow) to update `custom_name` when the product is updated.
 
-The `updateProductsWorkflow` is executed by the [Update Product API route](!api!/admin#products_postproductsid), which accepts the `additional_data` parameter to pass custom data to the hook.
+The `updateProductsWorkflow` is executed by the [Update Product API route](!api!/admin/products/update-a-product), which accepts the `additional_data` parameter to pass custom data to the hook.
 
 ### Add custom_name to Additional Data Validation
 

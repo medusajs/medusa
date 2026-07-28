@@ -7,6 +7,7 @@ import {
 import Section from "@/components/Section"
 import { CodeTabs, CodeTab, H1, Prerequisites } from "docs-ui"
 import { Feedback } from "@/components/Feedback"
+import ViewAsMarkdown from "@/components/ViewAsMarkdown"
 
 import ClientLibraries from "./client-libraries.mdx"
 
@@ -18,7 +19,9 @@ import ClientLibraries from "./client-libraries.mdx"
 
 <DividedMarkdownContent>
 
-<H1 className={"!h2-docs scroll-m-[184px] lg:scroll-m-[264px]"} id="introduction">Medusa V2 Store API Reference</H1>
+<H1 className={"scroll-m-[184px] lg:scroll-m-[264px] !mb-0"} id="introduction">Medusa V2 Store API Reference</H1>
+
+<ViewAsMarkdown path="/store" className="mb-1" />
 
 This API reference includes Medusa v2's Store APIs, which are REST APIs exposed by the Medusa application. They are used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
@@ -67,7 +70,7 @@ Use a JWT token in a request's bearer authorization header to send authenticated
 
 #### How to Obtain the JWT Token
 
-To obtain a JWT token, send a request to the [authentication route](#auth_postactor_typeauth_provider) passing it the customer's email and password in the request body.
+To obtain a JWT token, send a request to the [authentication route](https://docs.medusajs.com/api/store/auth/authenticate-customer) passing it the customer's email and password in the request body.
 
 </DividedMarkdownContent>
 
@@ -175,7 +178,7 @@ To obtain a cookie session ID, you must have a [JWT token for bearer authenticat
 
 Then, if you're using the JS SDK, make sure the `auth.type` configuration is set to `session`, as explained in the [JS SDK configurations](!resources!/js-sdk#js-sdk-configurations) guide. The `auth.login` method will handle setting the session cookie and passing it in subsequent requests.
 
-If you're not using the JS SDK, send a request to the [session authentication API route](#auth_postsession). To view the cookie session ID, pass the `-v` option to the `curl` command.
+If you're not using the JS SDK, send a request to the [session authentication API route](https://docs.medusajs.com/api/store/auth/set-authentication-session). To view the cookie session ID, pass the `-v` option to the `curl` command.
 
 </DividedMarkdownContent>
 
@@ -287,7 +290,7 @@ and associate placed orders with the specified sales channel.
 
 ### How to Create a Publishable API Key
 
-Create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/api/admin#api-keys_postapikeys), or using the [Medusa Admin](!user-guide!/settings/developer/publishable-api-keys#create-publishable-api-key).
+Create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/api/admin/api-keys/create-api-key), or using the [Medusa Admin](!user-guide!/settings/developer/publishable-api-keys#create-publishable-api-key).
 
 ### How to Use a Publishable API Key
 

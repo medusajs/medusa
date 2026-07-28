@@ -58,7 +58,9 @@
 			"code": "The code of the order line item tax line",
 			"rate": "The rate of the order line item tax line",
 			"provider_id": "The ID of the tax provider used to calculate the tax line.",
-			"item": "The associated item that the tax line is for.\n\n@expandable"
+			"item": "The associated item that the tax line is for.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs.",
+			"data": "The data of the order line item tax line"
 		},
 		"deprecated": {
 			"is_deprecated": false
@@ -292,7 +294,9 @@
 			"code": "The code of the applied tax rate.",
 			"rate": "The applied tax rate",
 			"provider_id": "The ID of the tax provider used to calculate the tax line.",
-			"shipping_method": "The associated shipping_method that the tax line is for.\n\n@expandable"
+			"shipping_method": "The associated shipping_method that the tax line is for.\n\n@expandable",
+			"metadata": "Holds custom data in key-value pairs.",
+			"data": "The data of the order shipping method tax line"
 		},
 		"deprecated": {
 			"is_deprecated": false

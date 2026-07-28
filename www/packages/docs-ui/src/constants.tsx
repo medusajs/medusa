@@ -163,6 +163,11 @@ export const navDropdownItems: NavigationItem[] = [
           },
           {
             type: "link",
+            title: "Settings",
+            link: "/resources/commerce-modules/settings",
+          },
+          {
+            type: "link",
             title: "Stock Location",
             link: "/resources/commerce-modules/stock-location",
           },

@@ -106,7 +106,7 @@ const orderFields = deduplicate([
 export const confirmOrderEditRequestWorkflowId = "confirm-order-edit-request"
 /**
  * This workflow confirms an order edit request. It's used by the
- * [Confirm Order Edit Admin API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsidconfirm).
+ * [Confirm Order Edit Admin API Route](https://docs.medusajs.com/api/admin/order-edits/confirm-order-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to confirm an order edit
  * in your custom flow.

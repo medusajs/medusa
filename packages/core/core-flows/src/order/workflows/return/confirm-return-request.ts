@@ -219,7 +219,7 @@ export type ConfirmReturnRequestWorkflowInput = {
 export const confirmReturnRequestWorkflowId = "confirm-return-request"
 /**
  * This workflow confirms a return request. It's used by the
- * [Confirm Return Request Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsidrequest).
+ * [Confirm Return Request Admin API Route](https://docs.medusajs.com/api/admin/returns/confirm-return-request).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to confirm a return request
  * in your custom flow.

@@ -40,7 +40,7 @@ export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"
 /**
  * This workflow lists the shipping options of a cart. It's executed by the
- * [List Shipping Options Store API Route](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions).
+ * [List Shipping Options Store API Route](https://docs.medusajs.com/api/store/shipping-options/list-shipping-options-for-cart).
  *
  * :::note
  *

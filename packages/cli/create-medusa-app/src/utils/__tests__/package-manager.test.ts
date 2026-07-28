@@ -97,6 +97,24 @@ describe("PackageManager", () => {
       expect(result.version).toBe("1.22.0")
     })
 
+    it("should detect nub from user agent with version", () => {
+      // nub's user agent also contains "npm" (e.g. `nub/0.4.5 npm/?`), so this
+      // confirms nub is matched rather than falling through to npm.
+      process.env.npm_config_user_agent = "nub/0.4.5 npm/? node/v24.14.0"
+      const pm = new PackageManager(processManager)
+      const result = pm["detectFromUserAgent"]()
+      expect(result.manager).toBe("nub")
+      expect(result.version).toBe("0.4.5")
+    })
+
+    it("should detect nub from user agent without version", () => {
+      process.env.npm_config_user_agent = "nub"
+      const pm = new PackageManager(processManager)
+      const result = pm["detectFromUserAgent"]()
+      expect(result.manager).toBe("nub")
+      expect(result.version).toBeUndefined()
+    })
+
     it("should default to npm for unknown user agent", () => {
       process.env.npm_config_user_agent = "some-unknown-manager/1.0.0"
       const pm = new PackageManager(processManager)
@@ -290,6 +308,35 @@ describe("PackageManager", () => {
         recursive: true,
       })
       expect(mockRmSync).toHaveBeenCalledWith("/test/path/package-lock.json", {
+        force: true,
+        recursive: true,
+      })
+      expect(mockRmSync).toHaveBeenCalledWith("/test/path/.yarn", {
+        force: true,
+        recursive: true,
+      })
+    })
+
+    it("should remove yarn.lock, package-lock.json, pnpm-lock.yaml, and .yarn when using nub", async () => {
+      const pm = new PackageManager(processManager)
+      pm["packageManager"] = "nub"
+      mockExistsSync.mockReturnValue(true)
+
+      await pm.removeLockFiles("/test/path")
+
+      expect(mockExistsSync).toHaveBeenCalledWith("/test/path/yarn.lock")
+      expect(mockExistsSync).toHaveBeenCalledWith("/test/path/package-lock.json")
+      expect(mockExistsSync).toHaveBeenCalledWith("/test/path/pnpm-lock.yaml")
+      expect(mockExistsSync).toHaveBeenCalledWith("/test/path/.yarn")
+      expect(mockRmSync).toHaveBeenCalledWith("/test/path/yarn.lock", {
+        force: true,
+        recursive: true,
+      })
+      expect(mockRmSync).toHaveBeenCalledWith("/test/path/package-lock.json", {
+        force: true,
+        recursive: true,
+      })
+      expect(mockRmSync).toHaveBeenCalledWith("/test/path/pnpm-lock.yaml", {
         force: true,
         recursive: true,
       })

@@ -83,7 +83,7 @@ const buildInventoryLevelsInput = (data: {
 export const createInventoryItemsWorkflowId = "create-inventory-items-workflow"
 /**
  * This workflow creates one or more inventory items. It's used by the
- * [Create Inventory Item Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems).
+ * [Create Inventory Item Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/create-inventory-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create inventory items in your custom flows.

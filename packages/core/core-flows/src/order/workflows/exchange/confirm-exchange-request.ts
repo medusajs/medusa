@@ -266,7 +266,7 @@ export type ConfirmExchangeRequestWorkflowInput = {
 export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
 /**
  * This workflow confirms an exchange request. It's used by the
- * [Confirm Exchange Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidrequest).
+ * [Confirm Exchange Admin API Route](https://docs.medusajs.com/api/admin/exchanges/confirm-an-exchange).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to confirm an exchange
  * for an order in your custom flow.

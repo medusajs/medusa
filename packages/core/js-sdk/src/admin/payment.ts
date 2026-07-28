@@ -16,7 +16,7 @@ export class Payment {
 
   /**
    * This method retrieves a paginated list of payments. It sends a request to the 
-   * [List Payments](https://docs.medusajs.com/api/admin#payments_getpayments) API route.
+   * [List Payments](https://docs.medusajs.com/api/admin/payments/list-payments) API route.
    * 
    * @param query  - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -58,7 +58,7 @@ export class Payment {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(query?: HttpTypes.AdminPaymentFilters, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminPaymentsResponse>(
@@ -72,7 +72,7 @@ export class Payment {
 
   /**
    * This method retrieves a paginated list of payment providers. It sends a request to the 
-   * [List Payment Providers](https://docs.medusajs.com/api/admin#payments_getpaymentspaymentproviders) API route.
+   * [List Payment Providers](https://docs.medusajs.com/api/admin/payments/list-payment-providers) API route.
    * 
    * @param query - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -114,7 +114,7 @@ export class Payment {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async listPaymentProviders(
     query?: HttpTypes.AdminGetPaymentProvidersParams,
@@ -131,7 +131,7 @@ export class Payment {
 
   /**
    * This method retrieves a payment's details. It sends a request to the 
-   * [Get Payment](https://docs.medusajs.com/api/admin#payments_getpaymentsid)
+   * [Get Payment](https://docs.medusajs.com/api/admin/payments/get-a-payment)
    * API route.
    * 
    * @param id - The payment's ID.
@@ -160,7 +160,7 @@ export class Payment {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -178,7 +178,7 @@ export class Payment {
 
   /**
    * This method captures a payment. It sends a request to the
-   * [Capture Payment](https://docs.medusajs.com/api/admin#payments_postpaymentsidcapture) API route.
+   * [Capture Payment](https://docs.medusajs.com/api/admin/payments/capture-payment) API route.
    * 
    * The API route uses the `capturePayment` method of the payment provider associated with the payment's collection.
    * 
@@ -213,7 +213,7 @@ export class Payment {
 
   /**
    * This method refunds a payment. It sends a request to the
-   * [Refund Payment](https://docs.medusajs.com/api/admin#payments_postpaymentsidrefund) API route.
+   * [Refund Payment](https://docs.medusajs.com/api/admin/payments/refund-payment) API route.
    * 
    * The API route uses the `refundPayment` method of the payment provider associated with the payment's collection.
    * 

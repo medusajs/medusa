@@ -1,5 +1,5 @@
 import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
+import { EllipsisHorizontal, ChevronUpDown, PencilSquare } from "@medusajs/icons"
 
 export const metadata = {
   title: `Long-Lived Environments`,
@@ -291,20 +291,17 @@ You can't change the branch of preview environments. This section only applies t
 
 </Note>
 
-In an environment's "Settings" tab, you can manage the deployment rules for the environment. Deployment rules allow you to control how and when deployments are triggered for the environment.
+In an environment's **Settings** tab, the **Deployment Rules** section lets you manage the branch the environment deploys from and configure conditions that control when deployments are triggered.
 
-To change the branch associated with an environment using deployment rules:
+To change the branch associated with an environment:
 
-1. In the [environment's dashboard](#open-environment-dashboard), click on the "Settings" tab.
-2. Choose the "Deployment rules" tab from the sidebar.
-3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the right side of the `branch` rule.
-4. Choose "Edit" from the dropdown menu.
-5. In the side window that opens, you can change the branch associated with the environment.
-6. Once you're done, click the "Save" button.
+1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
+2. Choose **Deployment Rules** from the sidebar.
+3. In the **Linked branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
+4. In the side window that opens, enter the new branch name in the **Branch** field.
+5. Click **Save**.
 
 Changes will take effect the next time you push a commit to the new branch. The environment will be redeployed with the latest changes from the new branch.
-
-![Change environment branch in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1750170517/Cloud/CleanShot_2025-06-17_at_17.28.25_2x_nfx79a.png)
 
 ---
 

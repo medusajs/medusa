@@ -46,9 +46,9 @@ export interface BatchPromotionRulesWorkflowOutput extends BatchWorkflowOutput<P
 export const batchPromotionRulesWorkflowId = "batch-promotion-rules"
 /**
  * This workflow manages a promotion's rules. It's used by the
- * [Manage Promotion Rules Admin API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidrulesbatch),
- * [Manage Promotion Buy Rules Admin API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidbuyrulesbatch),
- * and [Manage Promotion Target Rules Admin API Route](https://docs.medusajs.com/api/admin#promotions_postpromotionsidtargetrulesbatch).
+ * [Manage Promotion Rules Admin API Route](https://docs.medusajs.com/api/admin/promotions/manage-rules),
+ * [Manage Promotion Buy Rules Admin API Route](https://docs.medusajs.com/api/admin/promotions/manage-buy-rules),
+ * and [Manage Promotion Target Rules Admin API Route](https://docs.medusajs.com/api/admin/promotions/manage-target-rules).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * manage promotion rules within your custom flows.

@@ -35,7 +35,7 @@ export type UpdateSalesChannelsWorkflowOutput = SalesChannelDTO[]
 export const updateSalesChannelsWorkflowId = "update-sales-channels"
 /**
  * This workflow updates sales channels matching the specified conditions. It's used by the
- * [Update Sales Channel Admin API Route](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsid).
+ * [Update Sales Channel Admin API Route](https://docs.medusajs.com/api/admin/sales-channels/update-a-sales-channel).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update sales channels within your custom flows.

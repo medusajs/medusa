@@ -4,21 +4,30 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { DataTableStatusCell } from "../../../components/data-table/components/data-table-status-cell/data-table-status-cell"
 import { PencilSquare } from "@medusajs/icons"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminEntityInfo>()
 
 export const usePropertyLabelsTableColumns = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   return useMemo(
     () => [
       columnHelper.accessor("module", {
         header: () => t("propertyLabels.fields.module"),
+        enableSorting: true,
+        sortLabel: t("propertyLabels.fields.module"),
+        sortAscLabel: t("filters.sorting.alphabeticallyAsc"),
+        sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
       }),
       columnHelper.accessor("name", {
         header: () => t("propertyLabels.fields.model"),
+        enableSorting: true,
+        sortLabel: t("propertyLabels.fields.model"),
+        sortAscLabel: t("filters.sorting.alphabeticallyAsc"),
+        sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
       }),
       columnHelper.accessor("propertyCount", {
         header: () => t("propertyLabels.fields.propertyCount"),
@@ -40,14 +49,16 @@ export const usePropertyLabelsTableColumns = () => {
             label: t("actions.edit"),
             icon: <PencilSquare />,
             onClick: () => {
+              const params = searchParams.toString()
               navigate(
-                `/settings/property-labels/${ctx.row.original.name}/edit`
+                `/settings/property-labels/${ctx.row.original.name}/edit`,
+                params ? { state: { restore_params: params } } : undefined
               )
             },
           },
         ],
       }),
     ],
-    [t, navigate]
+    [t, navigate, searchParams]
   )
 }

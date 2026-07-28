@@ -1,0 +1,36 @@
+export const metadata = {
+  title: `Layout Configurations`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about layout configurations in the Settings Module.
+
+<Note title="Tip">
+
+Refer to the [Medusa Admin User Guide](!user-guide!/tips/layout-configurations) to learn how to customize layouts in the Medusa Admin dashboard.
+
+</Note>
+
+## What is a Layout Configuration?
+
+A layout configuration stores the layout preferences of a zone in the dashboard, such as a product's details page or the sidebar. It lets admin users customize the order and visibility of a zone's sections.
+
+The [LayoutConfiguration](/references/settings/models/LayoutConfiguration) data model stores a layout's customizations in its `configuration` property, and it's associated with a zone through its `zone` property.
+
+---
+
+## Layout Configuration Types
+
+There are two types of layout configurations for a zone:
+
+1. System default: A stored layout configuration that has its `is_system_default` property enabled and no `user_id`. It applies to all users that don't have a personal layout. Only one system default can exist per zone.
+2. Personal layout: A stored layout configuration that has a `user_id`. It's private to the user that created it.
+
+---
+
+## Active Layout Scope
+
+Each user has an active layout scope for a zone, which is either `personal` or `default`. It indicates whether the user is viewing their personal layout or the system default.
+
+The `getActiveLayoutScope` method of the module's service retrieves a user's active scope for a zone, and the `setActiveLayoutScope` method sets it.

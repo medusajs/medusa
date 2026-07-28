@@ -15,7 +15,7 @@ import { useRemoteQueryStep } from "../../common"
 export const createFulfillmentWorkflowId = "create-fulfillment-workflow"
 /**
  * This workflow creates a fulfillment, which can be used for an order, return, exchanges, and similar concepts.
- * The workflow is used by the [Create Fulfillment Admin API Route](https://docs.medusajs.com/api/admin#fulfillments_postfulfillments).
+ * The workflow is used by the [Create Fulfillment Admin API Route](https://docs.medusajs.com/api/admin/fulfillments/create-fulfillment).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * create a fulfillment within your custom flows.

@@ -486,15 +486,11 @@ This feature is available starting [Medusa v2.17.2](https://github.com/medusajs/
 
 </Note>
 
-{/* By default, a UI route's page title is set to the `label` property of the route's configuration.
+By default, a UI route's page title is set to the `label` property of the route's configuration.
 
-You can also set it to a dynamic value, which is useful for UI routes that accept path parameters. For example, if you have a brand details page, you can set the page title to the brand's name. */}
+You can also set it to a dynamic value, which is useful for UI routes that accept path parameters. For example, if you have a brand details page, you can set the page title to the brand's name.
 
-{/* To set the page title of a UI route different than the `label` property, export a `handle` object with a `seo` property in the UI route's file: */}
-
-To set the page title of a UI route, export a `handle` object with a `seo` property in the UI route's file. It can return a string, or it can accept a `match` object whose `data` property holds the data returned by the `loader` function. This is useful for UI routes that accept path parameters, allowing you to set the page title dynamically.
-
-For example:
+To set the page title of a UI route different than the `label` property, export a `handle` object with a `seo` property in the UI route's file:
 
 export const seoHighlights = [
   ["26", "loader", "Define a loader function to fetch the brand data."],

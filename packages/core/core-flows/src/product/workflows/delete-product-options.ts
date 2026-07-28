@@ -25,7 +25,7 @@ export type DeleteProductOptionsWorkflowInput = {
 export const deleteProductOptionsWorkflowId = "delete-product-options"
 /**
  * This workflow deletes one or more product options. It's used by the
- * [Delete Product Option Admin API Route](https://docs.medusajs.com/api/admin#products_deleteproductsidoptionsoption_id).
+ * [Delete Product Option Admin API Route](https://docs.medusajs.com/api/admin/product-options/delete-a-product-option).
  *
  * This workflow has a hook that allows you to perform custom actions after the product options are deleted. For example,
  * you can delete custom records linked to the product colleciton.

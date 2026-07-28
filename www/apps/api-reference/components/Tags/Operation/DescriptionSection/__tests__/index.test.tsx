@@ -97,6 +97,12 @@ vi.mock("@/components/Feedback", () => ({
     <div data-testid="feedback">{question}</div>
   ),
 }))
+vi.mock("@/providers/area", () => ({
+  useArea: () => ({ area: "store" }),
+}))
+vi.mock("@/utils/resolve-doc-url", () => ({
+  resolveApiRefDocUrl: (url: string) => url,
+}))
 
 import TagsOperationDescriptionSection from ".."
 

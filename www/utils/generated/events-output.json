@@ -1,35 +1,5 @@
 [
   {
-    "name": "auth.mfa_enabled",
-    "parentName": "AuthEvents",
-    "propertyName": "MFA_ENABLED",
-    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.\n  mfa_id, // The ID of the MFA factor that was enabled.\n  provider, // The provider of the MFA factor that was enabled.\n}\n```",
-    "description": "Emitted when an MFA factor is enabled for an auth identity.",
-    "workflows": [],
-    "since": "2.15.5",
-    "deprecated": false
-  },
-  {
-    "name": "auth.mfa_disabled",
-    "parentName": "AuthEvents",
-    "propertyName": "MFA_DISABLED",
-    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.\n  mfa_id, // The ID of the MFA factor that was disabled.\n  provider, // The provider of the MFA factor that was disabled.\n}\n```",
-    "description": "Emitted when an MFA factor is disabled for an auth identity.",
-    "workflows": [],
-    "since": "2.15.5",
-    "deprecated": false
-  },
-  {
-    "name": "auth.mfa_recovery_codes_generated",
-    "parentName": "AuthEvents",
-    "propertyName": "MFA_RECOVERY_CODES_GENERATED",
-    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.\n  count, // (number) The number of recovery codes that were generated.\n}\n```",
-    "description": "Emitted when recovery codes are generated for an auth identity.",
-    "workflows": [],
-    "since": "2.15.5",
-    "deprecated": false
-  },
-  {
     "name": "cart.created",
     "parentName": "CartWorkflowEvents",
     "propertyName": "CREATED",
@@ -857,6 +827,182 @@
       "batchTranslationsWorkflow"
     ],
     "since": "2.12.3",
+    "deprecated": false
+  },
+  {
+    "name": "inventory-item.created",
+    "parentName": "InventoryItemWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the inventory item\n}\n```",
+    "description": "Emitted when inventory items are created.",
+    "workflows": [
+      "createInventoryItemsWorkflow",
+      "createProductVariantsWorkflow",
+      "createProductsWorkflow",
+      "batchProductVariantsWorkflow",
+      "batchProductsWorkflow",
+      "importProductsWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "inventory-item.updated",
+    "parentName": "InventoryItemWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the inventory item\n}\n```",
+    "description": "Emitted when inventory items are updated.",
+    "workflows": [
+      "updateInventoryItemsWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "inventory-item.deleted",
+    "parentName": "InventoryItemWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the inventory item\n}\n```",
+    "description": "Emitted when inventory items are deleted.",
+    "workflows": [
+      "deleteInventoryItemWorkflow",
+      "deleteProductsWorkflow",
+      "deleteProductVariantsWorkflow",
+      "batchProductsWorkflow",
+      "batchProductVariantsWorkflow",
+      "importProductsWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "inventory-level.created",
+    "parentName": "InventoryLevelWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the inventory level\n}\n```",
+    "description": "Emitted when inventory levels are created.",
+    "workflows": [
+      "createInventoryLevelsWorkflow",
+      "bulkCreateDeleteLevelsWorkflow",
+      "batchInventoryItemLevelsWorkflow",
+      "createInventoryItemsWorkflow",
+      "createProductVariantsWorkflow",
+      "createProductsWorkflow",
+      "batchProductVariantsWorkflow",
+      "batchProductsWorkflow",
+      "importProductsWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "inventory-level.updated",
+    "parentName": "InventoryLevelWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the inventory level\n  order_id, // (optional) The ID of the order, if the update was triggered by an order flow\n}\n```",
+    "description": "Emitted when inventory levels are updated. This includes adjustments to\nthe stocked or reserved quantity, such as during order fulfillment.",
+    "workflows": [
+      "createOrderFulfillmentWorkflow",
+      "cancelOrderFulfillmentWorkflow",
+      "updateInventoryLevelsWorkflow",
+      "batchInventoryItemLevelsWorkflow",
+      "confirmReturnReceiveWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "inventory-level.deleted",
+    "parentName": "InventoryLevelWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the inventory level\n}\n```",
+    "description": "Emitted when inventory levels are deleted.",
+    "workflows": [
+      "deleteInventoryLevelsWorkflow",
+      "bulkCreateDeleteLevelsWorkflow",
+      "batchInventoryItemLevelsWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "reservation-item.created",
+    "parentName": "ReservationItemWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the reservation\n  order_id, // (optional) The ID of the order, if the reservation was created by an order flow\n}\n```",
+    "description": "Emitted when reservations are created.",
+    "workflows": [
+      "createReservationsWorkflow",
+      "cancelOrderFulfillmentWorkflow",
+      "convertDraftOrderWorkflow",
+      "completeCartWorkflow",
+      "confirmOrderEditRequestWorkflow",
+      "confirmExchangeRequestWorkflow",
+      "confirmClaimRequestWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "reservation-item.updated",
+    "parentName": "ReservationItemWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the reservation\n  order_id, // (optional) The ID of the order, if the reservation was updated by an order flow\n}\n```",
+    "description": "Emitted when reservations are updated.",
+    "workflows": [
+      "updateReservationsWorkflow",
+      "createOrderFulfillmentWorkflow",
+      "cancelOrderFulfillmentWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "reservation-item.deleted",
+    "parentName": "ReservationItemWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the reservation\n  order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow\n}\n```",
+    "description": "Emitted when reservations are deleted.",
+    "workflows": [
+      "deleteReservationsWorkflow",
+      "deleteReservationsByLineItemsWorkflow",
+      "createOrderFulfillmentWorkflow",
+      "cancelOrderWorkflow",
+      "confirmOrderEditRequestWorkflow",
+      "cancelOrderExchangeWorkflow",
+      "cancelOrderClaimWorkflow"
+    ],
+    "since": "2.17.3",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_enabled",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_ENABLED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.\n  mfa_id, // The ID of the MFA factor that was enabled.\n  provider, // The provider of the MFA factor that was enabled.\n}\n```",
+    "description": "Emitted when an MFA factor is enabled for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_disabled",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_DISABLED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.\n  mfa_id, // The ID of the MFA factor that was disabled.\n  provider, // The provider of the MFA factor that was disabled.\n}\n```",
+    "description": "Emitted when an MFA factor is disabled for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_recovery_codes_generated",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_RECOVERY_CODES_GENERATED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.\n  count, // (number) The number of recovery codes that were generated.\n}\n```",
+    "description": "Emitted when recovery codes are generated for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
     "deprecated": false
   }
 ]

@@ -146,7 +146,10 @@ export default defineMiddlewares({
 
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
-- `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
+- `matcher`: the API route path to apply the middleware on. Its value can be one of the following:
+    - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`.
+    - A regular expression (`RegExp`), which Medusa matches against the request path directly. For example, `/^\/custom(\/.*)?$/`.
+
 - `middlewares`: An array of global and route middleware functions.
 - `method`: (optional) By default, a middleware is applied on all HTTP methods for a route. You can specify one or more HTTP methods to apply the middleware to in this option, making it a route middleware.
 
@@ -170,6 +173,49 @@ Received a request!
 ### Troubleshooting
 
 If the middleware didn't run, make sure you've correctly created the middleware at `src/api/middlewares.ts` (with correct spelling). This is a common mistake that can lead to the middleware not being applied, resulting in unexpected behavior.
+
+---
+
+## Apply a Middleware Using a Regular Expression
+
+You can set the `matcher` property to a regular expression (`RegExp`) to apply a middleware to routes matching a pattern.
+
+A `RegExp` matcher must account for the full request path, including the leading slash. How Medusa matches the pattern depends on whether the middleware is a global or route middleware.
+
+### Global Middleware
+
+For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/4x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
+
+So, you must anchor the pattern with `^` and include the leading slash:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: /^\/custom(\/.*)?$/,
+      middlewares: [
+        // ...
+      ],
+    },
+  ],
+})
+```
+
+This middleware applies to `/custom` and any route starting with `/custom/`.
+
+<Note title="Warning" type="warning">
+
+An unanchored pattern like `/custom/` doesn't match any route for a global middleware, since its match doesn't start at the beginning of the path. Always anchor a global middleware's pattern with `^\/`.
+
+</Note>
+
+### Route Middleware
+
+For a route middleware (a middleware with a `method`), Medusa matches the `RegExp` against the full request path. So, an unanchored pattern like `/custom/` matches routes containing `custom`.
+
+To keep the same behavior across both middleware types, always anchor a `RegExp` matcher with `^\/`.
 
 ---
 
