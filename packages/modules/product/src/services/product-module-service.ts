@@ -44,6 +44,7 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
+  mergeMetadata,
   MessageAggregator,
   Modules,
   partitionArray,
@@ -659,11 +660,23 @@ export default class ProductModuleService
 
     // Data normalization
     const variantsWithProductId: UpdateProductVariantInput[] = variants.map(
-      (v) => ({
-        ...data.find((d) => d.id === v.id),
-        id: v.id,
-        product_id: v.product_id,
-      })
+      (variant) => {
+        const update = data.find(({ id }) => id === variant.id)!
+
+        return {
+          ...update,
+          id: variant.id,
+          product_id: variant.product_id,
+          ...(isPresent(update.metadata)
+            ? {
+                metadata: mergeMetadata(
+                  variant.metadata ?? {},
+                  update.metadata!
+                ),
+              }
+            : {}),
+        }
+      }
     )
 
     let productVariantsWithOptions: UpdateProductVariantInput[] =
