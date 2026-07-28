@@ -1,5 +1,5 @@
 import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
+import { EllipsisHorizontal, ChevronUpDown, PencilSquare } from "@medusajs/icons"
 
 export const metadata = {
   title: `Long-Lived Environments`,
@@ -297,8 +297,8 @@ To change the branch associated with an environment:
 
 1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
 2. Choose **Deployment Rules** from the sidebar.
-3. In the **Linked Branch** section, click the pencil icon next to the current branch name.
-4. In the drawer that opens, enter the new branch name in the **Branch** field.
+3. In the **Linked branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
+4. In the side window that opens, enter the new branch name in the **Branch** field.
 5. Click **Save**.
 
 Changes will take effect the next time you push a commit to the new branch. The environment will be redeployed with the latest changes from the new branch.
