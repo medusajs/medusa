@@ -14,7 +14,7 @@ export const beginDraftOrderEditWorkflowId = "begin-draft-order-edit"
 
 /**
  * This workflow begins a draft order edit. It's used by the
- * [Create Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedit).
+ * [Create Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/create-edit).
  *
  * The draft order edit can later be requested using {@link requestDraftOrderEditWorkflow} or confirmed using {@link confirmDraftOrderEditWorkflow}.
  *

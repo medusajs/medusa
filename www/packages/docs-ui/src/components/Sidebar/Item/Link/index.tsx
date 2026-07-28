@@ -115,7 +115,7 @@ export const SidebarItemLink = ({
     <li ref={ref}>
       <span className="block px-docs_0.75">
         <Link
-          href={item.isPathHref ? item.path : `#${item.path}`}
+          href={item.path}
           className={clsx(
             "py-docs_0.25 px-docs_0.5",
             "block w-full rounded-docs_sm",

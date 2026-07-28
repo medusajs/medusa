@@ -16,7 +16,7 @@ export class ProductCollection {
 
   /**
    * This method creates a product collection. It sends a request to the 
-   * [Create Collection](https://docs.medusajs.com/api/admin#collections_postcollections)
+   * [Create Collection](https://docs.medusajs.com/api/admin/collections/create-collection)
    * API route.
    * 
    * @param body - The details of the product collection to create.
@@ -50,7 +50,7 @@ export class ProductCollection {
 
   /**
    * This method updates a collection. It sends a request to the
-   * [Update Collection](https://docs.medusajs.com/api/admin#collections_postcollectionsid)
+   * [Update Collection](https://docs.medusajs.com/api/admin/collections/update-a-collection)
    * API route.
    * 
    * @param id - The ID of the collection.
@@ -86,7 +86,7 @@ export class ProductCollection {
 
   /**
    * This method retrieves a paginated list of collections. It sends a request to the 
-   * [List Collections](https://docs.medusajs.com/api/admin#collections_getcollections) API route.
+   * [List Collections](https://docs.medusajs.com/api/admin/collections/list-collections) API route.
    * 
    * @param queryParams - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -128,7 +128,7 @@ export class ProductCollection {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     queryParams?: HttpTypes.AdminCollectionListParams,
@@ -145,7 +145,7 @@ export class ProductCollection {
 
   /**
    * This method retrieves a collection by its ID. It sends a request to the 
-   * [Get Collection](https://docs.medusajs.com/api/admin#collections_getcollectionsid) API route.
+   * [Get Collection](https://docs.medusajs.com/api/admin/collections/get-a-collection) API route.
    * 
    * @param id - The collection's ID.
    * @param query - Configure the fields to retrieve in the collection.
@@ -173,7 +173,7 @@ export class ProductCollection {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -191,7 +191,7 @@ export class ProductCollection {
 
   /**
    * This method deletes a product collection. It sends a request to the
-   * [Delete Collection](https://docs.medusajs.com/api/admin#collections_deletecollectionsid)
+   * [Delete Collection](https://docs.medusajs.com/api/admin/collections/delete-a-collection)
    * API route.
    * 
    * @param id - The collection's ID.
@@ -216,7 +216,7 @@ export class ProductCollection {
 
   /**
    * This method manages the products of a collection to add or remove them. It sends a request
-   * to the [Manage Products](https://docs.medusajs.com/api/admin#collections_postcollectionsidproducts)
+   * to the [Manage Products](https://docs.medusajs.com/api/admin/collections/manage-products)
    * API route.
    * 
    * @param id - The collection's ID.

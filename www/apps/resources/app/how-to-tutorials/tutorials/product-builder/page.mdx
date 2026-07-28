@@ -3128,7 +3128,7 @@ const ProductBuilderWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.side.after",
+  zone: "product.details.side",
 })
 
 export default ProductBuilderWidget
@@ -3295,7 +3295,7 @@ You define the following types:
 
 Next, you need to retrieve the builder configuration for a product when the customer views its details page.
 
-Since you've defined a link between the product and its builder configuration, you can retrieve the builder configuration of a product by specifying it in the `fields` query parameter of the [List Products API Route](!api!/store#products_getproducts).
+Since you've defined a link between the product and its builder configuration, you can retrieve the builder configuration of a product by specifying it in the `fields` query parameter of the [List Products API Route](!api!/store/products/list-products).
 
 In `src/lib/data/products.ts`, add the following import at the top of the file:
 
@@ -6432,7 +6432,7 @@ const OrderBuilderDetailsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default OrderBuilderDetailsWidget

@@ -1956,6 +1956,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/errors-installing-cli"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/esm-syntax-error/page.mdx",
+    "pathname": "/troubleshooting/esm-syntax-error"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/general-errors/page.mdx",
     "pathname": "/troubleshooting/general-errors"
   },

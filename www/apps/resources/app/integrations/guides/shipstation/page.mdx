@@ -943,7 +943,7 @@ class ShipStationProviderService extends AbstractFulfillmentProviderService {
 The `validateFulfillmentData` method accepts the following parameters:
 
 1. The `data` property of the chosen shipping option during checkout. It will hold the carrier ID and its service code.
-2. The `data` property of the shipping method to be created. This can hold custom data sent in the [Add Shipping Method API route](!api!/store#carts_postcartsidshippingmethods).
+2. The `data` property of the shipping method to be created. This can hold custom data sent in the [Add Shipping Method API route](!api!/store/carts/add-shipping-method).
 3. An object of the checkout's context, including the cart's items, the location associated with the shipping option, and more.
 
 In the method, you try to retrieve the shipment ID from the shipping method's `data` parameter if it was already created. If not, you create the shipment in ShipStation using the `createShipment` method.

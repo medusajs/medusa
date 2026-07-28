@@ -47,7 +47,7 @@
  *         "code_provider": "token"
  *       }'
  * tags:
- *   - Verification
+ *   - Auth
  * responses:
  *   "201":
  *     description: OK

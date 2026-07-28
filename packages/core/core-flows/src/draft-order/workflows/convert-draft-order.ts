@@ -92,7 +92,7 @@ export const convertDraftOrderStep = createStep(
 
 /**
  * This workflow converts a draft order to a pending order. It's used by the
- * [Convert Draft Order to Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidconverttoorder).
+ * [Convert Draft Order to Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/convert-to-order).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * converting a draft order to a pending order.

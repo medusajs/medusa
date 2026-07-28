@@ -8432,6 +8432,7 @@ __metadata:
     pluralize: ^8.0.0
     postcss: ^8.5.10
     posthog-js: ^1.298.1
+    posthog-node: ^5.29.0
     prism-react-renderer: 2.4.0
     react: 19.2.5
     react-dom: 19.2.5

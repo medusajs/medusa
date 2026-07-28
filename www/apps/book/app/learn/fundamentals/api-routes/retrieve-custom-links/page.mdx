@@ -12,7 +12,7 @@ Often, you'll link custom data models to existing Medusa data models to implemen
 
 For example, to add brands for products, you can create a `Brand` data model in a Brand Module, then [define a link](../../module-links/page.mdx) to the [Product Module](!resources!/commerce-modules/product)'s `Product` data model.
 
-When you implement this customization, you might need to retrieve the brand of a product using the existing [Get Product API Route](!api!/admin#products_getproductsid). You can do this by passing the linked data model's name in the `fields` query parameter of the API route.
+When you implement this customization, you might need to retrieve the brand of a product using the existing [Get Product API Route](!api!/admin/products/get-a-product). You can do this by passing the linked data model's name in the `fields` query parameter of the API route.
 
 ---
 
@@ -20,14 +20,14 @@ When you implement this customization, you might need to retrieve the brand of a
 
 Most of Medusa's API routes accept a `fields` query parameter that allows you to specify the fields and relations to retrieve in the resource, such as a product.
 
-For example, to retrieve the brand of a product, you can pass the `brand` field in the `fields` query parameter of the [Get Product API Route](!api!/admin#products_getproductsid):
+For example, to retrieve the brand of a product, you can pass the `brand` field in the `fields` query parameter of the [Get Product API Route](!api!/admin/products/get-a-product):
 
 ```bash
 curl 'http://localhost:9000/admin/products/{id}?fields=*brand' \
 -H 'Authorization: Bearer {access_token}'
 ```
 
-The `fields` query parameter accepts a comma-separated list of fields and relations to retrieve. To learn more about using the `fields` query parameter, refer to the [API Reference](!api!/store#select-fields-and-relations).
+The `fields` query parameter accepts a comma-separated list of fields and relations to retrieve. To learn more about using the `fields` query parameter, refer to the [API Reference](!api!/store/select-fields-and-relations).
 
 By prefixing `brand` with an asterisk (`*`), you retrieve all the default fields of the product, including the `brand` field. If you don't include the `*` prefix, the response will only include the product's brand.
 
@@ -39,15 +39,15 @@ Some of Medusa's API routes restrict the fields and relations you can retrieve, 
 
 The API routes that restrict the fields and relations you can retrieve are:
 
-- [Customer Store API Routes](!api!/store#customers)
-- [Customer Admin API Routes](!api!/admin#customers)
-- [Product Category Admin API Routes](!api!/admin#product-categories)
+- [Customer Store API Routes](!api!/store/customers)
+- [Customer Admin API Routes](!api!/admin/customers)
+- [Product Category Admin API Routes](!api!/admin/product-categories)
 
 ### How to Override Allowed Fields and Relations
 
 For these routes, you need to override the allowed fields and relations to be retrieved. You can do this by applying a [global middleware](../middlewares/page.mdx) to those routes.
 
-For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](!api!/admin#customers_getcustomersid), create the file `src/api/middlewares.ts` with the following content:
+For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer), create the file `src/api/middlewares.ts` with the following content:
 
 <Note>
 
@@ -77,11 +77,11 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Customer Admin API Route](!api!/admin#customers_getcustomersid).
+In this example, you apply a middleware to the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer).
 
 The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `b2b_company` field.
 
-You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](!api!/admin#customers_getcustomersid):
+You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](!api!/admin/customers/get-a-customer):
 
 ```bash
 curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \

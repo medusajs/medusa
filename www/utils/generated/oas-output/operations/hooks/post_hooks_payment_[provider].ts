@@ -20,6 +20,13 @@
  * responses:
  *   "200":
  *     description: OK
+ *     content:
+ *       text/plain:
+ *         schema:
+ *           type: string
+ *           title: message
+ *           description: The 200 status code's message.
+ *           example: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -14,7 +14,7 @@ export const refreshInviteTokensWorkflowId = "refresh-invite-tokens-workflow"
 /**
  * This workflow refreshes the token of one or more user invites, updating the
  * token and the expiry date. It's used by the
- * [Refresh Invite Token Admin API Route](https://docs.medusajs.com/api/admin#invites_postinvitesidresend).
+ * [Refresh Invite Token Admin API Route](https://docs.medusajs.com/api/admin/invites/refresh-invite-token).
  *
  * This workflow is useful to trigger resending invite tokens. It emits the `invite.resent` event,
  * which you can listen to in a [Subscriber](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers).

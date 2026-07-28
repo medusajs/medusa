@@ -97,7 +97,7 @@ export type CreateOrderWorkflowInput = CreateOrderDTO & AdditionalData
 
 export const createOrdersWorkflowId = "create-orders"
 /**
- * This workflow creates an order. It's used by the [Create Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders), but
+ * This workflow creates an order. It's used by the [Create Draft Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/create-draft-order), but
  * you can also use it to create any order.
  *
  * This workflow has a hook that allows you to perform custom actions on the created order. For example, you can pass under `additional_data` custom data that

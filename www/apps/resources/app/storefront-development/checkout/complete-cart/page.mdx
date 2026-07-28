@@ -32,7 +32,7 @@ If you need to change the cart before completing it, run a separate step or work
 
 Once you finish any required actions with the third-party payment provider, you can complete the cart and place the order.
 
-To complete the cart, send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete). For example:
+To complete the cart, send a request to the [Complete Cart API route](!api!/store/carts/complete-cart). For example:
 
 <Note title="Tip">
 
@@ -174,7 +174,7 @@ export default function SystemDefaultPayment() {
 In the example above, you create a `handlePayment` function in the payment component. In this function, you:
 
 - Optionally perform any required actions with the third-party payment provider. For example, authorize the payment. For the default system payment provider, no actions are required.
-- Send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) once all actions with the third-party payment provider are performed.
+- Send a request to the [Complete Cart API route](!api!/store/carts/complete-cart) once all actions with the third-party payment provider are performed.
 - In the received response of the request, if the `type` is `cart`, it means that the cart completion failed. The error is set in the `error` response field.
 - If the `type` is `order`, it means the card was completed and the order was placed successfully. You can access the order in the `order` response field.
 - When the order is placed, you must unset the `cart_id` from the `localStorage`. You can redirect the customer to an order success page at this point. The redirection logic depends on the storefront framework you're using.

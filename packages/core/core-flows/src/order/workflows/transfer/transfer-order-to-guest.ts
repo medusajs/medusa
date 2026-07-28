@@ -85,7 +85,7 @@ export const transferOrderToGuestWorkflowId = "transfer-order-to-guest-workflow"
 /**
  * This workflow transfers an order from its current customer to a
  * guest customer, identified by email. It's executed by the
- * [Transfer Order to Guest](https://docs.medusajs.com/api/admin#orders_postordersidtransferguest)
+ * [Transfer Order to Guest](https://docs.medusajs.com/api/admin/orders/transfer-to-guest)
  * API route. If no customer exists with the given
  * email, a guest customer is created. Unlike {@link requestOrderTransferWorkflow},
  * this workflow is intended for admin users and applies the transfer immediately

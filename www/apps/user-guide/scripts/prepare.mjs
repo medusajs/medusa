@@ -1,6 +1,7 @@
 import {
   generateEditedDates,
   generateSidebar,
+  generateSitemapUrls,
   copyMdxToPublic,
 } from "build-scripts"
 import { sidebar } from "../sidebar.mjs"
@@ -9,6 +10,7 @@ import path from "path"
 async function main() {
   await generateSidebar(sidebar)
   await generateEditedDates()
+  await generateSitemapUrls()
   if (process.env.CLOUDFLARE_ENV) {
     await copyMdxToPublic({
       srcDir: path.join(process.cwd(), "app"),

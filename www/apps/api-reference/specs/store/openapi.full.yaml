@@ -636,6 +636,13 @@ paths:
       responses:
         '201':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 201 status code's message.
+                example: Created
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1379,7 +1386,7 @@ paths:
               "code": "{value}"
             }'
       tags:
-        - Verification
+        - Auth
       responses:
         '200':
           description: OK
@@ -1445,7 +1452,7 @@ paths:
               "code_provider": "token"
             }'
       tags:
-        - Verification
+        - Auth
       responses:
         '201':
           description: OK

@@ -115,7 +115,7 @@ export const removeItemReceiveReturnActionWorkflowId =
   "remove-item-receive-return-action"
 /**
  * This workflow removes an item from a return receival. It's used by the
- * [Remove a Received Item from Return Admin API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceiveitemsaction_id).
+ * [Remove a Received Item from Return Admin API Route](https://docs.medusajs.com/api/admin/returns/remove-received-item).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to remove an item from a return receival
  * in your custom flow.

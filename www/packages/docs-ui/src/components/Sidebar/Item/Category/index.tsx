@@ -11,6 +11,7 @@ import { SidebarItemTitle } from "@/components/Sidebar/Item/Title"
 import { useSidebar } from "@/providers/Sidebar"
 import clsx from "clsx"
 import { TriangleDownMini, TriangleUpMini } from "@medusajs/icons"
+import Link from "next/link"
 
 export type SidebarItemCategoryProps = {
   item: Sidebar.SidebarItemCategory
@@ -101,11 +102,25 @@ export const SidebarItemCategory = ({
           onClick={handleOpen}
           data-testid="sidebar-item-category"
         >
-          <SidebarItemTitle
-            title={item.title}
-            isTitleOneWord={isTitleOneWord}
-            className="text-compact-x-small-plus"
-          />
+          {item.path ? (
+            <Link
+              href={item.path}
+              className="flex-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <SidebarItemTitle
+                title={item.title}
+                isTitleOneWord={isTitleOneWord}
+                className="text-compact-x-small-plus"
+              />
+            </Link>
+          ) : (
+            <SidebarItemTitle
+              title={item.title}
+              isTitleOneWord={isTitleOneWord}
+              className="text-compact-x-small-plus"
+            />
+          )}
           {item.additionalElms}
           {item.badge && (
             <Badge variant={item.badge.variant}>{item.badge.text}</Badge>
