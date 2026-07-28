@@ -71,7 +71,15 @@ export const exportInventoryItemsStep = createStep(
     let page = 0
     let hasHeader = false
 
-    const fields = deduplicate(["id", "sku", ...input.select])
+    const fields = deduplicate([
+      "id",
+      "sku",
+      // The barcodes live on the linked product variant.
+      "variants.barcode",
+      "variants.ean",
+      "variants.upc",
+      ...input.select,
+    ])
     if (!fields.some((field) => field.includes("location_levels"))) {
       fields.push("location_levels.*")
     }

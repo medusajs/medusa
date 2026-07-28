@@ -5,10 +5,18 @@ import {
 } from "@medusajs/framework/types"
 import { BigNumber, upperCaseFirst } from "@medusajs/framework/utils"
 
+type ExportableInventoryItem = HttpTypes.AdminInventoryItem & {
+  /**
+   * The product variants linked to the inventory item.
+   */
+  variants?: (HttpTypes.AdminProductVariant | null)[] | null
+}
+
 /**
  * Normalizes inventory item data for export, creating one row per inventory item.
- * Each row contains the item's details, its total quantities, and the stocked,
- * reserved, incoming, and available quantities for each stock location.
+ * Each row contains the item's details, the barcodes of its linked product variant,
+ * its total quantities, and the stocked, reserved, and available quantities for
+ * each stock location.
  *
  * @param items - The array of inventory items to normalize for export.
  * @param locations - Object containing an array of stock locations used to build the per-location columns.
@@ -21,7 +29,7 @@ import { BigNumber, upperCaseFirst } from "@medusajs/framework/utils"
  * )
  */
 export const normalizeForExport = (
-  items: HttpTypes.AdminInventoryItem[],
+  items: ExportableInventoryItem[],
   { locations }: { locations: StockLocationTypes.StockLocationDTO[] }
 ): object[] => {
   return items.map((item) => {
@@ -29,12 +37,19 @@ export const normalizeForExport = (
       (item.location_levels ?? []).map((level) => [level.location_id, level])
     )
 
+    const variant = item.variants?.find(Boolean)
+
     const res = {
       ...prefixFields(item, "item"),
     } as any
 
     delete res["Item Location Levels"]
     delete res["Item Metadata"]
+    delete res["Item Variants"]
+
+    res["Item Barcode"] = variant?.barcode ?? ""
+    res["Item Ean"] = variant?.ean ?? ""
+    res["Item Upc"] = variant?.upc ?? ""
 
     for (const location of locations) {
       const level = levelsByLocation.get(location.id)

@@ -12,6 +12,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
+import { getProductFixture } from "../../../../helpers/fixtures"
 
 jest.setTimeout(50000)
 
@@ -209,6 +210,75 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             "Item Id": inventoryItem2.id,
             "Item Sku": "PANTS",
+          })
+        )
+      })
+
+      it("should include the barcodes of the linked product variant", async () => {
+        const shippingProfile = (
+          await api.post(
+            `/admin/shipping-profiles`,
+            { name: "Test", type: "default" },
+            adminHeaders
+          )
+        ).data.shipping_profile
+
+        await api.post(
+          "/admin/products",
+          getProductFixture({
+            title: "Barcode product",
+            shipping_profile_id: shippingProfile.id,
+            variants: [
+              {
+                title: "Barcode variant",
+                sku: "BARCODE-SHIRT",
+                barcode: "123456789012",
+                ean: "4006381333931",
+                upc: "036000291452",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "large", color: "green" },
+              },
+            ],
+          }),
+          adminHeaders
+        )
+
+        const inventoryItems = (
+          await api.get("/admin/inventory-items?q=BARCODE-SHIRT", adminHeaders)
+        ).data.inventory_items
+
+        expect(inventoryItems).toHaveLength(1)
+
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
+          eventBus
+        )
+
+        const exportRes = await api.post(
+          `/admin/inventory-items/export?id=${inventoryItems[0].id}`,
+          {},
+          adminHeaders
+        )
+
+        expect(exportRes.data.transaction_id).toBeTruthy()
+
+        await subscriberExecution
+        const notifications = (
+          await api.get("/admin/notifications", adminHeaders)
+        ).data.notifications
+
+        const exportedFileContents = await getCSVContents(
+          notifications[0].data.file.url
+        )
+
+        expect(exportedFileContents).toHaveLength(1)
+        expect(exportedFileContents[0]).toEqual(
+          expect.objectContaining({
+            "Item Sku": "BARCODE-SHIRT",
+            // csv2json parses digit-only values back as numbers
+            "Item Barcode": 123456789012,
+            "Item Ean": 4006381333931,
+            "Item Upc": "036000291452",
           })
         )
       })
