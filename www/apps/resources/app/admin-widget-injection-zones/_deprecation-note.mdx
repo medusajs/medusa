@@ -1,0 +1,9 @@
+<Note title="Deprecated Suffixes">
+
+Before [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2), injection zone names ended with `.before` or `.after` to place the widget at the top or the bottom of the zone. These suffixes are deprecated, and you should use the zone name without the suffix instead.
+
+A widget is now added at the end of the zone it's injected into. Admin users can then change its placement, including moving it to the top of the page or in between the page's core components, using [Layout Configurations](!user-guide!/tips/layout-configurations).
+
+Widgets that still use the `.before` or `.after` suffixes keep rendering, but the suffix no longer changes their placement.
+
+</Note>

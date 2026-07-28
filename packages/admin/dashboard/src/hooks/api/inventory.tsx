@@ -66,6 +66,26 @@ export const useInventoryItem = (
   return { ...data, ...rest }
 }
 
+export const useExportInventoryItems = (
+  options?: UseMutationOptions<
+    HttpTypes.AdminExportInventoryItemResponse,
+    FetchError,
+    {
+      payload?: HttpTypes.AdminExportInventoryItemRequest
+      query?: HttpTypes.AdminInventoryItemsParams
+    }
+  >
+) => {
+  return useMutation({
+    mutationFn: ({ payload = {}, query }) =>
+      sdk.admin.inventoryItem.export(payload, query),
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useCreateInventoryItem = (
   options?: UseMutationOptions<
     HttpTypes.AdminInventoryItemResponse,

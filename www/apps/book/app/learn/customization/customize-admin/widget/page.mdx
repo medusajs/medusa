@@ -76,7 +76,7 @@ export const highlights = [
   ["19", "fields", "Specify the product's brand to be retrieved."],
   ["23", "brandName", "Get brand name from the query request."],
   ["53", "defineWidgetConfig", "Export the widget's configurations"],
-  ["54", "zone", "Show the widget at the top of the product details page."]
+  ["54", "zone", "Show the widget in the product details page."]
 ]
 
 ```tsx title="src/admin/widgets/product-brand.tsx" highlights={highlights}
@@ -133,7 +133,7 @@ const ProductBrandWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductBrandWidget
@@ -144,7 +144,7 @@ A widget's file must export:
 - A React component to be rendered in the specified injection zone. The component must be the file's default export.
 - A configuration object created with `defineWidgetConfig` from the Admin Extension SDK. The function receives an object as a parameter that has a `zone` property, whose value is the zone to inject the widget to.
 
-Since the widget is injected at the top of the product details page, the widget receives the product's details as a parameter.
+Since the widget is injected into the product details page, the widget receives the product's details as a parameter.
 
 In the widget, you use [Tanstack (React) Query](https://tanstack.com/query/latest) to query the Medusa server. Tanstack Query provides features like asynchronous state management and optimized caching. In the `queryFn` function that executes the query, you use the JS SDK to send a request to the [Get Product API Route](!api!/admin/products/get-a-product), passing `+brand.*` in the `fields` query parameter to retrieve the product's brand.
 
