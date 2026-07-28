@@ -3026,7 +3026,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -3036,7 +3036,7 @@ Learn more about widgets in [this documentation](!docs!/learn/fundamentals/admin
 
 ### Receive Details Props in Widgets
 
-Widgets created in a details page, such as widgets in the `product.details.before` injection zone, receive a prop of the data of the details page (for example, the product):
+Widgets created in a details page, such as widgets in the `product.details` injection zone, receive a prop of the data of the details page (for example, the product):
 
 ```tsx highlights={[["10", "data"]]}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
@@ -3063,7 +3063,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -3203,7 +3203,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -3231,7 +3231,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
