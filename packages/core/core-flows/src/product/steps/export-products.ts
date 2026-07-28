@@ -70,7 +70,10 @@ export const exportProductsStep = createStep(
     const fields = deduplicate(["id", "handle", ...input.select])
     const { sales_channel_id, ..._filters } = input.filter ?? {}
 
-    // Pass 1: Collect unified keys across all batches
+    // Pass 1: Collect unified keys across all batches.
+    // Note: This two-pass approach doubles the DB query count for the export, 
+    // but it is necessary to guarantee a consistent CSV schema when dealing with 
+    // dynamically inferred columns across paginated batches.
     const allKeys = new Set<string>()
     while (true) {
       if (!!sales_channel_id) {
