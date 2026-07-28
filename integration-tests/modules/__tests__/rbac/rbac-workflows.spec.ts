@@ -4,12 +4,7 @@ import {
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { IRbacModuleService, MedusaContainer } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  definePolicies,
-  Modules,
-  Policy,
-} from "@medusajs/utils"
+import { definePolicies, Modules, Policy } from "@medusajs/utils"
 
 jest.setTimeout(60000)
 
@@ -834,9 +829,6 @@ medusaIntegrationTestRunner({
 
         it("should prevent user from assigning policies they don't have access to", async () => {
           const userModule = appContainer.resolve(Modules.USER)
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.LINK
-          )
 
           // Create policies
           const policiesWorkflow = createRbacPoliciesWorkflow(appContainer)
@@ -887,14 +879,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: user.id,
+          await rbacService.createRbacRoleAssignments([
+            {
+              role_id: limitedRoles[0].id,
+              reference: "user",
+              reference_id: user.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: limitedRoles[0].id,
-            },
-          })
+          ])
 
           // Try to create a role with write permission
           let error: any
@@ -922,9 +913,6 @@ medusaIntegrationTestRunner({
 
         it("should allow user to create roles with policies they have access to", async () => {
           const userModule = appContainer.resolve(Modules.USER)
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.LINK
-          )
 
           // Create policies
           const policiesWorkflow = createRbacPoliciesWorkflow(appContainer)
@@ -969,14 +957,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: user.id,
+          await rbacService.createRbacRoleAssignments([
+            {
+              role_id: adminRoles[0].id,
+              reference: "user",
+              reference_id: user.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: adminRoles[0].id,
-            },
-          })
+          ])
 
           // User should be able to create a role with read permission (which they have)
           const { result: newRoles } = await rolesWorkflow.run({
@@ -1004,9 +991,6 @@ medusaIntegrationTestRunner({
 
         it("should allow user with inherited permissions to create roles", async () => {
           const userModule = appContainer.resolve(Modules.USER)
-          const remoteLink = appContainer.resolve(
-            ContainerRegistrationKeys.LINK
-          )
 
           // Create policies
           const policiesWorkflow = createRbacPoliciesWorkflow(appContainer)
@@ -1064,14 +1048,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: user.id,
+          await rbacService.createRbacRoleAssignments([
+            {
+              role_id: managerRoles[0].id,
+              reference: "user",
+              reference_id: user.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: managerRoles[0].id,
-            },
-          })
+          ])
 
           // User should be able to create a role with read permission (inherited)
           const { result: newRoles } = await rolesWorkflow.run({

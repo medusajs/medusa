@@ -1,3 +1,4 @@
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { IRbacModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
@@ -28,6 +29,10 @@ export const getInviteRolesStepId = "get-invite-roles-step"
 export const getInviteRolesStep = createStep(
   getInviteRolesStepId,
   async (input: GetInviteRolesStepInput, { container }) => {
+    if (!MedusaModule.isInstalled(Modules.RBAC)) {
+      return new StepResponse([])
+    }
+
     const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
     const assignments = await service.listRbacRoleAssignments({

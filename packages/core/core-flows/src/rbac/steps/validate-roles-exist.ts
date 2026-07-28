@@ -1,3 +1,4 @@
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
@@ -19,7 +20,7 @@ export const validateRolesExistStepId = "validate-roles-exist-step"
 export const validateRolesExistStep = createStep(
   validateRolesExistStepId,
   async (roleIds: string[], { container }) => {
-    if (!roleIds.length) {
+    if (!roleIds.length || !MedusaModule.isInstalled(Modules.RBAC)) {
       return new StepResponse(undefined)
     }
 

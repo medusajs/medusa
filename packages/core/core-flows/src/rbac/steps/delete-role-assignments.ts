@@ -2,6 +2,7 @@ import { IRbacModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { invalidateRoleAssignmentCache } from "../utils/invalidate-role-assignment-cache"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 /**
  * The filters identifying the role assignments to delete.
@@ -32,11 +33,14 @@ export const deleteRoleAssignmentsStepId = "delete-role-assignments"
 export const deleteRoleAssignmentsStep = createStep(
   deleteRoleAssignmentsStepId,
   async (data: DeleteRoleAssignmentsStepInput, { container }) => {
-    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
-
-    if (!data?.reference_id?.length) {
+    if (
+      !data?.reference_id?.length ||
+      !MedusaModule.isInstalled(Modules.RBAC)
+    ) {
       return new StepResponse([], [])
     }
+
+    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
     const filters: {
       reference: string

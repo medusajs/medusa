@@ -2,6 +2,7 @@ import { IRbacModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { invalidateRoleAssignmentCache } from "../utils/invalidate-role-assignment-cache"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 /**
  * A single role assignment to create.
@@ -38,11 +39,11 @@ export const createRoleAssignmentsStepId = "create-role-assignments"
 export const createRoleAssignmentsStep = createStep(
   createRoleAssignmentsStepId,
   async (data: CreateRoleAssignmentsStepInput, { container }) => {
-    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
-
-    if (!data?.length) {
+    if (!data?.length || !MedusaModule.isInstalled(Modules.RBAC)) {
       return new StepResponse([], [])
     }
+
+    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
     const created = await service.createRbacRoleAssignments(
       data.map((assignment) => ({
