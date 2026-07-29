@@ -231,6 +231,14 @@ export const rule = createRule<[], MessageIds>({
 
 export default rule
 
+function tryOrDefault<T>(fn: () => T, defaultValue: T): T {
+  try {
+    return fn()
+  } catch {
+    return defaultValue
+  }
+}
+
 /**
  * Build a map of internal module events to their workflow-event equivalent, if any.
  * Only enums whose value is in the internal `{module}.{data-model}.{action}`
@@ -238,7 +246,7 @@ export default rule
  */
 function buildModuleEventMap(): Map<string, string | null> {
   const map = new Map<string, string | null>()
-  const exports = require(FRAMEWORK_UTILS_SOURCE)
+  const exports = tryOrDefault(() => require(FRAMEWORK_UTILS_SOURCE), null)
   if (!exports) {
     return map
   }
