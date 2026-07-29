@@ -102,6 +102,14 @@ export type OrderEditRequestWorkflowInput = {
    * The ID of the user requesting the edit.
    */
   requested_by?: string
+  /**
+   * Whether to prevent sending the customer a notification about the requested
+   * order edit. The value is passed to the emitted `order-edit.requested` event,
+   * allowing subscribers to check it before sending a notification.
+   *
+   * @since 2.19.0
+   */
+  no_notification?: boolean
 }
 
 export const requestOrderEditRequestWorkflowId = "order-edit-request"
@@ -173,11 +181,12 @@ export const requestOrderEditRequestWorkflow = createWorkflow(
     updateOrderChangesStep(updateOrderChangesData)
 
     const eventData = transform(
-      { order, orderChange },
-      ({ order, orderChange }) => {
+      { input, order, orderChange },
+      ({ input, order, orderChange }) => {
         return {
           order_id: order.id,
           actions: orderChange.actions,
+          no_notification: input.no_notification,
         }
       }
     )

@@ -279,6 +279,7 @@ export const OrderEditWorkflowEvents = {
    * {
    *   order_id, // The ID of the order
    *   actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+   *   no_notification, // (boolean) Whether the customer shouldn't be notified of the requested order edit. Available since v2.19.0.
    * }
    * ```
    */

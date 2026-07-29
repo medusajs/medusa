@@ -8,6 +8,7 @@ import {
   AdminPostOrderEditsAddItemsReqSchema,
   AdminPostOrderEditsItemsActionReqSchema,
   AdminPostOrderEditsReqSchema,
+  AdminPostOrderEditsRequestReqSchema,
   AdminPostOrderEditsShippingActionReqSchema,
   AdminPostOrderEditsShippingReqSchema,
   AdminPostOrderEditsUpdateItemQuantityReqSchema,
@@ -141,7 +142,9 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/order-edits/:id/request",
-    middlewares: [],
+    middlewares: [
+      validateAndTransformBody(AdminPostOrderEditsRequestReqSchema),
+    ],
     policies: [
       {
         resource: Entities.order_change,

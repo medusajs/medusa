@@ -4,6 +4,7 @@ import {
   ContainerRegistrationKeys,
   Modules,
   OrderChangeStatus,
+  OrderEditWorkflowEvents,
   ProductStatus,
   PromotionStatus,
   PromotionType,
@@ -1081,6 +1082,54 @@ medusaIntegrationTestRunner({
         expect(orderChangesResult.data.order_changes.length).toEqual(1)
         expect(orderChangesResult.data.order_changes[0].status).toEqual(
           OrderChangeStatus.CONFIRMED
+        )
+      })
+
+      it("should pass no_notification to the order edit requested event", async () => {
+        const eventBus = container.resolve(Modules.EVENT_BUS)
+        const requestedSubscriber = jest.fn()
+
+        eventBus.subscribe(
+          OrderEditWorkflowEvents.REQUESTED,
+          requestedSubscriber
+        )
+
+        const orderId = order.id
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: orderId, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/shipping-method`,
+          { shipping_option_id: shippingOption.id, custom_amount: 5 },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/request`,
+          { no_notification: true },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        await new Promise((resolve) => setTimeout(resolve, 100))
+
+        expect(requestedSubscriber.mock.calls[0][0].data).toMatchObject({
+          order_id: orderId,
+          no_notification: true,
+        })
+
+        eventBus.unsubscribe(
+          OrderEditWorkflowEvents.REQUESTED,
+          requestedSubscriber
         )
       })
     })
