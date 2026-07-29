@@ -27,7 +27,7 @@ function getOrderChangesData({
   input,
   orderChange,
 }: {
-  input: { requested_by?: string }
+  input: { requested_by?: string; no_notification?: boolean }
   orderChange: { id: string }
 }) {
   return transform({ input, orderChange }, ({ input, orderChange }) => {
@@ -37,6 +37,7 @@ function getOrderChangesData({
         status: OrderChangeStatus.REQUESTED,
         requested_at: new Date(),
         requested_by: input.requested_by,
+        no_notification: input.no_notification,
       },
     ]
   })
@@ -103,9 +104,10 @@ export type OrderEditRequestWorkflowInput = {
    */
   requested_by?: string
   /**
-   * Whether to prevent sending the customer a notification about the requested
-   * order edit. The value is passed to the emitted `order-edit.requested` event,
-   * allowing subscribers to check it before sending a notification.
+   * Whether to prevent sending the customer a notification about the order edit.
+   * The value is stored on the order change and passed to the emitted
+   * `order-edit.requested` event, allowing subscribers to check it before sending
+   * a notification.
    *
    * @since 2.19.0
    */

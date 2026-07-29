@@ -3419,6 +3419,7 @@ export default class OrderModuleService
         "description",
         "internal_note",
         "carry_over_promotions",
+        "no_notification",
       ],
       relations: [] as string[],
       order: {},

@@ -1085,13 +1085,18 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should pass no_notification to the order edit requested event", async () => {
+      it("should store no_notification on the order change and pass it to the order edit events", async () => {
         const eventBus = container.resolve(Modules.EVENT_BUS)
         const requestedSubscriber = jest.fn()
+        const confirmedSubscriber = jest.fn()
 
         eventBus.subscribe(
           OrderEditWorkflowEvents.REQUESTED,
           requestedSubscriber
+        )
+        eventBus.subscribe(
+          OrderEditWorkflowEvents.CONFIRMED,
+          confirmedSubscriber
         )
 
         const orderId = order.id
@@ -1108,16 +1113,29 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        await api.post(
+        const requestResult = await api.post(
           `/admin/order-edits/${orderId}/request`,
           { no_notification: true },
           adminHeaders
+        )
+
+        expect(requestResult.data.order_preview.order_change).toEqual(
+          expect.objectContaining({ no_notification: true })
         )
 
         await api.post(
           `/admin/order-edits/${orderId}/confirm`,
           {},
           adminHeaders
+        )
+
+        const orderChangesResult = await api.get(
+          `/admin/orders/${orderId}/changes?change_type=edit`,
+          adminHeaders
+        )
+
+        expect(orderChangesResult.data.order_changes[0]).toEqual(
+          expect.objectContaining({ no_notification: true })
         )
 
         await new Promise((resolve) => setTimeout(resolve, 100))
@@ -1127,9 +1145,18 @@ medusaIntegrationTestRunner({
           no_notification: true,
         })
 
+        expect(confirmedSubscriber.mock.calls[0][0].data).toMatchObject({
+          order_id: orderId,
+          no_notification: true,
+        })
+
         eventBus.unsubscribe(
           OrderEditWorkflowEvents.REQUESTED,
           requestedSubscriber
+        )
+        eventBus.unsubscribe(
+          OrderEditWorkflowEvents.CONFIRMED,
+          confirmedSubscriber
         )
       })
     })

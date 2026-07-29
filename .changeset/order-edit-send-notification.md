@@ -3,6 +3,7 @@
 "@medusajs/dashboard": patch
 "@medusajs/js-sdk": minor
 "@medusajs/medusa": patch
+"@medusajs/order": patch
 "@medusajs/types": patch
 "@medusajs/utils": patch
 ---
