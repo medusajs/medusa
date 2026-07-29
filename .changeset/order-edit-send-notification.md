@@ -8,4 +8,4 @@
 "@medusajs/utils": patch
 ---
 
-feat(core-flows,dashboard,js-sdk, medusa,types,utils): support no_notification when requesting an order edit
+feat(core-flows,dashboard,js-sdk, medusa,types,utils): support notification preferences for order edits
