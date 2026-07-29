@@ -437,6 +437,39 @@ export type ProjectConfigOptions = {
        */
       ssl?: boolean | ConnectionOptions
     }
+    /**
+     * A function that returns a password (or token) for database authentication.
+     * When provided, the connection URL is parsed into discrete fields
+     * (host, port, user, database) and passed without `connectionString`,
+     * so pg invokes this function on every new pool connection.
+     *
+     * This is required for IAM-based database authentication (e.g. AWS RDS)
+     * where short-lived tokens must be minted per connection.
+     *
+     * @example
+     * ```ts title="medusa-config.ts"
+     * import { Signer } from "@aws-sdk/rds-signer"
+     *
+     * const signer = new Signer({ hostname: host, port, username: user })
+     *
+     * export default defineConfig({
+     *   projectConfig: {
+     *     databaseUrl: `postgres://${user}@${host}:${port}/${database}`,
+     *     databaseDriverOptions: {
+     *       dynamicPassword: () => signer.getAuthToken(),
+     *       connection: { ssl: { rejectUnauthorized: true } },
+     *     },
+     *   },
+     * })
+     * ```
+     */
+    dynamicPassword?: () => Promise<string>
+    /**
+     * A function that checks whether the current connection's credentials
+     * have expired. When it returns `true`, knex destroys the connection
+     * and creates a new one (which invokes `dynamicPassword` again).
+     */
+    expirationChecker?: () => boolean
   }
 
   /**
