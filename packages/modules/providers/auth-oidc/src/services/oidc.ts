@@ -11,7 +11,7 @@ import {
   AbstractAuthModuleProvider,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { OidcEngine } from "../engine"
+import { assertSecureUrl, OidcEngine } from "../engine"
 
 type InjectedDependencies = {
   logger: Logger
@@ -37,7 +37,7 @@ export class OidcAuthService extends AbstractAuthModuleProvider {
       )
     }
 
-    OidcAuthService.assertSecureIssuer_(options.issuer)
+    assertSecureUrl(options.issuer, "issuer")
 
     if (!options.client_id) {
       throw new MedusaError(
@@ -86,11 +86,14 @@ export class OidcAuthService extends AbstractAuthModuleProvider {
 
     const callbackUrl = body?.callback_url ?? this.config_.callback_url
 
-    const allowedCallbackUrls = this.config_.allowed_callback_urls ?? [
-      this.config_.callback_url,
-    ]
+    // The allowlist is opt-in: when it isn't configured, validating the callback
+    // URL is left entirely to the identity provider.
+    const allowedCallbackUrls = this.config_.allowed_callback_urls
 
-    if (!allowedCallbackUrls.includes(callbackUrl)) {
+    if (
+      allowedCallbackUrls?.length &&
+      !allowedCallbackUrls.includes(callbackUrl)
+    ) {
       this.logger_?.warn(
         `[auth-oidc] Rejected authentication with a callback URL (${callbackUrl}) that is not in the allowlist`
       )
@@ -137,7 +140,9 @@ export class OidcAuthService extends AbstractAuthModuleProvider {
     const body: Record<string, string> = req.body ?? {}
 
     if (query.error) {
-      this.logger_?.error(
+      // Not an application fault (e.g. the user canceled, or `access_denied`),
+      // so it's only logged for debugging purposes.
+      this.logger_?.debug(
         `[auth-oidc] Identity provider returned an error on callback: ${query.error}`
       )
       return { success: false, error: GENERIC_AUTH_ERROR }
@@ -197,34 +202,6 @@ export class OidcAuthService extends AbstractAuthModuleProvider {
         `[auth-oidc] Could not validate authentication callback: ${error.message}`
       )
       return { success: false, error: GENERIC_AUTH_ERROR }
-    }
-  }
-
-  private static assertSecureIssuer_(value: string): void {
-    let url: URL
-    try {
-      url = new URL(value)
-    } catch (e) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "OIDC 'issuer' must be a valid URL"
-      )
-    }
-
-    const isLocalhost =
-      url.hostname === "localhost" ||
-      url.hostname === "127.0.0.1" ||
-      url.hostname === "::1" ||
-      url.hostname === "[::1]"
-
-    if (
-      url.protocol !== "https:" &&
-      !(url.protocol === "http:" && isLocalhost)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "OIDC 'issuer' must use https (http is only allowed for localhost)"
-      )
     }
   }
 }

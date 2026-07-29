@@ -1,6 +1,6 @@
 import { MedusaError } from "@medusajs/framework/utils"
 import { Issuer } from "openid-client"
-import { clearOidcDiscoveryCache, OidcEngine } from "../../src/engine/engine"
+import { OidcEngine } from "../../src/engine/engine"
 import { OidcEngineOptions } from "../../src/engine/types"
 
 const ISSUER = "https://idp.example.com"
@@ -24,7 +24,6 @@ const baseOptions = (
 
 describe("OidcEngine", () => {
   beforeEach(() => {
-    clearOidcDiscoveryCache()
     jest.restoreAllMocks()
   })
 
@@ -36,9 +35,9 @@ describe("OidcEngine", () => {
     })
 
     it("throws when client_id is missing", () => {
-      expect(
-        () => new OidcEngine({ ...baseOptions(), client_id: "" })
-      ).toThrow(/requires a 'client_id'/)
+      expect(() => new OidcEngine({ ...baseOptions(), client_id: "" })).toThrow(
+        /requires a 'client_id'/
+      )
     })
 
     it("throws when callback_url is missing", () => {
@@ -65,6 +64,27 @@ describe("OidcEngine", () => {
             })
           )
       ).not.toThrow()
+    })
+
+    it("rejects an http issuer on localhost in production", () => {
+      const nodeEnv = process.env.NODE_ENV
+      process.env.NODE_ENV = "production"
+
+      try {
+        expect(
+          () =>
+            new OidcEngine(
+              baseOptions({
+                issuer: "http://localhost:4000",
+                authorization_endpoint: "http://localhost:4000/authorize",
+                token_endpoint: "http://localhost:4000/token",
+                jwks_uri: "http://localhost:4000/jwks",
+              })
+            )
+        ).toThrow(/must use https/)
+      } finally {
+        process.env.NODE_ENV = nodeEnv
+      }
     })
 
     it("rejects a non-https endpoint override", () => {
@@ -131,9 +151,9 @@ describe("OidcEngine", () => {
 
     it("throws when no state is provided", async () => {
       const engine = new OidcEngine(baseOptions())
-      await expect(
-        engine.buildAuthorizationUrl({ state: "" })
-      ).rejects.toThrow(/'state' value is required/)
+      await expect(engine.buildAuthorizationUrl({ state: "" })).rejects.toThrow(
+        /'state' value is required/
+      )
     })
   })
 
@@ -155,14 +175,12 @@ describe("OidcEngine", () => {
 
       // Simulate a token endpoint response without an id_token, which happens
       // when the 'openid' scope isn't requested.
-      jest
-        .spyOn(engine as any, "getClient_")
-        .mockResolvedValue({
-          callback: jest.fn().mockResolvedValue({
-            access_token: "access-token",
-            token_type: "Bearer",
-          }),
-        })
+      jest.spyOn(engine as any, "getClient_").mockResolvedValue({
+        callback: jest.fn().mockResolvedValue({
+          access_token: "access-token",
+          token_type: "Bearer",
+        }),
+      })
 
       const error = await engine
         .exchangeCode({
@@ -269,71 +287,11 @@ describe("OidcEngine", () => {
         callback_url: CALLBACK_URL,
       })
 
-      await expect((engine as any).getClient_()).rejects.toThrow(
-        /network down/
-      )
+      await expect((engine as any).getClient_()).rejects.toThrow(/network down/)
 
       // The failure isn't memoized: the next call retries and succeeds.
       const client = await (engine as any).getClient_()
       expect(client).toBeDefined()
-    })
-  })
-
-  describe("discovery caching", () => {
-    const discoveredIssuer = () =>
-      new Issuer({
-        issuer: ISSUER,
-        authorization_endpoint: AUTHORIZATION_ENDPOINT,
-        token_endpoint: TOKEN_ENDPOINT,
-        jwks_uri: JWKS_URI,
-      })
-
-    it("discovers once and caches the result across calls and instances", async () => {
-      const discoverSpy = jest
-        .spyOn(Issuer, "discover")
-        .mockResolvedValue(discoveredIssuer())
-
-      // No endpoint overrides -> discovery is used.
-      const options: OidcEngineOptions = {
-        issuer: ISSUER,
-        client_id: "client-123",
-        client_secret: "super-secret",
-        callback_url: CALLBACK_URL,
-      }
-
-      const engine = new OidcEngine(options)
-      await engine.buildAuthorizationUrl({ state: "one" })
-      await engine.buildAuthorizationUrl({ state: "two" })
-
-      // A second engine for the same issuer reuses the cached discovery.
-      const otherEngine = new OidcEngine(options)
-      await otherEngine.buildAuthorizationUrl({ state: "three" })
-
-      expect(discoverSpy).toHaveBeenCalledTimes(1)
-    })
-
-    it("re-discovers after the cache is cleared", async () => {
-      const discoverSpy = jest
-        .spyOn(Issuer, "discover")
-        .mockResolvedValue(discoveredIssuer())
-
-      const options: OidcEngineOptions = {
-        issuer: ISSUER,
-        client_id: "client-123",
-        callback_url: CALLBACK_URL,
-      }
-
-      const engine = new OidcEngine(options)
-      await engine.buildAuthorizationUrl({ state: "one" })
-
-      clearOidcDiscoveryCache()
-
-      // The cached client is still valid, so a new engine is needed to force a
-      // fresh discovery.
-      const otherEngine = new OidcEngine(options)
-      await otherEngine.buildAuthorizationUrl({ state: "two" })
-
-      expect(discoverSpy).toHaveBeenCalledTimes(2)
     })
   })
 

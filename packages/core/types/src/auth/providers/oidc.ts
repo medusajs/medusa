@@ -43,7 +43,8 @@ export interface OidcAuthProviderOptions {
   /**
    * The identity provider's issuer URL. It's used both to resolve the discovery
    * document at `{issuer}/.well-known/openid-configuration` and to validate the
-   * `iss` claim of returned ID tokens. Must be an `https` URL (except for `localhost`).
+   * `iss` claim of returned ID tokens. Must be an `https` URL, except for
+   * `localhost` outside of production.
    */
   issuer: string
 
@@ -70,7 +71,9 @@ export interface OidcAuthProviderOptions {
    * `callback_url` (through the request's `callback_url` body field). Any override
    * that isn't in this list is rejected.
    *
-   * @defaultValue `[callback_url]`
+   * This check is opt-in and complements the identity provider's own redirect URI
+   * validation. If the option isn't set, any callback URL is accepted and the
+   * validation is left entirely to the identity provider.
    */
   allowed_callback_urls?: string[]
 

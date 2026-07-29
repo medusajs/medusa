@@ -1,5 +1,5 @@
 import { ICacheService } from "@medusajs/framework/types"
-import { isDefined, MedusaError } from "@medusajs/framework/utils"
+import { isDefined, isProduction, MedusaError } from "@medusajs/framework/utils"
 import {
   Client,
   custom,
@@ -36,18 +36,35 @@ const DISCOVERY_CACHE_KEY_PREFIX = "oidc:discovery:"
 // token exchange) so an IdP outage degrades to a login failure rather than a hang.
 custom.setHttpOptionsDefaults({ timeout: DEFAULT_HTTP_TIMEOUT_MS })
 
-type DiscoveryCacheEntry = {
-  metadata: IssuerMetadata
-  expiresAt: number
-}
-
-const discoveryCache = new Map<string, DiscoveryCacheEntry>()
-
 /**
- * @internal exported for tests only.
+ * Asserts that a URL is `https`. Outside of production, `http` is allowed for
+ * localhost so local development and testing remain possible.
  */
-export const clearOidcDiscoveryCache = (): void => {
-  discoveryCache.clear()
+export const assertSecureUrl = (value: string, label: string): void => {
+  let url: URL
+  try {
+    url = new URL(value)
+  } catch (e) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `OIDC '${label}' must be a valid URL`
+    )
+  }
+
+  const isLocalhost =
+    url.hostname === "localhost" ||
+    url.hostname === "127.0.0.1" ||
+    url.hostname === "::1" ||
+    url.hostname === "[::1]"
+
+  const allowsHttp = isLocalhost && !isProduction()
+
+  if (url.protocol !== "https:" && !(url.protocol === "http:" && allowsHttp)) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `OIDC '${label}' must use https (http is only allowed for localhost outside of production)`
+    )
+  }
 }
 
 /**
@@ -93,16 +110,14 @@ export class OidcEngine {
       )
     }
 
-    // Only https issuers are accepted; http is allowed for localhost to keep
-    // local development and testing possible.
-    this.assertSecureUrl_(options.issuer, "issuer")
+    assertSecureUrl(options.issuer, "issuer")
     for (const [key, value] of [
       ["authorization_endpoint", options.authorization_endpoint],
       ["token_endpoint", options.token_endpoint],
       ["jwks_uri", options.jwks_uri],
     ] as const) {
       if (value) {
-        this.assertSecureUrl_(value, key)
+        assertSecureUrl(value, key)
       }
     }
 
@@ -361,66 +376,20 @@ export class OidcEngine {
   }
 
   protected async discoverMetadata_(): Promise<IssuerMetadata> {
-    if (this.cache_) {
-      const key = `${DISCOVERY_CACHE_KEY_PREFIX}${this.options_.issuer}`
+    const key = `${DISCOVERY_CACHE_KEY_PREFIX}${this.options_.issuer}`
 
-      const cached = await this.cache_.get<IssuerMetadata>(key)
-      if (cached) {
-        return cached
-      }
-
-      const metadata = (await Issuer.discover(this.options_.issuer)).metadata
-      await this.cache_.set(
-        key,
-        metadata,
-        Math.floor(this.discoveryCacheTtlMs_ / 1000)
-      )
-
-      return metadata
-    }
-
-    // Fallback: process-local cache when no cache module is available
-    const now = Date.now()
-    const cached = discoveryCache.get(this.options_.issuer)
-    if (cached && cached.expiresAt > now) {
-      return cached.metadata
+    const cached = await this.cache_?.get<IssuerMetadata>(key)
+    if (cached) {
+      return cached
     }
 
     const metadata = (await Issuer.discover(this.options_.issuer)).metadata
-
-    discoveryCache.set(this.options_.issuer, {
+    await this.cache_?.set(
+      key,
       metadata,
-      expiresAt: now + this.discoveryCacheTtlMs_,
-    })
+      Math.floor(this.discoveryCacheTtlMs_ / 1000)
+    )
 
     return metadata
-  }
-
-  protected assertSecureUrl_(value: string, label: string): void {
-    let url: URL
-    try {
-      url = new URL(value)
-    } catch (e) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `OIDC '${label}' must be a valid URL`
-      )
-    }
-
-    const isLocalhost =
-      url.hostname === "localhost" ||
-      url.hostname === "127.0.0.1" ||
-      url.hostname === "::1" ||
-      url.hostname === "[::1]"
-
-    if (
-      url.protocol !== "https:" &&
-      !(url.protocol === "http:" && isLocalhost)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `OIDC '${label}' must use https (http is only allowed for localhost)`
-      )
-    }
   }
 }

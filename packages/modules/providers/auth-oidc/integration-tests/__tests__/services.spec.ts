@@ -38,6 +38,7 @@ const createLogger = (): Logger =>
     error: jest.fn(),
     warn: jest.fn(),
     info: jest.fn(),
+    debug: jest.fn(),
   } as unknown as Logger)
 
 const createAuthIdentityService = (): MockAuthIdentityService => ({
@@ -203,7 +204,9 @@ describe("OidcAuthService", () => {
     })
 
     it("rejects a body callback_url that is not in the allowlist without echoing it", async () => {
-      const { service, engine } = createService()
+      const { service, engine } = createService(
+        baseOptions({ allowed_callback_urls: [CALLBACK_URL] })
+      )
       const authIdentityService = createAuthIdentityService()
 
       const result = await service.authenticate(
@@ -217,6 +220,28 @@ describe("OidcAuthService", () => {
       expect(result.error).not.toContain("evil.example.com")
       expect(engine.buildAuthorizationUrl).not.toHaveBeenCalled()
       expect(authIdentityService.setState).not.toHaveBeenCalled()
+    })
+
+    it("accepts any body callback_url when no allowlist is configured", async () => {
+      const override = "https://other.example.com/callback"
+      const { service, engine } = createService()
+      const authIdentityService = createAuthIdentityService()
+
+      engine.buildAuthorizationUrl.mockResolvedValue({
+        url: "https://idp.example.com/authorize",
+        nonce: "n",
+        codeVerifier: "v",
+      })
+
+      const result = await service.authenticate(
+        { body: { callback_url: override } } as unknown as AuthenticationInput,
+        authIdentityService as any
+      )
+
+      expect(result.success).toBe(true)
+      expect(engine.buildAuthorizationUrl).toHaveBeenCalledWith(
+        expect.objectContaining({ callbackUrl: override })
+      )
     })
   })
 
