@@ -55,7 +55,7 @@ export interface StoreShippingOption {
    * The type of the shipping option's price:
    *
    * - `flat`: the price is a fixed amount available in the `amount` property.
-   * - `calculated`: the price is calculated during checkout by the shipping option's fulfillment provider. Retrieve the price using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
+   * - `calculated`: the price is calculated during checkout by the shipping option's fulfillment provider. Retrieve the price using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store/shipping-options/calculate-shipping-option-price).
    */
   price_type: ShippingOptionPriceType
   /**

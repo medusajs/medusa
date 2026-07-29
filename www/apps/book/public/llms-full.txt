@@ -1933,6 +1933,29 @@ module.exports = defineConfig({
 
 When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable` to the end of the [databaseUrl](#databaseUrl) as well.
 
+#### AWS RDS IAM Database Authentication
+
+To use a dynamic password (for example, with AWS RDS IAM authentication), pass a `dynamicPassword` function that returns a fresh token for each new connection:
+
+This option is available since Medusa [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0)
+
+```ts title="medusa-config.ts"
+import { generateAuthToken } from "./src/utils/rds-auth"
+
+module.exports = defineConfig({
+  projectConfig: {
+    databaseDriverOptions: {
+      dynamicPassword: async () => generateAuthToken(),
+      expirationChecker: () => {
+        return tokenHasExpired()
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
 #### Properties
 
 - connection: (\`object\`) An object of connection options.
@@ -1952,6 +1975,8 @@ When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable`
     - reapIntervalMillis: (\`number\`) How often to check for idle connections that can be released.
 
     - createRetryIntervalMillis: (\`number\`) How long to wait before retrying to create a connection after a failure.
+- dynamicPassword: (\`() => string\` | \`() => Promise\<string>\`) A function that returns a password (or a promise resolving to a password) called for each new database connection. Use this for short-lived credentials, such as AWS RDS IAM authentication tokens, that must be refreshed per connection. Available since v2.18.0.
+- expirationChecker: (\`() => boolean\`) A function that returns \`true\` when a connection's credentials have expired. When this returns \`true\`, the connection pool creates a new connection and calls \`dynamicPassword\` to obtain fresh credentials. Available since v2.18.0.
 - idle\_in\_transaction\_session\_timeout: (\`number\`) The maximum time, in milliseconds, that a session can be idle before being terminated.
 
 ### databaseLogging
@@ -2362,7 +2387,7 @@ The configuration accepts an object whose key is the actor type (for example, `u
 
 The `projectConfig.http.compression` configuration modifies the HTTP compression settings at the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
 
-If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`. Learn more in the [API Reference](https://docs.medusajs.com/api/store#http-compression).
+If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`. Learn more in the [API Reference](https://docs.medusajs.com/api/store/http-compression).
 
 For example:
 
@@ -4256,7 +4281,7 @@ const ProductBrandWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductBrandWidget
@@ -4267,9 +4292,9 @@ A widget's file must export:
 - A React component to be rendered in the specified injection zone. The component must be the file's default export.
 - A configuration object created with `defineWidgetConfig` from the Admin Extension SDK. The function receives an object as a parameter that has a `zone` property, whose value is the zone to inject the widget to.
 
-Since the widget is injected at the top of the product details page, the widget receives the product's details as a parameter.
+Since the widget is injected into the product details page, the widget receives the product's details as a parameter.
 
-In the widget, you use [Tanstack (React) Query](https://tanstack.com/query/latest) to query the Medusa server. Tanstack Query provides features like asynchronous state management and optimized caching. In the `queryFn` function that executes the query, you use the JS SDK to send a request to the [Get Product API Route](https://docs.medusajs.com/api/admin#products_getproductsid), passing `+brand.*` in the `fields` query parameter to retrieve the product's brand.
+In the widget, you use [Tanstack (React) Query](https://tanstack.com/query/latest) to query the Medusa server. Tanstack Query provides features like asynchronous state management and optimized caching. In the `queryFn` function that executes the query, you use the JS SDK to send a request to the [Get Product API Route](https://docs.medusajs.com/api/admin/products/get-a-product), passing `+brand.*` in the `fields` query parameter to retrieve the product's brand.
 
 Do not install Tanstack Query as that will cause unexpected errors in your development. If you prefer installing it for better auto-completion in your code editor, make sure to install `v5.64.2` as a development dependency.
 
@@ -4376,7 +4401,7 @@ In the next chapter, you'll extend Medusa's workflow and API route that create a
 
 After linking the [custom Brand data model](https://docs.medusajs.com/learn/customization/custom-features/module/index.html.md) and Medusa's [Product Module](https://docs.medusajs.com/resources/commerce-modules/product/index.html.md) in the [previous chapter](https://docs.medusajs.com/learn/customization/extend-features/define-link/index.html.md), you'll extend the create product workflow and API route to allow associating a brand with a product.
 
-Some API routes, including the [Create Product API route](https://docs.medusajs.com/api/admin#products_postproducts), accept an `additional_data` request body parameter. This parameter can hold custom data that's passed to the [hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks/index.html.md) of the workflow executed in the API route, allowing you to consume those hooks and perform actions with the custom data.
+Some API routes, including the [Create Product API route](https://docs.medusajs.com/api/admin/products/create-product), accept an `additional_data` request body parameter. This parameter can hold custom data that's passed to the [hooks](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks/index.html.md) of the workflow executed in the API route, allowing you to consume those hooks and perform actions with the custom data.
 
 So, in this chapter, to extend the create product flow and associate a brand with a product, you will:
 
@@ -4396,7 +4421,7 @@ To learn more about the `additional_data` property and the API routes that accep
 
 A [workflow hook](https://docs.medusajs.com/learn/fundamentals/workflows/workflow-hooks/index.html.md) is a point in a workflow where you can inject a step to perform a custom functionality. Consuming a workflow hook allows you to extend the features of a workflow and, consequently, the API route that uses it.
 
-The [createProductsWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/createProductsWorkflow/index.html.md) used in the [Create Product API route](https://docs.medusajs.com/api/admin#products_postproducts) has a `productsCreated` hook that runs after the product is created. You'll consume this hook to link the created product with the brand specified in the request parameters.
+The [createProductsWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/createProductsWorkflow/index.html.md) used in the [Create Product API route](https://docs.medusajs.com/api/admin/products/create-product) has a `productsCreated` hook that runs after the product is created. You'll consume this hook to link the created product with the brand specified in the request parameters.
 
 To consume the `productsCreated` hook, create the file `src/workflows/hooks/created-product.ts` with the following content:
 
@@ -4567,7 +4592,7 @@ curl -X POST 'http://localhost:9000/admin/products' \
 }'
 ```
 
-Make sure to replace `{token}` with the token you received from the previous request, `shipping_profile_id` with the ID of a shipping profile in your application, and `{brand_id}` with the ID of a brand in your application. You can retrieve the ID of a shipping profile either from the Medusa Admin, or the [List Shipping Profiles API route](https://docs.medusajs.com/api/admin#shipping-profiles_getshippingprofiles).
+Make sure to replace `{token}` with the token you received from the previous request, `shipping_profile_id` with the ID of a shipping profile in your application, and `{brand_id}` with the ID of a brand in your application. You can retrieve the ID of a shipping profile either from the Medusa Admin, or the [List Shipping Profiles API route](https://docs.medusajs.com/api/admin/shipping-profiles/list-shipping-profiles).
 
 The request creates a product and returns it.
 
@@ -4618,7 +4643,7 @@ In this chapter, you'll learn how to retrieve a product's brand (and vice-versa)
 
 ## Approach 1: Retrieve Brands in Existing API Routes
 
-Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](https://docs.medusajs.com/api/admin#products_getproducts), [Get Product](https://docs.medusajs.com/api/admin#products_getproductsid), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
+Medusa's existing API routes accept a `fields` query parameter that allows you to specify the fields and relations of a model to retrieve. So, when you send a request to the [List Products](https://docs.medusajs.com/api/admin/products/list-products), [Get Product](https://docs.medusajs.com/api/admin/products/get-a-product), or any product-related store or admin routes that accept a `fields` query parameter, you can specify in this parameter to return the product's brands.
 
 Learn more about using the `fields` query parameter to retrieve custom linked data models in the [Retrieve Custom Linked Data Models from Medusa's API Routes](https://docs.medusajs.com/learn/fundamentals/api-routes/retrieve-custom-links/index.html.md) chapter.
 
@@ -4629,7 +4654,7 @@ curl 'http://localhost:9000/admin/products?fields=+brand.*' \
 -H 'Authorization: Bearer {token}'
 ```
 
-Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](https://docs.medusajs.com/api/store#authentication).
+Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](https://docs.medusajs.com/api/store/authentication).
 
 Any product that is linked to a brand will have a `brand` property in its object:
 
@@ -4703,7 +4728,7 @@ curl 'http://localhost:9000/admin/brands' \
 -H 'Authorization: Bearer {token}'
 ```
 
-Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](https://docs.medusajs.com/api/store#authentication).
+Make sure to replace `{token}` with your admin user's authentication token. Learn how to retrieve it in the [API reference](https://docs.medusajs.com/api/store/authentication).
 
 This returns the brands in your store with their linked products. For example:
 
@@ -6187,7 +6212,7 @@ While both approaches can be used to disable API routes, a middleware is useful 
 
 ### Feature Flags API Route
 
-For client customizations, you can use the [List Feature Flags API Route](https://docs.medusajs.com/api/admin#feature-flags_getfeatureflags) to check the status of feature flags.
+For client customizations, you can use the [List Feature Flags API Route](https://docs.medusajs.com/api/admin/feature-flags/list-feature-flags) to check the status of feature flags.
 
 For example, you can show an [admin widget](https://docs.medusajs.com/learn/fundamentals/admin/widgets/index.html.md) only if a feature flag is enabled:
 
@@ -6217,7 +6242,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -8566,18 +8591,18 @@ A widget zone's value must be wrapped in double or single quotes. It can't be a 
 ```ts highlights={zoneHighlights}
 // Don't
 export const config = defineWidgetConfig({
-  zone: `product.details.before`,
+  zone: `product.details`,
 })
 
 // Don't
-const ZONE = "product.details.after"
+const ZONE = "product.details"
 export const config = defineWidgetConfig({
   zone: ZONE,
 })
 
 // Do
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 ```
 
@@ -8680,11 +8705,13 @@ Refer to the [LayoutComposer](https://docs.medusajs.com/resources/admin-componen
 
 ### Custom Zone Naming Convention
 
-Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+Custom injection zones should follow the pattern `{resource-name}.{page-context}` for the main section, and `{resource-name}.{page-context}.{section}` for other sections, where:
 
 - `resource-name`: The name of the resource being accessed in the page. For example, `brand` in the example above.
 - `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
-- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+- `section`: The name of the layout section the zone belongs to, if it isn't the main one. For example, `side` for the side section of a two-column layout.
+
+Don't add a `.before` or `.after` suffix to your zone names. These suffixes are deprecated since [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2), as admin users now change a widget's placement with [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md).
 
 This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
 
@@ -8699,10 +8726,9 @@ To register the injection zones, augment the `InjectionZoneRegistry` interface t
 ```ts title="index.d.ts"
 declare module "@medusajs/admin-shared" {
   interface InjectionZoneRegistry {
-    "brand.details.before": true
-    "brand.details.after": true
-    "brand.details.side.before": true
-    "brand.details.side.after": true
+    "brand.details": true
+    "brand.details.side": true
+    "brand.list": true
   }
 }
 ```
@@ -8745,20 +8771,20 @@ const BrandListWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "brand.list.before",
+  zone: "brand.list",
 })
 
 export default BrandListWidget
 ```
 
-In this example, the widget is injected into the `brand.list.before` zone, so it's rendered before the main content of the brand list page you added to your plugin.
+In this example, the widget is injected into the `brand.list` zone, so it's rendered in the main section of the brand list page you added to your plugin.
 
-If you don't see `brand.list.before` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
+If you don't see `brand.list` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
 
 ```json title="src/admin/tsconfig.json"
 "include": [
   ".",
-  "../../.medusa/types/plugin-augmentations.d.ts"
+  "../../.medusa/types/augmentation-refs.d.ts"
 ]
 ```
 
@@ -8798,13 +8824,13 @@ const BrandWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "brand.details.before",
+  zone: "brand.details",
 })
 
 export default BrandWidget
 ```
 
-In this example, the `BrandWidget` is injected into the `brand.details.before` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.
+In this example, the `BrandWidget` is injected into the `brand.details` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.
 
 
 # Environment Variables in Admin Customizations
@@ -8848,7 +8874,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -8929,7 +8955,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -8968,7 +8994,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9069,7 +9095,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9268,7 +9294,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -9306,7 +9332,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9468,7 +9494,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9561,7 +9587,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -9647,7 +9673,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -10267,15 +10293,11 @@ You also use the `useLoaderData` hook to access the data returned by the `loader
 
 This feature is available starting [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2).
 
-{/* By default, a UI route's page title is set to the `label` property of the route's configuration.
+By default, a UI route's page title is set to the `label` property of the route's configuration.
 
-You can also set it to a dynamic value, which is useful for UI routes that accept path parameters. For example, if you have a brand details page, you can set the page title to the brand's name. */}
+You can also set it to a dynamic value, which is useful for UI routes that accept path parameters. For example, if you have a brand details page, you can set the page title to the brand's name.
 
-{/* To set the page title of a UI route different than the `label` property, export a `handle` object with a `seo` property in the UI route's file: */}
-
-To set the page title of a UI route, export a `handle` object with a `seo` property in the UI route's file. It can return a string, or it can accept a `match` object whose `data` property holds the data returned by the `loader` function. This is useful for UI routes that accept path parameters, allowing you to set the page title dynamically.
-
-For example:
+To set the page title of a UI route different than the `label` property, export a `handle` object with a `seo` property in the UI route's file:
 
 ```tsx title="src/admin/routes/brands/[id]/page.tsx" highlights={seoHighlights}
 import { Container, Heading } from "@medusajs/ui"
@@ -10386,13 +10408,13 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
 ```
 
-In the example above, the widget is injected at the top of a product’s details.
+In the example above, the widget is injected at the end of a product’s details page.
 
 You export the `ProductWidget` component, which displays the heading `Product Widget`. In the widget, you use [Medusa UI](https://docs.medusajs.com/ui/index.html.md) to customize the dashboard with the same components used to build it.
 
@@ -10411,7 +10433,19 @@ To test out the widget, start the Medusa application:
 npm run dev
 ```
 
-Then, open a product’s details page. You’ll find your custom widget at the top of the page.
+Then, open a product’s details page. You’ll find your custom widget at the end of the page.
+
+***
+
+## Widget Placement
+
+Prior to Medusa v2.17.2, widget zones ended with `.before` or `.after` to indicate whether the widget should be placed at the beginning or end of the zone. For example, `product.details.before` would place the widget at the top of the product details page, while `product.details.after` would place it at the bottom.
+
+As of Medusa v2.17.2, the `.before` and `.after` suffixes have been deprecated in favor of [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md). The login page is the only exception. It isn't part of the layout configurations, so its `login.before` and `login.after` zones still place the widget before or after the login form.
+
+Widgets are now placed at the end of the zone they're injected into. For example, if you inject a widget into the `product.details` zone, it will be placed at the end of the product details page. Then, users can customize the placement of the widget in the Medusa Admin dashboard using [Layout Configurations](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md). The widget can be moved to the top of the page or in between core components of the page.
+
+If you're still using the `.before` or `.after` suffixes, you can continue to do so, but it's recommended to migrate to the new system. `.before` and `.after` (aside from the login page) have no effect on the placement of widgets in Medusa v2.17.2 and later, and may be removed in future versions.
 
 ***
 
@@ -10419,7 +10453,7 @@ Then, open a product’s details page. You’ll find your custom widget at the t
 
 Widgets that are injected into a detail page receive a `data` prop, which is the main data of the details page.
 
-For example, a widget injected into the `product.details.before` zone receives the product's details in the `data` prop:
+For example, a widget injected into the `product.details` zone receives the product's details in the `data` prop:
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={detailHighlights}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
@@ -10446,7 +10480,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -10513,7 +10547,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -10532,49 +10566,47 @@ Some of Medusa's API Routes accept an `additional_data` parameter whose type is 
 
 This is useful when you have a link from your custom module to a Commerce Module, and you want to perform an additional action when a request is sent to an existing API route.
 
-For example, the [Create Product API Route](https://docs.medusajs.com/api/admin#products_postproducts) accepts an `additional_data` parameter. If you have a data model linked to it, you consume the `productsCreated` hook to create a record of the data model using the custom data and link it to the product.
+For example, the [Create Product API Route](https://docs.medusajs.com/api/admin/products/create-product) accepts an `additional_data` parameter. If you have a data model linked to it, you consume the `productsCreated` hook to create a record of the data model using the custom data and link it to the product.
 
 ### API Routes Accepting Additional Data
 
 ### API Routes List
 
 - Campaigns
-  - [Create Campaign](https://docs.medusajs.com/api/admin#campaigns_postcampaigns)
-  - [Update Campaign](https://docs.medusajs.com/api/admin#campaigns_postcampaignsid)
+  - [Create Campaign](https://docs.medusajs.com/api/admin/campaigns/create-campaign)
+  - [Update Campaign](https://docs.medusajs.com/api/admin/campaigns/update-a-campaign)
 - Cart
-  - [Create Cart](https://docs.medusajs.com/api/store#carts_postcarts)
-  - [Update Cart](https://docs.medusajs.com/api/store#carts_postcartsid)
+  - [Create Cart](https://docs.medusajs.com/api/store/carts/create-cart)
+  - [Update Cart](https://docs.medusajs.com/api/store/carts/update-a-cart)
 - Collections
-  - [Create Collection](https://docs.medusajs.com/api/admin#collections_postcollections)
-  - [Update Collection](https://docs.medusajs.com/api/admin#collections_postcollectionsid)
+  - [Create Collection](https://docs.medusajs.com/api/admin/collections/create-collection)
+  - [Update Collection](https://docs.medusajs.com/api/admin/collections/update-a-collection)
 - Customers
-  - [Create Customer](https://docs.medusajs.com/api/admin#customers_postcustomers)
-  - [Update Customer](https://docs.medusajs.com/api/admin#customers_postcustomersid)
-  - [Create Address](https://docs.medusajs.com/api/admin#customers_postcustomersidaddresses)
-  - [Update Address](https://docs.medusajs.com/api/admin#customers_postcustomersidaddressesaddress_id)
+  - [Create Customer](https://docs.medusajs.com/api/admin/customers/create-customer)
+  - [Update Customer](https://docs.medusajs.com/api/admin/customers/update-a-customer)
+  - [Create Address](https://docs.medusajs.com/api/admin/customers/add-address)
+  - [Update Address](https://docs.medusajs.com/api/admin/customers/update-address)
 - Draft Orders
-  - [Create Draft Order](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders)
+  - [Create Draft Order](https://docs.medusajs.com/api/admin/draft-orders/create-draft-order)
 - Orders
-  - [Complete Orders](https://docs.medusajs.com/api/admin#orders_postordersidcomplete)
-  - [Cancel Order's Fulfillment](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idcancel)
-  - [Create Shipment](https://docs.medusajs.com/api/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
-  - [Create Fulfillment](https://docs.medusajs.com/api/admin#orders_postordersidfulfillments)
+  - [Complete Orders](https://docs.medusajs.com/api/admin/orders/complete-order)
+  - [Cancel Order's Fulfillment](https://docs.medusajs.com/api/admin/orders/cancel-fulfillment)
+  - [Create Shipment](https://docs.medusajs.com/api/admin/orders/create-shipment)
+  - [Create Fulfillment](https://docs.medusajs.com/api/admin/orders/create-fulfillment)
 - Products
-  - [Create Product](https://docs.medusajs.com/api/admin#products_postproducts)
-  - [Update Product](https://docs.medusajs.com/api/admin#products_postproductsid)
-  - [Create Product Variant](https://docs.medusajs.com/api/admin#products_postproductsidvariants)
-  - [Update Product Variant](https://docs.medusajs.com/api/admin#products_postproductsidvariantsvariant_id)
-  - [Create Product Option](https://docs.medusajs.com/api/admin#products_postproductsidoptions)
-  - [Update Product Option](https://docs.medusajs.com/api/admin#products_postproductsidoptionsoption_id)
+  - [Create Product](https://docs.medusajs.com/api/admin/products/create-product)
+  - [Update Product](https://docs.medusajs.com/api/admin/products/update-a-product)
+  - [Create Product Variant](https://docs.medusajs.com/api/admin/products/create-variant)
+  - [Update Product Variant](https://docs.medusajs.com/api/admin/products/update-variant)
 - Product Tags
-  - [Create Product Tag](https://docs.medusajs.com/api/admin#product-tags_postproducttags)
-  - [Update Product Tag](https://docs.medusajs.com/api/admin#product-tags_postproducttagsid)
+  - [Create Product Tag](https://docs.medusajs.com/api/admin/product-tags/create-product-tag)
+  - [Update Product Tag](https://docs.medusajs.com/api/admin/product-tags/update-a-product-tag)
 - Product Types
-  - [Create Product Type](https://docs.medusajs.com/api/admin#product-types_postproducttypes)
-  - [Update Product Type](https://docs.medusajs.com/api/admin#product-types_postproducttypesid)
+  - [Create Product Type](https://docs.medusajs.com/api/admin/product-types/create-product-type)
+  - [Update Product Type](https://docs.medusajs.com/api/admin/product-types/update-a-product-type)
 - Promotions
-  - [Create Promotion](https://docs.medusajs.com/api/admin#promotions_postpromotions)
-  - [Update Promotion](https://docs.medusajs.com/api/admin#promotions_postpromotionsid)
+  - [Create Promotion](https://docs.medusajs.com/api/admin/promotions/create-promotion)
+  - [Update Promotion](https://docs.medusajs.com/api/admin/promotions/update-a-promotion)
 
 ***
 
@@ -11129,7 +11161,7 @@ curl "http://localhost:9000/store/products" \
 
 The above examples retrieve products with their fields translated to French (France) if translations are available. If no translations exist for the requested locale, the original content stored in the data model is returned.
 
-Store API routes require a publishable API key in the request header. Learn more in the [Store API reference](https://docs.medusajs.com/api/store#publishable-api-key).
+Store API routes require a publishable API key in the request header. Learn more in the [Store API reference](https://docs.medusajs.com/api/store/publishable-api-key).
 
 ***
 
@@ -11288,8 +11320,12 @@ export default defineMiddlewares({
 
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
-- `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
+- `matcher`: the API route path to apply the middleware on. Its value can be one of the following:
+  - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`.
+  - A regular expression (`RegExp`), which Medusa matches against the request path directly. For example, `/^\/custom(\/.*)?$/`.
+
 - `middlewares`: An array of global and route middleware functions.
+
 - `method`: (optional) By default, a middleware is applied on all HTTP methods for a route. You can specify one or more HTTP methods to apply the middleware to in this option, making it a route middleware.
 
 ### Test the Middleware
@@ -11312,6 +11348,45 @@ Received a request!
 ### Troubleshooting
 
 If the middleware didn't run, make sure you've correctly created the middleware at `src/api/middlewares.ts` (with correct spelling). This is a common mistake that can lead to the middleware not being applied, resulting in unexpected behavior.
+
+***
+
+## Apply a Middleware Using a Regular Expression
+
+You can set the `matcher` property to a regular expression (`RegExp`) to apply a middleware to routes matching a pattern.
+
+A `RegExp` matcher must account for the full request path, including the leading slash. How Medusa matches the pattern depends on whether the middleware is a global or route middleware.
+
+### Global Middleware
+
+For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/4x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
+
+So, you must anchor the pattern with `^` and include the leading slash:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: /^\/custom(\/.*)?$/,
+      middlewares: [
+        // ...
+      ],
+    },
+  ],
+})
+```
+
+This middleware applies to `/custom` and any route starting with `/custom/`.
+
+An unanchored pattern like `/custom/` doesn't match any route for a global middleware, since its match doesn't start at the beginning of the path. Always anchor a global middleware's pattern with `^\/`.
+
+### Route Middleware
+
+For a route middleware (a middleware with a `method`), Medusa matches the `RegExp` against the full request path. So, an unanchored pattern like `/custom/` matches routes containing `custom`.
+
+To keep the same behavior across both middleware types, always anchor a `RegExp` matcher with `^\/`.
 
 ***
 
@@ -12039,7 +12114,7 @@ A protected API route is an API route that requires requests to be user-authenti
 
 Protected API routes are useful for routes that require user authentication, such as creating a product or managing an order. These routes must only be accessed by authenticated admin users.
 
-Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin#authentication) and [Store](https://docs.medusajs.com/api/store#authentication) to learn how to send authenticated requests.
+Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin/authentication) and [Store](https://docs.medusajs.com/api/store/authentication) to learn how to send authenticated requests.
 
 ***
 
@@ -12052,7 +12127,7 @@ Any API route, including your custom API routes, are protected if they start wit
 |\`/admin\`|Only authenticated admin users can access.|
 |\`/store/customers/me\`|Only authenticated customers can access.|
 
-Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin#authentication) and [Store](https://docs.medusajs.com/api/store#authentication) to learn how to send authenticated requests.
+Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin/authentication) and [Store](https://docs.medusajs.com/api/store/authentication) to learn how to send authenticated requests.
 
 ### Opt-Out of Default Authentication Requirement
 
@@ -12459,7 +12534,7 @@ Often, you'll link custom data models to existing Medusa data models to implemen
 
 For example, to add brands for products, you can create a `Brand` data model in a Brand Module, then [define a link](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md) to the [Product Module](https://docs.medusajs.com/resources/commerce-modules/product/index.html.md)'s `Product` data model.
 
-When you implement this customization, you might need to retrieve the brand of a product using the existing [Get Product API Route](https://docs.medusajs.com/api/admin#products_getproductsid). You can do this by passing the linked data model's name in the `fields` query parameter of the API route.
+When you implement this customization, you might need to retrieve the brand of a product using the existing [Get Product API Route](https://docs.medusajs.com/api/admin/products/get-a-product). You can do this by passing the linked data model's name in the `fields` query parameter of the API route.
 
 ***
 
@@ -12467,14 +12542,14 @@ When you implement this customization, you might need to retrieve the brand of a
 
 Most of Medusa's API routes accept a `fields` query parameter that allows you to specify the fields and relations to retrieve in the resource, such as a product.
 
-For example, to retrieve the brand of a product, you can pass the `brand` field in the `fields` query parameter of the [Get Product API Route](https://docs.medusajs.com/api/admin#products_getproductsid):
+For example, to retrieve the brand of a product, you can pass the `brand` field in the `fields` query parameter of the [Get Product API Route](https://docs.medusajs.com/api/admin/products/get-a-product):
 
 ```bash
 curl 'http://localhost:9000/admin/products/{id}?fields=*brand' \
 -H 'Authorization: Bearer {access_token}'
 ```
 
-The `fields` query parameter accepts a comma-separated list of fields and relations to retrieve. To learn more about using the `fields` query parameter, refer to the [API Reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+The `fields` query parameter accepts a comma-separated list of fields and relations to retrieve. To learn more about using the `fields` query parameter, refer to the [API Reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
 
 By prefixing `brand` with an asterisk (`*`), you retrieve all the default fields of the product, including the `brand` field. If you don't include the `*` prefix, the response will only include the product's brand.
 
@@ -12486,15 +12561,15 @@ Some of Medusa's API routes restrict the fields and relations you can retrieve, 
 
 The API routes that restrict the fields and relations you can retrieve are:
 
-- [Customer Store API Routes](https://docs.medusajs.com/api/store#customers)
-- [Customer Admin API Routes](https://docs.medusajs.com/api/admin#customers)
-- [Product Category Admin API Routes](https://docs.medusajs.com/api/admin#product-categories)
+- [Customer Store API Routes](https://docs.medusajs.com/api/store/customers)
+- [Customer Admin API Routes](https://docs.medusajs.com/api/admin/customers)
+- [Product Category Admin API Routes](https://docs.medusajs.com/api/admin/product-categories)
 
 ### How to Override Allowed Fields and Relations
 
 For these routes, you need to override the allowed fields and relations to be retrieved. You can do this by applying a [global middleware](https://docs.medusajs.com/learn/fundamentals/api-routes/middlewares/index.html.md) to those routes.
 
-For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](https://docs.medusajs.com/api/admin#customers_getcustomersid), create the file `src/api/middlewares.ts` with the following content:
+For example, to allow retrieving the `b2b_company` of a customer using the [Get Customer Admin API Route](https://docs.medusajs.com/api/admin/customers/get-a-customer), create the file `src/api/middlewares.ts` with the following content:
 
 Learn how to create a middleware in the [Middlewares](https://docs.medusajs.com/learn/fundamentals/api-routes/middlewares/index.html.md) chapter.
 
@@ -12516,11 +12591,11 @@ export default defineMiddlewares({
 })
 ```
 
-In this example, you apply a middleware to the [Get Customer Admin API Route](https://docs.medusajs.com/api/admin#customers_getcustomersid).
+In this example, you apply a middleware to the [Get Customer Admin API Route](https://docs.medusajs.com/api/admin/customers/get-a-customer).
 
 The request object passed to middlewares has an `allowed` property that contains the fields and relations that can be retrieved. So, you modify the `allowed` array to include the `b2b_company` field.
 
-You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](https://docs.medusajs.com/api/admin#customers_getcustomersid):
+You can now retrieve the `b2b_company` field using the `fields` query parameter of the [Get Customer Admin API Route](https://docs.medusajs.com/api/admin/customers/get-a-customer):
 
 ```bash
 curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \
@@ -12530,6 +12605,49 @@ curl 'http://localhost:9000/admin/customers/{id}?fields=*b2b_company' \
 In this example, you retrieve the `b2b_company` relation of the customer using the `fields` query parameter.
 
 This approach only works using a global middleware. It doesn't work in a route middleware.
+
+***
+
+## API Routes that Hard-Block Retrievable Fields
+
+The `disallowed` property is available since Medusa [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
+
+Some of Medusa's API routes block specific field path segments as a hard security boundary. These fields are removed before the query executes, regardless of what the client requests or what you set in a middleware.
+
+Unlike `allowed` fields, you cannot override `disallowed` fields from a middleware. This is intentional: disallowed fields guard sensitive relations (such as orders, customers, and payment data) on unauthenticated Store API endpoints to prevent a caller from pivoting into private data.
+
+For example, a Store API route for products may block the `orders` segment, so a request like `GET /store/products?fields=orders.customer.email` returns products without the `orders` relation, even if the caller explicitly requests it.
+
+If you create a custom Store API route and want to apply the same protection, pass a `disallowed` array to the `validateAndTransformQuery` configuration:
+
+```ts title="src/api/middlewares.ts"
+import {
+  validateAndTransformQuery,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/custom",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(
+          createFindParams(),
+          {
+            defaults: ["id", "title"],
+            isList: true,
+            disallowed: ["orders", "customer"],
+          }
+        ),
+      ],
+    },
+  ],
+})
+```
+
+Any field path that contains `orders` or `customer` as a segment will be stripped from the query before it executes.
 
 
 # Request Body and Query Parameter Validation
@@ -13845,7 +13963,7 @@ The brand record will now have the `metadata` property updated to remove the `is
 
 The instructions above also apply when managing JSON properties in API routes, since they typically use a service's `update` method under the hood.
 
-Refer to the [API reference](https://docs.medusajs.com/api/store#manage-metadata) to learn more about managing JSON properties, such as `metadata`, in API routes.
+Refer to the [API reference](https://docs.medusajs.com/api/store/manage-metadata) to learn more about managing JSON properties, such as `metadata`, in API routes.
 
 
 # Manage Relationships
@@ -17503,7 +17621,7 @@ The Index API routes are available from [Medusa v2.11.2](https://github.com/medu
 
 Medusa provides API routes to view and trigger index reingestion or syncing. This is useful if you want to reingest data manually, for example, after a large data import.
 
-Refer to the [Index API Reference](https://docs.medusajs.com/api/admin#index) for more information about the available API routes and how to use them.
+Refer to the [Index API Reference](https://docs.medusajs.com/api/admin/index) for more information about the available API routes and how to use them.
 
 ***
 
@@ -18946,9 +19064,11 @@ In this chapter, you’ll learn about Query and how to use it to fetch data from
 
 ## What is Query?
 
-Query fetches data across modules. It’s a set of methods registered in the Medusa container under the `query` key.
+Query fetches data across modules. It's a set of methods registered in the Medusa container under the `query` key.
 
-In all resources that can access the [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa’s Commerce Modules.
+In all resources that can access the [Medusa Container](https://docs.medusajs.com/learn/fundamentals/medusa-container/index.html.md), such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa's Commerce Modules.
+
+Prefer Query for read operations (list and retrieve) in API routes. It integrates with the [`validateAndTransformQuery` middleware](#request-query-configurations) and resolves cross-module links automatically.
 
 ***
 
@@ -20388,6 +20508,7 @@ The `validateAndTransformQuery` accepts two parameters:
    2. `isList`: A boolean indicating whether a list of items is returned in the response.
    3. `allowed`: An array of fields and relations allowed to be passed in the `fields` query parameter.
    4. `defaultLimit`: A number indicating the default limit to use if no limit is provided. By default, it's `50`.
+   5. `disallowed`: An array of field path segments that are always stripped from the query, regardless of what the client requests. Any requested field whose path contains one of these segments is removed before the query executes. Unlike `allowed`, this is a hard security boundary that middleware cannot override. Use it to keep sensitive relations off unauthenticated endpoints.
 
 ### Step 2: Use Configurations in API Route
 
@@ -20444,7 +20565,7 @@ To test it out, start your Medusa application and send a `GET` request to the `/
 
 Try passing one of the Query configuration parameters, like `fields` or `limit`, and you'll see its impact on the returned result.
 
-Learn more about [specifying fields and relations](https://docs.medusajs.com/api/store#select-fields-and-relations) and [pagination](https://docs.medusajs.com/api/store#pagination) in the API reference.
+Learn more about [specifying fields and relations](https://docs.medusajs.com/api/store/select-fields-and-relations) and [pagination](https://docs.medusajs.com/api/store/pagination) in the API reference.
 
 
 # Read-Only Module Link
@@ -26856,7 +26977,7 @@ The `productsCreated` hook is available in the workflow's `hooks` property.
 
 You call the hook and pass a step function (the hook handler) as a parameter.
 
-Now, when a product is created using the [Create Product API route](https://docs.medusajs.com/api/admin#products_postproducts), your hook handler runs after the product is created.
+Now, when a product is created using the [Create Product API route](https://docs.medusajs.com/api/admin/products/create-product), your hook handler runs after the product is created.
 
 A hook can have only one handler. So, you can't consume the same hook multiple times.
 
@@ -28378,6 +28499,32 @@ claude
 
 If you're connecting with OAuth, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
 
+### Codex
+
+To connect to the Medusa MCP server in Codex, use one of the following methods:
+
+### OAuth
+
+```bash
+codex mcp add medusa --url https://docs.medusajs.com/mcp
+```
+
+### Personal Access Key
+
+```toml title="~/.codex/config.toml"
+[mcp_servers.medusa]
+url = "https://docs.medusajs.com/mcp"
+bearer_token_env_var = "{token}"
+```
+
+If you're connecting with OAuth, run the following command in your terminal to authenticate with your Cloud account:
+
+```bash
+codex mcp login medusa
+```
+
+This will open a browser window where you can log into your Cloud account to authenticate.
+
 ### Cursor
 
 Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
@@ -29739,7 +29886,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -29841,7 +29988,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -30924,11 +31071,20 @@ In your Medusa application, a `publishable` API key is only useful to send reque
 
 In addition, a `secret` API key allows you to access the [Admin API routes](https://docs.medusajs.com/api/admin) and perform actions as the admin user that the key was created for. The `created_by` property of the [ApiKey data model](https://docs.medusajs.com/references/api-key/models/ApiKey/index.html.md) indicates the ID of the associated admin user.
 
+To authenticate using a secret API key, pass it with HTTP Basic authentication in the `Authorization` header:
+
+```bash
+curl -X GET http://localhost:9000/admin/products \
+-H 'Authorization: Basic {secret_api_key}'
+```
+
+Secret API keys must be sent using HTTP Basic authentication, not as a Bearer token. Sending a secret API key as `Authorization: Bearer {secret_api_key}` returns a `401` error.
+
 ***
 
 ## API Key Creation
 
-When using the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/developer/index.html.md) or [API routes](https://docs.medusajs.com/api/admin#api-keys), only admin users can create API keys.
+When using the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/developer/index.html.md) or [API routes](https://docs.medusajs.com/api/admin/api-keys), only admin users can create API keys.
 
 You can also create API keys in your customizations using the [createApiKeysWorkflow](https://docs.medusajs.com/references/medusa-workflows/createApiKeysWorkflow/index.html.md).
 
@@ -31847,8 +32003,8 @@ The steps are:
 
 1. Register the user with the [Register Route](#register-route).
 2. Use the authentication token to create the user with their respective API route.
-   - For example, for customers you would use the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers).
-   - For admin users, you accept an invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin#invites_postinvitesaccept)
+   - For example, for customers you would use the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer).
+   - For admin users, you accept an invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin/invites/accept-invite)
 3. Authenticate the user with the [Auth Route](#login-route).
 
 After registration, you only use the [Auth Route](#login-route) for subsequent authentication.
@@ -31874,8 +32030,8 @@ It requires the following steps:
    - If the decoded data has an `actor_id` property, then the user is already registered. So, use this token for subsequent authenticated requests.
    - If not, follow the rest of the steps.
 7. The frontend uses the authentication token to create the user with their respective API route.
-   - For example, for customers you would use the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers).
-   - For admin users, you accept an invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin#invites_postinvitesaccept)
+   - For example, for customers you would use the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer).
+   - For admin users, you accept an invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin/invites/accept-invite)
 8. The frontend sends a request to the [Refresh Token Route](#refresh-token-route) to retrieve a new token with the user information populated.
 
 ***
@@ -31898,7 +32054,7 @@ This API route is useful for providers like `emailpass` that uses custom logic t
 For example, if you're registering a customer, you:
 
 1. Send a request to `/auth/customer/emailpass/register` to retrieve the registration JWT token.
-2. Send a request to the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers) to create the customer, passing the [JWT token in the header](https://docs.medusajs.com/api/store#authentication).
+2. Send a request to the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer) to create the customer, passing the [JWT token in the header](https://docs.medusajs.com/api/store/authentication).
 
 ### Path Parameters
 
@@ -31958,7 +32114,7 @@ You can show that error message to the customer.
 
 ## Login Route
 
-The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](https://docs.medusajs.com/api/store#authentication) to send authenticated requests.
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](https://docs.medusajs.com/api/store/authentication) to send authenticated requests.
 
 ```bash
 curl -X POST http://localhost:9000/auth/{actor_type}/{providers}
@@ -32056,7 +32212,7 @@ If the authentication is successful, you'll receive a `token` field in the respo
 In your frontend, decode the token using tools like [react-jwt](https://www.npmjs.com/package/react-jwt):
 
 - If the decoded data has an `actor_id` property, the user is already registered. So, use this token for subsequent authenticated requests.
-- If not, use the token in the header of a request that creates the user, such as the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers).
+- If not, use the token in the header of a request that creates the user, such as the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer).
 
 The decoded data may look like this:
 
@@ -35698,7 +35854,7 @@ When you use the Cart Module in the Medusa application, Medusa recalculates a ca
 Whether Medusa recalculates the tax lines depends on the `automatic_taxes` setting of the cart's [region](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/region/index.html.md):
 
 - If `automatic_taxes` is enabled, Medusa recalculates the affected tax lines automatically when the cart changes.
-- If `automatic_taxes` is disabled, Medusa only calculates tax lines when you send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store#carts_postcartsidtaxes).
+- If `automatic_taxes` is disabled, Medusa only calculates tax lines when you send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store/carts/calculate-taxes).
 
 ### Tax Lines Require a Shipping Address
 
@@ -35720,7 +35876,7 @@ The following table explains how each cart operation affects the cart's tax line
 |Update a line item's quantity|Medusa doesn't recalculate tax lines. Instead, it derives the new tax amounts from the item's existing tax rates.|
 |Remove a line item|Medusa doesn't recalculate the tax lines of the cart's other items.|
 
-To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store#carts_postcartsidtaxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
+To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store/carts/calculate-taxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
 
 ***
 
@@ -37229,7 +37385,7 @@ A shipping option's `price_type` property determines how its price is resolved:
 
 For a shipping option of type `calculated`, Medusa invokes the [calculatePrice method](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) of the associated fulfillment provider to resolve the price against the cart. This happens when:
 
-- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
+- You retrieve the cart's shipping options with their prices, such as when the customer views their shipping options during checkout. For calculated options, you retrieve the price using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store/shipping-options/calculate-shipping-option-price).
 - The shipping method is added to the cart.
 - The cart is refreshed. Medusa refreshes the cart after most cart changes, such as adding a line item or updating the cart's address, so the price may be recalculated frequently.
 
@@ -37389,6 +37545,8 @@ When an item in an order is fulfilled and the associated variant has its `manage
 - Deletes the associated reservation item.
 
 This flow is implemented within the [createOrderFulfillmentWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderFulfillmentWorkflow/index.html.md)
+
+Each fulfilled item whose variant has `manage_inventory` enabled must have an associated inventory reservation, otherwise the [createOrderFulfillmentWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderFulfillmentWorkflow/index.html.md) throws an error. Reservations are created automatically when an order is placed through the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md). If you create an order with a workflow that doesn't create reservations, such as [createOrderWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderWorkflow/index.html.md), use the [createReservationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createReservationsWorkflow/index.html.md) to create reservations before fulfilling the order, and set each reservation's `line_item_id` to the order item's ID.
 
 ![A diagram showcasing how the Inventory Module is used in the order fulfillment flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709712390/Medusa%20Resources/inventory-order-fulfillment_o9wdxh.jpg)
 
@@ -38109,7 +38267,7 @@ Medusa creates a reservation for each of the order's inventory items when an ord
 
 The reservation is created in the location associated with the order's sales channel, and its quantity is the ordered quantity.
 
-Some workflows that create an order, such as the [createOrderWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderWorkflow/index.html.md), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, create the reservations manually before fulfilling the order, as explained in the next section.
+Some workflows that create an order, such as the [createOrderWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderWorkflow/index.html.md), only check that there's sufficient stock without creating a reservation. If you create an order with one of these workflows, the [createOrderFulfillmentWorkflow](https://docs.medusajs.com/references/medusa-workflows/createOrderFulfillmentWorkflow/index.html.md) throws an error for items whose variants have `manage_inventory` enabled, since they don't have an associated reservation. Create the reservations manually before fulfilling the order, as explained in the next section.
 
 ### Custom Reservations
 
@@ -38825,7 +38983,7 @@ When an order is created from a cart or a draft order, the order inherits their 
 
 When order items are changed through an edit, claim, or exchange, the new items added to the order will also have their details in the order's locale if translations are available.
 
-You can also edit an order's locale using the [Update Order](https://docs.medusajs.com/api/admin#orders_postordersid) API route.
+You can also edit an order's locale using the [Update Order](https://docs.medusajs.com/api/admin/orders/update-order) API route.
 
 ***
 
@@ -40704,6 +40862,66 @@ const totalRefunded = refundTransactions?.reduce((acc, t) => acc + Math.abs(t!.a
 ```
 
 
+# Transfer Order to Guest Customer
+
+This feature is available since Medusa [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
+
+In this guide, you'll learn how Medusa handles transferring an order to a guest customer.
+
+## Overview
+
+An admin user can transfer an order from its current customer to a guest customer identified by email. Unlike the request order transfer flow, this transfer is applied immediately without requiring the recipient to accept it.
+
+If no customer exists with the given email address, Medusa creates a new guest customer. The transfer can only be made to guest (non-registered) customers.
+
+***
+
+## Transfer Order to Guest Workflow
+
+The transfer is handled by the `transferOrderToGuestWorkflow`, which is executed by the [Transfer Order to Guest API route](https://docs.medusajs.com/api/admin/orders/transfer-to-guest).
+
+You can also use this workflow in your customizations:
+
+```ts title="src/workflows/transfer-to-guest.ts"
+import { transferOrderToGuestWorkflow } from "@medusajs/medusa/core-flows"
+
+const { result } = await transferOrderToGuestWorkflow(container)
+  .run({
+    input: {
+      order_id: "order_123",
+      email: "customer@example.com",
+      logged_in_user: "user_123",
+    },
+  })
+```
+
+### Input
+
+The workflow accepts the following input:
+
+- `order_id`: The ID of the order to transfer.
+- `email`: The email of the guest customer to transfer the order to. If no customer exists with this email, a guest customer is created.
+- `logged_in_user`: The ID of the admin user requesting the transfer.
+- `description` (optional): Details of the transfer.
+- `internal_note` (optional): A note visible to admin users only.
+
+### Validation
+
+Before applying the transfer, the workflow validates that:
+
+- The order is not cancelled.
+- The resolved customer is not the same as the order's current customer.
+- The resolved customer is a guest customer. Transfers to registered customer accounts are not allowed.
+
+***
+
+## Difference from Request Order Transfer Workflow
+
+The `transferOrderToGuestWorkflow` is intended for admin users and applies the transfer immediately.
+
+The `requestOrderTransferWorkflow`, on the other hand, sends a transfer request that the recipient customer must accept before the transfer is applied. Use that workflow when transferring an order to a registered customer account.
+
+
 # Commerce Modules
 
 In this section of the documentation, you'll find guides and references related to Medusa's Commerce Modules.
@@ -40729,13 +40947,19 @@ A Commerce Module also defines data models, representing tables in the database.
 - [Promotion Module](https://docs.medusajs.com/commerce-modules/promotion/index.html.md)
 - [Region Module](https://docs.medusajs.com/commerce-modules/region/index.html.md)
 - [Sales Channel Module](https://docs.medusajs.com/commerce-modules/sales-channel/index.html.md)
+- [Settings Module](https://docs.medusajs.com/commerce-modules/settings/index.html.md)
 - [Stock Location Module](https://docs.medusajs.com/commerce-modules/stock-location/index.html.md)
 - [Store Module](https://docs.medusajs.com/commerce-modules/store/index.html.md)
 - [Store Credit Module](https://docs.medusajs.com/commerce-modules/store-credit/index.html.md)
 - [Tax Module](https://docs.medusajs.com/commerce-modules/tax/index.html.md)
 - [Translation Module](https://docs.medusajs.com/commerce-modules/translation/index.html.md)
+- [User Module](https://docs.medusajs.com/commerce-modules/user/index.html.md)
 
-[User Module](https://docs.medusajs.com/commerce-modules/user/index.html.md): undefined
+{/* <Card
+  title="User Module"
+  href="/commerce-modules/user"
+  className="my-1"
+/> */}
 
 ***
 
@@ -40800,6 +41024,18 @@ In the Medusa application, when a payment session is created for a registered cu
 Consequently, the Payment Module uses the payment provider to create an account holder in the third-party service, then creates the account holder in Medusa.
 
 This flow is only supported if the chosen payment provider has implemented the necessary [save payment methods](#save-payment-methods).
+
+***
+
+## Account Holder Idempotency
+
+Account holder creation is idempotent per customer. When the Payment Module calls `createAccountHolder` on the payment provider, it passes `idempotency_key: customer.id` as part of the provider context. This means that if the same customer's account holder is created more than once, the payment provider returns the same result rather than creating a duplicate.
+
+Do not compensate account holder creation with a provider-side delete in your custom workflows. If you call `deleteAccountHolder` in a compensation step, a subsequent retry will ask the provider to create the account holder again. However, the provider may replay the original creation response for the same idempotency key, returning the already-deleted object. This results in an account holder in Medusa that points to a deleted provider-side customer, causing saved payment method flows to fail until the provider's idempotency window expires.
+
+The built-in [createPaymentSessionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createPaymentSessionsWorkflow/index.html.md) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
+
+If you build a custom workflow that creates account holders, use the same `noCompensation: true` config on `createPaymentAccountHolderStep`, or omit a compensation function that calls `deleteAccountHolder` on the provider.
 
 
 # Links between Payment Module and Other Modules
@@ -41376,12 +41612,12 @@ The payment flow consists of the following steps:
 
 ![A diagram showcasing the payment flow's steps](https://res.cloudinary.com/dza7lstvk/image/upload/v1711566781/Medusa%20Resources/payment-flow_jblrvw.jpg)
 
-- [Create Payment Collection](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollections): Create a payment collection associated with a cart.
+- [Create Payment Collection](https://docs.medusajs.com/api/store/payment-collections/create-payment-collection): Create a payment collection associated with a cart.
   - This payment collection will hold all details related to the payment operations.
-- [Show Payment Providers](https://docs.medusajs.com/api/store#payment-providers_getpaymentproviders): Show the customer the available payment providers to choose from.
+- [Show Payment Providers](https://docs.medusajs.com/api/store/payment-providers/list-payment-providers): Show the customer the available payment providers to choose from.
   - You can integrate any [payment provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/index.html.md), and you can enable them per region.
-- [Create and Initialize Payment Session](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions): Create a payment session for the selected payment provider in the Medusa application, and initialize the session in the third-party payment provider.
-- [Complete Cart](https://docs.medusajs.com/api/store#carts_postcartsidcomplete): Once the customer places the order, complete the cart, which involves:
+- [Create and Initialize Payment Session](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session): Create a payment session for the selected payment provider in the Medusa application, and initialize the session in the third-party payment provider.
+- [Complete Cart](https://docs.medusajs.com/api/store/carts/complete-cart): Once the customer places the order, complete the cart, which involves:
   - Authorizing the payment session with the third-party payment provider.
   - If the third-party payment provider requires performing additional actions, show them to the customer, then retry cart completion.
 
@@ -41658,9 +41894,25 @@ You can then:
 
 Some payment providers allow capturing the payment automatically once it's authorized. In that case, you don't need to do it manually.
 
+### Capture Payments
+
+To capture a payment, use the `capturePaymentWorkflow` or the Payment Module's `capturePayment` method.
+
+If you pass an `amount`, it must be greater than 0. If you omit the `amount`, Medusa captures the full payment amount.
+
+Before [Medusa v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0), passing `0` as the capture amount was treated as if no amount was provided, defaulting to the full payment amount. Now, passing `0` or a negative number throws an error.
+
+***
+
 ### Refund Payments
 
-If you need to refund a payment, use the `refundPaymentsWorkflow`:
+If you need to refund a payment, use the `refundPaymentsWorkflow`.
+
+If you pass an `amount`, it must be greater than 0. If you omit the `amount`, Medusa refunds the full payment amount.
+
+Before [Medusa v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0), passing `0` as the refund amount was treated as if no amount was provided, defaulting to the full payment amount. Now, passing `0` or a negative number throws an error.
+
+For example:
 
 ### Using Workflow
 
@@ -41839,6 +42091,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
 |\`automatic\_payment\_methods\`|A boolean value indicating whether to enable Stripe's automatic payment methods. This is useful if you integrate services like Apple pay or Google pay.|No|\`false\`|
 |\`payment\_description\`|A string used as the default description of a payment if none is available in cart.context.payment\_description.|No|-|
 |\`oxxoExpiresDays\`|The number of days before an OXXO payment expires. Only applicable if you plan to use OXXO as a payment method.|No|\`3\`|
+|\`paymentMethodConfiguration\`|A string indicating the ID of a Stripe |No|-|
 
 ***
 
@@ -43004,7 +43257,7 @@ Price rules only affect shipping options whose `price_type` is `flat`. For optio
 
 The [price calculation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/price-calculation/index.html.md) mechanism considers a price applicable when the resource that this price is in matches the specified rules.
 
-For example, a [cart object](https://docs.medusajs.com/api/store#carts_cart_schema) has an `item_total` property. So, if a shipping option has the following price:
+For example, a [cart object](https://docs.medusajs.com/api/store/carts/schema) has an `item_total` property. So, if a shipping option has the following price:
 
 ```json
 {
@@ -45712,7 +45965,7 @@ The following table lists the supported attributes for each rule scope:
 |Cart items|The application method's |\`items.product.id\`|
 |Shipping methods|The application method's |\`shipping\_methods.shipping\_option.shipping\_option\_type\_id\`|
 
-To retrieve the supported attributes programmatically, use the [listRuleAttributes](https://docs.medusajs.com/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes/index.html.md) JS SDK method or the [List Rule Attribute Options](https://docs.medusajs.com/api/admin#promotions_getpromotionsruleattributeoptionsrule_type) Admin API route.
+To retrieve the supported attributes programmatically, use the [listRuleAttributes](https://docs.medusajs.com/references/js_sdk/admin/Promotion/methods/js_sdk.admin.Promotion.listRuleAttributes/index.html.md) JS SDK method or the [List Rule Attribute Options](https://docs.medusajs.com/api/admin/promotions/list-potential-rule-attributes) Admin API route.
 
 ### Restrict a Promotion by Order Value
 
@@ -47212,6 +47465,986 @@ You can then use these IDs based on your business logic. For example, you can re
 Notice that the request object's type is `MedusaStoreRequest` instead of `MedusaRequest` to ensure the availability of the `publishable_key_context` property.
 
 
+# Settings Module Concepts
+
+In this guide, you'll learn about the main concepts in the Settings Module and the data models it uses to store admin personalization settings.
+
+## View Configuration
+
+A view configuration is a saved data-table view for an entity, such as products or orders. It stores which columns are visible, their order and widths, the active filters, the sorting, and the search query.
+
+A view configuration is either personal to a user or a shared system default. Learn more in the [View Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/view-configurations/index.html.md) document.
+
+The [ViewConfiguration](https://docs.medusajs.com/references/settings/models/ViewConfiguration/index.html.md) data model represents a view configuration.
+
+***
+
+## Layout Configuration
+
+A layout configuration stores the layout preferences of a zone, such as a product's details page. It stores the order and visibility of the zone's sections.
+
+A layout configuration is either personal to a user or a shared system default. Learn more in the [Layout Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/layout-configurations/index.html.md) document.
+
+The [LayoutConfiguration](https://docs.medusajs.com/references/settings/models/LayoutConfiguration/index.html.md) data model represents a layout configuration.
+
+***
+
+## Property Label
+
+A property label sets a custom label and description for a property of an entity, such as the `display_id` property of an order. Labels are global, so they apply to all admin users, and they're translatable.
+
+Learn more in the [Property Labels](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/property-labels/index.html.md) document.
+
+The [PropertyLabel](https://docs.medusajs.com/references/settings/models/PropertyLabel/index.html.md) data model represents a property label.
+
+***
+
+## User Preference
+
+A user preference stores an arbitrary setting for a user as a key-value pair. The Settings Module also uses user preferences internally to track a user's active view and layout scope.
+
+Learn more in the [User Preferences](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/user-preferences/index.html.md) document.
+
+The [UserPreference](https://docs.medusajs.com/references/settings/models/UserPreference/index.html.md) data model represents a user preference.
+
+***
+
+## Entity Discovery and Column Generation
+
+To build data tables in the dashboard, the Settings Module discovers the entities available in your application from the registered modules' [query graph](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), then generates the columns for each entity.
+
+You can customize the generated columns of an entity, such as the default visible columns or their order. Learn how in the [Configure View Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/configure-view-configurations/index.html.md) guide.
+
+
+# Configure View Configurations
+
+In this guide, you'll learn how to configure the data tables that use view configurations in the dashboard. You'll learn how to set the default columns and their order, add computed columns, change how a column's value renders, and show a configurable data table in your admin customizations.
+
+### Prerequisites
+
+- [Medusa v2.18.0 or later](https://github.com/medusajs/medusa/releases/tag/v2.18.0)
+- [View configurations feature flag enabled](../view-configurations/page.mdx#enable-the-feature-flag)
+
+## How Column Configurations are Generated
+
+The Settings Module discovers the entities in your application from the registered modules' [query graph](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), including your custom modules' data models. For each entity, it generates the column configurations that are used in its configurable data table in the Medusa Admin dashboard.
+
+You can then override these generated column configurations, as explained in the following sections. You can change the default visible columns, their order, how their values render, and add computed columns.
+
+In this guide, the terms "entity" and "data model" are used interchangeably. They both refer to a [data model](https://docs.medusajs.com/docs/learn/fundamentals/data-models/index.html.md) defined in a module, such as a core data model like `Product` or a custom one like `Brand`.
+
+***
+
+## How to Override Entity Column Configurations
+
+In the Settings Module's configurations, you can override the generated columns of a core or custom data model. These overrides are applied to the configurable data table in the Medusa Admin dashboard when the view configuration feature is enabled, and only to the system default view configuration.
+
+Admin users can still customize the columns of a data table in the dashboard, and their customizations are saved either as system default or user-specific view configurations. The overrides you define here are applied only if the user hasn't customized the columns of the data table.
+
+In this section, you'll learn how to configure the default columns of a custom data model `Brand` defined in a custom module. You can use the same approach to configure the default columns of any core or custom data model. The sections after this one explain all the different configuration overrides you can set for an entity's columns.
+
+### Prerequisites
+
+- [A custom module with a data model defined](https://docs.medusajs.com/docs/learn/customization/custom-features/module/index.html.md)
+
+### Step 1: Configure the Settings Module
+
+To override the generated columns of an entity, pass the `entityOverrides` option to the Settings Module in `medusa-config.ts`. Its value is an object whose keys are data model names as passed to the `MedusaService` extended by the module's service, and whose values are the entity's override configuration.
+
+For core data models, the entity key is the pascal case name of the entity, such as `Product`, `Order`, or `SalesChannel`.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: [
+              "name",
+              "description",
+            ],
+            defaultFieldOrdering: { name: 100 },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This configuration overrides the default columns of the `Brand` data model, assuming you defined it in a custom module. The `name` and `description` columns are shown by default, and the `name` column appears first.
+
+The Settings Module is registered by default, so you only add it to the `modules` array to pass when you want to pass options to it.
+
+### Step 2: Show a Configurable Data Table in Your Admin Customizations
+
+### Prerequisites
+
+- [An API route that lists the entity's records](https://docs.medusajs.com/docs/learn/customization/customize-admin/route#1-get-brands-api-route/index.html.md)
+
+Next, you can show a configurable, view-aware data table for an entity in your admin customizations, such as a [custom UI route](https://docs.medusajs.com/docs/learn/fundamentals/admin/ui-routes/index.html.md).
+
+To do that, use the `ConfigurableDataTable` component with an adapter created by the `createTableAdapter` utility, both available through the admin dashboard.
+
+For example, create the file `src/admin/routes/brands/page.tsx` with the following content:
+
+```tsx title="src/admin/routes/brands/page.tsx"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { ConfigurableDataTable } from "@medusajs/dashboard/components"
+import { createTableAdapter } from "@medusajs/dashboard/lib"
+import { useQuery } from "@tanstack/react-query"
+import { sdk } from "../../lib/sdk"
+
+const adapter = createTableAdapter({
+  entity: "brand",
+  useData: (fields, params) => {
+    const { data, isLoading, isError, error } =
+      useQuery({
+        queryKey: ["brands", fields, params],
+        queryFn: () =>
+          sdk.client.fetch("/admin/brands", {
+            query: { fields, ...params },
+          }),
+      })
+
+    return {
+      data: data?.brands,
+      count: data?.count,
+      isLoading,
+      isError,
+      error,
+    }
+  },
+  getRowHref: (row) => `/brands/${row.id}`,
+})
+
+const BrandsPage = () => {
+  return (
+    <ConfigurableDataTable
+      adapter={adapter}
+      heading="Brands"
+    />
+  )
+}
+
+export const config = defineRouteConfig({
+  label: "Brands",
+})
+
+export default BrandsPage
+```
+
+This API route retrieves the list of brands from the `/admin/brands` API route and shows them in a configurable data table. The table uses the default columns defined in the Settings Module's configuration, and admin users can customize the columns and save their view configurations.
+
+If you go to `/admin/brands` in your Medusa Admin dashboard, you'll see the configurable data table for the `Brand` data model. Based on the configurations you defined in `medusa-config.ts`, it shows the `name` and `description` columns, and the `name` column appears first. You can customize the configurations, such as the visible columns and their order, and save your view configuration.
+
+If you don't need saved views or dynamic columns, use the [DataTable component](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/admin-components/components/data-table/index.html.md) from `@medusajs/ui` instead. It's a stable, fully-supported table primitive.
+
+***
+
+## Set Default Visible Fields and Ordering
+
+To set which columns are shown by default and their order, use the following properties in the entity's override configuration:
+
+- `defaultVisibleFields`: An array of field names that are shown by default, in the order they're listed.
+- `defaultFieldOrdering`: An object whose keys are field names, and whose values are numbers. Columns are ordered by these numbers in ascending order, so a column with a lower number appears first.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: ["name", "description"],
+            defaultFieldOrdering: {
+              name: 100,
+              description: 200,
+            },
+          },
+          Product: {
+            defaultVisibleFields: ["title", "collection.title"],
+            defaultFieldOrdering: {
+              title: 100,
+              "collection.title": 200,
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+You override the default columns of the `Brand` and `Product` data models. The `Brand` override shows the `name` and `description` columns, and the `Product` override shows the `title` column and the title of its collection.
+
+The `Product` override adds a relation's field to the visible columns: `collection.title` shows the title of a product's collection as a column. Use a dotted path to reference a scalar field of a related entity, and use the same dotted path as the key in `defaultFieldOrdering`.
+
+For a core entity like `Product`, your configuration is merged with the built-in configuration. For a custom data model like `Brand`, your configuration is the entire configuration.
+
+Space the ordering numbers by `100` to leave room to insert columns later.
+
+***
+
+## Default Column Render Modes
+
+The Settings Module infers how to render each column's value, which is used to decide the column's render mode. The Medusa Admin dashboard defines cell renderers for these render modes, which are used to render the column's value in the configurable data table.
+
+The Settings Module and Medusa Admin dashboard support the following built-in render modes:
+
+|Render Mode|Description|
+|---|---|
+|\`text\`|Shows the value as plain text.|
+|\`number\`|Formats the value as a localized number.|
+|\`currency\`|Formats the value as a price using the same row's |
+|\`date\`|Formats the value as a date.|
+|\`boolean\`|Shows the value as a Yes or No badge.|
+|\`email\`|Shows the value as a |
+|\`phone\`|Shows the value as a |
+|\`url\`|Shows the value as an external link.|
+|\`image\`|Shows the value as an image.|
+|\`json\`|Shows the value as formatted JSON.|
+|\`handle\`|Shows the value as a URL path prefixed with |
+|\`count\`|Shows the number of items in the array specified in the entity configuration's |
+|\`badges\`|Shows the items in the array specified in the entity configuration's |
+|\`status\`|Shows a status pill resolved from the entity configuration's |
+|\`name\`|Shows a full name from the |
+|\`address\`|Shows a formatted address from the object at the entity configuration's |
+|\`country\_code\`|Shows a country flag from the code at the entity configuration's |
+
+### How Render Modes are Inferred
+
+By default, the Settings Module infers how to render a column's value in the following order of precedence:
+
+1. **Name checking:** It applies the following name checks and assigns the corresponding render mode if the field name matches:
+   - `*_at` / `created_at` / `updated_at` / `deleted_at` → `datetime`
+   - `*_date` → `date`
+   - `*total` / `*amount` / `*price` / `subtotal` / `tax_total` / `shipping_total` / `discount_total` → `currency`
+   - `*status` / `state` / `payment_status` / `fulfillment_status` → `status`
+   - `email` / `*_email` → `email`
+   - `phone` / `*_phone` → `phone`
+   - `*country_code` → `country_code`
+   - `url` / `*_url` → `url`
+   - `thumbnail` / `avatar` / `*_image` → `image`
+   - `id` / `*_id` → `id`
+   - `display_id` → `display_id`
+   - `count` / `*_count` / `*quantity` → `number`
+   - `is_*` / `has_*` / `can_*` → `boolean`
+   - `metadata` → `json`
+2. **Type checking:** If the field name doesn't match any of the above, it checks the field's type and assigns the corresponding render mode:
+   - `boolean` → `boolean`
+   - `text` → `text`
+   - `number` → `number`
+   - `dateTime` → `datetime`
+   - `json` → `json`
+   - `id` → `id`
+3. **Fallback:** If the field name and type don't match any of the above, it defaults to `text`.
+
+### Override Field Render Modes
+
+To override the inferred render mode of a field, use the `fieldRenderModes` property. Its value is an object whose keys are field names, and whose values are render modes:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: ["name", "description", "asset"],
+            fieldRenderModes: {
+              asset: "image",
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+In this example, the `asset` field of the `Brand` data model is rendered as an image, even if its name and type don't match any of the built-in render modes.
+
+For render modes that require additional configuration through the `metadata` property, such as `country_code`, you can set the required configuration in the entity's override configuration:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            defaultVisibleFields: ["name", "description", "country"],
+            fieldRenderModes: {
+              country: "country_code",
+            },
+            fieldMetadata: {
+              country: { country_code_field: "country" },
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+In this example, the `country` field of the `Brand` data model is rendered as a country flag, and the `country_code_field` metadata is set to the same field name.
+
+***
+
+## Define a Custom Render Mode
+
+In your admin dashboard customization, you can define a custom render mode to render a column's value in a specific way. You can then use that render mode in the entity's override configuration to render a column's value with your custom logic.
+
+Cell renderers are defined in the `src/admin/lib/cell-renderers.tsx` file of your Medusa project. You can define multiple cell renderers in this file, each defined with the `defineCellRenderer` utility.
+
+For example, create the file `src/admin/lib/cell-renderers.tsx` with the following content:
+
+```tsx title="src/admin/lib/cell-renderers.tsx"
+import { defineCellRenderer } from "@medusajs/dashboard/lib"
+
+defineCellRenderer("capitalized", {
+  render: (value) => {
+    if (!value) {
+      return "-"
+    }
+
+    const text = String(value)
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  },
+})
+```
+
+In this example, the `capitalized` render mode capitalizes the first letter of the column's value.
+
+The `defineCellRenderer` utility accepts the following parameters:
+
+1. A string that is the render mode's name, which you can use in the entity's override configuration.
+2. A configuration object with the following properties:
+   - `render`: A function that returns the content of the cell. It receives the following parameters:
+     1. The column's value. For regular columns, this is the value of the field. For computed columns, this is the full row.
+     2. The full row of data, which includes all the fields of the entity.
+     3. The column's configuration as an `AdminColumn` object, including properties like `id`, `name`, `field` (the field path), `data_type`, `render_mode`, and `metadata`. For computed columns, it also has a `computed` object with `type`, `required_fields`, and `optional_fields`.
+     4. A translation function to translate strings in the cell's content.
+   - `align`: (optional) The alignment of the cell's content. Its value can be `left`, `center`, or `right`. The default value is `left`.
+   - `truncateTooltip`: (optional) Whether to show a tooltip with the full content when the cell's content is truncated. The default value is `true`.
+
+You can then apply the `capitalized` render mode to a regular field in the `Brand` entity's override configuration using the `fieldRenderModes` property:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            fieldRenderModes: {
+              name: "capitalized",
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This applies the `capitalized` render mode to the `name` column, so a brand's name renders with its first letter capitalized. Because the renderer only uses the column's own value, no other fields need to be fetched.
+
+### Use Metadata in a Custom Render Mode
+
+A custom render mode can accept configuration through the column's `metadata`, which makes the render mode reusable across fields. Set the metadata for a regular field with the `fieldMetadata` property, and read it in the renderer from the third parameter's `metadata` property.
+
+For example, add a `truncated` render mode that shortens a value to a maximum length:
+
+```tsx title="src/admin/lib/cell-renderers.tsx"
+import { defineCellRenderer } from "@medusajs/dashboard/lib"
+
+defineCellRenderer("truncated", {
+  render: (value, _row, column) => {
+    if (!value) {
+      return "-"
+    }
+
+    const maxLength = column.metadata?.max_length ?? 50
+    const text = String(value)
+
+    return text.length > maxLength
+      ? `${text.slice(0, maxLength)}...`
+      : text
+  },
+})
+```
+
+Then apply the `truncated` render mode to a regular field and pass its configuration with the `fieldMetadata` property:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            fieldRenderModes: {
+              description: "truncated",
+            },
+            fieldMetadata: {
+              description: { max_length: 50 },
+            },
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This applies the `truncated` render mode to the `description` column and truncates its value to `50` characters. The renderer reads `max_length` from the column's `metadata`, which is populated from the `fieldMetadata` property. You can reuse the same render mode on other fields with a different `max_length`.
+
+***
+
+## Add Computed Columns
+
+A computed column is a column whose value is computed from other fields or with custom logic, rather than a direct property of the entity. For example, you can add a `products_count` column for the `Brand` data model that shows the number of products associated with a brand.
+
+To add computed columns to an entity's data table, use the `computedColumns` property on the entity's override configuration. Its value is an array of objects, each having the following properties:
+
+- `id`: The column's unique identifier.
+- `name`: The column's display name.
+- `context`: (optional) When to use the column. Its value can be `display` to show the column, `filter` to only allow filtering by it, or `both`. The default value is `display`.
+- `renderMode`: How the column's value renders. This is required for columns with `context: display` (the default). Its value can either be a [built-in render mode](#default-column-render-modes) or a [custom render mode](#define-a-custom-render-mode).
+- `requiredFields`: An array of fields needed to compute the column's value.
+- `metadata`: An object of additional configuration for the column, which are used by the render mode's cell renderer. For example, the `count` render mode uses the `metadata.list_field` property to count the items in a relation.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/settings",
+      options: {
+        entityOverrides: {
+          Brand: {
+            computedColumns: [
+              {
+                id: "products_count",
+                name: "Product Count",
+                renderMode: "count",
+                requiredFields: ["products.id"],
+                metadata: { list_field: "products" },
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+This adds a `products_count` column to the Brand's configurable data table that shows the number of products associated with a brand, assuming there's a link between them.
+
+The `count` render mode counts the items in the relation set by `metadata.list_field` (`products` here), whereas `requiredFields` only ensures that relation is fetched onto the row.
+
+
+# Layout Configurations
+
+In this guide, you'll learn about layout configurations in the Settings Module.
+
+Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md) to learn how to customize layouts in the Medusa Admin dashboard.
+
+## What is a Layout Configuration?
+
+A layout configuration stores the layout preferences of a zone in the dashboard, such as a product's details page or the sidebar. It lets admin users customize the order and visibility of a zone's sections.
+
+The [LayoutConfiguration](https://docs.medusajs.com/references/settings/models/LayoutConfiguration/index.html.md) data model stores a layout's customizations in its `configuration` property, and it's associated with a zone through its `zone` property.
+
+***
+
+## Layout Configuration Types
+
+There are two types of layout configurations for a zone:
+
+1. System default: A stored layout configuration that has its `is_system_default` property enabled and no `user_id`. It applies to all users that don't have a personal layout. Only one system default can exist per zone.
+2. Personal layout: A stored layout configuration that has a `user_id`. It's private to the user that created it.
+
+***
+
+## Active Layout Scope
+
+Each user has an active layout scope for a zone, which is either `personal` or `default`. It indicates whether the user is viewing their personal layout or the system default.
+
+The `getActiveLayoutScope` method of the module's service retrieves a user's active scope for a zone, and the `setActiveLayoutScope` method sets it.
+
+
+# Settings Module
+
+In this section of the documentation, you will find resources to learn more about the Settings Module and how to use it in your application.
+
+Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/tips/table-views/index.html.md) to learn how to customize data tables and manage views in the dashboard.
+
+Medusa has admin personalization and configuration features available out-of-the-box through the Settings Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features is provided in Commerce Modules, such as the Settings Module.
+
+The Settings Module powers dashboard personalization features, such as configuring data tables, customizing page layouts, and storing user preferences.
+
+Refer to the [Module Isolation](https://docs.medusajs.com/docs/learn/fundamentals/modules/isolation/index.html.md) guide to learn more about why modules are isolated.
+
+## Settings Features
+
+- [View Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/view-configurations/index.html.md): Store data-table views for an entity, including visible columns, column order and widths, filters, sorting, and search. Views can be personal to a user or a shared system default.
+- [Layout Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/layout-configurations/index.html.md): Store per-zone layout preferences, such as the order and visibility of sections on a page, for a user or as a shared system default.
+- [Property Labels](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/property-labels/index.html.md): Set custom, translatable labels and descriptions for an entity's properties.
+- [User Preferences](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/user-preferences/index.html.md): Store arbitrary preferences for a user as key-value pairs.
+
+***
+
+## How to Use the Settings Module
+
+In your Medusa application, you build flows around Commerce Modules. A flow is built as a [Workflow](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md), which is a special function composed of a series of steps that guarantees data consistency and a reliable rollback mechanism.
+
+You can build custom workflows and steps. You can also re-use Medusa's workflows and steps, which are provided by the `@medusajs/medusa/core-flows` package.
+
+For example:
+
+```ts title="src/workflows/set-preference.ts" highlights={highlights}
+import { 
+  createWorkflow, 
+  WorkflowResponse,
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+
+const setPreferenceStep = createStep(
+  "set-preference",
+  async ({}, { container }) => {
+    const settingsModuleService = container.resolve(Modules.SETTINGS)
+
+    const preference = await settingsModuleService
+      .setUserPreference("user_123", "theme", {
+        mode: "dark",
+      })
+
+    return new StepResponse({ preference })
+  }
+)
+
+export const setPreferenceWorkflow = createWorkflow(
+  "set-preference",
+  () => {
+    const { preference } = setPreferenceStep()
+
+    return new WorkflowResponse({
+      preference,
+    })
+  }
+)
+```
+
+You can then execute the workflow in your custom API routes, scheduled jobs, or subscribers:
+
+### API Route
+
+```ts title="src/api/workflow/route.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { setPreferenceWorkflow } from "../../workflows/set-preference"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await setPreferenceWorkflow(req.scope)
+    .run()
+
+  res.send(result)
+}
+```
+
+### Subscriber
+
+```ts title="src/subscribers/user-created.ts" highlights={[["11"], ["12"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+} from "@medusajs/framework"
+import { setPreferenceWorkflow } from "../workflows/set-preference"
+
+export default async function handleUserCreated({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  const { result } = await setPreferenceWorkflow(container)
+    .run()
+
+  console.log(result)
+}
+
+export const config: SubscriberConfig = {
+  event: "user.created",
+}
+```
+
+### Scheduled Job
+
+```ts title="src/jobs/run-daily.ts" highlights={[["7"], ["8"]]}
+import { MedusaContainer } from "@medusajs/framework/types"
+import { setPreferenceWorkflow } from "../workflows/set-preference"
+
+export default async function myCustomJob(
+  container: MedusaContainer
+) {
+  const { result } = await setPreferenceWorkflow(container)
+    .run()
+
+  console.log(result)
+}
+
+export const config = {
+  name: "run-once-a-day",
+  schedule: `0 0 * * *`,
+}
+```
+
+Refer to the [Workflows](https://docs.medusajs.com/docs/learn/fundamentals/workflows/index.html.md) documentation to learn more.
+
+***
+
+
+# Property Labels
+
+In this guide, you'll learn about property labels in the Settings Module.
+
+## What is a Property Label?
+
+A property label sets a custom label and description for a property of an entity. For example, you can set the label of an order's `display_id` property to `Order Number`.
+
+The [PropertyLabel](https://docs.medusajs.com/references/settings/models/PropertyLabel/index.html.md) data model represents a property label. It's associated with a property through its `entity` and `property` properties, and it stores the custom label and description in its `label` and `description` properties.
+
+Property labels are global, so they apply to all admin users. A property can have only one label.
+
+***
+
+## Translatable Labels
+
+A property label's `label` and `description` are translatable fields, so they integrate with the [Translation Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/index.html.md). You can store a different `label` and `description` for each of your store's [locales](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/translation/concepts#locales/index.html.md).
+
+You can manage a property label's translations from the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/translations/index.html.md) or programmatically with the Translation Module.
+
+Then, when you retrieve a property label for a specific locale, Medusa returns the translated `label` and `description` for that locale. If the property label has no translation for that locale, Medusa falls back to the `label` and `description` values stored on the property label itself.
+
+***
+
+## Property Labels in Data Tables
+
+When the dashboard generates the columns of a data table, it uses an entity's property labels as the column names. This lets you customize how columns are named across the dashboard.
+
+Learn more about data-table columns in the [Configure View Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/configure-view-configurations/index.html.md) guide.
+
+
+# User Preferences
+
+In this guide, you'll learn about user preferences in the Settings Module.
+
+## What is a User Preference?
+
+A user preference stores an arbitrary setting for a user as a key-value pair. For example, you can store a user's preferred theme or language.
+
+The [UserPreference](https://docs.medusajs.com/references/settings/models/UserPreference/index.html.md) data model represents a user preference. It denotes the user it belongs to through the `user_id` property, and it stores the setting's key and value in its `key` and `value` properties. A user can have only one preference per key.
+
+***
+
+## Manage User Preferences
+
+The Settings Module's service provides methods to create, retrieve, update, and delete user preferences. Resolve the service from the Medusa container using `Modules.SETTINGS`.
+
+### Set a User Preference
+
+Use the `setUserPreference` method to create or update a user preference by its key:
+
+```ts
+const preference = await settingsModuleService.setUserPreference(
+  "user_123",
+  "theme",
+  { mode: "dark" }
+)
+```
+
+### Get a User Preference
+
+Use the `getUserPreference` method to retrieve a user's preference by key:
+
+```ts
+const preference = await settingsModuleService.getUserPreference(
+  "user_123",
+  "theme"
+)
+```
+
+This returns `null` if no preference exists for the specified user and key.
+
+### Create User Preferences
+
+Use the `createUserPreferences` method to create one or more preferences at once:
+
+```ts
+const preferences =
+  await settingsModuleService.createUserPreferences([
+    {
+      user_id: "user_123",
+      key: "theme",
+      value: "dark",
+    },
+  ])
+```
+
+### Retrieve a User Preference by ID
+
+Use the `retrieveUserPreference` method to retrieve a preference by its ID:
+
+```ts
+const preference =
+  await settingsModuleService.retrieveUserPreference("uspref_123")
+```
+
+### List User Preferences
+
+Use the `listUserPreferences` method to list preferences with optional filters:
+
+```ts
+const preferences =
+  await settingsModuleService.listUserPreferences({
+    user_id: "user_123",
+  })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountUserPreferences`:
+
+```ts
+const [preferences, count] =
+  await settingsModuleService.listAndCountUserPreferences(
+    { user_id: "user_123" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update User Preferences
+
+Use the `updateUserPreferences` method to update existing preferences by their IDs:
+
+```ts
+const preferences =
+  await settingsModuleService.updateUserPreferences([
+    {
+      id: "uspref_123",
+      value: "light",
+    },
+  ])
+```
+
+### Delete User Preferences
+
+Use the `deleteUserPreferences` method to delete preferences by their IDs:
+
+```ts
+await settingsModuleService.deleteUserPreferences("uspref_123")
+```
+
+***
+
+## Internal Usage
+
+The Settings Module uses user preferences internally to track a user's active view for an entity and active layout scope for a zone.
+
+Learn more about these concepts in the [View Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/view-configurations/index.html.md) and [Layout Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/layout-configurations/index.html.md) documents.
+
+
+# View Configurations
+
+In this guide, you'll learn about view configurations in the Settings Module.
+
+This feature is a work in progress, so it may change in future releases.
+
+### Prerequisites
+
+
+
+## Enable the Feature Flag
+
+View configurations are disabled by default. To enable them, set the `view_configurations` feature flag in your `medusa-config.ts` file:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    view_configurations: true,
+  },
+})
+```
+
+Alternatively, set the `MEDUSA_FF_VIEW_CONFIGURATIONS` environment variable:
+
+```bash
+MEDUSA_FF_VIEW_CONFIGURATIONS=true
+```
+
+***
+
+## What is a View Configuration?
+
+A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+
+The [ViewConfiguration](https://docs.medusajs.com/references/settings/models/ViewConfiguration/index.html.md) data model stores a view's customizations in its `configuration` property, which includes:
+
+- `visible_columns`: The columns shown in the table.
+- `column_order`: The order of the columns.
+- `column_widths`: The width of each column.
+- `filters`: The applied filters.
+- `sorting`: The column and direction to sort by.
+- `search`: The search query.
+
+***
+
+## View Configuration Types
+
+There are three types of views for an entity:
+
+1. Code default: The default view built into the dashboard. It has no stored view configuration.
+2. System default: A stored view configuration that has its `is_system_default` property enabled and no `user_id`. It applies to all users that don't have a personal view. Only one system default can exist per entity.
+3. Personal view: A stored view configuration that has a `user_id`. It's private to the user that created it.
+
+***
+
+## Active View
+
+Each user has an active view for an entity, which is the view they're currently using. The Settings Module resolves a user's active view in the following order:
+
+1. The view set as active in the user's preferences.
+2. The user's first personal view, if any.
+3. The system default, if any.
+
+The `getActiveViewConfiguration` method of the module's service resolves the active view, and the `setActiveViewConfiguration` method sets it.
+
+***
+
+## Manage View Configurations
+
+The Settings Module's service provides methods to create, retrieve, update, and delete view configurations programmatically. Resolve the service from the Medusa container using `Modules.SETTINGS`.
+
+### Create a View Configuration
+
+Use the `createViewConfigurations` method to create a new view configuration:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.createViewConfigurations({
+    entity: "product",
+    name: "My Products View",
+    configuration: {
+      visible_columns: ["title", "status"],
+      column_order: ["title", "status"],
+    },
+  })
+```
+
+### Retrieve a View Configuration
+
+Use the `retrieveViewConfiguration` method to retrieve a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.retrieveViewConfiguration("viewcfg_123")
+```
+
+### List View Configurations
+
+Use the `listViewConfigurations` method to list view configurations with optional filters:
+
+```ts
+const viewConfigurations =
+  await settingsModuleService.listViewConfigurations({
+    entity: "product",
+  })
+```
+
+To retrieve a paginated list with the total count, use `listAndCountViewConfigurations`:
+
+```ts
+const [viewConfigurations, count] =
+  await settingsModuleService.listAndCountViewConfigurations(
+    { entity: "product" },
+    { take: 20, skip: 0 }
+  )
+```
+
+### Update a View Configuration
+
+Use the `updateViewConfigurations` method to update a view configuration by its ID:
+
+```ts
+const viewConfiguration =
+  await settingsModuleService.updateViewConfigurations("viewcfg_123", {
+    name: "Updated View",
+  })
+```
+
+### Delete a View Configuration
+
+Use the `deleteViewConfigurations` method to delete a view configuration by its ID:
+
+```ts
+await settingsModuleService.deleteViewConfigurations("viewcfg_123")
+```
+
+### Manage the Active View
+
+Use `getActiveViewConfiguration` to retrieve a user's active view for an entity, and `setActiveViewConfiguration` to change it:
+
+```ts
+const activeView =
+  await settingsModuleService.getActiveViewConfiguration(
+    "user_123",
+    "product"
+  )
+
+await settingsModuleService.setActiveViewConfiguration(
+  "user_123",
+  "product",
+  "viewcfg_123"
+)
+```
+
+***
+
+## Configure View Configurations
+
+You can customize how columns are generated for an entity, add computed columns, and change how a column's value renders. You can also show a configurable data table in your admin customizations.
+
+Learn how in the [Configure View Configurations](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/settings/configure-view-configurations/index.html.md) guide.
+
+
 # Stock Location Concepts
 
 In this guide, you’ll learn about the main concepts in the Stock Location Module.
@@ -48522,7 +49755,12 @@ The method returns tax lines for the line item and shipping methods. For example
     "rate_id": "txr_1",
     "rate": 10,
     "code": "XXX",
-    "name": "Tax Rate 1"
+    "name": "Tax Rate 1",
+    "data": {
+      "state_rate": 6,
+      "county_rate": 2,
+      "city_rate": 2
+    }
   },
   {
     "shipping_line_id": "casm_123",
@@ -48533,6 +49771,8 @@ The method returns tax lines for the line item and shipping methods. For example
   }
 ]
 ```
+
+Each tax line can include a `data` field with additional information returned by the tax provider, such as a breakdown of rates by jurisdiction (state, county, city). This field is stored on the tax line and is useful when integrating with third-party tax services like Avalara that return granular tax details.
 
 ***
 
@@ -48978,7 +50218,7 @@ curl "http://localhost:9000/store/posts" \
 -H 'x-medusa-locale: fr-FR'
 ```
 
-You must pass a publishable API key in the request header to store API routes. Learn more in the [Store API reference](https://docs.medusajs.com/api/store#publishable-api-key).
+You must pass a publishable API key in the request header to store API routes. Learn more in the [Store API reference](https://docs.medusajs.com/api/store/publishable-api-key).
 
 If your API route isn't under the `/store` prefix, you must apply the `applyLocale` middleware. For example, add the middleware to the `src/api/middlewares.ts` file:
 
@@ -49464,7 +50704,7 @@ In this guide, you’ll learn how to use locales and serve translated content in
 
 ## Fetch Store Locales
 
-You can retrieve the list of locales available in your store using the [List Locales Store API route](https://docs.medusajs.com/api/store#locales_getlocales). You can display this list to customers, allowing them to select their preferred language.
+You can retrieve the list of locales available in your store using the [List Locales Store API route](https://docs.medusajs.com/api/store/locales/list-locales). You can display this list to customers, allowing them to select their preferred language.
 
 For example, to fetch the list of locales, send a `GET` request to the following endpoint:
 
@@ -49475,7 +50715,7 @@ curl "http://localhost:9000/store/locales" \
 
 Learn more in the [Localization](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/localization/index.html.md) storefront guide.
 
-You must pass a publishable API key in the request header to store API routes. Learn more in the [Store API reference](https://docs.medusajs.com/api/store#publishable-api-key).
+You must pass a publishable API key in the request header to store API routes. Learn more in the [Store API reference](https://docs.medusajs.com/api/store/publishable-api-key).
 
 ***
 
@@ -49560,11 +50800,11 @@ Refer to the [Manage Invites](https://docs.medusajs.com/user-guide/settings/user
 
 Admin users can add new users to their store by sending them an invite. The flow for inviting users is as follows:
 
-1. An admin user invites a user either through the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/users/invites/index.html.md) or using the [Create Invite API route](https://docs.medusajs.com/api/admin#invites_postinvites).
+1. An admin user invites a user either through the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/users/invites/index.html.md) or using the [Create Invite API route](https://docs.medusajs.com/api/admin/invites/create-invite).
 2. The invite is created and the `invite.created` event is emitted.
    - At this point, you can handle the event to send an email or notification to the user.
 3. The invited user receives the invite and can accept it, which creates a new user.
-   - The invited user can accept the invite either through the Medusa Admin or using the [Accept Invite API route](https://docs.medusajs.com/api/admin#invites_postinvitesaccept).
+   - The invited user can accept the invite either through the Medusa Admin or using the [Accept Invite API route](https://docs.medusajs.com/api/admin/invites/accept-invite).
 
 The admin user can also resend the invite if the invited user doesn't receive the invite or doesn't accept it before expiry, which emits the `invite.resent` event.
 
@@ -52888,7 +54128,9 @@ module.exports = defineConfig({
             is_default: true,
             options: {
               redisUrl: process.env.CACHE_REDIS_URL,
-              // more options...
+              redisOptions: {
+                // ioredis options...
+              },
             },
           },
           // other caching providers...
@@ -52917,6 +54159,7 @@ CACHE_REDIS_URL=redis://localhost:6379
 |\`ttl\`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.|\`3600\`|
 |\`prefix\`|A string to prefix all cache keys with. This is useful for namespacing your cache keys, especially when sharing a Redis instance with other applications or modules.|No prefix by default|
 |\`compressionThreshold\`|A number indicating the size threshold in bytes above which cached items will be compressed before being stored in Redis. This helps save memory when caching large items.|\`1024\`|
+|\`redisOptions\`|An object of ||
 
 ***
 
@@ -54556,7 +55799,7 @@ Then, start the Medusa application:
 npm run dev
 ```
 
-And create a product either using the [API route](https://docs.medusajs.com/api/admin#products_postproducts) or the [Medusa Admin](https://docs.medusajs.com/user-guide/products/create/index.html.md). This runs the subscriber and sends an email using SendGrid.
+And create a product either using the [API route](https://docs.medusajs.com/api/admin/products/create-product) or the [Medusa Admin](https://docs.medusajs.com/user-guide/products/create/index.html.md). This runs the subscriber and sends an email using SendGrid.
 
 ### Other Events to Handle
 
@@ -55629,7 +56872,7 @@ npx medusa user --email user@example.com --invite
 The command will create a user invite and output the invite token. You can then either:
 
 - Accept the invite in the Medusa Admin at the path `/app/invite?token=<invite_token>`
-- Accept the invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin#invites_postinvitesaccept).
+- Accept the invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin/invites/accept-invite).
 
 
 # Medusa CLI Reference
@@ -56141,7 +57384,7 @@ npx medusa user --email user@example.com --invite
 The command will create a user invite and output the invite token. You can then either:
 
 - Accept the invite in the Medusa Admin at the path `/app/invite?token=<invite_token>`
-- Accept the invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin#invites_postinvitesaccept).
+- Accept the invite using the [Accept Invite API route](https://docs.medusajs.com/api/admin/invites/accept-invite).
 
 
 # Medusa CLI Reference
@@ -56589,6 +57832,40 @@ The method returns a Promise that, when resolved, has the data returned by the r
 
 ***
 
+## Download Binary or File Responses
+
+By default, the `fetch` method sets the `accept` header of the request to `application/json`, so it parses the response as JSON and returns a JavaScript object.
+
+The `fetch` method decides whether to parse the response as JSON based on the request's `accept` header, not the response's content type. So, if your custom route returns a binary or file response, such as a PDF or an image, you must override the `accept` header to a value other than `application/json`. The method then returns the raw [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) object without parsing it.
+
+For example, to download a PDF file returned by a custom route:
+
+```tsx
+const response: Response = await sdk.client.fetch(
+  `/admin/orders/${orderId}/invoice`,
+  {
+    method: "GET",
+    headers: {
+      accept: "application/pdf",
+    },
+  }
+)
+
+const blob = await response.blob()
+const url = window.URL.createObjectURL(blob)
+const link = document.createElement("a")
+link.href = url
+link.download = `invoice-${orderId}.pdf`
+link.click()
+window.URL.revokeObjectURL(url)
+```
+
+In this example, you set the `accept` header to `application/pdf`, so the `fetch` method returns the raw `Response` object. You then use the [Response.blob](https://developer.mozilla.org/en-US/docs/Web/API/Response/blob) method to read the response as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), which you can download in the browser.
+
+Since the method returns the raw `Response` object in this case, type the returned value as `Response`. You're then responsible for reading the response's body, using methods like `blob`, [arrayBuffer](https://developer.mozilla.org/en-US/docs/Web/API/Response/arrayBuffer), or [text](https://developer.mozilla.org/en-US/docs/Web/API/Response/text).
+
+***
+
 ## Migrating from Fetch API to JS SDK
 
 Prefer `sdk.client.fetch` over the raw [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) when sending requests to your Medusa backend.
@@ -56924,7 +58201,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -56962,7 +58239,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -57604,7 +58881,7 @@ Since you export a `POST` function in this file, you're exposing a `POST` API ro
 1. A request object with details and context on the request, such as path and body parameters.
 2. A response object to manipulate and send the response.
 
-In the function, you retrieve the cart's ID from the path parameter, and the item's details from the request body. This API route will accept the same request body parameters as Medusa's [Add Item to Cart API Route](https://docs.medusajs.com/api/store#carts_postcartsidlineitems).
+In the function, you retrieve the cart's ID from the path parameter, and the item's details from the request body. This API route will accept the same request body parameters as Medusa's [Add Item to Cart API Route](https://docs.medusajs.com/api/store/carts/add-line-item).
 
 Then, you execute the `addCustomToCartWorkflow` by invoking it, passing it the Medusa container, which is available in the request's `scope` property, then executing its `run` method. You pass the workflow's input object with the cart's ID and the item to add to the cart.
 
@@ -57652,7 +58929,7 @@ You pass in the `routes` array an object having the following properties:
 
 - `matcher`: The route to apply the middleware on.
 - `method`: The HTTP method to apply the middleware on for the specified API route.
-- `middlewares`: An array of the middlewares to apply. You apply the `validateAndTransformBody` middleware, which validates the request body based on the `StoreAddCartLineItem` schema. This validation schema is the same schema used for Medusa's [Add Item to Cart API Route](https://docs.medusajs.com/api/store#carts_postcartsidlineitems).
+- `middlewares`: An array of the middlewares to apply. You apply the `validateAndTransformBody` middleware, which validates the request body based on the `StoreAddCartLineItem` schema. This validation schema is the same schema used for Medusa's [Add Item to Cart API Route](https://docs.medusajs.com/api/store/carts/add-line-item).
 
 Any request sent to the `/store/carts/:id/line-items-metals` API route will now fail if it doesn't have the required parameters.
 
@@ -58738,7 +60015,7 @@ To retrieve the publishable API key from the Medusa Admin, refer to [this user g
 
 As mentioned before, the API route you added requires the customer to be authenticated. So, you'll first create a customer, then retrieve their authentication token to use in the request.
 
-Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register):
+Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](https://docs.medusajs.com/api/store/auth/retrieve-registration-jwt-token):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
@@ -58751,7 +60028,7 @@ curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
 
 Make sure to replace the email and password with the credentials you want.
 
-Then, register the customer using the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers):
+Then, register the customer using the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/customers' \
@@ -58770,7 +60047,7 @@ Make sure to replace:
 
 Also, if you changed the email in the first request, make sure to change it here as well.
 
-The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider):
+The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](https://docs.medusajs.com/api/store/auth/authenticate-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass' \
@@ -58787,7 +60064,7 @@ Copy the returned token to use it in the next requests.
 
 The customer needs a cart with an item before creating the quote.
 
-A cart requires a region ID. You can retrieve a region ID using the [List Regions API route](https://docs.medusajs.com/api/store#regions_getregions):
+A cart requires a region ID. You can retrieve a region ID using the [List Regions API route](https://docs.medusajs.com/api/store/regions/list-regions):
 
 ```bash
 curl 'http://localhost:9000/store/regions' \
@@ -58796,7 +60073,7 @@ curl 'http://localhost:9000/store/regions' \
 
 Make sure to replace the `{your_publishable_api_key}` with the publishable API key you retrieved from the Medusa Admin.
 
-Then, create a cart for the customer using the [Create Cart API route](https://docs.medusajs.com/api/store#carts_postcarts):
+Then, create a cart for the customer using the [Create Cart API route](https://docs.medusajs.com/api/store/carts/create-cart):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts' \
@@ -58816,7 +60093,7 @@ Make sure to replace:
 
 This will create and return a cart. Copy its ID for the next request.
 
-You now need to add a product variant to the cart. You can retrieve a product variant ID using the [List Products API route](https://docs.medusajs.com/api/store#products_getproducts):
+You now need to add a product variant to the cart. You can retrieve a product variant ID using the [List Products API route](https://docs.medusajs.com/api/store/products/list-products):
 
 ```bash
 curl 'http://localhost:9000/store/products' \
@@ -58827,7 +60104,7 @@ Make sure to replace the `{your_publishable_api_key}` with the publishable API k
 
 Copy the ID of a variant in a product from the response.
 
-Finally, to add the product variant to the cart, use the [Add Item to Cart API route](https://docs.medusajs.com/api/store#carts_postcartsidlineitems):
+Finally, to add the product variant to the cart, use the [Add Item to Cart API route](https://docs.medusajs.com/api/store/carts/add-line-item):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/{id}/line-items' \
@@ -58851,10 +60128,10 @@ This adds the product variant to the cart. You can now use the cart to create a 
 
 For more accurate totals and processing of the quote's draft order, you should:
 
-- Add shipping and billing addresses by [updating the cart](https://docs.medusajs.com/api/store#carts_postcartsid).
-- [Choose a shipping method](https://docs.medusajs.com/api/store#carts_postcartsidshippingmethods) for the cart.
-- [Create a payment collection](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollections) for the cart.
-- [Initialize payment session](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions) in the payment collection.
+- Add shipping and billing addresses by [updating the cart](https://docs.medusajs.com/api/store/carts/update-a-cart).
+- [Choose a shipping method](https://docs.medusajs.com/api/store/carts/add-shipping-method) for the cart.
+- [Create a payment collection](https://docs.medusajs.com/api/store/payment-collections/create-payment-collection) for the cart.
+- [Initialize payment session](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session) in the payment collection.
 
 You can also learn how to build a checkout experience in a storefront by following [this storefront development guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/checkout/index.html.md). It's not specific to quote management, so you'll need to change the last step to create a quote instead of an order.
 
@@ -59465,7 +60742,7 @@ You define a `useQuote` hook that accepts the quote's ID and optional query para
 
 The hook returns the fetched data from the Medusa server. You'll use this hook later in the UI route.
 
-In addition, you'll need a hook to retrieve a preview of the quote's draft order. An order preview includes changes or edits to be applied on an order's items, such as changes in prices and quantities. Medusa already provides a [Get Order Preview API route](https://docs.medusajs.com/api/admin#orders_getordersidpreview) that you can use to retrieve the preview.
+In addition, you'll need a hook to retrieve a preview of the quote's draft order. An order preview includes changes or edits to be applied on an order's items, such as changes in prices and quantities. Medusa already provides a [Get Order Preview API route](https://docs.medusajs.com/api/admin/orders/get-preview) that you can use to retrieve the preview.
 
 To create the hook, create the file `src/admin/hooks/order-preview.tsx` with the following content:
 
@@ -61107,7 +62384,7 @@ You can also view the quote from the Medusa Admin dashboard, where you'll find i
 
 The last feature you'll add is allowing merchants or admin users to make changes to the quote's items. This includes updating the item's quantity and price.
 
-Since you're using an [order change](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/order-change/index.html.md) to manage edits to the quote's draft orders, you don't need to implement customizations on the server side, such as adding workflows or API routes. Instead, you'll only add a new UI route in the Medusa Admin that uses the [Order Edit API routes](https://docs.medusajs.com/api/admin#order-edits) to provide the functionality to edit the quote's items.
+Since you're using an [order change](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/order-change/index.html.md) to manage edits to the quote's draft orders, you don't need to implement customizations on the server side, such as adding workflows or API routes. Instead, you'll only add a new UI route in the Medusa Admin that uses the [Order Edit API routes](https://docs.medusajs.com/api/admin/order-edits) to provide the functionality to edit the quote's items.
 
 Order changes also allow you to add or remove items from the quote. However, for simplicity, this guide only covers how to update the item's quantity and price. Refer to the [Order Change](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/order-change/index.html.md) documentation to learn more.
 
@@ -61115,7 +62392,7 @@ Order changes also allow you to add or remove items from the quote. However, for
 
 In this step, you'll add a new UI route to manage the quote's items. This will include:
 
-1. Adding hooks to send requests to [Medusa's Order Edits API routes](https://docs.medusajs.com/api/admin#order-edits).
+1. Adding hooks to send requests to [Medusa's Order Edits API routes](https://docs.medusajs.com/api/admin/order-edits).
 2. Implement the components you'll use within the UI route.
 3. Add the new UI route to the Medusa Admin.
 
@@ -64607,7 +65884,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -64617,7 +65894,7 @@ Learn more about widgets in [this documentation](https://docs.medusajs.com/docs/
 
 ### Receive Details Props in Widgets
 
-Widgets created in a details page, such as widgets in the `product.details.before` injection zone, receive a prop of the data of the details page (for example, the product):
+Widgets created in a details page, such as widgets in the `product.details` injection zone, receive a prop of the data of the details page (for example, the product):
 
 ```tsx highlights={[["10", "data"]]}
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
@@ -64644,7 +65921,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -64784,7 +66061,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.list.before",
+  zone: "product.list",
 })
 
 export default ProductWidget
@@ -64812,7 +66089,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -70509,7 +71786,7 @@ const CategoryMediaWidget = ({ data }: DetailWidgetProps<AdminProductCategory>) 
 }
 
 export const config = defineWidgetConfig({
-  zone: "product_category.details.after",
+  zone: "product_category.details",
 })
 
 export default CategoryMediaWidget
@@ -75743,7 +77020,7 @@ In this step, you'll validate that a cart's promotions match the customer's tier
 
 ### Validate Promotion Addition
 
-When a customer adds a promotion to the cart, the storefront sends a request to the [Add Promotions API Route](https://docs.medusajs.com/api/store#carts_postcartsidpromotions), which executes the [updateCartPromotionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartPromotionsWorkflow/index.html.md).
+When a customer adds a promotion to the cart, the storefront sends a request to the [Add Promotions API Route](https://docs.medusajs.com/api/store/carts/add-promotions), which executes the [updateCartPromotionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartPromotionsWorkflow/index.html.md).
 
 To ensure that customers don't add promotions that belong to different tiers, you can consume the `validate` [hook](https://docs.medusajs.com/docs/learn/fundamentals/workflows/workflow-hooks/index.html.md) of the `updateCartPromotionsWorkflow`. A hook is a specific point in a workflow where you can inject custom functionality.
 
@@ -77676,7 +78953,7 @@ const OrderGiftItemsWidget = ({ data }: DetailWidgetProps<AdminOrder>) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default OrderGiftItemsWidget 
@@ -77687,7 +78964,7 @@ A widget file must export:
 - A React component that renders the widget content.
 - A configuration object created with `defineWidgetConfig` that defines the widget's [injection zone](https://docs.medusajs.com/admin-widget-injection-zones/index.html.md).
 
-You define the `OrderGiftItemsWidget` component that is injected in the `order.details.side.after` zone. Because it's injected in the order details page, it receives the order details as a `data` prop.
+You define the `OrderGiftItemsWidget` component that is injected in the `order.details.side` zone. Because it's injected in the order details page, it receives the order details as a `data` prop.
 
 In the component, you filter the order items to get only the gift items by checking if the `metadata.is_gift` property is set to `"true"`. Then, you render the gift items with their messages in a new "Gift Items & Messages" section.
 
@@ -78473,7 +79750,7 @@ In the component, you:
 3. Define a function that returns the current invoice configuration data, which is useful to create the form.
 4. Define a `form` instance with `useForm` from `react-hook-form`. You pass it the Zod validation schema as a type argument, and the default values using the `getFormDefaultValues` function.
 5. Define a `handleSubmit` function that updates the invoice configuration using the mutation.
-6. Define an `uploadLogo` function that uploads a logo using Medusa's [Upload API route](https://docs.medusajs.com/api/admin#uploads_postuploads).
+6. Define an `uploadLogo` function that uploads a logo using Medusa's [Upload API route](https://docs.medusajs.com/api/admin/uploads/upload-files).
 7. Reset the form's default values when the `data` changes, ensuring the form reflects the latest invoice configuration.
 
 Finally, replace the `TODO` comment with the following `return` statement:
@@ -79555,7 +80832,7 @@ const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.before",
+  zone: "order.details.side",
 })
 
 export default OrderInvoiceWidget 
@@ -82555,7 +83832,7 @@ This will return a `token` in the response:
 
 #### b. Register Customer
 
-Next, you'll register the customer using the [Register Customer](https://docs.medusajs.com/api/store#customers_postcustomers) API route. You'll pass the registration token you received in the previous step in the header of this request.
+Next, you'll register the customer using the [Register Customer](https://docs.medusajs.com/api/store/customers/register-customer) API route. You'll pass the registration token you received in the previous step in the header of this request.
 
 So, send a `POST` request to `/store/customers`:
 
@@ -82577,7 +83854,7 @@ Make sure to replace:
 - `{publishable_api_key}` with the publishable API key you retrieved from the Medusa Admin dashboard.
 - `{reg_token}` with the registration token you received in the previous step.
 - The customer details in the request body with the ones you want to use. Use the same phone number you used in the previous step.
-  - You pass the email because it's required by the [Register Customer](https://docs.medusajs.com/api/store#customers_postcustomers) API route. You set it to the phone number with a `gmail.com` domain.
+  - You pass the email because it's required by the [Register Customer](https://docs.medusajs.com/api/store/customers/register-customer) API route. You set it to the phone number with a `gmail.com` domain.
 
 The request will return the created customer's details:
 
@@ -82604,7 +83881,7 @@ The customer can now authenticate using the phone number and OTP.
 
 #### c. Authenticate Customer
 
-Next, you'll authenticate the customer using the [Authenticate Customer](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider) API route. This would send the customer an OTP to their phone number (which you'll implement in the next step).
+Next, you'll authenticate the customer using the [Authenticate Customer](https://docs.medusajs.com/api/store/auth/authenticate-customer) API route. This would send the customer an OTP to their phone number (which you'll implement in the next step).
 
 So, send a `POST` request to `/auth/customer/phone-auth`:
 
@@ -82640,7 +83917,7 @@ info:    Generated OTP: 576794
 
 As mentioned before, this is only for debugging purposes. In the next step, you'll implement the logic to send the OTP to the user using Twilio.
 
-So, to verify the OTP, you'll send a request to the [Verify Callback API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providercallback):
+So, to verify the OTP, you'll send a request to the [Verify Callback API route](https://docs.medusajs.com/api/store/auth/validate-authentication-callback):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/phone-auth/callback?phone=%2B19077890116&otp=476588'
@@ -82659,7 +83936,7 @@ If the OTP is valid, you'll receive a JWT token in the response:
 }
 ```
 
-You can use this token to authenticate the customer in the application. For example, you can use the token to [retrieve the customer's details](https://docs.medusajs.com/api/store#customers_getcustomersme).
+You can use this token to authenticate the customer in the application. For example, you can use the token to [retrieve the customer's details](https://docs.medusajs.com/api/store/customers/get-customer).
 
 If the OTP has expired, send a request to the [Authenticate Customer](#c-authenticate-customer) API route to generate a new OTP
 
@@ -83197,7 +84474,7 @@ The function accepts an object with the following properties:
 
 In the function, you retrieve a registration token for the customer using the `/auth/customer/phone-auth/register` API route. You pass the phone number in the request body.
 
-Then, after setting the registration token in the cookies, you create a customer using the [Create Customer](https://docs.medusajs.com/api/store#customers_postcustomers) API route. You pass the following properties in the request body:
+Then, after setting the registration token in the cookies, you create a customer using the [Create Customer](https://docs.medusajs.com/api/store/customers/register-customer) API route. You pass the following properties in the request body:
 
 - `email`: The email of the customer. You set it to the phone number with a `@gmail.com` domain.
 - `first_name`: The first name of the customer.
@@ -84956,7 +86233,7 @@ export const usePreorderVariant = (variant: HttpTypes.AdminProductVariant) => {
 
 The `usePreorderVariant` hook returns an object with the following properties:
 
-- `preorderVariant`: The pre-order variant. It's retrieved from Medusa's [Retrieve Variant](https://docs.medusajs.com/api/admin#products_getproductsidvariantsvariant_id) API route, which allows expanding linked records using the `fields` query parameter.
+- `preorderVariant`: The pre-order variant. It's retrieved from Medusa's [Retrieve Variant](https://docs.medusajs.com/api/admin/products/get-variant) API route, which allows expanding linked records using the `fields` query parameter.
 - `isLoading`: Whether the pre-order variant is being retrieved.
 - `error`: Errors that occur while retrieving the pre-order variant.
 - `upsertPreorder`: A mutation to create or update a pre-order variant.
@@ -85061,7 +86338,7 @@ const PreorderWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product_variant.details.side.after",
+  zone: "product_variant.details.side",
 })
 
 export default PreorderWidget
@@ -86193,7 +87470,7 @@ const getStatusBadgeColor = (status: string) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default PreordersWidget
@@ -89943,7 +91220,7 @@ const ProductBuilderWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.side.after",
+  zone: "product.details.side",
 })
 
 export default ProductBuilderWidget
@@ -90094,7 +91371,7 @@ You define the following types:
 
 Next, you need to retrieve the builder configuration for a product when the customer views its details page.
 
-Since you've defined a link between the product and its builder configuration, you can retrieve the builder configuration of a product by specifying it in the `fields` query parameter of the [List Products API Route](https://docs.medusajs.com/api/store#products_getproducts).
+Since you've defined a link between the product and its builder configuration, you can retrieve the builder configuration of a product by specifying it in the `fields` query parameter of the [List Products API Route](https://docs.medusajs.com/api/store/products/list-products).
 
 In `src/lib/data/products.ts`, add the following import at the top of the file:
 
@@ -92985,7 +94262,7 @@ const OrderBuilderDetailsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.after",
+  zone: "order.details.side",
 })
 
 export default OrderBuilderDetailsWidget
@@ -94445,7 +95722,7 @@ const ProductRentalConfigWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductRentalConfigWidget
@@ -97010,7 +98287,7 @@ const OrderRentalItemsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.after",
+  zone: "order.details",
 })
 
 export default OrderRentalItemsWidget
@@ -98315,7 +99592,7 @@ To retrieve the publishable API key from the Medusa Admin, refer to [this user g
 
 As mentioned before, the API route you added requires the customer to be authenticated. So, you'll first create a customer, then retrieve their authentication token to use in the request.
 
-Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider_register):
+Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](https://docs.medusajs.com/api/store/auth/retrieve-registration-jwt-token):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
@@ -98328,7 +99605,7 @@ curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
 
 Make sure to replace the email and password with the credentials you want.
 
-Then, register the customer using the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers):
+Then, register the customer using the [Create Customer API route](https://docs.medusajs.com/api/store/customers/register-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/customers' \
@@ -98347,7 +99624,7 @@ Make sure to replace:
 
 Also, if you changed the email in the first request, make sure to change it here as well.
 
-The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_provider):
+The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](https://docs.medusajs.com/api/store/auth/authenticate-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass' \
@@ -100438,9 +101715,9 @@ The Next.js Starter Storefront is available in the `apps/storefront` directory o
 cd apps/storefront
 ```
 
-During checkout, when the customer chooses a payment method, such as Stripe, the Next.js Starter Storefront creates a [payment session](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-session/index.html.md) in Medusa using the [Initialize Payment Session](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions) API route.
+During checkout, when the customer chooses a payment method, such as Stripe, the Next.js Starter Storefront creates a [payment session](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-session/index.html.md) in Medusa using the [Initialize Payment Session](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session) API route.
 
-Under the hood, Medusa uses the associated payment provider (Stripe) to initiate the payment process with the associated third-party payment provider. The [Initialize Payment Session](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions) API route accepts a `data` object parameter in the request body that allows you to pass data relevant to the third-party payment provider.
+Under the hood, Medusa uses the associated payment provider (Stripe) to initiate the payment process with the associated third-party payment provider. The [Initialize Payment Session](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session) API route accepts a `data` object parameter in the request body that allows you to pass data relevant to the third-party payment provider.
 
 So, to save the payment method that the customer uses during checkout with Stripe, you must pass the `setup_future_usage` property in the `data` object. The `setup_future_usage` property is a Stripe-specific property that allows you to save the payment method for future use.
 
@@ -120441,7 +121718,7 @@ const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -120533,7 +121810,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
 This adds a `POST` API route at `/admin/sanity/syncs`. In the route handler, you execute the `sanitySyncProductsWorkflow` without passing it a `product_ids` input. The step in the workflow will retrieve all products, instead of filtering them by ID, and sync them to Sanity.
 
-You return the transaction ID of the workflow, which you can use to track the execution's progress since the workflow will run in the background. This is not implemented in this guide, but Medusa has a [Get Execution API route](https://docs.medusajs.com/api/admin#workflows-executions_getworkflowsexecutionsworkflow_idtransaction_id) that you can use to get the details of a workflow's execution.
+You return the transaction ID of the workflow, which you can use to track the execution's progress since the workflow will run in the background. This is not implemented in this guide, but Medusa has a [Get Execution API route](https://docs.medusajs.com/api/admin/workflows-executions/get-exection) that you can use to get the details of a workflow's execution.
 
 ### Add Sanity UI Route
 
@@ -122544,7 +123821,7 @@ class ShipStationProviderService extends AbstractFulfillmentProviderService {
 The `validateFulfillmentData` method accepts the following parameters:
 
 1. The `data` property of the chosen shipping option during checkout. It will hold the carrier ID and its service code.
-2. The `data` property of the shipping method to be created. This can hold custom data sent in the [Add Shipping Method API route](https://docs.medusajs.com/api/store#carts_postcartsidshippingmethods).
+2. The `data` property of the shipping method to be created. This can hold custom data sent in the [Add Shipping Method API route](https://docs.medusajs.com/api/store/carts/add-shipping-method).
 3. An object of the checkout's context, including the cart's items, the location associated with the shipping option, and more.
 
 In the method, you try to retrieve the shipment ID from the shipping method's `data` parameter if it was already created. If not, you create the shipment in ShipStation using the `createShipment` method.
@@ -129560,7 +130837,7 @@ const ProductWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -129588,9 +130865,7 @@ Then:
 
 ![Click on the "Products" in the sidebar on the right, then choose a product from the table shown in the middle](https://res.cloudinary.com/dza7lstvk/image/upload/v1737632826/Medusa%20Resources/Screenshot_2025-01-23_at_1.46.29_PM_xjsn8s.png)
 
-3. You should see the widget you created showing the number of wishlists the product is in at the top of the page.
-
-![The widget is shown at the top of the product page before other sections](https://res.cloudinary.com/dza7lstvk/image/upload/v1737632826/Medusa%20Resources/Screenshot_2025-01-23_at_1.46.05_PM_hfyz7u.png)
+3. You should see the widget you created showing the number of wishlists the product is in at the end of the page.
 
 ***
 
@@ -129780,7 +131055,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -129832,7 +131107,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -129891,7 +131166,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -129914,7 +131189,7 @@ This guide focuses on how to use the `DataTable` component while fetching data f
 
 ## Example: DataTable with Data Fetching
 
-In this example, you'll create a UI widget that shows the list of products retrieved from the [List Products API Route](https://docs.medusajs.com/api/admin#products_getproducts) in a data table with pagination, filtering, searching, and sorting.
+In this example, you'll create a UI widget that shows the list of products retrieved from the [List Products API Route](https://docs.medusajs.com/api/admin/products/list-products) in a data table with pagination, filtering, searching, and sorting.
 
 Start by initializing the columns in the data table. To do that, use the `createDataTableColumnHelper` from Medusa UI:
 
@@ -130680,7 +131955,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -130951,7 +132226,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131103,7 +132378,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131333,7 +132608,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131571,7 +132846,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -131760,7 +133035,7 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -132130,7 +133405,11 @@ The method's name is `listDataModel`, where `DataModel` is the plural pascal-cas
 const posts = await postModuleService.listPosts()
 ```
 
-If no parameters are passed, the method returns an array of the first `15` records.
+If no parameters are passed, the method returns all matching records.
+
+When you call this method directly from a workflow step or a custom route handler without passing a `take` value, it returns all records from the database without any limit. Pass the `take` parameter to avoid unbounded fetches on large tables.
+
+The default limit of `50` records is enforced by the HTTP query-config middleware layer, not by the module service method itself. It only applies when the method is called through Medusa's built-in HTTP routes.
 
 ***
 
@@ -132150,7 +133429,7 @@ Refer to the [Filtering](https://docs.medusajs.com/Users/shahednasser/medusa/www
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ***
 
@@ -132170,7 +133449,7 @@ To retrieve records with their relations, pass an object with a `relations` prop
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ***
 
@@ -132190,7 +133469,7 @@ By default, retrieved records have all their properties. To select specific prop
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 ***
 
@@ -132207,7 +133486,7 @@ const posts = await postModuleService.listPosts({}, {
 
 To paginate the returned records, the second object parameter accepts the following properties:
 
-- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `take`: a number indicating how many records to retrieve. When not specified, all matching records are returned.
 - `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
 
 ### Returns
@@ -132235,7 +133514,7 @@ To sort records by one or more properties, pass an `order` property in the secon
 
 ### Returns
 
-The method returns an array of the first `15` records matching the filters.
+The method returns an array of all records matching the filters.
 
 
 # listAndCount Method - Service Factory Reference
@@ -132252,8 +133531,12 @@ const [posts, count] = await postModuleService.listAndCountPosts()
 
 If no parameters are passed, the method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
+
+When you call this method directly from a workflow step or a custom route handler without passing a `take` value, it returns all records from the database without any limit. Pass the `take` parameter to avoid unbounded fetches on large tables.
+
+The default limit of `50` records is enforced by the HTTP query-config middleware layer, not by the module service method itself. It only applies when the method is called through Medusa's built-in HTTP routes.
 
 ***
 
@@ -132275,7 +133558,7 @@ Refer to the [Filtering](https://docs.medusajs.com/Users/shahednasser/medusa/www
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved matching the specified filters.
+1. The first is an array of all records retrieved matching the specified filters.
 2. The second is the total count of records matching the specified filters.
 
 ***
@@ -132298,7 +133581,7 @@ To retrieve records with their relations, pass an object with a `relations` prop
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
 
 ***
@@ -132321,7 +133604,7 @@ By default, retrieved records have all their properties. To select specific prop
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
 
 ***
@@ -132339,7 +133622,7 @@ const [posts, count] = await postModuleService.listAndCountPosts({}, {
 
 To paginate the returned records, the second object parameter accepts the following properties:
 
-- `take`: a number indicating how many records to retrieve. By default, it's `15`.
+- `take`: a number indicating how many records to retrieve. When not specified, all matching records are returned.
 - `skip`: a number indicating how many records to skip before the retrieved records. By default, it's `0`.
 
 ### Returns
@@ -132372,7 +133655,7 @@ To sort records by one or more properties, pass an `order` property in the secon
 
 The method returns an array with two items:
 
-1. The first is an array of the first `15` records retrieved.
+1. The first is an array of all retrieved records.
 2. The second is the total count of records.
 
 
@@ -135505,7 +136788,7 @@ cd apps/storefront
 
 ### List Return Reasons Function
 
-The first function sends a request to the [List Return Reasons](https://docs.medusajs.com/api/store#return-reasons_getreturnreasons) API route. It fetches the available return reasons, which customers can select from when creating a return request.
+The first function sends a request to the [List Return Reasons](https://docs.medusajs.com/api/store/return-reasons/list-return-reasons) API route. It fetches the available return reasons, which customers can select from when creating a return request.
 
 Create the file `src/lib/data/returns.ts` with the following content:
 
@@ -135542,7 +136825,7 @@ You add the `listReturnReasons` function. It sends a `GET` request to the `/stor
 
 ### List Return Shipping Options Function
 
-Next, you'll add a function that sends a request to the [List Shipping Options](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions) API route. It fetches the available shipping options for returns, which customers can select from when creating a return request.
+Next, you'll add a function that sends a request to the [List Shipping Options](https://docs.medusajs.com/api/store/shipping-options/list-shipping-options-for-cart) API route. It fetches the available shipping options for returns, which customers can select from when creating a return request.
 
 In the same `src/lib/data/returns.ts` file, add the following function:
 
@@ -135581,7 +136864,7 @@ The API route accepts the following query parameters:
 
 ### Create Return Function
 
-Finally, you'll add a function that sends a request to the [Create Return](https://docs.medusajs.com/api/store#returns_postreturns) API route. This creates a return request for an order.
+Finally, you'll add a function that sends a request to the [Create Return](https://docs.medusajs.com/api/store/returns/create-return) API route. This creates a return request for an order.
 
 In the same `src/lib/data/returns.ts` file, add the following function:
 
@@ -136702,7 +137985,7 @@ As a merchant, you can now handle return requests from the Medusa Admin. You can
 
 You can customize the return request page to fit your storefront's design and requirements. You can also change how returns are created. For example, you can let guest customers request returns, set custom prices for return shipping options, or specify a stock location to return the items to.
 
-Refer to the [Create Return API reference](https://docs.medusajs.com/api/api/store#returns_postreturns) to see the available parameters when creating a return request.
+Refer to the [Create Return API reference](https://docs.medusajs.com/api/api/store/returns/create-return) to see the available parameters when creating a return request.
 
 ### Learn More about Medusa
 
@@ -136919,6 +138202,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [GET /admin/orders/{id}/shipping-options](https://docs.medusajs.com/api/admin#orders_getordersidshippingoptions)
 - [POST /admin/orders/{id}/transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer)
 - [POST /admin/orders/{id}/transfer/cancel](https://docs.medusajs.com/api/admin#orders_postordersidtransfercancel)
+- [POST /admin/orders/{id}/transfer/guest](https://docs.medusajs.com/api/admin#orders_postordersidtransferguest)
 - [POST /admin/payment-collections](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollections)
 - [DELETE /admin/payment-collections/{id}](https://docs.medusajs.com/api/admin#payment-collections_deletepaymentcollectionsid)
 - [POST /admin/payment-collections/{id}/mark-as-paid](https://docs.medusajs.com/api/admin#payment-collections_postpaymentcollectionsidmarkaspaid)
@@ -137168,8 +138452,8 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /auth/session](https://docs.medusajs.com/api/store#auth_postsession)
 - [DELETE /auth/session](https://docs.medusajs.com/api/store#auth_deletesession)
 - [POST /auth/token/refresh](https://docs.medusajs.com/api/store#auth_postadminauthtokenrefresh)
-- [POST /auth/verification/confirm](https://docs.medusajs.com/api/store#verification_postverificationconfirm)
-- [POST /auth/verification/request](https://docs.medusajs.com/api/store#verification_postverificationrequest)
+- [POST /auth/verification/confirm](https://docs.medusajs.com/api/store#auth_postverificationconfirm)
+- [POST /auth/verification/request](https://docs.medusajs.com/api/store#auth_postverificationrequest)
 - [POST /store/carts](https://docs.medusajs.com/api/store#carts_postcarts)
 - [GET /store/carts/{id}](https://docs.medusajs.com/api/store#carts_getcartsid)
 - [POST /store/carts/{id}](https://docs.medusajs.com/api/store#carts_postcartsid)
@@ -145553,7 +146837,7 @@ Then, on the storefront, you retrieve only the B2B products for B2B customers, w
 You can create a sales channel through the Medusa Admin or Admin REST APIs.
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/settings/sales-channels/index.html.md): Create the sales channel using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannels): Create the sales channel using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/sales-channels/create-sales-channel): Create the sales channel using the REST APIs.
 
 ***
 
@@ -145571,12 +146855,12 @@ You can create a publishable API key through the Medusa Admin or the Admin REST 
 ### Create Publishable API Key
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys/index.html.md): Create the API key using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#api-keys_postapikeys): Create the API key using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/api-keys/create-api-key): Create the API key using the REST APIs.
 
 ### Associate Key with Sales Channel
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys#manage-publishable-api-keys-sales-channels/index.html.md): Associate the key with the sales channel using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#api-keys_postapikeysidsaleschannels): Associate the key with the sales channel using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/api-keys/manage-sales-channels): Associate the key with the sales channel using the REST APIs.
 
 ***
 
@@ -145589,12 +146873,12 @@ You can create new products or add existing ones to the B2B sales channel using 
 ### Create Products
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/products/create/index.html.md): Create the products using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#products_postproducts): Create the products using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/products/create-product): Create the products using the REST APIs.
 
 ### Add Products to Sales Channel
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/settings/sales-channels#manage-products-in-sales-channel/index.html.md): Create the products using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#sales-channels_postsaleschannelsidproductsbatchadd): Add the products to the sales channel using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/sales-channels/manage-products): Add the products to the sales channel using the REST APIs.
 
 ***
 
@@ -145609,12 +146893,12 @@ You can create a customer group for each B2B company, then add customers of that
 ### Create Customers
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/customers/manage/index.html.md): Create customers using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#customers_postcustomers): Create customers using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/customers/create-customer): Create customers using the REST APIs.
 
 ### Assign Customers to Groups
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/customers/manage#manage-customers-groups/index.html.md): Assign customer to groups using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#customer-groups_postcustomergroupsidcustomersbatch): Assign customer to groups using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/customer-groups/manage-customers): Assign customer to groups using the REST APIs.
 
 ### Flexible Customizations: Create Custom Module
 
@@ -145638,7 +146922,7 @@ For B2B use cases, you can use price lists to set different prices for each B2B 
 You can create a price list using the Medusa Admin or the Admin REST APIs. Make sure to set the B2B customer group(s) as a condition.
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/price-lists/create/index.html.md): Create price list using the Medusa Admin.
-- [Using Admin API](https://docs.medusajs.com/api/admin#price-lists_postpricelists): Create price list using the REST APIs.
+- [Using Admin API](https://docs.medusajs.com/api/admin/price-lists/create-price-list): Create price list using the REST APIs.
 
 ***
 
@@ -145672,7 +146956,7 @@ In your storefront, you can use the publishable API key you associated with your
 - [Next.js Starter Storefront](https://docs.medusajs.com/nextjs-starter/index.html.md): Learn how to install and customize the Next.js Starter Storefront.
 - [Storefront Development](https://docs.medusajs.com/storefront-development/index.html.md): Find guides to build your own storefront.
 
-[Use Publishable API Keys](https://docs.medusajs.com/api/store#publishable-api-key): Learn how to use the publishable API key in client requests.
+[Use Publishable API Keys](https://docs.medusajs.com/api/store/publishable-api-key): Learn how to use the publishable API key in client requests.
 
 
 # Implement Bundled Products in Medusa
@@ -158883,7 +160167,7 @@ export default defineMiddlewares({
 })
 ```
 
-Similar to before, you apply the `validateAndTransformBody` middleware on the `POST /vendors/products` API route. You pass to the middleware the `AdminCreateProduct` schema that Medusa uses to validate the request body of the [Create Product Admin API Route](https://docs.medusajs.com/api/admin#products_postproducts).
+Similar to before, you apply the `validateAndTransformBody` middleware on the `POST /vendors/products` API route. You pass to the middleware the `AdminCreateProduct` schema that Medusa uses to validate the request body of the [Create Product Admin API Route](https://docs.medusajs.com/api/admin/products/create-product).
 
 ### Test it Out
 
@@ -159666,7 +160950,7 @@ Medusa supports creating custom actor types that can be authenticated with your 
 
 ## Split Orders Based on Vendors
 
-If your use case allows a customer's orders to have items from different vendors, you can replicate the [Complete Cart API route](https://docs.medusajs.com/api/store#carts_postcartsidcomplete) to customize the order creation process.
+If your use case allows a customer's orders to have items from different vendors, you can replicate the [Complete Cart API route](https://docs.medusajs.com/api/store/carts/complete-cart) to customize the order creation process.
 
 In the API route, you can create a workflow that splits the order into multiple orders, one for each vendor. A workflow is a series of steps that provide features like rollback and retry mechanisms.
 
@@ -159743,7 +161027,7 @@ Merchants can define tax regions, which are tax-related settings for a specific 
 During checkout, Medusa calculates the taxes using the tax region settings of the customer's region and selected country in their shipping address.
 
 - [Using Medusa Admin](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md): Learn how to manage tax regions in the Medusa Admin
-- [Using Admin APIs](https://docs.medusajs.com/api/admin#tax-regions_posttaxregions): Manage tax regions using the Admin APIs.
+- [Using Admin APIs](https://docs.medusajs.com/api/admin/tax-regions/create-tax-region): Manage tax regions using the Admin APIs.
 
 ### Payment and Fulfillment Providers
 
@@ -159876,13 +161160,13 @@ Sales channels in your commerce ecosystem must route their orders into the OMS.
 
 ![Routing orders into Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1709032160/Medusa%20Book/oms-orders_zf5ta9.jpg)
 
-Medusa's [Store REST APIs](https://docs.medusajs.com/api/store) let you integrate a checkout experience in any storefront. Alternatively, you can use Medusa's [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders) to place an order without direct involvement from the customer, such as when placing an order through a POS.
+Medusa's [Store REST APIs](https://docs.medusajs.com/api/store) let you integrate a checkout experience in any storefront. Alternatively, you can use Medusa's [Draft Order APIs](https://docs.medusajs.com/api/admin/draft-orders) to place an order without direct involvement from the customer, such as when placing an order through a POS.
 
 In addition, you can customize the Medusa application to accept orders through a third-party checkout system. This gives you more flexibility over adding orders to Medusa.
 
 For example, you can support importing orders into Medusa through a custom API Route that allows batch-inserting orders. Another example is creating a scheduled job that runs at a specified interval and imports orders from a third-party service.
 
-- [Store REST APIs](https://docs.medusajs.com/api/store#carts): Learn how to use the Store REST APIs to create an order.
+- [Store REST APIs](https://docs.medusajs.com/api/store/carts): Learn how to use the Store REST APIs to create an order.
 - [Create API Route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md): Learn how to create a custom API Route.
 
 [Create Scheduled Jobs](https://docs.medusajs.com/docs/learn/fundamentals/scheduled-jobs/index.html.md): Learn how to create a scheduled job.
@@ -160566,7 +161850,7 @@ When the customer adds a personalized product to the cart, you need to add the i
 
 So, you'll create a workflow that wraps around Medusa's existing add-to-cart logic to add the personalized product to the cart with the custom price. Then, you'll create an API route that executes this workflow.
 
-If you're not using custom pricing, you can skip this step and keep on using Medusa's existing [Add-to-Cart API route](https://docs.medusajs.com/api/store#carts_postcartsidlineitems).
+If you're not using custom pricing, you can skip this step and keep on using Medusa's existing [Add-to-Cart API route](https://docs.medusajs.com/api/store/carts/add-line-item).
 
 ### a. Create the Add-to-Cart Workflow
 
@@ -161021,7 +162305,7 @@ const PersonalizedOrderItemsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.after",
+  zone: "order.details",
 })
 
 export default PersonalizedOrderItemsWidget
@@ -161239,7 +162523,7 @@ You can also create custom modules to provide features for a better customer exp
 
 Medusa's architecture allows you to integrate any third-party payment provider for your POS and online storefront. For example, you can integrate [Stripe Terminal](https://stripe.com/terminal) to accept in-store payments.
 
-Once you accept the payment, you can place an order in the POS system using the [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders). Draft orders provide similar features to an online checkout experience, including discounts, payment processing, and more.
+Once you accept the payment, you can place an order in the POS system using the [Draft Order APIs](https://docs.medusajs.com/api/admin/draft-orders). Draft orders provide similar features to an online checkout experience, including discounts, payment processing, and more.
 
 Then, merchants can view all orders coming from different sales channels using the Medusa Admin. This keeps logistics and order handling consistent between online and in-store customers.
 
@@ -162037,7 +163321,7 @@ To create a subscription when a customer completes their purchase, you need to e
 
 An [API Route](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/index.html.md) is an endpoint that exposes commerce features to external applications and clients, such as storefronts.
 
-In this step, you’ll create a custom API route similar to the [Complete Cart API route](https://docs.medusajs.com/api/store#carts_postcartsidcomplete) that uses the workflow you previously created to complete the customer's purchase and create a subscription.
+In this step, you’ll create a custom API route similar to the [Complete Cart API route](https://docs.medusajs.com/api/store/carts/complete-cart) that uses the workflow you previously created to complete the customer's purchase and create a subscription.
 
 Create the file `src/api/store/carts/[id]/subscribe/route.ts` with the following content:
 
@@ -162119,7 +163403,7 @@ By default, the checkout flow requires you to create a [payment collection](http
 
 ![Diagram showcasing payment flow overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1740657136/Medusa%20Resources/subscriptions-stripe_ycw4ig.jpg)
 
-To support subscriptions, you need to support capturing the payment each time the subscription renews. When creating the payment session using the [Initialize Payment Session API route](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions), you must pass the data that your payment provider requires to support capturing the payment again in the future. You can pass the data that the provider requires in the `data` property.
+To support subscriptions, you need to support capturing the payment each time the subscription renews. When creating the payment session using the [Initialize Payment Session API route](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session), you must pass the data that your payment provider requires to support capturing the payment again in the future. You can pass the data that the provider requires in the `data` property.
 
 If you're using a custom payment provider, you can handle that additional data in the [initiatePayment method](https://docs.medusajs.com/references/payment/provider#initiatepayment/index.html.md) of your provider's service.
 

@@ -43,7 +43,43 @@ export default class TypesHelper {
 
     cleanedUpTypes = this.joinDateAndString(cleanedUpTypes)
 
+    cleanedUpTypes = this.removeWidenedStringType(cleanedUpTypes)
+
     return cleanedUpTypes
+  }
+
+  /**
+   * Removes the `string & {}` member of a union of string literals. The member is
+   * only added to the type to keep the literals suggested in editors while allowing
+   * any other string. Without removing it, unions like `"a" | "b" | (string & {})`
+   * are emitted as a `oneOf` of indistinguishable strings rather than an enum.
+   */
+  private removeWidenedStringType(types: ts.Type[]): ts.Type[] {
+    if (types.length <= 1 || !types.some((type) => type.isStringLiteral())) {
+      return types
+    }
+
+    const filtered = types.filter((type) => !this.isWidenedStringType(type))
+
+    return filtered.length > 0 ? filtered : types
+  }
+
+  private isWidenedStringType(type: ts.Type): boolean {
+    if (!type.isIntersection()) {
+      return false
+    }
+
+    const intersectionTypes = (type as ts.IntersectionType).types
+
+    return (
+      intersectionTypes.length === 2 &&
+      intersectionTypes.some((item) => !!(item.flags & ts.TypeFlags.String)) &&
+      intersectionTypes.some(
+        (item) =>
+          !!(item.flags & ts.TypeFlags.Object) &&
+          item.getProperties().length === 0
+      )
+    )
   }
 
   /**

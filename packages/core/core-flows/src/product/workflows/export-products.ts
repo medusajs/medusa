@@ -11,12 +11,12 @@ import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 export const exportProductsWorkflowId = "export-products"
 /**
  * This workflow exports products matching the specified filters. It's used by the
- * [Export Products Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsexport).
+ * [Export Products Admin API Route](https://docs.medusajs.com/api/admin/products/export-products).
  *
  * :::note
  *
  * This workflow doesn't return the exported products. Instead, it sends a notification to the admin
- * users that they can download the exported products. Learn more in the [API Reference](https://docs.medusajs.com/api/admin#products_postproductsexport).
+ * users that they can download the exported products. Learn more in the [API Reference](https://docs.medusajs.com/api/admin/products/export-products).
  *
  * :::
  *

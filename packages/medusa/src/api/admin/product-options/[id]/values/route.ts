@@ -5,6 +5,9 @@ import {
 import { HttpTypes } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
+/**
+ * @since 2.16.0
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductOptionValueListParams>,
   res: MedusaResponse<HttpTypes.AdminProductOptionValueListResponse>

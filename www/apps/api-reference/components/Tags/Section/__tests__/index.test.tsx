@@ -96,6 +96,11 @@ const mockUseRouter = vi.fn(() => ({
   push: mockPush,
   replace: mockReplace,
 }))
+const mockUsePathname = vi.fn(() => "")
+const mockIsScrollSpyLocked = vi.fn(() => false)
+const mockIsScrollSpyNavigation = vi.fn(() => false)
+const mockLockScrollSpy = vi.fn(() => () => {})
+const mockMarkScrollSpyNavigation = vi.fn()
 const mockUseSWR = vi.fn((key: string | null, fetcher: unknown, options: unknown) => ({
   data: undefined as {paths: OpenAPI.PathsObject} | {schema: OpenAPI.SchemaObject} | undefined,
   error: undefined,
@@ -149,6 +154,12 @@ vi.mock("docs-ui", () => ({
   useSidebar: () => mockUseSidebar(),
   H2: ({ children }: { children: React.ReactNode }) => (
     <h2 data-testid="h2">{children}</h2>
+  ),
+  H1: ({ children }: { children: React.ReactNode }) => (
+    <h1 data-testid="h1">{children}</h1>
+  ),
+  WideSection: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="wide-section">{children}</div>
   ),
   Link: ({
     href,
@@ -217,16 +228,8 @@ vi.mock("@/components/Tags/Paths", () => ({
   ),
 }))
 vi.mock("@/components/Tags/Section/RoutesSummary", () => ({
-  RoutesSummary: ({
-    tagName,
-    paths,
-  }: {
-    tagName: string
-    paths: OpenAPI.PathsObject
-  }) => (
-    <div data-testid="routes-summary" data-tag-name={tagName}>
-      {JSON.stringify(paths)}
-    </div>
+  RoutesSummary: ({ paths }: { paths: OpenAPI.PathsObject }) => (
+    <div data-testid="routes-summary">{JSON.stringify(paths)}</div>
   ),
 }))
 vi.mock("@/components/Section/Divider", () => ({
@@ -285,9 +288,17 @@ vi.mock("@/components/Section", () => ({
 }))
 vi.mock("next/navigation", () => ({
   useRouter: () => mockUseRouter(),
+  usePathname: () => mockUsePathname(),
+}))
+vi.mock("@/utils/scroll-spy-lock", () => ({
+  isScrollSpyLocked: () => mockIsScrollSpyLocked(),
+  isScrollSpyNavigation: (path: string) => mockIsScrollSpyNavigation(path),
+  lockScrollSpy: () => mockLockScrollSpy(),
+  markScrollSpyNavigation: (path: string) => mockMarkScrollSpyNavigation(path),
+  scheduleScrollSpyUpdate: (apply: () => void) => apply(),
 }))
 vi.mock("docs-utils", () => ({
-  getSectionId: (options: unknown) => mockGetSectionId(options),
+  getApiRefTagSlug: (name: unknown) => mockGetSectionId(name),
 }))
 vi.mock("@/utils/check-element-in-viewport", () => ({
   default: (element: HTMLElement, threshold: number) =>
@@ -324,6 +335,7 @@ beforeEach(() => {
   mockGetSectionId.mockReturnValue("mock-slug-tag-name")
   mockCheckElementInViewport.mockReturnValue(true)
   mockBasePathUrl.mockImplementation((url: string) => url)
+  mockUsePathname.mockReturnValue("")
   mockUseSWR.mockReturnValue({
     data: undefined,
     error: undefined,
@@ -354,11 +366,11 @@ describe("rendering", () => {
     expect(getByTestId("divided-code-content")).toBeInTheDocument()
   })
 
-  test("renders H2 with tag name", () => {
+  test("renders H1 with tag name", () => {
     const { getByTestId } = render(<TagSectionComponent tag={mockTag} />)
-    const h2Element = getByTestId("h2")
-    expect(h2Element).toBeInTheDocument()
-    expect(h2Element).toHaveTextContent(mockTag.name)
+    const h1Element = getByTestId("h1")
+    expect(h1Element).toBeInTheDocument()
+    expect(h1Element).toHaveTextContent(mockTag.name)
   })
 
   test("renders MDXContentClient when tag has description", async () => {
@@ -430,7 +442,6 @@ describe("rendering", () => {
     const { getByTestId } = render(<TagSectionComponent tag={mockTag} />)
     const routesSummaryElement = getByTestId("routes-summary")
     expect(routesSummaryElement).toBeInTheDocument()
-    expect(routesSummaryElement).toHaveAttribute("data-tag-name", mockTag.name)
     expect(routesSummaryElement).toHaveTextContent("{}")
   })
 
@@ -460,9 +471,9 @@ describe("rendering", () => {
 })
 
 describe("slug generation", () => {
-  test("generates slug using getSectionId with tag name", () => {
+  test("generates slug using getApiRefTagSlug with tag name", () => {
     render(<TagSectionComponent tag={mockTag} />)
-    expect(mockGetSectionId).toHaveBeenCalledWith([mockTag.name])
+    expect(mockGetSectionId).toHaveBeenCalledWith(mockTag.name)
   })
 })
 
@@ -586,81 +597,25 @@ describe("conditional rendering", () => {
   })
 })
 
-describe("useEffect scrolling behavior", () => {
-  test("scrolls to element when activePath matches slugTagName and element is not in viewport", () => {
-    const mockPath = "mock-slug-tag-name"
-    mockGetSectionId.mockReturnValue(mockPath)
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-    mockCheckElementInViewport.mockReturnValue(false)
+describe("deep-link scroll controller", () => {
+  const tagPath = "/store/mock-slug-tag-name"
+
+  test("scrolls to the target element when the pathname is within the tag", () => {
+    mockUsePathname.mockReturnValue(tagPath)
 
     const mockElement = document.createElement("div")
-    mockElement.id = mockPath
-    Object.defineProperty(mockElement, "offsetTop", { value: 100 })
-    Object.defineProperty(mockElement, "offsetParent", { value: { offsetTop: 50 } as HTMLElement })
+    mockElement.id = "mock-slug-tag-name"
     document.body.appendChild(mockElement)
 
     render(<TagSectionComponent tag={mockTag} />)
 
-    expect(mockScrollToTop).toHaveBeenCalledWith(150, 0)
+    expect(mockScrollToTop).toHaveBeenCalled()
 
     document.body.removeChild(mockElement)
   })
 
-  test("does not scroll when element is already in viewport", () => {
-    const mockPath = "mock-slug-tag-name"
-    mockGetSectionId.mockReturnValue(mockPath)
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-    mockCheckElementInViewport.mockReturnValue(true)
-
-    const mockElement = document.createElement("div")
-    mockElement.id = mockPath
-    document.body.appendChild(mockElement)
-
-    render(<TagSectionComponent tag={mockTag} />)
-
-    expect(mockScrollToTop).not.toHaveBeenCalled()
-
-    document.body.removeChild(mockElement)
-  })
-
-  test("sets loadData to true when activePath has multiple parts", () => {
-    const mockPath = "mock-slug-tag-name_operation"
-    mockGetSectionId.mockReturnValue("mock-slug-tag-name")
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
-
-    const { getByTestId } = render(<TagSectionComponent tag={mockTag} />)
-    // After useEffect runs, loadData should be true, so divider should not be visible
-    waitFor(() => {
-      const dividerElement = getByTestId("section-divider")
-      expect(dividerElement).not.toBeInTheDocument()
-    })
-  })
-
-  test("does not scroll when activePath does not include slugTagName", () => {
-    mockUseSidebar.mockReturnValue({
-      activePath: "different-path",
-      setActivePath: mockSetActivePath,
-    })
-
-    render(<TagSectionComponent tag={mockTag} />)
-
-    expect(mockScrollToTop).not.toHaveBeenCalled()
-  })
-
-  test("does not scroll when activePath is null", () => {
-    mockUseSidebar.mockReturnValue({
-      activePath: null,
-      setActivePath: mockSetActivePath,
-    })
+  test("does not scroll when the pathname is not within the tag", () => {
+    mockUsePathname.mockReturnValue("/store/different-tag")
 
     render(<TagSectionComponent tag={mockTag} />)
 
@@ -669,16 +624,20 @@ describe("useEffect scrolling behavior", () => {
 
   test("does not scroll when not in browser", () => {
     mockUseIsBrowser.mockReturnValue({ isBrowser: false })
-    const mockPath = "mock-slug-tag-name"
-    mockGetSectionId.mockReturnValue(mockPath)
-    mockUseSidebar.mockReturnValue({
-      activePath: mockPath,
-      setActivePath: mockSetActivePath,
-    })
+    mockUsePathname.mockReturnValue(tagPath)
 
     render(<TagSectionComponent tag={mockTag} />)
 
     expect(mockScrollToTop).not.toHaveBeenCalled()
+  })
+
+  test("loads the tag data when the pathname is an operation of the tag", () => {
+    mockUsePathname.mockReturnValue(`${tagPath}/operation`)
+
+    const { queryByTestId } = render(<TagSectionComponent tag={mockTag} />)
+    waitFor(() => {
+      expect(queryByTestId("section-divider")).not.toBeInTheDocument()
+    })
   })
 })
 
@@ -696,50 +655,62 @@ describe("InView onChange behavior", () => {
     })
   })
 
-  test("updates router hash when in view and hash does not match", () => {
-    window.location.hash = "#different-hash"
+  test("updates the URL via history.replaceState when in view and path does not match", async () => {
     mockUseSidebar.mockReturnValue({
-      activePath: "different-path",
+      activePath: "/store/different-tag",
       setActivePath: mockSetActivePath,
     })
+    const replaceStateSpy = vi.spyOn(window.history, "replaceState")
     const { getByTestId } = render(<TagSectionComponent tag={mockTag} />)
     const inViewToggleButton = getByTestId("in-view-toggle-button")
     fireEvent.click(inViewToggleButton)
 
-    expect(mockPush).toHaveBeenCalledWith("#mock-slug-tag-name", {
-      scroll: false,
-    })
+    // the scroll-spy update is debounced
+    await waitFor(() =>
+      expect(replaceStateSpy).toHaveBeenCalledWith(
+        null,
+        "",
+        "/store/mock-slug-tag-name"
+      )
+    )
+    replaceStateSpy.mockRestore()
   })
 
-  test("sets active path when in view and activePath is different", () => {
+  test("sets active path to the tag path when in view and activePath is different", async () => {
     mockUseSidebar.mockReturnValue({
-      activePath: "different-path",
+      activePath: "/store/different-tag",
       setActivePath: mockSetActivePath,
     })
-    window.location.hash = "#mock-slug-tag-name"
 
     const { getByTestId } = render(<TagSectionComponent tag={mockTag} />)
     const inViewToggleButton = getByTestId("in-view-toggle-button")
     fireEvent.click(inViewToggleButton)
 
-    expect(mockSetActivePath).toHaveBeenCalledWith("mock-slug-tag-name")
+    // the scroll-spy update is debounced
+    await waitFor(() =>
+      expect(mockSetActivePath).toHaveBeenCalledWith("/store/mock-slug-tag-name")
+    )
   })
 
-  test("does not update hash when current hash links to inner path", () => {
-    window.location.hash = "#mock-slug-tag-name_operation"
+  test("does not update the tag path when active path is one of its operations", () => {
+    mockUseSidebar.mockReturnValue({
+      activePath: "/store/mock-slug-tag-name/operation",
+      setActivePath: mockSetActivePath,
+    })
     const { getByTestId } = render(<TagSectionComponent tag={mockTag} />)
     const inViewToggleButton = getByTestId("in-view-toggle-button")
     mockSetActivePath.mockClear()
     fireEvent.click(inViewToggleButton)
 
-    // Should not update because hash links to inner path
-    expect(mockSetActivePath).not.toHaveBeenCalledWith("mock-slug-tag-name")
+    // Should not update because active path links to an inner operation
+    expect(mockSetActivePath).not.toHaveBeenCalledWith(
+      "/store/mock-slug-tag-name"
+    )
   })
 
-  test("does not update when hash already matches slugTagName", () => {
-    window.location.hash = "#mock-slug-tag-name"
+  test("does not update when active path already matches the tag path", () => {
     mockUseSidebar.mockReturnValue({
-      activePath: "mock-slug-tag-name",
+      activePath: "/store/mock-slug-tag-name",
       setActivePath: mockSetActivePath,
     })
 

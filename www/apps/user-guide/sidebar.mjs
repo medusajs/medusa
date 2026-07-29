@@ -353,6 +353,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Property Labels",
+            path: "/settings/property-labels",
+          },
+          {
+            type: "link",
             title: "Location & Shipping",
             path: "/settings/locations-and-shipping",
             children: [

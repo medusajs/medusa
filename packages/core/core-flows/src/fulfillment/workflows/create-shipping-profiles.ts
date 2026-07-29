@@ -10,7 +10,7 @@ export const createShippingProfilesWorkflowId =
   "create-shipping-profiles-workflow"
 /**
  * This workflow creates one or more shipping profiles. It's used by the
- * [Create Shipping Profile Admin API Route](https://docs.medusajs.com/api/admin#shipping-profiles_postshippingprofiles).
+ * [Create Shipping Profile Admin API Route](https://docs.medusajs.com/api/admin/shipping-profiles/create-shipping-profile).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * create shipping profiles within your custom flows.

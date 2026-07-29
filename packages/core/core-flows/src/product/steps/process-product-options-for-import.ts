@@ -16,7 +16,7 @@ export const processProductOptionsForImportStepId =
  * created — defaulting to `is_exclusive: true` unless the import explicitly
  * sets it to `false`.
  *
- * @since 2.17.3
+ * @since 2.18.0
  */
 export type ImportProductOptionInput = ProductTypes.CreateProductOptionDTO & {
   id?: string

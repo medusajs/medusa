@@ -38,6 +38,14 @@ async function injectViteMiddleware(
   middleware: RequestHandler
 ) {
   router.use((req, res, next) => {
+    // Block Vite's launch-editor endpoint (GHSA-v6wh-96g9-6wx3). It's registered
+    // unconditionally by Vite's dev server and only powers the "open in editor"
+    // overlay action, which the admin dashboard doesn't rely on. Match
+    // case-insensitively since Vite's connect router does too.
+    if (req.path.toLowerCase().startsWith("/__open-in-editor")) {
+      res.status(403).end()
+      return
+    }
     req.path.endsWith(".html") ? next() : middleware(req, res, next)
   })
 }

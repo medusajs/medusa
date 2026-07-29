@@ -636,6 +636,13 @@ paths:
       responses:
         '201':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 201 status code's message.
+                example: Created
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1379,7 +1386,7 @@ paths:
               "code": "{value}"
             }'
       tags:
-        - Verification
+        - Auth
       responses:
         '200':
           description: OK
@@ -1445,7 +1452,7 @@ paths:
               "code_provider": "token"
             }'
       tags:
-        - Verification
+        - Auth
       responses:
         '201':
           description: OK
@@ -2015,6 +2022,17 @@ paths:
             Emitted when an order is placed, or when a draft order is converted to an
             order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
   /store/carts/{id}/customer:
     post:
       operationId: PostCartsIdCustomer
@@ -3013,7 +3031,10 @@ paths:
       operationId: PostCartsIdShippingMethods
       summary: Add Shipping Method to Cart
       x-sidebar-summary: Add Shipping Method
-      description: Add a shipping method to a cart. Use this API route when the customer chooses their preferred shipping option.
+      description: |
+        Add a shipping method to a cart. Use this API route when the customer chooses their preferred shipping option.
+
+        If the chosen shipping option's `price_type` is `calculated`, its price is computed by the associated fulfillment provider when it's added to the cart. If the provider fails to calculate the price, this route returns an error.
       externalDocs:
         url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
         description: 'Storefront guide: How to implement shipping during checkout.'
@@ -3043,16 +3064,6 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
-        - name: fields
-          in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
         - name: locale
           in: query
           description: The locale in BCP 47 format to retrieve localized content.
@@ -3063,6 +3074,16 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
       requestBody:
         content:
           application/json:
@@ -3274,16 +3295,6 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
-        - name: fields
-          in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
         - name: locale
           in: query
           description: The locale in BCP 47 format to retrieve localized content.
@@ -3294,6 +3305,16 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -12478,6 +12499,8 @@ paths:
         Retrieve a list of shipping options for a cart. The cart's ID is set in the required `cart_id` query parameter.
 
         The shipping options also be sorted or paginated.
+
+        For a shipping option whose `price_type` is `calculated`, the returned `amount` isn't reliable, as its price is computed on the fly by the fulfillment provider. To retrieve its price, use the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
       externalDocs:
         url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
         description: 'Storefront guide: How to implement shipping during checkout.'
@@ -12641,7 +12664,10 @@ paths:
     post:
       operationId: PostShippingOptionsIdCalculate
       summary: Calculate Shipping Option Price
-      description: Calculate the price of a shipping option in a cart.
+      description: |
+        Calculate the price of a shipping option in a cart. Use this API route for shipping options whose `price_type` is `calculated`, as their price isn't stored but computed on the fly by the associated fulfillment provider against the cart.
+
+        If the fulfillment provider fails to calculate the price, this route returns an error.
       x-authenticated: false
       parameters:
         - name: id
@@ -12668,19 +12694,6 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
-        - name: fields
-          in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
-          required: false
-          schema:
-            type: string
-            title: fields
-            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-            externalDocs:
-              url: '#select-fields-and-relations'
         - name: locale
           in: query
           description: The locale in BCP 47 format to retrieve localized content.
@@ -12691,6 +12704,16 @@ paths:
             externalDocs:
               url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
               description: Learn more in the Serve Translations in Storefront guide.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
       requestBody:
         content:
           application/json:
@@ -12740,7 +12763,7 @@ paths:
             -H 'x-publishable-api-key: {your_publishable_api_key}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
-              "cart_id": "{value}"
+              "cart_id": "cart_123"
             }'
       tags:
         - Shipping Options
@@ -15413,6 +15436,9 @@ components:
           type: string
           title: label_id
           description: The ID of the column's label, if it has a custom label.
+        metadata:
+          type: object
+          description: The column's metadata.
     AdminConfirmReceiveReturn:
       type: object
       description: The confirmation's details.
@@ -27246,6 +27272,26 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+    AdminTransferOrderToGuest:
+      type: object
+      description: The details of the order transfer to a guest.
+      x-schemaName: AdminTransferOrderToGuest
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          title: email
+          description: The email to which the order will be transferred.
+          format: email
+        internal_note:
+          type: string
+          title: internal_note
+          description: The internal note for the order transfer.
+        description:
+          type: string
+          title: description
+          description: Details of the order transfer to a guest.
     AdminTranslation:
       type: object
       description: The translation's details.
@@ -28788,7 +28834,7 @@ components:
           description: The shipping option's type id.
         prices:
           type: array
-          description: The shipping option's prices.
+          description: The shipping option's prices. This array replaces the shipping option's existing prices - a price with a matching `id` is updated, a price without an `id` is created, and any existing price whose `id` isn't included is deleted. Omit this property to leave the existing prices unchanged.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminUpdateShippingOptionPriceWithCurrency'
@@ -28812,7 +28858,7 @@ components:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         currency_code:
           type: string
           title: currency_code
@@ -28824,7 +28870,7 @@ components:
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionPriceWithRegion:
@@ -28835,7 +28881,7 @@ components:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         region_id:
           type: string
           title: region_id
@@ -28846,7 +28892,7 @@ components:
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionRule:
@@ -30057,6 +30103,11 @@ components:
           type: number
           title: original_shipping_tax_total
           description: The sum of all shipping methods' original tax totals before discounts.
+        completed_at:
+          type: string
+          title: completed_at
+          description: The date the cart was completed.
+          format: date-time
     BaseCartAddress:
       type: object
       description: The cart's shipping address.
@@ -30562,8 +30613,6 @@ components:
       properties:
         item:
           type: object
-          title: item
-          description: The details of the item that the adjustment belongs to.
         item_id:
           type: string
           title: item_id
@@ -30622,9 +30671,7 @@ components:
         - updated_at
       properties:
         item:
-          type: object
-          title: item
-          description: The details of the item that the tax line belongs to.
+          $ref: '#/components/schemas/BaseCartLineItem'
         item_id:
           type: string
           title: item_id
@@ -32973,8 +33020,10 @@ components:
       properties:
         shipping_method:
           type: object
-          title: shipping_method
-          description: The details of the method that the adjustment belongs to.
+        shipping_method_id:
+          type: string
+          title: shipping_method_id
+          description: The ID of the shipping method this adjustment applies on.
         id:
           type: string
           title: id
@@ -33030,8 +33079,6 @@ components:
       properties:
         shipping_method:
           type: object
-          title: shipping_method
-          description: The details of the method that the tax line belongs to.
         shipping_method_id:
           type: string
           title: shipping_method_id
@@ -35067,6 +35114,12 @@ components:
           format: date-time
           title: updated_at
           description: The date the tax line was updated.
+        data:
+          type: object
+          description: The tax line's data.
+        metadata:
+          type: object
+          description: The tax line's metadata, can hold custom key-value pairs.
     OrderReturnItem:
       type: object
       description: The item's items.
@@ -35363,6 +35416,12 @@ components:
           format: date-time
           title: updated_at
           description: The date the tax line was updated.
+        data:
+          type: object
+          description: The tax line's data.
+        metadata:
+          type: object
+          description: The tax line's metadata. Can hold custom key-value pairs.
     OrderTransaction:
       type: object
       description: The transaction's details.
@@ -35497,6 +35556,10 @@ components:
           type: string
           title: endpoint
           description: The relationship filter's endpoint.
+        filter_key:
+          type: string
+          title: filter_key
+          description: The relationship's filter key.
     Return:
       type: object
       description: The return's details.
@@ -36568,7 +36631,7 @@ components:
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount for the cart. For a shipping option whose `price_type` is `calculated`, this amount is computed on the fly by the fulfillment provider against the cart.
         data:
           type: object
           description: The shipping option's data, useful for the provider handling fulfillment.
@@ -39625,7 +39688,7 @@ components:
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
         is_tax_inclusive:
           type: boolean
           title: is_tax_inclusive

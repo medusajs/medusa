@@ -20,6 +20,7 @@ import type {
   OrderDTO,
 } from "@medusajs/framework/types"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
+import { updateOrderTaxLinesWorkflow } from "../../order"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
@@ -91,7 +92,7 @@ export const convertDraftOrderStep = createStep(
 
 /**
  * This workflow converts a draft order to a pending order. It's used by the
- * [Convert Draft Order to Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidconverttoorder).
+ * [Convert Draft Order to Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/convert-to-order).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * converting a draft order to a pending order.
@@ -130,6 +131,15 @@ export const convertDraftOrderWorkflow = createWorkflow(
     }).config({ name: "order-query" })
 
     validateDraftOrderStep({ order })
+
+    // Safety net: recompute the order's tax lines before placing the order so it
+    // can never carry stale tax lines (e.g. from an address change that didn't
+    // re-tax). The recompute respects the region's `automatic_taxes` setting.
+    updateOrderTaxLinesWorkflow.runAsStep({
+      input: {
+        order_id: input.id,
+      },
+    })
 
     const orderItems = useRemoteQueryStep({
       entry_point: "order",

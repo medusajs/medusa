@@ -12,7 +12,7 @@ export function useConfigurableTableColumns<TData = any>(
   apiColumns: HttpTypes.AdminColumn[] | undefined,
   adapter?: TableAdapter<TData>
 ) {
-  const columnHelper = createDataTableColumnHelper<TData>()
+  const columnHelper = useMemo(() => createDataTableColumnHelper<TData>(), [])
   const { t } = useTranslation()
 
   return useMemo(() => {
@@ -20,7 +20,49 @@ export function useConfigurableTableColumns<TData = any>(
       return []
     }
 
-    return apiColumns.map((apiColumn) => {
+    const generatedColumns = apiColumns.map((apiColumn) => {
+      // Virtual selection column: the ui select column (checkbox), kept as a
+      // normal column (id "select") so it participates in ordering — its low
+      // default_order keeps it first.
+      if (apiColumn.render_mode === "select") {
+        return columnHelper.select()
+      }
+
+      // Virtual actions column: rendered from the adapter's row actions rather
+      // than the cell-renderer registry, but kept as a normal column so it
+      // participates in visibility/ordering.
+      if (apiColumn.render_mode === "actions") {
+        return columnHelper.accessor(() => null, {
+          id: apiColumn.field,
+          header: () => null,
+          cell: ({ row }: { row: any }) => {
+            const content = adapter?.renderRowActions?.(row.original)
+            if (!content) {
+              return null
+            }
+            return (
+              <div
+                className="flex items-center justify-end"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {content}
+              </div>
+            )
+          },
+          meta: {
+            name: apiColumn.name,
+            column: apiColumn,
+          },
+          computed: {
+            required_fields: [],
+            optional_fields: [],
+          },
+          enableHiding: apiColumn.hideable,
+          enableSorting: false,
+          align: "right",
+        } as any)
+      }
+
       let renderType = apiColumn.computed?.type
 
       if (!renderType) {
@@ -29,6 +71,12 @@ export function useConfigurableTableColumns<TData = any>(
 
       const renderer = getCellRenderer(renderType, apiColumn.data_type)
       const align = adapter?.getColumnAlignment?.(apiColumn) ?? renderer.align
+      // Per-column override wins; otherwise fall back to the renderer's default
+      // (renderers that self-handle overflow set this to false), then to `true`.
+      const truncateTooltip =
+        (apiColumn.metadata as any)?.truncate_tooltip ??
+        renderer.truncateTooltip ??
+        true
 
       const accessor = (row: TData) => getColumnValue(row, apiColumn)
 
@@ -48,7 +96,10 @@ export function useConfigurableTableColumns<TData = any>(
         enableSorting: apiColumn.sortable,
         sortLabel: apiColumn.name,
         align,
+        truncateTooltip,
       } as any)
     })
+
+    return generatedColumns
   }, [apiColumns, adapter, t, columnHelper])
 }

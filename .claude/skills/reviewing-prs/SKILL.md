@@ -41,6 +41,7 @@ ignored.
 - **Checking contribution guidelines?** → MUST load `reference/contribution-types.md` first
 - **Verifying code conventions?** → MUST load `reference/conventions.md` first
 - **Reviewing a dependency-update PR (Dependabot / Renovate / lockfile bump)?** → MUST load `reference/dependency-review.md` first
+- **Running the security analysis (Step 10)?** → MUST load `reference/security-review.md` first (trust-boundary heuristic + Medusa-specific patterns)
 - **Writing the review summary / blocking points?** → MUST load `reference/comment-guidelines.md` first (includes bug, security, and performance reporting formats)
 
 **Minimum requirement:** Load at least the relevant reference file(s) before completing the review.
@@ -325,6 +326,30 @@ Each such comment is a **required change**: emit
 
 > **CRITICAL:** Applies to **all PRs**, including team members. Read the actual diff; before flagging, read the full file. Only flag issues in added (`+`) lines.
 
+> **MUST load `reference/security-review.md` before this step.** It explains
+> the trust-boundary / taint-tracing method and Medusa-specific patterns
+> (object-storage key traversal, DB/query-filter injection, unescaped
+> JSON/HTML output, the "widened input" red flag). The checklist below is a
+> reminder, not a substitute.
+
+**How to look, not just what to look for:** for the changed code, trace
+**tainted input** (request bodies/params/headers, uploaded file names and
+contents, webhook payloads, and any entity field set from them) to a
+**sensitive sink** (path/key construction, URL fetch, SQL/query filter, shell,
+`eval`, response, log). A finding is: tainted value reaches a sink without
+validation in between. Read callers/types when you can't tell if a value is
+tainted — a "filename" or "key" is frequently set straight from an upload
+request.
+
+**Highest-value red flag — a diff that WIDENS what user input reaches a sink.**
+The most-missed security bug is not new dangerous code but the *removal of an
+implicit protection*: code that used to use only a sanitized fragment of an
+input now uses more of it (e.g. it kept only a filename's base name and now
+also prepends the parsed **directory**), or a `basename`/allow-list/regex/cap/
+`encodeURIComponent` is dropped, or a fixed value becomes request-configurable.
+When the diff routes more of an input into a path/key/URL/query, ask *"what is
+the worst string an attacker can put here, and where does it end up?"*
+
 Check for:
 
 **Authentication & Authorization:**
@@ -332,15 +357,51 @@ Check for:
 - Authorization checks missing — any route that accesses or mutates data scoped to a user/store must verify ownership
 - Privilege escalation
 
-**Injection & Execution:**
-- Raw SQL constructed from user input (SQL injection)
+**Database injection (not just raw SQL):**
+- Raw SQL / MikroORM / Knex from user input — string-interpolated `em.execute()`,
+  `knex.raw()`, `.raw()` fragments instead of bound parameters
+- **Query-filter / operator injection** — `req.body` / `req.query` /
+  `req.filterableFields` passed straight into a service `.list*()`, repository,
+  or `query.graph({ filters })` without a validator, letting a caller inject
+  operators (`$ne`, `$or`, `$like`, …) or filter on unintended columns to read
+  or bypass scoped data. Routes must validate/whitelist the request (Zod /
+  `validateAndTransformBody`) and pass only known fields into the filter.
+- Dynamic column / order / table names from user input without an allow-list
+
+**Other injection & execution:**
 - `eval()`, `new Function()`, `vm.runInContext()` with untrusted data
 - Dynamic `require()`/`import()` with user-controlled paths
 - Shell command construction with user input
 
-**Input Validation:**
-- User-controlled input to filesystem operations without sanitization → path traversal
-- Missing size/length limits → DoS
+**Output encoding — unescaped JSON / HTML (commonly missed):**
+- **Unescaped JSON in an HTML/`<script>` context (XSS)** — interpolating
+  `JSON.stringify(data)` into an HTML string or inline script. `JSON.stringify`
+  does NOT escape HTML, so a value with `</script>` (or `<!--`, U+2028/U+2029)
+  breaks out and injects markup. Escape `<`/`>`/`&`/line separators, or use a
+  `data-*`/DOM API instead of string concatenation.
+- User input reflected into any HTML/markup response (pages, emails, invoices,
+  SVGs, redirect params) without escaping → XSS/HTML injection
+- Hand-built JSON via string concatenation instead of `JSON.stringify`
+- `JSON.parse` on untrusted input without try/catch; parsed objects merged via
+  `Object.assign`/spread/deep-merge without guarding `__proto__` →
+  prototype pollution
+- Returning user-controlled text as `text/html` (or a sniffable missing
+  `Content-Type`) when it should be `application/json`/`text/plain`
+
+**Path / key traversal (NOT just `fs.*`):**
+- User-controlled input built into a **filesystem path** without sanitization
+- User-controlled input built into an **object-storage key / bucket path**
+  (S3/GCS/R2 `Key`, `Upload`, presigned URLs) — cloud SDKs treat the key as an
+  opaque string, so `..` or a leading `/` in a filename can **escape a
+  configured prefix and cross a tenant/namespace boundary or overwrite another
+  object.** Prefixing a string does NOT stop `..` from climbing out of it.
+- `..` / leading `/` (and encoded forms `%2e%2e`, `%2f`) reaching a cache key,
+  URL path, redirect target, or archive entry name (zip-slip)
+- Fix expectation: strip/reject `..` and leading `/` (or derive the safe part
+  via `path.basename`/an allow-list) **before** building the path/key
+
+**Other input validation:**
+- Missing size/length/pagination limits → DoS
 - Unvalidated external URLs in server-side fetches → SSRF
 
 **Data Exposure:**
@@ -479,6 +540,13 @@ the workflow event — never from JSON-supplied numbers.
 - [ ] Skipping the integration test check for API route changes in `packages/medusa/src/api/`
 - [ ] Not fetching PR details when they weren't passed as arguments
 - [ ] Skipping security analysis for team member PRs — security analysis applies to ALL PRs
+- [ ] Running Step 10 without loading `reference/security-review.md`
+- [ ] Treating path traversal as a filesystem-only issue — object-storage keys, cache keys, and URL paths are equally vulnerable to `..` / leading `/`
+- [ ] Missing a change that widens what user input reaches a path/key/URL (e.g. a filename's directory now prepended to a storage key) — trace the tainted value to its sink
+- [ ] Assuming a configured prefix/base dir contains the final path — it does not stop `..` from climbing out
+- [ ] Treating DB injection as raw-SQL-only — unvalidated `req.body`/`req.query` passed into a service `.list*()`/repository/`query.graph({ filters })` allows operator injection and reading unscoped data
+- [ ] Missing unescaped JSON/HTML — `JSON.stringify(userData)` interpolated into an HTML/`<script>` context is XSS; user input reflected into any markup response must be escaped
+- [ ] Overlooking prototype pollution — a parsed JSON body merged via `Object.assign`/spread/deep-merge without guarding `__proto__`
 - [ ] Skipping performance analysis — always check for N+1 queries and unbounded queries
 - [ ] Setting `review_template: "approve"` while listing a confirmed security or blocking performance issue
 - [ ] Flagging style/code smell as bugs
@@ -502,5 +570,6 @@ the workflow event — never from JSON-supplied numbers.
 reference/conventions.md           - Medusa coding conventions to verify
 reference/contribution-types.md    - How to verify code, docs, and admin translation contributions
 reference/dependency-review.md     - How to review dependency-update PRs (release notes, breaking changes, Medusa usage, test areas)
+reference/security-review.md       - Trust-boundary/taint method + Medusa security patterns (path/key traversal, DB/filter injection, unescaped JSON/HTML); load before Step 10
 reference/comment-guidelines.md    - Tone and phrasing rules; use as guidance for `summary` and `blocking_points`
 ```

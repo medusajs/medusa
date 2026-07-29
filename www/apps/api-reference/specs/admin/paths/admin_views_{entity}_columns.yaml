@@ -18,6 +18,10 @@ get:
     - cookie_auth: []
     - jwt_token: []
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_views_{entity}_columns/get.js
     - lang: Shell
       label: cURL
       source:

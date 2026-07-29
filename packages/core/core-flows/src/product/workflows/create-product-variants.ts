@@ -200,7 +200,7 @@ const buildVariantItemCreateMap = (data: {
 
 export const createProductVariantsWorkflowId = "create-product-variants"
 /**
- * This workflow creates one or more product variants. It's used by the [Create Product Variant Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsidvariants).
+ * This workflow creates one or more product variants. It's used by the [Create Product Variant Admin API Route](https://docs.medusajs.com/api/admin/products/create-variant).
  *
  * This workflow has a hook that allows you to perform custom actions on the created product variants. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the product variants.

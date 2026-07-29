@@ -237,6 +237,20 @@ export const getAuthContextFromJwtToken = (
           delete options.algorithm
         }
 
+        // Defense-in-depth against prototype pollution: `jsonwebtoken` reads
+        // these flags off the options prototype chain, so ensure they are set
+        // as own properties (defaulting to the safe value) unless explicitly
+        // configured. Otherwise a polluted `Object.prototype.ignoreExpiration`
+        // could silently disable expiry verification for the whole process.
+        if (
+          !Object.prototype.hasOwnProperty.call(options, "ignoreExpiration")
+        ) {
+          options.ignoreExpiration = false
+        }
+        if (!Object.prototype.hasOwnProperty.call(options, "ignoreNotBefore")) {
+          options.ignoreNotBefore = false
+        }
+
         const verified = verify(
           token,
           jwtPublicKey ?? jwtSecret!,

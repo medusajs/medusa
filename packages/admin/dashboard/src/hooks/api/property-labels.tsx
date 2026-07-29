@@ -75,6 +75,7 @@ export const useCreatePropertyLabel = (
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(data.property_label.entity),
       })
+      queryClient.invalidateQueries({ queryKey: viewsQueryKeys.entities() })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -117,6 +118,7 @@ export const useDeletePropertyLabel = (
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(),
       })
+      queryClient.invalidateQueries({ queryKey: viewsQueryKeys.entities() })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -137,6 +139,7 @@ export const useBatchPropertyLabels = (
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(),
       })
+      queryClient.invalidateQueries({ queryKey: viewsQueryKeys.entities() })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

@@ -1015,7 +1015,7 @@ export const InventoryItemWorkflowEvents = {
   /**
    * Emitted when inventory items are created.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1028,7 +1028,7 @@ export const InventoryItemWorkflowEvents = {
   /**
    * Emitted when inventory items are updated.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1041,7 +1041,7 @@ export const InventoryItemWorkflowEvents = {
   /**
    * Emitted when inventory items are deleted.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1061,7 +1061,7 @@ export const InventoryLevelWorkflowEvents = {
   /**
    * Emitted when inventory levels are created.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1075,7 +1075,7 @@ export const InventoryLevelWorkflowEvents = {
    * Emitted when inventory levels are updated. This includes adjustments to
    * the stocked or reserved quantity, such as during order fulfillment.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1089,7 +1089,7 @@ export const InventoryLevelWorkflowEvents = {
   /**
    * Emitted when inventory levels are deleted.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1109,7 +1109,7 @@ export const ReservationItemWorkflowEvents = {
   /**
    * Emitted when reservations are created.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1123,7 +1123,7 @@ export const ReservationItemWorkflowEvents = {
   /**
    * Emitted when reservations are updated.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1137,7 +1137,7 @@ export const ReservationItemWorkflowEvents = {
   /**
    * Emitted when reservations are deleted.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts

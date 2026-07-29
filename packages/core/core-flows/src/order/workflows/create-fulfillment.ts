@@ -364,7 +364,7 @@ export type CreateOrderFulfillmentWorkflowInput =
 
 export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
 /**
- * This workflow creates a fulfillment for an order. It's used by the [Create Order Fulfillment Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidfulfillments).
+ * This workflow creates a fulfillment for an order. It's used by the [Create Order Fulfillment Admin API Route](https://docs.medusajs.com/api/admin/orders/create-fulfillment).
  *
  * This workflow has a hook that allows you to perform custom actions on the created fulfillment. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the fulfillment.
@@ -521,7 +521,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "location_id",
       ],
       variables: {
-        filter: {
+        filters: {
           line_item_id: lineItemIds,
         },
       },

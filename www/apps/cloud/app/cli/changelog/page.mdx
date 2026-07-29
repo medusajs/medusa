@@ -6,6 +6,23 @@ export const metadata = {
 
 In this guide, you'll find the notable changes to the Cloud CLI (`mcloud`) for each release, with the newest version listed first.
 
+## 0.1.12 (July 28, 2026)
+
+### Deployments
+
+- `mcloud deployments get` now displays deployment details in a key-value format instead of a horizontal table, with updated field labels (for example, "Started at", "Updated at")
+
+### Variables
+
+- `mcloud variables set` now defaults `--runtime` to `true` for new variables (previously defaulted to `false`)
+- `mcloud variables set` now correctly targets the storefront environment when `--type storefront` is used
+
+### Local
+
+- `mcloud local build` no longer fails in repositories without a remote origin configured; it falls back to using the folder name as the repository name
+
+---
+
 ## 0.1.11 (July 17, 2026)
 
 ### Environments

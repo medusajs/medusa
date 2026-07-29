@@ -3,7 +3,7 @@ import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { _DataTable } from "../../../../components/table/data-table"
 import { useInventoryItems } from "../../../../hooks/api/inventory"
 import { useDataTable } from "../../../../hooks/use-data-table"
@@ -17,6 +17,7 @@ const PAGE_SIZE = 20
 export const InventoryListTable = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [selection, setSelection] = useState<RowSelectionState>({})
 
@@ -64,9 +65,14 @@ export const InventoryListTable = () => {
             {t("inventory.subtitle")}
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        <div className="flex items-center justify-center gap-x-2">
+          <Button size="small" variant="secondary" asChild>
+            <Link to={`export${location.search}`}>{t("actions.export")}</Link>
+          </Button>
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        </div>
       </div>
       <_DataTable
         table={table}

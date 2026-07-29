@@ -126,11 +126,17 @@ Refer to the [LayoutComposer](!resources!/admin-components/components/layout-com
 
 ### Custom Zone Naming Convention
 
-Custom injection zones should follow the pattern `{resource-name}.{page-context}.{position}`, where:
+Custom injection zones should follow the pattern `{resource-name}.{page-context}` for the main section, and `{resource-name}.{page-context}.{section}` for other sections, where:
 
 - `resource-name`: The name of the resource being accessed in the page. For example, `brand` in the example above.
 - `page-context`: The page or section context. For example, `details` for a details page or `list` for a list page.
-- `position`: One of `before`, `after`, `side.before`, or `side.after`.
+- `section`: The name of the layout section the zone belongs to, if it isn't the main one. For example, `side` for the side section of a two-column layout.
+
+<Note>
+
+Don't add a `.before` or `.after` suffix to your zone names. These suffixes are deprecated since [Medusa v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2), as admin users now change a widget's placement with [Layout Configurations](!user-guide!/tips/layout-configurations).
+
+</Note>
 
 This naming convention helps avoid conflicts between different plugins and makes zones easier to identify.
 
@@ -145,10 +151,9 @@ To register the injection zones, augment the `InjectionZoneRegistry` interface t
 ```ts title="index.d.ts"
 declare module "@medusajs/admin-shared" {
   interface InjectionZoneRegistry {
-    "brand.details.before": true
-    "brand.details.after": true
-    "brand.details.side.before": true
-    "brand.details.side.after": true
+    "brand.details": true
+    "brand.details.side": true
+    "brand.list": true
   }
 }
 ```
@@ -191,20 +196,20 @@ const BrandListWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "brand.list.before",
+  zone: "brand.list",
 })
 
 export default BrandListWidget
 ```
 
-In this example, the widget is injected into the `brand.list.before` zone, so it's rendered before the main content of the brand list page you added to your plugin.
+In this example, the widget is injected into the `brand.list` zone, so it's rendered in the main section of the brand list page you added to your plugin.
 
-If you don't see `brand.list.before` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
+If you don't see `brand.list` in the autocompletion of the `zone` property, make sure your `src/admin/tsconfig.json` has the following in its `include` array:
 
 ```json title="src/admin/tsconfig.json"
 "include": [
   ".",
-  "../../.medusa/types/plugin-augmentations.d.ts"
+  "../../.medusa/types/augmentation-refs.d.ts"
 ]
 ```
 
@@ -248,10 +253,10 @@ const BrandWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "brand.details.before",
+  zone: "brand.details",
 })
 
 export default BrandWidget
 ```
 
-In this example, the `BrandWidget` is injected into the `brand.details.before` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.
+In this example, the `BrandWidget` is injected into the `brand.details` zone, which is part of the brand details page you added to your plugin. Since you passed the `brand` object as data to the `LayoutComposer`, developers can access it in the widget through the `data` prop.

@@ -32,7 +32,7 @@ export const removeDraftOrderActionShippingMethodWorkflowId =
 
 /**
  * This workflow removes a shipping method that was added to an edited draft order. It's used by the
- * [Remove Shipping Method from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersideditshippingmethodsaction_id).
+ * [Remove Shipping Method from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/remove-new-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * removing a shipping method from an edited draft order.

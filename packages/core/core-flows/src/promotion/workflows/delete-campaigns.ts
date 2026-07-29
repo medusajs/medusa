@@ -19,7 +19,7 @@ export type DeleteCampaignsWorkflowInput = {
 export const deleteCampaignsWorkflowId = "delete-campaigns"
 /**
  * This workflow deletes one or more campaigns. It's used by the
- * [Delete Campaign Admin API Route](https://docs.medusajs.com/api/admin#campaigns_deletecampaignsid).
+ * [Delete Campaign Admin API Route](https://docs.medusajs.com/api/admin/campaigns/delete-a-campaign).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * delete campaigns within your custom flows.

@@ -1017,6 +1017,30 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
+        it("should emit PRODUCT_CATEGORY_DELETED event on softDeleteProductCategories", async () => {
+          const categories = await service.createProductCategories([
+            { name: "Category To Soft Delete" },
+          ])
+          eventBusSpy.mockClear()
+
+          await service.softDeleteProductCategories([categories[0].id])
+
+          expect(eventBusSpy).toHaveBeenCalledTimes(1)
+          expect(eventBusSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_CATEGORY_DELETED, {
+                data: { id: categories[0].id },
+                object: "product_category",
+                source: Modules.PRODUCT,
+                action: CommonEvents.DELETED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
+        })
+
         it("should emit appropriate events on upsertProductCategories", async () => {
           const existingCategory = await service.createProductCategories([
             { name: "Existing Category" },
