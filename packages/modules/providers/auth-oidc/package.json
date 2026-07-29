@@ -32,10 +32,10 @@
     "openid-client": "^5.7.1"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.17.2"
+    "@medusajs/framework": "2.18.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.17.2"
+    "@medusajs/framework": "2.18.0"
   },
   "keywords": [
     "medusa-provider",
