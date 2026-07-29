@@ -98,14 +98,6 @@ export type DefaultResourceValue = DefaultPolicyResources[DefaultResourceKey]
 
 declare global {
   var PolicyResource: DefaultPolicyResources & Record<string, string>
-  var PolicyOperation: Record<string, string> & {
-    readonly read: "read"
-    readonly write: "write"
-    readonly update: "update"
-    readonly delete: "delete"
-    readonly "*": "*"
-    readonly ALL: "*"
-  }
   var Policy: Record<
     string,
     { resource: string; operation: string; description?: string }

@@ -1,14 +1,8 @@
 import { getCallerFilePath, isFileDisabled, MEDUSA_SKIP_FILE } from "../common"
 import { toSnakeCase } from "../common/to-snake-case"
+import { WILDCARD } from "../policies/policy-operations"
 
 export const MedusaPolicySymbol = Symbol.for("MedusaPolicy")
-
-/**
- * The single character used as the RBAC wildcard across both resource and
- * operation slots. All RBAC code that needs to read, write, or compare the
- * wildcard should import this constant.
- */
-export const WILDCARD = "*"
 
 export interface PolicyDefinition {
   name: string
@@ -33,30 +27,9 @@ const PolicyResource: DefaultPolicyResources & Record<string, string> =
 
 global.PolicyResource ??= PolicyResource
 
-/**
- * Global registry for all unique operations.
- */
-const defaultOperations = ["read", "create", "update", "delete", WILDCARD]
-
-const PolicyOperation: Record<string, string> & {
-  readonly read: "read"
-  readonly create: "create"
-  readonly update: "update"
-  readonly delete: "delete"
-  readonly "*": "*"
-  readonly ALL: "*"
-} = global.PolicyOperation ?? { ALL: WILDCARD }
-
 const normalizeKey = (element: string) => {
   return element === WILDCARD ? WILDCARD : toSnakeCase(element)
 }
-
-for (const operation of defaultOperations) {
-  const operationKey = normalizeKey(operation)
-  PolicyOperation[operationKey] = operation
-}
-
-global.PolicyOperation ??= PolicyOperation
 
 const Policy: Record<
   string,
@@ -125,8 +98,6 @@ export function definePolicies(
 
     PolicyResource[resourceKey] = policy.resource
 
-    PolicyOperation[operationKey] = policy.operation
-
     // Register in Policy object with name as key
     Policy[policy.name] = { ...policy }
   }
@@ -139,4 +110,4 @@ export function definePolicies(
   return output
 }
 
-export { Policy, PolicyOperation, PolicyResource }
+export { Policy, PolicyResource }

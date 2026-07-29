@@ -1,9 +1,10 @@
 import { FileSystem } from "../common/file-system"
 import { promiseAll } from "../common/promise-all"
-import { Policy, PolicyOperation, PolicyResource } from "./define-policies"
+import { Policy, PolicyResource } from "./define-policies"
 
 /**
- * Generates TypeScript type definitions for RBAC Resource, Operation, and Policy.
+ * Generates TypeScript type definitions for RBAC Resource and Policy.
+ *
  * Creates two files:
  * - "policy-types.d.ts" - Ambient type declarations with global types
  * - "policy-bindings.d.ts" - Module augmentation for @medusajs/framework/utils
@@ -33,19 +34,10 @@ export async function generatePolicyTypes({
   const fileSystem = new FileSystem(outputDir)
 
   const resourceKeys = Object.keys(PolicyResource).sort()
-  const operationKeys = Object.keys(PolicyOperation).sort()
 
   // Generate PolicyResourceType entries
   const resourceTypeEntries = resourceKeys
     .map((key) => `  readonly ${key}: "${PolicyResource[key]}";`)
-    .join("\n")
-
-  // Generate PolicyOperationType entries
-  const operationTypeEntries = operationKeys
-    .map(
-      (key) =>
-        `  readonly ${key === "*" ? `"*"` : key}: "${PolicyOperation[key]}";`
-    )
     .join("\n")
 
   // File 1: policy-types.d.ts - Ambient type declarations
@@ -57,20 +49,12 @@ ${resourceTypeEntries}
 };
 
 /**
- * RBAC Operation registry type
- */
-type PolicyOperationType = {
-${operationTypeEntries}
-};
-
-/**
  * RBAC Policy registry type
  */
 type PolicyType = ${policyInterface};
 
 // Global declarations
 declare const PolicyResource: PolicyResourceType;
-declare const PolicyOperation: PolicyOperationType;
 declare const Policy: PolicyType;
 `
 
@@ -81,7 +65,6 @@ declare const Policy: PolicyType;
 // Types and globals are defined in policy-types.d.ts
 declare module "@medusajs/framework/utils" {
   export const PolicyResource: PolicyResourceType;
-  export const PolicyOperation: PolicyOperationType;
   export const Policy: PolicyType;
 }
 
