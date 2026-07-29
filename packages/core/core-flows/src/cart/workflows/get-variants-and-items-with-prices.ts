@@ -94,6 +94,17 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
     const priceNotFound: string[] = []
     const variantNotFoundOrPublished: string[] = []
 
+    // Index the variants by id so the per-item lookup below is O(1) instead of a
+    // `variantsData.find` scan. A cart refresh runs this for every line item, so the
+    // scan made the step O(items x variants) on carts with many lines. First match
+    // wins, mirroring `find`.
+    const variantsById = new Map<string, any>()
+    for (const variant of variantsData) {
+      if (!variantsById.has(variant.id)) {
+        variantsById.set(variant.id, variant)
+      }
+    }
+
     const items = (inputItems ?? cart.items ?? []).map((item) => {
       const item_ = item as any
       const idLike =
@@ -110,7 +121,7 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         priceNotFound.push(item_.variant_id)
       }
 
-      const variant = variantsData.find((v) => v.id === item.variant_id)
+      const variant = variantsById.get(item.variant_id!)
       if (
         (item.variant_id && !variant) || // variant specified but doesn't exist
         (variant &&
