@@ -6,7 +6,7 @@ import {
   MiddlewareVerb,
   ParserConfig,
 } from "../types"
-import type { PolicyAction } from "../middlewares/check-permissions"
+import type { PolicyAction } from "@medusajs/types"
 import type { ZodRawShape } from "@medusajs/deps/zod"
 
 /**

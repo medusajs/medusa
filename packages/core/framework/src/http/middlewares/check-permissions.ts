@@ -1,4 +1,5 @@
-import { MedusaError, PolicyOperationValue } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
+import type { PolicyAction } from "@medusajs/types"
 import { getRequestActorRoleIds } from "../../roles/get-request-actor-roles"
 import { hasPermission } from "../../policies/has-permission"
 import type {
@@ -7,18 +8,6 @@ import type {
   MedusaResponse,
   MiddlewareFunction,
 } from "../types"
-
-/**
- * A `(resource, operation)` pair a route may be guarded by.
- *
- * `operation` is constrained to {@link PolicyOperationValue}, so modules that
- * augment `PolicyOperationRegistry` can guard routes with their own operations
- * and typos stay compile errors.
- */
-export type PolicyAction = {
-  resource: string
-  operation: PolicyOperationValue | PolicyOperationValue[]
-}
 
 /**
  * Core permission checking logic for middleware and routes

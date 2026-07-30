@@ -1,13 +1,15 @@
 import {
   GraphQLUtils,
   PolicyDefinition,
-  PolicyResource,
   promiseAll,
   toSnakeCase,
 } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import type { MedusaContainer } from "@medusajs/types"
-import { hasPermission } from "../../../policies/has-permission"
+import {
+  fetchPolicyResources,
+  hasPermission,
+} from "../../../policies/has-permission"
 import { FieldFilterContext, IFieldFilter } from "../field-filtering/index"
 
 /**
@@ -430,12 +432,13 @@ export class RBACFieldFilter implements IFieldFilter {
     }
 
     const actorRoles = await this.getActorRoles()
+    const policyResources = await fetchPolicyResources(this.container)
 
     const uniquePaths = collectUniqueEntityPaths(entity, fieldsToCheck)
 
     const pathsNeedingCheck: { path: string; entityName: string }[] = []
     for (const [path, info] of uniquePaths) {
-      if (info.entityName && PolicyResource[info.entityName]) {
+      if (info.entityName && policyResources.has(info.entityName)) {
         pathsNeedingCheck.push({ path, entityName: info.entityName })
       }
     }

@@ -16,17 +16,6 @@ export interface definePoliciesExport {
   policies: PolicyDefinition[]
 }
 
-// This will be overridden by the actual interface when medusa types are loaded
-type DefaultPolicyResources = Record<string, string>
-
-/**
- * Global registry for all unique resources.
- */
-const PolicyResource: DefaultPolicyResources & Record<string, string> =
-  global.PolicyResource ?? {}
-
-global.PolicyResource ??= PolicyResource
-
 const normalizeKey = (element: string) => {
   return element === WILDCARD ? WILDCARD : toSnakeCase(element)
 }
@@ -96,8 +85,6 @@ export function definePolicies(
     policy.resource = resourceKey
     policy.operation = operationKey
 
-    PolicyResource[resourceKey] = policy.resource
-
     // Register in Policy object with name as key
     Policy[policy.name] = { ...policy }
   }
@@ -110,4 +97,4 @@ export function definePolicies(
   return output
 }
 
-export { Policy, PolicyResource }
+export { Policy }
