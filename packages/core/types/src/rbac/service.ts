@@ -1,5 +1,6 @@
 import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { MedusaRequest } from "../http-request"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -13,6 +14,7 @@ import {
   RbacRoleDTO,
   RbacRoleParentDTO,
   RbacRolePolicyDTO,
+  RbacScope,
 } from "./common"
 import {
   CreateRbacPolicyDTO,
@@ -290,4 +292,13 @@ export interface IRbacModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+  resolveScope<T extends MedusaRequest<any, any>>(
+    req: T
+  ): Promise<RbacScope | undefined>
+}
+
+export interface IRbacModuleServiceOptions {
+  scopeResolver?: <T extends MedusaRequest<any, any>>(
+    req: T
+  ) => Promise<RbacScope>
 }

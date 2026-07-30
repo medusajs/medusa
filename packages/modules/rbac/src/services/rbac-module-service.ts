@@ -2,6 +2,7 @@ import {
   Context,
   FilterableRbacRoleProps,
   FindConfig,
+  InternalModuleDeclaration,
   RbacRoleDTO,
 } from "@medusajs/framework/types"
 import {
@@ -17,8 +18,11 @@ import {
   CreateRbacRoleParentDTO,
   InferEntityType,
   IRbacModuleService,
+  IRbacModuleServiceOptions,
+  MedusaRequest,
   ModulesSdkTypes,
   RbacRoleParentDTO,
+  RbacScope,
   UpdateRbacRoleParentDTO,
 } from "@medusajs/types"
 import {
@@ -65,19 +69,24 @@ export default class RbacModuleService
   protected readonly rbacPolicyService: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof RbacPolicy>
   >
+  protected readonly options_: IRbacModuleServiceOptions
 
-  constructor({
-    rbacRepository,
-    rbacRoleService,
-    rbacPolicyService,
-    rbacRolePolicyService,
-  }: InjectedDependencies) {
-    // @ts-ignore
+  constructor(
+    {
+      rbacRepository,
+      rbacRoleService,
+      rbacPolicyService,
+      rbacRolePolicyService,
+    }: InjectedDependencies,
+    options: IRbacModuleServiceOptions = {},
+    protected readonly moduleDeclaration: InternalModuleDeclaration
+  ) {
     super(...arguments)
     this.rbacRepository_ = rbacRepository
     this.rbacRolePolicyService = rbacRolePolicyService
     this.rbacRoleService = rbacRoleService
     this.rbacPolicyService = rbacPolicyService
+    this.options_ = options
   }
 
   __hooks = {
@@ -306,5 +315,17 @@ export default class RbacModuleService
     }
 
     return await super.updateRbacRoleParents(data, sharedContext)
+  }
+
+  @InjectManager()
+  async resolveScope<T extends MedusaRequest<any, any>>(
+    req: T
+  ): Promise<RbacScope | undefined> {
+    const scopeResolver = this.options_.scopeResolver
+    if (!scopeResolver) {
+      return undefined
+    }
+
+    return await this.options_.scopeResolver?.(req)
   }
 }
