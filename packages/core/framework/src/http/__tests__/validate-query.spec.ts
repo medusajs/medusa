@@ -59,10 +59,12 @@ describe("validateAndTransformQuery", () => {
   })
 
   it("should transform the input query", async () => {
+    // `RestrictedFields` is nominal (it has a `#private` field), so the partial
+    // literal is not comparable to `MedusaRequest` directly.
     let mockRequest = {
       restrictedFields: new RestrictedFields(),
       query: {},
-    } as MedusaRequest
+    } as unknown as MedusaRequest
     const mockResponse = {} as MedusaResponse
     const nextFunction: MedusaNextFunction = jest.fn()
 

@@ -38,13 +38,19 @@
     "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
-    "@medusajs/deps": "2.18.0"
+    "@medusajs/deps": "2.18.0",
+    "@types/express": "^4.17.21",
+    "express": "^4.21.0"
   },
   "peerDependencies": {
+    "express": "^4.21.0",
     "ioredis": "^5.4.1",
     "vite": "^5.4.21"
   },
   "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    },
     "ioredis": {
       "optional": true
     },
