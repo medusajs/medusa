@@ -81,13 +81,9 @@ info:    Greeting!
 
 ### Disable a Scheduled Job
 
+Do not disable a scheduled job by commenting out or removing the `config` export while keeping the file in `src/jobs/`. This will cause errors when you build or start your Medusa application.
+
 To disable a scheduled job, move its file out of the `src/jobs` directory. For example, move it to `src/scripts/` or any directory other than `src/jobs/`.
-
-<Note title="Warning" type="warning">
-
-Do not disable a scheduled job by commenting out or removing the `config` export while keeping the file in `src/jobs/`. The ESLint plugin enforces that all files in `src/jobs/` have a valid `config` export with `name` and `schedule` properties, and will report an error if the export is missing or incomplete.
-
-</Note>
 
 ### Troubleshooting Scheduled Jobs
 
