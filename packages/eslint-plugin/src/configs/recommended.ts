@@ -182,6 +182,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("subscriber-config-export-required")]: "error",
         [ruleId("subscriber-default-export-must-be-async")]: "error",
         [ruleId("subscriber-default-export-required")]: "error",
+        [ruleId("prefer-workflow-event-over-module-event")]: "warn",
       },
     },
     {
