@@ -42,6 +42,7 @@ import {
 } from "../../reservation"
 import { registerOrderFulfillmentStep } from "../steps"
 import { buildReservationsMap } from "../utils/build-reservations-map"
+import { planReservationConsumption } from "../utils/plan-reservation-consumption"
 import {
   throwIfItemsAreNotGroupedByShippingRequirement,
   throwIfItemsDoesNotExistsInOrder,
@@ -207,15 +208,24 @@ function prepareFulfillmentData({
         ] as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO[]
       }
 
-      // if line item is from a managed variant, create a fulfillment item for each reservation item
-      return reservations.map((r) => {
+      // If the line item is from a managed variant, create a fulfillment item
+      // for each of its inventory items. A line item can have multiple
+      // reservations for the same inventory item when its reservation was
+      // split across stock locations, so reservations are deduplicated by
+      // inventory item here — the fulfillment item describes what is
+      // fulfilled, not where it was reserved.
+      const inventoryItemIds = Array.from(
+        new Set(reservations.map((r) => r.inventory_item_id))
+      )
+
+      return inventoryItemIds.map((inventoryItemId) => {
         const iItem = orderItem?.variant?.inventory_items.find(
-          (ii) => ii.inventory.id === r.inventory_item_id
+          (ii) => ii.inventory.id === inventoryItemId
         )
 
         return {
           line_item_id: i.id,
-          inventory_item_id: r.inventory_item_id,
+          inventory_item_id: inventoryItemId,
           quantity: MathBN.mult(
             iItem?.required_quantity ?? 1,
             i.quantity
@@ -271,6 +281,7 @@ function prepareInventoryUpdate({
   input,
   inputItemsMap,
   itemsList,
+  shippingOption,
 }) {
   const toDelete: string[] = []
   const toUpdate: {
@@ -290,15 +301,23 @@ function prepareInventoryUpdate({
 
   const reservationMap = buildReservationsMap(reservations)
 
+  // The location the fulfillment is created at. Reservations at this
+  // location are consumed before reservations at other locations, so a
+  // reservation that was split across locations is consumed by the
+  // fulfillments at its respective locations.
+  const preferredLocationId: string | undefined =
+    input.location_id ??
+    shippingOption?.service_zone?.fulfillment_set?.location?.id
+
   const allItems = itemsList ?? order.items
   const itemsToFulfill = allItems.filter((i) => i.id in inputItemsMap)
 
   // iterate over items that are being fulfilled
   for (const item of itemsToFulfill) {
-    const reservations = reservationMap.get(item.id)
+    const itemReservations = reservationMap.get(item.id)
     const orderItem = orderItemsMap.get(item.id)! as OrderItemWithVariantDTO
 
-    if (!reservations?.length) {
+    if (!itemReservations?.length) {
       if (item.variant?.manage_inventory) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -310,44 +329,72 @@ function prepareInventoryUpdate({
 
     const inputQuantity = inputItemsMap[item.id]?.quantity ?? item.quantity
 
-    reservations.forEach((reservation) => {
+    const reservationsByInventoryItem = new Map<
+      string,
+      ReservationItemDTO[]
+    >()
+    for (const reservation of itemReservations) {
+      const group = reservationsByInventoryItem.get(
+        reservation.inventory_item_id
+      )
+      if (group) {
+        group.push(reservation)
+      } else {
+        reservationsByInventoryItem.set(reservation.inventory_item_id, [
+          reservation,
+        ])
+      }
+    }
+
+    for (const [
+      inventoryItemId,
+      inventoryItemReservations,
+    ] of reservationsByInventoryItem) {
       const iItem = orderItem?.variant?.inventory_items.find(
-        (ii) => ii.inventory.id === reservation.inventory_item_id
+        (ii) => ii.inventory.id === inventoryItemId
       )
 
-      const adjustemntQuantity = MathBN.mult(
+      const neededQuantity = MathBN.mult(
         inputQuantity,
         iItem?.required_quantity ?? 1
       )
 
-      const remainingReservationQuantity = MathBN.sub(
-        reservation.quantity,
-        adjustemntQuantity
-      )
+      const { entries, shortfall } = planReservationConsumption({
+        reservations: inventoryItemReservations,
+        quantity: neededQuantity,
+        preferredLocationId,
+      })
 
-      if (MathBN.lt(remainingReservationQuantity, 0)) {
+      if (MathBN.gt(shortfall, 0)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Quantity to fulfill exceeds the reserved quantity for the item: ${item.id}`
         )
       }
 
-      inventoryAdjustment.push({
-        inventory_item_id: reservation.inventory_item_id,
-        location_id: input.location_id ?? reservation.location_id,
-        adjustment: MathBN.mult(adjustemntQuantity, -1),
-      })
-
-      if (MathBN.eq(remainingReservationQuantity, 0)) {
-        toDelete.push(reservation.id)
-      } else {
-        toUpdate.push({
-          id: reservation.id,
-          quantity: remainingReservationQuantity,
+      for (const { reservation, quantity } of entries) {
+        inventoryAdjustment.push({
+          inventory_item_id: inventoryItemId,
           location_id: input.location_id ?? reservation.location_id,
+          adjustment: MathBN.mult(quantity, -1),
         })
+
+        const remainingReservationQuantity = MathBN.sub(
+          reservation.quantity,
+          quantity
+        )
+
+        if (MathBN.eq(remainingReservationQuantity, 0)) {
+          toDelete.push(reservation.id)
+        } else {
+          toUpdate.push({
+            id: reservation.id,
+            quantity: remainingReservationQuantity,
+            location_id: input.location_id ?? reservation.location_id,
+          })
+        }
       }
-    })
+    }
   }
   return {
     toDelete,
@@ -575,6 +622,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         input,
         inputItemsMap,
         itemsList: input.items_list,
+        shippingOption,
       },
       prepareInventoryUpdate
     )

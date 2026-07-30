@@ -8,6 +8,7 @@ import {
   MedusaError,
   deepFlatMap,
 } from "@medusajs/framework/utils"
+import type { ReservationLocationAvailability } from "./compute-reservation-allocations"
 
 export const requiredOrderFieldsForInventoryConfirmation = [
   "id",
@@ -73,6 +74,7 @@ interface ConfirmInventoryItem {
   allow_backorder: boolean
   quantity: BigNumberInput
   location_ids: string[]
+  location_availability: ReservationLocationAvailability[]
 }
 
 /**
@@ -265,6 +267,13 @@ const formatInventoryInput = ({
           ?.has(variantInventoryItem.inventory_item_id)
       )
 
+      const locationAvailability = locationsWithLevel.map((locId) => ({
+        location_id: locId,
+        available_quantity: stockAvailability
+          .get(locId)!
+          .get(variantInventoryItem.inventory_item_id)!,
+      }))
+
       itemsToConfirm.push({
         id: item.id,
         inventory_item_id: variantInventoryItem.inventory_item_id,
@@ -276,6 +285,7 @@ const formatInventoryInput = ({
           : locationsWithLevel.length
           ? locationsWithLevel
           : location_ids,
+        location_availability: locationAvailability,
       })
     })
   })
