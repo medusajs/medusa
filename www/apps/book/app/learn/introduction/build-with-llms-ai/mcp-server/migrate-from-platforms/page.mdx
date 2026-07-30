@@ -1,0 +1,186 @@
+---
+sidebar_label: Migrate from Other Platforms
+---
+
+import { Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Migrate from Shopify, WooCommerce, Magento, or Other Platforms`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to migrate your store's data from another ecommerce platform into Medusa.
+
+## What is the Migration Tool?
+
+The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from another ecommerce platform.
+
+You tell your AI agent which platform you're coming from and what you want to bring over, and it produces a working import: your store's data lands in Medusa with the source platform's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
+
+The tool can produce a migration for any of the following data types:
+
+- Products, variants, prices, and images
+- Inventory levels
+- Collections and categories
+
+The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
+
+---
+
+## Supported Platforms
+
+The MCP server has curated migration guides for the following platforms:
+
+- Shopify (including Shopify Plus)
+- Magento / Adobe Commerce
+- WooCommerce
+
+For any other platform, the tool returns a platform-agnostic migration guide. This means you can still use it to migrate from platforms like BigCommerce, Salesforce Commerce Cloud, PrestaShop, commercetools, Squarespace, and Wix, as well as from legacy or in-house systems.
+
+<Note title="Tip">
+
+Always tell your AI agent the actual platform you're migrating from, even if it isn't in the list above. The tool falls back to the generic guide automatically, and knowing the real platform helps your agent map its data model correctly.
+
+</Note>
+
+---
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Merchants and teams migrating an existing store from another platform to Medusa.
+- Agencies and solution partners performing repeated platform migrations for clients.
+- Teams running Medusa alongside a legacy system that needs continuous data synchronization.
+- Developers who need to seed a Medusa development environment with real catalog data.
+
+---
+
+## Why Use This Tool?
+
+A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the old store is switched off, and records that can't be matched back to the source platform when you need to re-sync.
+
+Compared to reading the documentation yourself or [asking a Medusa question](../ask-medusa-question/page.mdx), this tool gives you:
+
+- **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from this platform into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
+- **Source-platform quirks accounted for.** The curated guides carry the specifics of how each platform models and exports its data, which is knowledge that lives in that platform's ecosystem rather than in Medusa's documentation.
+- **Imports that can be run again.** When you choose the API-based approach, the result is built to be idempotent and resumable, so a migration becomes ongoing synchronization rather than a one-time event you can't repeat.
+
+Your agent still calls `ask_medusa_question` while it works, for the exact Medusa APIs and workflows involved. The guide decides the approach; the documentation supplies the details.
+
+---
+
+## Migration Approaches
+
+The tool supports two migration approaches, and the guide it returns differs based on the approach you choose:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Approach
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        How it works
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        When to use it
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      **Custom** (default)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Builds a custom module and workflows in your Medusa application that pull data from the source platform's API. The import is idempotent, resumable, and re-runnable, and it can be triggered from an admin widget, a scheduled job, a CLI command, or a webhook.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      You need to migrate inventory levels or re-host images in Medusa's file provider, or you want ongoing synchronization rather than a one-time cutover.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      **CSV**
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Builds a transform from the source platform's CSV export into the CSV format that Medusa's built-in product importer accepts. You then import the resulting file from the Medusa Admin.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      You can't create an API app or credentials on the source platform, or you want a single minimum-effort cutover and will handle stock quantities and images yourself.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The CSV approach is much faster to build, but it's lossy: inventory quantities aren't migrated, images stay as URLs pointing to the old platform's CDN, collections usually aren't part of the export, and most exports have no ID column, so records can't be keyed back to the source for later re-syncs.
+
+<Note type="warning">
+
+Don't mix the two approaches on the same store. The CSV path can't key records to source IDs, so running the API-based importer afterwards treats every record as new and fails on duplicate product handles.
+
+</Note>
+
+---
+
+## How to Use the Migration Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+    }
+  ]}
+/>
+
+After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with the source platform, data type, and approach, then follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Migrate my Shopify store's products to Medusa.
+```
+
+Other prompts that trigger the tool:
+
+```bash title="Example prompts"
+Import our WooCommerce catalog into Medusa.
+```
+
+```bash title="Example prompts"
+We're switching from Magento. Move our products and customers over to Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent asks which approach you want, if you haven't specified one, and explains the trade-offs.
+2. It calls the migration tool for the platform, data type, and approach.
+3. It scaffolds the module, workflows, and any triggers or transforms the guide specifies.
+4. It guides you through running the import and verifying the migrated data.
+
+<Note title="Tip">
+
+If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
+
+</Note>
+
+---
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
