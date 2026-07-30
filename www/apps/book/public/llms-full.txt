@@ -28814,10 +28814,10 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
 
-1. [Shopify Migration](https://medusajs.com/contact?type=shopify-migration)
-2. [WooCommerce Migration](https://medusajs.com/contact?type=woocommerce-migration)
-3. [Magento Migration](https://medusajs.com/contact?type=magento-migration)
-4. [Other Platform Migration](https://medusajs.com/contact?type=other-platform-migration)
+1. [Shopify Migration](https://medusajs.com/contact?type=mcp-server-shopify-migration)
+2. [WooCommerce Migration](https://medusajs.com/contact?type=mcp-server-woocommerce-migration)
+3. [Magento Migration](https://medusajs.com/contact?type=mcp-server-magento-migration)
+4. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
 
 
 # Medusa MCP Remote Server
