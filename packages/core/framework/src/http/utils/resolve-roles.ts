@@ -1,8 +1,18 @@
-import { AuthenticatedMedusaRequest } from "@medusajs/types"
+import { AuthenticatedMedusaRequest, RbacScope } from "@medusajs/types"
 import { deduplicate, Modules } from "@medusajs/utils"
 import { buildAuthzContext } from "./build-authz-context"
 
-export const resolveRoles = async (req: AuthenticatedMedusaRequest) => {
+export const resolveRoles = async (
+  req: AuthenticatedMedusaRequest,
+  /**
+   * // TODO: [rbac] revisit naming and comment. But this basically allows unscoped endpoints like
+   * /admin/rbac/me/permissions to resolve roles for a specific scope.
+   *
+   * The scope should always be resolved by the application. But it can be provided for
+   * unscoped requests, to resolve roles for a specific scope.
+   */
+  providedScope?: RbacScope
+) => {
   const rbacModule = req.scope.resolve(Modules.RBAC)
 
   const authzConfig = await rbacModule.retrieveActorAutzContextConfig(
@@ -21,7 +31,7 @@ export const resolveRoles = async (req: AuthenticatedMedusaRequest) => {
     container: req.scope,
   })
 
-  const scope = await rbacModule.resolveScope(req)
+  const scope = (await rbacModule.resolveScope(req)) ?? providedScope
 
   const assignments = await rbacModule.listRbacRoleAssignments({
     $or: authzContext.grantees.map((g) => ({

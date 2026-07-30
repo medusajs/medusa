@@ -89,28 +89,6 @@ export type RbacScope = {
 }
 
 /**
- * A role resolved for an actor.
- *
- * @property role_id - The ID of the role.
- * @property source - The assigned source entity for the role from which it was resolved.
- * @property scope - The scope entity that was applied when resolving the role.
- *
- * @example
- * ```ts
- * {
- *   role_id: "role_123",
- *   source: { reference: "membership", reference_id: "mem_456" },
- *   scope: { type: "organization", id: "org_xyz" },
- * }
- * ```
- */
-export interface ResolvedRole {
-  role_id: string
-  source: { reference: string; reference_id: string }
-  scope?: RbacScope
-}
-
-/**
  * RBAC operations type-only registry.
  *
  * Medusa's own operations are declared here. Modules and plugins that need

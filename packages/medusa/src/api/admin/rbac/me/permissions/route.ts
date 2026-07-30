@@ -1,14 +1,14 @@
-import { getRequestActorRoleIds, resolvePermissions } from "@medusajs/framework"
+import { resolvePermissions } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  resolveRoles,
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
-  isDefined,
   WILDCARD,
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../feature-flags/rbac"
@@ -47,12 +47,11 @@ export const GET = async (
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { scope, scope_id } = req.validatedQuery
-  if (isDefined(scope) && isDefined(scope_id)) {
-    req.rbacScopes = { type: scope, id: scope_id }
-  }
-
-  const roleIds = await getRequestActorRoleIds(req)
+  const { scope: providedScope, scope_id: providedScopeId } = req.validatedQuery
+  const scope =
+    providedScope && providedScopeId
+      ? { type: providedScope, id: providedScopeId }
+      : undefined
 
   // Build the universe from the persisted policies.
   const universe: Array<{ resource: string; operation: string }> = []
@@ -83,6 +82,8 @@ export const GET = async (
   for (const policy of persistedPolicies ?? []) {
     consider(policy?.resource, policy?.operation)
   }
+
+  const roleIds = await resolveRoles(req, scope)
 
   const granted = await resolvePermissions({
     roles: roleIds,

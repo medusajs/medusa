@@ -1,13 +1,9 @@
-import type {
-  ZodNullable,
-  ZodObject,
-  ZodOptional,
-} from "@medusajs/deps/zod"
+import type { ZodNullable, ZodObject, ZodOptional } from "@medusajs/deps/zod"
 import type { NextFunction, Request, Response } from "express"
 
 import type { FindConfig, MedusaContainer, RequestQueryFields } from "./common"
 import type { MedusaPricingContext } from "./pricing"
-import type { PolicyAction, RbacScope, ResolvedRole } from "./rbac"
+import type { PolicyAction } from "./rbac"
 
 /**
  * The fields restricted from being selected in the response. Implemented by the
@@ -82,23 +78,6 @@ export interface MedusaRequest<
    * A generic context object that can be used across the request lifecycle
    */
   context?: Record<string, any>
-
-  /**
-   * Per-request memoized RBAC role resolution. Holds the in-flight (or settled)
-   * promise of the authenticated actor's resolved roles (with their scopes) so
-   * multiple guarded handlers in one request resolve once. Managed via
-   * `getRequestActorRoles`.
-   */
-  roles?: Promise<ResolvedRole[]>
-
-  /**
-   * The scope set this request acts within, used to select which of the
-   * actor's scoped roles apply. Resolved once per request via the
-   * application's `defineScopeResolver` (managed by `getRequestScopes`), or
-   * assigned directly by earlier application middleware — an assigned value
-   * wins over the resolver.
-   */
-  rbacScopes?: RbacScope[] | Promise<RbacScope[]>
 
   /**
    * Custom validator to validate the `additional_data` property in
