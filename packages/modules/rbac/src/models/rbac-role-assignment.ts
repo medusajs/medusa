@@ -7,11 +7,17 @@ const RbacRoleAssignment = model
     role: model.belongsTo(() => RbacRole, { mappedBy: "assignments" }),
     reference: model.text(),
     reference_id: model.text(),
+    scope: model.text().nullable(),
+    scope_id: model.text().nullable(),
     metadata: model.json().nullable(),
   })
   .indexes([
     {
-      on: ["role_id"],
+      on: ["role_id", "scope", "scope_id"],
+      where: "deleted_at IS NULL",
+    },
+    {
+      on: ["scope", "scope_id", "reference", "reference_id"],
       where: "deleted_at IS NULL",
     },
     {
@@ -19,7 +25,7 @@ const RbacRoleAssignment = model
       where: "deleted_at IS NULL",
     },
     {
-      on: ["role_id", "reference", "reference_id"],
+      on: ["role_id", "scope", "scope_id", "reference", "reference_id"],
       unique: true,
       where: "deleted_at IS NULL",
     },
