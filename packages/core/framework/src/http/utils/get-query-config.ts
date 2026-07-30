@@ -46,7 +46,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
 ) {
   const {
     allowed = [],
-    forbiddenOrderBy = [],
+    disallowedOrderBy = [],
     restricted = [],
     disallowed = [],
     defaults = [],
@@ -134,7 +134,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     }
 
     if (
-      forbiddenOrderBy.includes(orderField) ||
+      disallowedOrderBy.includes(orderField) ||
       (allowed.length && !allowed.includes(orderField))
     ) {
       throw new MedusaError(

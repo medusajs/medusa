@@ -110,7 +110,7 @@ export const retrieveTransformQueryConfig = {
  * database layer. They remain selectable; they just can't be sort keys.
  * The totals mirror `shouldIncludeTotals` in the order module service.
  */
-export const forbiddenAdminOrderSortFields = [
+export const disallowedAdminOrderSortFields = [
   "payment_status",
   "fulfillment_status",
   "summary",
@@ -143,7 +143,7 @@ export const forbiddenAdminOrderSortFields = [
 
 export const listTransformQueryConfig = {
   defaults: defaultAdminOrderFields,
-  forbiddenOrderBy: forbiddenAdminOrderSortFields,
+  disallowedOrderBy: disallowedAdminOrderSortFields,
   defaultLimit: 20,
   isList: true,
   entity: Entities.order,

@@ -73,9 +73,9 @@ export const retrieveTransformQueryConfig = {
  * time — not columns on the order table — so ordering by them throws at the
  * database layer. They remain selectable; they just can't be sort keys.
  * The totals mirror `shouldIncludeTotals` in the order module service.
- * Kept in sync with `forbiddenAdminOrderSortFields` on the admin route.
+ * Kept in sync with `disallowedAdminOrderSortFields` on the admin route.
  */
-export const forbiddenStoreOrderSortFields = [
+export const disallowedStoreOrderSortFields = [
   "payment_status",
   "fulfillment_status",
   "summary",
@@ -109,6 +109,6 @@ export const forbiddenStoreOrderSortFields = [
 
 export const listTransformQueryConfig = {
   defaults: defaultStoreOrderFields,
-  forbiddenOrderBy: forbiddenStoreOrderSortFields,
+  disallowedOrderBy: disallowedStoreOrderSortFields,
   isList: true,
 }
