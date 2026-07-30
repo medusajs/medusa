@@ -154,7 +154,7 @@ jobs:
 
           claude_args: >-
             --model claude-sonnet-4-6
-            --max-turns 50
+            --max-turns 80
             --allowedTools
             "Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_comments.sh:*),
