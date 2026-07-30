@@ -1,4 +1,9 @@
-import { FindConfig, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import {
+  FindConfig,
+  PolicyAction,
+  QueryConfig,
+  RequestQueryFields,
+} from "@medusajs/types"
 import {
   buildOrder,
   FeatureFlag,
@@ -6,7 +11,6 @@ import {
   isPresent,
   MedusaError,
   pickDeep,
-  PolicyDefinition,
   promiseAll,
   stringToSelectRelationObject,
 } from "@medusajs/utils"
@@ -41,7 +45,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> & { restricted?: string[] } = {},
   req?: MedusaRequest & {
-    policies?: PolicyDefinition[]
+    policies?: PolicyAction[]
     auth_context?: AuthContext
   }
 ) {
@@ -177,7 +181,7 @@ export async function prepareRetrieveQuery<
   validated: T,
   queryConfig?: QueryConfig<TEntity> & { restricted?: string[] },
   req?: MedusaRequest & {
-    policies?: PolicyDefinition[]
+    policies?: PolicyAction[]
     auth_context?: AuthContext
   }
 ) {

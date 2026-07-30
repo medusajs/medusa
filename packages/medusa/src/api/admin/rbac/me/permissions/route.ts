@@ -9,7 +9,6 @@ import {
   defineFileConfig,
   FeatureFlag,
   isDefined,
-  Policy,
   WILDCARD,
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../feature-flags/rbac"
@@ -18,11 +17,10 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  * Returns the authenticated actor's effective permission set as a flat array
  * of `resource:operation` strings, with wildcards already expanded.
  *
- * The "universe" of meaningful permissions is the union of:
- *   - policies registered in code via `definePolicies()` (the global `Policy`
- *     registry), and
- *   - distinct `(resource, operation)` rows currently in `rbac_policy` (covers
- *     policies registered at runtime by admins or plugins).
+ * The "universe" of meaningful permissions is the set of distinct
+ * `(resource, operation)` rows currently in `rbac_policy`. It covers both the
+ * core policies seeded by the RBAC module's loader and policies created at
+ * runtime by admins or plugins.
  *
  * Wildcard-only tuples are excluded — they're grants, not permissions.
  *
@@ -56,7 +54,7 @@ export const GET = async (
 
   const roleIds = await getRequestActorRoleIds(req)
 
-  // Build the universe from code-registered + DB-persisted policies.
+  // Build the universe from the persisted policies.
   const universe: Array<{ resource: string; operation: string }> = []
   const seen = new Set<string>()
 
@@ -75,10 +73,6 @@ export const GET = async (
     }
     seen.add(key)
     universe.push({ resource, operation })
-  }
-
-  for (const definition of Object.values(Policy)) {
-    consider(definition?.resource, definition?.operation)
   }
 
   const { data: persistedPolicies } = await query.graph({

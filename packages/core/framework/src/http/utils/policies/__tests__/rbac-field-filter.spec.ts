@@ -35,9 +35,7 @@ const makeFilter = (policyResources: string[]) => {
   fetchPolicyResourcesMock.mockResolvedValue(new Set(policyResources))
 
   return new RBACFieldFilter({
-    policies: [
-      { name: "ReadProducts", resource: "product", operation: "read" },
-    ],
+    policies: [{ resource: "product", operation: "read" }],
     getActorRoles: async () => ["role_1"],
     container: {} as MedusaContainer,
   })

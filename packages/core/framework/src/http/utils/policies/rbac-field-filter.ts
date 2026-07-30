@@ -1,11 +1,10 @@
 import {
   GraphQLUtils,
-  PolicyDefinition,
   promiseAll,
   toSnakeCase,
 } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import type { MedusaContainer } from "@medusajs/types"
+import type { MedusaContainer, PolicyAction } from "@medusajs/types"
 import {
   fetchPolicyResources,
   hasPermission,
@@ -404,7 +403,7 @@ function collectUniqueEntityPaths(
  * Optimized for parallel permission checks
  */
 export class RBACFieldFilter implements IFieldFilter {
-  private policies: PolicyDefinition[]
+  private policies: PolicyAction[]
   private getActorRoles: () => Promise<string[]>
   private container: MedusaContainer
 
@@ -413,7 +412,7 @@ export class RBACFieldFilter implements IFieldFilter {
     getActorRoles,
     container,
   }: {
-    policies: PolicyDefinition[]
+    policies: PolicyAction[]
     getActorRoles: () => Promise<string[]>
     container: MedusaContainer
   }) {

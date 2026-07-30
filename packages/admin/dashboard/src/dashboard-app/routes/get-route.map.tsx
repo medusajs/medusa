@@ -1687,7 +1687,8 @@ export function getRouteMap({
                 {
                   path: "",
                   lazy: () => import("../../routes/policies/policy-list"),
-                  // TODO: V1: policy CRUD lives in code (`definePolicies`).Uncomment
+                  // TODO: [rbac] V1: core policy CRUD lives in code (the RBAC module's
+                  // core policies loader). Uncomment
                   // along with the matching list/detail action sites to
                   // re-enable dashboard CRUD.
                   // children: [
