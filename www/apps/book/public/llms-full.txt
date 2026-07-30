@@ -28478,8 +28478,6 @@ This tool is useful for:
 
 ## Why Use This Tool?
 
-Every AI model already has opinions about Medusa from its training data, and for a framework that ships frequently, those opinions age badly. The problem isn't that an agent doesn't know Medusa; it's that it's confident about APIs, configuration keys, and method signatures that changed, were renamed, or belonged to Medusa v1. You find out when the code doesn't run, or worse, when it runs but does the wrong thing.
-
 Compared to browsing the documentation yourself, this tool gives you:
 
 - **Verifiable answers.** Every result carries its source URL, so you can check any claim your agent makes against the page it came from.
@@ -28493,7 +28491,7 @@ Compared to browsing the documentation yourself, this tool gives you:
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](../page.mdx)
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
 
 After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
 
@@ -28528,7 +28526,7 @@ If the tool can't find relevant documentation for your question, that's a docume
 
 ## Not an MCP server user?
 
-If you don't use the Medusa MCP server but have questions about Medusa, [contact us](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) and our team will help you find the answers you need.
+If you don't use the Medusa MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.
 
 
 # Extend Products with the MCP Server
@@ -28575,7 +28573,7 @@ Your agent still calls `ask_medusa_question` as it works, to confirm exact API s
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](../page.mdx)
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
 
 After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent for the product extension you want. Your agent infers the name of the data from your request, calls the tool, and follows the returned guide.
 
@@ -28603,7 +28601,7 @@ Tell your agent whether the data is per product, per variant, or per option, and
 
 ## Not an MCP server user?
 
-If you don't use the Medusa MCP server but need help extending products with custom data and features, [contact us](https://medusajs.com/contact?type=mcp-server-extend-products) and our team will help you design and build the extension.
+If you don't use the Medusa MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
 
 
 # Integrate Providers with the MCP Server
@@ -28656,7 +28654,7 @@ For Stripe, don't use these tools. Medusa ships an official Stripe provider, so 
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](../page.mdx)
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
 
 After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to integrate the provider. Your agent detects which of the two tools applies, calls it with the provider's name, and follows the returned guide.
 
@@ -28700,7 +28698,7 @@ Tell your agent whether you want the provider inside your Medusa application or 
 
 ## Not an MCP server user?
 
-If you don't use the Medusa MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for help.
+If you don't use the Medusa MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
 
 
 # Migrate from Shopify, WooCommerce, Magento, or Other Platforms
@@ -28781,7 +28779,7 @@ Don't mix the two approaches on the same store. The CSV path can't key records t
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](../page.mdx)
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
 
 After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with the source platform, data type, and approach, then follows the returned guide.
 
@@ -28814,7 +28812,12 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 ## Not an MCP server user?
 
-If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, [contact us](https://medusajs.com/contact?type=mcp-server-migration) and our team will help you plan and execute your migration.
+If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+
+1. [Shopify Migration](https://medusajs.com/contact?type=shopify-migration)
+2. [WooCommerce Migration](https://medusajs.com/contact?type=woocommerce-migration)
+3. [Magento Migration](https://medusajs.com/contact?type=magento-migration)
+4. [Other Platform Migration](https://medusajs.com/contact?type=other-platform-migration)
 
 
 # Medusa MCP Remote Server
@@ -29057,7 +29060,7 @@ Submitting feedback is always preferable to silently working around a problem.
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](../page.mdx)
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
 
 After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to submit feedback.
 
@@ -29115,7 +29118,7 @@ Some versions also ship [codemods](https://docs.medusajs.com/learn/codemods/inde
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](../page.mdx)
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
 
 After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
 
@@ -29140,7 +29143,7 @@ Always upgrade on a branch with a clean working tree, and review the resulting d
 
 ## Not an MCP server user?
 
-If you don't use the Medusa MCP server but need help upgrading your Medusa project, [contact us](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) and our team will help you plan and apply the upgrade.
+If you don't use the Medusa MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
 
 
 # Build with AI Assistants and LLMs

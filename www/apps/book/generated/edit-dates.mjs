@@ -153,7 +153,7 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/page.mdx": "2026-07-30T10:30:50.331Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/extend-products/page.mdx": "2026-07-30T10:34:57.901Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers/page.mdx": "2026-07-30T10:23:36.079Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms/page.mdx": "2026-07-30T10:51:04.045Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms/page.mdx": "2026-07-30T12:42:13.870Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/page.mdx": "2026-07-30T11:21:42.127Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z"
 }
