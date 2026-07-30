@@ -1,4 +1,3 @@
-import { getRequestScopes } from "@medusajs/framework"
 import {
   assignRolesWorkflow,
   unassignRolesWorkflow,
@@ -32,15 +31,12 @@ export const GET = async (
   const roleId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { reference, reference_id: referenceId } = req.filterableFields
-
   const { data: assignments, metadata } = await query.graph({
     entity: "rbac_role_assignment",
     fields: req.queryConfig.fields,
     filters: {
       role_id: roleId,
-      ...(reference ? { reference } : {}),
-      ...(referenceId ? { reference_id: referenceId } : {}),
+      ...req.filterableFields,
     },
     pagination: req.queryConfig.pagination,
   })
@@ -62,7 +58,13 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.AdminRbacRoleAssignmentsResponse>
 ) => {
   const roleId = req.params.id
-  const { reference, reference_ids: referenceIds } = req.validatedBody
+  const {
+    reference,
+    reference_ids: referenceIds,
+    scope: assignmentScope,
+    scope_id: assignmentScopeId,
+  } = req.validatedBody
+
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const {
@@ -80,14 +82,21 @@ export const POST = async (
     )
   }
 
+  const scope =
+    assignmentScope && assignmentScopeId
+      ? { type: assignmentScope, id: assignmentScopeId }
+      : undefined
+
   await assignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      scope: await getRequestScopes(req),
-      reference,
-      reference_id: referenceIds,
-      role_id: roleId,
+      assignments: referenceIds.map((referenceId) => ({
+        role_id: roleId,
+        reference,
+        reference_id: referenceId,
+        scope,
+      })),
     },
   })
 
@@ -109,16 +118,28 @@ export const DELETE = async (
   res: MedusaResponse<HttpTypes.AdminRbacRoleAssignmentsDeleteResponse>
 ) => {
   const roleId = req.params.id
-  const { reference, reference_ids: referenceIds } = req.validatedBody
+  const {
+    reference,
+    reference_ids: referenceIds,
+    scope: assignmentScope,
+    scope_id: assignmentScopeId,
+  } = req.validatedBody
+
+  const scope =
+    assignmentScope && assignmentScopeId
+      ? { type: assignmentScope, id: assignmentScopeId }
+      : undefined
 
   await unassignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      scope: await getRequestScopes(req),
-      reference,
-      reference_id: referenceIds,
-      role_id: roleId,
+      assignments: referenceIds.map((referenceId) => ({
+        role_id: roleId,
+        reference,
+        reference_id: referenceId,
+        scope,
+      })),
     },
   })
 

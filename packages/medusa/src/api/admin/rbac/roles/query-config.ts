@@ -70,6 +70,8 @@ export const defaultAdminRoleAssignmentFields = [
   "role_id",
   "reference",
   "reference_id",
+  "scope",
+  "scope_id",
   "metadata",
   "created_at",
   "updated_at",

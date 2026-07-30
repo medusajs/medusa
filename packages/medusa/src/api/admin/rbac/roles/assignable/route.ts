@@ -1,5 +1,4 @@
 import { getAssignableRolesWorkflow } from "@medusajs/core-flows"
-import { getRequestScopes } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -13,7 +12,7 @@ import { HttpTypes } from "@medusajs/framework/types"
  * Returns the subset of `rbac_role`s the authenticated actor is allowed to
  * assign.
  *
- * Introspection may ask for a specific scope context via the `scope_type` +
+ * Introspection may ask for a specific scope context via the `scope` +
  * `scope_id` query params (both required to take effect); otherwise the
  * request's ambient scope set applies.
  *
@@ -23,22 +22,21 @@ import { HttpTypes } from "@medusajs/framework/types"
 export const GET = async (
   req: AuthenticatedMedusaRequest<
     undefined,
-    HttpTypes.AdminRbacRoleAssignmentListParams
+    HttpTypes.AdminRbacRoleListParams & { scope?: string; scope_id?: string }
   >,
   res: MedusaResponse
 ) => {
-  const { scope_type, scope_id, ...filters } = req.filterableFields
+  const { scope, scope_id, ...filters } = req.filterableFields
 
-  const scope =
-    scope_type && scope_id
-      ? [{ type: scope_type, id: scope_id }]
-      : await getRequestScopes(req)
+  // If a scoped is passed, the asignable roles are evaluated in its context
+  const rbacScope =
+    scope && scope_id ? { type: scope, id: scope_id } : undefined
 
   const { result } = await getAssignableRolesWorkflow(req.scope).run({
     input: {
       actor_id: req.auth_context.actor_id,
       actor: req.auth_context.actor_type,
-      scope,
+      scope: rbacScope,
       filters,
       pagination: req.queryConfig?.pagination,
     },

@@ -21,7 +21,7 @@ export type GetAssignableRolesStepInput = {
    * Server-derived scope context the assignability is evaluated within.
    * Omitted = the actor's full scope-union.
    */
-  scope?: RbacScope | RbacScope[]
+  scope?: RbacScope
   /**
    * Optional filters forwarded to the `rbac_role` query (e.g. `q`, `id`).
    */
