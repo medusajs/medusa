@@ -1,7 +1,7 @@
 import { OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
-interface AdminRbacScopeParams {
+export interface AdminRbacScopeParams {
   /**
    * Filter by the type of scope.
    */

@@ -63,3 +63,8 @@ export interface AdminUnassignUserRoles {
     scope_id?: string
   }[]
 }
+
+export interface AdminUnassignUserRole {
+  scope?: string
+  scope_id?: string
+}

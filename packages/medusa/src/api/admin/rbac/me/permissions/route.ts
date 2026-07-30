@@ -31,8 +31,12 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  * @ignore
  * @featureFlag rbac
  */
+// TODO: revisit when we have role resolution
 export const GET = async (
-  req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminRbacScopeParams>,
+  req: AuthenticatedMedusaRequest<
+    undefined,
+    { scope?: string; scope_id?: string }
+  >,
   res: MedusaResponse<HttpTypes.AdminRbacMePermissionsResponse>
 ) => {
   const actorId = req.auth_context.actor_id
@@ -45,9 +49,9 @@ export const GET = async (
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { scope_type, scope_id } = req.validatedQuery
-  if (isDefined(scope_type) && isDefined(scope_id)) {
-    req.rbacScopes = [{ type: scope_type, id: scope_id }]
+  const { scope, scope_id } = req.validatedQuery
+  if (isDefined(scope) && isDefined(scope_id)) {
+    req.rbacScopes = { type: scope, id: scope_id }
   }
 
   const roleIds = await getRequestActorRoleIds(req)
