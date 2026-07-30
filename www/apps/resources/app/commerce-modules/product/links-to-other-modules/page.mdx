@@ -414,7 +414,7 @@ Learn more about product variant's inventory management in [this guide](../varia
 
 ### Retrieve with Query
 
-To retrieve the inventory items of a product variant with [Query](!docs!/learn/fundamentals/module-links/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records — use `inventory_items.inventory` to access the actual `InventoryItem` data:
+To retrieve the inventory items of a product variant with [Query](!docs!/learn/fundamentals/module-links/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
