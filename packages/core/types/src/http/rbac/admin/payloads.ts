@@ -72,6 +72,16 @@ export interface AdminCreateRoleAssignments {
    * The IDs of the entities to assign the role to.
    */
   reference_ids: string[]
+  /**
+   * The type of scope entity the assignments are constrained to (e.g.
+   * `sales_channel`). Must be provided together with `scope_id`.
+   */
+  scope?: string
+  /**
+   * The ID of the scope entity the assignments are constrained to. Must be
+   * provided together with `scope`.
+   */
+  scope_id?: string
 }
 
 export interface AdminRemoveRoleAssignments {
@@ -83,6 +93,16 @@ export interface AdminRemoveRoleAssignments {
    * The IDs of the entities to remove the role from.
    */
   reference_ids: string[]
+  /**
+   * When provided together with `scope_id`, only assignments constrained to
+   * that exact scope are removed.
+   */
+  scope?: string
+  /**
+   * When provided together with `scope`, only assignments constrained to
+   * that exact scope are removed.
+   */
+  scope_id?: string
 }
 
 export interface AdminCreateRbacPolicy {

@@ -61,6 +61,15 @@ export interface AdminRbacRoleAssignment {
    */
   reference_id: string
   /**
+   * The type of scope entity the assignment is constrained to (e.g.
+   * `sales_channel`), if any.
+   */
+  scope: string | null
+  /**
+   * The ID of the scope entity the assignment is constrained to, if any.
+   */
+  scope_id: string | null
+  /**
    * Custom key-value pairs that can be added to the assignment.
    */
   metadata: Record<string, unknown> | null

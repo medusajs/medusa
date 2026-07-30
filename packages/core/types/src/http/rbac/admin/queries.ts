@@ -1,15 +1,15 @@
 import { OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
-export interface AdminRbacScopeParams {
+interface AdminRbacScopeParams {
   /**
    * Filter by the type of scope.
    */
-  scope_type?: string
+  scope?: string | string[]
   /**
    * Filter by the ID of the scope.
    */
-  scope_id?: string
+  scope_id?: string | string[]
 }
 
 export interface AdminRbacRoleListParams extends FindParams {

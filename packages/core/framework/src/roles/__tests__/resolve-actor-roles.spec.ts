@@ -21,7 +21,12 @@ type CachingModuleMock = {
 type MockContainerArgs = {
   rbacEnabled?: boolean
   graphData?: unknown[]
-  assignments?: { role_id: string; reference_id: string }[]
+  assignments?: {
+    role_id: string
+    reference_id: string
+    scope?: string | null
+    scope_id?: string | null
+  }[]
   cachingModule?: CachingModuleMock
 }
 
@@ -90,7 +95,7 @@ describe("resolveActorRoles", () => {
     expect(graph).not.toHaveBeenCalled()
     expect(listRbacRoleAssignments).toHaveBeenCalledWith(
       { reference: "unregistered_actor", reference_id: ["usr_1"] },
-      { select: ["role_id", "reference_id"] }
+      { select: ["role_id", "reference_id", "scope", "scope_id"] }
     )
     expect(roles).toEqual([
       {
@@ -99,6 +104,49 @@ describe("resolveActorRoles", () => {
         scope: undefined,
       },
     ])
+  })
+
+  it("emits a scoped role when the assignment stores a scope constraint", async () => {
+    const { container } = makeContainer({
+      assignments: [
+        {
+          role_id: "rol_1",
+          reference_id: "usr_1",
+          scope: "sales_channel",
+          scope_id: "sc_1",
+        },
+        { role_id: "rol_2", reference_id: "usr_1", scope: null, scope_id: null },
+      ],
+    })
+
+    const roles = await resolveActorRoles({
+      actorType: "stored_scope_actor",
+      actorId: "usr_1",
+      container,
+    })
+
+    expect(roles).toEqual([
+      {
+        role_id: "rol_1",
+        source: { reference: "stored_scope_actor", reference_id: "usr_1" },
+        scope: { type: "sales_channel", id: "sc_1" },
+      },
+      {
+        role_id: "rol_2",
+        source: { reference: "stored_scope_actor", reference_id: "usr_1" },
+        scope: undefined,
+      },
+    ])
+
+    // The stored-scope role does not apply within a non-matching scope.
+    const narrowed = await resolveActorRoles({
+      actorType: "stored_scope_actor",
+      actorId: "usr_1",
+      container,
+      scope: { type: "sales_channel", id: "sc_2" },
+    })
+
+    expect(narrowed.map((role) => role.role_id)).toEqual(["rol_2"])
   })
 
   it("resolves a path source traversing nested to-many relations", async () => {
@@ -134,7 +182,7 @@ describe("resolveActorRoles", () => {
     })
     expect(listRbacRoleAssignments).toHaveBeenCalledWith(
       { reference: "membership", reference_id: ["mem_1", "mem_2", "mem_3"] },
-      { select: ["role_id", "reference_id"] }
+      { select: ["role_id", "reference_id", "scope", "scope_id"] }
     )
     expect(roles).toEqual([
       {
@@ -272,7 +320,7 @@ describe("resolveActorRoles", () => {
     // one ResolvedRole per distinct scope it was reached through.
     expect(listRbacRoleAssignments).toHaveBeenCalledWith(
       { reference: "membership", reference_id: ["mem_1"] },
-      { select: ["role_id", "reference_id"] }
+      { select: ["role_id", "reference_id", "scope", "scope_id"] }
     )
     expect(roles).toEqual([
       {
