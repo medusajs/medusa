@@ -34,13 +34,13 @@ export const AdminGetRbacRolesParams = createFindParams({
   .merge(applyAndAndOrOperators(AdminGetRbacRolesParamsFields))
 
 /**
- * Optional scope context for introspection endpoints. Both `scope_type` and
+ * Optional scope context for introspection endpoints. Both `scope` and
  * `scope_id` must be provided together to take effect; when present they
  * evaluate the actor's privileges within that scope instead of the request's
  * ambient scope set.
  */
 export const RbacScopeParamsFields = z.object({
-  scope_type: z.string().optional(),
+  scope: z.string().optional(),
   scope_id: z.string().optional(),
 })
 
@@ -105,6 +105,8 @@ export const AdminRemoveRoleUsers = z.object({
 export const AdminGetRoleAssignmentsParamsFields = z.object({
   reference: z.union([z.string(), z.array(z.string())]).optional(),
   reference_id: z.union([z.string(), z.array(z.string())]).optional(),
+  scope: z.union([z.string(), z.array(z.string())]).optional(),
+  scope_id: z.union([z.string(), z.array(z.string())]).optional(),
 })
 
 export type AdminGetRoleAssignmentsParamsType = z.infer<
@@ -117,18 +119,40 @@ export const AdminGetRoleAssignmentsParams = createFindParams({
   .extend(AdminGetRoleAssignmentsParamsFields.shape)
   .extend(applyAndAndOrOperators(AdminGetRoleAssignmentsParamsFields).shape)
 
+/**
+ * Optional scope constraint stored on (or filtering) role assignments. Both
+ * fields must be provided together.
+ */
+const assignmentScopeFields = {
+  scope: z.string().min(1).optional(),
+  scope_id: z.string().min(1).optional(),
+}
+
+const requireScopePair = (data: { scope?: string; scope_id?: string }) =>
+  !data.scope === !data.scope_id
+
+const scopePairError = {
+  message: "scope and scope_id must be provided together",
+}
+
 export type AdminCreateRoleAssignmentsType = z.infer<
   typeof AdminCreateRoleAssignments
 >
-export const AdminCreateRoleAssignments = z.object({
-  reference: z.string().min(1),
-  reference_ids: z.array(z.string().min(1)).min(1),
-})
+export const AdminCreateRoleAssignments = z
+  .object({
+    reference: z.string().min(1),
+    reference_ids: z.array(z.string().min(1)).min(1),
+    ...assignmentScopeFields,
+  })
+  .refine(requireScopePair, scopePairError)
 
 export type AdminRemoveRoleAssignmentsType = z.infer<
   typeof AdminRemoveRoleAssignments
 >
-export const AdminRemoveRoleAssignments = z.object({
-  reference: z.string().min(1),
-  reference_ids: z.array(z.string().min(1)).min(1),
-})
+export const AdminRemoveRoleAssignments = z
+  .object({
+    reference: z.string().min(1),
+    reference_ids: z.array(z.string().min(1)).min(1),
+    ...assignmentScopeFields,
+  })
+  .refine(requireScopePair, scopePairError)

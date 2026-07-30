@@ -20,11 +20,6 @@ import { validateActorPermissionsStep } from "../steps/validate-actor-permission
 export type CreateRbacRolesWorkflowInput = {
   actor_id?: string
   actor?: string
-  /**
-   * Scope context the grant happens within. Omitted = the
-   * actor's full scope-union.
-   */
-  scope?: RbacScope
   roles: {
     name: string
     description?: string | null
@@ -47,6 +42,7 @@ export const createRbacRolesWorkflowId = "create-rbac-roles"
 export const createRbacRolesWorkflow = createWorkflow(
   createRbacRolesWorkflowId,
   (input: WorkflowData<CreateRbacRolesWorkflowInput>) => {
+    // TODO: [rbac] revisit when we have role resolution
     const validationData = transform({ input }, ({ input }) => {
       const allPolicyIds = new Set<string>()
       input.roles.forEach((role) => {
@@ -56,7 +52,6 @@ export const createRbacRolesWorkflow = createWorkflow(
         actor_id: input.actor_id!,
         actor: input.actor,
         policy_ids: Array.from(allPolicyIds),
-        scope: input.scope,
       }
     })
 
