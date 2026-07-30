@@ -4,6 +4,8 @@ import { deepEqualObj, isPresent } from "@medusajs/framework/utils"
 /**
  * The properties of a new line item that determine whether it can be merged
  * into an existing cart line item.
+ *
+ * @since 2.18.1
  */
 export interface MatchableLineItem {
   metadata?: Record<string, unknown> | null
@@ -26,6 +28,8 @@ const metadataMatches = (
 /**
  * The line item fields that must be selected when looking for existing cart
  * line items a new item can be merged into.
+ *
+ * @since 2.18.1
  */
 export const lineItemFieldsForMerging = [
   "id",
@@ -41,6 +45,8 @@ export const lineItemFieldsForMerging = [
  * Finds the line item, among the existing items of the same variant, that a new
  * item should be merged into. Items are merged when their metadata matches and
  * either both carry the same custom price, or neither has a custom price.
+ *
+ * @since 2.18.1
  */
 export function findMatchingLineItem<T extends ExistingLineItem>(
   existingItems: T[] | undefined,

@@ -26,6 +26,9 @@ export interface GetLineItemActionsStepInput {
   items: CreateLineItemForCartDTO[]
 }
 
+/**
+ * The output of the {@link getLineItemActionsStep}.
+ */
 export interface GetLineItemActionsStepOutput {
   /**
    * The line items to create.

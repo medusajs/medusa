@@ -12,6 +12,8 @@ import {
 
 /**
  * The details of the items to resolve pricing quantities for.
+ *
+ * @since 2.18.1
  */
 export interface GetLineItemPricingQuantitiesStepInput {
   /**
@@ -39,6 +41,8 @@ export const getLineItemPricingQuantitiesStepId =
  * resolved against the wrong quantity.
  *
  * The returned quantities are aligned, by index, with the input items.
+ *
+ * @since 2.18.1
  *
  * @example
  * const quantities = getLineItemPricingQuantitiesStep({
