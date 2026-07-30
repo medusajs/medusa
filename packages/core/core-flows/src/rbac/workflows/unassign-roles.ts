@@ -1,4 +1,4 @@
-import { RbacScopeRef } from "@medusajs/framework/utils"
+import { RbacScope } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,11 +20,10 @@ export type UnassignRolesWorkflowInput = {
   granting_actor_id?: string
   granting_actor?: string
   /**
-   * Server-derived scope context the grant happens within. When provided, the
-   * granting actor's privileges are evaluated strictly within it; omitted =
-   * the actor's full scope-union.
+   * Optional scope constraint filter: when provided, only assignments stored
+   * with this exact scope are removed.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope
 }
 
 /**
@@ -55,6 +54,7 @@ export const unassignRolesWorkflow = createWorkflow(
           ? input.reference_id
           : [input.reference_id],
         roleIds: Array.isArray(input.role_id) ? input.role_id : [input.role_id],
+        scopeRef: input.scope,
       }
     })
 
@@ -74,9 +74,13 @@ export const unassignRolesWorkflow = createWorkflow(
       { normalizedInput },
       ({ normalizedInput }) => {
         return {
-          reference: normalizedInput.reference,
-          reference_id: normalizedInput.referenceIds,
-          role_id: normalizedInput.roleIds,
+          selector: {
+            reference: normalizedInput.reference,
+            reference_id: normalizedInput.referenceIds,
+            role_id: normalizedInput.roleIds,
+            scope: normalizedInput.scopeRef?.type,
+            scope_id: normalizedInput.scopeRef?.id,
+          },
         }
       }
     )

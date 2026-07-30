@@ -1,13 +1,10 @@
-import type { RbacScopeRef, ResolvedRole } from "@medusajs/utils"
+import type { RbacScope, ResolvedRole } from "@medusajs/types"
 
 /**
  * Whether a resolved role applies within `scopes`: unscoped roles always
  * apply; scoped roles apply only when the scope set contains their scope.
  */
-function roleAppliesToScopes(
-  role: ResolvedRole,
-  scopes: RbacScopeRef[]
-): boolean {
+function roleAppliesToScopes(role: ResolvedRole, scopes: RbacScope[]): boolean {
   if (!role.scope) {
     return true
   }
@@ -28,7 +25,7 @@ function roleAppliesToScopes(
  */
 export function applicableRoles(
   roles: ResolvedRole[],
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
 ): ResolvedRole[] {
   if (scope === undefined) {
     return roles

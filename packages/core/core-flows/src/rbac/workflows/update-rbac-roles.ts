@@ -1,4 +1,5 @@
-import { isDefined, RbacScopeRef } from "@medusajs/framework/utils"
+import { RbacScope } from "@medusajs/framework/types"
+import { isDefined } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -22,7 +23,7 @@ export type UpdateRbacRolesWorkflowInput = {
    * Server-derived scope context the grant happens within. Omitted = the
    * actor's full scope-union.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
   selector: Record<string, any>
   update: Omit<UpdateRbacRoleDTO, "id"> & {
     parent_ids?: string[]

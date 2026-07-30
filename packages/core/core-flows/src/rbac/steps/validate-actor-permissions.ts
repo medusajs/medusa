@@ -1,8 +1,8 @@
+import { RbacScope } from "@medusajs/framework/types"
 import {
   arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-  RbacScopeRef,
 } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { assertActorCanGrant } from "../utils/assert-actor-can-grant"
@@ -23,7 +23,7 @@ export type ValidateActorPermissionsStepInput = {
    * Server-derived scope context the grant happens within. Omitted = the
    * actor's full scope-union policies
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
 }
 
 /**

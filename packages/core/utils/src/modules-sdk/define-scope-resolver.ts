@@ -1,35 +1,26 @@
-/**
- * A scope an authenticated request acts within, identified by the scope
- * entity's type and id (e.g. `{ type: "organization", id: "org_123" }`).
- */
-export interface RbacScopeRef {
-  type: string
-  id: string
-}
+import type { AuthenticatedMedusaRequest, RbacScope } from "@medusajs/types"
 
 /**
  * The scopes a resolver derives for a request: a single scope, several (e.g. a
  * hierarchy chain such as repository -> team -> organization), or `undefined`
  * for an unscoped request.
  */
-export type ScopeResolverResult = RbacScopeRef | RbacScopeRef[] | undefined
+export type ScopeResolverResult = RbacScope | RbacScope[] | undefined
 
 /**
- * Derives the scope set a request acts within. Receives the incoming
- * `MedusaRequest` (typed loosely here since the HTTP types live in
- * `@medusajs/framework`).
+ * Derives the scope set a request acts within.
  *
  * Scope MUST be derived server-side, from the same source the handler uses to
  * bound data access (e.g. a path param, the authenticated tenant).
  */
-export type ScopeResolver<TReq = any> = (args: {
+export type ScopeResolver<TReq = AuthenticatedMedusaRequest> = (args: {
   req: TReq
 }) => ScopeResolverResult | Promise<ScopeResolverResult>
 
 /**
  * Global holder for the application's single scope resolver.
  */
-const ScopeResolverHolder: { resolver?: ScopeResolver } =
+const ScopeResolverHolder: { resolver?: ScopeResolver<any> } =
   global.RbacScopeResolverHolder ?? {}
 
 global.RbacScopeResolverHolder ??= ScopeResolverHolder
@@ -66,7 +57,7 @@ global.RbacScopeResolverHolder ??= ScopeResolverHolder
  * })
  * ```
  */
-export function defineScopeResolver<TReq = any>(
+export function defineScopeResolver<TReq = AuthenticatedMedusaRequest>(
   resolver: ScopeResolver<TReq>
 ): void {
   if (typeof resolver !== "function") {
@@ -87,7 +78,7 @@ export function defineScopeResolver<TReq = any>(
  * Return the registered scope resolver, or `undefined` when none is registered
  * (every request is then unscoped unless middleware assigns scopes directly).
  */
-export function getScopeResolver(): ScopeResolver | undefined {
+export function getScopeResolver(): ScopeResolver<any> | undefined {
   return ScopeResolverHolder.resolver
 }
 

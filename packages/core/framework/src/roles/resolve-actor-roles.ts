@@ -1,4 +1,4 @@
-import { IRbacModuleService, MedusaContainer } from "@medusajs/types"
+import { IRbacModuleService, MedusaContainer, RbacScope } from "@medusajs/types"
 import {
   buildActorRolesCacheKey,
   buildRoleAssignmentCacheTag,
@@ -7,7 +7,6 @@ import {
   FunctionRoleSource,
   getRoleSources,
   Modules,
-  RbacScopeRef,
   ResolvedRole,
   RoleSource,
   useCache,
@@ -31,7 +30,7 @@ export type ResolveActorRolesInput = {
    *
    * Must be derived server-side, never from an arbitrary client claim.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
 }
 
 /**
@@ -165,7 +164,7 @@ async function resolveDeclarativeSource(
 
   const assignments = await rbacModule.listRbacRoleAssignments(
     { reference: source.reference, reference_id: referenceIds },
-    { select: ["role_id", "reference_id"] }
+    { select: ["role_id", "reference_id", "scope", "scope_id"] }
   )
 
   // Emit one ResolvedRole per (assignment row, scope) pair; references with no
@@ -175,6 +174,19 @@ async function resolveDeclarativeSource(
       reference: source.reference,
       reference_id: assignment.reference_id,
     }
+
+    // A scope stored on the assignment row is an explicit constraint on that
+    // grant and takes precedence over any traversal-derived scope.
+    if (assignment.scope && assignment.scope_id) {
+      return [
+        {
+          role_id: assignment.role_id,
+          source: resolvedSource,
+          scope: { type: assignment.scope, id: assignment.scope_id },
+        },
+      ]
+    }
+
     const scopeIds = scopeIdsByReferenceId.get(assignment.reference_id)
 
     if (!scopeIds?.size) {

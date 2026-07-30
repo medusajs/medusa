@@ -1,8 +1,6 @@
 import { hasPermission, resolveActorRoleIds } from "@medusajs/framework"
-import {
-  ContainerRegistrationKeys,
-  RbacScopeRef,
-} from "@medusajs/framework/utils"
+import { RbacScope } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -23,7 +21,7 @@ export type GetAssignableRolesStepInput = {
    * Server-derived scope context the assignability is evaluated within.
    * Omitted = the actor's full scope-union.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
   /**
    * Optional filters forwarded to the `rbac_role` query (e.g. `q`, `id`).
    */

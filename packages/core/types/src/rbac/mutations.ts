@@ -45,6 +45,8 @@ export type CreateRbacRoleAssignmentDTO = {
   role_id: string
   reference: string
   reference_id: string
+  scope?: string | null
+  scope_id?: string | null
   metadata?: Record<string, unknown> | null
 }
 

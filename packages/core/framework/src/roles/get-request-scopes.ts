@@ -1,4 +1,5 @@
-import { getScopeResolver, RbacScopeRef } from "@medusajs/utils"
+import type { RbacScope } from "@medusajs/types"
+import { getScopeResolver } from "@medusajs/utils"
 
 /**
  * The minimal request shape needed to resolve and memoize the request's scope
@@ -6,7 +7,7 @@ import { getScopeResolver, RbacScopeRef } from "@medusajs/utils"
  * reads off the request.
  */
 export type RequestWithRbacScopes = {
-  rbacScopes?: RbacScopeRef[] | Promise<RbacScopeRef[]>
+  rbacScopes?: RbacScope[] | Promise<RbacScope[]>
 }
 
 /**
@@ -27,7 +28,7 @@ export type RequestWithRbacScopes = {
  */
 export function getRequestScopes(
   req: RequestWithRbacScopes
-): Promise<RbacScopeRef[]> {
+): Promise<RbacScope[]> {
   if (req.rbacScopes) {
     const promise = Promise.resolve(req.rbacScopes)
     req.rbacScopes = promise
@@ -51,4 +52,17 @@ export function getRequestScopes(
 
   req.rbacScopes = promise
   return promise
+}
+
+/**
+ * Resolves the single scope the current request acts within: the first — most
+ * specific — entry of the request's scope set, or `undefined` when the request
+ * is unscoped. Use where a single scope ref is expected (e.g. the scope
+ * constraint stored on a role assignment).
+ */
+export async function getRequestScope(
+  req: RequestWithRbacScopes
+): Promise<RbacScope | undefined> {
+  const [scope] = await getRequestScopes(req)
+  return scope
 }

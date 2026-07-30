@@ -1,4 +1,4 @@
-import { RbacScopeRef } from "@medusajs/framework/utils"
+import { RbacScope } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,7 +20,7 @@ export type CreateRbacRolePoliciesWorkflowInput = {
    * Server-derived scope context the grant happens within. Omitted = the
    * actor's full scope-union.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
   policies: {
     role_id: string
     policy_id: string

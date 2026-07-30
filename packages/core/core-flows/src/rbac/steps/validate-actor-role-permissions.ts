@@ -1,7 +1,5 @@
-import {
-  ContainerRegistrationKeys,
-  RbacScopeRef,
-} from "@medusajs/framework/utils"
+import { RbacScope } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { assertActorCanGrant } from "../utils/assert-actor-can-grant"
 
@@ -14,10 +12,9 @@ export type ValidateActorRolePermissionsStepInput = {
   actor?: string
   role_ids: string[]
   /**
-   * Server-derived scope context the grant happens within. Omitted = the
-   * actor's full scope-union policies.
+   * If the role assignment is scoped, then we control the granting actor has the role in the same scope.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope | RbacScope[]
 }
 
 /**
@@ -36,6 +33,10 @@ export const validateActorRolePermissionsStepId =
 export const validateActorRolePermissionsStep = createStep(
   validateActorRolePermissionsStepId,
   async (data: ValidateActorRolePermissionsStepInput, { container }) => {
+    // TODO: [rbac] The scope handling here is wrong and needs to be correctly
+    // implemented. `scope` on the assign/unassign flows now carries the scope
+    // constraint stored on the assignment itself, not the granting actor's
+    // evaluation context.
     const { actor_id, actor, role_ids, scope } = data
 
     if (!role_ids?.length) {

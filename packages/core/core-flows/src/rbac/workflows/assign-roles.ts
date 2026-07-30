@@ -1,4 +1,4 @@
-import { RbacScopeRef } from "@medusajs/framework/utils"
+import { RbacScope } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -9,6 +9,7 @@ import {
 import { createRoleAssignmentsStep } from "../steps/create-role-assignments"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
 import { validateRolesExistStep } from "../steps/validate-roles-exist"
+import { CreateRbacRoleAssignmentDTO } from "@medusajs/framework/types"
 
 /**
  * @ignore
@@ -21,11 +22,10 @@ export type AssignRolesWorkflowInput = {
   granting_actor_id?: string
   granting_actor?: string
   /**
-   * Server-derived scope context the grant happens within. When provided, the
-   * granting actor's privileges are evaluated strictly within it; omitted =
-   * the actor's full scope-union.
+   * Optional scope constraint stored on the created assignments: the assigned
+   * roles only apply when acting within the given scope entity.
    */
-  scope?: RbacScopeRef | RbacScopeRef[]
+  scope?: RbacScope
 }
 
 /**
@@ -56,6 +56,7 @@ export const assignRolesWorkflow = createWorkflow(
           ? input.reference_id
           : [input.reference_id],
         roleIds: Array.isArray(input.role_id) ? input.role_id : [input.role_id],
+        scopeRef: input.scope,
       }
     })
 
@@ -76,11 +77,7 @@ export const assignRolesWorkflow = createWorkflow(
     const assignments = transform(
       { normalizedInput },
       ({ normalizedInput }) => {
-        const rows: {
-          role_id: string
-          reference: string
-          reference_id: string
-        }[] = []
+        const rows: CreateRbacRoleAssignmentDTO[] = []
 
         for (const referenceId of normalizedInput.referenceIds) {
           for (const roleId of normalizedInput.roleIds) {
@@ -88,6 +85,8 @@ export const assignRolesWorkflow = createWorkflow(
               role_id: roleId,
               reference: normalizedInput.reference,
               reference_id: referenceId,
+              scope: normalizedInput.scopeRef?.type,
+              scope_id: normalizedInput.scopeRef?.id,
             })
           }
         }
