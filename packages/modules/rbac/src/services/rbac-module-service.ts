@@ -11,6 +11,7 @@ import {
   MedusaService,
 } from "@medusajs/framework/utils"
 import {
+  AuthzContextConfig,
   CreateRbacRoleParentDTO,
   InferEntityType,
   IRbacModuleService,
@@ -72,7 +73,9 @@ export default class RbacModuleService
       rbacPolicyService,
       rbacRolePolicyService,
     }: InjectedDependencies,
-    options: IRbacModuleServiceOptions = {},
+    options: IRbacModuleServiceOptions = {
+      actors: {},
+    },
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     super(...arguments)
@@ -80,7 +83,22 @@ export default class RbacModuleService
     this.rbacRolePolicyService = rbacRolePolicyService
     this.rbacRoleService = rbacRoleService
     this.rbacPolicyService = rbacPolicyService
-    this.options_ = options
+
+    // We always auto inject the user actor authz config
+    this.options_ = {
+      ...options,
+      actors: {
+        ...(options.actors ?? {}),
+        user: {
+          grantees: [
+            {
+              entity: "user",
+              path: "id",
+            },
+          ],
+        },
+      },
+    }
   }
 
   @InjectManager()
@@ -219,7 +237,6 @@ export default class RbacModuleService
     return await super.updateRbacRoleParents(data, sharedContext)
   }
 
-  @InjectManager()
   async resolveScope<T extends MedusaRequest<any, any>>(
     req: T
   ): Promise<RbacScope | undefined> {
@@ -229,5 +246,11 @@ export default class RbacModuleService
     }
 
     return await this.options_.scopeResolver?.(req)
+  }
+
+  async retrieveActorAutzContextConfig(
+    actorType: string
+  ): Promise<AuthzContextConfig | undefined> {
+    return this.options_.actors?.[actorType]
   }
 }

@@ -159,3 +159,20 @@ export type PolicyAction = {
   resource: string
   operation: PolicyOperationValue | PolicyOperationValue[]
 }
+
+export type AuthzContextConfig = {
+  /**
+   * Entities that can hold role assignments reachable from the actor in the graph. Used
+   * to build the AuthzContext necessary to resolve the actor's roles.
+   */
+  grantees: {
+    /**
+     * The entity that can hold role assignments reachable from the actor.
+     */
+    entity: string
+    /**
+     * The path from the actor to the entity's id.
+     */
+    path: string
+  }[]
+}

@@ -1,4 +1,5 @@
 import {
+  AuthenticatedMedusaRequest,
   FindConfig,
   PolicyAction,
   QueryConfig,
@@ -22,8 +23,8 @@ import {
   IFieldFilter,
   RestrictedFieldFilter,
 } from "./field-filtering"
-import { getRequestActorRoleIds } from "../../roles/get-request-actor-roles"
 import { RBACFieldFilter } from "./policies/rbac-field-filter"
+import { resolveRoles } from "./resolve-roles"
 
 export function pickByConfig<TModel>(
   obj: TModel | TModel[],
@@ -74,11 +75,17 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
 
   const filters: IFieldFilter[] = []
 
-  if (req?.policies && entity && rbacFilterFieldsFeatureFlag) {
+  if (
+    req?.policies &&
+    req?.auth_context &&
+    entity &&
+    rbacFilterFieldsFeatureFlag
+  ) {
     filters.push(
       new RBACFieldFilter({
         policies: req.policies,
-        getActorRoles: () => getRequestActorRoleIds(req),
+        getActorRoles: async () =>
+          resolveRoles(req as AuthenticatedMedusaRequest),
         container: req.scope,
       })
     )

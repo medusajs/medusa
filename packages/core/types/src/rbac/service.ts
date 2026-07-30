@@ -1,9 +1,10 @@
 import { FindConfig } from "../common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { BaseFilterable, RestoreReturn, SoftDeleteReturn } from "../dal"
 import { MedusaRequest } from "../http-request"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  AuthzContextConfig,
   FilterableRbacPolicyProps,
   FilterableRbacRoleAssignmentProps,
   FilterableRbacRoleParentProps,
@@ -224,7 +225,7 @@ export interface IRbacModuleService extends IModuleService {
   ): Promise<RbacRoleAssignmentDTO>
 
   listRbacRoleAssignments(
-    filters?: FilterableRbacRoleAssignmentProps,
+    filters?: BaseFilterable<FilterableRbacRoleAssignmentProps>,
     config?: FindConfig<RbacRoleAssignmentDTO>,
     sharedContext?: Context
   ): Promise<RbacRoleAssignmentDTO[]>
@@ -295,9 +296,23 @@ export interface IRbacModuleService extends IModuleService {
   resolveScope<T extends MedusaRequest<any, any>>(
     req: T
   ): Promise<RbacScope | undefined>
+  retrieveActorAutzContextConfig(
+    actorType: string
+  ): Promise<AuthzContextConfig | undefined>
 }
 
 export interface IRbacModuleServiceOptions {
+  /**
+   * Keyed by actor type, holds the configuration needed to build the Authz Context
+   * necessary to resolve the actor's roles.
+   */
+  actors: {
+    [actor_type: string]: AuthzContextConfig | undefined
+  }
+  /**
+   * The callback used to resolve the request rbac scope (if any). Used to further
+   * drilldown the Authz Context to resolve the roles for the request scope.
+   */
   scopeResolver?: <T extends MedusaRequest<any, any>>(
     req: T
   ) => Promise<RbacScope>

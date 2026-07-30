@@ -1,6 +1,5 @@
 import { MedusaError } from "@medusajs/utils"
 import type { PolicyAction } from "@medusajs/types"
-import { getRequestActorRoleIds } from "../../roles/get-request-actor-roles"
 import { hasPermission } from "../../policies/has-permission"
 import type {
   AuthenticatedMedusaRequest,
@@ -8,6 +7,7 @@ import type {
   MedusaResponse,
   MiddlewareFunction,
 } from "../types"
+import { resolveRoles } from "../utils/resolve-roles"
 
 /**
  * Core permission checking logic for middleware and routes
@@ -23,8 +23,7 @@ async function checkPermissions(
     return
   }
 
-  // Resolve roles at request time (memoized per request) filtered to the request's scope set
-  const roleIds = await getRequestActorRoleIds(req)
+  const roleIds = await resolveRoles(req)
 
   if (!roleIds.length) {
     throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
