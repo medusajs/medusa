@@ -15,17 +15,24 @@ import { CreateRbacRoleAssignmentDTO } from "@medusajs/framework/types"
  * @ignore
  * @featureFlag rbac
  */
-export type AssignRolesWorkflowInput = {
+export type AssignRole = {
+  role_id: string
   reference: string
-  reference_id: string | string[]
-  role_id: string | string[]
-  granting_actor_id?: string
-  granting_actor?: string
+  reference_id: string
   /**
-   * Optional scope constraint stored on the created assignments: the assigned
-   * roles only apply when acting within the given scope entity.
+   * Optional scope constraint stored on the assignment: the role only applies
+   * when acting within the given scope entity.
    */
   scope?: RbacScope
+}
+
+export type AssignRolesWorkflowInput = {
+  /**
+   * The role assignments to create.
+   */
+  assignments: AssignRole[]
+  granting_actor_id?: string
+  granting_actor?: string
 }
 
 /**
@@ -35,9 +42,10 @@ export type AssignRolesWorkflowInput = {
 export const assignRolesWorkflowId = "assign-roles"
 
 /**
- * This workflow assigns one or more roles to one or more reference entities
- * (e.g. users, invites, or custom entities). It creates the cross-product of
- * the provided reference ids and role ids as `rbac_role_assignment` rows.
+ * This workflow assigns roles to reference entities (e.g. users, invites, or
+ * custom entities). Each input assignment becomes one `rbac_role_assignment`
+ * row, so a single run can assign different roles to different references,
+ * each optionally constrained to its own scope.
  *
  * It validates that the roles exist and that the granting actor holds all the
  * policies of the roles being assigned.
@@ -47,16 +55,31 @@ export const assignRolesWorkflowId = "assign-roles"
 export const assignRolesWorkflow = createWorkflow(
   assignRolesWorkflowId,
   (input: WorkflowData<AssignRolesWorkflowInput>) => {
+    // TODO: [rbac] revisit this when we implement role resolution
     const normalizedInput = transform({ input }, ({ input }) => {
+      const assignments = input.assignments ?? []
+
+      const scopesByKey = new Map<string, RbacScope>()
+      for (const assignment of assignments) {
+        if (assignment.scope) {
+          scopesByKey.set(
+            `${assignment.scope.type}:${assignment.scope.id}`,
+            assignment.scope
+          )
+        }
+      }
+      const scopes = Array.from(scopesByKey.values())
+
       return {
         grantingActorId: input.granting_actor_id,
         grantingActor: input.granting_actor,
-        reference: input.reference,
-        referenceIds: Array.isArray(input.reference_id)
-          ? input.reference_id
-          : [input.reference_id],
-        roleIds: Array.isArray(input.role_id) ? input.role_id : [input.role_id],
-        scopeRef: input.scope,
+        assignments,
+        roleIds: Array.from(
+          new Set(assignments.map((assignment) => assignment.role_id))
+        ),
+        // Undefined (not an empty array) when no assignment is scoped: an empty
+        // set means "evaluate strictly within no scope" to the grant check.
+        scopes: scopes.length ? scopes : undefined,
       }
     })
 
@@ -70,28 +93,22 @@ export const assignRolesWorkflow = createWorkflow(
         actor_id: normalizedInput.grantingActorId!,
         actor: normalizedInput.grantingActor,
         role_ids: normalizedInput.roleIds,
-        scope: input.scope,
+        scope: normalizedInput.scopes,
       })
     })
 
     const assignments = transform(
       { normalizedInput },
       ({ normalizedInput }) => {
-        const rows: CreateRbacRoleAssignmentDTO[] = []
-
-        for (const referenceId of normalizedInput.referenceIds) {
-          for (const roleId of normalizedInput.roleIds) {
-            rows.push({
-              role_id: roleId,
-              reference: normalizedInput.reference,
-              reference_id: referenceId,
-              scope: normalizedInput.scopeRef?.type,
-              scope_id: normalizedInput.scopeRef?.id,
-            })
-          }
-        }
-
-        return rows
+        return normalizedInput.assignments.map(
+          (assignment): CreateRbacRoleAssignmentDTO => ({
+            role_id: assignment.role_id,
+            reference: assignment.reference,
+            reference_id: assignment.reference_id,
+            scope: assignment.scope?.type,
+            scope_id: assignment.scope?.id,
+          })
+        )
       }
     )
 

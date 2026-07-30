@@ -1,19 +1,14 @@
 import { IRbacModuleService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import { FeatureFlag, Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { invalidateRoleAssignmentCache } from "../utils/invalidate-role-assignment-cache"
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 /**
- * The filters identifying the role assignments to delete.
- *
  * @ignore
  * @featureFlag rbac
  */
 export type DeleteRoleAssignmentsStepInput = {
-  reference: string
-  reference_id: string[]
-  role_id?: string[]
+  id: string | string[]
 }
 
 /**
@@ -32,39 +27,26 @@ export const deleteRoleAssignmentsStepId = "delete-role-assignments"
  */
 export const deleteRoleAssignmentsStep = createStep(
   deleteRoleAssignmentsStepId,
-  async (data: DeleteRoleAssignmentsStepInput, { container }) => {
-    if (
-      !data?.reference_id?.length ||
-      !MedusaModule.isInstalled(Modules.RBAC)
-    ) {
+  async (input: DeleteRoleAssignmentsStepInput, { container }) => {
+    const normalizedIds = Array.isArray(input.id) ? input.id : [input.id]
+
+    if (!normalizedIds.length || !FeatureFlag.isFeatureEnabled("rbac")) {
       return new StepResponse([], [])
     }
 
     const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
-    const filters: {
-      reference: string
-      reference_id: string[]
-      role_id?: string[]
-    } = {
-      reference: data.reference,
-      reference_id: data.reference_id,
-    }
-
-    if (data.role_id?.length) {
-      filters.role_id = data.role_id
-    }
-
-    const existing = await service.listRbacRoleAssignments(filters)
+    const existing = await service.listRbacRoleAssignments({
+      id: normalizedIds,
+    })
 
     if (!existing.length) {
       return new StepResponse([], [])
     }
 
-    await service.deleteRbacRoleAssignments(
-      existing.map((assignment) => assignment.id)
-    )
+    await service.deleteRbacRoleAssignments(normalizedIds)
 
+    // TODO: [rbac] revisit this when we reimplement role resolution
     await invalidateRoleAssignmentCache(
       container,
       existing.map(({ reference, reference_id }) => ({
@@ -84,6 +66,7 @@ export const deleteRoleAssignmentsStep = createStep(
 
     await service.createRbacRoleAssignments(existing)
 
+    // TODO: [rbac] revisit this when we reimplement role resolution
     await invalidateRoleAssignmentCache(
       container,
       existing.map(({ reference, reference_id }) => ({

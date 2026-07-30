@@ -1023,9 +1023,13 @@ medusaIntegrationTestRunner({
               input: {
                 granting_actor_id: superAdminUser.id,
                 granting_actor: "user",
-                reference: "user",
-                reference_id: assigneeUserId,
-                role_id: mixedRoleId,
+                assignments: [
+                  {
+                    role_id: mixedRoleId,
+                    reference: "user",
+                    reference_id: assigneeUserId,
+                  },
+                ],
               },
             })
 
@@ -1044,9 +1048,13 @@ medusaIntegrationTestRunner({
               input: {
                 granting_actor_id: productManager.id,
                 granting_actor: "user",
-                reference: "user",
-                reference_id: assigneeUserId,
-                role_id: productReadRoleId,
+                assignments: [
+                  {
+                    role_id: productReadRoleId,
+                    reference: "user",
+                    reference_id: assigneeUserId,
+                  },
+                ],
               },
             })
 
@@ -1066,9 +1074,13 @@ medusaIntegrationTestRunner({
                 input: {
                   granting_actor_id: productManager.id,
                   granting_actor: "user",
-                  reference: "user",
-                  reference_id: assigneeUserId,
-                  role_id: mixedRoleId,
+                  assignments: [
+                    {
+                      role_id: mixedRoleId,
+                      reference: "user",
+                      reference_id: assigneeUserId,
+                    },
+                  ],
                 },
               })
               .catch((e) => e)
@@ -1091,9 +1103,13 @@ medusaIntegrationTestRunner({
                 input: {
                   granting_actor_id: stray.id,
                   granting_actor: "user",
-                  reference: "user",
-                  reference_id: assigneeUserId,
-                  role_id: productReadRoleId,
+                  assignments: [
+                    {
+                      role_id: productReadRoleId,
+                      reference: "user",
+                      reference_id: assigneeUserId,
+                    },
+                  ],
                 },
               })
               .catch((e) => e)
@@ -1122,9 +1138,13 @@ medusaIntegrationTestRunner({
               input: {
                 granting_actor_id: superAdminUser.id,
                 granting_actor: "user",
-                reference: "user",
-                reference_id: assigneeUserId,
-                role_id: mixedRoleId,
+                assignments: [
+                  {
+                    role_id: mixedRoleId,
+                    reference: "user",
+                    reference_id: assigneeUserId,
+                  },
+                ],
               },
             })
 

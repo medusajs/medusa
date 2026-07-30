@@ -21,10 +21,10 @@ export type CreateRbacRolesWorkflowInput = {
   actor_id?: string
   actor?: string
   /**
-   * Server-derived scope context the grant happens within. Omitted = the
+   * Scope context the grant happens within. Omitted = the
    * actor's full scope-union.
    */
-  scope?: RbacScope | RbacScope[]
+  scope?: RbacScope
   roles: {
     name: string
     description?: string | null

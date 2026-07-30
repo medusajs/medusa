@@ -1,27 +1,16 @@
-import { IRbacModuleService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
+import {
+  CreateRbacRoleAssignmentDTO,
+  IRbacModuleService,
+} from "@medusajs/framework/types"
+import { FeatureFlag, Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { invalidateRoleAssignmentCache } from "../utils/invalidate-role-assignment-cache"
-import { MedusaModule } from "@medusajs/framework/modules-sdk"
-
-/**
- * A single role assignment to create.
- *
- * @ignore
- * @featureFlag rbac
- */
-export type CreateRoleAssignment = {
-  role_id: string
-  reference: string
-  reference_id: string
-  metadata?: Record<string, unknown> | null
-}
 
 /**
  * @ignore
  * @featureFlag rbac
  */
-export type CreateRoleAssignmentsStepInput = CreateRoleAssignment[]
+export type CreateRoleAssignmentsStepInput = CreateRbacRoleAssignmentDTO[]
 
 /**
  * @ignore
@@ -39,21 +28,15 @@ export const createRoleAssignmentsStepId = "create-role-assignments"
 export const createRoleAssignmentsStep = createStep(
   createRoleAssignmentsStepId,
   async (data: CreateRoleAssignmentsStepInput, { container }) => {
-    if (!data?.length || !MedusaModule.isInstalled(Modules.RBAC)) {
+    if (!data?.length || !FeatureFlag.isFeatureEnabled("rbac")) {
       return new StepResponse([], [])
     }
 
     const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
-    const created = await service.createRbacRoleAssignments(
-      data.map((assignment) => ({
-        role_id: assignment.role_id,
-        reference: assignment.reference,
-        reference_id: assignment.reference_id,
-        metadata: assignment.metadata ?? null,
-      }))
-    )
+    const created = await service.createRbacRoleAssignments(data)
 
+    // TODO: [rbac] revisit this when we implement role resolution
     await invalidateRoleAssignmentCache(
       container,
       data.map(({ reference, reference_id }) => ({ reference, reference_id }))
@@ -79,6 +62,7 @@ export const createRoleAssignmentsStep = createStep(
       createdAssignments.map((assignment) => assignment.id)
     )
 
+    // TODO: [rbac] revisit this when we reimplement role resolution
     await invalidateRoleAssignmentCache(
       container,
       createdAssignments.map(({ reference, reference_id }) => ({

@@ -8,22 +8,31 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { deleteRoleAssignmentsStep } from "../steps/delete-role-assignments"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
+import { useQueryGraphStep } from "../../common"
 
 /**
  * @ignore
  * @featureFlag rbac
  */
-export type UnassignRolesWorkflowInput = {
+export type UnassignRole = {
+  role_id: string
   reference: string
-  reference_id: string | string[]
-  role_id: string | string[]
-  granting_actor_id?: string
-  granting_actor?: string
+  reference_id: string
   /**
-   * Optional scope constraint filter: when provided, only assignments stored
-   * with this exact scope are removed.
+   * Optional scope constraint filter: when provided, only the assignment stored
+   * with this exact scope is removed; omitted removes the matching assignments
+   * regardless of the scope they are stored with.
    */
   scope?: RbacScope
+}
+
+export type UnassignRolesWorkflowInput = {
+  /**
+   * The role assignments to remove.
+   */
+  assignments: UnassignRole[]
+  granting_actor_id?: string
+  granting_actor?: string
 }
 
 /**
@@ -33,9 +42,10 @@ export type UnassignRolesWorkflowInput = {
 export const unassignRolesWorkflowId = "unassign-roles"
 
 /**
- * This workflow removes one or more roles from one or more reference entities
- * (e.g. users, invites, or custom entities). It deletes the matching
- * `rbac_role_assignment` rows.
+ * This workflow removes roles from reference entities (e.g. users, invites, or
+ * custom entities). Each input assignment deletes the matching
+ * `rbac_role_assignment` rows, so a single run can remove different roles from
+ * different references, each optionally constrained to its own scope.
  *
  * It validates that the granting actor holds all the policies of the roles
  * being removed.
@@ -45,16 +55,31 @@ export const unassignRolesWorkflowId = "unassign-roles"
 export const unassignRolesWorkflow = createWorkflow(
   unassignRolesWorkflowId,
   (input: WorkflowData<UnassignRolesWorkflowInput>) => {
+    // TODO: [rbac] revisit this when we implement role resolution
     const normalizedInput = transform({ input }, ({ input }) => {
+      const assignments = input.assignments ?? []
+
+      const scopesByKey = new Map<string, RbacScope>()
+      for (const assignment of assignments) {
+        if (assignment.scope) {
+          scopesByKey.set(
+            `${assignment.scope.type}:${assignment.scope.id}`,
+            assignment.scope
+          )
+        }
+      }
+      const scopes = Array.from(scopesByKey.values())
+
       return {
         grantingActorId: input.granting_actor_id,
         grantingActor: input.granting_actor,
-        reference: input.reference,
-        referenceIds: Array.isArray(input.reference_id)
-          ? input.reference_id
-          : [input.reference_id],
-        roleIds: Array.isArray(input.role_id) ? input.role_id : [input.role_id],
-        scopeRef: input.scope,
+        assignments,
+        roleIds: Array.from(
+          new Set(assignments.map((assignment) => assignment.role_id))
+        ),
+        // Undefined (not an empty array) when no assignment is scoped: an empty
+        // set means "evaluate strictly within no scope" to the grant check.
+        scopes: scopes.length ? scopes : undefined,
       }
     })
 
@@ -66,26 +91,23 @@ export const unassignRolesWorkflow = createWorkflow(
         actor_id: normalizedInput.grantingActorId!,
         actor: normalizedInput.grantingActor,
         role_ids: normalizedInput.roleIds,
-        scope: input.scope,
+        scope: normalizedInput.scopes,
       })
     })
 
-    const deleteInput = transform(
-      { normalizedInput },
-      ({ normalizedInput }) => {
-        return {
-          selector: {
-            reference: normalizedInput.reference,
-            reference_id: normalizedInput.referenceIds,
-            role_id: normalizedInput.roleIds,
-            scope: normalizedInput.scopeRef?.type,
-            scope_id: normalizedInput.scopeRef?.id,
-          },
-        }
-      }
-    )
+    const { data: roleAssignmentsToDelete } = useQueryGraphStep({
+      entity: "rbac_role_assignment",
+      fields: ["id"],
+      filters: transform({ normalizedInput }, ({ normalizedInput }) => ({
+        $or: normalizedInput.assignments,
+      })),
+    }).config({ name: "query-role-assignments-to-delete" })
 
-    deleteRoleAssignmentsStep(deleteInput)
+    deleteRoleAssignmentsStep(
+      transform({ roleAssignmentsToDelete }, ({ roleAssignmentsToDelete }) => ({
+        id: roleAssignmentsToDelete.map((assignment) => assignment.id),
+      }))
+    )
 
     return new WorkflowResponse(void 0)
   }

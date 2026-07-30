@@ -9,6 +9,7 @@ import {
 import { emitEventStep } from "../../common/steps/emit-event"
 import { deleteRoleAssignmentsStep } from "../../rbac/steps"
 import { deleteInvitesStep } from "../steps"
+import { useQueryGraphStep } from "../../common"
 
 export const deleteInvitesWorkflowId = "delete-invites-workflow"
 /**
@@ -44,13 +45,24 @@ export const deleteInvitesWorkflow = createWorkflow(
     })
 
     // Clean up any RBAC role assignments for the deleted invites.
-    const roleAssignmentsToDelete = transform({ input }, ({ input }) => ({
-      reference: "invite",
-      reference_id: input.ids ?? [],
-    }))
+    const { data: roleAssignmentsToDelete } = useQueryGraphStep({
+      entity: "rbac_role_assignment",
+      fields: ["id"],
+      filters: {
+        reference: "invite",
+        reference_id: input.ids,
+      },
+    }).config({ name: "query-role-assignments-to-delete" })
 
     parallelize(
-      deleteRoleAssignmentsStep(roleAssignmentsToDelete),
+      deleteRoleAssignmentsStep(
+        transform(
+          { roleAssignmentsToDelete },
+          ({ roleAssignmentsToDelete }) => ({
+            id: roleAssignmentsToDelete.map((assignment) => assignment.id),
+          })
+        )
+      ),
       emitEventStep({
         eventName: InviteWorkflowEvents.DELETED,
         data: invitesIdEvents,

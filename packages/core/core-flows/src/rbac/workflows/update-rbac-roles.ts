@@ -20,10 +20,10 @@ export type UpdateRbacRolesWorkflowInput = {
   actor_id?: string
   actor?: string
   /**
-   * Server-derived scope context the grant happens within. Omitted = the
+   * Scope context the grant happens within. Omitted = the
    * actor's full scope-union.
    */
-  scope?: RbacScope | RbacScope[]
+  scope?: RbacScope
   selector: Record<string, any>
   update: Omit<UpdateRbacRoleDTO, "id"> & {
     parent_ids?: string[]
@@ -44,6 +44,7 @@ export const updateRbacRolesWorkflowId = "update-rbac-roles"
 export const updateRbacRolesWorkflow = createWorkflow(
   updateRbacRolesWorkflowId,
   (input: WorkflowData<UpdateRbacRolesWorkflowInput>) => {
+    // TODO: [rbac] revisit this when we implement role resolution
     const validationData = transform({ input }, ({ input }) => {
       const policyIds = input.update.policy_ids || []
       return {
