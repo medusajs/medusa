@@ -7,11 +7,12 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
 import {
-  AdminAssignUserRoles,
+  AdminAssignUserRole,
   AdminGetUserParams,
   AdminGetUserRolesParams,
   AdminGetUsersParams,
-  AdminRemoveUserRoles,
+  AdminUnassignUserRole,
+  AdminUnassignUserRoles,
   AdminUpdateUser,
 } from "./validators"
 
@@ -108,7 +109,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users/:id/roles",
-    middlewares: [validateAndTransformBody(AdminAssignUserRoles)],
+    middlewares: [validateAndTransformBody(AdminAssignUserRole)],
     policies: [
       {
         resource: Entities.user,
@@ -123,6 +124,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id/roles/:role_id",
+    middlewares: [validateAndTransformBody(AdminUnassignUserRole)],
     policies: [
       {
         resource: Entities.user,
@@ -137,7 +139,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id/roles",
-    middlewares: [validateAndTransformBody(AdminRemoveUserRoles)],
+    middlewares: [validateAndTransformBody(AdminUnassignUserRoles)],
     policies: [
       {
         resource: Entities.user,

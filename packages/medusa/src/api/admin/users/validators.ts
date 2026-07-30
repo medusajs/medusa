@@ -4,6 +4,7 @@ import {
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
+import { applyAndAndOrOperators } from "../../utils/common-validators"
 
 export const AdminGetUserParams = createSelectParams()
 
@@ -40,18 +41,32 @@ export const AdminUpdateUser = z.object({
   metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
-export type AdminAssignUserRolesType = z.infer<typeof AdminAssignUserRoles>
-export const AdminAssignUserRoles = z.object({
-  roles: z.array(z.string().min(1)).min(1),
+export type AdminAssignUserRoleType = z.infer<typeof AdminAssignUserRole>
+export const AdminAssignUserRole = z.object({
+  assignments: z.array(
+    z.object({
+      role_id: z.string().min(1),
+      scope: z.string().optional(),
+      scope_id: z.string().optional(),
+    })
+  ),
 })
 
-export type AdminRemoveUserRolesType = z.infer<typeof AdminRemoveUserRoles>
-export const AdminRemoveUserRoles = z.object({
-  roles: z.array(z.string().min(1)).min(1),
+export type AdminUnassignUserRolesType = z.infer<typeof AdminUnassignUserRoles>
+export const AdminUnassignUserRoles = z.object({
+  assignments: z.array(
+    z.object({
+      role_id: z.string().min(1),
+      scope: z.string().optional(),
+      scope_id: z.string().optional(),
+    })
+  ),
 })
 
 export const AdminGetUserRolesParamsFields = z.object({
   role_id: z.union([z.string(), z.array(z.string())]).optional(),
+  scope: z.union([z.string(), z.array(z.string())]).optional(),
+  scope_id: z.union([z.string(), z.array(z.string())]).optional(),
 })
 
 export type AdminGetUserRolesParamsType = z.infer<
@@ -60,4 +75,14 @@ export type AdminGetUserRolesParamsType = z.infer<
 export const AdminGetUserRolesParams = createFindParams({
   limit: 50,
   offset: 0,
-}).merge(AdminGetUserRolesParamsFields)
+})
+  .extend(AdminGetUserRolesParamsFields.shape)
+  .extend(applyAndAndOrOperators(AdminGetUserRolesParamsFields).shape)
+
+export type AdminUnassignUserRoleType = z.infer<typeof AdminUnassignUserRole>
+export const AdminUnassignUserRole = z
+  .object({
+    scope: z.string().optional(),
+    scope_id: z.string().optional(),
+  })
+  .optional()

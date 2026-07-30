@@ -1,4 +1,3 @@
-import { getRequestScopes } from "@medusajs/framework"
 import {
   assignRolesWorkflow,
   unassignRolesWorkflow,
@@ -12,6 +11,7 @@ import {
   defineFileConfig,
   FeatureFlag,
   MedusaError,
+  Modules,
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../../feature-flags/rbac"
 import {
@@ -79,7 +79,9 @@ export const POST = async (
 ) => {
   const roleId = req.params.id
   const { users } = req.validatedBody
+
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const rbacModuleService = req.scope.resolve(Modules.RBAC)
 
   const {
     data: [role],
@@ -96,14 +98,18 @@ export const POST = async (
     )
   }
 
+  const scope = await rbacModuleService.resolveScope(req)
+
   await assignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      scope: await getRequestScopes(req),
-      reference: "user",
-      reference_id: users,
-      role_id: roleId,
+      assignments: users.map((userId) => ({
+        role_id: roleId,
+        reference: "user",
+        reference_id: userId,
+        scope,
+      })),
     },
   })
 
@@ -140,7 +146,9 @@ export const DELETE = async (
 ) => {
   const roleId = req.params.id
   const { users } = req.validatedBody
+
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const rbacModuleService = req.scope.resolve(Modules.RBAC)
 
   const {
     data: [role],
@@ -157,14 +165,18 @@ export const DELETE = async (
     )
   }
 
+  const scope = await rbacModuleService.resolveScope(req)
+
   await unassignRolesWorkflow(req.scope).run({
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      scope: await getRequestScopes(req),
-      reference: "user",
-      reference_id: users,
-      role_id: roleId,
+      assignments: users.map((userId) => ({
+        role_id: roleId,
+        reference: "user",
+        reference_id: userId,
+        scope,
+      })),
     },
   })
 

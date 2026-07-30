@@ -1,4 +1,3 @@
-import { getRequestScopes } from "@medusajs/framework"
 import {
   assignRolesWorkflow,
   unassignRolesWorkflow,
@@ -10,6 +9,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  Modules,
 } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/framework/types"
 
@@ -19,31 +19,35 @@ import { HttpTypes } from "@medusajs/framework/types"
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminGetUserRolesParams>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminUserRoleListResponse>
 ) => {
   const userId = req.params.id
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { role_id } = req.filterableFields
+  const rbacModuleService = req.scope.resolve(Modules.RBAC)
 
-  const { data: assignments, metadata } = await query.graph({
-    entity: "rbac_role_assignment",
-    fields: req.queryConfig?.fields,
-    filters: {
-      reference: "user",
-      reference_id: userId,
-      ...(role_id ? { role_id: role_id } : {}),
-    },
-    pagination: req.queryConfig?.pagination || {},
-  })
+  const [assignments, count] =
+    await rbacModuleService.listAndCountRbacRoleAssignments(
+      {
+        reference: "user",
+        reference_id: userId,
+        ...req.filterableFields,
+      },
+      {
+        relations: ["role"],
+        ...req.queryConfig?.pagination,
+      }
+    )
 
-  const roles = assignments.map((assignment: any) => assignment.role)
+  const roles = assignments.map((assignment: any) => ({
+    ...assignment.role,
+    scope: assignment.scope,
+  }))
 
   res.status(200).json({
     roles,
-    count: metadata?.count ?? 0,
-    offset: metadata?.skip ?? 0,
-    limit: metadata?.take ?? 0,
+    count,
+    offset: req.queryConfig?.pagination?.skip ?? 0,
+    limit: req.queryConfig?.pagination?.take ?? 0,
   })
 }
 
@@ -56,7 +60,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const userId = req.params.id
-  const { roles } = req.validatedBody
+  const { assignments: assignmentsToCreate } = req.validatedBody
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const {
@@ -78,10 +82,15 @@ export const POST = async (
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      scope: await getRequestScopes(req),
-      reference: "user",
-      reference_id: userId,
-      role_id: roles,
+      assignments: assignmentsToCreate.map((assignment) => ({
+        role_id: assignment.role_id,
+        reference: "user",
+        reference_id: userId,
+        scope:
+          assignment.scope && assignment.scope_id
+            ? { type: assignment.scope, id: assignment.scope_id }
+            : undefined,
+      })),
     },
   })
 
@@ -101,11 +110,11 @@ export const POST = async (
  * @featureFlag rbac
  */
 export const DELETE = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminRemoveUserRoles>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUnassignUserRoles>,
   res: MedusaResponse
 ) => {
   const userId = req.params.id
-  const { roles } = req.validatedBody
+  const { assignments } = req.validatedBody
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const {
@@ -127,15 +136,20 @@ export const DELETE = async (
     input: {
       granting_actor_id: req.auth_context.actor_id,
       granting_actor: req.auth_context.actor_type,
-      scope: await getRequestScopes(req),
-      reference: "user",
-      reference_id: userId,
-      role_id: roles,
+      assignments: assignments.map((assignment) => ({
+        role_id: assignment.role_id,
+        scope:
+          assignment.scope && assignment.scope_id
+            ? { type: assignment.scope, id: assignment.scope_id }
+            : undefined,
+        reference: "user",
+        reference_id: userId,
+      })),
     },
   })
 
   res.status(200).json({
-    ids: roles,
+    ids: assignments.map((assignment) => assignment.role_id),
     object: "user_role",
     deleted: true,
   })

@@ -1,4 +1,5 @@
 import { AdminUser } from "../.."
+import { RbacScope } from "../../../rbac"
 
 export interface AdminRbacRole {
   /**
@@ -25,6 +26,13 @@ export interface AdminRbacRole {
    * The policies associated with the role.
    */
   policies?: AdminRbacPolicy[]
+
+  /**
+   * The scope the role is constrained to (e.g. `organization | org_123`), if any.
+   */
+  scope?: RbacScope
+
+  // TODO: [rbac] this is only relevant for user actor type roles
   /**
    * The users associated with the role.
    */
