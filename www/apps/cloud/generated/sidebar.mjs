@@ -89,6 +89,13 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Clone Project Locally",
+                "path": "/projects/clone-locally",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
                 "children": []
