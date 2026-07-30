@@ -145,9 +145,15 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/agentic-skills/page.mdx": "2026-04-29T13:34:27.727Z",
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-07-22T15:21:26.016Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-07-30T11:47:10.280Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
   "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T10:39:20.544Z",
   "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-07-28T05:43:48.904Z",
-  "app/learn/fundamentals/data-models/big-numbers/page.mdx": "2026-07-14T08:41:46.736Z"
+  "app/learn/fundamentals/data-models/big-numbers/page.mdx": "2026-07-14T08:41:46.736Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/page.mdx": "2026-07-30T10:30:50.331Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/extend-products/page.mdx": "2026-07-30T10:34:57.901Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers/page.mdx": "2026-07-30T10:23:36.079Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms/page.mdx": "2026-07-30T12:50:53.144Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/page.mdx": "2026-07-30T11:21:42.127Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z"
 }
