@@ -12,6 +12,7 @@ import {
   isDefined,
   MathBN,
   MedusaError,
+  PriceListType,
   QueryContext,
 } from "@medusajs/framework/utils"
 import {
@@ -88,15 +89,16 @@ interface PrepareLineItemUpdateStepInput {
 
 /**
  * This step builds the update payload for a cart line item, resolving its unit
- * price (from the input, the variant's calculated price, or the existing item)
- * and tax inclusivity. It throws an error if the resulting unit price is unset.
+ * price (from the input, the variant's calculated price, or the existing item),
+ * its compare-at unit price, and tax inclusivity. It throws an error if the
+ * resulting unit price is unset.
  */
 export const prepareLineItemUpdateStep = createStep(
   "prepare-line-item-update",
   async ({ input, variants, item }: PrepareLineItemUpdateStepInput) => {
     const variant = variants?.[0] ?? undefined
 
-    const updateData = {
+    const updateData: Record<string, any> = {
       ...input.update,
       unit_price: isDefined(input.update.unit_price)
         ? input.update.unit_price
@@ -111,6 +113,24 @@ export const prepareLineItemUpdateStep = createStep(
 
     if (variant && !updateData.is_custom_price) {
       updateData.unit_price = variant.calculated_price.calculated_amount
+
+      // The compare-at price is hydrated the same way the create path does it,
+      // so that the applied sale price is visible regardless of which path
+      // produced the line item.
+      if (!isDefined(input.update.compare_at_unit_price)) {
+        const isSalePrice =
+          variant.calculated_price?.calculated_price?.price_list_type ===
+          PriceListType.SALE
+
+        updateData.compare_at_unit_price =
+          isSalePrice &&
+          !MathBN.eq(
+            variant.calculated_price?.original_amount,
+            variant.calculated_price?.calculated_amount
+          )
+            ? variant.calculated_price.original_amount
+            : null
+      }
     }
 
     if (!isDefined(updateData.unit_price)) {
