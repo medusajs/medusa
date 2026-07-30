@@ -43,7 +43,7 @@ export const sidebar = [
             type: "link",
             title: "Navigation Styles",
             path: "/navigation",
-          }
+          },
         ],
       },
       {
@@ -65,6 +65,11 @@ export const sidebar = [
                 type: "link",
                 title: "Prerequisites",
                 path: "/projects/prerequisites",
+              },
+              {
+                type: "link",
+                title: "Clone Project Locally",
+                path: "/projects/clone-locally",
               },
               {
                 type: "link",
@@ -141,7 +146,7 @@ export const sidebar = [
             type: "link",
             title: "Account",
             path: "/user",
-          }
+          },
         ],
       },
       {
