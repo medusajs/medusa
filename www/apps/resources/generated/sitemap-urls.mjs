@@ -333,6 +333,7 @@ export const sitemapUrls = [
   "/lint/rules/prefer-container-registration-keys",
   "/lint/rules/prefer-link-over-remote-link",
   "/lint/rules/prefer-modules-enum",
+  "/lint/rules/prefer-workflow-event-over-module-event",
   "/lint/rules/prices-in-major-units",
   "/lint/rules/primary-key-required",
   "/lint/rules/read-only-link-requires-field",

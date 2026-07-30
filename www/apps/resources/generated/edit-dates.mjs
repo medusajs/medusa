@@ -7642,5 +7642,6 @@ export const generatedEditDates = {
   "app/commerce-modules/store-credit/admin-widget-zones/page.mdx": "2026-07-28T05:42:11.297Z",
   "app/lint/rules/widget-must-export-config/page.mdx": "2026-07-28T05:43:12.267Z",
   "app/lint/rules/widget-must-have-default-export/page.mdx": "2026-07-28T05:43:12.274Z",
-  "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z"
+  "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z",
+  "app/lint/rules/prefer-workflow-event-over-module-event/page.mdx": "2026-07-30T06:31:46.952Z"
 }
