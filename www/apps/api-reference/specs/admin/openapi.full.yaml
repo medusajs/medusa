@@ -37105,7 +37105,9 @@ paths:
     delete:
       operationId: DeleteProductCategoriesId
       summary: Delete a Product Category
-      description: Delete a product category. This doesn't deleted products in that category.
+      description: Delete a product category. This doesn't delete the products in
+        that category. A product category that has child categories can't be deleted,
+        so you must delete its child categories first.
       x-authenticated: true
       parameters:
         - name: id
