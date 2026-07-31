@@ -14363,6 +14363,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Enforce Sales Channel Availability",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Get Variant Inventory",
               "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory",
               "children": []
