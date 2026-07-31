@@ -63,6 +63,7 @@ You can also navigate to the environment creation form from the [command palette
         - If you don't see the branch you want to use, refresh the page to load the latest branches from your repository.
     - **Custom subdomain**: Set the custom subdomain for the Medusa application (and, subsequently, storefront). Medusa applications are a subdomain of `medusajs.app`, and their storefront is a subdomain of `medusajs.site`.
         - Refer to the [Subdomain Restrictions](../../projects/page.mdx#subdomain-restrictions) guide for reserved subdomains and restrictions.
+    - **Configuration Group** (optional): Select a compute configuration for the environment. This determines the compute tier used to run the environment. It defaults to **Develop**. The estimated cost shown in the drawer reflects the selected configuration group.
 3. Once you're done, click the "Create" button.
 
 ![Side window with the form to create an environment](https://res.cloudinary.com/dza7lstvk/image/upload/v1749812846/Cloud/CleanShot_2025-06-13_at_14.04.53_2x_apb634.png)
@@ -312,6 +313,20 @@ In the environment's **Database & Storage** tab, you can export a database dump 
 You can also import a database dump to use existing data that you have, or to restore the environment to a previous state.
 
 Learn more in the [Database](../../database/page.mdx) guide.
+
+---
+
+## Change Configuration Group
+
+The **Configuration Group** setting controls the compute tier used to run the environment. You can change it at any time from the environment's settings.
+
+To change the configuration group for a long-lived environment:
+
+1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
+2. In the **Configuration Group** section, select a new configuration group from the dropdown.
+3. Click **Save Changes**.
+
+A toast notification confirms whether the change was saved successfully.
 
 ---
 
