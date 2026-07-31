@@ -78,7 +78,7 @@ export const generatedEditDates = {
   "app/commerce-modules/sales-channel/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/sales-channel/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/sales-channel/publishable-api-keys/page.mdx": "2025-04-25T14:22:42.329Z",
-  "app/commerce-modules/sales-channel/page.mdx": "2025-04-17T08:48:22.065Z",
+  "app/commerce-modules/sales-channel/page.mdx": "2026-07-31T13:02:11.090Z",
   "app/commerce-modules/stock-location/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/stock-location/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/stock-location/concepts/page.mdx": "2026-04-10T11:36:06.163Z",
@@ -134,7 +134,7 @@ export const generatedEditDates = {
   "app/service-factory-reference/tips/filtering/page.mdx": "2025-08-15T12:06:28.709Z",
   "app/service-factory-reference/page.mdx": "2025-09-01T15:57:34.193Z",
   "app/storefront-development/cart/context/page.mdx": "2025-03-27T14:47:14.258Z",
-  "app/storefront-development/cart/create/page.mdx": "2025-12-16T07:17:17.903Z",
+  "app/storefront-development/cart/create/page.mdx": "2026-07-31T12:42:34.225Z",
   "app/storefront-development/cart/manage-items/page.mdx": "2025-03-26T15:54:31.446Z",
   "app/storefront-development/cart/retrieve/page.mdx": "2025-03-27T14:46:51.473Z",
   "app/storefront-development/cart/update/page.mdx": "2025-12-16T07:16:57.881Z",
@@ -565,7 +565,7 @@ export const generatedEditDates = {
   "app/medusa-cli/commands/start/page.mdx": "2026-01-12T12:27:25.481Z",
   "app/medusa-cli/commands/telemtry/page.mdx": "2026-01-12T12:27:28.040Z",
   "app/medusa-cli/commands/user/page.mdx": "2026-01-12T12:27:31.855Z",
-  "app/recipes/marketplace/examples/restaurant-delivery/page.mdx": "2026-01-12T12:29:23.864Z",
+  "app/recipes/marketplace/examples/restaurant-delivery/page.mdx": "2026-07-31T12:43:07.931Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCustomerGroup/page.mdx": "2024-12-09T13:21:33.569Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateReservation/page.mdx": "2025-04-11T09:04:47.498Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminCustomerGroup/page.mdx": "2026-01-06T15:55:02.348Z",
@@ -5662,7 +5662,7 @@ export const generatedEditDates = {
   "app/commerce-modules/payment/account-holder/page.mdx": "2026-06-08T10:33:47.663Z",
   "app/troubleshooting/test-errors/page.mdx": "2025-12-04T14:15:45.524Z",
   "app/commerce-modules/product/variant-inventory/page.mdx": "2026-07-20T12:16:49.481Z",
-  "app/examples/guides/custom-item-price/page.mdx": "2026-01-12T12:17:46.402Z",
+  "app/examples/guides/custom-item-price/page.mdx": "2026-07-31T12:43:03.287Z",
   "references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateShippingStep/page.mdx": "2026-04-23T12:32:58.516Z",
   "references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateShippingStepId/page.mdx": "2025-02-11T11:36:39.228Z",
   "references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.createPaymentAccountHolderStep/page.mdx": "2025-02-24T10:48:31.714Z",
@@ -7643,5 +7643,5 @@ export const generatedEditDates = {
   "app/lint/rules/widget-must-export-config/page.mdx": "2026-07-28T05:43:12.267Z",
   "app/lint/rules/widget-must-have-default-export/page.mdx": "2026-07-28T05:43:12.274Z",
   "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z",
-  "app/lint/rules/prefer-workflow-event-over-module-event/page.mdx": "2026-07-30T06:31:46.952Z"
+  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z"
 }
