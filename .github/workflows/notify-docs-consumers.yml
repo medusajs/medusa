@@ -1,0 +1,196 @@
+name: Notify Docs Consumers
+
+# Notifies downstream repositories (MCP server, agent skills, etc.) whenever
+# documentation changes are merged, so they can update their own content if relevant.
+#
+# Each target repository must have a workflow listening for the
+# `medusa-docs-updated` repository_dispatch event. The event's `client_payload`
+# contains the commit link, sha, message, and the list of changed docs files.
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "www/apps/book/**"
+      - "www/apps/resources/**"
+      - "www/apps/ui/**"
+      - "www/apps/user-guide/**"
+      - "www/apps/cloud/**"
+      - "www/apps/api-reference/**"
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to notify the downstream repositories about"
+        required: true
+        type: string
+
+concurrency:
+  group: notify-docs-consumers
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: Collect docs changes
+    runs-on: ubuntu-latest
+    outputs:
+      commit_sha: ${{ steps.changes.outputs.commit_sha }}
+      commit_url: ${{ steps.changes.outputs.commit_url }}
+      commit_message: ${{ steps.changes.outputs.commit_message }}
+      changed_files: ${{ steps.changes.outputs.changed_files }}
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect changed documentation files
+        id: changes
+        env:
+          COMMIT_SHA: ${{ github.event.inputs.commit_sha || github.sha }}
+        run: |
+          node --input-type=module << 'EOF'
+          import { execFileSync } from "child_process"
+          import { appendFileSync } from "fs"
+
+          const sha = execFileSync("git", ["rev-parse", process.env.COMMIT_SHA], {
+            encoding: "utf8",
+          }).trim()
+          const message = execFileSync("git", ["log", "-1", "--pretty=%s", sha], {
+            encoding: "utf8",
+          }).trim()
+
+          // Files changed by the commit. Merge commits are diffed against their
+          // first parent, which is the state of `develop` before the merge.
+          // Renames are reported as a delete + an add so that consumers are told
+          // about the path that went away, not only the one that replaced it.
+          const diff = execFileSync(
+            "git",
+            [
+              "diff-tree",
+              "--no-commit-id",
+              "--name-status",
+              "--no-renames",
+              "-m",
+              "--first-parent",
+              "-r",
+              sha,
+            ],
+            { encoding: "utf8" }
+          )
+
+          const docsApps = [
+            "book",
+            "resources",
+            "ui",
+            "user-guide",
+            "cloud",
+            "api-reference",
+          ]
+          const seen = new Set()
+          const files = diff
+            .split("\n")
+            .filter(Boolean)
+            .map((line) => {
+              const [status, path] = line.split("\t")
+              // "A" (added), "M" (modified), or "D" (deleted)
+              return { status, path }
+            })
+            .filter(({ path }) => {
+              if (!path || seen.has(path)) {
+                return false
+              }
+              seen.add(path)
+              return docsApps.some((app) => path.startsWith(`www/apps/${app}/`))
+            })
+
+          // `client_payload` is limited in size, so only send a capped list.
+          const MAX_FILES = 100
+          const cappedFiles = files.slice(0, MAX_FILES)
+          if (files.length > MAX_FILES) {
+            console.log(
+              `Capping changed files list at ${MAX_FILES} (${files.length} changed).`
+            )
+          }
+
+          const outputs = {
+            commit_sha: sha,
+            commit_url: `https://github.com/${process.env.GITHUB_REPOSITORY}/commit/${sha}`,
+            commit_message: message,
+            changed_files: JSON.stringify(cappedFiles),
+            has_changes: files.length > 0 ? "true" : "false",
+          }
+
+          appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            Object.entries(outputs)
+              .map(([key, value]) => `${key}<<__EOF__\n${value}\n__EOF__`)
+              .join("\n") + "\n"
+          )
+
+          console.log(`Commit: ${sha}`)
+          console.log(`Changed docs files: ${files.length}`)
+          EOF
+
+  notify:
+    name: Notify ${{ matrix.repo }}
+    needs: collect
+    if: ${{ needs.collect.outputs.has_changes == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Add downstream repositories here (names only — they are all under the
+        # `medusajs` org). Each one needs a workflow listening for the
+        # `medusa-docs-updated` repository_dispatch event, and the Medusa GitHub
+        # App must be installed on it.
+        repo:
+          - medusa-mcp
+          - medusa-agent-skills
+    steps:
+      # Same app as the issue/PR triage workflows. Unlike those, `owner` and
+      # `repositories` are set explicitly: the action defaults to the current
+      # repository, which cannot dispatch to another one. Scoping the token to
+      # the single repo of this matrix leg keeps it minimally privileged.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ matrix.repo }}
+
+      - name: Send repository dispatch
+        env:
+          # Needs the `Contents: write` repository permission.
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET_REPO: ${{ github.repository_owner }}/${{ matrix.repo }}
+          COMMIT_SHA: ${{ needs.collect.outputs.commit_sha }}
+          COMMIT_URL: ${{ needs.collect.outputs.commit_url }}
+          COMMIT_MESSAGE: ${{ needs.collect.outputs.commit_message }}
+          CHANGED_FILES: ${{ needs.collect.outputs.changed_files }}
+        run: |
+          payload=$(jq -n \
+            --arg sha "$COMMIT_SHA" \
+            --arg url "$COMMIT_URL" \
+            --arg message "$COMMIT_MESSAGE" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --argjson changed_files "$CHANGED_FILES" \
+            '{
+              event_type: "medusa-docs-updated",
+              client_payload: {
+                repository: $repository,
+                commit_sha: $sha,
+                commit_url: $url,
+                commit_message: $message,
+                changed_files: $changed_files
+              }
+            }')
+
+          echo "$payload" | gh api "repos/$TARGET_REPO/dispatches" \
+            --method POST \
+            --input -
+
+          echo "Dispatched medusa-docs-updated to $TARGET_REPO for $COMMIT_URL"

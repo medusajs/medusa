@@ -12,7 +12,7 @@ keywords:
 ---
 
 import { CodeTabs, CodeTab, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
-import { ChevronUpDown } from "@medusajs/icons"
+import { ChevronUpDown, TriangleRightMini } from "@medusajs/icons"
 
 export const metadata = {
   title: `Medusa Emails`,
@@ -225,9 +225,24 @@ The domain will then be added, and the system will periodically check the DNS re
 
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
-The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) with an inline status indicator showing whether verification succeeded, failed, or is still in progress.
+The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) with an inline status indicator per row showing whether verification succeeded, failed, or is still in progress. When all DKIM records pass but the domain is still pending platform confirmation, a **Finalizing** status is shown.
 
 ![Sender Domains page with the sender domain added](https://res.cloudinary.com/dza7lstvk/image/upload/v1762947495/Cloud/CleanShot_2025-11-12_at_13.36.59_2x_sbaf7y.png)
+
+### Re-verify DNS Records
+
+If you've updated your DNS records and want to trigger an immediate check, click the **Reverify records** button on the domain detail page. This manually starts a fresh DNS check rather than waiting for the next automatic check.
+
+### Diagnose DNS Record Issues
+
+On the domain detail page, you can click the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon for any record whose verification status is failing. This shows:
+
+- The actual DNS records currently found for that entry, if any.
+- A `dig` command (macOS/Linux) you can copy and run in your terminal to check the record yourself.
+- An `nslookup` command (Windows) you can copy and run in your terminal.
+- A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser.
+
+Use these diagnosis details to verify and fix any issues in your domain's DNS records. For example, if a different value is set for a record, make sure you set the correct value.
 
 ### Specify From Email
 
@@ -327,6 +342,13 @@ Below the statistics, you'll find a detailed list of sent emails.
 To change the time range for email activity statistics and the list of sent emails, click the time range dropdown at the top right of the page. You can choose custom ranges or predefined ranges like "Last 7 days" or "Last 30 days".
 
 ![Time range dropdown opened on the Email Activity page](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948832/Cloud/CleanShot_2025-11-12_at_14.00.17_2x_bqlopg.png)
+
+The earliest selectable start date depends on your organization's [plan](../pricing/page.mdx):
+
+- **Develop plan**: You can query email logs from up to the past 12 hours.
+- **Launch and Scale plans**: You can query email logs from up to the past 3 days.
+
+If you select a start date earlier than what your plan allows, the picker automatically moves it forward to the earliest permitted time.
 
 ### Filter Emails by Project
 

@@ -5,6 +5,7 @@ import {
   generateEditedDates,
   generateLlmsFull,
   generateSidebar,
+  generateSitemapUrls,
   copyMdxToPublic,
 } from "build-scripts"
 import {
@@ -19,6 +20,7 @@ async function main() {
   await generateSidebar(sidebars, {
     addNumbering: true,
   })
+  await generateSitemapUrls()
   const baseUrl =
     process.env.NEXT_PUBLIC_PROD_BASE_URL || process.env.NEXT_PUBLIC_BASE_URL
   const plugins = {

@@ -6,6 +6,9 @@ import { IAuthModuleService } from "@medusajs/framework/types"
 import { AuthEvents, MedusaError, Modules } from "@medusajs/framework/utils"
 import { AuthMfaGenerateRecoveryCodesRequestType } from "../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AuthMfaGenerateRecoveryCodesRequestType>,
   res: MedusaResponse

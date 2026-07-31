@@ -3004,7 +3004,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/updateClaimAddItemWorkflow",
                   "title": "updateClaimAddItemWorkflow",
@@ -3972,7 +3971,6 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 },
                 {
                   "loaded": true,
-                  "isPathHref": true,
                   "type": "link",
                   "path": "/references/medusa-workflows/updateClaimAddItemValidationStep",
                   "title": "updateClaimAddItemValidationStep",

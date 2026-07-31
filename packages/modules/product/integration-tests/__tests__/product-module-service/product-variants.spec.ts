@@ -444,6 +444,29 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(productVariant.title).toEqual("new test")
         })
 
+        it("should delete one metadata field without removing the others", async () => {
+          await service.updateProductVariants(variantOne.id, {
+            metadata: {
+              keep: "value",
+              remove: "value",
+            },
+          })
+
+          await service.updateProductVariants(variantOne.id, {
+            metadata: {
+              remove: "",
+            },
+          })
+
+          const productVariant = await service.retrieveProductVariant(
+            variantOne.id
+          )
+
+          expect(productVariant.metadata).toEqual({
+            keep: "value",
+          })
+        })
+
         it("should update scalar fields without altering the variant's options", async () => {
           // A scalar-only update (no `options` in the payload) skips the option
           // resolution/uniqueness/relation-reconcile path. This must NOT wipe or
