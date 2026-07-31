@@ -17,7 +17,7 @@ export type PriceListRuleOperatorType = z.infer<
 
 export const PriceListRulesSchema = z.object({
   customer_group_id: z.array(PriceListCustomerGroupSchema).nullish(),
-  customer_group_operator: PriceListRuleOperatorSchema.default("in"),
+  customer_group_operator: PriceListRuleOperatorSchema,
 })
 
 export const PriceListCreateCurrencyPriceSchema = z.object({

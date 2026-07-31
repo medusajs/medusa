@@ -41,7 +41,7 @@ const PriceListConfigurationSchema = z.object({
       name: z.string(),
     })
   ),
-  customer_group_operator: z.enum(["in", "nin"]).default("in"),
+  customer_group_operator: z.enum(["in", "nin"]),
 })
 
 const STACKED_MODAL_ID = "cg"
