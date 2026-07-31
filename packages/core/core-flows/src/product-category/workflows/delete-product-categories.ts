@@ -52,6 +52,9 @@ export const deleteProductCategoriesWorkflowId = "delete-product-categories"
  * @summary
  *
  * Delete product categories.
+ *
+ * @property hooks.categoriesDeleted - This hook is called after the product categories are deleted.
+ * You can use it to perform custom actions on the deleted categories.
  */
 export const deleteProductCategoriesWorkflow = createWorkflow(
   deleteProductCategoriesWorkflowId,
