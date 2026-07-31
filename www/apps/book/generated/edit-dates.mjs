@@ -153,7 +153,9 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/page.mdx": "2026-07-30T10:30:50.331Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/extend-products/page.mdx": "2026-07-30T10:34:57.901Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers/page.mdx": "2026-07-30T10:23:36.079Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms/page.mdx": "2026-07-30T12:50:53.144Z",
   "app/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/page.mdx": "2026-07-30T11:21:42.127Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z"
+  "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/page.mdx": "2026-07-31T06:25:13.296Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z"
 }
