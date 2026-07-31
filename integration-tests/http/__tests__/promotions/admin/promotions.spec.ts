@@ -537,6 +537,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                   shipping_profile_id: shippingProfile.id,
                 },
@@ -682,6 +683,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                   shipping_profile_id: shippingProfile.id,
                 },
@@ -823,6 +825,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                 },
                 adminHeaders
@@ -1084,6 +1087,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                 },
                 adminHeaders
@@ -1248,6 +1252,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                 },
                 adminHeaders
@@ -1344,6 +1349,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                   shipping_profile_id: shippingProfile.id,
                 },
@@ -1496,6 +1502,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                   shipping_profile_id: shippingProfile.id,
                 },
@@ -1623,6 +1630,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                   shipping_profile_id: shippingProfile.id,
                 },
@@ -1781,6 +1789,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   ...medusaTshirtProduct,
                   shipping_profile_id: shippingProfile.id,
                 },
@@ -2007,7 +2016,14 @@ medusaIntegrationTestRunner({
           ).data.region
 
           const product = (
-            await api.post("/admin/products", medusaTshirtProduct, adminHeaders)
+            await api.post(
+              "/admin/products",
+              {
+                ...medusaTshirtProduct,
+                sales_channels: [{ id: salesChannel.id }],
+              },
+              adminHeaders
+            )
           ).data.product
 
           const response = await api.post(
@@ -2256,6 +2272,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/products",
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "Discounted Medusa T-Shirt",
                 status: ProductStatus.PUBLISHED,
                 handle: "discounted-medusa-t-shirt",
@@ -2589,7 +2606,14 @@ medusaIntegrationTestRunner({
           ).data.region
 
           const product = (
-            await api.post("/admin/products", medusaTshirtProduct, adminHeaders)
+            await api.post(
+              "/admin/products",
+              {
+                ...medusaTshirtProduct,
+                sales_channels: [{ id: salesChannel.id }],
+              },
+              adminHeaders
+            )
           ).data.product
 
           const response = await api.post(
@@ -2824,7 +2848,14 @@ medusaIntegrationTestRunner({
           ).data.region
 
           const product = (
-            await api.post("/admin/products", medusaTshirtProduct, adminHeaders)
+            await api.post(
+              "/admin/products",
+              {
+                ...medusaTshirtProduct,
+                sales_channels: [{ id: salesChannel.id }],
+              },
+              adminHeaders
+            )
           ).data.product
 
           const response = await api.post(
@@ -4038,6 +4069,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/products",
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "Test product 1",
                 options: [{ title: "size", values: ["large", "small"] }],
                 shipping_profile_id: shippingProfile.id,
@@ -4050,6 +4082,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/products",
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "Test product 2",
                 options: [{ title: "size", values: ["large", "small"] }],
                 shipping_profile_id: shippingProfile.id,

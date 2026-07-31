@@ -28,6 +28,7 @@ import {
 } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
 import { validateLineItemPricesStep } from "../steps/validate-line-item-prices"
+import { validateVariantSalesChannelsStep } from "../steps/validate-variant-sales-channels"
 import {
   cartFieldsForPricingContext,
   productVariantsFields,
@@ -252,6 +253,11 @@ export const addToCartWorkflow = createWorkflow(
           fetchedVariants) as unknown as PrepareVariantLineItemInput[]
       }
     )
+
+    validateVariantSalesChannelsStep({
+      salesChannelId: cart.sales_channel_id,
+      variants,
+    })
 
     const lineItems = transform(
       { cart_id: input.cart_id, items: input.items, lineItemsData, variants },

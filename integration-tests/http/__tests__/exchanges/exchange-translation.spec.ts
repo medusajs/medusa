@@ -123,6 +123,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: "Medusa T-Shirt",
               description: "A comfortable cotton t-shirt",
               handle: "t-shirt",

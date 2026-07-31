@@ -38,6 +38,7 @@ import {
   validateCartItemsStep,
   validateCartPaymentsStep,
   validateShippingStep,
+  validateVariantSalesChannelsStep,
 } from "../steps"
 import { compensatePaymentIfNeededStep } from "../steps/compensate-payment-if-needed"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
@@ -391,6 +392,21 @@ export const completeCartWorkflow = createWorkflow(
     })
 
     validateCartItemsStep({ cart: cartData.data })
+
+    // Availability may have changed since the items were added to the cart.
+    const salesChannelAvailability = transform(
+      { cart: cartData.data },
+      ({ cart }) => {
+        return {
+          salesChannelId: cart?.sales_channel_id,
+          variants: (cart?.items ?? [])
+            .map((item) => item.variant)
+            .filter(Boolean),
+        }
+      }
+    )
+
+    validateVariantSalesChannelsStep(salesChannelAvailability)
 
     // this needs to be before the validation step
     const paymentSessions = validateCartPaymentsStep({ cart: cartData.data })

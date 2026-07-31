@@ -29,6 +29,7 @@ import {
   findSalesChannelStep,
 } from "../steps"
 import { validateSalesChannelStep } from "../steps/validate-sales-channel"
+import { validateVariantSalesChannelsStep } from "../steps/validate-variant-sales-channels"
 import { productVariantsFields } from "../utils/fields"
 import { requiredVariantFieldsForInventoryConfirmation } from "../utils/prepare-confirm-inventory-input"
 import { pricingContextResult } from "../utils/schemas"
@@ -249,6 +250,11 @@ export const createCartWorkflow = createWorkflow(
 
     const { variants, lineItems } = getVariantsAndItemsWithPrices.runAsStep({
       input: getVariantsAndItemsWithPricesInput,
+    })
+
+    validateVariantSalesChannelsStep({
+      salesChannelId: salesChannel.id,
+      variants,
     })
 
     confirmVariantInventoryWorkflow.runAsStep({

@@ -114,6 +114,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/products",
           {
+            sales_channels: [{ id: salesChannel.id }],
             title: "Test product",
             status: ProductStatus.PUBLISHED,
             options: [{ title: "size", values: ["large", "small"] }],
@@ -140,6 +141,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/products",
           {
+            sales_channels: [{ id: salesChannel.id }],
             title: "Extra product",
             status: ProductStatus.PUBLISHED,
             options: [{ title: "size", values: ["large", "small"] }],
@@ -166,6 +168,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/products",
           {
+            sales_channels: [{ id: salesChannel.id }],
             title: "Buy rule product",
             options: [{ title: "size", values: ["large", "small"] }],
             shipping_profile_id: shippingProfile.id,
@@ -1115,14 +1118,6 @@ medusaIntegrationTestRunner({
           )
         ).data.region
 
-        product = (
-          await api.post(
-            "/admin/products",
-            { ...medusaTshirtProduct },
-            adminHeaders
-          )
-        ).data.product
-
         salesChannel = (
           await api.post(
             "/admin/sales-channels",
@@ -1130,6 +1125,17 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.sales_channel
+
+        product = (
+          await api.post(
+            "/admin/products",
+            {
+              ...medusaTshirtProduct,
+              sales_channels: [{ id: salesChannel.id }],
+            },
+            adminHeaders
+          )
+        ).data.product
       })
 
       it("should add a create a new payment collection if the order has authorized payment collection", async () => {

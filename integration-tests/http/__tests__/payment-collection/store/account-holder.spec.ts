@@ -111,6 +111,7 @@ medusaIntegrationTestRunner({
         await api.post(
           "/admin/products",
           getProductFixture({
+            sales_channels: [{ id: salesChannel.id }],
             title: "test",
             status: "published",
             shipping_profile_id: shippingProfile.id,

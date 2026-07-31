@@ -89,6 +89,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: "Test fixture",
               status: ProductStatus.PUBLISHED,
               options: [

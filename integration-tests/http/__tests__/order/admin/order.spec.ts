@@ -2078,6 +2078,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: `Wooden table`,
               status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
@@ -2243,6 +2244,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: `Tablet`,
               status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
@@ -2467,6 +2469,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: `Tablet`,
               status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
@@ -2872,6 +2875,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: `Bottle Packs`,
               status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
@@ -3679,6 +3683,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/products",
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: `Wooden table`,
                 status: ProductStatus.PUBLISHED,
                 shipping_profile_id: shippingProfile.id,

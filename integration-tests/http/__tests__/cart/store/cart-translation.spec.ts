@@ -153,6 +153,7 @@ medusaIntegrationTestRunner({
               description: "A comfortable cotton t-shirt",
               handle: "t-shirt",
               status: ProductStatus.PUBLISHED,
+              sales_channels: [{ id: salesChannel.id }],
               shipping_profile_id: shippingProfile.id,
               options: [
                 {

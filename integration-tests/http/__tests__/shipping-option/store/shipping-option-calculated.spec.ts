@@ -79,6 +79,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/products",
             {
+              sales_channels: [{ id: salesChannel.id }],
               title: "Test fixture",
               shipping_profile_id: shippingProfile.id,
               status: ProductStatus.PUBLISHED,
@@ -580,6 +581,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/products",
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "Test fixture B",
                 shipping_profile_id: shippingProfileB.id,
                 status: ProductStatus.PUBLISHED,

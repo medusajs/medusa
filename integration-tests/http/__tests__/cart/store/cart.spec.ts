@@ -111,14 +111,6 @@ medusaIntegrationTestRunner({
           )
         ).data.region
 
-        product = (
-          await api.post(
-            "/admin/products",
-            { ...medusaTshirtProduct, shipping_profile_id: shippingProfile.id },
-            adminHeaders
-          )
-        ).data.product
-
         salesChannel = (
           await api.post(
             "/admin/sales-channels",
@@ -126,6 +118,18 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.sales_channel
+
+        product = (
+          await api.post(
+            "/admin/products",
+            {
+              ...medusaTshirtProduct,
+              sales_channels: [{ id: salesChannel.id }],
+              shipping_profile_id: shippingProfile.id,
+            },
+            adminHeaders
+          )
+        ).data.product
 
         await api.post(
           "/admin/price-preferences",
@@ -220,6 +224,7 @@ medusaIntegrationTestRunner({
           const productData = {
             title: "Medusa T-Shirt based quantity",
             handle: "t-shirt-with-quantity-prices",
+            sales_channels: [{ id: salesChannel.id }],
             status: ProductStatus.PUBLISHED,
             options: [
               {
@@ -314,6 +319,7 @@ medusaIntegrationTestRunner({
           const productData = {
             title: "Medusa T-Shirt based quantity",
             handle: "t-shirt-with-quantity-prices",
+            sales_channels: [{ id: salesChannel.id }],
             status: ProductStatus.PUBLISHED,
             options: [
               {
@@ -523,6 +529,53 @@ medusaIntegrationTestRunner({
             )
           })
         })
+
+        it("should throw when creating a cart with a product that is not available in the cart's sales channel", async () => {
+          const otherSalesChannel = (
+            await api.post(
+              "/admin/sales-channels",
+              { name: "Other channel" },
+              adminHeaders
+            )
+          ).data.sales_channel
+
+          const restrictedProduct = (
+            await api.post(
+              `/admin/products`,
+              {
+                ...medusaTshirtProduct,
+                handle: "restricted-on-create",
+                shipping_profile_id: shippingProfile.id,
+                sales_channels: [{ id: otherSalesChannel.id }],
+                variants: medusaTshirtProduct.variants.map((v) => ({
+                  ...v,
+                  sku: `${v.sku}-RESTRICTED-CREATE`,
+                })),
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const response = await api
+            .post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [
+                  { variant_id: restrictedProduct.variants[0].id, quantity: 1 },
+                ],
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.response.status).toEqual(400)
+          expect(response.response.data.message).toEqual(
+            `Variants with IDs ${restrictedProduct.variants[0].id} are not available in sales channel ${salesChannel.id}`
+          )
+        })
       })
 
       describe("POST /store/carts/:id/line-items", () => {
@@ -716,6 +769,7 @@ medusaIntegrationTestRunner({
           const productData = {
             title: "Medusa T-Shirt based quantity",
             handle: "t-shirt-with-quantity-prices",
+            sales_channels: [{ id: salesChannel.id }],
             status: ProductStatus.PUBLISHED,
             options: [
               {
@@ -1023,6 +1077,7 @@ medusaIntegrationTestRunner({
           const productData = {
             title: "Medusa T-Shirt based quantity",
             handle: "t-shirt-with-quantity-prices",
+            sales_channels: [{ id: salesChannel.id }],
             status: ProductStatus.PUBLISHED,
             options: [
               {
@@ -1923,6 +1978,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Medusa T-Shirt with tiered sale prices",
                   handle: "t-shirt-with-tiered-sale-prices",
                   status: ProductStatus.PUBLISHED,
@@ -2114,6 +2170,58 @@ medusaIntegrationTestRunner({
               expect(response.status).toEqual(200)
             })
           })
+        })
+
+        it("should throw when adding a product that is not available in the cart's sales channel", async () => {
+          const otherSalesChannel = (
+            await api.post(
+              "/admin/sales-channels",
+              { name: "Other channel" },
+              adminHeaders
+            )
+          ).data.sales_channel
+
+          const restrictedProduct = (
+            await api.post(
+              `/admin/products`,
+              {
+                ...medusaTshirtProduct,
+                handle: "restricted-on-add",
+                shipping_profile_id: shippingProfile.id,
+                sales_channels: [{ id: otherSalesChannel.id }],
+                variants: medusaTshirtProduct.variants.map((v) => ({
+                  ...v,
+                  sku: `${v.sku}-RESTRICTED-ADD`,
+                })),
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const response = await api
+            .post(
+              `/store/carts/${cart.id}/line-items`,
+              { variant_id: restrictedProduct.variants[0].id, quantity: 1 },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.response.status).toEqual(400)
+          expect(response.response.data.message).toEqual(
+            `Variants with IDs ${restrictedProduct.variants[0].id} are not available in sales channel ${salesChannel.id}`
+          )
         })
       })
 
@@ -2439,6 +2547,39 @@ medusaIntegrationTestRunner({
             )
           })
 
+          it("should throw when completing a cart holding a product that is no longer available in the cart's sales channel", async () => {
+            // The item was added while available, then the product was removed
+            // from the cart's sales channel.
+            await api.post(
+              `/admin/sales-channels/${salesChannel.id}/products`,
+              { remove: [product.id] },
+              adminHeaders
+            )
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response = await api
+              .post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+              .catch((e) => e)
+
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data.message).toEqual(
+              `Variants with IDs ${product.variants[0].id} are not available in sales channel ${salesChannel.id}`
+            )
+          })
+
           it("should successfully complete cart with pre existing captured payment session", async () => {
             const paymentModule = appContainer.resolve(Modules.PAYMENT)
 
@@ -2607,6 +2748,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   status: ProductStatus.PUBLISHED,
                   title: "Product for camapign",
                   description: "test",
@@ -2824,6 +2966,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product without inventory management",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -3019,6 +3162,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: `Test fixture ${shippingProfile.id}`,
                     status: ProductStatus.PUBLISHED,
                     shipping_profile_id: shippingProfile.id,
@@ -3240,6 +3384,7 @@ medusaIntegrationTestRunner({
             await api.post(
               "/admin/products",
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "GB Tax Test Product",
                 status: ProductStatus.PUBLISHED,
                 options: [{ title: "Size", values: ["S"] }],
@@ -3599,6 +3744,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "test product",
                   status: ProductStatus.PUBLISHED,
                   description: "test",
@@ -3749,6 +3895,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product Profile A",
                   status: ProductStatus.PUBLISHED,
                   options: [{ title: "Size", values: ["One"] }],
@@ -3840,6 +3987,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product Profile B",
                   status: ProductStatus.PUBLISHED,
                   options: [{ title: "Size", values: ["One"] }],
@@ -4005,6 +4153,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product Orphan Profile A",
                   status: ProductStatus.PUBLISHED,
                   options: [{ title: "Size", values: ["One"] }],
@@ -4096,6 +4245,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product Orphan Profile B",
                   status: ProductStatus.PUBLISHED,
                   options: [{ title: "Size", values: ["One"] }],
@@ -4678,6 +4828,7 @@ medusaIntegrationTestRunner({
             await api.post(
               `/admin/products`,
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "Gift Card",
                 description: "test",
                 status: ProductStatus.PUBLISHED,
@@ -4744,6 +4895,7 @@ medusaIntegrationTestRunner({
             await api.post(
               `/admin/products`,
               {
+                sales_channels: [{ id: salesChannel.id }],
                 title: "Gift Card",
                 description: "test",
                 status: ProductStatus.PUBLISHED,
@@ -5313,6 +5465,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 "/admin/products",
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Medusa T-Shirt not discountable",
                   status: ProductStatus.PUBLISHED,
                   handle: "t-shirt-not-discountable",
@@ -5489,6 +5642,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -5606,6 +5760,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -5725,6 +5880,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -5844,6 +6000,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -5982,6 +6139,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -6099,6 +6257,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -6237,6 +6396,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   description: "test",
                   status: ProductStatus.PUBLISHED,
@@ -6333,6 +6493,7 @@ medusaIntegrationTestRunner({
               await api.post(
                 `/admin/products`,
                 {
+                  sales_channels: [{ id: salesChannel.id }],
                   title: "Product for free",
                   status: ProductStatus.PUBLISHED,
                   description: "test",
@@ -6561,6 +6722,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: "Expensive Product",
                     status: ProductStatus.PUBLISHED,
                     options: [{ title: "Size", values: ["L"] }],
@@ -6583,6 +6745,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: "Cheap Product",
                     status: ProductStatus.PUBLISHED,
                     options: [{ title: "Size", values: ["M"] }],
@@ -6664,6 +6827,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: "Product 1",
                     status: ProductStatus.PUBLISHED,
                     options: [{ title: "Size", values: ["S"] }],
@@ -6686,6 +6850,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: "Product 2",
                     status: ProductStatus.PUBLISHED,
                     options: [{ title: "Size", values: ["M"] }],
@@ -6764,6 +6929,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: "Expensive Product",
                     status: ProductStatus.PUBLISHED,
                     options: [{ title: "Size", values: ["L"] }],
@@ -6786,6 +6952,7 @@ medusaIntegrationTestRunner({
                 await api.post(
                   "/admin/products",
                   {
+                    sales_channels: [{ id: salesChannel.id }],
                     title: "Cheap Product",
                     status: ProductStatus.PUBLISHED,
                     options: [{ title: "Size", values: ["S"] }],

@@ -107,6 +107,12 @@ medusaIntegrationTestRunner({
         )
       ).data.sales_channel
 
+      await api.post(
+        `/admin/sales-channels/${salesChannel.id}/products`,
+        { add: [product.id] },
+        adminHeaders
+      )
+
       region = (
         await api.post(
           "/admin/regions",

@@ -90,6 +90,12 @@ medusaIntegrationTestRunner({
         )
       ).data.sales_channel
 
+      await api.post(
+        `/admin/sales-channels/${salesChannel.id}/products`,
+        { add: [product.id] },
+        adminHeaders
+      )
+
       region = (
         await api.post(
           "/admin/regions",
@@ -1482,6 +1488,7 @@ medusaIntegrationTestRunner({
             {
               title: "Gift Card Product",
               status: ProductStatus.PUBLISHED,
+              sales_channels: [{ id: salesChannel.id }],
               is_giftcard: true,
               options: [{ title: "Denomination", values: ["10"] }],
               variants: [

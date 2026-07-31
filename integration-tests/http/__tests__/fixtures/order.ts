@@ -181,6 +181,29 @@ export async function createOrderSeeder({
     adminHeaders
   )
 
+  // Every product in the cart must be available in the cart's sales channel to
+  // be purchasable, including the ones passed as additional products.
+  const additionalVariantIds = (additionalProducts ?? []).map(
+    (item) => item.variant_id
+  )
+
+  const additionalProductIds = additionalVariantIds.length
+    ? (
+        await container
+          .resolve(Modules.PRODUCT)
+          .listProductVariants(
+            { id: additionalVariantIds },
+            { select: ["product_id"] }
+          )
+      ).map((variant) => variant.product_id)
+    : []
+
+  await api.post(
+    `/admin/sales-channels/${salesChannel.id}/products`,
+    { add: [...new Set([product.id, ...additionalProductIds])] },
+    adminHeaders
+  )
+
   const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
   await remoteLink.create([
     {
