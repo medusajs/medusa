@@ -212,7 +212,7 @@ You can also navigate to the sender domains form from the [command palette](../c
 5. Click the "Add sender domain" button.
 6. In the form that opens, enter the domain you want to add (for example, `yourdomain.com`) and click **Continue**.
 
-After submitting, you are navigated to the domain's detail page where the required DNS records are shown. Add these records to your domain's DNS settings:
+After submitting, you'll be taken to the domain's detail page where the required DNS records are shown. Add these records to your domain's DNS settings:
 
 - **DKIM** (labeled **Required**): DomainKeys Identified Mail records that authenticate your emails. You must add these records to send emails from your domain.
 - **SPF**: (Optional) Sender Policy Framework records that help receiving mail servers verify your domain. Adding SPF records improves deliverability but is not required.
@@ -226,11 +226,7 @@ The domain will then be verified periodically. This process may take a few minut
 
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
-The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified.
-
-When all DKIM records pass but the domain is still pending platform confirmation, a **Finalizing** status is shown. A propagation note below the sections reminds you that DNS changes may take up to 48 hours to take effect.
-
-The domain header shows when the most recent verification check ran.
+The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
 
 ### Restart Failed DNS Setup
 
