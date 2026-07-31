@@ -226,7 +226,11 @@ The domain will then be verified periodically. This process may take a few minut
 
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
-The detail page is organized into check sections — **DKIM**, **SPF**, and **DMARC** — each showing whether the corresponding DNS records have been verified. When all DKIM records pass but the domain is still pending platform confirmation, a **Finalizing** status is shown. A propagation note below the sections reminds you that DNS changes may take up to 48 hours to take effect. The domain header shows a **last checked** timestamp indicating when the most recent verification check ran.
+The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified.
+
+When all DKIM records pass but the domain is still pending platform confirmation, a **Finalizing** status is shown. A propagation note below the sections reminds you that DNS changes may take up to 48 hours to take effect.
+
+The domain header shows a **last checked** timestamp indicating when the most recent verification check ran.
 
 <Note>
 
