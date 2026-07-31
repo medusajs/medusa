@@ -42,6 +42,7 @@ export const sitemapUrls = [
   "/commerce-modules/cart/links-to-other-modules",
   "/commerce-modules/cart",
   "/commerce-modules/cart/promotions",
+  "/commerce-modules/cart/sales-channel-availability",
   "/commerce-modules/cart/tax-lines",
   "/commerce-modules/cart/workflows",
   "/commerce-modules/currency/js-sdk",

@@ -24,6 +24,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/cart/extend"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Extend Customer",
     "path": "https://docs.medusajs.com/resources/commerce-modules/customer/extend"
   },
