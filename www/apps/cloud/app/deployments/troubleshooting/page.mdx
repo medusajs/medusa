@@ -525,6 +525,24 @@ Replace `".."` with the relative path from your storefront directory to the mono
 
 ---
 
+## Missing Root Files in Turborepo Monorepo Builds (TS5083)
+
+If your `turbo` monorepo build fails with an error similar to the following, but succeeds locally, a file at the root of your monorepo isn't available during the build:
+
+```bash
+error TS5083: Cannot read file '/tsconfig.base.json'.
+```
+
+Medusa prunes `turbo` monorepos down to the package it's building. The pruned output only includes the root `package.json`, the lockfile, `pnpm-workspace.yaml`, `turbo.json`, `.gitignore`, `.npmrc`, and the source code of the target package along with the workspace packages it depends on. So, a shared root file, such as a `tsconfig.base.json` file that other packages reference with `extends`, isn't copied into the build.
+
+### Fix Missing Root Files
+
+Move the shared file into a workspace package, then add that package as a dependency of your Medusa application or storefront. Medusa then includes the file in the build, since it builds the target package along with the workspace packages it depends on.
+
+For files that your Medusa application needs at runtime, such as JSON files or fonts, keep them within your Medusa application and copy them to the `.medusa/server` directory as part of your `build` script. Learn more in the [Built Assets](!docs!/learn/build#built-assets) documentation.
+
+---
+
 ## npm Cache Errors During Build
 
 If your build fails with an error similar to:
