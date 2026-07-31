@@ -159,12 +159,13 @@ The page is organized into check sections:
 
 Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
 
-### Verify or Restart DNS Checks
+### Restart Failed DNS Setup
 
-The action button on the DNS detail page adapts to the domain's current status:
+When the domain is in a **failed** state, you can retry the verification from the beginning by clicking the **Restart** button at the top right. This button will only show up in the failed state.
 
-- When the domain is in a **failed** state, the button shows **Restart** — click it to retry the verification from the beginning.
-- Otherwise, the button shows **Verify** — click it to trigger an immediate DNS check.
+### Verify DNS Records Manually
+
+If your domain's status is still pending, you can trigger an immediate DNS check instead of waiting for the next automatic check by clicking the **Verify records** button at the top right.
 
 ---
 
