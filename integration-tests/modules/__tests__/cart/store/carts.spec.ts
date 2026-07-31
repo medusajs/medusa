@@ -147,6 +147,14 @@ medusaIntegrationTestRunner({
           await remoteLink.create([
             {
               [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
               [Modules.PRICING]: {
@@ -234,6 +242,10 @@ medusaIntegrationTestRunner({
           ])
 
           await remoteLink.create([
+            {
+              [Modules.PRODUCT]: { product_id: product.id },
+              [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel.id },
+            },
             {
               [Modules.PRODUCT]: { variant_id: product.variants[0].id },
               [Modules.PRICING]: { price_set_id: priceSet.id },
@@ -721,6 +733,9 @@ medusaIntegrationTestRunner({
         })
 
         it("handle line item quantity edge cases", async () => {
+          // These carts omit sales_channel_id, so they fall back to the
+          // store's default sales channel.
+          const [defaultStore] = await storeService.listStores({})
           const shippingProfile =
             await fulfillmentModule.createShippingProfiles({
               name: "Test",
@@ -733,6 +748,7 @@ medusaIntegrationTestRunner({
               {
                 ...productData,
                 shipping_profile_id: shippingProfile.id,
+                sales_channels: [{ id: defaultStore.default_sales_channel_id }],
               },
               adminHeaders
             )
@@ -837,6 +853,9 @@ medusaIntegrationTestRunner({
         })
 
         it("adding an existing variant should update or create line item depending on metadata", async () => {
+          // These carts omit sales_channel_id, so they fall back to the
+          // store's default sales channel.
+          const [defaultStore] = await storeService.listStores({})
           const shippingProfile =
             await fulfillmentModule.createShippingProfiles({
               name: "Test",
@@ -849,6 +868,7 @@ medusaIntegrationTestRunner({
               {
                 ...productData,
                 shipping_profile_id: shippingProfile.id,
+                sales_channels: [{ id: defaultStore.default_sales_channel_id }],
               },
               adminHeaders
             )
