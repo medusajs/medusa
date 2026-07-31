@@ -378,6 +378,14 @@ medusaIntegrationTestRunner({
           await remoteLink.create([
             {
               [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
               [Modules.PRICING]: {
@@ -514,6 +522,14 @@ medusaIntegrationTestRunner({
           await remoteLink.create([
             {
               [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
               [Modules.PRICING]: {
@@ -646,6 +662,14 @@ medusaIntegrationTestRunner({
           })
 
           await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
             {
               [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
@@ -808,6 +832,14 @@ medusaIntegrationTestRunner({
           })
 
           await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
             {
               [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
@@ -982,6 +1014,14 @@ medusaIntegrationTestRunner({
           })
 
           await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
             {
               [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
@@ -1253,6 +1293,14 @@ medusaIntegrationTestRunner({
           await remoteLink.create([
             {
               [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
               },
               [Modules.PRICING]: {
@@ -1432,6 +1480,14 @@ medusaIntegrationTestRunner({
           })
 
           await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                product_id: product.id,
+              },
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+            },
             {
               [Modules.PRODUCT]: {
                 variant_id: product.variants[0].id,
