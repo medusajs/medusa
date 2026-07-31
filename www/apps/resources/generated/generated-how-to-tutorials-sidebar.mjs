@@ -128,13 +128,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
-              "title": "Enforce Sales Channel Availability",
-              "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
-              "children": []
-            },
-            {
-              "loaded": true,
-              "type": "ref",
               "title": "Filter Products",
               "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products",
               "children": []
