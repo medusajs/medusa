@@ -60,10 +60,24 @@ export const sidebars = [
               },
               {
                 type: "link",
-                title: "Migrate from Other Platforms",
-                path: "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms",
+                title: "Migrate from Shopify",
+                path: "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify",
                 description:
-                  "Migrate data from Shopify, Magento, WooCommerce, and other platforms.",
+                  "Migrate your store's data from Shopify to Medusa.",
+              },
+              {
+                type: "link",
+                title: "Migrate from WooCommerce",
+                path: "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce",
+                description:
+                  "Migrate your store's data from WooCommerce to Medusa.",
+              },
+              {
+                type: "link",
+                title: "Migrate from Magento",
+                path: "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento",
+                description:
+                  "Migrate your store's data from Magento to Medusa.",
               },
               {
                 type: "link",
