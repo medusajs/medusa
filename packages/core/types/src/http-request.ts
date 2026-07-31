@@ -3,7 +3,7 @@ import type { NextFunction, Request, Response } from "express"
 
 import type { FindConfig, MedusaContainer, RequestQueryFields } from "./common"
 import type { MedusaPricingContext } from "./pricing"
-import type { PolicyAction } from "./rbac"
+import type { PolicyAction, RbacScope } from "./rbac"
 
 /**
  * The fields restricted from being selected in the response. Implemented by the
@@ -123,6 +123,7 @@ export interface AuthenticatedMedusaRequest<
   publishable_key_context?: PublishableKeyContext
   secret_key_context?: SecretKeyContext
   policies?: PolicyAction[]
+  rbacScope?: RbacScope
 }
 
 export interface MedusaStoreRequest<

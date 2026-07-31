@@ -1,4 +1,4 @@
-import { resolveActorRoleIds, resolvePermissions } from "@medusajs/framework"
+import { resolvePermissions, resolveRoles } from "@medusajs/framework"
 import { RbacScope } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -74,14 +74,13 @@ export const getAssignablePoliciesStep = createStep(
 
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const actorRoleIds = await resolveActorRoleIds({
-      actorType: actor ?? "user",
-      actorId: actor_id,
+    const roleIds = await resolveRoles({
+      authContext: { actor_id, actor_type: actor ?? "user" },
       container,
       scope,
     })
 
-    if (!actorRoleIds.length) {
+    if (!roleIds.length) {
       return new StepResponse({ policies: [], count: 0 })
     }
 
@@ -96,7 +95,7 @@ export const getAssignablePoliciesStep = createStep(
     })
 
     const granted = await resolvePermissions({
-      roles: actorRoleIds,
+      roles: roleIds,
       universe: (candidates ?? []).map((p: any) => ({
         resource: p.resource as string,
         operation: p.operation as string,

@@ -1,4 +1,4 @@
-import { hasPermission, resolveActorRoleIds } from "@medusajs/framework"
+import { hasPermission, resolveRoles } from "@medusajs/framework"
 import { RbacScope } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -72,14 +72,13 @@ export const getAssignableRolesStep = createStep(
 
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const actorRoleIds = await resolveActorRoleIds({
-      actorType: actor ?? "user",
-      actorId: actor_id,
+    const roleIds = await resolveRoles({
+      authContext: { actor_id, actor_type: actor ?? "user" },
       container,
       scope,
     })
 
-    if (!actorRoleIds.length) {
+    if (!roleIds.length) {
       return new StepResponse({ roles: [], count: 0 })
     }
 
@@ -104,7 +103,7 @@ export const getAssignableRolesStep = createStep(
       )
 
       const allowed = await hasPermission({
-        roles: actorRoleIds,
+        roles: roleIds,
         actions,
         container,
       })

@@ -1,4 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, Modules } from "@medusajs/utils"
 import type { PolicyAction } from "@medusajs/types"
 import { hasPermission } from "../../policies/has-permission"
 import type {
@@ -23,7 +23,11 @@ async function checkPermissions(
     return
   }
 
-  const roleIds = await resolveRoles(req)
+  const roleIds = await resolveRoles({
+    authContext: req.auth_context,
+    container: req.scope,
+    scope: req.rbacScope,
+  })
 
   if (!roleIds.length) {
     throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
@@ -67,6 +71,11 @@ export function wrapWithPoliciesCheck(
     try {
       req.policies ??= []
       req.policies.push(...(Array.isArray(policies) ? policies : [policies]))
+
+      const rbacModule = req.scope.resolve(Modules.RBAC)
+      const scope = await rbacModule.resolveScope(req)
+
+      req.rbacScope = scope
 
       await checkPermissions(policies, req)
       return handler(req, res, next)

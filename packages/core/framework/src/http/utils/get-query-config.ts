@@ -1,5 +1,4 @@
 import {
-  AuthenticatedMedusaRequest,
   FindConfig,
   PolicyAction,
   QueryConfig,
@@ -11,6 +10,7 @@ import {
   isDefined,
   isPresent,
   MedusaError,
+  Modules,
   pickDeep,
   promiseAll,
   stringToSelectRelationObject,
@@ -81,11 +81,19 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     entity &&
     rbacFilterFieldsFeatureFlag
   ) {
+    const rbacModule = req.scope.resolve(Modules.RBAC)
+
+    const scope = await rbacModule.resolveScope(req)
+
     filters.push(
       new RBACFieldFilter({
         policies: req.policies,
         getActorRoles: async () =>
-          resolveRoles(req as AuthenticatedMedusaRequest),
+          resolveRoles({
+            authContext: req.auth_context!,
+            container: req.scope,
+            scope,
+          }),
         container: req.scope,
       })
     )

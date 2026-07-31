@@ -38,7 +38,6 @@ export const updateRbacRolesWorkflowId = "update-rbac-roles"
 export const updateRbacRolesWorkflow = createWorkflow(
   updateRbacRolesWorkflowId,
   (input: WorkflowData<UpdateRbacRolesWorkflowInput>) => {
-    // TODO: [rbac] revisit this when we implement role resolution
     const validationData = transform({ input }, ({ input }) => {
       const policyIds = input.update.policy_ids || []
       return {

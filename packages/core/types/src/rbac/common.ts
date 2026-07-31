@@ -1,3 +1,5 @@
+import { BaseFilterable } from "../dal"
+
 export type RbacRoleDTO = {
   id: string
   name: string
@@ -70,7 +72,8 @@ export type RbacRoleAssignmentDTO = {
   deleted_at?: Date | string | null
 }
 
-export type FilterableRbacRoleAssignmentProps = {
+export interface FilterableRbacRoleAssignmentProps
+  extends BaseFilterable<FilterableRbacRoleAssignmentProps> {
   id?: string | string[]
   role_id?: string | string[]
   reference?: string | string[]

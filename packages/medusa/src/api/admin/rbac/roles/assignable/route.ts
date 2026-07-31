@@ -28,9 +28,8 @@ export const GET = async (
 ) => {
   const { scope, scope_id, ...filters } = req.filterableFields
 
-  // If a scoped is passed, the asignable roles are evaluated in its context
   const rbacScope =
-    scope && scope_id ? { type: scope, id: scope_id } : undefined
+    scope && scope_id ? { type: scope, id: scope_id } : req.rbacScope
 
   const { result } = await getAssignableRolesWorkflow(req.scope).run({
     input: {

@@ -1,4 +1,3 @@
-import { RbacScope } from "@medusajs/framework/types"
 import {
   createWorkflow,
   transform,
@@ -42,7 +41,6 @@ export const createRbacRolesWorkflowId = "create-rbac-roles"
 export const createRbacRolesWorkflow = createWorkflow(
   createRbacRolesWorkflowId,
   (input: WorkflowData<CreateRbacRolesWorkflowInput>) => {
-    // TODO: [rbac] revisit when we have role resolution
     const validationData = transform({ input }, ({ input }) => {
       const allPolicyIds = new Set<string>()
       input.roles.forEach((role) => {

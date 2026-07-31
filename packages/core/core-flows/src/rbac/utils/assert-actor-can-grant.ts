@@ -1,4 +1,4 @@
-import { hasPermission, resolveActorRoleIds } from "@medusajs/framework"
+import { hasPermission, resolveRoles } from "@medusajs/framework"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { RbacScope } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
@@ -19,7 +19,7 @@ export type AssertActorCanGrantInput = {
    * it. When omitted, privileges are evaluated across the actor's full
    * scope-union policies.
    */
-  scope?: RbacScope | RbacScope[]
+  scope?: RbacScope
 }
 
 /**
@@ -41,24 +41,18 @@ export const assertActorCanGrant = async ({
     return
   }
 
-  // TODO: The scope handling here is wrong and needs to be correctly
-  // implemented. `scope` on the assign/unassign flows now carries the scope
-  // constraint stored on the assignment itself, not the granting actor's
-  // evaluation context, so evaluating the actor's privileges against it no
-  // longer matches its meaning.
-  const actorRoleIds = await resolveActorRoleIds({
-    actorType: actor ?? "user",
-    actorId: actor_id,
+  const roleIds = await resolveRoles({
+    authContext: { actor_id, actor_type: actor ?? "user" },
     container,
     scope,
   })
 
-  if (!actorRoleIds.length) {
+  if (!roleIds.length) {
     throw new MedusaError(MedusaError.Types.FORBIDDEN, errorMessage)
   }
 
   const allowed = await hasPermission({
-    roles: actorRoleIds,
+    roles: roleIds,
     actions,
     container,
   })

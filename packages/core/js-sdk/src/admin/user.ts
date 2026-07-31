@@ -260,7 +260,7 @@ export class User {
    */
   async removeRoles(
     id: string,
-    body: HttpTypes.AdminRemoveUserRoles,
+    body: HttpTypes.AdminUnassignUserRoles,
     headers?: ClientHeaders
   ) {
     return this.client.fetch<HttpTypes.AdminUserRolesDeleteResponse>(

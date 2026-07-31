@@ -4,7 +4,6 @@ import {
 } from "@medusajs/framework/types"
 import { FeatureFlag, Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
-import { invalidateRoleAssignmentCache } from "../utils/invalidate-role-assignment-cache"
 
 /**
  * @ignore
@@ -36,12 +35,6 @@ export const createRoleAssignmentsStep = createStep(
 
     const created = await service.createRbacRoleAssignments(data)
 
-    // TODO: [rbac] revisit this when we implement role resolution
-    await invalidateRoleAssignmentCache(
-      container,
-      data.map(({ reference, reference_id }) => ({ reference, reference_id }))
-    )
-
     return new StepResponse(
       created,
       created.map((assignment) => ({
@@ -60,15 +53,6 @@ export const createRoleAssignmentsStep = createStep(
 
     await service.deleteRbacRoleAssignments(
       createdAssignments.map((assignment) => assignment.id)
-    )
-
-    // TODO: [rbac] revisit this when we reimplement role resolution
-    await invalidateRoleAssignmentCache(
-      container,
-      createdAssignments.map(({ reference, reference_id }) => ({
-        reference,
-        reference_id,
-      }))
     )
   }
 )

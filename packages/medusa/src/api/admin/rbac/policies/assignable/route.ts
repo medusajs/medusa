@@ -28,7 +28,7 @@ export const GET = async (
   const { scope, scope_id, ...filters } = req.filterableFields
 
   const rbacScope =
-    scope && scope_id ? { type: scope, id: scope_id } : undefined
+    scope && scope_id ? { type: scope, id: scope_id } : req.rbacScope
 
   const { result } = await getAssignablePoliciesWorkflow(req.scope).run({
     input: {

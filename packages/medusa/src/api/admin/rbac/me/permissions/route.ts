@@ -29,7 +29,6 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  * @ignore
  * @featureFlag rbac
  */
-// TODO: revisit when we have role resolution
 export const GET = async (
   req: AuthenticatedMedusaRequest<
     undefined,
@@ -37,10 +36,9 @@ export const GET = async (
   >,
   res: MedusaResponse<HttpTypes.AdminRbacMePermissionsResponse>
 ) => {
-  const actorId = req.auth_context.actor_id
-  const actorType = req.auth_context.actor_type
+  const { actor_id, actor_type } = req.auth_context
 
-  if (!actorId || !actorType) {
+  if (!actor_id || !actor_type) {
     res.status(200).json({ permissions: [] })
     return
   }
@@ -51,7 +49,7 @@ export const GET = async (
   const scope =
     providedScope && providedScopeId
       ? { type: providedScope, id: providedScopeId }
-      : undefined
+      : req.rbacScope
 
   // Build the universe from the persisted policies.
   const universe: Array<{ resource: string; operation: string }> = []
@@ -83,7 +81,11 @@ export const GET = async (
     consider(policy?.resource, policy?.operation)
   }
 
-  const roleIds = await resolveRoles(req, scope)
+  const roleIds = await resolveRoles({
+    authContext: { actor_id, actor_type },
+    container: req.scope,
+    scope,
+  })
 
   const granted = await resolvePermissions({
     roles: roleIds,

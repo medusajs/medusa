@@ -55,20 +55,8 @@ export const assignRolesWorkflowId = "assign-roles"
 export const assignRolesWorkflow = createWorkflow(
   assignRolesWorkflowId,
   (input: WorkflowData<AssignRolesWorkflowInput>) => {
-    // TODO: [rbac] revisit this when we implement role resolution
     const normalizedInput = transform({ input }, ({ input }) => {
       const assignments = input.assignments ?? []
-
-      const scopesByKey = new Map<string, RbacScope>()
-      for (const assignment of assignments) {
-        if (assignment.scope) {
-          scopesByKey.set(
-            `${assignment.scope.type}:${assignment.scope.id}`,
-            assignment.scope
-          )
-        }
-      }
-      const scopes = Array.from(scopesByKey.values())
 
       return {
         grantingActorId: input.granting_actor_id,
@@ -77,9 +65,6 @@ export const assignRolesWorkflow = createWorkflow(
         roleIds: Array.from(
           new Set(assignments.map((assignment) => assignment.role_id))
         ),
-        // Undefined (not an empty array) when no assignment is scoped: an empty
-        // set means "evaluate strictly within no scope" to the grant check.
-        scopes: scopes.length ? scopes : undefined,
       }
     })
 
@@ -93,7 +78,6 @@ export const assignRolesWorkflow = createWorkflow(
         actor_id: normalizedInput.grantingActorId!,
         actor: normalizedInput.grantingActor,
         role_ids: normalizedInput.roleIds,
-        scope: normalizedInput.scopes,
       })
     })
 

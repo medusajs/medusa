@@ -23,7 +23,7 @@ export type ValidateActorPermissionsStepInput = {
    * Server-derived scope context the grant happens within. Omitted = the
    * actor's full scope-union policies
    */
-  scope?: RbacScope | RbacScope[]
+  scope?: RbacScope
 }
 
 /**

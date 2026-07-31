@@ -6,7 +6,10 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { createRbacRolePoliciesStep } from "../steps"
-import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
+import {
+  validateActorPermissionsStep,
+  ValidateActorPermissionsStepInput,
+} from "../steps/validate-actor-permissions"
 
 /**
  * @ignore
@@ -35,10 +38,6 @@ export const createRbacRolePoliciesWorkflow = createWorkflow(
   createRbacRolePoliciesWorkflowId,
   (input: WorkflowData<CreateRbacRolePoliciesWorkflowInput>) => {
     const validationData = transform({ input }, ({ input }) => {
-      if (!input.actor_id) {
-        return null
-      }
-
       const policyIds = new Set<string>()
       input.policies.forEach((rp) => policyIds.add(rp.policy_id))
 
@@ -46,7 +45,7 @@ export const createRbacRolePoliciesWorkflow = createWorkflow(
         actor_id: input.actor_id,
         actor: input.actor,
         policy_ids: Array.from(policyIds),
-      }
+      } as ValidateActorPermissionsStepInput
     })
 
     when({ validationData }, ({ validationData }) => {

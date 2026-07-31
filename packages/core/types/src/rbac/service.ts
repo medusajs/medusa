@@ -1,5 +1,5 @@
 import { FindConfig } from "../common"
-import { BaseFilterable, RestoreReturn, SoftDeleteReturn } from "../dal"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { MedusaRequest } from "../http-request"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
@@ -225,7 +225,7 @@ export interface IRbacModuleService extends IModuleService {
   ): Promise<RbacRoleAssignmentDTO>
 
   listRbacRoleAssignments(
-    filters?: BaseFilterable<FilterableRbacRoleAssignmentProps>,
+    filters?: FilterableRbacRoleAssignmentProps,
     config?: FindConfig<RbacRoleAssignmentDTO>,
     sharedContext?: Context
   ): Promise<RbacRoleAssignmentDTO[]>
