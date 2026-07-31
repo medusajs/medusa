@@ -77,7 +77,68 @@ export const generatedSidebars = [
             "type": "link",
             "title": "MCP Server",
             "path": "/learn/introduction/build-with-llms-ai/mcp-server",
-            "children": [],
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Ask Medusa Questions",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question",
+                "description": "Answer Medusa questions from the official documentation.",
+                "children": [],
+                "chapterTitle": "2.3.1. Ask Medusa Questions",
+                "number": "2.3.1."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Other Platforms",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms",
+                "description": "Migrate data from Shopify, Magento, WooCommerce, and other platforms.",
+                "children": [],
+                "chapterTitle": "2.3.2. Migrate from Other Platforms",
+                "number": "2.3.2."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Integrate Providers",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers",
+                "description": "Build payment and fulfillment module providers for third-party services.",
+                "children": [],
+                "chapterTitle": "2.3.3. Integrate Providers",
+                "number": "2.3.3."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Extend Products",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/extend-products",
+                "description": "Attach custom data and features to products, variants, and options.",
+                "children": [],
+                "chapterTitle": "2.3.4. Extend Products",
+                "number": "2.3.4."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Upgrade Medusa",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions",
+                "description": "Upgrade a Medusa project to a newer version, breaking changes included.",
+                "children": [],
+                "chapterTitle": "2.3.5. Upgrade Medusa",
+                "number": "2.3.5."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Submit Feedback",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback",
+                "description": "Send documentation, bug, and feedback to the Medusa team.",
+                "children": [],
+                "chapterTitle": "2.3.6. Submit Feedback",
+                "number": "2.3.6."
+              }
+            ],
             "chapterTitle": "2.3. MCP Server",
             "number": "2.3."
           },

@@ -954,6 +954,18 @@
   "inventory": {
     "domain": "Inventory",
     "subtitle": "Manage your inventory items",
+    "export": {
+      "header": "Export Inventory List",
+      "description": "Export the inventory list to a CSV file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      }
+    },
     "reserved": "Reserved",
     "available": "Available",
     "locationLevels": "Locations",

@@ -2062,12 +2062,87 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:3.4.2":
-  version: 3.4.2
-  resolution: "@hookform/resolvers@npm:3.4.2"
+"@hookform/resolvers@npm:5.5.7":
+  version: 5.5.7
+  resolution: "@hookform/resolvers@npm:5.5.7"
+  dependencies:
+    "@standard-schema/utils": ^0.3.0
   peerDependencies:
-    react-hook-form: ^7.0.0
-  checksum: cb8a3e0cc1c9aeaf2adad585f29badf342a96da9cfdf4efa1168aadb7ef52f440cac5cc6fedf0fda6a52effd27a5c859692c89bb99ed5c76d03064aea1f0d684
+    "@sinclair/typebox": ">=0.25.24"
+    "@standard-schema/spec": ^1.0.0
+    "@typeschema/main": ">=0.13.7"
+    "@vinejs/vine": ^2.0.0 || ^3.0.0
+    ajv: ^8.12.0
+    ajv-errors: ^3.0.0
+    ajv-formats: ^2.1.1
+    arktype: ^2.0.0
+    ata-validator: ^0.7.0
+    class-transformer: ">=0.4.0"
+    class-validator: ">=0.12.0"
+    computed-types: ^1.0.0
+    effect: ^3.10.3
+    fluentvalidation-ts: ^3.0.0
+    fp-ts: ^2.7.0
+    io-ts: ^2.0.0
+    joi: ^17.0.0
+    nope-validator: ">=0.12.0"
+    react-hook-form: ^7.55.0
+    superstruct: ">=0.12.0"
+    typanion: ^3.3.2
+    valibot: ">=0.31.0 || ^1.0.0-beta.4 || ^1.0.0-rc"
+    vest: ">=3.0.0"
+    yup: ^1.0.0
+    zod: ^3.25.0 || ^4.0.0
+  peerDependenciesMeta:
+    "@sinclair/typebox":
+      optional: true
+    "@standard-schema/spec":
+      optional: true
+    "@typeschema/main":
+      optional: true
+    "@vinejs/vine":
+      optional: true
+    ajv:
+      optional: true
+    ajv-errors:
+      optional: true
+    ajv-formats:
+      optional: true
+    arktype:
+      optional: true
+    ata-validator:
+      optional: true
+    class-transformer:
+      optional: true
+    class-validator:
+      optional: true
+    computed-types:
+      optional: true
+    effect:
+      optional: true
+    fluentvalidation-ts:
+      optional: true
+    fp-ts:
+      optional: true
+    io-ts:
+      optional: true
+    joi:
+      optional: true
+    nope-validator:
+      optional: true
+    superstruct:
+      optional: true
+    typanion:
+      optional: true
+    valibot:
+      optional: true
+    vest:
+      optional: true
+    yup:
+      optional: true
+    zod:
+      optional: true
+  checksum: 412663923df939084e6370dcc3107910b12294559799197bebbc57d560ec6f27bd24e14a4fb7a498ee6b01b60d5c5e1b20cafbfe4e9e7ee6879e1479d51f5da0
   languageName: node
   linkType: hard
 
@@ -3125,7 +3200,7 @@ __metadata:
     "@dnd-kit/sortable": ^8.0.0
     "@dnd-kit/utilities": ^3.2.2
     "@hookform/error-message": ^2.0.1
-    "@hookform/resolvers": 3.4.2
+    "@hookform/resolvers": 5.5.7
     "@medusajs/admin-shared": 2.18.0
     "@medusajs/admin-vite-plugin": 2.18.0
     "@medusajs/icons": 2.18.0
@@ -3159,7 +3234,7 @@ __metadata:
     react-currency-input-field: ^3.6.11
     react-dom: ^18.3.1
     react-helmet-async: ^2.0.5
-    react-hook-form: 7.49.1
+    react-hook-form: 7.83.0
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
     react-router-dom: 6.30.4
@@ -3194,7 +3269,7 @@ __metadata:
   dependencies:
     "@ariakit/react": ^0.4.15
     "@babel/runtime": ^7.26.10
-    "@hookform/resolvers": 3.4.2
+    "@hookform/resolvers": 5.5.7
     "@medusajs/admin-sdk": 2.18.0
     "@medusajs/cli": 2.18.0
     "@medusajs/dashboard": 2.18.0
@@ -3212,7 +3287,8 @@ __metadata:
     lodash.isequal: ^4.5.0
     match-sorter: ^6.3.4
     radix-ui: 1.1.2
-    react-hook-form: 7.49.1
+    react-hook-form: 7.83.0
+    zod: 4.2.0
   peerDependencies:
     "@medusajs/admin-sdk": 2.18.0
     "@medusajs/cli": 2.18.0
@@ -9400,6 +9476,13 @@ __metadata:
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
   checksum: d90f55acde4b2deb983529c87e8025fa693de1a5e8b49ecc6eb84d1fd96328add0e03d7d551442156c7432fd78165b2c26ff561b970a9a881f046abb78d6a526
+  languageName: node
+  linkType: hard
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 6eb74cd13e52d5fc74054df51e37d947ef53f3ab9e02c085665dcca3c38c60ece8d735cebbdf18fbb13c775fbcb9becb3f53109b0e092a63f0f7389ce0993fd0
   languageName: node
   linkType: hard
 
@@ -22286,12 +22369,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.49.1":
-  version: 7.49.1
-  resolution: "react-hook-form@npm:7.49.1"
+"react-hook-form@npm:7.83.0":
+  version: 7.83.0
+  resolution: "react-hook-form@npm:7.83.0"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 9496155273220a432f897fbe1c393f11b273cd1c9c2ede70e301df95190e2cac6479bdaed7479612c027954b0da35b01c4eec7a428c0dfafcd04b915a170fc8c
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 3a1cfbb6bd614833675e1db1c079e05dc51c4f26c5259424023846a380de22d51748a755032a9983af492d25cbe98c524eecadce3c75e6997ff136e7538be06e
   languageName: node
   linkType: hard
 
@@ -24699,15 +24782,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.2":
-  version: 7.5.20
-  resolution: "tar@npm:7.5.20"
+  version: 7.5.22
+  resolution: "tar@npm:7.5.22"
   dependencies:
     "@isaacs/fs-minipass": ^4.0.0
     chownr: ^3.0.0
     minipass: ^7.1.2
     minizlib: ^3.1.0
     yallist: ^5.0.0
-  checksum: 4df4335c6d958b76adf1eaced55889dec3ca1c51f450658a074af80694bb0d9c154a8e93fdf4da617372d1575b121295379993961bbe4cd4b0867c0e5689846a
+  checksum: 1311f6be85a8157ac4c9147bae43e13923d2a1aae15e4aa1bd5239e4e03d2cf53cfe103dde7f35832fbb4c938b042856bc8e9a0afd29abd05e2d1608788c4fea
   languageName: node
   linkType: hard
 

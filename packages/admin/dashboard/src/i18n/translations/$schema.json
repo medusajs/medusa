@@ -3735,6 +3735,45 @@
         "subtitle": {
           "type": "string"
         },
+        "export": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "success": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "filters": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "description", "success", "filters"],
+          "additionalProperties": false
+        },
         "reserved": {
           "type": "string"
         },
@@ -3982,6 +4021,7 @@
       "required": [
         "domain",
         "subtitle",
+        "export",
         "reserved",
         "available",
         "locationLevels",
