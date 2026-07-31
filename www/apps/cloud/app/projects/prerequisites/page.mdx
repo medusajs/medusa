@@ -144,7 +144,7 @@ In a monorepo, Medusa doesn't run the `build` script of your root `package.json`
 So, instead of a root `build` script, you need:
 
 1. A `build` script in your Medusa application's `package.json` file that runs the `medusa build` command.
-2. A `build` script in your storefront's `package.json` file that runs the build command of its framework, such as `next build`.
+2. A `build` script in your storefront's `package.json` file that runs the build command, such as `next build`.
 
 ```json title="apps/backend/package.json"
 {
