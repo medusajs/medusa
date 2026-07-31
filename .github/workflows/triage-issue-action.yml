@@ -29,6 +29,34 @@ jobs:
   # Job B validates and applies.
   analyze:
     runs-on: ubuntu-latest
+    # Opt out of claude-code-action's "subprocess isolation", which it enables
+    # automatically whenever `allowed_non_write_users` is set. That mode makes
+    # Claude Code apply a GitHub-Actions hardening profile that wraps EVERY
+    # Bash command in bubblewrap with `filesystem.allowWrite` covering the
+    # root-owned directories /home, /root, /tmp, /var, /opt, /run and /mnt. It
+    # then tries to mask its mandatory deny-write paths inside those roots by
+    # bind-mounting /dev/null over them, which requires creating the mount
+    # target — so bwrap aborts with "Can't create file at /home/.mcp.json:
+    # Permission denied" / "Can't mkdir /home/.claude", because the `runner`
+    # user cannot write to /home. Every allowlisted script call then fails and
+    # the model emits an empty (or "triage could not complete") decision while
+    # the workflow still reports success. See anthropics/claude-code#17727.
+    #
+    # This is the opt-out documented by the action (docs/security.md); it must
+    # live in a workflow/job `env:` block, because the action reads it from the
+    # `env` context to decide whether to turn the mode on. `sandbox.*` settings
+    # cannot fix this: the wrapping is driven by the hardening profile, not by
+    # `sandbox.enabled`, and `sandbox.filesystem.disabled` is explicitly
+    # ignored while subprocess isolation is on.
+    #
+    # What we give up is the best-effort scrubbing of the Anthropic/GitHub
+    # tokens from subprocess environments. That is acceptable here: the job's
+    # only Bash entries are five fixed read-only `scripts/*.sh` helpers that
+    # shell out to `gh` with repo-pinned queries and never interpolate the
+    # environment, `scripts/` is chmod'd read-only below, and the job holds
+    # only the read-only default token (no App token).
+    env:
+      CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "0"
     permissions:
       contents: read
       issues: read
@@ -56,6 +84,7 @@ jobs:
           chmod a-w scripts
 
       - name: Triage analysis
+        id: analysis
         # Pinned to the commit the v1 tag currently resolves to. A floating
         # `@v1` tag let an upstream release silently roll into CI (a change
         # that enabled the bwrap Bash sandbox broke every allowlisted script
@@ -67,31 +96,25 @@ jobs:
           GITHUB_EVENT_NUMBER: ${{ inputs.issue_number }}
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          # Work around Claude Code's Bash sandbox (bubblewrap) failing on the
-          # runner: it aborts every Bash command during sandbox setup with
-          # "bwrap: Can't create file at /home/.mcp.json" / "Can't mkdir
-          # /home/.claude". The sandbox builds an isolated home under /home
-          # inside its own bwrap namespace and cannot create files in it
-          # (upstream bug anthropics/claude-code#17727).
+          # Belt and braces: the Bash sandbox is off by default, and the job
+          # never needs it (see the note on the bwrap failure at the top of
+          # this job). Keeping it explicit means a future runner image or
+          # settings default cannot switch it on underneath us.
           #
-          # `sandbox.enabled: false` alone does NOT help: this action runs
-          # Claude via the Agent SDK in headless bypass-permissions mode, which
-          # force-enables the sandbox regardless of that flag (confirmed: the
-          # action loads user settings via settingSources but the sandbox still
-          # ran). The reliable lever is `excludedCommands`, which runs matching
-          # commands OUTSIDE the sandbox so bwrap never wraps them. Every tool
-          # this job can run is `bash scripts/*.sh` (see --allowedTools below),
-          # so excluding `bash *` covers them all.
+          # Isolation for this job is enforced by: the tight --allowedTools
+          # allowlist (only specific `bash scripts/*.sh` + Read + Write, no
+          # arbitrary Bash), the read-only default token with NO App token in
+          # this job, and the `chmod -R a-w scripts` step above.
           #
-          # Isolation for this job is still enforced by: the tight
-          # --allowedTools allowlist (only specific `bash scripts/*.sh` + Read +
-          # Write, no arbitrary Bash), the read-only default token with NO App
-          # token in this job, the `chmod -R a-w scripts` step above, and
-          # CLAUDE_CODE_SUBPROCESS_ENV_SCRUB (auto-enabled by the action because
-          # allowed_non_write_users is set), which strips the Anthropic API
-          # token from every subprocess env.
+          # The `Read` deny rule closes the one path by which the agent could
+          # read the tokens out of its own process environment
+          # (`/proc/self/environ`). Read/Write are not sandboxed even when the
+          # sandbox is on, so this rule is what actually blocks it.
           settings: |
-            { "sandbox": { "enabled": false, "excludedCommands": ["bash *"] } }
+            {
+              "sandbox": { "enabled": false },
+              "permissions": { "deny": ["Read(//proc/**)"] }
+            }
           github_token: ${{ github.token }}
           # NOTE: this action version has no `model` input (it is silently
           # ignored with an "Unexpected input(s) 'model'" warning); the model
@@ -163,6 +186,32 @@ jobs:
             Bash(bash scripts/search_issues.sh:*),
             Read,
             Write"
+
+      - name: Detect broken Bash tooling
+        # When the Bash tool is broken at the sandbox level (see the bwrap note
+        # at the top of this job), every script call fails but the model still
+        # finishes "successfully" and writes an empty or apologetic decision, so
+        # the run goes green while nothing was triaged. Fail loudly instead: a
+        # bwrap error in the execution log means the analysis was never able to
+        # read the issue.
+        #
+        # `bwrap:` is emitted only by bubblewrap itself. The log also contains
+        # untrusted issue text, so an issue that quotes this string fails triage
+        # for that issue — that is the safe direction (no labels, no comment)
+        # and it stays visible in the workflow logs.
+        env:
+          EXECUTION_FILE: ${{ steps.analysis.outputs.execution_file }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$EXECUTION_FILE" || ! -f "$EXECUTION_FILE" ]]; then
+            echo "::warning::No execution log to inspect; skipping the bwrap check."
+            exit 0
+          fi
+          if grep -qF 'bwrap:' "$EXECUTION_FILE"; then
+            echo "::error::Claude Code's Bash tool failed under bubblewrap, so the issue was never analyzed. Matching lines:" >&2
+            grep -o -m 5 'bwrap: [^"\\]*' "$EXECUTION_FILE" >&2 || true
+            exit 1
+          fi
 
       - name: Verify decision file
         run: |
