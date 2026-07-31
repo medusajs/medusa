@@ -1,5 +1,8 @@
 import { SelectParams } from "../../common"
 
+/**
+ * The data to create a cart.
+ */
 export interface StoreCreateCart {
   /**
    * The ID of the region that the cart is created in.
@@ -58,6 +61,9 @@ export interface StoreCreateCart {
   locale?: string | null
 }
 
+/**
+ * The data to update a cart.
+ */
 export interface StoreUpdateCart {
   /**
    * The ID of the region that the cart is in.
@@ -104,8 +110,14 @@ export interface StoreUpdateCart {
   locale?: string | null
 }
 
+/**
+ * The data to update the customer of a cart.
+ */
 export interface StoreUpdateCartCustomer {}
 
+/**
+ * The data to add a line item to a cart.
+ */
 export interface StoreAddCartLineItem {
   /**
    * The ID of the product variant to add to the cart.
@@ -121,6 +133,9 @@ export interface StoreAddCartLineItem {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to update a line item in a cart.
+ */
 export interface StoreUpdateCartLineItem {
   /**
    * The item's quantity.
@@ -159,10 +174,19 @@ export type StoreAddCartShippingMethods =
   | StoreAddCartShippingMethodsBase
   | StoreAddCartShippingMethodsBase[]
 
+/**
+ * The data to complete a cart and place an order.
+ */
 export interface StoreCompleteCart {
+  /**
+   * A unique key to ensure the cart completion is idempotent.
+   */
   idempotency_key?: string
 }
 
+/**
+ * The address data to add to a cart.
+ */
 export interface StoreAddAddress {
   /**
    * The first name of the address.
@@ -220,6 +244,9 @@ export interface StoreAddAddress {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to remove promotion codes from a cart.
+ */
 export interface StoreCartRemovePromotion {
   /**
    * The promotion codes to remove from the cart.
@@ -227,6 +254,9 @@ export interface StoreCartRemovePromotion {
   promo_codes: string[]
 }
 
+/**
+ * The data to add promotion codes to a cart.
+ */
 export interface StoreCartAddPromotion {
   /**
    * The promotion codes to add to the cart.
@@ -234,4 +264,7 @@ export interface StoreCartAddPromotion {
   promo_codes: string[]
 }
 
+/**
+ * The query parameters for calculating a cart's taxes.
+ */
 export interface StoreCalculateCartTaxes extends SelectParams {}
