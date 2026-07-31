@@ -4,17 +4,35 @@ import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
-  try {
-    const { provider } = req.params
+  const { provider } = req.params
 
+  const paymentService = req.scope.resolve(Modules.PAYMENT)
+
+  const event = {
+    provider,
+    payload: { data: req.body, rawData: req.rawBody, headers: req.headers },
+  }
+
+  try {
+    // Verifies that the provider is registered and, when the provider
+    // supports it, that the webhook's signature is valid, before we
+    // acknowledge the request and hand it off for async processing.
+    await paymentService.getWebhookActionAndData(event)
+  } catch (err) {
+    const isUnknownProvider = (err.message as string)?.includes(
+      "Unable to retrieve the payment provider"
+    )
+
+    res
+      .status(isUnknownProvider ? 404 : 400)
+      .send(`Webhook Error: ${err.message}`)
+    return
+  }
+
+  try {
     const options: PaymentModuleOptions =
       // @ts-expect-error "Not sure if .options exists on a module"
-      req.scope.resolve(Modules.PAYMENT).options || {}
-
-    const event = {
-      provider,
-      payload: { data: req.body, rawData: req.rawBody, headers: req.headers },
-    }
+      paymentService.options || {}
 
     const eventBus = req.scope.resolve(Modules.EVENT_BUS)
 
