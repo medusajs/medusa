@@ -316,17 +316,23 @@ Learn more in the [Database](../../database/page.mdx) guide.
 
 ---
 
-## Change Configuration Group
+## Change Infrastructure Specifications for Long-Lived Environment
 
-The **Configuration Group** setting controls the compute tier used to run the environment. You can change it at any time from the environment's settings.
+<Note>
 
-To change the configuration group for a long-lived environment:
+To change the infrastructure specs of the Production environment, see the [Projects](../../projects/page.mdx#change-project-infrastructure-specifications) guide.
+
+</Note>
+
+By default, long-lived environments that aren't the Production environment use the specs of the **Develop** plan. This is useful to reduce costs on those environments, but that means it may not be fitting for high-traffic or complex operations.
+
+To change the infrastructure specs for a long-lived environment:
 
 1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
-2. In the **Configuration Group** section, select a new configuration group from the dropdown.
+2. In the **Infrastructure Specs** section, select the plan you'd like to use its specs for the long-lived environment.
 3. Click **Save Changes**.
 
-A toast notification confirms whether the change was saved successfully.
+The new specs for the environment will be applied afterward.
 
 ---
 
