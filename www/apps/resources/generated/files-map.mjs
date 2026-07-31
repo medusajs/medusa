@@ -172,6 +172,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/promotions"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/sales-channel-availability/page.mdx",
+    "pathname": "/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/tax-lines/page.mdx",
     "pathname": "/commerce-modules/cart/tax-lines"
   },

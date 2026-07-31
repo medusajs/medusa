@@ -1242,6 +1242,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "link",
+              "path": "/commerce-modules/cart/sales-channel-availability",
+              "title": "Enforce Sales Channel Availability",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
               "path": "/commerce-modules/cart/extend",
               "title": "Extend Module",
               "children": []
@@ -14353,6 +14360,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "Learn how to use the Sales Channel Module in your customizations on the Medusa application server.",
           "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Enforce Sales Channel Availability",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
+              "children": []
+            },
             {
               "loaded": true,
               "type": "ref",

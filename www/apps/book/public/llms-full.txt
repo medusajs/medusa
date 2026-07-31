@@ -10927,9 +10927,21 @@ The error object returned in the response has three properties:
 |\`UNAUTHORIZED\`|Indicates that a user is not authorized to perform an action or access a route.|\`401\`|
 |\`NOT\_FOUND\`|Indicates that the requested resource, such as a route or a record, isn't found.|\`404\`|
 |\`NOT\_ALLOWED\`|Indicates that an operation isn't allowed.|\`400\`|
-|\`CONFLICT\`|Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message.|\`409\`|
+|\`CONFLICT\`|Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message. Refer to the |\`409\`|
 |\`PAYMENT\_AUTHORIZATION\_ERROR\`|Indicates an error has occurred while authorizing a payment.|\`422\`|
 |Other error types|Any other error type results in an |\`500\`|
+
+### Conflict Error Messages
+
+The error handler replaces the message of a `CONFLICT` error with the following default message:
+
+```plain
+The request conflicted with another request. You may retry the request with the provided Idempotency-Key.
+```
+
+So, only throw a `CONFLICT` error for internal conflicts, such as a request that conflicts with an ongoing transaction or a lock that another process holds. The client doesn't need details about these conflicts, and the default message avoids exposing internal implementation details.
+
+If the client needs the details of the conflict, throw a `NOT_ALLOWED` error instead. Its message reaches the client, but the response has a `400` status code rather than `409`.
 
 ***
 
@@ -36466,6 +36478,192 @@ await cartModuleService.setShippingMethodAdjustments(
 ```
 
 
+# Enforce Sales Channel Availability in Carts
+
+In this guide, you'll learn how to reject product variants whose product isn't available in the cart's sales channel.
+
+### Prerequisites
+
+- [Medusa application set up](https://docs.medusajs.com/docs/learn/installation/index.html.md)
+
+## Why Medusa Doesn't Enforce This by Default
+
+A product's [availability in a sales channel](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules#product-module/index.html.md) is a merchandising filter, not an authorization boundary.
+
+Medusa applies it when you retrieve products. For example, the [List Products Store API route](https://docs.medusajs.com/api/store/products/list-products) only returns the products available in the sales channels of the publishable API key in the request. So, a product that you remove from a sales channel disappears from that channel's storefront.
+
+Medusa doesn't apply that filter when a variant is added to a cart or when a cart is completed. A customer who knows a variant's ID can still add it to a cart scoped to a sales channel that the variant's product isn't available in.
+
+Medusa doesn't enforce this by default because merchants use sales channels for merchandising, and rejecting items would break carts whenever a merchant changes a product's availability. If you rely on sales channels for legal or contractual restrictions, such as licensing agreements that forbid selling a product in a country, add the validation shown in this guide.
+
+The inventory check that does run when you add an item to a cart, which the [confirmVariantInventoryWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmVariantInventoryWorkflow/index.html.md) performs, only checks the quantity available at the stock locations of the cart's sales channel. It doesn't check whether the variant's product is linked to that sales channel.
+
+To enforce the availability, consume the `validate` [hook](https://docs.medusajs.com/docs/learn/fundamentals/workflows/workflow-hooks/index.html.md) of the workflows that add items to a cart and complete a cart. A workflow hook is a point in a workflow where you can inject custom functionality as a step function. If the step function throws an error, the workflow stops and the API route returns the error.
+
+This guide doesn't cover draft orders that admin users create in the dashboard, as it's assumed that merchants don't need to enforce sales channel availability for them.
+
+***
+
+## Step 1: Create the Validation Function
+
+Start by creating a function that finds the variants that aren't available in a sales channel. You'll reuse it in both hooks.
+
+Create the file `src/utils/sales-channel-availability.ts` with the following content:
+
+```ts title="src/utils/sales-channel-availability.ts" highlights={helperHighlights}
+import { MedusaContainer } from "@medusajs/framework/types"
+
+export async function getUnavailableVariantIds({
+  container,
+  variantIds,
+  salesChannelId,
+}: {
+  container: MedusaContainer
+  variantIds: string[]
+  salesChannelId: string
+}) {
+  const query = container.resolve("query")
+
+  const { data: variants } = await query.graph({
+    entity: "variant",
+    fields: ["id", "product.sales_channels.id"],
+    filters: {
+      id: variantIds,
+    },
+  })
+
+  return variants
+    .filter((variant) => {
+      const salesChannels =
+        variant.product?.sales_channels ?? []
+
+      return !salesChannels.some(
+        (salesChannel) =>
+          salesChannel?.id === salesChannelId
+      )
+    })
+    .map((variant) => variant.id)
+}
+```
+
+The function uses [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md) to retrieve the variants with the sales channels of their product, then returns the IDs of the variants whose product isn't linked to the specified sales channel.
+
+A product without any sales channels isn't available in any of them, so the function considers its variants unavailable.
+
+***
+
+## Step 2: Validate Items Added to the Cart
+
+Next, consume the `validate` hook of the [addToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addToCartWorkflow/index.html.md), which the [Add Line Item Store API route](https://docs.medusajs.com/api/store/carts/add-line-item) executes.
+
+Create the file `src/workflows/hooks/validate-add-to-cart.ts` with the following content:
+
+```ts title="src/workflows/hooks/validate-add-to-cart.ts" highlights={addToCartHighlights}
+import { MedusaError } from "@medusajs/framework/utils"
+import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
+import {
+  getUnavailableVariantIds,
+} from "../../utils/sales-channel-availability"
+
+addToCartWorkflow.hooks.validate(
+  async ({ input, cart }, { container }) => {
+    if (!cart.sales_channel_id) {
+      return
+    }
+
+    const variantIds = (input.items ?? [])
+      .map((item) => item.variant_id)
+      .filter(Boolean) as string[]
+
+    if (!variantIds.length) {
+      return
+    }
+
+    const unavailableIds = await getUnavailableVariantIds({
+      container,
+      variantIds,
+      salesChannelId: cart.sales_channel_id,
+    })
+
+    if (unavailableIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The variants ${unavailableIds.join(", ")} aren't ` +
+          `available in the cart's sales channel.`
+      )
+    }
+  }
+)
+```
+
+The hook receives the cart and the input passed to the workflow, which holds the items to add. You retrieve the IDs of the variants that aren't available in the cart's sales channel, then throw a `MedusaError` if there are any. The Add Line Item API route then returns a response with the `400` status code.
+
+A cart isn't always associated with a sales channel. The example returns early in that case, since there's nothing to validate against.
+
+***
+
+## Step 3: Validate the Cart on Completion
+
+A merchant can change a product's availability after a customer adds it to their cart. So, also consume the `validate` hook of the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md) to check the cart's items before Medusa creates the order.
+
+Create the file `src/workflows/hooks/validate-complete-cart.ts` with the following content:
+
+```ts title="src/workflows/hooks/validate-complete-cart.ts" highlights={completeCartHighlights}
+import { MedusaError } from "@medusajs/framework/utils"
+import {
+  completeCartWorkflow,
+} from "@medusajs/medusa/core-flows"
+import {
+  getUnavailableVariantIds,
+} from "../../utils/sales-channel-availability"
+
+completeCartWorkflow.hooks.validate(
+  async ({ cart }, { container }) => {
+    if (!cart.sales_channel_id) {
+      return
+    }
+
+    const variantIds = (cart.items ?? [])
+      .map((item) => item.variant_id)
+      .filter(Boolean) as string[]
+
+    if (!variantIds.length) {
+      return
+    }
+
+    const unavailableIds = await getUnavailableVariantIds({
+      container,
+      variantIds,
+      salesChannelId: cart.sales_channel_id,
+    })
+
+    if (unavailableIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The variants ${unavailableIds.join(", ")} are no ` +
+          `longer available in the cart's sales channel.`
+      )
+    }
+  }
+)
+```
+
+This stops the cart completion for carts that a customer created before the merchant changed a product's availability.
+
+***
+
+## Test it Out
+
+To test out the validation:
+
+1. Start the Medusa application.
+2. In the Medusa Admin dashboard, add a product that doesn't belong to a sales channel, or remove a product from a sales channel, as explained in the [user guide](https://docs.medusajs.com/user-guide/settings/sales-channels#manage-products-in-sales-channel/index.html.md).
+3. Create a cart associated with that sales channel using a publishable API key linked to it.
+4. Send a request to the [Add Line Item Store API route](https://docs.medusajs.com/api/store/carts/add-line-item) with a variant of the product you removed.
+
+The request returns a response with the `400` status code and the error message you specified.
+
+
 # Tax Lines in Cart Module
 
 In this document, you’ll learn about tax lines in a cart and how to retrieve tax lines with the Tax Module.
@@ -47923,7 +48121,7 @@ Some use case examples for using a sales channel:
 
 - [Sales Channel Management](https://docs.medusajs.com/references/sales-channel/models/SalesChannel/index.html.md): Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
 - [Product Availability](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Medusa uses the Product and Sales Channel modules to allow merchants to specify a product's availability per sales channel.
-- [Cart and Order Scoping](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you benefit from more features like allowing only products available in sales channel in a cart.
+- [Cart and Order Scoping](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you can show customers only the products available in their sales channel, and associate the created order with that sales channel.
 - [Inventory Availability Per Sales Channel](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Medusa links sales channels to stock locations, allowing you to retrieve available inventory of products based on the specified sales channel.
 
 ***
@@ -59643,7 +59841,9 @@ You'll use this variant to add it to the cart later. You can find its ID by clic
 
 #### Retrieve Publishable API Key
 
-All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, products that aren't available in a cart's sales channel can't be added to it.
+All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, the products you retrieve are only those available in the key's sales channels.
+
+Medusa doesn't reject a variant added to a cart when its product isn't available in the cart's sales channel. Refer to the [Enforce Sales Channel Availability in Carts](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart/sales-channel-availability/index.html.md) guide to learn how to add that validation.
 
 To retrieve the publishable API key, on the Medusa Admin:
 
@@ -157895,7 +158095,7 @@ curl -X POST 'http://localhost:9000/restaurants/res_01J5X704WQTFSZMRC7Z6S3YAC7/p
 }'
 ```
 
-Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. This is necessary when you later create an order, as the cart must have the same sales channel as the product.
+Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. You'll use the same sales channel for the cart you create later, so that the product shows up in the storefront requests scoped to that sales channel.
 
 The request returns the created product in the response.
 
