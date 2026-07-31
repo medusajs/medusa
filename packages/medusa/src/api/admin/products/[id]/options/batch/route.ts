@@ -7,6 +7,9 @@ import { createAndLinkProductOptionsToProductWorkflow } from "@medusajs/core-flo
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { remapKeysForProduct, remapProductResponse } from "../../../helpers"
 
+/**
+ * @since 2.17.0
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminLinkProductOptions>,
   res: MedusaResponse<HttpTypes.AdminProductResponse>

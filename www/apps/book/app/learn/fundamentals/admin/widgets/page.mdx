@@ -58,13 +58,13 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
 ```
 
-In the example above, the widget is injected at the top of a product’s details.
+In the example above, the widget is injected at the end of a product’s details page.
 
 You export the `ProductWidget` component, which displays the heading `Product Widget`. In the widget, you use [Medusa UI](!ui!) to customize the dashboard with the same components used to build it.
 
@@ -87,7 +87,19 @@ To test out the widget, start the Medusa application:
 npm run dev
 ```
 
-Then, open a product’s details page. You’ll find your custom widget at the top of the page.
+Then, open a product’s details page. You’ll find your custom widget at the end of the page.
+
+---
+
+## Widget Placement
+
+Prior to Medusa v2.17.2, widget zones ended with `.before` or `.after` to indicate whether the widget should be placed at the beginning or end of the zone. For example, `product.details.before` would place the widget at the top of the product details page, while `product.details.after` would place it at the bottom.
+
+As of Medusa v2.17.2, the `.before` and `.after` suffixes have been deprecated in favor of [Layout Configurations](!user-guide!/tips/layout-configurations). The login page is the only exception. It isn't part of the layout configurations, so its `login.before` and `login.after` zones still place the widget before or after the login form.
+
+Widgets are now placed at the end of the zone they're injected into. For example, if you inject a widget into the `product.details` zone, it will be placed at the end of the product details page. Then, users can customize the placement of the widget in the Medusa Admin dashboard using [Layout Configurations](!user-guide!/tips/layout-configurations). The widget can be moved to the top of the page or in between core components of the page.
+
+If you're still using the `.before` or `.after` suffixes, you can continue to do so, but it's recommended to migrate to the new system. `.before` and `.after` (aside from the login page) have no effect on the placement of widgets in Medusa v2.17.2 and later, and may be removed in future versions.
 
 ---
 
@@ -95,7 +107,7 @@ Then, open a product’s details page. You’ll find your custom widget at the t
 
 Widgets that are injected into a detail page receive a `data` prop, which is the main data of the details page.
 
-For example, a widget injected into the `product.details.before` zone receives the product's details in the `data` prop:
+For example, a widget injected into the `product.details` zone receives the product's details in the `data` prop:
 
 export const detailHighlights = [
   ["10", "data", "Receive the data as a prop."],
@@ -128,7 +140,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget
@@ -195,7 +207,7 @@ const ProductWidget = ({
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 
 export default ProductWidget

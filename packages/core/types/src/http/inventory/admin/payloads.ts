@@ -1,3 +1,5 @@
+export interface AdminExportInventoryItemRequest {}
+
 export interface AdminCreateInventoryItem {
   /**
    * The inventory item's SKU.

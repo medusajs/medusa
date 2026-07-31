@@ -197,6 +197,8 @@ export const productVariantsFields = [
 export const cartFieldsForCalculateShippingOptionsPrices = [
   "id",
   "locale",
+  "currency_code",
+  "region_id",
   "items.*",
   "items.variant.id",
   "items.variant.product.id",

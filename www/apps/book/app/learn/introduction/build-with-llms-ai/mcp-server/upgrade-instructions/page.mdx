@@ -1,0 +1,93 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Upgrade Medusa with the MCP Server`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to upgrade your Medusa project to a newer version.
+
+## What is the Upgrade Instructions Tool?
+
+The Medusa MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
+
+You name the version you want to move to, and your AI agent produces an upgraded project: packages bumped, breaking changes applied across your backend, admin, and storefront, migrations run, and the result built and typechecked to prove the changes hold together. Before any of that happens, it presents a plan for your approval.
+
+If the MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
+
+---
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers upgrading a Medusa project across one or more releases.
+- Teams that have fallen several versions behind and need an ordered plan rather than a single bump.
+- Agencies maintaining multiple Medusa projects that each need the same upgrade applied.
+- Anyone who wants breaking changes surfaced and reviewed before files are modified.
+
+---
+
+## Why Use This Tool?
+
+Upgrades are the task where an AI agent's default behavior is most misleading. Asked to upgrade Medusa, an agent will bump `@medusajs/*` versions from memory, report success, and leave you with a project that no longer boots, because the breaking changes those releases introduced were never applied. Nothing about the output signals that anything is missing.
+
+Compared to reading the release notes yourself or [asking a Medusa question](../ask-medusa-question/page.mdx), this tool gives you:
+
+- **An upgrade, not a version bump.** The tool exists to make sure the changes each release requires are actually applied, rather than just the numbers in `package.json` changing.
+- **Coverage across every release in between.** Upgrading several versions at once means several sets of breaking changes. The tool accounts for all of them, which is easy to miss when you're only looking at the target release's notes.
+- **A plan you approve before files change.** You see the intended version bumps and the specific edits, with file paths, while it's still cheap to stop. Anything your agent can't resolve on its own is flagged for you to decide rather than guessed at.
+- **Your whole project considered.** Upgrades touch the backend, the admin dashboard, the storefront, configuration, dependencies, and database migrations. The tool works through all of them rather than the packages alone.
+- **Verification as part of the job.** The upgrade isn't finished until the install, the migrations, and the build and typecheck have each been run and reported, so a broken upgrade surfaces immediately instead of on your next deploy. If any of them fail, your agent reports the error and stops rather than piling on speculative fixes.
+
+<Note title="Tip">
+
+Some versions also ship [codemods](../../../../codemods/page.mdx) that automate large mechanical changes across your codebase. When a codemod exists for a change, using it is faster and safer than having your agent rewrite every occurrence by hand.
+
+</Note>
+
+---
+
+## How to Use the Upgrade Instructions Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+    },
+    {
+      text: "A clean git working tree, so you can review and revert the upgrade's changes"
+    }
+  ]}
+/>
+
+After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
+
+For example:
+
+```bash title="Example prompt"
+Update my Medusa application to v2.18.0.
+```
+
+### What to Expect
+
+1. Your AI agent resolves the target version, including resolving "latest" to a concrete version number.
+2. It calls the tool with that version.
+3. It inspects your project to determine its shape, current version, and package manager.
+4. It presents a migration plan for your approval. Review it before approving, especially the breaking changes it flags.
+5. Once you approve, it bumps the packages, applies the changes, and runs migrations.
+6. It builds and typechecks the project, including your storefront if you have one, and reports the result of each verification step.
+
+<Note type="warning">
+
+Always upgrade on a branch with a clean working tree, and review the resulting diff before merging. Upgrades touch configuration, dependencies, and database migrations.
+
+</Note>
+
+---
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
