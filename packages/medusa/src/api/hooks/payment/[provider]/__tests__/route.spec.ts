@@ -1,3 +1,4 @@
+import { MedusaError } from "@medusajs/framework/utils"
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { POST } from "../route"
 
@@ -80,8 +81,9 @@ describe("POST /hooks/payment/:provider", () => {
 
   it("returns 404 and does not publish an event for an unregistered provider", async () => {
     paymentServiceMock.getWebhookActionAndData.mockRejectedValueOnce(
-      new Error(
-        "Unable to retrieve the payment provider with id: pp_unknown_unknown"
+      new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Payment provider not registered: pp_unknown_unknown"
       )
     )
 

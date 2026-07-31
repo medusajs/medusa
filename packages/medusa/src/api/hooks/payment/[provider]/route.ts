@@ -1,5 +1,12 @@
-import { PaymentModuleOptions } from "@medusajs/framework/types"
-import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
+import {
+  PaymentModuleOptions,
+  ProviderWebhookPayload,
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  Modules,
+  PaymentWebhookEvents,
+} from "@medusajs/framework/utils"
 
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
@@ -8,9 +15,13 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
   const paymentService = req.scope.resolve(Modules.PAYMENT)
 
-  const event = {
+  const event: ProviderWebhookPayload = {
     provider,
-    payload: { data: req.body, rawData: req.rawBody, headers: req.headers },
+    payload: {
+      data: req.body as Record<string, unknown>,
+      rawData: req.rawBody,
+      headers: req.headers,
+    },
   }
 
   try {
@@ -19,9 +30,9 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     // acknowledge the request and hand it off for async processing.
     await paymentService.getWebhookActionAndData(event)
   } catch (err) {
-    const isUnknownProvider = (err.message as string)?.includes(
-      "Unable to retrieve the payment provider"
-    )
+    // An unregistered provider is a missing resource, anything else (e.g. a
+    // failed signature verification) is a bad request.
+    const isUnknownProvider = err.type === MedusaError.Types.NOT_FOUND
 
     res
       .status(isUnknownProvider ? 404 : 400)

@@ -640,5 +640,35 @@ medusaIntegrationTestRunner({
         }
       })
     })
+
+    describe("POST /hooks/payment/:provider — request validation", () => {
+      const webhookProviderPath = "pending-auth_pending-auth"
+
+      it("should return 404 when the provider is not registered", async () => {
+        // Resolve to the response either way, so an unexpectedly accepted
+        // webhook fails with the status it returned rather than a TypeError.
+        const res = await api
+          .post(`/hooks/payment/does-not-exist`, { action: "captured" })
+          .catch((e) => e.response)
+
+        expect(res.status).toEqual(404)
+      })
+
+      it("should return 400 when the provider rejects the payload", async () => {
+        const res = await api
+          .post(`/hooks/payment/${webhookProviderPath}`, {
+            invalid_signature: true,
+          })
+          .catch((e) => e.response)
+
+        expect(res.status).toEqual(400)
+      })
+
+      it("should return 200 for a registered provider even when the event is not supported", async () => {
+        const res = await api.post(`/hooks/payment/${webhookProviderPath}`, {})
+
+        expect(res.status).toEqual(200)
+      })
+    })
   },
 })
