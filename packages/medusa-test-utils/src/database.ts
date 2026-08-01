@@ -18,16 +18,13 @@ import {
 } from "./medusa-test-runner-utils"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
-const DB_HOST = process.env.DB_HOST ?? "localhost"
-const DB_USERNAME = process.env.DB_USERNAME ?? ""
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
-const DB_PORT = process.env.DB_PORT ?? "5432"
-
-const databaseCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-  port: parseInt(DB_PORT),
+export function getDatabaseCredentials() {
+  return {
+    user: process.env.DB_USERNAME ?? "",
+    password: process.env.DB_PASSWORD ?? "",
+    host: process.env.DB_HOST ?? "localhost",
+    port: parseInt(process.env.DB_PORT ?? "5432"),
+  }
 }
 
 export function getDatabaseURL(dbName?: string): string {
@@ -219,7 +216,7 @@ export const dbTestUtilFactory = (): any => ({
     try {
       await createDatabase(
         { databaseName: dbName, errorIfExist: false },
-        databaseCredentials
+        getDatabaseCredentials()
       )
     } catch (error) {
       logger.error("Error creating database:", error)
@@ -365,7 +362,7 @@ export const dbTestUtilFactory = (): any => ({
 
       return await dropDatabase(
         { databaseName: dbName, errorIfNonExist: false },
-        databaseCredentials
+        getDatabaseCredentials()
       )
     } catch (error) {
       logger.error("Error during database shutdown:", error)
