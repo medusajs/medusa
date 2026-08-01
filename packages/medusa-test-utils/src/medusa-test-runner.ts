@@ -182,6 +182,10 @@ class MedusaTestRunner {
 
     await this.initializeDatabase()
 
+    await this.dbUtils.pgConnection_?.raw(
+      `CREATE SCHEMA IF NOT EXISTS "${this.schema}";`
+    )
+
     const migrator = new Migrator({ container })
     await migrator.ensureMigrationsTable()
 
