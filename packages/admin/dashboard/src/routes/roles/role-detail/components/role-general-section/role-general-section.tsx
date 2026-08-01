@@ -126,7 +126,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{role.name}</Heading>
-        {groups.length && <ActionMenu groups={groups} />}
+        {groups.length > 0 && <ActionMenu groups={groups} />}
       </div>
       <SectionRow title={t("fields.description")} value={role.description} />
       {canReadUsers && (
