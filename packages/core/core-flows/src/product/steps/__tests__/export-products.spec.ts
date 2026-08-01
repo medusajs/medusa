@@ -104,14 +104,48 @@ describe("exportProductsStep", () => {
     const lines = csvOutput.split("\n")
     const header = lines[0]
     
-    expect(header).toContain("id")
-    expect(header).toContain("title")
-    expect(header).toContain("handle")
-    expect(header).toContain("description")
+    expect(header).toContain("Product Id")
+    expect(header).toContain("Product Title")
+    expect(header).toContain("Product Handle")
+    expect(header).toContain("Product Description")
     const row1 = lines[1]
     const row2 = lines[2]
     
     expect(row1).toBeDefined()
     expect(row2).toBeDefined()
+  })
+
+  it("aligns columns correctly when array lengths differ across batches", async () => {
+    const queryGraphOverride = (args: any) => {
+      if (args.pagination?.skip === 0) {
+        return { data: [{ id: "prod_1", images: [{ url: "a.jpg" }] }] }
+      }
+      if (args.pagination?.skip === 1) {
+        return {
+          data: [
+            {
+              id: "prod_2",
+              images: [{ url: "a.jpg" }, { url: "b.jpg" }],
+            },
+          ],
+        }
+      }
+      return { data: [] }
+    }
+    const { container, writes } = buildContainer(queryGraphOverride)
+    await runStep(container, { select: ["images"], batch_size: 1 })
+
+    const csvOutput = writes.join("")
+    const lines = csvOutput.split("\n").filter(Boolean)
+    const headerColumns = lines[0].split(",")
+    
+    // Check that we got the expanded array headers
+    expect(headerColumns).toContain("Product Image 1")
+    expect(headerColumns).toContain("Product Image 2")
+    
+    // Check that all rows have the same number of columns as the header
+    for (const row of lines.slice(1)) {
+      expect(row.split(",").length).toEqual(headerColumns.length)
+    }
   })
 })

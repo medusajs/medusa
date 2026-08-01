@@ -3087,6 +3087,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.18.0
     csv-parse: ^5.6.0
+    deeks: ^3.2.1
     json-2-csv: ^5.5.11
   peerDependencies:
     "@medusajs/framework": 2.18.0
@@ -14564,7 +14565,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deeks@npm:3.2.1":
+"deeks@npm:3.2.1, deeks@npm:^3.2.1":
   version: 3.2.1
   resolution: "deeks@npm:3.2.1"
   checksum: 502e999e9ca3aa9b2e740d99bbb20b3654e8e1b5398c5cb61419700ee26ecf1a037de4dd89d40a93ef324442b303adce446cc3e584258d8abb271cd891943357
