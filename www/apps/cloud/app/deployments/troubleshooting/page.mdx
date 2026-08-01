@@ -425,6 +425,25 @@ The `.npmrc` file must be committed to your repository for Cloud to use it durin
 
 </Note>
 
+### pnpm Users: Environment Variable Expansion in .npmrc
+
+pnpm does not expand environment variables in project-level `.npmrc` files. This is a deliberate pnpm security policy to prevent leaking secrets to attacker-controlled registries. If you use pnpm and add `${NPM_TOKEN}` to a project-level `.npmrc`, the token is not substituted and authentication fails.
+
+To work around this, use the `cloud:preinstall` lifecycle hook to write the token to a user-level `~/.npmrc` file, where pnpm does expand environment variables:
+
+1. Remove or leave empty the auth token line from your project-level `.npmrc`.
+2. Add a `cloud:preinstall` script to your root `package.json`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "cloud:preinstall": "echo '//registry.example.com/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
+  }
+}
+```
+
+Replace `registry.example.com` with your registry hostname. The `cloud:preinstall` script runs before `pnpm install` in the Cloud build process, so the user-level `.npmrc` is in place when pnpm fetches packages.
+
 ### Secondary Failures from Failed Dependency Installation
 
 If the private registry authentication fails, `pnpm install` may fail silently or produce cryptic secondary errors such as missing binaries or missing modules. If you see unexpected errors after a build, check the build logs for `401 Unauthorized` or `ERR_PNPM_FETCH_401` errors earlier in the output.
@@ -443,6 +462,7 @@ Cloud uses `--frozen-lockfile` when installing dependencies to ensure reproducib
 - **pnpm version mismatch**: The version of pnpm used locally differs from the one used in Cloud builds.
 - **Native build dependencies**: A package with native binaries fails to build in the Cloud environment.
 - **Registry connectivity issues**: A package registry is unreachable during the build.
+- **npm registry rate limiting (HTTP 429)**: Unauthenticated requests to the npm registry are rate-limited, causing `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` errors for Medusa packages.
 
 ### Retrieve Full Build Logs
 
@@ -475,6 +495,27 @@ If the logs show a lockfile error, regenerate the lockfile locally:
 1. Run `pnpm install` locally to update the lockfile.
 2. Commit the updated `pnpm-lock.yaml`.
 3. Push the changes to trigger a new deployment.
+
+### Fix npm Registry Rate-Limit Errors (HTTP 429)
+
+If the full build logs show `ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION` errors for Medusa packages such as `@medusajs/js-sdk`, `@medusajs/modules-sdk`, or `@medusajs/types`, the npm registry is rate-limiting unauthenticated requests. Authenticated requests have significantly higher rate limits.
+
+To resolve this, add an `NPM_TOKEN` environment variable to your Cloud project and configure pnpm to use it:
+
+1. [Add an environment variable](../../environments/environment-variables/page.mdx#add-environment-variables-on-cloud) named `NPM_TOKEN` in your Cloud project and mark it as available at build time.
+2. Because pnpm does not expand environment variables in project-level `.npmrc` files, use the `cloud:preinstall` lifecycle hook to write the token to a user-level `~/.npmrc`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "cloud:preinstall": "echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc"
+  }
+}
+```
+
+3. Commit the updated `package.json` and push to trigger a new deployment.
+
+The `cloud:preinstall` script runs before `pnpm install` in the Cloud build process, so the authenticated `.npmrc` is in place when pnpm fetches packages from the npm registry.
 
 ---
 
