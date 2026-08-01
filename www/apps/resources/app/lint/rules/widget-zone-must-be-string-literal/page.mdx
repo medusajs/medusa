@@ -23,7 +23,7 @@ The following code is reported by the rule:
 ```tsx title="src/admin/widgets/product-widget.tsx"
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 
-const ZONE = "product.details.before"
+const ZONE = "product.details"
 
 export const config = defineWidgetConfig({
   zone: ZONE,
@@ -36,7 +36,7 @@ Instead, use a string literal:
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
 
 export const config = defineWidgetConfig({
-  zone: "product.details.before",
+  zone: "product.details",
 })
 ```
 

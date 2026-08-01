@@ -33,12 +33,53 @@ jobs:
   # Job B validates and applies.
   analyze:
     runs-on: ubuntu-latest
+    # Opt out of claude-code-action's "subprocess isolation", which it enables
+    # automatically whenever `allowed_non_write_users` is set. That mode makes
+    # Claude Code apply a GitHub-Actions hardening profile that wraps EVERY
+    # Bash command in bubblewrap with `filesystem.allowWrite` covering the
+    # root-owned directories /home, /root, /tmp, /var, /opt, /run and /mnt. It
+    # then tries to mask its mandatory deny-write paths inside those roots by
+    # bind-mounting /dev/null over them, which requires creating the mount
+    # target — so bwrap aborts with "Can't create file at /home/.mcp.json:
+    # Permission denied" / "Can't mkdir /home/.claude", because the `runner`
+    # user cannot write to /home. Every allowlisted script call then fails and
+    # the model emits an empty (or "review could not complete") decision while
+    # the workflow still reports success. See anthropics/claude-code#17727.
+    #
+    # This is the opt-out documented by the action (docs/security.md); it must
+    # live in a workflow/job `env:` block, because the action reads it from the
+    # `env` context to decide whether to turn the mode on. `sandbox.*` settings
+    # cannot fix this: the wrapping is driven by the hardening profile, not by
+    # `sandbox.enabled`, and `sandbox.filesystem.disabled` is explicitly
+    # ignored while subprocess isolation is on.
+    #
+    # What we give up is the best-effort scrubbing of the Anthropic/GitHub
+    # tokens from subprocess environments. That is acceptable here: the job's
+    # only Bash entries are the fixed read-only `scripts/*.sh` helpers listed
+    # in --allowedTools, which shell out to `gh` against api.github.com with
+    # validated arguments and never interpolate the environment, `scripts/` is
+    # chmod'd read-only below, and the job holds only the read-only default
+    # token (no App token). The generic Read/Write tools are fenced off with
+    # deny rules in `settings` below.
+    #
+    # Gotcha for future edits: `CLAUDE_CODE_SCRIPT_CAPS` (per-script call
+    # limits) is part of the same hardening profile, so it is silently ignored
+    # while this is set to 0. Do not reach for it as a control here.
+    env:
+      CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "0"
     permissions:
       contents: read
       pull-requests: read
       issues: read
     steps:
       - name: Checkout repository
+        # NO `ref:` on purpose. This workflow is reached from
+        # `pull_request_target`, which runs with the base repository's secrets,
+        # so the workspace must stay on the BASE commit. Checking out the PR
+        # head here would put attacker-controlled files at allowlisted paths
+        # (e.g. `scripts/get_pr.sh`) and the agent would execute them with
+        # CLAUDE_CODE_API_TOKEN in the environment. The PR's contents reach the
+        # model only as text, via `gh pr diff`.
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -51,12 +92,24 @@ jobs:
         # entry to run arbitrary commands and exfiltrate
         # CLAUDE_CODE_API_TOKEN. Stripping write bits on the directory
         # and its contents removes that path.
+        #
+        # The HEAD assertion is a tripwire for the checkout above: if a future
+        # edit ever points it at the PR head, this job must not run at all.
+        # `chmod` only stops the model from rewriting a script; it cannot help
+        # when the checkout itself supplies a poisoned one.
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
+          if [[ -n "$PR_HEAD_SHA" && "$(git rev-parse HEAD)" == "$PR_HEAD_SHA" ]]; then
+            echo "::error::Workspace is on the PR head commit. This job runs with repository secrets and must stay on the base ref." >&2
+            exit 1
+          fi
           chmod -R a-w scripts
           chmod a-w scripts
 
       - name: Review analysis
+        id: analysis
         # Pinned to the commit the v1 tag currently resolves to. A floating
         # `@v1` tag let an upstream release silently roll into CI (a change
         # that enabled the bwrap Bash sandbox broke every allowlisted script
@@ -68,31 +121,40 @@ jobs:
           GITHUB_EVENT_NUMBER: ${{ inputs.pr_number }}
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-          # Work around Claude Code's Bash sandbox (bubblewrap) failing on the
-          # runner: it aborts every Bash command during sandbox setup with
-          # "bwrap: Can't create file at /home/.mcp.json" / "Can't mkdir
-          # /home/.claude". The sandbox builds an isolated home under /home
-          # inside its own bwrap namespace and cannot create files in it
-          # (upstream bug anthropics/claude-code#17727).
+          # Belt and braces: the Bash sandbox is off by default, and the job
+          # never needs it (see the note on the bwrap failure at the top of
+          # this job). Keeping it explicit means a future runner image or
+          # settings default cannot switch it on underneath us.
           #
-          # `sandbox.enabled: false` alone does NOT help: this action runs
-          # Claude via the Agent SDK in headless bypass-permissions mode, which
-          # force-enables the sandbox regardless of that flag (confirmed: the
-          # action loads user settings via settingSources but the sandbox still
-          # ran). The reliable lever is `excludedCommands`, which runs matching
-          # commands OUTSIDE the sandbox so bwrap never wraps them. Every tool
-          # this job can run is `bash scripts/*.sh` (see --allowedTools below),
-          # so excluding `bash *` covers them all.
+          # Isolation for this job is enforced by: the tight --allowedTools
+          # allowlist (only specific `bash scripts/*.sh` + Read + Write, no
+          # arbitrary Bash), the read-only default token with NO App token in
+          # this job, and the `chmod -R a-w scripts` step above.
           #
-          # Isolation for this job is still enforced by: the tight
-          # --allowedTools allowlist (only specific `bash scripts/*.sh` + Read +
-          # Write, no arbitrary Bash), the read-only default token with NO App
-          # token in this job, the `chmod -R a-w scripts` step above, and
-          # CLAUDE_CODE_SUBPROCESS_ENV_SCRUB (auto-enabled by the action because
-          # allowed_non_write_users is set), which strips the Anthropic API
-          # token from every subprocess env.
+          # The deny rules cover the two things the generic `Read`/`Write`
+          # tools could otherwise reach. Neither tool goes through the sandbox
+          # even when it is on, so these rules — not the sandbox — are what
+          # blocks them:
+          #   - `/proc/**`: reading the tokens straight out of the agent's own
+          #     process environment via `/proc/self/environ`.
+          #   - `.claude/**` and `.mcp.json`: writing agent config into the
+          #     checkout. The action loads project and local setting sources,
+          #     so this keeps a prompt-injected model from trying to widen its
+          #     own allowlist or register an MCP server mid-run.
+          # `review-decision.json` at the repo root stays writable.
           settings: |
-            { "sandbox": { "enabled": false, "excludedCommands": ["bash *"] } }
+            {
+              "sandbox": { "enabled": false },
+              "permissions": {
+                "deny": [
+                  "Read(//proc/**)",
+                  "Write(//**/.claude/**)",
+                  "Edit(//**/.claude/**)",
+                  "Write(//**/.mcp.json)",
+                  "Edit(//**/.mcp.json)"
+                ]
+              }
+            }
           github_token: ${{ github.token }}
           # NOTE: this action version has no `model` input (it is silently
           # ignored with an "Unexpected input(s) 'model'" warning); the model
@@ -163,7 +225,7 @@ jobs:
 
           claude_args: >-
             --model claude-sonnet-4-6
-            --max-turns 50
+            --max-turns 80
             --allowedTools
             "Bash(bash scripts/get_pr.sh:*),
             Bash(bash scripts/get_pr_files.sh:*),
@@ -176,6 +238,54 @@ jobs:
             Bash(bash scripts/get_dependency_releases.sh:*),
             Read,
             Write"
+
+      - name: Detect broken Bash tooling
+        # When the Bash tool is broken at the sandbox level (see the bwrap note
+        # at the top of this job), every script call fails but the model still
+        # finishes "successfully" and writes an empty or apologetic decision, so
+        # the run goes green while nothing was reviewed. Fail loudly instead.
+        #
+        # This inspects ONLY tool results that (a) belong to a Bash call and
+        # (b) came back as errors. Both conditions matter: an earlier version
+        # grepped the whole execution log and failed issue #16249 — a report
+        # about these very workflows — because the agent read this file and the
+        # grep matched its own pattern. A successful `get_issue.sh` whose output
+        # quotes a bwrap error (an issue *about* this bug) is likewise not an
+        # error result, so it no longer trips the check.
+        env:
+          EXECUTION_FILE: ${{ steps.analysis.outputs.execution_file }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$EXECUTION_FILE" || ! -f "$EXECUTION_FILE" ]]; then
+            echo "::warning::No execution log to inspect; skipping the sandbox check."
+            exit 0
+          fi
+
+          # If the log has no tool calls at all, the shape probably changed
+          # upstream. Say so rather than silently passing forever.
+          TOOL_CALLS=$(jq '[.[]? | select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")] | length' "$EXECUTION_FILE")
+          if [[ "$TOOL_CALLS" == "0" ]]; then
+            echo "::warning::No tool calls found in the execution log; the sandbox check did not run. Has the log format changed?"
+            exit 0
+          fi
+
+          FAILURES=$(jq -r --arg marker 'bwrap' '
+            ([.[]? | select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")
+              | {key: .id, value: .name}] | from_entries) as $names
+            | [ .[]? | select(.type=="user") | .message.content[]? | select(.type=="tool_result")
+                | select(.is_error == true)
+                | select(($names[.tool_use_id] // "") == "Bash")
+                | (if (.content|type) == "string" then .content
+                   else ([.content[]?.text // ""] | join("\n")) end)
+                | select(test($marker))
+              ][0:3] | .[]
+          ' "$EXECUTION_FILE")
+
+          if [[ -n "$FAILURES" ]]; then
+            echo "::error::Claude Code's Bash tool failed inside the sandbox, so the PR was never analyzed. First failures:" >&2
+            printf '%s\n' "$FAILURES" >&2
+            exit 1
+          fi
 
       - name: Verify decision file
         run: |

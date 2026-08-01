@@ -7,14 +7,21 @@ on:
     types: [created]
   workflow_dispatch:
     inputs:
+      pr_number:
+        description: "Review only this PR (e.g. 16248). Leave empty to review every open non-draft PR."
+        required: false
+        default: ''
+        type: string
       skip_reviewed:
-        description: "Skip PRs that already have initial-approval or requires-more labels"
+        description: "Skip PRs that already have initial-approval or requires-more labels. Ignored when pr_number is set."
         required: false
         default: true
         type: boolean
 
 jobs:
-  # Runs only on workflow_dispatch: collects all open non-draft PRs for the matrix below
+  # Runs only on workflow_dispatch: resolves which PRs to review. With
+  # `pr_number` set it emits that single PR; otherwise it collects all open
+  # non-draft PRs for the matrix below.
   get-open-prs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -27,8 +34,23 @@ jobs:
         id: get-prs
         env:
           GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          SKIP_REVIEWED: ${{ inputs.skip_reviewed }}
         run: |
-          SKIP_REVIEWED="${{ inputs.skip_reviewed }}"
+          set -euo pipefail
+
+          # Explicitly targeting one PR skips the label and draft filters: the
+          # point of naming a PR is to re-run the review on it regardless.
+          if [[ -n "$PR_NUMBER" ]]; then
+            if ! [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
+              echo "::error::pr_number must be a positive integer, got '$PR_NUMBER'" >&2
+              exit 1
+            fi
+            echo "Reviewing PR #$PR_NUMBER only."
+            echo "matrix=[{\"number\":$PR_NUMBER}]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           matrix=$(gh pr list --repo ${{ github.repository }} --state open --limit 200 --json number,isDraft,author,labels \
             --jq "[.[] | select(
               .isDraft == false and
@@ -36,7 +58,7 @@ jobs:
               (if \"$SKIP_REVIEWED\" == \"true\" then ([.labels[].name] | contains([\"initial-approval\"]) | not) and ([.labels[].name] | contains([\"requires-more\"]) | not) else true end)
             ) | {number: .number}]")
 
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
   review-all:

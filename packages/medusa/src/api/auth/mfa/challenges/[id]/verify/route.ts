@@ -11,6 +11,9 @@ import {
 import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AuthMfaVerifyChallengeRequestType>,
   res: MedusaResponse

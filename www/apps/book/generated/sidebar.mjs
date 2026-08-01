@@ -77,7 +77,88 @@ export const generatedSidebars = [
             "type": "link",
             "title": "MCP Server",
             "path": "/learn/introduction/build-with-llms-ai/mcp-server",
-            "children": [],
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Ask Medusa Questions",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question",
+                "description": "Answer Medusa questions from the official documentation.",
+                "children": [],
+                "chapterTitle": "2.3.1. Ask Medusa Questions",
+                "number": "2.3.1."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Shopify",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify",
+                "description": "Migrate your store's data from Shopify to Medusa.",
+                "children": [],
+                "chapterTitle": "2.3.2. Migrate from Shopify",
+                "number": "2.3.2."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from WooCommerce",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce",
+                "description": "Migrate your store's data from WooCommerce to Medusa.",
+                "children": [],
+                "chapterTitle": "2.3.3. Migrate from WooCommerce",
+                "number": "2.3.3."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Magento",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento",
+                "description": "Migrate your store's data from Magento to Medusa.",
+                "children": [],
+                "chapterTitle": "2.3.4. Migrate from Magento",
+                "number": "2.3.4."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Integrate Providers",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers",
+                "description": "Build payment and fulfillment module providers for third-party services.",
+                "children": [],
+                "chapterTitle": "2.3.5. Integrate Providers",
+                "number": "2.3.5."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Extend Products",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/extend-products",
+                "description": "Attach custom data and features to products, variants, and options.",
+                "children": [],
+                "chapterTitle": "2.3.6. Extend Products",
+                "number": "2.3.6."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Upgrade Medusa",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions",
+                "description": "Upgrade a Medusa project to a newer version, breaking changes included.",
+                "children": [],
+                "chapterTitle": "2.3.7. Upgrade Medusa",
+                "number": "2.3.7."
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Submit Feedback",
+                "path": "/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback",
+                "description": "Send documentation, bug, and feedback to the Medusa team.",
+                "children": [],
+                "chapterTitle": "2.3.8. Submit Feedback",
+                "number": "2.3.8."
+              }
+            ],
             "chapterTitle": "2.3. MCP Server",
             "number": "2.3."
           },
