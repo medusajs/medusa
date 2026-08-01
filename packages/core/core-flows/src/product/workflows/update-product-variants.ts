@@ -14,6 +14,7 @@ import {
 import { emitEventStep } from "../../common"
 import { updatePriceSetsStep } from "../../pricing"
 import {
+  createProductVariantsInventoryStep,
   dismissProductVariantsInventoryStep,
   updateProductVariantsStep,
 } from "../steps"
@@ -178,6 +179,32 @@ export const updateProductVariantsWorkflow = createWorkflow(
 
     dismissProductVariantsInventoryStep({
       variantIds: variantsToDismissInventory,
+    })
+
+    const variantsToCreateInventory = transform(
+      { input, updatedVariants },
+      (data) => {
+        const variantIds: string[] = []
+
+        if ("product_variants" in data.input) {
+          for (const variant of data.input.product_variants) {
+            if (variant.id && variant.manage_inventory === true) {
+              variantIds.push(variant.id)
+            }
+          }
+        } else if (
+          data.input.update &&
+          data.input.update?.manage_inventory === true
+        ) {
+          variantIds.push(...data.updatedVariants.map((v) => v.id))
+        }
+
+        return variantIds
+      }
+    )
+
+    createProductVariantsInventoryStep({
+      variantIds: variantsToCreateInventory,
     })
 
     // We don't want to do any pricing updates if the prices didn't change

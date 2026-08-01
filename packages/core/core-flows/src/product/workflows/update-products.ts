@@ -27,6 +27,7 @@ import {
   useRemoteQueryStep,
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
+import { createProductVariantsInventoryStep } from "../steps/create-product-variants-inventory"
 import { dismissProductVariantsInventoryStep } from "../steps/dismiss-product-variants-inventory"
 
 /**
@@ -472,6 +473,35 @@ export const updateProductsWorkflow = createWorkflow(
 
     dismissProductVariantsInventoryStep({
       variantIds: variantsToDismissInventory,
+    })
+
+    const variantsToCreateInventory = transform(
+      { input, updatedProducts },
+      (data) => {
+        const variantIds: string[] = []
+
+        if ("products" in data.input) {
+          for (const product of data.input.products) {
+            for (const variant of product.variants ?? []) {
+              if (variant.id && variant.manage_inventory === true) {
+                variantIds.push(variant.id)
+              }
+            }
+          }
+        } else if (data.input.update?.variants?.length) {
+          for (const variant of data.input.update.variants) {
+            if (variant.id && variant.manage_inventory === true) {
+              variantIds.push(variant.id)
+            }
+          }
+        }
+
+        return variantIds
+      }
+    )
+
+    createProductVariantsInventoryStep({
+      variantIds: variantsToCreateInventory,
     })
 
     const salesChannelLinks = transform(
