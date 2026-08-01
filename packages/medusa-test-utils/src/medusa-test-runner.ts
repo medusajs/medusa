@@ -52,11 +52,33 @@ interface TestRunnerConfig {
   medusaConfigFile?: string
   schema?: string
   debug?: boolean
+  /**
+   * @deprecated This option has never been read by the test runner and has no
+   * effect. It will be removed in a future release.
+   */
   inApp?: boolean
   hooks?: {
     beforeServerStart?: (container: MedusaContainer) => Promise<void>
   }
   cwd?: string
+}
+
+// The warning is per process, not per runner: a test file can register several
+// runners, and repeating the same notice for each of them is only noise.
+let hasWarnedAboutInAppOption = false
+
+function warnAboutInAppOption(): void {
+  if (hasWarnedAboutInAppOption) {
+    return
+  }
+
+  hasWarnedAboutInAppOption = true
+
+  logger.warn(
+    `The "inApp" option of medusaIntegrationTestRunner is deprecated and has no effect. ` +
+      `No code path in @medusajs/test-utils reads it. Remove it from your test setup, ` +
+      `since it will be removed in a future release.`
+  )
 }
 
 class MedusaTestRunner {
@@ -67,8 +89,6 @@ class MedusaTestRunner {
   private cwd: string
   private env: Record<string, any>
   private debug: boolean
-  // @ts-ignore
-  private inApp: boolean
 
   private dbUtils: ReturnType<typeof dbTestUtilFactory>
   private dbConfig: {
@@ -98,7 +118,10 @@ class MedusaTestRunner {
     this.modulesConfigPath = config.medusaConfigFile ?? this.cwd
     this.env = config.env ?? {}
     this.debug = config.debug ?? false
-    this.inApp = config.inApp ?? false
+
+    if (config.inApp !== undefined) {
+      warnAboutInAppOption()
+    }
 
     this.dbUtils = dbTestUtilFactory()
     this.dbConfig = {
@@ -372,7 +395,7 @@ export function medusaIntegrationTestRunner({
   schema = "public",
   env = {},
   debug = false,
-  inApp = false,
+  inApp,
   testSuite,
   hooks,
   cwd,
@@ -383,6 +406,10 @@ export function medusaIntegrationTestRunner({
   medusaConfigFile?: string
   schema?: string
   debug?: boolean
+  /**
+   * @deprecated This option has never been read by the test runner and has no
+   * effect. Passing it logs a warning. It will be removed in a future release.
+   */
   inApp?: boolean
   testSuite: (options: MedusaSuiteOptions) => void
   hooks?: TestRunnerConfig["hooks"]
