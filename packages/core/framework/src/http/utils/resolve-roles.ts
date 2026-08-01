@@ -35,19 +35,25 @@ export const resolveRoles = async ({
   })
 
   const assignments = await rbacModule.listRbacRoleAssignments({
-    $or: authzContext.grantees.map((g) => ({
-      reference: g.type,
-      reference_id: g.id,
-    })),
-    ...(scope
-      ? {
-          $or: [
-            { scope: scope.type, scope_id: scope.id },
-            // Unscoped role assignments allow exercising privileges across all scopes.
-            { scope: null, scope_id: null },
-          ],
-        }
-      : {}),
+    $and: [
+      {
+        $or: authzContext.grantees.map((g) => ({
+          reference: g.type,
+          reference_id: g.id,
+        })),
+      },
+      ...(scope
+        ? [
+            {
+              $or: [
+                { scope: scope.type, scope_id: scope.id },
+                // Unscoped role assignments allow exercising privileges across all scopes.
+                { scope: null, scope_id: null },
+              ],
+            },
+          ]
+        : []),
+    ],
   })
 
   return deduplicate(assignments.map((assignment) => assignment.role_id))
