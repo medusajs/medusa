@@ -2,6 +2,8 @@ import { ILockingModule } from "@medusajs/framework/types"
 import { Modules, promiseAll } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { setTimeout } from "node:timers/promises"
+import { Redis } from "ioredis"
+import { RedisLockingProvider } from "../../src/services/redis-lock"
 
 jest.setTimeout(5000)
 
@@ -158,6 +160,149 @@ moduleIntegrationTestRunner<ILockingModule>({
 
         const release = await service.release(keyToLock)
         expect(release).toBe(true)
+      })
+
+      it("should re-enter a lock held by the same owner when awaitQueue is set", async () => {
+        await service.acquire("reentrant_key", {
+          ownerId: "owner_reentry",
+          expire: 10,
+        })
+
+        // Against the unfixed provider the awaitQueue branch never runs the
+        // same-owner check, so this call backs off against its own lock and the
+        // test dies on the jest timeout instead of resolving. That asymmetry
+        // with the awaitQueue: false path above is the proof.
+        await expect(
+          service.acquire("reentrant_key", {
+            ownerId: "owner_reentry",
+            expire: 10,
+            awaitQueue: true,
+          })
+        ).resolves.toBeUndefined()
+
+        expect(
+          await service.release("reentrant_key", { ownerId: "owner_reentry" })
+        ).toBe(true)
+      })
+
+      it("should scope releaseAll to the given owner", async () => {
+        await service.acquire("ra_mine", { ownerId: "owner_a", expire: 10 })
+        await service.acquire("ra_theirs", { ownerId: "owner_b", expire: 10 })
+
+        await service.releaseAll({ ownerId: "owner_a" })
+
+        await expect(
+          service.acquire("ra_mine", { ownerId: "owner_c", expire: 10 })
+        ).resolves.toBeUndefined()
+
+        await expect(
+          service.acquire("ra_theirs", { ownerId: "owner_c", expire: 10 })
+        ).rejects.toThrow(`Failed to acquire lock for key "ra_theirs"`)
+
+        expect(await service.release("ra_mine", { ownerId: "owner_c" })).toBe(
+          true
+        )
+        expect(await service.release("ra_theirs", { ownerId: "owner_b" })).toBe(
+          true
+        )
+      })
+
+      it("should not deadlock when two callers request the same keys in opposite orders", async () => {
+        // The suite's module service serves every caller from a single ioredis
+        // connection, so two callers started with Promise.all never interleave:
+        // the first one queues both of its commands before the second one is
+        // scheduled, takes both keys, and an argument-order implementation
+        // looks safe. Each caller here therefore gets its own connection, and a
+        // delay is injected before its second acquisition so both callers hold
+        // their first key before either asks for its second.
+        //
+        // Under argument order that is the ABBA interleave: caller one holds
+        // "abba_a", caller two holds "abba_b", and both then spin on the key
+        // the other holds. Under the sorted order both callers target "abba_a"
+        // first, so only one of them is ever in the critical section and the
+        // injected delay is inconsequential.
+        const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379"
+        const clients: Redis[] = []
+
+        const makeCaller = async (keys: string[], ownerId: string) => {
+          // defineCommand attaches acquireLock to the instance at runtime and
+          // the provider's own client type is not exported, so restate the one
+          // command this test wraps.
+          const client = new Redis(redisUrl, {
+            lazyConnect: true,
+          }) as Redis & {
+            acquireLock: (
+              key: string,
+              ownerId: string,
+              ttl: number
+            ) => Promise<number>
+          }
+          clients.push(client)
+          await client.connect()
+
+          const provider = new RedisLockingProvider(
+            { redisClient: client, prefix: "medusa_lock:" },
+            {}
+          )
+
+          // Fault injection lives in the test; the provider is untouched.
+          const acquireLock = client.acquireLock.bind(client)
+          let calls = 0
+          client.acquireLock = async (key, owner, ttl) => {
+            if (++calls === 2) {
+              await setTimeout(150)
+            }
+            return acquireLock(key, owner, ttl)
+          }
+
+          return async () => {
+            await provider.acquire(keys, {
+              ownerId,
+              expire: 10,
+              awaitQueue: true,
+            })
+            expect(await provider.release(keys, { ownerId })).toBe(true)
+          }
+        }
+
+        try {
+          const callerOne = await makeCaller(
+            ["abba_a", "abba_b"],
+            "owner_abba_one"
+          )
+          const callerTwo = await makeCaller(
+            ["abba_b", "abba_a"],
+            "owner_abba_two"
+          )
+
+          const settled = Promise.all([callerOne(), callerTwo()])
+          // The teardown below aborts the in-flight command of a caller that is
+          // still retrying; swallow that follow-up rejection.
+          settled.catch(() => {})
+
+          // awaitQueue has no overall deadline, so a deadlock here would hang
+          // until the jest timeout killed the whole file. Racing a deadline
+          // turns it into a readable assertion failure instead.
+          const deadlocked =
+            "deadlocked: both callers are still waiting on each other"
+          const outcome = await Promise.race([
+            settled,
+            setTimeout(2000, deadlocked, { ref: false }),
+          ])
+
+          expect(outcome).not.toBe(deadlocked)
+        } finally {
+          // Disconnect first: it stops a still-spinning retry loop before the
+          // cleanup runs, so a deadlocked run cannot leave the two keys held
+          // for their whole TTL and fail the next run for the wrong reason.
+          clients.forEach((client) => client.disconnect())
+          await service.release(["abba_a", "abba_b"], {
+            ownerId: "owner_abba_one",
+          })
+          await service.release(["abba_a", "abba_b"], {
+            ownerId: "owner_abba_two",
+          })
+        }
       })
     })
 
