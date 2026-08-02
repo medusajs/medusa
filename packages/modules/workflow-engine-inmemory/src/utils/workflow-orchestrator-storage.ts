@@ -31,6 +31,9 @@ import { WorkflowExecution } from "../models/workflow-execution"
 
 const THIRTY_MINUTES_IN_MS = 1000 * 60 * 30
 
+// setTimeout coerces any delay above the max signed 32-bit integer, so longer delays are armed in chunks
+const MAX_TIMER_DELAY_MS = 2_147_483_647
+
 const doneStates = new Set([
   TransactionStepState.DONE,
   TransactionStepState.REVERTED,
@@ -188,15 +191,29 @@ export class InMemoryDistributedTransactionStorage
 
   private createManagedTimer(
     callback: () => void | Promise<void>,
-    delay: number
+    delay: number,
+    options?: { unref?: boolean }
   ): NodeJS.Timeout {
+    const chunk = Math.min(delay, MAX_TIMER_DELAY_MS)
+    const remaining = delay - chunk
+
     const timer = setTimeout(async () => {
       this.pendingTimers.delete(timer)
+
+      if (remaining > 0) {
+        this.createManagedTimer(callback, remaining, options)
+        return
+      }
+
       const res = callback()
       if (res instanceof Promise) {
         await res
       }
-    }, delay)
+    }, chunk)
+
+    if (options?.unref) {
+      timer.unref()
+    }
 
     this.pendingTimers.add(timer)
     return timer
@@ -669,12 +686,11 @@ export class InMemoryDistributedTransactionStorage
     const delay = parseNextExecution(schedulerOptions)
     const scheduledFor = new Date(Date.now() + delay)
 
-    const timer = setTimeout(async () => {
-      await this.jobHandler(jobId, scheduledFor)
-    }, delay)
-
-    // Set the timer's unref to prevent it from keeping the process alive
-    timer.unref()
+    const timer = this.createManagedTimer(
+      () => this.jobHandler(jobId, scheduledFor),
+      delay,
+      { unref: true }
+    )
 
     this.scheduled.set(jobId, {
       timer,
@@ -726,12 +742,13 @@ export class InMemoryDistributedTransactionStorage
         },
       })
 
-      const timer = this.createManagedTimer(() => {
-        void this.jobHandler(jobId, nextScheduledFor)
-      }, nextExecution)
-
-      // Prevent timer from keeping the process alive
-      timer.unref()
+      const timer = this.createManagedTimer(
+        () => {
+          void this.jobHandler(jobId, nextScheduledFor)
+        },
+        nextExecution,
+        { unref: true }
+      )
 
       this.scheduled.set(jobId, {
         timer,
