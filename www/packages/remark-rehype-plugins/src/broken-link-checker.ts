@@ -374,7 +374,7 @@ export function brokenLinkCheckerPlugin(
     }
 
     const currentPageFilePath = file.history[0].replace(
-      `/${path.basename(file.history[0])}`,
+      path.dirname(file.history[0]),
       ""
     )
 
