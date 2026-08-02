@@ -107,7 +107,7 @@ const InnerForm = <TRes,>({
     )
   })
 
-  const { fields, insert, remove } = useFieldArray({
+  const { fields, append, insert, remove } = useFieldArray({
     control: form.control,
     name: "metadata",
   })
@@ -127,6 +127,19 @@ const InnerForm = <TRes,>({
 
   function insertRow(index: number, position: "above" | "below") {
     insert(index + (position === "above" ? 0 : 1), {
+      key: "",
+      value: "",
+      disabled: false,
+    })
+  }
+
+  /**
+   * Rows holding non-primitive values are disabled, which also hides their row
+   * actions. Appending from outside the rows keeps metadata addable when every
+   * existing row is disabled.
+   */
+  function addRow() {
+    append({
       key: "",
       value: "",
       disabled: false,
@@ -261,6 +274,15 @@ const InnerForm = <TRes,>({
               )
             })}
           </div>
+          <Button
+            size="small"
+            variant="secondary"
+            type="button"
+            className="self-start"
+            onClick={addRow}
+          >
+            {t("metadata.edit.actions.addRow")}
+          </Button>
           {hasUneditableRows && (
             <InlineTip
               variant="warning"
