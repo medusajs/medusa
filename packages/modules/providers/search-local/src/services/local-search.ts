@@ -38,10 +38,10 @@ type StoredIndex = {
 }
 
 /**
- * Search provider backed by Orama, holding every index in process memory.
+ * Search provider backed by Orama, holding every index in-memory.
  *
- * Nothing is persisted, so it is meant for tests, local development and small
- * read-mostly datasets — a restart is an empty index until something reindexes.
+ * Meant for tests, local development and small read-mostly datasets
+ * The index will be empty upon restart, so rely on fallback if used in production.
  */
 export class LocalSearchService extends AbstractSearchProviderService {
   static identifier = "search-local"
@@ -53,8 +53,6 @@ export class LocalSearchService extends AbstractSearchProviderService {
     super()
     this.logger_ = logger
   }
-
-  /* ---------------------------- index lifecycle --------------------------- */
 
   async upsertIndex({
     index,
@@ -120,8 +118,6 @@ export class LocalSearchService extends AbstractSearchProviderService {
     return this.task(alias)
   }
 
-  /* -------------------------------- documents ---------------------------- */
-
   async upsertDocuments({
     index,
     documents,
@@ -186,8 +182,6 @@ export class LocalSearchService extends AbstractSearchProviderService {
 
     return this.task(index)
   }
-
-  /* ----------------------------------- read ------------------------------ */
 
   async search(
     input: SearchTypes.ProviderSearchQuery
@@ -294,8 +288,6 @@ export class LocalSearchService extends AbstractSearchProviderService {
         skip,
         take,
         count: total,
-        // Orama counts every match.
-        count_is_estimate: false,
         query: input.q,
         // Orama reports elapsed time in nanoseconds.
         processing_time_ms: Number(elapsed) / 1e6,
@@ -308,8 +300,6 @@ export class LocalSearchService extends AbstractSearchProviderService {
   ): Promise<SearchTypes.SearchResult[]> {
     return await Promise.all(inputs.map((input) => this.search(input)))
   }
-
-  /* --------------------------------- helpers ----------------------------- */
 
   protected resolveSortBy(
     input: SearchTypes.ProviderSearchQuery,

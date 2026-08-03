@@ -1,0 +1,116 @@
+import { SearchTypes } from "@medusajs/framework/types"
+
+export type TestProduct = {
+  id: string
+  title: string
+  handle: string
+  description: string
+  status: string
+  brand: string
+  min_price: number
+  created_at: Date
+  tags: string[]
+  variants: { sku: string; color: string }[]
+}
+
+/**
+ * Stands in for the source of truth a real `seed` would read through
+ * `query.graph`. Tests mutate it and reindex to prove the index follows.
+ */
+export const dataset: { products: TestProduct[] } = { products: [] }
+
+export const baseProducts: TestProduct[] = [
+  {
+    id: "prod_1",
+    title: "Red running shoe",
+    handle: "red-running-shoe",
+    description: "A breathable shoe for long distances",
+    status: "published",
+    brand: "acme",
+    min_price: 100,
+    created_at: new Date("2026-01-01T00:00:00.000Z"),
+    tags: ["shoe", "sport"],
+    variants: [
+      { sku: "SHOE-RED-41", color: "red" },
+      { sku: "SHOE-RED-42", color: "red" },
+    ],
+  },
+  {
+    id: "prod_2",
+    title: "Blue running shirt",
+    handle: "blue-running-shirt",
+    description: "A light shirt for warm weather",
+    status: "published",
+    brand: "borg",
+    min_price: 50,
+    created_at: new Date("2026-02-01T00:00:00.000Z"),
+    tags: ["shirt", "sport"],
+    variants: [{ sku: "SHIRT-BLUE-M", color: "blue" }],
+  },
+  {
+    id: "prod_3",
+    title: "Green wool hat",
+    handle: "green-wool-hat",
+    description: "A warm hat for the winter",
+    status: "draft",
+    brand: "acme",
+    min_price: 200,
+    created_at: new Date("2026-03-01T00:00:00.000Z"),
+    tags: ["hat"],
+    variants: [
+      { sku: "HAT-GREEN-S", color: "green" },
+      { sku: "HAT-GREEN-L", color: "olive" },
+    ],
+  },
+]
+
+export function resetDataset(products: TestProduct[] = baseProducts): void {
+  dataset.products = products.map((product) => ({ ...product }))
+}
+
+export const productIndex: SearchTypes.SearchIndexDefinition = {
+  name: "product",
+  entity: "product",
+  fields: {
+    id: { type: "keyword", filterable: true },
+    title: { type: "text", searchable: { weight: 3 }, sortable: true },
+    handle: { type: "keyword", filterable: true },
+    // Indexed for matching but never returned, so the split between engine
+    // fields and `query.graph` fields is observable.
+    description: { type: "text", searchable: true, retrievable: false },
+    status: { type: "keyword", filterable: true, facetable: true },
+    brand: {
+      type: "keyword",
+      filterable: true,
+      facetable: true,
+      sortable: true,
+    },
+    min_price: { type: "float", filterable: true, sortable: true, facetable: true },
+    created_at: { type: "date", filterable: true, sortable: true },
+    tags: { type: "keyword", array: true, filterable: true, facetable: true },
+    variants: {
+      type: "object",
+      array: true,
+      fields: {
+        sku: { type: "keyword", searchable: true, filterable: true },
+        color: { type: "keyword", filterable: true, facetable: true },
+      },
+    },
+  },
+  events: [],
+  // eslint-disable-next-line require-yield
+  async *seed({ filters }) {
+    const ids = (filters?.ids as string[]) ?? undefined
+
+    const products = ids
+      ? dataset.products.filter((product) => ids.includes(product.id))
+      : dataset.products
+
+    // Two batches, so the streaming path and the sync cursor both get exercised.
+    const half = Math.ceil(products.length / 2) || 1
+
+    for (let i = 0; i < products.length; i += half) {
+      yield products.slice(i, i + half)
+    }
+  },
+}

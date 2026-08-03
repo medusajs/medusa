@@ -2,20 +2,17 @@ import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 
 /**
- * The original document is stored verbatim under this key. Orama keeps
- * undeclared properties in its document store without indexing them, which
- * makes reads lossless — dates come back as dates, and arrays of objects keep
- * their shape even though they have to be collapsed for indexing.
+ * The original document, stored verbatim. Orama keeps undeclared properties
+ * without indexing them, which makes reads lossless — dates come back as dates,
+ * and arrays of objects keep their shape despite being collapsed for indexing.
  */
 export const SOURCE_KEY = "__source"
 
 /**
- * Suffix for the shadow copy of a tokenized field.
- *
- * Orama's `where` on a `string` property matches tokens, not whole values, so
- * `{ title: "Red shoe" }` also matches "Blue shoe". A field that must be both
- * free-text searchable and exactly filterable therefore gets indexed twice:
- * once as `string` for matching, once as `enum` for filtering and faceting.
+ * Suffix for the shadow copy of a tokenized field. Orama's `where` on a `string`
+ * matches tokens, not whole values — `{ title: "Red shoe" }` also matches "Blue
+ * shoe" — so a field that must be both searchable and exactly filterable is
+ * indexed twice: `string` for matching, `enum` for filtering and faceting.
  */
 export const FILTER_SUFFIX = "__filter"
 
@@ -93,11 +90,9 @@ function scalarType(
 }
 
 /**
- * Refuses a definition Orama cannot honour.
- *
- * Scoped to what makes the index unbuildable or silently wrong. A per-query
- * feature such as a stats facet is refused when it is *requested*, so declaring
- * it does not make the rest of the field unusable.
+ * Refuses a definition Orama cannot honour, scoped to what makes the index
+ * unbuildable or silently wrong. A per-query feature like a stats facet is refused
+ * when *requested*, so declaring it does not make the field unusable.
  */
 export function assertIndexSupported(
   definition: SearchTypes.ResolvedSearchIndexDefinition
@@ -131,11 +126,9 @@ export function assertIndexSupported(
 }
 
 /**
- * Refuses a query Orama cannot honour.
- *
- * The dangerous cases are the ones where Orama would otherwise answer *almost*
- * correctly: it takes a single `sortBy`, so extra sort keys would be dropped,
- * and it has no highlighting or cursors, which would come back silently absent.
+ * Refuses a query Orama cannot honour. The dangerous ones are where it would
+ * answer *almost* correctly: a single `sortBy` silently drops extra sort keys, and
+ * missing highlighting or cursors would come back silently absent.
  */
 export function assertQuerySupported(
   query: SearchTypes.ProviderSearchQuery
@@ -239,11 +232,9 @@ export function buildIndexPlan(
 }
 
 /**
- * Whether two plans describe the same physical index.
- *
- * Compared against the built schema rather than the definition hash, so a change
- * that does not reach Orama — a settings-only edit, a new `retrievable: false`
- * on an already-indexed field — does not force a needless rebuild.
+ * Whether two plans describe the same physical index. Compared on the built schema
+ * rather than the definition hash, so a change that never reaches Orama — a
+ * settings-only edit — does not force a needless rebuild.
  */
 export function sameSchema(a: IndexPlan, b: IndexPlan): boolean {
   const keysA = Object.keys(a.schema).sort()
@@ -341,10 +332,8 @@ function coerce(value: unknown, planned: PlannedField): unknown {
   }
 }
 
-/**
- * Projects a source document onto the indexed schema, collapsing arrays of
- * objects into per-leaf arrays, and stashes the original under `__source`.
- */
+// Projects onto the indexed schema, collapsing arrays of objects into per-leaf
+// arrays, and stashes the original under `__source`.
 export function toOramaDocument(
   document: SearchTypes.SearchDocument,
   plan: IndexPlan
@@ -436,11 +425,8 @@ function resolveFilterTarget(
   return { key, planned: planned!, type }
 }
 
-/**
- * Orama accepts exactly one operation per field, so an operator map has to
- * collapse to a single operation. `$gte` + `$lte` becomes `between`; other
- * multi-operator combinations are not expressible and are rejected.
- */
+// Orama accepts one operation per field, so an operator map has to collapse to
+// one. `$gte` + `$lte` becomes `between`; other combinations are rejected.
 function toOramaOperation(
   path: string,
   raw: unknown,
@@ -563,10 +549,8 @@ function toOramaOperation(
   }
 }
 
-/**
- * Orama's `where` is a flat conjunction, so `$and` branches are merged and
- * `$or` / `$not` are rejected.
- */
+// Orama's `where` is a flat conjunction: `$and` branches merge, `$or`/`$not` are
+// rejected.
 export function toOramaWhere(
   filters: SearchTypes.SearchFilters | undefined,
   plan: IndexPlan
@@ -610,11 +594,9 @@ export function toOramaWhere(
 }
 
 /**
- * Recognises a filter that is nothing but primary-key membership, so a delete
- * can go straight to Orama's `removeMultiple` instead of searching first.
- *
- * Returns `undefined` for anything else, including a filter that mentions the
- * primary key alongside other fields.
+ * Recognises a filter that is nothing but primary-key membership, so a delete goes
+ * straight to `removeMultiple` instead of searching first. `undefined` for
+ * anything else, including the primary key alongside other fields.
  */
 export function extractPrimaryKeyFilter(
   filters: SearchTypes.SearchFilters,
