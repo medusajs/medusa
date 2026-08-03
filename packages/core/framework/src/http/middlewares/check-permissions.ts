@@ -52,6 +52,30 @@ async function checkPermissions(
 }
 
 /**
+ * Creates a middleware that records the policies guarding a route on the
+ * request, without checking them.
+ *
+ * This runs before the route's own middlewares, because the query config
+ * middlewares read "req.policies" to filter the requested fields. The check
+ * itself runs after them, see "wrapWithPoliciesCheck".
+ *
+ * @param policies - Single policy or array of policies guarding the route
+ */
+export function recordPolicies(
+  policies: PolicyAction | PolicyAction[]
+): MiddlewareFunction {
+  return (
+    req: AuthenticatedMedusaRequest,
+    _: MedusaResponse,
+    next: MedusaNextFunction
+  ) => {
+    req.policies ??= []
+    req.policies.push(...(Array.isArray(policies) ? policies : [policies]))
+    return next()
+  }
+}
+
+/**
  * Wraps a middleware or route handler with RBAC permission checking.
  * Checks if the authenticated user has the required policies before executing the handler.
  *
@@ -69,9 +93,6 @@ export function wrapWithPoliciesCheck(
     next: MedusaNextFunction
   ) => {
     try {
-      req.policies ??= []
-      req.policies.push(...(Array.isArray(policies) ? policies : [policies]))
-
       const rbacModule = req.scope.resolve(Modules.RBAC)
       const scope = await rbacModule.resolveScope(req)
 

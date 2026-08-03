@@ -3,6 +3,7 @@ import { dynamicImport, FileSystem, isFileSkipped } from "@medusajs/utils"
 import { join } from "path"
 
 import { logger } from "../logger"
+import { recordPolicies } from "./middlewares/check-permissions"
 import {
   type AdditionalDataValidatorRoute,
   type BodyParserConfigRoute,
@@ -136,21 +137,48 @@ export class MiddlewareFileLoader {
         }
 
         if (route.middlewares || route.policies) {
-          const middlewares = route.middlewares ?? []
-          if (route.policies && !route.middlewares?.length) {
-            middlewares.push((_, __, next) => {
-              next()
+          /**
+           * TODO: [rbac] verify if we will effectively go this route, as middlewares
+           * are unprotected. The alternative is for scopeResolver to be self-sufficient.
+           *
+           * The policies are registered around the route's own middlewares,
+           * rather than on each of them:
+           *
+           * - They are recorded on the request first, because the query config
+           *   middlewares read them to filter the requested fields.
+           * - They are checked last, so that a route authenticating the request
+           *   through one of its own middlewares has an auth context by the
+           *   time the check runs.
+           *
+           * Registering the check once also avoids repeating it (and the
+           * queries it performs) for every middleware on the route.
+           */
+          if (route.policies) {
+            result.middleware.push({
+              handler: recordPolicies(route.policies),
+              matcher: matcher,
+              methods: route.methods,
             })
           }
 
-          middlewares.forEach((middleware) => {
+          route.middlewares?.forEach((middleware) => {
             result.middleware.push({
               handler: middleware,
               matcher: matcher,
               methods: route.methods,
-              policies: route.policies,
             })
           })
+
+          if (route.policies) {
+            result.middleware.push({
+              handler: (_, __, next) => {
+                next()
+              },
+              matcher: matcher,
+              methods: route.methods,
+              policies: route.policies,
+            })
+          }
         }
         return result
       },
