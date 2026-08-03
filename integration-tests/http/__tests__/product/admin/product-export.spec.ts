@@ -43,7 +43,7 @@ const getCSVContents = async (filePath: string) => {
 }
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let baseProduct
     let proposedProduct
 
@@ -63,7 +63,7 @@ medusaIntegrationTestRunner({
       eventBus = getContainer().resolve(Modules.EVENT_BUS)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
 
       baseRegion = (
@@ -214,6 +214,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.product
+
+      await dbUtils.snapshot()
     })
 
     afterEach(() => {
@@ -308,8 +310,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -369,8 +373,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "small",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -430,8 +436,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -523,8 +531,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -585,8 +595,10 @@ medusaIntegrationTestRunner({
               "Variant Mid Code": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "small",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -710,8 +722,10 @@ medusaIntegrationTestRunner({
               "Variant Thumbnail": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",
@@ -803,8 +817,10 @@ medusaIntegrationTestRunner({
               "Variant Thumbnail": "",
               "Variant Image 1": "test-image.png",
               "Variant Image 2": "test-image-2.png",
+              "Variant Option 1 Id": expect.any(String),
               "Variant Option 1 Name": "size",
               "Variant Option 1 Value": "large",
+              "Variant Option 2 Id": expect.any(String),
               "Variant Option 2 Name": "color",
               "Variant Option 2 Value": "green",
               "Variant Origin Country": "",

@@ -15,12 +15,7 @@ import {
   ShippingOptionDTO,
   StockLocationDTO,
 } from "@medusajs/types"
-import {
-  BigNumber,
-  ContainerRegistrationKeys,
-  Modules,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { BigNumber, ContainerRegistrationKeys, Modules, remoteQueryObjectFromString, } from "@medusajs/utils"
 
 jest.setTimeout(500000)
 
@@ -160,7 +155,7 @@ async function prepareDataFixtures({ container }) {
     },
     {
       [Modules.PRODUCT]: {
-        variant_id: product.variants[0].id,
+        variant_id: product.variants.find((v) => v.sku === variantSkuWithInventory)!.id,
       },
       [Modules.INVENTORY]: {
         inventory_item_id: inventoryItem.id,
@@ -233,15 +228,19 @@ async function prepareDataFixtures({ container }) {
 
 async function createOrderFixture({ container, product, location }) {
   const orderService: IOrderModuleService = container.resolve(Modules.ORDER)
+
+  const variantWithInventory = product.variants.find((v) => v.sku === variantSkuWithInventory)!
+  const variantWithoutInventory = product.variants.find((v) => v.sku === "test-variant-no-inventory")!
+
   let order = await orderService.createOrders({
     region_id: "test_region_id",
     email: "foo@bar.com",
     items: [
       {
         title: "Custom Item 2",
-        variant_sku: product.variants[0].sku,
-        variant_title: product.variants[0].title,
-        variant_id: product.variants[0].id,
+        variant_sku: variantWithInventory.sku,
+        variant_title: variantWithInventory.title,
+        variant_id: variantWithInventory.id,
         quantity: 1,
         unit_price: 50,
         adjustments: [
@@ -256,9 +255,9 @@ async function createOrderFixture({ container, product, location }) {
       },
       {
         title: product.title,
-        variant_sku: product.variants[1].sku,
-        variant_title: product.variants[1].title,
-        variant_id: product.variants[1].id,
+        variant_sku: variantWithoutInventory.sku,
+        variant_title: variantWithoutInventory.title,
+        variant_id: variantWithoutInventory.id,
         quantity: 1,
         unit_price: 200,
       },

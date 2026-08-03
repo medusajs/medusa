@@ -1,0 +1,31 @@
+/**
+ * @schema AdminLinkProductOptions
+ * type: object
+ * description: The details of linking product options to a product.
+ * x-schemaName: AdminLinkProductOptions
+ * properties:
+ *   add:
+ *     type: array
+ *     description: The options to add to the product.
+ *     items:
+ *       oneOf:
+ *         - type: string
+ *           title: add
+ *           description: The details of the product option to add.
+ *         - $ref: "#/components/schemas/AdminCreateProductOption"
+ *         - $ref: "#/components/schemas/AdminLinkProductOptionWithValues"
+ *   remove:
+ *     type: array
+ *     description: The IDs of the product options to remove from the product.
+ *     items:
+ *       type: string
+ *       title: remove
+ *       description: The ID of the product option to remove.
+ *   update:
+ *     type: array
+ *     description: The product's update.
+ *     items:
+ *       $ref: "#/components/schemas/AdminUpdateProductOptionValues"
+ * 
+*/
+

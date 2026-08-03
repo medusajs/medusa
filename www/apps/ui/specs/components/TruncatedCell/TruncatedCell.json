@@ -1,0 +1,15 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "TruncatedCell",
+  "props": {
+    "children": {
+      "required": true,
+      "tsType": {
+        "name": "ReactReactNode",
+        "raw": "React.ReactNode"
+      },
+      "description": ""
+    }
+  }
+}

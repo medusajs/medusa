@@ -13,7 +13,7 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Store: Shipping Option API", () => {
       let appContainer
       let salesChannel
@@ -32,7 +32,7 @@ medusaIntegrationTestRunner({
         appContainer = getContainer()
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
 
@@ -226,6 +226,8 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.shipping_option
+
+        await dbUtils.snapshot()
       })
 
       describe("GET /store/shipping-options?cart_id=", () => {
@@ -325,6 +327,58 @@ medusaIntegrationTestRunner({
               amount: 3,
             })
           )
+        })
+
+        it("should pass the cart's currency to the provider in both the calculate and the add path", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: regionTwo.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "dkk",
+                email: "test@admin.com",
+                items: [
+                  {
+                    variant_id: product.variants[0].id,
+                    quantity: 2,
+                  },
+                ],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Display path: POST /store/shipping-options/:id/calculate
+          const calculated = (
+            await api.post(
+              `/store/shipping-options/${shippingOptionCalculated.id}/calculate`,
+              { cart_id: cart.id, data: { pin_id: "test" } },
+              storeHeaders
+            )
+          ).data.shipping_option
+
+          // 2 items * 1.5 * dkk rate of 2
+          expect(calculated.amount).toEqual(6)
+
+          // Add path: the price charged must match the price displayed
+          const cartWithMethod = (
+            await api.post(
+              `/store/carts/${cart.id}/shipping-methods?fields=*shipping_methods`,
+              {
+                option_id: shippingOptionCalculated.id,
+                data: { pin_id: "test" },
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(cartWithMethod.shipping_methods).toEqual([
+            expect.objectContaining({
+              shipping_option_id: shippingOptionCalculated.id,
+              amount: 6,
+            }),
+          ])
         })
 
         it("should add shipping method with calculated price to cart", async () => {

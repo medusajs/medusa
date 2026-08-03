@@ -16,7 +16,7 @@ export type DeletePriceListsWorkflowInput = {
 export const deletePriceListsWorkflowId = "delete-price-lists"
 /**
  * This workflow deletes one or more price lists. It's used by the
- * [Delete Price List Admin API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistsid).
+ * [Delete Price List Admin API Route](https://docs.medusajs.com/api/admin/price-lists/delete-a-price-list).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete price lists in your custom flows.
@@ -36,14 +36,12 @@ export const deletePriceListsWorkflowId = "delete-price-lists"
 export const deletePriceListsWorkflow = createWorkflow(
   deletePriceListsWorkflowId,
   (input: WorkflowData<DeletePriceListsWorkflowInput>): WorkflowData<void> => {
-    const deletedPriceLists = deletePriceListsStep(input.ids)
+    deletePriceListsStep(input.ids)
 
     removeRemoteLinkStep({
       [Modules.PRICING]: {
         price_list_id: input.ids,
       },
     })
-
-    return deletedPriceLists
   }
 )

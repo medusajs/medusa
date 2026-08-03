@@ -12,10 +12,12 @@ import {
   ShippingProfileDTO,
 } from "@medusajs/framework/types"
 import {
+  InventoryLevelWorkflowEvents,
   MathBN,
   MedusaError,
   Modules,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -362,12 +364,22 @@ export type CreateOrderFulfillmentWorkflowInput =
 
 export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
 /**
- * This workflow creates a fulfillment for an order. It's used by the [Create Order Fulfillment Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidfulfillments).
+ * This workflow creates a fulfillment for an order. It's used by the [Create Order Fulfillment Admin API Route](https://docs.medusajs.com/api/admin/orders/create-fulfillment).
  *
  * This workflow has a hook that allows you to perform custom actions on the created fulfillment. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the fulfillment.
  *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around creating a fulfillment.
+ *
+ * :::note
+ *
+ * Each fulfilled item whose variant has `manage_inventory` enabled must have an associated inventory reservation, otherwise the workflow throws an error.
+ * Reservations are created automatically when an order is placed through the [completeCartWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/completeCartWorkflow).
+ * However, if you create an order with a workflow that doesn't create reservations, such as {@link createOrderWorkflow}, you must create the reservations
+ * using the [createReservationsWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/createReservationsWorkflow) before creating the fulfillment,
+ * passing each reservation the `line_item_id` of the order's item so that this workflow can find it.
+ *
+ * :::
  *
  * @example
  * const { result } = await createOrderFulfillmentWorkflow(container)
@@ -509,7 +521,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "location_id",
       ],
       variables: {
-        filter: {
+        filters: {
           line_item_id: lineItemIds,
         },
       },
@@ -535,9 +547,13 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         fulfillment,
         input,
         inputItemsMap,
-        itemsList: input.items ?? input.items_list,
       },
-      prepareRegisterOrderFulfillmentData
+      (data) => {
+        return prepareRegisterOrderFulfillmentData({
+          ...data,
+          itemsList: data.input.items ?? data.input.items_list,
+        })
+      }
     )
 
     const link = transform(
@@ -563,7 +579,32 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       prepareInventoryUpdate
     )
 
-    adjustInventoryLevelsStep(inventoryAdjustment)
+    const adjustedLevels = adjustInventoryLevelsStep(inventoryAdjustment)
+
+    const {
+      levelUpdatedEvents,
+      reservationUpdatedEvents,
+      reservationDeletedEvents,
+    } = transform(
+      { adjustedLevels, toUpdate, toDelete, input },
+      ({ adjustedLevels, toUpdate, toDelete, input }) => {
+        return {
+          levelUpdatedEvents: adjustedLevels.map((level) => ({
+            id: level.id,
+            order_id: input.order_id,
+          })),
+          reservationUpdatedEvents: toUpdate.map((reservation) => ({
+            id: reservation.id,
+            order_id: input.order_id,
+          })),
+          reservationDeletedEvents: toDelete.map((id) => ({
+            id,
+            order_id: input.order_id,
+          })),
+        }
+      }
+    )
+
     parallelize(
       registerOrderFulfillmentStep(registerOrderFulfillmentData),
       createRemoteLinkStep(link),
@@ -577,6 +618,22 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
           no_notification: input.no_notification,
         },
       })
+    )
+
+    // Emitted after the reservations are updated and deleted.
+    parallelize(
+      emitEventStep({
+        eventName: InventoryLevelWorkflowEvents.UPDATED,
+        data: levelUpdatedEvents,
+      }).config({ name: "emit-inventory-level-updated" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.UPDATED,
+        data: reservationUpdatedEvents,
+      }).config({ name: "emit-reservation-item-updated" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.DELETED,
+        data: reservationDeletedEvents,
+      }).config({ name: "emit-reservation-item-deleted" })
     )
 
     const fulfillmentCreated = createHook("fulfillmentCreated", {

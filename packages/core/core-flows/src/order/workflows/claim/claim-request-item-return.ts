@@ -101,7 +101,7 @@ export type OrderClaimRequestItemReturnValidationStepInput = {
  * })
  */
 export const orderClaimRequestItemReturnValidationStep = createStep(
-  "claim-request-item-return-validation",
+  "order-claim-request-item-return-validation",
   async function ({
     order,
     orderChange,
@@ -122,11 +122,19 @@ export const orderClaimRequestItemReturnValidationStep = createStep(
   }
 )
 
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "items.variant.manage_inventory",
+  "items.variant.inventory_items.inventory_item_id",
+  "items.variant.inventory_items.inventory.location_levels.location_id",
+]
+
 export const orderClaimRequestItemReturnWorkflowId = "claim-request-item-return"
 /**
  * This workflow requests one or more items to be returned as part of a claim. The
  * items are added to the claim as inbound items. The workflow is used by the
- * [Add Inbound Items to Claim Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidinbounditems).
+ * [Add Inbound Items to Claim Admin API Route](https://docs.medusajs.com/api/admin/claims/add-inbound-items).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to request items to be returned
  * as part of a claim in your custom flows.
@@ -177,13 +185,7 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "status",
-        "items.variant.manage_inventory",
-        "items.variant.inventory_items.inventory_item_id",
-        "items.variant.inventory_items.inventory.location_levels.location_id",
-      ],
+      fields: orderFields,
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -261,12 +263,16 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
     when({ createdReturn }, ({ createdReturn }) => {
       return !!createdReturn?.length
     }).then(() => {
-      updateOrderChangesStep([
-        {
-          id: orderChange.id,
-          return_id: createdReturn?.[0]?.id,
-        },
-      ])
+      const updateOrderChangeInput = transform(
+        { orderChange, createdReturn },
+        ({ orderChange, createdReturn }) => {
+          return [{
+            id: orderChange.id,
+            return_id: createdReturn?.[0]?.id,
+          }]
+        }
+      )
+      updateOrderChangesStep(updateOrderChangeInput)
     })
 
     orderClaimRequestItemReturnValidationStep({
@@ -280,12 +286,16 @@ export const orderClaimRequestItemReturnWorkflow = createWorkflow(
     when({ orderClaim }, ({ orderClaim }) => {
       return !orderClaim.return_id
     }).then(() => {
-      updateOrderClaimsStep([
-        {
-          id: orderClaim.id,
-          return: createdReturn?.[0]!.id,
-        },
-      ])
+      const updateOrderClaimsInput = transform(
+        { orderClaim, createdReturn },
+        ({ orderClaim, createdReturn }) => {
+          return [{
+            id: orderClaim.id,
+            return: createdReturn?.[0]?.id,
+          }]
+        }
+      )
+      updateOrderClaimsStep(updateOrderClaimsInput)
     })
 
     const orderChangeActionInput = transform(

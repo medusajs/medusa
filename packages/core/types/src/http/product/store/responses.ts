@@ -1,5 +1,5 @@
 import { PaginatedResponse } from "../../common"
-import { StoreProduct, StoreProductVariant } from "../store"
+import { StoreProduct, StoreProductOption, StoreProductVariant } from "../store"
 
 export interface StoreProductResponse {
   /**
@@ -27,4 +27,18 @@ export type StoreProductVariantListResponse = PaginatedResponse<{
    * The list of product variants.
    */
   variants: StoreProductVariant[]
+}>
+
+export interface StoreProductOptionResponse {
+  /**
+   * The product option's details.
+   */
+  product_option: StoreProductOption
+}
+
+export type StoreProductOptionListResponse = PaginatedResponse<{
+  /**
+   * The list of product options.
+   */
+  product_options: StoreProductOption[]
 }>

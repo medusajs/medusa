@@ -3,6 +3,8 @@ products:
   - tax
 ---
 
+import { Table } from "docs-ui"
+
 export const metadata = {
   title: `Tax Lines in Cart Module`,
 }
@@ -36,6 +38,114 @@ The following diagram is a simplified showcase of how a subtotal is calculated f
 ![A diagram showing an example of calculating the subtotal of a line item using its taxes](https://res.cloudinary.com/dza7lstvk/image/upload/v1711535295/Medusa%20Resources/cart-tax-inclusive_shpr3t.jpg)
 
 For example, if a line item's amount is `5000`, the tax rate is `10`, and tax inclusivity is enabled, the tax amount is 10% of `5000`, which is `500`, making the unit price of the line item `4500`.
+
+---
+
+## When Are Tax Lines Recalculated?
+
+When you use the Cart Module in the Medusa application, Medusa recalculates a cart's tax lines automatically as the customer builds and updates their cart. So, in most cases, you don't need to manually recalculate them.
+
+Whether Medusa recalculates the tax lines depends on the `automatic_taxes` setting of the cart's [region](../../region/page.mdx):
+
+- If `automatic_taxes` is enabled, Medusa recalculates the affected tax lines automatically when the cart changes.
+- If `automatic_taxes` is disabled, Medusa only calculates tax lines when you send a request to the [Calculate Cart Taxes API route](!api!/store/carts/calculate-taxes).
+
+### Tax Lines Require a Shipping Address
+
+Regardless of the `automatic_taxes` setting, Medusa only calculates tax lines once the cart's shipping address has a country code. Until you set the shipping address's country, the cart's line items and shipping methods have no tax lines.
+
+Medusa determines the tax rates from the country in the cart's shipping address, not from the list of countries in the cart's [region](../../region/page.mdx). So, a region with multiple countries doesn't have a default country for tax calculation. Medusa calculates each customer's taxes based on the country they set in their shipping address.
+
+<Note>
+
+If the cart's region has only one country, Medusa sets that country as the cart's shipping address country when creating the cart. So, Medusa can calculate tax lines without the customer setting their address. For a region with multiple countries, the customer must set their shipping address's country before Medusa calculates tax lines.
+
+</Note>
+
+### Tax Recalculation by Cart Operation
+
+The following table explains how each cart operation affects the cart's tax lines when `automatic_taxes` is enabled:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Operation
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Tax behavior
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      Add a line item
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa calculates the tax lines of the new item.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Add a shipping method
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa calculates the tax lines of the new shipping method.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Update the cart's region or locale
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa recalculates the tax lines of all the cart's items and shipping methods.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Update a line item's quantity
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa doesn't recalculate tax lines. Instead, it derives the new tax amounts from the item's existing tax rates.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Remove a line item
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa doesn't recalculate the tax lines of the cart's other items.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note>
+
+To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](!api!/store/carts/calculate-taxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
+
+</Note>
 
 ---
 
@@ -84,3 +194,46 @@ await cartModuleService.setLineItemTaxLines(
   taxLines.filter((line) => "shipping_line_id" in line)
 )
 ```
+
+---
+
+## Customize Tax Context with Hooks
+
+The tax line workflows (`updateTaxLinesWorkflow`, `upsertTaxLinesWorkflow`, and `updateOrderTaxLinesWorkflow`) expose a `setTaxLineContext` hook that allows you to add custom context to tax calculations.
+
+<Note>
+
+This hook is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+This is useful when you need to pass additional information to your tax provider that isn't included in the default cart or order data.
+
+For example, create the file `src/workflows/hooks/tax-context.ts` with the following content:
+
+```ts title="src/workflows/hooks/tax-context.ts"
+import { updateTaxLinesWorkflow } from "@medusajs/medusa/core-flows"
+import { Modules } from "@medusajs/framework/utils"
+
+updateTaxLinesWorkflow.hooks.setTaxLineContext(
+  async ({ cart, items, shipping_methods }, { container }) => {
+    // Add custom logic to determine tax context
+    const customerModule = container.resolve(Modules.CUSTOMER)
+    const customer = await customerModule.retrieveCustomer(cart.customer_id)
+    
+    return {
+      customer_type: customer.metadata?.type || "regular",
+      loyalty_tier: customer.metadata?.loyalty_tier || "bronze",
+      special_exemption: customer.metadata?.tax_exempt || false,
+    }
+  }
+)
+```
+
+The returned object is passed as `additional_context` to the [tax provider's `getTaxLines` method](/references/tax/ITaxProvider/methods/tax.ITaxProvider.getTaxLines), allowing you to implement custom tax logic based on this context.
+
+<Note>
+
+Learn more about workflow hooks in the [Workflow Hooks guide](!docs!/learn/fundamentals/workflows/workflow-hooks).
+
+</Note>

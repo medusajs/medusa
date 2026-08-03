@@ -15,7 +15,7 @@ export class ShippingOption {
   }
   /**
    * This method creates a shipping option. It sends a request to the
-   * [Create Shipping Option](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions)
+   * [Create Shipping Option](https://docs.medusajs.com/api/admin/shipping-options/create-shipping-option)
    * API route.
    * 
    * @param body - The details of the shipping option to create.
@@ -50,7 +50,7 @@ export class ShippingOption {
 
   /**
    * This method retrieves a shipping option. It sends a request to the
-   * [Get Shipping Option](https://docs.medusajs.com/api/admin#shipping-options_getshippingoptionsid)
+   * [Get Shipping Option](https://docs.medusajs.com/api/admin/shipping-options/get-a-shipping-option)
    * API route.
    * 
    * @param id - The ID of the shipping option to retrieve.
@@ -79,7 +79,7 @@ export class ShippingOption {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -98,7 +98,7 @@ export class ShippingOption {
 
   /**
    * This method updates a shipping option. It sends a request to the
-   * [Update Shipping Option](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptionsid)
+   * [Update Shipping Option](https://docs.medusajs.com/api/admin/shipping-options/update-a-shipping-option)
    * API route.
    * 
    * @param id - The ID of the shipping option to update.
@@ -134,7 +134,7 @@ export class ShippingOption {
 
   /**
    * This method deletes a shipping option. It sends a request to the
-   * [Delete Shipping Option](https://docs.medusajs.com/api/admin#shipping-options_deleteshippingoptionsid)
+   * [Delete Shipping Option](https://docs.medusajs.com/api/admin/shipping-options/delete-a-shipping-option)
    * API route.
    * 
    * @param id - The ID of the shipping option to delete.
@@ -159,7 +159,7 @@ export class ShippingOption {
 
   /**
    * This method retrieves a list of shipping options. It sends a request to the
-   * [List Shipping Options](https://docs.medusajs.com/api/admin#shipping-options_getshippingoptions)
+   * [List Shipping Options](https://docs.medusajs.com/api/admin/shipping-options/list-shipping-options)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -202,7 +202,7 @@ export class ShippingOption {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminShippingOptionListParams,
@@ -220,7 +220,7 @@ export class ShippingOption {
 
   /**
    * This method manages the rules of a shipping option to create, update, or remove them. It sends a request to the
-   * [Manage Rules of a Shipping Option](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptionsidrulesbatch)
+   * [Manage Rules of a Shipping Option](https://docs.medusajs.com/api/admin/shipping-options/manage-rules)
    * API route.
    * 
    * @param id - The ID of the shipping option to manage the rules for.

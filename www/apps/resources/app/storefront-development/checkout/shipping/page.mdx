@@ -24,10 +24,10 @@ To allow the customer to choose a shipping method, you:
 
 ![Diagram showing the different steps of the shipping flow in storefront checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1743085465/Medusa%20Resources/shipping-checkout-flow_mfzdsh.jpg)
 
-1. Retrieve the available shipping options for the cart using the [List Shipping Options API route](!api!/store#shipping-options_getshippingoptions) and show them to the customer.
-2. For shipping options whose `price_type=calculated`, you retrieve their calculated price using the [Calculate Shipping Option Price API Route](!api!/store#shipping-options_postshippingoptionsidcalculate).
+1. Retrieve the available shipping options for the cart using the [List Shipping Options API route](!api!/store/shipping-options/list-shipping-options-for-cart) and show them to the customer.
+2. For shipping options whose `price_type=calculated`, you retrieve their calculated price using the [Calculate Shipping Option Price API Route](!api!/store/shipping-options/calculate-shipping-option-price).
     - The Medusa application calculates the price using the associated fulfillment provider's logic, which may require sending a request to a third-party service.
-3. When the customer chooses a shipping option, you use the [Add Shipping Method to Cart API route](!api!/store#carts_postcartsidshippingmethods) to set the cart's shipping method.
+3. When the customer chooses shipping option(s), you use the [Add Shipping Method to Cart API route](!api!/store/carts/add-shipping-method) to add the cart's shipping method(s). You can add a single shipping method or multiple methods in one request.
 
 ---
 
@@ -290,13 +290,58 @@ export const fetchHighlights = [
 
 In the example above, you:
 
-- Retrieve the available shipping options of the cart to allow the customer to select from them using the [List Shipping Options API route](!api!/store#shipping-options_getshippingoptions).
-- For each shipping option, you retrieve its calculated price from the Medusa application using the [Calculate Shipping Option Price API Route](!api!/store#shipping-options_postshippingoptionsidcalculate).
-- Once the customer selects a shipping option, you send a request to the [Add Shipping Method to Cart API route](!api!/store#carts_postcartsidshippingmethods) to update the cart's shipping method using the selected shipping option.
+- Retrieve the available shipping options of the cart to allow the customer to select from them using the [List Shipping Options API route](!api!/store/shipping-options/list-shipping-options-for-cart).
+- For each shipping option, you retrieve its calculated price from the Medusa application using the [Calculate Shipping Option Price API Route](!api!/store/shipping-options/calculate-shipping-option-price).
+- Once the customer selects a shipping option, you send a request to the [Add Shipping Method to Cart API route](!api!/store/carts/add-shipping-method) to update the cart's shipping method using the selected shipping option.
+
+---
+
+## Adding Multiple Shipping Methods
+
+<Note>
+
+Multiple shipping methods support is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+The [Add Shipping Method to Cart API route](!api!/store/carts/add-shipping-method) supports adding multiple shipping methods to a cart in a single request by passing an array of shipping method objects instead of a single object.
+
+This is useful for scenarios where:
+
+- Items require different shipping methods based on their shipping profiles
+- Customers want to split their order across multiple carriers
+- Different fulfillment providers handle different product types
+
+```tsx
+// Add multiple shipping methods
+sdk.store.cart.addShippingMethod(cart.id, [
+  {
+    option_id: "standard_shipping_option",
+    data: {
+      carrier: "fedex",
+    },
+  },
+  {
+    option_id: "express_shipping_option", 
+    data: {
+      carrier: "ups",
+    },
+  },
+])
+.then(({ cart: updatedCart }) => {
+  // handle updated cart
+})
+```
+
+When adding multiple shipping methods, Medusa automatically:
+
+- Removes any existing shipping methods that conflict with the new ones based on the shipping profile
+- Validates that each shipping option can be applied to the cart
+- Ensures pricing is calculated correctly for all methods
 
 ### data Request Body Parameter
 
-When calculating a shipping option's price using the [Calculate Shipping Option Price API Route](!api!/store#shipping-options_postshippingoptionsidcalculate), or when setting the shipping method using the [Add Shipping Method to Cart API route](!api!/store#carts_postcartsidshippingmethods), you can pass a `data` request body parameter that holds data relevant for the fulfillment provider.
+When calculating a shipping option's price using the [Calculate Shipping Option Price API Route](!api!/store/shipping-options/calculate-shipping-option-price), or when setting the shipping method using the [Add Shipping Method to Cart API route](!api!/store/carts/add-shipping-method), you can pass a `data` request body parameter that holds data relevant for the fulfillment provider.
 
 For example, you may pass a custom carrier code to the `data` parameter to identify the carrier of the shipping option if your fulfillment provider requires it.
 

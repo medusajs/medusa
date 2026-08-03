@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Regions - Admin", () => {
       let appContainer
       let service: IRegionModuleService
@@ -22,8 +22,10 @@ medusaIntegrationTestRunner({
         service = appContainer.resolve(Modules.REGION)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should create, update, and delete a region", async () => {
@@ -236,6 +238,46 @@ medusaIntegrationTestRunner({
             ]),
           })
         )
+
+        /**
+         * Omitting payment_providers should leave the existing links untouched
+         */
+
+        await api.post(
+          `/admin/regions/${created.data.region.id}`,
+          {
+            name: "Test Region updated",
+          },
+          adminHeaders
+        )
+
+        regionResponse = await api.get(
+          `/admin/regions/${created.data.region.id}?fields=*payment_providers`,
+          adminHeaders
+        )
+
+        expect(regionResponse.status).toEqual(200)
+        expect(regionResponse.data.region.payment_providers).toHaveLength(2)
+
+        /**
+         * Passing an empty payment_providers list should clear all links
+         */
+
+        await api.post(
+          `/admin/regions/${created.data.region.id}`,
+          {
+            payment_providers: [],
+          },
+          adminHeaders
+        )
+
+        regionResponse = await api.get(
+          `/admin/regions/${created.data.region.id}?fields=*payment_providers`,
+          adminHeaders
+        )
+
+        expect(regionResponse.status).toEqual(200)
+        expect(regionResponse.data.region.payment_providers).toEqual([])
       })
 
       it("should throw on update if the given payment providers does not exists", async () => {

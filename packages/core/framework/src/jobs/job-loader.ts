@@ -11,8 +11,15 @@ import {
   createStep,
   createWorkflow,
   StepResponse,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { ResourceLoader } from "../utils/resource-loader"
+import {
+  ScheduledJobContext,
+  ScheduledJobHandler,
+  ScheduledJobWorkflowInput,
+} from "./types"
 
 type CronJobConfig = {
   name: string
@@ -20,7 +27,7 @@ type CronJobConfig = {
   numberOfExecutions?: SchedulerOptions["numberOfExecutions"]
 }
 
-type CronJobHandler = (container: MedusaContainer) => Promise<any>
+type CronJobHandler = ScheduledJobHandler
 
 export class JobLoader extends ResourceLoader {
   protected resourceName = "job"
@@ -103,10 +110,16 @@ export class JobLoader extends ResourceLoader {
     const workflowName = `job-${config.name}`
     const step = createStep(
       `${config.name}-as-step`,
-      async (_, stepContext) => {
+      async (input: ScheduledJobWorkflowInput | undefined, stepContext) => {
         const { container } = stepContext
+        const context: ScheduledJobContext = {
+          scheduledFor: input?.scheduledFor
+            ? new Date(input.scheduledFor)
+            : new Date(),
+        }
+
         try {
-          const res = await handler(container)
+          const res = await handler(container, context)
           return new StepResponse(res, res)
         } catch (error) {
           this.logger.error(
@@ -127,9 +140,12 @@ export class JobLoader extends ResourceLoader {
           },
     }
 
-    createWorkflow(workflowConfig, () => {
-      step()
-    })
+    createWorkflow(
+      workflowConfig,
+      (input: WorkflowData<ScheduledJobWorkflowInput>) => {
+        return new WorkflowResponse(step(input))
+      }
+    )
 
     registerDevServerResource({
       sourcePath: path,

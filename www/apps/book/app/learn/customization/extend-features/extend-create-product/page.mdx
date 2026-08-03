@@ -13,7 +13,7 @@ export const metadata = {
 
 After linking the [custom Brand data model](../../custom-features/module/page.mdx) and Medusa's [Product Module](!resources!/commerce-modules/product) in the [previous chapter](../define-link/page.mdx), you'll extend the create product workflow and API route to allow associating a brand with a product.
 
-Some API routes, including the [Create Product API route](!api!/admin#products_postproducts), accept an `additional_data` request body parameter. This parameter can hold custom data that's passed to the [hooks](../../../fundamentals/workflows/workflow-hooks/page.mdx) of the workflow executed in the API route, allowing you to consume those hooks and perform actions with the custom data.
+Some API routes, including the [Create Product API route](!api!/admin/products/create-product), accept an `additional_data` request body parameter. This parameter can hold custom data that's passed to the [hooks](../../../fundamentals/workflows/workflow-hooks/page.mdx) of the workflow executed in the API route, allowing you to consume those hooks and perform actions with the custom data.
 
 So, in this chapter, to extend the create product flow and associate a brand with a product, you will:
 
@@ -45,7 +45,7 @@ To learn more about the `additional_data` property and the API routes that accep
 
 A [workflow hook](../../../fundamentals/workflows/workflow-hooks/page.mdx) is a point in a workflow where you can inject a step to perform a custom functionality. Consuming a workflow hook allows you to extend the features of a workflow and, consequently, the API route that uses it.
 
-The [createProductsWorkflow](!resources!/references/medusa-workflows/createProductsWorkflow) used in the [Create Product API route](!api!/admin#products_postproducts) has a `productsCreated` hook that runs after the product is created. You'll consume this hook to link the created product with the brand specified in the request parameters.
+The [createProductsWorkflow](!resources!/references/medusa-workflows/createProductsWorkflow) used in the [Create Product API route](!api!/admin/products/create-product) has a `productsCreated` hook that runs after the product is created. You'll consume this hook to link the created product with the brand specified in the request parameters.
 
 To consume the `productsCreated` hook, create the file `src/workflows/hooks/created-product.ts` with the following content:
 
@@ -230,7 +230,7 @@ curl -X POST 'http://localhost:9000/admin/products' \
 }'
 ```
 
-Make sure to replace `{token}` with the token you received from the previous request, `shipping_profile_id` with the ID of a shipping profile in your application, and `{brand_id}` with the ID of a brand in your application. You can retrieve the ID of a shipping profile either from the Medusa Admin, or the [List Shipping Profiles API route](!api!/admin#shipping-profiles_getshippingprofiles).
+Make sure to replace `{token}` with the token you received from the previous request, `shipping_profile_id` with the ID of a shipping profile in your application, and `{brand_id}` with the ID of a brand in your application. You can retrieve the ID of a shipping profile either from the Medusa Admin, or the [List Shipping Profiles API route](!api!/admin/shipping-profiles/list-shipping-profiles).
 
 The request creates a product and returns it.
 

@@ -18,7 +18,7 @@ In this guide, you'll learn how to show the cart totals in the checkout flow. Th
 
 ## Cart Total Fields
 
-The `Cart` object has various fields related to its totals, which you can check out in the [Store API reference](!api!/store#carts_cart_schema).
+The `Cart` object has various fields related to its totals, which you can check out in the [Store API reference](!api!/store/carts/schema).
 
 The fields that are most commonly used are:
 
@@ -153,7 +153,7 @@ Finally, you render the cart totals in a list, showing the subtotal, discounts, 
 
 You can also show the totals specific to each item in the cart. This is useful when you want to show the price breakdown for each item, such as price before and after discounts.
 
-The cart item totals aren't included by default in the cart object. You need to explicitly expand the `items.*` relation when retrieving the cart. This will add item totals like `total`, `subtotal`, `tax_total`, and `discount_total` to each item object in the cart. You can learn about other total fields in the [Store API reference](!api!/store#carts_cart_schema).
+The cart item totals aren't included by default in the cart object. You need to explicitly expand the `items.*` relation when retrieving the cart. This will add item totals like `total`, `subtotal`, `tax_total`, and `discount_total` to each item object in the cart. You can learn about other total fields in the [Store API reference](!api!/store/carts/schema).
 
 For example, when retrieving the cart, you can expand the `items.*` relation like this:
 
@@ -216,7 +216,7 @@ Finally, you render the cart items in a list, showing each item's title, total, 
 
 You can also show the totals specific to each shipping method in the cart. This is useful when you want to show the price breakdown for each shipping method, such as price before and after discounts.
 
-The cart shipping method totals aren't included by default in the cart response. You need to explicitly expand the `shipping_methods.*` relation when retrieving the cart. This will add shipping method totals like `total`, `subtotal`, `tax_total`, and `discount_total` to each shipping method object in the cart. You can learn about other total fields in the [Store API reference](!api!/store#carts_cart_schema).
+The cart shipping method totals aren't included by default in the cart response. You need to explicitly expand the `shipping_methods.*` relation when retrieving the cart. This will add shipping method totals like `total`, `subtotal`, `tax_total`, and `discount_total` to each shipping method object in the cart. You can learn about other total fields in the [Store API reference](!api!/store/carts/schema).
 
 For example, when retrieving the cart, you can expand the `shipping_methods.*` relation like this:
 

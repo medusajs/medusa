@@ -1,4 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
+import { Tooltip } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
@@ -9,6 +10,7 @@ import {
   DataGrid,
 } from "../../../../components/data-grid"
 import { createDataGridPriceColumns } from "../../../../components/data-grid/helpers/create-data-grid-price-columns"
+import { DataGridQuantityPriceCell } from "../../../../components/data-grid/components/data-grid-quantity-price-cell"
 import { PricingCreateSchemaType } from "../../price-list-create/components/price-list-create-form/schema"
 import { isProductRow } from "../utils"
 
@@ -42,7 +44,9 @@ export const usePriceListGridColumns = ({
               <DataGrid.ReadonlyCell context={context}>
                 <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                   <Thumbnail src={entity.thumbnail} size="small" />
-                  <span className="truncate">{entity.title}</span>
+                  <Tooltip content={entity.title}>
+                    <span className="truncate">{entity.title}</span>
+                  </Tooltip>
                 </div>
               </DataGrid.ReadonlyCell>
             )
@@ -51,7 +55,9 @@ export const usePriceListGridColumns = ({
           return (
             <DataGrid.ReadonlyCell context={context} color="normal">
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
-                <span className="truncate">{entity.title}</span>
+                <Tooltip content={entity.title}>
+                  <span className="truncate">{entity.title}</span>
+                </Tooltip>
               </div>
             </DataGrid.ReadonlyCell>
           )
@@ -65,6 +71,18 @@ export const usePriceListGridColumns = ({
         currencies: currencies.map((c) => c.currency_code),
         regions,
         pricePreferences,
+        renderPriceCell: (code, context) => (
+          <DataGridQuantityPriceCell
+            code={code}
+            context={context}
+            getTieredFieldName={(field) =>
+              field
+                .replace("currency_prices", "conditional_currency_prices")
+                .replace("region_prices", "conditional_region_prices")
+                .replace(/\.0\.amount$/, "")
+            }
+          />
+        ),
         isReadyOnly: (context) => {
           const entity = context.row.original
           return isProductRow(entity)
@@ -77,10 +95,10 @@ export const usePriceListGridColumns = ({
           }
 
           if (context.column.id?.startsWith("currency_prices")) {
-            return `products.${entity.product_id}.variants.${entity.id}.currency_prices.${value}.amount`
+            return `products.${entity.product_id}.variants.${entity.id}.currency_prices.${value}.0.amount`
           }
 
-          return `products.${entity.product_id}.variants.${entity.id}.region_prices.${value}.amount`
+          return `products.${entity.product_id}.variants.${entity.id}.region_prices.${value}.0.amount`
         },
         t,
       }),

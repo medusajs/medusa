@@ -1,22 +1,12 @@
 import { HttpTypes } from "@medusajs/types"
-import { getEntityDefaultFields } from "./entity-defaults"
 
 /**
- * Calculates the required fields based on visible columns and entity defaults
+ * Calculate required fields based on visible columns from API definitions.
  */
 export function calculateRequiredFields(
-  entity: string,
-  apiColumns: HttpTypes.AdminColumn[] | undefined,
+  apiColumns: HttpTypes.AdminColumn[],
   visibleColumns: Record<string, boolean>
 ): string {
-  // Get entity-specific default fields
-  const defaults = getEntityDefaultFields(entity)
-  const defaultFields = defaults.formatted
-
-  if (!apiColumns?.length) {
-    return defaultFields
-  }
-
   // Get all visible columns
   const visibleColumnObjects = apiColumns.filter((column) => {
     // If visibleColumns has data, use it; otherwise use default_visible
@@ -30,6 +20,12 @@ export function calculateRequiredFields(
   const requiredFieldsSet = new Set<string>()
 
   visibleColumnObjects.forEach((column) => {
+    // Virtual columns (selection, actions) have no backing data field and must
+    // not be requested from the API.
+    if (column.render_mode === "select" || column.render_mode === "actions") {
+      return
+    }
+
     if (column.computed) {
       // For computed columns, add all required and optional fields
       column.computed.required_fields?.forEach((field: string) =>
@@ -38,53 +34,25 @@ export function calculateRequiredFields(
       column.computed.optional_fields?.forEach((field: string) =>
         requiredFieldsSet.add(field)
       )
-    } else if (!column.field.includes(".")) {
-      // Direct field
-      requiredFieldsSet.add(column.field)
     } else {
       // Relationship field
       requiredFieldsSet.add(column.field)
     }
   })
 
-  // Separate relationship fields from direct fields
-  const allRequiredFields = Array.from(requiredFieldsSet)
-  const visibleRelationshipFields = allRequiredFields.filter((field) =>
-    field.includes(".")
+  // Currency columns (e.g. "total") render their amount using the entity's
+  // own currency, not a fixed one, so `currency_code` must be fetched
+  // whenever such a column is visible, even if the user hasn't added it as a
+  // column itself.
+  const hasVisibleCurrencyColumn = visibleColumnObjects.some(
+    (column) => column.data_type === "currency"
   )
-  const visibleDirectFields = allRequiredFields.filter(
-    (field) => !field.includes(".")
+  const entityHasCurrencyCode = apiColumns.some(
+    (column) => column.field === "currency_code"
   )
-
-  // Check which relationship fields need to be added
-  const additionalRelationshipFields = visibleRelationshipFields.filter(
-    (field) => {
-      const [relationName] = field.split(".")
-      const isAlreadyCovered = defaults.relations.some(
-        (rel) => rel === `*${relationName}` || rel === relationName
-      )
-      return !isAlreadyCovered
-    }
-  )
-
-  // Check which direct fields need to be added
-  const additionalDirectFields = visibleDirectFields.filter((field) => {
-    const isAlreadyIncluded = (
-      defaults.properties as readonly string[]
-    ).includes(field)
-    return !isAlreadyIncluded
-  })
-
-  // Combine all additional fields
-  const additionalFields = [
-    ...additionalRelationshipFields,
-    ...additionalDirectFields,
-  ]
-
-  // Combine default fields with additional needed fields
-  if (additionalFields.length > 0) {
-    return `${defaultFields},${additionalFields.join(",")}`
+  if (hasVisibleCurrencyColumn && entityHasCurrencyCode) {
+    requiredFieldsSet.add("currency_code")
   }
 
-  return defaultFields
+  return Array.from(requiredFieldsSet).join(",")
 }

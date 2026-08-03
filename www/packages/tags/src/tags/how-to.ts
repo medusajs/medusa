@@ -8,6 +8,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/email-verification"
   },
   {
+    "title": "Link Auth Provider to Existing Actor",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "title": "Reset Password Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password"
   },
@@ -16,8 +20,16 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/cart/cart-totals"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Retrieve Order Totals",
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
+  },
+  {
+    "title": "Filter Products",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
   {
     "title": "Get Variant Prices",
@@ -30,6 +42,10 @@ export const howTo = [
   {
     "title": "Get Variant Inventory",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/variant-inventory"
+  },
+  {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
     "title": "Invite User Email",
@@ -90,6 +106,14 @@ export const howTo = [
   {
     "title": "Create Locking Provider",
     "path": "https://docs.medusajs.com/resources/references/locking-module-provider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
   },
   {
     "title": "Create Notification Provider",

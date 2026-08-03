@@ -6,6 +6,7 @@ import {
   resolveObjectExpression,
   resolveStaticStringValue,
 } from "../../util/ast"
+import { isIndexFile } from "../../util/filename"
 
 type MessageIds = "invalidCron"
 
@@ -39,6 +40,12 @@ export const rule = createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
+    // `index.<ext>` files in a jobs directory are barrels/re-exports, not job
+    // definitions.
+    if (isIndexFile(context.filename)) {
+      return {}
+    }
+
     const sourceCode = context.sourceCode ?? context.getSourceCode()
 
     // The resolved `config` object literal. Stays null when `config` is

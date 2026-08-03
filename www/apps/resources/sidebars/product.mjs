@@ -26,6 +26,11 @@ export const productSidebar = [
           },
           {
             type: "link",
+            path: "/commerce-modules/product/physical-customs-attributes",
+            title: "Physical and Customs Attributes",
+          },
+          {
+            type: "link",
             path: "/commerce-modules/product/selling-products",
             title: "Selling Use Cases",
           },
@@ -49,6 +54,11 @@ export const productSidebar = [
             type: "link",
             path: "/commerce-modules/product/extend",
             title: "Extend Module",
+          },
+          {
+            type: "link",
+            path: "/commerce-modules/product/guides/filter-products",
+            title: "Filter Products",
           },
           {
             type: "link",

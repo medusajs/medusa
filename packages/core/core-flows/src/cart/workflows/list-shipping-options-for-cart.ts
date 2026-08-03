@@ -26,11 +26,21 @@ import {
 } from "../utils/schemas"
 import { getTranslatedShippingOptionsStep } from "../../common/steps/get-translated-shipping-option"
 
+const cartFields = [
+  ...cartFieldsForPricingContext,
+  "items.*",
+  "items.variant.manage_inventory",
+  "items.variant.allow_backorder",
+  "items.variant.inventory_items.inventory_item_id",
+  "items.variant.inventory_items.inventory.requires_shipping",
+  "items.variant.inventory_items.inventory.location_levels.*",
+]
+
 export const listShippingOptionsForCartWorkflowId =
   "list-shipping-options-for-cart"
 /**
  * This workflow lists the shipping options of a cart. It's executed by the
- * [List Shipping Options Store API Route](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions).
+ * [List Shipping Options Store API Route](https://docs.medusajs.com/api/store/shipping-options/list-shipping-options-for-cart).
  *
  * :::note
  *
@@ -142,15 +152,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },
-      fields: [
-        ...cartFieldsForPricingContext,
-        "items.*",
-        "items.variant.manage_inventory",
-        "items.variant.allow_backorder",
-        "items.variant.inventory_items.inventory_item_id",
-        "items.variant.inventory_items.inventory.requires_shipping",
-        "items.variant.inventory_items.inventory.location_levels.*",
-      ],
+      fields: cartFields,
       options: { throwIfKeyNotFound: true },
     }).config({ name: "get-cart" })
 

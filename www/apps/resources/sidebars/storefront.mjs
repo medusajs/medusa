@@ -95,6 +95,13 @@ export const storefrontDevelopmentSidebar = [
         type: "link",
         path: "/storefront-development/products/list",
         title: "List Products",
+        children: [
+          {
+            type: "link",
+            path: "/storefront-development/products/options",
+            title: "Filter by Options",
+          },
+        ],
       },
       {
         type: "link",

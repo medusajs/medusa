@@ -23,6 +23,7 @@ import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
   createLineItemsStep,
   getLineItemActionsStep,
+  getLineItemPricingQuantitiesStep,
   updateLineItemsStep,
 } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
@@ -46,10 +47,15 @@ const cartFields = ["completed_at", "locale"].concat(
   cartFieldsForPricingContext
 )
 
+const variantFields = deduplicate([
+  ...productVariantsFields,
+  ...requiredVariantFieldsForInventoryConfirmation,
+])
+
 export const addToCartWorkflowId = "add-to-cart"
 /**
  * This workflow adds a product variant to a cart as a line item. It's executed by the
- * [Add Line Item Store API Route](https://docs.medusajs.com/api/store#carts_postcartsidlineitems).
+ * [Add Line Item Store API Route](https://docs.medusajs.com/api/store/carts/add-line-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to wrap custom logic around adding an item to the cart.
  * For example, you can use this workflow to add a line item to the cart with a custom price.
@@ -166,27 +172,54 @@ export const addToCartWorkflow = createWorkflow(
         return !!variantIds.length
       }
     ).then(() => {
+      // Items added for a variant that is already in the cart are merged into
+      // the existing line item, so their prices must be selected for the
+      // resulting total quantity.
+      const pricingQuantities = getLineItemPricingQuantitiesStep({
+        id: input.cart_id,
+        items: input.items,
+      })
+
+      const itemsToPrice = transform(
+        { items: input.items, pricingQuantities },
+        ({ items, pricingQuantities }) => {
+          return (items ?? []).map((item, index) => {
+            return {
+              ...item,
+              quantity: pricingQuantities[index] ?? item.quantity,
+            }
+          })
+        }
+      )
+
       const { variants: variantsData, lineItems: items } =
         getVariantsAndItemsWithPrices.runAsStep({
           input: {
             cart,
-            items: input.items,
+            items: itemsToPrice,
             setPricingContextResult: setPricingContextResult!,
             variants: {
               id: variantIds,
-              fields: deduplicate([
-                ...productVariantsFields,
-                ...requiredVariantFieldsForInventoryConfirmation,
-              ]),
+              fields: variantFields,
             },
           },
         })
 
-      const lineItems = transform({ items }, ({ items }) => {
-        return items.map((item) => {
-          return item.data as CreateLineItemForCartDTO
-        })
-      })
+      // The quantity of the prepared items is restored to the added quantity,
+      // since it's later accumulated with the existing line item's quantity by
+      // `getLineItemActionsStep`.
+      const lineItems = transform(
+        { items, originalItems: input.items },
+        ({ items, originalItems }) => {
+          return items.map((item, index) => {
+            const lineItem = item.data as CreateLineItemForCartDTO
+            return {
+              ...lineItem,
+              quantity: originalItems?.[index]?.quantity ?? lineItem.quantity,
+            }
+          })
+        }
+      )
 
       return { variants: variantsData, lineItems }
     })
@@ -200,10 +233,7 @@ export const addToCartWorkflow = createWorkflow(
     ).then(() => {
       return useQueryGraphStep({
         entity: "variants",
-        fields: deduplicate([
-          ...productVariantsFields,
-          ...requiredVariantFieldsForInventoryConfirmation,
-        ]),
+        fields: variantFields,
         filters: {
           id: variantIds,
         },

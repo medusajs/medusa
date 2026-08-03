@@ -1,71 +1,47 @@
 import { BaseFilterable } from "../../dal"
 
-export type AuthVerification = {
-  actor_type?: string | null
-  provider: string
+export type AuthVerificationDTO = {
+  id?: string
+  // The entity ID is an opaque field that can be an email, phone number, or any other identifier that needs verification.
   entity_id: string
-  expires_at?: Date | string
-}
-
-export type AuthVerificationTokenDTO = {
-  id: string
-  auth_identity_id?: string
-  provider_identity_id?: string
-  entity_id: string
-  expires_at: Date
-  metadata?: Record<string, unknown> | null
-  created_at?: Date
-  updated_at?: Date
-  deleted_at?: Date | null
-}
-
-export type CreateAuthVerificationTokenDTO = {
   auth_identity_id: string
-  provider_identity_id: string
-  entity_id: string
-  expires_at: Date
+  // The kind of entity being verified, such as `email` or `phone_number`.
+  entity_type: string
+  // The verification provider that handles requesting and confirming the verification, such as `token`.
+  code_provider: string
+  provider_metadata?: Record<string, unknown> | null
   metadata?: Record<string, unknown> | null
-}
-
-export type CreateAuthVerificationTokenResponse = {
-  token: string
-  verification_token: AuthVerificationTokenDTO
+  verified_at?: Date | null
+  requested_at: Date
 }
 
 export type RequestAuthVerificationDTO = {
-  actor_type?: string | null
-  provider: string
   entity_id: string
-  ttl_seconds?: number
+  auth_identity_id: string
+  entity_type: string
+  code_provider: string
   metadata?: Record<string, unknown> | null
 }
 
-export type RequestAuthVerificationResponse = {
-  token: string
-  verification: AuthVerification & {
-    auth_identity_id: string
-    provider_identity_id: string
-    metadata?: Record<string, unknown> | null
-  }
+export type RequestAuthVerificationResponse = AuthVerificationDTO & {
+  code?: string
+  expires_at?: Date
 }
 
 export type ConfirmAuthVerificationDTO = {
-  token: string
-  provider?: string
+  // The verification provider can decide if the auth identity is required to confirm the verification.
+  auth_identity_id?: string
+  code: string
+  code_provider?: string
 }
 
-export type ConfirmAuthVerificationResponse = {
-  verified: true
-  auth_identity_id: string
-  provider_identity_id: string
-  entity_id: string
-}
+export type ConfirmAuthVerificationResponse = AuthVerificationDTO
 
-export interface FilterableAuthVerificationTokenProps
-  extends BaseFilterable<FilterableAuthVerificationTokenProps> {
+export interface FilterableAuthVerificationProps
+  extends BaseFilterable<FilterableAuthVerificationProps> {
   id?: string[]
   auth_identity_id?: string
-  provider_identity_id?: string
   entity_id?: string
-  token_hash?: string
+  entity_type?: string
+  code_provider?: string
 }

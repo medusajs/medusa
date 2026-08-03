@@ -13,19 +13,29 @@ jest.setTimeout(30000)
 
 moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
   moduleName: Modules.SETTINGS,
-  joinerConfig: getTestJoinerConfigs(),
+  hooks: {
+    beforeModuleInit: async () => {
+      const { MedusaModule } = await import("@medusajs/framework/modules-sdk")
+
+      for (const config of getTestJoinerConfigs()) {
+        if (config.serviceName && !config.isReadOnlyLink) {
+          MedusaModule.setJoinerConfig(config.serviceName, config)
+        }
+      }
+    },
+  },
   testSuite: ({ service }) => {
     describe("EntityDiscovery", function () {
       describe("listDiscoverableEntities", function () {
         it("should return list of discoverable entities", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
 
           expect(Array.isArray(entities)).toBe(true)
           expect(entities.length).toBeGreaterThan(0)
         })
 
         it("should return entities with correct AdminEntityInfo shape", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
 
           const entity = entities[0]
 
@@ -45,7 +55,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         it("should include Product entity from fixture", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
           const productEntity = entities.find((e) => e.name === "Product")
 
           expect(productEntity).toBeDefined()
@@ -54,7 +64,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         it("should include Order entity from fixture", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
           const orderEntity = entities.find((e) => e.name === "Order")
 
           expect(orderEntity).toBeDefined()
@@ -63,7 +73,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         it("should include Customer entity from fixture", async () => {
-          const entities = service.listDiscoverableEntities()
+          const entities = await service.listDiscoverableEntities()
           const customerEntity = entities.find((e) => e.name === "Customer")
 
           expect(customerEntity).toBeDefined()
@@ -686,8 +696,8 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
           })
         })
 
-        describe("fieldOrdering", function () {
-          it("should order Order fields according to fieldOrdering", async () => {
+        describe("defaultFieldOrdering", function () {
+          it("should order Order fields according to defaultFieldOrdering", async () => {
             const columns = await service.generateEntityColumns("Order")
 
             expect(columns).not.toBeNull()
@@ -703,17 +713,17 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             )
             const total = columns!.find((c) => c.id === "total")
 
-            // Verify fieldOrdering is applied (lower number = earlier in list)
+            // Verify defaultFieldOrdering is applied (lower number = earlier in list)
             expect(displayId?.default_order).toBeLessThan(
               createdAt?.default_order || Infinity
             )
             expect(createdAt?.default_order).toBeLessThan(
               fulfillmentStatus?.default_order || Infinity
             )
-            expect(fulfillmentStatus?.default_order).toBeLessThan(
-              paymentStatus?.default_order || Infinity
-            )
             expect(paymentStatus?.default_order).toBeLessThan(
+              fulfillmentStatus?.default_order || Infinity
+            )
+            expect(fulfillmentStatus?.default_order).toBeLessThan(
               total?.default_order || Infinity
             )
           })
@@ -808,15 +818,12 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             expect(emailColumn).toBeDefined()
             expect(emailColumn?.default_visible).toBe(true)
 
-            // first_name should be default visible for Customer
-            const firstNameColumn = columns!.find((c) => c.id === "first_name")
-            expect(firstNameColumn).toBeDefined()
-            expect(firstNameColumn?.default_visible).toBe(true)
-
-            // last_name should be default visible for Customer
-            const lastNameColumn = columns!.find((c) => c.id === "last_name")
-            expect(lastNameColumn).toBeDefined()
-            expect(lastNameColumn?.default_visible).toBe(true)
+            // customer_name should be default visible for Customer
+            const customerNameColumn = columns!.find(
+              (c) => c.id === "customer_name"
+            )
+            expect(customerNameColumn).toBeDefined()
+            expect(customerNameColumn?.default_visible).toBe(true)
           })
 
           it("should apply filter rules for Customer", async () => {
@@ -836,19 +843,23 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
         })
 
         describe("hasOverrides in entity info", function () {
-          it("should report hasOverrides=true for entities with custom overrides", async () => {
-            const entities = service.listDiscoverableEntities()
+          it("should report hasOverrides=true only for entities with at least one property label", async () => {
+            await service.createPropertyLabels([
+              { entity: "Product", property: "title", label: "Title" },
+            ])
 
-            const orderEntity = entities.find((e) => e.name === "Order")
+            const entities = await service.listDiscoverableEntities()
+
             const productEntity = entities.find((e) => e.name === "Product")
+            const orderEntity = entities.find((e) => e.name === "Order")
 
-            // Order and Product have explicit overrides in ENTITY_OVERRIDES
-            expect(orderEntity?.hasOverrides).toBe(true)
+            // Product has a property label; Order does not.
             expect(productEntity?.hasOverrides).toBe(true)
+            expect(orderEntity?.hasOverrides).toBe(false)
           })
 
           it("should report hasOverrides accurately for all entities", async () => {
-            const entities = service.listDiscoverableEntities()
+            const entities = await service.listDiscoverableEntities()
 
             for (const entity of entities) {
               expect(typeof entity.hasOverrides).toBe("boolean")
@@ -906,7 +917,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
               excludeFields: ["internal_field"],
               excludePrefixes: ["_"],
               defaultVisibleFields: ["name", "status"],
-              fieldOrdering: { name: 100, status: 200 },
+              defaultFieldOrdering: { name: 100, status: 200 },
             }
 
             registry.register("CustomEntity", customOverride)
@@ -923,15 +934,15 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
 
             registry.register("Order", {
               excludeFields: ["new_excluded_field"],
-              fieldOrdering: { new_field: 50 },
+              defaultFieldOrdering: { new_field: 50 },
             })
 
             const merged = registry.get("Order")
 
             expect(merged?.excludeFields).toContain("order_change")
             expect(merged?.excludeFields).toContain("new_excluded_field")
-            expect(merged?.fieldOrdering?.display_id).toBe(100)
-            expect(merged?.fieldOrdering?.new_field).toBe(50)
+            expect(merged?.defaultFieldOrdering?.display_id).toBe(100)
+            expect(merged?.defaultFieldOrdering?.new_field).toBe(50)
           })
 
           it("should prefer new values for non-array fields", () => {
@@ -970,7 +981,9 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
 
             expect(merged?.nonFilterableFields).toContain("payment_status")
             expect(merged?.nonFilterableFields).toContain("fulfillment_status")
-            expect(merged?.nonFilterableFields).toContain("custom_computed_field")
+            expect(merged?.nonFilterableFields).toContain(
+              "custom_computed_field"
+            )
           })
         })
 
@@ -1100,7 +1113,7 @@ moduleIntegrationTestRunner<SettingsTypes.ISettingsModuleService>({
             const registry = getEntityOverrideRegistry()
 
             registry.register("OrderingTestEntity", {
-              fieldOrdering: { name: 100, status: 200, created_at: 300 },
+              defaultFieldOrdering: { name: 100, status: 200, created_at: 300 },
             })
 
             const ordering = getFieldOrdering("OrderingTestEntity")

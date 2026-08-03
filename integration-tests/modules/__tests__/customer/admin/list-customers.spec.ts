@@ -12,7 +12,7 @@ jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   env: {},
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("GET /admin/customers", () => {
       let appContainer
       let shutdownServer
@@ -23,8 +23,10 @@ medusaIntegrationTestRunner({
         customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
-      beforeEach(async () => {
+      beforeAll(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        await dbUtils.snapshot()
       })
 
       it("should get all customers and its count", async () => {

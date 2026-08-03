@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/analytics",
-  "version": "2.15.5",
+  "version": "2.18.0",
   "description": "Medusa Analytics module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,8 +15,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/modules/analytics"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -32,10 +35,10 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/test-utils": "2.15.5"
+    "@medusajs/framework": "2.18.0",
+    "@medusajs/test-utils": "2.18.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@medusajs/framework": "2.18.0"
   }
 }

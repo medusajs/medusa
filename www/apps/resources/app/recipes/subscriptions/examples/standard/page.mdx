@@ -893,7 +893,7 @@ To create a subscription when a customer completes their purchase, you need to e
 
 An [API Route](!docs!/learn/fundamentals/api-routes) is an endpoint that exposes commerce features to external applications and clients, such as storefronts.
 
-In this step, you’ll create a custom API route similar to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) that uses the workflow you previously created to complete the customer's purchase and create a subscription.
+In this step, you’ll create a custom API route similar to the [Complete Cart API route](!api!/store/carts/complete-cart) that uses the workflow you previously created to complete the customer's purchase and create a subscription.
 
 Create the file `src/api/store/carts/[id]/subscribe/route.ts` with the following content:
 
@@ -981,7 +981,7 @@ By default, the checkout flow requires you to create a [payment collection](../.
 
 ![Diagram showcasing payment flow overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1740657136/Medusa%20Resources/subscriptions-stripe_ycw4ig.jpg)
 
-To support subscriptions, you need to support capturing the payment each time the subscription renews. When creating the payment session using the [Initialize Payment Session API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions), you must pass the data that your payment provider requires to support capturing the payment again in the future. You can pass the data that the provider requires in the `data` property.
+To support subscriptions, you need to support capturing the payment each time the subscription renews. When creating the payment session using the [Initialize Payment Session API route](!api!/store/payment-collections/initialize-payment-session), you must pass the data that your payment provider requires to support capturing the payment again in the future. You can pass the data that the provider requires in the `data` property.
 
 <Note title="Tip">
 
@@ -1192,6 +1192,7 @@ And to show the subscription form during checkout, add the `SubscriptionForm` in
 ```tsx title="src/modules/checkout/templates/checkout-form/index.tsx" badgeLabel="Storefront" badgeColor="orange"
 // other imports...
 import SubscriptionForm from "@modules/checkout/components/subscriptions"
+import { Suspense } from "react"
 
 export default async function CheckoutForm({
   cart,
@@ -1207,13 +1208,21 @@ export default async function CheckoutForm({
       {/* ... */}
       {/* After Addresses, before Shipping */}
       <div>
-        <SubscriptionForm />
+        <Suspense fallback={<></>}>
+          <SubscriptionForm />
+        </Suspense>
       </div>
       {/* ... */}
     </div>
   )
 }
 ```
+
+<Note>
+
+In Next.js 15, any component that uses `useSearchParams()` must be wrapped in a `<Suspense>` boundary to enable static prerendering. Without the `<Suspense>` boundary, the build fails with: `useSearchParams() should be wrapped in a suspense boundary`.
+
+</Note>
 
 ### Pass Additional Data to Payment Provider
 
@@ -1809,7 +1818,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface GetPaymentMethodStepInput {
   customer?: CustomerDTO & {
-    account_holder: AccountHolderDTO
+    account_holders: AccountHolderDTO[]
   }
 }
 
@@ -1831,7 +1840,7 @@ export const getPaymentMethodStep = createStep(
 
 You create a `getLatestPaymentMethod` function that receives an array of payment methods and returns the latest one based on the `created` date in the `data` field. This is based off of Stripe's payment method data, so if you're using a different payment provider, you may need to adjust this function.
 
-Then, you create the `getPaymentMethodStep` that receives the customer's data and account holder as an input.
+Then, you create the `getPaymentMethodStep` that receives the customer's data and account holders as an input.
 
 Next, you'll add the implementation of the step. Replace `getPaymentMethodStep` with the following:
 
@@ -1841,7 +1850,12 @@ export const getPaymentMethodStep = createStep(
   async ({ customer }: GetPaymentMethodStepInput, { container }) => {
     const paymentModuleService = container.resolve(Modules.PAYMENT)
 
-    if (!customer?.account_holder) {
+    const providerId = "pp_stripe_stripe"
+    const accountHolder = customer?.account_holders?.find(
+      (ah) => ah.provider_id === providerId
+    )
+
+    if (!accountHolder) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "No account holder found for the customer while retrieving payment method"
@@ -1851,9 +1865,9 @@ export const getPaymentMethodStep = createStep(
     const paymentMethods = await paymentModuleService.listPaymentMethods(
       {
         // you can change to other payment provider
-        provider_id: "pp_stripe_stripe",
+        provider_id: providerId,
         context: {
-          account_holder: customer.account_holder,
+          account_holder: accountHolder,
         },
       }
     )
@@ -1869,13 +1883,13 @@ export const getPaymentMethodStep = createStep(
 
     return new StepResponse(
       paymentMethodToUse,
-      customer.account_holder
+      accountHolder
     )
   }
 )
 ```
 
-In the step, you first check that the customer has an account holder, and throw an error otherwise. Then, you list the customer's payment methods using the Payment Module service's `listPaymentMethods` method. You filter the payment methods to retrieve only the ones from the Stripe provider. So, if you're using a different payment provider, you may need to adjust the `provider_id` value.
+In the step, you first find the account holder for the Stripe payment provider from the customer's `account_holders` list, and throw an error if none is found. Then, you list the customer's payment methods using the Payment Module service's `listPaymentMethods` method. If you're using a different payment provider, adjust the `provider_id` value.
 
 If the customer doesn't have any payment methods, you throw an error. Otherwise, you return the latest payment method found using the `getLatestPaymentMethod` function.
 
@@ -2211,7 +2225,7 @@ const createSubscriptionOrderWorkflow = createWorkflow(
         "cart.payment_collection.*",
         "cart.payment_collection.payment_sessions.*",
         "cart.customer.*",
-        "cart.customer.account_holder.*",
+        "cart.customer.account_holders.*",
       ],
       filters: {
         id: input.subscription.id,

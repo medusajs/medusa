@@ -46,7 +46,7 @@ const regionId = localStorage.getItem("region_id")
 
 As you build your storefront, you may need to retrieve the full details of a region. For example, to get the region's currency code.
 
-To retrieve the selected region's details from Medusa, use the [Retrieve Region API route](!api!/store#regions_getregionsid):
+To retrieve the selected region's details from Medusa, use the [Retrieve Region API route](!api!/store/regions/get-a-region):
 
 <Note title="Tip">
 
@@ -63,7 +63,7 @@ sdk.store.region.retrieve(regionId)
 })
 ```
 
-The response has a `regions` field, which is an array of [regions](!api!/store#regions_region_schema).
+The response has a `regions` field, which is an array of [regions](!api!/store/regions/schema).
 
 ---
 

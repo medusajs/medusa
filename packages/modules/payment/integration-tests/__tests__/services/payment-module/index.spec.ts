@@ -705,6 +705,170 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               })
             )
           })
+
+          it("should return null and not create payment when provider returns pending_authorization", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 200,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                customer: { id: "cus-id-1", email: "new@test.tsst" },
+              },
+            })
+
+            jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "authorizePayment"
+              )
+              .mockResolvedValueOnce({
+                data: { some: "data" },
+                status: "pending_authorization",
+              })
+
+            const result = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            expect(result).toBeNull()
+
+            // Verify session status is updated
+            const updatedSession = await service.retrievePaymentSession(
+              session.id
+            )
+            expect(updatedSession.status).toBe("pending_authorization")
+            expect(updatedSession.authorized_at).toBeNull()
+
+            // Verify no payment record was created
+            const payments = await service.listPayments({
+              payment_session_id: session.id,
+            })
+            expect(payments).toHaveLength(0)
+
+            // Verify payment collection stays in awaiting
+            const updatedCollection =
+              await service.retrievePaymentCollection(collection.id)
+            expect(updatedCollection.status).toBe("awaiting")
+          })
+
+          it("should create payment on re-authorization after pending_authorization when provider returns authorized", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 100,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                customer: { id: "cus-id-1", email: "new@test.tsst" },
+              },
+            })
+
+            // First call: provider returns pending_authorization
+            const authorizeMock = jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "authorizePayment"
+              )
+              .mockResolvedValueOnce({
+                data: { some: "data" },
+                status: "pending_authorization",
+              })
+
+            const firstResult = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+            expect(firstResult).toBeNull()
+
+            // Second call: provider returns authorized (payment came through)
+            authorizeMock.mockResolvedValueOnce({
+              data: { payment_id: "external_id" },
+              status: "authorized",
+            })
+
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            expect(payment).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 100,
+                currency_code: "usd",
+                provider_id: "pp_system_default",
+                payment_session: expect.objectContaining({
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              })
+            )
+
+            // Verify payment collection is now authorized
+            const updatedCollection =
+              await service.retrievePaymentCollection(collection.id)
+            expect(updatedCollection.status).toBe("authorized")
+          })
+
+          it("should return null again when re-authorizing and provider still returns pending_authorization", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 100,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                customer: { id: "cus-id-1", email: "new@test.tsst" },
+              },
+            })
+
+            const authorizeMock = jest
+              .spyOn(
+                (service as any).paymentProviderService_,
+                "authorizePayment"
+              )
+              .mockResolvedValue({
+                data: { some: "data" },
+                status: "pending_authorization",
+              })
+
+            // First call
+            const result1 = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+            expect(result1).toBeNull()
+
+            // Second call - still pending
+            const result2 = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+            expect(result2).toBeNull()
+
+            expect(authorizeMock).toHaveBeenCalledTimes(2)
+
+            // Still no payment
+            const payments = await service.listPayments({
+              payment_session_id: session.id,
+            })
+            expect(payments).toHaveLength(0)
+          })
         })
       })
 
@@ -1036,6 +1200,65 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should throw if refund amount is 0", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 0,
+                payment_id: "pay-id-2",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "Refund amount must be greater than 0."
+            )
+          })
+
+          it("should throw if refund amount is negative", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: -50,
+                payment_id: "pay-id-2",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "Refund amount must be greater than 0."
+            )
+          })
+
+          it("should fully refund the captured amount when no amount is passed", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              })
+            )
+          })
+
           it("should throw if total refunded amount is greater than captured amount", async () => {
             await service.capturePayment({
               amount: 100,
@@ -1362,6 +1585,80 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                 refunded_amount: 999,
               })
             )
+          })
+
+          it("should not allow concurrent captures to exceed the authorized amount", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 500,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 500,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const payment = await service.authorizePaymentSession(session.id, {})
+
+            // Two concurrent captures that each pass the guard in isolation
+            // (500 - 0 = 500 remaining seen by both) but together capture 600.
+            const outcomes = await promiseAll([
+              service
+                .capturePayment({ amount: 300, payment_id: payment.id })
+                .then(() => "ok", () => "threw"),
+              service
+                .capturePayment({ amount: 300, payment_id: payment.id })
+                .then(() => "ok", () => "threw"),
+            ])
+
+            // Exactly one capture is admitted; the other is rejected by the guard.
+            expect(outcomes.filter((o) => o === "threw")).toHaveLength(1)
+
+            const [finalCollection] = await service.listPaymentCollections({
+              id: collection.id,
+            })
+
+            expect(finalCollection.captured_amount).toBe(300)
+          })
+
+          it("should not allow concurrent refunds to exceed the captured amount", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 500,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 500,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const payment = await service.authorizePaymentSession(session.id, {})
+
+            await service.capturePayment({ amount: 500, payment_id: payment.id })
+
+            // Two concurrent refunds that each pass the guard in isolation
+            // (500 captured, 0 refunded seen by both) but together refund 600.
+            const outcomes = await promiseAll([
+              service
+                .refundPayment({ amount: 300, payment_id: payment.id })
+                .then(() => "ok", () => "threw"),
+              service
+                .refundPayment({ amount: 300, payment_id: payment.id })
+                .then(() => "ok", () => "threw"),
+            ])
+
+            // Exactly one refund is admitted; the other is rejected by the guard.
+            expect(outcomes.filter((o) => o === "threw")).toHaveLength(1)
+
+            const [finalCollection] = await service.listPaymentCollections({
+              id: collection.id,
+            })
+
+            expect(finalCollection.refunded_amount).toBe(300)
           })
         })
       })

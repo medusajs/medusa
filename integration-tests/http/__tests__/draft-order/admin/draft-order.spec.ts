@@ -18,7 +18,7 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 jest.setTimeout(300000)
 
 medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
+  testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let region: HttpTypes.AdminRegion
     let salesChannel: HttpTypes.AdminSalesChannel
     let stockLocation: HttpTypes.AdminStockLocation
@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
     let apiKey: HttpTypes.AdminApiKeyResponse["api_key"]
     let userId: string
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
@@ -172,6 +172,8 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.draft_order
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /draft-orders", () => {
@@ -395,6 +397,96 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toBe(200)
         expect(response.data.order.status).toBe("pending")
+      })
+
+      it("should recompute tax lines when the shipping address changes and carry the current jurisdiction's tax into the converted order", async () => {
+        // Add an item under the US default jurisdiction (2%)
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+          {
+            items: [
+              {
+                variant_id: product.variants.find((v) => v.title === "L shirt")
+                  .id,
+                quantity: 1,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const taxFields =
+          "?fields=+tax_total,+items.tax_total,+items.tax_lines.rate"
+
+        let draftOrder = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}${taxFields}`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(draftOrder.items[0].tax_lines).toEqual([
+          expect.objectContaining({ rate: 2 }),
+        ])
+        expect(draftOrder.items[0].tax_total).toBe(0.2)
+
+        // Change the shipping address to the CA province jurisdiction (5%)
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}`,
+          {
+            shipping_address: {
+              province: "CA",
+            },
+          },
+          adminHeaders
+        )
+
+        // Tax lines should be recomputed to reflect the new jurisdiction
+        draftOrder = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}${taxFields}`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(draftOrder.items[0].tax_lines).toEqual([
+          expect.objectContaining({ rate: 5 }),
+        ])
+        expect(draftOrder.items[0].tax_total).toBe(0.5)
+
+        // Convert to order and confirm the placed order reflects the current jurisdiction
+        const response = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/convert-to-order`,
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.order.status).toBe("pending")
+
+        const order = (
+          await api.get(
+            `/admin/orders/${response.data.order.id}${taxFields}`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(order.items[0].tax_lines).toEqual([
+          expect.objectContaining({ rate: 5 }),
+        ])
+        expect(order.items[0].tax_total).toBe(0.5)
       })
 
       it("should create reservations on draft order to order conversion", async () => {

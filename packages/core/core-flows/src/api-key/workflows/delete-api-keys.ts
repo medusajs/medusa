@@ -16,7 +16,7 @@ export type DeleteApiKeysWorkflowInput = {
 export const deleteApiKeysWorkflowId = "delete-api-keys"
 /**
  * This workflow deletes one or more secret or publishable API keys. It's used by the
- * [Delete API Key Admin API Route](https://docs.medusajs.com/api/admin#api-keys_deleteapikeysid).
+ * [Delete API Key Admin API Route](https://docs.medusajs.com/api/admin/api-keys/delete-an-api-key).
  * 
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete API keys within your custom flows.

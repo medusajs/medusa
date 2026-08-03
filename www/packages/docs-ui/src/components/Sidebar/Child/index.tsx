@@ -35,7 +35,10 @@ export const SidebarChild = () => {
         data-testid="sidebar-child-back-button"
       >
         <ArrowUturnLeft />
-        <span className="truncate flex-1" data-testid="sidebar-child-title">
+        <span
+          className="truncate flex-1 overscroll-y-auto"
+          data-testid="sidebar-child-title"
+        >
           {title}
         </span>
       </div>

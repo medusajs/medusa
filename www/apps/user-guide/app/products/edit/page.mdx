@@ -8,7 +8,7 @@ products:
   - product
 ---
 
-import { ArrowUpRightOnBox, EllipsisHorizontal, EllipsisVertical, ThumbnailBadge } from "@medusajs/icons"
+import { ArrowUpRightOnBox, EllipsisHorizontal, EllipsisVertical, ThumbnailBadge, XMark } from "@medusajs/icons"
 import { Table } from "docs-ui"
 
 export const metadata = {
@@ -43,26 +43,46 @@ In the first section's header, you can see the product's status. A product can h
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Status</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
-      <Table.Cell>Published</Table.Cell>
-      <Table.Cell>The product is available on the storefront and can be purchased.</Table.Cell>
+      <Table.Cell>
+        Published
+      </Table.Cell>
+      <Table.Cell>
+        The product is available on the storefront and can be purchased.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Draft</Table.Cell>
-      <Table.Cell>A product whose details you're still working on. It's not available on the storefront.</Table.Cell>
+      <Table.Cell>
+        Draft
+      </Table.Cell>
+      <Table.Cell>
+        A product whose details you're still working on. It's not available on the storefront.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Proposed</Table.Cell>
-      <Table.Cell>A product that is not yet approved for publishing. It's not available on the storefront.</Table.Cell>
+      <Table.Cell>
+        Proposed
+      </Table.Cell>
+      <Table.Cell>
+        A product that is not yet approved for publishing. It's not available on the storefront.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Rejected</Table.Cell>
-      <Table.Cell>A product that has been rejected and is not available on the storefront.</Table.Cell>
+      <Table.Cell>
+        Rejected
+      </Table.Cell>
+      <Table.Cell>
+        A product that has been rejected and is not available on the storefront.
+      </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
@@ -181,57 +201,38 @@ To associate images with multiple variants:
 
 ---
 
-## Manage Product Options
-
-The Options section includes the product's options. Use this section to view and edit the product's options.
-
-![Options Section](https://res.cloudinary.com/dza7lstvk/image/upload/v1739810071/User%20Guide/Screenshot_2025-02-17_at_6.34.21_PM_y5eiwe.png)
-
-### Create Options
+## Manage Product's Options
 
 <Note>
 
-Unlike the product-creation form, when you create an option for an existing product you must create the variants manually.
+As of [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), product options can be managed globally and re-used across products. If you don't see the Product → Options page in the sidebar, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
 
 </Note>
 
-To add a new option to the product:
+The Options section includes the product's [options](../options/page.mdx). Use this section to view and edit the product's options.
 
-1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the "Options" section's header.
-2. Choose Create from the dropdown.
-3. In the side window that opens:
-    - In the Option title field, enter the option's title, such as "Color".
-    - In the Values field, enter the option's values, such as "Red, Blue, Green". Values are separated by a comma.
+![Options Section](https://res.cloudinary.com/dza7lstvk/image/upload/v1739810071/User%20Guide/Screenshot_2025-02-17_at_6.34.21_PM_y5eiwe.png)
+
+Product options can be defined globally from the [Product → Options](../options/page.mdx) page, or can be specific to this product.
+
+To manage the product's options:
+
+1. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the "Options" section's header.
+2. Choose Manage from the dropdown.
+3. In the side window that opens, you can:
+    - Add existing product options by selecting them in the "Product Options" dropdown.
+    - Create a product-specific option by entering a title in the "Product Options" dropdown. You can also enter the option's values separated by commas in the field shown for the new option.
+    - Remove an option by clicking the <InlineIcon Icon={XMark} alt="cross" /> icon next to it.
+    - Remove and add option values from the "Values" dropdown field of each option.
 4. Once you're done, click the Save button.
 
-### Edit Option
-
-To edit an option:
-
-1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in its row.
-2. Choose Edit from the dropdown.
-3. In the side window that opens, you can edit the option's title and values.
-4. Once you're done, click the Save button.
-
-### Delete Option
-
-<Note type="warning">
-
-Deleting an option is irreversible.
-
-</Note>
-
-To delete an option:
-
-1. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in its row.
-2. Choose Delete from the dropdown.
-3. Confirm deleting the option by clicking the Delete button in the pop-up.
+![Manage Product Options form in the Medusa Admin dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1765529614/User%20Guide/CleanShot_2025-12-12_at_10.53.03_2x_f8ftqv.png)
 
 ---
 
 ## Variants Section
 
-The Variants section includes the product's variants. You can view, search, and filter variants. You can also edit a variant's informtion, or click on it to edit more of its details.
+The Variants section includes the product's variants. You can view, search, and filter variants. You can also edit a variant's information, or click on it to edit more of its details.
 
 Refer to [this guide](../variants/page.mdx) to learn about managing product variants.
 

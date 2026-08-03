@@ -1,8 +1,10 @@
 import type { ESLint } from "eslint"
 import { rule as adminComponentMustBeArrowFunction } from "./admin-component-must-be-arrow-function"
 import { rule as adminEnvVarsImportMeta } from "./admin-env-vars-import-meta"
+import { rule as adminNoMedusaUtilsImport } from "./admin-no-medusa-utils-import"
 import { rule as authenticateFlagNameAndType } from "./authenticate-flag-name-and-type"
 import { rule as dataModelTableNameSnakeCase } from "./data-model-table-name-snake-case"
+import { rule as importFromFrameworkNotInternal } from "./import-from-framework-not-internal"
 import { rule as linkCreateKeysModulesEnum } from "./link-create-keys-modules-enum"
 import { rule as linkNoCrossModuleRelationship } from "./link-no-cross-module-relationship"
 import { rule as linkUsesLinkableProperties } from "./link-uses-linkable-properties"
@@ -20,6 +22,7 @@ import { rule as medusaContextOnContextParam } from "./medusa-context-on-context
 import { rule as middlewareMustCallNext } from "./middleware-must-call-next"
 import { rule as middlewaresFileLocationAndName } from "./middlewares-file-location-and-name"
 import { rule as noLoopsInWorkflow } from "./no-loops-in-workflow"
+import { rule as noMikroormDirectImport } from "./no-mikroorm-direct-import"
 import { rule as noNewDateInWorkflow } from "./no-new-date-in-workflow"
 import { rule as noNonSerializableStepReturn } from "./no-non-serializable-step-return"
 import { rule as noReservedDefaultPropertiesInModel } from "./no-reserved-default-properties-in-model"
@@ -28,6 +31,7 @@ import { rule as noSpreadInWorkflow } from "./no-spread-in-workflow"
 import { rule as noThrowInTransform } from "./no-throw-in-transform"
 import { rule as noTrailingSlashInRouteMatcher } from "./no-trailing-slash-in-route-matcher"
 import { rule as noTryCatchInWorkflow } from "./no-try-catch-in-workflow"
+import { rule as noWildcardWithSpecificFields } from "./no-wildcard-with-specific-fields"
 import { rule as readOnlyLinkRequiresField } from "./read-only-link-requires-field"
 import { rule as routeDynamicFolderSyntax } from "./route-dynamic-folder-syntax"
 import { rule as routeFileNaming } from "./route-file-naming"
@@ -41,12 +45,13 @@ import { rule as scheduledJobScheduleValidCron } from "./scheduled-job-schedule-
 import { rule as serviceConstructorMustCallSuper } from "./service-constructor-must-call-super"
 import { rule as serviceMethodsMustBeAsync } from "./service-methods-must-be-async"
 import { rule as useInjectManagerOnPublicMethods } from "./use-inject-manager-on-public-methods"
-import { rule as useQueryContextUtility } from "./use-query-context-utility"
+import { rule as useMedusaErrorNotGenericError } from "./use-medusa-error-not-generic-error"
 import { rule as useValidatedBodyOrQuery } from "./use-validated-body-or-query"
 import { rule as noWorkflowCallWithoutContainer } from "./no-workflow-call-without-container"
 import { rule as preferContainerRegistrationKeys } from "./prefer-container-registration-keys"
 import { rule as preferLinkOverRemoteLink } from "./prefer-link-over-remote-link"
 import { rule as preferModulesEnum } from "./prefer-modules-enum"
+import { rule as preferWorkflowEventOverModuleEvent } from "./prefer-workflow-event-over-module-event"
 import { rule as pricesInMajorUnits } from "./prices-in-major-units"
 import { rule as primaryKeyRequired } from "./primary-key-required"
 import { rule as stepIdKebabCase } from "./step-id-kebab-case"
@@ -67,8 +72,10 @@ import { rule as zodImportSource } from "./zod-import-source"
 export const rules = {
   "admin-component-must-be-arrow-function": adminComponentMustBeArrowFunction,
   "admin-env-vars-import-meta": adminEnvVarsImportMeta,
+  "admin-no-medusa-utils-import": adminNoMedusaUtilsImport,
   "authenticate-flag-name-and-type": authenticateFlagNameAndType,
   "data-model-table-name-snake-case": dataModelTableNameSnakeCase,
+  "import-from-framework-not-internal": importFromFrameworkNotInternal,
   "link-create-keys-modules-enum": linkCreateKeysModulesEnum,
   "link-no-cross-module-relationship": linkNoCrossModuleRelationship,
   "link-uses-linkable-properties": linkUsesLinkableProperties,
@@ -87,6 +94,7 @@ export const rules = {
   "middleware-must-call-next": middlewareMustCallNext,
   "middlewares-file-location-and-name": middlewaresFileLocationAndName,
   "no-loops-in-workflow": noLoopsInWorkflow,
+  "no-mikroorm-direct-import": noMikroormDirectImport,
   "no-new-date-in-workflow": noNewDateInWorkflow,
   "no-non-serializable-step-return": noNonSerializableStepReturn,
   "no-reserved-default-properties-in-model": noReservedDefaultPropertiesInModel,
@@ -95,6 +103,7 @@ export const rules = {
   "no-throw-in-transform": noThrowInTransform,
   "no-trailing-slash-in-route-matcher": noTrailingSlashInRouteMatcher,
   "no-try-catch-in-workflow": noTryCatchInWorkflow,
+  "no-wildcard-with-specific-fields": noWildcardWithSpecificFields,
   "read-only-link-requires-field": readOnlyLinkRequiresField,
   "route-dynamic-folder-syntax": routeDynamicFolderSyntax,
   "route-file-naming": routeFileNaming,
@@ -108,12 +117,13 @@ export const rules = {
   "service-constructor-must-call-super": serviceConstructorMustCallSuper,
   "service-methods-must-be-async": serviceMethodsMustBeAsync,
   "use-inject-manager-on-public-methods": useInjectManagerOnPublicMethods,
-  "use-query-context-utility": useQueryContextUtility,
+  "use-medusa-error-not-generic-error": useMedusaErrorNotGenericError,
   "use-validated-body-or-query": useValidatedBodyOrQuery,
   "no-workflow-call-without-container": noWorkflowCallWithoutContainer,
   "prefer-container-registration-keys": preferContainerRegistrationKeys,
   "prefer-link-over-remote-link": preferLinkOverRemoteLink,
   "prefer-modules-enum": preferModulesEnum,
+  "prefer-workflow-event-over-module-event": preferWorkflowEventOverModuleEvent,
   "prices-in-major-units": pricesInMajorUnits,
   "primary-key-required": primaryKeyRequired,
   "step-id-kebab-case": stepIdKebabCase,

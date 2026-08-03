@@ -144,6 +144,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/products/import"
   },
   {
+    "title": "Manage Product Options",
+    "path": "https://docs.medusajs.com/user-guide/products/options"
+  },
+  {
     "title": "Products Overview",
     "path": "https://docs.medusajs.com/user-guide/products"
   },
@@ -212,6 +216,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/settings/profile"
   },
   {
+    "title": "Manage Property Labels",
+    "path": "https://docs.medusajs.com/user-guide/settings/property-labels"
+  },
+  {
     "title": "Manage Refund Reasons",
     "path": "https://docs.medusajs.com/user-guide/settings/refund-reasons"
   },
@@ -246,5 +254,13 @@ export const userGuide = [
   {
     "title": "Manage Users",
     "path": "https://docs.medusajs.com/user-guide/settings/users"
+  },
+  {
+    "title": "Configure Layouts",
+    "path": "https://docs.medusajs.com/user-guide/tips/layout-configurations"
+  },
+  {
+    "title": "Configure Table Views",
+    "path": "https://docs.medusajs.com/user-guide/tips/table-views"
   }
 ]

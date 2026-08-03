@@ -109,7 +109,7 @@ export const validateRefundPaymentExceedsCapturedAmountStep = createStep(
 export const refundPaymentWorkflowId = "refund-payment-workflow"
 /**
  * This workflow refunds a payment. It's used by the
- * [Refund Payment Admin API Route](https://docs.medusajs.com/api/admin#payments_postpaymentsidrefund).
+ * [Refund Payment Admin API Route](https://docs.medusajs.com/api/admin/payments/refund-payment).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to refund a payment in your custom flows.
@@ -233,13 +233,18 @@ export const refundPaymentWorkflow = createWorkflow(
     when({ creditLineAmount }, ({ creditLineAmount }) =>
       MathBN.gt(creditLineAmount, 0)
     ).then(() => {
+      const createRefundCreditLinesData = transform({
+        order, creditLineAmount, refundReason,
+      }, (data) => {
+        return {
+          order_id: data.order.id,
+          amount: data.creditLineAmount,
+          reference: data.refundReason?.label,
+          referenceId: data.refundReason?.code,
+        }
+      })
       createOrderRefundCreditLinesWorkflow.runAsStep({
-        input: {
-          order_id: order.id,
-          amount: creditLineAmount,
-          reference: refundReason?.label,
-          referenceId: refundReason?.code,
-        },
+        input: createRefundCreditLinesData,
       })
     })
 

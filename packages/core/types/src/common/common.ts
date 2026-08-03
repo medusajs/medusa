@@ -1,3 +1,5 @@
+import type { InternalQueryOptions } from "../dal/cross-module-query"
+
 /**
  * Prettify complex types to a flat object structure
  */
@@ -107,6 +109,11 @@ export interface FindConfig<Entity> {
    * Enable ORM specific defined options
    */
   options?: Record<string, any>
+
+  /**
+   * @internal
+   */
+  __internal?: InternalQueryOptions
 }
 
 /**
@@ -452,6 +459,16 @@ export type QueryConfig<TEntity> = {
    * the authorization search.
    */
   allowed?: string[]
+  /**
+   * Fields and relations that must never be resolved, regardless of what the
+   * caller requests. Any requested field whose path contains one of these
+   * segments (e.g. `orders` matches `orders.customer.email`) is stripped before
+   * the query is executed. Unlike `allowed`, this is a hard security boundary
+   * that is always enforced, independent of any feature flag. Use it to keep
+   * sensitive relations (order, customer, payment, ...) off unauthenticated
+   * endpoints.
+   */
+  disallowed?: string[]
   defaultLimit?: number
   /**
    * If the route that will use that configuration is supposed to return a list of entities. This

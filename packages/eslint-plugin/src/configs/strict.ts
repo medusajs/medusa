@@ -1,17 +1,23 @@
 import type { Linter } from "eslint"
 import { ruleId } from "../constants"
 import { buildRecommended } from "./recommended"
+import { tsParserBlock } from "./shared"
 
 /**
  * Strict preset — superset of `recommended` plus rules that are too expensive
  * for the default preset: rules that require TypeScript type information
- * (`parserOptions.project` / `projectService` must be set on the consumer's
- * ESLint config), and cross-file rules whose cost scales with project size.
- * These are slower to run, which is why they are not in `recommended`.
+ * (this preset enables `parserOptions.project`, so the consumer must have a
+ * tsconfig that includes the linted files), and cross-file rules whose cost
+ * scales with project size. These are slower to run, which is why they are not
+ * in `recommended`.
  */
 export function buildStrict(plugin: unknown): Linter.Config[] {
   return [
     ...buildRecommended(plugin),
+    // Enable type-aware parsing for the type-information rules below. This comes
+    // after `recommended` so it overrides that preset's project-less parser
+    // block.
+    tsParserBlock(true),
     {
       files: ["**/*.{ts,tsx}"],
       rules: {

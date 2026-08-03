@@ -10,12 +10,14 @@ import {
   MathBN,
   OrderChangeStatus,
   OrderEditWorkflowEvents,
+  ReservationItemWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
   transform,
   WorkflowResponse,
+  parallelize,
 } from "@medusajs/framework/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import {
@@ -72,7 +74,7 @@ export type ConfirmOrderEditRequestValidationStepInput = {
  * })
  */
 export const confirmOrderEditRequestValidationStep = createStep(
-  "validate-confirm-order-edit-request",
+  "confirm-order-edit-request-validation",
   async function ({
     order,
     orderChange,
@@ -96,10 +98,15 @@ export type ConfirmOrderEditRequestWorkflowInput = {
   confirmed_by?: string
 }
 
+const orderFields = deduplicate([
+  ...requiredOrderFieldsForInventoryConfirmation,
+  ...fieldsToRefreshOrderEdit,
+])
+
 export const confirmOrderEditRequestWorkflowId = "confirm-order-edit-request"
 /**
  * This workflow confirms an order edit request. It's used by the
- * [Confirm Order Edit Admin API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsidconfirm).
+ * [Confirm Order Edit Admin API Route](https://docs.medusajs.com/api/admin/order-edits/confirm-order-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to confirm an order edit
  * in your custom flow.
@@ -182,10 +189,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
 
     const { data: refreshedOrder } = useQueryGraphStep({
       entity: "order",
-      fields: deduplicate([
-        ...requiredOrderFieldsForInventoryConfirmation,
-        ...fieldsToRefreshOrderEdit,
-      ]),
+      fields: orderFields,
       filters: { id: input.order_id },
       options: {
         throwIfKeyNotFound: true,
@@ -269,8 +273,39 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       prepareConfirmInventoryInput
     )
 
-    deleteReservationsByLineItemsStep(toRemoveReservationLineItemIds)
-    reserveInventoryStep(formatedInventoryItems)
+    const deletedReservationIds = deleteReservationsByLineItemsStep(
+      toRemoveReservationLineItemIds
+    )
+    const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+    const { reservationDeletedEvents, reservationCreatedEvents } = transform(
+      { deletedReservationIds, createdReservations, order },
+      ({ deletedReservationIds, createdReservations, order }) => {
+        return {
+          reservationDeletedEvents: (deletedReservationIds ?? []).map((id) => ({
+            id,
+            order_id: order.id,
+          })),
+          reservationCreatedEvents: (createdReservations ?? []).map(
+            (reservation) => ({
+              id: reservation.id,
+              order_id: order.id,
+            })
+          ),
+        }
+      }
+    )
+
+    parallelize(
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.DELETED,
+        data: reservationDeletedEvents,
+      }).config({ name: "emit-reservation-item-deleted" }),
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
+    )
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
       input: {

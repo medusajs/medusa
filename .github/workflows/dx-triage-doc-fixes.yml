@@ -62,6 +62,7 @@ jobs:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,mcp__linear-server__list_teams,mcp__linear-server__list_issues,mcp__linear-server__get_issue,mcp__linear-server__list_issue_statuses,Bash(git diff:*,git status:*,ls:*,find:*,cat:*)"
           max_turns: 80
+          model: claude-sonnet-4-6
           mcp_config: |
             {
               "mcpServers": {
@@ -127,6 +128,15 @@ jobs:
             DX-2591
             DX-2593
 
+            ## Step 5 — Write the PR title and summary
+
+            After applying all fixes, write these two files using the Write tool:
+
+            1. /tmp/pr-title.txt — a single-line pull request title. It MUST start with "docs: ", followed by a concise summary of what was changed, and MUST end with " [automated]". Keep it under 100 characters. Example: "docs: fix incorrect subscriber examples and payment provider setup [automated]"
+            2. /tmp/pr-summary.md — a short summary (2-4 sentences, or a few bullet points) of what was updated. Plain markdown, no top-level heading.
+
+            If no issues qualified or were fixed, do not create either file.
+
       - name: Stage documentation changes
         id: changes
         run: |
@@ -150,6 +160,21 @@ jobs:
             echo "No issues fixed."
           fi
 
+      - name: Read Claude-generated PR metadata
+        id: pr-meta
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          TITLE=""
+          if [ -s /tmp/pr-title.txt ]; then
+            TITLE=$(head -n 1 /tmp/pr-title.txt | sed 's/[[:space:]]*$//')
+          fi
+          # Fall back to a static title if Claude's title is missing or malformed
+          case "$TITLE" in
+            "docs: "*"[automated]") ;;
+            *) TITLE="docs: fix documentation issues in triage inbox [automated]" ;;
+          esac
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
       - name: Commit documentation changes
         if: steps.changes.outputs.has_changes == 'true'
         run: |
@@ -166,6 +191,7 @@ jobs:
           REPO: ${{ github.repository }}
           BRANCH: ${{ steps.branch.outputs.name }}
           FIXED_IDS: ${{ steps.fixed-ids.outputs.ids }}
+          PR_TITLE: ${{ steps.pr-meta.outputs.title }}
         run: |
           BODY_FILE=$(mktemp)
 
@@ -174,6 +200,16 @@ jobs:
 
           This PR fixes documentation issues from the triage inbox.
           Each issue was evaluated by Claude and deemed a self-contained doc fix.
+          BODY_EOF
+
+          echo "" >> "$BODY_FILE"
+          if [ -s /tmp/pr-summary.md ]; then
+            cat /tmp/pr-summary.md >> "$BODY_FILE"
+          else
+            echo "_No summary was generated._" >> "$BODY_FILE"
+          fi
+
+          cat >> "$BODY_FILE" << 'BODY_EOF'
 
           > Review carefully before merging. Claude may have missed context or made
           > incorrect assumptions.
@@ -191,19 +227,19 @@ jobs:
           if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
             gh api "repos/$REPO/pulls/$PR_NUMBER" \
               --method PATCH \
-              --field title="docs: fix documentation issues in triage inbox" \
+              --field title="$PR_TITLE" \
               --field body="$(cat "$BODY_FILE")"
             echo "Updated PR #$PR_NUMBER"
           else
             PR_NUMBER=$(gh api "repos/$REPO/pulls" \
               --method POST \
-              --field title="docs: fix documentation issues in triage inbox" \
+              --field title="$PR_TITLE" \
               --field body="$(cat "$BODY_FILE")" \
               --field base="develop" \
               --field head="$BRANCH" \
               --jq '.number')
             gh api "repos/$REPO/issues/$PR_NUMBER/labels" \
               --method POST \
-              --field 'labels[]=type: chore'
+              --field 'labels[]=type: docs'
             echo "Created PR #$PR_NUMBER"
           fi

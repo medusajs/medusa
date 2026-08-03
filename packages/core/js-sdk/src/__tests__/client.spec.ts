@@ -287,6 +287,35 @@ describe("Client", () => {
       // Cleaning up after this specific test
       global.window = undefined as any
     })
+
+    it("should fall back to no storage when browser storage access is blocked", async () => {
+      global.window = {} as any
+
+      Object.defineProperties(global.window, {
+        localStorage: {
+          get: () => {
+            throw new Error("localStorage is blocked")
+          },
+        },
+        sessionStorage: {
+          get: () => {
+            throw new Error("sessionStorage is blocked")
+          },
+        },
+      })
+
+      const blockedStorageClient = new Client({
+        baseUrl,
+      })
+
+      await blockedStorageClient.setToken(token)
+
+      const resp = await blockedStorageClient.fetch<any>("nostore")
+      expect(resp).toEqual({ test: "test" })
+
+      // Cleaning up after this specific test
+      global.window = undefined as any
+    })
   })
 
   describe("Custom Storage", () => {

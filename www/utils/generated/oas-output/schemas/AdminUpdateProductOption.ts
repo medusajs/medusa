@@ -19,6 +19,16 @@
  *     type: string
  *     title: id
  *     description: The option's ID.
+ *   ranks:
+ *     type: object
+ *     description: The product option's ranks.
+ *   is_exclusive:
+ *     type: boolean
+ *     title: is_exclusive
+ *     description: Whether the product option is exclusive to the product. If disabled, the product option can be used by other products.
+ *   metadata:
+ *     type: object
+ *     description: Key-value pairs that hold additional information about the product option.
  * 
 */
 

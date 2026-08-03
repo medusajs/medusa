@@ -163,6 +163,11 @@ export const navDropdownItems: NavigationItem[] = [
           },
           {
             type: "link",
+            title: "Settings",
+            link: "/resources/commerce-modules/settings",
+          },
+          {
+            type: "link",
             title: "Stock Location",
             link: "/resources/commerce-modules/stock-location",
           },
@@ -306,6 +311,12 @@ export const navDropdownItems: NavigationItem[] = [
         title: "Medusa UI",
         link: "/ui",
         sidebar_id: "ui",
+      },
+      {
+        type: "link",
+        title: "ESLint Plugin",
+        link: "/resources/lint",
+        sidebar_id: "lint",
       },
     ],
   },

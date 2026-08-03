@@ -14,7 +14,7 @@ export const calculateShippingOptionsPricesWorkflowId =
   "calculate-shipping-options-prices-workflow"
 /**
  * This workflow calculates the prices for one or more shipping options in a cart. It's used by the
- * [Calculate Shipping Option Price Store API Route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
+ * [Calculate Shipping Option Price Store API Route](https://docs.medusajs.com/api/store/shipping-options/calculate-shipping-option-price).
  *
  * :::note
  *

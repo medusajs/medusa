@@ -1,5 +1,31 @@
 # Change Log
 
+## 2.18.0
+
+### Patch Changes
+
+- [#16083](https://github.com/medusajs/medusa/pull/16083) [`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps,medusa): update OpenTelemetry SDK to 2.9.0. `OTEL_RESOURCE_ATTRIBUTES` is now parsed strictly per the W3C Baggage spec. A single malformed entry silently discards the entire variable, values containing whitespace must be percent-encoded (` ` -> `%20`), and double quotes are treated as literal characters rather than value wrappers. If you set this env var, audit it so resource attributes like `service.name` still apply.
+
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+## 2.17.1
+
+## 2.17.0
+
+## 2.16.0
+
+### Minor Changes
+
+- [`456813f8b36ab1086dec09c6a89655d7ab0bae5b`](undefined) - chore(deps): bump OpenTelemetry packages
+
+### Patch Changes
+
+- [`18474de124868370298addf195e5229ca6792f81`](undefined) - chore(product, order, utils, deps, index): update MikroORM to v6.6.14
+
 ## 2.15.5
 
 ## 2.15.4

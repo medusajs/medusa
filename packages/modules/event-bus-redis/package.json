@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-redis",
-  "version": "2.15.5",
+  "version": "2.18.0",
   "description": "Redis Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -11,8 +11,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/modules/event-bus-redis"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -23,9 +26,9 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/types": "2.15.5",
-    "@medusajs/utils": "2.15.5"
+    "@medusajs/framework": "2.18.0",
+    "@medusajs/types": "2.18.0",
+    "@medusajs/utils": "2.18.0"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
@@ -38,6 +41,6 @@
     "ioredis": "^5.4.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.15.5"
+    "@medusajs/framework": "2.18.0"
   }
 }

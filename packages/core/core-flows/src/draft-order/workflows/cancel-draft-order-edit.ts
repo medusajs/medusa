@@ -31,9 +31,14 @@ export interface CancelDraftOrderEditWorkflowInput {
   order_id: string
 }
 
+const draftOrderFields = [
+  "version",
+  ...draftOrderFieldsForRefreshSteps
+]
+
 /**
  * This workflow cancels a draft order edit. It's used by the
- * [Cancel Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersidedit).
+ * [Cancel Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/cancel-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * cancelling a draft order edit.
@@ -65,7 +70,7 @@ export const cancelDraftOrderEditWorkflow = createWorkflow(
       }[]
     } = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["version", ...draftOrderFieldsForRefreshSteps],
+      fields: draftOrderFields,
       variables: { id: input.order_id },
       list: false,
       throw_if_key_not_found: true,

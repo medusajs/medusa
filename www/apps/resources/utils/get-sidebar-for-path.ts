@@ -58,6 +58,7 @@ const sidebarMappings: {
       "/js-sdk",
       "/nextjs-starter",
       "/references/js-sdk",
+      "/lint",
     ],
   },
   {
@@ -109,6 +110,7 @@ const sidebarMappings: {
       "/references/user",
       "/references/loyalty",
       "/references/store-credit",
+      "/references/settings",
     ],
   },
   {

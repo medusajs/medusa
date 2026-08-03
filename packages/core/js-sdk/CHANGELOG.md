@@ -1,5 +1,61 @@
 # @medusajs/js-sdk
 
+## 2.18.0
+
+### Patch Changes
+
+- [#15941](https://github.com/medusajs/medusa/pull/15941) [`57ef861b0aae5062d591fd2fcd8bbfae5702a699`](https://github.com/medusajs/medusa/commit/57ef861b0aae5062d591fd2fcd8bbfae5702a699) Thanks [@Arunsiva003](https://github.com/Arunsiva003)! - Handle blocked browser storage access when initializing the JS SDK client.
+
+- [#15899](https://github.com/medusajs/medusa/pull/15899) [`d75e69a5492e1d9915fce3f117668d08c78faefd`](https://github.com/medusajs/medusa/commit/d75e69a5492e1d9915fce3f117668d08c78faefd) Thanks [@ashif323](https://github.com/ashif323)! - Fix Vite import-analysis conflict with Product.import method
+
+- [#16083](https://github.com/medusajs/medusa/pull/16083) [`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(create-medusa-app, admin-bundler, dashboard, core-flows, framework, js-sdk, medusa): dependabot dependencies update
+
+- [#15926](https://github.com/medusajs/medusa/pull/15926) [`c2fc62507a54f0ab73367d4369c783bbbdccf022`](https://github.com/medusajs/medusa/commit/c2fc62507a54f0ab73367d4369c783bbbdccf022) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,medusa,types,js-sdk,dashboard): transfer order to guest customer
+
+- [#14661](https://github.com/medusajs/medusa/pull/14661) [`8f97e3f3710a2bae662415dac7098e1c6e60c3c9`](https://github.com/medusajs/medusa/commit/8f97e3f3710a2bae662415dac7098e1c6e60c3c9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,admin-vite-plugin,admin-shared,ui,settings,js-sdk,types): view configuration UI enhancements — dynamic filter/sort resolution, custom cell renderer registration, property labels management UI
+
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- [#15721](https://github.com/medusajs/medusa/pull/15721) [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9) Thanks [@leobenzol](https://github.com/leobenzol)! - feat: drag&drop LayoutComposer, settings db persistence
+
+## 2.17.1
+
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(js-sdk): product option redesign (client-side)
+
+### Patch Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,core-flows,product,js-sdk,types,medusa): rework product option values views and add dedicated endpoints
+
+- [#15735](https://github.com/medusajs/medusa/pull/15735) [`b3386a5645343fcd31577899fca031ad9ae1bdd1`](https://github.com/medusajs/medusa/commit/b3386a5645343fcd31577899fca031ad9ae1bdd1) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard,js-sdk): exclude unnecessary relations from variants mutation responses in dashboard
+
+## 2.16.0
+
+### Minor Changes
+
+- [#15642](https://github.com/medusajs/medusa/pull/15642) [`d815e81a1a4977f66d6aebb5abc742ee8780619c`](https://github.com/medusajs/medusa/commit/d815e81a1a4977f66d6aebb5abc742ee8780619c) Thanks [@sradevski](https://github.com/sradevski)! - Update the signature of the sdk register method to either return verification response or a token
+
+### Patch Changes
+
+- [#14674](https://github.com/medusajs/medusa/pull/14674) [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,admin-shared,core-flows,js-sdk,types,medusa,link-modules): RBAC admin dashboard CRUD
+
+- [#15561](https://github.com/medusajs/medusa/pull/15561) [`1344c10503f34e392bd03f733820bcd5a12a2766`](https://github.com/medusajs/medusa/commit/1344c10503f34e392bd03f733820bcd5a12a2766) Thanks [@GBreg19](https://github.com/GBreg19)! - feat(medusa,core-flows,js-sdk,types): allow provider_id when marking a payment collection as paid
+
+  The `mark-as-paid` admin route and the `markPaymentCollectionAsPaid` workflow now accept an optional `provider_id`. When provided, the captured payment is recorded under that provider instead of always using `pp_system_default`. Omitting it preserves the previous behavior. This completes the admin payment-provider flow started in #15169.
+
+- [#15597](https://github.com/medusajs/medusa/pull/15597) [`f10e3ab70d2328fcc7202e6539c899cdf1313946`](https://github.com/medusajs/medusa/commit/f10e3ab70d2328fcc7202e6539c899cdf1313946) Thanks [@puneetdixit200](https://github.com/puneetdixit200)! - fix(js-sdk): add explicit ESM extensions to RBAC admin imports
+
+- [#15571](https://github.com/medusajs/medusa/pull/15571) [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
+
 ## 2.15.5
 
 ### Patch Changes

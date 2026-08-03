@@ -18,7 +18,7 @@ In this guide, you'll learn how to manage a customer's addresses in a storefront
 
 ## List Customer Addresses
 
-To retrieve the list of customer addresses, send a request to the [List Customer Addresses API route](!api!/store#customers_getcustomersmeaddressesaddress_id):
+To retrieve the list of customer addresses, send a request to the [List Customer Addresses API route](!api!/store/customers/get-address):
 
 <Note title="Tip">
 
@@ -35,8 +35,8 @@ export const highlights = [
   ["23", "listAddress", "Send a request to retrieve the addresses."],
   ["27", "count", "The total number of addresses in the Medusa application."],
   ["39", "setHasMorePages", "Set whether there are more pages based on the total count."],
-  ["52", "", "Using only two address fields for simplicity."],
-  ["59", "button", "Show a button to load more addresses if there are more pages."]
+  ["53", "", "Using only two address fields for simplicity."],
+  ["60", "button", "Show a button to load more addresses if there are more pages."]
 ]
 
   ```tsx highlights={highlights} collapsibleLines="50-77" expandButtonLabel="Show render"
@@ -92,6 +92,7 @@ export const highlights = [
         <ul>
           {addresses.map((address) => (
             <li key={address.id}>
+              {address.address_name && `${address.address_name} - `}
               City: {address.city} - 
               Country: {address.country_code}
             </li>
@@ -135,9 +136,9 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-The [List Customer Addresses API route](!api!/store#customers_getcustomersmeaddresses) accepts pagination parameters to paginate the address.
+The [List Customer Addresses API route](!api!/store/customers/list-customers-addresses) accepts pagination parameters to paginate the address.
 
-The request returns in the response the `addresses` field, which is an array of addresses. You can check its structure in the [customer schema](!api!/store#customers_customer_schema).
+The request returns in the response the `addresses` field, which is an array of addresses. You can check its structure in the [customer schema](!api!/store/customers/schema).
 
 The request also returns the `count` field, which is the total number of addresses in the Medusa application. You can use it to check if there are more addresses to retrieve.
 
@@ -145,7 +146,7 @@ The request also returns the `count` field, which is the total number of address
 
 ## Add Customer Address
 
-To add a new address for the customer, send a request to the [Add Customer Address API route](!api!/store#customers_postcustomersmeaddresses):
+To add a new address for the customer, send a request to the [Add Customer Address API route](!api!/store/customers/create-address):
 
 <Note title="Tip">
 
@@ -176,6 +177,7 @@ export const addHighlights = [
     const { setCustomer } = useCustomer()
 
     const [loading, setLoading] = useState(false)
+    const [addressName, setAddressName] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [address1, setAddress1] = useState("")
@@ -193,6 +195,7 @@ export const addHighlights = [
       setLoading(false)
 
       sdk.store.customer.createAddress({
+        address_name: addressName,
         first_name: firstName,
         last_name: lastName,
         address_1: address1,
@@ -211,6 +214,12 @@ export const addHighlights = [
 
     return (
       <form>
+        <input 
+          type="text" 
+          placeholder="Address Name" 
+          value={addressName}
+          onChange={(e) => setAddressName(e.target.value)}
+        />
         <input 
           type="text" 
           placeholder="First Name" 
@@ -288,6 +297,7 @@ export const addHighlights = [
 
   ```ts
   sdk.store.customer.createAddress({
+    address_name: addressName,
     first_name: firstName,
     last_name: lastName,
     address_1: address1,
@@ -307,15 +317,15 @@ export const addHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you send a request to the [Add Customer Address API route](!api!/store#customers_postcustomersmeaddresses) to add a new address for the customer.
+In this example, you send a request to the [Add Customer Address API route](!api!/store/customers/create-address) to add a new address for the customer.
 
-The response of the request has a `customer` field, which is a [customer object](!api!/store#customers_customer_schema). You can access the new address in the `addresses` property of the customer object.
+The response of the request has a `customer` field, which is a [customer object](!api!/store/customers/schema). You can access the new address in the `addresses` property of the customer object.
 
 ---
 
 ## Edit an Address
 
-To edit an address, send a request to the [Update Customer Address API route](!api!/store#customers_postcustomersmeaddressesaddress_id):
+To edit an address, send a request to the [Update Customer Address API route](!api!/store/customers/update-address):
 
 <Note title="Tip">
 
@@ -356,6 +366,9 @@ export const editHighlights = [
       (address) => address.id === id
     )
     const [loading, setLoading] = useState(false)
+    const [addressName, setAddressName] = useState(
+      address?.address_name || ""
+    )
     const [firstName, setFirstName] = useState(
       address?.first_name || ""
     )
@@ -394,6 +407,7 @@ export const editHighlights = [
       setLoading(true)
 
       sdk.store.customer.updateAddress(address.id, {
+        address_name: addressName,
         first_name: firstName,
         last_name: lastName,
         address_1: address1,
@@ -412,6 +426,12 @@ export const editHighlights = [
 
     return (
       <form>
+        <input 
+          type="text" 
+          placeholder="Address Name" 
+          value={addressName}
+          onChange={(e) => setAddressName(e.target.value)}
+        />
         <input 
           type="text" 
           placeholder="First Name" 
@@ -489,6 +509,7 @@ export const editHighlights = [
 
   ```ts
   sdk.store.customer.updateAddress(address.id, {
+    address_name: addressName,
     first_name: firstName,
     last_name: lastName,
     address_1: address1,
@@ -508,15 +529,15 @@ export const editHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you send a request to the [Update Customer Address API route](!api!/store#customers_postcustomersmeaddressesaddress_id) to edit an address.
+In this example, you send a request to the [Update Customer Address API route](!api!/store/customers/update-address) to edit an address.
 
-The response of the request has a `customer` field, which is a [customer object](!api!/store#customers_customer_schema). You can access the updated address in the `addresses` property of the customer object.
+The response of the request has a `customer` field, which is a [customer object](!api!/store/customers/schema). You can access the updated address in the `addresses` property of the customer object.
 
 ---
 
 ## Delete Customer Address
 
-To delete a customer's address, send a request to the [Delete Customer Address API route](!api!/store#customers_deletecustomersmeaddressesaddress_id):
+To delete a customer's address, send a request to the [Delete Customer Address API route](!api!/store/customers/remove-address):
 
 <Note title="Tip">
 
@@ -537,6 +558,6 @@ sdk.store.customer.deleteAddress(addrId)
 })
 ```
 
-In this example, you send a request to the [Delete Customer Address API route](!api!/store#customers_deletecustomersmeaddressesaddress_id) to delete an address.
+In this example, you send a request to the [Delete Customer Address API route](!api!/store/customers/remove-address) to delete an address.
 
-The response of the request has a `parent` field, which is a [customer object](!api!/store#customers_customer_schema). You can access the updated customer in the `parent` property of the response.
+The response of the request has a `parent` field, which is a [customer object](!api!/store/customers/schema). You can access the updated customer in the `parent` property of the response.

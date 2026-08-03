@@ -17,7 +17,7 @@ export class ReturnReason {
 
   /**
    * This method retrieves a list of return reasons. It sends a request to the
-   * [List Return Reasons](https://docs.medusajs.com/api/admin#return-reasons_returnreason_schema)
+   * [List Return Reasons](https://docs.medusajs.com/api/admin/return-reasons/schema)
    * API route.
    * 
    * @param query - Filters and pagination configurations.
@@ -60,7 +60,7 @@ export class ReturnReason {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminReturnReasonListParams,
@@ -77,7 +77,7 @@ export class ReturnReason {
 
   /**
    * This method retrieves a return reason by ID. It sends a request to the
-   * [Get Return Reason](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasonsid)
+   * [Get Return Reason](https://docs.medusajs.com/api/admin/return-reasons/get-a-return-reason)
    * API route.
    * 
    * @param id - The return reason's ID.
@@ -106,7 +106,7 @@ export class ReturnReason {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -124,7 +124,7 @@ export class ReturnReason {
 
   /**
    * This method creates a return reason. It sends a request to the
-   * [Create Return Reason](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons)
+   * [Create Return Reason](https://docs.medusajs.com/api/admin/return-reasons/create-return-reason)
    * API route.
    * 
    * @param body - The details of the return reason to create.
@@ -159,7 +159,7 @@ export class ReturnReason {
 
   /**
    * This method updates a return reason. It sends a request to the
-   * [Update Return Reason](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasonsid)
+   * [Update Return Reason](https://docs.medusajs.com/api/admin/return-reasons/update-a-return-reason)
    * API route.
    * 
    * @param id - The return reason's ID.
@@ -196,7 +196,7 @@ export class ReturnReason {
 
   /**
    * This method deletes a return reason. It sends a request to the
-   * [Delete Return Reason](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreasonsid)
+   * [Delete Return Reason](https://docs.medusajs.com/api/admin/return-reasons/delete-a-return-reason)
    * API route.
    * 
    * @param id - The return reason's ID.

@@ -2,9 +2,12 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
 
 import type { InventoryTypes } from "@medusajs/framework/types"
+import { InventoryItemWorkflowEvents } from "@medusajs/framework/utils"
+import { emitEventStep } from "../../common"
 import { updateInventoryItemsStep } from "../steps"
 
 /**
@@ -26,7 +29,7 @@ export type UpdateInventoryItemsWorkflowOutput =
 export const updateInventoryItemsWorkflowId = "update-inventory-items-workflow"
 /**
  * This workflow updates one or more inventory items. It's used by the
- * [Update an Inventory Item Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsid).
+ * [Update an Inventory Item Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/update-an-inventory-item).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update inventory items in your custom flows.
@@ -53,6 +56,17 @@ export const updateInventoryItemsWorkflow = createWorkflow(
   (
     input: WorkflowData<UpdateInventoryItemsWorkflowInput>
   ): WorkflowResponse<UpdateInventoryItemsWorkflowOutput> => {
-    return new WorkflowResponse(updateInventoryItemsStep(input.updates))
+    const updatedItems = updateInventoryItemsStep(input.updates)
+
+    const itemIdEvents = transform({ updatedItems }, ({ updatedItems }) => {
+      return updatedItems.map((item) => ({ id: item.id }))
+    })
+
+    emitEventStep({
+      eventName: InventoryItemWorkflowEvents.UPDATED,
+      data: itemIdEvents,
+    })
+
+    return new WorkflowResponse(updatedItems)
   }
 )

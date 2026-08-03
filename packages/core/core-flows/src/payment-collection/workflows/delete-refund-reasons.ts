@@ -18,7 +18,7 @@ export type DeleteRefundReasonsWorkflowInput = {
 export const deleteRefundReasonsWorkflowId = "delete-refund-reasons-workflow"
 /**
  * This workflow deletes one or more refund reasons. It's used by the
- * [Delete Refund Reason Admin API Route](https://docs.medusajs.com/api/admin#refund-reasons_deleterefundreasonsid).
+ * [Delete Refund Reason Admin API Route](https://docs.medusajs.com/api/admin/refund-reasons/delete-a-refund-reason).
  * 
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete refund reasons in your custom flows.

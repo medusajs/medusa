@@ -1,29 +1,15 @@
 import type { Linter } from "eslint"
-import { PLUGIN_NAMESPACE, ruleId } from "../constants"
+import { ruleId } from "../constants"
+import { ignoresBlock, pluginBlock, tsParserBlock } from "./shared"
 
 export function buildRecommended(plugin: unknown): Linter.Config[] {
   return [
-    {
-      ignores: [
-        ".medusa/**",
-        ".yalc/**",
-        "dist/**",
-        "build/**",
-        "node_modules/**",
-        "coverage/**",
-        ".cache/**",
-        "**/*.generated.ts",
-      ],
-    },
-    {
-      files: ["**/*.{ts,tsx}"],
-      plugins: { [PLUGIN_NAMESPACE]: plugin as never },
-      languageOptions: {
-        parser: require("@typescript-eslint/parser"),
-        parserOptions: { project: true, sourceType: "module" },
-      },
-      rules: {},
-    },
+    ignoresBlock,
+    pluginBlock(plugin),
+    // No recommended rule needs type information, so the parser runs without
+    // `project` — the preset stays zero-config (no tsconfig required). The
+    // type-aware `strict` preset turns `project` on itself.
+    tsParserBlock(),
     {
       files: ["**/*.{ts,js}"],
       ignores: ["src/admin/**", "**/src/admin/**"],
@@ -39,13 +25,16 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("no-spread-in-workflow")]: "error",
         [ruleId("no-throw-in-transform")]: "error",
         [ruleId("no-try-catch-in-workflow")]: "error",
+        [ruleId("no-wildcard-with-specific-fields")]: "warn",
+        [ruleId("import-from-framework-not-internal")]: "warn",
+        [ruleId("no-mikroorm-direct-import")]: "warn",
+        [ruleId("use-medusa-error-not-generic-error")]: "warn",
         [ruleId("link-create-keys-modules-enum")]: "warn",
         [ruleId("prefer-container-registration-keys")]: "warn",
         [ruleId("prefer-link-over-remote-link")]: "warn",
         [ruleId("prefer-modules-enum")]: "warn",
         [ruleId("prices-in-major-units")]: "warn",
         [ruleId("step-id-kebab-case")]: "warn",
-        [ruleId("use-query-context-utility")]: "warn",
         [ruleId("step-must-return-step-response")]: "error",
         [ruleId("workflow-id-matches-export-or-filename")]: "warn",
         [ruleId("workflow-must-return-workflow-response")]: "error",
@@ -75,10 +64,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: [
-        "**/middleware.{ts,js}",
-        "**/middlewares.{ts,js}",
-      ],
+      files: ["**/middleware.{ts,js}", "**/middlewares.{ts,js}"],
       rules: {
         [ruleId("middleware-must-call-next")]: "warn",
         [ruleId("middlewares-file-location-and-name")]: "error",
@@ -92,13 +78,10 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
         [ruleId("service-constructor-must-call-super")]: "error",
         [ruleId("service-methods-must-be-async")]: "error",
         [ruleId("use-inject-manager-on-public-methods")]: "warn",
-      }
+      },
     },
     {
-      files: [
-        "src/modules/**/index.{ts,js}",
-        "**/modules/**/index.{ts,js}",
-      ],
+      files: ["src/modules/**/index.{ts,js}", "**/modules/**/index.{ts,js}"],
       rules: {
         [ruleId("module-name-snake-case")]: "error",
       },
@@ -134,6 +117,7 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       ],
       rules: {
         [ruleId("admin-env-vars-import-meta")]: "warn",
+        [ruleId("admin-no-medusa-utils-import")]: "error",
       },
     },
     {
@@ -189,21 +173,24 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      files: [
-        "src/subscribers/**/*.{ts,js}",
-        "**/src/subscribers/**/*.{ts,js}",
-      ],
+      // Direct descendants of `subscribers/` only — Medusa loads a subscriber
+      // from each file directly under this directory. Files in nested
+      // subdirectories are treated as utilities, not subscribers, so they are
+      // not subject to these rules.
+      files: ["src/subscribers/*.{ts,js}", "**/src/subscribers/*.{ts,js}"],
       rules: {
         [ruleId("subscriber-config-export-required")]: "error",
         [ruleId("subscriber-default-export-must-be-async")]: "error",
         [ruleId("subscriber-default-export-required")]: "error",
+        [ruleId("prefer-workflow-event-over-module-event")]: "warn",
       },
     },
     {
-      files: [
-        "src/jobs/**/*.{ts,js}",
-        "**/src/jobs/**/*.{ts,js}",
-      ],
+      // Direct descendants of `jobs/` only — Medusa loads a scheduled job from
+      // each file directly under this directory. Files in nested subdirectories
+      // are treated as utilities, not jobs, so they are not subject to these
+      // rules.
+      files: ["src/jobs/*.{ts,js}", "**/src/jobs/*.{ts,js}"],
       rules: {
         [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",

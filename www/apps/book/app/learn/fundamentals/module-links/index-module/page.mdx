@@ -10,7 +10,9 @@ In this chapter, you'll learn about the Index Module and how you can use it.
 
 <Note type="soon" title="Experimental">
 
-The Index Module is experimental and still in development, so it is subject to change. Consider whether your application can tolerate minor issues before using it in production.
+The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
+
+For multi-vendor setups with sales channel filtering needs, the Index Module provides the most efficient approach for filtering products by sales channels and other linked data models.
 
 </Note>
 
@@ -94,6 +96,12 @@ info:    [Index engine] syncing entity 'SalesChannel' done (+7.00ms)
 ### Update Index on Data Changes
 
 The Index Module automatically updates its data store when data in the ingested data models change. So, you don't need to do anything to keep the data in sync.
+
+<Note type="warning">
+
+Incremental sync requires a Redis-based event bus. If you're using the in-memory event bus (the default when no `event-bus-redis` module is configured), the Index Module will not receive change events and the data store will only be updated on the next server startup. To enable incremental sync, configure the [Redis Event Module](!resources!/infrastructure-modules/event/redis).
+
+</Note>
 
 For example, if you create a new product, the Index Module will ingest it into its data store.
 
@@ -284,7 +292,7 @@ The Index API routes are available from [Medusa v2.11.2](https://github.com/medu
 
 Medusa provides API routes to view and trigger index reingestion or syncing. This is useful if you want to reingest data manually, for example, after a large data import.
 
-Refer to the [Index API Reference](!api!/admin#index) for more information about the available API routes and how to use them.
+Refer to the [Index API Reference](!api!/admin/index) for more information about the available API routes and how to use them.
 
 ---
 
@@ -841,6 +849,29 @@ export const retrieveBrandsWorkflow = createWorkflow(
 ```
 
 This will retrieve all brands that are linked to at least one product.
+
+### Sales Channel Filtering for Multi-Vendor Setups
+
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
+
+For example, to filter vendor products by multiple sales channels:
+
+```ts title="src/api/custom/vendor-products/route.ts"
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "sales_channels.*", "vendor.*"],
+  filters: {
+    sales_channels: {
+      id: ["sc_vendor_1", "sc_vendor_2"],
+    },
+    vendor: {
+      id: "vendor_123",
+    },
+  },
+})
+```
+
+This query efficiently filters products by both vendor and sales channels in a single operation.
 
 ### Retrieve Localized Data
 

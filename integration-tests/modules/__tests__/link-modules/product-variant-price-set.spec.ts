@@ -82,21 +82,28 @@ medusaIntegrationTestRunner({
           },
         ])
 
+        const variant1 = product.variants.find(
+          (v) => v.title === "Test variant"
+        )
+        const variant2 = product.variants.find(
+          (v) => v.title === "Variant number 2"
+        )
+
         await remoteLink.create([
           {
             [Modules.PRODUCT]: {
-              variant_id: product.variants[0].id,
+              variant_id: variant1!.id,
             },
             [Modules.PRICING]: {
-              price_set_id: priceSet1.id,
+              price_set_id: priceSet1!.id,
             },
           },
           {
             [Modules.PRODUCT]: {
-              variant_id: product.variants[1].id,
+              variant_id: variant2!.id,
             },
             [Modules.PRICING]: {
-              price_set_id: priceSet2.id,
+              price_set_id: priceSet2!.id,
             },
           },
         ])

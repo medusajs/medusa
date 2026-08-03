@@ -7,7 +7,7 @@ import {
   OrderWorkflow,
   PromotionDTO,
 } from "@medusajs/framework/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus, MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -105,19 +105,29 @@ export const updateClaimAddItemValidationStep = createStep(
     ) as OrderChangeActionDTO
 
     if (!associatedAction) {
-      throw new Error(
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA, 
         `No request to add item for claim ${input.claim_id} in order change ${orderChange.id}`
       )
     } else if (associatedAction.action !== ChangeActionType.ITEM_ADD) {
-      throw new Error(`Action ${associatedAction.id} is not adding an item`)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Action ${associatedAction.id} is not adding an item`
+      )
     }
   }
 )
 
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "canceled_at",
+]
+
 export const updateClaimAddItemWorkflowId = "update-claim-add-item"
 /**
  * This workflow updates a claim's new or outbound item. It's used by the
- * [Update Outbound Item API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidoutbounditemsaction_id).
+ * [Update Outbound Item API Route](https://docs.medusajs.com/api/admin/claims/update-outbound-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to update a claim's new or outbound item
  * in your custom flows.
@@ -153,11 +163,7 @@ export const updateClaimAddItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "status",
-        "canceled_at",
-      ],
+      fields: orderFields,
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,

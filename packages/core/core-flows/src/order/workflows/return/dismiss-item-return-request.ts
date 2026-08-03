@@ -112,7 +112,7 @@ export type DismissItemReturnRequestWorkflowInput = OrderWorkflow.ReceiveOrderRe
 export const dismissItemReturnRequestWorkflowId = "dismiss-item-return-request"
 /**
  * This workflow dismisses items from a return request due to them being damaged. It's used
- * by the [Add Damaged Items Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturnsiddismissitems).
+ * by the [Add Damaged Items Admin API Route](https://docs.medusajs.com/api/admin/returns/add-damaged-items).
  * 
  * A damaged item's quantity is dismissed, meaning it's not returned to the inventory.
  * 

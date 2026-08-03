@@ -15,9 +15,7 @@
  *   - updated_at
  * properties:
  *   shipping_method:
- *     type: object
- *     title: shipping_method
- *     description: The details of the method that the tax line belongs to.
+ *     $ref: "#/components/schemas/BaseCartShippingMethod"
  *   shipping_method_id:
  *     type: string
  *     title: shipping_method_id

@@ -52,7 +52,8 @@ async function fetchCustomerById(
   const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
   return await useCache<CustomerDTO>(
-    async () => service.retrieveCustomer(customerId),
+    async () =>
+      service.retrieveCustomer(customerId, { relations: ["groups"] }),
     {
       container,
       key: ["find-or-create-customer-by-id", customerId],
@@ -71,7 +72,7 @@ async function fetchCustomersByEmail(
     hasAccount !== undefined ? { email, has_account: hasAccount } : { email }
 
   return await useCache<CustomerDTO[]>(
-    async () => service.listCustomers(filters),
+    async () => service.listCustomers(filters, { relations: ["groups"] }),
     {
       container,
       key: ["find-or-create-customer-by-email", filters],

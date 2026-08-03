@@ -10,8 +10,13 @@ import {
   FilterableInventoryLevelProps,
   InventoryLevelDTO,
 } from "@medusajs/framework/types"
-import { deduplicate, MedusaError, Modules } from "@medusajs/framework/utils"
-import { useRemoteQueryStep } from "../../common"
+import {
+  deduplicate,
+  InventoryLevelWorkflowEvents,
+  MedusaError,
+  Modules,
+} from "@medusajs/framework/utils"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { deleteEntitiesStep } from "../../common/steps/delete-entities"
 
 /**
@@ -107,7 +112,7 @@ export const deleteInventoryLevelsWorkflowId =
   "delete-inventory-levels-workflow"
 /**
  * This workflow deletes one or more inventory levels. It's used by the
- * [Delete Inventory Levels Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsidlocationlevelslocation_id).
+ * [Delete Inventory Levels Admin API Route](https://docs.medusajs.com/api/admin/inventory-items/remove-inventory-level).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete inventory levels in your custom flows.
@@ -155,6 +160,15 @@ export const deleteInventoryLevelsWorkflow = createWorkflow(
       invokeMethod: "softDeleteInventoryLevels",
       compensateMethod: "restoreInventoryLevels",
       data: idsToDelete,
+    })
+
+    const levelIdEvents = transform({ idsToDelete }, ({ idsToDelete }) => {
+      return idsToDelete.map((id) => ({ id }))
+    })
+
+    emitEventStep({
+      eventName: InventoryLevelWorkflowEvents.DELETED,
+      data: levelIdEvents,
     })
 
     return new WorkflowResponse(void 0)

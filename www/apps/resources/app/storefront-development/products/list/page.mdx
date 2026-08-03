@@ -18,7 +18,7 @@ In this guide, you'll learn how to list, paginate, and filter products in your s
 
 ## List Products
 
-To retrieve a list products, send a request to the [List Products API route](!api!/store#products_getproducts):
+To retrieve a list products, send a request to the [List Products API route](!api!/store/products/list-products):
 
 <Note title="Tip">
 
@@ -84,7 +84,7 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
   </CodeTab>
 </CodeTabs>
 
-The response has a `products` field, which is an array of [products](!api!/store#products_product_schema).
+The response has a `products` field, which is an array of [products](!api!/store/products/schema).
 
 ---
 
@@ -186,7 +186,21 @@ You then show a button to load more products if there are more pages.
 
 The List Products API route accepts query parameters to filter products by title, category, handle, and more.
 
-Refer to the [API reference](!api!/store#products_getproducts) for the full list of accepted query parameters.
+Refer to the [API reference](!api!/store/products/list-products) for the full list of accepted query parameters.
+
+### Filter by Options
+
+<Note>
+
+This feature is available since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
+
+</Note>
+
+The List Products API route supports filtering products by options and their values, such as size or color. This is useful to add filtering functionality to your storefront.
+
+Learn more about product options and how to filter by them in the [Product Options guide](../options/page.mdx#use-product-options-for-filtering).
+
+### Filter by Keyword
 
 For example, to filter products by a keyword:
 
@@ -242,8 +256,8 @@ If you support [localization](../../localization/page.mdx) in your storefront, y
 You can set the locale using one of the following methods:
 
 - Use the JS SDK's `setLocale` method. The JS SDK will automatically include the locale in subsequent requests.
-- Pass the `locale` query parameter to the [List Products API route](!api!/store#products_getproducts).
-- Set the `x-medusa-locale` header in the API request to the [List Products API route](!api!/store#products_getproducts).
+- Pass the `locale` query parameter to the [List Products API route](!api!/store/products/list-products).
+- Set the `x-medusa-locale` header in the API request to the [List Products API route](!api!/store/products/list-products).
 
 For example:
 
@@ -278,7 +292,7 @@ curl "http://localhost:9000/store/products" \
   </CodeTab>
 </CodeTabs>
 
-The returned products will have the same structure as described in the [products schema](!api!/store#products_product_schema), but their fields like `title` and `description` will be in the specified locale:
+The returned products will have the same structure as described in the [products schema](!api!/store/products/schema), but their fields like `title` and `description` will be in the specified locale:
 
 ```json
 {

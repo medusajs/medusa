@@ -29,7 +29,9 @@ export const rule = createRule<[], MessageIds>({
     let badInitializerNode: TSESTree.Node | null = null
 
     function isDefineWidgetConfigCall(node: TSESTree.Node | null): boolean {
-      if (!node || node.type !== AST_NODE_TYPES.CallExpression) return false
+      if (!node || node.type !== AST_NODE_TYPES.CallExpression) {
+        return false
+      }
       const callee = node.callee
       return (
         callee.type === AST_NODE_TYPES.Identifier &&
@@ -38,13 +40,17 @@ export const rule = createRule<[], MessageIds>({
     }
 
     function declaratorName(decl: TSESTree.VariableDeclarator): string | null {
-      if (decl.id.type === AST_NODE_TYPES.Identifier) return decl.id.name
+      if (decl.id.type === AST_NODE_TYPES.Identifier) {
+        return decl.id.name
+      }
       return null
     }
 
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
-        if (node.source.value !== ADMIN_SDK_SOURCE) return
+        if (node.source.value !== ADMIN_SDK_SOURCE) {
+          return
+        }
         for (const spec of node.specifiers) {
           if (
             spec.type === AST_NODE_TYPES.ImportSpecifier &&

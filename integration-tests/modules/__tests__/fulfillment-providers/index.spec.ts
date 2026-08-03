@@ -12,7 +12,7 @@ const adminHeaders = {
 
 medusaIntegrationTestRunner({
   env,
-  testSuite: ({ getContainer, api, dbConnection }) => {
+  testSuite: ({ getContainer, api, dbConnection, dbUtils }) => {
     let service: IFulfillmentModuleService
     let container
 
@@ -21,8 +21,10 @@ medusaIntegrationTestRunner({
       service = container.resolve(Modules.FULFILLMENT)
     })
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, container)
+
+      await dbUtils.snapshot()
     })
 
     describe("GET /admin/fulfillment-providers", () => {

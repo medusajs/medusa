@@ -22,7 +22,7 @@ export type CreateTaxRegionsWorkflowOutput = TaxRegionDTO[]
 export const createTaxRegionsWorkflowId = "create-tax-regions"
 /**
  * This workflow creates one or more tax regions. It's used by the
- * [Create Tax Region Admin API Route](https://docs.medusajs.com/api/admin#tax-regions_posttaxregions).
+ * [Create Tax Region Admin API Route](https://docs.medusajs.com/api/admin/tax-regions/create-tax-region).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create tax regions in your custom flows.

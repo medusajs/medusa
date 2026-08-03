@@ -1,12 +1,15 @@
 {
   "name": "@medusajs/test-utils",
-  "version": "2.15.5",
+  "version": "2.18.0",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/medusa-test-utils"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
     "node": ">=20"
@@ -25,8 +28,8 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/core-flows": "2.15.5",
-    "@medusajs/framework": "2.15.5"
+    "@medusajs/core-flows": "2.18.0",
+    "@medusajs/framework": "2.18.0"
   },
   "dependencies": {
     "@types/express": "^4.17.21",
@@ -36,9 +39,9 @@
     "ulid": "^2.3.0"
   },
   "peerDependencies": {
-    "@medusajs/core-flows": "2.15.5",
-    "@medusajs/framework": "2.15.5",
-    "@medusajs/medusa": "2.15.5"
+    "@medusajs/core-flows": "2.18.0",
+    "@medusajs/framework": "2.18.0",
+    "@medusajs/medusa": "2.18.0"
   },
   "peerDependenciesMeta": {
     "@medusajs/core-flows": {

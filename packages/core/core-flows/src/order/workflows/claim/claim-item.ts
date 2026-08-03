@@ -70,7 +70,7 @@ export type OrderClaimItemValidationStepInput = {
  * })
  */
 export const orderClaimItemValidationStep = createStep(
-  "claim-item-validation",
+  "order-claim-item-validation",
   async function ({
     order,
     orderChange,
@@ -86,10 +86,16 @@ export const orderClaimItemValidationStep = createStep(
   }
 )
 
+const orderFields = [
+  ...fieldsToComputeAdjustmentsForPreview,
+  "status",
+  "canceled_at",
+]
+
 export const orderClaimItemWorkflowId = "claim-item"
 /**
  * This workflow adds order items to a claim as claim items. It's used by the
- * [Add Claim Items Admin API Route](https://docs.medusajs.com/api/admin#claims_postclaimsidclaimitems).
+ * [Add Claim Items Admin API Route](https://docs.medusajs.com/api/admin/claims/add-claim-items).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to add items to a claim
  * for an order in your custom flows.
@@ -127,11 +133,7 @@ export const orderClaimItemWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: [
-        ...fieldsToComputeAdjustmentsForPreview,
-        "status",
-        "canceled_at",
-      ],
+      fields: orderFields,
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,

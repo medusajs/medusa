@@ -1,5 +1,97 @@
 # @medusajs/types
 
+## 2.18.0
+
+### Minor Changes
+
+- [#15989](https://github.com/medusajs/medusa/pull/15989) [`0e7973e2fc3c45da39136cf3f66c90358571ffc5`](https://github.com/medusajs/medusa/commit/0e7973e2fc3c45da39136cf3f66c90358571ffc5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): fix delete operation when primary key is not `id`
+
+### Patch Changes
+
+- [#16025](https://github.com/medusajs/medusa/pull/16025) [`e61285a935b0cae42603f8bb9e10569fd0a51169`](https://github.com/medusajs/medusa/commit/e61285a935b0cae42603f8bb9e10569fd0a51169) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,settings,ui,types): implement configurable data tables end to end in admin dashboard
+
+- [#15840](https://github.com/medusajs/medusa/pull/15840) [`dfdcdd7467ede40e1bb80ce866bfe2c256b8ff86`](https://github.com/medusajs/medusa/commit/dfdcdd7467ede40e1bb80ce866bfe2c256b8ff86) Thanks [@nam-stx](https://github.com/nam-stx)! - feat(core-flows,order,cart,types,medusa): Add data and metadata fields to tax line models
+
+- [#16125](https://github.com/medusajs/medusa/pull/16125) [`3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09`](https://github.com/medusajs/medusa/commit/3bf2b51b7e140c3a7f45ad9c9a8a6bd4f470ff09) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework, types, medusa): add disallowed query config to restrict retrieved fields
+
+- [#15926](https://github.com/medusajs/medusa/pull/15926) [`c2fc62507a54f0ab73367d4369c783bbbdccf022`](https://github.com/medusajs/medusa/commit/c2fc62507a54f0ab73367d4369c783bbbdccf022) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,medusa,types,js-sdk,dashboard): transfer order to guest customer
+
+- [#15614](https://github.com/medusajs/medusa/pull/15614) [`3382c8189bfc9f44e86123496ef3665e92ac91c9`](https://github.com/medusajs/medusa/commit/3382c8189bfc9f44e86123496ef3665e92ac91c9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,types,utils,medusa): support global product options in imports
+
+- [#14661](https://github.com/medusajs/medusa/pull/14661) [`8f97e3f3710a2bae662415dac7098e1c6e60c3c9`](https://github.com/medusajs/medusa/commit/8f97e3f3710a2bae662415dac7098e1c6e60c3c9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,admin-vite-plugin,admin-shared,ui,settings,js-sdk,types): view configuration UI enhancements — dynamic filter/sort resolution, custom cell renderer registration, property labels management UI
+
+- [#15686](https://github.com/medusajs/medusa/pull/15686) [`99f2ea9c85a64a08c56196ba963db2c8dd0b7923`](https://github.com/medusajs/medusa/commit/99f2ea9c85a64a08c56196ba963db2c8dd0b7923) Thanks [@mrpackethead](https://github.com/mrpackethead)! - feat(utils): support dynamic password function in createPgConnection for RDS IAM auth
+
+  Pass `driverOptions.dynamicPassword` and `driverOptions.expirationChecker` through to the Knex connection config, enabling AWS RDS IAM authentication and other rotating-credential patterns.
+
+- [#15923](https://github.com/medusajs/medusa/pull/15923) [`d5c6d183e187a24d5cf6d39bca8d79d72a4f1f71`](https://github.com/medusajs/medusa/commit/d5c6d183e187a24d5cf6d39bca8d79d72a4f1f71) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,types): filter notifications in admin dashboard for logged in user
+
+## 2.17.2
+
+### Patch Changes
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- [#15721](https://github.com/medusajs/medusa/pull/15721) [`7686adc8637b41879c4551ca422829ad2d63d6a9`](https://github.com/medusajs/medusa/commit/7686adc8637b41879c4551ca422829ad2d63d6a9) Thanks [@leobenzol](https://github.com/leobenzol)! - feat: drag&drop LayoutComposer, settings db persistence
+
+## 2.17.1
+
+### Patch Changes
+
+- [#15814](https://github.com/medusajs/medusa/pull/15814) [`4f5e1cc97f4511f43cf4790af412781dafb2ba86`](https://github.com/medusajs/medusa/commit/4f5e1cc97f4511f43cf4790af412781dafb2ba86) Thanks [@peterlgh7](https://github.com/peterlgh7)! - add created_at and published_at to EventMetadata
+
+## 2.17.0
+
+### Minor Changes
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(medusa,product,core-flows,types): product options redesign (server-side)
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(): allow linking a subset of an option's values to the product
+
+### Patch Changes
+
+- [#15764](https://github.com/medusajs/medusa/pull/15764) [`2221e527701c7a47f243d808b0f4fe8c7f44f2f8`](https://github.com/medusajs/medusa/commit/2221e527701c7a47f243d808b0f4fe8c7f44f2f8) Thanks [@mrpackethead](https://github.com/mrpackethead)! - feat(file-s3): add `acl` option to disable ACL headers on uploads
+
+  Adds an `acl` configuration option to the S3 file provider:
+
+  - `undefined` (default): existing behaviour (public-read for public, private for private)
+  - `false`: omit the ACL header entirely, required for buckets with BucketOwnerEnforced Object Ownership or Block Public Access enabled
+  - A canned ACL string: use that ACL for all uploads
+
+- [#13817](https://github.com/medusajs/medusa/pull/13817) [`6eff86709de4dddc359f35fa84a2462fed85b753`](https://github.com/medusajs/medusa/commit/6eff86709de4dddc359f35fa84a2462fed85b753) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,core-flows,product,js-sdk,types,medusa): rework product option values views and add dedicated endpoints
+
+## 2.16.0
+
+### Minor Changes
+
+- [`30f6d407cfaca510939ad161fbbe74feebb97883`](undefined) - feat(auth-emailpass, types, medusa): require verification by actor type
+
+### Patch Changes
+
+- [`528b12cbd50f85079e157b920be306dec7c89938`](undefined) - feat(order,types): add line_item_metadata to order responses
+
+- [`55be5103e41ffe367400cc9317a3bd6dbaa1e0cf`](undefined) - feat(core-flows,types): add setTaxLineContext hook
+
+- [#15407](https://github.com/medusajs/medusa/pull/15407) [`46271f2c4f9b4d107a43b588b1082a3e572fbe76`](https://github.com/medusajs/medusa/commit/46271f2c4f9b4d107a43b588b1082a3e572fbe76) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(core-flows,medusa,types): add multi shipping method carts support
+
+- [#14674](https://github.com/medusajs/medusa/pull/14674) [`06b05343b4158e7bb96f8f0fbd7e6836a1818e44`](https://github.com/medusajs/medusa/commit/06b05343b4158e7bb96f8f0fbd7e6836a1818e44) Thanks [@fPolic](https://github.com/fPolic)! - feat(dashboard,admin-shared,core-flows,js-sdk,types,medusa,link-modules): RBAC admin dashboard CRUD
+
+- [`2bd3b0d18d7d4fe9c6f36bdffb76d1104f58f47b`](undefined) - Add support for deleting a payment method
+
+- [#15561](https://github.com/medusajs/medusa/pull/15561) [`1344c10503f34e392bd03f733820bcd5a12a2766`](https://github.com/medusajs/medusa/commit/1344c10503f34e392bd03f733820bcd5a12a2766) Thanks [@GBreg19](https://github.com/GBreg19)! - feat(medusa,core-flows,js-sdk,types): allow provider_id when marking a payment collection as paid
+
+  The `mark-as-paid` admin route and the `markPaymentCollectionAsPaid` workflow now accept an optional `provider_id`. When provided, the captured payment is recorded under that provider instead of always using `pp_system_default`. Omitting it preserves the previous behavior. This completes the admin payment-provider flow started in #15169.
+
+- [`a46961ed421dc69fe991891d02b0f1c66f6180ab`](undefined) - fix(core-flows, auth, types, medusa): bind password reset tokens to a single-use server record
+
+- [`b74b5b19569534412a67835ffae8fb3afbf6f5c5`](undefined) - fix(http-types-generator, types): correctly generate types for OperatorMap
+
+- [#15571](https://github.com/medusajs/medusa/pull/15571) [`13c5dd22802593f5fb5c0a97076a966704aa56c9`](https://github.com/medusajs/medusa/commit/13c5dd22802593f5fb5c0a97076a966704aa56c9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,types,auth): extract MFA and recovery code provider interfaces to types package
+
+- [#15690](https://github.com/medusajs/medusa/pull/15690) [`60d63bd2c0e400f06b985d5275b86c72681e4f62`](https://github.com/medusajs/medusa/commit/60d63bd2c0e400f06b985d5275b86c72681e4f62) Thanks [@Tusharkhadde](https://github.com/Tusharkhadde)! - feat(dashboard,medusa,types): add internal note support to order edits
+
 ## 2.15.5
 
 ### Patch Changes

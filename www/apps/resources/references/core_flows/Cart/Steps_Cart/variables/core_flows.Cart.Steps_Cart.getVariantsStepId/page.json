@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.getVariantsStepId","title":"getVariantsStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"getVariantsStepId","type":"`\"get-variants\"`","description":"","optional":false,"defaultValue":"\"get-variants\"","expandable":false,"children":[]}]}]}

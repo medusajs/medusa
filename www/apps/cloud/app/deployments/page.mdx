@@ -35,11 +35,18 @@ For short-lived preview environments, Medusa creates a new environment and deplo
 
 Before deploying your application on Cloud, Medusa runs the `build` script defined in your project's `package.json` file, which must run the `medusa build` command, among other build steps you may have.
 
-For example, your `build` script may look like this:
+Cloud also supports optional lifecycle scripts that you can define in your backend and storefront `package.json` files:
+
+- `cloud:preinstall`: Executed before Cloud installs dependencies
+- `cloud:prebuild`: Executed after dependencies are installed but before the build process starts
+
+For example, your `package.json` scripts may look like this:
 
 ```json title="package.json"
 {
   "scripts": {
+    "cloud:preinstall": "echo 'Pre-install setup'",
+    "cloud:prebuild": "echo 'Pre-build setup'", 
     "build": "medusa build && npm run other-build-steps"
   }
 }
@@ -58,6 +65,14 @@ If you're deploying both a Medusa application and a storefront on Cloud, Medusa 
 1. The `build` command defined in the backend's `package.json` file, which must run the `medusa build` command.
 2. The build command relevant to the storefront, depending on the frontend framework you're using. For example, if you're using Next.js for your storefront, Medusa will run the `next build` command in the storefront's directory.
     - Medusa currently doesn't support custom build scripts for storefronts.
+
+In a monorepo, Medusa doesn't run the `build` script of your root `package.json` file. It builds each of the two packages separately, targeting only that package and the workspace packages it depends on. So, the other packages of your monorepo don't enter the build process.
+
+<Note>
+
+If you're using `turbo`, Medusa prunes your monorepo down to the package it's building. This means most files at the root of your monorepo aren't available during the build. Learn more in the [Prerequisites](../projects/prerequisites/page.mdx#root-files-available-during-the-build-turborepo) guide.
+
+</Note>
 
 Storefront builds and deployments operate independently of the backend status. This means storefront deployments can proceed successfully even if the backend build or deployment fails.
 

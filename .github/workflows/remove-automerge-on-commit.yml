@@ -1,0 +1,99 @@
+name: Remove Automerge on New Commit
+
+# When a new (non-merge) commit is pushed to a PR opened by a non-team
+# contributor that already carries the `automerge` label, remove the label and
+# ask the contributor to request a re-review. This prevents unreviewed changes
+# from being merged automatically after a maintainer has approved an earlier
+# revision.
+#
+# Uses `pull_request_target` (not `pull_request`) so the Medusa GitHub App
+# credentials are available even for PRs opened from forks. No PR code is
+# checked out or executed — the only checkout is the trusted base ref, used to
+# read `.github/teams.yml`.
+
+on:
+  pull_request_target:
+    types: [synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  remove-automerge:
+    name: Remove automerge label
+    runs-on: ubuntu-latest
+    # Only run when the PR already carries the automerge label. Team-membership
+    # and merge-commit checks happen in the "Evaluate conditions" step below.
+    if: contains(github.event.pull_request.labels.*.name, 'automerge')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Evaluate conditions
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          AUTHOR="${{ github.event.pull_request.user.login }}"
+
+          # Team members manage automerge on their own PRs; don't interfere.
+          if grep -qF "\"@${AUTHOR}\"" ./.github/teams.yml; then
+            echo "Author @${AUTHOR} is a Medusa team member; leaving automerge label."
+            echo "should_remove=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Ignore merge commits (e.g. merging the base branch into the PR
+          # branch). Those aren't new work from the contributor, so they
+          # shouldn't invalidate a maintainer's automerge decision.
+          PARENTS=$(gh api "repos/${{ github.repository }}/commits/${{ github.event.pull_request.head.sha }}" --jq '.parents | length')
+          if [ "$PARENTS" -gt 1 ]; then
+            echo "Head commit ${{ github.event.pull_request.head.sha }} is a merge commit; leaving automerge label."
+            echo "should_remove=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "New non-merge commit from non-team contributor @${AUTHOR}; removing automerge label."
+          echo "should_remove=true" >> "$GITHUB_OUTPUT"
+
+      # Mint a short-lived token from the Medusa GitHub App so the label change
+      # and comment are attributed to the Medusa bot (same app used by the PR
+      # review / triage workflows).
+      - name: Generate GitHub App token
+        if: steps.check.outputs.should_remove == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Remove automerge label
+        if: steps.check.outputs.should_remove == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          gh pr edit "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --remove-label "automerge"
+
+      - name: Comment on the PR
+        if: steps.check.outputs.should_remove == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          # Write the body flush-left so no accidental leading whitespace turns
+          # a paragraph into a Markdown code block.
+          cat > automerge-comment.md <<'EOF'
+          The **automerge** label was removed because a new commit was pushed to this PR after the label was applied. Automerge is enabled once a maintainer has reviewed a specific revision, so new changes need to be looked at again before the PR can merge automatically.
+
+          Once your changes are ready, please request a re-review from a maintainer. A maintainer will re-apply the automerge label after the new commit has been reviewed.
+          EOF
+          gh pr comment "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --body-file automerge-comment.md

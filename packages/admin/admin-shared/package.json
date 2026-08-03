@@ -1,15 +1,18 @@
 {
   "name": "@medusajs/admin-shared",
   "description": "Shared code for Medusa admin packages.",
-  "version": "2.15.5",
+  "version": "2.18.0",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "git+https://github.com/medusajs/medusa.git",
     "directory": "packages/admin/admin-shared"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "files": [
     "dist",

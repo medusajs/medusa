@@ -116,10 +116,7 @@ ruleTester.run("no-trailing-slash-in-route-matcher", rule, {
           ],
         })
       `,
-      errors: [
-        { messageId: "trailingSlash" },
-        { messageId: "trailingSlash" },
-      ],
+      errors: [{ messageId: "trailingSlash" }, { messageId: "trailingSlash" }],
     },
     // Multiple trailing slashes are all stripped.
     {

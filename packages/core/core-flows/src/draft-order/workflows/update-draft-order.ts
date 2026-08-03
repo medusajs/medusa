@@ -23,6 +23,7 @@ import {
   registerOrderChangesStep,
   updateOrderItemsTranslationsStep,
   updateOrderShippingMethodsTranslationsStep,
+  updateOrderTaxLinesWorkflow,
 } from "../../order"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
 import { updateOrderTaxLinesTranslationsStep } from "../../order/steps/update-order-tax-lines-translations"
@@ -136,7 +137,7 @@ export const updateDraftOrderStep = createStep(
 
 /**
  * This workflow updates a draft order's details. It's used by the
- * [Update Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersid).
+ * [Update Draft Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/update-a-draft-order).
  *
  * This workflow doesn't update the draft order's items, shipping methods, or promotions. Instead, you have to
  * create a draft order edit using {@link beginDraftOrderEditWorkflow} and make updates in the draft order edit.
@@ -342,6 +343,23 @@ export const updateDraftOrderWorkflow = createWorkflow(
     )
 
     registerOrderChangesStep(orderChangeInput)
+
+    // Changing the shipping or billing address can change the tax jurisdiction,
+    // so recompute the order's tax lines. The recompute respects the region's
+    // `automatic_taxes` setting via `getItemTaxLinesStep`.
+    when(
+      "recompute-tax-lines-on-address-change",
+      { input },
+      ({ input }) => {
+        return !!input.shipping_address || !!input.billing_address
+      }
+    ).then(() => {
+      updateOrderTaxLinesWorkflow.runAsStep({
+        input: {
+          order_id: input.id,
+        },
+      })
+    })
 
     when({ input, order }, ({ input, order }) => {
       return !!input.locale && input.locale !== order.locale

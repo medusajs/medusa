@@ -1,4 +1,7 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -8,8 +11,11 @@ import {
 import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
+/**
+ * @since 2.15.3
+ */
 export const POST = async (
-  req: MedusaRequest<AuthMfaVerifyChallengeRequestType>,
+  req: AuthenticatedMedusaRequest<AuthMfaVerifyChallengeRequestType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
@@ -26,13 +32,6 @@ export const POST = async (
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       "MFA challenge is missing an auth identity"
-    )
-  }
-
-  if (!challenge.actor_type) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "MFA challenge is missing an actor type"
     )
   }
 
@@ -57,11 +56,13 @@ export const POST = async (
     ContainerRegistrationKeys.CONFIG_MODULE
   ).projectConfig
 
+  // We don't do additinal checks here as initial authentication has to be done before doing the MFA challenge.
   const token = await generateJwtTokenForAuthIdentity(
     {
       authIdentity,
-      actorType: challenge.actor_type,
-      authProvider: challenge.auth_provider ?? undefined,
+      actorType: req.auth_context.actor_type,
+      authProvider:
+        req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
       container: req.scope,
     },
     {

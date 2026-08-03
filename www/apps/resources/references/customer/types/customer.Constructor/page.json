@@ -1,0 +1,1 @@
+{"slug":"/references/customer/types/customer.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"customerReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

@@ -48,7 +48,12 @@ The method returns tax lines for the line item and shipping methods. For example
     "rate_id": "txr_1",
     "rate": 10,
     "code": "XXX",
-    "name": "Tax Rate 1"
+    "name": "Tax Rate 1",
+    "data": {
+      "state_rate": 6,
+      "county_rate": 2,
+      "city_rate": 2
+    }
   },
   {
     "shipping_line_id": "casm_123",
@@ -59,6 +64,8 @@ The method returns tax lines for the line item and shipping methods. For example
   }
 ]
 ```
+
+Each tax line can include a `data` field with additional information returned by the tax provider, such as a breakdown of rates by jurisdiction (state, county, city). This field is stored on the tax line and is useful when integrating with third-party tax services like Avalara that return granular tax details.
 
 ---
 
