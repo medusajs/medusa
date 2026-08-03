@@ -857,8 +857,9 @@ export default class PaymentModuleService
     // it may be a live, in-flight capture from a *concurrent* call whose
     // provider request hasn't resolved yet, and treating it as "not really
     // captured" here would let a concurrent second call race past the
-    // over-capture guard (see #16097). Only a capture this payment's own
-    // failed attempt marked `failed` is safe to treat as reusable/excluded.
+    // over-capture guard serialized by the row lock above. Only a capture
+    // this payment's own failed attempt marked `failed` is safe to treat as
+    // reusable/excluded.
     const isFailed = (c: InferEntityType<typeof Capture>) =>
       (c.metadata as Record<string, unknown> | null)?.__capture_status ===
       "failed"
