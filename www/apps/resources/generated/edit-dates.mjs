@@ -5661,7 +5661,7 @@ export const generatedEditDates = {
   "references/core_flows/Order/Steps_Order/variables/core_flows.Order.Steps_Order.updateOrderChangesStepId/page.mdx": "2025-01-27T11:43:49.278Z",
   "app/commerce-modules/payment/account-holder/page.mdx": "2026-06-08T10:33:47.663Z",
   "app/troubleshooting/test-errors/page.mdx": "2025-12-04T14:15:45.524Z",
-  "app/commerce-modules/product/variant-inventory/page.mdx": "2026-07-20T12:16:49.481Z",
+  "app/commerce-modules/product/variant-inventory/page.mdx": "2026-08-03T20:11:37.791Z",
   "app/examples/guides/custom-item-price/page.mdx": "2026-07-31T12:43:03.287Z",
   "references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateShippingStep/page.mdx": "2026-04-23T12:32:58.516Z",
   "references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateShippingStepId/page.mdx": "2025-02-11T11:36:39.228Z",
