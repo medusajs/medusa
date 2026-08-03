@@ -350,6 +350,61 @@ describe("RoutesLoader", function () {
     })
   })
 
+  describe("RBAC routes", function () {
+    let request
+
+    beforeAll(async function () {
+      const rootDir = resolve(__dirname, "../__fixtures__/routers-rbac")
+
+      const { request: request_ } = await createServer(rootDir)
+
+      request = request_
+    })
+
+    it("should require authentication", async function () {
+      const res = await request("GET", "/rbac/roles")
+
+      expect(res.status).toBe(401)
+    })
+
+    it("should authenticate an actor type allowed by rbacActorTypes", async function () {
+      const res = await request("GET", "/rbac/roles", {
+        adminSession: {
+          jwt: {
+            userId: "admin_user",
+          },
+        },
+      })
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET /rbac/roles")
+    })
+
+    it("should reject an actor type not allowed by rbacActorTypes", async function () {
+      const res = await request("GET", "/rbac/roles", {
+        clientSession: {
+          customer_id: "customer_1",
+        },
+      })
+
+      expect(res.status).toBe(401)
+    })
+
+    it("should apply the admin cors config", async function () {
+      const res = await request("OPTIONS", "/rbac/roles", {
+        headers: {
+          origin: "http://localhost:7001",
+          "access-control-request-method": "GET",
+        },
+      })
+
+      expect(res.status).toBe(204)
+      expect(res.headers["access-control-allow-origin"]).toBe(
+        "http://localhost:7001"
+      )
+    })
+  })
+
   describe("Duplicate parameters", function () {
     const app = express()
 

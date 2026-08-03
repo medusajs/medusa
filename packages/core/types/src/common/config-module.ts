@@ -992,6 +992,27 @@ export type ProjectConfigOptions = {
       store?: string[]
       /*admin?: string[]*/
     }
+
+    /**
+     * The actor types that are allowed to authenticate against the `/rbac` API routes.
+     * Requests authenticated as any other actor type are rejected with a 401.
+     *
+     * Defaults to `["user"]`. Pass `["*"]` to allow every authenticated actor type.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       rbacActorTypes: ["user", "custom_actor"],
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    rbacActorTypes?: string[]
   }
 
   /**

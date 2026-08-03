@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  DEFAULT_RBAC_ACTOR_TYPES,
   FeatureFlag,
   isFileDisabled,
   parseCorsOrigins,
@@ -243,6 +244,15 @@ export class ApiLoader {
     }) as unknown as RequestHandler)
 
     this.#app.use("/admin", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
+      req.restrictedFields = new RestrictedFields()
+      next()
+    }) as unknown as RequestHandler)
+
+    this.#app.use("/rbac", ((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -505,6 +515,29 @@ export class ApiLoader {
       "session",
       "api-key",
     ])
+
+    /**
+     * CORS and Auth setup for the RBAC routes. They are not admin routes, but
+     * they are consumed by the admin dashboard and therefore reuse its CORS
+     * configuration.
+     *
+     * Unlike the admin routes, they are not restricted to the "user" actor.
+     * The allowed actor types are configured via "http.rbacActorTypes", and
+     * secret API keys are not supported (they only authenticate as "user").
+     */
+    this.#applyCorsMiddleware(
+      routesFinder,
+      "/rbac",
+      "shouldAppendAdminCors",
+      this.#createCorsOptions(configManager.config.projectConfig.http.adminCors)
+    )
+    this.#applyAuthMiddleware(
+      routesFinder,
+      "/rbac",
+      configManager.config.projectConfig.http.rbacActorTypes ??
+        DEFAULT_RBAC_ACTOR_TYPES,
+      ["bearer", "session"]
+    )
 
     this.#applyCorsMiddleware(
       routesFinder,

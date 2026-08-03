@@ -71,7 +71,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleListResponse>(
-      `/admin/rbac/roles`,
+      `/rbac/roles`,
       {
         query: queryParams,
         headers,
@@ -103,7 +103,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleResponse>(
-      `/admin/rbac/roles/${id}`,
+      `/rbac/roles/${id}`,
       {
         query,
         headers,
@@ -138,7 +138,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleResponse>(
-      `/admin/rbac/roles`,
+      `/rbac/roles`,
       {
         method: "POST",
         headers,
@@ -176,7 +176,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleResponse>(
-      `/admin/rbac/roles/${id}`,
+      `/rbac/roles/${id}`,
       {
         method: "POST",
         headers,
@@ -202,7 +202,7 @@ export class RbacRole {
    */
   async delete(id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleDeleteResponse>(
-      `/admin/rbac/roles/${id}`,
+      `/rbac/roles/${id}`,
       {
         method: "DELETE",
         headers,
@@ -231,7 +231,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyListResponse>(
-      `/admin/rbac/roles/${roleId}/policies`,
+      `/rbac/roles/${roleId}/policies`,
       {
         query: queryParams,
         headers,
@@ -260,7 +260,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleUserListResponse>(
-      `/admin/rbac/roles/${roleId}/users`,
+      `/rbac/roles/${roleId}/users`,
       {
         query: queryParams,
         headers,
@@ -291,7 +291,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleUsersResponse>(
-      `/admin/rbac/roles/${roleId}/users`,
+      `/rbac/roles/${roleId}/users`,
       {
         method: "POST",
         headers,
@@ -323,7 +323,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleUsersDeleteResponse>(
-      `/admin/rbac/roles/${roleId}/users`,
+      `/rbac/roles/${roleId}/users`,
       {
         method: "DELETE",
         headers,
@@ -356,7 +356,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentListResponse>(
-      `/admin/rbac/roles/${roleId}/assignments`,
+      `/rbac/roles/${roleId}/assignments`,
       {
         query: queryParams,
         headers,
@@ -389,7 +389,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentsResponse>(
-      `/admin/rbac/roles/${roleId}/assignments`,
+      `/rbac/roles/${roleId}/assignments`,
       {
         method: "POST",
         headers,
@@ -423,7 +423,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacRoleAssignmentsDeleteResponse>(
-      `/admin/rbac/roles/${roleId}/assignments`,
+      `/rbac/roles/${roleId}/assignments`,
       {
         method: "DELETE",
         headers,
@@ -455,7 +455,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyListResponse>(
-      `/admin/rbac/roles/${roleId}/policies`,
+      `/rbac/roles/${roleId}/policies`,
       {
         method: "POST",
         headers,
@@ -485,7 +485,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacPolicyDeleteResponse>(
-      `/admin/rbac/roles/${roleId}/policies/${policyId}`,
+      `/rbac/roles/${roleId}/policies/${policyId}`,
       {
         method: "DELETE",
         headers,
@@ -507,7 +507,7 @@ export class RbacRole {
    */
   async mePermissions(headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminRbacMePermissionsResponse>(
-      `/admin/rbac/me/permissions`,
+      `/rbac/me/permissions`,
       {
         method: "GET",
         headers,
@@ -527,7 +527,7 @@ export class RbacRole {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminRbacAssignableRolesListResponse>(
-      `/admin/rbac/roles/assignable`,
+      `/rbac/roles/assignable`,
       {
         method: "GET",
         query: queryParams,

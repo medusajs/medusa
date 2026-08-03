@@ -437,7 +437,7 @@ medusaIntegrationTestRunner({
 
         // Create policies
         const policy1 = await api.post(
-          "/admin/rbac/policies",
+          "/rbac/policies",
           {
             key: "read:products",
             resource: "product",
@@ -448,7 +448,7 @@ medusaIntegrationTestRunner({
         )
 
         const policy2 = await api.post(
-          "/admin/rbac/policies",
+          "/rbac/policies",
           {
             key: "write:products",
             resource: "product",
@@ -459,7 +459,7 @@ medusaIntegrationTestRunner({
         )
 
         const policy3 = await api.post(
-          "/admin/rbac/policies",
+          "/rbac/policies",
           {
             key: "delete:products",
             resource: "product",
@@ -477,7 +477,7 @@ medusaIntegrationTestRunner({
 
         // Create roles with different policies
         const viewerRoleResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Viewer",
             description: "Can view products",
@@ -487,7 +487,7 @@ medusaIntegrationTestRunner({
         viewerRole = viewerRoleResponse.data.role
 
         const editorRoleResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Editor",
             description: "Can edit products",
@@ -497,7 +497,7 @@ medusaIntegrationTestRunner({
         editorRole = editorRoleResponse.data.role
 
         const adminRoleResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Admin",
             description: "Full product access",

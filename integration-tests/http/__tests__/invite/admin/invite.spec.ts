@@ -221,7 +221,7 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         // Create test roles
         const viewerResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Viewer",
             description: "Can view products",
@@ -231,7 +231,7 @@ medusaIntegrationTestRunner({
         viewerRole = viewerResponse.data.role
 
         const editorResponse = await api.post(
-          "/admin/rbac/roles",
+          "/rbac/roles",
           {
             name: "Product Editor",
             description: "Can edit products",
@@ -242,7 +242,7 @@ medusaIntegrationTestRunner({
 
         // Get the super admin role created by migration
         const superAdminResponse = await api.get(
-          "/admin/rbac/roles?id=role_super_admin",
+          "/rbac/roles?id=role_super_admin",
           adminHeaders
         )
         superAdminRole = superAdminResponse.data.roles[0]

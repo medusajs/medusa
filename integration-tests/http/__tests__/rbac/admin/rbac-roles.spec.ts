@@ -55,10 +55,10 @@ medusaIntegrationTestRunner({
     })
 
     describe("RBAC Roles - Admin API", () => {
-      describe("POST /admin/rbac/roles", () => {
+      describe("POST /rbac/roles", () => {
         it("should create a role", async () => {
           const response = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Viewer",
               description: "Can view resources",
@@ -78,7 +78,7 @@ medusaIntegrationTestRunner({
 
         it("should create a role with metadata", async () => {
           const response = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Editor",
               description: "Can edit resources",
@@ -113,7 +113,7 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Product Editor",
               description: "Read and create products",
@@ -180,7 +180,7 @@ medusaIntegrationTestRunner({
 
           const error = await api
             .post(
-              "/admin/rbac/roles",
+              "/rbac/roles",
               {
                 name: "Cannot Create",
                 policy_ids: [productRead.id, customerCreate.id],
@@ -202,10 +202,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles", () => {
+      describe("GET /rbac/roles", () => {
         beforeEach(async () => {
           await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Viewer",
               description: "Can view resources",
@@ -214,7 +214,7 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Editor",
               description: "Can edit resources",
@@ -223,7 +223,7 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Admin",
               description: "Full access",
@@ -233,7 +233,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should list all roles", async () => {
-          const response = await api.get("/admin/rbac/roles", adminHeaders)
+          const response = await api.get("/rbac/roles", adminHeaders)
 
           expect(response.status).toEqual(200)
           // 4 roles: Super Admin  + 3 created in beforeEach
@@ -262,7 +262,7 @@ medusaIntegrationTestRunner({
 
         it("should filter roles by name", async () => {
           const response = await api.get(
-            "/admin/rbac/roles?name=Viewer",
+            "/rbac/roles?name=Viewer",
             adminHeaders
           )
 
@@ -276,10 +276,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles/:id", () => {
+      describe("GET /rbac/roles/:id", () => {
         it("should retrieve a role by id", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Manager",
               description: "Can manage resources",
@@ -290,7 +290,7 @@ medusaIntegrationTestRunner({
           const roleId = createResponse.data.role.id
 
           const response = await api.get(
-            `/admin/rbac/roles/${roleId}`,
+            `/rbac/roles/${roleId}`,
             adminHeaders
           )
 
@@ -305,10 +305,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/rbac/roles/:id", () => {
+      describe("POST /rbac/roles/:id", () => {
         it("should update a role", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Support",
               description: "Support team",
@@ -319,7 +319,7 @@ medusaIntegrationTestRunner({
           const roleId = createResponse.data.role.id
 
           const response = await api.post(
-            `/admin/rbac/roles/${roleId}`,
+            `/rbac/roles/${roleId}`,
             {
               name: "Customer Support",
               description: "Customer support team with limited access",
@@ -338,10 +338,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/rbac/roles/:id", () => {
+      describe("DELETE /rbac/roles/:id", () => {
         it("should delete a role", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Temporary",
               description: "Temporary role",
@@ -352,7 +352,7 @@ medusaIntegrationTestRunner({
           const roleId = createResponse.data.role.id
 
           const deleteResponse = await api.delete(
-            `/admin/rbac/roles/${roleId}`,
+            `/rbac/roles/${roleId}`,
             adminHeaders
           )
 
@@ -363,7 +363,7 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const listResponse = await api.get("/admin/rbac/roles", adminHeaders)
+          const listResponse = await api.get("/rbac/roles", adminHeaders)
           expect(
             listResponse.data.roles.find((r) => r.id === roleId)
           ).toBeUndefined()
@@ -381,7 +381,7 @@ medusaIntegrationTestRunner({
 
           // Create policies
           const policy1 = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "read:products",
               resource: "product",
@@ -392,7 +392,7 @@ medusaIntegrationTestRunner({
           )
 
           const policy2 = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "write:products",
               resource: "product",
@@ -403,7 +403,7 @@ medusaIntegrationTestRunner({
           )
 
           const policy3 = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "delete:products",
               resource: "product",
@@ -421,7 +421,7 @@ medusaIntegrationTestRunner({
 
           // Create an admin role with all policies
           const adminRoleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Admin Role",
               description: "Has all permissions",
@@ -453,7 +453,7 @@ medusaIntegrationTestRunner({
 
           // Create viewer and editor roles for the tests
           const viewer = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Product Viewer",
               description: "Can view products",
@@ -463,7 +463,7 @@ medusaIntegrationTestRunner({
           viewerRole = viewer.data.role
 
           const editor = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Product Editor",
               description: "Can edit products",
@@ -512,7 +512,7 @@ medusaIntegrationTestRunner({
 
         it("should add policies to a role", async () => {
           const response = await api.post(
-            `/admin/rbac/roles/${viewerRole.id}/policies`,
+            `/rbac/roles/${viewerRole.id}/policies`,
             {
               policies: [policies[0].id],
             },
@@ -531,7 +531,7 @@ medusaIntegrationTestRunner({
         it("should list role-policies for a specific role", async () => {
           // Add multiple policies to the role
           await api.post(
-            `/admin/rbac/roles/${viewerRole.id}/policies`,
+            `/rbac/roles/${viewerRole.id}/policies`,
             {
               policies: [policies[0].id, policies[1].id],
             },
@@ -540,7 +540,7 @@ medusaIntegrationTestRunner({
 
           // List the role to get its policies
           const response = await api.get(
-            `/admin/rbac/roles/${viewerRole.id}/?fields=policies`,
+            `/rbac/roles/${viewerRole.id}/?fields=policies`,
             adminHeaders
           )
 
@@ -562,7 +562,7 @@ medusaIntegrationTestRunner({
         it("should remove a policy from a role", async () => {
           // First add a policy to the role
           await api.post(
-            `/admin/rbac/roles/${editorRole.id}/policies`,
+            `/rbac/roles/${editorRole.id}/policies`,
             {
               policies: [policies[2].id],
             },
@@ -571,14 +571,14 @@ medusaIntegrationTestRunner({
 
           // Verify the policy was added
           const initialResponse = await api.get(
-            `/admin/rbac/roles/${editorRole.id}?fields=policies`,
+            `/rbac/roles/${editorRole.id}?fields=policies`,
             adminHeaders
           )
           expect(initialResponse.data.role.policies).toHaveLength(1)
 
           // Remove the policy from the role
           const deleteResponse = await api.delete(
-            `/admin/rbac/roles/${editorRole.id}/policies/${policies[2].id}`,
+            `/rbac/roles/${editorRole.id}/policies/${policies[2].id}`,
             adminHeaders
           )
 
@@ -591,7 +591,7 @@ medusaIntegrationTestRunner({
 
           // Verify the policy was removed
           const finalResponse = await api.get(
-            `/admin/rbac/roles/${editorRole.id}?fields=policies`,
+            `/rbac/roles/${editorRole.id}?fields=policies`,
             adminHeaders
           )
           expect(finalResponse.data.role.policies).toHaveLength(0)
@@ -735,10 +735,10 @@ medusaIntegrationTestRunner({
           emptyTargetRoleId = emptyTargetRole.id
         })
 
-        describe("POST /admin/rbac/roles/:id/policies", () => {
+        describe("POST /rbac/roles/:id/policies", () => {
           it("allows super-admin (`*:*`) to grant any policy", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               {
                 policies: [
                   productReadPolicyId,
@@ -755,7 +755,7 @@ medusaIntegrationTestRunner({
 
           it("allows `resource:*` holder to grant any operation on that resource", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               {
                 policies: [
                   productReadPolicyId,
@@ -773,7 +773,7 @@ medusaIntegrationTestRunner({
           it("denies `resource:*` holder when granting a different resource", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: [customerReadPolicyId] },
                 productManagerHeaders
               )
@@ -789,7 +789,7 @@ medusaIntegrationTestRunner({
 
           it("allows `*:op` holder to grant that operation on any resource", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               {
                 policies: [productReadPolicyId, customerReadPolicyId],
               },
@@ -803,7 +803,7 @@ medusaIntegrationTestRunner({
           it("denies `*:op` holder when granting a different operation", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: [customerCreatePolicyId] },
                 universalReaderHeaders
               )
@@ -814,7 +814,7 @@ medusaIntegrationTestRunner({
 
           it("allows exact `resource:op` holder to grant that policy", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               { policies: [productReadPolicyId] },
               productReaderHeaders
             )
@@ -826,7 +826,7 @@ medusaIntegrationTestRunner({
           it("denies exact-match holder when granting any other policy", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 {
                   policies: [productReadPolicyId, productCreatePolicyId],
                 },
@@ -840,7 +840,7 @@ medusaIntegrationTestRunner({
           it("denies a user whose only policy does not cover the grant target", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: [productReadPolicyId] },
                 noPolicyHeaders
               )
@@ -852,7 +852,7 @@ medusaIntegrationTestRunner({
           it("returns 404 when granting a non-existent policy id", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: ["rpol_does_not_exist"] },
                 adminHeaders
               )
@@ -1160,7 +1160,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles/assignable", () => {
+      describe("GET /rbac/roles/assignable", () => {
         // Headers for actors with varying levels of permission coverage.
         // `adminHeaders` is the super-admin baseline (holds `*:*`).
         const productManagerHeaders = { headers: { ...adminHeaders.headers } }
@@ -1355,7 +1355,7 @@ medusaIntegrationTestRunner({
 
         it("returns response shape `{ roles, count }` with count matching roles.length", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             adminHeaders
           )
 
@@ -1369,7 +1369,7 @@ medusaIntegrationTestRunner({
 
         it("returns every target role for a super-admin (`*:*`)", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             adminHeaders
           )
 
@@ -1388,7 +1388,7 @@ medusaIntegrationTestRunner({
 
         it("returns role projection of `{ id, name, description }` without policies leakage", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             adminHeaders
           )
 
@@ -1404,7 +1404,7 @@ medusaIntegrationTestRunner({
 
         it("expands `resource:*` — product:* actor sees product-only roles, not cross-resource", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             productManagerHeaders
           )
 
@@ -1418,7 +1418,7 @@ medusaIntegrationTestRunner({
 
         it("expands `*:op` — *:read actor sees read-only roles across resources", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             universalReaderHeaders
           )
 
@@ -1433,7 +1433,7 @@ medusaIntegrationTestRunner({
 
         it("requires literal coverage — actor with product:read alone only covers empty targets", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             productReaderHeaders
           )
 
@@ -1471,9 +1471,9 @@ medusaIntegrationTestRunner({
           // hasPermission on an empty actions list returns true, so an empty
           // target role passes for every actor that holds at least one role.
           const responses = await Promise.all([
-            api.get("/admin/rbac/roles/assignable", productManagerHeaders),
-            api.get("/admin/rbac/roles/assignable", universalReaderHeaders),
-            api.get("/admin/rbac/roles/assignable", productReaderHeaders),
+            api.get("/rbac/roles/assignable", productManagerHeaders),
+            api.get("/rbac/roles/assignable", universalReaderHeaders),
+            api.get("/rbac/roles/assignable", productReaderHeaders),
           ])
 
           for (const response of responses) {
@@ -1485,7 +1485,7 @@ medusaIntegrationTestRunner({
         it("only a `*:*` holder can assign a role whose policies include `*:*`", async () => {
           // Super-admin holds *:* → can assign superAdminLikeRoleId.
           const superAdminResponse = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             adminHeaders
           )
           const superAdminIds = superAdminResponse.data.roles.map(
@@ -1495,9 +1495,9 @@ medusaIntegrationTestRunner({
 
           // Every other actor (product:*, *:read, product:read) cannot.
           const otherResponses = await Promise.all([
-            api.get("/admin/rbac/roles/assignable", productManagerHeaders),
-            api.get("/admin/rbac/roles/assignable", universalReaderHeaders),
-            api.get("/admin/rbac/roles/assignable", productReaderHeaders),
+            api.get("/rbac/roles/assignable", productManagerHeaders),
+            api.get("/rbac/roles/assignable", universalReaderHeaders),
+            api.get("/rbac/roles/assignable", productReaderHeaders),
           ])
           for (const response of otherResponses) {
             const ids = response.data.roles.map((r: { id: string }) => r.id)
@@ -1540,7 +1540,7 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             multiRoleHeaders
           )
 
@@ -1552,7 +1552,7 @@ medusaIntegrationTestRunner({
           // Verifies the route forwards `req.filterableFields` into the
           // workflow so candidate narrowing happens before per-role coverage.
           const response = await api.get(
-            `/admin/rbac/roles/assignable?id=${emptyRoleId}`,
+            `/rbac/roles/assignable?id=${emptyRoleId}`,
             adminHeaders
           )
 
@@ -1562,7 +1562,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles/:id/users", () => {
+      describe("GET /rbac/roles/:id/users", () => {
         let testRole
         let testUser1
         let testUser2
@@ -1572,7 +1572,7 @@ medusaIntegrationTestRunner({
 
           // Create a role for testing
           const roleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Test Role",
               description: "Role for testing users endpoint",
@@ -1619,7 +1619,7 @@ medusaIntegrationTestRunner({
 
         it("should list users for a role", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
 
@@ -1642,7 +1642,7 @@ medusaIntegrationTestRunner({
 
         it("should filter users by user_id", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users?user_id=${testUser1.id}`,
+            `/rbac/roles/${testRole.id}/users?user_id=${testUser1.id}`,
             adminHeaders
           )
 
@@ -1659,7 +1659,7 @@ medusaIntegrationTestRunner({
 
         it("should filter users by multiple user_ids", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users?user_id[]=${testUser1.id}&user_id[]=${testUser2.id}`,
+            `/rbac/roles/${testRole.id}/users?user_id[]=${testUser1.id}&user_id[]=${testUser2.id}`,
             adminHeaders
           )
 
@@ -1670,7 +1670,7 @@ medusaIntegrationTestRunner({
 
         it("should paginate users", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users?limit=1&offset=0`,
+            `/rbac/roles/${testRole.id}/users?limit=1&offset=0`,
             adminHeaders
           )
 
@@ -1683,7 +1683,7 @@ medusaIntegrationTestRunner({
 
         it("should return empty array for role with no users", async () => {
           const emptyRoleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Empty Role",
               description: "Role with no users",
@@ -1693,7 +1693,7 @@ medusaIntegrationTestRunner({
           const emptyRole = emptyRoleResponse.data.role
 
           const response = await api.get(
-            `/admin/rbac/roles/${emptyRole.id}/users`,
+            `/rbac/roles/${emptyRole.id}/users`,
             adminHeaders
           )
 
@@ -1703,7 +1703,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/rbac/roles/:id/users", () => {
+      describe("POST /rbac/roles/:id/users", () => {
         it("should assign multiple users to a role", async () => {
           const userModule = container.resolve(Modules.USER)
 
@@ -1721,7 +1721,7 @@ medusaIntegrationTestRunner({
 
           // Create a role
           const roleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Batch Test Role",
               description: "Role for batch user assignment",
@@ -1732,7 +1732,7 @@ medusaIntegrationTestRunner({
 
           // Assign multiple users to the role
           const response = await api.post(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             { users: [testUser1.id, testUser2.id] },
             adminHeaders
           )
@@ -1748,7 +1748,7 @@ medusaIntegrationTestRunner({
 
           // Verify users were assigned
           const verifyResponse = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
           expect(verifyResponse.data.count).toEqual(2)
@@ -1757,7 +1757,7 @@ medusaIntegrationTestRunner({
         it("should return 404 for non-existent role", async () => {
           const error = await api
             .post(
-              `/admin/rbac/roles/non_existent_id/users`,
+              `/rbac/roles/non_existent_id/users`,
               { users: ["user_123"] },
               adminHeaders
             )
@@ -1767,7 +1767,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/rbac/roles/:id/users", () => {
+      describe("DELETE /rbac/roles/:id/users", () => {
         it("should remove multiple users from a role", async () => {
           const userModule = container.resolve(Modules.USER)
           const rbacModule = container.resolve(Modules.RBAC)
@@ -1786,7 +1786,7 @@ medusaIntegrationTestRunner({
 
           // Create a role
           const roleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Batch Remove Test Role",
               description: "Role for batch user removal",
@@ -1811,14 +1811,14 @@ medusaIntegrationTestRunner({
 
           // Verify users were assigned
           const beforeResponse = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
           expect(beforeResponse.data.count).toEqual(2)
 
           // Remove multiple users from the role
           const deleteResponse = await api.delete(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             {
               ...adminHeaders,
               data: { users: [testUser1.id, testUser2.id] },
@@ -1834,7 +1834,7 @@ medusaIntegrationTestRunner({
 
           // Verify users were removed
           const afterResponse = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
           expect(afterResponse.data.count).toEqual(0)
@@ -1842,7 +1842,7 @@ medusaIntegrationTestRunner({
 
         it("should return 404 for non-existent role", async () => {
           const error = await api
-            .delete(`/admin/rbac/roles/non_existent_id/users`, {
+            .delete(`/rbac/roles/non_existent_id/users`, {
               ...adminHeaders,
               data: { users: ["user_123"] },
             })

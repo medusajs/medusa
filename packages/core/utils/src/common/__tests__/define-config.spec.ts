@@ -191,6 +191,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -528,6 +531,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -721,6 +727,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -915,6 +924,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -1097,6 +1109,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -1282,6 +1297,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -1519,6 +1537,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -1716,6 +1737,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -1955,6 +1979,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -2210,6 +2237,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -2495,6 +2525,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -2732,6 +2765,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -2960,6 +2996,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
@@ -3197,6 +3236,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(

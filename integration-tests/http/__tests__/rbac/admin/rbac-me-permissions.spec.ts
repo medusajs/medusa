@@ -138,10 +138,10 @@ medusaIntegrationTestRunner({
       delete process.env.MEDUSA_FF_RBAC
     })
 
-    describe("GET /admin/rbac/me/permissions", () => {
+    describe("GET /rbac/me/permissions", () => {
       it("returns the full universe for a super-admin (`*:*`)", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -160,7 +160,7 @@ medusaIntegrationTestRunner({
 
       it("does not include wildcard-only entries in the response", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -173,7 +173,7 @@ medusaIntegrationTestRunner({
 
       it("returns sorted output for deterministic ordering", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -183,7 +183,7 @@ medusaIntegrationTestRunner({
 
       it("expands `resource:*` to all ops on that resource only", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           productManagerHeaders
         )
 
@@ -203,7 +203,7 @@ medusaIntegrationTestRunner({
 
       it("expands `*:op` to that op on every resource in the universe", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           universalReaderHeaders
         )
 
@@ -219,7 +219,7 @@ medusaIntegrationTestRunner({
 
       it("returns only the literal grant for an exact-match holder", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           productReaderHeaders
         )
 
@@ -229,7 +229,7 @@ medusaIntegrationTestRunner({
 
       it("returns an empty array when the actor has no roles", async () => {
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           noRolesUserHeaders
         )
 
@@ -257,7 +257,7 @@ medusaIntegrationTestRunner({
         }
 
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           adminHeaders
         )
 
@@ -288,7 +288,7 @@ medusaIntegrationTestRunner({
         })
 
         const response = await api.get(
-          "/admin/rbac/me/permissions",
+          "/rbac/me/permissions",
           multiRoleHeaders
         )
 
