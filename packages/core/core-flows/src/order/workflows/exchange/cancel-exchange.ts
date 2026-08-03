@@ -4,7 +4,10 @@ import {
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  ReservationItemWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
@@ -13,7 +16,7 @@ import {
   transform,
   when,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../../common"
 import { deleteReservationsByLineItemsStep } from "../../../reservation/steps/delete-reservations-by-line-items"
 import { cancelOrderExchangeStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"
@@ -91,7 +94,7 @@ export const cancelExchangeValidateOrder = createStep(
 export const cancelOrderExchangeWorkflowId = "cancel-exchange"
 /**
  * This workflow cancels a confirmed exchange. It's used by the
- * [Cancel Exchange Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidcancel).
+ * [Cancel Exchange Admin API Route](https://docs.medusajs.com/api/admin/exchanges/cancel-an-exchange).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to cancel an exchange
  * for an order in your custom flow.
@@ -142,7 +145,7 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
       return orderExchange.additional_items?.map((i) => i.item_id)
     })
 
-    parallelize(
+    const [, deletedReservationIds] = parallelize(
       cancelOrderExchangeStep({
         exchange_id: orderExchange.id,
         order_id: orderExchange.order_id,
@@ -150,6 +153,21 @@ export const cancelOrderExchangeWorkflow = createWorkflow(
       }),
       deleteReservationsByLineItemsStep(lineItemIds)
     )
+
+    const reservationDeletedEvents = transform(
+      { deletedReservationIds, orderExchange },
+      ({ deletedReservationIds, orderExchange }) => {
+        return (deletedReservationIds ?? []).map((id) => ({
+          id,
+          order_id: orderExchange.order_id,
+        }))
+      }
+    )
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.DELETED,
+      data: reservationDeletedEvents,
+    })
 
     when({ orderExchange }, ({ orderExchange }) => {
       return !!orderExchange.return_id

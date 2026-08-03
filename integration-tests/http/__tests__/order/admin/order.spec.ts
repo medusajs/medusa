@@ -86,6 +86,26 @@ medusaIntegrationTestRunner({
         expect(response.data.orders).toEqual([])
       })
 
+      it("should search orders by custom_display_id", async () => {
+        const customDisplayId = "custom-display-id-1234"
+        await dbConnection.raw(
+          `UPDATE "order" SET custom_display_id = ? WHERE id = ?`,
+          [customDisplayId, order.id]
+        )
+
+        const response = await api.get(
+          `/admin/orders?q=${customDisplayId}`,
+          adminHeaders
+        )
+
+        expect(response.data.orders).toHaveLength(1)
+        expect(response.data.orders).toEqual([
+          expect.objectContaining({
+            id: order.id,
+          }),
+        ])
+      })
+
       it("should search orders by shipping address", async () => {
         let response = await api.get(
           `/admin/orders?fields=+shipping_address.address_1,+shipping_address.address_2`,
@@ -479,6 +499,105 @@ medusaIntegrationTestRunner({
         expect(responseOrder.billing_address.city).toEqual(
           order.billing_address.city
         )
+      })
+    })
+
+    // shipping-method adjustments must be version-scoped
+    // in the list (findAndCount) path, as they already are in the retrieve
+    // (find) path. Before the fix, GET /admin/orders summed the free-shipping
+    // waiver once per order version, yielding a negative shipping_total and an
+    // understated total for fulfilled/shipped orders.
+    describe("list totals for a shipped order with a shipping promotion", () => {
+      let order
+      let seeder
+
+      beforeEach(async () => {
+        // automatic 100%-off-shipping promotion must exist before the order is
+        // created so the cart's shipping method picks up the adjustment
+        await api.post(
+          `/admin/promotions`,
+          {
+            code: "FREESHIP_VERSIONED",
+            type: "standard",
+            status: "active",
+            is_automatic: true,
+            application_method: {
+              type: "percentage",
+              target_type: "shipping_methods",
+              allocation: "each",
+              value: 100,
+              max_quantity: 1,
+              currency_code: "usd",
+            },
+          },
+          adminHeaders
+        )
+
+        seeder = await createOrderSeeder({ api, container: getContainer() })
+        order = seeder.order
+      })
+
+      it("should match list and detail shipping_total/total after fulfillment and shipment", async () => {
+        // sanity: the automatic promo fully waived shipping on the created order
+        const created = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=id,version,shipping_total`,
+            adminHeaders
+          )
+        ).data.order
+        expect(created.shipping_total).toBe(0)
+
+        // fulfill then ship to advance the order version
+        const fulfilled = (
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments?fields=id,*fulfillments`,
+            {
+              shipping_option_id: seeder.shippingOption.id,
+              location_id: seeder.stockLocation.id,
+              items: order.items.map((i) => ({
+                id: i.id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+        ).data.order
+
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments/${fulfilled.fulfillments[0].id}/shipments`,
+          {
+            items: order.items.map((i) => ({
+              id: i.id,
+              quantity: i.quantity,
+            })),
+          },
+          adminHeaders
+        )
+
+        // detail (find path) is correct and version-scoped
+        const detail = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=id,version,total,shipping_total`,
+            adminHeaders
+          )
+        ).data.order
+        expect(detail.version).toBeGreaterThanOrEqual(2)
+        expect(detail.shipping_total).toBe(0)
+
+        // list (findAndCount path) must agree — before the fix this returned a
+        // negative shipping_total and an understated total
+        const listed = (
+          await api.get(
+            `/admin/orders?fields=${encodeURIComponent(
+              "id,total,shipping_total"
+            )}`,
+            adminHeaders
+          )
+        ).data.orders.find((o) => o.id === order.id)
+
+        expect(listed).toBeTruthy()
+        expect(listed.shipping_total).toBe(0)
+        expect(listed.total).toBe(detail.total)
       })
     })
 

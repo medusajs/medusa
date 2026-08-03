@@ -53,7 +53,7 @@ export const beginReturnOrderValidationStep = createStep(
 export const beginReturnOrderWorkflowId = "begin-return-order"
 /**
  * This workflow creates an order return that can be later requested or confirmed.
- * It's used by the [Create Return Admin API Route](https://docs.medusajs.com/api/admin#returns_postreturns).
+ * It's used by the [Create Return Admin API Route](https://docs.medusajs.com/api/admin/returns/create-return).
  * 
  * You can start the return receival using the {@link beginReceiveReturnWorkflow}.
  * 

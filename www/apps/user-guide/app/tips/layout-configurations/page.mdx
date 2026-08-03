@@ -1,0 +1,114 @@
+---
+sidebar_position: 1
+sidebar_label: "Configure Layouts"
+tags:
+    - user guide
+    - settings
+products:
+    - settings
+---
+
+import { Adjustments, BellAlert, DotsSix, EyeMini, EyeSlashMini } from "@medusajs/icons"
+import { InlineIcon } from "docs-ui"
+
+export const metadata = {
+  title: `Configure Layouts of the Medusa Admin Dashboard`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to customize the layout of the Medusa Admin dashboard to suit your preferences and workflow.
+
+<Note>
+
+Layout configuration is available from [Medusa Admin v2.17.2](https://github.com/medusajs/medusa/releases/tag/v2.17.2). If you don't see the layout configuration options in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+## What is Layout Configuration?
+
+The Medusa Admin dashboard allows you to configure the layout of its pages, sidebar, and top navigation bar to suit your preferences and workflow. You can choose what to display and in what order.
+
+You can customize the layouts of core Medusa pages, as well as pages of Medusa plugins and integrations. You can also create personal layouts, and layouts for your team.
+
+---
+
+## How to Customize a Page's Layout
+
+You can customize what sections show on a page, and how they're ordered.
+
+To customize a page's layout:
+
+1. Open the page. For example, a [product's details page](../../products/edit/page.mdx#open-products-details).
+2. Click on <InlineIcon Icon={Adjustments} alt="layout configuration" /> at the top end of the page, next to the <InlineIcon Icon={BellAlert} alt="notifications" /> icon.
+3. Choose "Customize page" from the dropdown.
+4. This will switch the page to edit mode. To customize the layout for yourself, click on the **Personal** badge. To customize the layout for your team, click on the **Default** badge.
+5. For each section on the page, you can:
+    - Reorder a section by clicking the <InlineIcon Icon={DotsSix} alt="drag handle" /> icon at its top end and dragging the section to a new position.
+    - Hide a section by clicking the <InlineIcon Icon={EyeMini} alt="eye" /> icon at its top end. In edit mode, the section will show as faded, but it will be hidden when you exit edit mode.
+    - Show a section that is hidden by clicking the <InlineIcon Icon={EyeSlashMini} alt="eye-slash" /> icon at its top end.
+6. Once you're done customizing the layout, click on the **Save** or **Save for everyone** button at the top end of the page, depending on whether you're customizing the layout for yourself or your team.
+
+The next time you open the page, it will show the layout you configured. If you set it as the default layout for your team, everyone will see the layout you configured when they open the page.
+
+---
+
+## How to Customize the Sidebar Layout
+
+There are two sidebar layouts you can customize:
+
+1. The main sidebar layout that shows pages like orders, products, and custom pages.
+2. The settings sidebar layout that shows pages like profile, regions, and taxes.
+
+You can customize both layouts to show the pages you want, and in the order you want.
+
+### Customize the Main Sidebar Layout
+
+To customize the main sidebar layout:
+
+1. Click on <InlineIcon Icon={Adjustments} alt="layout configuration" /> at the top end of the page, next to the <InlineIcon Icon={BellAlert} alt="notifications" /> icon. You can do this on any page.
+2. Choose "Customize sidebar" from the dropdown.
+3. This will switch the sidebar to edit mode. To customize the layout for yourself, click on the **Personal** badge. To customize the layout for your team, click on the **Default** badge.
+4. For each item in the sidebar, you can:
+    - Reorder an item by clicking the <InlineIcon Icon={DotsSix} alt="drag handle" /> icon at its top end and dragging the item to a new position.
+    - Hide an item by clicking the <InlineIcon Icon={EyeMini} alt="eye" /> icon at its top end. In edit mode, the item will show as faded, but it will be hidden when you exit edit mode.
+    - Show an item that is hidden by clicking the <InlineIcon Icon={EyeSlashMini} alt="eye-slash" /> icon at its top end.
+5. Once you're done customizing the layout, click on the **Save** or **Save for everyone** button at the top end of the sidebar, depending on whether you're customizing the layout for yourself or your team.
+
+The sidebar will now show the layout you configured. If you set it as the default layout for your team, everyone will see the layout you configured for the main sidebar.
+
+### Customize the Settings Sidebar Layout
+
+To customize the settings sidebar layout:
+
+1. Click on <InlineIcon Icon={Adjustments} alt="layout configuration" /> at the top end of the page, next to the <InlineIcon Icon={BellAlert} alt="notifications" /> icon. You can do this on any page.
+2. Choose "Customize settings sidebar" from the dropdown. This will take you to the settings page, if you're not already on it, and switch the settings sidebar to edit mode.
+3. To customize the layout for yourself, click on the **Personal** badge. To customize the layout for your team, click on the **Default** badge.
+4. For each item in the settings sidebar, you can:
+    - Reorder an item by clicking the <InlineIcon Icon={DotsSix} alt="drag handle" /> icon at its top end and dragging the item to a new position.
+    - Hide an item by clicking the <InlineIcon Icon={EyeMini} alt="eye" /> icon at its top end. In edit mode, the item will show as faded, but it will be hidden when you exit edit mode.
+    - Show an item that is hidden by clicking the <InlineIcon Icon={EyeSlashMini} alt="eye-slash" /> icon at its top end.
+    - You can move an item from one category to another in the sidebar. For example, you can move "Store" from "General" to "My Account".
+    - You can't remove categories, move them, or add new categories. You can only move items between categories.
+5. Once you're done customizing the layout, click on the **Save** or **Save for everyone** button at the top end of the sidebar, depending on whether you're customizing the layout for yourself or your team.
+
+The settings sidebar will now show the layout you configured. If you set it as the default layout for your team, everyone will see the layout you configured for the settings sidebar.
+
+---
+
+## How to Customize the Top Navigation Bar Layout
+
+You can customize the top bar layout to show the items you want, and in the order you want. By default, you can only customize the <InlineIcon Icon={BellAlert} alt="notifications" /> icon, but if you have Medusa plugins that add items to the top bar, you can customize those items as well.
+
+To customize the top navigation bar layout:
+
+1. Click on <InlineIcon Icon={Adjustments} alt="layout configuration" /> at the top end of the page, next to the <InlineIcon Icon={BellAlert} alt="notifications" /> icon. You can do this on any page.
+2. Choose "Customize top bar" from the dropdown.
+3. This will switch the top bar to edit mode. To customize the layout for yourself, click on the **Personal** badge. To customize the layout for your team, click on the **Default** badge.
+4. For each item in the top bar, you can:
+    - Reorder an item by clicking the <InlineIcon Icon={DotsSix} alt="drag handle" /> icon at its top end and dragging the item to a new position.
+    - Hide an item by clicking the <InlineIcon Icon={EyeMini} alt="eye" /> icon at its top end. In edit mode, the item will show as faded, but it will be hidden when you exit edit mode.
+    - Show an item that is hidden by clicking the <InlineIcon Icon={EyeSlashMini} alt="eye-slash" /> icon at its top end.
+5. Once you're done customizing the layout, click on the **Save** or **Save for everyone** button at the top end of the top bar, depending on whether you're customizing the layout for yourself or your team.
+
+The top navigation bar will now show the layout you configured. If you set it as the default layout for your team, everyone will see the layout you configured for the top navigation bar.

@@ -40,7 +40,7 @@ export const deleteOrderPaymentCollectionsId =
   "delete-order-payment-collectionworkflow"
 /**
  * This workflow deletes one or more payment collections of an order. It's used by the
- * [Delete Payment Collection API Route](https://docs.medusajs.com/api/admin#payment-collections_deletepaymentcollectionsid).
+ * [Delete Payment Collection API Route](https://docs.medusajs.com/api/admin/payment-collections/delete-a-payment-collection).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * deleting a payment collection of an order.

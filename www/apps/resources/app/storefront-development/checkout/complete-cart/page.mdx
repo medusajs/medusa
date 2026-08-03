@@ -20,11 +20,19 @@ export const metadata = {
 
 In this guide, you'll learn how to complete the cart and place the order. This is the last step of your checkout flow.
 
+<Note title="Warning" type="warning">
+
+Don't use the `validate` hook of `completeCartWorkflow` to mutate the cart's line items, shipping methods, or totals. The workflow retrieves the cart once before any hook runs and builds the order from that snapshot. If you mutate the cart in a hook, the created order and the authorized payment amount won't reflect the change.
+
+If you need to change the cart before completing it, run a separate step or workflow before `completeCartWorkflow`, then refresh the cart's payment collection so that the payment session amount matches the new total.
+
+</Note>
+
 ## How to Complete Cart in Storefront Checkout
 
 Once you finish any required actions with the third-party payment provider, you can complete the cart and place the order.
 
-To complete the cart, send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete). For example:
+To complete the cart, send a request to the [Complete Cart API route](!api!/store/carts/complete-cart). For example:
 
 <Note title="Tip">
 
@@ -54,6 +62,23 @@ In the response of the request, the `type` field determines whether the cart com
 - If the `type` is `order`, it means the cart was completed and the order was placed successfully.
 
 When the cart completion is successful, it's important to unset the cart ID from the `localStorage`, as the cart is no longer usable.
+
+<Note title="Tip">
+
+Check `type === "order"` to confirm cart completion. Don't assume the payment was charged based on calling the complete cart endpoint alone.
+
+</Note>
+
+---
+
+## Payment Failure Handling
+
+When cart completion fails after the payment was authorized or captured, the `completeCartWorkflow` automatically reverts the payment so the customer isn't charged for an incomplete order:
+
+- An authorized payment that wasn't yet captured is canceled.
+- A captured payment is refunded, unless a later or concurrent completion attempt already placed an order for the same cart. In that case, the refund is skipped so that the successful order keeps its payment.
+
+Because the payment is reverted before the response is returned, a storefront doesn't need to issue a refund itself when completion fails. The `type: "cart"` response signals that completion failed and the payment was rolled back.
 
 ---
 
@@ -149,7 +174,7 @@ export default function SystemDefaultPayment() {
 In the example above, you create a `handlePayment` function in the payment component. In this function, you:
 
 - Optionally perform any required actions with the third-party payment provider. For example, authorize the payment. For the default system payment provider, no actions are required.
-- Send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) once all actions with the third-party payment provider are performed.
+- Send a request to the [Complete Cart API route](!api!/store/carts/complete-cart) once all actions with the third-party payment provider are performed.
 - In the received response of the request, if the `type` is `cart`, it means that the cart completion failed. The error is set in the `error` response field.
 - If the `type` is `order`, it means the card was completed and the order was placed successfully. You can access the order in the `order` response field.
 - When the order is placed, you must unset the `cart_id` from the `localStorage`. You can redirect the customer to an order success page at this point. The redirection logic depends on the storefront framework you're using.

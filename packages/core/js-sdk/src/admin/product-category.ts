@@ -16,7 +16,7 @@ export class ProductCategory {
 
   /**
    * This method creates a product category. It sends a request to the
-   * [Create Category](https://docs.medusajs.com/api/admin#product-categories_postproductcategories)
+   * [Create Category](https://docs.medusajs.com/api/admin/product-categories/create-product-category)
    * API route.
    * 
    * @param body - The details of the category to create.
@@ -50,7 +50,7 @@ export class ProductCategory {
 
   /**
    * This method updates a product category. It sends a request to the
-   * [Update Category](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriesid)
+   * [Update Category](https://docs.medusajs.com/api/admin/product-categories/update-a-product-category)
    * API route.
    * 
    * @param id - The product category's ID.
@@ -86,7 +86,7 @@ export class ProductCategory {
 
   /**
    * This method retrieves a paginated list of product categories. It sends a request to the 
-   * [List Product Categories](https://docs.medusajs.com/api/admin#product-categories_getproductcategories) API route.
+   * [List Product Categories](https://docs.medusajs.com/api/admin/product-categories/list-product-categories) API route.
    * 
    * @param query - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -128,7 +128,7 @@ export class ProductCategory {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminProductCategoryListParams,
@@ -145,7 +145,7 @@ export class ProductCategory {
 
   /**
    * This method retrieves a product category by its ID. It sends a request to the 
-   * [Get Product Category](https://docs.medusajs.com/api/admin#product-categories_getproductcategoriesid) API route.
+   * [Get Product Category](https://docs.medusajs.com/api/admin/product-categories/get-a-product-category) API route.
    * 
    * @param id - The category's ID.
    * @param query - Configure the fields to retrieve in the product category.
@@ -173,7 +173,7 @@ export class ProductCategory {
    * })
    * ```
    * 
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -191,7 +191,7 @@ export class ProductCategory {
 
   /**
    * This method deletes a product category. It sends a request to the
-   * [Delete Product Category](https://docs.medusajs.com/api/admin#product-categories_deleteproductcategoriesid)
+   * [Delete Product Category](https://docs.medusajs.com/api/admin/product-categories/delete-a-product-category)
    * API route.
    * 
    * @param id - The category's ID.
@@ -216,7 +216,7 @@ export class ProductCategory {
 
   /**
    * This method manaes the products of a category to add or remove them. It sends a request
-   * to the [Manage Products](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriesidproducts)
+   * to the [Manage Products](https://docs.medusajs.com/api/admin/product-categories/manage-products)
    * API route.
    * 
    * @param id - The category's ID.

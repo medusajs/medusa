@@ -30,7 +30,7 @@ export interface ConfirmDraftOrderEditWorkflowInput {
 
 /**
  * This workflow confirms a draft order edit. It's used by the
- * [Confirm Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditconfirm).
+ * [Confirm Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/confirm-edit).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * confirming a draft order edit.

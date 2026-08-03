@@ -1,16 +1,18 @@
 import clsx from "clsx"
-import { getSectionId } from "docs-utils"
 import Link from "next/link"
 import React, { useMemo } from "react"
 import { OpenAPI } from "types"
 import { compareOperations } from "@/utils/sort-operations-utils"
 
 type RoutesSummaryProps = {
-  tagName: string
   paths: OpenAPI.PathsObject
 }
 
-export const RoutesSummary = ({ tagName, paths }: RoutesSummaryProps) => {
+// memoized: `paths` is referentially stable, so the routes list doesn't
+// re-render on scroll-spy activePath/pathname changes.
+export const RoutesSummary = React.memo(function RoutesSummary({
+  paths,
+}: RoutesSummaryProps) {
   const sortedOperations = useMemo(() => {
     const sortedOperations: {
       endpointPath: string
@@ -66,10 +68,7 @@ export const RoutesSummary = ({ tagName, paths }: RoutesSummaryProps) => {
         >
           {sortedOperations.map(
             ({ endpointPath, method, operation }, operationIndex) => {
-              const operationId = getSectionId([
-                tagName,
-                (operation as OpenAPI.Operation).operationId,
-              ])
+              const operationPath = operation["x-path"]
               return (
                 <span className={clsx("flex gap-x-0.25")} key={operationIndex}>
                   <span
@@ -83,7 +82,7 @@ export const RoutesSummary = ({ tagName, paths }: RoutesSummaryProps) => {
                     {method.toUpperCase()}
                   </span>
                   <Link
-                    href={`#${operationId}`}
+                    href={operationPath || "#"}
                     className="text-medusa-contrast-fg-secondary hover:text-medusa-contrast-fg-primary w-[85%]"
                     data-testid="link"
                   >
@@ -97,4 +96,4 @@ export const RoutesSummary = ({ tagName, paths }: RoutesSummaryProps) => {
       </div>
     </div>
   )
-}
+})

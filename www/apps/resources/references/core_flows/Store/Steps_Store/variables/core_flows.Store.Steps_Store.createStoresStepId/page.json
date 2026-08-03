@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Store/Steps_Store/variables/core_flows.Store.Steps_Store.createStoresStepId","title":"createStoresStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"createStoresStepId","type":"`\"create-stores\"`","description":"","optional":false,"defaultValue":"\"create-stores\"","expandable":false,"children":[]}]}]}

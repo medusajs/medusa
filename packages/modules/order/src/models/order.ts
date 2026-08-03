@@ -10,20 +10,67 @@ import { OrderTransaction } from "./transaction"
 const _Order = model
   .define("Order", {
     id: model.id({ prefix: "order" }).primaryKey(),
+    /**
+     * An auto-incremented display ID for the order.
+     */
     display_id: model.autoincrement().searchable(),
-    custom_display_id: model.text().nullable(),
+    /**
+     * A custom display ID for the order.
+     */
+    custom_display_id: model.text().searchable().nullable(),
+    /**
+     * The ID of the region the order belongs to.
+     */
     region_id: model.text().nullable(),
+    /**
+     * The ID of the customer that placed the order.
+     */
     customer_id: model.text().nullable(),
+    /**
+     * The order's version number.
+     */
     version: model.number().default(1),
+    /**
+     * The ID of the sales channel the order was placed in.
+     */
     sales_channel_id: model.text().nullable(),
+    /**
+     * The order's status.
+     */
     status: model.enum(OrderStatus).default(OrderStatus.PENDING),
+    /**
+     * Whether the order is a draft order.
+     */
     is_draft_order: model.boolean().default(false),
+    /**
+     * The email associated with the order.
+     */
     email: model.text().searchable().nullable(),
+    /**
+     * The ISO 3 character currency code of the order.
+     * @example "usd"
+     */
     currency_code: model.text(),
+    /**
+     * The BCP 47 language tag of the order's locale.
+     * @example "en-US"
+     */
     locale: model.text().nullable(),
+    /**
+     * Whether notifications should be sent for this order.
+     */
     no_notification: model.boolean().nullable(),
+    /**
+     * Custom key-value metadata for the order.
+     */
     metadata: model.json().nullable(),
+    /**
+     * The date the order was canceled.
+     */
     canceled_at: model.dateTime().nullable(),
+    /**
+     * The associated shipping address.
+     */
     shipping_address: model
       .hasOne<any>(() => OrderAddress, {
         mappedBy: undefined,
@@ -31,6 +78,9 @@ const _Order = model
       })
       .searchable()
       .nullable(),
+    /**
+     * The associated billing address.
+     */
     billing_address: model
       .hasOne<any>(() => OrderAddress, {
         mappedBy: undefined,
@@ -38,21 +88,39 @@ const _Order = model
       })
       .searchable()
       .nullable(),
+    /**
+     * The associated order summaries.
+     */
     summary: model.hasMany<any>(() => OrderSummary, {
       mappedBy: "order",
     }),
+    /**
+     * The associated order items.
+     */
     items: model.hasMany<any>(() => OrderItem, {
       mappedBy: "order",
     }),
+    /**
+     * The associated shipping methods.
+     */
     shipping_methods: model.hasMany<any>(() => OrderShipping, {
       mappedBy: "order",
     }),
+    /**
+     * The associated transactions.
+     */
     transactions: model.hasMany<any>(() => OrderTransaction, {
       mappedBy: "order",
     }),
+    /**
+     * The associated credit lines.
+     */
     credit_lines: model.hasMany<any>(() => OrderCreditLine, {
       mappedBy: "order",
     }),
+    /**
+     * The associated returns.
+     */
     returns: model.hasMany<any>(() => Return, {
       mappedBy: "order",
     }),
@@ -129,4 +197,7 @@ const _Order = model
     },
   ])
 
+/**
+ * An order placed by a customer.
+ */
 export const Order = _Order

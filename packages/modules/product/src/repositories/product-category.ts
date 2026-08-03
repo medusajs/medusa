@@ -64,7 +64,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     }
 
     Object.assign(findOptions_.options, {
-      strategy: LoadStrategy.SELECT_IN,
+      strategy: LoadStrategy.BALANCED,
     })
 
     return findOptions_

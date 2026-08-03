@@ -44,7 +44,7 @@ export interface AddDraftOrderPromotionWorkflowInput {
 
 /**
  * This workflow adds promotions to a draft order. It's used by the
- * [Add Promotion to Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditpromotions).
+ * [Add Promotion to Draft Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/add-promotions).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around adding promotions to
  * a draft order.

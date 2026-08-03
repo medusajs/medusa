@@ -8,7 +8,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This rule requires read-only `defineLink` calls to specify a `field` on the first linkable, and a `primaryKey` on the inverse form.
+This rule requires read-only `defineLink` calls to specify a `field` on the first linkable, and a `primaryKey` or `alias` on the inverse form.
 
 ## Severity
 
@@ -16,7 +16,7 @@ This rule requires read-only `defineLink` calls to specify a `field` on the firs
 
 ## What it Targets
 
-This rule targets files in your project's `src/links` directory. It reports read-only `defineLink` calls (calls whose options object sets `readOnly: true`) whose first argument is missing a `field` property. For the inverse form, where the second argument spreads `<Module>.linkable.<dataModel>.id`, it also requires a `primaryKey` property.
+This rule targets files in your project's `src/links` directory. It reports read-only `defineLink` calls (calls whose options object sets `readOnly: true`) whose first argument is missing a `field` property. For the inverse form, where the second argument spreads `<Module>.linkable.<dataModel>.id`, it also requires either a `primaryKey` property or an `alias` property.
 
 The following code is reported by the rule:
 
@@ -58,6 +58,20 @@ export default defineLink(
     ...BlogModule.linkable.post.id,
     primaryKey: "product_id",
   },
+  { readOnly: true }
+)
+```
+
+Alternatively, you can use `alias` instead of `primaryKey` on the inverse form when re-aliasing a linkable. For example, when linking to draft orders using the `order` linkable re-aliased to `draft_order`:
+
+```ts title="src/links/quote-draft-order.ts"
+import { defineLink } from "@medusajs/framework/utils"
+import QuoteModule from "../modules/quote"
+import OrderModule from "@medusajs/medusa/order"
+
+export default defineLink(
+  { linkable: QuoteModule.linkable.quote, field: "draft_order_id" },
+  { ...OrderModule.linkable.order.id, alias: "draft_order" },
   { readOnly: true }
 )
 ```

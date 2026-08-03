@@ -34,7 +34,7 @@ export const updateDraftOrderActionShippingMethodWorkflowId =
 
 /**
  * This workflow updates a new shipping method that was added to a draft order edit. It's used by the
- * [Update New Shipping Method in Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditshippingmethodsaction_id).
+ * [Update New Shipping Method in Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/update-new-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * updating a new shipping method in a draft order edit.

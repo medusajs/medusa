@@ -1,5 +1,75 @@
 # @medusajs/utils
 
+## 2.18.0
+
+### Minor Changes
+
+- [#15989](https://github.com/medusajs/medusa/pull/15989) [`0e7973e2fc3c45da39136cf3f66c90358571ffc5`](https://github.com/medusajs/medusa/commit/0e7973e2fc3c45da39136cf3f66c90358571ffc5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): fix delete operation when primary key is not `id`
+
+- [#16137](https://github.com/medusajs/medusa/pull/16137) [`7d7edad6fdf47ae36c06cd5f5b71232c9d51c70b`](https://github.com/medusajs/medusa/commit/7d7edad6fdf47ae36c06cd5f5b71232c9d51c70b) Thanks [@sradevski](https://github.com/sradevski)! - Use a BALANCED load strategy for the data
+
+### Patch Changes
+
+- [#15948](https://github.com/medusajs/medusa/pull/15948) [`b83aeae9b03e52dedbf3cd37be5f838e23875014`](https://github.com/medusajs/medusa/commit/b83aeae9b03e52dedbf3cd37be5f838e23875014) Thanks [@KMLnk](https://github.com/KMLnk)! - feat(dashboard,utils,loyalty-plugin): Add Iranian Toman (IRT) to the default currency list
+
+- [#16100](https://github.com/medusajs/medusa/pull/16100) [`1621e14330fe64a968510991408ace8fdac84ce9`](https://github.com/medusajs/medusa/commit/1621e14330fe64a968510991408ace8fdac84ce9) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(modules-sdk, framework): fail early when can't connect to the database
+
+- [#15797](https://github.com/medusajs/medusa/pull/15797) [`6d1622265c96e2417b64aa69fd867a89522e6b76`](https://github.com/medusajs/medusa/commit/6d1622265c96e2417b64aa69fd867a89522e6b76) Thanks [@BIGSUS24](https://github.com/BIGSUS24)! - feat(dashboard,utils,loyalty-plugin): Add AOA (Angolan Kwanza) to the default currency list and stop the admin region editor from crashing on unknown currency codes
+
+- [#15834](https://github.com/medusajs/medusa/pull/15834) [`04daac9a7639435a89446578b9012ad0a673ac6b`](https://github.com/medusajs/medusa/commit/04daac9a7639435a89446578b9012ad0a673ac6b) Thanks [@leobenzol](https://github.com/leobenzol)! - fix(medusa,utils): defineConfig typed modules
+
+- [#15806](https://github.com/medusajs/medusa/pull/15806) [`45646168b9769a306c3783fa605a7109f9df4ee9`](https://github.com/medusajs/medusa/commit/45646168b9769a306c3783fa605a7109f9df4ee9) Thanks [@dosacha](https://github.com/dosacha)! - Prevent nested MikroORM serialization from mutating parent key iteration state.
+
+- [#15694](https://github.com/medusajs/medusa/pull/15694) [`b18d4de91c2c229ba7a03a9d541e1b8de71f52a9`](https://github.com/medusajs/medusa/commit/b18d4de91c2c229ba7a03a9d541e1b8de71f52a9) Thanks [@sawirricardo](https://github.com/sawirricardo)! - fix(utils): apply MikroORM onUpdate hooks before native batch updates
+
+- [#15968](https://github.com/medusajs/medusa/pull/15968) [`a48e78b953943efd11204f48890608020f7949e0`](https://github.com/medusajs/medusa/commit/a48e78b953943efd11204f48890608020f7949e0) Thanks [@peterlgh7](https://github.com/peterlgh7)! - join only with link table if only filtering on target key
+
+- [#16013](https://github.com/medusajs/medusa/pull/16013) [`af4ab2f5f7721f8b99c80158c78fba3b5c4db64d`](https://github.com/medusajs/medusa/commit/af4ab2f5f7721f8b99c80158c78fba3b5c4db64d) Thanks [@Venkat-jaswanth](https://github.com/Venkat-jaswanth)! - fix(utils): assign per-adjustment subtotal/total instead of the cumulative running sum
+
+  `calculateAdjustmentTotal` wrote the plural running accumulators (`adjustmentsSubtotal`/`adjustmentsTotal`) onto each adjustment's own `subtotal`/`total`, instead of the singular per-adjustment values. Every adjustment after the first was inflated to the cumulative total; the bug was masked for lines with a single adjustment. The aggregate return values were unaffected.
+
+- [#16014](https://github.com/medusajs/medusa/pull/16014) [`f85473ca88249bed7bfed81b01326a7abc46ac12`](https://github.com/medusajs/medusa/commit/f85473ca88249bed7bfed81b01326a7abc46ac12) Thanks [@Venkat-jaswanth](https://github.com/Venkat-jaswanth)! - fix(utils): add `BigNumber.toString()` to avoid `"[object Object]"` coercion
+
+  `BigNumber` implemented `valueOf`, `toJSON`, and `[Symbol.toPrimitive]` but not `toString()`, so an explicit `bn.toString()` fell through to `Object.prototype.toString` and returned `"[object Object]"`. This silently broke callers such as `parseFloat(bn.toString())` (returned `NaN`). `toString()` is now the single source of truth for string coercion, returning the same value as the `[Symbol.toPrimitive]` string hint, which delegates to it so the two stay consistent.
+
+- [#16141](https://github.com/medusajs/medusa/pull/16141) [`7c0f94c207796bc443fd36d3999f1533bba255be`](https://github.com/medusajs/medusa/commit/7c0f94c207796bc443fd36d3999f1533bba255be) Thanks [@peterlgh7](https://github.com/peterlgh7)! - Always use left joins to avoid entities being hidden in query by a soft-deleted related entity
+
+- [#15614](https://github.com/medusajs/medusa/pull/15614) [`3382c8189bfc9f44e86123496ef3665e92ac91c9`](https://github.com/medusajs/medusa/commit/3382c8189bfc9f44e86123496ef3665e92ac91c9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,types,utils,medusa): support global product options in imports
+
+- [#15990](https://github.com/medusajs/medusa/pull/15990) [`935a14c0098580a2b6ef8af11321e931c8ac80da`](https://github.com/medusajs/medusa/commit/935a14c0098580a2b6ef8af11321e931c8ac80da) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): apply select in strategy for single entity fetches
+
+- [#15991](https://github.com/medusajs/medusa/pull/15991) [`e78ef6ce51a00e6b303b654c5046cd1e60c8dc68`](https://github.com/medusajs/medusa/commit/e78ef6ce51a00e6b303b654c5046cd1e60c8dc68) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows, utils): emit inventory-related events
+
+- [#15686](https://github.com/medusajs/medusa/pull/15686) [`99f2ea9c85a64a08c56196ba963db2c8dd0b7923`](https://github.com/medusajs/medusa/commit/99f2ea9c85a64a08c56196ba963db2c8dd0b7923) Thanks [@mrpackethead](https://github.com/mrpackethead)! - feat(utils): support dynamic password function in createPgConnection for RDS IAM auth
+
+  Pass `driverOptions.dynamicPassword` and `driverOptions.expirationChecker` through to the Knex connection config, enabling AWS RDS IAM authentication and other rotating-credential patterns.
+
+- [#15886](https://github.com/medusajs/medusa/pull/15886) [`9cd0501b26c401431a11e0d7f4ae6719100b9296`](https://github.com/medusajs/medusa/commit/9cd0501b26c401431a11e0d7f4ae6719100b9296) Thanks [@shafi-VM](https://github.com/shafi-VM)! - fix(utils): do not double-count tax on discounts in refundable_total for non-tax-inclusive items
+
+  `refundable_total` / `refundable_total_per_unit` were understated for a non-tax-inclusive line item that carries a discount (adjustment) and has a pending or partially received return. `setRefundableTotal` subtracted the tax-inclusive discount (`adjustmentsTotal`) and then applied tax to the remaining amount, which taxed the discount a second time.
+
+  The discount basis now follows the item's tax inclusivity: tax-inclusive items keep using the tax-inclusive discount (the unit price already includes tax, and no tax is added back), while non-tax-inclusive items subtract the pre-tax discount before tax is applied once. For example, a non-tax-inclusive item at `unit_price 100`, `quantity 2`, `10%` tax, a `20` discount, with `1` unit requested for return now reports `refundable_total` `99` instead of `97.9`.
+
+- [#16123](https://github.com/medusajs/medusa/pull/16123) [`70c122753875f3cca03ff49b8a0ea9fe2c5e1165`](https://github.com/medusajs/medusa/commit/70c122753875f3cca03ff49b8a0ea9fe2c5e1165) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework, utils): defensive handling of dotted path segments
+
+- [#15968](https://github.com/medusajs/medusa/pull/15968) [`a48e78b953943efd11204f48890608020f7949e0`](https://github.com/medusajs/medusa/commit/a48e78b953943efd11204f48890608020f7949e0) Thanks [@peterlgh7](https://github.com/peterlgh7)! - skip self-joins for read-only links in cross-module filters
+
+- Updated dependencies [[`d6b2a87da1dbfd065336c80e41cb7c086dc2a340`](https://github.com/medusajs/medusa/commit/d6b2a87da1dbfd065336c80e41cb7c086dc2a340)]:
+  - @medusajs/deps@2.18.0
+
+## 2.17.2
+
+### Patch Changes
+
+- [#15701](https://github.com/medusajs/medusa/pull/15701) [`8f2c71222afb2bcd1268438fc5fe9da6a63d7af2`](https://github.com/medusajs/medusa/commit/8f2c71222afb2bcd1268438fc5fe9da6a63d7af2) Thanks [@kowalski21](https://github.com/kowalski21)! - fix(utils): add `alias` to `InputOptions` in `defineLink` so two links from the same source module to the same target module can be differentiated
+
+- [#15683](https://github.com/medusajs/medusa/pull/15683) [`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c) Thanks [@Floofy6](https://github.com/Floofy6)! - chore: add package bugs metadata
+
+- [#15085](https://github.com/medusajs/medusa/pull/15085) [`b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51`](https://github.com/medusajs/medusa/commit/b50a9dbaf3eeb29753fa28afbc1b529c44ec5a51) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(payment,payment-stripe,core-flows,medusa,dashboard,js-sdk,utils,types): introduce async payment methods support
+
+- Updated dependencies [[`de58ec503bcd82aae3fe576f9a404c36e2525f4c`](https://github.com/medusajs/medusa/commit/de58ec503bcd82aae3fe576f9a404c36e2525f4c)]:
+  - @medusajs/deps@2.17.2
+
 ## 2.17.1
 
 ### Patch Changes

@@ -1,20 +1,12 @@
-import { Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Container,
-  createDataTableColumnHelper,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/data-table"
-import {
-  useDeleteProductOptionValueLazy,
-  useProductOptionValues,
-} from "../../../../../hooks/api"
+import { useProductOptionValues } from "../../../../../hooks/api"
 import { useProductOptionValueTableQuery } from "../../../../../hooks/table/query/use-product-option-value-table-query"
+import { ProductOptionValueRowActions } from "./product-option-value-row-actions"
 
 type ProductOptionValuesSectionProps = {
   productOption: HttpTypes.AdminProductOption
@@ -27,7 +19,6 @@ export const ProductOptionValuesSection = ({
   productOption,
 }: ProductOptionValuesSectionProps) => {
   const { t } = useTranslation()
-  const prompt = usePrompt()
 
   const { searchParams } = useProductOptionValueTableQuery({
     pageSize: PAGE_SIZE,
@@ -43,33 +34,7 @@ export const ProductOptionValuesSection = ({
       }
     )
 
-  const { mutateAsync } = useDeleteProductOptionValueLazy(productOption.id)
-
-  const handleDelete = async (value: HttpTypes.AdminProductOptionValue) => {
-    const result = await prompt({
-      title: t("general.areYouSure"),
-      description: t("productOptions.values.delete.confirmation", {
-        value: value.value,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!result) {
-      return
-    }
-
-    await mutateAsync(value.id, {
-      onSuccess: () => {
-        toast.success(t("productOptions.values.delete.successToast"))
-      },
-      onError: (e) => {
-        toast.error(e.message)
-      },
-    })
-  }
-
-  const columns = useColumns(handleDelete)
+  const columns = useColumns(productOption.id)
 
   if (isError) {
     throw error
@@ -109,9 +74,7 @@ export const ProductOptionValuesSection = ({
 const columnHelper =
   createDataTableColumnHelper<HttpTypes.AdminProductOptionValue>()
 
-const useColumns = (
-  handleDelete: (value: HttpTypes.AdminProductOptionValue) => void
-) => {
+const useColumns = (optionId: string) => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -119,16 +82,16 @@ const useColumns = (
       columnHelper.accessor("value", {
         header: t("productOptions.values.header"),
       }),
-      columnHelper.action({
-        actions: [
-          {
-            icon: <Trash />,
-            label: t("actions.delete"),
-            onClick: (ctx) => handleDelete(ctx.row.original),
-          },
-        ],
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => (
+          <ProductOptionValueRowActions
+            optionId={optionId}
+            value={row.original}
+          />
+        ),
       }),
     ],
-    [t, handleDelete]
+    [t, optionId]
   )
 }

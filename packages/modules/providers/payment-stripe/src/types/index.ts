@@ -1,3 +1,5 @@
+import Stripe from "stripe"
+
 export interface StripeOptions {
   /**
    * The API key for the Stripe account
@@ -16,6 +18,13 @@ export interface StripeOptions {
    */
   automaticPaymentMethods?: boolean
   /**
+   * Set `payment_method_configuration` to a PMC ID to apply a Dashboard-managed set of
+   * payment methods to the intent
+   *
+   * @see https://docs.stripe.com/payments/payment-method-configurations
+   */
+  paymentMethodConfiguration?: string
+  /**
    * Set a default description on the intent if the context does not provide one
    */
   paymentDescription?: string
@@ -23,6 +32,11 @@ export interface StripeOptions {
    * Set the number of days before an OXXO payment expires
    */
   oxxoExpiresDays?: number
+  /**
+   * List of asynchronous payment method types. If not provided, all payment method types will be considered synchronous.
+   * Asynchronous payment methods are allowed to generate an order when the Stripe status is `pending`.
+   */
+  asyncPaymentMethodTypes?: Stripe.PaymentMethod.Type[]
 }
 
 export interface PaymentIntentOptions {

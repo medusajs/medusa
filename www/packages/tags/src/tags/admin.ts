@@ -1,5 +1,9 @@
 export const admin = [
   {
+    "title": "Configure View Configurations",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
+  },
+  {
     "title": "apiKey",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/apiKey"
   },
@@ -52,6 +56,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/invite"
   },
   {
+    "title": "layouts",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/layouts"
+  },
+  {
     "title": "locale",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/locale"
   },
@@ -100,6 +108,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productCollection"
   },
   {
+    "title": "productOption",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productOption"
+  },
+  {
     "title": "productTag",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/productTag"
   },
@@ -114,6 +126,10 @@ export const admin = [
   {
     "title": "promotion",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/promotion"
+  },
+  {
+    "title": "propertyLabel",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/propertyLabel"
   },
   {
     "title": "rbacPolicy",

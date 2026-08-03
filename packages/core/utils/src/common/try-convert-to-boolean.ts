@@ -11,6 +11,9 @@ export function tryConvertToBoolean<T>(
   value: unknown,
   defaultValue?: T
 ): boolean | undefined | T {
+  if (typeof value === "boolean") {
+    return value
+  }
   if (typeof value === "string") {
     const normalizedValue = value.toLowerCase()
     return normalizedValue === "true"

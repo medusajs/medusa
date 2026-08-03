@@ -4,6 +4,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
   },
   {
+    "title": "Link Auth Provider to Existing Actor",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/auth/link-provider-identity"
+  },
+  {
     "title": "Reset Password",
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
@@ -52,12 +56,20 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/auth/provider"
   },
   {
+    "title": "createPasswordResetTokenStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPasswordResetTokenStep"
+  },
+  {
     "title": "requestVerificationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/requestVerificationStep"
   },
   {
     "title": "setAuthAppMetadataStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
+  },
+  {
+    "title": "generateResetPasswordTokenWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow"
   },
   {
     "title": "requestVerificationWorkflow",
@@ -102,6 +114,10 @@ export const auth = [
   {
     "title": "refresh",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/refresh"
+  },
+  {
+    "title": "register",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/auth/register"
   },
   {
     "title": "resetPassword",

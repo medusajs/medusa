@@ -29,7 +29,7 @@ export const removeDraftOrderActionItemWorkflowId =
 
 /**
  * This workflow removes an item that was added or updated in a draft order edit. It's used by the
- * [Remove Item from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersidedititemsaction_id).
+ * [Remove Item from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/remove-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * removing an item from a draft order edit.

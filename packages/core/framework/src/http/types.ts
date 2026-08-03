@@ -102,7 +102,7 @@ export type RouteDescriptor = {
  * Represents a middleware
  */
 export type MiddlewareDescriptor = {
-  matcher: string
+  matcher: string | RegExp
   methods?: MiddlewareVerb | MiddlewareVerb[]
   handler: MiddlewareFunction
   policies?:
@@ -111,13 +111,13 @@ export type MiddlewareDescriptor = {
 }
 
 export type BodyParserConfigRoute = {
-  matcher: string
+  matcher: string | RegExp
   methods: MiddlewareVerb | MiddlewareVerb[]
   config: ParserConfig
 }
 
 export type AdditionalDataValidatorRoute = {
-  matcher: string
+  matcher: string | RegExp
   methods: MiddlewareVerb | MiddlewareVerb[]
   schema: ZodRawShape
   validator: ZodOptional<ZodNullable<ZodObject<any, any>>>

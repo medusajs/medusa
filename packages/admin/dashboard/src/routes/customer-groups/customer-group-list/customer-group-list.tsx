@@ -1,18 +1,28 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { CustomerGroupListTable } from "./components/customer-group-list-table"
+import { ConfigurableCustomerGroupListTable } from "./components/customer-group-list-table/configurable-customer-group-list-table"
 
 export const CustomerGroupsList = () => {
-  const { getWidgets } = useExtension()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   return (
-    <SingleColumnPage
-      widgets={{
-        after: getWidgets("customer_group.list.after"),
-        before: getWidgets("customer_group.list.before"),
+    <LayoutComposer
+      widgetsZonePrefix="customer_group.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="CustomerGroupListTable">
+            {isViewConfigEnabled ? (
+              <ConfigurableCustomerGroupListTable />
+            ) : (
+              <CustomerGroupListTable />
+            )}
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <CustomerGroupListTable />
-    </SingleColumnPage>
+    />
   )
 }

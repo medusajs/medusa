@@ -22,6 +22,50 @@ import path from "path"
 import { PassThrough, Readable, Writable } from "stream"
 import { ulid } from "ulid"
 
+/**
+ * Decodes the string `content` of an uploaded file into a Buffer.
+ *
+ * Upload inputs arrive as a string that may be base64, UTF-8 text (e.g. a CSV
+ * with special characters, see #13649) or a binary/latin1 string (e.g. an image
+ * produced via `buffer.toString("binary")`, as the upload docs instruct).
+ * Decoding a binary string as UTF-8 corrupts every byte > 127 (a PNG's leading
+ * `0x89` becomes `0xC2 0x89`), so the encoding is chosen from the file's MIME
+ * type, defaulting to binary for non-text content.
+ */
+function decodeFileContent(content: string, mimeType?: string): Buffer {
+  const decodedBase64 = Buffer.from(content, "base64")
+  if (decodedBase64.toString("base64") === content) {
+    return decodedBase64
+  }
+
+  const isTextContent =
+    mimeType?.startsWith("text/") ||
+    mimeType?.includes("csv") ||
+    mimeType?.includes("json") ||
+    mimeType?.includes("xml")
+
+  return isTextContent
+    ? Buffer.from(content, "utf8")
+    : Buffer.from(content, "binary")
+}
+
+
+/**
+ * Sanitizes a file path by:
+ * - Normalizing slashes to posix format
+ * - Stripping leading slashes
+ * - Resolving relative path segments (.)
+ * - Removing path traversal segments (..)
+ */
+function sanitizeFilePath(filePath: string): string {
+  const cleanPath = filePath.replace(/\\/g, "/").replace(/^\/+/, "")
+  const normalizedPath = path.posix.normalize(cleanPath)
+  return normalizedPath
+    .split("/")
+    .filter((segment) => segment !== ".." && segment !== ".")
+    .join("/")
+}
+
 type InjectedDependencies = {
   logger: Logger
 }
@@ -143,24 +187,20 @@ export class S3FileService extends AbstractFileProviderService {
       )
     }
 
-    const parsedFilename = path.parse(file.filename)
+    const sanitizedPath = sanitizeFilePath(file.filename)
+    if (!sanitizedPath) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid filename: ${file.filename}`
+      )
+    }
+    const parsedFilename = path.posix.parse(sanitizedPath)
 
     // TODO: Allow passing a full path for storage per request, not as a global config.
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+    const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
 
-    let content: Buffer
-    try {
-      const decoded = Buffer.from(file.content, "base64")
-      if (decoded.toString("base64") === file.content) {
-        content = decoded
-      } else {
-        content = Buffer.from(file.content, "utf8")
-      }
-    } catch {
-      // Last-resort fallback: binary
-      content = Buffer.from(file.content, "binary")
-    }
+    const content = decodeFileContent(file.content, file.mimeType)
 
     const command = new PutObjectCommand({
       // We probably also want to support a separate bucket altogether for private files
@@ -212,8 +252,15 @@ export class S3FileService extends AbstractFileProviderService {
       )
     }
 
-    const parsedFilename = path.parse(fileData.filename)
-    const fileKey = `${this.config_.prefix}${parsedFilename.name}-${ulid()}${parsedFilename.ext
+    const sanitizedPath = sanitizeFilePath(fileData.filename)
+    if (!sanitizedPath) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid filename: ${fileData.filename}`
+      )
+    }
+    const parsedFilename = path.posix.parse(sanitizedPath)
+    const fileKey = `${this.config_.prefix}${parsedFilename.dir ? `${parsedFilename.dir}/` : ""}${parsedFilename.name}-${ulid()}${parsedFilename.ext
       }`
 
     const pass = new PassThrough()
@@ -308,7 +355,14 @@ export class S3FileService extends AbstractFileProviderService {
       )
     }
 
-    const fileKey = `${this.config_.prefix}${fileData.filename}`
+    const sanitizedFilename = sanitizeFilePath(fileData.filename)
+    if (!sanitizedFilename) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invalid filename: ${fileData.filename}`
+      )
+    }
+    const fileKey = `${this.config_.prefix}${sanitizedFilename}`
 
     const acl = fileData.access
       ? this.resolveAcl(fileData.access as "public" | "private")

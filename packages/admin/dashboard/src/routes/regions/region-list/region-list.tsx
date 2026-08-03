@@ -1,18 +1,28 @@
-import { SingleColumnPage } from "../../../components/layout/pages"
-import { useExtension } from "../../../providers/extension-provider"
+import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+
+import { LayoutComposer } from "../../../components/layout-composer"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { RegionListTable } from "./components/region-list-table"
+import { ConfigurableRegionListTable } from "./components/region-list-table/configurable-region-list-table"
 
 export const RegionList = () => {
-  const { getWidgets } = useExtension()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   return (
-    <SingleColumnPage
-      widgets={{
-        before: getWidgets("region.list.before"),
-        after: getWidgets("region.list.after"),
+    <LayoutComposer
+      widgetsZonePrefix="region.list"
+      preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
+      sections={{
+        main: (
+          <LayoutComposer.Entry id="RegionListTable">
+            {isViewConfigEnabled ? (
+              <ConfigurableRegionListTable />
+            ) : (
+              <RegionListTable />
+            )}
+          </LayoutComposer.Entry>
+        ),
       }}
-    >
-      <RegionListTable />
-    </SingleColumnPage>
+    />
   )
 }

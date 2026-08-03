@@ -28,7 +28,7 @@ export const addDraftOrderItemsWorkflowId = "add-draft-order-items"
 
 /**
  * This workflow adds items to a draft order. It's used by the
- * [Add Item to Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersidedititems).
+ * [Add Item to Draft Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/add-item).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around adding items to
  * a draft order.

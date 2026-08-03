@@ -1,0 +1,1 @@
+{"slug":"/references/types/HttpTypes/types/types.HttpTypes.StoreProductStatus","title":"StoreProductStatus","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"StoreProductStatus","type":"[ProductStatus](/references/types/types/types.ProductStatus)","description":"The product's status.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

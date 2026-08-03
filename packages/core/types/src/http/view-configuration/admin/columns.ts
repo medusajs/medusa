@@ -1,5 +1,8 @@
 import { RelationshipFilterConfig, RenderMode } from "./property-descriptor"
 
+/**
+ * The details of a column available for an entity's data table view.
+ */
 export interface AdminColumn {
   /**
    * The column's unique identifier (e.g., "display_id", "customer.email").
@@ -40,6 +43,7 @@ export interface AdminColumn {
     | "currency"
     | "enum"
     | "object"
+    | (string & {})
   /**
    * The semantic type provides additional context about the data.
    */
@@ -56,6 +60,13 @@ export interface AdminColumn {
     required_fields: string[]
     optional_fields: string[]
   }
+  /**
+   * Arbitrary per-column configuration consumed by cell renderers (e.g. the
+   * field path a renderer reads, or a value->variant map). Populated from the
+   * settings entity override's `fieldMetadata` (any column) or a computed
+   * column definition's `metadata`.
+   */
+  metadata?: Record<string, any>
   /**
    * Information about relationship columns.
    */
@@ -127,6 +138,9 @@ export interface AdminColumn {
   label_id?: string
 }
 
+/**
+ * The response body of the List Entity Columns API route.
+ */
 export interface AdminViewsEntityColumnsResponse {
   /**
    * The list of available columns for the entity.

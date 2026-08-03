@@ -832,8 +832,10 @@ medusaIntegrationTestRunner({
                   tax_lines: [
                     {
                       code: "CADEFAULT",
+                      data: null,
                       description: "CA Default Rate",
                       id: expect.any(String),
+                      metadata: null,
                       provider_id: "system",
                       rate: 5,
                     },
@@ -954,8 +956,10 @@ medusaIntegrationTestRunner({
                   tax_lines: [
                     {
                       code: "CADEFAULT",
+                      data: null,
                       description: "CA Default Rate",
                       id: expect.any(String),
+                      metadata: null,
                       provider_id: "system",
                       rate: 5,
                     },
@@ -1905,6 +1909,147 @@ medusaIntegrationTestRunner({
                     quantity: 2,
                   }),
                 ]),
+              })
+            )
+          })
+        })
+
+        describe("with quantity based sale price lists", () => {
+          let tieredVariantId
+          let tieredCart
+
+          beforeEach(async () => {
+            const tieredProduct = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Medusa T-Shirt with tiered sale prices",
+                  handle: "t-shirt-with-tiered-sale-prices",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["S"] }],
+                  variants: [
+                    {
+                      title: "S",
+                      sku: "SHIRT-S-BLACK-w-tiered-sale-prices",
+                      options: { Size: "S" },
+                      manage_inventory: false,
+                      prices: [{ amount: 4000, currency_code: "usd" }],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            tieredVariantId = tieredProduct.variants[0].id
+
+            await api.post(
+              `/admin/price-lists`,
+              {
+                title: "tiered sale price list",
+                description: "test",
+                status: PriceListStatus.ACTIVE,
+                type: PriceListType.SALE,
+                prices: [
+                  {
+                    amount: 3799,
+                    currency_code: "usd",
+                    variant_id: tieredVariantId,
+                    min_quantity: 3,
+                    max_quantity: 4,
+                  },
+                  {
+                    amount: 3599,
+                    currency_code: "usd",
+                    variant_id: tieredVariantId,
+                    min_quantity: 5,
+                  },
+                ],
+              },
+              adminHeaders
+            )
+
+            tieredCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                },
+                storeHeaders
+              )
+            ).data.cart
+          })
+
+          it("should re-calculate the price of a merged line item based on the resulting quantity", async () => {
+            let response
+
+            for (let i = 0; i < 3; i++) {
+              response = await api.post(
+                `/store/carts/${tieredCart.id}/line-items`,
+                {
+                  variant_id: tieredVariantId,
+                  quantity: 1,
+                },
+                storeHeaders
+              )
+
+              expect(response.status).toEqual(200)
+            }
+
+            expect(response.data.cart.items).toHaveLength(1)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                variant_id: tieredVariantId,
+                quantity: 3,
+                unit_price: 3799,
+                compare_at_unit_price: 4000,
+              })
+            )
+          })
+
+          it("should set compare_at_unit_price when a line item's quantity is updated", async () => {
+            const itemId = (
+              await api.post(
+                `/store/carts/${tieredCart.id}/line-items`,
+                {
+                  variant_id: tieredVariantId,
+                  quantity: 1,
+                },
+                storeHeaders
+              )
+            ).data.cart.items[0].id
+
+            let response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 3 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 3,
+                unit_price: 3799,
+                compare_at_unit_price: 4000,
+              })
+            )
+
+            // Dropping back below the first tier resets the compare-at price
+            response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 1,
+                unit_price: 4000,
+                compare_at_unit_price: null,
               })
             )
           })
@@ -3069,6 +3214,107 @@ medusaIntegrationTestRunner({
           })
         })
 
+        it("should preserve tax line data field on order after cart completion", async () => {
+          const taxService = appContainer.resolve(Modules.TAX)
+          await taxService.createTaxRegions([
+            {
+              country_code: "GB",
+              provider_id: "tp_tax-data-provider_data-provider",
+              default_tax_rate: {
+                name: "GB Standard Rate",
+                rate: 20,
+                code: "GB_STD",
+              },
+            },
+          ])
+
+          const gbRegion = (
+            await api.post(
+              "/admin/regions",
+              { name: "GB Tax Data", currency_code: "gbp", countries: ["gb"] },
+              adminHeaders
+            )
+          ).data.region
+
+          const gbProduct = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "GB Tax Test Product",
+                status: ProductStatus.PUBLISHED,
+                options: [{ title: "Size", values: ["S"] }],
+                variants: [
+                  {
+                    title: "S",
+                    manage_inventory: false,
+                    options: { Size: "S" },
+                    prices: [{ amount: 1000, currency_code: "gbp" }],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          const gbCart = (
+            await api.post(
+              "/store/carts",
+              {
+                currency_code: "gbp",
+                region_id: gbRegion.id,
+                sales_channel_id: salesChannel.id,
+                shipping_address: {
+                  address_1: "1 Oxford Street",
+                  city: "London",
+                  country_code: "GB",
+                  postal_code: "W1D 1AN",
+                },
+                items: [{ variant_id: gbProduct.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              "/store/payment-collections",
+              { cart_id: gbCart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+
+          const response = await api.post(
+            `/store/carts/${gbCart.id}/complete`,
+            {},
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+
+          const order = (
+            await api.get(
+              `/admin/orders/${response.data.order.id}?fields=items.tax_lines.*`,
+              adminHeaders
+            )
+          ).data.order
+
+          expect(order.items[0].tax_lines).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                code: "GB_STD",
+                provider_id: "tax-data-provider",
+                data: { state_rate: 4.0, county_rate: 3.0, city_rate: 1.9 },
+              }),
+            ])
+          )
+        })
+
         describe("empty cart validation", () => {
           it("should fail to complete an empty cart via the store endpoint", async () => {
             const emptyCart = (
@@ -4190,6 +4436,243 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should refresh tax lines when the shipping address province changes", async () => {
+          let updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {},
+            storeHeaders
+          )
+
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "CA Default Rate",
+                      code: "CADEFAULT",
+                      rate: 5,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              shipping_address: {
+                ...shippingAddressData,
+                country_code: "us",
+                province: "NY",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_address: expect.objectContaining({ province: "NY" }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "NY Default Rate",
+                      code: "NYDEFAULT",
+                      rate: 6,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should refresh tax lines when a country-only shipping address is set on a multi-country region cart", async () => {
+          const euRegion = (
+            await api.post(
+              "/admin/regions",
+              {
+                name: "Europe",
+                currency_code: "eur",
+                countries: ["de", "ca"],
+              },
+              adminHeaders
+            )
+          ).data.region
+
+          // A multi-country region doesn't auto-assign a country, so the item
+          // is added before the cart has a shipping country.
+          const euCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "eur",
+                sales_channel_id: salesChannel.id,
+                region_id: euRegion.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 2 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Without a country on the cart, items carry no tax lines.
+          expect(euCart.items).toEqual([
+            expect.objectContaining({ tax_lines: [] }),
+          ])
+
+          // Setting a country-only address (no province) must refresh taxes.
+          const updated = await api.post(
+            `/store/carts/${euCart.id}`,
+            { shipping_address: { country_code: "de" } },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: euCart.id,
+              shipping_address: expect.objectContaining({ country_code: "de" }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "Germany Default Rate",
+                      code: "DE19",
+                      rate: 19,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should refresh tax lines when the shipping country changes within a multi-country region", async () => {
+          const euRegion = (
+            await api.post(
+              "/admin/regions",
+              {
+                name: "Europe",
+                currency_code: "eur",
+                countries: ["de", "ca"],
+              },
+              adminHeaders
+            )
+          ).data.region
+
+          const euCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "eur",
+                sales_channel_id: salesChannel.id,
+                region_id: euRegion.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 2 }],
+                shipping_address: { country_code: "de" },
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(euCart.items).toEqual([
+            expect.objectContaining({
+              tax_lines: [
+                expect.objectContaining({
+                  code: "DE19",
+                  rate: 19,
+                }),
+              ],
+            }),
+          ])
+
+          // Switching the country (still no province) must re-tax at the new
+          // country's rate.
+          const updated = await api.post(
+            `/store/carts/${euCart.id}`,
+            { shipping_address: { country_code: "ca" } },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: euCart.id,
+              shipping_address: expect.objectContaining({ country_code: "ca" }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "Canada Default Rate",
+                      code: "CA_DEF",
+                      rate: 5,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should refresh tax lines when the shipping address is switched to a different address id", async () => {
+          // cart (beforeEach) has a US/CA address (CA Default Rate). Create a
+          // second cart with a US/NY address to obtain a different,
+          // tax-different address id.
+          const otherCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: {
+                  ...shippingAddressData,
+                  country_code: "us",
+                  province: "NY",
+                },
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          // Switch the cart to the other address by id alone (the payload
+          // carries no tax-relevant fields), so only the changed address id can
+          // trigger the refresh. The referenced address is in a different tax
+          // region (NY), so tax lines must be recalculated.
+          const updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { shipping_address: { id: otherCart.shipping_address.id } },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              shipping_address: expect.objectContaining({
+                id: otherCart.shipping_address.id,
+                province: "NY",
+              }),
+              items: [
+                expect.objectContaining({
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "NY Default Rate",
+                      code: "NYDEFAULT",
+                      rate: 6,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
+
         it("should not generate tax lines for gift card products", async () => {
           const giftCardProduct = (
             await api.post(
@@ -4227,11 +4710,10 @@ medusaIntegrationTestRunner({
           ).data.product
 
           let updated = await api.post(
-            `/store/carts/${cart.id}/line-items?fields=+items.is_giftcard`,
+            `/store/carts/${cart.id}/line-items`,
             { variant_id: giftCardProduct.variants[0].id, quantity: 1 },
             storeHeaders
           )
-
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
             expect.objectContaining({

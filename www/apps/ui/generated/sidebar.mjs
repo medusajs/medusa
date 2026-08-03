@@ -5,7 +5,6 @@ export const generatedSidebars = [
     "items": [
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "link",
         "title": "Introduction",
         "path": "/",
@@ -16,14 +15,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Installation",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Medusa Admin Extension",
             "path": "/installation/medusa-admin-extension",
@@ -31,7 +28,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Standalone Project",
             "path": "/installation/standalone-project",
@@ -41,7 +37,6 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "link",
         "title": "Icons",
         "path": "/icons/overview",
@@ -49,7 +44,6 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "link",
         "title": "Colors",
         "path": "/colors/overview",
@@ -60,14 +54,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Components",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Alert",
             "path": "/components/alert",
@@ -75,7 +67,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Avatar",
             "path": "/components/avatar",
@@ -83,7 +74,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Badge",
             "path": "/components/badge",
@@ -91,7 +81,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Button",
             "path": "/components/button",
@@ -99,7 +88,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Calendar",
             "path": "/components/calendar",
@@ -107,7 +95,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Checkbox",
             "path": "/components/checkbox",
@@ -115,7 +102,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Code Block",
             "path": "/components/code-block",
@@ -123,7 +109,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Command",
             "path": "/components/command",
@@ -131,7 +116,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Command Bar",
             "path": "/components/command-bar",
@@ -139,7 +123,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Container",
             "path": "/components/container",
@@ -147,7 +130,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Copy",
             "path": "/components/copy",
@@ -155,7 +137,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Currency Input",
             "path": "/components/currency-input",
@@ -163,7 +144,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Data Table",
             "path": "/components/data-table",
@@ -171,7 +151,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Date Picker",
             "path": "/components/date-picker",
@@ -179,7 +158,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Drawer",
             "path": "/components/drawer",
@@ -187,7 +165,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Dropdown Menu",
             "path": "/components/dropdown-menu",
@@ -195,7 +172,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Focus Modal",
             "path": "/components/focus-modal",
@@ -203,7 +179,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Heading",
             "path": "/components/heading",
@@ -211,7 +186,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Icon Badge",
             "path": "/components/icon-badge",
@@ -219,7 +193,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Icon Button",
             "path": "/components/icon-button",
@@ -227,7 +200,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Inline Tip",
             "path": "/components/inline-tip",
@@ -235,7 +207,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Input",
             "path": "/components/input",
@@ -243,7 +214,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Kbd",
             "path": "/components/kbd",
@@ -251,7 +221,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Label",
             "path": "/components/label",
@@ -259,7 +228,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "OTP Input",
             "path": "/components/otp-input",
@@ -267,7 +235,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Progress Accordion",
             "path": "/components/progress-accordion",
@@ -275,7 +242,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Progress Tabs",
             "path": "/components/progress-tabs",
@@ -283,7 +249,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Prompt",
             "path": "/components/prompt",
@@ -291,7 +256,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Radio Group",
             "path": "/components/radio-group",
@@ -299,7 +263,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Select",
             "path": "/components/select",
@@ -307,7 +270,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Status Badge",
             "path": "/components/status-badge",
@@ -315,7 +277,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Switch",
             "path": "/components/switch",
@@ -323,7 +284,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Table",
             "path": "/components/table",
@@ -331,7 +291,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Tabs",
             "path": "/components/tabs",
@@ -339,7 +298,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Text",
             "path": "/components/text",
@@ -347,7 +305,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Textarea",
             "path": "/components/textarea",
@@ -355,7 +312,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Toast",
             "path": "/components/toast",
@@ -363,7 +319,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Tooltip",
             "path": "/components/tooltip",
@@ -373,14 +328,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Hooks",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "usePrompt",
             "path": "/hooks/use-prompt",
@@ -388,7 +341,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "useToggleState",
             "path": "/hooks/use-toggle-state",
@@ -398,14 +350,12 @@ export const generatedSidebars = [
       },
       {
         "loaded": true,
-        "isPathHref": true,
         "type": "category",
         "title": "Utils",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "clx",
             "path": "/utils/clx",

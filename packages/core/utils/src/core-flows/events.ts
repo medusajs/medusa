@@ -376,20 +376,23 @@ export const AuthWorkflowEvents = {
   /**
    * Emitted when a verification code is generated. You can listen to
    * this event and decide how to deliver the code to the user or customer.
+   * The payload changed in v2.17.0:
+   * `actor_type` and `provider_identity_id` were removed,
+   * `provider` was renamed to `code_provider`, and `entity_type` was added.
+   * Subscribers written before v2.17.0 must be updated to use the payload below.
    *
    * @since 2.15.5
    *
    * @eventPayload
    * ```ts
    * {
-   *   entity_id, // The identifier of the user or customer. For example, an email address.
-   *   actor_type, // The type of actor. For example, "customer", "user", or custom.
-   *   provider, // The auth provider that requested verification.
+   *   entity_id, // The identifier of the entity being verified. For example, an email address.
+   *   entity_type, // The kind of entity being verified. For example, "email".
+   *   code_provider, // The verification provider that generated the code. For example, "token".
    *   auth_identity_id, // The ID of the auth identity being verified.
-   *   provider_identity_id, // The ID of the provider identity being verified.
    *   code, // The generated verification code.
-   *   expires_at, // The code expiry date.
-   *   metadata, // Optional custom metadata passed from the request.
+   *   expires_at, // (Date) The code expiry date.
+   *   metadata, // (object) Optional custom metadata passed from the request.
    * }
    * ```
    */
@@ -1005,6 +1008,149 @@ export const TranslationWorkflowEvents = {
    * ```
    */
   DELETED: "translation.deleted",
+} as const
+
+/**
+ * @category Inventory Item
+ * @customNamespace Inventory
+ */
+export const InventoryItemWorkflowEvents = {
+  /**
+   * Emitted when inventory items are created.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory item
+   * }
+   * ```
+   */
+  CREATED: "inventory-item.created",
+  /**
+   * Emitted when inventory items are updated.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory item
+   * }
+   * ```
+   */
+  UPDATED: "inventory-item.updated",
+  /**
+   * Emitted when inventory items are deleted.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory item
+   * }
+   * ```
+   */
+  DELETED: "inventory-item.deleted",
+} as const
+
+/**
+ * @category Inventory Level
+ * @customNamespace Inventory
+ */
+export const InventoryLevelWorkflowEvents = {
+  /**
+   * Emitted when inventory levels are created.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory level
+   * }
+   * ```
+   */
+  CREATED: "inventory-level.created",
+  /**
+   * Emitted when inventory levels are updated. This includes adjustments to
+   * the stocked or reserved quantity, such as during order fulfillment.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory level
+   *   order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+   * }
+   * ```
+   */
+  UPDATED: "inventory-level.updated",
+  /**
+   * Emitted when inventory levels are deleted.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the inventory level
+   * }
+   * ```
+   */
+  DELETED: "inventory-level.deleted",
+} as const
+
+/**
+ * @category Reservation Item
+ * @customNamespace Inventory
+ */
+export const ReservationItemWorkflowEvents = {
+  /**
+   * Emitted when reservations are created.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the reservation
+   *   order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+   * }
+   * ```
+   */
+  CREATED: "reservation-item.created",
+  /**
+   * Emitted when reservations are updated.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the reservation
+   *   order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+   * }
+   * ```
+   */
+  UPDATED: "reservation-item.updated",
+  /**
+   * Emitted when reservations are deleted.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the reservation
+   *   order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+   * }
+   * ```
+   */
+  DELETED: "reservation-item.deleted",
 } as const
 
 // TODO: Comment temporarely and we will re enable it in the near future #14478

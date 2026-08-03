@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartStepId","title":"validateCartStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"validateCartStepId","type":"`\"validate-cart\"`","description":"","optional":false,"defaultValue":"\"validate-cart\"","expandable":false,"children":[]}]}]}

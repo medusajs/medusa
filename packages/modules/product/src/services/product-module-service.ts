@@ -44,6 +44,7 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
+  mergeMetadata,
   MessageAggregator,
   Modules,
   partitionArray,
@@ -382,6 +383,10 @@ export default class ProductModuleService
       await this.filterOptionValues(serializedProducts, sharedContext)
     }
 
+    if (shouldFilterOptionValues) {
+      await this.filterOptionValues(serializedProducts, sharedContext)
+    }
+
     return [serializedProducts, count]
   }
 
@@ -501,14 +506,14 @@ export default class ProductModuleService
 
     const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
     const [variants, { optionsByProductId, valueIdsByProductId }] =
-    await promiseAll([
-      this.productVariantService_.list(
-        { product_id: productIds },
-        { relations: ["options"] },
-        sharedContext
-      ),
-      this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
-    ])
+      await promiseAll([
+        this.productVariantService_.list(
+          { product_id: productIds },
+          { relations: ["options"] },
+          sharedContext
+        ),
+        this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
+      ])
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
@@ -655,11 +660,23 @@ export default class ProductModuleService
 
     // Data normalization
     const variantsWithProductId: UpdateProductVariantInput[] = variants.map(
-      (v) => ({
-        ...data.find((d) => d.id === v.id),
-        id: v.id,
-        product_id: v.product_id,
-      })
+      (variant) => {
+        const update = data.find(({ id }) => id === variant.id)!
+
+        return {
+          ...update,
+          id: variant.id,
+          product_id: variant.product_id,
+          ...(isPresent(update.metadata)
+            ? {
+                metadata: mergeMetadata(
+                  variant.metadata ?? {},
+                  update.metadata!
+                ),
+              }
+            : {}),
+        }
+      }
     )
 
     let productVariantsWithOptions: UpdateProductVariantInput[] =
@@ -1687,12 +1704,12 @@ export default class ProductModuleService
   async removeProductOptionFromProduct(
     groupCustomerPair: ProductTypes.ProductOptionProductPair,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<string[]>
 
   async removeProductOptionFromProduct(
     groupCustomerPairs: ProductTypes.ProductOptionProductPair[],
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<string[]>
 
   @InjectManager()
   @EmitEvents()
@@ -1701,8 +1718,12 @@ export default class ProductModuleService
       | ProductTypes.ProductOptionProductPair
       | ProductTypes.ProductOptionProductPair[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.removeProductOptionFromProduct_(data, new Set(), sharedContext)
+  ): Promise<string[]> {
+    return await this.removeProductOptionFromProduct_(
+      data,
+      new Set(),
+      sharedContext
+    )
   }
 
   @InjectTransactionManager()
@@ -1712,7 +1733,7 @@ export default class ProductModuleService
       | ProductTypes.ProductOptionProductPair[],
     alreadyValidatedProductIds: Set<string>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
+  ): Promise<string[]> {
     const pairs = Array.isArray(data) ? data : [data]
     const productOptionsProducts = await this.productProductOptionService_.list(
       {
@@ -1742,6 +1763,13 @@ export default class ProductModuleService
     }
 
     const productOptionsProductIds = productOptionsProducts.map(({ id }) => id)
+    const unlinkedOptionIds = [
+      ...new Set(
+        productOptionsProducts
+          .map((ppo) => ppo.product_option_id)
+          .filter((id): id is string => !!id)
+      ),
+    ]
 
     await this.productProductOptionValueService_.delete(
       productOptionsProductIds.map((id) => ({ product_product_option_id: id })),
@@ -1752,6 +1780,43 @@ export default class ProductModuleService
       productOptionsProductIds,
       sharedContext
     )
+
+    // Soft-delete exclusive options that are now orphaned.
+    if (!unlinkedOptionIds.length) {
+      return []
+    }
+
+    const [unlinkedOptions, remainingLinks] = await promiseAll([
+      this.productOptionService_.list(
+        { id: unlinkedOptionIds },
+        {},
+        sharedContext
+      ),
+      this.productProductOptionService_.list(
+        { product_option_id: unlinkedOptionIds },
+        {},
+        sharedContext
+      ),
+    ])
+
+    const stillLinkedOptionIds = new Set(
+      remainingLinks.map((link) => link.product_option_id)
+    )
+
+    const orphanedExclusiveOptionIds = unlinkedOptions
+      .filter(
+        (option) => option.is_exclusive && !stillLinkedOptionIds.has(option.id)
+      )
+      .map((option) => option.id)
+
+    if (orphanedExclusiveOptionIds.length) {
+      await this.productOptionService_.softDelete(
+        orphanedExclusiveOptionIds,
+        sharedContext
+      )
+    }
+
+    return orphanedExclusiveOptionIds
   }
 
   async updateProductOptionValuesOnProduct(
@@ -2483,6 +2548,40 @@ export default class ProductModuleService
     )
 
     return categories
+  }
+
+  @InjectManager()
+  @EmitEvents()
+  // @ts-expect-error
+  async softDeleteProductCategories<
+    TReturnableLinkableKeys extends string = string
+  >(
+    primaryKeyValues: string | object | string[] | object[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    const primaryKeyValuesArray = Array.isArray(primaryKeyValues)
+      ? primaryKeyValues
+      : [primaryKeyValues]
+
+    const categoryIds = primaryKeyValuesArray.map((primaryKeyValue) =>
+      isString(primaryKeyValue)
+        ? primaryKeyValue
+        : (primaryKeyValue as { id: string }).id
+    )
+
+    const result = await super.softDeleteProductCategories(
+      primaryKeyValues,
+      config,
+      sharedContext
+    )
+
+    eventBuilders.deletedProductCategory({
+      data: categoryIds.map((id) => ({ id })),
+      sharedContext,
+    })
+
+    return result
   }
 
   //@ts-expect-error

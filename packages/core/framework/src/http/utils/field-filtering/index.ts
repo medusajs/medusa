@@ -32,4 +32,8 @@ export interface IFieldFilter {
 }
 
 export { FieldParser } from "./field-parser"
-export { AllowedFieldFilter, RestrictedFieldFilter } from "./field-validator"
+export {
+  AllowedFieldFilter,
+  DisallowedFieldFilter,
+  RestrictedFieldFilter,
+} from "./field-validator"

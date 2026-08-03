@@ -1,0 +1,63 @@
+post:
+  operationId: PostProductsIdOptionsBatch
+  summary: Add Options to Product
+  description: Add a list of options to a product.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The product's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminLinkProductOptions.yaml
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_products_{id}_options_batch/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_products_{id}_options_batch/post.sh
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminProductResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: createAndLinkProductOptionsToProductWorkflow
+  x-events:
+    - name: product.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the product
+        }
+        ```
+      description: Emitted when products are updated.
+      deprecated: false
+  x-since: 2.17.0

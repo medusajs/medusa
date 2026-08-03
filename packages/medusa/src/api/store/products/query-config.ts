@@ -1,3 +1,5 @@
+import { disallowedStoreFields } from "../utils/disallowed-fields"
+
 export const defaultStoreProductFields = [
   "id",
   "title",
@@ -31,6 +33,7 @@ export const defaultStoreProductFields = [
 
 export const retrieveProductQueryConfig = {
   defaults: defaultStoreProductFields,
+  disallowed: disallowedStoreFields,
   isList: false,
 }
 

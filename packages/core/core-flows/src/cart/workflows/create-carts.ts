@@ -20,6 +20,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import { getTranslatedLineItemsStep } from "../../common"
 import { emitEventStep } from "../../common/steps/emit-event"
 import {
   createCartsStep,
@@ -36,7 +37,6 @@ import { getVariantsAndItemsWithPrices } from "./get-variants-and-items-with-pri
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
-import { getTranslatedLineItemsStep } from "../../common"
 
 /**
  * The data to create the cart, along with custom data that's passed to the workflow's hooks.
@@ -112,7 +112,7 @@ export const prepareCartToCreateStep = createStep(
 export const createCartWorkflowId = "create-cart"
 /**
  * This workflow creates and returns a cart. You can set the cart's items, region, customer, and other details. This workflow is executed by the
- * [Create Cart Store API Route](https://docs.medusajs.com/api/store#carts_postcarts).
+ * [Create Cart Store API Route](https://docs.medusajs.com/api/store/carts/create-cart).
  *
  * This workflow has a hook that allows you to perform custom actions on the created cart. You can see an example in [this guide](https://docs.medusajs.com/resources/commerce-modules/cart/extend#step-4-consume-cartcreated-workflow-hook).
  *
@@ -232,6 +232,7 @@ export const createCartWorkflow = createWorkflow(
             region: data.region,
             region_id: data.region?.id,
             customer_id: data.customerData.customer?.id,
+            customer: data.customerData.customer ?? undefined,
           },
           items: data.input.items,
           setPricingContextResult: data.setPricingContextResult!,

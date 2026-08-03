@@ -50,7 +50,7 @@ export interface AddDraftOrderShippingMethodsWorkflowInput {
 
 /**
  * This workflow adds shipping methods to a draft order. It's used by the
- * [Add Shipping Method to Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditshippingmethods).
+ * [Add Shipping Method to Draft Order Admin API Route](https://docs.medusajs.com/api/admin/draft-orders/add-shipping-method).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around adding shipping methods to
  * a draft order.

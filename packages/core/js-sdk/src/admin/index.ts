@@ -27,6 +27,7 @@ import { ProductTag } from "./product-tag.js"
 import { ProductType } from "./product-type.js"
 import { ProductVariant } from "./product-variant.js"
 import { Promotion } from "./promotion.js"
+import { PropertyLabel } from "./property-label.js"
 import { RefundReason } from "./refund-reasons.js"
 import { Region } from "./region.js"
 import Reservation from "./reservation.js"
@@ -43,6 +44,7 @@ import { TaxRegion } from "./tax-region.js"
 import { Upload } from "./upload.js"
 import { User } from "./user.js"
 import { Views } from "./views.js"
+import { Layouts } from "./layouts.js"
 import { WorkflowExecution } from "./workflow-execution.js"
 import { ShippingOptionType } from "./shipping-option-type.js"
 import { Locale } from "./locale.js"
@@ -255,6 +257,15 @@ export class Admin {
    */
   public views: Views
   /**
+   * @tags property-labels
+   * @featureFlag view_configurations
+   */
+  public propertyLabel: PropertyLabel
+  /**
+   * @tags layouts
+   */
+  public layouts: Layouts
+  /**
    * @tags rbac
    * @since 2.15.5
    */
@@ -315,6 +326,8 @@ export class Admin {
     this.plugin = new Plugin(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)
+    this.propertyLabel = new PropertyLabel(client)
+    this.layouts = new Layouts(client)
     this.rbacRole = new RbacRole(client)
     this.rbacPolicy = new RbacPolicy(client)
   }
