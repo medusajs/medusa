@@ -28,8 +28,6 @@ on:
       - "docs/**"
       - "www/**"
       - ".github/**"
-  schedule:
-    - cron: "0 */3 * * *"
   issue_comment:
     types:
       - created
