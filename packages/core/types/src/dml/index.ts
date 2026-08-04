@@ -10,6 +10,10 @@ export type DMLSchema = Record<
   PropertyType<any> | RelationshipType<any>
 >
 
+/**
+ * The configuration for a DML entity. Accepts either a string (the entity name)
+ * or an object with a table name and optional name override.
+ */
 export type IDmlEntityConfig =
   | string
   | {
@@ -17,6 +21,9 @@ export type IDmlEntityConfig =
       tableName: string
     }
 
+/**
+ * Infers the camelCase entity name from an `IDmlEntityConfig`.
+ */
 export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
   TConfig extends string
     ? CamelCase<TConfig>
@@ -268,6 +275,9 @@ export type Infer<T> = T extends IDmlEntity<infer Schema, any>
   ? EntityConstructor<InferSchemaFields<Schema>>
   : never
 
+/**
+ * Infers the entity type for use in module services from a DML entity.
+ */
 export type InferEntityForModuleService<T> = T extends IDmlEntity<
   infer Schema,
   any
@@ -360,10 +370,24 @@ export type EntityIndex<
   type?: string
 }
 
+/**
+ * A simple scalar value used in DML query conditions.
+ */
 export type SimpleQueryValue = string | number | boolean | null
+
+/**
+ * A query value representing a "not equal" condition.
+ */
 export type NeQueryValue = { $ne: SimpleQueryValue }
+
+/**
+ * A value used in DML query conditions, either a scalar or a "not equal" object.
+ */
 export type QueryValue = SimpleQueryValue | NeQueryValue
 
+/**
+ * A query condition object for filtering DML entity records.
+ */
 export type QueryCondition<T extends DMLSchema = DMLSchema> = {
   [K in keyof IDmlEntity<T, any>["schema"]]?: T[K] extends object
     ? QueryValue

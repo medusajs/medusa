@@ -3,14 +3,21 @@ import ProductOptionValue from "./product-option-value"
 import ProductProductOption from "./product-product-option"
 
 /**
+ * A pivot record linking a product option to a product option value.
  * @since 2.16.0
  */
 const ProductProductOptionValue = model
   .define("ProductProductOptionValue", {
     id: model.id({ prefix: "prodoptval" }).primaryKey(),
+    /**
+     * The associated product option.
+     */
     product_product_option: model.belongsTo(() => ProductProductOption, {
       mappedBy: "values",
     }),
+    /**
+     * The associated product option value.
+     */
     product_option_value: model.belongsTo(() => ProductOptionValue, {
       mappedBy: "product_options",
     }),
