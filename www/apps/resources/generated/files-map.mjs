@@ -1912,6 +1912,10 @@ export const filesMap = [
     "pathname": "/test-tools-reference/moduleIntegrationTestRunner"
   },
   {
+    "filePath": "/www/apps/resources/app/test-tools-reference/normalizeBigNumbers/page.mdx",
+    "pathname": "/test-tools-reference/normalizeBigNumbers"
+  },
+  {
     "filePath": "/www/apps/resources/app/test-tools-reference/page.mdx",
     "pathname": "/test-tools-reference"
   },

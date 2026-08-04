@@ -477,6 +477,7 @@ export const sitemapUrls = [
   "/storefront-development/tips",
   "/test-tools-reference/medusaIntegrationTestRunner",
   "/test-tools-reference/moduleIntegrationTestRunner",
+  "/test-tools-reference/normalizeBigNumbers",
   "/test-tools-reference",
   "/tools",
   "/troubleshooting/api-routes/additional-data-error",

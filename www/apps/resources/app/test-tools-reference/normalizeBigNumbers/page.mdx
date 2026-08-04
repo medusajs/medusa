@@ -1,0 +1,43 @@
+export const metadata = {
+  title: `normalizeBigNumbers Reference`,
+}
+
+# {metadata.title}
+
+This is a reference to the `normalizeBigNumbers` function provided by the `@medusajs/test-utils` package.
+
+## Summary
+
+`normalizeBigNumbers` recursively converts `BigNumber` instances to plain JavaScript numbers within any object, array, or primitive value. Dates are left intact.
+
+When you retrieve or create orders and carts in tests, numeric fields such as totals are returned as `BigNumber` instances rather than plain numbers. Use `normalizeBigNumbers` when writing Jest assertions against those values so you can compare them to plain-number expectations.
+
+## Example
+
+```ts
+import { medusaIntegrationTestRunner, normalizeBigNumbers } from "@medusajs/test-utils"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ api }) => {
+    it("returns the correct order totals", async () => {
+      const { data: { order } } = await api.get("/admin/orders/order_123")
+
+      expect(normalizeBigNumbers(order)).toMatchObject({
+        total: 5000,
+        subtotal: 4500,
+        tax_total: 500,
+      })
+    })
+  },
+})
+```
+
+## Parameters
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `value` | `any` | The value to normalize. Can be a `BigNumber` instance, a plain object, an array, or any primitive. |
+
+## Returns
+
+Returns the normalized value with all `BigNumber` instances replaced by plain `number` values. The original structure (objects, arrays) is preserved. `Date` instances are returned as-is.

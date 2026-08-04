@@ -7643,5 +7643,6 @@ export const generatedEditDates = {
   "app/lint/rules/widget-must-export-config/page.mdx": "2026-07-28T05:43:12.267Z",
   "app/lint/rules/widget-must-have-default-export/page.mdx": "2026-07-28T05:43:12.274Z",
   "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z",
-  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z"
+  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z",
+  "app/test-tools-reference/normalizeBigNumbers/page.mdx": "2026-08-04T18:55:41.529Z"
 }
