@@ -1,5 +1,5 @@
 import { ICacheService } from "@medusajs/framework/types"
-import { isDefined, isProduction, MedusaError } from "@medusajs/framework/utils"
+import { isDefined, MedusaError } from "@medusajs/framework/utils"
 import {
   Client,
   custom,
