@@ -22,7 +22,7 @@ export const generatedEditDates = {
   "app/commerce-modules/fulfillment/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/fulfillment/concepts/page.mdx": "2025-04-24T09:21:37.616Z",
   "app/commerce-modules/fulfillment/fulfillment-provider/page.mdx": "2025-05-20T07:51:40.707Z",
-  "app/commerce-modules/fulfillment/item-fulfillment/page.mdx": "2025-08-21T14:58:42.730Z",
+  "app/commerce-modules/fulfillment/item-fulfillment/page.mdx": "2026-08-04T15:52:11.557Z",
   "app/commerce-modules/fulfillment/module-options/page.mdx": "2025-08-21T15:00:29.183Z",
   "app/commerce-modules/fulfillment/shipping-option/page.mdx": "2026-07-15T08:25:04.666Z",
   "app/commerce-modules/fulfillment/page.mdx": "2025-05-20T07:51:40.707Z",
