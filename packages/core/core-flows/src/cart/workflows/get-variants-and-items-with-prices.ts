@@ -185,6 +185,25 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
 
 export const getVariantsAndItemsWithPricesId =
   "get-variant-items-with-prices-workflow"
+/**
+ * This workflow retrieves product variants and cart line items with their
+ * calculated prices. It's used as a sub-workflow when adding items to a cart
+ * or refreshing cart prices to attach up-to-date pricing context to each line
+ * item.
+ *
+ * @example
+ * const { result } = await getVariantsAndItemsWithPrices(container)
+ *   .run({
+ *     input: {
+ *       cart: { id: "cart_123", items: [] },
+ *       setPricingContextResult: {},
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Retrieve variants and line items with their calculated prices.
+ */
 export const getVariantsAndItemsWithPrices = createWorkflow(
   getVariantsAndItemsWithPricesId,
   (
