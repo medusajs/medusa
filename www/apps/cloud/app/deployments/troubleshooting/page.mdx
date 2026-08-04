@@ -478,9 +478,9 @@ If the logs show a lockfile error, regenerate the lockfile locally:
 
 ---
 
-## Next.js Storefront: Cannot Find Module @opennextjs/cloudflare
+## Storefront: Cannot Find Module @opennextjs/cloudflare
 
-If your Next.js storefront build fails with an error similar to:
+If your storefront build fails with an error similar to:
 
 ```bash
 Cannot find module '@opennextjs/cloudflare/overrides/...'
@@ -501,12 +501,6 @@ Open your storefront's `tsconfig.json` and update `compilerOptions.moduleResolut
 ```
 
 After updating the file, commit the change and push to trigger a new deployment.
-
-<Note>
-
-The `bundler` resolution mode is the recommended setting for Next.js projects using modern packages with subpath exports. Refer to the [Next.js TypeScript documentation](https://nextjs.org/docs/app/api-reference/config/typescript) for more details.
-
-</Note>
 
 ---
 
