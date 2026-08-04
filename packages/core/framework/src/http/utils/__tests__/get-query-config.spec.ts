@@ -668,21 +668,21 @@ describe("prepareListQuery", () => {
       expect(result.remoteQueryConfig.fields).toEqual(["id", "orders.email"])
     })
   })
+})
 
-  describe("prepareRetrieveQuery", () => {
-    it("should preserve the entity in the remote query config", async () => {
-      const validated: RequestQueryFields = {
-        fields: "id,title",
-      }
+describe("prepareRetrieveQuery", () => {
+  it("should preserve the entity in the remote query config", async () => {
+    const validated: RequestQueryFields = {
+      fields: "id,title",
+    }
 
-      const queryConfig: QueryConfig<any> = {
-        entity: "product",
-      }
+    const queryConfig: QueryConfig<any> = {
+      entity: "product",
+    }
 
-      const result = await prepareRetrieveQuery(validated, queryConfig)
+    const result = await prepareRetrieveQuery(validated, queryConfig)
 
-      expect(result.remoteQueryConfig.entity).toBe("product")
-      expect(result.remoteQueryConfig.pagination).toEqual({})
-    })
+    expect(result.remoteQueryConfig.entity).toBe("product")
+    expect(result.remoteQueryConfig.pagination).toEqual({})
   })
 })
