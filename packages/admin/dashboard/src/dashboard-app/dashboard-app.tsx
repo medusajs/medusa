@@ -579,11 +579,32 @@ export class DashboardApp {
 
     const router = createBrowserRouter(routes, {
       basename: __BASE__ || "/",
+      /**
+       * Only the v7 flags whose features we actually use. Omitted because the
+       * dashboard uses none of what they govern: `v7_fetcherPersist` (no
+       * `useFetcher`), `v7_normalizeFormMethod` (no router `Form`/`submit` —
+       * our `Form` is `components/common/form`), `v7_skipActionErrorRevalidation`
+       * (no route `action`s).
+       *
+       * `v7_partialHydration` is omitted for a different reason: our routes
+       * have loaders but no root `HydrateFallback`, and enabling it makes
+       * react-router warn on every initial load ("No `HydrateFallback` element
+       * provided to render during initial hydration"). Adding a
+       * `HydrateFallback` is a prerequisite for turning it on.
+       *
+       * Note `v7_startTransition` is not a router option — it belongs on
+       * `RouterProvider` below.
+       *
+       * @see https://reactrouter.com/6.30.4/upgrading/future
+       */
+      future: {
+        v7_relativeSplatPath: true,
+      },
     })
 
     return (
       <Providers api={this.api}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} future={{ v7_startTransition: true }} />
       </Providers>
     )
   }
