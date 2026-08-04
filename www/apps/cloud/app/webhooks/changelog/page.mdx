@@ -1,0 +1,22 @@
+export const metadata = {
+  title: `Webhooks Changelog`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find the notable changes to the webhook events that Cloud delivers, with the newest change listed first. Each entry is grouped by the date the change went live.
+
+Refer to the [Webhooks](../page.mdx) reference for the current payload of every event.
+
+{/* Entries are added automatically when webhook changes are deployed.
+    Keep them newest-first, with an `## {Month} {Day}, {Year}` heading. */}
+
+## August 4, 2026
+
+### deployment.succeeded
+
+- Added the `deployment.succeeded` event, delivered when a deployment of an environment finishes successfully.
+
+### deployment.failed
+
+- Added the `deployment.failed` event, delivered when a deployment of an environment fails.

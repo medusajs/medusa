@@ -1,0 +1,282 @@
+import { Note, Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Webhooks`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how Cloud delivers webhook events to your application, and you'll find the details and payload of every event that Cloud sends.
+
+## Webhooks Overview
+
+A webhook is an HTTP request that Cloud sends to an endpoint you own when something happens in your organization, such as a deployment finishing. Webhooks let you react to changes in Cloud without polling its APIs.
+
+Cloud sends every webhook as a `POST` request with a JSON body. Your endpoint must return a `2xx` status code to acknowledge the delivery.
+
+<Note>
+
+Refer to the [Webhooks Changelog](./changelog/page.mdx) for dated updates to the webhook events that Cloud delivers.
+
+</Note>
+
+---
+
+## Delivery Details
+
+{/* TODO: confirm the header names, signature algorithm, and retry policy
+    with the Cloud team once webhook delivery ships. */}
+
+Every delivery includes the following headers:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Header
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Event`
+
+      </Table.Cell>
+      <Table.Cell>
+        The name of the event, such as `deployment.succeeded`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Delivery-Id`
+
+      </Table.Cell>
+      <Table.Cell>
+        A unique ID for the delivery attempt. Use it to make your handler idempotent.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Signature`
+
+      </Table.Cell>
+      <Table.Cell>
+        An HMAC SHA-256 signature of the raw request body, signed with your endpoint's secret.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Verify a Signature
+
+Compute the HMAC SHA-256 of the raw request body using your endpoint's secret, then compare it to the `X-Medusa-Signature` header:
+
+```ts
+import crypto from "crypto"
+
+export function isValid(
+  rawBody: string,
+  signature: string,
+  secret: string
+) {
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(rawBody)
+    .digest("hex")
+
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signature)
+  )
+}
+```
+
+Verify the signature against the raw request body. If your framework parses the body into an object first, the signature won't match.
+
+### Retries
+
+If your endpoint doesn't return a `2xx` status code, Cloud retries the delivery with an exponential backoff. Cloud stops retrying after the last attempt fails, and the delivery is marked as failed.
+
+---
+
+## Events
+
+{/* TODO: The events below are placeholders until the webhook catalog is
+    finalized. Verify the event names, properties, and example payloads. */}
+
+Cloud sends the following events:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Event
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.succeeded`](#deploymentsucceeded)
+
+      </Table.Cell>
+      <Table.Cell>
+        A deployment finished successfully.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.failed`](#deploymentfailed)
+
+      </Table.Cell>
+      <Table.Cell>
+        A deployment failed.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## deployment.succeeded
+
+Cloud sends this event when a deployment of an environment finishes successfully.
+
+### Payload
+
+<TypeList
+  types={[
+    {
+      name: "event",
+      type: "`string`",
+      description: `The name of the event. Always \`deployment.succeeded\`.`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `The date and time the event occurred, in ISO 8601 format.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The details of the deployment.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the deployment.`,
+        },
+        {
+          name: "environment_id",
+          type: "`string`",
+          description: `The ID of the environment the deployment belongs to.`,
+        },
+        {
+          name: "project_id",
+          type: "`string`",
+          description: `The ID of the project the deployment belongs to.`,
+        },
+        {
+          name: "commit_sha",
+          type: "`string`",
+          description: `The SHA of the commit that triggered the deployment.`,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.succeeded"
+/>
+
+### Example Payload
+
+```json
+{
+  "event": "deployment.succeeded",
+  "created_at": "2026-08-04T10:12:31.000Z",
+  "data": {
+    "id": "depl_01J8Z",
+    "environment_id": "env_01J8Z",
+    "project_id": "proj_01J8Z",
+    "commit_sha": "9f2c1ab"
+  }
+}
+```
+
+---
+
+## deployment.failed
+
+Cloud sends this event when a deployment of an environment fails.
+
+### Payload
+
+<TypeList
+  types={[
+    {
+      name: "event",
+      type: "`string`",
+      description: `The name of the event. Always \`deployment.failed\`.`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `The date and time the event occurred, in ISO 8601 format.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The details of the deployment.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the deployment.`,
+        },
+        {
+          name: "environment_id",
+          type: "`string`",
+          description: `The ID of the environment the deployment belongs to.`,
+        },
+        {
+          name: "project_id",
+          type: "`string`",
+          description: `The ID of the project the deployment belongs to.`,
+        },
+        {
+          name: "error",
+          type: "`string`",
+          description: `The reason the deployment failed.`,
+          optional: true,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.failed"
+/>
+
+### Example Payload
+
+```json
+{
+  "event": "deployment.failed",
+  "created_at": "2026-08-04T10:14:02.000Z",
+  "data": {
+    "id": "depl_01J8Z",
+    "environment_id": "env_01J8Z",
+    "project_id": "proj_01J8Z",
+    "error": "Build step exited with code 1"
+  }
+}
+```

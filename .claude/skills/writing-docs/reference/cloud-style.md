@@ -124,15 +124,29 @@ import { Table } from "docs-ui"
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Column</Table.HeaderCell>
+      <Table.HeaderCell>
+        Column
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
-      <Table.Cell>Value</Table.Cell>
+      <Table.Cell>
+        Value
+      </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
+```
+
+Put each cell's content on its own line, indented one level deeper than its tag. When a cell's content uses markdown, such as inline code or a link, surround it with blank lines so MDX parses it:
+
+```mdx
+      <Table.Cell>
+
+      [`deployment.succeeded`](#deploymentsucceeded)
+
+      </Table.Cell>
 ```
 
 ## Cross-Project Links
@@ -281,6 +295,100 @@ Update CLI docs when a Cloud CLI change:
 - Changes shared flags that affect multiple commands
 
 Do not update CLI docs for internal refactors that don't change the CLI's external behavior.
+
+---
+
+## Webhooks Documentation
+
+Cloud's webhook events are documented on **two pages only**:
+
+| Page | File |
+|---|---|
+| Events reference | `www/apps/cloud/app/webhooks/page.mdx` |
+| Changelog | `www/apps/cloud/app/webhooks/changelog/page.mdx` |
+
+Never create a page per event. Every event is a section on the single reference page.
+
+### Reference Page Structure
+
+```mdx
+import { Note, Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Webhooks`,
+}
+
+# {metadata.title}
+
+## Webhooks Overview      → what webhooks are, how Cloud delivers them
+## Delivery Details       → headers, signature verification, retries
+## Events                 → summary table linking to each event's section
+## <event name>           → one section per event
+```
+
+Each event section follows this shape, with `---` dividers between events:
+
+````mdx
+## deployment.succeeded
+
+Cloud sends this event when a deployment of an environment finishes successfully.
+
+<Note title="Changes">
+
+- Cloud removed the `data.commit_sha` property on August 4, 2026.
+
+</Note>
+
+### Payload
+
+<TypeList
+  types={[
+    {
+      name: "event",
+      type: "`string`",
+      description: `The name of the event.`,
+    },
+  ]}
+  sectionTitle="deployment.succeeded"
+/>
+
+### Example Payload
+
+```json
+{
+  "event": "deployment.succeeded"
+}
+```
+````
+
+**Rules:**
+
+- The `##` heading is the event name exactly as delivered, in code-free plain text (`## deployment.succeeded`, not `` ## `deployment.succeeded` ``), so anchors stay stable
+- `sectionTitle` on `TypeList` matches the event name
+- `TypeList` `type` values are wrapped in backticks inside a double-quoted string (`` type: "`string`" ``), and `description` values use template literals
+- Nest object properties with the `children` array instead of flattening them into `data.x` names
+- The `## Events` table lists every event with a link to its section anchor. Anchors strip dots, so `deployment.succeeded` links to `#deploymentsucceeded`
+
+### Changelog Page
+
+Webhook changes are **dated, not versioned**. Never write a version number on either page.
+
+- Each entry uses a `## {Month} {Day}, {Year}` heading, for example `## August 4, 2026`
+- Entries are newest-first, directly below the intro
+- Under each date, use a `### <event name>` subsection with bullet points describing what changed
+- Use a `### Delivery` subsection for changes that aren't tied to a single event, such as header, signature, or retry changes
+- If an entry for that date already exists, merge into it instead of adding a duplicate
+
+### Inline Change Notes
+
+When an event's payload changes, add a `<Note title="Changes">` block after the section intro of that event, listing the change and the date it went live. Write these actively, since Vale flags passive voice:
+
+```mdx
+- Cloud removed the `data.commit_sha` property on August 4, 2026.
+- Cloud added the `data.build_id` property on August 4, 2026.
+```
+
+Keep previous entries in the note and add new bullet points at the top.
 
 ---
 

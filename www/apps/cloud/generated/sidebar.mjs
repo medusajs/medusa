@@ -504,6 +504,30 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
+        "title": "Webhooks",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Events Reference",
+            "path": "/webhooks",
+            "hideFromChildItems": true,
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/webhooks/changelog",
+            "hideFromChildItems": true,
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
         "title": "Networking",
         "initialOpen": true,
         "children": [
