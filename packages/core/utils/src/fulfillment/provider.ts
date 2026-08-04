@@ -296,6 +296,9 @@ export class AbstractFulfillmentProviderService
    * @param items - The items in the fulfillment.
    * @param order - The order this fulfillment is created for.
    * @param fulfillment - The fulfillment's details.
+   * @param additionalData - Custom key-value pairs forwarded from the workflow that
+   * created the fulfillment (for example, the `additional_data` of the Create Order
+   * Fulfillment API route). It isn't persisted on the fulfillment.
    * @returns An object whose `data` property is stored in the fulfillment's `data` property.
    *
    * @example
@@ -305,7 +308,8 @@ export class AbstractFulfillmentProviderService
    *     data: Record<string, unknown>,
    *     items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
    *     order: Partial<FulfillmentOrderDTO> | undefined,
-   *     fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
+   *     fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>,
+   *     additionalData?: Record<string, unknown>
    *   ): Promise<CreateFulfillmentResult> {
    *     // assuming the client creates a fulfillment
    *     // in the third-party service
@@ -327,7 +331,10 @@ export class AbstractFulfillmentProviderService
     data: Record<string, unknown>,
     items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
     order: Partial<FulfillmentOrderDTO> | undefined,
-    fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
+    fulfillment: Partial<
+      Omit<FulfillmentDTO, "provider_id" | "data" | "items">
+    >,
+    additionalData?: Record<string, unknown>
   ): Promise<CreateFulfillmentResult> {
     throw Error("createFulfillment must be overridden by the child class")
   }
