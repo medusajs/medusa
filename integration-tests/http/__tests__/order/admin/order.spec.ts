@@ -1869,6 +1869,41 @@ medusaIntegrationTestRunner({
         expect(iitem.reserved_quantity).toBe(0)
       })
 
+      it("should override the fulfillment's delivery address with the request's delivery_address", async () => {
+        const orderItemId = order.items.find(
+          (i) => i.variant_id === productOverride3.variants[0].id
+        ).id
+
+        const {
+          data: { order: fulfillableOrder },
+        } = await api.post(
+          `/admin/orders/${order.id}/fulfillments?fields=fulfillments.id,fulfillments.delivery_address.*`,
+          {
+            shipping_option_id: seeder.shippingOption.id,
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+            delivery_address: {
+              first_name: "Nova",
+              last_name: "Poshta",
+            },
+          },
+          adminHeaders
+        )
+
+        expect(fulfillableOrder.fulfillments).toHaveLength(1)
+        expect(fulfillableOrder.fulfillments[0].delivery_address).toEqual(
+          expect.objectContaining({
+            // overridden by the request
+            first_name: "Nova",
+            last_name: "Poshta",
+            // untouched fields are still taken from the order's shipping address
+            address_1: order.shipping_address.address_1,
+            city: order.shipping_address.city,
+            country_code: order.shipping_address.country_code,
+          })
+        )
+      })
+
       it("should throw if trying to fulfillment more items than it is reserved", async () => {
         const orderItemId = order.items.find(
           (i) => i.variant_id === productOverride3.variants[0].id
