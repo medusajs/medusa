@@ -24,9 +24,13 @@ export class ManualFulfillmentService extends AbstractFulfillmentProviderService
   }
 
   async calculatePrice(optionData, data, context) {
+    // mock caluclation as 1.5 per item, converted with a per-currency rate to
+    // assert the currency is part of the context in every calculation path
+    const rate = context.currency_code === "dkk" ? 2 : 1
+
     return {
       calculated_amount:
-        context.items.reduce((acc, i) => acc + i.quantity, 0) * 1.5, // mock caluclation as 1.5 per item
+        context.items.reduce((acc, i) => acc + i.quantity, 0) * 1.5 * rate,
       is_calculated_price_tax_inclusive: false,
     }
   }

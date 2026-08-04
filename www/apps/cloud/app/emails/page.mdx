@@ -11,7 +11,7 @@ keywords:
   - medusa emails
 ---
 
-import { CodeTabs, CodeTab, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
+import { CodeTabs, CodeTab, Note, Prerequisites, InlineIcon, getOsShortcut, Kbd } from "docs-ui"
 import { ChevronUpDown, TriangleRightMini } from "@medusajs/icons"
 
 export const metadata = {
@@ -210,28 +210,31 @@ You can also navigate to the sender domains form from the [command palette](../c
 
 4. Click Emails -> Sender Domains from the sidebar.
 5. Click the "Add sender domain" button.
-6. In the form that opens, perform these two steps:
-    - **Domain**: Enter the domain you want to add (for example, `yourdomain.com`).
-    - **DNS Records**: Add the provided DNS records to your domain's DNS settings. The form shows two categories of records:
-        - **DKIM** (labeled **Required**): DomainKeys Identified Mail records that authenticate your emails. You must add these records to send emails from your domain.
-        - **SPF** (labeled **Optional**): Sender Policy Framework records that help receiving mail servers verify your domain. Adding SPF records improves deliverability but is not required.
-        - **DMARC** (labeled **Optional**): Domain-based Message Authentication records that build on DKIM and SPF to protect against email spoofing. Adding DMARC records is recommended for improved email security but is not required.
-        - If you're unsure how to add DNS records, refer to your domain registrar's documentation or support.
-7. Once you're done, click the "I've added the records" button.
+6. In the form that opens, enter the domain you want to add (for example, `yourdomain.com`) and click **Continue**.
 
-The domain will then be added, and the system will periodically check the DNS records to verify it. This process may take a few minutes to several hours, depending on your DNS provider.
+After submitting, you'll be taken to the domain's detail page where the required DNS records are shown. Add these records to your domain's DNS settings:
+
+- **DKIM** (labeled **Required**): DomainKeys Identified Mail records that authenticate your emails. You must add these records to send emails from your domain.
+- **SPF**: (Optional) Sender Policy Framework records that help receiving mail servers verify your domain. Adding SPF records improves deliverability but is not required.
+- **DMARC**: (Optional) Domain-based Message Authentication records that build on DKIM and SPF to protect against email spoofing. Adding DMARC records is recommended for improved email security but is not required.
+
+If you're unsure how to add DNS records, refer to your domain registrar's documentation or support.
+
+The domain will then be verified periodically. This process may take a few minutes to several hours, depending on your DNS provider.
 
 ### View Domain Verification Status
 
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
-The detail page shows the DNS records for each section (DKIM, SPF, and DMARC) with an inline status indicator per row showing whether verification succeeded, failed, or is still in progress. When all DKIM records pass but the domain is still pending platform confirmation, a **Finalizing** status is shown.
+The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
 
-![Sender Domains page with the sender domain added](https://res.cloudinary.com/dza7lstvk/image/upload/v1762947495/Cloud/CleanShot_2025-11-12_at_13.36.59_2x_sbaf7y.png)
+### Restart Failed DNS Setup
 
-### Re-verify DNS Records
+When the domain is in a **failed** state, you can retry the verification from the beginning by clicking the **Restart** button at the top right. This button will only show up in the failed state.
 
-If you've updated your DNS records and want to trigger an immediate check, click the **Reverify records** button on the domain detail page. This manually starts a fresh DNS check rather than waiting for the next automatic check.
+### Verify DNS Records Manually
+
+If your domain's status is still pending, you can trigger an immediate DNS check instead of waiting for the next automatic check by clicking the **Verify records** button at the top right.
 
 ### Diagnose DNS Record Issues
 
@@ -342,6 +345,13 @@ Below the statistics, you'll find a detailed list of sent emails.
 To change the time range for email activity statistics and the list of sent emails, click the time range dropdown at the top right of the page. You can choose custom ranges or predefined ranges like "Last 7 days" or "Last 30 days".
 
 ![Time range dropdown opened on the Email Activity page](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948832/Cloud/CleanShot_2025-11-12_at_14.00.17_2x_bqlopg.png)
+
+The earliest selectable start date depends on your organization's [plan](../pricing/page.mdx):
+
+- **Develop plan**: You can query email logs from up to the past 12 hours.
+- **Launch and Scale plans**: You can query email logs from up to the past 3 days.
+
+If you select a start date earlier than what your plan allows, the picker automatically moves it forward to the earliest permitted time.
 
 ### Filter Emails by Project
 

@@ -85,6 +85,42 @@ export class InventoryItem {
   }
 
   /**
+   * This method exports inventory items to a CSV file. The CSV file includes the
+   * inventory levels of each item per stock location. It sends a request to the
+   * [Export Inventory Items](https://docs.medusajs.com/api/admin/inventory-items/export-inventory-items)
+   * API route.
+   *
+   * The export is processed asynchronously. Once it's done, admin users receive
+   * a notification with the URL to download the exported file.
+   *
+   * @param body - The export's details.
+   * @param query - Filters to select which inventory items to export.
+   * @param headers - Headers to pass in the request.
+   * @returns The ID of the workflow transaction processing the export.
+   *
+   * @example
+   * sdk.admin.inventoryItem.export({})
+   * .then(({ transaction_id }) => {
+   *   console.log(transaction_id)
+   * })
+   */
+  async export(
+    body: HttpTypes.AdminExportInventoryItemRequest,
+    query?: HttpTypes.AdminInventoryItemsParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminExportInventoryItemResponse>(
+      `/admin/inventory-items/export`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  /**
    * This method retrieves a paginated list of inventory items. It sends a request to the
    * [List Inventory Items](https://docs.medusajs.com/api/admin/inventory-items/list-inventory-items)
    * API route.

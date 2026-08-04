@@ -77,6 +77,8 @@ If the build succeeds, the resulting image is tagged `<repository-name>:cloud-lo
 
 Before the build starts, the CLI may print warnings if your installed CLI version is outdated, or if the current repository or branch doesn't match the linked Cloud project and environment. These are warnings only and don't stop the build.
 
+If your repository does not have a remote origin configured, the CLI falls back to using the local folder name as the repository name.
+
 </Note>
 
 ### Override Environment Variables

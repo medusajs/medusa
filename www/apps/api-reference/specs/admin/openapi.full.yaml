@@ -23207,6 +23207,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 200 status code's message.
+                example: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -37098,7 +37105,9 @@ paths:
     delete:
       operationId: DeleteProductCategoriesId
       summary: Delete a Product Category
-      description: Delete a product category. This doesn't deleted products in that category.
+      description: Delete a product category. This doesn't delete the products in
+        that category. A product category that has child categories can't be deleted,
+        so you must delete its child categories first.
       x-authenticated: true
       parameters:
         - name: id
@@ -71275,6 +71284,13 @@ paths:
       responses:
         '201':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 201 status code's message.
+                example: Created
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -93974,7 +93990,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the cart's sales channel. Only products that belong to the same sales channel can be added to the cart. The created order will be associated with the same sales channel.
+          description: |
+            The ID of the cart's sales channel. The created order is associated with the same sales channel.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         email:
           type: string
           title: email
@@ -94828,7 +94849,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the sales channel that cart is created in. Only products available in that sales channel can be added to the cart. If not provided, the store's default sales channel is associated with the cart instead.
+          description: |
+            The ID of the sales channel that cart is created in. If not provided, the store's default sales channel is associated with the cart instead.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         metadata:
           type: object
           description: The cart's metadata, can hold custom key-value pairs.
@@ -98167,7 +98193,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the associated sales channel. Only products available in this channel can be added to the cart.
+          description: |
+            The ID of the associated sales channel.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         email:
           type: string
           title: email
