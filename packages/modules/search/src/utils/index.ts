@@ -1,30 +1,24 @@
 import { SearchTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
+import { SearchIndexes } from "@types"
 import { createHash } from "crypto"
 
-// Lifecycle of an index, as persisted on `SearchIndex.status`.
 export enum SearchIndexState {
-  // Known to the module, not yet created on the engine.
   PENDING = "pending",
-  // Being seeded. For a `swap` reindex this is the shadow index.
   BUILDING = "building",
   READY = "ready",
   ERROR = "error",
 }
 
-// Lifecycle of one seed run, as persisted on `SearchIndexSync.status`.
 export enum SearchSyncStatus {
-  // Recorded, not yet picked up by a worker.
   PENDING = "pending",
   PROCESSING = "processing",
   DONE = "done",
-  // Stopped before finishing. `last_key` holds the resume point.
   FAILED = "failed",
-  // Superseded by a newer run, or cancelled explicitly.
   CANCELED = "canceled",
 }
 
-export const DEFAULT_TAKE = 20
+const DEFAULT_TAKE = 20
 export const DEFAULT_REINDEX_BATCH_SIZE = 100
 
 /* ----------------------------- field traversal ---------------------------- */
@@ -60,7 +54,7 @@ export function flattenFields(
   return flat
 }
 
-export function buildFieldMap(
+function buildFieldMap(
   definition: Pick<SearchTypes.SearchIndexDefinition, "fields">
 ): Map<string, FlatSearchField> {
   return new Map(flattenFields(definition.fields).map((f) => [f.path, f]))
@@ -100,14 +94,6 @@ function defaultFacetKinds(
   }
 }
 
-export function isRetrievable(
-  field: SearchTypes.SearchFieldDefinition
-): boolean {
-  return field.retrievable !== false
-}
-
-/* ------------------------------ definitions ------------------------------- */
-
 // Key order must not change the hash, so object keys are emitted sorted.
 function stableStringify(value: unknown): string {
   if (value === null || typeof value !== "object") {
@@ -125,7 +111,7 @@ function stableStringify(value: unknown): string {
 
 // Stable hash over what affects the physical index. `events`, `consume` and
 // `seed` are excluded: how documents are produced is not the index' shape.
-export function buildDefinitionHash(
+function buildDefinitionHash(
   definition: Pick<SearchTypes.SearchIndexDefinition, "fields" | "settings">
 ): string {
   return createHash("sha256")
@@ -140,7 +126,7 @@ export function buildDefinitionHash(
 }
 
 // Accounts for `index_prefix` and, for a shadow index, the schema suffix.
-export function buildPhysicalIndexName({
+function buildPhysicalIndexName({
   name,
   prefix,
   suffix,
@@ -151,82 +137,6 @@ export function buildPhysicalIndexName({
 }): string {
   return [prefix, name, suffix].filter(Boolean).join("_")
 }
-
-// Applies defaults and binds a definition to a provider.
-export function resolveIndexDefinition({
-  definition,
-  default_provider,
-  index_prefix,
-}: {
-  definition: SearchTypes.SearchIndexDefinition
-  default_provider: string
-  index_prefix?: string
-}): SearchTypes.ResolvedSearchIndexDefinition {
-  if (!definition.name) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "A search index definition requires a name"
-    )
-  }
-
-  if (!definition.fields?.[definition.primary_key ?? "id"]) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Search index "${definition.name}" must declare its primary key field "${
-        definition.primary_key ?? "id"
-      }"`
-    )
-  }
-
-  const settings = { ...(definition.settings ?? {}) }
-
-  settings.default_search_attributes ??= flattenFields(definition.fields)
-    .filter(({ field }) => isSearchable(field))
-    .map(({ path }) => path)
-
-  return {
-    ...definition,
-    primary_key: definition.primary_key ?? "id",
-    provider: definition.provider ?? default_provider,
-    settings,
-    definition_hash: buildDefinitionHash(definition),
-    physical_name: buildPhysicalIndexName({
-      name: definition.name,
-      prefix: index_prefix,
-    }),
-  }
-}
-
-// Splits requested fields into what the engine can return and what needs
-// hydrating through `query.graph`. The primary key lands in both halves.
-export function splitRequestedFields({
-  index,
-  fields,
-}: {
-  index: SearchTypes.ResolvedSearchIndexDefinition
-  fields: string[]
-}): { index_fields: string[]; graph_fields: string[] } {
-  const fieldMap = buildFieldMap(index)
-  const indexFields = new Set<string>([index.primary_key])
-  const graphFields = new Set<string>([index.primary_key])
-
-  for (const requested of fields) {
-    const known = fieldMap.get(requested)
-
-    if (known && isRetrievable(known.field)) {
-      indexFields.add(requested)
-    } else {
-      graphFields.add(requested)
-    }
-  }
-
-  return {
-    index_fields: [...indexFields],
-    graph_fields: [...graphFields],
-  }
-}
-
-/* --------------------------------- queries -------------------------------- */
 
 // Lifts `q` out of the filters, applies pagination defaults, expands shorthand
 // facets, and resolves `attributes_to_search_on` against the index' defaults.
@@ -254,14 +164,11 @@ export function normalizeSearchQuery({
   searchOptions.attributes_to_search_on ??=
     index.settings.default_search_attributes
 
-  const { index_fields } = splitRequestedFields({
-    index,
-    fields: query.fields ?? [],
-  })
-
   return {
     index,
-    attributes_to_retrieve: index_fields,
+    // Taken as given: `query.search` has already dropped anything the index
+    // cannot return and left only what the provider should project.
+    attributes_to_retrieve: query.fields ?? [],
     q,
     filters: Object.keys(filters).length
       ? (filters as SearchTypes.SearchFilters)
@@ -276,7 +183,7 @@ export function normalizeSearchQuery({
   }
 }
 
-// Drops every predicate on `field`, including inside `$and` branches.
+// Drops every predicate on `field`, including inside `$and` / `$or` / `$not`.
 function withoutFieldFilter(
   filters: SearchTypes.SearchFilters | undefined,
   field: string
@@ -291,15 +198,28 @@ function withoutFieldFilter(
     if (key === field) {
       continue
     }
-    if (key === "$and" && Array.isArray(value)) {
+
+    if ((key === "$and" || key === "$or") && Array.isArray(value)) {
       const branches = value
         .map((branch) => withoutFieldFilter(branch, field))
         .filter((branch) => branch && Object.keys(branch).length)
       if (branches.length) {
-        next.$and = branches
+        next[key] = branches
       }
       continue
     }
+
+    if (key === "$not") {
+      const stripped = withoutFieldFilter(
+        value as SearchTypes.SearchFilters,
+        field
+      )
+      if (stripped && Object.keys(stripped).length) {
+        next.$not = stripped
+      }
+      continue
+    }
+
     next[key] = value
   }
 
@@ -373,8 +293,6 @@ export function mergeDisjunctiveFacetResults({
   return { ...base, facets }
 }
 
-/* -------------------------------- validation ------------------------------ */
-
 function collectFilterPaths(
   filters: SearchTypes.SearchFilters,
   into: Set<string> = new Set()
@@ -391,57 +309,6 @@ function collectFilterPaths(
     }
   }
   return into
-}
-
-/**
- * Checks a definition is internally coherent regardless of provider — a field
- * asking for something that makes no sense for its type. Whether a *particular*
- * provider can serve it is settled in `upsertIndex`, which runs for every
- * definition at startup, so it still fails at boot but with a better error.
- */
-export function validateIndexDefinition({
-  definition,
-}: {
-  definition: SearchTypes.ResolvedSearchIndexDefinition
-}): void {
-  const fail = (message: string) => {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Invalid search index definition "${definition.name}": ${message}`
-    )
-  }
-
-  for (const { path, field } of flattenFields(definition.fields)) {
-    if (field.correlated && !(field.type === "object" && field.array)) {
-      fail(
-        `field "${path}" sets "correlated", which only applies to an array of objects`
-      )
-    }
-
-    if (field.type === "vector" && !field.dimensions) {
-      fail(`vector field "${path}" must declare its "dimensions"`)
-    }
-
-    if (field.type === "object" && !field.fields) {
-      fail(`object field "${path}" must declare its "fields"`)
-    }
-
-    const numeric = ["integer", "float", "date"].includes(field.type)
-
-    if (isFacetable(field, "range") && !numeric) {
-      fail(`field "${path}" is not numeric, so it cannot have range facets`)
-    }
-
-    if (isFacetable(field, "stats") && !numeric) {
-      fail(`field "${path}" is not numeric, so it cannot have stats facets`)
-    }
-
-    if (isSearchable(field) && !["text", "keyword"].includes(field.type)) {
-      fail(
-        `field "${path}" is of type "${field.type}", which cannot be searched as free text`
-      )
-    }
-  }
 }
 
 // Checks a field is declared for the use the query puts it to. Engines reject
@@ -521,21 +388,133 @@ export function validateFieldUsage({
   }
 }
 
-export { stableStringify }
+/**
+ * Resolves every definition once, at construction. Duplicates and incoherent
+ * definitions fail here, so everything downstream can treat the result as given.
+ */
+export function resolveIndexDefinitions({
+  definitions,
+  default_provider,
+  index_prefix,
+}: {
+  definitions: SearchTypes.SearchIndexDefinition[]
+  default_provider: string
+  index_prefix?: string
+}): SearchIndexes {
+  const resolved: SearchIndexes = new Map()
 
-/* -------------------------------- lookups --------------------------------- */
+  for (const definition of definitions) {
+    const primaryKey = definition.primary_key ?? "id"
+
+    if (!definition.name) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "A search index definition requires a name"
+      )
+    }
+
+    if (resolved.has(definition.name)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Duplicate search index definition for "${definition.name}"`
+      )
+    }
+
+    if (!definition.fields?.[primaryKey]) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Search index "${definition.name}" must declare its primary key field "${primaryKey}"`
+      )
+    }
+
+    const settings = { ...(definition.settings ?? {}) }
+
+    settings.default_search_attributes ??= flattenFields(definition.fields)
+      .filter(({ field }) => isSearchable(field))
+      .map(({ path }) => path)
+
+    const entry: SearchTypes.ResolvedSearchIndexDefinition = {
+      ...definition,
+      primary_key: primaryKey,
+      provider: definition.provider ?? default_provider,
+      settings,
+      definition_hash: buildDefinitionHash(definition),
+      physical_name: buildPhysicalIndexName({
+        name: definition.name,
+        prefix: index_prefix,
+      }),
+    }
+
+    validateIndexDefinition({ definition: entry })
+
+    resolved.set(entry.name, entry)
+  }
+
+  return resolved
+}
+
+/**
+ * Checks a definition is internally coherent regardless of provider — a field
+ * asking for something that makes no sense for its type. Whether a *particular*
+ * provider can serve it is settled in `upsertIndex`, which runs for every
+ * definition at startup, so it still fails at boot but with a better error.
+ */
+function validateIndexDefinition({
+  definition,
+}: {
+  definition: SearchTypes.ResolvedSearchIndexDefinition
+}): void {
+  const fail = (message: string) => {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Invalid search index definition "${definition.name}": ${message}`
+    )
+  }
+
+  for (const { path, field } of flattenFields(definition.fields)) {
+    if (field.correlated && !(field.type === "object" && field.array)) {
+      fail(
+        `field "${path}" sets "correlated", which only applies to an array of objects`
+      )
+    }
+
+    if (field.type === "vector" && !field.dimensions) {
+      fail(`vector field "${path}" must declare its "dimensions"`)
+    }
+
+    if (field.type === "object" && !field.fields) {
+      fail(`object field "${path}" must declare its "fields"`)
+    }
+
+    const numeric = ["integer", "float", "date"].includes(field.type)
+
+    if (isFacetable(field, "range") && !numeric) {
+      fail(`field "${path}" is not numeric, so it cannot have range facets`)
+    }
+
+    if (isFacetable(field, "stats") && !numeric) {
+      fail(`field "${path}" is not numeric, so it cannot have stats facets`)
+    }
+
+    if (isSearchable(field) && !["text", "keyword"].includes(field.type)) {
+      fail(
+        `field "${path}" is of type "${field.type}", which cannot be searched as free text`
+      )
+    }
+  }
+}
 
 export function retrieveIndexDefinition(
-  indexes: Record<string, SearchTypes.ResolvedSearchIndexDefinition>,
+  indexes: SearchIndexes,
   name: string
 ): SearchTypes.ResolvedSearchIndexDefinition {
-  const definition = indexes[name]
+  const definition = indexes.get(name)
 
   if (!definition) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
       `No search index registered for "${name}". Registered indexes: ${
-        Object.keys(indexes).join(", ") || "(none)"
+        [...indexes.keys()].join(", ") || "(none)"
       }`
     )
   }
@@ -543,8 +522,6 @@ export function retrieveIndexDefinition(
   return definition
 }
 
-// A rejected write is an error, not something to wait on. Anything else comes
-// back untouched, for the caller to block on or not.
 export function assertTaskAccepted(
   task: SearchTypes.SearchTask,
   index: string

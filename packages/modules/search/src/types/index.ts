@@ -58,12 +58,18 @@ declare module "@medusajs/types" {
  * their own. `indexes` is a live reference to the service's registry, not a copy,
  * and `providers` is structural so `utils` need not depend on the service layer.
  */
+/** Resolved definitions, keyed by index name. */
+export type SearchIndexes = Map<
+  string,
+  SearchTypes.ResolvedSearchIndexDefinition
+>
+
 export type SearchIndexContext = {
   // Handed to a definition's `seed` so it can reach `query.graph`.
   container: MedusaContainer
   logger: Logger
   options: SearchModuleOptions
-  indexes: Record<string, SearchTypes.ResolvedSearchIndexDefinition>
+  indexes: SearchIndexes
   providers: { retrieve(identifier: string): SearchTypes.ISearchProvider }
   indexService: ModulesSdkTypes.IMedusaInternalService<any>
   syncService: ModulesSdkTypes.IMedusaInternalService<any>

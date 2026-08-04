@@ -21,5 +21,6 @@ export const SearchIndex = model
       name: "IDX_search_index_name",
       on: ["name"],
       unique: true,
+      where: "deleted_at IS NULL",
     },
   ])

@@ -18,10 +18,7 @@ import {
 } from "./index"
 import { shadowIndexName } from "./migrations"
 
-/** Only the pieces `withIndexLock` reads. */
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
-
-/** Only the pieces the sync-history helpers read. */
 type SyncContext = Pick<SearchIndexContext, "indexService" | "syncService">
 
 /* -------------------------------- planning -------------------------------- */
@@ -35,7 +32,7 @@ type SyncContext = Pick<SearchIndexContext, "indexService" | "syncService">
 export async function createSeedPlan(
   context: SearchIndexRegistry
 ): Promise<SearchIndexSeedAction[]> {
-  const definitions = Object.values(context.indexes)
+  const definitions = [...context.indexes.values()]
 
   if (!definitions.length) {
     return []
@@ -103,8 +100,6 @@ function inPlace(
   }
 }
 
-/* -------------------------------- execution ------------------------------- */
-
 export async function executeSeedPlan(
   context: SearchSeedRuntime & LockContext,
   actions: SearchIndexSeedAction[]
@@ -140,13 +135,9 @@ async function runSeed(
   })
 
   try {
-    // A rebuild without a swap has to bring the live index up to the new schema
-    // first, which may empty it. Nothing else can be done on a provider with no
-    // alias support.
-    if (!action.swap) {
-      await provider.upsertIndex({ index: definition })
-    }
-
+    // Seeding writes into an index a migration already created — only a `swap`
+    // needs its replacement built here. If the target is missing, the provider
+    // says so on the first write.
     const { documents_synced } = await streamSeed(context, {
       index: definition,
       sync_id: sync.id,
@@ -180,36 +171,32 @@ async function runSeed(
   }
 }
 
-/* ------------------------------- reindexing ------------------------------- */
-
-/**
- * Rebuilds on demand, recording a `SearchIndexSync` row per index up front so a
- * run is visible in flight and stays in the history after.
- *
- * `swap` seeds a replacement and aliases over on success, so the live index keeps
- * serving and a failure changes nothing. Providers without `swapIndex` fall back
- * to `in_place`, as does any run scoped by `filters` — swapping in an index built
- * from a subset would drop everything outside it.
- */
 export async function reindexIndexes(
-  context: SearchSeedRuntime,
+  context: SearchSeedRuntime & LockContext,
   input: SearchTypes.SearchReindexInput = {}
 ): Promise<SearchTypes.SearchReindexResult> {
   const names = input.index
     ? Array.isArray(input.index)
       ? input.index
       : [input.index]
-    : Object.keys(context.indexes)
+    : [...context.indexes.keys()]
 
   const definitions = names.map((name) =>
     retrieveIndexDefinition(context.indexes, name)
   )
   const jobId = randomUUID()
 
-  await persistRecords(context, definitions)
-
   for (const definition of definitions) {
-    await reindexOne(context, { definition, jobId, input })
+    // Same lock boot seeding takes, so a reindex never races a startup seed
+    // (or another reindex) on the same index. Unlike boot, an explicit reindex
+    // must not quietly skip — the caller asked for work to happen.
+    if (context.locking) {
+      await context.locking.execute(`search:seed:${definition.name}`, () =>
+        reindexOne(context, { definition, jobId, input })
+      )
+    } else {
+      await reindexOne(context, { definition, jobId, input })
+    }
   }
 
   return { job_id: jobId, indexes: names }
@@ -252,21 +239,13 @@ async function reindexOne(
   })
 
   try {
+    // Only the replacement is new; rebuilding in place writes into the index a
+    // migration already created, whatever its current schema.
     if (useSwap) {
       await provider.upsertIndex({
         index: { ...definition, physical_name: target },
       })
-    } else if (!input.filters) {
-      // A full rebuild with no alias to hide behind: bring the live index up to
-      // the current definition before refilling it. A no-op when the schema
-      // already matches; when it does not, a provider that cannot alter in place
-      // will recreate the index, leaving it briefly empty. That is the cost of
-      // migrating without alias support.
-      await provider.upsertIndex({ index: definition })
     }
-    // A partial rebuild deliberately skips the upsert. It only produces some of
-    // the documents, so it must never be allowed to recreate the index — and a
-    // schema change cannot be migrated by a partial run.
 
     const { documents_synced } = await streamSeed(context, {
       index: definition,
@@ -432,10 +411,7 @@ async function startSync(
 
 async function completeSync(
   context: Pick<SearchIndexContext, "syncService">,
-  {
-    sync_id,
-    documents_synced,
-  }: { sync_id: string; documents_synced: number }
+  { sync_id, documents_synced }: { sync_id: string; documents_synced: number }
 ): Promise<void> {
   await context.syncService.update({
     selector: { id: sync_id },
@@ -526,37 +502,6 @@ async function withIndexLock<T>(
   }
 }
 
-// Creates the `SearchIndex` row for any definition that has none yet.
-async function persistRecords(
-  context: Pick<SearchIndexContext, "indexService">,
-  definitions: SearchTypes.ResolvedSearchIndexDefinition[]
-): Promise<void> {
-  if (!definitions.length) {
-    return
-  }
-
-  const records = await context.indexService.list(
-    { name: definitions.map((definition) => definition.name) },
-    { take: null }
-  )
-
-  const known = new Set(records.map((record) => record.name))
-  const missing = definitions.filter(
-    (definition) => !known.has(definition.name)
-  )
-
-  if (missing.length) {
-    await context.indexService.create(
-      missing.map((definition) => ({
-        name: definition.name,
-        provider: definition.provider,
-        status: SearchIndexState.PENDING,
-        definition_hash: definition.definition_hash,
-      }))
-    )
-  }
-}
-
 async function retrieveRecord(
   context: Pick<SearchIndexContext, "indexService">,
   name: string
@@ -566,7 +511,7 @@ async function retrieveRecord(
   if (!record) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `No persisted search index record for "${name}"`
+      `Search index "${name}" has no record; run migrations to create it`
     )
   }
 

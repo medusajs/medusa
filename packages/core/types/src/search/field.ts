@@ -30,9 +30,9 @@ export interface SearchFieldDefinition {
   facetable?: boolean | { types?: SearchFacetKind[] }
 
   /**
-   * Whether the field comes back on hits. `false` for index-only fields, such as
-   * a blob used purely for matching. Splits requested fields between the engine
-   * and `query.graph`.
+   * Whether the field comes back on hits. `false` for index-only fields, such as a
+   * blob used purely for matching. `query.search` reads this to decide which
+   * requested fields the engine can serve and which need `query.graph`.
    *
    * @default true
    */

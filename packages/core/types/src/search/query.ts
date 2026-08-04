@@ -102,7 +102,11 @@ export interface SearchPagination {
 export interface SearchQuery<TEntry extends string = string> {
   // The index to query, defaulting to the index whose name equals the entity.
   entity: TEntry
-  // Fields on the index and fields reachable through `query.graph`, unioned.
+  /**
+   * The fields the engine should return. `query.search` resolves these against the
+   * definition first, so by the time the module sees them they hold only what the
+   * index can serve — anything else has already been split off for `query.graph`.
+   */
   fields?: string[]
 
   /**

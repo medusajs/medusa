@@ -15,12 +15,10 @@ export function shadowIndexName(
   return `${definition.physical_name}_${definition.definition_hash.slice(0, 8)}`
 }
 
-// What has to happen for the physical indexes to match the definitions, without
-// doing any of it.
 export async function createIndexMigrationPlan(
   context: SearchIndexRegistry
 ): Promise<SearchIndexMigrationAction[]> {
-  const definitions = Object.values(context.indexes)
+  const definitions = [...context.indexes.values()]
 
   if (!definitions.length) {
     return []
@@ -73,11 +71,7 @@ export async function createIndexMigrationPlan(
   })
 }
 
-/**
- * Creates missing indexes and builds a replacement for any changed definition.
- * Never seeds — that waits for application start, so a migration cannot empty an
- * index the previous deploy is still reading.
- */
+// Note: Seeding data is done by the application start hook, migrations are reserved for schema changes.
 export async function executeIndexMigrationPlan(
   context: SearchIndexRegistry,
   actions: SearchIndexMigrationAction[]

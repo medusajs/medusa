@@ -16,6 +16,7 @@ import {
 } from "@medusajs/framework/utils"
 import {
   SearchIndexContext,
+  SearchIndexes,
   SearchIndexMigrationAction,
   SearchIndexSeedAction,
   SearchModuleOptions,
@@ -25,10 +26,9 @@ import {
   buildDisjunctiveFacetQueries,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
-  resolveIndexDefinition,
+  resolveIndexDefinitions,
   retrieveIndexDefinition,
   validateFieldUsage,
-  validateIndexDefinition,
 } from "@utils"
 import {
   createIndexMigrationPlan,
@@ -66,11 +66,10 @@ export default class SearchModuleService
 
   protected readonly moduleOptions_: SearchModuleOptions
 
-  // Definitions keyed by name, populated once on application start and read-only
-  protected readonly indexes_: Record<
-    string,
-    SearchTypes.ResolvedSearchIndexDefinition
-  > = {}
+  // Definitions keyed by name, resolved once in the constructor. Nothing registers
+  // an index at runtime, which is what lets a `definition_hash` change count as a
+  // migration rather than a race.
+  protected readonly indexes_: SearchIndexes
 
   // Passed down for migrations and seeding, among other things.
   protected readonly context_: SearchIndexContext
@@ -92,6 +91,18 @@ export default class SearchModuleService
       {}) as SearchModuleOptions
 
     this.isWorkerMode = moduleDeclaration.worker_mode !== "server"
+
+    // Resolved here rather than on application start, so anything that resolves the
+    // module — `db:migrate` included — sees the definitions without booting first.
+    this.indexes_ = this.moduleOptions_.indexes?.length
+      ? resolveIndexDefinitions({
+          definitions: this.moduleOptions_.indexes,
+          default_provider: container.searchProviderService.getDefaultIdentifier(
+            this.moduleOptions_.default_provider
+          ),
+          index_prefix: this.moduleOptions_.index_prefix,
+        })
+      : new Map()
 
     this.context_ = {
       container: container as unknown as MedusaContainer,
@@ -229,13 +240,12 @@ export default class SearchModuleService
   }
 
   /**
-   * Seeds whatever needs data.
-   * Indexes that are not migrated yet are skipped.
+   * Seeds whatever needs data. Indexes that are not migrated yet are skipped —
+   * creating and migrating physical indexes is the application's job
+   * (e.g. `db:migrate`), not something a booting worker invents.
    */
   protected async onApplicationStart_(): Promise<void> {
-    this.registerIndexDefinitions_(this.moduleOptions_.indexes ?? [])
-
-    if (!Object.keys(this.indexes_).length || !this.isWorkerMode) {
+    if (!this.indexes_.size || !this.isWorkerMode) {
       return
     }
 
@@ -262,49 +272,6 @@ export default class SearchModuleService
     actions: SearchIndexSeedAction[]
   ): Promise<void> {
     await executeSeedPlan(this.context_, actions)
-  }
-
-  // Resolves each definition, checks it is internally coherent, and stores it.
-  protected registerIndexDefinitions_(
-    definitions: SearchTypes.SearchIndexDefinition[]
-  ): void {
-    if (!definitions.length) {
-      return
-    }
-
-    const defaultProvider = this.searchProviderService_.getDefaultIdentifier(
-      this.moduleOptions_.default_provider
-    )
-
-    const resolved = new Map<
-      string,
-      SearchTypes.ResolvedSearchIndexDefinition
-    >()
-
-    for (const definition of definitions) {
-      if (resolved.has(definition.name)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Duplicate search index definition for "${definition.name}"`
-        )
-      }
-
-      const entry = resolveIndexDefinition({
-        definition,
-        default_provider: defaultProvider,
-        index_prefix: this.moduleOptions_.index_prefix,
-      })
-
-      validateIndexDefinition({ definition: entry })
-
-      resolved.set(entry.name, entry)
-    }
-
-    for (const name of Object.keys(this.indexes_)) {
-      delete this.indexes_[name]
-    }
-
-    Object.assign(this.indexes_, Object.fromEntries(resolved))
   }
 
   protected async createIndexMigrationPlan_(): Promise<

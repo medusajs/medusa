@@ -4,8 +4,8 @@ import { ResolvedSearchIndexDefinition } from "./index-definition"
 import { SearchQuery } from "./query"
 import { SearchResult } from "./result"
 
-// The caller's query plus the resolved definition, with fields already narrowed
-// to what the index can serve.
+// The caller's query plus the resolved definition. `attributes_to_retrieve` is
+// already narrowed to what the index can serve, so project it as given.
 export interface ProviderSearchQuery
   extends Omit<SearchQuery, "entity" | "fields"> {
   index: ResolvedSearchIndexDefinition

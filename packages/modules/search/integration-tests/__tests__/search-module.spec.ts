@@ -40,7 +40,7 @@ const migrate = (
 ) => (service as any).executeIndexMigrationPlan_(actions) as Promise<void>
 
 const definition = (service: SearchService, name: string) =>
-  (service as any).indexes_[name] as
+  (service as any).indexes_.get(name) as
     | SearchTypes.ResolvedSearchIndexDefinition
     | undefined
 
@@ -65,6 +65,7 @@ const ids = (result: SearchTypes.SearchResult) =>
 moduleIntegrationTestRunner<SearchService>({
   moduleName: Modules.SEARCH,
   moduleModels: [SearchIndex, SearchIndexSync],
+  resolve: __dirname + "/../..",
   moduleOptions: {
     providers: [
       {
@@ -397,21 +398,35 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result)).toEqual(["prod_3"])
         })
 
-        it("matches a field that is searchable but not retrievable", async () => {
+        it("matches on a field that is never returned", async () => {
+          // `description` is `retrievable: false`, so nothing asks for it back —
+          // but it is indexed, so it still matches.
           const result = await service.search({
             entity: "product",
-            fields: ["id", "title", "description"],
+            fields: ["id", "title"],
             filters: { q: "breathable" },
           })
 
           expect(ids(result)).toEqual(["prod_1"])
-          // `description` is `retrievable: false`, so the engine never returns
-          // it — it is left for `query.graph` to hydrate.
-          expect(result.hits[0].document).not.toHaveProperty("description")
-          expect(result.hits[0].document).toMatchObject({
+          expect(result.hits[0].document).toEqual({
             id: "prod_1",
             title: "Red running shoe",
           })
+        })
+
+        it("returns exactly the fields it is given", async () => {
+          // Narrowing to what the index can serve is `query.search`'s job, so the
+          // module projects the list as-is rather than filtering it again.
+          const result = await service.search({
+            entity: "product",
+            fields: ["id", "brand"],
+            filters: { q: "breathable" },
+          })
+
+          expect(Object.keys(result.hits[0].document).sort()).toEqual([
+            "brand",
+            "id",
+          ])
         })
 
         it("matches nested searchable fields", async () => {
