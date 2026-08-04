@@ -120,7 +120,7 @@ A table for the link is now created in the database. You can now retrieve and ma
 
 When a cart is created, you also want to create a `Custom` record and set the `custom_name` property, then create a link between the `Cart` and `Custom` records.
 
-To do that, you'll consume the [cartCreated](/references/medusa-workflows/createCartWorkflow#cartcreated) hook of the [createCartWorkflow](/references/medusa-workflows/createCartWorkflow). This workflow is executed in the [Create Cart API Route](!api!/store#carts_postcarts).
+To do that, you'll consume the [cartCreated](/references/medusa-workflows/createCartWorkflow#cartcreated) hook of the [createCartWorkflow](/references/medusa-workflows/createCartWorkflow). This workflow is executed in the [Create Cart API Route](!api!/store/carts/create-cart).
 
 <Note title="Tip">
 
@@ -334,11 +334,11 @@ When you extend an existing data model through links, you also want to retrieve 
 
 ### Retrieve in API Routes
 
-To retrieve the `custom_name` property when you're retrieving the cart through API routes, such as the [Get Cart API Route](!api!/store#carts_getcartsid), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
+To retrieve the `custom_name` property when you're retrieving the cart through API routes, such as the [Get Cart API Route](!api!/store/carts/get-a-cart), pass in the `fields` query parameter `+custom.*`, which retrieves the linked `Custom` record's details.
 
 <Note title="Tip">
 
-The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default cart fields. Learn more about selecting fields and relations in the [API reference](!api!/store#select-fields-and-relations).
+The `+` prefix in `+custom.*` indicates that the relation should be retrieved with the default cart fields. Learn more about selecting fields and relations in the [API reference](!api!/store/select-fields-and-relations).
 
 </Note>
 
@@ -392,7 +392,7 @@ Learn more about how to use Query in [this guide](!docs!/learn/fundamentals/modu
 
 Similar to the `cartCreated` hook, you'll consume the [cartUpdated](/references/medusa-workflows/updateCartWorkflow#cartupdated) hook of the [updateCartWorkflow](/references/medusa-workflows/updateCartWorkflow) to update `custom_name` when the cart is updated.
 
-The `updateCartWorkflow` is executed by the [Update Cart API route](!api!/store#carts_postcartsid), which accepts the `additional_data` parameter to pass custom data to the hook.
+The `updateCartWorkflow` is executed by the [Update Cart API route](!api!/store/carts/update-a-cart), which accepts the `additional_data` parameter to pass custom data to the hook.
 
 ### Add custom_name to Additional Data Validation
 

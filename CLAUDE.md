@@ -2,6 +2,10 @@
 
 Open-source commerce platform. TypeScript monorepo with 30+ modular commerce packages.
 
+> When working on the API reference documentation (`www/apps/api-reference`), read [`www/apps/api-reference/CLAUDE.md`](www/apps/api-reference/CLAUDE.md) for its path structure and the OAS → public docs flow.
+
+> When working on the resources documentation (`www/apps/resources`), read [`www/apps/resources/CLAUDE.md`](www/apps/resources/CLAUDE.md) for details on references and how they're generated and built
+
 ### 1. Codebase Structure
 
 **Monorepo Organization:**

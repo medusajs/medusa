@@ -25,7 +25,7 @@ Product collections allow you to group products together for marketing or promot
 
 ## List Product Collections
 
-To retrieve the list of product collections, send a request to the [List Product Collections API route](!api!/store#collections_getcollections):
+To retrieve the list of product collections, send a request to the [List Product Collections API route](!api!/store/collections/list-collections):
 
 <Note title="Tip">
 
@@ -93,15 +93,15 @@ Learn how to install and configure the JS SDK in the [JS SDK documentation](../.
   </CodeTab>
 </CodeTabs>
 
-In this example, you retrieve the list of product collections by sending a request to the [List Product Collections API route](!api!/store#collections_getcollections).
+In this example, you retrieve the list of product collections by sending a request to the [List Product Collections API route](!api!/store/collections/list-collections).
 
-The response has a `collections` field, which is an array of [product collections](!api!/store#collections_getcollections).
+The response has a `collections` field, which is an array of [product collections](!api!/store/collections/list-collections).
 
 ---
 
 ## Paginate Product Collections
 
-To paginate product collections, pass the following query parameters to the [List Product Collections API route](!api!/store#collections_getcollections):
+To paginate product collections, pass the following query parameters to the [List Product Collections API route](!api!/store/collections/list-collections):
 
 - `limit`: The number of product collections to return in the request.
 - `offset`: The number of product collections to skip before the returned product collections. You can calculate this by multiplying the current page with the limit.
@@ -190,7 +190,7 @@ export default function Collections() {
 }
 ```
 
-In this example, you paginate the product collections by passing the `limit` and `offset` query parameters to the [List Product Collections API route](!api!/store#collections_getcollections).
+In this example, you paginate the product collections by passing the `limit` and `offset` query parameters to the [List Product Collections API route](!api!/store/collections/list-collections).
 
 Then, you show a button to load more product collections if there are more pages.
 
@@ -198,9 +198,9 @@ Then, you show a button to load more product collections if there are more pages
 
 ## Filter Collections
 
-The [List Product Collections API route](!api!/store#collections_getcollections) accepts query parameters to filter the collections by title, handle, external ID, and more.
+The [List Product Collections API route](!api!/store/collections/list-collections) accepts query parameters to filter the collections by title, handle, external ID, and more.
 
-Refer to the [API reference](!api!/store#collections_getcollections) for the full list of accepted query parameters.
+Refer to the [API reference](!api!/store/collections/list-collections) for the full list of accepted query parameters.
 
 For example, to filter the collections by title:
 

@@ -267,6 +267,21 @@ If your storefront build fails with a `build-failed` status but the build logs a
 - An outdated lockfile that is out of sync with `package.json`
 - Incompatible or missing dependencies in the monorepo
 
+### Check for Storefront Root Directory Misconfiguration
+
+If the storefront build fails immediately (within 1-2 seconds) with no build logs and you see file retrieval errors, the storefront root directory configured in your Cloud project may not match the actual location of your storefront in the repository.
+
+To verify and fix the storefront root directory:
+
+1. In the [Cloud dashboard](../../organizations/page.mdx), open your project and go to **Settings**.
+2. Check the **Storefront root directory** field and confirm it matches the actual path of your storefront in the repository. For example, if your storefront is at `apps/storefront`, the field should contain `apps/storefront`.
+3. If the path is incorrect, update it and save.
+4. Trigger a new deployment.
+
+Refer to the [Projects](../../projects/page.mdx) guide for details on editing the storefront root directory setting.
+
+---
+
 ### Check for Lockfile Mismatches
 
 Cloud installs dependencies with a frozen lockfile to ensure reproducible builds. If your lockfile is out of sync with `package.json`, the dependency installation step may fail silently.
@@ -478,6 +493,56 @@ This is because Cloud does not currently support Node.js middlewares in Next.js 
 
 ---
 
+## Next.js Turbopack Workspace Root Error in Monorepos
+
+If your Next.js 16+ storefront build fails with the following error:
+
+```bash
+Error: Next.js inferred your workspace root, but it may not be correct.
+We couldn't find the Next.js package (next/package.json) from the project directory
+```
+
+This occurs in monorepo setups where the storefront is in a subdirectory (for example, `/storefront`) but `node_modules` is installed at the monorepo root. Turbopack's default workspace inference looks for `next/package.json` relative to the storefront directory, but the package is installed at the monorepo root.
+
+### Fix Turbopack Workspace Root
+
+Set the `turbopack.root` option in your `next.config.ts` to point to the monorepo root:
+
+```ts title="apps/storefront/next.config.ts"
+import path from "path"
+import type { NextConfig } from "next"
+
+const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.join(__dirname, ".."),
+  },
+}
+
+export default nextConfig
+```
+
+Replace `".."` with the relative path from your storefront directory to the monorepo root. Commit the updated `next.config.ts` and push to trigger a new deployment.
+
+---
+
+## Missing Root Files in Turborepo Monorepo Builds (TS5083)
+
+If your `turbo` monorepo build fails with an error similar to the following, but succeeds locally, a file at the root of your monorepo isn't available during the build:
+
+```bash
+error TS5083: Cannot read file '/tsconfig.base.json'.
+```
+
+Medusa prunes `turbo` monorepos down to the package it's building. The pruned output only includes the root `package.json`, the lockfile, `pnpm-workspace.yaml`, `turbo.json`, `.gitignore`, `.npmrc`, and the source code of the target package along with the workspace packages it depends on. So, a shared root file, such as a `tsconfig.base.json` file that other packages reference with `extends`, isn't copied into the build.
+
+### Fix Missing Root Files
+
+Move the shared file into a workspace package, then add that package as a dependency of your Medusa application or storefront. Medusa then includes the file in the build, since it builds the target package along with the workspace packages it depends on.
+
+For files that your Medusa application needs at runtime, such as JSON files or fonts, keep them within your Medusa application and copy them to the `.medusa/server` directory as part of your `build` script. Learn more in the [Built Assets](!docs!/learn/build#built-assets) documentation.
+
+---
+
 ## npm Cache Errors During Build
 
 If your build fails with an error similar to:
@@ -530,6 +595,40 @@ If you have manually set a `DATABASE_URL` in your environment variables, it may 
 3. In the environment's dashboard, click on the **Settings** tab.
 4. In the settings, click the **Environment variables** sidebar item.
 5. Check whether you have a `DATABASE_URL` variable set. If so, remove it and let Cloud manage the connection string.
+
+---
+
+## Custom start Script Not Executed on Cloud
+
+Cloud starts your Medusa application by invoking `medusa start` directly. It does not use the `start` script defined in your `package.json`. This means that any custom logic you place in your `package.json` `start` script, such as environment checks, maintenance-mode toggles, or initialization commands, is not executed on Cloud.
+
+### Use Loaders for Custom Initialization
+
+To run custom initialization logic when your Medusa application starts on Cloud, use [loaders](!docs!/learn/fundamentals/modules/loaders). Loaders are executed by Medusa as part of its startup process regardless of how the application is started.
+
+For example, you can create a loader that checks an environment variable to enable maintenance mode or run any one-time setup logic:
+
+```ts title="src/loaders/maintenance.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+
+export default async function maintenanceLoader(
+  container: MedusaContainer
+) {
+  if (process.env.MAINTENANCE_MODE === "true") {
+    const logger = container.resolve("logger")
+    logger.info("Maintenance mode is enabled.")
+  }
+}
+```
+
+### Reserved Cloud Environment Variables
+
+Cloud injects the following environment variables into every environment automatically:
+
+- `MEDUSA_CLOUD_PROJECT_HANDLE`: The handle of your Cloud project.
+- `MEDUSA_CLOUD_ENVIRONMENT_HANDLE`: The handle of the current Cloud environment.
+
+You can read these variables inside your loaders to apply environment-specific logic.
 
 ---
 

@@ -63,3 +63,10 @@ export interface AdminBatchInventoryItemLocationLevelsResponse {
  */
 export interface AdminBatchInventoryItemsLocationLevelsResponse
   extends AdminBatchInventoryItemLocationLevelsResponse {}
+
+export interface AdminExportInventoryItemResponse {
+  /**
+   * The ID of the export inventory items workflow's transaction.
+   */
+  transaction_id: string
+}

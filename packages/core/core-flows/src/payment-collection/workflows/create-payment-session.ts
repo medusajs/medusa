@@ -52,7 +52,7 @@ export interface CreatePaymentSessionsWorkflowInput {
 export const createPaymentSessionsWorkflowId = "create-payment-sessions"
 /**
  * This workflow creates payment sessions. It's used by the
- * [Initialize Payment Session Store API Route](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+ * [Initialize Payment Session Store API Route](https://docs.medusajs.com/api/store/payment-collections/initialize-payment-session).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create payment sessions in your custom flows.

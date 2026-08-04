@@ -1,5 +1,35 @@
 [
   {
+    "name": "auth.mfa_enabled",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_ENABLED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.\n  mfa_id, // The ID of the MFA factor that was enabled.\n  provider, // The provider of the MFA factor that was enabled.\n}\n```",
+    "description": "Emitted when an MFA factor is enabled for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_disabled",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_DISABLED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.\n  mfa_id, // The ID of the MFA factor that was disabled.\n  provider, // The provider of the MFA factor that was disabled.\n}\n```",
+    "description": "Emitted when an MFA factor is disabled for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
+    "name": "auth.mfa_recovery_codes_generated",
+    "parentName": "AuthEvents",
+    "propertyName": "MFA_RECOVERY_CODES_GENERATED",
+    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.\n  count, // (number) The number of recovery codes that were generated.\n}\n```",
+    "description": "Emitted when recovery codes are generated for an auth identity.",
+    "workflows": [],
+    "since": "2.15.5",
+    "deprecated": false
+  },
+  {
     "name": "cart.created",
     "parentName": "CartWorkflowEvents",
     "propertyName": "CREATED",
@@ -307,8 +337,8 @@
     "name": "auth.verification_requested",
     "parentName": "AuthWorkflowEvents",
     "propertyName": "VERIFICATION_REQUESTED",
-    "payload": "```ts\n{\n  entity_id, // The identifier of the user or customer. For example, an email address.\n  actor_type, // The type of actor. For example, \"customer\", \"user\", or custom.\n  provider, // The auth provider that requested verification.\n  auth_identity_id, // The ID of the auth identity being verified.\n  provider_identity_id, // The ID of the provider identity being verified.\n  code, // The generated verification code.\n  expires_at, // The code expiry date.\n  metadata, // Optional custom metadata passed from the request.\n}\n```",
-    "description": "Emitted when a verification code is generated. You can listen to\nthis event and decide how to deliver the code to the user or customer.",
+    "payload": "```ts\n{\n  entity_id, // The identifier of the entity being verified. For example, an email address.\n  entity_type, // The kind of entity being verified. For example, \"email\".\n  code_provider, // The verification provider that generated the code. For example, \"token\".\n  auth_identity_id, // The ID of the auth identity being verified.\n  code, // The generated verification code.\n  expires_at, // (Date) The code expiry date.\n  metadata, // (object) Optional custom metadata passed from the request.\n}\n```",
+    "description": "Emitted when a verification code is generated. You can listen to\nthis event and decide how to deliver the code to the user or customer.\nThe payload changed in v2.17.0:\n`actor_type` and `provider_identity_id` were removed,\n`provider` was renamed to `code_provider`, and `entity_type` was added.\nSubscribers written before v2.17.0 must be updated to use the payload below.",
     "workflows": [
       "requestVerificationWorkflow"
     ],
@@ -843,7 +873,7 @@
       "batchProductsWorkflow",
       "importProductsWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -855,7 +885,7 @@
     "workflows": [
       "updateInventoryItemsWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -872,7 +902,7 @@
       "batchProductVariantsWorkflow",
       "importProductsWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -892,7 +922,7 @@
       "batchProductsWorkflow",
       "importProductsWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -908,7 +938,7 @@
       "batchInventoryItemLevelsWorkflow",
       "confirmReturnReceiveWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -922,7 +952,7 @@
       "bulkCreateDeleteLevelsWorkflow",
       "batchInventoryItemLevelsWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -940,7 +970,7 @@
       "confirmExchangeRequestWorkflow",
       "confirmClaimRequestWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -954,7 +984,7 @@
       "createOrderFulfillmentWorkflow",
       "cancelOrderFulfillmentWorkflow"
     ],
-    "since": "2.17.3",
+    "since": "2.18.0",
     "deprecated": false
   },
   {
@@ -972,37 +1002,7 @@
       "cancelOrderExchangeWorkflow",
       "cancelOrderClaimWorkflow"
     ],
-    "since": "2.17.3",
-    "deprecated": false
-  },
-  {
-    "name": "auth.mfa_enabled",
-    "parentName": "AuthEvents",
-    "propertyName": "MFA_ENABLED",
-    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was enabled.\n  mfa_id, // The ID of the MFA factor that was enabled.\n  provider, // The provider of the MFA factor that was enabled.\n}\n```",
-    "description": "Emitted when an MFA factor is enabled for an auth identity.",
-    "workflows": [],
-    "since": "2.15.5",
-    "deprecated": false
-  },
-  {
-    "name": "auth.mfa_disabled",
-    "parentName": "AuthEvents",
-    "propertyName": "MFA_DISABLED",
-    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the MFA factor was disabled.\n  mfa_id, // The ID of the MFA factor that was disabled.\n  provider, // The provider of the MFA factor that was disabled.\n}\n```",
-    "description": "Emitted when an MFA factor is disabled for an auth identity.",
-    "workflows": [],
-    "since": "2.15.5",
-    "deprecated": false
-  },
-  {
-    "name": "auth.mfa_recovery_codes_generated",
-    "parentName": "AuthEvents",
-    "propertyName": "MFA_RECOVERY_CODES_GENERATED",
-    "payload": "```ts\n{\n  auth_identity_id, // The ID of the auth identity for which the recovery codes were generated.\n  count, // (number) The number of recovery codes that were generated.\n}\n```",
-    "description": "Emitted when recovery codes are generated for an auth identity.",
-    "workflows": [],
-    "since": "2.15.5",
+    "since": "2.18.0",
     "deprecated": false
   }
 ]

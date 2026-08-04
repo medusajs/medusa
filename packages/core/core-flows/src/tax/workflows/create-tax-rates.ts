@@ -19,7 +19,7 @@ export type CreateTaxRatesWorkflowOutput = TaxRateDTO[]
 export const createTaxRatesWorkflowId = "create-tax-rates"
 /**
  * This workflow creates one or more tax rates. It's used by the
- * [Create Tax Rates Admin API Route](https://docs.medusajs.com/api/admin#tax-rates_posttaxrates).
+ * [Create Tax Rates Admin API Route](https://docs.medusajs.com/api/admin/tax-rates/create-tax-rate).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create tax rates in your custom flows.

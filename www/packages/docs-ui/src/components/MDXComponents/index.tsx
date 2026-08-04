@@ -20,7 +20,11 @@ export const MDXComponents: MDXComponentsType = {
   code: CodeMdx,
   kbd: Kbd,
   Kbd,
-  Note,
+  // Referenced through a wrapper (read at render time, not module-init time) to
+  // break a circular-import TDZ: Note -> Note/Layout -> MarkdownContent ->
+  // MDXComponents -> Note. Without this, importing `Note` before this module is
+  // initialized throws "Cannot access 'Note' before initialization".
+  Note: (props: React.ComponentProps<typeof Note>) => <Note {...props} />,
   details: Details,
   Details: ({ className, ...props }: DetailsProps) => {
     return <Details {...props} className={clsx(className, "my-docs_1")} />

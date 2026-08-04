@@ -172,6 +172,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/promotions"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/sales-channel-availability/page.mdx",
+    "pathname": "/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/tax-lines/page.mdx",
     "pathname": "/commerce-modules/cart/tax-lines"
   },
@@ -1954,6 +1958,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/errors-installing-cli/page.mdx",
     "pathname": "/troubleshooting/errors-installing-cli"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/esm-syntax-error/page.mdx",
+    "pathname": "/troubleshooting/esm-syntax-error"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/general-errors/page.mdx",

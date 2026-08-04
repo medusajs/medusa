@@ -20,6 +20,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/cart/cart-totals"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Retrieve Order Totals",
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
   },
@@ -62,5 +66,69 @@ export const howTo = [
   {
     "title": "Use Workflow Engine Module",
     "path": "https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine/how-to-use"
+  },
+  {
+    "title": "Use Analytics Module",
+    "path": "https://docs.medusajs.com/resources/references/analytics/service"
+  },
+  {
+    "title": "Create Auth Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/provider"
+  },
+  {
+    "title": "Use Cache Module",
+    "path": "https://docs.medusajs.com/resources/references/cache-service"
+  },
+  {
+    "title": "Use Caching Module",
+    "path": "https://docs.medusajs.com/resources/references/caching-service"
+  },
+  {
+    "title": "Create Caching Provider",
+    "path": "https://docs.medusajs.com/resources/references/caching-module-provider"
+  },
+  {
+    "title": "Use Event Module",
+    "path": "https://docs.medusajs.com/resources/references/event-service"
+  },
+  {
+    "title": "Use File Module",
+    "path": "https://docs.medusajs.com/resources/references/file-service"
+  },
+  {
+    "title": "Create Fulfillment Provider",
+    "path": "https://docs.medusajs.com/resources/references/fulfillment/provider"
+  },
+  {
+    "title": "Use Locking Module",
+    "path": "https://docs.medusajs.com/resources/references/locking-service"
+  },
+  {
+    "title": "Create Locking Provider",
+    "path": "https://docs.medusajs.com/resources/references/locking-module-provider"
+  },
+  {
+    "title": "Create MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/mfa-module-provider"
+  },
+  {
+    "title": "Create Recovery Code MFA Provider",
+    "path": "https://docs.medusajs.com/resources/references/auth/recovery-code-mfa-module-provider"
+  },
+  {
+    "title": "Create Notification Provider",
+    "path": "https://docs.medusajs.com/resources/references/notification-provider-module"
+  },
+  {
+    "title": "Use Notification Module",
+    "path": "https://docs.medusajs.com/resources/references/notification-service"
+  },
+  {
+    "title": "Create Payment Provider",
+    "path": "https://docs.medusajs.com/resources/references/payment/provider"
+  },
+  {
+    "title": "Create Tax Provider",
+    "path": "https://docs.medusajs.com/resources/references/tax/provider"
   }
 ]

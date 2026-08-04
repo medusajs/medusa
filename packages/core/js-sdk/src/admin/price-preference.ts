@@ -17,7 +17,7 @@ export class PricePreference {
 
   /**
    * This method retrieves a price preference. It sends a request to the
-   * [Get Price Preference](https://docs.medusajs.com/api/admin#price-preferences_getpricepreferencesid)
+   * [Get Price Preference](https://docs.medusajs.com/api/admin/price-preferences/get-a-price-preference)
    * API route.
    *
    * @param id - The price preference's ID.
@@ -46,7 +46,7 @@ export class PricePreference {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async retrieve(
     id: string,
@@ -65,7 +65,7 @@ export class PricePreference {
 
   /**
    * This method retrieves a paginated list of price preferences. It sends a request to the
-   * [List Price Preferences](https://docs.medusajs.com/api/admin#price-preferences_getpricepreferences) API route.
+   * [List Price Preferences](https://docs.medusajs.com/api/admin/price-preferences/list-price-preferences) API route.
    *
    * @param query - Filters and pagination configurations.
    * @param headers - Headers to pass in the request.
@@ -107,7 +107,7 @@ export class PricePreference {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminPricePreferenceListParams,
@@ -125,7 +125,7 @@ export class PricePreference {
 
   /**
    * This method creates a price preference. It sends a request to the
-   * [Create Price Preference](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferences)
+   * [Create Price Preference](https://docs.medusajs.com/api/admin/price-preferences/create-price-preference)
    * API route.
    *
    * @param body - The details of the price preference to create.
@@ -161,7 +161,7 @@ export class PricePreference {
 
   /**
    * This method updates a price preference. It sends a request to the
-   * [Update Price Preference](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferencesid)
+   * [Update Price Preference](https://docs.medusajs.com/api/admin/price-preferences/update-a-price-preference)
    * API route.
    *
    * @param id - The price preference's ID.
@@ -197,7 +197,7 @@ export class PricePreference {
 
   /**
    * This method deletes a price preference. It sends a request to the
-   * [Delete Price Preference](https://docs.medusajs.com/api/admin#price-preferences_deletepricepreferencesid)
+   * [Delete Price Preference](https://docs.medusajs.com/api/admin/price-preferences/delete-a-price-preference)
    * API route.
    *
    * @param id - The price preference's ID.

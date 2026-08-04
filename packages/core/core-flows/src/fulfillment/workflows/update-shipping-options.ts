@@ -28,7 +28,7 @@ export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
 /**
  * This workflow updates one or more shipping options. It's used by the
- * [Update Shipping Options Admin API Route](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptionsid).
+ * [Update Shipping Options Admin API Route](https://docs.medusajs.com/api/admin/shipping-options/update-a-shipping-option).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * update shipping options within your custom flows.

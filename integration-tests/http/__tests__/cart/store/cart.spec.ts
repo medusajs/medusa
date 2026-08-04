@@ -1914,6 +1914,147 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("with quantity based sale price lists", () => {
+          let tieredVariantId
+          let tieredCart
+
+          beforeEach(async () => {
+            const tieredProduct = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Medusa T-Shirt with tiered sale prices",
+                  handle: "t-shirt-with-tiered-sale-prices",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["S"] }],
+                  variants: [
+                    {
+                      title: "S",
+                      sku: "SHIRT-S-BLACK-w-tiered-sale-prices",
+                      options: { Size: "S" },
+                      manage_inventory: false,
+                      prices: [{ amount: 4000, currency_code: "usd" }],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            tieredVariantId = tieredProduct.variants[0].id
+
+            await api.post(
+              `/admin/price-lists`,
+              {
+                title: "tiered sale price list",
+                description: "test",
+                status: PriceListStatus.ACTIVE,
+                type: PriceListType.SALE,
+                prices: [
+                  {
+                    amount: 3799,
+                    currency_code: "usd",
+                    variant_id: tieredVariantId,
+                    min_quantity: 3,
+                    max_quantity: 4,
+                  },
+                  {
+                    amount: 3599,
+                    currency_code: "usd",
+                    variant_id: tieredVariantId,
+                    min_quantity: 5,
+                  },
+                ],
+              },
+              adminHeaders
+            )
+
+            tieredCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                },
+                storeHeaders
+              )
+            ).data.cart
+          })
+
+          it("should re-calculate the price of a merged line item based on the resulting quantity", async () => {
+            let response
+
+            for (let i = 0; i < 3; i++) {
+              response = await api.post(
+                `/store/carts/${tieredCart.id}/line-items`,
+                {
+                  variant_id: tieredVariantId,
+                  quantity: 1,
+                },
+                storeHeaders
+              )
+
+              expect(response.status).toEqual(200)
+            }
+
+            expect(response.data.cart.items).toHaveLength(1)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                variant_id: tieredVariantId,
+                quantity: 3,
+                unit_price: 3799,
+                compare_at_unit_price: 4000,
+              })
+            )
+          })
+
+          it("should set compare_at_unit_price when a line item's quantity is updated", async () => {
+            const itemId = (
+              await api.post(
+                `/store/carts/${tieredCart.id}/line-items`,
+                {
+                  variant_id: tieredVariantId,
+                  quantity: 1,
+                },
+                storeHeaders
+              )
+            ).data.cart.items[0].id
+
+            let response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 3 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 3,
+                unit_price: 3799,
+                compare_at_unit_price: 4000,
+              })
+            )
+
+            // Dropping back below the first tier resets the compare-at price
+            response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 1,
+                unit_price: 4000,
+                compare_at_unit_price: null,
+              })
+            )
+          })
+        })
+
         describe("with manage_inventory true", () => {
           let inventoryItem
           beforeEach(async () => {

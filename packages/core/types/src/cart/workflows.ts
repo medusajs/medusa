@@ -510,6 +510,11 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
      * The ID of the line item if it's already in the cart.
      */
     id?: string
+    /**
+     * Whether the item can be added even if its variant is out of stock. This
+     * overrides the variant's `allow_backorder` setting for this item only.
+     */
+    allow_backorder?: boolean
   }[]
   /**
    * The new quantity of the variant to be added to the cart.

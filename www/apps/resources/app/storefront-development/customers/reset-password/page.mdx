@@ -39,7 +39,7 @@ Customers need to reset their password if they forget it. To implement the flow 
 
 ## 1. Request Reset Password Page
 
-The request password reset page prompts the customer to enter their email. Then, it sends a request to the [Request Reset Password Token API route](!api!/store#auth_postactor_typeauth_providerresetpassword) to request resetting the password.
+The request password reset page prompts the customer to enter their email. Then, it sends a request to the [Request Reset Password Token API route](!api!/store/auth/generate-reset-password-token) to request resetting the password.
 
 This API route will then handle sending an email or another type of notification, if you handle it as explained in the [Reset Password Guide](../../../commerce-modules/auth/reset-password/page.mdx).
 
@@ -144,13 +144,13 @@ export const fetchHighlights = [
   </CodeTab>
 </CodeTabs>
 
-In this example, you send a request to the [Request Reset Password Token API route](!api!/store#auth_postactor_typeauth_providerresetpassword) when the form that has the email field is submitted.
+In this example, you send a request to the [Request Reset Password Token API route](!api!/store/auth/generate-reset-password-token) when the form that has the email field is submitted.
 
 In the request body, you pass an `identifier` parameter, which is the customer's email.
 
 <Note title="Tip">
 
-The [Request Reset Password Token API route](!api!/store#auth_postactor_typeauth_providerresetpassword) returns a successful response always, even if the customer's email doesn't exist. This ensures that customer emails that don't exist are not exposed.
+The [Request Reset Password Token API route](!api!/store/auth/generate-reset-password-token) returns a successful response always, even if the customer's email doesn't exist. This ensures that customer emails that don't exist are not exposed.
 
 </Note>
 
@@ -162,7 +162,7 @@ Once the customer requests to reset their password, you should handle sending th
 
 The notification should include a URL in your storefront that allows the customer to update their password. In this step, you'll implement this page.
 
-The reset password page should receive a `token` and `email` query parameters. Then, it prompts the customer for a new password, and sends a request to the [Reset Password API route](!api!/store#auth_postactor_typeauth_providerupdate) to update the password.
+The reset password page should receive a `token` and `email` query parameters. Then, it prompts the customer for a new password, and sends a request to the [Reset Password API route](!api!/store/auth/reset-password) to update the password.
 
 <Note>
 
@@ -298,7 +298,7 @@ export const resetPasswordFetchHighlights = [
 
 In this example, you receive the `token` and `email` from the page's query parameters.
 
-Then, when the form that has the password field is submitted, you send a request to the [Reset Password API route](!api!/store#auth_postactor_typeauth_providerupdate), passing it the token, email, and new password.
+Then, when the form that has the password field is submitted, you send a request to the [Reset Password API route](!api!/store/auth/reset-password), passing it the token, email, and new password.
 
 Notice that the JS SDK passes the token in the `Authorization: Bearer` header. So, if you're implementing this flow without using the JS SDK, make sure to pass the token accordingly.
 

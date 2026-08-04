@@ -40,7 +40,7 @@ export const setLayoutConfigurationWorkflowId = "set-layout-configuration"
  * scope as the user's active view for the zone, so it sticks across reloads.
  *
  * This workflow is used by the
- * [Set Layout Configuration Admin API Route](https://docs.medusajs.com/api/admin#layouts_postlayoutszoneconfiguration).
+ * [Set Layout Configuration Admin API Route](https://docs.medusajs.com/api/admin/layouts/add-layout-configuration).
  *
  * You can use this workflow within your own customizations or custom workflows,
  * allowing you to set a layout configuration within your custom flows.

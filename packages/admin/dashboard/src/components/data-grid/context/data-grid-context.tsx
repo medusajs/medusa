@@ -8,7 +8,7 @@ import {
 } from "react-hook-form"
 import { CellErrorMetadata, CellMetadata, DataGridCoordinates } from "../types"
 
-type DataGridContextType<TFieldValues extends FieldValues> = {
+export type DataGridContextType<TFieldValues extends FieldValues> = {
   // Grid state
   anchor: DataGridCoordinates | null
   trapActive: boolean

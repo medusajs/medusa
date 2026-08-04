@@ -94,7 +94,7 @@ export type CancelRequestReturnWorkflowInput = {
 export const cancelReturnRequestWorkflowId = "cancel-return-request"
 /**
  * This workflow cancels a requested return. It's used by the
- * [Cancel Return Request API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequest).
+ * [Cancel Return Request API Route](https://docs.medusajs.com/api/admin/returns/cancel-return-request).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to cancel a return request in your custom flow.

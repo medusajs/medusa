@@ -49,7 +49,7 @@ These are the pages you need in your storefront to allow customers to log in or 
 
 In your storefront, you'll have a login page with different login options. One of those options will be a button that starts the third-party login process. For example, a "Login with Google" button.
 
-When the customer clicks the "Login with Google" button, send a request to the [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider). This returns the URL to redirect the customer to Google for authentication.
+When the customer clicks the "Login with Google" button, send a request to the [Authenticate Customer API route](!api!/store/auth/authenticate-customer). This returns the URL to redirect the customer to Google for authentication.
 
 For example:
 
@@ -155,7 +155,7 @@ You define a `loginWithGoogle` function that:
 
 <Note title="Tip">
 
-The JS SDK sets and passes authentication headers or session cookies automatically based on your [configured authentication method](../../../js-sdk/auth/overview/page.mdx). If you're not using the JS SDK, make sure to pass the necessary headers in your request as explained in the [API reference](!api!/store#authentication).
+The JS SDK sets and passes authentication headers or session cookies automatically based on your [configured authentication method](../../../js-sdk/auth/overview/page.mdx). If you're not using the JS SDK, make sure to pass the necessary headers in your request as explained in the [API reference](!api!/store/authentication).
 
 </Note>
 
@@ -283,7 +283,7 @@ const sendCallback = async () => {
   </CodeTab>
 </CodeTabs>
 
-You add a new page. In the page's component, you define the `sendCallback` function that sends a request to the [Validate Callback API route](!api!/store#auth_postactor_typeauth_providercallback), passing it all query parameters received from Google. These include the `code` and `state` parameters.
+You add a new page. In the page's component, you define the `sendCallback` function that sends a request to the [Validate Callback API route](!api!/store/auth/validate-authentication-callback), passing it all query parameters received from Google. These include the `code` and `state` parameters.
 
 <Note title="Tip">
 
@@ -316,7 +316,7 @@ You add the function `createCustomer` which creates a customer when this is the 
 
 <Note title="Tip">
 
-This method assumes that the token received from the [Validate Callback API route](!api!/store#auth_postactor_typeauth_providercallback) is already set in the JS SDK. So, if you're implementing this flow without using the JS SDK, make sure to pass the token received from the [Validate Callback API route](!api!/store#auth_postactor_typeauth_providercallback) in the [authorization Bearer header](!api!/store#authentication).
+This method assumes that the token received from the [Validate Callback API route](!api!/store/auth/validate-authentication-callback) is already set in the JS SDK. So, if you're implementing this flow without using the JS SDK, make sure to pass the token received from the [Validate Callback API route](!api!/store/auth/validate-authentication-callback) in the [authorization Bearer header](!api!/store/authentication).
 
 </Note>
 
@@ -339,13 +339,13 @@ const refreshToken = async () => {
 // TODO add more functions...
 ```
 
-You add the function `refreshToken` that sends a request to the [Refresh Token API route](!api!/store#auth_postadminauthtokenrefresh) to retrieve a new token for the created customer.
+You add the function `refreshToken` that sends a request to the [Refresh Token API route](!api!/store/auth/refresh-authentication-token) to retrieve a new token for the created customer.
 
 The `refreshToken` method also updates the token stored by the JS SDK, ensuring that subsequent requests use that token.
 
 <Note title="Tip">
 
-This method assumes that the token received from the [Validate Callback API route](!api!/store#auth_postactor_typeauth_providercallback) is already set in the JS SDK. So, if you're implementing this flow without using the JS SDK, make sure to pass the token in the [authorization Bearer header](!api!/store#authentication). Make sure to also update the token stored in your application after refreshing it.
+This method assumes that the token received from the [Validate Callback API route](!api!/store/auth/validate-authentication-callback) is already set in the JS SDK. So, if you're implementing this flow without using the JS SDK, make sure to pass the token in the [authorization Bearer header](!api!/store/authentication). Make sure to also update the token stored in your application after refreshing it.
 
 </Note>
 
@@ -389,7 +389,7 @@ const validateCallback = async () => {
 
 The `validateCallback` function uses the functions added earlier to implement the following flow:
 
-1. Send a request to the [Validate Callback API route](!api!/store#auth_postactor_typeauth_providercallback). This returns an authentication token.
+1. Send a request to the [Validate Callback API route](!api!/store/auth/validate-authentication-callback). This returns an authentication token.
     - The `sendCallback` function also sets the token in the JS SDK. This passes the token in subsequent requests.
 2. Decode the token to check if it has an `actor_id` property.
   - If the property exists, the customer is already registered. The authentication token can be used for subsequent authenticated requests.
@@ -606,15 +606,15 @@ If you already set up the [Auth Module Provider](../../../commerce-modules/auth/
 
 ![Diagram illustrating the authentication flow between the storefront, Medusa application, and the third-party service.](https://res.cloudinary.com/dza7lstvk/image/upload/v1725531068/Medusa%20Resources/Social_Media_Graphics_third-party-auth-customer_kfn3k3.jpg)
 
-1. Authenticate the customer with the [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider). It may return:
+1. Authenticate the customer with the [Authenticate Customer API route](!api!/store/auth/authenticate-customer). It may return:
     - A URL in a `location` property to authenticate with a third-party service, such as Google. When you receive this property, redirect to the returned location.
     - A token in a `token` property. In this case, the customer was previously logged in with the third-party service. No additional actions are required. You can use the token to send subsequent authenticated requests.
 2. Once authentication with the third-party service finishes, it redirects back to the storefront with query parameters such as `code` and `state`. Make sure your third-party service is configured to redirect to your storefront's callback page after successful authentication.
-3. In the storefront's callback page, send a request to the [Validate Authentication Callback API route](!api!/store#auth_postactor_typeauth_providercallback). Pass the query parameters (`code`, `state`, etc.) received from the third-party service.
+3. In the storefront's callback page, send a request to the [Validate Authentication Callback API route](!api!/store/auth/validate-authentication-callback). Pass the query parameters (`code`, `state`, etc.) received from the third-party service.
     - Medusa validates the authentication with the third-party service.
 4. If the callback validation is successful, you'll receive the authentication token. Decode the received token in the storefront using tools like [react-jwt](https://www.npmjs.com/package/react-jwt).
     - If the decoded data has an `actor_id` property, the customer is already registered. Use this token for subsequent authenticated requests.
     - If not, follow the rest of the steps.
-5. The customer is not registered yet. Use the received token from the Validate Authentication Callback API route to create the customer using the [Create Customer API route](!api!/store#customers_postcustomers).
-6. Send a request to the [Refresh Token Route](!api!/store#auth_postadminauthtokenrefresh) to retrieve a new token for the customer. Pass the token from the Validate Authentication Callback API in the header.
-7. Use the token for subsequent authenticated requests, such as retrieving the customer's details using the [Retrieve Customer API route](!api!/store#getactor_typecustomersme).
+5. The customer is not registered yet. Use the received token from the Validate Authentication Callback API route to create the customer using the [Create Customer API route](!api!/store/customers/register-customer).
+6. Send a request to the [Refresh Token Route](!api!/store/auth/refresh-authentication-token) to retrieve a new token for the customer. Pass the token from the Validate Authentication Callback API in the header.
+7. Use the token for subsequent authenticated requests, such as retrieving the customer's details using the [Retrieve Customer API route](!api!/store/customers/get-customer).

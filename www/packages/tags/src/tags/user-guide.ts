@@ -256,6 +256,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/settings/users"
   },
   {
+    "title": "Configure Layouts",
+    "path": "https://docs.medusajs.com/user-guide/tips/layout-configurations"
+  },
+  {
     "title": "Configure Table Views",
     "path": "https://docs.medusajs.com/user-guide/tips/table-views"
   }
