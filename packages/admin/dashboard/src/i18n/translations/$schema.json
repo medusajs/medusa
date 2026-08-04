@@ -14299,9 +14299,25 @@
             },
             "noProviders": {
               "type": "string"
+            },
+            "continueWithProvider": {
+              "type": "string"
+            },
+            "or": {
+              "type": "string"
+            },
+            "provisioningFailed": {
+              "type": "string"
             }
           },
-          "required": ["authenticationFailed", "cloud", "noProviders"],
+          "required": [
+            "authenticationFailed",
+            "cloud",
+            "noProviders",
+            "continueWithProvider",
+            "or",
+            "provisioningFailed"
+          ],
           "additionalProperties": false
         }
       },
