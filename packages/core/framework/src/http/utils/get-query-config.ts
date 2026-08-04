@@ -185,6 +185,7 @@ export async function prepareRetrieveQuery<
     queryConfig,
     req
   )
+  const { entity } = queryConfig ?? {}
 
   return {
     retrieveConfig: {
@@ -192,9 +193,7 @@ export async function prepareRetrieveQuery<
       relations: listConfig.relations,
     },
     remoteQueryConfig: {
-      ...(!!remoteQueryConfig.entity
-        ? { entity: remoteQueryConfig.entity }
-        : {}),
+      ...(entity ? { entity } : {}),
       fields: remoteQueryConfig.fields,
       pagination: {},
       withDeleted: remoteQueryConfig.withDeleted,
