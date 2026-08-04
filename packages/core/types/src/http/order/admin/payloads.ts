@@ -1,3 +1,6 @@
+/**
+ * The data to update in an order.
+ */
 export interface AdminUpdateOrder {
   /**
    * The order's email.
@@ -25,6 +28,9 @@ export interface AdminUpdateOrder {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to create a fulfillment for an order.
+ */
 export interface AdminCreateOrderFulfillment {
   /**
    * The items to add to the fulfillment.
@@ -65,6 +71,9 @@ export interface AdminCreateOrderFulfillment {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The data to create a shipment for an order's fulfillment.
+ */
 export interface AdminCreateOrderShipment {
   /**
    * The fulfillment items to create a shipment for.
@@ -118,6 +127,9 @@ export interface AdminMarkOrderFulfillmentAsDelivered {
   no_notification?: boolean
 }
 
+/**
+ * The data to cancel an order's fulfillment.
+ */
 export interface AdminCancelOrderFulfillment {
   /**
    * Whether to notify the customer about this change.
@@ -125,6 +137,9 @@ export interface AdminCancelOrderFulfillment {
   no_notification?: boolean
 }
 
+/**
+ * The data to request an order transfer to a customer.
+ */
 export interface AdminRequestOrderTransfer {
   /**
    * The ID of the customer to transfer the order to.
