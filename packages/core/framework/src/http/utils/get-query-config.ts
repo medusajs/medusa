@@ -192,6 +192,9 @@ export async function prepareRetrieveQuery<
       relations: listConfig.relations,
     },
     remoteQueryConfig: {
+      ...(!!remoteQueryConfig.entity
+        ? { entity: remoteQueryConfig.entity }
+        : {}),
       fields: remoteQueryConfig.fields,
       pagination: {},
       withDeleted: remoteQueryConfig.withDeleted,

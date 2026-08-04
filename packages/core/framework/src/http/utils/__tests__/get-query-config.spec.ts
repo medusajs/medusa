@@ -1,5 +1,5 @@
 import { QueryConfig, RequestQueryFields } from "@medusajs/types"
-import { prepareListQuery } from "../get-query-config"
+import { prepareListQuery, prepareRetrieveQuery } from "../get-query-config"
 
 describe("prepareListQuery", () => {
   describe("buildOrder functionality", () => {
@@ -666,6 +666,23 @@ describe("prepareListQuery", () => {
       const result = await prepareListQuery(validated, queryConfig)
 
       expect(result.remoteQueryConfig.fields).toEqual(["id", "orders.email"])
+    })
+  })
+
+  describe("prepareRetrieveQuery", () => {
+    it("should preserve the entity in the remote query config", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,title",
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "product",
+      }
+
+      const result = await prepareRetrieveQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.entity).toBe("product")
+      expect(result.remoteQueryConfig.pagination).toEqual({})
     })
   })
 })
