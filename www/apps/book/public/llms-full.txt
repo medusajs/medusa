@@ -12075,7 +12075,7 @@ export async function POST(
       files: files?.map((f) => ({
         filename: f.originalname,
         mimeType: f.mimetype,
-        content: f.buffer.toString("binary"),
+        content: f.buffer.toString("base64"),
         access: "public",
       })),
     },
@@ -12086,6 +12086,8 @@ export async function POST(
 ```
 
 The uploaded files are stored in the `req.files` property as an array of Multer file objects that have properties like `filename` and `mimetype`.
+
+Always encode the file content as `base64` when passing it to `uploadFilesWorkflow`. The File Module Providers expect base64-encoded content, and using `binary` encoding will corrupt binary files such as images when stored by remote providers.
 
 To upload the files, you can use the [uploadFilesWorkflow](undefined/resources/references/medusa-workflows/uploadFilesWorkflow), which uploads the files using the configured [File Module Provider](undefined/resources/infrastructure-modules/file).
 
@@ -24030,6 +24032,12 @@ After a minute, the following message will be logged to the terminal:
 ```bash
 info:    Greeting!
 ```
+
+### Disable a Scheduled Job
+
+Do not disable a scheduled job by commenting out or removing the `config` export while keeping the file in `src/jobs/`. This will cause errors when you build or start your Medusa application.
+
+To disable a scheduled job, move its file out of the `src/jobs` directory. For example, move it to `src/scripts/` or any directory other than `src/jobs/`.
 
 ### Troubleshooting Scheduled Jobs
 
@@ -45615,7 +45623,7 @@ Learn more about product variant's inventory management in [this guide](undefine
 
 ### Retrieve with Query
 
-To retrieve the inventory items of a product variant with [Query](undefined/docs/learn/fundamentals/module-links/query), pass `inventory_items.*` in `fields`:
+To retrieve the inventory items of a product variant with [Query](undefined/docs/learn/fundamentals/module-links/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
 
 ### query.graph
 
@@ -45623,11 +45631,11 @@ To retrieve the inventory items of a product variant with [Query](undefined/docs
 const { data: variants } = await query.graph({
   entity: "variant",
   fields: [
-    "inventory_items.*",
+    "inventory_items.inventory.*",
   ],
 })
 
-// variants[0].inventory_items
+// variants[0].inventory_items[0].inventory
 ```
 
 ### useQueryGraphStep
@@ -45640,12 +45648,46 @@ import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 const { data: variants } = useQueryGraphStep({
   entity: "variant",
   fields: [
-    "inventory_items.*",
+    "inventory_items.inventory.*",
   ],
 })
 
-// variants[0].inventory_items
+// variants[0].inventory_items[0].inventory
 ```
+
+You can also traverse from the `product` entity through its variants to their inventory items:
+
+### query.graph
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "variants.inventory_items.inventory.id",
+  ],
+})
+
+// products[0].variants[0].inventory_items[0].inventory.id
+```
+
+### useQueryGraphStep
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "variants.inventory_items.inventory.id",
+  ],
+})
+
+// products[0].variants[0].inventory_items[0].inventory.id
+```
+
+Creating a product variant with `manage_inventory` enabled creates an inventory item automatically, but does not create inventory levels. You must create inventory levels separately to set the stocked quantity at a specific location. Refer to the [Inventory Module's documentation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory) for details.
 
 ### Manage with Link
 
