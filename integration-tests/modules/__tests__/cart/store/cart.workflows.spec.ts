@@ -47,25 +47,11 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { normalizeBigNumbers } from "@medusajs/test-utils"
 
 jest.setTimeout(200000)
 
 const env = {}
-
-const normalizeBigNumbers = (value) => {
-  if (Array.isArray(value)) {
-    return value.map(normalizeBigNumbers)
-  }
-  if (value && typeof value === "object" && !(value instanceof Date)) {
-    if ("numeric_" in value && "raw_" in value) {
-      return Number(value)
-    }
-    return Object.fromEntries(
-      Object.keys(value).map((key) => [key, normalizeBigNumbers(value[key])])
-    )
-  }
-  return value
-}
 
 medusaIntegrationTestRunner({
   env,

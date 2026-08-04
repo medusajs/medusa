@@ -3,26 +3,9 @@ import { BigNumber, Module, Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { CheckConstraintViolationException } from "@medusajs/framework/mikro-orm/core"
 import { CartModuleService } from "@services"
+import { normalizeBigNumbers } from "@medusajs/test-utils"
 
 jest.setTimeout(50000)
-
-// Retrieving a cart without an explicit `select` now computes totals, so numeric
-// fields come back as BigNumber instances. This normalizes them to plain numbers
-// for equality assertions while preserving Dates and object structure.
-const normalizeBigNumbers = (value) => {
-  if (Array.isArray(value)) {
-    return value.map(normalizeBigNumbers)
-  }
-  if (value && typeof value === "object" && !(value instanceof Date)) {
-    if ("numeric_" in value && "raw_" in value) {
-      return Number(value)
-    }
-    return Object.fromEntries(
-      Object.keys(value).map((key) => [key, normalizeBigNumbers(value[key])])
-    )
-  }
-  return value
-}
 
 moduleIntegrationTestRunner<ICartModuleService>({
   moduleName: Modules.CART,
