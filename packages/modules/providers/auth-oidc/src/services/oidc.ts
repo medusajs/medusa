@@ -11,7 +11,8 @@ import {
   AbstractAuthModuleProvider,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { assertSecureUrl, OidcEngine } from "../engine"
+import { OidcEngine } from "../engine"
+import { assertSecureUrl } from "../utils"
 
 type InjectedDependencies = {
   logger: Logger
