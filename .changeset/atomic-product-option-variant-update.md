@@ -5,4 +5,4 @@
 "@medusajs/types": patch
 ---
 
-Update product option values atomically with variants in one product update request.
+fix(core-flows, medusa, product, types): update option values atomically with variants
