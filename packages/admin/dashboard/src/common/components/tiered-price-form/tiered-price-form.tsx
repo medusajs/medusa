@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Text } from "@medusajs/ui"
-import { useFieldArray, useForm } from "react-hook-form"
+import { Resolver, useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../components/common/form"
@@ -33,11 +33,17 @@ export const TieredPriceForm = <T extends TieredPriceSchema>({
     defaultRow ??
     ({ amount: "", [fieldConfig.min]: "", [fieldConfig.max]: null } as any)
 
-  const form = useForm<z.infer<T>>({
+  const form = useForm<z.infer<T>, any, z.infer<T>>({
     defaultValues: {
       prices: initialValues.length > 0 ? initialValues : [emptyRow],
     } as any,
-    resolver: zodResolver(schema),
+    // The schema is only known through the generic `T`, so the resolver's
+    // inferred types can't be related back to `z.infer<T>` here.
+    resolver: zodResolver(schema as any) as unknown as Resolver<
+      z.infer<T>,
+      any,
+      z.infer<T>
+    >,
   })
 
   const { fields, append, remove } = useFieldArray({

@@ -325,6 +325,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "﷼",
     decimal_digits: 0,
   },
+  IRT: {
+    code: "IRT",
+    name: "Iranian Toman",
+    symbol_native: "تومان",
+    decimal_digits: 0,
+  },
   ISK: {
     code: "ISK",
     name: "Icelandic Króna",

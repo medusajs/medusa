@@ -17,7 +17,10 @@ export function getLinkRepository(model: EntitySchema) {
       this.joinerConfig_ = joinerConfig
     }
 
-    async delete(data: any, context: Context = {}): Promise<string[]> {
+    async delete(
+      data: any,
+      context: Context = {}
+    ): Promise<string[] | Record<string, any>[]> {
       const filter = {}
       for (const key in data) {
         filter[key] = {

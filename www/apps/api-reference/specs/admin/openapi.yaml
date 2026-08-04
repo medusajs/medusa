@@ -778,6 +778,19 @@ tags:
     x-associatedSchema:
       $ref: ./components/schemas/AdminUser.yaml
   - name: Views
+    description: >
+      A view configuration is a saved data-table view for an entity, such as
+      products or orders. It lets admin users customize how a table shows its
+      data, then save that customization as a reusable view.
+
+      These API routes allow admin users to manage the system default and
+      personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: >-
+        https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminViewConfiguration.yaml
   - name: Workflows Executions
     description: >
       These API routes allow you to track workflow executions in your Medusa
@@ -1027,6 +1040,8 @@ paths:
     $ref: paths/admin_orders_{id}_transfer.yaml
   /admin/orders/{id}/transfer/cancel:
     $ref: paths/admin_orders_{id}_transfer_cancel.yaml
+  /admin/orders/{id}/transfer/guest:
+    $ref: paths/admin_orders_{id}_transfer_guest.yaml
   /admin/payment-collections:
     $ref: paths/admin_payment-collections.yaml
   /admin/payment-collections/{id}:
@@ -1325,7 +1340,7 @@ components:
     api_token:
       type: http
       x-displayName: API Token
-      scheme: bearer
+      scheme: basic
     jwt_token:
       type: http
       x-displayName: JWT Token

@@ -1,7 +1,9 @@
 import {
+  CrossModuleJoinSpec,
   JoinerArgument,
   JoinerRelationship,
   JoinerServiceConfig,
+  ModuleJoinerConfig,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
 } from "@medusajs/types"
@@ -25,6 +27,40 @@ export type InternalJoinerServiceConfig = Omit<
   relationships?: Map<string, JoinerRelationship | JoinerRelationship[]>
   entity?: string
   entryPoint?: string
+  isLink?: boolean
+  databaseConfig?: ModuleJoinerConfig["databaseConfig"]
+  databaseClientUrl?: string
+}
+
+/**
+ * A cross-module filter that could not be pushed down to SQL during
+ * compilation. Kept on the plan so the in-memory filtering stage (stage 2)
+ * can complete it.
+ */
+export type ResidualCrossModuleFilter = {
+  /** Dotted relation path relative to the query root, in alias form. */
+  path: string
+  filters: Record<string, unknown>
+}
+
+/**
+ * A property that was loaded solely to evaluate residual cross-module filters
+ * in memory. Hidden from the returned payload after evaluation.
+ */
+export type ResidualHiddenProperty = {
+  /** Alias-form path to the parent objects holding the property. */
+  location: string[]
+  property: string
+}
+
+/**
+ * One root ordering key applied in memory (stage 2). When any key cannot be
+ * pushed down to SQL, the whole ordering moves in memory in this order.
+ */
+export type ResidualOrderBy = {
+  /** Alias-form path from the query root, including the sorted field. */
+  segments: string[]
+  direction: "ASC" | "DESC"
 }
 
 /**
@@ -97,6 +133,26 @@ export type QueryPlan = {
   initialData: any[]
   initialDataOnly?: boolean
   options?: RemoteJoinerOptions
+  /**
+   * Cross-module joins pushed down to the root module fetch. Applied as
+   * correlated EXISTS/scalar subqueries by the module's DAL.
+   */
+  crossModuleJoins?: CrossModuleJoinSpec[]
+  /**
+   * Cross-module filters that could not be pushed down to SQL. Completed in
+   * memory by executePlan after the fetch (stage 2).
+   */
+  residualCrossModuleFilters?: ResidualCrossModuleFilter[]
+  /**
+   * Properties added to the query solely to evaluate residual filters,
+   * hidden from the returned payload.
+   */
+  residualHiddenProperties?: ResidualHiddenProperty[]
+  /**
+   * Root ordering applied in memory after the fetch because at least one sort
+   * key could not be pushed down to SQL.
+   */
+  residualOrderBy?: ResidualOrderBy[]
 }
 
 /** Contract for loading module data during join execution. */

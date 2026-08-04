@@ -14,6 +14,7 @@ import {
   Modules,
   OrderChangeStatus,
   OrderWorkflowEvents,
+  ReservationItemWorkflowEvents,
   ReturnStatus,
 } from "@medusajs/framework/utils"
 import {
@@ -265,7 +266,7 @@ export type ConfirmExchangeRequestWorkflowInput = {
 export const confirmExchangeRequestWorkflowId = "confirm-exchange-request"
 /**
  * This workflow confirms an exchange request. It's used by the
- * [Confirm Exchange Admin API Route](https://docs.medusajs.com/api/admin#exchanges_postexchangesidrequest).
+ * [Confirm Exchange Admin API Route](https://docs.medusajs.com/api/admin/exchanges/confirm-an-exchange).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to confirm an exchange
  * for an order in your custom flow.
@@ -435,7 +436,22 @@ export const confirmExchangeRequestWorkflow = createWorkflow(
         prepareConfirmInventoryInput
       )
 
-      reserveInventoryStep(formatedInventoryItems)
+      const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+      const reservationCreatedEvents = transform(
+        { createdReservations, order },
+        ({ createdReservations, order }) => {
+          return (createdReservations ?? []).map((reservation) => ({
+            id: reservation.id,
+            order_id: order.id,
+          }))
+        }
+      )
+
+      emitEventStep({
+        eventName: ReservationItemWorkflowEvents.CREATED,
+        data: reservationCreatedEvents,
+      }).config({ name: "emit-reservation-item-created" })
     })
 
     when(

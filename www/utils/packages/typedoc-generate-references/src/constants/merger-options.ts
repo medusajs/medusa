@@ -63,7 +63,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
   out: path.join(rootPathPrefix, "www", "apps", "resources", "references"),
   name: "references",
   indexTitle: "Medusa References",
-  plugin: [...(baseOptions.plugin || []), "typedoc-plugin-markdown-medusa"],
+  plugin: [...(baseOptions.plugin || []), "typedoc-plugin-medusa-theme"],
   excludeReferences: true,
   excludeNotDocumented: true,
   hideInPageTOC: true,
@@ -167,6 +167,7 @@ You should only use the methods in this reference when implementing complex cust
 
         // module's model config
         [`^${snakeCaseModuleName}_models`]: {
+          showSourceCodeLink: true,
           frontmatterData: {
             displayed_sidebar: `${camelCaseModuleName}ModelReference`,
             slug: `/references/${moduleName}/models/{{alias}}`,

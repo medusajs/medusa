@@ -502,6 +502,105 @@ medusaIntegrationTestRunner({
       })
     })
 
+    // shipping-method adjustments must be version-scoped
+    // in the list (findAndCount) path, as they already are in the retrieve
+    // (find) path. Before the fix, GET /admin/orders summed the free-shipping
+    // waiver once per order version, yielding a negative shipping_total and an
+    // understated total for fulfilled/shipped orders.
+    describe("list totals for a shipped order with a shipping promotion", () => {
+      let order
+      let seeder
+
+      beforeEach(async () => {
+        // automatic 100%-off-shipping promotion must exist before the order is
+        // created so the cart's shipping method picks up the adjustment
+        await api.post(
+          `/admin/promotions`,
+          {
+            code: "FREESHIP_VERSIONED",
+            type: "standard",
+            status: "active",
+            is_automatic: true,
+            application_method: {
+              type: "percentage",
+              target_type: "shipping_methods",
+              allocation: "each",
+              value: 100,
+              max_quantity: 1,
+              currency_code: "usd",
+            },
+          },
+          adminHeaders
+        )
+
+        seeder = await createOrderSeeder({ api, container: getContainer() })
+        order = seeder.order
+      })
+
+      it("should match list and detail shipping_total/total after fulfillment and shipment", async () => {
+        // sanity: the automatic promo fully waived shipping on the created order
+        const created = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=id,version,shipping_total`,
+            adminHeaders
+          )
+        ).data.order
+        expect(created.shipping_total).toBe(0)
+
+        // fulfill then ship to advance the order version
+        const fulfilled = (
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments?fields=id,*fulfillments`,
+            {
+              shipping_option_id: seeder.shippingOption.id,
+              location_id: seeder.stockLocation.id,
+              items: order.items.map((i) => ({
+                id: i.id,
+                quantity: i.quantity,
+              })),
+            },
+            adminHeaders
+          )
+        ).data.order
+
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments/${fulfilled.fulfillments[0].id}/shipments`,
+          {
+            items: order.items.map((i) => ({
+              id: i.id,
+              quantity: i.quantity,
+            })),
+          },
+          adminHeaders
+        )
+
+        // detail (find path) is correct and version-scoped
+        const detail = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=id,version,total,shipping_total`,
+            adminHeaders
+          )
+        ).data.order
+        expect(detail.version).toBeGreaterThanOrEqual(2)
+        expect(detail.shipping_total).toBe(0)
+
+        // list (findAndCount path) must agree — before the fix this returned a
+        // negative shipping_total and an understated total
+        const listed = (
+          await api.get(
+            `/admin/orders?fields=${encodeURIComponent(
+              "id,total,shipping_total"
+            )}`,
+            adminHeaders
+          )
+        ).data.orders.find((o) => o.id === order.id)
+
+        expect(listed).toBeTruthy()
+        expect(listed.shipping_total).toBe(0)
+        expect(listed.total).toBe(detail.total)
+      })
+    })
+
     describe("POST /orders/:id", () => {
       beforeEach(async () => {
         seeder = await createOrderSeeder({
@@ -1728,6 +1827,41 @@ medusaIntegrationTestRunner({
 
         expect(iitem.stocked_quantity).toBe(7)
         expect(iitem.reserved_quantity).toBe(0)
+      })
+
+      it("should override the fulfillment's delivery address with the request's delivery_address", async () => {
+        const orderItemId = order.items.find(
+          (i) => i.variant_id === productOverride3.variants[0].id
+        ).id
+
+        const {
+          data: { order: fulfillableOrder },
+        } = await api.post(
+          `/admin/orders/${order.id}/fulfillments?fields=fulfillments.id,fulfillments.delivery_address.*`,
+          {
+            shipping_option_id: seeder.shippingOption.id,
+            location_id: seeder.stockLocation.id,
+            items: [{ id: orderItemId, quantity: 1 }],
+            delivery_address: {
+              first_name: "Nova",
+              last_name: "Poshta",
+            },
+          },
+          adminHeaders
+        )
+
+        expect(fulfillableOrder.fulfillments).toHaveLength(1)
+        expect(fulfillableOrder.fulfillments[0].delivery_address).toEqual(
+          expect.objectContaining({
+            // overridden by the request
+            first_name: "Nova",
+            last_name: "Poshta",
+            // untouched fields are still taken from the order's shipping address
+            address_1: order.shipping_address.address_1,
+            city: order.shipping_address.city,
+            country_code: order.shipping_address.country_code,
+          })
+        )
       })
 
       it("should throw if trying to fulfillment more items than it is reserved", async () => {

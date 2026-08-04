@@ -723,7 +723,7 @@ So, you'll create a workflow that wraps around Medusa's existing add-to-cart log
 
 <Note title="Tip">
 
-If you're not using custom pricing, you can skip this step and keep on using Medusa's existing [Add-to-Cart API route](!api!/store#carts_postcartsidlineitems).
+If you're not using custom pricing, you can skip this step and keep on using Medusa's existing [Add-to-Cart API route](!api!/store/carts/add-line-item).
 
 </Note>
 
@@ -1263,7 +1263,7 @@ const PersonalizedOrderItemsWidget = ({
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.after",
+  zone: "order.details",
 })
 
 export default PersonalizedOrderItemsWidget

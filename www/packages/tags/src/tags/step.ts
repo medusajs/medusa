@@ -172,6 +172,26 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateVariantPricesStep"
   },
   {
+    "title": "computeCreditLineActionsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/computeCreditLineActionsStep"
+  },
+  {
+    "title": "findLineItemToUpdateStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/findLineItemToUpdateStep"
+  },
+  {
+    "title": "prepareCartToCreateStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/prepareCartToCreateStep"
+  },
+  {
+    "title": "prepareCartToUpdateStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/prepareCartToUpdateStep"
+  },
+  {
+    "title": "prepareLineItemUpdateStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/prepareLineItemUpdateStep"
+  },
+  {
     "title": "retrieveGiftCardBalanceStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/retrieveGiftCardBalanceStep"
   },
@@ -278,6 +298,10 @@ export const step = [
   {
     "title": "validateCustomerAccountCreation",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCustomerAccountCreation"
+  },
+  {
+    "title": "getCustomerAuthIdentityStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getCustomerAuthIdentityStep"
   },
   {
     "title": "createCustomerGroupsStep",
@@ -800,6 +824,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exchangeRequestItemReturnValidationStep"
   },
   {
+    "title": "getOrderPendingAmountStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getOrderPendingAmountStep"
+  },
+  {
     "title": "orderClaimAddNewItemValidationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderClaimAddNewItemValidationStep"
   },
@@ -890,6 +918,10 @@ export const step = [
   {
     "title": "throwUnlessStatusIsNotPaid",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/throwUnlessStatusIsNotPaid"
+  },
+  {
+    "title": "transferOrderToGuestValidationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferOrderToGuestValidationStep"
   },
   {
     "title": "updateClaimAddItemValidationStep",
@@ -1076,6 +1108,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addImagesToVariantStep"
   },
   {
+    "title": "addProductOptionsToProductStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addProductOptionsToProductStep"
+  },
+  {
     "title": "batchLinkProductsToCategoryStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/batchLinkProductsToCategoryStep"
   },
@@ -1116,6 +1152,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteCollectionsStep"
   },
   {
+    "title": "deleteProductOptionValuesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductOptionValuesStep"
+  },
+  {
     "title": "deleteProductOptionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteProductOptionsStep"
   },
@@ -1144,10 +1184,6 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportProductsStep"
   },
   {
-    "title": "getProductsStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getProductsStep"
-  },
-  {
     "title": "normalizeCsvStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/normalizeCsvStep"
   },
@@ -1160,6 +1196,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/processImportChunksStep"
   },
   {
+    "title": "processProductOptionsForImportStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/processProductOptionsForImportStep"
+  },
+  {
     "title": "removeImageFromVariantsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeImageFromVariantsStep"
   },
@@ -1168,8 +1208,20 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeImagesFromVariantStep"
   },
   {
+    "title": "removeProductOptionsFromProductStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/removeProductOptionsFromProductStep"
+  },
+  {
     "title": "updateCollectionsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateCollectionsStep"
+  },
+  {
+    "title": "updateProductOptionValuesOnProductStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionValuesOnProductStep"
+  },
+  {
+    "title": "updateProductOptionValuesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateProductOptionValuesStep"
   },
   {
     "title": "updateProductOptionsStep",
@@ -1336,6 +1388,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateSalesChannelsStep"
   },
   {
+    "title": "clearLayoutConfigurationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/clearLayoutConfigurationStep"
+  },
+  {
     "title": "createPropertyLabelsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPropertyLabelsStep"
   },
@@ -1348,8 +1404,16 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deletePropertyLabelsStep"
   },
   {
+    "title": "setActiveLayoutScopeStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveLayoutScopeStep"
+  },
+  {
     "title": "setActiveViewConfigurationStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setActiveViewConfigurationStep"
+  },
+  {
+    "title": "setLayoutConfigurationStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setLayoutConfigurationStep"
   },
   {
     "title": "updatePropertyLabelsStep",

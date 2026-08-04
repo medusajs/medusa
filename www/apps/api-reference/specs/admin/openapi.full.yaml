@@ -571,6 +571,14 @@ tags:
     x-associatedSchema:
       $ref: '#/components/schemas/AdminUser'
   - name: Views
+    description: |
+      A view configuration is a saved data-table view for an entity, such as products or orders. It lets admin users customize how a table shows its data, then save that customization as a reusable view.
+      These API routes allow admin users to manage the system default and personal views.
+    externalDocs:
+      description: Learn more about views configurations.
+      url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminViewConfiguration'
   - name: Workflows Executions
     description: |
       These API routes allow you to track workflow executions in your Medusa application.
@@ -4366,7 +4374,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: cancelOrderClaimWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/claims/{id}/claim-items:
     post:
       operationId: PostClaimsIdClaimItems
@@ -8858,6 +8877,17 @@ paths:
             ```
           description: Emitted when a claim is created for an order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteClaimsIdRequest
       summary: Cancel Claim Request
@@ -18245,6 +18275,17 @@ paths:
             Emitted when an order is placed, or when a draft order is converted to an
             order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
       requestBody:
         content:
           application/json:
@@ -20374,7 +20415,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: cancelOrderExchangeWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/exchanges/{id}/inbound/items:
     post:
       operationId: PostExchangesIdInboundItems
@@ -21483,6 +21535,17 @@ paths:
             ```
           description: Emitted when an exchange is created for an order.
           deprecated: false
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteExchangesIdRequest
       summary: Cancel Exchange Request
@@ -23144,6 +23207,13 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 200 status code's message.
+                example: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -23709,7 +23779,27 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createInventoryItemsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/location-levels/batch:
     post:
       operationId: PostInventoryItemsLocationLevelsBatch
@@ -23799,7 +23889,40 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchInventoryItemLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}:
     get:
       operationId: GetInventoryItemsId
@@ -23965,7 +24088,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateInventoryItemsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are updated.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteInventoryItemsId
       summary: Delete Inventory Item
@@ -24046,7 +24179,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteInventoryItemWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels:
     get:
       operationId: GetInventoryItemsIdLocationLevels
@@ -24261,7 +24404,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createInventoryLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels/batch:
     post:
       operationId: PostInventoryItemsIdLocationLevelsBatch
@@ -24332,7 +24485,40 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchInventoryItemLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/inventory-items/{id}/location-levels/{location_id}:
     post:
       operationId: PostInventoryItemsIdLocationLevelsLocation_id
@@ -24423,7 +24609,20 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateInventoryLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
       summary: Remove Inventory Level of Inventory Item
@@ -24531,7 +24730,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteInventoryLevelsWorkflow
-      x-events: []
+      x-events:
+        - name: inventory-level.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/invites:
     get:
       operationId: GetInvites
@@ -25664,6 +25873,20 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { layout_configurations } = await sdk.admin.layouts.listConfigurations()
         - lang: Shell
           label: cURL
           source: |-
@@ -26212,6 +26435,20 @@ paths:
             type: boolean
             title: with_deleted
             description: Whether to include deleted records in the result.
+        - name: to
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: to
+                description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
+              - type: array
+                description: Filter by who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
+                items:
+                  type: string
+                  title: to
+                  description: Who the notification was sent to. Set to `""` to retrieve notifications for all admin users.
       security:
         - api_token: []
         - cookie_auth: []
@@ -27458,6 +27695,28 @@ paths:
           description: Emitted when an order edit request is confirmed.
           deprecated: false
           since: 2.8.0
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/order-edits/{id}/items:
     post:
       operationId: PostOrderEditsIdItems
@@ -29276,7 +29535,10 @@ paths:
     post:
       operationId: PostOrdersId
       summary: Update Order
-      description: Update an order's details.
+      description: |-
+        Update an order's details.
+
+        Updating the order's shipping or billing address doesn't recalculate the order's taxes or totals; the existing tax lines are preserved as-is. You also can't change the address's `country_code`.
       x-authenticated: true
       parameters:
         - name: id
@@ -29285,12 +29547,17 @@ paths:
           required: true
           schema:
             type: string
+        - name: version
+          in: query
+          description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
         - name: fields
           in: query
-          description: |-
-            Comma-separated fields that should be included in the returned data.
-            if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
-            without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
@@ -29298,14 +29565,6 @@ paths:
             description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
-        - name: version
-          in: query
-          description: The version of the order to retrieve.
-          required: false
-          schema:
-            type: number
-            title: version
-            description: The version of the order to retrieve.
       security:
         - api_token: []
         - cookie_auth: []
@@ -29347,7 +29606,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}' \
-            -H 'Authorization: Bearer {jwt_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -29574,6 +29833,17 @@ paths:
             ```
           description: Emitted when an order is canceld.
           deprecated: false
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/orders/{id}/changes:
     get:
       operationId: GetOrdersIdChanges
@@ -30822,6 +31092,41 @@ paths:
             ```
           description: Emitted when a fulfillment is created for an order.
           deprecated: false
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+            }
+            ```
+          description: Emitted when reservations are updated.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idCancel
@@ -30927,6 +31232,41 @@ paths:
             ```
           description: Emitted when an order's fulfillment is canceled.
           deprecated: false
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
+        - name: reservation-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+            }
+            ```
+          description: Emitted when reservations are updated.
+          deprecated: false
+          since: 2.18.0
   /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered:
     post:
       operationId: PostOrdersIdFulfillmentsFulfillment_idMarkAsDelivered
@@ -31744,6 +32084,100 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: cancelOrderTransferRequestWorkflow
+      x-events: []
+  /admin/orders/{id}/transfer/guest:
+    post:
+      operationId: PostOrdersIdTransferGuest
+      summary: Transfer Order to Guest Customer
+      x-sidebar-summary: Transfer to Guest
+      description: Transfer an order to a guest customer. This is useful when the order email was incorrectly entered and you want to set it to a guest customer. The order will be transferred to a new guest customer with the provided email. For transferring orders to registered customer, check out the [Request Order Transfer](https://docs.medusajs.com/api/admin#orders_postordersidtransfer) API route instead.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The order's ID.
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: query
+          description: Retrieve a specific version of the order. If no version is provided, the latest version will be retrieved.
+          required: false
+          schema:
+            type: number
+            title: version
+            description: The order's version.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminTransferOrderToGuest'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.order.transferToGuest("order_123", {
+              email: "customer@example.com",
+              internal_note: "Internal note",
+            })
+            .then(({ order }) => {
+              console.log(order)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/orders/{id}/transfer/guest' \
+            -H 'Authorization: Bearer {access_token}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "email": "Eda_Kuhic78@gmail.com"
+            }'
+      tags:
+        - Orders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOrderResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: transferOrderToGuestWorkflow
       x-events: []
   /admin/payment-collections:
     post:
@@ -36671,7 +37105,9 @@ paths:
     delete:
       operationId: DeleteProductCategoriesId
       summary: Delete a Product Category
-      description: Delete a product category. This doesn't deleted products in that category.
+      description: Delete a product category. This doesn't delete the products in
+        that category. A product category that has child categories can't be deleted,
+        so you must delete its child categories first.
       x-authenticated: true
       parameters:
         - name: id
@@ -42059,6 +42495,26 @@ paths:
             ```
           description: Emitted when products are created.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/batch:
     post:
       operationId: PostProductsBatch
@@ -42205,6 +42661,36 @@ paths:
             ```
           description: Emitted when product options are deleted.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/export:
     post:
       operationId: PostProductsExport
@@ -43519,6 +44005,36 @@ paths:
             ```
           description: Emitted when product options are deleted.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
       deprecated: true
       x-deprecated_message: use `POST /admin/products/imports` instead.
   /admin/products/import/{transaction_id}/confirm:
@@ -43957,6 +44473,16 @@ paths:
             ```
           description: Emitted when product options are deleted.
           deprecated: false
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/images/{image_id}/variants/batch:
     post:
       operationId: PostProductsIdImagesImage_idVariantsBatch
@@ -45050,6 +45576,26 @@ paths:
             ```
           description: Emitted when product variants are created.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/variants/batch:
     post:
       operationId: PostProductsIdVariantsBatch
@@ -45173,6 +45719,36 @@ paths:
             ```
           description: Emitted when product variants are deleted.
           deprecated: false
+        - name: inventory-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are created.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
+        - name: inventory-level.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+            }
+            ```
+          description: Emitted when inventory levels are created.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/variants/inventory-items/batch:
     post:
       operationId: PostProductsIdVariantsInventoryItemsBatch
@@ -45542,6 +46118,16 @@ paths:
             ```
           description: Emitted when product variants are deleted.
           deprecated: false
+        - name: inventory-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory item
+            }
+            ```
+          description: Emitted when inventory items are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/products/{id}/variants/{variant_id}/images/batch:
     post:
       operationId: PostProductsIdVariantsVariant_idImagesBatch
@@ -50613,7 +51199,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createReservationsWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was created by an order flow
+            }
+            ```
+          description: Emitted when reservations are created.
+          deprecated: false
+          since: 2.18.0
   /admin/reservations/{id}:
     get:
       operationId: GetReservationsId
@@ -50768,7 +51365,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateReservationsWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+            }
+            ```
+          description: Emitted when reservations are updated.
+          deprecated: false
+          since: 2.18.0
     delete:
       operationId: DeleteReservationsId
       summary: Delete a Reservation
@@ -50849,7 +51457,18 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteReservationsWorkflow
-      x-events: []
+      x-events:
+        - name: reservation-item.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the reservation
+              order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+            }
+            ```
+          description: Emitted when reservations are deleted.
+          deprecated: false
+          since: 2.18.0
   /admin/return-reasons:
     get:
       operationId: GetReturnReasons
@@ -54882,6 +55501,19 @@ paths:
             ```
           description: Emitted when a return is marked as received.
           deprecated: false
+        - name: inventory-level.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the inventory level
+              order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+            }
+            ```
+          description: |-
+            Emitted when inventory levels are updated. This includes adjustments to
+            the stocked or reserved quantity, such as during order fulfillment.
+          deprecated: false
+          since: 2.18.0
   /admin/returns/{id}/request:
     post:
       operationId: PostReturnsIdRequest
@@ -59550,7 +60182,18 @@ paths:
     post:
       operationId: PostShippingOptionsId
       summary: Update a Shipping Option
-      description: Update a shipping option's details.
+      description: |
+        Update a shipping option's details.
+
+        When you provide the `prices` array, it replaces the shipping option's existing flat-rate prices:
+
+        - A price with a matching `id` is updated.
+        - A price without an `id` is created
+        - Any existing price whose `id` isn't included in the array is deleted.
+
+        The `rules` you provide for a price similarly replace that price's existing rules, so omit a rule to remove it.
+
+        Omitting the `prices` property entirely leaves the existing prices unchanged, whereas setting `price_type` to `calculated` removes all flat-rate prices.
       x-authenticated: true
       parameters:
         - name: id
@@ -59561,12 +60204,12 @@ paths:
             type: string
         - name: fields
           in: query
-          description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
           required: false
           schema:
             type: string
             title: fields
-            description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
             externalDocs:
               url: '#select-fields-and-relations'
       security:
@@ -59602,7 +60245,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-options/{id}' \
-            -H 'Authorization: Bearer {jwt_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Options
       responses:
@@ -67894,6 +68537,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.listEntities()
+            .then(({ entities }) => {
+              console.log(entities)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -67941,6 +68601,20 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { columns } = await sdk.admin.views.columns("orders")
         - lang: Shell
           label: cURL
           source: |-
@@ -68359,6 +69033,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.listConfigurations("orders")
+            .then(({ view_configurations, count, limit, offset }) => {
+              console.log(view_configurations)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68443,6 +69134,29 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminCreateViewConfiguration'
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { view_configuration } = await sdk.admin.views.createConfiguration(
+              "orders",
+              {
+                name: "My Orders View",
+                configuration: {
+                  visible_columns: ["display_id", "status"],
+                  column_order: ["display_id", "status"],
+                },
+              }
+            )
         - lang: Shell
           label: cURL
           source: |-
@@ -68506,6 +69220,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.retrieveActiveConfiguration("orders")
+            .then(({ view_configuration, active_view_configuration_id }) => {
+              console.log(view_configuration)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68570,6 +69301,22 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminSetActiveViewConfiguration'
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            await sdk.admin.views.setActiveConfiguration("orders", {
+              view_configuration_id: "viewconfig_123",
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68644,6 +69391,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.views.retrieveConfiguration("orders", "viewconfig_123")
+            .then(({ view_configuration }) => {
+              console.log(view_configuration)
+            })
         - lang: Shell
           label: cURL
           source: |-
@@ -68700,6 +69464,26 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminUpdateViewConfiguration'
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { view_configuration } = await sdk.admin.views.updateConfiguration(
+              "orders",
+              "viewconfig_123",
+              {
+                name: "Updated View",
+              }
+            )
         - lang: Shell
           label: cURL
           source: |-
@@ -68757,6 +69541,23 @@ paths:
         - cookie_auth: []
         - jwt_token: []
       x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            const { id, object, deleted } = await sdk.admin.views.deleteConfiguration(
+              "orders",
+              "viewconfig_123"
+            )
         - lang: Shell
           label: cURL
           source: |-
@@ -70483,6 +71284,13 @@ paths:
       responses:
         '201':
           description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                title: message
+                description: The 201 status code's message.
+                example: Created
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -72709,6 +73517,9 @@ components:
           type: string
           title: label_id
           description: The ID of the column's label, if it has a custom label.
+        metadata:
+          type: object
+          description: The column's metadata.
     AdminConfirmReceiveReturn:
       type: object
       description: The confirmation's details.
@@ -84542,6 +85353,26 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+    AdminTransferOrderToGuest:
+      type: object
+      description: The details of the order transfer to a guest.
+      x-schemaName: AdminTransferOrderToGuest
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          title: email
+          description: The email to which the order will be transferred.
+          format: email
+        internal_note:
+          type: string
+          title: internal_note
+          description: The internal note for the order transfer.
+        description:
+          type: string
+          title: description
+          description: Details of the order transfer to a guest.
     AdminTranslation:
       type: object
       description: The translation's details.
@@ -86084,7 +86915,7 @@ components:
           description: The shipping option's type id.
         prices:
           type: array
-          description: The shipping option's prices.
+          description: The shipping option's prices. This array replaces the shipping option's existing prices - a price with a matching `id` is updated, a price without an `id` is created, and any existing price whose `id` isn't included is deleted. Omit this property to leave the existing prices unchanged.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminUpdateShippingOptionPriceWithCurrency'
@@ -86108,7 +86939,7 @@ components:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         currency_code:
           type: string
           title: currency_code
@@ -86120,7 +86951,7 @@ components:
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionPriceWithRegion:
@@ -86131,7 +86962,7 @@ components:
         id:
           type: string
           title: id
-          description: The price's ID.
+          description: The price's ID. If not provided, a new price is created; existing prices whose ID isn't included in the request are deleted.
         region_id:
           type: string
           title: region_id
@@ -86142,7 +86973,7 @@ components:
           description: The price's amount.
         rules:
           type: array
-          description: The price's rules.
+          description: The price's rules. These rules replace the price's existing rules, so omit a rule to remove it.
           items:
             $ref: '#/components/schemas/PriceRule'
     AdminUpdateShippingOptionRule:
@@ -87353,6 +88184,11 @@ components:
           type: number
           title: original_shipping_tax_total
           description: The sum of all shipping methods' original tax totals before discounts.
+        completed_at:
+          type: string
+          title: completed_at
+          description: The date the cart was completed.
+          format: date-time
     BaseCartAddress:
       type: object
       description: The cart's shipping address.
@@ -87858,8 +88694,6 @@ components:
       properties:
         item:
           type: object
-          title: item
-          description: The details of the item that the adjustment belongs to.
         item_id:
           type: string
           title: item_id
@@ -87918,9 +88752,7 @@ components:
         - updated_at
       properties:
         item:
-          type: object
-          title: item
-          description: The details of the item that the tax line belongs to.
+          $ref: '#/components/schemas/BaseCartLineItem'
         item_id:
           type: string
           title: item_id
@@ -90269,8 +91101,10 @@ components:
       properties:
         shipping_method:
           type: object
-          title: shipping_method
-          description: The details of the method that the adjustment belongs to.
+        shipping_method_id:
+          type: string
+          title: shipping_method_id
+          description: The ID of the shipping method this adjustment applies on.
         id:
           type: string
           title: id
@@ -90326,8 +91160,6 @@ components:
       properties:
         shipping_method:
           type: object
-          title: shipping_method
-          description: The details of the method that the tax line belongs to.
         shipping_method_id:
           type: string
           title: shipping_method_id
@@ -92363,6 +93195,12 @@ components:
           format: date-time
           title: updated_at
           description: The date the tax line was updated.
+        data:
+          type: object
+          description: The tax line's data.
+        metadata:
+          type: object
+          description: The tax line's metadata, can hold custom key-value pairs.
     OrderReturnItem:
       type: object
       description: The item's items.
@@ -92659,6 +93497,12 @@ components:
           format: date-time
           title: updated_at
           description: The date the tax line was updated.
+        data:
+          type: object
+          description: The tax line's data.
+        metadata:
+          type: object
+          description: The tax line's metadata. Can hold custom key-value pairs.
     OrderTransaction:
       type: object
       description: The transaction's details.
@@ -92793,6 +93637,10 @@ components:
           type: string
           title: endpoint
           description: The relationship filter's endpoint.
+        filter_key:
+          type: string
+          title: filter_key
+          description: The relationship's filter key.
     Return:
       type: object
       description: The return's details.
@@ -93142,7 +93990,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the cart's sales channel. Only products that belong to the same sales channel can be added to the cart. The created order will be associated with the same sales channel.
+          description: |
+            The ID of the cart's sales channel. The created order is associated with the same sales channel.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         email:
           type: string
           title: email
@@ -93864,7 +94717,7 @@ components:
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount for the cart. For a shipping option whose `price_type` is `calculated`, this amount is computed on the fly by the fulfillment provider against the cart.
         data:
           type: object
           description: The shipping option's data, useful for the provider handling fulfillment.
@@ -93996,7 +94849,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the sales channel that cart is created in. Only products available in that sales channel can be added to the cart. If not provided, the store's default sales channel is associated with the cart instead.
+          description: |
+            The ID of the sales channel that cart is created in. If not provided, the store's default sales channel is associated with the cart instead.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         metadata:
           type: object
           description: The cart's metadata, can hold custom key-value pairs.
@@ -96921,7 +97779,7 @@ components:
         amount:
           type: number
           title: amount
-          description: The shipping option's amount.
+          description: The shipping option's amount. For a shipping option whose `price_type` is `calculated`, this amount isn't reliable until it's computed by the fulfillment provider using the [Calculate Shipping Option Price API route](https://docs.medusajs.com/api/store#shipping-options_postshippingoptionsidcalculate).
         is_tax_inclusive:
           type: boolean
           title: is_tax_inclusive
@@ -97335,7 +98193,12 @@ components:
         sales_channel_id:
           type: string
           title: sales_channel_id
-          description: The ID of the associated sales channel. Only products available in this channel can be added to the cart.
+          description: |
+            The ID of the associated sales channel.
+
+            A product's availability in a sales channel only filters the products you retrieve. Medusa doesn't reject a variant added to the cart when its product isn't available in the cart's sales channel. Refer to the guide in the external documentation to learn how to enforce that validation.
+          externalDocs:
+            url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
         email:
           type: string
           title: email
@@ -97649,7 +98512,7 @@ components:
     api_token:
       type: http
       x-displayName: API Token
-      scheme: bearer
+      scheme: basic
     jwt_token:
       type: http
       x-displayName: JWT Token

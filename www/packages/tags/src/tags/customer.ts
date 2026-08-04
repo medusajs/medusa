@@ -216,6 +216,10 @@ export const customer = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/orderExchangeAddNewItemWorkflow"
   },
   {
+    "title": "transferOrderToGuestWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferOrderToGuestWorkflow"
+  },
+  {
     "title": "updateOrderWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateOrderWorkflow"
   },

@@ -139,9 +139,21 @@ export class BigNumber implements IBigNumber {
     return this.numeric
   }
 
+  /**
+   * Explicit string coercion. Without this, `.toString()` falls through to
+   * `Object.prototype.toString` and returns "[object Object]", silently
+   * breaking callers such as `parseFloat(bn.toString())` (returns `NaN`).
+   * This is the single source of truth for string coercion — the
+   * `[Symbol.toPrimitive]` "string" hint delegates to it so the two stay
+   * consistent.
+   */
+  toString(): string {
+    return `${this.raw?.value ?? this.numeric}`
+  }
+
   [Symbol.toPrimitive](hint) {
     if (hint === "string") {
-      return this.raw?.value
+      return this.toString()
     }
 
     return this.numeric

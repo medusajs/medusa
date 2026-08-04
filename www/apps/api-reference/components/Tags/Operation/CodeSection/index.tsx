@@ -61,4 +61,6 @@ const TagOperationCodeSection = ({
   )
 }
 
-export default TagOperationCodeSection
+// memoized: props are referentially stable, so this heavy subtree doesn't
+// re-render on scroll-spy activePath/pathname changes.
+export default React.memo(TagOperationCodeSection)

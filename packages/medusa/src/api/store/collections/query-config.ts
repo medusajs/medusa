@@ -1,3 +1,5 @@
+import { disallowedStoreFields } from "../utils/disallowed-fields"
+
 export const defaultStoreCollectionFields = [
   "id",
   "title",
@@ -9,6 +11,7 @@ export const defaultStoreCollectionFields = [
 
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCollectionFields,
+  disallowed: disallowedStoreFields,
   isList: false,
 }
 

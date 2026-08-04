@@ -104,6 +104,8 @@ export type FormattingOptionType = {
   isEventsReference?: boolean
   sortMembers?: boolean
   internalType?: string
+  /** Whether to show the GitHub source-code link for the member. */
+  showSourceCodeLink?: boolean
 }
 
 export type AllowedProjectDocumentsOption = {
@@ -355,4 +357,195 @@ export declare type MedusaEvent = {
   since?: string
   deprecated?: boolean
   deprecated_message?: string
+}
+
+/* -------------------------------------------------------------------------- */
+/*                           References doc-model                             */
+/* -------------------------------------------------------------------------- */
+/*
+ * The doc-model is the serialization format the references pipeline emits
+ * instead of MDX. Each reference page is one `DocPage` (written as a single
+ * `<page>.json`). It is a presentation-ready, self-contained description of a
+ * page: a list of ordered `DocBlock`s whose data (type tables, workflow
+ * diagrams, code examples) is structured JSON and whose links are already
+ * resolved to final site URLs at generation time.
+ *
+ * IMPORTANT: this contract is duplicated on the website side (see
+ * `www/packages/docs-ui` `ReferenceContent`). The two definitions live in
+ * separate yarn workspace roots and must be kept structurally in sync.
+ */
+
+/**
+ * A single row in a `TypeList` (parameters, return values, object properties).
+ * Structurally identical to the `Parameter` type used by the markdown theme
+ * and the `Type` prop consumed by the `docs-ui` `TypeList` component.
+ */
+export declare type DocTypeListItem = {
+  name: string
+  /**
+   * The rendered type, e.g. "`string`" or a link like
+   * "[CartDTO](/references/cart/models/Cart)". Links are pre-resolved.
+   */
+  type: string
+  optional?: boolean
+  defaultValue?: string
+  example?: string
+  /**
+   * Description as pre-rendered, sanitized HTML (links resolved).
+   */
+  description?: string
+  featureFlag?: string
+  expandable: boolean
+  children?: DocTypeListItem[]
+  since?: string
+  deprecated?: {
+    is_deprecated: boolean
+    description?: string
+  }
+}
+
+/**
+ * A single step in a workflow diagram.
+ */
+export declare type DocWorkflowStep = {
+  type: "step" | "hook" | "workflow" | "when"
+  name: string
+  description?: string
+  /** Pre-resolved link to the step's own page, or a "#anchor". */
+  link?: string
+  depth: number
+  /** Present when `type === "when"`. */
+  condition?: string
+  steps?: DocWorkflowStep[]
+}
+
+export declare type DocCodeTab = {
+  label: string
+  language: string
+  title?: string
+  code: string
+}
+
+/**
+ * An ordered content block within a page. `kind` discriminates the shape.
+ */
+export declare type DocBlock =
+  | {
+      /** Prose rendered to sanitized HTML at build time (links resolved). */
+      kind: "markdown"
+      html: string
+    }
+  | {
+      kind: "heading"
+      level: number
+      text: string
+      id: string
+    }
+  | {
+      kind: "typeList"
+      sectionTitle?: string
+      expandUrl?: string
+      /** Levels to expand by default (e.g. 1 for workflow input/output). */
+      openedLevel?: number
+      types: DocTypeListItem[]
+    }
+  | {
+      kind: "workflowDiagram"
+      workflow: {
+        name: string
+        steps: DocWorkflowStep[]
+      }
+    }
+  | {
+      kind: "codeTabs"
+      tabs: DocCodeTab[]
+    }
+  | {
+      kind: "note"
+      variant?: string
+      /** Note body as sanitized HTML (links resolved). */
+      html: string
+      title?: string
+    }
+  | {
+      kind: "sourceCodeLink"
+      link: string
+      text?: string
+    }
+  | {
+      kind: "table"
+      headers: string[]
+      rows: string[][]
+    }
+  | {
+      /** Namespace / index pages: a list of links to member pages. */
+      kind: "linkList"
+      items: {
+        title: string
+        href: string
+        description?: string
+      }[]
+    }
+  | {
+      /** Feature-flag / status badges rendered above a section. */
+      kind: "badges"
+      badges: {
+        variant?: string
+        label: string
+        tooltip?: string
+      }[]
+    }
+  | {
+      /** Events emitted by a workflow (from `@workflowEvent` tags). */
+      kind: "workflowEvents"
+      events: {
+        name: string
+        description?: string
+        /** The event payload as a code snippet. */
+        payload?: string
+        deprecated?: boolean
+        deprecatedMessage?: string
+        since?: string
+      }[]
+    }
+  | {
+      /** The full events reference listing (grouped by module/category). */
+      kind: "eventsListing"
+      categories: {
+        title?: string
+        events: DocEvent[]
+      }[]
+    }
+
+/** A single event in the events reference listing. */
+export declare type DocEvent = {
+  name: string
+  /** Anchor id (slug of the event name). */
+  id: string
+  /** Description as Markdown (links resolved). */
+  description?: string
+  /** The event payload, as a fenced code block. */
+  payload?: string
+  /** Workflows that emit this event, as pre-resolved links. */
+  workflows?: { name: string; href: string }[]
+  deprecated?: boolean
+  deprecatedMessage?: string
+  since?: string
+}
+
+/**
+ * A fully-serialized reference page.
+ */
+export declare type DocPage = {
+  /** Final site URL for this page (already accounts for slug overrides). */
+  slug: string
+  title: string
+  frontmatter: FrontmatterData
+  /** In-page table of contents, built from `heading` blocks. */
+  toc?: {
+    title: string
+    id: string
+    level: number
+  }[]
+  blocks: DocBlock[]
 }

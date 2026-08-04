@@ -1,7 +1,15 @@
 import { RemoteJoinerQuery } from "@medusajs/types"
-import { deduplicate, isDefined, isString } from "@medusajs/utils"
+import { deduplicate, isDefined } from "@medusajs/utils"
 import { GraphCatalog } from "./catalog"
-import { getNestedItems } from "./helpers"
+import {
+  consumeResiduals,
+  extractCrossModuleJoins,
+} from "./cross-module-joins"
+import {
+  getNestedItems,
+  resolveFieldAliasEntry,
+  ResolvedFieldAlias,
+} from "./helpers"
 import {
   BASE_PATH,
   CompileInput,
@@ -46,6 +54,30 @@ export function compileQuery(
   { query, serviceConfig, options, initialData }: CompileInput,
   catalog: GraphCatalog
 ): QueryPlan {
+  const { crossModuleJoins, residualCrossModuleFilters, residualOrderBy } =
+    extractCrossModuleJoins({ query, serviceConfig }, catalog)
+
+  if (crossModuleJoins.length) {
+    query.args ??= []
+    query.args.push({ name: "__internal", value: { crossModuleJoins } })
+  }
+
+  // Stage 2: residual filters/orderings are consumed here (stripped from the
+  // query, their data loaded via injected expands) and completed in memory by
+  // executePlan after the fetch.
+  const residualHiddenProperties =
+    residualCrossModuleFilters.length || residualOrderBy.length
+      ? consumeResiduals(
+          {
+            query,
+            serviceConfig,
+            residualFilters: residualCrossModuleFilters,
+            residualOrderBy,
+          },
+          catalog
+        )
+      : []
+
   const { primaryKeyArg, otherArgs, pkName } = getPrimaryKeysAndOtherFilters({
     serviceConfig,
     queryObj: query,
@@ -94,6 +126,10 @@ export function compileQuery(
     initialData,
     initialDataOnly: options?.initialDataOnly,
     options,
+    crossModuleJoins,
+    residualCrossModuleFilters,
+    residualHiddenProperties,
+    residualOrderBy,
   }
 }
 
@@ -249,43 +285,6 @@ function parseProperties(
   }
 
   return { parsedExpands, aliasRealPathMap }
-}
-
-type ResolvedFieldAlias = {
-  path: string
-  isList?: boolean
-  forwardArgumentsOnPath?: string[]
-  entity?: string
-}
-
-function resolveFieldAliasEntry(
-  alias: unknown,
-  currentPathEntity?: string
-): ResolvedFieldAlias | undefined {
-  if (!alias) {
-    return undefined
-  }
-
-  if (Array.isArray(alias)) {
-    if (!currentPathEntity) {
-      return alias[0] as ResolvedFieldAlias
-    }
-
-    return (
-      (alias.find((entry) => entry.entity == currentPathEntity) as
-        | ResolvedFieldAlias
-        | undefined) ?? (alias[0] as ResolvedFieldAlias)
-    )
-  }
-
-  if (isString(alias)) {
-    return { path: alias }
-  }
-
-  // Match legacy RemoteJoiner behavior: a singular entity-scoped alias object
-  // is always applied when the property name hits. Entity filtering only
-  // applies when multiple aliases share the same property (array form above).
-  return alias as ResolvedFieldAlias
 }
 
 /**

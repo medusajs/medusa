@@ -25,7 +25,7 @@ export type CreateCustomersWorkflowInput = {
 
 export const createCustomersWorkflowId = "create-customers"
 /**
- * This workflow creates one or more customers. It's used by the [Create Customer Admin API Route](https://docs.medusajs.com/api/admin#customers_postcustomers).
+ * This workflow creates one or more customers. It's used by the [Create Customer Admin API Route](https://docs.medusajs.com/api/admin/customers/create-customer).
  *
  * This workflow has a hook that allows you to perform custom actions on the created customer. You can see an example in [this guide](https://docs.medusajs.com/resources/commerce-modules/customer/extend).
  *

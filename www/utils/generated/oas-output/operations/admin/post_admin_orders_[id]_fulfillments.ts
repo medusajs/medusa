@@ -74,6 +74,9 @@
  *                 type: boolean
  *                 title: no_notification
  *                 description: Whether to send the customer a notification about the created fulfillment.
+ *               delivery_address:
+ *                 $ref: "#/components/schemas/AdminFulfillmentDeliveryAddress"
+ *                 description: The recipient address to use for the fulfillment. It's merged over the order's shipping address, allowing you to override recipient details (such as the first and last name) sent to the fulfillment provider.
  *               metadata:
  *                 type: object
  *                 description: The order's metadata. Can hold custom key-value pairs.
@@ -159,6 +162,41 @@
  *       ```
  *     description: Emitted when a fulfillment is created for an order.
  *     deprecated: false
+ *   - name: inventory-level.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the inventory level
+ *         order_id, // (optional) The ID of the order, if the update was triggered by an order flow
+ *       }
+ *       ```
+ *     description: |-
+ *       Emitted when inventory levels are updated. This includes adjustments to
+ *       the stocked or reserved quantity, such as during order fulfillment.
+ *     deprecated: false
+ *     since: 2.18.0
+ *   - name: reservation-item.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was updated by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are updated.
+ *     deprecated: false
+ *     since: 2.18.0
+ *   - name: reservation-item.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the reservation
+ *         order_id, // (optional) The ID of the order, if the reservation was deleted by an order flow
+ *       }
+ *       ```
+ *     description: Emitted when reservations are deleted.
+ *     deprecated: false
+ *     since: 2.18.0
  * 
 */
 

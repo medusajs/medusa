@@ -22,8 +22,8 @@ import {
   createHook,
   createStep,
   createWorkflow,
-  parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { pricingContextResult } from "../../../cart/utils/schemas"
 import {
@@ -292,7 +292,7 @@ export const createAndCompleteReturnOrderWorkflowId =
 /**
  * This workflow creates and completes a return from the storefront. The admin would receive the return and
  * process it from the dashboard. This workflow is used by the
- * [Create Return Store API Route](https://docs.medusajs.com/api/store#return_postreturn).
+ * [Create Return Store API Route](https://docs.medusajs.com/api/store/returns/create-return).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to create a return
  * for an order in your custom flow.
@@ -463,14 +463,15 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
     )
     receiveReturnStep(receiveItems)
 
-    parallelize(
-      emitEventStep({
-        eventName: OrderWorkflowEvents.RETURN_REQUESTED,
-        data: {
-          order_id: order.id,
-          return_id: returnCreated.id,
-        },
-      }).config({ name: "emit-return-requested-event" }),
+    emitEventStep({
+      eventName: OrderWorkflowEvents.RETURN_REQUESTED,
+      data: {
+        order_id: order.id,
+        return_id: returnCreated.id,
+      },
+    }).config({ name: "emit-return-requested-event" })
+
+    when({ input }, ({ input }) => input.receive_now === true).then(() =>
       emitEventStep({
         eventName: OrderWorkflowEvents.RETURN_RECEIVED,
         data: {

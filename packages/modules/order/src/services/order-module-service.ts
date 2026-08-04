@@ -362,6 +362,7 @@ export default class OrderModuleService
 
   private shouldIncludeTotals(config: FindConfig<any>): boolean {
     const totalFields = [
+      "*",
       "total",
       "subtotal",
       "tax_total",
@@ -391,7 +392,7 @@ export default class OrderModuleService
       "refundable_amount",
     ]
 
-    const includeTotals = (config?.select ?? []).some((field) =>
+    const includeTotals = (config?.select ?? ["*"]).some((field) =>
       totalFields.includes(field as string)
     )
 
@@ -404,7 +405,6 @@ export default class OrderModuleService
 
   private addRelationsToCalculateTotals(config: FindConfig<any>, totalFields) {
     config.relations ??= []
-    config.select ??= []
 
     const requiredRelationsForTotals = [
       "credit_lines",
@@ -421,10 +421,10 @@ export default class OrderModuleService
       ...requiredRelationsForTotals,
     ])
 
-    config.select = config.select.filter((field) => {
+    config.select = config.select?.filter((field) => {
       return (
         !requiredRelationsForTotals.some((val) =>
-          val.startsWith(field as string)
+          (field as string).startsWith(val)
         ) && !totalFields.includes(field)
       )
     })
@@ -937,7 +937,7 @@ export default class OrderModuleService
       (orderShipping) => orderShipping.shipping_method_id
     )
 
-    const deletions: Promise<string[]>[] = []
+    const deletions: Promise<unknown>[] = []
 
     if (orderAddressIds.length) {
       deletions.push(

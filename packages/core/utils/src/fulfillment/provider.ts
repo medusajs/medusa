@@ -217,7 +217,8 @@ export class AbstractFulfillmentProviderService
   }
 
   /**
-   * This method calculates the price of a shipping method when it's created or its cart is refreshed.
+   * This method calculates the price of a shipping method whose shipping option has the
+   * `price_type` set to `calculated`.
    *
    * In this method, you can send a request to your third-party provider to retrieve the prices. The first
    * parameters holds the `data` property of the shipping method's shipping option, which has fulfillment
@@ -228,6 +229,24 @@ export class AbstractFulfillmentProviderService
    *
    * So, using both of these data, assuming you're storing in them data related to the third-party service,
    * you can retrieve the calculated price of the shipping method.
+   *
+   * ### When is this method invoked?
+   *
+   * This method is invoked in Medusa whenever the calculated shipping option's price needs to be resolved
+   * against a cart:
+   *
+   * - When retrieving a cart's shipping options with their prices, such as when the customer views their shipping options during checkout.
+   * - When the shipping method is added to the cart.
+   * - Every time the cart is refreshed. A cart is refreshed after most cart changes, such as adding a line item or updating the cart's details, so this method may be invoked frequently for a cart that has a calculated shipping method.
+   *
+   * The price isn't re-calculated when the cart is completed and converted to an order; the order uses the last price that was stored on the shipping method.
+   *
+   * If this method throws an error, or returns a result without a `calculated_amount`, the shipping
+   * option's price can't be resolved. This blocks the operation that triggered the calculation,
+   * such as adding the shipping method to the cart or the cart refresh triggered by other cart
+   * changes, which can prevent the customer from completing checkout. So, ensure to handle errors
+   * gracefully, such as by falling back to a default price, if you don't want a failure in the
+   * third-party service to block checkout.
    *
    * @param optionData - The `data` property of a shipping option.
    * @param data - The shipping method's `data` property with custom data passed from the frontend.
@@ -277,6 +296,9 @@ export class AbstractFulfillmentProviderService
    * @param items - The items in the fulfillment.
    * @param order - The order this fulfillment is created for.
    * @param fulfillment - The fulfillment's details.
+   * @param additionalData - Custom key-value pairs forwarded from the workflow that
+   * created the fulfillment (for example, the `additional_data` of the Create Order
+   * Fulfillment API route). It isn't persisted on the fulfillment.
    * @returns An object whose `data` property is stored in the fulfillment's `data` property.
    *
    * @example
@@ -286,7 +308,8 @@ export class AbstractFulfillmentProviderService
    *     data: Record<string, unknown>,
    *     items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
    *     order: Partial<FulfillmentOrderDTO> | undefined,
-   *     fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
+   *     fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>,
+   *     additionalData?: Record<string, unknown>
    *   ): Promise<CreateFulfillmentResult> {
    *     // assuming the client creates a fulfillment
    *     // in the third-party service
@@ -308,7 +331,10 @@ export class AbstractFulfillmentProviderService
     data: Record<string, unknown>,
     items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
     order: Partial<FulfillmentOrderDTO> | undefined,
-    fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
+    fulfillment: Partial<
+      Omit<FulfillmentDTO, "provider_id" | "data" | "items">
+    >,
+    additionalData?: Record<string, unknown>
   ): Promise<CreateFulfillmentResult> {
     throw Error("createFulfillment must be overridden by the child class")
   }

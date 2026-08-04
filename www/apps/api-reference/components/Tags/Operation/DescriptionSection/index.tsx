@@ -20,6 +20,9 @@ import { TagsOperationDescriptionSectionWorkflowBadgeProps } from "./WorkflowBad
 import { TagsOperationDescriptionSectionEventsProps } from "./Events"
 import { TagsOperationDescriptionSectionDeprecationNoticeProps } from "./DeprecationNotice"
 import { Feedback } from "@/components/Feedback"
+import { useArea } from "@/providers/area"
+import { resolveApiRefDocUrl } from "@/utils/resolve-doc-url"
+import ViewAsMarkdown from "@/components/ViewAsMarkdown"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -57,6 +60,7 @@ type TagsOperationDescriptionSectionProps = {
 const TagsOperationDescriptionSection = ({
   operation,
 }: TagsOperationDescriptionSectionProps) => {
+  const { area } = useArea()
   return (
     <>
       <H2>
@@ -106,6 +110,9 @@ const TagsOperationDescriptionSection = ({
           </Tooltip>
         ))}
       </H2>
+      {operation["x-path"] && (
+        <ViewAsMarkdown path={operation["x-path"]} className="my-1" />
+      )}
       <div className="my-1">
         <MDXContentClient content={operation.description} />
       </div>
@@ -118,7 +125,7 @@ const TagsOperationDescriptionSection = ({
         <>
           Related guide:{" "}
           <Link
-            href={operation.externalDocs.url}
+            href={resolveApiRefDocUrl(operation.externalDocs.url, area)}
             target="_blank"
             variant="content"
             data-testid="related-guide-link"
@@ -162,4 +169,6 @@ const TagsOperationDescriptionSection = ({
   )
 }
 
-export default TagsOperationDescriptionSection
+// memoized: props (operation) are referentially stable, so this heavy subtree
+// doesn't re-render on scroll-spy activePath/pathname changes.
+export default React.memo(TagsOperationDescriptionSection)

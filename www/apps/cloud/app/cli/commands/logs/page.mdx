@@ -290,7 +290,7 @@ stream new log lines continuously with `--follow`.
 
       Filter log lines by a metadata field using an "in" filter. Repeatable.
       Pass the flag multiple times. Repeating the same key merges the
-      values into a single filter.
+      values into a single filter. See [Available Metadata Keys](#available-metadata-keys) for the supported field names.
 
       </Table.Cell>
       <Table.Cell>
@@ -463,7 +463,7 @@ as the search bar in the Cloud dashboard logs view:
   </CodeTab>
 </CodeTabs>
 
-Alternatively, if you're looking for HTTP calls that resulted in 500 or other error status codes, use the `--metadata` filter to find log lines with `status_code=500`:
+Alternatively, if you're looking for HTTP calls that resulted in 500 or other error status codes, use the `--metadata` filter to find log lines with `status=500`:
 
 <CodeTabs group="cli-auth">
   <CodeTab label="With Flags" value="flags">
@@ -488,6 +488,161 @@ Alternatively, if you're looking for HTTP calls that resulted in 500 or other er
 
   </CodeTab>
 </CodeTabs>
+
+### Available Metadata Keys
+
+`--metadata` filters on the structured fields of HTTP request log lines. Other log lines (such as your application's own log messages) may not have these fields, so a metadata filter only matches request logs.
+
+Backend logs (`--type backend`, the default) expose the following keys:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Key
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `status`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      HTTP response status code, such as `200` or `500`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `method`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      HTTP request method, such as `GET` or `POST`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `path`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Request path, such as `/store/products`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `duration`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Response time in milliseconds.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `request_id`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Request ID, useful to correlate a request with related error logs.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `client_ip`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      IP address of the client that made the request.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `user_agent`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      User agent of the client that made the request.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `referrer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Referrer of the request.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `response_size`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Response size in bytes.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `request_size`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Request size in bytes.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `http_version`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      HTTP version used for the request.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Storefront logs (`--type storefront`) expose a subset of these keys: `status`, `method`, `path`, `duration`, and `level` (the highest log level of the request).
 
 ---
 

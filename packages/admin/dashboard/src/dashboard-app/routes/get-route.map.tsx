@@ -990,6 +990,11 @@ export function getRouteMap({
                         import("../../routes/inventory/inventory-create"),
                     },
                     {
+                      path: "export",
+                      lazy: () =>
+                        import("../../routes/inventory/inventory-export"),
+                    },
+                    {
                       path: "stock",
                       lazy: () =>
                         import("../../routes/inventory/inventory-stock"),
@@ -1137,6 +1142,29 @@ export function getRouteMap({
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/regions/region-metadata"),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              path: "property-labels",
+              errorElement: <ErrorBoundary />,
+              element: <Outlet />,
+              handle: {
+                breadcrumb: () => t("propertyLabels.domain", "Property Labels"),
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/property-labels"),
+                  children: [
+                    {
+                      path: ":entity/edit",
+                      lazy: () =>
+                        import(
+                          "../../routes/property-labels/property-labels-edit"
+                        ),
                     },
                   ],
                 },

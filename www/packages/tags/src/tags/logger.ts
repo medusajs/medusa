@@ -84,6 +84,10 @@ export const logger = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/refundPaymentsStep"
   },
   {
+    "title": "authorizePaymentSessionForOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow"
+  },
+  {
     "title": "refundPaymentsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refundPaymentsWorkflow"
   },

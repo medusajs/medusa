@@ -20,8 +20,16 @@ export const fulfillment = [
     "path": "https://docs.medusajs.com/user-guide/settings/locations-and-shipping/shipping-profiles"
   },
   {
+    "title": "Reservations Lifecycle",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/inventory/reservations-lifecycle"
+  },
+  {
     "title": "Shipping Option Price Rules",
     "path": "https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules"
+  },
+  {
+    "title": "Physical and Customs Attributes",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/physical-customs-attributes"
   },
   {
     "title": "Product Shipping Requirement",

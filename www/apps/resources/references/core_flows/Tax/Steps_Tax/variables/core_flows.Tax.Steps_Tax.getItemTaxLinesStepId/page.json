@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Tax/Steps_Tax/variables/core_flows.Tax.Steps_Tax.getItemTaxLinesStepId","title":"getItemTaxLinesStepId","frontmatter":{},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"getItemTaxLinesStepId","type":"`\"get-item-tax-lines\"`","description":"","optional":false,"defaultValue":"\"get-item-tax-lines\"","expandable":false,"children":[]}]}]}

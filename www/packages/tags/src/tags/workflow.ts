@@ -740,6 +740,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/requestOrderTransferWorkflow"
   },
   {
+    "title": "transferOrderToGuestWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferOrderToGuestWorkflow"
+  },
+  {
     "title": "updateClaimAddItemWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateClaimAddItemWorkflow"
   },
@@ -806,6 +810,10 @@ export const workflow = [
   {
     "title": "updateReturnWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateReturnWorkflow"
+  },
+  {
+    "title": "authorizePaymentSessionForOrderWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/authorizePaymentSessionForOrderWorkflow"
   },
   {
     "title": "capturePaymentWorkflow",
@@ -908,6 +916,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchVariantImagesWorkflow"
   },
   {
+    "title": "createAndLinkProductOptionsToProductWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createAndLinkProductOptionsToProductWorkflow"
+  },
+  {
     "title": "createCollectionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCollectionsWorkflow"
   },
@@ -934,6 +946,10 @@ export const workflow = [
   {
     "title": "deleteCollectionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteCollectionsWorkflow"
+  },
+  {
+    "title": "deleteProductOptionValuesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductOptionValuesWorkflow"
   },
   {
     "title": "deleteProductOptionsWorkflow",
@@ -968,8 +984,16 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/importProductsWorkflow"
   },
   {
+    "title": "setProductProductOptionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setProductProductOptionsWorkflow"
+  },
+  {
     "title": "updateCollectionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCollectionsWorkflow"
+  },
+  {
+    "title": "updateProductOptionValuesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductOptionValuesWorkflow"
   },
   {
     "title": "updateProductOptionsWorkflow",
@@ -1116,6 +1140,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchPropertyLabelsWorkflow"
   },
   {
+    "title": "clearLayoutConfigurationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/clearLayoutConfigurationWorkflow"
+  },
+  {
     "title": "createPropertyLabelsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createPropertyLabelsWorkflow"
   },
@@ -1126,6 +1154,10 @@ export const workflow = [
   {
     "title": "deletePropertyLabelsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deletePropertyLabelsWorkflow"
+  },
+  {
+    "title": "setLayoutConfigurationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setLayoutConfigurationWorkflow"
   },
   {
     "title": "updatePropertyLabelsWorkflow",

@@ -490,6 +490,13 @@ const redirects = async () => {
       destination: "/learn/introduction/build-with-llms-ai",
       permanent: true,
     },
+    {
+      source:
+        "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms",
+      destination:
+        "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify",
+      permanent: true,
+    },
   ]
 }
 

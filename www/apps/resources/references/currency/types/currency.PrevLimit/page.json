@@ -1,0 +1,1 @@
+{"slug":"/references/currency/types/currency.PrevLimit","title":"PrevLimit","frontmatter":{"displayed_sidebar":"currencyReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"PrevLimit","type":"[`never`, `0`, `1`, `2`]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

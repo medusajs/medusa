@@ -13,7 +13,7 @@ export type DeleteRegionsWorkflowInput = { ids: string[] }
 export const deleteRegionsWorkflowId = "delete-regions"
 /**
  * This workflow deletes one or more regions. It's used by the
- * [Delete Region Admin API Route](https://docs.medusajs.com/api/admin#regions_deleteregionsid).
+ * [Delete Region Admin API Route](https://docs.medusajs.com/api/admin/regions/delete-a-region).
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete regions in your custom flows.

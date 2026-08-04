@@ -1,24 +1,16 @@
-import {
-  Container,
-  createDataTableColumnHelper,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { PencilSquare, Trash } from "@medusajs/icons"
 
-import {
-  useDeleteProductOptionLazy,
-  useProductOptions,
-} from "../../../../../hooks/api/product-options"
+import { useProductOptions } from "../../../../../hooks/api/product-options"
 import { useProductOptionTableColumns } from "../../../../../hooks/table/columns/use-product-option-table-columns"
 import { useProductOptionTableQuery } from "../../../../../hooks/table/query/use-product-option-table-query"
 import { useProductOptionTableFilters } from "../../../../../hooks/table/filters"
 import { DataTable } from "../../../../../components/data-table"
+import { ProductOptionListTableActions } from "./product-option-list-table-actions"
 
 const PAGE_SIZE = 20
 const DEFAULT_IS_EXCLUSIVE_FILTER = JSON.stringify("false")
@@ -73,8 +65,7 @@ export const ProductOptionListTable = () => {
       <DataTable
         data={product_options}
         columns={columns}
-        filters={filters} // show filter bar ...
-        enableFilterMenu={false} // hide filter with search bar so we don't render duplicates
+        filters={filters}
         rowCount={count}
         pageSize={PAGE_SIZE}
         getRowId={(row) => row.id}
@@ -106,63 +97,18 @@ export const ProductOptionListTable = () => {
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProductOption>()
 
 const useColumns = () => {
-  const { t } = useTranslation()
-  const prompt = usePrompt()
-  const navigate = useNavigate()
   const base = useProductOptionTableColumns()
-
-  const { mutateAsync } = useDeleteProductOptionLazy()
-
-  const handleDelete = useCallback(
-    async (productOption: HttpTypes.AdminProductOption) => {
-      const confirm = await prompt({
-        title: t("general.areYouSure"),
-        description: t("productOptions.delete.confirmation", {
-          title: productOption.title,
-        }),
-        confirmText: t("actions.delete"),
-        cancelText: t("actions.cancel"),
-      })
-
-      if (!confirm) {
-        return
-      }
-
-      await mutateAsync(productOption.id, {
-        onSuccess: () => {
-          toast.success(t("productOptions.delete.successToast"))
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      })
-    },
-    [t, prompt, mutateAsync]
-  )
 
   return useMemo(
     () => [
       ...base,
-      columnHelper.action({
-        actions: (ctx) => [
-          [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: () =>
-                navigate(`/product-options/${ctx.row.original.id}/edit`),
-            },
-          ],
-          [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: () => handleDelete(ctx.row.original),
-            },
-          ],
-        ],
+      columnHelper.display({
+        id: "action",
+        cell: ({ row }) => (
+          <ProductOptionListTableActions productOption={row.original} />
+        ),
       }),
     ],
-    [base, handleDelete, navigate, t]
+    [base]
   )
 }

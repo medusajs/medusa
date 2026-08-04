@@ -87,7 +87,18 @@ export class MiddlewareFileLoader {
           )
         }
 
-        const matcher = String(route.matcher)
+        /**
+         * The matcher can be a string or a regular expression.
+         * A regular expression must be preserved as-is so that it can be passed
+         * to Express directly. Stringifying it (e.g. via `String(regexp)`) turns
+         * it into its literal source (`/^\/admin$/`), which Express then compiles
+         * as a string path that matches no request, silently disabling the
+         * middleware.
+         */
+        const matcher =
+          route.matcher instanceof RegExp
+            ? route.matcher
+            : String(route.matcher)
 
         if (route.bodyParser !== undefined) {
           let methods = route.methods || [...HTTP_METHODS]

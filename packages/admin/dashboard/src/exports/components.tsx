@@ -41,3 +41,8 @@ export const LayoutComposer = Object.assign(LayoutComposerRoot, {
 })
 
 export type { LayoutComponentProps } from "../components/layout-composer/types"
+
+export {
+  ConfigurableDataTable,
+  type ConfigurableDataTableProps,
+} from "../components/table/configurable-data-table/configurable-data-table"
