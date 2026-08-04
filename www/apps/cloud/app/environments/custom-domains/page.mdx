@@ -19,7 +19,7 @@ To update the default `medusajs.app` and `medusajs.site` subdomains instead, see
 
 </Note>
 
-You can configure custom domains per environment, allowing you to use different domains for Production, Staging, and preview environments based on your needs.
+You can configure multiple custom domains per environment, allowing you to use different domains for Production, Staging, and preview environments based on your needs.
 
 ---
 
@@ -53,7 +53,7 @@ To set up a backend custom domain:
 
 After submitting, you are taken to the DNS configuration detail page where you can add the required DNS records with your domain provider.
 
-You can track your domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+You can track each domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
 
 ### Update Backend Domain in Storefront
 
@@ -113,7 +113,7 @@ To set up a storefront custom domain, you need:
 
 #### From Project Overview
 
-If no custom domain is configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
+If no custom domains are configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
 
 1. Go to your project's dashboard in Cloud.
 2. In the environment card (for example, Production), click the **Setup Custom Domain** link next to the health status.
@@ -129,7 +129,19 @@ If no custom domain is configured for your storefront environment, you'll see a 
 
 After submitting, you are taken to the DNS configuration detail page where you can add the required DNS records with your domain provider.
 
-You can track your domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+You can track each domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+
+---
+
+## Multiple Custom Domains for Storefront and Backend
+
+In some use cases, you may want to apply multiple domains to your project that apply for specific conditions. For example, you may want to have `myshop.uk` for your users in the United Kingdom, and `myshop.dk` for your users in Denmark.
+
+Medusa supports multiple domains on the [Scale and Enterprise plans](../../pricing/page.mdx), with a three-domain limit per project for Scale plans. If you're on these plans, you can add another domain by following the same flow for [storefront](#storefront-custom-domains) and [backend](#backend-custom-domains).
+
+After adding these multiple domains, you can choose which one to redirect to in your application's logic. For example, you can add a middleware in your storefront that redirects to the correct domain based on the user's location.
+
+If you need multiple custom domains for the storefront or backend, make sure to [update your plan to Scale or Enterprise](../../billing/plans/page.mdx#change-plan).
 
 ---
 
@@ -170,6 +182,10 @@ If your domain's status is still pending, you can trigger an immediate DNS check
 ---
 
 ## Manage Custom Domains
+
+### View All Domains
+
+In the **Domains** section of your environment settings, each custom domain is shown as a card with its domain name and DNS verification status. Click a domain card to open its DNS configuration detail page.
 
 ### Remove Custom Domain
 
