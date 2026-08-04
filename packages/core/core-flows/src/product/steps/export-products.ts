@@ -90,7 +90,14 @@ export const exportProductsStep = createStep(
       return products
     }
 
-    const exportKeys: string[] = []
+    const exportOptions = {
+      arrayIndexesAsKeys: true,
+      expandNestedObjects: true,
+      expandArrayObjects: true,
+      ignoreEmptyArraysWhenExpanding: true,
+      escapeNestedDots: true,
+    }
+
     const seenExportKeys = new Set<string>()
     let page = 0
     while (true) {
@@ -98,7 +105,7 @@ export const exportProductsStep = createStep(
       if (products.length === 0) break
 
       const normalizedProducts = normalizeForExport(products, { regions })
-      appendProductExportKeys(normalizedProducts, exportKeys, seenExportKeys)
+      appendProductExportKeys(normalizedProducts, seenExportKeys, exportOptions)
 
       if (products.length < pageSize) break
       page += 1
@@ -112,11 +119,9 @@ export const exportProductsStep = createStep(
 
       const normalizedProducts = normalizeForExport(products, { regions })
       const batchCsv = json2csv(normalizedProducts, {
-        keys: exportKeys,
+        keys: Array.from(seenExportKeys),
         prependHeader: !hasHeader,
-        arrayIndexesAsKeys: true,
-        expandNestedObjects: true,
-        expandArrayObjects: true,
+        ...exportOptions,
         unwindArrays: false,
         preventCsvInjection: true,
         emptyFieldValue: "",
