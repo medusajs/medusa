@@ -170,7 +170,7 @@ class MedusaTestRunner {
       ContainerRegistrationKeys.CONFIG_MODULE
     )
     const plugins = await getResolvedPlugins(this.cwd, configModule)
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, this.cwd)
 
     container.register({
       [ContainerRegistrationKeys.LOGGER]: asValue(logger),

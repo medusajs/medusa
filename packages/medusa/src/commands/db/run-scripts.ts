@@ -10,7 +10,11 @@ import {
 import { dirname, join } from "path"
 
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { Logger, MedusaContainer, PluginDetails } from "@medusajs/types"
+import {
+  Logger,
+  MedusaContainer,
+  PluginDetails,
+} from "@medusajs/framework/types"
 import { initializeContainer } from "../../loaders"
 import { ensureDbExists } from "../utils"
 
@@ -44,7 +48,7 @@ export async function runMigrationScripts({
 
     plugins = await getResolvedPlugins(directory, configModule, true)
 
-    mergePluginModules(configModule, plugins)
+    mergePluginModules(configModule, plugins, directory)
 
     const resources = await loadResources(plugins, logger, container)
     onApplicationPrepareShutdown = resources.onApplicationPrepareShutdown
