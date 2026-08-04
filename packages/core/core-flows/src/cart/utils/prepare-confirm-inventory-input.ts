@@ -9,6 +9,11 @@ import {
   deepFlatMap,
 } from "@medusajs/framework/utils"
 
+/**
+ * The order fields required to confirm inventory availability.
+ * Use these fields when querying an order to pass to
+ * `prepareConfirmInventoryInput`.
+ */
 export const requiredOrderFieldsForInventoryConfirmation = [
   "id",
   "version",
@@ -30,6 +35,11 @@ export const requiredOrderFieldsForInventoryConfirmation = [
   "items.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
 ]
 
+/**
+ * The variant fields required to confirm inventory availability.
+ * Use these fields when querying a variant to pass to
+ * `prepareConfirmInventoryInput`.
+ */
 export const requiredVariantFieldsForInventoryConfirmation = [
   "manage_inventory",
   "allow_backorder",
