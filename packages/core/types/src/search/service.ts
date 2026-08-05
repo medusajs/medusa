@@ -52,5 +52,11 @@ export interface ISearchModuleService extends IModuleService {
     filters: SearchFilters
   }): Promise<SearchTask>
 
+  /**
+   * The field paths the index can return. `query.search` uses this to split what a
+   * caller asked for between the engine and `query.graph`.
+   */
+  listRetrievableFields(index: string): string[]
+
   reindex(input?: SearchReindexInput): Promise<SearchReindexResult>
 }

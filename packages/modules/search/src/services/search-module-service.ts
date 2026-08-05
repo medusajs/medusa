@@ -28,6 +28,7 @@ import {
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   validateFieldUsage,
+  flattenFields,
 } from "@utils"
 import {
   createIndexMigrationPlan,
@@ -232,6 +233,12 @@ export default class SearchModuleService
     })
 
     return assertTaskAccepted(task, index)
+  }
+
+  listRetrievableFields(index: string): string[] {
+    return flattenFields(retrieveIndexDefinition(this.indexes_, index).fields)
+      .filter(({ field }) => field.retrievable !== false)
+      .map(({ path }) => path)
   }
 
   async reindex(

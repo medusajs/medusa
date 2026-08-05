@@ -4,6 +4,7 @@ import {
   ExternalModuleDeclaration,
   FlagSettings,
   IIndexService,
+  ISearchModuleService,
   ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
@@ -732,6 +733,10 @@ async function MedusaApp_({
     allowUnregistered: true,
   }) as IIndexService
 
+  const searchModule = sharedContainer_.resolve(Modules.SEARCH, {
+    allowUnregistered: true,
+  }) as ISearchModuleService
+
   return {
     onApplicationShutdown,
     onApplicationPrepareShutdown,
@@ -742,6 +747,7 @@ async function MedusaApp_({
       modulesLoaded,
       relationMap,
       indexModule,
+      searchModule,
       container: sharedContainer_,
     }) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,
     entitiesMap,
