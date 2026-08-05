@@ -2,6 +2,7 @@ import {
   Context,
   FilterableRbacRoleProps,
   FindConfig,
+  Logger,
   RbacRoleDTO,
 } from "@medusajs/framework/types"
 import {
@@ -35,6 +36,7 @@ type InjectedDependencies = {
   rbacPolicyService: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof RbacPolicy>
   >
+  logger?: Logger
 }
 
 const SUPER_ADMIN_KEY = `${WILDCARD}:${WILDCARD}`
@@ -58,12 +60,14 @@ export default class RbacModuleService
   protected readonly rbacPolicyService: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof RbacPolicy>
   >
+  protected readonly logger_: Logger
 
   constructor({
     rbacRepository,
     rbacRoleService,
     rbacPolicyService,
     rbacRolePolicyService,
+    logger,
   }: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
@@ -71,6 +75,7 @@ export default class RbacModuleService
     this.rbacRolePolicyService = rbacRolePolicyService
     this.rbacRoleService = rbacRoleService
     this.rbacPolicyService = rbacPolicyService
+    this.logger_ = logger ?? (console as unknown as Logger)
   }
 
   __hooks = {
@@ -119,10 +124,11 @@ export default class RbacModuleService
       const hasChanges =
         existing &&
         (existing.name !== registeredPolicy.name ||
-          existing.description !== registeredPolicy.description)
+          existing.description !== registeredPolicy.description ||
+          !existing.is_registered)
 
       if (!existing) {
-        policiesToCreate.push(registeredPolicy)
+        policiesToCreate.push({ ...registeredPolicy, is_registered: true })
       } else if (existing.deleted_at) {
         policiesToRestore.push(existing.id)
         if (hasChanges) {
@@ -130,6 +136,7 @@ export default class RbacModuleService
             id: existing.id,
             name: registeredPolicy.name,
             description: registeredPolicy.description,
+            is_registered: true,
           })
         }
       } else if (hasChanges) {
@@ -137,18 +144,38 @@ export default class RbacModuleService
           id: existing.id,
           name: registeredPolicy.name,
           description: registeredPolicy.description,
+          is_registered: true,
         })
       }
     }
 
-    const policiesToSoftDelete = existingPolicies
-      .filter(
-        (p) =>
-          !p.deleted_at &&
-          !registeredKeys.includes(p.key) &&
-          p.key !== SUPER_ADMIN_KEY
+    /**
+     * Only policies this sync created from the code registry are reconciled
+     * against it. Anything else (created through the Admin API, or predating
+     * `is_registered`) is left alone, because the registry only describes the
+     * code the running process happens to hold.
+     */
+    const policiesToSoftDelete = existingPolicies.filter(
+      (p) =>
+        !p.deleted_at &&
+        p.is_registered &&
+        !registeredKeys.includes(p.key) &&
+        p.key !== SUPER_ADMIN_KEY
+    )
+
+    if (policiesToSoftDelete.length > 0) {
+      this.logger_.warn(
+        `RBAC: archiving ${policiesToSoftDelete.length} ${
+          policiesToSoftDelete.length === 1 ? "policy" : "policies"
+        } that ${
+          policiesToSoftDelete.length === 1 ? "is" : "are"
+        } no longer declared in code: ${policiesToSoftDelete
+          .map((p) => p.key)
+          .join(
+            ", "
+          )}. Role grants pointing at them are archived too, so actors holding them lose the permission. Re-declare them with definePolicies to restore them.`
       )
-      .map((p) => p.id)
+    }
 
     // First restore any soft-deleted policies
     if (policiesToRestore.length > 0) {
@@ -161,7 +188,10 @@ export default class RbacModuleService
       policiesToUpdate.length > 0 &&
         this.rbacPolicyService.upsert(policiesToUpdate, sharedContext),
       policiesToSoftDelete.length > 0 &&
-        this.rbacPolicyService.softDelete(policiesToSoftDelete, sharedContext),
+        this.rbacPolicyService.softDelete(
+          policiesToSoftDelete.map((p) => p.id),
+          sharedContext
+        ),
     ])
   }
 

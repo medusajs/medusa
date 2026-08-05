@@ -1,5 +1,5 @@
 import { IRbacModuleService } from "@medusajs/framework/types"
-import { Module, Modules } from "@medusajs/framework/utils"
+import { Module, Modules, Policy } from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -298,6 +298,222 @@ moduleIntegrationTestRunner<IRbacModuleService>({
 
         expect(roles).toHaveLength(1)
         expect(roles[0].name).toBe("Updated Test Role")
+      })
+    })
+
+    describe("registered policy sync", () => {
+      const VENDOR_READ = {
+        name: "ReadVendors",
+        resource: "vendor",
+        operation: "read",
+        description: "Read vendors",
+      }
+
+      const VENDOR_WRITE = {
+        name: "WriteVendors",
+        resource: "vendor",
+        operation: "write",
+        description: "Write vendors",
+      }
+
+      let registeredNames: string[] = []
+      let warnSpy: jest.SpyInstance
+
+      // The module resolves `logger` from the container, and the module test
+      // runner injects `console` as the logger.
+      beforeEach(() => {
+        registeredNames = []
+        warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {})
+      })
+
+      afterEach(() => {
+        registeredNames.forEach((name) => delete Policy[name])
+        warnSpy.mockRestore()
+      })
+
+      /**
+       * Declares a policy the way `definePolicies` does, so the next sync sees
+       * it as part of the running build.
+       */
+      const registerPolicy = ({
+        name,
+        ...policy
+      }: typeof VENDOR_READ): void => {
+        Policy[name] = policy
+        registeredNames.push(name)
+      }
+
+      const restartApplication = async (): Promise<void> => {
+        await (service as any).__hooks.onApplicationStart()
+      }
+
+      it("should keep a policy created through the API when the application restarts", async () => {
+        const created = await service.createRbacPolicies({
+          key: "vendor:read",
+          resource: "vendor",
+          operation: "read",
+          name: "ReadVendors",
+        })
+
+        await restartApplication()
+
+        const [policy] = await service.listRbacPolicies(
+          { id: created.id },
+          { withDeleted: true }
+        )
+
+        expect(policy.id).toBe(created.id)
+        expect(policy.deleted_at).toBeNull()
+        expect(policy.is_registered).toBe(false)
+      })
+
+      it("should not archive an API-created policy while archiving a code-declared one", async () => {
+        const apiPolicy = await service.createRbacPolicies({
+          key: "vendor:read",
+          resource: "vendor",
+          operation: "read",
+          name: "ReadVendors",
+        })
+
+        registerPolicy(VENDOR_WRITE)
+        await restartApplication()
+
+        // Simulate a build that no longer declares the policy
+        delete Policy[VENDOR_WRITE.name]
+        await restartApplication()
+
+        const [survivor] = await service.listRbacPolicies(
+          { id: apiPolicy.id },
+          { withDeleted: true }
+        )
+        const [archived] = await service.listRbacPolicies(
+          { key: "vendor:write" },
+          { withDeleted: true }
+        )
+
+        expect(survivor.deleted_at).toBeNull()
+        expect(archived.deleted_at).not.toBeNull()
+      })
+
+      it("should archive, warn about, and revoke grants for policies missing from the current code build", async () => {
+        registerPolicy(VENDOR_READ)
+        await restartApplication()
+
+        const [created] = await service.listRbacPolicies({ key: "vendor:read" })
+        expect(created.is_registered).toBe(true)
+
+        const role = await service.createRbacRoles({ name: "Vendor Manager" })
+        const grant = await service.createRbacRolePolicies({
+          role_id: role.id,
+          policy_id: created.id,
+        })
+
+        // Simulate a build that no longer declares the policy
+        delete Policy[VENDOR_READ.name]
+        await restartApplication()
+
+        const [afterRestart] = await service.listRbacPolicies(
+          { key: "vendor:read" },
+          { withDeleted: true }
+        )
+        expect(afterRestart.id).toBe(created.id)
+        expect(afterRestart.deleted_at).not.toBeNull()
+
+        // The archival is announced rather than silent
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining("vendor:read")
+        )
+
+        // The grant is archived alongside it, so the grant table cannot report
+        // a permission that no longer resolves
+        const [archivedGrant] = await service.listRbacRolePolicies(
+          { id: grant.id },
+          { withDeleted: true }
+        )
+        expect(archivedGrant.deleted_at).not.toBeNull()
+        expect(await service.listPoliciesForRole(role.id)).toHaveLength(0)
+      })
+
+      it("should create registered policies and restore them once archived", async () => {
+        registerPolicy(VENDOR_READ)
+        await restartApplication()
+
+        const [created] = await service.listRbacPolicies({ key: "vendor:read" })
+
+        expect(created.name).toBe(VENDOR_READ.name)
+        expect(created.description).toBe(VENDOR_READ.description)
+
+        await service.softDeleteRbacPolicies([created.id])
+        expect(
+          await service.listRbacPolicies({ key: "vendor:read" })
+        ).toHaveLength(0)
+
+        await restartApplication()
+
+        const [restored] = await service.listRbacPolicies({
+          key: "vendor:read",
+        })
+
+        expect(restored.id).toBe(created.id)
+        expect(restored.deleted_at).toBeNull()
+      })
+
+      it("should keep existing role grants resolvable across restarts", async () => {
+        const role = await service.createRbacRoles({ name: "Vendor Manager" })
+        const policy = await service.createRbacPolicies({
+          key: "vendor:read",
+          resource: "vendor",
+          operation: "read",
+          name: "ReadVendors",
+        })
+
+        await service.createRbacRolePolicies({
+          role_id: role.id,
+          policy_id: policy.id,
+        })
+
+        expect(await service.listPoliciesForRole(role.id)).toHaveLength(1)
+
+        await restartApplication()
+
+        const policies = await service.listPoliciesForRole(role.id)
+
+        expect(policies).toHaveLength(1)
+        expect(policies[0].key).toBe("vendor:read")
+      })
+
+      it("should archive and restore role grants along with the policy", async () => {
+        const role = await service.createRbacRoles({ name: "Vendor Manager" })
+        const policy = await service.createRbacPolicies({
+          key: "vendor:read",
+          resource: "vendor",
+          operation: "read",
+          name: "ReadVendors",
+        })
+
+        const grant = await service.createRbacRolePolicies({
+          role_id: role.id,
+          policy_id: policy.id,
+        })
+
+        await service.softDeleteRbacPolicies([policy.id])
+
+        const [archivedGrant] = await service.listRbacRolePolicies(
+          { id: grant.id },
+          { withDeleted: true }
+        )
+
+        expect(archivedGrant.deleted_at).not.toBeNull()
+        expect(await service.listPoliciesForRole(role.id)).toHaveLength(0)
+
+        await service.restoreRbacPolicies([policy.id])
+
+        const [restoredGrant] = await service.listRbacRolePolicies({
+          id: grant.id,
+        })
+
+        expect(restoredGrant.deleted_at).toBeNull()
+        expect(await service.listPoliciesForRole(role.id)).toHaveLength(1)
       })
     })
   },
