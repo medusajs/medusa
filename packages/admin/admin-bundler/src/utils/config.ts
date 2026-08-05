@@ -48,6 +48,8 @@ export async function getViteConfig(
         "react/jsx-runtime",
         "react-dom/client",
         "react-router-dom",
+        "react-router",
+        "react-router/dom",
         "react-i18next",
         "@medusajs/ui",
         "@medusajs/dashboard",
@@ -62,7 +64,10 @@ export async function getViteConfig(
       __AUTH_TYPE__: JSON.stringify(authType),
       __JWT_TOKEN_STORAGE_KEY__: JSON.stringify(jwtTokenStorageKey),
       __STOREFRONT_URL__: JSON.stringify(storefrontUrl),
-      __MAX_UPLOAD_FILE_SIZE__: options.maxUploadFileSize === Infinity ? "Infinity" : JSON.stringify(options.maxUploadFileSize ?? 1024 * 1024),
+      __MAX_UPLOAD_FILE_SIZE__:
+        options.maxUploadFileSize === Infinity
+          ? "Infinity"
+          : JSON.stringify(options.maxUploadFileSize ?? 1024 * 1024),
     },
     server: {
       fs: {
