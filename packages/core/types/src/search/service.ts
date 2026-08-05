@@ -1,6 +1,7 @@
 import { IModuleService } from "../modules-sdk"
 import { SearchDocument, SearchTask } from "./common"
 import { SearchFilters } from "./filters"
+import { SearchIndexMigrationAction } from "./migration"
 import { SearchQuery } from "./query"
 import { SearchResult } from "./result"
 
@@ -59,4 +60,17 @@ export interface ISearchModuleService extends IModuleService {
   listRetrievableFields(index: string): string[]
 
   reindex(input?: SearchReindexInput): Promise<SearchReindexResult>
+
+  /**
+   * What it would take to bring the physical indexes in line with the loaded
+   * definitions. Planned separately from executing it so that `db:migrate` can
+   * print the actions first.
+   */
+  createIndexMigrationPlan(): Promise<SearchIndexMigrationAction[]>
+
+  /**
+   * Creates and alters physical indexes. Filling them is the seed at application
+   * start, so an index this creates serves nothing until then.
+   */
+  executeIndexMigrationPlan(actions: SearchIndexMigrationAction[]): Promise<void>
 }

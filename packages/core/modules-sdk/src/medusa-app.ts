@@ -15,6 +15,7 @@ import {
   ModuleExports,
   ModuleServiceInitializeOptions,
   RemoteQueryFunction,
+  SearchTypes,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -211,6 +212,26 @@ export async function loadModules(args: {
       }
       declaration.options.database.debug ??=
         sharedResourcesConfig?.database?.debug
+    }
+
+    // The Search Module does not discover its own definitions; the application
+    // loads them off the file system (`search/`) and passes them in, the same way
+    // links register themselves before the app boots. Rebuilt rather than pushed
+    // into, since `declaration.options` may be the config object itself and a
+    // second boot in the same process would otherwise double the list.
+    if (moduleName === Modules.SEARCH) {
+      const registered = MedusaModule.getSearchIndexes()
+
+      if (registered.length) {
+        declaration.options = {
+          ...declaration.options,
+          indexes: [
+            ...((declaration.options?.indexes as SearchTypes.SearchIndexDefinition[]) ??
+              []),
+            ...registered,
+          ],
+        }
+      }
     }
 
     modulesToLoad.push({

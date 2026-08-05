@@ -16,7 +16,6 @@ import {
 import {
   SearchIndexContext,
   SearchIndexes,
-  SearchIndexMigrationAction,
   SearchIndexSeedAction,
   SearchModuleOptions,
 } from "@types"
@@ -282,14 +281,14 @@ export default class SearchModuleService
     await executeSeedPlan(this.context_, actions)
   }
 
-  protected async createIndexMigrationPlan_(): Promise<
-    SearchIndexMigrationAction[]
+  async createIndexMigrationPlan(): Promise<
+    SearchTypes.SearchIndexMigrationAction[]
   > {
     return await createIndexMigrationPlan(this.context_)
   }
 
-  protected async executeIndexMigrationPlan_(
-    actions: SearchIndexMigrationAction[]
+  async executeIndexMigrationPlan(
+    actions: SearchTypes.SearchIndexMigrationAction[]
   ): Promise<void> {
     await executeIndexMigrationPlan(this.context_, actions)
   }
