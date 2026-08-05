@@ -115,6 +115,9 @@ medusaIntegrationTestRunner({
           "-shipping_total",
           "credit_line_tax_total",
           "original_item_subtotal",
+          "discount_subtotal",
+          "item_discount_total",
+          "-shipping_discount_total",
         ])(
           "should return 400 when sorting by computed field '%s'",
           async (sort) => {
