@@ -1,5 +1,14 @@
 # @medusajs/cart
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16022](https://github.com/medusajs/medusa/pull/16022) [`11d58f75f22691e63ef4258f8c40d63a3d12332b`](https://github.com/medusajs/medusa/commit/11d58f75f22691e63ef4258f8c40d63a3d12332b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(cart): fetch totals with all fields + fix inconsistent total calculation
+
+- Updated dependencies []:
+  - @medusajs/framework@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

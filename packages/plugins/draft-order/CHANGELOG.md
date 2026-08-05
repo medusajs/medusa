@@ -1,5 +1,21 @@
 # @medusajs/draft-order
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16208](https://github.com/medusajs/medusa/pull/16208) [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard,draft-order): update @hookform/resolvers and react-hook-form to show validation errors in admin forms
+
+- Updated dependencies [[`7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9`](https://github.com/medusajs/medusa/commit/7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9), [`60346987f74cc606d6864df765e7d4b007def3fe`](https://github.com/medusajs/medusa/commit/60346987f74cc606d6864df765e7d4b007def3fe), [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c), [`b0520082670752ec09b34ea9fac2a1b9422b8cdd`](https://github.com/medusajs/medusa/commit/b0520082670752ec09b34ea9fac2a1b9422b8cdd), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`438271818d8a3d10470fe838a6ac5c994019620c`](https://github.com/medusajs/medusa/commit/438271818d8a3d10470fe838a6ac5c994019620c), [`fb4a498f3a425b2a13a41de65ac3d88b25dc4793`](https://github.com/medusajs/medusa/commit/fb4a498f3a425b2a13a41de65ac3d88b25dc4793), [`f16a505cb0ccfc103ca393847bb819e8f7c6255a`](https://github.com/medusajs/medusa/commit/f16a505cb0ccfc103ca393847bb819e8f7c6255a)]:
+  - @medusajs/test-utils@2.19.0
+  - @medusajs/dashboard@2.19.0
+  - @medusajs/js-sdk@2.19.0
+  - @medusajs/cli@2.19.0
+  - @medusajs/framework@2.19.0
+  - @medusajs/admin-sdk@2.19.0
+  - @medusajs/icons@2.19.0
+  - @medusajs/ui@4.2.1
+
 ## 2.18.0
 
 ### Patch Changes

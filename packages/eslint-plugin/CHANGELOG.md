@@ -1,5 +1,11 @@
 # @medusajs/eslint-plugin
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16150](https://github.com/medusajs/medusa/pull/16150) [`8933ac87c69b6904f890afe6d4c41e542732272e`](https://github.com/medusajs/medusa/commit/8933ac87c69b6904f890afe6d4c41e542732272e) Thanks [@leobenzol](https://github.com/leobenzol)! - feat(eslint-plugin): prefer workflow events
+
 ## 2.18.0
 
 ### Patch Changes

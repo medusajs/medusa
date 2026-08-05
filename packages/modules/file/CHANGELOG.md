@@ -1,5 +1,12 @@
 # @medusajs/product
 
+## 2.19.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @medusajs/framework
 
+## 2.19.0
+
+### Patch Changes
+
+- Updated dependencies [[`b31b64270e19a785ee1d396766a0e0c0a37f8354`](https://github.com/medusajs/medusa/commit/b31b64270e19a785ee1d396766a0e0c0a37f8354), [`f2c9d7d3c11507f92142b440a1d90ad74c2a03de`](https://github.com/medusajs/medusa/commit/f2c9d7d3c11507f92142b440a1d90ad74c2a03de), [`c13aaa96b3968b7f021131529f630b1de7bd6970`](https://github.com/medusajs/medusa/commit/c13aaa96b3968b7f021131529f630b1de7bd6970), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`9fa4bd9eb941a266c560b35683e8230af33a3352`](https://github.com/medusajs/medusa/commit/9fa4bd9eb941a266c560b35683e8230af33a3352)]:
+  - @medusajs/utils@2.19.0
+  - @medusajs/types@2.19.0
+  - @medusajs/cli@2.19.0
+  - @medusajs/modules-sdk@2.19.0
+  - @medusajs/orchestration@2.19.0
+  - @medusajs/workflows-sdk@2.19.0
+  - @medusajs/deps@2.19.0
+  - @medusajs/telemetry@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.19.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.19.0
+  - @medusajs/telemetry@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

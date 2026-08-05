@@ -1,5 +1,15 @@
 # @medusajs/js-sdk
 
+## 2.19.0
+
+### Minor Changes
+
+- [#16187](https://github.com/medusajs/medusa/pull/16187) [`f16a505cb0ccfc103ca393847bb819e8f7c6255a`](https://github.com/medusajs/medusa/commit/f16a505cb0ccfc103ca393847bb819e8f7c6255a) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(js-sdk): remove dead product-option methods from admin.product
+
+### Patch Changes
+
+- [#16223](https://github.com/medusajs/medusa/pull/16223) [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,medusa,dashboard,js-sdk,types): add inventory item export with per-location levels
+
 ## 2.18.0
 
 ### Patch Changes

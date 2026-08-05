@@ -1,5 +1,14 @@
 # @medusajs/file-s3
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16010](https://github.com/medusajs/medusa/pull/16010) [`c6188c23f2efda5dafcb8bea83f71dc02d375f19`](https://github.com/medusajs/medusa/commit/c6188c23f2efda5dafcb8bea83f71dc02d375f19) Thanks [@Tusharkhadde](https://github.com/Tusharkhadde)! - fix(file-s3): preserve directory portion of filename in object key
+
+- Updated dependencies []:
+  - @medusajs/framework@2.19.0
+
 ## 2.18.0
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @medusajs/dashboard
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16191](https://github.com/medusajs/medusa/pull/16191) [`60346987f74cc606d6864df765e7d4b007def3fe`](https://github.com/medusajs/medusa/commit/60346987f74cc606d6864df765e7d4b007def3fe) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): fix active sidebar link detection
+
+- [#16208](https://github.com/medusajs/medusa/pull/16208) [`43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c`](https://github.com/medusajs/medusa/commit/43cdf13c724dc99c08d6f625cfccc3dd28d2bc0c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard,draft-order): update @hookform/resolvers and react-hook-form to show validation errors in admin forms
+
+- [#16255](https://github.com/medusajs/medusa/pull/16255) [`b0520082670752ec09b34ea9fac2a1b9422b8cdd`](https://github.com/medusajs/medusa/commit/b0520082670752ec09b34ea9fac2a1b9422b8cdd) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): hide Property Labels settings item unless view_configurations is enabled
+
+- [#16223](https://github.com/medusajs/medusa/pull/16223) [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,medusa,dashboard,js-sdk,types): add inventory item export with per-location levels
+
+- [#16195](https://github.com/medusajs/medusa/pull/16195) [`438271818d8a3d10470fe838a6ac5c994019620c`](https://github.com/medusajs/medusa/commit/438271818d8a3d10470fe838a6ac5c994019620c) Thanks [@Nahid-NHB](https://github.com/Nahid-NHB)! - fix(dashboard): use order's own currency code in the configurable order list total column
+
+- [#15962](https://github.com/medusajs/medusa/pull/15962) [`fb4a498f3a425b2a13a41de65ac3d88b25dc4793`](https://github.com/medusajs/medusa/commit/fb4a498f3a425b2a13a41de65ac3d88b25dc4793) Thanks [@andershermansen](https://github.com/andershermansen)! - fix(dashboard): show full product/variant name via tooltip in the price list and variant pricing grids
+
+- Updated dependencies [[`8f03b13a6137047ce36f61a9bb033879395f9345`](https://github.com/medusajs/medusa/commit/8f03b13a6137047ce36f61a9bb033879395f9345), [`e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158`](https://github.com/medusajs/medusa/commit/e2b2a5c5c2c51dfc0973b024d4cbb5c6c2f49158), [`f16a505cb0ccfc103ca393847bb819e8f7c6255a`](https://github.com/medusajs/medusa/commit/f16a505cb0ccfc103ca393847bb819e8f7c6255a)]:
+  - @medusajs/admin-shared@2.19.0
+  - @medusajs/js-sdk@2.19.0
+  - @medusajs/icons@2.19.0
+  - @medusajs/ui@4.2.1
+
 ## 2.18.0
 
 ### Minor Changes

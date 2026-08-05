@@ -1,5 +1,14 @@
 # @medusajs/order
 
+## 2.19.0
+
+### Patch Changes
+
+- [#16021](https://github.com/medusajs/medusa/pull/16021) [`7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9`](https://github.com/medusajs/medusa/commit/7a5ef2d1f79b2e278625b686dba0b9cfe53a9cc9) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(order): fetch totals with all fields + fix inconsistent total calculation
+
+- Updated dependencies []:
+  - @medusajs/framework@2.19.0
+
 ## 2.18.0
 
 ### Minor Changes
