@@ -16,10 +16,8 @@ import {
   InferEntityType,
   IRbacModuleService,
   IRbacModuleServiceOptions,
-  MedusaRequest,
   ModulesSdkTypes,
   RbacRoleParentDTO,
-  RbacScope,
   UpdateRbacRoleParentDTO,
 } from "@medusajs/types"
 import {
@@ -235,17 +233,6 @@ export default class RbacModuleService
     }
 
     return await super.updateRbacRoleParents(data, sharedContext)
-  }
-
-  async resolveScope<T extends MedusaRequest<any, any>>(
-    req: T
-  ): Promise<RbacScope | undefined> {
-    const scopeResolver = this.options_.scopeResolver
-    if (!scopeResolver) {
-      return undefined
-    }
-
-    return await this.options_.scopeResolver?.(req)
   }
 
   async retrieveActorAutzContextConfig(

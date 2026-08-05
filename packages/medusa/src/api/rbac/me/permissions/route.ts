@@ -9,7 +9,6 @@ import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
-  Modules,
   WILDCARD,
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../feature-flags/rbac"
@@ -45,13 +44,12 @@ export const GET = async (
   }
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const rbacModule = req.scope.resolve(Modules.RBAC)
 
   const { scope: providedScope, scope_id: providedScopeId } = req.validatedQuery
   const scope =
     providedScope && providedScopeId
       ? { type: providedScope, id: providedScopeId }
-      : await rbacModule.resolveScope(req)
+      : req.rbac_context?.scope
 
   // Build the universe from the persisted policies.
   const universe: Array<{ resource: string; operation: string }> = []

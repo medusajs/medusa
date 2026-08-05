@@ -6,7 +6,6 @@ import {
   MiddlewareVerb,
   ParserConfig,
 } from "../types"
-import type { PolicyAction } from "@medusajs/types"
 import type { ZodRawShape } from "@medusajs/deps/zod"
 
 /**
@@ -30,7 +29,6 @@ export function defineMiddlewares<
       res: MedusaResponse,
       next: MedusaNextFunction
     ) => any)[]
-    policies?: PolicyAction | PolicyAction[]
   }
 >(
   config:

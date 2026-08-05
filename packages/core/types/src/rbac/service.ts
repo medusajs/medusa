@@ -1,6 +1,5 @@
 import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { MedusaRequest } from "../http-request"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -15,7 +14,6 @@ import {
   RbacRoleDTO,
   RbacRoleParentDTO,
   RbacRolePolicyDTO,
-  RbacScope,
 } from "./common"
 import {
   CreateRbacPolicyDTO,
@@ -293,9 +291,6 @@ export interface IRbacModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-  resolveScope<T extends MedusaRequest<any, any>>(
-    req: T
-  ): Promise<RbacScope | undefined>
   retrieveActorAutzContextConfig(
     actorType: string
   ): Promise<AuthzContextConfig | undefined>
@@ -309,11 +304,4 @@ export interface IRbacModuleServiceOptions {
   actors: {
     [actor_type: string]: AuthzContextConfig | undefined
   }
-  /**
-   * The callback used to resolve the request rbac scope (if any). Used to further
-   * drilldown the Authz Context to resolve the roles for the request scope.
-   */
-  scopeResolver?: <T extends MedusaRequest<any, any>>(
-    req: T
-  ) => Promise<RbacScope>
 }

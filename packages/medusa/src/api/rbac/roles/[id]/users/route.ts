@@ -11,7 +11,6 @@ import {
   defineFileConfig,
   FeatureFlag,
   MedusaError,
-  Modules,
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../feature-flags/rbac"
 import {
@@ -81,7 +80,6 @@ export const POST = async (
   const { users } = req.validatedBody
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const rbacModuleService = req.scope.resolve(Modules.RBAC)
 
   const {
     data: [role],
@@ -98,7 +96,7 @@ export const POST = async (
     )
   }
 
-  const scope = await rbacModuleService.resolveScope(req)
+  const scope = req.rbac_context?.scope
 
   await assignRolesWorkflow(req.scope).run({
     input: {
@@ -148,7 +146,6 @@ export const DELETE = async (
   const { users } = req.validatedBody
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const rbacModuleService = req.scope.resolve(Modules.RBAC)
 
   const {
     data: [role],
@@ -165,7 +162,7 @@ export const DELETE = async (
     )
   }
 
-  const scope = await rbacModuleService.resolveScope(req)
+  const scope = req.rbac_context?.scope
 
   await unassignRolesWorkflow(req.scope).run({
     input: {

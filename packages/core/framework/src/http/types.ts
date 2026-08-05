@@ -10,7 +10,6 @@ import type {
   MedusaRequest,
   MedusaRequestHandler,
   MedusaResponse,
-  PolicyAction,
 } from "@medusajs/types"
 
 /**
@@ -84,8 +83,6 @@ export type MiddlewareRoute = {
   bodyParser?: ParserConfig
   additionalDataValidator?: ZodRawShape
   middlewares?: MiddlewareFunction[]
-  /** @ignore */
-  policies?: PolicyAction | PolicyAction[]
 }
 
 export type MiddlewaresConfig = {
@@ -119,7 +116,6 @@ export type MiddlewareDescriptor = {
   matcher: string | RegExp
   methods?: MiddlewareVerb | MiddlewareVerb[]
   handler: MiddlewareFunction
-  policies?: PolicyAction | PolicyAction[]
 }
 
 export type BodyParserConfigRoute = {
