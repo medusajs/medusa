@@ -11,11 +11,13 @@ import {
   ModuleJoinerConfig,
   ModuleResolution,
   ModuleServiceInitializeOptions,
+  SearchTypes,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   loadDatabaseConfig,
+  MedusaError,
   promiseAll,
   simpleHash,
   stringifyCircular,
@@ -105,6 +107,10 @@ class MedusaModule {
     new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static customLinks_: RegisterModuleJoinerConfig[] = []
+  private static searchIndexes_: Map<
+    string,
+    { definition: SearchTypes.SearchIndexDefinition; filePath?: string }
+  > = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
   private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
   private static moduleResolutions_: Map<string, ModuleResolution> = new Map()
@@ -182,6 +188,7 @@ class MedusaModule {
     MedusaModule.joinerConfig_.clear()
     MedusaModule.moduleResolutions_.clear()
     MedusaModule.customLinks_.length = 0
+    MedusaModule.searchIndexes_.clear()
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
@@ -249,6 +256,34 @@ class MedusaModule {
 
   public static getCustomLinks(): RegisterModuleJoinerConfig[] {
     return MedusaModule.customLinks_
+  }
+
+  /**
+   * Keyed by index name so that loading the same file twice — a CLI that boots
+   * more than once in a process — registers the same index rather than a
+   * duplicate the Search Module would then reject. Two different files claiming
+   * one name is a real conflict, and still throws.
+   */
+  public static setSearchIndex(
+    definition: SearchTypes.SearchIndexDefinition,
+    filePath?: string
+  ): void {
+    const existing = MedusaModule.searchIndexes_.get(definition.name)
+
+    if (existing && filePath && existing.filePath !== filePath) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Search index "${definition.name}" is defined twice: in ${existing.filePath} and ${filePath}`
+      )
+    }
+
+    MedusaModule.searchIndexes_.set(definition.name, { definition, filePath })
+  }
+
+  public static getSearchIndexes(): SearchTypes.SearchIndexDefinition[] {
+    return [...MedusaModule.searchIndexes_.values()].map(
+      ({ definition }) => definition
+    )
   }
 
   public static getModuleInstance(

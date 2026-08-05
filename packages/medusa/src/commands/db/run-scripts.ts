@@ -12,6 +12,7 @@ import { dirname, join } from "path"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { Logger, MedusaContainer, PluginDetails } from "@medusajs/types"
 import { initializeContainer } from "../../loaders"
+import { loadSearchIndexes } from "../../loaders/search"
 import { ensureDbExists } from "../utils"
 
 const TERMINAL_SIZE = process.stdout.columns
@@ -105,6 +106,14 @@ async function loadResources(
     join(plugin.resolve, "links")
   )
   await new LinkLoader(linksSourcePaths, logger).load()
+
+  // Cleared along with the module instances above, and the boot below seeds
+  // through `onApplicationStart`, so the definitions have to be back first.
+  await loadSearchIndexes({
+    plugins,
+    configModule: container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),
+    logger,
+  })
 
   // Pass the existing container so that registrations (e.g. ContainerRegistrationKeys.QUERY)
   // are made on the same container that migration scripts will resolve from.

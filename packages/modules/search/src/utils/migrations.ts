@@ -1,5 +1,5 @@
 import { SearchTypes } from "@medusajs/framework/types"
-import { SearchIndexMigrationAction, SearchIndexRegistry } from "@types"
+import { SearchIndexRegistry } from "@types"
 import { retrieveIndexDefinition, SearchIndexState } from "./index"
 
 /**
@@ -17,7 +17,7 @@ export function shadowIndexName(
 
 export async function createIndexMigrationPlan(
   context: SearchIndexRegistry
-): Promise<SearchIndexMigrationAction[]> {
+): Promise<SearchTypes.SearchIndexMigrationAction[]> {
   const definitions = [...context.indexes.values()]
 
   if (!definitions.length) {
@@ -74,7 +74,7 @@ export async function createIndexMigrationPlan(
 // Note: Seeding data is done by the application start hook, migrations are reserved for schema changes.
 export async function executeIndexMigrationPlan(
   context: SearchIndexRegistry,
-  actions: SearchIndexMigrationAction[]
+  actions: SearchTypes.SearchIndexMigrationAction[]
 ): Promise<void> {
   for (const action of actions) {
     if (action.action === "noop") {

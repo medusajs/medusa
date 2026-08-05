@@ -2,10 +2,7 @@ import { SearchTypes } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { SearchIndex, SearchIndexSync } from "@models"
-import {
-  SearchIndexMigrationAction,
-  SearchIndexSeedAction,
-} from "@types"
+import { SearchIndexSeedAction } from "@types"
 import {
   baseProducts,
   dataset,
@@ -27,17 +24,15 @@ const seedPlan = (service: SearchService) =>
     SearchIndexSeedAction[]
   >
 
-// Migrating is internal — driven by `db:migrate`, not by callers — as is reading
-// the registered definitions.
+// Migrating is public — `db:migrate` plans and executes it — but reading the
+// registered definitions is not.
 const migrationPlan = (service: SearchService) =>
-  (service as any).createIndexMigrationPlan_() as Promise<
-    SearchIndexMigrationAction[]
-  >
+  service.createIndexMigrationPlan()
 
 const migrate = (
   service: SearchService,
-  actions: SearchIndexMigrationAction[]
-) => (service as any).executeIndexMigrationPlan_(actions) as Promise<void>
+  actions: SearchTypes.SearchIndexMigrationAction[]
+) => service.executeIndexMigrationPlan(actions)
 
 const definition = (service: SearchService, name: string) =>
   (service as any).indexes_.get(name) as
