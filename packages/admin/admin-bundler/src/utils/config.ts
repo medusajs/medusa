@@ -33,6 +33,14 @@ export async function getViteConfig(
     build: {
       emptyOutDir: true,
       outDir: path.resolve(process.cwd(), options.outDir),
+      /**
+       * Pinned rather than left to Vite's default. Vite 7 changed the default
+       * from `modules` (Chrome 87 / Firefox 78 / Safari 14 / Edge 88) to
+       * `baseline-widely-available` (Chrome 107 / Firefox 104 / Safari 16 /
+       * Edge 107). Setting it explicitly keeps the admin's supported browser
+       * matrix stable across future Vite majors, which move this default.
+       */
+      target: "baseline-widely-available",
     },
     optimizeDeps: {
       include: [
