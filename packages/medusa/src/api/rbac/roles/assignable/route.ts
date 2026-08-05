@@ -29,7 +29,7 @@ export const GET = async (
   const { scope, scope_id, ...filters } = req.filterableFields
 
   const rbacScope =
-    scope && scope_id ? { type: scope, id: scope_id } : req.rbacScope
+    scope && scope_id ? { type: scope, id: scope_id } : req.rbac_context?.scope
 
   const { result } = await getAssignableRolesWorkflow(req.scope).run({
     input: {

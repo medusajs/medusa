@@ -26,7 +26,7 @@ async function checkPermissions(
   const roleIds = await resolveRoles({
     authContext: req.auth_context,
     container: req.scope,
-    scope: req.rbacScope,
+    scope: req.rbac_context?.scope,
   })
 
   if (!roleIds.length) {
@@ -56,8 +56,8 @@ async function checkPermissions(
  * request, without checking them.
  *
  * This runs before the route's own middlewares, because the query config
- * middlewares read "req.policies" to filter the requested fields. The check
- * itself runs after them, see "wrapWithPoliciesCheck".
+ * middlewares read "req.rbac_context.policies" to filter the requested fields.
+ * The check itself runs after them, see "wrapWithPoliciesCheck".
  *
  * @param policies - Single policy or array of policies guarding the route
  */
@@ -69,8 +69,13 @@ export function recordPolicies(
     _: MedusaResponse,
     next: MedusaNextFunction
   ) => {
-    req.policies ??= []
-    req.policies.push(...(Array.isArray(policies) ? policies : [policies]))
+    req.rbac_context = {
+      ...req.rbac_context,
+      policies: [
+        ...(req.rbac_context?.policies ?? []),
+        ...(Array.isArray(policies) ? policies : [policies]),
+      ],
+    }
     return next()
   }
 }
@@ -96,7 +101,7 @@ export function wrapWithPoliciesCheck(
       const rbacModule = req.scope.resolve(Modules.RBAC)
       const scope = await rbacModule.resolveScope(req)
 
-      req.rbacScope = scope
+      req.rbac_context = { ...req.rbac_context, scope }
 
       await checkPermissions(policies, req)
       return handler(req, res, next)

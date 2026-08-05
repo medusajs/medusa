@@ -92,6 +92,32 @@ export type RbacScope = {
 }
 
 /**
+ * The RBAC context of a request, held on `req.rbac_context`.
+ *
+ * The scope is set by the application, from a middleware registered ahead of
+ * the `authorize` middleware guarding the route. The permissions are set by
+ * `authorize` itself, once it has resolved the actor's roles.
+ */
+export type RbacContext = {
+  /**
+   * The most granular scope the request acts within. When it is not set, only
+   * unscoped role assignments are considered when resolving the actor's roles.
+   */
+  scope?: RbacScope
+  /**
+   * The policies guarding the request, recorded by the `authorize` middlewares
+   * it went through. Read by the query config middlewares to filter the
+   * requested fields.
+   */
+  policies?: PolicyAction[]
+  /**
+   * The `resource:operation` permissions granted by the roles resolved for the
+   * request. Wildcards are listed as they are stored (e.g. `product:*`).
+   */
+  permissions?: string[]
+}
+
+/**
  * RBAC operations type-only registry.
  *
  * Medusa's own operations are declared here. Modules and plugins that need

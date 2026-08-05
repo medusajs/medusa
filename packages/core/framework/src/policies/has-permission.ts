@@ -31,6 +31,11 @@ export type ResolvePermissionsInput = {
   container: MedusaContainer
 }
 
+export type ListRolePermissionsInput = {
+  roles: string | string[]
+  container: MedusaContainer
+}
+
 type RolePoliciesCache = Map<string, Map<string, Set<string>>>
 
 /**
@@ -161,6 +166,47 @@ export async function resolvePermissions(
   }
 
   return granted
+}
+
+/**
+ * Lists the permissions the given roles grant, as `resource:operation` strings.
+ *
+ * Wildcards are listed as they are stored (e.g. `product:*`, `*:*`), because
+ * expanding them requires the universe of persisted policies. Use
+ * {@link resolvePermissions} when the expanded set is needed.
+ *
+ * @example
+ * ```ts
+ * const permissions = await listRolePermissions({
+ *   roles: ["role_123"],
+ *   container,
+ * })
+ * // permissions = ["product:delete", "product:read"]
+ * ```
+ */
+export async function listRolePermissions(
+  input: ListRolePermissionsInput
+): Promise<string[]> {
+  const { roles, container } = input
+
+  const roleIds = Array.isArray(roles) ? roles : [roles]
+
+  if (!roleIds.length) {
+    return []
+  }
+
+  const rolePoliciesMap = await fetchRolePolicies(roleIds, container)
+  const permissions = new Set<string>()
+
+  for (const resourceMap of rolePoliciesMap.values()) {
+    for (const [resource, operations] of resourceMap) {
+      for (const operation of operations) {
+        permissions.add(`${resource}:${operation}`)
+      }
+    }
+  }
+
+  return Array.from(permissions).sort()
 }
 
 /**

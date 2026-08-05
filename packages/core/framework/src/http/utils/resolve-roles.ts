@@ -10,8 +10,10 @@ export const resolveRoles = async ({
   authContext: Pick<AuthContext, "actor_type" | "actor_id">
   container: MedusaContainer
   /**
-   * The scope should always be resolved by the application. But it can be provided for
-   * unscoped requests, to resolve roles for a specific scope.
+   * The scope the request acts within, resolved by the application. Role
+   * assignments scoped to it, as well as unscoped assignments, are considered.
+   *
+   * When it is not provided, only unscoped assignments are considered.
    */
   scope?: RbacScope
 }) => {
@@ -34,6 +36,10 @@ export const resolveRoles = async ({
     container,
   })
 
+  if (!authzContext.grantees.length) {
+    return []
+  }
+
   const assignments = await rbacModule.listRbacRoleAssignments({
     $and: [
       {
@@ -42,17 +48,13 @@ export const resolveRoles = async ({
           reference_id: g.id,
         })),
       },
-      ...(scope
-        ? [
-            {
-              $or: [
-                { scope: scope.type, scope_id: scope.id },
-                // Unscoped role assignments allow exercising privileges across all scopes.
-                { scope: null, scope_id: null },
-              ],
-            },
-          ]
-        : []),
+      {
+        $or: [
+          // Unscoped role assignments allow exercising privileges across all scopes.
+          { scope: null, scope_id: null },
+          ...(scope ? [{ scope: scope.type, scope_id: scope.id }] : []),
+        ],
+      },
     ],
   })
 

@@ -3,7 +3,7 @@ import type { NextFunction, Request, Response } from "express"
 
 import type { FindConfig, MedusaContainer, RequestQueryFields } from "./common"
 import type { MedusaPricingContext } from "./pricing"
-import type { PolicyAction, RbacScope } from "./rbac"
+import type { RbacContext } from "./rbac"
 
 /**
  * The fields restricted from being selected in the response. Implemented by the
@@ -122,8 +122,7 @@ export interface AuthenticatedMedusaRequest<
   auth_context: AuthContext
   publishable_key_context?: PublishableKeyContext
   secret_key_context?: SecretKeyContext
-  policies?: PolicyAction[]
-  rbacScope?: RbacScope
+  rbac_context?: RbacContext
 }
 
 export interface MedusaStoreRequest<
@@ -132,7 +131,6 @@ export interface MedusaStoreRequest<
 > extends MedusaRequest<Body, QueryFields> {
   auth_context?: AuthContext
   publishable_key_context: PublishableKeyContext
-  policies?: PolicyAction | PolicyAction[]
 }
 
 export type MedusaResponse<Body = unknown> = Response<Body>

@@ -1,7 +1,7 @@
 import {
   FindConfig,
-  PolicyAction,
   QueryConfig,
+  RbacContext,
   RequestQueryFields,
 } from "@medusajs/types"
 import {
@@ -10,7 +10,6 @@ import {
   isDefined,
   isPresent,
   MedusaError,
-  Modules,
   pickDeep,
   promiseAll,
   stringToSelectRelationObject,
@@ -46,8 +45,8 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> & { restricted?: string[] } = {},
   req?: MedusaRequest & {
-    policies?: PolicyAction[]
     auth_context?: AuthContext
+    rbac_context?: RbacContext
   }
 ) {
   const {
@@ -76,23 +75,19 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   const filters: IFieldFilter[] = []
 
   if (
-    req?.policies &&
+    req?.rbac_context?.policies &&
     req?.auth_context &&
     entity &&
     rbacFilterFieldsFeatureFlag
   ) {
-    const rbacModule = req.scope.resolve(Modules.RBAC)
-
-    const scope = await rbacModule.resolveScope(req)
-
     filters.push(
       new RBACFieldFilter({
-        policies: req.policies,
+        policies: req.rbac_context.policies,
         getActorRoles: async () =>
           resolveRoles({
             authContext: req.auth_context!,
             container: req.scope,
-            scope,
+            scope: req.rbac_context?.scope,
           }),
         container: req.scope,
       })
@@ -196,8 +191,8 @@ export async function prepareRetrieveQuery<
   validated: T,
   queryConfig?: QueryConfig<TEntity> & { restricted?: string[] },
   req?: MedusaRequest & {
-    policies?: PolicyAction[]
     auth_context?: AuthContext
+    rbac_context?: RbacContext
   }
 ) {
   const { listConfig, remoteQueryConfig } = await prepareListQuery(
