@@ -1,3 +1,5 @@
+import { disallowedOrderSortFields } from "../../utils/sort-fields"
+
 export enum Entities {
   order = "order",
   fulfillment = "fulfillment",
@@ -104,46 +106,9 @@ export const retrieveTransformQueryConfig = {
   entity: Entities.order,
 }
 
-/**
- * Fields the orders list may NOT be sorted by. These are computed at query
- * time — not columns on the order table — so ordering by them throws at the
- * database layer. They remain selectable; they just can't be sort keys.
- * The totals mirror `shouldIncludeTotals` in the order module service.
- */
-export const disallowedAdminOrderSortFields = [
-  "payment_status",
-  "fulfillment_status",
-  "summary",
-  "total",
-  "subtotal",
-  "tax_total",
-  "discount_total",
-  "discount_tax_total",
-  "original_total",
-  "original_subtotal",
-  "original_tax_total",
-  "item_total",
-  "item_subtotal",
-  "item_tax_total",
-  "original_item_total",
-  "original_item_subtotal",
-  "original_item_tax_total",
-  "shipping_total",
-  "shipping_subtotal",
-  "shipping_tax_total",
-  "original_shipping_total",
-  "original_shipping_subtotal",
-  "original_shipping_tax_total",
-  "credit_line_total",
-  "credit_line_subtotal",
-  "credit_line_tax_total",
-  "pending_difference",
-  "refundable_amount",
-]
-
 export const listTransformQueryConfig = {
   defaults: defaultAdminOrderFields,
-  disallowedOrderBy: disallowedAdminOrderSortFields,
+  disallowedOrderBy: disallowedOrderSortFields,
   defaultLimit: 20,
   isList: true,
   entity: Entities.order,
