@@ -23,7 +23,11 @@ const createRequest = ({
   rbacContext,
 }: {
   rbacEnabled?: boolean
-  authContext?: Record<string, unknown> | undefined
+  /**
+   * Pass null for an unauthenticated request. Passing undefined would fall back
+   * to the default above, which is the opposite of what the test intends.
+   */
+  authContext?: Record<string, unknown> | null
   rbacContext?: AuthenticatedMedusaRequest["rbac_context"]
 } = {}): AuthenticatedMedusaRequest => {
   const resolve = jest.fn((key: string) => {
@@ -48,6 +52,18 @@ const run = async (
   const next = jest.fn() as unknown as NextFunction
   await middleware(req, {} as MedusaResponse, next)
   return next as unknown as jest.Mock
+}
+
+const runExpectingThrow = async (
+  middleware: ReturnType<typeof authorize>,
+  req: AuthenticatedMedusaRequest
+) => {
+  const next = jest.fn() as unknown as NextFunction
+  const error = await middleware(req, {} as MedusaResponse, next).then(
+    () => undefined,
+    (err) => err
+  )
+  return { error, next: next as unknown as jest.Mock }
 }
 
 const readPolicy: PolicyAction = { resource: "product", operation: "read" }
@@ -131,25 +147,23 @@ describe("authorize", () => {
     resolveRolesMock.mockResolvedValue([])
     const req = createRequest()
 
-    const next = await run(authorize(readPolicy), req)
+    const { error, next } = await runExpectingThrow(authorize(readPolicy), req)
 
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: MedusaError.Types.FORBIDDEN,
-        message: "Forbidden",
-      })
-    )
+    expect(error).toMatchObject({
+      type: MedusaError.Types.FORBIDDEN,
+      message: "Forbidden",
+    })
+    expect(next).not.toHaveBeenCalled()
     expect(hasPermissionMock).not.toHaveBeenCalled()
   })
 
   it("forbids the request when there is no authenticated actor", async () => {
-    const req = createRequest({ authContext: undefined })
+    const req = createRequest({ authContext: null })
 
-    const next = await run(authorize(readPolicy), req)
+    const { error, next } = await runExpectingThrow(authorize(readPolicy), req)
 
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({ type: MedusaError.Types.FORBIDDEN })
-    )
+    expect(error).toMatchObject({ type: MedusaError.Types.FORBIDDEN })
+    expect(next).not.toHaveBeenCalled()
     expect(resolveRolesMock).not.toHaveBeenCalled()
   })
 
@@ -157,7 +171,7 @@ describe("authorize", () => {
     hasPermissionMock.mockResolvedValue(false)
     const req = createRequest()
 
-    const next = await run(
+    const { error, next } = await runExpectingThrow(
       authorize([
         readPolicy,
         { resource: "product", operation: "delete" } as PolicyAction,
@@ -165,24 +179,23 @@ describe("authorize", () => {
       req
     )
 
-    expect(next).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: MedusaError.Types.FORBIDDEN,
-        message:
-          "Insufficient permissions. Required policies: product:read, product:delete",
-      })
-    )
+    expect(error).toMatchObject({
+      type: MedusaError.Types.FORBIDDEN,
+      message:
+        "Insufficient permissions. Required policies: product:read, product:delete",
+    })
+    expect(next).not.toHaveBeenCalled()
     expect(req.rbac_context?.permissions).toBeUndefined()
   })
 
-  it("forwards an unexpected failure to the error handler once", async () => {
-    const error = new Error("boom")
-    resolveRolesMock.mockRejectedValue(error)
+  it("lets an unexpected failure propagate without continuing the request", async () => {
+    const failure = new Error("boom")
+    resolveRolesMock.mockRejectedValue(failure)
     const req = createRequest()
 
-    const next = await run(authorize(readPolicy), req)
+    const { error, next } = await runExpectingThrow(authorize(readPolicy), req)
 
-    expect(next).toHaveBeenCalledTimes(1)
-    expect(next).toHaveBeenCalledWith(error)
+    expect(error).toBe(failure)
+    expect(next).not.toHaveBeenCalled()
   })
 })

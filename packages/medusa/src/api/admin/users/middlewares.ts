@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -21,32 +21,32 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/users",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetUsersParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/users/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetUserParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -63,92 +63,100 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/users/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateUser),
       validateAndTransformQuery(
         AdminGetUserParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id",
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/users/:id/roles",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.read,
+        },
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetUserRolesParams,
         QueryConfig.listUserRolesTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.read,
-      },
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/users/:id/roles",
-    middlewares: [validateAndTransformBody(AdminAssignUserRole)],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminAssignUserRole),
     ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id/roles/:role_id",
-    middlewares: [validateAndTransformBody(AdminUnassignUserRole)],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminUnassignUserRole),
     ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id/roles",
-    middlewares: [validateAndTransformBody(AdminUnassignUserRoles)],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminUnassignUserRoles),
     ],
   },
 ]

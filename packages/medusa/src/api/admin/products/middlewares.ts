@@ -2,7 +2,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  maybeApplyLinkFilter,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { FeatureFlag, PolicyOperation } from "@medusajs/framework/utils"
 import multer from "multer"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
@@ -41,44 +45,58 @@ const upload = multer({ storage: multer.memoryStorage() })
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/products/*",
-    policies: [
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     matcher: "/admin/products/*/variants/*",
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     matcher: "/admin/products/*/options/*",
-    policies: [
-      {
-        resource: Entities.product_option,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_option,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     matcher: "/admin/products/*/variants/*/inventory-items/*",
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/products",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductsParams,
         QueryConfig.listProductQueryConfig
@@ -96,28 +114,22 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       },
       maybeApplyPriceListsFilter(),
     ],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateProduct),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
@@ -127,6 +139,16 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
       validateAndTransformBody(
         createBatchBody(CreateProduct, AdminBatchUpdateProduct)
       ),
@@ -134,16 +156,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: [
-          PolicyOperation.create,
-          PolicyOperation.update,
-          PolicyOperation.delete,
-        ],
-      },
     ],
   },
   {
@@ -159,34 +171,39 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/import",
-    middlewares: [upload.single("file")],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: [PolicyOperation.create, PolicyOperation.update],
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: [PolicyOperation.create, PolicyOperation.update],
+        },
+      ]),
+      upload.single("file"),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/imports",
-    middlewares: [validateAndTransformBody(AdminImportProducts)],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: [PolicyOperation.create, PolicyOperation.update],
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: [PolicyOperation.create, PolicyOperation.update],
+        },
+      ]),
+      validateAndTransformBody(AdminImportProducts),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/import/:transaction_id/confirm",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: [PolicyOperation.create, PolicyOperation.update],
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: [PolicyOperation.create, PolicyOperation.update],
+        },
+      ]),
     ],
   },
   {
@@ -203,33 +220,33 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateProduct),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.delete,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.delete,
-      },
     ],
   },
   {
@@ -246,21 +263,21 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/variants",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.create,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreateProductVariant),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -270,6 +287,20 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(
         createBatchBody(CreateProductVariant, AdminBatchUpdateProductVariant)
       ),
@@ -278,20 +309,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveVariantConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: [
-          PolicyOperation.create,
-          PolicyOperation.update,
-          PolicyOperation.delete,
-        ],
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["POST"],
@@ -299,16 +316,18 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    middlewares: [validateAndTransformBody(AdminBatchImageVariant)],
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminBatchImageVariant),
     ],
   },
   {
@@ -317,16 +336,18 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    middlewares: [validateAndTransformBody(AdminBatchVariantImages)],
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminBatchVariantImages),
     ],
   },
   // Note: New endpoint in v2
@@ -344,41 +365,41 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/variants/:variant_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateProductVariant),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id/variants/:variant_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.delete,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.delete,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 
@@ -397,25 +418,25 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/:id/options/batch",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.product_option,
+          operation: [
+            PolicyOperation.delete,
+            PolicyOperation.create,
+            PolicyOperation.update,
+          ],
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminLinkProductOptions),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.product_option,
-        operation: [
-          PolicyOperation.delete,
-          PolicyOperation.create,
-          PolicyOperation.update,
-        ],
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 
@@ -427,6 +448,20 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(
         createBatchBody(
           AdminBatchCreateVariantInventoryItem,
@@ -439,40 +474,26 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveVariantConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: [
-          PolicyOperation.create,
-          PolicyOperation.update,
-          PolicyOperation.delete,
-        ],
-      },
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/products/:id/variants/:variant_id/inventory-items",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.create,
+        },
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreateVariantInventoryItem),
       validateAndTransformQuery(
         AdminGetProductVariantParams,
         QueryConfig.retrieveVariantConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -480,21 +501,21 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher:
       "/admin/products/:id/variants/:variant_id/inventory-items/:inventory_item_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateVariantInventoryItem),
       validateAndTransformQuery(
         AdminGetProductVariantParams,
         QueryConfig.retrieveVariantConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -502,20 +523,20 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     matcher:
       "/admin/products/:id/variants/:variant_id/inventory-items/:inventory_item_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.delete,
+        },
+        {
+          resource: Entities.product_variant,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetProductVariantParams,
         QueryConfig.retrieveVariantConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.delete,
-      },
-      {
-        resource: Entities.product_variant,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

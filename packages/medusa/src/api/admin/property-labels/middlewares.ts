@@ -1,4 +1,5 @@
 import {
+  authorize,
   MiddlewareRoute,
   validateAndTransformBody,
   validateAndTransformQuery,
@@ -21,17 +22,17 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels",
     method: "GET",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.read,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformQuery(
         AdminPropertyLabelListParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.property_label,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   // Create property label
@@ -39,6 +40,12 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels",
     method: "POST",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.create,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformBody(AdminCreatePropertyLabel),
       validateAndTransformQuery(
@@ -46,29 +53,23 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.property_label,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   // Get single property label
   {
     matcher: "/admin/property-labels/:id",
     method: "GET",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.read,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformQuery(
         AdminPropertyLabelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.property_label,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   // Update property label
@@ -76,6 +77,12 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels/:id",
     method: "POST",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.update,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformBody(AdminUpdatePropertyLabel),
       validateAndTransformQuery(
@@ -83,23 +90,19 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.property_label,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   // Delete property label
   {
     matcher: "/admin/property-labels/:id",
     method: "DELETE",
-    middlewares: [ensureViewConfigurationsEnabled],
-    policies: [
-      {
-        resource: Entities.property_label,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.delete,
+        },
+      ]),
+      ensureViewConfigurationsEnabled,
     ],
   },
   // Batch operations
@@ -107,22 +110,22 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels/batch",
     method: "POST",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformBody(AdminBatchPropertyLabels),
       validateAndTransformQuery(
         AdminPropertyLabelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.property_label,
-        operation: [
-          PolicyOperation.create,
-          PolicyOperation.update,
-          PolicyOperation.delete,
-        ],
-      },
     ],
   },
 ]

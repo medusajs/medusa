@@ -16,52 +16,54 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/customers/*",
-    policies: [
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/customers",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminCustomersParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/customers",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateCustomer),
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["GET"],
@@ -77,142 +79,144 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/customers/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateCustomer),
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/customers/:id",
-    policies: [
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/addresses",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer_address,
+          operation: PolicyOperation.create,
+        },
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreateCustomerAddress),
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.customer_address,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/customers/:id/addresses/:address_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer_address,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminCustomerAddressParams,
         QueryConfig.retrieveAddressTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.customer_address,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/addresses/:address_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer_address,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateCustomerAddress),
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.customer_address,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/customers/:id/addresses/:address_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer_address,
+          operation: PolicyOperation.delete,
+        },
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.customer_address,
-        operation: PolicyOperation.delete,
-      },
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/customers/:id/addresses",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer_address,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminCustomerAddressesParams,
         QueryConfig.listAddressesTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.customer_address,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/customer-groups",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.customer_group,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.customer,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.customer_group,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

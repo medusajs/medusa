@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as queryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -17,27 +17,29 @@ import {
 export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/payments/*",
-    policies: [
-      {
-        resource: Entities.payment,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.payment,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/payments",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.payment,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetPaymentsParams,
         queryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.payment,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -64,42 +66,42 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/payments/:id/capture",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.capture,
+          operation: PolicyOperation.create,
+        },
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreatePaymentCapture),
       validateAndTransformQuery(
         AdminGetPaymentParams,
         queryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.capture,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.order,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/payments/:id/refund",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.refund,
+          operation: PolicyOperation.create,
+        },
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreatePaymentRefund),
       validateAndTransformQuery(
         AdminGetPaymentParams,
         queryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.refund,
-        operation: PolicyOperation.create,
-      },
-      {
-        resource: Entities.order,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

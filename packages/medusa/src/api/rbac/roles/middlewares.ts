@@ -4,7 +4,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 
 import { Entities } from "./query-config"
@@ -28,227 +28,235 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/rbac/roles",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRbacRolesParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/roles/assignable",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetAssignableRbacRolesParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/roles/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRbacRoleParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/roles",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateRbacRole),
       validateAndTransformQuery(
         AdminGetRbacRoleParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/roles/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateRbacRole),
       validateAndTransformQuery(
         AdminGetRbacRoleParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/roles/:id/policies",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRbacRoleParams,
         QueryConfig.retrieveRolePoliciesTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/roles/:id/policies",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminAddRolePoliciesType),
       validateAndTransformQuery(
         AdminGetRbacRoleParams,
         QueryConfig.retrieveRolePoliciesTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/rbac/roles/:id/policies/:policy_id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/roles/:id/users",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRoleUsersParams,
         QueryConfig.listRoleUsersTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/roles/:id/users",
-    middlewares: [validateAndTransformBody(AdminAssignRoleUsers)],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminAssignRoleUsers),
     ],
   },
   {
     method: ["DELETE"],
     matcher: "/rbac/roles/:id/users",
-    middlewares: [validateAndTransformBody(AdminRemoveRoleUsers)],
-    policies: [
-      {
-        resource: Entities.user,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.user,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminRemoveRoleUsers),
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/roles/:id/assignments",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRoleAssignmentsParams,
         QueryConfig.listRoleAssignmentsTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/roles/:id/assignments",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreateRoleAssignments),
       validateAndTransformQuery(
         AdminGetRoleAssignmentsParams,
         QueryConfig.listRoleAssignmentsTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/rbac/roles/:id/assignments",
-    middlewares: [validateAndTransformBody(AdminRemoveRoleAssignments)],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.update,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminRemoveRoleAssignments),
     ],
   },
   {
     method: ["DELETE"],
     matcher: "/rbac/roles/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.rbac_role,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

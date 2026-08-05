@@ -4,7 +4,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 
 import {
@@ -24,89 +24,90 @@ export const rbacPolicyRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/rbac/policies",
     middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
+      ]),
       validateAndTransformQuery(
         AdminGetRbacPoliciesParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/policies/assignable",
     middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
+      ]),
       validateAndTransformQuery(
         AdminGetAssignableRbacPoliciesParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/policies/:id",
     middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
+      ]),
       validateAndTransformQuery(
         AdminGetRbacPolicyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
     ],
   },
   {
     method: ["GET"],
     matcher: "/rbac/policies/:id/roles",
     middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
+        { resource: RBAC_ROLE_RESOURCE, operation: PolicyOperation.read },
+      ]),
       validateAndTransformQuery(
         AdminGetRbacPolicyRolesParams,
         QueryConfig.listRbacPolicyRolesTransformQueryConfig
       ),
-    ],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.read },
-      { resource: RBAC_ROLE_RESOURCE, operation: PolicyOperation.read },
     ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/policies",
     middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.create },
+      ]),
       validateAndTransformBody(AdminCreateRbacPolicy),
       validateAndTransformQuery(
         AdminGetRbacPolicyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.create },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/rbac/policies/:id",
     middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.update },
+      ]),
       validateAndTransformBody(AdminUpdateRbacPolicy),
       validateAndTransformQuery(
         AdminGetRbacPolicyParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.update },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/rbac/policies/:id",
-    middlewares: [],
-    policies: [
-      { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.delete },
+    middlewares: [
+      authorize([
+        { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.delete },
+      ]),
     ],
   },
 ]

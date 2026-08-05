@@ -14,7 +14,12 @@ const createContainer = ({
   authzConfig = { grantees: [{ entity: "user", path: "id" }] },
   assignments = [],
 }: {
-  authzConfig?: unknown
+  /**
+   * Pass null for an actor type with no authz config. Passing undefined would
+   * fall back to the default above, which is the opposite of what the test
+   * intends.
+   */
+  authzConfig?: unknown | null
   assignments?: { role_id: string }[]
 } = {}) => {
   const listRbacRoleAssignments = jest.fn().mockResolvedValue(assignments)
@@ -50,7 +55,7 @@ describe("resolveRoles", () => {
 
   it("returns no roles when the actor type has no authz config", async () => {
     const { container, listRbacRoleAssignments } = createContainer({
-      authzConfig: undefined,
+      authzConfig: null,
     })
 
     await expect(resolveRoles({ authContext, container })).resolves.toEqual([])

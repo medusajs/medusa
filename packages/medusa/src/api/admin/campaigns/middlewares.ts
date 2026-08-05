@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
@@ -17,45 +17,47 @@ import {
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/campaigns/*",
-    policies: [
-      {
-        resource: Entities.campaign,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.campaign,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/campaigns",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.campaign,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetCampaignsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.campaign,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/campaigns",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.campaign,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateCampaign),
       validateAndTransformQuery(
         AdminGetCampaignParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.campaign,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["GET"],
@@ -71,48 +73,50 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/campaigns/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.campaign,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateCampaign),
       validateAndTransformQuery(
         AdminGetCampaignParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.campaign,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/campaigns/:id/promotions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.campaign,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminGetCampaignParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.campaign,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/campaigns/:id",
-    policies: [
-      {
-        resource: Entities.campaign,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.campaign,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

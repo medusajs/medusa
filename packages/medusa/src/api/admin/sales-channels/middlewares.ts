@@ -2,7 +2,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  maybeApplyLinkFilter,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
@@ -17,17 +21,25 @@ import {
 export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/sales-channels/*",
-    policies: [
-      {
-        resource: Entities.sales_channel,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.sales_channel,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/sales-channels",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.sales_channel,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetSalesChannelsParams,
         QueryConfig.listTransformQueryConfig
@@ -43,12 +55,6 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         filterableField: "publishable_key_id",
       }),
     ],
-    policies: [
-      {
-        resource: Entities.sales_channel,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["GET"],
@@ -64,66 +70,67 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/sales-channels",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.sales_channel,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateSalesChannel),
       validateAndTransformQuery(
         AdminGetSalesChannelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.sales_channel,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/sales-channels/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.sales_channel,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateSalesChannel),
       validateAndTransformQuery(
         AdminGetSalesChannelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.sales_channel,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/sales-channels/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.sales_channel,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.sales_channel,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/sales-channels/:id/products",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.sales_channel,
+          operation: PolicyOperation.update,
+        },
+        {
+          resource: Entities.product,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(createLinkBody()),
       validateAndTransformQuery(
         AdminGetSalesChannelParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.sales_channel,
-        operation: PolicyOperation.update,
-      },
-      {
-        resource: Entities.product,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

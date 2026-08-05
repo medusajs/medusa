@@ -1,5 +1,5 @@
 import { validateAndTransformQuery } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -11,27 +11,29 @@ import {
 export const adminNotificationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/notifications/*",
-    policies: [
-      {
-        resource: Entities.notification,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.notification,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/notifications",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.notification,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetNotificationsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.notification,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {

@@ -1,4 +1,5 @@
 import {
+  authorize,
   MiddlewareRoute,
   validateAndTransformBody,
   validateAndTransformQuery,
@@ -21,20 +22,24 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
     // Match all translations routes except the settings subtree, which is
     // guarded by its own `translation_setting` policy below.
     matcher: /^\/admin\/translations(?!\/settings(\/|$))(\/.*)?$/,
-    policies: [
-      {
-        resource: Entities.translation,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.translation,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     matcher: "/admin/translations/settings/*",
-    policies: [
-      {
-        resource: Entities.translation_setting,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.translation_setting,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
@@ -53,16 +58,18 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    middlewares: [validateAndTransformBody(AdminBatchTranslations)],
-    policies: [
-      {
-        resource: Entities.translation,
-        operation: [
-          PolicyOperation.create,
-          PolicyOperation.update,
-          PolicyOperation.delete,
-        ],
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.translation,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
+      validateAndTransformBody(AdminBatchTranslations),
     ],
   },
   {
@@ -82,16 +89,18 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/translations/settings/batch",
-    middlewares: [validateAndTransformBody(AdminBatchTranslationSettings)],
-    policies: [
-      {
-        resource: Entities.translation_setting,
-        operation: [
-          PolicyOperation.create,
-          PolicyOperation.update,
-          PolicyOperation.delete,
-        ],
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.translation_setting,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
+      validateAndTransformBody(AdminBatchTranslationSettings),
     ],
   },
   {
