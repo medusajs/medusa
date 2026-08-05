@@ -183,6 +183,9 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
   }
 )
 
+/**
+ * The ID of the {@link getVariantsAndItemsWithPrices} workflow.
+ */
 export const getVariantsAndItemsWithPricesId =
   "get-variant-items-with-prices-workflow"
 /**
