@@ -110,5 +110,8 @@
     "eslint": "8",
     "typescript": "5.9.3"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "engines": {
+    "node": ">=20.19.0"
+  }
 }
