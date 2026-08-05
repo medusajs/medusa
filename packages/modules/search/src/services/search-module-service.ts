@@ -29,6 +29,7 @@ import {
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   validateFieldUsage,
+  flattenFields,
 } from "@utils"
 import {
   createIndexMigrationPlan,
@@ -97,9 +98,10 @@ export default class SearchModuleService
     this.indexes_ = this.moduleOptions_.indexes?.length
       ? resolveIndexDefinitions({
           definitions: this.moduleOptions_.indexes,
-          default_provider: container.searchProviderService.getDefaultIdentifier(
-            this.moduleOptions_.default_provider
-          ),
+          default_provider:
+            container.searchProviderService.getDefaultIdentifier(
+              this.moduleOptions_.default_provider
+            ),
           index_prefix: this.moduleOptions_.index_prefix,
         })
       : new Map()
@@ -231,6 +233,12 @@ export default class SearchModuleService
     })
 
     return assertTaskAccepted(task, index)
+  }
+
+  listRetrievableFields(index: string): string[] {
+    return flattenFields(retrieveIndexDefinition(this.indexes_, index).fields)
+      .filter(({ field }) => field.retrievable !== false)
+      .map(({ path }) => path)
   }
 
   async reindex(

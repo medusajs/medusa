@@ -1,4 +1,5 @@
 import { Prettify } from "../common"
+import { SearchQuery, SearchResult } from "../search"
 import {
   IndexQueryInput,
   QueryResultSet,
@@ -40,6 +41,28 @@ export type QueryGraphFunction = {
     queryConfig: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<Prettify<GraphResultSet<TEntry>>>
+}
+
+/**
+ * What `query.search` returns: the hydrated entities in `data`, and whatever the
+ * engine reported — hits, scores, facets, counts — in `search_result`.
+ */
+export type SearchResultSet<TEntry extends string> = {
+  data: TEntry extends keyof RemoteQueryEntryPoints
+    ? RemoteQueryEntryPoints[TEntry][]
+    : any[]
+  search_result: SearchResult
+}
+
+/**
+ * QuerySearchFunction runs a search through the Search Module and expands the
+ * results with `query.graph`.
+ */
+export type QuerySearchFunction = {
+  <const TEntry extends string>(
+    queryOptions: SearchQuery<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<Prettify<SearchResultSet<TEntry>>>
 }
 
 /**
@@ -123,6 +146,11 @@ export type RemoteQueryFunction = {
    * returns a result set
    */
   index: QueryIndexFunction
+
+  /**
+   * Search function uses the search module and hydrates the results through graph
+   */
+  search: QuerySearchFunction
 
   /**
    * Query wrapper to provide specific GraphQL like API around remoteQuery.query
