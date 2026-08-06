@@ -15,6 +15,7 @@ import {
   ModuleExports,
   ModuleServiceInitializeOptions,
   RemoteQueryFunction,
+  SearchTypes,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -211,6 +212,30 @@ export async function loadModules(args: {
       }
       declaration.options.database.debug ??=
         sharedResourcesConfig?.database?.debug
+    }
+
+    /**
+     * The Search Module does not discover its own definitions; the app loads them
+     * off the file system (`search/`) and passes them in, like links.
+     *
+     * Inline ones go through the registry too, so it holds everything indexed and
+     * not just what came off disk — the ingestion subscriber reads it to know what
+     * to enroll in, having no container at config time. Keyed by name, so a second
+     * boot re-registers instead of doubling the list.
+     */
+    if (moduleName === Modules.SEARCH) {
+      const configured = (declaration.options?.indexes ??
+        []) as SearchTypes.SearchIndexDefinition[]
+
+      for (const definition of configured) {
+        MedusaModule.setSearchIndex(definition)
+      }
+
+      const registered = MedusaModule.getSearchIndexes()
+
+      if (registered.length) {
+        declaration.options = { ...declaration.options, indexes: registered }
+      }
     }
 
     modulesToLoad.push({

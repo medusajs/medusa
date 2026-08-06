@@ -24,7 +24,9 @@ function createQueryInstance(searchModule?: any) {
     container: { resolve: jest.fn() } as unknown as MedusaContainer,
   })
 
-  const graph = jest.spyOn(query, "graph").mockResolvedValue({ data: [] } as any)
+  const graph = jest
+    .spyOn(query, "graph")
+    .mockResolvedValue({ data: [] } as any)
 
   return { query, graph }
 }
@@ -155,7 +157,9 @@ describe("Query.search", () => {
     ])
     searchModule.search.mockResolvedValue({
       hits: [{ id: "prod_1", document: { id: "prod_1" }, score: 1.5 }],
-      facets: { brand: { type: "value", values: [{ value: "acme", count: 1 }] } },
+      facets: {
+        brand: { type: "value", values: [{ value: "acme", count: 1 }] },
+      },
       metadata: { skip: 0, take: 20, count: 1 },
     })
 

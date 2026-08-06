@@ -66,7 +66,11 @@ export const baseProducts: TestProduct[] = [
 
 export function resetDataset(products: TestProduct[] = baseProducts): void {
   dataset.products = products.map((product) => ({ ...product }))
+  consumedEvents.length = 0
 }
+
+// What `consume` was handed, so the tests can assert how the module routed.
+export const consumedEvents: { event: string; index: string }[] = []
 
 export const productIndex: SearchTypes.SearchIndexDefinition = {
   name: "product",
@@ -97,7 +101,27 @@ export const productIndex: SearchTypes.SearchIndexDefinition = {
       },
     },
   },
-  events: [],
+  events: ["product.created", "product.updated", "product.deleted"],
+  // Reads the document out of the dataset rather than off the event, the way a
+  // real definition reads through `query.graph`: an event carries an id.
+  async consume(event, { index }) {
+    consumedEvents.push({ event: event.name, index: index.name })
+
+    const id = (event.data as { id: string }).id
+
+    if (event.name === "product.deleted") {
+      return [{ action: "delete", filters: { id: [id] } }]
+    }
+
+    const product = dataset.products.find((candidate) => candidate.id === id)
+
+    // Gone by the time the event was handled; the delete that follows removes it.
+    if (!product) {
+      return []
+    }
+
+    return [{ action: "upsert", documents: [product] }]
+  },
   // eslint-disable-next-line require-yield
   async *seed({ filters }) {
     const ids = (filters?.ids as string[]) ?? undefined

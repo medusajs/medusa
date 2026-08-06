@@ -2,12 +2,10 @@ import { SearchTypes } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { SearchIndex, SearchIndexSync } from "@models"
-import {
-  SearchIndexMigrationAction,
-  SearchIndexSeedAction,
-} from "@types"
+import { SearchIndexSeedAction } from "@types"
 import {
   baseProducts,
+  consumedEvents,
   dataset,
   productIndex,
   resetDataset,
@@ -27,17 +25,15 @@ const seedPlan = (service: SearchService) =>
     SearchIndexSeedAction[]
   >
 
-// Migrating is internal — driven by `db:migrate`, not by callers — as is reading
-// the registered definitions.
+// Migrating is public — `db:migrate` plans and executes it — but reading the
+// registered definitions is not.
 const migrationPlan = (service: SearchService) =>
-  (service as any).createIndexMigrationPlan_() as Promise<
-    SearchIndexMigrationAction[]
-  >
+  service.createIndexMigrationPlan()
 
 const migrate = (
   service: SearchService,
-  actions: SearchIndexMigrationAction[]
-) => (service as any).executeIndexMigrationPlan_(actions) as Promise<void>
+  actions: SearchTypes.SearchIndexMigrationAction[]
+) => service.executeIndexMigrationPlan(actions)
 
 const definition = (service: SearchService, name: string) =>
   (service as any).indexes_.get(name) as
@@ -831,6 +827,132 @@ moduleIntegrationTestRunner<SearchService>({
           await expect(
             service.upsertDocuments({ index: "nope", documents: [{ id: "x" }] })
           ).rejects.toThrow(/No search index registered for "nope"/)
+        })
+      })
+
+      describe("event ingestion", () => {
+        const ingest = (name: string, id: string) =>
+          service.ingest({ name, data: { id } } as any)
+
+        const found = async (q: string) =>
+          ids(
+            await service.search({
+              entity: "product",
+              fields: ["id"],
+              filters: { q },
+            })
+          )
+
+        it("indexes a document the event says was created", async () => {
+          dataset.products.push({
+            ...baseProducts[0],
+            id: "prod_4",
+            title: "Yellow rain jacket",
+            handle: "yellow-rain-jacket",
+          })
+
+          const tasks = await ingest("product.created", "prod_4")
+
+          expect(tasks).toEqual([
+            expect.objectContaining({ status: "succeeded" }),
+          ])
+          expect(await found("jacket")).toEqual(["prod_4"])
+        })
+
+        it("routes the event to the index that declared it", async () => {
+          await ingest("product.updated", "prod_1")
+
+          expect(consumedEvents).toEqual([
+            { event: "product.updated", index: "product" },
+          ])
+        })
+
+        it("reindexes the document an update points at, in place", async () => {
+          const product = dataset.products.find((p) => p.id === "prod_1")!
+          product.title = "Crimson trail runner"
+
+          await ingest("product.updated", "prod_1")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: { q: "crimson" },
+          })
+
+          expect(result.hits).toEqual([
+            expect.objectContaining({
+              id: "prod_1",
+              document: expect.objectContaining({
+                title: "Crimson trail runner",
+              }),
+            }),
+          ])
+
+          // Replaced rather than added beside the old document.
+          const all = await service.search({ entity: "product", fields: ["id"] })
+          expect(all.metadata.count).toBe(3)
+        })
+
+        it("removes the document an event says was deleted", async () => {
+          await ingest("product.deleted", "prod_1")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+          })
+
+          expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
+        })
+
+        // The bus only promises at-least-once, so twice must look like once.
+        it("is idempotent under a redelivered event", async () => {
+          const product = dataset.products.find((p) => p.id === "prod_2")!
+          product.title = "Azure running shirt"
+
+          await ingest("product.updated", "prod_2")
+          await ingest("product.updated", "prod_2")
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "azure" },
+          })
+
+          expect(ids(result)).toEqual(["prod_2"])
+          expect(result.metadata.count).toBe(1)
+        })
+
+        it("does nothing for an event no index declared", async () => {
+          const tasks = await ingest("order.placed", "order_1")
+
+          expect(tasks).toEqual([])
+          expect(consumedEvents).toEqual([])
+        })
+
+        it("writes nothing when the entity is already gone", async () => {
+          const tasks = await ingest("product.created", "prod_missing")
+
+          expect(tasks).toEqual([])
+          expect(await found("shoe")).toEqual(["prod_1"])
+        })
+
+        it("propagates a write failure, so the event is redelivered", async () => {
+          const provider = (service as any).searchProviderService_.retrieve(
+            "search-local"
+          )
+          const upsert = jest
+            .spyOn(provider, "upsertDocuments")
+            .mockResolvedValue({
+              index: "product",
+              status: "failed",
+              error: { message: "engine unavailable" },
+            })
+
+          await expect(
+            ingest("product.updated", "prod_1")
+          ).rejects.toThrow(/engine unavailable/)
+
+          upsert.mockRestore()
         })
       })
 
