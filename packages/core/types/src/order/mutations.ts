@@ -951,6 +951,11 @@ export interface CreateOrderChangeDTO {
   carry_over_promotions?: boolean | null
 
   /**
+   * Whether the customer shouldn't be notified of the order change.
+   */
+  no_notification?: boolean | null
+
+  /**
    * The user or customer that requested the order change.
    */
   requested_by?: string
@@ -1063,6 +1068,11 @@ export interface UpdateOrderChangeDTO {
    * Whether to carry over promotions to outbound exchange items.
    */
   carry_over_promotions?: boolean | null
+
+  /**
+   * Whether the customer shouldn't be notified of the order change.
+   */
+  no_notification?: boolean | null
 }
 
 /**
