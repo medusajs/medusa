@@ -36,6 +36,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
   },
   {
+    "title": "Restrict Order Retrieval",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
+  },
+  {
     "title": "Extend Product",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/extend"
   },

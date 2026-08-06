@@ -90,6 +90,7 @@ export const defaultAdminRetrieveOrderChangesFields = [
   "created_at",
   "updated_at",
   "carry_over_promotions",
+  "no_notification",
 ]
 
 export const defaultAdminOrderItemsFields = [

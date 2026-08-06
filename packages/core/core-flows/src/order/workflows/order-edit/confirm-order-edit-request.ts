@@ -152,6 +152,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       fields: [
         "id",
         "status",
+        "no_notification",
         "actions.id",
         "actions.order_id",
         "actions.return_id",
@@ -319,6 +320,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
         return {
           order_id: order.id,
           actions: orderChange.actions,
+          no_notification: orderChange.no_notification,
         }
       }
     )

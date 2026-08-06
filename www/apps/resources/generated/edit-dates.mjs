@@ -5754,7 +5754,7 @@ export const generatedEditDates = {
   "references/notification_service/interfaces/notification_service.INotificationModuleService/page.mdx": "2026-04-30T16:36:44.178Z",
   "app/nextjs-starter/guides/revalidate-cache/page.mdx": "2025-05-01T15:33:42.490Z",
   "app/storefront-development/cart/totals/page.mdx": "2025-09-15T15:13:56.268Z",
-  "app/storefront-development/checkout/order-confirmation/page.mdx": "2025-12-16T07:17:57.133Z",
+  "app/storefront-development/checkout/order-confirmation/page.mdx": "2026-08-06T07:45:07.260Z",
   "app/how-to-tutorials/tutorials/product-reviews/page.mdx": "2026-01-12T12:25:29.951Z",
   "app/troubleshooting/data-models/default-fields/page.mdx": "2025-03-21T06:59:06.775Z",
   "app/troubleshooting/medusa-admin/blocked-request/page.mdx": "2025-03-21T06:53:34.854Z",
@@ -7643,5 +7643,6 @@ export const generatedEditDates = {
   "app/lint/rules/widget-must-export-config/page.mdx": "2026-07-28T05:43:12.267Z",
   "app/lint/rules/widget-must-have-default-export/page.mdx": "2026-07-28T05:43:12.274Z",
   "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z",
-  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z"
+  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z",
+  "app/commerce-modules/order/secure-order-retrieval/page.mdx": "2026-08-06T07:59:42.895Z"
 }
