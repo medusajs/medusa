@@ -24,12 +24,14 @@ export interface InvalidationEvent {
 
 /**
  * The mutations a cached entity can go through. `attached`/`detached` are the
- * link modules' equivalent of created/deleted.
+ * link modules' equivalent of created/deleted, and `restored` reverses a soft
+ * delete.
  */
 export type InvalidationOperation =
   | "created"
   | "updated"
   | "deleted"
+  | "restored"
   | "attached"
   | "detached"
 
@@ -37,6 +39,7 @@ const LIST_AFFECTING_OPERATIONS: InvalidationOperation[] = [
   "created",
   "updated",
   "deleted",
+  "restored",
   "attached",
   "detached",
 ]
@@ -256,7 +259,8 @@ export class CacheInvalidationParser {
     // from draft to published), and the cache layer has no way of knowing which
     // fields are filter-relevant. Attach/detach are included because a link row
     // never carries a usable id at attach time, so the list key is the only tag
-    // a cached link query can be invalidated by.
+    // a cached link query can be invalidated by. Restore is included because the
+    // entity re-enters every list it was soft deleted out of.
     if (entity.isInArray || LIST_AFFECTING_OPERATIONS.includes(operation)) {
       keys.add(`${entity.type}:list:*`)
     }

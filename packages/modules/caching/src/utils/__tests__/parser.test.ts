@@ -505,6 +505,18 @@ describe("CacheInvalidationParser", () => {
       ])
     })
 
+    it("should invalidate list caches for restored operation", () => {
+      // A restored entity re-enters every list it was soft deleted out of.
+      const entities: EntityReference[] = [{ type: "Product", id: "prod_123" }]
+
+      const events = parser.buildInvalidationEvents(entities, "restored")
+
+      expect(events[0].cacheKeys).toEqual([
+        "Product:prod_123",
+        "Product:list:*",
+      ])
+    })
+
     it.each(["attached", "detached"] as const)(
       "should invalidate list caches for %s operation",
       (operation) => {
