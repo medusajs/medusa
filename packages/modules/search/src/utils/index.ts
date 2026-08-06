@@ -26,28 +26,22 @@ export const DEFAULT_REINDEX_BATCH_SIZE = 100
 export type FlatSearchField = {
   path: string
   field: SearchTypes.SearchFieldDefinition
-  // True when any ancestor is an array of objects, so values arrive as a list
-  // and predicates on them cannot correlate per element.
-  in_array: boolean
 }
 
 // Walks fields into dotted paths. Object fields yield themselves and their
 // descendants, so `retrievable` can be asked about either.
 export function flattenFields(
   fields: Record<string, SearchTypes.SearchFieldDefinition>,
-  prefix = "",
-  inArray = false
+  prefix = ""
 ): FlatSearchField[] {
   const flat: FlatSearchField[] = []
 
   for (const [name, field] of Object.entries(fields)) {
     const path = prefix ? `${prefix}.${name}` : name
-    flat.push({ path, field, in_array: inArray })
+    flat.push({ path, field })
 
     if (field.type === "object" && field.fields) {
-      flat.push(
-        ...flattenFields(field.fields, path, inArray || field.array === true)
-      )
+      flat.push(...flattenFields(field.fields, path))
     }
   }
 

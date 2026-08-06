@@ -97,21 +97,6 @@ export type SearchSeedRuntime = SearchIndexRegistry &
 
 /* ---------------------------- persisted records ---------------------------- */
 
-/**
- * A row of the module's own bookkeeping. Internal on purpose — not on
- * `SearchTypes`, and the models are registered for neither CRUD nor linking.
- */
-export type SearchIndexRecord = {
-  id: string
-  name: string
-  provider: string
-  status: string
-  definition_hash: string
-  created_at: Date
-  updated_at: Date
-  deleted_at: Date | null
-}
-
 /** One seed run against one index. Append-only, so these are the history. */
 export type SearchIndexSyncRecord = {
   id: string
