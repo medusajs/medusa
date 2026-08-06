@@ -57,7 +57,7 @@ import { SearchTypes } from "@medusajs/types"
  * `upsertIndex` so the error surfaces at startup. Returning a slightly different result is
  * the one outcome to avoid, since callers can't tell it apart from a correct one.
  *
- * `swapIndex`, `searchMany`, `partialUpdateDocuments` and `waitForTask` are optional and
+ * `swapIndex`, `searchMany` and `waitForTask` are optional and
  * left out of this class on purpose: the Search Module treats their presence as support,
  * so only define the ones your engine can back. Implementing `swapIndex`, for example,
  * lets the module reindex without downtime instead of rebuilding in place.

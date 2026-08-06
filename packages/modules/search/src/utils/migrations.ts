@@ -46,7 +46,12 @@ export async function createIndexMigrationPlan(
       }
     }
 
-    if (record.definition_hash === definition.definition_hash) {
+    // A provider change with an untouched schema drifts too: the hash still
+    // matches, but no physical index exists on the new provider yet.
+    if (
+      record.definition_hash === definition.definition_hash &&
+      record.provider === definition.provider
+    ) {
       return {
         ...shared,
         action: "noop" as const,

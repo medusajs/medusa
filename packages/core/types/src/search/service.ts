@@ -63,8 +63,7 @@ export interface ISearchModuleService extends IModuleService {
    */
   ingest(event: Event<any>): Promise<SearchTask[]>
 
-  /** The distinct events the registered indexes declared. */
-  listIngestionEvents(): string[]
+  listIndexes(): string[]
 
   /**
    * The field paths the index can return. `query.search` uses this to split what a

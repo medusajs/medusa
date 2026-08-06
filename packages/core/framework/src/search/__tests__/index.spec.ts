@@ -18,11 +18,13 @@ describe("SearchIndexLoader", () => {
   it("should register each definition in the '/search' folder and sub folder", async () => {
     await new SearchIndexLoader(rootDir).load()
 
+    // `tag` comes from `tag-index.ts` — a name that must not be skipped as a
+    // barrel file.
     expect(
       MedusaModule.getSearchIndexes()
         .map((index) => index.name)
         .sort()
-    ).toEqual(["customer", "product"])
+    ).toEqual(["customer", "product", "tag"])
   })
 
   // A file is free to declare more than one index. Its own fixture folder because

@@ -4,6 +4,7 @@ import { ProductEvents } from "@medusajs/utils"
 const BATCH_SIZE = 100
 
 const PRODUCT_FIELDS = ["id", "title", "handle", "status"]
+const CUSTOMER_FIELDS = ["id", "email", "first_name", "last_name"]
 
 const productIndex: SearchTypes.SearchIndexDefinition = {
   name: "product",
@@ -71,4 +72,44 @@ const productIndex: SearchTypes.SearchIndexDefinition = {
   },
 }
 
-export default [productIndex]
+/**
+ * A second index, so grouped results across entities are observable. No `events`:
+ * ingestion is covered by the product index, and this one is filled by a reindex.
+ */
+const customerIndex: SearchTypes.SearchIndexDefinition = {
+  name: "customer",
+  entity: "customer",
+  fields: {
+    id: { type: "keyword", filterable: true },
+    email: { type: "keyword", searchable: true },
+    first_name: { type: "text", searchable: true },
+    last_name: { type: "text", searchable: true },
+  },
+
+  async *seed({ container, filters }) {
+    let skip = 0
+
+    while (true) {
+      const { data } = await container.query.graph({
+        entity: "customer",
+        fields: CUSTOMER_FIELDS,
+        filters: filters ?? {},
+        pagination: { skip, take: BATCH_SIZE, order: { id: "ASC" } },
+      })
+
+      if (!data.length) {
+        return
+      }
+
+      yield data as SearchTypes.SearchDocument[]
+
+      if (data.length < BATCH_SIZE) {
+        return
+      }
+
+      skip += BATCH_SIZE
+    }
+  },
+}
+
+export default [productIndex, customerIndex]
