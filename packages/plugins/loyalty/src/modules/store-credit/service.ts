@@ -1,3 +1,4 @@
+/* eslint-disable @medusajs/use-inject-manager-on-public-methods */
 import {
   BigNumberValue,
   Context,
@@ -161,6 +162,24 @@ class StoreCreditService
 
   /* Entity: AccountTransaction */
 
+  /**
+   * `MedusaService` derives its generated method names from the model name, so
+   * the transaction delete method is generated as `deleteAccountTransactions`.
+   * `IStoreCreditModuleService` however declares this method as
+   * `deleteTransactions`, which meant the declared method did not exist at
+   * runtime and every caller threw a `TypeError`.
+   *
+   * The declared name is part of the module's public API, so it is implemented
+   * here as a forwarder rather than renamed.
+   */
+  @InjectTransactionManager()
+  async deleteTransactions(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.deleteAccountTransactions(ids, sharedContext);
+  }
+
   @InjectManager()
   async retrieveAccountStats(
     data: ModuleRetrieveAccountStats,
@@ -297,6 +316,53 @@ class StoreCreditService
     );
   }
 
+  /**
+   * Acquires a row-level lock on the given store credit accounts for the duration
+   * of the surrounding transaction.
+   *
+   * Balances are derived from the transaction ledger rather than stored on the
+   * account, so a debit is a check-then-insert: read the balance, verify it covers
+   * the amount, then insert the debit. Under Postgres' default READ COMMITTED
+   * isolation, concurrent transactions do not observe each other's uncommitted
+   * debits, so without a lock two checkouts can both pass the balance check and
+   * overspend the same stored value.
+   *
+   * Locking the account row serializes all debits for that account across
+   * processes. Accounts are locked in a deterministic order so that debits
+   * spanning multiple accounts cannot deadlock against each other.
+   */
+  @InjectTransactionManager()
+  protected async lockAccountsForUpdate_(
+    accountIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const uniqueAccountIds = Array.from(new Set(accountIds)).sort();
+
+    if (!uniqueAccountIds.length) {
+      return;
+    }
+
+    const manager = sharedContext.transactionManager as SqlEntityManager;
+    const transactionContext = manager.getTransactionContext();
+
+    if (!transactionContext) {
+      /*
+        Falling back to a non-transactional connection would release the lock
+        immediately and silently reintroduce the double-spend race, so we fail
+        loudly instead.
+      */
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Cannot lock store credit accounts outside of a transaction"
+      );
+    }
+
+    await transactionContext("store_credit_account")
+      .select("id")
+      .whereIn("id", uniqueAccountIds)
+      .forUpdate();
+  }
+
   @InjectTransactionManager()
   async debitAccounts_(
     debitAccountsData: ModuleDebitAccount[],
@@ -304,6 +370,15 @@ class StoreCreditService
   ) {
     const manager = sharedContext.transactionManager as SqlEntityManager;
     const transactions: ModuleAccountTransaction[] = [];
+
+    /*
+      Lock every account up front, before any balance is read, so that the
+      check-then-insert below is serialized per account.
+    */
+    await this.lockAccountsForUpdate_(
+      debitAccountsData.map((data) => data.account_id).filter(Boolean),
+      sharedContext
+    );
 
     for (const data of debitAccountsData) {
       const { account_id, amount, reference, reference_id, note } = data;
