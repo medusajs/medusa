@@ -99,25 +99,22 @@ export const exportProductsStep = createStep(
     }
 
     const seenExportKeys = new Set<string>()
+    const normalizedBatches: object[][] = []
     let page = 0
     while (true) {
       const products = await getProducts(page)
       if (products.length === 0) break
 
       const normalizedProducts = normalizeForExport(products, { regions })
+      normalizedBatches.push(normalizedProducts)
       appendProductExportKeys(normalizedProducts, seenExportKeys, exportOptions)
 
       if (products.length < pageSize) break
       page += 1
     }
 
-    page = 0
     let hasHeader = false
-    while (true) {
-      const products = await getProducts(page)
-      if (products.length === 0) break
-
-      const normalizedProducts = normalizeForExport(products, { regions })
+    for (const normalizedProducts of normalizedBatches) {
       const batchCsv = json2csv(normalizedProducts, {
         keys: Array.from(seenExportKeys),
         prependHeader: !hasHeader,
@@ -133,8 +130,6 @@ export const exportProductsStep = createStep(
       }
 
       hasHeader = true
-      if (products.length < pageSize) break
-      page += 1
     }
 
     writeStream.end()
