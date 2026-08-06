@@ -151,3 +151,19 @@ export interface AdminRbacScopesResponse {
    */
   scopes: { type: string }[]
 }
+
+export interface AdminRbacScopeOptionsResponse {
+  /**
+   * The possible values for the scope.
+   */
+  options: {
+    /**
+     * The ID of the scope entity.
+     */
+    id: string
+    /**
+     * The label of the scope entity.
+     */
+    label: string
+  }[]
+}
