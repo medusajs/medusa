@@ -39,8 +39,11 @@ export interface SearchResultMetadata {
    * Treat as an estimate. Most engines only approximate a total — Meilisearch and
    * Elasticsearch do by default — so nothing should be built on it being exact,
    * even where a particular provider happens to count precisely.
+   *
+   * `null` when the query asked for `count: "none"` and the provider skipped
+   * counting altogether.
    */
-  count: number
+  count: number | null
   next_cursor?: string
   query?: string
   processing_time_ms?: number

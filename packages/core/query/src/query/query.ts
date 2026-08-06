@@ -210,10 +210,10 @@ export class Query {
     }
 
     const entity = queryOptions.entity
-    const requested = queryOptions.fields ?? []
-    const retrievable = new Set(
-      this.#searchModule.listRetrievableFields(entity)
-    )
+    const retrievableFields = this.#searchModule.listRetrievableFields(entity)
+    // Without an explicit selection, return what the index holds.
+    const requested = queryOptions.fields ?? retrievableFields
+    const retrievable = new Set(retrievableFields)
 
     const indexFields = requested.filter((field) => retrievable.has(field))
     const graphFields = requested.filter((field) => !retrievable.has(field))

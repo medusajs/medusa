@@ -57,4 +57,19 @@ describe("MedusaModule search index registry", () => {
       'Search index "product" is defined twice: in /app/search/product.ts and /app/search/products.ts'
     )
   })
+
+  it("replaces rather than duplicates when an inline definition re-registers", () => {
+    MedusaModule.setSearchIndex(definition("product"))
+    MedusaModule.setSearchIndex(definition("product"))
+
+    expect(MedusaModule.getSearchIndexes().length).toBe(1)
+  })
+
+  it("rejects a file and the module options claiming the same index name", () => {
+    MedusaModule.setSearchIndex(definition("product"), "/app/search/product.ts")
+
+    expect(() => MedusaModule.setSearchIndex(definition("product"))).toThrow(
+      `Search index "product" is defined twice: in /app/search/product.ts and the Search Module's options`
+    )
+  })
 })
