@@ -64,21 +64,19 @@ export class LocalSearchService extends AbstractSearchProviderService {
     const plan = buildIndexPlan(index)
     const existing = this.indexes_.get(index.physical_name)
 
-    if (existing && sameSchema(existing.plan, plan)) {
-      return this.task(index.physical_name)
-    }
-
     // Orama fixes a schema at creation, so bringing an index up to date means
     // rebuilding it empty. That is safe because the module only ever points this
     // at an index it is about to seed — a shadow it will swap in, or a live one
     // it is refilling wholesale.
-    this.indexes_.set(index.physical_name, {
-      name: index.physical_name,
-      db: oramaCreate({ schema: plan.schema as any }),
-      plan,
-      created_at: existing?.created_at ?? new Date(),
-      updated_at: new Date(),
-    })
+    if (!existing || !sameSchema(existing.plan, plan)) {
+      this.indexes_.set(index.physical_name, {
+        name: index.physical_name,
+        db: oramaCreate({ schema: plan.schema as any }),
+        plan,
+        created_at: existing?.created_at ?? new Date(),
+        updated_at: new Date(),
+      })
+    }
 
     return this.task(index.physical_name)
   }
@@ -195,9 +193,18 @@ export class LocalSearchService extends AbstractSearchProviderService {
     const skip = input.pagination?.skip ?? 0
     const take = input.pagination?.take ?? 20
 
-    const properties = (
-      options.attributes_to_search_on ?? plan.searchable
-    ).filter((path) => plan.searchable.includes(path))
+    // Silently ignoring an attribute would widen or narrow matches without the
+    // caller noticing, so an unknown or unsearchable one is refused instead.
+    for (const path of options.attributes_to_search_on ?? []) {
+      if (!plan.searchable.includes(path)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Field "${path}" is not searchable on search index "${input.index.name}"`
+        )
+      }
+    }
+
+    const properties = options.attributes_to_search_on ?? plan.searchable
 
     const facetPlan = toOramaFacets(
       options.facets as SearchTypes.SearchFacetRequest[] | undefined,
@@ -215,6 +222,18 @@ export class LocalSearchService extends AbstractSearchProviderService {
     // searchable field can never match.
     if (input.q && properties.length) {
       params.properties = properties
+
+      // Definition weights land here at query time, as Orama boosts.
+      const boost: Record<string, number> = {}
+      for (const path of properties) {
+        const searchable = plan.fields.get(path)?.field.searchable
+        if (typeof searchable === "object" && searchable.weight !== undefined) {
+          boost[path] = searchable.weight
+        }
+      }
+      if (Object.keys(boost).length) {
+        params.boost = boost
+      }
     } else if (input.q && !properties.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

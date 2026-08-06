@@ -42,14 +42,20 @@ export interface SearchFieldDefinition {
   fields?: Record<string, SearchFieldDefinition>
 
   /**
-   * For an array of objects, require filters to correlate per element — that
-   * `variants.color = "red" AND variants.size = "XL"` match one variant, not the
-   * union. A provider that cannot rejects it from `upsertIndex`, so this fails at
-   * boot rather than over-matching later.
+   * Only meaningful on an array of objects. When `true`, filters on the object's
+   * sub-fields must all match within a *single* element — `variants.color = "red"
+   * AND variants.size = "XL"` matches a product with a red XL variant, not one
+   * with a red S and a blue XL. Off by default because most engines flatten
+   * arrays and cannot express it; a provider that cannot rejects it from
+   * `upsertIndex`, so this fails at boot rather than over-matching later.
    */
   correlated?: boolean
 
-  // For `type: "vector"`.
+  /**
+   * The dimensionality of the embedding stored in a `type: "vector"` field —
+   * every vector written to it must have exactly this many components. Required
+   * for vector fields; meaningless on any other type.
+   */
   dimensions?: number
 
   // Keyed by provider identifier, e.g. `{ meilisearch: { ... } }`.
