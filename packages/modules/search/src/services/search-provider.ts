@@ -27,6 +27,16 @@ export class SearchProviderService {
         continue
       }
 
+      // Definitions bind to a provider by identifier, so two registrations of
+      // the same provider class would be indistinguishable to them — the second
+      // would silently shadow the first.
+      if (this.providers_.has(provider.identifier)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `The search provider "${provider.identifier}" is registered twice. Register each provider once; index definitions select it through their "provider" field.`
+        )
+      }
+
       this.providers_.set(provider.identifier, provider)
     }
   }

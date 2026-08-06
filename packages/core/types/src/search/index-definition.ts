@@ -31,7 +31,12 @@ export interface SearchIndexSettings {
 
 export type SearchMutation =
   | { action: "upsert"; documents: SearchDocument[] }
-  // Deleting by id is a filter on the primary key.
+  /**
+   * Removes every document matching `filters`. The common case is deleting by
+   * id, which is a filter on the primary key — `{ id: ["prod_1"] }` — but any
+   * filter the provider can evaluate works, e.g. removing everything a
+   * `store.deleted` event orphaned with `{ store_id: "store_1" }`.
+   */
   | { action: "delete"; filters: SearchFilters }
 
 /**

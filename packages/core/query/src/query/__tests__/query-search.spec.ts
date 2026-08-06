@@ -61,6 +61,22 @@ describe("Query.search", () => {
     expect(result.data).toEqual([{ id: "prod_1", title: "Red shoe" }])
   })
 
+  it("defaults the requested fields to what the index can return", async () => {
+    const searchModule = createSearchModule([
+      { id: "prod_1", document: { id: "prod_1", title: "Red shoe" } },
+    ])
+    const { query, graph } = createQueryInstance(searchModule)
+
+    await query.search({ entity: "product" })
+
+    // Nothing was asked for, so everything the engine holds comes back and
+    // there is nothing left over for graph.
+    expect(searchModule.search).toHaveBeenCalledWith(
+      expect.objectContaining({ fields: RETRIEVABLE })
+    )
+    expect(graph).not.toHaveBeenCalled()
+  })
+
   it("splits the requested fields between the engine and graph", async () => {
     const searchModule = createSearchModule([
       { id: "prod_1", document: { id: "prod_1", title: "Red shoe" } },
