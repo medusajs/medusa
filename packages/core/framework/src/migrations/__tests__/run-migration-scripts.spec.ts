@@ -2,16 +2,66 @@ import { jest } from "@jest/globals"
 import { MedusaContainer } from "@medusajs/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import path from "path"
+import { logger } from "../../logger"
 import { MigrationScriptsMigrator } from "../run-migration-scripts"
+
+const mockConnection = {
+  query: jest.fn(),
+}
+
+const mockClient = {
+  acquireConnection: jest.fn(),
+  releaseConnection: jest.fn(),
+}
 
 const mockPgConnection = {
   raw: jest.fn(),
+  client: mockClient,
 }
 
 const mockLockService = {
   acquire: jest.fn(),
   release: jest.fn(),
 }
+
+/**
+ * Programs the connection used to claim a migration.
+ *
+ * @param locked - Whether the advisory lock is acquired. `false` means another
+ * process is running the script.
+ * @param existingRows - The existing record for the script. An empty array
+ * means the script has never been run.
+ * @param claimRows - The rows returned by the claim. An empty array means the
+ * script has already been executed.
+ */
+const mockClaim = ({
+  locked = true,
+  existingRows = [],
+  claimRows = [{ id: 1 }],
+}: {
+  locked?: boolean
+  existingRows?: { finished_at: Date | null }[]
+  claimRows?: { id: number }[]
+} = {}) => {
+  mockConnection.query.mockImplementation((async (sql: string) => {
+    if (sql.includes("pg_try_advisory_lock")) {
+      return { rows: [{ locked }] }
+    }
+    if (sql.includes("pg_advisory_unlock")) {
+      return { rows: [{ pg_advisory_unlock: true }] }
+    }
+    if (sql.includes("SELECT finished_at")) {
+      return { rows: existingRows }
+    }
+    return { rows: claimRows }
+  }) as never)
+}
+
+/**
+ * The SQL statements sent on the claim connection.
+ */
+const claimQueries = () =>
+  mockConnection.query.mock.calls.map((call) => call[0] as string)
 
 const mockContainer = {
   resolve: (key: string) => {
@@ -31,8 +81,11 @@ describe("MigrationScriptsMigrator", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    mockPgConnection.raw.mockResolvedValue(undefined as never)
+    mockClient.acquireConnection.mockResolvedValue(mockConnection as never)
+    mockClient.releaseConnection.mockResolvedValue(undefined as never)
     // by default, the migration is successfully claimed
-    mockPgConnection.raw.mockResolvedValue({ rows: [{ id: 1 }] } as never)
+    mockClaim()
     migrator = new MigrationScriptsMigrator({ container: mockContainer })
     // @ts-ignore
     migrator.pgConnection = mockPgConnection
@@ -62,18 +115,18 @@ describe("MigrationScriptsMigrator", () => {
 
       expect(mockScript).toHaveBeenCalled()
 
-      expect(mockPgConnection.raw).toHaveBeenNthCalledWith(
-        1,
-        expect.stringContaining(
-          "INSERT INTO script_migrations (script_name) VALUES (?)"
-        ),
+      expect(claimQueries()[0]).toContain("pg_try_advisory_lock")
+      expect(claimQueries()[2]).toContain(
+        "INSERT INTO script_migrations (script_name) VALUES ($1)"
+      )
+      expect(mockPgConnection.raw).toHaveBeenCalledWith(
+        expect.stringContaining("SET finished_at"),
         [path.basename(scriptPath)]
       )
-      expect(mockPgConnection.raw).toHaveBeenNthCalledWith(
-        2,
-        expect.stringContaining("UPDATE script_migrations"),
-        [path.basename(scriptPath)]
-      )
+
+      // the advisory lock is released and the connection returned to the pool
+      expect(claimQueries()).toContain("SELECT pg_advisory_unlock($1)")
+      expect(mockClient.releaseConnection).toHaveBeenCalledWith(mockConnection)
     })
 
     it("should not mark a failed migration as finished", async () => {
@@ -104,6 +157,48 @@ describe("MigrationScriptsMigrator", () => {
         expect.stringContaining("SET finished_at"),
         expect.anything()
       )
+
+      // the claim is still released, so the connection is not leaked
+      expect(claimQueries()).toContain("SELECT pg_advisory_unlock($1)")
+      expect(mockClient.releaseConnection).toHaveBeenCalledWith(mockConnection)
+    })
+
+    it("should skip a migration that another process is currently running", async () => {
+      const scriptPath = "/path/to/migration.ts"
+
+      jest
+        .spyOn(migrator as any, "getPendingMigrations")
+        .mockResolvedValue([scriptPath])
+      jest
+        .spyOn(migrator as any, "trackDuration")
+        .mockReturnValue({ getSeconds: () => 1 })
+
+      // the advisory lock is held by another process
+      mockClaim({ locked: false })
+
+      const mockScript = jest.fn()
+      jest.mock(
+        scriptPath,
+        () => ({
+          default: mockScript,
+        }),
+        { virtual: true }
+      )
+
+      await migrator.run([scriptPath])
+
+      expect(mockScript).not.toHaveBeenCalled()
+      // the record is not touched, so the running process keeps its claim
+      expect(
+        claimQueries().some((sql) =>
+          sql.includes("INSERT INTO script_migrations")
+        )
+      ).toBe(false)
+      expect(mockPgConnection.raw).not.toHaveBeenCalledWith(
+        expect.stringContaining("SET finished_at"),
+        expect.anything()
+      )
+      expect(mockClient.releaseConnection).toHaveBeenCalledWith(mockConnection)
     })
 
     it("should skip a migration that has already been completed by another process", async () => {
@@ -117,7 +212,7 @@ describe("MigrationScriptsMigrator", () => {
         .mockReturnValue({ getSeconds: () => 1 })
 
       // the claim does not return a row, meaning the script is already finished
-      mockPgConnection.raw.mockResolvedValue({ rows: [] } as never)
+      mockClaim({ claimRows: [] })
 
       const mockScript = jest.fn()
       jest.mock(
@@ -139,6 +234,10 @@ describe("MigrationScriptsMigrator", () => {
 
     it("should re-run a migration that was interrupted during a previous run", async () => {
       const scriptPath = "/path/to/interrupted-migration.ts"
+      const warn = jest.spyOn(logger, "warn").mockImplementation(() => logger)
+
+      // the record was left behind by the interrupted run
+      mockClaim({ existingRows: [{ finished_at: null }] })
 
       jest
         .spyOn(migrator as any, "getExecutedMigrations")
@@ -168,6 +267,23 @@ describe("MigrationScriptsMigrator", () => {
         expect.stringContaining("SET finished_at"),
         [path.basename(scriptPath)]
       )
+
+      /**
+       * `getPendingMigrations` is also called ahead of the run by the
+       * `db:migrate:scripts` command, so the warning is only emitted when the
+       * script is actually re-claimed. Otherwise it shows up twice per run.
+       */
+      const warnings = warn.mock.calls.filter((call) =>
+        String(call[0]).includes("did not complete during a previous run")
+      )
+      expect(warnings).toHaveLength(1)
+
+      await migrator.getPendingMigrations([scriptPath])
+      expect(
+        warn.mock.calls.filter((call) =>
+          String(call[0]).includes("did not complete during a previous run")
+        )
+      ).toHaveLength(1)
     })
   })
 

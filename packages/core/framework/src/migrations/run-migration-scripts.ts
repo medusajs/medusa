@@ -41,13 +41,23 @@ export class MigrationScriptsMigrator extends Migrator {
         const scriptName = basename(script)
 
         /**
-         * In case another process is running in parallel, the migration might
-         * have already been completed and therefore the claim will not return
-         * a row.
+         * The script is skipped when it has already been executed, or when
+         * another process is running it right now.
          */
-        const claimed = await this.#claimMigration(scriptName)
-        if (!claimed) {
+        const claim = await this.#claimMigration(scriptName)
+        if (!claim.claimed) {
+          if (claim.reason === "running-elsewhere") {
+            logger.info(
+              `Skipping migration script ${script}. It is being executed by another process`
+            )
+          }
           continue
+        }
+
+        if (claim.interrupted) {
+          logger.warn(
+            `Migration script ${script} did not complete during a previous run and is being executed again`
+          )
         }
 
         logger.info(`Running migration script ${script}`)
@@ -69,6 +79,8 @@ export class MigrationScriptsMigrator extends Migrator {
         } catch (error) {
           logger.error(`Failed to run migration script ${script}:`, error)
           throw error
+        } finally {
+          await claim.release()
         }
       }
     } finally {
@@ -77,38 +89,20 @@ export class MigrationScriptsMigrator extends Migrator {
   }
 
   async getPendingMigrations(migrationPaths: string[]): Promise<string[]> {
-    const migrationRecords = await this.getExecutedMigrations()
-
     /**
      * A script is only considered executed once it has finished running. Scripts
      * that were interrupted (e.g. a deadlock, a crash or a killed process) have
      * a record without a `finished_at` and must be run again.
      */
     const executedMigrations = new Set(
-      migrationRecords
+      (await this.getExecutedMigrations())
         .filter((item) => !!item.finished_at)
-        .map((item) => item.script_name)
-    )
-    const unfinishedMigrations = new Set(
-      migrationRecords
-        .filter((item) => !item.finished_at)
         .map((item) => item.script_name)
     )
 
     const all = await this.loadMigrationFiles(migrationPaths)
-    const pending = all.filter(
-      (item) => !executedMigrations.has(basename(item))
-    )
 
-    for (const script of pending) {
-      if (unfinishedMigrations.has(basename(script))) {
-        logger.warn(
-          `Migration script ${script} did not complete during a previous run and will be executed again`
-        )
-      }
-    }
-
-    return pending
+    return all.filter((item) => !executedMigrations.has(basename(item)))
   }
 
   protected async createMigrationTable(): Promise<void> {
@@ -125,26 +119,126 @@ export class MigrationScriptsMigrator extends Migrator {
   }
 
   /**
-   * Atomically claims a migration script before running it.
+   * Hashes a string into a signed 32-bit integer, as required by the Postgres
+   * advisory lock functions.
+   */
+  #hashStringToInt(str: string): number {
+    let hash = 5381
+    for (let i = str.length; i--; ) {
+      hash = (hash * 33) ^ str.charCodeAt(i)
+    }
+    return hash | 0
+  }
+
+  /**
+   * Claims a migration script before running it.
    *
-   * The record is inserted (or re-claimed, in case a previous run was
-   * interrupted and left it without a `finished_at`) in a single statement, so
-   * that two processes running in parallel can never claim the same script.
+   * Two guarantees are needed here, and they pull in opposite directions:
+   *
+   * - A script that was interrupted (deadlock, crash, killed process) must be
+   *   picked up again by a later run.
+   * - A script that another process is running right now must not be run a
+   *   second time in parallel.
+   *
+   * The database record alone cannot tell those two apart: in both cases the
+   * record exists without a `finished_at`. The difference is whether the
+   * process that claimed it is still alive, so a session-level advisory lock is
+   * held on a dedicated connection for as long as the script runs. Postgres
+   * releases that lock by itself once the connection goes away, which is
+   * exactly what happens when a process dies, while a live process keeps
+   * holding it.
    *
    * @param scriptName - The name of the script to claim
-   * @returns Whether the script was claimed. `false` means it has already
-   * been executed to completion.
+   * @returns The outcome of the claim, and a `release` to call once the script
+   * is done.
    */
-  async #claimMigration(scriptName: string): Promise<boolean> {
-    const result = await this.pgConnection.raw(
-      `INSERT INTO ${this.migration_table_name} (script_name) VALUES (?)
-       ON CONFLICT (script_name) DO UPDATE SET created_at = NOW()
-       WHERE ${this.migration_table_name}.finished_at IS NULL
-       RETURNING id`,
-      [scriptName]
+  async #claimMigration(scriptName: string): Promise<{
+    claimed: boolean
+    /**
+     * Whether a previous run of this script was interrupted before completing.
+     */
+    interrupted?: boolean
+    reason?: "already-executed" | "running-elsewhere"
+    release: () => Promise<void>
+  }> {
+    const lockKey = this.#hashStringToInt(
+      `${this.migration_table_name}:${scriptName}`
     )
 
-    return !!result?.rows?.length
+    const client = this.pgConnection.client
+    const connection = await client.acquireConnection()
+
+    let released = false
+    const release = async (unlock: boolean) => {
+      if (released) {
+        return
+      }
+      released = true
+
+      try {
+        if (unlock) {
+          await connection.query("SELECT pg_advisory_unlock($1)", [lockKey])
+        }
+      } finally {
+        await client.releaseConnection(connection)
+      }
+    }
+
+    try {
+      const lock = await connection.query(
+        "SELECT pg_try_advisory_lock($1) AS locked",
+        [lockKey]
+      )
+
+      if (!lock.rows[0].locked) {
+        await release(false)
+        return {
+          claimed: false,
+          reason: "running-elsewhere",
+          release: async () => {},
+        }
+      }
+
+      /**
+       * The lock is held, so no other process can be claiming this script at
+       * the same time and the existing record can be read safely. A record
+       * without a `finished_at` belongs to a run that was interrupted.
+       */
+      const existing = await connection.query(
+        `SELECT finished_at FROM ${this.migration_table_name} WHERE script_name = $1`,
+        [scriptName]
+      )
+
+      const interrupted =
+        !!existing.rows.length && !existing.rows[0].finished_at
+
+      /**
+       * The record is inserted, or re-claimed when a previous run left it
+       * without a `finished_at`. No row is returned when the script has
+       * already been executed to completion.
+       */
+      const claim = await connection.query(
+        `INSERT INTO ${this.migration_table_name} (script_name) VALUES ($1)
+         ON CONFLICT (script_name) DO UPDATE SET created_at = NOW()
+         WHERE ${this.migration_table_name}.finished_at IS NULL
+         RETURNING id`,
+        [scriptName]
+      )
+
+      if (!claim.rows.length) {
+        await release(true)
+        return {
+          claimed: false,
+          reason: "already-executed",
+          release: async () => {},
+        }
+      }
+
+      return { claimed: true, interrupted, release: () => release(true) }
+    } catch (error) {
+      await release(true)
+      throw error
+    }
   }
 
   #updateMigrationFinishedAt(scriptName: string) {
