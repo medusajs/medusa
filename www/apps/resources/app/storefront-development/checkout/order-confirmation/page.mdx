@@ -18,6 +18,12 @@ In this guide, you'll learn how to show the different order details on the order
 
 After the customer completes the checkout process and places an order, you can show an order confirmation page to display the order details.
 
+<Note>
+
+The [Get an Order API route](!api!/store/orders/get-an-order) doesn't require customer authentication, so that guest customers can view their order confirmation page. To add access rules to the route, refer to the [Restrict Order Retrieval guide](!resources!/commerce-modules/order/secure-order-retrieval).
+
+</Note>
+
 ## Retrieve Order Details
 
 To show the order details, you need to retrieve the order by sending a request to the [Get an Order API route](!api!/store/orders/get-an-order).
