@@ -255,7 +255,7 @@ medusaIntegrationTestRunner({
             "/admin/invites",
             {
               email: "role-test@medusa-commerce.com",
-              roles: [viewerRole.id, editorRole.id],
+              roles: [{ role_id: viewerRole.id }, { role_id: editorRole.id }],
             },
             adminHeaders
           )
@@ -328,7 +328,7 @@ medusaIntegrationTestRunner({
             "/admin/invites",
             {
               email: "admin-test@medusa-commerce.com",
-              roles: [superAdminRole.id],
+              roles: [{ role_id: superAdminRole.id }],
             },
             adminHeaders
           )
@@ -363,6 +363,111 @@ medusaIntegrationTestRunner({
 
         expect(userRoles).toHaveLength(1)
         expect(userRoles[0].role_id).toEqual(superAdminRole.id)
+      })
+
+      it("should create invite with scoped roles and transfer the scopes to the user on acceptance", async () => {
+        const createdInvite = (
+          await api.post(
+            "/admin/invites",
+            {
+              email: "scoped-role-test@medusa-commerce.com",
+              roles: [
+                {
+                  role_id: viewerRole.id,
+                  scopes: [
+                    { type: "organization", id: "org_1" },
+                    { type: "organization", id: "org_2" },
+                  ],
+                },
+                // Unscoped role, alongside the scoped one
+                { role_id: editorRole.id },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.invite
+
+        const container = getContainer()
+        const { Modules } = require("@medusajs/framework/utils")
+        const rbacModule = container.resolve(Modules.RBAC)
+
+        // One assignment per scope, plus one for the unscoped role
+        const inviteRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "invite",
+          reference_id: createdInvite.id,
+        })
+
+        expect(inviteRoles).toHaveLength(3)
+        expect(inviteRoles).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_1",
+            }),
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_2",
+            }),
+            expect.objectContaining({
+              role_id: editorRole.id,
+              scope: null,
+              scope_id: null,
+            }),
+          ])
+        )
+
+        const signup = await api.post("/auth/user/emailpass/register", {
+          email: "scoped-role-test@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const acceptedUser = (
+          await api.post(
+            `/admin/invites/accept?token=${createdInvite.token}`,
+            {
+              first_name: "Scoped",
+              last_name: "Test",
+            },
+            { headers: { authorization: `Bearer ${signup.data.token}` } }
+          )
+        ).data.user
+
+        // The scopes are carried over to the user's assignments
+        const userRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: acceptedUser.id,
+        })
+
+        expect(userRoles).toHaveLength(3)
+        expect(userRoles).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_1",
+            }),
+            expect.objectContaining({
+              role_id: viewerRole.id,
+              scope: "organization",
+              scope_id: "org_2",
+            }),
+            expect.objectContaining({
+              role_id: editorRole.id,
+              scope: null,
+              scope_id: null,
+            }),
+          ])
+        )
+
+        // The invite's own assignments are removed once transferred
+        const remainingInviteRoles = await rbacModule.listRbacRoleAssignments({
+          reference: "invite",
+          reference_id: createdInvite.id,
+        })
+
+        expect(remainingInviteRoles).toHaveLength(0)
       })
 
       it("should create invite without roles and work normally", async () => {
@@ -414,7 +519,7 @@ medusaIntegrationTestRunner({
             "/admin/invites",
             {
               email: "invalid-role-test@medusa-commerce.com",
-              roles: ["non_existent_role_id"],
+              roles: [{ role_id: "non_existent_role_id" }],
             },
             adminHeaders
           )

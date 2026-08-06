@@ -383,7 +383,7 @@ medusaIntegrationTestRunner({
               users: [
                 {
                   email: "test-role@medusa.js",
-                  roles: ["non_existent_role_id"],
+                  roles: [{ role_id: "non_existent_role_id" }],
                 },
               ],
             },
@@ -413,7 +413,7 @@ medusaIntegrationTestRunner({
               users: [
                 {
                   email: "test-with-role@medusa.js",
-                  roles: [superAdminRoles[0].id],
+                  roles: [{ role_id: superAdminRoles[0].id }],
                 },
               ],
             },
@@ -422,6 +422,54 @@ medusaIntegrationTestRunner({
 
         expect(users).toHaveLength(1)
         expect(users[0].email).toEqual("test-with-role@medusa.js")
+      })
+
+      it("should create user with scoped roles", async () => {
+        const rbacService = container.resolve(Modules.RBAC)
+        const superAdminRoles = await rbacService.listRbacRoles({
+          id: "role_super_admin",
+        })
+
+        const { result: users } = await createUsersWorkflow(container).run({
+          input: {
+            users: [
+              {
+                email: "test-with-scoped-role@medusa.js",
+                roles: [
+                  {
+                    role_id: superAdminRoles[0].id,
+                    scopes: [
+                      { type: "organization", id: "org_1" },
+                      { type: "organization", id: "org_2" },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        })
+
+        const assignments = await rbacService.listRbacRoleAssignments({
+          reference: "user",
+          reference_id: users[0].id,
+        })
+
+        // One assignment per scope
+        expect(assignments).toHaveLength(2)
+        expect(assignments).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              role_id: superAdminRoles[0].id,
+              scope: "organization",
+              scope_id: "org_1",
+            }),
+            expect.objectContaining({
+              role_id: superAdminRoles[0].id,
+              scope: "organization",
+              scope_id: "org_2",
+            }),
+          ])
+        )
       })
     })
 

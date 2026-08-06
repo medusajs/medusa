@@ -12,12 +12,15 @@ import {
   createRoleAssignmentsStep,
   validateRolesExistStep,
 } from "../../rbac/steps"
+import { buildRoleAssignments } from "../../rbac/utils/build-role-assignments"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more user invites. It's used by the
  * [Create Invite Admin API Route](https://docs.medusajs.com/api/admin#invites_postinvites).
  *
  * You can provide roles to be assigned to each user when the invite is accepted.
+ * Each role can be constrained to one or more scopes, creating one role
+ * assignment per scope.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create invites within your custom flows.
@@ -29,7 +32,13 @@ export const createInvitesWorkflowId = "create-invite-step"
  *     invites: [
  *       {
  *         email: "example@gmail.com",
- *         roles: ["role_super_admin"]
+ *         roles: [
+ *           { role_id: "role_super_admin" },
+ *           {
+ *             role_id: "role_editor",
+ *             scopes: [{ type: "organization", id: "org_123" }]
+ *           }
+ *         ]
  *       }
  *     ]
  *   }
@@ -47,8 +56,8 @@ export const createInvitesWorkflow = createWorkflow(
     const allRoleIds = transform({ input }, ({ input }) => {
       const roleIds = new Set<string>()
       input.invites.forEach((invite) => {
-        for (const roleId of invite.roles || []) {
-          roleIds.add(roleId)
+        for (const role of invite.roles || []) {
+          roleIds.add(role.role_id)
         }
       })
       return Array.from(roleIds)
@@ -61,22 +70,9 @@ export const createInvitesWorkflow = createWorkflow(
     const inviteRoleAssignments = transform(
       { input, createdInvites },
       ({ input, createdInvites }) => {
-        const assignments: {
-          role_id: string
-          reference: string
-          reference_id: string
-        }[] = []
-        input.invites.forEach((invite, index) => {
-          const inviteId = createdInvites[index].id
-          for (const roleId of invite.roles || []) {
-            assignments.push({
-              role_id: roleId,
-              reference: "invite",
-              reference_id: inviteId,
-            })
-          }
-        })
-        return assignments
+        return input.invites.flatMap((invite, index) =>
+          buildRoleAssignments(invite.roles, "invite", createdInvites[index].id)
+        )
       }
     )
 

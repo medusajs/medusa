@@ -39,7 +39,16 @@ export type AdminCreateInviteType = z.infer<typeof AdminCreateInvite>
 export const AdminCreateInvite = z
   .object({
     email: z.string(),
-    roles: z.array(z.string()).nullish(),
+    roles: z
+      .array(
+        z.object({
+          role_id: z.string().min(1),
+          scopes: z
+            .array(z.object({ type: z.string().min(1), id: z.string().min(1) }))
+            .nullish(),
+        })
+      )
+      .nullish(),
     metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

@@ -136,7 +136,7 @@ export const InviteUserForm = () => {
       }
 
       if (showRbacRolesField && values.roles?.length) {
-        payload.roles = values.roles
+        payload.roles = values.roles.map((roleId) => ({ role_id: roleId }))
       }
 
       await mutateAsync(payload)

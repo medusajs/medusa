@@ -9,6 +9,7 @@ import {
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createRoleAssignmentsStep } from "../../rbac/steps/create-role-assignments"
 import { validateRolesExistStep } from "../../rbac/steps/validate-roles-exist"
+import { buildRoleAssignments } from "../../rbac/utils/build-role-assignments"
 import { createUsersStep } from "../steps"
 
 export const createUsersWorkflowId = "create-users-workflow"
@@ -20,7 +21,9 @@ export const createUsersWorkflowId = "create-users-workflow"
  * {@link setAuthAppMetadataStep}. Learn more about auth identities in
  * [this documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-identity-and-actor-types).
  *
- * You can provide roles to be assigned to each user during creation.
+ * You can provide roles to be assigned to each user during creation. Each role
+ * can be constrained to one or more scopes, creating one role assignment per
+ * scope.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create users within your custom flows.
@@ -33,7 +36,13 @@ export const createUsersWorkflowId = "create-users-workflow"
  *       email: "example@gmail.com",
  *       first_name: "John",
  *       last_name: "Doe",
- *       roles: ["role_super_admin"]
+ *       roles: [
+ *         { role_id: "role_super_admin" },
+ *         {
+ *           role_id: "role_editor",
+ *           scopes: [{ type: "organization", id: "org_123" }]
+ *         }
+ *       ]
  *     }]
  *   }
  * })
@@ -50,8 +59,8 @@ export const createUsersWorkflow = createWorkflow(
     const allRoleIds = transform({ input }, ({ input }) => {
       const roleIds = new Set<string>()
       input.users.forEach((user) => {
-        for (const roleId of user.roles || []) {
-          roleIds.add(roleId)
+        for (const role of user.roles || []) {
+          roleIds.add(role.role_id)
         }
       })
       return Array.from(roleIds)
@@ -64,22 +73,9 @@ export const createUsersWorkflow = createWorkflow(
     const userRoleAssignments = transform(
       { input, createdUsers },
       ({ input, createdUsers }) => {
-        const assignments: {
-          role_id: string
-          reference: string
-          reference_id: string
-        }[] = []
-        input.users.forEach((user, index) => {
-          const userId = createdUsers[index].id
-          for (const roleId of user.roles || []) {
-            assignments.push({
-              role_id: roleId,
-              reference: "user",
-              reference_id: userId,
-            })
-          }
-        })
-        return assignments
+        return input.users.flatMap((user, index) =>
+          buildRoleAssignments(user.roles, "user", createdUsers[index].id)
+        )
       }
     )
 

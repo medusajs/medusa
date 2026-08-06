@@ -482,7 +482,10 @@ medusaIntegrationTestRunner({
                   email: "test-user@example.com",
                   first_name: "Test",
                   last_name: "User",
-                  roles: [viewerRole.id, editorRole.id],
+                  roles: [
+                    { role_id: viewerRole.id },
+                    { role_id: editorRole.id },
+                  ],
                 },
               ],
             },

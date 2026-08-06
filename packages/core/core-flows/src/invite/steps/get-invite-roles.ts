@@ -1,5 +1,8 @@
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { IRbacModuleService } from "@medusajs/framework/types"
+import {
+  CreateActorRoleDTO,
+  IRbacModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -17,7 +20,9 @@ export interface GetInviteRolesStepInput {
  */
 export const getInviteRolesStepId = "get-invite-roles-step"
 /**
- * This step retrieves the roles associated with an invite.
+ * This step retrieves the roles associated with an invite, each carrying the
+ * scope of its assignment, so the roles can be re-assigned as-is to the user
+ * created when the invite is accepted.
  *
  * @example
  * const data = getInviteRolesStep({
@@ -40,8 +45,15 @@ export const getInviteRolesStep = createStep(
       reference_id: input.invite_id,
     })
 
-    const roleIds = assignments.map((assignment) => assignment.role_id)
+    const roles = assignments.map((assignment): CreateActorRoleDTO => {
+      return assignment.scope && assignment.scope_id
+        ? {
+            role_id: assignment.role_id,
+            scopes: [{ type: assignment.scope, id: assignment.scope_id }],
+          }
+        : { role_id: assignment.role_id }
+    })
 
-    return new StepResponse(roleIds)
+    return new StepResponse(roles)
   }
 )
