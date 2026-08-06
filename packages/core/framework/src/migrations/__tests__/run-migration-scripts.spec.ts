@@ -31,6 +31,8 @@ describe("MigrationScriptsMigrator", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    // by default, the migration is successfully claimed
+    mockPgConnection.raw.mockResolvedValue({ rows: [{ id: 1 }] } as never)
     migrator = new MigrationScriptsMigrator({ container: mockContainer })
     // @ts-ignore
     migrator.pgConnection = mockPgConnection
@@ -74,16 +76,13 @@ describe("MigrationScriptsMigrator", () => {
       )
     })
 
-    it("should handle failed migrations by cleaning up", async () => {
+    it("should not mark a failed migration as finished", async () => {
       const scriptPath = "/path/to/failing-migration.ts"
       const error = new Error("Migration failed")
 
       jest
         .spyOn(migrator as any, "getPendingMigrations")
         .mockResolvedValue([scriptPath])
-      jest
-        .spyOn(migrator as any, "insertMigration")
-        .mockResolvedValue(undefined)
       jest
         .spyOn(migrator as any, "trackDuration")
         .mockReturnValue({ getSeconds: () => 1 })
@@ -101,23 +100,54 @@ describe("MigrationScriptsMigrator", () => {
         "Migration failed"
       )
 
-      expect(mockPgConnection.raw).toHaveBeenCalledWith(
-        expect.stringContaining("DELETE FROM script_migrations"),
-        [path.basename(scriptPath)]
+      expect(mockPgConnection.raw).not.toHaveBeenCalledWith(
+        expect.stringContaining("SET finished_at"),
+        expect.anything()
       )
     })
 
-    it("should skip migration when unique constraint error occurs", async () => {
+    it("should skip a migration that has already been completed by another process", async () => {
       const scriptPath = "/path/to/migration.ts"
-      const uniqueError = new Error("Unique constraint violation")
-      ;(uniqueError as any).constraint = "idx_script_name_unique"
 
       jest
         .spyOn(migrator as any, "getPendingMigrations")
         .mockResolvedValue([scriptPath])
       jest
-        .spyOn(migrator as any, "insertMigration")
-        .mockRejectedValue(uniqueError)
+        .spyOn(migrator as any, "trackDuration")
+        .mockReturnValue({ getSeconds: () => 1 })
+
+      // the claim does not return a row, meaning the script is already finished
+      mockPgConnection.raw.mockResolvedValue({ rows: [] } as never)
+
+      const mockScript = jest.fn()
+      jest.mock(
+        scriptPath,
+        () => ({
+          default: mockScript,
+        }),
+        { virtual: true }
+      )
+
+      await migrator.run([scriptPath])
+
+      expect(mockScript).not.toHaveBeenCalled()
+      expect(mockPgConnection.raw).not.toHaveBeenCalledWith(
+        expect.stringContaining("SET finished_at"),
+        expect.anything()
+      )
+    })
+
+    it("should re-run a migration that was interrupted during a previous run", async () => {
+      const scriptPath = "/path/to/interrupted-migration.ts"
+
+      jest
+        .spyOn(migrator as any, "getExecutedMigrations")
+        .mockResolvedValue([
+          { script_name: path.basename(scriptPath), finished_at: null },
+        ])
+      jest
+        .spyOn(migrator as any, "loadMigrationFiles")
+        .mockResolvedValue([scriptPath])
       jest
         .spyOn(migrator as any, "trackDuration")
         .mockReturnValue({ getSeconds: () => 1 })
@@ -133,9 +163,10 @@ describe("MigrationScriptsMigrator", () => {
 
       await migrator.run([scriptPath])
 
-      expect(mockScript).not.toHaveBeenCalled()
-      expect(mockPgConnection.raw).not.toHaveBeenCalledWith(
-        expect.stringContaining("UPDATE script_migrations")
+      expect(mockScript).toHaveBeenCalled()
+      expect(mockPgConnection.raw).toHaveBeenCalledWith(
+        expect.stringContaining("SET finished_at"),
+        [path.basename(scriptPath)]
       )
     })
   })
@@ -147,7 +178,9 @@ describe("MigrationScriptsMigrator", () => {
 
       jest
         .spyOn(migrator as any, "getExecutedMigrations")
-        .mockResolvedValue([{ script_name: executedMigration }])
+        .mockResolvedValue([
+          { script_name: executedMigration, finished_at: new Date() },
+        ])
       jest
         .spyOn(migrator as any, "loadMigrationFiles")
         .mockResolvedValue([
@@ -159,6 +192,27 @@ describe("MigrationScriptsMigrator", () => {
 
       expect(result).toHaveLength(1)
       expect(result[0]).toContain(pendingMigration)
+    })
+
+    it("should return migrations that started but never finished", async () => {
+      const unfinishedMigration = "unfinished.ts"
+      const executedMigration = "executed.ts"
+
+      jest.spyOn(migrator as any, "getExecutedMigrations").mockResolvedValue([
+        { script_name: executedMigration, finished_at: new Date() },
+        { script_name: unfinishedMigration, finished_at: null },
+      ])
+      jest
+        .spyOn(migrator as any, "loadMigrationFiles")
+        .mockResolvedValue([
+          `/path/to/${executedMigration}`,
+          `/path/to/${unfinishedMigration}`,
+        ])
+
+      const result = await migrator.getPendingMigrations(["/path/to"])
+
+      expect(result).toHaveLength(1)
+      expect(result[0]).toContain(unfinishedMigration)
     })
   })
 
