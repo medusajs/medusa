@@ -66,6 +66,14 @@ yarn test:integration:api
 yarn test:integration:modules
 ```
 
+**Generated Files:**
+
+After adding or removing keys in `packages/admin/dashboard/src/i18n/translations/en.json`, regenerate the JSON schema that validates all translation files:
+```bash
+cd packages/admin/dashboard && yarn i18n:schema
+```
+Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, since `translations/$schema.json` is generated from `en.json` and lists every key in both `properties` and `required`. Commit the regenerated `$schema.json` with the translation change.
+
 ### 3. Testing Conventions
 
 **Frameworks:**

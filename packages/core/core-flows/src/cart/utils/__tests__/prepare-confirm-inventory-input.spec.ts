@@ -325,6 +325,119 @@ describe("prepareConfirmInventoryInput", () => {
     })
   })
 
+  it("if an item opts into allow_backorder, it should override a variant that doesn't allow backorder", () => {
+    const input = {
+      sales_channel_id: "sc_1",
+      variants: [
+        {
+          id: "pv_1",
+          manage_inventory: true,
+          allow_backorder: false,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_1",
+              variant_id: "pv_1",
+              required_quantity: 1,
+              inventory: [
+                {
+                  location_levels: {
+                    stocked_quantity: 0, // out of stock
+                    reserved_quantity: 0,
+                    location_id: "sl_1",
+                    stock_locations: [
+                      {
+                        id: "sl_1",
+                        sales_channels: [{ id: "sc_1" }],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      items: [
+        {
+          variant_id: "pv_1",
+          quantity: 1,
+          id: "item_1",
+          allow_backorder: true,
+        },
+      ],
+    }
+
+    const result = prepareConfirmInventoryInput({ input })
+
+    expect(result).toEqual({
+      items: [
+        {
+          id: "item_1",
+          inventory_item_id: "ii_1",
+          required_quantity: 1,
+          quantity: 1,
+          allow_backorder: true,
+          location_ids: ["sl_1"],
+        },
+      ],
+    })
+  })
+
+  it("if an item opts into allow_backorder, it should return normally even if there's no stock location for the sales channel", () => {
+    const input = {
+      sales_channel_id: "sc_1",
+      variants: [
+        {
+          id: "pv_1",
+          manage_inventory: true,
+          allow_backorder: false,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_1",
+              variant_id: "pv_1",
+              required_quantity: 1,
+              inventory: [
+                {
+                  location_levels: {
+                    stock_locations: [
+                      {
+                        id: "sl_2",
+                        sales_channels: [{ id: "sc_2" }], // Different sales channel
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      items: [
+        {
+          variant_id: "pv_1",
+          quantity: 1,
+          id: "item_1",
+          allow_backorder: true,
+        },
+      ],
+    }
+
+    const result = prepareConfirmInventoryInput({ input })
+
+    expect(result).toEqual({
+      items: [
+        {
+          id: "item_1",
+          inventory_item_id: "ii_1",
+          required_quantity: 1,
+          quantity: 1,
+          allow_backorder: true,
+          location_ids: [],
+        },
+      ],
+    })
+  })
+
   it("should return only stock locations with availability, if any", () => {
     const input = {
       sales_channel_id: "sc_1",

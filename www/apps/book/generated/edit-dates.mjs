@@ -58,7 +58,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/modules/service-constraints/page.mdx": "2025-03-18T15:12:46.006Z",
   "app/learn/fundamentals/api-routes/responses/page.mdx": "2025-12-30T06:35:16.514Z",
   "app/learn/fundamentals/api-routes/validation/page.mdx": "2025-03-24T06:52:47.896Z",
-  "app/learn/fundamentals/api-routes/errors/page.mdx": "2025-06-19T16:09:08.563Z",
+  "app/learn/fundamentals/api-routes/errors/page.mdx": "2026-07-31T13:22:37.587Z",
   "app/learn/fundamentals/admin/constraints/page.mdx": "2026-07-28T05:43:12.213Z",
   "app/learn/debugging-and-testing/testing-tools/modules-tests/page.mdx": "2025-07-23T15:32:18.008Z",
   "app/learn/fundamentals/module-links/custom-columns/page.mdx": "2025-12-09T13:27:05.446Z",
@@ -145,9 +145,17 @@ export const generatedEditDates = {
   "app/learn/introduction/build-with-llms-ai/agentic-skills/page.mdx": "2026-04-29T13:34:27.727Z",
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
   "app/learn/introduction/build-with-llms-ai/bloom/page.mdx": "2026-04-29T13:20:11.886Z",
-  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-07-22T15:21:26.016Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/page.mdx": "2026-07-30T11:47:10.280Z",
   "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
   "app/learn/fundamentals/admin/eslint/page.mdx": "2026-06-15T10:39:20.544Z",
   "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-07-28T05:43:48.904Z",
-  "app/learn/fundamentals/data-models/big-numbers/page.mdx": "2026-07-14T08:41:46.736Z"
+  "app/learn/fundamentals/data-models/big-numbers/page.mdx": "2026-07-14T08:41:46.736Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/page.mdx": "2026-07-30T10:30:50.331Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/extend-products/page.mdx": "2026-07-30T10:34:57.901Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/integrate-providers/page.mdx": "2026-07-30T10:23:36.079Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/page.mdx": "2026-07-30T11:21:42.127Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/upgrade-instructions/page.mdx": "2026-07-30T11:29:52.282Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/page.mdx": "2026-07-31T06:25:13.296Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/page.mdx": "2026-07-31T06:24:44.044Z",
+  "app/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/page.mdx": "2026-07-31T06:25:10.290Z"
 }

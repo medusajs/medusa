@@ -20,6 +20,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/cart/cart-totals"
   },
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Retrieve Order Totals",
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
   },
