@@ -49,14 +49,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("built-in search ingestion subscriber", () => {
-      it("enrolls in the events the index definitions declared", () => {
-        expect(searchModule.listIngestionEvents().sort()).toEqual([
-          ProductEvents.PRODUCT_CREATED,
-          ProductEvents.PRODUCT_DELETED,
-          ProductEvents.PRODUCT_UPDATED,
-        ])
-      })
-
       it("indexes a product created over the API, without a reindex", async () => {
         const subscribed = delivered(ProductEvents.PRODUCT_CREATED)
 

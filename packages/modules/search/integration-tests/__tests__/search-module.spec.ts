@@ -843,14 +843,6 @@ moduleIntegrationTestRunner<SearchService>({
             })
           )
 
-        it("declares the events its indexes subscribe to", () => {
-          expect(service.listIngestionEvents().sort()).toEqual([
-            "product.created",
-            "product.deleted",
-            "product.updated",
-          ])
-        })
-
         it("indexes a document the event says was created", async () => {
           dataset.products.push({
             ...baseProducts[0],

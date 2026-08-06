@@ -252,8 +252,8 @@ export default class SearchModuleService
     })
   }
 
-  listIngestionEvents(): string[] {
-    return [...this.eventRoutes_.keys()]
+  listIndexes(): string[] {
+    return [...this.indexes_.keys()]
   }
 
   listRetrievableFields(index: string): string[] {
