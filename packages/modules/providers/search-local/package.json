@@ -12,6 +12,9 @@
   "bugs": {
     "url": "https://github.com/medusajs/medusa/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist",
     "!dist/**/__tests__",

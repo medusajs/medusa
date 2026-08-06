@@ -64,11 +64,6 @@ export interface ISearchProvider {
 
   clearIndex(input: { index: string }): Promise<SearchTask>
 
-  partialUpdateDocuments?(input: {
-    index: string
-    documents: (Partial<SearchDocument> & { id: string })[]
-  }): Promise<SearchTask>
-
   /* ----------------------------------- read ------------------------------ */
 
   search(input: ProviderSearchQuery): Promise<SearchResult>

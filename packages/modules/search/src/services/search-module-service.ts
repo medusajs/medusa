@@ -1,5 +1,4 @@
 import {
-  DAL,
   IEventBusModuleService,
   InternalModuleDeclaration,
   Logger,
@@ -46,7 +45,6 @@ import { SearchProviderService } from "./search-provider"
 type InjectedDependencies = {
   logger: Logger
   [Modules.EVENT_BUS]: IEventBusModuleService
-  baseRepository: DAL.RepositoryService
   searchProviderService: SearchProviderService
   searchIndexService: ModulesSdkTypes.IMedusaInternalService<any>
   searchIndexSyncService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -62,7 +60,6 @@ export default class SearchModuleService
   protected isWorkerMode: boolean = true
 
   protected readonly logger_: Logger
-  protected readonly baseRepository_: DAL.RepositoryService
   protected readonly searchProviderService_: SearchProviderService
 
   protected readonly moduleOptions_: SearchModuleOptions
@@ -84,13 +81,16 @@ export default class SearchModuleService
     super(...arguments)
 
     this.logger_ = container.logger ?? (console as unknown as Logger)
-    this.baseRepository_ = container.baseRepository
     this.searchProviderService_ = container.searchProviderService
 
     this.moduleOptions_ = (moduleOptions ??
       moduleDeclaration.options ??
       {}) as SearchModuleOptions
 
+    // `worker_mode` is stamped onto every module's declaration by the
+    // modules-sdk from the application's own `projectConfig.workerMode`, so this
+    // reads the same value `configModule` would give — an HTTP-only process
+    // must not spend its boot seeding indexes.
     this.isWorkerMode = moduleDeclaration.worker_mode !== "server"
 
     // Resolved here rather than on application start, so anything that resolves the
