@@ -6,11 +6,12 @@ import {
   IProductModuleService,
   LinkDefinition,
 } from "@medusajs/types"
+import { createDefaultInventoryItem } from "../utils/create-default-inventory-item"
 
-export const createProductVariantsInventoryStepId =
-  "create-product-variants-inventory"
+export const createProductVariantsDefaultInventoryStepId =
+  "create-product-variants-default-inventory"
 
-export type CreateProductVariantsInventoryStepInput = {
+export type CreateProductVariantsDefaultInventoryStepInput = {
   variantIds: string[]
 }
 
@@ -37,9 +38,12 @@ async function getVariantIdsWithoutInventory(
   return variantIds.filter((variantId) => !linkedVariantIds.has(variantId))
 }
 
-export const createProductVariantsInventoryStep = createStep(
-  createProductVariantsInventoryStepId,
-  async (data: CreateProductVariantsInventoryStepInput, { container }) => {
+export const createProductVariantsDefaultInventoryStep = createStep(
+  createProductVariantsDefaultInventoryStepId,
+  async (
+    data: CreateProductVariantsDefaultInventoryStepInput,
+    { container }
+  ) => {
     const variantIds = Array.from(new Set(data.variantIds ?? [])).filter(
       Boolean
     )
@@ -76,25 +80,8 @@ export const createProductVariantsInventoryStep = createStep(
       Modules.INVENTORY
     )
 
-    /**
-     * Mirrors the default inventory item built by createProductVariantsWorkflow
-     * when a variant is created with manage_inventory enabled.
-     */
     const createdItems = await inventoryService.createInventoryItems(
-      variants.map((variant) => ({
-        sku: variant.sku ?? undefined,
-        origin_country: variant.origin_country ?? undefined,
-        mid_code: variant.mid_code ?? undefined,
-        material: variant.material ?? undefined,
-        weight: variant.weight ?? undefined,
-        length: variant.length ?? undefined,
-        height: variant.height ?? undefined,
-        width: variant.width ?? undefined,
-        title: variant.title,
-        description: variant.title,
-        hs_code: variant.hs_code ?? undefined,
-        requires_shipping: true,
-      }))
+      variants.map((variant) => createDefaultInventoryItem(variant))
     )
 
     const links: LinkDefinition[] = variants.map((variant, index) => ({

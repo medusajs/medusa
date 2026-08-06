@@ -823,22 +823,13 @@ medusaIntegrationTestRunner({
         expect(updatedVariant.manage_inventory).toBe(true)
         expect(updatedVariant.inventory_items).toHaveLength(1)
         expect(updatedVariant.inventory_items[0]).toEqual(
-          expect.objectContaining({ required_quantity: 1 })
-        )
-
-        const inventoryItemId =
-          updatedVariant.inventory_items[0].inventory_item_id
-
-        const inventoryItemResponse = await api.get(
-          `/admin/inventory-items/${inventoryItemId}`,
-          adminHeaders
-        )
-
-        expect(inventoryItemResponse.status).toEqual(200)
-        expect(inventoryItemResponse.data.inventory_item).toEqual(
           expect.objectContaining({
-            id: inventoryItemId,
-            sku: "variant-enable-manage-inventory",
+            required_quantity: 1,
+            inventory: expect.objectContaining({
+              sku: "variant-enable-manage-inventory",
+              title: "Variant without inventory",
+              requires_shipping: true,
+            }),
           })
         )
       })
