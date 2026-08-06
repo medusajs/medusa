@@ -1,34 +1,38 @@
 import {
+  Event,
   IEventBusModuleService,
   InternalModuleDeclaration,
   Logger,
-  MedusaContainer,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  RemoteQueryFunction,
   SearchTypes,
 } from "@medusajs/framework/types"
 import {
+  ContainerRegistrationKeys,
   MedusaError,
   MedusaService,
   Modules,
   promiseAll,
 } from "@medusajs/framework/utils"
 import {
+  SearchEventRoutes,
   SearchIndexContext,
   SearchIndexes,
-  SearchIndexMigrationAction,
   SearchIndexSeedAction,
   SearchModuleOptions,
 } from "@types"
 import {
   assertTaskAccepted,
   buildDisjunctiveFacetQueries,
+  listRetrievablePaths,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   validateFieldUsage,
 } from "@utils"
+import { buildEventRoutes, ingestEvent } from "../utils/ingestion"
 import {
   createIndexMigrationPlan,
   executeIndexMigrationPlan,
@@ -44,6 +48,7 @@ import { SearchProviderService } from "./search-provider"
 type InjectedDependencies = {
   logger: Logger
   [Modules.EVENT_BUS]: IEventBusModuleService
+  [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
   searchProviderService: SearchProviderService
   searchIndexService: ModulesSdkTypes.IMedusaInternalService<any>
   searchIndexSyncService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -70,6 +75,9 @@ export default class SearchModuleService
 
   // Passed down for migrations and seeding, among other things.
   protected readonly context_: SearchIndexContext
+
+  // Built with the definitions, so routing a delivered event costs a lookup.
+  protected readonly eventRoutes_: SearchEventRoutes
 
   constructor(
     container: InjectedDependencies,
@@ -105,8 +113,10 @@ export default class SearchModuleService
         })
       : new Map()
 
+    this.eventRoutes_ = buildEventRoutes(this.indexes_)
+
     this.context_ = {
-      container: container as unknown as MedusaContainer,
+      container,
       logger: this.logger_,
       options: this.moduleOptions_,
       indexes: this.indexes_,
@@ -234,6 +244,24 @@ export default class SearchModuleService
     return assertTaskAccepted(task, index)
   }
 
+  // Waits for its writes, so awaiting this acknowledges the event.
+  async ingest(event: Event<any>): Promise<SearchTypes.SearchTask[]> {
+    return await ingestEvent(this.context_, {
+      event,
+      routes: this.eventRoutes_,
+    })
+  }
+
+  listIndexes(): string[] {
+    return [...this.indexes_.keys()]
+  }
+
+  listRetrievableFields(index: string): string[] {
+    return listRetrievablePaths(
+      retrieveIndexDefinition(this.indexes_, index).fields
+    )
+  }
+
   async reindex(
     input: SearchTypes.SearchReindexInput = {}
   ): Promise<SearchTypes.SearchReindexResult> {
@@ -275,14 +303,14 @@ export default class SearchModuleService
     await executeSeedPlan(this.context_, actions)
   }
 
-  protected async createIndexMigrationPlan_(): Promise<
-    SearchIndexMigrationAction[]
+  async createIndexMigrationPlan(): Promise<
+    SearchTypes.SearchIndexMigrationAction[]
   > {
     return await createIndexMigrationPlan(this.context_)
   }
 
-  protected async executeIndexMigrationPlan_(
-    actions: SearchIndexMigrationAction[]
+  async executeIndexMigrationPlan(
+    actions: SearchTypes.SearchIndexMigrationAction[]
   ): Promise<void> {
     await executeIndexMigrationPlan(this.context_, actions)
   }

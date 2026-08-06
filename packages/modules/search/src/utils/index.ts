@@ -498,6 +498,17 @@ function validateIndexDefinition({
     )
   }
 
+  const hasEvents = !!definition.events?.length
+  const hasConsume = !!definition.consume
+
+  if (hasEvents && !hasConsume) {
+    fail(`declares "events" but no "consume" to turn them into documents`)
+  }
+
+  if (hasConsume && !hasEvents) {
+    fail(`declares "consume" but no "events" for it to be called on`)
+  }
+
   for (const { path, field } of flattenFields(definition.fields)) {
     if (field.correlated && !(field.type === "object" && field.array)) {
       fail(
