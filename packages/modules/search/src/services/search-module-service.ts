@@ -23,12 +23,12 @@ import {
 import {
   assertTaskAccepted,
   buildDisjunctiveFacetQueries,
+  listRetrievablePaths,
   mergeDisjunctiveFacetResults,
   normalizeSearchQuery,
   resolveIndexDefinitions,
   retrieveIndexDefinition,
   validateFieldUsage,
-  flattenFields,
 } from "@utils"
 import {
   createIndexMigrationPlan,
@@ -236,9 +236,9 @@ export default class SearchModuleService
   }
 
   listRetrievableFields(index: string): string[] {
-    return flattenFields(retrieveIndexDefinition(this.indexes_, index).fields)
-      .filter(({ field }) => field.retrievable !== false)
-      .map(({ path }) => path)
+    return listRetrievablePaths(
+      retrieveIndexDefinition(this.indexes_, index).fields
+    )
   }
 
   async reindex(
