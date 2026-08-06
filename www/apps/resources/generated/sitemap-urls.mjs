@@ -95,6 +95,7 @@ export const sitemapUrls = [
   "/commerce-modules/order",
   "/commerce-modules/order/promotion-adjustments",
   "/commerce-modules/order/return",
+  "/commerce-modules/order/secure-order-retrieval",
   "/commerce-modules/order/tax-lines",
   "/commerce-modules/order/transactions",
   "/commerce-modules/order/transfer-to-guest",
