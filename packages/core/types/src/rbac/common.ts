@@ -167,8 +167,31 @@ export type PolicyAction = {
   operation: PolicyOperationValue | PolicyOperationValue[]
 }
 
-export type AuthzContextConfig = {
+export type RbacScopeConfig = {
   /**
+   * The scope type, e.g. "organization", "product", "user", etc.
+   * This is used to identify the scope in the role assignments table.
+   */
+  type: string
+  /**
+   * The path from the actor to the scope entity. For example,
+   * "organizations.projects" for a project type scope.
+   */
+  path: string
+  /**
+   * The field that is used to identify the scope. Defaults to "id".
+   */
+  id_field?: string
+  /**
+   * The display field of the underlying scope entity. This is useful
+   * to build UIs that can get the possible scope values for a scoped
+   * role assignment. For example, "name" for a project type scope.
+   */
+  display_field?: string
+}
+
+export type AuthzContextConfig = {
+  /**x
    * Entities that can hold role assignments reachable from the actor in the graph. Used
    * to build the AuthzContext necessary to resolve the actor's roles.
    */
@@ -181,5 +204,9 @@ export type AuthzContextConfig = {
      * The path from the actor to the entity's id.
      */
     path: string
+    /**
+     * The scope configurations for the grantee.
+     */
+    scope_configs?: RbacScopeConfig[]
   }[]
 }

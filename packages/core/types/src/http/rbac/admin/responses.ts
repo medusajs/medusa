@@ -144,3 +144,10 @@ export interface AdminRbacMePermissionsResponse {
    */
   permissions: string[]
 }
+
+export interface AdminRbacScopesResponse {
+  /**
+   * The scopes along with their possible values that can be used for role assignments
+   */
+  scopes: { type: string }[]
+}
