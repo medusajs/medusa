@@ -51,6 +51,7 @@
     "dev": "medusa plugin:develop",
     "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
     "link:watch": "medusa plugin:publish && medusa plugin:develop",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src",
     "watch": "medusa plugin:develop"
   },
   "devDependencies": {
