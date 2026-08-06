@@ -231,7 +231,9 @@ export default Post
 
 ### json
 
-The `json` method defines a property whose value is stored as a stringified JSON object in the database.
+The `json` method defines a property whose value is stored as a `jsonb` column in the database, supporting any JSON-serializable value.
+
+By default, the property's TypeScript type is `Record<string, unknown>`. Pass a type parameter to use a different shape, such as an array of objects.
 
 For example:
 
@@ -247,6 +249,25 @@ const Post = model.define("post", {
 
 export default Post
 ```
+
+To store an array of typed objects, pass a type argument:
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  warnings: model.json<{ code: string; message: string }[]>(),
+  // ...
+})
+
+export default Post
+```
+
+<Note title="Tip">
+
+To store an array of strings, use the [array](#array) property type instead, which stores the value in a `text[]` column.
+
+</Note>
 
 Learn more in the [JSON Properties](../json-properties/page.mdx) chapter.
 
