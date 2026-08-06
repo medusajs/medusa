@@ -1,6 +1,6 @@
 ---
 "@medusajs/auth-keycloak": minor
-"@medusajs/types": minor
+"@medusajs/types": patch
 ---
 
 feat(auth-keycloak): add Keycloak OIDC auth module provider
