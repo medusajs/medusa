@@ -1,5 +1,5 @@
-import { MedusaContainer } from "../common"
 import { Event } from "../event-bus"
+import { RemoteQueryFunction } from "../modules-sdk"
 import { SearchDocument } from "./common"
 import { SearchFieldDefinition } from "./field"
 import { SearchFilters } from "./filters"
@@ -34,8 +34,16 @@ export type SearchMutation =
   // Deleting by id is a filter on the primary key.
   | { action: "delete"; filters: SearchFilters }
 
+/**
+ * We keep the container very limited here so the search module doesn't need a full MedusaContainer.
+ * We can expand in the future if needed, but query should suffice.
+ */
+export interface SearchContainer {
+  query: RemoteQueryFunction
+}
+
 export interface SearchIngestionContext {
-  container: MedusaContainer
+  container: SearchContainer
   index: SearchIndexDefinition
 }
 
@@ -64,21 +72,20 @@ export interface SearchIndexDefinition {
   fields: Record<string, SearchFieldDefinition>
   settings?: SearchIndexSettings
 
-  // Events that invalidate documents here. Unused until ingestion is wired up.
+  /**
+   * Events related and that can affect the data for this index.
+   */
   events?: string[]
 
   /**
-   * Turns an event into mutations, fetching through `query.graph` off the
-   * container since events rarely carry everything. Return `[]` to ignore one.
-   * Unused until ingestion is wired up.
+   * Executed on event ingestion to determine the action that needs to be performed on the index.
    */
   consume?: (
     event: Event<any>,
     context: SearchIngestionContext
   ) => Promise<SearchMutation[]>
 
-  // Builds the index, or the subset `context.filters` selects. Yields batches so
-  // a large index streams rather than being held in memory.
+  // Ran when there is no data in the index or on reindex.
   seed: (context: SearchSeedContext) => AsyncIterable<SearchDocument[]>
 }
 
