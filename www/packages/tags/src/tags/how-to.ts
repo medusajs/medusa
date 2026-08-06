@@ -28,6 +28,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/order-totals"
   },
   {
+    "title": "Restrict Order Retrieval",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
+  },
+  {
     "title": "Filter Products",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
