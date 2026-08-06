@@ -170,7 +170,15 @@ const getDataForComputation = async (
     },
     {
       cache: {
-        enable: true,
+        tags: [
+          ...data.variant_ids.map((id) => `ProductVariant:${id}`),
+          "LinkProductVariantInventoryItem:list:*",
+          "InventoryItem:list:*",
+          "InventoryLevel:list:*",
+          // available_quantity is stocked minus reserved, and reservations only
+          // emit reservation item events.
+          "ReservationItem:list:*",
+        ],
       },
     }
   )
@@ -195,6 +203,7 @@ const getDataForComputation = async (
           tags: [
             `SalesChannel:${data.sales_channel_id}`,
             "StockLocation:list:*",
+            "LinkSalesChannelStockLocation:list:*",
           ],
         },
       }

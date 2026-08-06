@@ -118,7 +118,19 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       filters: { id: shippingMethod.shipping_option_id },
       options: {
         cache: {
-          enable: true,
+          tags: [
+            "ShippingOption:list:*",
+            "ShippingOptionType:list:*",
+            "ShippingOptionRule:list:*",
+            "ServiceZone:list:*",
+            "FulfillmentSet:list:*",
+            "FulfillmentProvider:list:*",
+            "StockLocation:list:*",
+            "StockLocationAddress:list:*",
+            // The fulfillment set resolves its location through a link row, which
+            // no entity event above covers.
+            "LinkLocationFulfillmentSet:list:*",
+          ],
         },
       },
     }).config({ name: "calculated-option" })

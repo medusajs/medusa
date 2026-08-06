@@ -47,7 +47,7 @@ export async function ensurePublishableApiKeyMiddleware(
       },
       {
         cache: {
-          enable: true,
+          tags: ["ApiKey:list:*", "LinkPublishableApiKeySalesChannel:list:*"],
         },
       }
     )
