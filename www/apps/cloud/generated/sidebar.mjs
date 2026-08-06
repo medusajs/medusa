@@ -71,7 +71,22 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Webhook Endpoints",
+                "path": "/organizations/webhooks/endpoints",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Webhook Events",
+                "path": "/organizations/webhooks/events",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,

@@ -55,6 +55,18 @@ export const sidebar = [
             type: "link",
             title: "Organizations",
             path: "/organizations",
+            children: [
+              {
+                type: "link",
+                title: "Webhook Endpoints",
+                path: "/organizations/webhooks/endpoints",
+              },
+              {
+                type: "link",
+                title: "Webhook Events",
+                path: "/organizations/webhooks/events",
+              },
+            ],
           },
           {
             type: "link",

@@ -1,0 +1,72 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Webhook Events`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to view webhook event deliveries and retry failed ones.
+
+## What are Webhook Events?
+
+Webhook events are delivery attempts made by Medusa to your configured [webhook endpoint](../endpoints/page.mdx). Each event corresponds to an action in your organization, such as a deployment completing or an environment being created.
+
+---
+
+## View Webhook Events
+
+To view the webhook event log:
+
+1. [Open the organization's settings](../../page.mdx#view-organization-settings).
+2. In the sidebar, click **Webhooks**, then select **Events**.
+
+The page shows a table of event deliveries with columns for timestamp, event type, and delivery status. Status badges indicate the state of each delivery:
+
+- **Pending / Retrying** (orange): The event has not been delivered yet and is awaiting delivery or a retry.
+- **Delivered** (green): The event was successfully delivered to the endpoint.
+- **Failed** (red): All delivery attempts failed.
+
+---
+
+## Filter Events
+
+You can narrow the event list using the filter controls at the top of the page:
+
+- **Project**: Filter by a specific project, or view events for all projects.
+- **Environment**: Filter by a specific environment within the selected project. Preview template environments are excluded from this filter.
+- **Time range**: Filter by a preset time window — 1 hour, 3 hours, 12 hours, 1 day, 3 days, 7 days, or 14 days. The default is 1 day.
+
+---
+
+## View Event Details
+
+Click on any row to expand it and see additional information about that delivery attempt:
+
+- **Destination URL**: The endpoint URL the event was sent to.
+- **Last attempt**: Timestamp of the most recent delivery attempt (for events that have not been delivered).
+- **Delivered at**: Timestamp of successful delivery.
+- **Failure reason**: The cause of delivery failure — an HTTP error with its status code, a timeout, or a network error.
+- **Next retry**: The scheduled time for the next automatic retry attempt.
+- **Project**: The project associated with the event, with a quick-filter button to filter the list by that project.
+- **Environment**: The environment associated with the event, with a quick-filter button to filter the list by that environment.
+- **Payload**: The full JSON payload sent with the event.
+
+---
+
+## Retry a Failed Event
+
+You can manually retry any event that has not been successfully delivered.
+
+To retry an event:
+
+1. Find the event in the table.
+2. Click the retry (circular arrow) button on the row.
+
+Medusa immediately re-attempts delivery to the configured endpoint.
+
+<Note>
+
+The retry button is only available for events that have not been delivered (pending, retrying, or failed status).
+
+</Note>

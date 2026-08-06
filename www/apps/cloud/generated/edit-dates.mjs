@@ -2,7 +2,7 @@ export const generatedEditDates = {
   "app/page.mdx": "2026-05-22T09:22:04.633Z",
   "app/organization/page.mdx": "2025-06-12T14:43:20.772Z",
   "app/projects/page.mdx": "2026-07-30T08:13:18.208Z",
-  "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
+  "app/environments/page.mdx": "2026-08-06T15:35:31.665Z",
   "app/deployments/page.mdx": "2026-07-31T14:07:34.446Z",
   "app/organizations/page.mdx": "2026-05-21T08:42:19.063Z",
   "app/notifications/page.mdx": "2025-10-15T15:25:33.672Z",
@@ -117,5 +117,7 @@ export const generatedEditDates = {
   "app/first-project/page.mdx": "2026-07-30T08:13:38.734Z",
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
-  "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z"
+  "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
+  "app/organizations/webhooks/endpoints/page.mdx": "2026-08-06T15:34:42.271Z",
+  "app/organizations/webhooks/events/page.mdx": "2026-08-06T15:35:00.586Z"
 }
