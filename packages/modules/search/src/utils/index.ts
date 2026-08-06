@@ -88,6 +88,21 @@ function defaultFacetKinds(
   }
 }
 
+/**
+ * The dotted paths an index can hand back on hits. Object containers are
+ * excluded — only their declared leaves are stored, so returning the container
+ * would silently hand back a partial object.
+ */
+export function listRetrievablePaths(
+  fields: Record<string, SearchTypes.SearchFieldDefinition>
+): string[] {
+  return flattenFields(fields)
+    .filter(
+      ({ field }) => field.type !== "object" && field.retrievable !== false
+    )
+    .map(({ path }) => path)
+}
+
 // Key order must not change the hash, so object keys are emitted sorted.
 function stableStringify(value: unknown): string {
   if (value === null || typeof value !== "object") {
@@ -103,16 +118,26 @@ function stableStringify(value: unknown): string {
   return `{${entries.join(",")}}`
 }
 
-// Stable hash over what affects the physical index. `events`, `consume` and
-// `seed` are excluded: how documents are produced is not the index' shape.
+/**
+ * Stable hash over what affects the physical index. `events`, `consume` and
+ * `seed` are excluded: how documents are produced is not the index' shape.
+ * `primary_key` and `physical_name` are included even though they are not
+ * strictly shape, because changing either strands the index the record points
+ * at — the mismatch is what makes `db:migrate` rebuild.
+ */
 function buildDefinitionHash(
-  definition: Pick<SearchTypes.SearchIndexDefinition, "fields" | "settings">
+  definition: Pick<SearchTypes.SearchIndexDefinition, "fields" | "settings"> & {
+    primary_key: string
+    physical_name: string
+  }
 ): string {
   return createHash("sha256")
     .update(
       stableStringify({
         fields: definition.fields,
         settings: definition.settings ?? {},
+        primary_key: definition.primary_key,
+        physical_name: definition.physical_name,
       })
     )
     .digest("hex")
@@ -160,9 +185,10 @@ export function normalizeSearchQuery({
 
   return {
     index,
-    // Taken as given: `query.search` has already dropped anything the index
-    // cannot return and left only what the provider should project.
-    attributes_to_retrieve: query.fields ?? [],
+    // Taken as given when set: `query.search` has already dropped anything the
+    // index cannot return and left only what the provider should project. A
+    // direct caller that names no fields gets everything retrievable.
+    attributes_to_retrieve: query.fields ?? listRetrievablePaths(index.fields),
     q,
     filters: Object.keys(filters).length
       ? (filters as SearchTypes.SearchFilters)
@@ -427,16 +453,23 @@ export function resolveIndexDefinitions({
       .filter(({ field }) => isSearchable(field))
       .map(({ path }) => path)
 
+    const physicalName = buildPhysicalIndexName({
+      name: definition.name,
+      prefix: index_prefix,
+    })
+
     const entry: SearchTypes.ResolvedSearchIndexDefinition = {
       ...definition,
       primary_key: primaryKey,
       provider: definition.provider ?? default_provider,
       settings,
-      definition_hash: buildDefinitionHash(definition),
-      physical_name: buildPhysicalIndexName({
-        name: definition.name,
-        prefix: index_prefix,
+      definition_hash: buildDefinitionHash({
+        fields: definition.fields,
+        settings: definition.settings,
+        primary_key: primaryKey,
+        physical_name: physicalName,
       }),
+      physical_name: physicalName,
     }
 
     validateIndexDefinition({ definition: entry })

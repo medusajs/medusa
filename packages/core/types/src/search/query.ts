@@ -74,6 +74,14 @@ export interface SearchOptions {
   min_score?: number
   include_score?: boolean
 
+  /**
+   * Query-time language hint, e.g. `["en"]`. Engines that analyze per language
+   * (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot
+   * honour it rejects it rather than silently matching differently. Defaults to
+   * the index' `settings.locales`.
+   */
+  locales?: string[]
+
   vector?: SearchVectorOptions
 
   /**

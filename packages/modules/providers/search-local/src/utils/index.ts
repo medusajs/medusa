@@ -155,6 +155,12 @@ export function assertQuerySupported(
     fail("The local search provider does not support vector search")
   }
 
+  if (options.locales?.length) {
+    fail(
+      "The local search provider does not support query-time locales; matching is language-agnostic"
+    )
+  }
+
   if (query.pagination?.cursor !== undefined) {
     fail("The local search provider does not support cursor pagination")
   }
@@ -181,14 +187,15 @@ export function buildIndexPlan(
     for (const [name, field] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${name}` : name
 
+      const isArray = inArray || field.array === true
+
       if (field.type === "object") {
         if (field.fields) {
-          walk(field.fields, path, inArray || field.array === true)
+          walk(field.fields, path, isArray)
         }
         continue
       }
 
-      const isArray = inArray || field.array === true
       const isPrimaryKey = path === definition.primary_key
       const scalar = scalarType(field, isPrimaryKey)
 
@@ -307,13 +314,26 @@ function setPath(target: Record<string, any>, path: string, value: unknown) {
 }
 
 function toNumber(value: unknown, isDate: boolean): number | undefined {
-  if (isDate) {
-    const time =
-      value instanceof Date ? value.getTime() : Date.parse(String(value))
-    return Number.isNaN(time) ? undefined : time
-  }
-  const num = typeof value === "number" ? value : Number(value)
+  const num = isDate
+    ? value instanceof Date
+      ? value.getTime()
+      : Date.parse(String(value))
+    : typeof value === "number"
+    ? value
+    : Number(value)
+
   return Number.isNaN(num) ? undefined : num
+}
+
+function toBoolean(value: unknown): boolean {
+  if (typeof value === "boolean") {
+    return value
+  }
+  // `Boolean("false")` is `true`, so string forms are read by content.
+  if (value === "true" || value === "false") {
+    return value === "true"
+  }
+  return Boolean(value)
 }
 
 function coerce(value: unknown, planned: PlannedField): unknown {
@@ -323,7 +343,7 @@ function coerce(value: unknown, planned: PlannedField): unknown {
     case "number":
       return toNumber(value, planned.is_date)
     case "boolean":
-      return typeof value === "boolean" ? value : Boolean(value)
+      return toBoolean(value)
     case "string":
     case "enum":
       return typeof value === "string" ? value : String(value)
@@ -357,8 +377,16 @@ export function toOramaDocument(
     }
   }
 
+  const primaryKey = document[plan.primary_key]
+
+  if (primaryKey === undefined || primaryKey === null || primaryKey === "") {
+    fail(
+      `A document written to the local search provider is missing its primary key "${plan.primary_key}"`
+    )
+  }
+
   // Orama takes the document id from `id`.
-  target.id = String(document[plan.primary_key] ?? document.id)
+  target.id = String(primaryKey)
   target[SOURCE_KEY] = document
 
   return target
@@ -419,10 +447,10 @@ function resolveFilterTarget(
     fail(`Unknown filter field "${path}" on the local search provider`)
   }
 
-  const key = planned!.filter_path ?? planned!.path
-  const type = planned!.filter_type ?? planned!.type
+  const key = planned.filter_path ?? planned.path
+  const type = planned.filter_type ?? planned.type
 
-  return { key, planned: planned!, type }
+  return { key, planned, type }
 }
 
 // Orama accepts one operation per field, so an operator map has to collapse to
@@ -481,7 +509,7 @@ function toOramaOperation(
 
   if (keys.length !== 1) {
     unsupported(
-      "Orama accepts one operation per field; only $gte with $lte can be combined"
+      "the local search provider accepts one operation per field; only $gte with $lte can be combined"
     )
   }
 
@@ -501,25 +529,27 @@ function toOramaOperation(
 
     case "$ne":
       if (base === "number" || base === "boolean") {
-        unsupported("Orama has no negation for numeric or boolean fields")
+        unsupported("negation is not supported on numeric or boolean fields")
       }
       if (isArrayType) {
-        unsupported("Orama has no negated array containment")
+        // Supported on scalar fields; array fields have no negated containment.
+        unsupported("$ne is not supported on array fields")
       }
       return { nin: values }
 
     case "$in":
       if (base === "number" || base === "boolean") {
-        unsupported("Orama matches numeric fields one value at a time")
+        unsupported("numeric and boolean fields match one value at a time")
       }
       return isArrayType ? { containsAny: values } : { in: values }
 
     case "$nin":
       if (base === "number" || base === "boolean") {
-        unsupported("Orama has no negation for numeric or boolean fields")
+        unsupported("negation is not supported on numeric or boolean fields")
       }
       if (isArrayType) {
-        unsupported("Orama has no negated array containment")
+        // Supported on scalar fields; array fields have no negated containment.
+        unsupported("$nin is not supported on array fields")
       }
       return { nin: values }
 
@@ -571,8 +601,9 @@ export function toOramaWhere(
       }
 
       if (key === "$or" || key === "$not") {
+        // Orama's where clause is a flat conjunction.
         fail(
-          `The local search provider cannot express ${key} in filters; Orama's where clause is a flat conjunction`
+          `The local search provider cannot express ${key} in filters; only conjunctions ($and) are supported`
         )
       }
 
@@ -672,10 +703,7 @@ export function toOramaFacets(
     const { key, type } = resolveFilterTarget(request.field, plan)
 
     if (request.type === "stats") {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "The local search provider does not support stats facets"
-      )
+      fail(`The local search provider does not support "stats" facets`)
     }
 
     if (request.type === "range") {

@@ -55,7 +55,10 @@ export async function createSeedPlan(
       continue
     }
 
-    if (record.definition_hash !== definition.definition_hash) {
+    if (
+      record.definition_hash !== definition.definition_hash ||
+      record.provider !== definition.provider
+    ) {
       const swap = !!context.providers.retrieve(definition.provider).swapIndex
 
       actions.push({
@@ -159,6 +162,9 @@ async function runSeed(
       data: {
         status: SearchIndexState.READY,
         definition_hash: definition.definition_hash,
+        // A migration may have moved the index to another provider; the record
+        // follows once the seed has landed there.
+        provider: definition.provider,
       },
     })
   } catch (error) {
@@ -269,6 +275,7 @@ async function reindexOne(
       data: {
         status: SearchIndexState.READY,
         definition_hash: definition.definition_hash,
+        provider: definition.provider,
       },
     })
   } catch (error) {

@@ -86,6 +86,10 @@ export default class SearchModuleService
       moduleDeclaration.options ??
       {}) as SearchModuleOptions
 
+    // `worker_mode` is stamped onto every module's declaration by the
+    // modules-sdk from the application's own `projectConfig.workerMode`, so this
+    // reads the same value `configModule` would give — an HTTP-only process
+    // must not spend its boot seeding indexes.
     this.isWorkerMode = moduleDeclaration.worker_mode !== "server"
 
     // Resolved here rather than on application start, so anything that resolves the
