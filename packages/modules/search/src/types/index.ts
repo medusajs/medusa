@@ -97,14 +97,11 @@ export type SearchSeedRuntime = SearchIndexRegistry &
 export type SearchIngestionRuntime = SearchIndexRegistry &
   Pick<SearchIndexContext, "container">
 
-<<<<<<< HEAD
-=======
 /** Event name to the indexes that declared it. */
 export type SearchEventRoutes = Map<string, string[]>
 
 /* ---------------------------- persisted records ---------------------------- */
 
->>>>>>> f3bdb28b49 (feat: Implement event consumption for search (#16344))
 /** One seed run against one index. Append-only, so these are the history. */
 export type SearchIndexSyncRecord = {
   id: string
