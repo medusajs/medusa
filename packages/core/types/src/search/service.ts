@@ -1,3 +1,4 @@
+import { Event } from "../event-bus"
 import { IModuleService } from "../modules-sdk"
 import { SearchDocument, SearchTask } from "./common"
 import { SearchFilters } from "./filters"
@@ -54,6 +55,17 @@ export interface ISearchModuleService extends IModuleService {
   }): Promise<SearchTask>
 
   /**
+   * Applies an event to every index that declared it, using each index' `consume`
+   * to turn the event into documents.
+   *
+   * Resolves once the engine has accepted the operation, failures leave redelivery to the
+   * event bus. Returns one task per write, and nothing for an undeclared event.
+   */
+  ingest(event: Event<any>): Promise<SearchTask[]>
+
+  listIndexes(): string[]
+
+  /**
    * The field paths the index can return. `query.search` uses this to split what a
    * caller asked for between the engine and `query.graph`.
    */
@@ -72,5 +84,7 @@ export interface ISearchModuleService extends IModuleService {
    * Creates and alters physical indexes. Filling them is the seed at application
    * start, so an index this creates serves nothing until then.
    */
-  executeIndexMigrationPlan(actions: SearchIndexMigrationAction[]): Promise<void>
+  executeIndexMigrationPlan(
+    actions: SearchIndexMigrationAction[]
+  ): Promise<void>
 }

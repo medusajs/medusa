@@ -214,23 +214,27 @@ export async function loadModules(args: {
         sharedResourcesConfig?.database?.debug
     }
 
-    // The Search Module does not discover its own definitions; the application
-    // loads them off the file system (`search/`) and passes them in, the same way
-    // links register themselves before the app boots. Rebuilt rather than pushed
-    // into, since `declaration.options` may be the config object itself and a
-    // second boot in the same process would otherwise double the list.
+    /**
+     * The Search Module does not discover its own definitions; the app loads them
+     * off the file system (`search/`) and passes them in, like links.
+     *
+     * Inline ones go through the registry too, so it holds everything indexed and
+     * not just what came off disk — the ingestion subscriber reads it to know what
+     * to enroll in, having no container at config time. Keyed by name, so a second
+     * boot re-registers instead of doubling the list.
+     */
     if (moduleName === Modules.SEARCH) {
+      const configured = (declaration.options?.indexes ??
+        []) as SearchTypes.SearchIndexDefinition[]
+
+      for (const definition of configured) {
+        MedusaModule.setSearchIndex(definition)
+      }
+
       const registered = MedusaModule.getSearchIndexes()
 
       if (registered.length) {
-        declaration.options = {
-          ...declaration.options,
-          indexes: [
-            ...((declaration.options?.indexes as SearchTypes.SearchIndexDefinition[]) ??
-              []),
-            ...registered,
-          ],
-        }
+        declaration.options = { ...declaration.options, indexes: registered }
       }
     }
 

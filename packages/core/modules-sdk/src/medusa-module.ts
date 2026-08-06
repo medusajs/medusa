@@ -261,8 +261,9 @@ class MedusaModule {
   /**
    * Keyed by index name so that loading the same file twice — a CLI that boots
    * more than once in a process — registers the same index rather than a
-   * duplicate the Search Module would then reject. Two different files claiming
-   * one name is a real conflict, and still throws.
+   * duplicate the Search Module would then reject. Two different sources
+   * claiming one name — two files, or a file and the module's inline options —
+   * is a real conflict, and throws.
    */
   public static setSearchIndex(
     definition: SearchTypes.SearchIndexDefinition,
@@ -270,10 +271,16 @@ class MedusaModule {
   ): void {
     const existing = MedusaModule.searchIndexes_.get(definition.name)
 
-    if (existing && filePath && existing.filePath !== filePath) {
+    // Same source re-registering (a re-boot in one process) is fine; `filePath`
+    // is undefined for both registrations of an inline definition.
+    if (existing && existing.filePath !== filePath) {
+      const describe = (path?: string) => path ?? "the Search Module's options"
+
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Search index "${definition.name}" is defined twice: in ${existing.filePath} and ${filePath}`
+        `Search index "${definition.name}" is defined twice: in ${describe(
+          existing.filePath
+        )} and ${describe(filePath)}`
       )
     }
 

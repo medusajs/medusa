@@ -17,10 +17,11 @@ export class SearchIndexLoader {
    * @private
    */
   #excludes: RegExp[] = [
-    /index\.js/,
-    /index\.ts/,
+    // Anchored, unlike the link loader's: `product-index.ts` is a natural name
+    // for a file in `search/` and must not be skipped as a barrel file.
+    /^index\.(js|ts)$/,
     /\.DS_Store/,
-    /(\.ts\.map|\.js\.map|\.d\.ts|\.md)/,
+    /(\.ts\.map|\.js\.map|\.d\.ts|\.md)$/,
     /^_[^/\\]*(\.[^/\\]+)?$/,
   ]
 

@@ -1,6 +1,5 @@
 import {
   Logger,
-  MedusaContainer,
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
   ModulesSdkTypes,
@@ -65,8 +64,7 @@ export type SearchIndexes = Map<
 >
 
 export type SearchIndexContext = {
-  // Handed to a definition's `seed` so it can reach `query.graph`.
-  container: MedusaContainer
+  container: SearchTypes.SearchContainer
   logger: Logger
   options: SearchModuleOptions
   indexes: SearchIndexes
@@ -95,8 +93,18 @@ export type SearchIndexRegistry = Pick<
 export type SearchSeedRuntime = SearchIndexRegistry &
   Pick<SearchIndexContext, "syncService" | "container" | "options">
 
+// Ingestion writes straight through, so unlike a seed it keeps no sync history.
+export type SearchIngestionRuntime = SearchIndexRegistry &
+  Pick<SearchIndexContext, "container">
+
+<<<<<<< HEAD
+=======
+/** Event name to the indexes that declared it. */
+export type SearchEventRoutes = Map<string, string[]>
+
 /* ---------------------------- persisted records ---------------------------- */
 
+>>>>>>> f3bdb28b49 (feat: Implement event consumption for search (#16344))
 /** One seed run against one index. Append-only, so these are the history. */
 export type SearchIndexSyncRecord = {
   id: string
