@@ -118,19 +118,17 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       filters: { id: shippingMethod.shipping_option_id },
       options: {
         cache: {
+          // The shipping option, its type, provider and the resolved location are all
+          // computed from the response. These are what computation cannot see: the
+          // service zone, fulfillment set and rules are selected without their ids,
+          // and the fulfillment set resolves its location through a link row.
           tags: [
-            "ShippingOption:list:*",
-            "ShippingOptionType:list:*",
-            "ShippingOptionRule:list:*",
             "ServiceZone:list:*",
             "FulfillmentSet:list:*",
-            "FulfillmentProvider:list:*",
-            "StockLocation:list:*",
-            "StockLocationAddress:list:*",
-            // The fulfillment set resolves its location through a link row, which
-            // no entity event above covers.
+            "ShippingOptionRule:list:*",
             "LinkLocationFulfillmentSet:list:*",
           ],
+          computeAutomaticTags: true,
         },
       },
     }).config({ name: "calculated-option" })

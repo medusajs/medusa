@@ -170,15 +170,16 @@ const getDataForComputation = async (
     },
     {
       cache: {
+        // The inventory items and levels are computed from the response. These are
+        // not: the link rows and the variants are selected without their ids, and
+        // available_quantity is stocked minus reserved, which reservations change
+        // without emitting inventory level events.
         tags: [
           ...data.variant_ids.map((id) => `ProductVariant:${id}`),
           "LinkProductVariantInventoryItem:list:*",
-          "InventoryItem:list:*",
-          "InventoryLevel:list:*",
-          // available_quantity is stocked minus reserved, and reservations only
-          // emit reservation item events.
           "ReservationItem:list:*",
         ],
+        computeAutomaticTags: true,
       },
     }
   )
@@ -200,11 +201,7 @@ const getDataForComputation = async (
       },
       {
         cache: {
-          tags: [
-            `SalesChannel:${data.sales_channel_id}`,
-            "StockLocation:list:*",
-            "LinkSalesChannelStockLocation:list:*",
-          ],
+          tags: ["LinkSalesChannelStockLocation:list:*"],
         },
       }
     )
