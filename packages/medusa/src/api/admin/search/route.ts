@@ -44,7 +44,9 @@ export const GET = async (
     results: results.map((result, i) => ({
       entity: entities[i],
       data: result.hits.map((hit) => hit.document),
-      count: result.metadata.count,
+      // Never requested with `count: "none"`, so `null` is out of the ordinary
+      // — but the response promises a number.
+      count: result.metadata.count ?? 0,
       offset: result.metadata.skip,
       limit: result.metadata.take,
     })),
