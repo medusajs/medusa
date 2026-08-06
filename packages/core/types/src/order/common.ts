@@ -2166,6 +2166,11 @@ export interface OrderChangeDTO {
   carry_over_promotions?: boolean | null
 
   /**
+   * Whether the customer shouldn't be notified of the order change.
+   */
+  no_notification?: boolean | null
+
+  /**
    * The ID of the associated order
    */
   order_id: string
