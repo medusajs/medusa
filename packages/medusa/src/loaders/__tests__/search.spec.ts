@@ -7,6 +7,10 @@ jest.mock("@medusajs/framework/search", () => ({
 }))
 
 const logger = { info: jest.fn(), debug: jest.fn() } as any
+
+// `resolve` is where a plugin's compiled sources live — for the application
+// itself that is `<project>/.medusa/server/src` — and index definitions are
+// discovered under its `search/` folder, like `links/` for links.
 const plugins = [{ resolve: "/app" }] as any
 
 describe("isSearchModuleEnabled", () => {
