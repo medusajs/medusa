@@ -55,18 +55,6 @@ export const sidebar = [
             type: "link",
             title: "Organizations",
             path: "/organizations",
-            children: [
-              {
-                type: "link",
-                title: "Webhook Endpoints",
-                path: "/organizations/webhooks/endpoints",
-              },
-              {
-                type: "link",
-                title: "Webhook Events",
-                path: "/organizations/webhooks/events",
-              },
-            ],
           },
           {
             type: "link",
@@ -387,6 +375,23 @@ export const sidebar = [
                 path: "/monitoring/http",
               },
             ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Webhooks",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
+          },
+          {
+            type: "link",
+            title: "Manage Events",
+            path: "/webhooks/events",
           },
         ],
       },

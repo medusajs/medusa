@@ -66,19 +66,3 @@ In the project's dashboard, you'll find a card for every long-lived environment 
 You'll also find a table listing all the preview environments created for the project below the long-lived environment cards.
 
 ![Project dashboard showing the environment cards](https://res.cloudinary.com/dza7lstvk/image/upload/v1767787582/Cloud/CleanShot_2026-01-07_at_14.06.03_2x_bane7m.png)
-
----
-
-## Environment Error State
-
-If an environment fails to provision, it enters an error state. Medusa shows this state clearly throughout the dashboard so you know the environment needs attention.
-
-- **Project list**: The environment card shows an error icon with an error title and message instead of the normal environment preview. You can still click the card to navigate to the environment detail page.
-- **Preview environment list**: The status badge for a preview environment shows a red **Error** status when provisioning has failed.
-- **Environment detail page**: The domain links in the header are hidden when an environment is in an error state. They reappear once the environment is healthy.
-
-<Note>
-
-If an environment is in an error state, navigate to its detail page to view more information and to troubleshoot. Refer to the [Deployment Troubleshooting](../deployments/troubleshooting/page.mdx) guide for common issues and solutions.
-
-</Note>

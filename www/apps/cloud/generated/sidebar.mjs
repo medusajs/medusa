@@ -71,22 +71,7 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Webhook Endpoints",
-                "path": "/organizations/webhooks/endpoints",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Webhook Events",
-                "path": "/organizations/webhooks/events",
-                "children": []
-              }
-            ]
+            "children": []
           },
           {
             "loaded": true,
@@ -513,6 +498,28 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Webhooks",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Events",
+            "path": "/webhooks/events",
+            "children": []
           }
         ]
       },
