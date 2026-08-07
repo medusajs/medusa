@@ -2,7 +2,7 @@ import { Note, InlineIcon } from "docs-ui"
 import { EyeMini, SquareTwoStackMini, ArrowPathMini, Trash } from "@medusajs/icons"
 
 export const metadata = {
-  title: `Webhook Endpoints`,
+  title: `Webhook Endpoints in Cloud`,
 }
 
 # {metadata.title}
@@ -51,6 +51,12 @@ To update the URL of an existing endpoint:
 ### Reveal or Copy the Signing Secret
 
 Medusa generates a signing secret for each endpoint. You can use the secret to verify that incoming requests are from Medusa.
+
+<Note>
+
+Learn how to verify webhook signatures in the [Webhooks Reference](../reference/page.mdx#verify-webhook-signatures) guide.
+
+</Note>
 
 To manage the signing secret:
 
