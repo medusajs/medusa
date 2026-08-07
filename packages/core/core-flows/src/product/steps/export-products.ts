@@ -73,7 +73,7 @@ export const exportProductsStep = createStep(
           entity: "product_sales_channel",
           filters: { sales_channel_id },
           fields: ["product_id"],
-          pagination: { skip: page * pageSize, take: pageSize },
+          pagination: { skip: page * pageSize, take: pageSize, order: { product_id: "ASC" } as any },
         })
         _filters.id = salesChannelProducts.map((p) => p.product_id)
       }
@@ -84,7 +84,7 @@ export const exportProductsStep = createStep(
         filters: _filters,
         pagination: sales_channel_id
           ? undefined
-          : { skip: page * pageSize, take: pageSize },
+          : { skip: page * pageSize, take: pageSize, order: { id: "ASC" } },
       })
 
       return products
@@ -99,24 +99,35 @@ export const exportProductsStep = createStep(
     }
 
     const seenExportKeys = new Set<string>()
-    const normalizedBatches: object[][] = []
+    const allProductIds: string[] = []
     let page = 0
     while (true) {
       const products = await getProducts(page)
       if (products.length === 0) break
 
       const normalizedProducts = normalizeForExport(products, { regions })
-      normalizedBatches.push(normalizedProducts)
+      allProductIds.push(...products.map((p: any) => p.id))
       appendProductExportKeys(normalizedProducts, seenExportKeys, exportOptions)
 
       if (products.length < pageSize) break
       page += 1
     }
 
+    const exportKeys = Array.from(seenExportKeys)
     let hasHeader = false
-    for (const normalizedProducts of normalizedBatches) {
+    
+    for (let i = 0; i < allProductIds.length; i += pageSize) {
+      const batchIds = allProductIds.slice(i, i + pageSize)
+      const { data: products } = await query.graph({
+        entity: "product",
+        fields,
+        filters: { id: batchIds },
+      })
+
+      const normalizedProducts = normalizeForExport(products, { regions })
+      
       const batchCsv = json2csv(normalizedProducts, {
-        keys: Array.from(seenExportKeys),
+        keys: exportKeys,
         prependHeader: !hasHeader,
         ...exportOptions,
         unwindArrays: false,
