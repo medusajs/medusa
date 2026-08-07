@@ -385,15 +385,13 @@ export const sidebar = [
         children: [
           {
             type: "link",
-            title: "Events Reference",
-            path: "/webhooks",
-            hideFromChildItems: true,
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
           },
           {
             type: "link",
-            title: "Changelog",
-            path: "/webhooks/changelog",
-            hideFromChildItems: true,
+            title: "Manage Events",
+            path: "/webhooks/events",
           },
         ],
       },

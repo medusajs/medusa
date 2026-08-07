@@ -510,17 +510,15 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Events Reference",
-            "path": "/webhooks",
-            "hideFromChildItems": true,
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "title": "Changelog",
-            "path": "/webhooks/changelog",
-            "hideFromChildItems": true,
+            "title": "Manage Events",
+            "path": "/webhooks/events",
             "children": []
           }
         ]

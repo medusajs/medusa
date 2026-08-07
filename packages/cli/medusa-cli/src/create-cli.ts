@@ -175,6 +175,10 @@ function buildLocalCommands(cli, isLocalProject) {
           type: "boolean",
           describe: "Do not sync links",
         })
+        builder.option("skip-search", {
+          type: "boolean",
+          describe: "Do not create or alter search indexes",
+        })
         builder.option("execute-all-links", {
           type: "boolean",
           describe:
@@ -227,6 +231,10 @@ function buildLocalCommands(cli, isLocalProject) {
           type: "boolean",
           describe: "Do not sync links",
         })
+        builder.option("skip-search", {
+          type: "boolean",
+          describe: "Do not create or alter search indexes",
+        })
         builder.option("execute-all-links", {
           type: "boolean",
           describe:
@@ -260,6 +268,16 @@ function buildLocalCommands(cli, isLocalProject) {
       desc: "Run all migration scripts",
       handler: handlerP(
         getCommandHandler("db/run-scripts", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
+    .command({
+      command: "db:migrate:search",
+      desc: "Create and alter the search indexes declared under search/",
+      handler: handlerP(
+        getCommandHandler("db/migrate-search", (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
           return cmd(args)
         })

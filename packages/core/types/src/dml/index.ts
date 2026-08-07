@@ -347,8 +347,12 @@ export type EntityIndex<
   on: InferIndexableProperties<Schema>[]
   /**
    * Conditions to restrict which records are indexed.
+   *
+   * Medusa scopes indexes to `deleted_at IS NULL` by default. Set this to `null`
+   * to opt out of that scope and create a non-partial index, which is required
+   * for indexes that back a foreign key with a cascading rule.
    */
-  where?: Where
+  where?: Where | null
 
   /**
    * The type of the index. (e.g: GIN)

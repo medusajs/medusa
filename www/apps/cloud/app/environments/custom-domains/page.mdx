@@ -19,7 +19,7 @@ To update the default `medusajs.app` and `medusajs.site` subdomains instead, see
 
 </Note>
 
-You can configure custom domains per environment, allowing you to use different domains for Production, Staging, and preview environments based on your needs.
+You can configure multiple custom domains per environment, allowing you to use different domains for Production, Staging, and preview environments based on your needs.
 
 ---
 
@@ -53,7 +53,7 @@ To set up a backend custom domain:
 
 After submitting, you are taken to the DNS configuration detail page where you can add the required DNS records with your domain provider.
 
-You can track your domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+You can track each domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
 
 ### Update Backend Domain in Storefront
 
@@ -113,7 +113,7 @@ To set up a storefront custom domain, you need:
 
 #### From Project Overview
 
-If no custom domain is configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
+If no custom domains are configured for your storefront environment, you'll see a **Setup Custom Domain** link in the environment card:
 
 1. Go to your project's dashboard in Cloud.
 2. In the environment card (for example, Production), click the **Setup Custom Domain** link next to the health status.
@@ -129,7 +129,19 @@ If no custom domain is configured for your storefront environment, you'll see a 
 
 After submitting, you are taken to the DNS configuration detail page where you can add the required DNS records with your domain provider.
 
-You can track your domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+You can track each domain's setup progress with the [Domain Status Indicators](#domain-status-indicators).
+
+---
+
+## Multiple Custom Domains for Storefront and Backend
+
+In some use cases, you may want to apply multiple domains to your project that apply for specific conditions. For example, you may want to have `myshop.uk` for your users in the United Kingdom, and `myshop.dk` for your users in Denmark.
+
+Medusa supports multiple domains on the [Scale and Enterprise plans](../../pricing/page.mdx), with a three-domain limit per project for Scale plans. If you're on these plans, you can add another domain by following the same flow for [storefront](#storefront-custom-domains) and [backend](#backend-custom-domains).
+
+After adding these multiple domains, you can choose which one to redirect to in your application's logic. For example, you can add a middleware in your storefront that redirects to the correct domain based on the user's location.
+
+If you need multiple custom domains for the storefront or backend, make sure to [update your plan to Scale or Enterprise](../../billing/plans/page.mdx#change-plan).
 
 ---
 
@@ -141,7 +153,7 @@ After adding a custom domain, a status badge next to the domain name helps you t
 - **Configured** (blue clock icon): DNS records are detected but verification is in progress
 - **Finalizing** (blue clock icon): All DNS records are verified on your end but the platform has not yet confirmed the domain as active
 - **Verified** (green checkmark icon): Domain is fully configured and active
-- **Failed**: DNS verification failed. Use the **Restart** button on the DNS detail page to retry.
+- **Failed**: DNS verification failed. Use the **Restart Verification** button on the DNS detail page to retry.
 
 Domain activation typically completes within a few minutes to 48 hours, depending on DNS propagation times.
 
@@ -159,17 +171,21 @@ The page is organized into check sections:
 
 Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
 
-### Restart Failed DNS Setup
-
-When the domain is in a **failed** state, you can retry the verification from the beginning by clicking the **Restart** button at the top right. This button will only show up in the failed state.
-
 ### Verify DNS Records Manually
 
-If your domain's status is still pending, you can trigger an immediate DNS check instead of waiting for the next automatic check by clicking the **Verify records** button at the top right.
+You can trigger an immediate DNS check at any time instead of waiting for the next automatic check by clicking the **Check records** button at the top right of the DNS configuration detail page.
+
+### Restart DNS Verification
+
+To restart the verification process from the beginning at any time, click the **Restart Verification** button at the top right of the DNS configuration detail page.
 
 ---
 
 ## Manage Custom Domains
+
+### View All Domains
+
+In the **Domains** section of your environment settings, each custom domain is shown as a card with its domain name and DNS verification status. Click a domain card to open its DNS configuration detail page.
 
 ### Remove Custom Domain
 
@@ -192,7 +208,7 @@ To remove a custom domain:
 
 ### Re-verify DNS Records
 
-If you've updated your DNS records and want to trigger an immediate check, open the DNS configuration detail page for your domain and click the **Verify records** button. This manually starts a fresh DNS check instead of waiting for the next automatic check. If the domain is in a failed state, click **Restart** instead to retry from the beginning.
+If you've updated your DNS records and want to trigger an immediate check, open the DNS configuration detail page for your domain and click the **Check records** button. This manually starts a fresh DNS check instead of waiting for the next automatic check. To restart the verification process from the beginning, click **Restart Verification**.
 
 ### Diagnose DNS Record Issues
 
@@ -210,7 +226,7 @@ The same expandable troubleshooting panel is available during the domain setup f
 If your domain remains in **Pending** or **Configured** status:
 
 1. **Check DNS records**: Verify that you've added all required DNS records exactly as provided in the DNS setup instructions. Expand any rows marked as failed or unexpected in the DNS records table to see what records were found.
-2. **Re-verify**: Click the **Verify records** button on the DNS configuration detail page to trigger a fresh check. If the domain is in a failed state, click **Restart** instead.
+2. **Re-verify**: Click the **Check records** button on the DNS configuration detail page to trigger a fresh check, or click **Restart Verification** to restart the verification process from the beginning.
 3. **Wait for propagation**: DNS changes can take up to 48 hours to propagate globally.
 4. **Contact support**: If your domain hasn't verified after 48 hours, contact support for assistance.
 

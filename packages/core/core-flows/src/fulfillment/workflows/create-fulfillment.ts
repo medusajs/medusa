@@ -96,14 +96,10 @@ export const createFulfillmentWorkflow = createWorkflow(
       }
     })
 
-    // When we have support for hooks with a return this would be a great
-    // place to put a hook for people to collect additional data they would
-    // like to pass down to the provider.
-    //
-    // const providerDataHook = createHook("getProviderData", stepInput)
-    //
-    // The collected provider data would be passed to createFulfillment in a
-    // additional_provider_data: Record<string, unknown> field.
+    // Callers can pass an `additional_data` field on the input, which is
+    // forwarded as-is to the provider's `createFulfillment` method (without
+    // being persisted on the fulfillment). This lets custom data reach the
+    // provider before it talks to the third-party service.
 
     const result = createFulfillmentStep(stepInput)
 
