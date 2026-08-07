@@ -375,7 +375,7 @@ Medusa signs every delivery attempt at the time it sends it, so retries of the s
 
 Medusa attempts the first delivery as soon as it queues the event. If your endpoint doesn't respond with a `2xx` status code within ten seconds, Medusa retries the delivery with an exponential backoff, starting at five minutes and doubling after every attempt.
 
-Medusa stops retrying once the next attempt falls more than 24 hours after the event's `created_at`, and marks the event as failed.
+Medusa will retry within twenty-four hours of the first attempt. After that, it stops retrying and marks the event as failed. You can [track the status of deliveries in the Cloud dashboard](../events/page.mdx).
 
 A delivery fails when your endpoint responds with a status code outside the `2xx` range, when it doesn't respond within ten seconds, or when Medusa can't reach it. Medusa doesn't follow redirects, so a `3xx` response also counts as a failed delivery.
 
