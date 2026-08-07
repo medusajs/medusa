@@ -393,6 +393,16 @@ export const sidebar = [
             title: "Manage Events",
             path: "/webhooks/events",
           },
+          {
+            type: "link",
+            title: "Reference",
+            path: "/webhooks/reference",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/webhooks/changelog",
+          },
         ],
       },
       {

@@ -1,0 +1,1349 @@
+import { Note, Table, Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTrigger, TypeList, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Cloud Webhooks Reference`,
+}
+
+# {metadata.title}
+
+In this reference guide, you'll learn how Medusa delivers webhook events to your application, and you'll find the details and payload of every event that Medusa sends.
+
+<Prerequisites
+  items={[
+    {
+      text: "A Webhook endpoint configured and enabled for your organization. This is the endpoint that receives the events in this reference.",
+      link: "/webhooks/endpoints",
+    }
+  ]}
+/>
+
+## Webhooks Overview
+
+A webhook is an HTTP request that Medusa sends to an endpoint you own when something happens in your organization, such as a build starting or a deployment finishing. Webhooks let you react to changes in Cloud without polling for them.
+
+Medusa delivers events to the [webhook endpoint configured for your organization](../endpoints/page.mdx). If your organization has no endpoint, or its endpoint is disabled, Medusa doesn't send any events.
+
+Every event is a `POST` request with a JSON body. Your endpoint must respond with a `2xx` status code within ten seconds, otherwise Medusa treats the delivery as failed and retries it. You can track events delivery [in the Cloud dashboard](../events/page.mdx).
+
+<Note>
+
+Refer to the [Webhooks Changelog](../changelog/page.mdx) for dated updates to the webhook events that Medusa delivers.
+
+</Note>
+
+---
+
+## Webhook Delivery Details
+
+Medusa wraps every event in the same envelope. The `data` property holds the event's payload, which differs per event:
+
+```json
+{
+  "id": "whev_01K2M7Q8ZCTVX3H4",
+  "type": "deployment.updated",
+  "data": {
+    // The payload of the event.
+  },
+  "created_at": "2026-08-07T09:14:22.000Z"
+}
+```
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      description: `The ID of the delivered event. Use it to make your handler idempotent, since Medusa reuses the same ID across retries of the same event.`,
+    },
+    {
+      name: "type",
+      type: "`string`",
+      description: `The name of the event, such as \`deployment.updated\`.`,
+    },
+    {
+      name: "data",
+      type: "`object`",
+      description: `The payload of the event. Refer to the event's section for its properties.`,
+    },
+    {
+      name: "created_at",
+      type: "`string`",
+      description: `The date and time Medusa queued the event for delivery, in ISO 8601 format. This is not the date the underlying resource changed. For that, use the resource's \`updated_at\` property in \`data\`. This value stays the same across retries, so it can be older than the request you receive.`,
+    },
+  ]}
+  sectionTitle="Delivery Details"
+/>
+
+### Webhook Request Headers
+
+Every delivery includes the following headers:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Header
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Event`
+
+      </Table.Cell>
+      <Table.Cell>
+        The name of the event, matching the `type` property of the body.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Delivery`
+
+      </Table.Cell>
+      <Table.Cell>
+        The ID of the delivered event, matching the `id` property of the body.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `X-Medusa-Signature`
+
+      </Table.Cell>
+      <Table.Cell>
+        The signature of the request, which you use to verify that Medusa sent it. Refer to the [Verify Webhook Signatures](#verify-webhook-signatures) section for details.
+        
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `User-Agent`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Always `MedusaCloud-Webhook/1.0`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Verify Webhook Signatures
+
+Medusa signs every request with the secret of your webhook endpoint, and sends the signature in the `X-Medusa-Signature` header:
+
+```bash
+X-Medusa-Signature: t=1786785262,v1=5e9b41...
+```
+
+The header holds two values separated by a comma:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Value
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `t`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The time Medusa signed the request, as a Unix timestamp in seconds.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `v1`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        The HMAC SHA-256 signature, in hexadecimal format.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+To verify a request, compute the HMAC SHA-256 of the string `{t}.{raw request body}` using your endpoint's secret, then compare the result to `v1`.
+
+For example:
+
+<Tabs defaultValue="medusa">
+  <TabsList>
+    <TabsTrigger value="medusa">Medusa Application</TabsTrigger>
+    <TabsTrigger value="node">Node.js</TabsTrigger>
+  </TabsList>
+  <TabsContentWrapper>
+    <TabsContent value="medusa">
+
+  In a Medusa application, verify the signature in a middleware so that your route only runs for requests that Cloud sent.
+
+  Start by registering the middleware on your webhook route in `src/api/middlewares.ts`:
+
+  ```ts title="src/api/middlewares.ts"
+  import { defineMiddlewares } from "@medusajs/framework/http"
+  import {
+    verifyWebhookSignature,
+  } from "./utils/verify-webhook-signature"
+
+  export default defineMiddlewares({
+    routes: [
+      {
+        method: ["POST"],
+        matcher: "/cloud-webhooks",
+        bodyParser: { preserveRawBody: true },
+        middlewares: [verifyWebhookSignature],
+      },
+    ],
+  })
+  ```
+
+  The `preserveRawBody` option of `bodyParser` stores the raw request body in `req.rawBody`, which you need to compute the signature. Learn more in the [Configure Request Body Parser](!docs!/learn/fundamentals/api-routes/parse-body#preserve-raw-body-data-for-webhooks) guide.
+
+  Then, create the middleware in `src/api/utils/verify-webhook-signature.ts`:
+
+  ```ts title="src/api/utils/verify-webhook-signature.ts"
+  import {
+    MedusaNextFunction,
+    MedusaRequest,
+    MedusaResponse,
+  } from "@medusajs/framework/http"
+  import crypto from "crypto"
+
+  export function verifyWebhookSignature(
+    req: MedusaRequest,
+    res: MedusaResponse,
+    next: MedusaNextFunction
+  ) {
+    const header = req.headers["x-medusa-signature"]
+    const secret = process.env.CLOUD_WEBHOOK_SECRET
+
+    if (typeof header !== "string" || !secret) {
+      return res.sendStatus(401)
+    }
+
+    const parts = new URLSearchParams(
+      header.replace(/,/g, "&")
+    )
+    const timestamp = parts.get("t")
+    const signature = parts.get("v1")
+
+    if (!timestamp || !signature || !req.rawBody) {
+      return res.sendStatus(401)
+    }
+
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(
+        `${timestamp}.${req.rawBody.toString("utf8")}`,
+        "utf8"
+      )
+      .digest("hex")
+
+    if (
+      expected.length !== signature.length ||
+      !crypto.timingSafeEqual(
+        Buffer.from(expected),
+        Buffer.from(signature)
+      )
+    ) {
+      return res.sendStatus(401)
+    }
+
+    next()
+  }
+  ```
+
+  Your route then handles the event, knowing that the request is verified:
+
+  ```ts title="src/api/cloud-webhooks/route.ts"
+  import {
+    MedusaRequest,
+    MedusaResponse,
+  } from "@medusajs/framework/http"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const event = req.body as {
+      id: string
+      type: string
+    }
+
+    // TODO handle the event
+
+    res.sendStatus(200)
+  }
+  ```
+
+    </TabsContent>
+    <TabsContent value="node">
+
+  In a plain Node.js application, pass the raw request body, the `X-Medusa-Signature` header, and your endpoint's secret to the following function:
+
+  ```ts
+  import crypto from "crypto"
+
+  export function isValid(
+    rawBody: string,
+    header: string,
+    secret: string
+  ) {
+    const parts = new URLSearchParams(
+      header.replace(/,/g, "&")
+    )
+    const timestamp = parts.get("t")
+    const signature = parts.get("v1")
+
+    if (!timestamp || !signature) {
+      return false
+    }
+
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(`${timestamp}.${rawBody}`, "utf8")
+      .digest("hex")
+
+    if (expected.length !== signature.length) {
+      return false
+    }
+
+    return crypto.timingSafeEqual(
+      Buffer.from(expected),
+      Buffer.from(signature)
+    )
+  }
+  ```
+
+    </TabsContent>
+  </TabsContentWrapper>
+</Tabs>
+
+<Note type="warning">
+
+Compute the signature from the raw request body. If your framework parses the body into an object before your handler runs, the signature won't match.
+
+</Note>
+
+You can also compare `t` to the current time and reject requests that are older than the window you accept. For example:
+
+```ts
+export function isRecent(
+  header: string,
+  toleranceInSeconds = 300
+) {
+  const parts = new URLSearchParams(
+    header.replace(/,/g, "&")
+  )
+  const timestamp = Number(parts.get("t"))
+
+  if (!timestamp) {
+    return false
+  }
+
+  const ageInSeconds = Date.now() / 1000 - timestamp
+
+  return ageInSeconds < toleranceInSeconds
+}
+```
+
+Medusa signs every delivery attempt at the time it sends it, so retries of the same event pass this check.
+
+### Webhook Retries
+
+Medusa attempts the first delivery as soon as it queues the event. If your endpoint doesn't respond with a `2xx` status code within ten seconds, Medusa retries the delivery with an exponential backoff, starting at five minutes and doubling after every attempt.
+
+Medusa will retry within twenty-four hours of the first attempt. After that, it stops retrying and marks the event as failed. You can [track the status of deliveries in the Cloud dashboard](../events/page.mdx).
+
+A delivery fails when your endpoint responds with a status code outside the `2xx` range, when it doesn't respond within ten seconds, or when Medusa can't reach it. Medusa doesn't follow redirects, so a `3xx` response also counts as a failed delivery.
+
+---
+
+## Webhook Events
+
+Medusa sends the following events:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Event
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.created`](#buildcreated)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Medusa created a build for an environment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`build.updated`](#buildupdated)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A build changed, such as when its status changed.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.created`](#deploymentcreated)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Medusa created a deployment for an environment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [`deployment.updated`](#deploymentupdated)
+
+      </Table.Cell>
+      <Table.Cell>
+
+        A deployment finished, regardless of whether it succeeded or failed.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Webhook Build Events
+
+Medusa sends these events related to an environment's builds, which happen after you push a commit to the environment's branch.
+
+### build.created
+
+Medusa sends this event when it creates a build for an environment, such as after you push a commit to the environment's branch.
+
+#### Payload
+
+<Note>
+
+The following payload is nested under the `data` property of the [event envelope](#webhook-delivery-details).
+
+</Note>
+
+<TypeList
+  types={[
+    {
+      name: "build",
+      type: "`object`",
+      description: `The details of the build.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the build.`,
+        },
+        {
+          name: "status",
+          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
+          description: `The status of the build.`,
+        },
+        {
+          name: "commit_hash",
+          type: "`string`",
+          description: `The hash of the commit that the build uses.`,
+        },
+        {
+          name: "commit_message",
+          type: "`string`",
+          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
+        },
+        {
+          name: "commit_author",
+          type: "`string`",
+          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the build was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the build was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "organization",
+      type: "`object`",
+      description: `The details of the organization that the build belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the organization.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the organization.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the organization was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the organization was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "project",
+      type: "`object`",
+      description: `The details of the project that the build belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the project.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the project.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the project, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "repository",
+          type: "`string`",
+          description: `The repository that the project deploys from.`,
+        },
+        {
+          name: "region",
+          type: "`string`",
+          description: `The region that the project runs in.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the project was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the project was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "environment",
+      type: "`object`",
+      description: `The details of the environment that the build belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the environment.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the environment.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the environment, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "branch",
+          type: "`string`",
+          description: `The branch that the environment deploys from.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the environment was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.created"
+/>
+
+#### Example Payload
+
+```json
+{
+  "id": "whev_01K2M7Q8ZCTVX3H4",
+  "type": "build.created",
+  "data": {
+    "build": {
+      "id": "build_01K2M7Q1ABCD",
+      "status": "created",
+      "commit_hash": "9f2c1ab",
+      "commit_message": "Add loyalty plugin",
+      "commit_author": "exampleuser",
+      "created_at": "2026-08-07T09:12:03.000Z",
+      "updated_at": "2026-08-07T09:12:03.000Z"
+    },
+    "organization": {
+      "id": "org_01K2M6YZ1234",
+      "name": "Acme",
+      "created_at": "2026-01-14T10:02:11.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "project": {
+      "id": "proj_01K2M6YZ5678",
+      "name": "Acme Store",
+      "handle": "acme-store",
+      "repository": "acme/store",
+      "region": "us-east-1",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "environment": {
+      "id": "projenv_01K2M6YZ9012",
+      "name": "Production",
+      "handle": "production",
+      "branch": "main",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    }
+  },
+  "created_at": "2026-08-07T09:12:04.000Z"
+}
+```
+
+### build.updated
+
+Medusa sends this event when a build changes, such as when it starts running or reaches a final status.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "build",
+      type: "`object`",
+      description: `The details of the build.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the build.`,
+        },
+        {
+          name: "status",
+          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
+          description: `The status of the build.`,
+        },
+        {
+          name: "commit_hash",
+          type: "`string`",
+          description: `The hash of the commit that the build uses.`,
+        },
+        {
+          name: "commit_message",
+          type: "`string`",
+          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
+        },
+        {
+          name: "commit_author",
+          type: "`string`",
+          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the build was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the build was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "organization",
+      type: "`object`",
+      description: `The details of the organization that the build belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the organization.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the organization.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the organization was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the organization was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "project",
+      type: "`object`",
+      description: `The details of the project that the build belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the project.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the project.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the project, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "repository",
+          type: "`string`",
+          description: `The repository that the project deploys from.`,
+        },
+        {
+          name: "region",
+          type: "`string`",
+          description: `The region that the project runs in.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the project was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the project was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "environment",
+      type: "`object`",
+      description: `The details of the environment that the build belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the environment.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the environment.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the environment, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "branch",
+          type: "`string`",
+          description: `The branch that the environment deploys from.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the environment was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="build.updated"
+/>
+
+#### Example Payload
+
+```json
+{
+  "id": "whev_01K2M7RA4DEFG567",
+  "type": "build.updated",
+  "data": {
+    "build": {
+      "id": "build_01K2M7Q1ABCD",
+      "status": "succeeded",
+      "commit_hash": "9f2c1ab",
+      "commit_message": "Add loyalty plugin",
+      "commit_author": "exampleuser",
+      "created_at": "2026-08-07T09:12:03.000Z",
+      "updated_at": "2026-08-07T09:14:18.000Z"
+    },
+    "organization": {
+      "id": "org_01K2M6YZ1234",
+      "name": "Acme",
+      "created_at": "2026-01-14T10:02:11.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "project": {
+      "id": "proj_01K2M6YZ5678",
+      "name": "Acme Store",
+      "handle": "acme-store",
+      "repository": "acme/store",
+      "region": "us-east-1",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "environment": {
+      "id": "projenv_01K2M6YZ9012",
+      "name": "Production",
+      "handle": "production",
+      "branch": "main",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    }
+  },
+  "created_at": "2026-08-07T09:14:19.000Z"
+}
+```
+
+---
+
+## Webhook Deployment Events
+
+Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
+
+### deployment.created
+
+Medusa sends this event when it creates a deployment for an environment, which happens after a build succeeds.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "deployment",
+      type: "`object`",
+      description: `The details of the deployment.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the deployment.`,
+        },
+        {
+          name: "status",
+          type: "`created` | `deploying` | `deployed` | `failed` | `canceled` | `idle`",
+          description: `The status of the deployment.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the deployment was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the deployment was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "build",
+      type: "`object`",
+      description: `The details of the build that the deployment uses.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the build.`,
+        },
+        {
+          name: "status",
+          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
+          description: `The status of the build.`,
+        },
+        {
+          name: "commit_hash",
+          type: "`string`",
+          description: `The hash of the commit that the build uses.`,
+        },
+        {
+          name: "commit_message",
+          type: "`string`",
+          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
+        },
+        {
+          name: "commit_author",
+          type: "`string`",
+          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the build was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the build was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "organization",
+      type: "`object`",
+      description: `The details of the organization that the deployment belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the organization.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the organization.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the organization was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the organization was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "project",
+      type: "`object`",
+      description: `The details of the project that the deployment belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the project.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the project.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the project, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "repository",
+          type: "`string`",
+          description: `The repository that the project deploys from.`,
+        },
+        {
+          name: "region",
+          type: "`string`",
+          description: `The region that the project runs in.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the project was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the project was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "environment",
+      type: "`object`",
+      description: `The details of the environment that the deployment belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the environment.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the environment.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the environment, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "branch",
+          type: "`string`",
+          description: `The branch that the environment deploys from.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the environment was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.created"
+/>
+
+#### Example Payload
+
+```json
+{
+  "id": "whev_01K2M7RB8HIJK890",
+  "type": "deployment.created",
+  "data": {
+    "deployment": {
+      "id": "depl_01K2M7RB1LMN",
+      "status": "created",
+      "created_at": "2026-08-07T09:14:20.000Z",
+      "updated_at": "2026-08-07T09:14:20.000Z"
+    },
+    "build": {
+      "id": "build_01K2M7Q1ABCD",
+      "status": "succeeded",
+      "commit_hash": "9f2c1ab",
+      "commit_message": "Add loyalty plugin",
+      "commit_author": "exampleuser",
+      "created_at": "2026-08-07T09:12:03.000Z",
+      "updated_at": "2026-08-07T09:14:18.000Z"
+    },
+    "organization": {
+      "id": "org_01K2M6YZ1234",
+      "name": "Acme",
+      "created_at": "2026-01-14T10:02:11.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "project": {
+      "id": "proj_01K2M6YZ5678",
+      "name": "Acme Store",
+      "handle": "acme-store",
+      "repository": "acme/store",
+      "region": "us-east-1",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "environment": {
+      "id": "projenv_01K2M6YZ9012",
+      "name": "Production",
+      "handle": "production",
+      "branch": "main",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    }
+  },
+  "created_at": "2026-08-07T09:14:21.000Z"
+}
+```
+
+### deployment.updated
+
+Medusa sends this event when a deployment finishes. Check the deployment's `status` to find out whether it succeeded.
+
+#### Payload
+
+<TypeList
+  types={[
+    {
+      name: "deployment",
+      type: "`object`",
+      description: `The details of the deployment.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the deployment.`,
+        },
+        {
+          name: "status",
+          type: "`created` | `deploying` | `deployed` | `failed` | `canceled` | `idle`",
+          description: `The status of the deployment.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the deployment was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the deployment was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "build",
+      type: "`object`",
+      description: `The details of the build that the deployment uses.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the build.`,
+        },
+        {
+          name: "status",
+          type: "`created` | `in-progress` | `succeeded` | `failed` | `timed-out` | `canceled`",
+          description: `The status of the build.`,
+        },
+        {
+          name: "commit_hash",
+          type: "`string`",
+          description: `The hash of the commit that the build uses.`,
+        },
+        {
+          name: "commit_message",
+          type: "`string`",
+          description: `The message of the commit. It's an empty string if Medusa doesn't have the message.`,
+        },
+        {
+          name: "commit_author",
+          type: "`string`",
+          description: `The author of the commit. It's an empty string if Medusa doesn't have the author.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the build was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the build was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "organization",
+      type: "`object`",
+      description: `The details of the organization that the deployment belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the organization.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the organization.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the organization was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the organization was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "project",
+      type: "`object`",
+      description: `The details of the project that the deployment belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the project.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the project.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the project, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "repository",
+          type: "`string`",
+          description: `The repository that the project deploys from.`,
+        },
+        {
+          name: "region",
+          type: "`string`",
+          description: `The region that the project runs in.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the project was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the project was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+    {
+      name: "environment",
+      type: "`object`",
+      description: `The details of the environment that the deployment belongs to.`,
+      children: [
+        {
+          name: "id",
+          type: "`string`",
+          description: `The ID of the environment.`,
+        },
+        {
+          name: "name",
+          type: "`string`",
+          description: `The name of the environment.`,
+        },
+        {
+          name: "handle",
+          type: "`string`",
+          description: `The handle of the environment, which is its unique identifier in URLs.`,
+        },
+        {
+          name: "branch",
+          type: "`string`",
+          description: `The branch that the environment deploys from.`,
+        },
+        {
+          name: "created_at",
+          type: "`string`",
+          description: `The date and time the environment was created, in ISO 8601 format.`,
+        },
+        {
+          name: "updated_at",
+          type: "`string`",
+          description: `The date and time the environment was last updated, in ISO 8601 format.`,
+        },
+      ],
+    },
+  ]}
+  sectionTitle="deployment.updated"
+/>
+
+#### Example Payload
+
+```json
+{
+  "id": "whev_01K2M7RC2OPQR123",
+  "type": "deployment.updated",
+  "data": {
+    "deployment": {
+      "id": "depl_01K2M7RB1LMN",
+      "status": "deployed",
+      "created_at": "2026-08-07T09:14:20.000Z",
+      "updated_at": "2026-08-07T09:15:47.000Z"
+    },
+    "build": {
+      "id": "build_01K2M7Q1ABCD",
+      "status": "succeeded",
+      "commit_hash": "9f2c1ab",
+      "commit_message": "Add loyalty plugin",
+      "commit_author": "exampleuser",
+      "created_at": "2026-08-07T09:12:03.000Z",
+      "updated_at": "2026-08-07T09:14:18.000Z"
+    },
+    "organization": {
+      "id": "org_01K2M6YZ1234",
+      "name": "Acme",
+      "created_at": "2026-01-14T10:02:11.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "project": {
+      "id": "proj_01K2M6YZ5678",
+      "name": "Acme Store",
+      "handle": "acme-store",
+      "repository": "acme/store",
+      "region": "us-east-1",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    },
+    "environment": {
+      "id": "projenv_01K2M6YZ9012",
+      "name": "Production",
+      "handle": "production",
+      "branch": "main",
+      "created_at": "2026-01-14T10:04:32.000Z",
+      "updated_at": "2026-07-30T08:41:56.000Z"
+    }
+  },
+  "created_at": "2026-08-07T09:15:48.000Z"
+}
+```
