@@ -157,8 +157,9 @@ function buildPhysicalIndexName({
   return [prefix, name, suffix].filter(Boolean).join("_")
 }
 
-// Lifts `q` out of the filters, applies pagination defaults, expands shorthand
-// facets, and resolves `attributes_to_search_on` against the index' defaults.
+// Lifts `q` out of the filters, applies pagination defaults, and expands
+// shorthand facets. When `attributes_to_search_on` is omitted the provider
+// matches on every field marked `searchable`.
 export function normalizeSearchQuery({
   query,
   index,
@@ -179,9 +180,6 @@ export function normalizeSearchQuery({
   searchOptions.facets = searchOptions.facets?.map((facet) =>
     typeof facet === "string" ? { field: facet, type: "value" as const } : facet
   )
-
-  searchOptions.attributes_to_search_on ??=
-    index.settings.default_search_attributes
 
   return {
     index,
@@ -447,12 +445,6 @@ export function resolveIndexDefinitions({
       )
     }
 
-    const settings = { ...(definition.settings ?? {}) }
-
-    settings.default_search_attributes ??= flattenFields(definition.fields)
-      .filter(({ field }) => isSearchable(field))
-      .map(({ path }) => path)
-
     const physicalName = buildPhysicalIndexName({
       name: definition.name,
       prefix: index_prefix,
@@ -462,7 +454,7 @@ export function resolveIndexDefinitions({
       ...definition,
       primary_key: primaryKey,
       provider: definition.provider ?? default_provider,
-      settings,
+      settings: definition.settings ?? {},
       definition_hash: buildDefinitionHash({
         fields: definition.fields,
         settings: definition.settings,

@@ -1,12 +1,16 @@
 import { SearchTypes } from "@medusajs/types"
 
 /**
+ * An abstract class for search providers. Extend this class to create a search
+ * provider.
+ *
  * ### constructor
  *
  * The constructor allows you to access resources from the module's container using the first parameter,
  * and the provider's options using the second parameter.
  *
- * If you're creating a client or establishing a connection with a search engine, do it in the constructor.
+ * If you're creating a client with a search engine, do it in the constructor.
+ * Establishing a connection with the search engine should happen in `onApplicationStart`.
  *
  * #### Example
  *
@@ -135,7 +139,7 @@ export class AbstractSearchProviderService
    *
    * You may recreate the index if your engine can't alter a schema in place. That's safe:
    * the module only points this at an index it's about to seed, never at one that has to
-   * keep serving reads.
+   * keep serving reads, and never during a partial rebuild.
    *
    * @param {object} input - The index to create or update.
    * @param {SearchTypes.ResolvedSearchIndexDefinition} input.index - The definition,

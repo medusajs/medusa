@@ -108,7 +108,7 @@ async function loadResources(
   await new LinkLoader(linksSourcePaths, logger).load()
 
   // Cleared along with the module instances above, and the boot below seeds
-  // through `onApplicationStart`, so the definitions have to be back first.
+  // through `onApplicationStart`,.
   await loadSearchIndexes({
     plugins,
     configModule: container.resolve(ContainerRegistrationKeys.CONFIG_MODULE),

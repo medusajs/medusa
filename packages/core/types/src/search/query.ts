@@ -53,7 +53,7 @@ export interface SearchVectorOptions {
 }
 
 export interface SearchOptions {
-  // Defaults to the index' `default_search_attributes`.
+  // Defaults to every field marked `searchable` on the index.
   attributes_to_search_on?: string[]
   match_strategy?: SearchMatchStrategy
   typo_tolerance?: boolean
@@ -110,16 +110,11 @@ export interface SearchPagination {
 export interface SearchQuery<TEntry extends string = string> {
   // The index to query, defaulting to the index whose name equals the entity.
   entity: TEntry
-  /**
-   * The fields the engine should return. `query.search` resolves these against the
-   * definition first, so by the time the module sees them they hold only what the
-   * index can serve — anything else has already been split off for `query.graph`.
-   */
+
+  // The fields the engine should return. Only fields available in the search engine can be passed here.
   fields?: string[]
 
-  /**
-   * Filters to apply, including the free-text query as `q`.
-   */
+  // Filters to apply, including the free-text query as `q`.
   filters?: SearchFilters
   pagination?: SearchPagination
   search_options?: SearchOptions

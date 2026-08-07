@@ -27,10 +27,6 @@ export function isSearchModuleEnabled(configModule: ConfigModule): boolean {
  * registering, so importing the files is all there is to do, and what was
  * registered reaches the Search Module as its `indexes` option — which is why this
  * runs before the app boots.
- *
- * Discovery is gated on the module: without it there is nothing to hand the
- * definitions to, and importing the files would run project code — building
- * documents, reaching for a client — that nothing asked for.
  */
 export async function loadSearchIndexes({
   plugins,

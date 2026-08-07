@@ -259,11 +259,8 @@ class MedusaModule {
   }
 
   /**
-   * Keyed by index name so that loading the same file twice — a CLI that boots
-   * more than once in a process — registers the same index rather than a
-   * duplicate the Search Module would then reject. Two different sources
-   * claiming one name — two files, or a file and the module's inline options —
-   * is a real conflict, and throws.
+   * Keyed by index name so that loading the same file twice registers the same index.
+   * Two different definitions with the same name (eg. in separate files)  is a real conflict, and throws.
    */
   public static setSearchIndex(
     definition: SearchTypes.SearchIndexDefinition,
@@ -686,8 +683,7 @@ class MedusaModule {
 
         joinerConfig = {
           ...joinerConfig,
-          databaseClientUrl:
-            resolveJoinerConfigDatabaseClientUrl(resolution),
+          databaseClientUrl: resolveJoinerConfigDatabaseClientUrl(resolution),
         }
 
         services[keyName].__joinerConfig = joinerConfig
@@ -820,8 +816,7 @@ class MedusaModule {
 
         joinerConfig = {
           ...joinerConfig,
-          databaseClientUrl:
-            resolveJoinerConfigDatabaseClientUrl(resolution),
+          databaseClientUrl: resolveJoinerConfigDatabaseClientUrl(resolution),
         }
 
         services[keyName].__joinerConfig = joinerConfig
@@ -991,9 +986,7 @@ function resolveJoinerConfigDatabaseClientUrl(
 ): string | undefined {
   const declaration = resolution.moduleDeclaration
   const options =
-    declaration &&
-    typeof declaration === "object" &&
-    "options" in declaration
+    declaration && typeof declaration === "object" && "options" in declaration
       ? (declaration.options as ModuleServiceInitializeOptions | undefined)
       : (resolution.options as ModuleServiceInitializeOptions | undefined)
 

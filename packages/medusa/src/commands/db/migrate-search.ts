@@ -23,7 +23,9 @@ import { ensureDbExists } from "../utils"
 
 const TERMINAL_SIZE = process.stdout.columns
 
-function describeAction(action: SearchTypes.SearchIndexMigrationAction): string {
+function describeAction(
+  action: SearchTypes.SearchIndexMigrationAction
+): string {
   const index = chalk.yellow(action.index)
 
   if (action.action !== "migrate") {
@@ -31,7 +33,7 @@ function describeAction(action: SearchTypes.SearchIndexMigrationAction): string 
   }
 
   // A rebuild that lands on the live name has nowhere to build alongside, so the
-  // index serves nothing between here and the seed at startup. Worth saying.
+  // index serves nothing between here and the seed at startup.
   const target =
     action.physical_name === action.live_physical_name
       ? chalk.dim(`(${action.physical_name}, replaced in place)`)
@@ -55,9 +57,7 @@ function logActions(
 /**
  * Low-level utility to bring the physical search indexes in line with the loaded
  * definitions. Creates and alters them only — filling them is the seed that runs
- * at application start, so an index this creates serves nothing until then.
- *
- * This util should never exit the process implicitly.
+ * at application start.
  */
 export async function migrateSearchIndexes({
   directory,

@@ -17,8 +17,8 @@ export interface SearchFieldDefinition {
   type: SearchFieldKind
   array?: boolean
 
-  // `weight` lands at build time on Meilisearch and Algolia, at query time on
-  // Typesense and Elasticsearch.
+  // `weight` lands at build time on some engines (Meilisearch and Algolia),
+  // and at query time on others (Typesense and Elasticsearch).
   searchable?: boolean | { weight?: number }
 
   filterable?: boolean

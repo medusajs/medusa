@@ -5,9 +5,6 @@ import { SearchFieldDefinition } from "./field"
 import { SearchFilters } from "./filters"
 
 export interface SearchIndexSettings {
-  // Fields matched when `search_options.attributes_to_search_on` is omitted.
-  // Defaults to every field marked `searchable`.
-  default_search_attributes?: string[]
   synonyms?: Record<string, string[]>
   stop_words?: string[]
   typo_tolerance?: {

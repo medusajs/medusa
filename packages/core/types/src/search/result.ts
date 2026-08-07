@@ -36,12 +36,8 @@ export interface SearchResultMetadata {
   skip: number
   take: number
   /**
-   * Treat as an estimate. Most engines only approximate a total — Meilisearch and
-   * Elasticsearch do by default — so nothing should be built on it being exact,
-   * even where a particular provider happens to count precisely.
-   *
-   * `null` when the query asked for `count: "none"` and the provider skipped
-   * counting altogether.
+   * Usually it's an estimate on the count, very few providers return an exact count.
+   * If the user didn't ask for a count, it's `null`.
    */
   count: number | null
   next_cursor?: string

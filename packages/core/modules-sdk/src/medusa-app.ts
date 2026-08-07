@@ -218,10 +218,9 @@ export async function loadModules(args: {
      * The Search Module does not discover its own definitions; the app loads them
      * off the file system (`search/`) and passes them in, like links.
      *
-     * Inline ones go through the registry too, so it holds everything indexed and
-     * not just what came off disk — the ingestion subscriber reads it to know what
-     * to enroll in, having no container at config time. Keyed by name, so a second
-     * boot re-registers instead of doubling the list.
+     * Inline ones go through the registry too, so the registry holds everything indexed and
+     * not just what came off disk. The ingestion subscriber uses the registry to know what
+     * events to listen to.
      */
     if (moduleName === Modules.SEARCH) {
       const configured = (declaration.options?.indexes ??

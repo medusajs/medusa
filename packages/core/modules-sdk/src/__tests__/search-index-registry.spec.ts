@@ -1,9 +1,7 @@
 import { SearchTypes } from "@medusajs/types"
 import { MedusaModule } from "../medusa-module"
 
-const definition = (
-  name: string
-): SearchTypes.SearchIndexDefinition => ({
+const definition = (name: string): SearchTypes.SearchIndexDefinition => ({
   name,
   entity: name,
   fields: { id: { type: "keyword", filterable: true } },
@@ -16,11 +14,8 @@ describe("MedusaModule search index registry", () => {
   })
 
   it("registers definitions and hands them out in registration order", () => {
-    MedusaModule.setSearchIndex(definition("product"), "/app/search/product.ts")
-    MedusaModule.setSearchIndex(
-      definition("customer"),
-      "/app/search/customer.ts"
-    )
+    MedusaModule.setSearchIndex(definition("product"), "/search/product.ts")
+    MedusaModule.setSearchIndex(definition("customer"), "/search/customer.ts")
 
     expect(MedusaModule.getSearchIndexes().map((index) => index.name)).toEqual([
       "product",
@@ -29,8 +24,8 @@ describe("MedusaModule search index registry", () => {
   })
 
   it("keeps every index a single file declares", () => {
-    MedusaModule.setSearchIndex(definition("order"), "/app/search/orders.ts")
-    MedusaModule.setSearchIndex(definition("return"), "/app/search/orders.ts")
+    MedusaModule.setSearchIndex(definition("order"), "/search/orders.ts")
+    MedusaModule.setSearchIndex(definition("return"), "/search/orders.ts")
 
     expect(MedusaModule.getSearchIndexes().map((index) => index.name)).toEqual([
       "order",
@@ -39,22 +34,19 @@ describe("MedusaModule search index registry", () => {
   })
 
   it("replaces rather than duplicates when the same file registers the same name", () => {
-    MedusaModule.setSearchIndex(definition("product"), "/app/search/product.ts")
-    MedusaModule.setSearchIndex(definition("product"), "/app/search/product.ts")
+    MedusaModule.setSearchIndex(definition("product"), "/search/product.ts")
+    MedusaModule.setSearchIndex(definition("product"), "/search/product.ts")
 
     expect(MedusaModule.getSearchIndexes().length).toBe(1)
   })
 
   it("rejects two files claiming the same index name", () => {
-    MedusaModule.setSearchIndex(definition("product"), "/app/search/product.ts")
+    MedusaModule.setSearchIndex(definition("product"), "/search/product.ts")
 
     expect(() =>
-      MedusaModule.setSearchIndex(
-        definition("product"),
-        "/app/search/products.ts"
-      )
+      MedusaModule.setSearchIndex(definition("product"), "/search/products.ts")
     ).toThrow(
-      'Search index "product" is defined twice: in /app/search/product.ts and /app/search/products.ts'
+      'Search index "product" is defined twice: in /search/product.ts and /search/products.ts'
     )
   })
 
@@ -66,10 +58,10 @@ describe("MedusaModule search index registry", () => {
   })
 
   it("rejects a file and the module options claiming the same index name", () => {
-    MedusaModule.setSearchIndex(definition("product"), "/app/search/product.ts")
+    MedusaModule.setSearchIndex(definition("product"), "/search/product.ts")
 
     expect(() => MedusaModule.setSearchIndex(definition("product"))).toThrow(
-      `Search index "product" is defined twice: in /app/search/product.ts and the Search Module's options`
+      `Search index "product" is defined twice: in /search/product.ts and the Search Module's options`
     )
   })
 })
