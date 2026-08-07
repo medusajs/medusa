@@ -322,8 +322,8 @@ export const metadata = {
 
 ## Webhooks Overview      → what webhooks are, how Medusa delivers them
 ## Delivery Details       → headers, signature verification, retries
-## Events                 → summary table linking to every event's section
-## <Resource> Events      → one section per resource, holding its events
+## Webhook Events                 → summary table linking to every event's section
+## Webhook <Resource> Events      → one section per resource, holding its events
 ### <event name>          → one subsection per event
 ```
 

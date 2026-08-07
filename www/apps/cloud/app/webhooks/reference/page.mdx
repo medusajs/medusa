@@ -1,20 +1,29 @@
-import { Note, Table, Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTrigger, TypeList } from "docs-ui"
+import { Note, Table, Tabs, TabsContent, TabsContentWrapper, TabsList, TabsTrigger, TypeList, Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `Webhooks`,
+  title: `Cloud Webhooks Reference`,
 }
 
 # {metadata.title}
 
-In this guide, you'll learn how Medusa delivers webhook events to your application, and you'll find the details and payload of every event that Medusa sends.
+In this reference guide, you'll learn how Medusa delivers webhook events to your application, and you'll find the details and payload of every event that Medusa sends.
+
+<Prerequisites
+  items={[
+    {
+      text: "A Webhook endpoint configured and enabled for your organization. This is the endpoint that receives the events in this reference.",
+      link: "/webhooks/endpoints",
+    }
+  ]}
+/>
 
 ## Webhooks Overview
 
 A webhook is an HTTP request that Medusa sends to an endpoint you own when something happens in your organization, such as a build starting or a deployment finishing. Webhooks let you react to changes in Cloud without polling for them.
 
-Medusa delivers events to the webhook endpoint configured for your organization. If your organization has no endpoint, or its endpoint is disabled, Medusa doesn't send any events.
+Medusa delivers events to the [webhook endpoint configured for your organization](../endpoints/page.mdx). If your organization has no endpoint, or its endpoint is disabled, Medusa doesn't send any events.
 
-Every event is a `POST` request with a JSON body. Your endpoint must respond with a `2xx` status code within ten seconds, otherwise Medusa treats the delivery as failed and retries it.
+Every event is a `POST` request with a JSON body. Your endpoint must respond with a `2xx` status code within ten seconds, otherwise Medusa treats the delivery as failed and retries it. You can track events delivery [in the Cloud dashboard](../events/page.mdx).
 
 <Note>
 
@@ -24,7 +33,7 @@ Refer to the [Webhooks Changelog](./changelog/page.mdx) for dated updates to the
 
 ---
 
-## Delivery Details
+## Webhook Delivery Details
 
 Medusa wraps every event in the same envelope. The `data` property holds the event's payload, which differs per event:
 
@@ -65,7 +74,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
   sectionTitle="Delivery Details"
 />
 
-### Request Headers
+### Webhook Request Headers
 
 Every delivery includes the following headers:
 
@@ -108,7 +117,7 @@ Every delivery includes the following headers:
 
       </Table.Cell>
       <Table.Cell>
-        The signature of the request, which you use to verify that Medusa sent it. Refer to the [Verify a Signature](#verify-a-signature) section for details.
+        The signature of the request, which you use to verify that Medusa sent it. Refer to the [Verify Webhook Signatures](#verify-webhook-signatures) section for details.
         
       </Table.Cell>
     </Table.Row>
@@ -127,7 +136,7 @@ Every delivery includes the following headers:
   </Table.Body>
 </Table>
 
-### Verify a Signature
+### Verify Webhook Signatures
 
 Medusa signs every request with the secret of your webhook endpoint, and sends the signature in the `X-Medusa-Signature` header:
 
@@ -362,7 +371,7 @@ export function isRecent(
 
 Medusa signs every delivery attempt at the time it sends it, so retries of the same event pass this check.
 
-### Retries
+### Webhook Retries
 
 Medusa attempts the first delivery as soon as it queues the event. If your endpoint doesn't respond with a `2xx` status code within ten seconds, Medusa retries the delivery with an exponential backoff, starting at five minutes and doubling after every attempt.
 
@@ -372,7 +381,7 @@ A delivery fails when your endpoint responds with a status code outside the `2xx
 
 ---
 
-## Events
+## Webhook Events
 
 Medusa sends the following events:
 
@@ -441,7 +450,7 @@ Medusa sends the following events:
 
 ---
 
-## Build Events
+## Webhook Build Events
 
 Medusa sends these events related to an environment's builds, which happen after you push a commit to the environment's branch.
 
@@ -453,7 +462,7 @@ Medusa sends this event when it creates a build for an environment, such as afte
 
 <Note>
 
-The following payload is nested under the `data` property of the [event envelope](#delivery-details).
+The following payload is nested under the `data` property of the [event envelope](#webhook-delivery-details).
 
 </Note>
 
@@ -861,7 +870,7 @@ Medusa sends this event when a build changes, such as when it starts running or 
 
 ---
 
-## Deployment Events
+## Webhook Deployment Events
 
 Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
 
