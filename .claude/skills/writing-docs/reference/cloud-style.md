@@ -144,7 +144,7 @@ Put each cell's content on its own line, indented one level deeper than its tag.
 ```mdx
       <Table.Cell>
 
-      [`deployment.succeeded`](#deploymentsucceeded)
+      [`deployment.created`](#deploymentcreated)
 
       </Table.Cell>
 ```
@@ -320,54 +320,68 @@ export const metadata = {
 
 # {metadata.title}
 
-## Webhooks Overview      → what webhooks are, how Cloud delivers them
+## Webhooks Overview      → what webhooks are, how Medusa delivers them
 ## Delivery Details       → headers, signature verification, retries
-## Events                 → summary table linking to each event's section
-## <event name>           → one section per event
+## Events                 → summary table linking to every event's section
+## <Resource> Events      → one section per resource, holding its events
+### <event name>          → one subsection per event
 ```
 
-Each event section follows this shape, with `---` dividers between events:
+Events are grouped by the resource they belong to, taken from the part of the event name before the dot. For example, `build.created` and `build.updated` both live under `## Build Events`. Separate resource groups with `---` dividers, but not the events within a group.
+
+Each resource group follows this shape:
 
 ````mdx
-## deployment.succeeded
+## Deployment Events
 
-Cloud sends this event when a deployment of an environment finishes successfully.
+Medusa sends these events related to an environment's deployments, which happen after a build succeeds.
+
+### deployment.created
+
+Medusa sends this event when it creates a deployment for an environment.
 
 <Note title="Changes">
 
-- Cloud removed the `data.commit_sha` property on August 4, 2026.
+- Medusa removed the `data.commit_sha` property on August 4, 2026.
 
 </Note>
 
-### Payload
+#### Payload
 
 <TypeList
   types={[
     {
-      name: "event",
-      type: "`string`",
-      description: `The name of the event.`,
+      name: "deployment",
+      type: "`object`",
+      description: `The details of the deployment.`,
     },
   ]}
-  sectionTitle="deployment.succeeded"
+  sectionTitle="deployment.created"
 />
 
-### Example Payload
+#### Example Payload
 
 ```json
 {
-  "event": "deployment.succeeded"
+  "type": "deployment.created"
 }
 ```
+
+### deployment.updated
+
+Medusa sends this event when a deployment finishes.
 ````
 
 **Rules:**
 
-- The `##` heading is the event name exactly as delivered, in code-free plain text (`## deployment.succeeded`, not `` ## `deployment.succeeded` ``), so anchors stay stable
+- The `##` group heading is the resource in title case, followed by "Events", such as `## Build Events`. It starts with one sentence covering the whole group
+- The `###` heading is the event name exactly as delivered, in code-free plain text (`### deployment.created`, not `` ### `deployment.created` ``), so anchors stay stable
+- Order groups alphabetically by their heading, and order events alphabetically within a group. The `## Events` table follows the same order
 - `sectionTitle` on `TypeList` matches the event name
 - `TypeList` `type` values are wrapped in backticks inside a double-quoted string (`` type: "`string`" ``), and `description` values use template literals
 - Nest object properties with the `children` array instead of flattening them into `data.x` names
-- The `## Events` table lists every event with a link to its section anchor. Anchors strip dots, so `deployment.succeeded` links to `#deploymentsucceeded`
+- The `## Events` table lists every event, across all groups, with a link to its section anchor. Anchors strip dots, so `deployment.created` links to `#deploymentcreated`
+- When you remove the last event of a group, remove the group's `##` heading and its intro too
 
 ### Changelog Page
 
@@ -384,8 +398,8 @@ Webhook changes are **dated, not versioned**. Never write a version number on ei
 When an event's payload changes, add a `<Note title="Changes">` block after the section intro of that event, listing the change and the date it went live. Write these actively, since Vale flags passive voice:
 
 ```mdx
-- Cloud removed the `data.commit_sha` property on August 4, 2026.
-- Cloud added the `data.build_id` property on August 4, 2026.
+- Medusa removed the `data.commit_sha` property on August 4, 2026.
+- Medusa added the `data.build_id` property on August 4, 2026.
 ```
 
 Keep previous entries in the note and add new bullet points at the top.

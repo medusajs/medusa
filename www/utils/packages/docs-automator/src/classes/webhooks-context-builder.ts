@@ -200,7 +200,7 @@ export class WebhooksContextBuilder {
           ? "removed"
           : "changed"
 
-    const sentence = `Cloud ${verb} the \`${change.property}\` property on ${changelogDate}.`
+    const sentence = `Medusa ${verb} the \`${change.property}\` property on ${changelogDate}.`
 
     return change.description ? `${sentence} ${change.description}` : sentence
   }
@@ -212,8 +212,9 @@ export class WebhooksContextBuilder {
     changelogDate: string
   ): string {
     const lines = [`## ${changelogDate}`, ""]
+    const sorted = [...events].sort((a, b) => a.event.localeCompare(b.event))
 
-    for (const event of events) {
+    for (const event of sorted) {
       lines.push(`### ${event.event}`, "")
 
       if (event.changeType === "added") {
@@ -223,7 +224,7 @@ export class WebhooksContextBuilder {
         lines.push(`- Added the \`${event.event}\` event.${suffix}`)
       } else if (event.changeType === "removed") {
         lines.push(
-          `- Removed the \`${event.event}\` event. Cloud no longer delivers it.`
+          `- Removed the \`${event.event}\` event. Medusa no longer delivers it.`
         )
       }
 
@@ -291,7 +292,7 @@ export class WebhooksContextBuilder {
   private buildSkillSection(): string {
     return `## Instructions
 
-Use the /writing-docs skill before making any documentation changes. Load the \`reference/cloud-style.md\` reference file from that skill. It contains the rules and patterns for writing Medusa Cloud documentation correctly, including the Webhooks section that describes the structure of the pages you're about to update.`
+Use the /writing-docs skill before making any documentation changes. Load the \`reference/cloud-style.md\` reference file from that skill. It contains the rules and patterns for writing Cloud documentation correctly, including the Webhooks section that describes the structure of the pages you're about to update.`
   }
 
   private buildTaskSection(changelogDate: string): string {
@@ -301,11 +302,26 @@ Cloud's webhook event delivery changed in production on **${changelogDate}**. Th
 
 Your job is to:
 1. Load the /writing-docs skill and read \`reference/cloud-style.md\`
-2. Update the webhooks reference page at \`${REFERENCE_PAGE}\` so it documents every event exactly as described below
+2. Update the webhooks reference page at \`${REFERENCE_PAGE}\` so it documents every event exactly as described below, keeping events grouped by resource
 3. Add the changelog entry to \`${CHANGELOG_PAGE}\`
-4. Keep the \`## Events\` summary table on the reference page in sync: add a row for each new event, remove the row of each removed event, and update descriptions when they changed
+4. Keep the \`## Events\` summary table on the reference page in sync: add a row for each new event, remove the row of each removed event, and update descriptions when they changed. Keep its rows in alphabetical order by event name
 
 Webhook docs are dated, not versioned. Never introduce version numbers, and always use the date **${changelogDate}** for this release.`
+  }
+
+  /**
+   * The reference page groups events by the resource they belong to, which is
+   * the part of the event name before the dot. For example, `build.created`
+   * belongs under the `## Build Events` heading.
+   */
+  private groupTitle(eventName: string): string {
+    const resource = eventName.split(".")[0]
+    const words = resource
+      .split(/[-_]/)
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+
+    return `${words.join(" ")} Events`
   }
 
   private buildEventsSection(
@@ -318,29 +334,65 @@ Webhook docs are dated, not versioned. Never introduce version numbers, and alwa
 No structured event changes were reported in this release. Only apply the prose changes described below, if any.`
     }
 
-    const blocks = events.map((event) =>
-      this.buildEventBlock(event, changelogDate)
-    )
+    // Keep events of the same resource together, alphabetically within each
+    // group, so the prompt lists them in the order the page uses
+    const groups = new Map<string, WebhookEvent[]>()
+    for (const event of events) {
+      const title = this.groupTitle(event.event)
+      groups.set(title, [...(groups.get(title) ?? []), event])
+    }
+
+    const sortedGroups = [...groups.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(
+        ([title, groupEvents]) =>
+          [
+            title,
+            [...groupEvents].sort((a, b) => a.event.localeCompare(b.event)),
+          ] as const
+      )
+
+    const blocks: string[] = []
+    for (const [title, groupEvents] of sortedGroups) {
+      blocks.push(
+        [
+          `### ${title}`,
+          ``,
+          `These events belong under the \`## ${title}\` heading on the reference page.`,
+        ].join("\n")
+      )
+
+      for (const event of groupEvents) {
+        blocks.push(this.buildEventBlock(event, changelogDate))
+      }
+    }
 
     return [
       `## Webhook Events`,
       ``,
-      `Each event below is a section on the reference page, using the event name as its \`##\` heading (for example, \`## ${events[0].event}\`). Sections are separated by \`---\` dividers and ordered so that related events stay together.`,
+      `The reference page groups events by the resource they belong to. Each group is a \`##\` heading, such as \`## ${this.groupTitle(events[0].event)}\`, with a one-sentence intro and one \`###\` subsection per event. Separate groups with \`---\` dividers, but not the events within a group.`,
+      ``,
+      `If a group heading doesn't exist yet, create it and write its intro sentence. Order groups alphabetically by their heading, and order events alphabetically within a group.`,
       ``,
       blocks.join("\n\n"),
     ].join("\n")
   }
 
   private buildEventBlock(event: WebhookEvent, changelogDate: string): string {
-    const lines = [`### \`${event.event}\` (${event.changeType})`, ``]
+    const lines = [`#### \`${event.event}\` (${event.changeType})`, ``]
 
     if (event.changeType === "removed") {
       lines.push(
-        `Remove the \`## ${event.event}\` section from \`${REFERENCE_PAGE}\`, along with its row in the \`## Events\` table. Do not keep a placeholder section for it. The removal is recorded in the changelog entry instead.`
+        `Remove the \`### ${event.event}\` subsection from \`${REFERENCE_PAGE}\`, along with its row in the \`## Events\` table. If it was the last event of the \`## ${this.groupTitle(event.event)}\` group, remove that heading and its intro too. Do not keep a placeholder section for it. The removal is recorded in the changelog entry instead.`
       )
 
       return lines.join("\n")
     }
+
+    lines.push(
+      `Use \`### ${event.event}\` as the subsection heading, under the \`## ${this.groupTitle(event.event)}\` heading.`,
+      ``
+    )
 
     if (event.description) {
       lines.push(
@@ -359,7 +411,7 @@ No structured event changes were reported in this release. Only apply the prose 
     const typeList = this.renderTypeList(event)
     if (typeList) {
       lines.push(
-        `**Payload.** Place this under a \`### Payload\` heading, replacing the existing \`TypeList\` block for this event if there is one. Paste it exactly as-is:`,
+        `**Payload.** Place this under a \`#### Payload\` heading, replacing the existing \`TypeList\` block for this event if there is one. Paste it exactly as-is:`,
         ``,
         "```mdx",
         typeList,
@@ -371,7 +423,7 @@ No structured event changes were reported in this release. Only apply the prose 
     const example = this.renderExample(event)
     if (example) {
       lines.push(
-        `**Example payload.** Place this under an \`### Example Payload\` heading, replacing the existing example if there is one. Paste it exactly as-is:`,
+        `**Example payload.** Place this under an \`#### Example Payload\` heading, replacing the existing example if there is one. Paste it exactly as-is:`,
         ``,
         "````mdx",
         example,
@@ -386,7 +438,7 @@ No structured event changes were reported in this release. Only apply the prose 
     )
     if (note) {
       lines.push(
-        `**Changes note.** Place this directly after the section intro, above the \`### Payload\` heading. If the section already has a \`Changes\` note, add these bullet points at the top of the existing note and keep the previous ones. Paste it exactly as-is:`,
+        `**Changes note.** Place this directly after the section intro, above the \`#### Payload\` heading. If the section already has a \`Changes\` note, add these bullet points at the top of the existing note and keep the previous ones. Paste it exactly as-is:`,
         ``,
         "```mdx",
         note,
@@ -437,10 +489,11 @@ ${entry}`
 - \`www/apps/cloud/sidebar.mjs\` — only if a page is missing from the sidebar
 
 **Reference page structure:**
-- \`## Webhooks Overview\` — what webhooks are and how Cloud delivers them
+- \`## Webhooks Overview\` — what webhooks are and how Medusa delivers them
 - \`## Delivery Details\` — headers, signature verification, and retries
-- \`## Events\` — a summary table of every event, linking to its section
-- One \`## <event name>\` section per event, each with a \`### Payload\` (\`TypeList\`) and an \`### Example Payload\` (JSON code block)`
+- \`## Events\` — a summary table of every event, across all groups, linking to its section
+- One \`## <Resource> Events\` section per resource, such as \`## Build Events\`, each starting with a one-sentence intro
+- Within a group, one \`### <event name>\` subsection per event, each with a \`#### Payload\` (\`TypeList\`) and a \`#### Example Payload\` (JSON code block)`
   }
 
   private buildConstraintsSection(): string {
@@ -453,7 +506,8 @@ These are absolute rules. Violating them will cause the workflow to fail:
 3. **Do not run \`yarn prep\` or \`yarn lint:content\`** — these run automatically after your session ends
 4. **Paste the provided MDX blocks verbatim.** Never edit a payload schema, example payload, or changelog entry, and never infer properties that aren't listed
 5. **Never use version numbers for webhooks.** Webhook changes are dated
-6. **Do not document internal platform details.** Only document what a customer receiving webhooks can observe
-7. **If a described change is too vague to document accurately, skip it** rather than guess`
+6. **Write "Medusa" as the subject, never "Cloud"**, for example "Medusa sends this event". Reserve "Cloud" for the platform as a place, such as "changes in Cloud"
+7. **Do not document internal platform details.** Only document what a customer receiving webhooks can observe
+8. **If a described change is too vague to document accurately, skip it** rather than guess`
   }
 }

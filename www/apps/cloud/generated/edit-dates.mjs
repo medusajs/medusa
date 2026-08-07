@@ -118,6 +118,6 @@ export const generatedEditDates = {
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
   "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
-  "app/webhooks/changelog/page.mdx": "2026-08-04T10:50:24.622Z",
-  "app/webhooks/page.mdx": "2026-08-04T10:50:18.528Z"
+  "app/webhooks/changelog/page.mdx": "2026-08-07T07:14:49.393Z",
+  "app/webhooks/page.mdx": "2026-08-07T07:18:41.956Z"
 }
