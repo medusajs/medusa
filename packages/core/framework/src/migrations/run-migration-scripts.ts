@@ -47,6 +47,13 @@ export class MigrationScriptsMigrator extends Migrator {
         const claim = await this.#claimMigration(scriptName)
         if (!claim.claimed) {
           if (claim.reason === "running-elsewhere") {
+            /**
+             * When a previous run died without closing its connection cleanly,
+             * Postgres keeps that connection, and the advisory lock it holds,
+             * until it detects the half-open connection. Until then the script
+             * is reported as running elsewhere. It is picked up again by a
+             * later run, once the connection has been reaped.
+             */
             logger.info(
               `Skipping migration script ${script}. It is being executed by another process`
             )
@@ -54,7 +61,7 @@ export class MigrationScriptsMigrator extends Migrator {
           continue
         }
 
-        if (claim.interrupted) {
+        if (claim.wasInterrupted) {
           logger.warn(
             `Migration script ${script} did not complete during a previous run and is being executed again`
           )
@@ -157,7 +164,7 @@ export class MigrationScriptsMigrator extends Migrator {
     /**
      * Whether a previous run of this script was interrupted before completing.
      */
-    interrupted?: boolean
+    wasInterrupted?: boolean
     reason?: "already-executed" | "running-elsewhere"
     release: () => Promise<void>
   }> {
@@ -185,12 +192,16 @@ export class MigrationScriptsMigrator extends Migrator {
     }
 
     try {
+      /**
+       * `pg_try_advisory_lock` never waits. It either takes the lock and
+       * returns true, or returns false when someone else is holding it.
+       */
       const lock = await connection.query(
-        "SELECT pg_try_advisory_lock($1) AS locked",
+        "SELECT pg_try_advisory_lock($1) AS acquired",
         [lockKey]
       )
 
-      if (!lock.rows[0].locked) {
+      if (!lock.rows[0].acquired) {
         await release(false)
         return {
           claimed: false,
@@ -201,31 +212,16 @@ export class MigrationScriptsMigrator extends Migrator {
 
       /**
        * The lock is held, so no other process can be claiming this script at
-       * the same time and the existing record can be read safely. A record
-       * without a `finished_at` belongs to a run that was interrupted.
+       * the same time and the existing record can be read safely.
        */
       const existing = await connection.query(
         `SELECT finished_at FROM ${this.migration_table_name} WHERE script_name = $1`,
         [scriptName]
       )
 
-      const interrupted =
-        !!existing.rows.length && !existing.rows[0].finished_at
+      const record = existing.rows[0]
 
-      /**
-       * The record is inserted, or re-claimed when a previous run left it
-       * without a `finished_at`. No row is returned when the script has
-       * already been executed to completion.
-       */
-      const claim = await connection.query(
-        `INSERT INTO ${this.migration_table_name} (script_name) VALUES ($1)
-         ON CONFLICT (script_name) DO UPDATE SET created_at = NOW()
-         WHERE ${this.migration_table_name}.finished_at IS NULL
-         RETURNING id`,
-        [scriptName]
-      )
-
-      if (!claim.rows.length) {
+      if (record?.finished_at) {
         await release(true)
         return {
           claimed: false,
@@ -234,7 +230,24 @@ export class MigrationScriptsMigrator extends Migrator {
         }
       }
 
-      return { claimed: true, interrupted, release: () => release(true) }
+      /**
+       * A record without a `finished_at` belongs to a run that was interrupted.
+       */
+      const wasInterrupted = !!record
+
+      /**
+       * The record is inserted, or re-claimed when a previous run left it
+       * without a `finished_at`. The `WHERE` clause keeps the statement safe on
+       * its own, so a finished record can never be re-claimed by it.
+       */
+      await connection.query(
+        `INSERT INTO ${this.migration_table_name} (script_name) VALUES ($1)
+         ON CONFLICT (script_name) DO UPDATE SET created_at = NOW()
+         WHERE ${this.migration_table_name}.finished_at IS NULL`,
+        [scriptName]
+      )
+
+      return { claimed: true, wasInterrupted, release: () => release(true) }
     } catch (error) {
       await release(true)
       throw error

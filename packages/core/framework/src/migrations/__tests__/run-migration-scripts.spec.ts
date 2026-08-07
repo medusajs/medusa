@@ -27,25 +27,22 @@ const mockLockService = {
 /**
  * Programs the connection used to claim a migration.
  *
- * @param locked - Whether the advisory lock is acquired. `false` means another
- * process is running the script.
+ * @param acquired - Whether the advisory lock is acquired. `false` means
+ * another process is running the script.
  * @param existingRows - The existing record for the script. An empty array
- * means the script has never been run.
- * @param claimRows - The rows returned by the claim. An empty array means the
- * script has already been executed.
+ * means the script has never been run. A record with a `finished_at` means it
+ * has already been executed.
  */
 const mockClaim = ({
-  locked = true,
+  acquired = true,
   existingRows = [],
-  claimRows = [{ id: 1 }],
 }: {
-  locked?: boolean
+  acquired?: boolean
   existingRows?: { finished_at: Date | null }[]
-  claimRows?: { id: number }[]
 } = {}) => {
   mockConnection.query.mockImplementation((async (sql: string) => {
     if (sql.includes("pg_try_advisory_lock")) {
-      return { rows: [{ locked }] }
+      return { rows: [{ acquired }] }
     }
     if (sql.includes("pg_advisory_unlock")) {
       return { rows: [{ pg_advisory_unlock: true }] }
@@ -53,7 +50,7 @@ const mockClaim = ({
     if (sql.includes("SELECT finished_at")) {
       return { rows: existingRows }
     }
-    return { rows: claimRows }
+    return { rows: [] }
   }) as never)
 }
 
@@ -174,7 +171,7 @@ describe("MigrationScriptsMigrator", () => {
         .mockReturnValue({ getSeconds: () => 1 })
 
       // the advisory lock is held by another process
-      mockClaim({ locked: false })
+      mockClaim({ acquired: false })
 
       const mockScript = jest.fn()
       jest.mock(
@@ -211,8 +208,8 @@ describe("MigrationScriptsMigrator", () => {
         .spyOn(migrator as any, "trackDuration")
         .mockReturnValue({ getSeconds: () => 1 })
 
-      // the claim does not return a row, meaning the script is already finished
-      mockClaim({ claimRows: [] })
+      // the record already has a finished_at, so the script is done
+      mockClaim({ existingRows: [{ finished_at: new Date() }] })
 
       const mockScript = jest.fn()
       jest.mock(
@@ -226,10 +223,17 @@ describe("MigrationScriptsMigrator", () => {
       await migrator.run([scriptPath])
 
       expect(mockScript).not.toHaveBeenCalled()
+      // the finished record is left untouched
+      expect(
+        claimQueries().some((sql) =>
+          sql.includes("INSERT INTO script_migrations")
+        )
+      ).toBe(false)
       expect(mockPgConnection.raw).not.toHaveBeenCalledWith(
         expect.stringContaining("SET finished_at"),
         expect.anything()
       )
+      expect(mockClient.releaseConnection).toHaveBeenCalledWith(mockConnection)
     })
 
     it("should re-run a migration that was interrupted during a previous run", async () => {
