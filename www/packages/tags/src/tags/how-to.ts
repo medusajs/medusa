@@ -32,6 +32,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
   },
   {
+    "title": "Restrict Return Creation",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation"
+  },
+  {
     "title": "Filter Products",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },

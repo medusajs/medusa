@@ -388,6 +388,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/secure-order-retrieval"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/secure-return-creation/page.mdx",
+    "pathname": "/commerce-modules/order/secure-return-creation"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/tax-lines/page.mdx",
     "pathname": "/commerce-modules/order/tax-lines"
   },
