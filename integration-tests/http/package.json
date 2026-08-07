@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage",
-    "test:integration:chunk": "jest --silent --no-cache --bail --forceExit",
+    "test:integration": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "NODE_OPTIONS=\"--experimental-vm-modules\" jest --silent --no-cache --bail --forceExit",
     "build": "tsc --allowJs --outDir ./dist"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/core-flows": "workspace:*",
     "@medusajs/customer": "workspace:^",
+    "@medusajs/essentials-plugin": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/event-bus-redis": "workspace:*",
     "@medusajs/framework": "workspace:*",

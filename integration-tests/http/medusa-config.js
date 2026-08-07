@@ -81,7 +81,7 @@ const modules = {
           id: "local",
           options: {
             name: "Local Notification Provider",
-            channels: ["feed"],
+            channels: ["feed", "email"],
           },
         },
       ],
@@ -151,6 +151,13 @@ module.exports = defineConfig({
     {
       resolve: "@medusajs/loyalty-plugin",
       options: {},
+    },
+    {
+      resolve: "@medusajs/essentials-plugin",
+      options: {
+        storeName: "Acme",
+        senderEmail: "noreply@acme.com",
+      },
     },
   ],
 })
