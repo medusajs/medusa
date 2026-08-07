@@ -1,6 +1,6 @@
 ---
-"@medusajs/essentials-plugin": patch
+"@medusajs/starter-kit-plugin": patch
 "integration-tests-http": patch
 ---
 
-add essentials plugin
+add starter kit plugin

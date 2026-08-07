@@ -3993,42 +3993,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/essentials-plugin@workspace:^, @medusajs/essentials-plugin@workspace:packages/plugins/essentials":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/essentials-plugin@workspace:packages/plugins/essentials"
-  dependencies:
-    "@medusajs/admin-sdk": 2.18.0
-    "@medusajs/cli": 2.18.0
-    "@medusajs/framework": 2.18.0
-    "@medusajs/medusa": 2.18.0
-    "@medusajs/test-utils": 2.18.0
-    "@medusajs/types": 2.18.0
-    "@react-email/components": 0.3.3
-    "@react-email/preview-server": 4.2.5
-    "@react-email/render": 1.1.4
-    "@swc/core": 1.5.7
-    "@types/node": ^20.0.0
-    "@types/react": ^18.3.2
-    "@types/react-dom": ^18.2.25
-    cross-env: ^7.0.3
-    react: ^18.3.1
-    react-dom: ^18.3.1
-    react-email: 4.2.5
-    ts-node: ^10.9.2
-    typescript: ^5.7.3
-  peerDependencies:
-    "@medusajs/cli": 2.18.0
-    "@medusajs/framework": 2.18.0
-    "@medusajs/medusa": 2.18.0
-    "@medusajs/test-utils": 2.18.0
-  peerDependenciesMeta:
-    "@medusajs/cli":
-      optional: true
-    "@medusajs/test-utils":
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@medusajs/event-bus-local@2.18.0, @medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
@@ -4602,6 +4566,42 @@ __metadata:
     "@medusajs/test-utils": 2.18.0
   peerDependencies:
     "@medusajs/framework": 2.18.0
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/starter-kit-plugin@workspace:^, @medusajs/starter-kit-plugin@workspace:packages/plugins/starter-kit":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/starter-kit-plugin@workspace:packages/plugins/starter-kit"
+  dependencies:
+    "@medusajs/admin-sdk": 2.18.0
+    "@medusajs/cli": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/medusa": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+    "@medusajs/types": 2.18.0
+    "@react-email/components": 0.3.3
+    "@react-email/preview-server": 4.2.5
+    "@react-email/render": 1.1.4
+    "@swc/core": 1.5.7
+    "@types/node": ^20.0.0
+    "@types/react": ^18.3.2
+    "@types/react-dom": ^18.2.25
+    cross-env: ^7.0.3
+    react: ^18.3.1
+    react-dom: ^18.3.1
+    react-email: 4.2.5
+    ts-node: ^10.9.2
+    typescript: ^5.7.3
+  peerDependencies:
+    "@medusajs/cli": 2.18.0
+    "@medusajs/framework": 2.18.0
+    "@medusajs/medusa": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+  peerDependenciesMeta:
+    "@medusajs/cli":
+      optional: true
+    "@medusajs/test-utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -19631,7 +19631,6 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/core-flows": "workspace:*"
     "@medusajs/customer": "workspace:^"
-    "@medusajs/essentials-plugin": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/event-bus-redis": "workspace:*"
     "@medusajs/framework": "workspace:*"
@@ -19645,6 +19644,7 @@ __metadata:
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
     "@medusajs/region": "workspace:^"
+    "@medusajs/starter-kit-plugin": "workspace:^"
     "@medusajs/stock-location": "workspace:^"
     "@medusajs/store": "workspace:^"
     "@medusajs/tax": "workspace:^"

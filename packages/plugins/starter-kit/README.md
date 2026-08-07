@@ -8,7 +8,7 @@
   </a>
 </p>
 <h1 align="center">
-  Medusa Essentials Plugin
+  Medusa Starter Kit Plugin
 </h1>
 
 Default features for starters.
@@ -31,7 +31,7 @@ A [Notification Module Provider](https://docs.medusajs.com/resources/infrastruct
 ## Installation
 
 ```bash
-yarn add @medusajs/essentials-plugin
+yarn add @medusajs/starter-kit-plugin
 ```
 
 ```ts title="medusa-config.ts"
@@ -39,7 +39,7 @@ module.exports = defineConfig({
   // ...
   plugins: [
     {
-      resolve: "@medusajs/essentials-plugin",
+      resolve: "@medusajs/starter-kit-plugin",
       options: {
         features: "all",
         storeName: "Acme",
@@ -53,7 +53,7 @@ module.exports = defineConfig({
 
 | Option      | Type                                     | Default | Description                                                                                  |
 | ----------- | ---------------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
-| `features`  | `"all" \| "none" \| EssentialsFeature[]` | `"all"` | Which email features to enable                                                               |
+| `features`  | `"all" \| "none" \| StarterKitFeature[]` | `"all"` | Which email features to enable                                                               |
 | `storeName` | `string`                                 | —       | Optional display name used in email copy                                                     |
 
 ## Compatibility

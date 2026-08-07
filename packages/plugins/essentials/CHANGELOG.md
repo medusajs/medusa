@@ -1,1 +1,0 @@
-# @medusajs/essentials-plugin

@@ -1,13 +1,13 @@
 {
-  "name": "@medusajs/essentials-plugin",
+  "name": "@medusajs/starter-kit-plugin",
   "version": "2.18.0",
-  "description": "Medusa Plugin: Essentials - default invite and password reset email notifications",
+  "description": "Medusa Plugin: Starter Kit - default invite and password reset email notifications",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
-    "directory": "packages/plugins/essentials"
+    "directory": "packages/plugins/starter-kit"
   },
   "bugs": {
     "url": "https://github.com/medusajs/medusa/issues"

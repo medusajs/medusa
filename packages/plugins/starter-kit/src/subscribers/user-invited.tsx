@@ -9,7 +9,7 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { render } from "@react-email/render"
-import { IEssentialsModuleService, PluginModule } from "../types"
+import { IStarterKitModuleService, PluginModule } from "../types"
 import { InviteUserEmail } from "../utils/email-templates/invite-user"
 import { getAdminUrl } from "../utils/utils"
 
@@ -17,10 +17,10 @@ export default async function userInvitedHandler({
   event: { data, name },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const essentials = container.resolve<IEssentialsModuleService>(
-    PluginModule.ESSENTIALS
+  const starterKit = container.resolve<IStarterKitModuleService>(
+    PluginModule.STARTER_KIT
   )
-  if (!(await essentials.isFeatureEnabled("email.invite"))) {
+  if (!(await starterKit.isFeatureEnabled("email.invite"))) {
     return
   }
 
@@ -46,7 +46,7 @@ export default async function userInvitedHandler({
   }
 
   const inviteUrl = `${getAdminUrl(config)}/invite?token=${invite.token}`
-  const storeName = (await essentials.getStoreName()) ?? "our store"
+  const storeName = (await starterKit.getStoreName()) ?? "our store"
   const html = await render(
     <InviteUserEmail
       inviteUrl={inviteUrl}
@@ -56,7 +56,7 @@ export default async function userInvitedHandler({
   )
 
   await notificationModuleService.createNotifications({
-    from: await essentials.getSenderEmail(),
+    from: await starterKit.getSenderEmail(),
     to: invite.email,
     channel: "email",
     trigger_type: name,
@@ -72,6 +72,6 @@ export default async function userInvitedHandler({
 export const config: SubscriberConfig = {
   event: [InviteWorkflowEvents.CREATED, InviteWorkflowEvents.RESENT],
   context: {
-    subscriberId: "essentials-user-invited",
+    subscriberId: "starter-kit-user-invited",
   },
 }

@@ -153,7 +153,7 @@ module.exports = defineConfig({
       options: {},
     },
     {
-      resolve: "@medusajs/essentials-plugin",
+      resolve: "@medusajs/starter-kit-plugin",
       options: {
         storeName: "Acme",
         senderEmail: "noreply@acme.com",

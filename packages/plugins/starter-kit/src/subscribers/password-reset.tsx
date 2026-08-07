@@ -9,7 +9,7 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { render } from "@react-email/render"
-import { IEssentialsModuleService, PluginModule } from "../types"
+import { IStarterKitModuleService, PluginModule } from "../types"
 import { PasswordResetEmail } from "../utils/email-templates/password-reset"
 import { getAdminUrl } from "../utils/utils"
 
@@ -25,10 +25,10 @@ export default async function passwordResetHandler({
   },
   container,
 }: SubscriberArgs<PasswordResetEventData>) {
-  const essentials = container.resolve<IEssentialsModuleService>(
-    PluginModule.ESSENTIALS
+  const starterKit = container.resolve<IStarterKitModuleService>(
+    PluginModule.STARTER_KIT
   )
-  if (!(await essentials.isFeatureEnabled("email.password-reset"))) {
+  if (!(await starterKit.isFeatureEnabled("email.password-reset"))) {
     return
   }
 
@@ -46,7 +46,7 @@ export default async function passwordResetHandler({
   const resetUrl = `${urlPrefix}/reset-password?token=${token}&email=${encodeURIComponent(
     email
   )}`
-  const storeName = (await essentials.getStoreName()) ?? "our store"
+  const storeName = (await starterKit.getStoreName()) ?? "our store"
   const html = await render(
     <PasswordResetEmail
       resetUrl={resetUrl}
@@ -56,7 +56,7 @@ export default async function passwordResetHandler({
   )
 
   await notificationModuleService.createNotifications({
-    from: await essentials.getSenderEmail(),
+    from: await starterKit.getSenderEmail(),
     to: email,
     channel: "email",
     trigger_type: AuthWorkflowEvents.PASSWORD_RESET,
@@ -70,6 +70,6 @@ export default async function passwordResetHandler({
 export const config: SubscriberConfig = {
   event: AuthWorkflowEvents.PASSWORD_RESET,
   context: {
-    subscriberId: "essentials-password-reset",
+    subscriberId: "starter-kit-password-reset",
   },
 }

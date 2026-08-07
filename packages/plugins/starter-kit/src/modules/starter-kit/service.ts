@@ -1,30 +1,30 @@
 import { MedusaService } from "@medusajs/framework/utils"
-import { EssentialsFeature, EssentialsPluginOptions } from "../../types"
+import { StarterKitFeature, StarterKitPluginOptions } from "../../types"
 
 type RequireFields<T, K extends keyof T> = T & Required<Pick<T, K>>
 
-class EssentialsModuleService extends MedusaService({}) {
-  private options: RequireFields<EssentialsPluginOptions, "features">
+class StarterKitModuleService extends MedusaService({}) {
+  private options: RequireFields<StarterKitPluginOptions, "features">
 
   constructor(
     dependencies: Record<string, unknown>,
-    options: EssentialsPluginOptions = {}
+    options: StarterKitPluginOptions = {}
   ) {
     super(dependencies, options)
     this.options = {
       features:
         options.features ??
-        (process.env.MEDUSA_ESSENTIALS_FEATURES?.split(
+        (process.env.MEDUSA_STARTER_KIT_FEATURES?.split(
           ","
-        ) as EssentialsFeature[]) ??
+        ) as StarterKitFeature[]) ??
         "all",
-      storeName: options.storeName ?? process.env.MEDUSA_ESSENTIALS_STORE_NAME,
+      storeName: options.storeName ?? process.env.MEDUSA_STARTER_KIT_STORE_NAME,
       senderEmail:
-        options.senderEmail ?? process.env.MEDUSA_ESSENTIALS_SENDER_EMAIL,
+        options.senderEmail ?? process.env.MEDUSA_STARTER_KIT_SENDER_EMAIL,
     }
   }
 
-  async isFeatureEnabled(feature: EssentialsFeature) {
+  async isFeatureEnabled(feature: StarterKitFeature) {
     return (
       this.options.features === "all" || this.options.features.includes(feature)
     )
@@ -39,4 +39,4 @@ class EssentialsModuleService extends MedusaService({}) {
   }
 }
 
-export default EssentialsModuleService
+export default StarterKitModuleService

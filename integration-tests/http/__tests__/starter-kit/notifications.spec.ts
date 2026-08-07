@@ -34,7 +34,7 @@ medusaIntegrationTestRunner({
       jest.restoreAllMocks()
     })
 
-    describe("Essentials plugin notifications", () => {
+    describe("Starter kit plugin notifications", () => {
       it("sends an invite email when an invite is created", async () => {
         const createSpy = jest.spyOn(
           notificationService,
@@ -49,7 +49,7 @@ medusaIntegrationTestRunner({
           await api.post(
             "/admin/invites",
             {
-              email: "essentials-invite@medusa.js",
+              email: "starter-kit-invite@medusa.js",
             },
             adminHeaders
           )
@@ -62,13 +62,13 @@ medusaIntegrationTestRunner({
         ).data.notifications
 
         const notification = notifications.find(
-          (n) => n.to === "essentials-invite@medusa.js"
+          (n) => n.to === "starter-kit-invite@medusa.js"
         )
 
         expect(notification).toEqual(
           expect.objectContaining({
             from: "noreply@acme.com",
-            to: "essentials-invite@medusa.js",
+            to: "starter-kit-invite@medusa.js",
             channel: "email",
             trigger_type: InviteWorkflowEvents.CREATED,
             resource_id: invite.id,
@@ -144,7 +144,7 @@ medusaIntegrationTestRunner({
         )
 
         await api.post("/auth/customer/emailpass/register", {
-          email: "essentials-customer@medusa.js",
+          email: "starter-kit-customer@medusa.js",
           password: "secret_password",
         })
 
@@ -156,7 +156,7 @@ medusaIntegrationTestRunner({
         const response = await api.post(
           "/auth/customer/emailpass/reset-password",
           {
-            identifier: "essentials-customer@medusa.js",
+            identifier: "starter-kit-customer@medusa.js",
           }
         )
 
@@ -170,13 +170,13 @@ medusaIntegrationTestRunner({
         const notification = notifications.find(
           (n) =>
             n.trigger_type === AuthWorkflowEvents.PASSWORD_RESET &&
-            n.to === "essentials-customer@medusa.js"
+            n.to === "starter-kit-customer@medusa.js"
         )
 
         expect(notification).toEqual(
           expect.objectContaining({
             from: "noreply@acme.com",
-            to: "essentials-customer@medusa.js",
+            to: "starter-kit-customer@medusa.js",
             channel: "email",
             trigger_type: AuthWorkflowEvents.PASSWORD_RESET,
           })
@@ -186,7 +186,7 @@ medusaIntegrationTestRunner({
             content: expect.objectContaining({
               subject: "Reset your password",
               html: expect.stringMatching(
-                /Acme[\s\S]*\/app\/reset-password\?token=.+&amp;email=essentials-customer%40medusa\.js/
+                /Acme[\s\S]*\/app\/reset-password\?token=.+&amp;email=starter-kit-customer%40medusa\.js/
               ),
             }),
           })
