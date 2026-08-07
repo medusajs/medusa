@@ -61,7 +61,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "path": "/tips/table-views",
             "title": "Configure Table Views",
@@ -517,7 +516,6 @@ export const generatedSidebars = [
           },
           {
             "loaded": true,
-            "isPathHref": true,
             "type": "link",
             "title": "Location & Shipping",
             "path": "/settings/locations-and-shipping",

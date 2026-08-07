@@ -107,7 +107,13 @@ Refer to the [Create Cart API reference](!api!/store/carts/create-cart) for deta
 
 As mentioned before, you must always pass the publishable API key in the header of the request (which is done automatically by the JS SDK, as explained in the [Publishable API Keys](../../publishable-api-keys/page.mdx) guide). So, Medusa will associate the cart with the sales channel(s) of the publishable API key.
 
-This is necessary, as only products matching the cart's sales channel(s) can be added to the cart. If you want to associate the cart with a different sales channel, or if the publishable API key is associated with multiple sales channels and you want to specify which one to use, you can pass the `sales_channel_id` parameter to the [Create Cart API route](!api!/store/carts/create-cart) with the desired sales channel's ID.
+This is necessary, as the cart's sales channel scopes the products you retrieve for the storefront, the available inventory, and the sales channel of the order created from the cart. If you want to associate the cart with a different sales channel, or if the publishable API key is associated with multiple sales channels and you want to specify which one to use, you can pass the `sales_channel_id` parameter to the [Create Cart API route](!api!/store/carts/create-cart) with the desired sales channel's ID.
+
+<Note>
+
+Medusa doesn't reject a product variant added to the cart when its product isn't available in the cart's sales channel. Sales channel availability filters the products you retrieve, but Medusa doesn't enforce it when adding items to the cart. Refer to the [Enforce Sales Channel Availability in Carts](../../../commerce-modules/cart/sales-channel-availability/page.mdx) guide to learn how to add that validation.
+
+</Note>
 
 For example:
 

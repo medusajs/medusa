@@ -66,6 +66,14 @@ If you're deploying both a Medusa application and a storefront on Cloud, Medusa 
 2. The build command relevant to the storefront, depending on the frontend framework you're using. For example, if you're using Next.js for your storefront, Medusa will run the `next build` command in the storefront's directory.
     - Medusa currently doesn't support custom build scripts for storefronts.
 
+In a monorepo, Medusa doesn't run the `build` script of your root `package.json` file. It builds each of the two packages separately, targeting only that package and the workspace packages it depends on. So, the other packages of your monorepo don't enter the build process.
+
+<Note>
+
+If you're using `turbo`, Medusa prunes your monorepo down to the package it's building. This means most files at the root of your monorepo aren't available during the build. Learn more in the [Prerequisites](../projects/prerequisites/page.mdx#root-files-available-during-the-build-turborepo) guide.
+
+</Note>
+
 Storefront builds and deployments operate independently of the backend status. This means storefront deployments can proceed successfully even if the backend build or deployment fails.
 
 ### What Gets Deployed in the Medusa Application?

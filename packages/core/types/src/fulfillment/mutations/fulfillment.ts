@@ -87,6 +87,13 @@ export interface CreateFulfillmentDTO {
    * The associated order to be sent to the provider.
    */
   order?: Partial<OrderDTO>
+
+  /**
+   * Custom key-value pairs to pass to the fulfillment provider's `createFulfillment`
+   * method. Unlike `data`, this isn't persisted on the fulfillment; it's only
+   * forwarded to the provider at creation time.
+   */
+  additional_data?: Record<string, unknown>
 }
 
 /**

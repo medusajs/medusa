@@ -503,6 +503,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
+              "type": "ref",
+              "title": "Restrict Order Retrieval",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval",
+              "children": []
+            },
+            {
+              "loaded": true,
               "type": "link",
               "path": "/commerce-modules/auth/email-verification",
               "title": "Send Email Verification",
@@ -1237,6 +1244,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Agentic Commerce",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/agentic-commerce",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/cart/sales-channel-availability",
+              "title": "Enforce Sales Channel Availability",
               "children": []
             },
             {
@@ -6234,6 +6248,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Implement Re-Order",
               "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/re-order",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Restrict Order Retrieval",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval",
               "children": []
             },
             {
@@ -14353,6 +14374,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "Learn how to use the Sales Channel Module in your customizations on the Medusa application server.",
           "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Enforce Sales Channel Availability",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
+              "children": []
+            },
             {
               "loaded": true,
               "type": "ref",

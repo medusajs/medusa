@@ -128,6 +128,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Enforce Sales Channel Availability",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Filter Products",
               "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products",
               "children": []
@@ -172,6 +179,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "ref",
               "title": "Reset Password Email",
               "path": "https://docs.medusajs.com/resources/commerce-modules/auth/reset-password",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Restrict Order Retrieval",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval",
               "children": []
             },
             {

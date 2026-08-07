@@ -988,7 +988,7 @@ export default class PricingModuleService
 
       const entry = price as ServiceTypes.UpsertPriceDTO
 
-      const hasRulesInput = isPresent(price.rules)
+      const hasRulesInput = isDefined(price.rules)
       entry.price_list_id = priceListId
       if (hasRulesInput) {
         entry.price_rules = rules

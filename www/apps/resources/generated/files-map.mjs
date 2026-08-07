@@ -172,6 +172,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/promotions"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/cart/sales-channel-availability/page.mdx",
+    "pathname": "/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/tax-lines/page.mdx",
     "pathname": "/commerce-modules/cart/tax-lines"
   },
@@ -378,6 +382,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/return/page.mdx",
     "pathname": "/commerce-modules/order/return"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/secure-order-retrieval/page.mdx",
+    "pathname": "/commerce-modules/order/secure-order-retrieval"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/tax-lines/page.mdx",

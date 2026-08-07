@@ -191,7 +191,7 @@ The error object returned in the response has three properties:
       </Table.Cell>
       <Table.Cell>
       
-      Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message.
+      Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message. Refer to the [note below](#conflict-error-messages) for details.
 
       </Table.Cell>
       <Table.Cell>
@@ -236,6 +236,22 @@ The error object returned in the response has three properties:
     </Table.Row>
   </Table.Body>
 </Table>
+
+### Conflict Error Messages
+
+The error handler replaces the message of a `CONFLICT` error with the following default message:
+
+```plain
+The request conflicted with another request. You may retry the request with the provided Idempotency-Key.
+```
+
+So, only throw a `CONFLICT` error for internal conflicts, such as a request that conflicts with an ongoing transaction or a lock that another process holds. The client doesn't need details about these conflicts, and the default message avoids exposing internal implementation details.
+
+<Note title="Tip">
+
+If the client needs the details of the conflict, throw a `NOT_ALLOWED` error instead. Its message reaches the client, but the response has a `400` status code rather than `409`.
+
+</Note>
 
 ---
 
