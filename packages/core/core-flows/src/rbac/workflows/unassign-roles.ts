@@ -79,19 +79,34 @@ export const unassignRolesWorkflow = createWorkflow(
       })
     })
 
-    const { data: roleAssignmentsToDelete } = useQueryGraphStep({
-      entity: "rbac_role_assignment",
-      fields: ["id"],
-      filters: transform({ normalizedInput }, ({ normalizedInput }) => ({
-        $or: normalizedInput.assignments,
-      })),
-    }).config({ name: "query-role-assignments-to-delete" })
+    when(
+      { normalizedInput },
+      ({ normalizedInput }) => normalizedInput.assignments.length > 0
+    ).then(() => {
+      const { data: roleAssignmentsToDelete } = useQueryGraphStep({
+        entity: "rbac_role_assignment",
+        fields: ["id"],
+        filters: transform({ normalizedInput }, ({ normalizedInput }) => ({
+          $or: normalizedInput.assignments.map((assignment) => ({
+            role_id: assignment.role_id,
+            reference: assignment.reference,
+            reference_id: assignment.reference_id,
+            ...(assignment.scope
+              ? { scope: assignment.scope.type, scope_id: assignment.scope.id }
+              : {}),
+          })),
+        })),
+      }).config({ name: "query-role-assignments-to-delete" })
 
-    deleteRoleAssignmentsStep(
-      transform({ roleAssignmentsToDelete }, ({ roleAssignmentsToDelete }) => ({
-        id: roleAssignmentsToDelete.map((assignment) => assignment.id),
-      }))
-    )
+      deleteRoleAssignmentsStep(
+        transform(
+          { roleAssignmentsToDelete },
+          ({ roleAssignmentsToDelete }) => ({
+            id: roleAssignmentsToDelete.map((assignment) => assignment.id),
+          })
+        )
+      )
+    })
 
     return new WorkflowResponse(void 0)
   }
