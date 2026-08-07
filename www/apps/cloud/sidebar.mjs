@@ -380,6 +380,33 @@ export const sidebar = [
       },
       {
         type: "category",
+        title: "Webhooks",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
+          },
+          {
+            type: "link",
+            title: "Manage Events",
+            path: "/webhooks/events",
+          },
+          {
+            type: "link",
+            title: "Reference",
+            path: "/webhooks/reference",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/webhooks/changelog",
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Networking",
         initialOpen: true,
         children: [

@@ -1,0 +1,30 @@
+export const metadata = {
+  title: `Webhooks Changelog`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find the notable changes to the webhook events that Medusa delivers, with the newest change listed first. Each entry is grouped by the date the change went live.
+
+Refer to the [Webhook Reference](../reference/page.mdx) for the current payload of every event.
+
+{/* Entries are added automatically when webhook changes are deployed.
+    Keep them newest-first, with an `## {Month} {Day}, {Year}` heading. */}
+
+## August 6, 2026
+
+### build.created
+
+- Added the `build.created` event, delivered when Medusa creates a build for an environment.
+
+### build.updated
+
+- Added the `build.updated` event, delivered when a build changes, such as when it reaches a final status.
+
+### deployment.created
+
+- Added the `deployment.created` event, delivered when Medusa creates a deployment for an environment.
+
+### deployment.updated
+
+- Added the `deployment.updated` event, delivered when a deployment finishes.

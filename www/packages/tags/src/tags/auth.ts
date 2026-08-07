@@ -16,6 +16,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval"
   },
   {
+    "title": "Restrict Return Creation",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/order/secure-return-creation"
+  },
+  {
     "title": "How to Add Custom Authentication in Medusa Admin",
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/how-to/admin/auth"
   },
