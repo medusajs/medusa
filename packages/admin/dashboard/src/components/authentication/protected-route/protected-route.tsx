@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useMePermissions } from "../../../hooks/api/rbac-roles"
 import { useMe } from "../../../hooks/api/users"
-import type { Permission, UserPolicy } from "../../../lib/permissions"
+import type { Permission, ActorPolicy } from "../../../lib/permissions"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { PermissionsProvider } from "../../../providers/permissions-provider"
 import { SearchProvider } from "../../../providers/search-provider"
@@ -20,12 +20,13 @@ export const ProtectedRoute = () => {
       enabled: !!user && isRbacEnabled,
     })
 
-  const policy: UserPolicy | null = useMemo(() => {
+  const policy: ActorPolicy | null = useMemo(() => {
     if (!permissionsResponse) {
       return null
     }
     return {
       permissions: permissionsResponse.permissions as Permission[],
+      roles: permissionsResponse.roles,
     }
   }, [permissionsResponse])
 

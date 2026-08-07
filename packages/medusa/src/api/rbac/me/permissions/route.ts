@@ -26,6 +26,8 @@ import RbacFeatureFlag from "../../../../feature-flags/rbac"
  *
  * Clients can rely on literal set membership.
  *
+ * The response also carries the actor's directly assigned roles.
+ *
  * @ignore
  * @featureFlag rbac
  */
@@ -39,7 +41,7 @@ export const GET = async (
   const { actor_id, actor_type } = req.auth_context
 
   if (!actor_id || !actor_type) {
-    res.status(200).json({ permissions: [] })
+    res.status(200).json({ permissions: [], roles: [] })
     return
   }
 
@@ -93,7 +95,26 @@ export const GET = async (
     container: req.scope,
   })
 
-  res.status(200).json({ permissions: Array.from(granted).sort() })
+  let roles: Array<{ id: string; name: string }> = []
+  if (roleIds.length) {
+    const { data: roleRows } = await query.graph(
+      {
+        entity: "rbac_role",
+        fields: ["id", "name"],
+        filters: { id: roleIds },
+      },
+      { cache: { enable: true } }
+    )
+
+    roles = (roleRows ?? [])
+      .map((role) => ({ id: role.id, name: role.name }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  res.status(200).json({
+    permissions: Array.from(granted).sort(),
+    roles,
+  })
 }
 
 defineFileConfig({

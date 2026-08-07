@@ -143,6 +143,19 @@ export interface AdminRbacMePermissionsResponse {
    * The actor's effective `resource:operation` permissions, with wildcards already expanded.
    */
   permissions: string[]
+  /**
+   * The actor's directly assigned roles, considering the resolved scope.
+   */
+  roles: {
+    /**
+     * The role's ID.
+     */
+    id: string
+    /**
+     * The role's unique name.
+     */
+    name: string
+  }[]
 }
 
 export interface AdminRbacScopesResponse {

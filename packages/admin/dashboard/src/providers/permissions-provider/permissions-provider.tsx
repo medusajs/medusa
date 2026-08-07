@@ -6,15 +6,16 @@ import {
   type PermissionOperation,
   type PermissionResource,
   type PermissionsContextValue,
-  type UserPolicy,
+  type ActorPolicy,
+  ActorRole,
 } from "../../lib/permissions"
 import { PermissionsContext } from "./permissions-context"
 
 interface PermissionsProviderProps extends PropsWithChildren {
   /**
-   * The user's policy containing their permissions.
+   * The actor's policy containing their permissions.
    */
-  policy: UserPolicy | null
+  policy: ActorPolicy | null
   /**
    * Whether the policy is currently being loaded.
    */
@@ -85,6 +86,51 @@ export const PermissionsProvider = ({
     [isRbacEnabled, permissionsMap]
   )
 
+  const roles: ActorRole[] = useMemo(() => policy?.roles ?? [], [policy])
+
+  const roleNames = useMemo(
+    () => new Set(roles.map((role) => role.name)),
+    [roles]
+  )
+
+  const hasRole = useCallback(
+    (role: string): boolean => {
+      if (!isRbacEnabled) {
+        return true
+      }
+      return roleNames.has(role)
+    },
+    [isRbacEnabled, roleNames]
+  )
+
+  const hasAnyRole = useCallback(
+    (requiredRoles: string[]): boolean => {
+      if (!isRbacEnabled) {
+        return true
+      }
+      if (!requiredRoles?.length) {
+        return false
+      }
+
+      return requiredRoles.some(hasRole)
+    },
+    [isRbacEnabled, hasRole]
+  )
+
+  const hasAllRoles = useCallback(
+    (requiredRoles: string[]): boolean => {
+      if (!isRbacEnabled) {
+        return true
+      }
+      if (!requiredRoles?.length) {
+        return false
+      }
+
+      return requiredRoles.every(hasRole)
+    },
+    [isRbacEnabled, hasRole]
+  )
+
   const value: PermissionsContextValue = useMemo(
     () => ({
       policy,
@@ -93,8 +139,23 @@ export const PermissionsProvider = ({
       hasAnyPermission,
       hasAllPermissions,
       can,
+      roles,
+      hasRole,
+      hasAnyRole,
+      hasAllRoles,
     }),
-    [policy, isLoading, hasPermission, hasAnyPermission, hasAllPermissions, can]
+    [
+      policy,
+      isLoading,
+      hasPermission,
+      hasAnyPermission,
+      hasAllPermissions,
+      can,
+      roles,
+      hasRole,
+      hasAnyRole,
+      hasAllRoles,
+    ]
   )
 
   return (

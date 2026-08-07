@@ -6,7 +6,8 @@ export type {
   PermissionResource,
   PermissionsContextValue,
   PermissionsRequirementsContextValue,
-  UserPolicy,
+  ActorPolicy,
+  ActorRole,
 } from "./types"
 
 export {

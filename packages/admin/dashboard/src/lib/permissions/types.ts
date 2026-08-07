@@ -101,13 +101,31 @@ export type LandingRoute = {
 }
 
 /**
- * A policy represents the user's set of permissions.
+ * A role assigned to the actor.
  */
-export interface UserPolicy {
+export interface ActorRole {
   /**
-   * Array of permission strings the user has been granted.
+   * The role's ID.
+   */
+  id: string
+  /**
+   * The role's unique name. Role checks match on this value.
+   */
+  name: string
+}
+
+/**
+ * A policy represents the actor's set of permissions.
+ */
+export interface ActorPolicy {
+  /**
+   * Array of permission strings the actor has been granted.
    */
   permissions: Permission[]
+  /**
+   * The actor's assigned roles.
+   */
+  roles?: ActorRole[]
 }
 
 /**
@@ -133,29 +151,45 @@ export interface PermissionRequirement {
  */
 export interface PermissionsContextValue {
   /**
-   * The user's current policy containing their permissions.
+   * The actor's current policy containing their permissions.
    */
-  policy: UserPolicy | null
+  policy: ActorPolicy | null
   /**
    * Whether the policy is currently being loaded.
    */
   isLoading: boolean
   /**
-   * Check if the user has a specific permission.
+   * Check if the actor has a specific permission.
    */
   hasPermission: (permission: Permission) => boolean
   /**
-   * Check if the user has any of the specified permissions.
+   * Check if the actor has any of the specified permissions.
    */
   hasAnyPermission: (permissions: Permission[]) => boolean
   /**
-   * Check if the user has all of the specified permissions.
+   * Check if the actor has all of the specified permissions.
    */
   hasAllPermissions: (permissions: Permission[]) => boolean
   /**
-   * Check if user can perform an operation on a resource.
+   * Check if actor can perform an operation on a resource.
    */
   can: (resource: PermissionResource, operation: PermissionOperation) => boolean
+  /**
+   * The actor's assigned roles.
+   */
+  roles: ActorRole[]
+  /**
+   * Check if the actor holds a role, matched by role name.
+   */
+  hasRole: (role: string) => boolean
+  /**
+   * Check if the actor holds any of the specified roles, matched by role name.
+   */
+  hasAnyRole: (roles: string[]) => boolean
+  /**
+   * Check if the actor holds all of the specified roles, matched by role name.
+   */
+  hasAllRoles: (roles: string[]) => boolean
 }
 
 /**

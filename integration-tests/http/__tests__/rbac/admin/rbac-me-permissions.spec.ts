@@ -227,6 +227,18 @@ medusaIntegrationTestRunner({
         expect(response.data.permissions).toEqual(["product:read"])
       })
 
+      it("returns the actor's assigned roles", async () => {
+        const response = await api.get(
+          "/rbac/me/permissions",
+          productReaderHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.roles).toEqual([
+          { id: expect.stringMatching(/^role_/), name: "Product Reader" },
+        ])
+      })
+
       it("returns an empty array when the actor has no roles", async () => {
         const response = await api.get(
           "/rbac/me/permissions",
@@ -235,6 +247,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
         expect(response.data.permissions).toEqual([])
+        expect(response.data.roles).toEqual([])
       })
 
       it("includes resources persisted at runtime in the universe", async () => {
@@ -299,6 +312,12 @@ medusaIntegrationTestRunner({
         // No grants beyond what the two roles provide.
         expect(response.data.permissions).not.toContain("product:create")
         expect(response.data.permissions).not.toContain("customer:read")
+
+        // Both roles are returned, sorted by name.
+        expect(response.data.roles.map((role) => role.name)).toEqual([
+          "Customer Creator Only",
+          "Product Reader Only",
+        ])
       })
     })
   },

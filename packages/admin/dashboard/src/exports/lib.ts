@@ -10,7 +10,8 @@ export {
 } from "../lib/permissions"
 
 export type {
-  UserPolicy,
+  ActorPolicy,
+  ActorRole,
   PermissionsContextValue,
   LandingRoute,
   PermissionRequirement,
