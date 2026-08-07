@@ -93,8 +93,11 @@ export const CORE_POLICY_RESOURCES = [
   "user",
   "api_key",
   "invite",
+
+  // RBAC
   "rbac_role",
   "rbac_policy",
+  "rbac_role_assignment",
 ] as const
 
 /**
