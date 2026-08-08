@@ -1,5 +1,5 @@
----
+﻿---
 "@medusajs/dashboard": patch
 ---
 
-Fix inventory kit inputs when earlier variants are filtered out
+fix(dashboard): inventory kit inputs written to wrong variant when earlier variants are filtered out
