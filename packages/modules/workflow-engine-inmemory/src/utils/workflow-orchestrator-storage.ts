@@ -192,7 +192,10 @@ export class InMemoryDistributedTransactionStorage
   private createManagedTimer(
     callback: () => void | Promise<void>,
     delay: number,
-    options?: { unref?: boolean }
+    options?: {
+      unref?: boolean
+      onRearm?: (timer: NodeJS.Timeout) => void
+    }
   ): NodeJS.Timeout {
     const chunk = Math.min(delay, MAX_TIMER_DELAY_MS)
     const remaining = delay - chunk
@@ -201,7 +204,12 @@ export class InMemoryDistributedTransactionStorage
       this.pendingTimers.delete(timer)
 
       if (remaining > 0) {
-        this.createManagedTimer(callback, remaining, options)
+        const nextTimer = this.createManagedTimer(
+          callback,
+          remaining,
+          options
+        )
+        options?.onRearm?.(nextTimer)
         return
       }
 
@@ -689,7 +697,15 @@ export class InMemoryDistributedTransactionStorage
     const timer = this.createManagedTimer(
       () => this.jobHandler(jobId, scheduledFor),
       delay,
-      { unref: true }
+      {
+        unref: true,
+        onRearm: (nextTimer) => {
+          const job = this.scheduled.get(jobId)
+          if (job) {
+            job.timer = nextTimer
+          }
+        },
+      }
     )
 
     this.scheduled.set(jobId, {
@@ -747,7 +763,15 @@ export class InMemoryDistributedTransactionStorage
           void this.jobHandler(jobId, nextScheduledFor)
         },
         nextExecution,
-        { unref: true }
+        {
+          unref: true,
+          onRearm: (nextTimer) => {
+            const currentJob = this.scheduled.get(jobId)
+            if (currentJob) {
+              currentJob.timer = nextTimer
+            }
+          },
+        }
       )
 
       this.scheduled.set(jobId, {
