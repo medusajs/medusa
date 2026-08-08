@@ -248,6 +248,58 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data.permissions).toEqual([])
         expect(response.data.roles).toEqual([])
+        expect(response.data.covered_roles).toEqual([])
+      })
+
+      it("covers roles whose grants the actor's permissions encompass, without assignment", async () => {
+        // The super-admin (`*:*`) is not assigned any of the roles created in
+        // setup, but their permissions encompass all of them.
+        const response = await api.get(
+          "/rbac/me/permissions",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.covered_roles).toEqual(
+          expect.arrayContaining([
+            "Product Manager",
+            "Product Reader",
+            "Universal Reader",
+          ])
+        )
+      })
+
+      it("always covers the actor's own assigned roles, and no partial supersets", async () => {
+        const response = await api.get(
+          "/rbac/me/permissions",
+          productReaderHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        // Assigned role is covered by definition.
+        expect(response.data.covered_roles).toContain("Product Reader")
+        // product:read alone covers neither product:* nor *:read roles.
+        expect(response.data.covered_roles).not.toContain("Product Manager")
+        expect(response.data.covered_roles).not.toContain("Universal Reader")
+      })
+
+      it("treats a role without policies as covered by no one", async () => {
+        const rbacModule = container.resolve(Modules.RBAC)
+        const [existing] = await rbacModule.listRbacRoles({
+          name: "Empty Role",
+        })
+        if (!existing) {
+          await rbacModule.createRbacRoles({ name: "Empty Role" })
+        }
+
+        const response = await api.get(
+          "/rbac/me/permissions",
+          adminHeaders
+        )
+
+        // Even the super-admin does not cover a role with no grants — an
+        // empty role must not open its guards to all actors.
+        expect(response.data.covered_roles).not.toContain("Empty Role")
       })
 
       it("includes resources persisted at runtime in the universe", async () => {

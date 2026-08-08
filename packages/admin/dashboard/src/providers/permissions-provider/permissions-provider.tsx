@@ -8,6 +8,7 @@ import {
   type PermissionsContextValue,
   type ActorPolicy,
   ActorRole,
+  type RoleMatch,
 } from "../../lib/permissions"
 import { PermissionsContext } from "./permissions-context"
 
@@ -88,23 +89,29 @@ export const PermissionsProvider = ({
 
   const roles: ActorRole[] = useMemo(() => policy?.roles ?? [], [policy])
 
-  const roleNames = useMemo(
+  const assignedRoleNames = useMemo(
     () => new Set(roles.map((role) => role.name)),
     [roles]
   )
 
+  const coveredRoleNames = useMemo(
+    () => new Set(policy?.covered_roles ?? []),
+    [policy]
+  )
+
   const hasRole = useCallback(
-    (role: string): boolean => {
+    (role: string, match: RoleMatch = "covers"): boolean => {
       if (!isRbacEnabled) {
         return true
       }
-      return roleNames.has(role)
+      const names = match === "assigned" ? assignedRoleNames : coveredRoleNames
+      return names.has(role)
     },
-    [isRbacEnabled, roleNames]
+    [isRbacEnabled, assignedRoleNames, coveredRoleNames]
   )
 
   const hasAnyRole = useCallback(
-    (requiredRoles: string[]): boolean => {
+    (requiredRoles: string[], match: RoleMatch = "covers"): boolean => {
       if (!isRbacEnabled) {
         return true
       }
@@ -112,13 +119,13 @@ export const PermissionsProvider = ({
         return false
       }
 
-      return requiredRoles.some(hasRole)
+      return requiredRoles.some((role) => hasRole(role, match))
     },
     [isRbacEnabled, hasRole]
   )
 
   const hasAllRoles = useCallback(
-    (requiredRoles: string[]): boolean => {
+    (requiredRoles: string[], match: RoleMatch = "covers"): boolean => {
       if (!isRbacEnabled) {
         return true
       }
@@ -126,7 +133,7 @@ export const PermissionsProvider = ({
         return false
       }
 
-      return requiredRoles.every(hasRole)
+      return requiredRoles.every((role) => hasRole(role, match))
     },
     [isRbacEnabled, hasRole]
   )

@@ -12,6 +12,7 @@ export {
 export type {
   ActorPolicy,
   ActorRole,
+  RoleMatch,
   PermissionsContextValue,
   LandingRoute,
   PermissionRequirement,

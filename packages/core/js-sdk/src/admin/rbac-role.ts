@@ -496,15 +496,18 @@ export class RbacRole {
   /**
    * Retrieves the authenticated actor's resolved permission set: a flat list
    * of `resource:operation` strings with wildcards already expanded, along
-   * with the actor's assigned roles.
+   * with the actor's assigned roles and the names of the roles the actor's
+   * permissions fully cover.
    *
    * @param headers - Headers to pass in the request.
-   * @returns The flat permission list and assigned roles.
+   * @returns The flat permission list, assigned roles, and covered role names.
    *
    * @example
-   * sdk.admin.rbacRole.mePermissions().then(({ permissions, roles }) => {
+   * sdk.admin.rbacRole.mePermissions()
+   * .then(({ permissions, roles, covered_roles }) => {
    *   console.log(permissions) // ["product:read", "customer:read", ...]
    *   console.log(roles) // [{ id: "role_123", name: "Product Manager" }]
+   *   console.log(covered_roles) // ["Product Manager", "Product Reader"]
    * })
    */
   async mePermissions(headers?: ClientHeaders) {

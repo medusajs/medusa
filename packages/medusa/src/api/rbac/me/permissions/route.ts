@@ -26,7 +26,11 @@ import RbacFeatureFlag from "../../../../feature-flags/rbac"
  *
  * Clients can rely on literal set membership.
  *
- * The response also carries the actor's directly assigned roles.
+ * The response also carries the actor's directly assigned roles, and the
+ * names of the roles the actor "covers" — roles whose expanded grant set is a
+ * subset of the actor's expanded grant set. Coverage is the useful semantic
+ * for role-based UI guards: a super admin (`*:*`) covers every role without
+ * being assigned any. Assigned roles are always covered.
  *
  * @ignore
  * @featureFlag rbac
@@ -41,7 +45,7 @@ export const GET = async (
   const { actor_id, actor_type } = req.auth_context
 
   if (!actor_id || !actor_type) {
-    res.status(200).json({ permissions: [], roles: [] })
+    res.status(200).json({ permissions: [], roles: [], covered_roles: [] })
     return
   }
 
@@ -111,9 +115,41 @@ export const GET = async (
       .sort((a, b) => a.name.localeCompare(b.name))
   }
 
+  // Covered roles: every role whose expanded grant set is a subset of the
+  // actor's expanded grant set. Expanding both sides against the same
+  // universe makes wildcards on either side comparable literally.
+  const { data: allRoles } = await query.graph(
+    {
+      entity: "rbac_role",
+      fields: ["id", "name"],
+    },
+    { cache: { enable: true } }
+  )
+
+  const coverage = await Promise.all(
+    (allRoles ?? []).map(async (role) => {
+      const roleGrants = await resolvePermissions({
+        roles: [role.id],
+        universe,
+        container: req.scope,
+      })
+
+      const isCovered =
+        roleGrants.size > 0 &&
+        Array.from(roleGrants).every((permission) => granted.has(permission))
+
+      return isCovered ? (role.name as string) : null
+    })
+  )
+
+  const coveredRoles = coverage
+    .filter((name): name is string => name !== null)
+    .sort()
+
   res.status(200).json({
     permissions: Array.from(granted).sort(),
     roles,
+    covered_roles: coveredRoles,
   })
 }
 

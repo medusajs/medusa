@@ -1,4 +1,5 @@
 import type { PropsWithChildren, ReactNode } from "react"
+import type { RoleMatch } from "../../../lib/permissions"
 import { usePermissions } from "../../../providers/permissions-provider"
 
 interface BaseRoleGuardProps extends PropsWithChildren {
@@ -15,6 +16,12 @@ interface BaseRoleGuardProps extends PropsWithChildren {
    * Custom loading component.
    */
   loadingComponent?: ReactNode
+  /**
+   * How to match roles. `"covers"` (default) passes when the actor's
+   * permissions include everything the role grants — a super admin covers
+   * every role. `"assigned"` requires the role to be literally assigned.
+   */
+  match?: RoleMatch
 }
 
 interface RoleGuardWithRole extends BaseRoleGuardProps {
@@ -41,23 +48,28 @@ interface RoleGuardWithRoles extends BaseRoleGuardProps {
 export type RoleGuardProps = RoleGuardWithRole | RoleGuardWithRoles
 
 /**
- * Component that conditionally renders children based on the actor's assigned
- * roles. Complementary to `PermissionGuard` for cases where a coarse
- * role-level check is more practical than enumerating permissions.
+ * Component that conditionally renders children based on the actor's roles.
+ * Complementary to `PermissionGuard` for cases where a coarse role-level
+ * check is more practical than enumerating permissions.
  *
- * Roles are matched by their unique name against the actor's assigned
- * roles. Renaming a role breaks guards referencing the old name, so
- * it is well suited if your role names are stable.
+ * Roles are matched by their unique name. By default a role matches when the
+ * actor's effective permissions cover everything the role grants — so a
+ * super admin passes every role check without being assigned the role, and
+ * a role acts as a named permission bundle maintained in the dashboard.
+ * Pass `match="assigned"` to require literal assignment instead.
+ *
+ * Renaming a role breaks guards referencing the old name, so it is well
+ * suited if your role names are stable.
  *
  * Like `PermissionGuard`, this is a UX guard only — the server keeps
- * enforcing access through policies, so the roles used here should cover the
- * permissions the guarded UI relies on.
+ * enforcing access through policies.
  *
  * @example
  * ```tsx
- * // Single role
- * <RoleGuard role="Store Manager">
- *   <OrderActionsMenu />
+ * // Passes for anyone whose permissions encompass the Billing role's
+ * // policies — including a super admin who was never assigned it.
+ * <RoleGuard role="Billing" fallback={<Text>No access</Text>}>
+ *   <BillingSection />
  * </RoleGuard>
  *
  * // Multiple roles (ANY)
@@ -65,13 +77,14 @@ export type RoleGuardProps = RoleGuardWithRole | RoleGuardWithRoles
  *   <OrderActionsMenu />
  * </RoleGuard>
  *
- * // Multiple roles (ALL), with fallback
- * <RoleGuard
- *   roles={["Store Manager", "Finance"]}
- *   requireAll
- *   fallback={<Text>You don't have access to payouts</Text>}
- * >
+ * // Multiple roles (ALL)
+ * <RoleGuard roles={["Store Manager", "Finance"]} requireAll>
  *   <PayoutsSection />
+ * </RoleGuard>
+ *
+ * // Identity check, for the "literally holds this role" case.
+ * <RoleGuard role="Auditor" match="assigned">
+ *   <AuditLogExport />
  * </RoleGuard>
  * ```
  */
@@ -80,6 +93,7 @@ export const RoleGuard = ({
   fallback = null,
   showLoading = false,
   loadingComponent = null,
+  match = "covers",
   ...props
 }: RoleGuardProps) => {
   const { hasAnyRole, hasAllRoles, isLoading } = usePermissions()
@@ -92,8 +106,8 @@ export const RoleGuard = ({
   }
 
   const hasAccess = props.requireAll
-    ? hasAllRoles(requiredRoles)
-    : hasAnyRole(requiredRoles)
+    ? hasAllRoles(requiredRoles, match)
+    : hasAnyRole(requiredRoles, match)
 
   if (!hasAccess) {
     return <>{fallback}</>

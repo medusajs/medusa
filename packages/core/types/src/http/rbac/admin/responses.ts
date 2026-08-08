@@ -156,6 +156,13 @@ export interface AdminRbacMePermissionsResponse {
      */
     name: string
   }[]
+  /**
+   * Names of the roles the actor covers: roles whose grants are a subset of
+   * the actor's effective permissions. Assigned roles are always covered, and
+   * a super admin covers every role. Roles without policies are covered by
+   * no one.
+   */
+  covered_roles: string[]
 }
 
 export interface AdminRbacScopesResponse {

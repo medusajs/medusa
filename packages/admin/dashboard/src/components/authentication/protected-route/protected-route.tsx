@@ -27,6 +27,7 @@ export const ProtectedRoute = () => {
     return {
       permissions: permissionsResponse.permissions as Permission[],
       roles: permissionsResponse.roles,
+      covered_roles: permissionsResponse.covered_roles,
     }
   }, [permissionsResponse])
 

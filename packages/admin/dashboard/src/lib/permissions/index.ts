@@ -8,6 +8,7 @@ export type {
   PermissionsRequirementsContextValue,
   ActorPolicy,
   ActorRole,
+  RoleMatch,
 } from "./types"
 
 export {

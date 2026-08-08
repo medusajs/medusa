@@ -101,6 +101,16 @@ export type LandingRoute = {
 }
 
 /**
+ * How role checks match against the actor's roles.
+ *
+ * - `covers` (default): passes when the actor's effective permissions include
+ *   everything the role grants, regardless of assignment. A super admin
+ *   covers every role.
+ * - `assigned`: passes only when the role is literally assigned to the actor.
+ */
+export type RoleMatch = "covers" | "assigned"
+
+/**
  * A role assigned to the actor.
  */
 export interface ActorRole {
@@ -126,6 +136,11 @@ export interface ActorPolicy {
    * The actor's assigned roles.
    */
   roles?: ActorRole[]
+  /**
+   * Names of the roles the actor covers: roles whose grants are a subset of
+   * the actor's effective permissions. Assigned roles are always covered.
+   */
+  covered_roles?: string[]
 }
 
 /**
@@ -180,16 +195,19 @@ export interface PermissionsContextValue {
   roles: ActorRole[]
   /**
    * Check if the actor holds a role, matched by role name.
+   * Defaults to coverage matching; pass `"assigned"` for identity matching.
    */
-  hasRole: (role: string) => boolean
+  hasRole: (role: string, match?: RoleMatch) => boolean
   /**
    * Check if the actor holds any of the specified roles, matched by role name.
+   * Defaults to coverage matching; pass `"assigned"` for identity matching.
    */
-  hasAnyRole: (roles: string[]) => boolean
+  hasAnyRole: (roles: string[], match?: RoleMatch) => boolean
   /**
    * Check if the actor holds all of the specified roles, matched by role name.
+   * Defaults to coverage matching; pass `"assigned"` for identity matching.
    */
-  hasAllRoles: (roles: string[]) => boolean
+  hasAllRoles: (roles: string[], match?: RoleMatch) => boolean
 }
 
 /**
