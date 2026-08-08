@@ -168,6 +168,12 @@ The API route accepts the following query parameters:
 
 Finally, you'll add a function that sends a request to the [Create Return](!api!/store/returns/create-return) API route. This creates a return request for an order.
 
+<Note>
+
+The Create Return API route doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](../../../commerce-modules/order/secure-return-creation/page.mdx).
+
+</Note>
+
 In the same `src/lib/data/returns.ts` file, add the following function:
 
 ```ts title="src/lib/data/returns.ts"

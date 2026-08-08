@@ -1,0 +1,81 @@
+import { Note, InlineIcon } from "docs-ui"
+import { ArrowPathMini } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Webhook Events in Cloud`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to view webhook event deliveries and retry failed ones.
+
+## What are Webhook Events?
+
+Webhook events are delivery attempts made by Medusa to your configured [webhook endpoint](../endpoints/page.mdx). Each event corresponds to an action in your organization, such as a deployment completing or an environment being created.
+
+<Note>
+
+See the [Webhook Reference](../reference/page.mdx) for a complete list of events that Medusa sends to your endpoint.
+
+</Note>
+
+---
+
+## View Webhook Events
+
+To view the webhook event log:
+
+1. [Open the organization's settings](../../organizations/page.mdx#view-organization-settings).
+2. In the sidebar, click **Events** under the **Webhooks** section.
+
+The page shows a table of event deliveries with columns for timestamp, event type, and delivery status. Status badges indicate the state of each delivery:
+
+- **Pending / Back-off** (orange): The event has not been delivered yet and is awaiting delivery or a retry.
+- **Delivered** (green): The event was successfully delivered to the endpoint.
+- **Failed** (red): All delivery attempts failed.
+
+---
+
+## Filter Events
+
+You can narrow the event list using the filter controls at the top of the page:
+
+- **Project**: Filter by a specific project, or view events for all projects.
+- **Environment**: Filter by a specific environment within the selected project. Preview environments are excluded from this filter.
+- **Time range**: Filter by a preset time window. You can select from specific options like last hour or last day, or select a custom time range. The default time range is the last 24 hours.
+
+When you apply a filter, the table updates to show only events that match the selected criteria. You can combine multiple filters to narrow down the results further.
+
+---
+
+## View Event Details
+
+Click on any row to expand it and see additional information about that delivery attempt:
+
+- **URL**: The endpoint URL the event was sent to.
+- **Last attempt**: Timestamp of the most recent delivery attempt (for events that have not been delivered).
+- **Delivered at**: Timestamp of successful delivery (for events that have been delivered).
+- **Failure reason**: The cause of delivery failure, such as an HTTP error with its status code, a timeout, or a network error.
+- **Next auto retry**: The scheduled time for the next automatic retry attempt.
+- **Project**: The name of the project associated with the event, with a quick-filter button to filter the list by that project.
+- **Environment**: The name of the environment associated with the event, with a quick-filter button to filter the list by that environment.
+- **Payload**: The full JSON payload sent with the event. This is the payload in the `data` field of the webhook request body.
+
+---
+
+## Retry a Failed Event
+
+You can manually retry any event that has not been successfully delivered.
+
+To retry an event:
+
+1. Find the event in the [Webhook Events](#view-webhook-events) table.
+2. Click the <InlineIcon Icon={ArrowPathMini} alt="retry" /> icon at the end of the row.
+
+Medusa immediately re-attempts delivery to the configured endpoint.
+
+<Note>
+
+The retry button is only available for events that have not been delivered (pending, retrying, or failed status).
+
+</Note>

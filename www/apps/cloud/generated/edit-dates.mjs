@@ -25,14 +25,14 @@ export const generatedEditDates = {
   "app/billing/plans/page.mdx": "2026-07-22T14:09:33.877Z",
   "app/cache/page.mdx": "2026-07-28T05:58:03.886Z",
   "app/deployments/troubleshooting/page.mdx": "2026-07-31T14:07:34.446Z",
-  "app/emails/page.mdx": "2026-07-29T15:53:42.319Z",
+  "app/emails/page.mdx": "2026-08-05T20:08:54.647Z",
   "app/emails/react-email/page.mdx": "2026-03-27T09:46:46.277Z",
   "app/user/page.mdx": "2026-06-08T13:04:35.724Z",
   "app/deployments/access/page.mdx": "2026-04-08T16:20:22.886Z",
   "app/projects/prerequisites/page.mdx": "2026-07-31T14:07:34.447Z",
   "app/storefront/page.mdx": "2026-07-28T05:57:46.335Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
-  "app/environments/custom-domains/page.mdx": "2026-08-04T08:22:46.126Z",
+  "app/environments/custom-domains/page.mdx": "2026-08-05T20:08:46.044Z",
   "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
   "app/environments/subdomains/page.mdx": "2026-04-14T10:50:18.756Z",
   "app/ip-addresses/page.mdx": "2026-04-14T10:43:16.892Z",
@@ -117,5 +117,7 @@ export const generatedEditDates = {
   "app/first-project/page.mdx": "2026-07-30T08:13:38.734Z",
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
-  "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z"
+  "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
+  "app/webhooks/endpoints/page.mdx": "2026-08-07T09:17:29.121Z",
+  "app/webhooks/events/page.mdx": "2026-08-07T09:10:40.566Z"
 }

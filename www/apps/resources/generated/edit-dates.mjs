@@ -38,7 +38,7 @@ export const generatedEditDates = {
   "app/commerce-modules/order/exchange/page.mdx": "2025-02-26T11:23:29.845Z",
   "app/commerce-modules/order/order-versioning/page.mdx": "2026-04-10T07:11:40.191Z",
   "app/commerce-modules/order/promotion-adjustments/page.mdx": "2024-10-09T10:19:19.333Z",
-  "app/commerce-modules/order/return/page.mdx": "2025-02-26T11:22:49.675Z",
+  "app/commerce-modules/order/return/page.mdx": "2026-08-07T11:09:00.324Z",
   "app/commerce-modules/order/tax-lines/page.mdx": "2026-07-05T20:54:48.913Z",
   "app/commerce-modules/order/transactions/page.mdx": "2025-10-03T10:35:16.560Z",
   "app/commerce-modules/order/page.mdx": "2025-08-26T09:21:49.780Z",
@@ -5754,7 +5754,7 @@ export const generatedEditDates = {
   "references/notification_service/interfaces/notification_service.INotificationModuleService/page.mdx": "2026-04-30T16:36:44.178Z",
   "app/nextjs-starter/guides/revalidate-cache/page.mdx": "2025-05-01T15:33:42.490Z",
   "app/storefront-development/cart/totals/page.mdx": "2025-09-15T15:13:56.268Z",
-  "app/storefront-development/checkout/order-confirmation/page.mdx": "2025-12-16T07:17:57.133Z",
+  "app/storefront-development/checkout/order-confirmation/page.mdx": "2026-08-06T07:45:07.260Z",
   "app/how-to-tutorials/tutorials/product-reviews/page.mdx": "2026-01-12T12:25:29.951Z",
   "app/troubleshooting/data-models/default-fields/page.mdx": "2025-03-21T06:59:06.775Z",
   "app/troubleshooting/medusa-admin/blocked-request/page.mdx": "2025-03-21T06:53:34.854Z",
@@ -6293,7 +6293,7 @@ export const generatedEditDates = {
   "references/core_flows/Locking/Steps_Locking/variables/core_flows.Locking.Steps_Locking.releaseLockStepId/page.mdx": "2025-09-15T09:52:14.219Z",
   "references/core_flows/Locking/core_flows.Locking.Steps_Locking/page.mdx": "2025-09-15T09:52:14.217Z",
   "app/integrations/guides/meilisearch/page.mdx": "2025-11-27T08:21:28.779Z",
-  "app/nextjs-starter/guides/storefront-returns/page.mdx": "2026-01-12T12:27:41.338Z",
+  "app/nextjs-starter/guides/storefront-returns/page.mdx": "2026-08-07T11:08:53.480Z",
   "references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.views/page.mdx": "2026-04-30T16:36:41.272Z",
   "app/data-model-repository-reference/methods/create/page.mdx": "2025-10-28T16:02:14.959Z",
   "app/data-model-repository-reference/methods/delete/page.mdx": "2025-10-28T16:02:17.380Z",
@@ -7643,5 +7643,7 @@ export const generatedEditDates = {
   "app/lint/rules/widget-must-export-config/page.mdx": "2026-07-28T05:43:12.267Z",
   "app/lint/rules/widget-must-have-default-export/page.mdx": "2026-07-28T05:43:12.274Z",
   "app/lint/rules/widget-zone-must-be-string-literal/page.mdx": "2026-07-28T05:43:12.270Z",
-  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z"
+  "app/commerce-modules/cart/sales-channel-availability/page.mdx": "2026-07-31T13:14:07.601Z",
+  "app/commerce-modules/order/secure-order-retrieval/page.mdx": "2026-08-06T07:59:42.895Z",
+  "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-08-07T11:16:40.482Z"
 }
