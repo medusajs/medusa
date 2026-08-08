@@ -1,4 +1,4 @@
-﻿---
+---
 "@medusajs/dashboard": patch
 ---
 
