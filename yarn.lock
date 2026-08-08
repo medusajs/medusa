@@ -3691,6 +3691,8 @@ __metadata:
     "@medusajs/rbac": 2.18.0
     "@medusajs/region": 2.18.0
     "@medusajs/sales-channel": 2.18.0
+    "@medusajs/search": 2.18.0
+    "@medusajs/search-local": 2.18.0
     "@medusajs/settings": 2.18.0
     "@medusajs/stock-location": 2.18.0
     "@medusajs/store": 2.18.0
@@ -3896,6 +3898,29 @@ __metadata:
 "@medusajs/sales-channel@2.18.0, @medusajs/sales-channel@workspace:packages/modules/sales-channel":
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/modules/sales-channel"
+  dependencies:
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+  peerDependencies:
+    "@medusajs/framework": 2.18.0
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/search-local@2.18.0, @medusajs/search-local@workspace:packages/modules/providers/search-local":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/search-local@workspace:packages/modules/providers/search-local"
+  dependencies:
+    "@medusajs/framework": 2.18.0
+    "@medusajs/test-utils": 2.18.0
+    "@orama/orama": ^3.1.18
+  peerDependencies:
+    "@medusajs/framework": 2.18.0
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/search@2.18.0, @medusajs/search@workspace:packages/modules/search":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/search@workspace:packages/modules/search"
   dependencies:
     "@medusajs/framework": 2.18.0
     "@medusajs/test-utils": 2.18.0
@@ -4999,6 +5024,13 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ^1.1.0
   checksum: 1774930abdad57a716662a3feffe8a7aca8e4494303356f04c3e958fddcdb1df29d464ca91db890e0501728b4fb6c4b578f3ecb83004bcdc9d7e81b739d24459
+  languageName: node
+  linkType: hard
+
+"@orama/orama@npm:^3.1.18":
+  version: 3.1.18
+  resolution: "@orama/orama@npm:3.1.18"
+  checksum: 868be5143eb4a27e700d9cc866763d1cc04405ef0af6a6b6b6987dcf33ee5d4ba90d3a32cd134006d46d34d64e32500e13cd31436c718eadc396a940e793e7cd
   languageName: node
   linkType: hard
 
@@ -18856,7 +18888,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1, js-yaml@npm:^4.2.0":
+"js-yaml@npm:^4.1.0, js-yaml@npm:^4.1.1":
   version: 4.3.0
   resolution: "js-yaml@npm:4.3.0"
   dependencies:
@@ -18864,6 +18896,17 @@ __metadata:
   bin:
     js-yaml: bin/js-yaml.js
   checksum: 058b30473d6915ca5b4feb11e2f7d4d97242f98d00a798ed48dd90b46b7c640398afe9128c5db22c5300f8c6528fe2a174b9a93f351a70ebc28c6203938d8bff
+  languageName: node
+  linkType: hard
+
+"js-yaml@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "js-yaml@npm:4.3.1"
+  dependencies:
+    argparse: ^2.0.1
+  bin:
+    js-yaml: bin/js-yaml.js
+  checksum: 13c500ca322e0c3f8c81686e6ecda96d2ea37b45247a420c17c7db36932d6965cc27391abc2d1a104501600e7f0d947a5f8b7be6db619c4fefa87901b3512807
   languageName: node
   linkType: hard
 
@@ -23350,7 +23393,7 @@ __metadata:
     import-from: ^3.0.0
     ioredis: ^5.4.1
     jest: ^29.7.0
-    js-yaml: ^4.2.0
+    js-yaml: ^4.3.1
     jsdom: ^27.1.0
     lint-staged: ^11.2.6
     msw: ^2.3.0

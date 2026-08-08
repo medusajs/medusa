@@ -5855,7 +5855,7 @@ paths:
     get:
       operationId: GetOrdersId
       summary: Get an Order
-      description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned.
+      description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned. This API route doesn't require customer authentication, so that guest customers can view their order confirmation page after placing an order. To restrict access to this API route, refer to the [Restrict Order Retrieval guide](https://docs.medusajs.com/resources/commerce-modules/order/secure-order-retrieval).
       x-authenticated: false
       parameters:
         - name: id
@@ -19980,17 +19980,20 @@ components:
       type: object
       description: The details of the user to be created.
       properties:
-        token:
+        email:
           type: string
-          title: token
-          description: The invite's token.
-        fields:
+          title: email
+          description: The invite's email.
+          format: email
+        first_name:
           type: string
-          title: fields
-          description: The invite's fields.
+          title: first_name
+          description: The invited user's first name.
+        last_name:
+          type: string
+          title: last_name
+          description: The invited user's last name.
       x-schemaName: AdminGetInviteAcceptParams
-      required:
-        - token
     AdminGiftCard:
       type: object
       description: The gift card's details.
