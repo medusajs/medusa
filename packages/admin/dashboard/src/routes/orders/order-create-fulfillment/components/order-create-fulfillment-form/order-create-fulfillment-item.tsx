@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { clx, Input, Text, Tooltip } from "@medusajs/ui"
@@ -67,7 +67,9 @@ export function OrderCreateFulfillmentItem({
     )
 
     // since we don't allow split fulifllments only one reservation from inventory kit is enough to calculate avalabel product quantity
-    const reservation = reservations?.find((r) => r.line_item_id === item.id)
+    const reservation = reservations?.find(
+      (r) => r.line_item_id === item.id && r.location_id === locationId
+    )
     const iitemRequiredQuantity = inventory_items.find(
       (i) => i.inventory_item_id === reservation?.inventory_item_id
     )?.required_quantity
@@ -128,6 +130,26 @@ export function OrderCreateFulfillmentItem({
     getFulfillableQuantity(item),
     availableQuantity || Number.MAX_SAFE_INTEGER
   )
+
+  useEffect(() => {
+  const currentQuantity = form.getValues(`quantity.${item.id}`)
+
+  if (
+    currentQuantity !== null &&
+    currentQuantity !== undefined &&
+    (currentQuantity < minValue || currentQuantity > maxValue)
+  ) {
+    form.setError(`quantity.${item.id}`, {
+      type: "manual",
+      message: t("orders.fulfillment.error.wrongQuantity", {
+        count: maxValue,
+        number: maxValue,
+      }),
+    })
+  } else {
+    form.clearErrors(`quantity.${item.id}`)
+  }
+}, [locationId, availableQuantity, maxValue])
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl">

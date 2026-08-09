@@ -171,9 +171,11 @@ export function OrderCreateFulfillmentForm({
 
         if (shippingOption) {
           const locationId =
-            shippingOption.service_zone.fulfillment_set.location.id
+           reservations?.[0]?.location_id ??
+           shippingOption.service_zone.fulfillment_set.location.id
 
           form.setValue("location_id", locationId)
+          
           form.setValue(
             "shipping_option_id",
             initialShippingOptionId || undefined
@@ -181,7 +183,8 @@ export function OrderCreateFulfillmentForm({
         } // else -> TODO: what if original shipping option is deleted?
       }
     }
-  }, [shipping_options])
+    }, [shipping_options, reservations])
+
 
   const fulfilledQuantityArray = (order.items || []).map(
     (item) =>
