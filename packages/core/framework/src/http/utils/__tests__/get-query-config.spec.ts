@@ -668,4 +668,42 @@ describe("prepareListQuery", () => {
       expect(result.remoteQueryConfig.fields).toEqual(["id", "orders.email"])
     })
   })
+
+  describe("restricted and allowed fields", () => {
+    it("should strip restricted fields without requiring the rbac_filter_fields feature flag", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,orders.email",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "region",
+        restricted: ["orders"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id"])
+    })
+
+    it("should strip fields not in the allowed list without requiring the rbac_filter_fields feature flag", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,title,secret_field",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> = {
+        entity: "region",
+        allowed: ["id", "title"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id", "title"])
+    })
+  })
 })

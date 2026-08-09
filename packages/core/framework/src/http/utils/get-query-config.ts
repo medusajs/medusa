@@ -92,7 +92,10 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   )
   const notAllowedFields = [...new Set(notAllowedArrays.flat())]
 
-  if (notAllowedFields.length && rbacFilterFieldsFeatureFlag) {
+  // restrictedFields/allowed are enforced unconditionally; RBACFieldFilter is
+  // only added to `filters` above when rbac_filter_fields is enabled, so its
+  // violations already carry that gating into notAllowedFields.
+  if (notAllowedFields.length) {
     notAllowedFields.forEach((field) => {
       allFields.delete(field)
       starFields.delete(field)
