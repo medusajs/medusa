@@ -159,7 +159,7 @@
     "openapi:generate": "yarn ./packages/cli/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/cli/oas/medusa-oas-cli run medusa-oas",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
-    "release:next": "chgstangeset publish --no-git-tags --snapshot --tag next",
+    "release:next": "changeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
     "version": "changeset version && yarn install --no-immutable"
@@ -185,7 +185,8 @@
     "validator": "^13.15.20",
     "@opentelemetry/core": "^2.7.0",
     "@rushstack/node-core-library/ajv": "^8.18.0",
-    "@changesets/assemble-release-plan@^6.0.9": "patch:@changesets/assemble-release-plan@npm:^6.0.9#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch"
+    "@changesets/assemble-release-plan@^6.0.9": "patch:@changesets/assemble-release-plan@npm:^6.0.9#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch",
+    "@changesets/cli@^2.26.0": "patch:@changesets/cli@npm:^2.26.0#.yarn/patches/@changesets-cli-npm-2.29.8-52df46efd2.patch"
   },
   "packageManager": "yarn@3.2.1"
 }

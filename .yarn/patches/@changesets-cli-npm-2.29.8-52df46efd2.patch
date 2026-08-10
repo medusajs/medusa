@@ -1,0 +1,176 @@
+diff --git a/dist/changesets-cli.cjs.js b/dist/changesets-cli.cjs.js
+index 0f03e31068a5a7f77ef03ee97684d7f4d5136367..20da5492162ce29a39be2551e00b6260cd458fee 100644
+--- a/dist/changesets-cli.cjs.js
++++ b/dist/changesets-cli.cjs.js
+@@ -598,8 +598,35 @@ const getLastJsonObjectFromString = str => {
+   return null;
+ };
+ 
+-const npmRequestLimit = pLimit__default["default"](40);
+-const npmPublishLimit = pLimit__default["default"](10);
++// MEDUSA PATCH: the npm registry rate-limits per egress IP. 40 concurrent metadata
++// requests and 10 concurrent publishes from a single CI runner reliably trips HTTP 429
++// for a repo that publishes ~78 packages per release, so the defaults are lowered and
++// made configurable.
++const readPositiveInt = (value, fallback) => {
++  const parsed = Number.parseInt(value, 10);
++  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
++};
++const npmRequestLimit = pLimit__default["default"](readPositiveInt(process.env.CHANGESETS_REQUEST_CONCURRENCY, 8));
++const npmPublishLimit = pLimit__default["default"](readPositiveInt(process.env.CHANGESETS_PUBLISH_CONCURRENCY, 2));
++
++// MEDUSA PATCH: rate-limit detection and backoff helpers, shared by the metadata
++// lookup and the publish retry below.
++const RATE_LIMIT_MAX_RETRIES = readPositiveInt(process.env.CHANGESETS_RATE_LIMIT_RETRIES, 5);
++const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
++const isRateLimited = text => /\b429\b|too many requests|rate limit/i.test(text || "");
++const parseRetryAfter = text => {
++  const match = /retry-?after["'\s:]+(\d+)/i.exec(text || "");
++  return match ? Number.parseInt(match[1], 10) : undefined;
++};
++// Exponential backoff with full jitter, capped at 60s. A Retry-After hint wins, capped
++// at 120s so a hostile value cannot stall the release indefinitely.
++const rateLimitDelay = (attempt, retryAfterSeconds) => {
++  if (retryAfterSeconds) {
++    return Math.min(retryAfterSeconds * 1000, 120000);
++  }
++  const base = Math.min(2000 * Math.pow(2, attempt), 60000);
++  return base / 2 + Math.random() * (base / 2);
++};
+ function jsonParse(input) {
+   try {
+     return JSON.parse(input);
+@@ -677,6 +704,89 @@ async function getTokenIsRequired() {
+   }
+   return json.tfa.mode === "auth-and-writes";
+ }
++// MEDUSA PATCH: `npm info` requests the FULL packument, which contains every field of
++// every published version with no pagination. For packages with thousands of versions
++// that is megabytes per package, fetched once per publishable package on every publish
++// run - the single largest driver of npm 429s in this repo. getUnpublishedPackages()
++// only needs the list of published version numbers, which the abbreviated packument
++// provides at a fraction of the size.
++// See https://github.com/npm/registry/blob/main/docs/responses/package-metadata.md
++const ABBREVIATED_PACKUMENT_ACCEPT = "application/vnd.npm.install-v1+json";
++
++// Resolves to a `npm info`-shaped object, or `undefined` to signal "fall back to
++// `npm info`" (unsupported registry, auth required, or no global fetch available).
++async function getAbbreviatedPackageInfo(packageName, registry) {
++  if (typeof fetch !== "function") {
++    return undefined;
++  }
++  const base = registry.endsWith("/") ? registry : `${registry}/`;
++  // Only the scope separator is encoded; the registry does not accept an encoded `@`.
++  const url = `${base}${packageName.replace(/\//g, "%2f")}`;
++  const headers = {
++    accept: ABBREVIATED_PACKUMENT_ACCEPT
++  };
++  // Covers the common CI setups. Public metadata reads work unauthenticated, which is
++  // what the OIDC/trusted-publishing workflows rely on.
++  const token = process.env.NPM_TOKEN || process.env.NODE_AUTH_TOKEN;
++  if (token) {
++    headers.authorization = `Bearer ${token}`;
++  }
++  for (let attempt = 0; attempt <= RATE_LIMIT_MAX_RETRIES; attempt++) {
++    let response;
++    try {
++      response = await fetch(url, {
++        headers,
++        signal: AbortSignal.timeout(30000)
++      });
++    } catch (err) {
++      logger.warn(`abbreviated metadata request for ${packageName} failed: ${err.message}`);
++      return undefined;
++    }
++    if (response.status === 404) {
++      return {
++        error: {
++          code: "E404"
++        }
++      };
++    }
++    if (response.status === 429 || response.status >= 500) {
++      if (attempt === RATE_LIMIT_MAX_RETRIES) {
++        return {
++          error: {
++            code: response.status === 429 ? "E429" : "E" + response.status,
++            summary: `registry returned ${response.status} for ${packageName} after ${attempt + 1} attempts`
++          }
++        };
++      }
++      const retryAfter = Number.parseInt(response.headers.get("retry-after"), 10);
++      const delay = rateLimitDelay(attempt, Number.isInteger(retryAfter) ? retryAfter : undefined);
++      logger.warn(`registry returned ${response.status} for ${packageName}; retrying in ${Math.round(delay / 1000)}s`);
++      await sleep(delay);
++      continue;
++    }
++    if (!response.ok) {
++      // 401/403 and friends - let `npm info` retry with the resolved .npmrc auth.
++      return undefined;
++    }
++    let body;
++    try {
++      body = await response.json();
++    } catch (err) {
++      return undefined;
++    }
++    // Abbreviated packuments key `versions` by version string; `npm info --json`
++    // returns an array. Normalise to what the callers expect.
++    if (!body || typeof body.versions !== "object" || body.versions === null) {
++      return undefined;
++    }
++    return {
++      name: body.name,
++      "dist-tags": body["dist-tags"],
++      versions: Array.isArray(body.versions) ? body.versions : Object.keys(body.versions)
++    };
++  }
++  return undefined;
++}
+ function getPackageInfo(packageJson) {
+   return npmRequestLimit(async () => {
+     logger.info(`npm info ${packageJson.name}`);
+@@ -685,6 +795,13 @@ function getPackageInfo(packageJson) {
+       registry
+     } = getCorrectRegistry(packageJson);
+ 
++    // MEDUSA PATCH: prefer the abbreviated packument; fall back to `npm info` below.
++    const abbreviated = await getAbbreviatedPackageInfo(packageJson.name, registry);
++    if (abbreviated !== undefined) {
++      return abbreviated;
++    }
++    logger.warn(`falling back to \`npm info\` (full packument) for ${packageJson.name}`);
++
+     // Due to a couple of issues with yarnpkg, we also want to override the npm registry when doing
+     // npm info.
+     // Issues: We sometimes get back cached responses, i.e old data about packages which causes
+@@ -743,7 +860,7 @@ let getOtpCode = async twoFactorState => {
+ 
+ // we have this so that we can do try a publish again after a publish without
+ // the call being wrapped in the npm request limit and causing the publishes to potentially never run
+-async function internalPublish(packageJson, opts, twoFactorState) {
++async function internalPublish(packageJson, opts, twoFactorState, rateLimitAttempt = 0) {
+   let publishTool = await getPublishTool(opts.cwd);
+   let publishFlags = opts.access ? ["--access", opts.access] : [];
+   publishFlags.push("--tag", opts.tag);
+@@ -794,6 +911,20 @@ async function internalPublish(packageJson, opts, twoFactorState) {
+       }
+       logger.error(`an error occurred while publishing ${packageJson.name}: ${json.error.code}`, json.error.summary, json.error.detail ? "\n" + json.error.detail : "");
+     }
++
++    // MEDUSA PATCH: retry rate-limited publishes with backoff instead of silently
++    // marking the package as unpublished. Without this, a 429 partway through a fixed
++    // version group leaves the registry with some @medusajs/* packages at the new
++    // version and others not, with cross-dependencies pointing at versions that do not
++    // exist. Sleeping while holding the publish-limit slot is intentional: it throttles
++    // the whole publish run once the registry starts pushing back.
++    const rateLimitHint = json !== null && json !== void 0 && json.error ? `${json.error.code} ${json.error.summary || ""} ${json.error.detail || ""}` : `${stderr.toString()}\n${stdout.toString()}`;
++    if (isRateLimited(rateLimitHint) && rateLimitAttempt < RATE_LIMIT_MAX_RETRIES) {
++      const delay = rateLimitDelay(rateLimitAttempt, parseRetryAfter(rateLimitHint));
++      logger.warn(`npm rate limited the publish of ${packageJson.name}; retrying in ${Math.round(delay / 1000)}s (attempt ${rateLimitAttempt + 2}/${RATE_LIMIT_MAX_RETRIES + 1})`);
++      await sleep(delay);
++      return internalPublish(packageJson, opts, twoFactorState, rateLimitAttempt + 1);
++    }
+     logger.error(stderr.toString() || stdout.toString());
+     return {
+       published: false

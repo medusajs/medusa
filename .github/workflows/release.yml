@@ -42,18 +42,106 @@ jobs:
 
       - name: Build packages
         run: yarn build
+
+      # changesets/action runs its `publish` command on every push where no changesets
+      # are pending, so routine develop pushes trigger a full publish attempt that
+      # queries the registry for all ~78 publishable packages and publishes nothing.
+      # A publish is only warranted when package versions actually landed on this push.
+      # Fails open: if the diff cannot be computed, we publish as before.
+      # Uses the compare API rather than local git, since the checkout above is shallow.
+      - name: Determine whether a publish is warranted
+        id: should_publish
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const setResult = (publish, reason) => {
+              core.info(`publish=${publish} (${reason})`)
+              core.setOutput('publish', String(publish))
+              core.setOutput('reason', reason)
+            }
+            if (context.eventName !== 'push') {
+              return setResult(true, 'not a push event')
+            }
+            const before = context.payload.before
+            if (!before || /^0+$/.test(before)) {
+              return setResult(true, 'no base commit on this push, failing open')
+            }
+            try {
+              const { data } = await github.rest.repos.compareCommitsWithBasehead({
+                ...context.repo,
+                basehead: `${before}...${context.sha}`,
+              })
+              // The compare API omits `files` on huge diffs and caps it at 300 entries,
+              // so an unseen package.json change is possible. Fail open in both cases.
+              if (!data.files) {
+                return setResult(true, 'compare returned no file list, failing open')
+              }
+              if (data.files.length >= 300) {
+                return setResult(true, 'compare file list truncated at 300, failing open')
+              }
+              const manifests = data.files.filter(
+                (f) => /^packages\/.*\/package\.json$/.test(f.filename)
+              )
+              if (!manifests.length) {
+                return setResult(false, 'no packages/**/package.json changes on this push')
+              }
+              // Merging the "Chore: Release" PR bumps the `version` field of every
+              // released package. A feature merge that only adds or bumps a dependency
+              // also touches package.json, but must not trigger a publish attempt.
+              const bumped = manifests.filter(
+                (f) => !f.patch || /^\+\s*"version":/m.test(f.patch)
+              )
+              if (bumped.length) {
+                return setResult(true, `${bumped.length} package.json version bump(s)`)
+              }
+              return setResult(
+                false,
+                `${manifests.length} package.json change(s), none bumping "version"`
+              )
+            } catch (err) {
+              return setResult(true, `compare failed (${err.message}), failing open`)
+            }
+
+      - name: Log publish decision
+        run: echo "publish=${{ steps.should_publish.outputs.publish }} (${{ steps.should_publish.outputs.reason }})"
+
       - name: Create Release Pull Request or Publish packages
         id: changesets
         uses: changesets/action@v1
+        continue-on-error: true
         with:
           version: yarn version
           commit: "Chore: Release"
           title: "Chore: Release"
           createGithubReleases: false
-          publish: yarn changeset publish
+          publish: ${{ steps.should_publish.outputs.publish == 'true' && 'yarn changeset publish' || '' }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGESETS_PUBLISH_CONCURRENCY: "2"
+          CHANGESETS_REQUEST_CONCURRENCY: "8"
+
+      # `changeset publish` is idempotent: it skips versions already on the registry and
+      # publishes only what is missing. A rate-limited run can leave the fixed version
+      # group half-published, so retry once after a cooldown before failing the release.
+      - name: Retry publish after rate-limit cooldown
+        id: retry_publish
+        if: steps.changesets.outcome == 'failure' && steps.should_publish.outputs.publish == 'true'
+        run: |
+          echo "::warning::Publish attempt failed; retrying after a 120s cooldown."
+          sleep 120
+          yarn changeset publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          CHANGESETS_PUBLISH_CONCURRENCY: "1"
+          CHANGESETS_REQUEST_CONCURRENCY: "4"
+
+      - name: Fail if release did not complete
+        if: steps.changesets.outcome == 'failure' && steps.retry_publish.outcome != 'success'
+        run: |
+          echo "::error::Release failed. Packages may be partially published - re-run this workflow via workflow_dispatch to publish the remainder."
+          exit 1
 
       - name: Trigger draft release generation
         if: steps.changesets.outputs.published == 'true'

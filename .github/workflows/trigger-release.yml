@@ -100,7 +100,32 @@ jobs:
         run: yarn build
 
       - name: Publish packages under next tag
+        id: publish
+        continue-on-error: true
         run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}
+        env:
+          CHANGESETS_PUBLISH_CONCURRENCY: "2"
+          CHANGESETS_REQUEST_CONCURRENCY: "8"
+
+      # `changeset publish` skips versions already on the registry, so re-running only
+      # publishes what a rate-limited first attempt missed. Without this, a 429 partway
+      # through leaves the fixed version group half-published under the preview tag.
+      - name: Retry publish after rate-limit cooldown
+        id: retry_publish
+        if: steps.publish.outcome == 'failure'
+        run: |
+          echo "::warning::Publish attempt failed; retrying after a 120s cooldown."
+          sleep 120
+          yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}
+        env:
+          CHANGESETS_PUBLISH_CONCURRENCY: "1"
+          CHANGESETS_REQUEST_CONCURRENCY: "4"
+
+      - name: Fail if publish did not complete
+        if: steps.publish.outcome == 'failure' && steps.retry_publish.outcome != 'success'
+        run: |
+          echo "::error::Publish failed after retry. Packages may be partially published."
+          exit 1
 
       - name: Post failure to Slack channel
         if: failure()
@@ -225,6 +250,8 @@ jobs:
         uses: actions/github-script@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGESETS_PUBLISH_CONCURRENCY: "2"
+          CHANGESETS_REQUEST_CONCURRENCY: "8"
         with:
           script: |
             await exec.exec('yarn run changeset version --snapshot snapshot')
