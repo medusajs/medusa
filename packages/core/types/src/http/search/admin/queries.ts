@@ -1,3 +1,6 @@
+/**
+ * The parameters to pass when searching across admin entities.
+ */
 export interface AdminSearchParams {
   /** Applied to every entity searched. */
   q?: string
