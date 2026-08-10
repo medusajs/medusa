@@ -12089,7 +12089,7 @@ The uploaded files are stored in the `req.files` property as an array of Multer 
 
 Always encode the file content as `base64` when passing it to `uploadFilesWorkflow`. The File Module Providers expect base64-encoded content, and using `binary` encoding will corrupt binary files such as images when stored by remote providers.
 
-To upload the files, you can use the [uploadFilesWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/uploadFilesWorkflow/index.html.md), which uploads the files using the configured [File Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/file/index.html.md).
+To upload the files, you can use the [uploadFilesWorkflow](undefined/resources/references/medusa-workflows/uploadFilesWorkflow), which uploads the files using the configured [File Module Provider](undefined/resources/infrastructure-modules/file).
 
 ### Test API Route
 
@@ -41711,7 +41711,7 @@ A return is the return of items delivered from the customer back to the merchant
 
 A return is requested either by the customer from the storefront, or the merchant from the admin. Medusa supports an automated Return Merchandise Authorization (RMA) flow.
 
-The [Create Return API route](https://docs.medusajs.com/api/store/returns/create-return) doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/secure-return-creation/index.html.md).
+The [Create Return API route](undefined/api/store/returns/create-return) doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/secure-return-creation).
 
 ![Diagram showcasing the automated RMA flow.](https://res.cloudinary.com/dza7lstvk/image/upload/v1719578128/Medusa%20Resources/return-rma_pzprwq.jpg)
 
@@ -41764,25 +41764,25 @@ The order’s version is incremented when:
 
 # Restrict Order Retrieval
 
-In this guide, you'll learn how Medusa handles access to the [Get an Order API route](https://docs.medusajs.com/api/store/orders/get-an-order), and how to restrict access to it in your Medusa application.
+In this guide, you'll learn how Medusa handles access to the [Get an Order API route](undefined/api/store/orders/get-an-order), and how to restrict access to it in your Medusa application.
 
 ## How Medusa Handles Order Retrieval
 
-The `GET /store/orders/:id` API route doesn't require customer authentication. Any request that includes a valid [publishable API key](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/publishable-api-keys/index.html.md) and a correct order ID receives the order's details.
+The `GET /store/orders/:id` API route doesn't require customer authentication. Any request that includes a valid [publishable API key](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/publishable-api-keys) and a correct order ID receives the order's details.
 
 Medusa applies this behavior intentionally. Guest customers place orders without an account, so they have no session or token to authenticate with. After they complete the cart, the storefront redirects them to an order confirmation page that retrieves the order by its ID. Requiring authentication would break that page.
 
 The order's ID acts as the credential in this flow. Medusa generates order IDs randomly, so guessing an ID requires brute forcing a value from an address space large enough to make the attempt impractical.
 
-The [List Orders API route](https://docs.medusajs.com/api/store/orders/list-orders), which lists a customer's orders, does require customer authentication. Only the retrieval route accepts unauthenticated requests.
+The [List Orders API route](undefined/api/store/orders/list-orders), which lists a customer's orders, does require customer authentication. Only the retrieval route accepts unauthenticated requests.
 
 ***
 
 ## Restrict Access to the Route
 
-If your store doesn't allow guest checkout, you may want stricter access rules. You can add access rules with [middlewares](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/middlewares/index.html.md). Middlewares that you apply to an existing API route run in addition to the route's original middlewares, so you don't have to replicate the route.
+If your store doesn't allow guest checkout, you may want stricter access rules. You can add access rules with [middlewares](undefined/docs/learn/fundamentals/api-routes/middlewares). Middlewares that you apply to an existing API route run in addition to the route's original middlewares, so you don't have to replicate the route.
 
-For example, add the [authenticate middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes/index.html.md) to the route:
+For example, add the [authenticate middleware](undefined/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes) to the route:
 
 ```ts title="src/api/middlewares.ts"
 import {
@@ -41854,7 +41854,7 @@ export async function ensureOrderOwner(
 }
 ```
 
-The middleware retrieves the order's `customer_id` with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
+The middleware retrieves the order's `customer_id` with [Query](undefined/docs/learn/fundamentals/module-links/query). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
 
 Then, apply the middleware after the `authenticate` middleware:
 
@@ -41888,11 +41888,11 @@ Now, only the customer that placed the order can retrieve it. Other logged-in cu
 
 # Restrict Return Creation
 
-In this guide, you'll learn how Medusa handles access to the [Create Return API route](https://docs.medusajs.com/api/store/returns/create-return), and how to restrict access to it in your Medusa application.
+In this guide, you'll learn how Medusa handles access to the [Create Return API route](undefined/api/store/returns/create-return), and how to restrict access to it in your Medusa application.
 
 ## How Medusa Handles Return Creation
 
-The `POST /store/returns` API route doesn't require customer authentication. Any request that includes a valid [publishable API key](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/publishable-api-keys/index.html.md) and a correct order ID creates a return for that order.
+The `POST /store/returns` API route doesn't require customer authentication. Any request that includes a valid [publishable API key](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/publishable-api-keys) and a correct order ID creates a return for that order.
 
 Medusa applies this behavior intentionally. Guest customers place orders without an account, so they have no session or token to authenticate with. They still need a way to request a return for the items they received. Requiring authentication would leave guest customers without a self-service return flow.
 
@@ -41910,9 +41910,9 @@ This is useful in stores that trust the customer's return request, such as digit
 
 ## Restrict Access to the Route
 
-If your store doesn't allow guest checkout, you may want stricter access rules. You can add access rules with [middlewares](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/middlewares/index.html.md). Middlewares that you apply to an existing API route run in addition to the route's original middlewares, so you don't have to replicate the route.
+If your store doesn't allow guest checkout, you may want stricter access rules. You can add access rules with [middlewares](undefined/docs/learn/fundamentals/api-routes/middlewares). Middlewares that you apply to an existing API route run in addition to the route's original middlewares, so you don't have to replicate the route.
 
-For example, add the [authenticate middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes/index.html.md) to the route:
+For example, add the [authenticate middleware](undefined/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes) to the route:
 
 ```ts title="src/api/middlewares.ts"
 import {
@@ -41986,7 +41986,7 @@ export async function ensureReturnOrderOwner(
 }
 ```
 
-The middleware retrieves the order's ID from the request body, since the Create Return API route accepts it as a body parameter. It then retrieves the order's `customer_id` with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
+The middleware retrieves the order's ID from the request body, since the Create Return API route accepts it as a body parameter. It then retrieves the order's `customer_id` with [Query](undefined/docs/learn/fundamentals/module-links/query). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
 
 Then, apply the middleware after the `authenticate` middleware:
 
@@ -42077,7 +42077,7 @@ export default defineMiddlewares({
 })
 ```
 
-A request that enables `receive_now` now receives a `400` error. The merchant marks the return as received later, as explained in the [Order Return documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/return/index.html.md).
+A request that enables `receive_now` now receives a `400` error. The merchant marks the return as received later, as explained in the [Order Return documentation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/return).
 
 
 # Tax Lines in Order Module
@@ -46079,7 +46079,7 @@ Learn more about product variant's inventory management in [this guide](undefine
 
 ### Retrieve with Query
 
-To retrieve the inventory items of a product variant with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
+To retrieve the inventory items of a product variant with [Query](undefined/docs/learn/fundamentals/module-links/query), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
 
 ### query.graph
 
@@ -46143,7 +46143,7 @@ const { data: products } = useQueryGraphStep({
 // products[0].variants[0].inventory_items[0].inventory.id
 ```
 
-Creating a product variant with `manage_inventory` enabled creates an inventory item automatically, but does not create inventory levels. You must create inventory levels separately to set the stocked quantity at a specific location. Refer to the [Inventory Module's documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory/index.html.md) for details.
+Creating a product variant with `manage_inventory` enabled creates an inventory item automatically, but does not create inventory levels. You must create inventory levels separately to set the stocked quantity at a specific location. Refer to the [Inventory Module's documentation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory) for details.
 
 ### Manage with Link
 
@@ -138267,7 +138267,7 @@ The API route accepts the following query parameters:
 
 Finally, you'll add a function that sends a request to the [Create Return](undefined/api/store/returns/create-return) API route. This creates a return request for an order.
 
-The Create Return API route doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/secure-return-creation/index.html.md).
+The Create Return API route doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/order/secure-return-creation).
 
 In the same `src/lib/data/returns.ts` file, add the following function:
 
