@@ -137,8 +137,10 @@ jobs:
           CHANGESETS_PUBLISH_CONCURRENCY: "1"
           CHANGESETS_REQUEST_CONCURRENCY: "4"
 
+      # `!cancelled()` is required: step conditions are implicitly wrapped in `success()`,
+      # so a failed retry would otherwise skip this step and leave the job green.
       - name: Fail if release did not complete
-        if: steps.changesets.outcome == 'failure' && steps.retry_publish.outcome != 'success'
+        if: ${{ !cancelled() && steps.changesets.outcome == 'failure' && steps.retry_publish.outcome != 'success' }}
         run: |
           echo "::error::Release failed. Packages may be partially published - re-run this workflow via workflow_dispatch to publish the remainder."
           exit 1

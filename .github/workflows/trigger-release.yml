@@ -119,8 +119,10 @@ jobs:
           CHANGESETS_PUBLISH_CONCURRENCY: "1"
           CHANGESETS_REQUEST_CONCURRENCY: "4"
 
+      # `!cancelled()` is required: step conditions are implicitly wrapped in `success()`,
+      # so a failed retry would otherwise skip this step and swallow the annotation.
       - name: Fail if publish did not complete
-        if: steps.publish.outcome == 'failure' && steps.retry_publish.outcome != 'success'
+        if: ${{ !cancelled() && steps.publish.outcome == 'failure' && steps.retry_publish.outcome != 'success' }}
         run: |
           echo "::error::Publish failed after retry. Packages may be partially published."
           exit 1
