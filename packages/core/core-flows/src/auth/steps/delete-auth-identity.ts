@@ -9,6 +9,7 @@ export type DeleteAuthIdentityStepInput = {
 }
 
 /**
+ * @since 2.18.1
  * Use this step to delete auth identities.
  *
  * @example

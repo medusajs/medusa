@@ -22,7 +22,7 @@ export const removeUserAccountWorkflowId = "remove-user-account"
 /**
  * This workflow deletes a user and remove the association to its auth identity. It's used
  * by the [Delete User Admin API Route](https://docs.medusajs.com/api/admin/users/delete-a-user).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete users within your custom flows.
  *
@@ -83,7 +83,7 @@ export const removeUserAccountWorkflow = createWorkflow(
     when({ shouldKeepAuthIdentity }, ({ shouldKeepAuthIdentity }) => {
       return shouldKeepAuthIdentity === true
     }).then(() => {
-      // TODO: we don't remove a matching entity_id provider_entity, since it could be used by the remaining
+      // we don't remove a matching entity_id provider_entity, since it could be used by the remaining
       // actor types.
       setAuthAppMetadataStep({
         authIdentityId: authIdentity.id,

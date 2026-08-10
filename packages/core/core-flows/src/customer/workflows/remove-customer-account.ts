@@ -19,8 +19,8 @@ export type RemoveCustomerAccountWorkflowInput = {
 interface GetCustomerAuthIdentityStepInput {
   authIdentities: {
     id: string
-    app_metadata: Record<string, unknown>
-    provider_identities: { entity_id: string }[]
+    app_metadata?: Record<string, unknown>
+    provider_identities?: { entity_id: string }[]
   }[]
 }
 
@@ -48,7 +48,7 @@ export const removeCustomerAccountWorkflowId = "remove-customer-account"
 /**
  * This workflow deletes a customer and remove its association to its auth identity. It's used by the
  * [Delete Customer Admin API Route](https://docs.medusajs.com/api/admin/customers/delete-a-customer).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * delete customer accounts within your custom flows.
  *
@@ -117,7 +117,7 @@ export const removeCustomerAccountWorkflow = createWorkflow(
         }
 
         // Only keep the auth identity if it has other actor types associated with it
-        return Object.entries(authIdentity.app_metadata)
+        return Object.entries(authIdentity.app_metadata ?? {})
           .filter(([key, _]) => key !== "customer_id")
           .some(([_, value]) => value !== null)
       }
@@ -126,7 +126,7 @@ export const removeCustomerAccountWorkflow = createWorkflow(
     when({ shouldKeepAuthIdentity }, ({ shouldKeepAuthIdentity }) => {
       return shouldKeepAuthIdentity === true
     }).then(() => {
-      // TODO: we don't remove a matching entity_id provider_entity, since it could be used by the remaining
+      // we don't remove a matching entity_id provider_entity, since it could be used by the remaining
       // actor types.
       setAuthAppMetadataStep({
         authIdentityId: authIdentity!.id,
