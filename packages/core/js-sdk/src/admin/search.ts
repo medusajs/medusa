@@ -5,7 +5,7 @@ import { ClientHeaders } from "../types.js"
 /**
  * This class is used to send requests to Admin Search API routes.
  *
- * @since 2.18.1
+ * @since 2.19.0
  */
 export class Search {
   /**
