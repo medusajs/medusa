@@ -21,9 +21,9 @@ import { HttpTypes } from "@medusajs/framework/types"
 export const GET = async (
   req: AuthenticatedMedusaRequest<
     undefined,
-    HttpTypes.AdminRbacPolicyListParams & { scope?: string; scope_id?: string }
+    HttpTypes.AdminRbacAssignablePolicyListParams
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacAssignablePoliciesListResponse>
 ) => {
   const { scope, scope_id, ...filters } = req.filterableFields
 

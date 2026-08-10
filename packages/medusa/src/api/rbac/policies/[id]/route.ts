@@ -6,6 +6,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
@@ -14,15 +15,14 @@ import {
 } from "@medusajs/framework/utils"
 
 import RbacFeatureFlag from "../../../../feature-flags/rbac"
-import { AdminUpdateRbacPolicyType } from "../validators"
 
 /**
  * @ignore
  * @featureFlag rbac
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminRbacPolicyParams>,
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { data: policies } = await query.graph({
@@ -48,8 +48,8 @@ export const GET = async (
  * @featureFlag rbac
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateRbacPolicyType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateRbacPolicy>,
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { data: existing } = await query.graph({
@@ -90,7 +90,7 @@ export const POST = async (
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyDeleteResponse>
 ) => {
   const id = req.params.id
 

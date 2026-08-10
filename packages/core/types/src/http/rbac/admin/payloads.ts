@@ -1,3 +1,5 @@
+import { PolicyOperationValue } from "../../../rbac"
+
 export interface AdminCreateRbacRole {
   /**
    * The role's name.
@@ -117,7 +119,7 @@ export interface AdminCreateRbacPolicy {
   /**
    * The operation the policy allows.
    */
-  operation: string
+  operation: PolicyOperationValue
   /**
    * The policy's name.
    */
@@ -144,7 +146,7 @@ export interface AdminUpdateRbacPolicy {
   /**
    * The operation the policy allows.
    */
-  operation?: string
+  operation?: PolicyOperationValue
   /**
    * The policy's name.
    */

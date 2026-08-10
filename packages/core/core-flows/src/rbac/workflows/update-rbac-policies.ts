@@ -6,7 +6,7 @@ import {
 import {
   FilterableRbacPolicyProps,
   UpdateRbacPolicyDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { updateRbacPoliciesStep } from "../steps/update-rbac-policies"
 
 /**

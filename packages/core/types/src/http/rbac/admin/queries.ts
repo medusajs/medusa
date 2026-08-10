@@ -89,6 +89,21 @@ export interface AdminRbacPolicyListParams
 
 export interface AdminRbacPolicyParams extends SelectParams {}
 
+export interface AdminRbacAssignablePolicyListParams
+  extends Omit<AdminRbacPolicyListParams, "scope" | "scope_id"> {
+  /**
+   * The type of the scope context assignability is evaluated within. Only
+   * takes effect together with `scope_id`; otherwise the request's ambient
+   * scope applies.
+   */
+  scope?: string
+  /**
+   * The ID of the scope context assignability is evaluated within. Only takes
+   * effect together with `scope`.
+   */
+  scope_id?: string
+}
+
 export interface AdminRbacRoleUserListParams extends FindParams {
   /**
    * Filter by user ID(s).

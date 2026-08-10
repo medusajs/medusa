@@ -30,7 +30,7 @@ export type FilterableRbacPolicyProps = {
   id?: string | string[]
   key?: string | string[]
   resource?: string
-  operation?: string
+  operation?: PolicyOperationValue | PolicyOperationValue[]
   q?: string
 }
 

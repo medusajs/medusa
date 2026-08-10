@@ -2,6 +2,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
@@ -17,8 +18,11 @@ import RbacFeatureFlag from "../../../../../feature-flags/rbac"
  * @featureFlag rbac
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<
+    undefined,
+    HttpTypes.AdminRbacPolicyRoleListParams
+  >,
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyRolesListResponse>
 ) => {
   const policyId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)

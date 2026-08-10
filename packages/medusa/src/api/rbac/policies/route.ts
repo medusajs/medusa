@@ -3,21 +3,24 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
 } from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../feature-flags/rbac"
-import { AdminCreateRbacPolicyType } from "./validators"
 
 /**
  * @ignore
  * @featureFlag rbac
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<
+    undefined,
+    HttpTypes.AdminRbacPolicyListParams
+  >,
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyListResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
@@ -41,8 +44,8 @@ export const GET = async (
  * @featureFlag rbac
  */
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateRbacPolicyType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateRbacPolicy>,
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyResponse>
 ) => {
   const input = [req.validatedBody]
 

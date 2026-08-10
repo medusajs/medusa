@@ -135,9 +135,6 @@ export interface AdminRbacAssignablePoliciesListResponse {
   count: number
 }
 
-export interface AdminRbacPolicyDeleteResponse
-  extends DeleteResponse<"rbac_policy"> {}
-
 export interface AdminRbacMePermissionsResponse {
   /**
    * The actor's effective `resource:operation` permissions, with wildcards already expanded.

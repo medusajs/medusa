@@ -1,11 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { PolicyOperationValue } from "@medusajs/types"
 import { Button, Heading, Input, Text, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import { RouteFocusModal, useRouteModal } from "../../../../../components/modals"
+import {
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateRbacPolicy } from "../../../../../hooks/api/rbac-policies"
 
@@ -41,7 +45,7 @@ export const CreatePolicyForm = () => {
       const { policy } = await mutateAsync({
         key: values.key.trim(),
         resource: values.resource.trim(),
-        operation: values.operation.trim(),
+        operation: values.operation.trim() as PolicyOperationValue,
         name: values.name?.trim() || null,
         description: values.description?.trim() || null,
       })
