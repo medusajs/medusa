@@ -3,14 +3,18 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { IRbacModuleService, UpdateRbacPolicyDTO } from "@medusajs/types"
+import {
+  FilterableRbacPolicyProps,
+  IRbacModuleService,
+  UpdateRbacPolicyDTO,
+} from "@medusajs/types"
 
 /**
  * @ignore
  * @featureFlag rbac
  */
 export type UpdateRbacPoliciesStepInput = {
-  selector: Record<string, any>
+  selector: FilterableRbacPolicyProps
   update: Omit<UpdateRbacPolicyDTO, "id">
 }
 

@@ -3,6 +3,7 @@ import {
   WorkflowResponse,
   createWorkflow,
 } from "@medusajs/framework/workflows-sdk"
+import { CreateRbacPolicyDTO } from "@medusajs/framework/types"
 import { createRbacPoliciesStep } from "../steps"
 
 /**
@@ -10,7 +11,7 @@ import { createRbacPoliciesStep } from "../steps"
  * @featureFlag rbac
  */
 export type CreateRbacPoliciesWorkflowInput = {
-  policies: any[]
+  policies: CreateRbacPolicyDTO[]
 }
 
 /**
