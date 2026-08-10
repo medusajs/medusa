@@ -5,7 +5,6 @@ import {
 import { HttpTypes, SearchTypes } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { searchWithGraphFallback } from "./fallback-search"
-import { DEFAULT_ADMIN_SEARCH_ENTITY_NAMES } from "./search-entities"
 import { AdminGetSearchParamsType } from "./validators"
 
 /**
@@ -28,27 +27,20 @@ export const GET = async (
   const skip = req.queryConfig.pagination.skip ?? 0
   const take = req.queryConfig.pagination.take ?? 20
 
-  if (!searchModule) {
+  const indexes = searchModule?.listIndexes() ?? []
+  // Everything indexed unless the caller narrowed it down.
+  const entities = entity?.length ? entity : indexes
+
+  // Half the groups ranked by an engine and the other half ordered by the
+  // database is not a result set anyone can reason about, so the engine only
+  // serves a request it covers entirely.
+  const isCoveredByIndexes =
+    entities.length > 0 && entities.every((name) => indexes.includes(name))
+
+  if (!searchModule || !isCoveredByIndexes) {
     const results = await searchWithGraphFallback(req.scope, {
       q,
       entity,
-      skip,
-      take,
-    })
-
-    res.json({ results })
-    return
-  }
-
-  // Everything indexed unless the caller narrowed it down.
-  const entities = entity?.length ? entity : searchModule.listIndexes()
-
-  if (!entities.length) {
-    // Module is on but nothing is indexed yet — fall back so the admin still
-    // returns useful results until core indexes ship.
-    const results = await searchWithGraphFallback(req.scope, {
-      q,
-      entity: entity?.length ? entity : DEFAULT_ADMIN_SEARCH_ENTITY_NAMES,
       skip,
       take,
     })

@@ -141,7 +141,10 @@ const useDynamicSearchResults = (
 
     return results
       .map((group) => transformSearchResultGroup(group, limit, t))
-      .filter((group): group is DynamicSearchResult => !!group && group.items.length > 0)
+      .filter(
+        (group): group is DynamicSearchResult =>
+          !!group && group.items.length > 0
+      )
   }, [q, results, limit, t])
 
   return {
