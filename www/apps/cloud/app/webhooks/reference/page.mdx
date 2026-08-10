@@ -40,7 +40,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
 ```json
 {
   "id": "whev_01K2M7Q8ZCTVX3H4",
-  "type": "deployment.updated",
+  "type": "deployment.created",
   "data": {
     // The payload of the event.
   },
@@ -58,7 +58,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
     {
       name: "type",
       type: "`string`",
-      description: `The name of the event, such as \`deployment.updated\`.`,
+      description: `The name of the event, such as \`deployment.created\`.`,
     },
     {
       name: "data",
@@ -68,7 +68,7 @@ Medusa wraps every event in the same envelope. The `data` property holds the eve
     {
       name: "created_at",
       type: "`string`",
-      description: `The date and time Medusa queued the event for delivery, in ISO 8601 format. This is not the date the underlying resource changed. For that, use the resource's \`updated_at\` property in \`data\`. This value stays the same across retries, so it can be older than the request you receive.`,
+      description: `The date and time Medusa queued the event for delivery, in ISO 8601 format. This is not the date the underlying resource changed.`,
     },
   ]}
   sectionTitle="Delivery Details"
@@ -553,12 +553,12 @@ Cloud delivers this event when a build is canceled.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build.`,
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -654,13 +654,13 @@ Cloud delivers this event when a build is canceled.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF",
+      "id": "build_01HXYZ5678ABCDEF",
       "status": "canceled"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -675,7 +675,7 @@ Cloud delivers this event when a build is canceled.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ4567ABCDEF",
+  "id": "whev_01HXYZ4567ABCDEF",
   "type": "build.canceled"
 }
 ```
@@ -744,12 +744,12 @@ Cloud delivers this event when a new build is created for an environment.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build.`,
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -845,13 +845,13 @@ Cloud delivers this event when a new build is created for an environment.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF",
+      "id": "build_01HXYZ5678ABCDEF",
       "status": "created"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -866,7 +866,7 @@ Cloud delivers this event when a new build is created for an environment.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ1234ABCDEF",
+  "id": "whev_01HXYZ1234ABCDEF",
   "type": "build.created"
 }
 ```
@@ -922,12 +922,12 @@ Cloud delivers this event when a build fails.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build.`,
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -1023,13 +1023,13 @@ Cloud delivers this event when a build fails.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF",
+      "id": "build_01HXYZ5678ABCDEF",
       "status": "failed"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -1044,7 +1044,7 @@ Cloud delivers this event when a build fails.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ3456ABCDEF",
+  "id": "whev_01HXYZ3456ABCDEF",
   "type": "build.failed"
 }
 ```
@@ -1100,12 +1100,12 @@ Cloud delivers this event when a build completes successfully.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message associated with the build.`,
+              description: `Git commit message associated with the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -1201,13 +1201,13 @@ Cloud delivers this event when a build completes successfully.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF",
+      "id": "build_01HXYZ5678ABCDEF",
       "status": "succeeded"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -1222,7 +1222,7 @@ Cloud delivers this event when a build completes successfully.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ2345ABCDEF",
+  "id": "whev_01HXYZ2345ABCDEF",
   "type": "build.succeeded"
 }
 ```
@@ -1296,12 +1296,12 @@ Cloud delivers this event when a deployment is canceled.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build.`,
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -1397,16 +1397,16 @@ Cloud delivers this event when a deployment is canceled.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF"
+      "id": "build_01HXYZ5678ABCDEF"
     },
     "deployment": {
-      "id": "dep_01HXYZ6789ABCDEF",
+      "id": "depl_01HXYZ6789ABCDEF",
       "status": "canceled"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -1421,7 +1421,7 @@ Cloud delivers this event when a deployment is canceled.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ8901ABCDEF",
+  "id": "whev_01HXYZ8901ABCDEF",
   "type": "deployment.canceled"
 }
 ```
@@ -1505,12 +1505,12 @@ Cloud delivers this event when a new deployment is created for an environment.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build.`,
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -1606,16 +1606,16 @@ Cloud delivers this event when a new deployment is created for an environment.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF"
+      "id": "build_01HXYZ5678ABCDEF"
     },
     "deployment": {
-      "id": "dep_01HXYZ6789ABCDEF",
+      "id": "depl_01HXYZ6789ABCDEF",
       "status": "created"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -1630,7 +1630,7 @@ Cloud delivers this event when a new deployment is created for an environment.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ5678ABCDEF",
+  "id": "whev_01HXYZ5678ABCDEF",
   "type": "deployment.created"
 }
 ```
@@ -1698,12 +1698,12 @@ Cloud delivers this event when a deployment fails.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build.`,
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -1799,16 +1799,16 @@ Cloud delivers this event when a deployment fails.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF"
+      "id": "build_01HXYZ5678ABCDEF"
     },
     "deployment": {
-      "id": "dep_01HXYZ6789ABCDEF",
+      "id": "depl_01HXYZ6789ABCDEF",
       "status": "failed"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -1823,7 +1823,7 @@ Cloud delivers this event when a deployment fails.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ7890ABCDEF",
+  "id": "whev_01HXYZ7890ABCDEF",
   "type": "deployment.failed"
 }
 ```
@@ -1891,12 +1891,12 @@ Cloud delivers this event when a deployment completes successfully.
             {
               name: "commit_message",
               type: "`string`",
-              description: `Git commit message of the build.`,
+              description: `Git commit message of the build. It is an empty string if Medusa doesn't have the message.`,
             },
             {
               name: "commit_author",
               type: "`string`",
-              description: `Author of the git commit.`,
+              description: `Author of the git commit. It is an empty string if Medusa doesn't have the author.`,
             },
           ],
         },
@@ -1992,16 +1992,16 @@ Cloud delivers this event when a deployment completes successfully.
       "commit_author": "Jane Doe",
       "commit_hash": "a1b2c3d4e5f6",
       "commit_message": "Add new product feature",
-      "id": "bld_01HXYZ5678ABCDEF"
+      "id": "build_01HXYZ5678ABCDEF"
     },
     "deployment": {
-      "id": "dep_01HXYZ6789ABCDEF",
+      "id": "depl_01HXYZ6789ABCDEF",
       "status": "succeeded"
     },
     "environment": {
       "branch": "main",
       "handle": "production",
-      "id": "env_01HXYZ7890ABCDEF",
+      "id": "projenv_01HXYZ7890ABCDEF",
       "name": "Production"
     },
     "organization": {
@@ -2016,7 +2016,7 @@ Cloud delivers this event when a deployment completes successfully.
       "repository": "https://github.com/acme/storefront"
     }
   },
-  "id": "whe_01HXYZ6789ABCDEF",
+  "id": "whev_01HXYZ6789ABCDEF",
   "type": "deployment.succeeded"
 }
 ```
