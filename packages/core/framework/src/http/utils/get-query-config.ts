@@ -92,7 +92,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   )
   const notAllowedFields = [...new Set(notAllowedArrays.flat())]
 
-  if (notAllowedFields.length && rbacFilterFieldsFeatureFlag) {
+  if (notAllowedFields.length) {
     notAllowedFields.forEach((field) => {
       allFields.delete(field)
       starFields.delete(field)

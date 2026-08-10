@@ -1,4 +1,5 @@
 import { QueryConfig, RequestQueryFields } from "@medusajs/types"
+import { FeatureFlag } from "@medusajs/utils"
 import { prepareListQuery } from "../get-query-config"
 
 describe("prepareListQuery", () => {
@@ -666,6 +667,48 @@ describe("prepareListQuery", () => {
       const result = await prepareListQuery(validated, queryConfig)
 
       expect(result.remoteQueryConfig.fields).toEqual(["id", "orders.email"])
+    })
+  })
+
+  describe("restricted fields", () => {
+    beforeEach(() => {
+      FeatureFlag.setFlag("rbac_filter_fields", false)
+    })
+
+    it("should strip restricted fields when the rbac_filter_fields feature flag is disabled", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,orders.email",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> & { restricted?: string[] } = {
+        entity: "region",
+        restricted: ["orders"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id"])
+    })
+
+    it("should keep fields that are not restricted", async () => {
+      const validated: RequestQueryFields = {
+        fields: "id,name",
+        limit: 10,
+        offset: 0,
+      }
+
+      const queryConfig: QueryConfig<any> & { restricted?: string[] } = {
+        entity: "region",
+        restricted: ["orders"],
+        isList: true,
+      }
+
+      const result = await prepareListQuery(validated, queryConfig)
+
+      expect(result.remoteQueryConfig.fields).toEqual(["id", "name"])
     })
   })
 })
