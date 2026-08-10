@@ -14257,7 +14257,6 @@ __metadata:
     chalk: ^4.1.2
     commander: ^11.0.0
     inquirer: ^8.0.0
-    nanoid: ^5.1.16
     node-emoji: ^2.0.2
     node-fetch: ^3.3.1
     open: ^9.1.0
@@ -20357,15 +20356,6 @@ __metadata:
   bin:
     nanoid: bin/nanoid.cjs
   checksum: 40e7f70b3d15f725ca072dfc4f74e81fcf1fbb02e491cf58ac0c79093adc9b0a73b152bcde57df4b79cd097e13023d7504acb38404a4da7bc1cd8e887b82fe0b
-  languageName: node
-  linkType: hard
-
-"nanoid@npm:^5.1.16":
-  version: 5.1.16
-  resolution: "nanoid@npm:5.1.16"
-  bin:
-    nanoid: bin/nanoid.js
-  checksum: 04b4f96237f5639716da0e98f453361b313bebaf458bb67dea2d384724fc8b3340a28f032a4373052150bcf3b801d122e291d81ae4fc522969f55c134f4401a3
   languageName: node
   linkType: hard
 
