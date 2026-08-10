@@ -59,6 +59,16 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
+      await api.post(
+        "/admin/customers",
+        {
+          email: "aurora.buyer@example.com",
+          first_name: "Aurora",
+          last_name: "Buyer",
+        },
+        adminHeaders
+      )
+
       // Fills both indexes from their seeds. Ingestion has already indexed the
       // products off their events; rebuilding is idempotent and covers the
       // customer index, which declares no events.
@@ -96,7 +106,7 @@ medusaIntegrationTestRunner({
       })
 
       it("returns a group with no hits rather than dropping the entity", async () => {
-        const response = await api.get("/admin/search?q=aurora", adminHeaders)
+        const response = await api.get("/admin/search?q=shoe", adminHeaders)
 
         expect(response.status).toEqual(200)
         expect(groupFor(response.data, "product").data).toEqual([
@@ -146,25 +156,34 @@ medusaIntegrationTestRunner({
 
       it("paginates each group on its own", async () => {
         const first = await api.get(
-          "/admin/search?entity=product&limit=1",
+          "/admin/search?entity=product,customer&limit=1",
           adminHeaders
         )
 
-        expect(groupFor(first.data, "product").data).toHaveLength(1)
-        expect(groupFor(first.data, "product")).toEqual(
-          expect.objectContaining({ limit: 1, offset: 0, count: 2 })
-        )
+        expect(first.data.results.map((g) => g.entity)).toEqual([
+          "product",
+          "customer",
+        ])
+
+        for (const entity of ["product", "customer"]) {
+          expect(groupFor(first.data, entity).data).toHaveLength(1)
+          expect(groupFor(first.data, entity)).toEqual(
+            expect.objectContaining({ limit: 1, offset: 0, count: 2 })
+          )
+        }
 
         const second = await api.get(
-          "/admin/search?entity=product&limit=1&offset=1",
+          "/admin/search?entity=product,customer&limit=1&offset=1",
           adminHeaders
         )
 
-        expect(groupFor(second.data, "product").data).toHaveLength(1)
-        expect(groupFor(second.data, "product").offset).toEqual(1)
-        expect(groupFor(second.data, "product").data[0].id).not.toEqual(
-          groupFor(first.data, "product").data[0].id
-        )
+        for (const entity of ["product", "customer"]) {
+          expect(groupFor(second.data, entity).data).toHaveLength(1)
+          expect(groupFor(second.data, entity).offset).toEqual(1)
+          expect(groupFor(second.data, entity).data[0].id).not.toEqual(
+            groupFor(first.data, entity).data[0].id
+          )
+        }
       })
 
       it("returns only the fields the index holds", async () => {
@@ -178,7 +197,38 @@ medusaIntegrationTestRunner({
         ).toEqual(["handle", "id", "status", "title"])
       })
 
-      it("fails on an entity that is not indexed", async () => {
+      it("queries the database for an entity that has no index", async () => {
+        const response = await api.get(
+          "/admin/search?entity=region",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.results).toEqual([
+          expect.objectContaining({ entity: "region", data: [], count: 0 }),
+        ])
+      })
+
+      it("queries the database for the whole request when only some of the entities are indexed", async () => {
+        const response = await api.get(
+          "/admin/search?q=zephyr&entity=product,region",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.results.map((g) => g.entity)).toEqual([
+          "product",
+          "region",
+        ])
+
+        // The index would have answered with its own fields, so the field set
+        // is what tells the two paths apart.
+        expect(
+          Object.keys(groupFor(response.data, "product").data[0]).sort()
+        ).toEqual(["id", "thumbnail", "title"])
+      })
+
+      it("fails on an entity that is neither indexed nor searchable in the database", async () => {
         const error = await api
           .get("/admin/search?entity=nope", adminHeaders)
           .catch((e) => e)
