@@ -196,8 +196,8 @@ export interface ICachingModuleService extends IModuleService {
     /**
      * Whether the tags computed from `data` should be applied along with the ones given
      * in `tags`, rather than `tags` being used on its own. Useful for tagging what the
-     * computation can't see - such as link tables, relations selected without their
-     * `id`, or entities that affect the data without appearing in it - without
+     * computation can't see, such as link tables, relations selected without their
+     * `id`, or entities that affect the data without appearing in it, without
      * restating everything it can.
      *
      * Has no effect when `tags` is omitted.
