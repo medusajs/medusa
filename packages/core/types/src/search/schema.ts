@@ -1,6 +1,10 @@
 import { SchemaPropertyMetadata, SchemaPropertyType } from "../schema"
 import { SearchDocument } from "./common"
-import { SearchFacetKind, SearchFieldDefinition, SearchFieldKind } from "./field"
+import {
+  SearchFacetKind,
+  SearchFieldDefinition,
+  SearchFieldKind,
+} from "./field"
 import { SearchIndexDefinition, SearchSeedContext } from "./index-definition"
 
 /**
@@ -12,10 +16,11 @@ export type SearchSchema = Record<string, SearchPropertyType<any>>
 
 /**
  * Runtime metadata produced by parsing a search property.
+ * `T` types `defaultValue` to match `$dataType` (search fields rarely set one).
  *
  * @since 2.18.1
  */
-export type SearchPropertyMetadata = SchemaPropertyMetadata & {
+export type SearchPropertyMetadata<T = any> = SchemaPropertyMetadata<T> & {
   dataType: {
     name: SearchFieldKind
     options?: Record<string, any>
@@ -39,7 +44,7 @@ export type SearchPropertyMetadata = SchemaPropertyMetadata & {
  */
 export type SearchPropertyType<T> = {
   $dataType: T
-  parse(fieldName: string): SearchPropertyMetadata
+  parse(fieldName: string): SearchPropertyMetadata<T>
 } & SchemaPropertyType<T>
 
 /**
