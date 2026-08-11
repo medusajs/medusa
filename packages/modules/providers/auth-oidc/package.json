@@ -21,7 +21,7 @@
     "node": ">=20"
   },
   "author": "Medusa",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
     "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",

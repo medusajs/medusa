@@ -39,9 +39,7 @@ and attorneys' fees where available.
 
 ## Enterprise Materials
 
-RBAC (role-based access control) is a Medusa Enterprise Edition feature. The
-following repository paths, including all files below a listed directory, are
-Enterprise Materials:
+RBAC (role-based access control) and SSO (single sign-on) are Medusa Enterprise Edition features. The following repository paths, including all files below a listed directory, are Enterprise Materials:
 
 ### RBAC module and backend behavior
 
@@ -94,13 +92,22 @@ Enterprise Materials:
 - `integration-tests/modules/__tests__/rbac/`
 - `integration-tests/modules/__tests__/rbac-match-endpoint-entities.spec.ts`
 
+### SSO provider and OIDC authentication
+
+- `packages/modules/providers/auth-oidc/`
+- `packages/medusa/src/modules/auth-oidc.ts`
+- `packages/core/types/src/auth/providers/oidc.ts`
+- `packages/medusa/src/api/auth/[auth_provider]/user/route.ts`
+- `packages/admin/dashboard/src/routes/login/components/sso-login.tsx`
+
 Generated, compiled, bundled, or otherwise transformed versions of the files
 listed above are also Enterprise Materials, even if emitted to another path.
 
 Files outside this list remain under the MIT License in `LICENSE`, including
-generic authentication, generic user and invite management, shared HTTP and
-workflow infrastructure, and incidental integration points that only register,
-configure, export, or display the availability of the RBAC feature.
+generic authentication, generic auth provider registration and discovery,
+generic user and invite management, shared HTTP and workflow infrastructure,
+and incidental integration points that only register, configure, export, or
+display the availability of an Enterprise feature.
 
 UNLESS A COMMERCIAL AGREEMENT WITH MEDUSAJS, INC. EXPRESSLY STATES OTHERWISE:
 THE ENTERPRISE MATERIALS ARE PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT
