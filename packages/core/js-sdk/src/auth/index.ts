@@ -77,6 +77,9 @@ export type AuthCallbackResponse =
   | AuthMfaRequiredResponse
   | AuthVerificationRequiredResponse
 
+/**
+ * Response returned from a token refresh attempt.
+ */
 export type AuthRefreshResponse =
   | { token: string }
   | AuthMfaRequiredResponse
@@ -288,6 +291,9 @@ type AuthProviderResponse = {
   verification?: AuthTypes.AuthVerificationDTO
 }
 
+/**
+ * This class provides methods for authentication operations including login, registration, logout, and MFA management.
+ */
 export class Auth {
   private client: Client
   private config: Config
