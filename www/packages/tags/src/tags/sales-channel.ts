@@ -1,5 +1,9 @@
 export const salesChannel = [
   {
+    "title": "Enforce Sales Channel Availability",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability"
+  },
+  {
     "title": "Manage Sales Channels",
     "path": "https://docs.medusajs.com/user-guide/settings/sales-channels"
   },

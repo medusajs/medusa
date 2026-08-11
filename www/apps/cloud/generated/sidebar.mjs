@@ -89,6 +89,13 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Clone Project Locally",
+                "path": "/projects/clone-locally",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Rename Repository",
                 "path": "/projects/rename-repo-branch",
                 "children": []
@@ -491,6 +498,42 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Webhooks",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Events",
+            "path": "/webhooks/events",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Reference",
+            "path": "/webhooks/reference",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/webhooks/changelog",
+            "children": []
           }
         ]
       },

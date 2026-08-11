@@ -478,6 +478,54 @@ If the logs show a lockfile error, regenerate the lockfile locally:
 
 ---
 
+## Storefront: Cannot Find Module @opennextjs/cloudflare
+
+If your storefront build fails with an error similar to:
+
+```bash
+Cannot find module '@opennextjs/cloudflare/overrides/...'
+```
+
+This error occurs when your storefront's `tsconfig.json` uses the legacy `moduleResolution: "node"` setting. The `@opennextjs/cloudflare` package uses subpath exports, which the `node` resolution mode cannot resolve.
+
+### Fix the moduleResolution Setting
+
+Open your storefront's `tsconfig.json` and update `compilerOptions.moduleResolution` to `bundler` (recommended for Next.js 13+), or to `node16`/`nodenext`:
+
+```json title="apps/storefront/tsconfig.json"
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler"
+  }
+}
+```
+
+After updating the file, commit the change and push to trigger a new deployment.
+
+---
+
+## Next.js 15: 404 Prerender Error with Async Layouts
+
+If your Next.js 15 storefront build fails during static prerendering with an error similar to:
+
+```bash
+Error: React error #31 on /404
+```
+
+This occurs when your `not-found.tsx` file inherits a parent layout that performs async data fetches, such as `retrieveCustomer` or `retrieveCart`. During static prerendering, Next.js 15 attempts to pre-render the `/404` route using the parent layout, which triggers the async data fetches in a context where they are not supported, causing a React error.
+
+### Fix the 404 Prerender Error
+
+Add the following export to your `not-found.tsx` file to opt out of static prerendering and force the page to render dynamically at request time:
+
+```ts title="app/not-found.tsx"
+export const dynamic = "force-dynamic"
+```
+
+After adding this export, commit the change and push to trigger a new deployment.
+
+---
+
 ## Next.js 16 Middlewares Not Supported on Cloud
 
 If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:
@@ -522,6 +570,24 @@ export default nextConfig
 ```
 
 Replace `".."` with the relative path from your storefront directory to the monorepo root. Commit the updated `next.config.ts` and push to trigger a new deployment.
+
+---
+
+## Missing Root Files in Turborepo Monorepo Builds (TS5083)
+
+If your `turbo` monorepo build fails with an error similar to the following, but succeeds locally, a file at the root of your monorepo isn't available during the build:
+
+```bash
+error TS5083: Cannot read file '/tsconfig.base.json'.
+```
+
+Medusa prunes `turbo` monorepos down to the package it's building. The pruned output only includes the root `package.json`, the lockfile, `pnpm-workspace.yaml`, `turbo.json`, `.gitignore`, `.npmrc`, and the source code of the target package along with the workspace packages it depends on. So, a shared root file, such as a `tsconfig.base.json` file that other packages reference with `extends`, isn't copied into the build.
+
+### Fix Missing Root Files
+
+Move the shared file into a workspace package, then add that package as a dependency of your Medusa application or storefront. Medusa then includes the file in the build, since it builds the target package along with the workspace packages it depends on.
+
+For files that your Medusa application needs at runtime, such as JSON files or fonts, keep them within your Medusa application and copy them to the `.medusa/server` directory as part of your `build` script. Learn more in the [Built Assets](!docs!/learn/build#built-assets) documentation.
 
 ---
 

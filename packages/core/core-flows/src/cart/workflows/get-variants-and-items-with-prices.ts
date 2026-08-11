@@ -94,6 +94,17 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
     const priceNotFound: string[] = []
     const variantNotFoundOrPublished: string[] = []
 
+    // Index the variants by id so the per-item lookup below is O(1) instead of a
+    // `variantsData.find` scan. A cart refresh runs this for every line item, so the
+    // scan made the step O(items x variants) on carts with many lines. First match
+    // wins, mirroring `find`.
+    const variantsById = new Map<string, any>()
+    for (const variant of variantsData) {
+      if (!variantsById.has(variant.id)) {
+        variantsById.set(variant.id, variant)
+      }
+    }
+
     const items = (inputItems ?? cart.items ?? []).map((item) => {
       const item_ = item as any
       const idLike =
@@ -110,7 +121,7 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         priceNotFound.push(item_.variant_id)
       }
 
-      const variant = variantsData.find((v) => v.id === item.variant_id)
+      const variant = variantsById.get(item.variant_id!)
       if (
         (item.variant_id && !variant) || // variant specified but doesn't exist
         (variant &&
@@ -135,7 +146,7 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
         isCustomPrice: isCustomPrice,
       }
 
-      if (variant && !isCustomPrice) {
+      if (variant && !isCustomPrice && calculatedPriceSet) {
         input.unitPrice = calculatedPriceSet.calculated_amount
         input.isTaxInclusive =
           calculatedPriceSet.is_calculated_price_tax_inclusive
@@ -174,6 +185,25 @@ export const prepareVariantsAndItemsWithPricesStep = createStep(
 
 export const getVariantsAndItemsWithPricesId =
   "get-variant-items-with-prices-workflow"
+/**
+ * This workflow retrieves product variants and cart line items with their
+ * calculated prices. It's used as a sub-workflow when adding items to a cart
+ * or refreshing cart prices to attach up-to-date pricing context to each line
+ * item.
+ *
+ * @example
+ * const { result } = await getVariantsAndItemsWithPrices(container)
+ *   .run({
+ *     input: {
+ *       cart: { id: "cart_123", items: [] },
+ *       setPricingContextResult: {},
+ *     },
+ *   })
+ *
+ * @summary
+ *
+ * Retrieve variants and line items with their calculated prices.
+ */
 export const getVariantsAndItemsWithPrices = createWorkflow(
   getVariantsAndItemsWithPricesId,
   (

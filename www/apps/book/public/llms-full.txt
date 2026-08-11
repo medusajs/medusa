@@ -10927,9 +10927,21 @@ The error object returned in the response has three properties:
 |\`UNAUTHORIZED\`|Indicates that a user is not authorized to perform an action or access a route.|\`401\`|
 |\`NOT\_FOUND\`|Indicates that the requested resource, such as a route or a record, isn't found.|\`404\`|
 |\`NOT\_ALLOWED\`|Indicates that an operation isn't allowed.|\`400\`|
-|\`CONFLICT\`|Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message.|\`409\`|
+|\`CONFLICT\`|Indicates that a request conflicts with another previous or ongoing request. The error message in this case is ignored in favor of a default message. Refer to the |\`409\`|
 |\`PAYMENT\_AUTHORIZATION\_ERROR\`|Indicates an error has occurred while authorizing a payment.|\`422\`|
 |Other error types|Any other error type results in an |\`500\`|
+
+### Conflict Error Messages
+
+The error handler replaces the message of a `CONFLICT` error with the following default message:
+
+```plain
+The request conflicted with another request. You may retry the request with the provided Idempotency-Key.
+```
+
+So, only throw a `CONFLICT` error for internal conflicts, such as a request that conflicts with an ongoing transaction or a lock that another process holds. The client doesn't need details about these conflicts, and the default message avoids exposing internal implementation details.
+
+If the client needs the details of the conflict, throw a `NOT_ALLOWED` error instead. Its message reaches the client, but the response has a `400` status code rather than `409`.
 
 ***
 
@@ -12063,7 +12075,7 @@ export async function POST(
       files: files?.map((f) => ({
         filename: f.originalname,
         mimeType: f.mimetype,
-        content: f.buffer.toString("binary"),
+        content: f.buffer.toString("base64"),
         access: "public",
       })),
     },
@@ -12074,6 +12086,8 @@ export async function POST(
 ```
 
 The uploaded files are stored in the `req.files` property as an array of Multer file objects that have properties like `filename` and `mimetype`.
+
+Always encode the file content as `base64` when passing it to `uploadFilesWorkflow`. The File Module Providers expect base64-encoded content, and using `binary` encoding will corrupt binary files such as images when stored by remote providers.
 
 To upload the files, you can use the [uploadFilesWorkflow](https://docs.medusajs.com/resources/references/medusa-workflows/uploadFilesWorkflow/index.html.md), which uploads the files using the configured [File Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/file/index.html.md).
 
@@ -24019,6 +24033,12 @@ After a minute, the following message will be logged to the terminal:
 info:    Greeting!
 ```
 
+### Disable a Scheduled Job
+
+Do not disable a scheduled job by commenting out or removing the `config` export while keeping the file in `src/jobs/`. This will cause errors when you build or start your Medusa application.
+
+To disable a scheduled job, move its file out of the `src/jobs` directory. For example, move it to `src/scripts/` or any directory other than `src/jobs/`.
+
 ### Troubleshooting Scheduled Jobs
 
 If your scheduled job is not running at the expected times, refer to the [Scheduled Job Troubleshooting Guide](https://docs.medusajs.com/resources/troubleshooting/scheduled-job-not-running/index.html.md).
@@ -28451,6 +28471,571 @@ npx skills add medusajs/medusa-agent-skills
 See the [Agentic Deployment with Cloud CLI](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
 
 
+# Ask Medusa Questions with the MCP Server
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to let your AI agent answer questions from the official Medusa documentation.
+
+## What is the Ask Medusa Question Tool?
+
+The Medusa MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
+
+This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
+
+Everything in the Medusa documentation is available through it, from architecture and concepts to the Framework's tools, Commerce Modules, configuration, deployment, the API references, and integration guides.
+
+***
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers new to Medusa who want accurate answers about concepts and APIs while they build.
+- Experienced developers who want their AI agent to stop hallucinating Medusa APIs, config keys, and method signatures.
+- Anyone building Medusa customizations with an AI agent, since the other guide tools direct your agent to call this tool for exact API shapes.
+- Teams evaluating Medusa who want to explore what's possible without reading the whole documentation.
+
+***
+
+## Why Use This Tool?
+
+Compared to browsing the documentation yourself, this tool gives you:
+
+- **Verifiable answers.** Every result carries its source URL, so you can check any claim your agent makes against the page it came from.
+- **The documentation where you're working.** Your agent retrieves what it needs mid-task without you switching to a browser, searching, and pasting context back in.
+- **Documentation your agent can act on directly.** The tool returns the actual content of the relevant sections, so your agent works from the real text rather than from a summary or a link it can't read.
+- **Fewer wrong turns while building.** When your agent checks the exact shape of an API before using it, you spend less time debugging code that was never going to work.
+
+***
+
+## How to Use the Ask Medusa Question Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
+
+For example:
+
+```bash title="Example prompts"
+Explain the Medusa workflow system.
+```
+
+```bash title="Example prompts"
+How do I create a custom API route that requires admin authentication?
+```
+
+The tool is also useful mid-implementation, when your agent needs an exact shape rather than a concept:
+
+```bash title="Example prompts"
+Create a Product Review module for Medusa.
+```
+
+The agent will call the tool whenever it needs information from the documentation, such as how to implement a custom module.
+
+### What to Expect
+
+1. Your AI agent sends questions about Medusa to the tool.
+2. The tool returns the most relevant documentation sections, each with its source URL and full Markdown content.
+3. Your agent answers or writes code based on those sections, and can cite the source URLs so you can verify the answer.
+4. If your agent needs more detail, it calls the tool again with a narrower question.
+
+If the tool can't find relevant documentation for your question, that's a documentation gap worth reporting. Ask your agent to [submit feedback](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/index.html.md) so the Medusa team can add coverage.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.
+
+
+# Extend Products with the MCP Server
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to extend Medusa's Product Module with custom data and features.
+
+## What is the Extend Products Tool?
+
+The Medusa MCP server exposes a `get_product_custom_data_guide` tool that returns a complete, step-by-step implementation guide for attaching custom data to Medusa's [Product Module](https://docs.medusajs.com/resources/commerce-modules/product/index.html.md) data models: `product`, `productVariant`, and `productOption`.
+
+You describe the data you want to attach, and your AI agent produces the extension: the custom data is stored, it's associated with products through a [module link](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md), it stays in sync as products are created, updated, and deleted, it can be read through the existing product APIs, and merchants can optionally manage it from the Medusa Admin.
+
+The tool covers any product-adjacent data the built-in Product Module doesn't store, including brands, vendors, or custom SEO fields.
+
+***
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers who need to store product data that Medusa's Product Module doesn't natively support.
+- Teams whose catalog has domain-specific attributes, such as technical specs, compliance data, or per-market fields.
+- Developers building B2B, marketplace, or digital-product experiences on Medusa.
+
+***
+
+## Why Use This Tool?
+
+Extending a product is where AI agents most often produce something that looks right and is wrong. Medusa's modules are isolated, so custom product data doesn't live on the product itself, and an agent working from general ecommerce instincts will reach for the wrong shape: forking the Product Module, adding a column to a Medusa table, or writing non-trivial data into `product.metadata`. All three appear to work at first and become expensive later.
+
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+
+- **The supported architecture by default.** Your agent builds the extension the way Medusa is designed to be extended, instead of choosing an approach that happens to compile.
+- **A right-sized solution.** The guide has your agent pick the lightest approach that actually fits your data, so you don't get a full module-and-link scaffold for something that didn't need one.
+- **Data that stays consistent with your products.** The extension is built so the custom data follows the product lifecycle, rather than drifting or leaving orphaned records behind when products are deleted.
+- **Structural decisions made before migrations run.** Whether the data hangs off products, variants, or options, and whether a product can have many of them, are settled up front. These are cheap to decide and expensive to change afterwards.
+- **Ordered steps with verification along the way.** The link is validated before anything is built on top of it, which turns a class of confusing downstream failures into an early, obvious one.
+
+Your agent still calls `ask_medusa_question` as it works, to confirm exact API shapes for your Medusa version. The guide decides the architecture; the documentation supplies the details.
+
+***
+
+## How to Use the Extend Products Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent for the product extension you want. Your agent infers the name of the data from your request, calls the tool, and follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Implement a brand feature to allow merchants to associate products with brands.
+```
+
+```bash title="Example prompt"
+Attach downloadable digital assets to products.
+```
+
+### What to Expect
+
+1. Your AI agent calls the tool with a name derived from your request, such as `brand`, `supplier`, or `review`.
+2. It presents an implementation plan, including which product data model it will link to and whether the relationship is one-to-one or one-to-many.
+3. Once you approve, it scaffolds the module, the data model, the link, the workflows, and the hook handlers.
+4. It runs the migrations and verifies the link before continuing.
+5. If you asked for it, it adds an admin widget so merchants can manage the data from the Medusa Admin.
+
+Tell your agent whether the data is per product, per variant, or per option, and whether a product can have many of them. These choices determine the link target and cardinality, which are much cheaper to get right up front than to change after migrations have run.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
+
+
+# Integrate Providers with the MCP Server
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to integrate third-party payment and fulfillment providers into your Medusa application.
+
+## What are the Provider Integration Tools?
+
+The Medusa MCP server exposes two tools that return complete, step-by-step implementation guides for building module providers:
+
+- `get_payment_provider_integration_guide`: returns a guide for building a [Payment Module Provider](https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/index.html.md) that integrates a third-party payment service.
+- `get_fulfillment_provider_integration_guide`: returns a guide for building a [Fulfillment Module Provider](https://docs.medusajs.com/resources/commerce-modules/fulfillment/fulfillment-provider/index.html.md) that integrates a third-party shipping or fulfillment service.
+
+You name the provider you want to integrate, and your AI agent produces a working integration: a provider that's implemented against Medusa's contract, registered in your configuration, wired up in the Medusa Admin, and verified with a real checkout, whether you're building it inside your Medusa application or as a reusable [plugin](https://docs.medusajs.com/learn/fundamentals/plugins/index.html.md).
+
+When integrating third-party providers, also add the [Context7 MCP server](https://github.com/upstash/context7#installation) to your AI tool. It retrieves the latest information from the provider's own documentation, which the Medusa guide can't cover and which is essential for a successful integration.
+
+***
+
+## Who is this Useful for?
+
+These tools are useful for:
+
+- Developers integrating a payment or shipping service that Medusa doesn't ship a ready integration for.
+- Teams migrating to Medusa who need to keep using their existing payment gateway or 3PL.
+- Providers and vendors building an official or community Medusa plugin for their own service.
+- Agencies that repeatedly integrate regional payment gateways or carriers for clients.
+
+***
+
+## Why Use These Tools?
+
+The documentation explains how provider integrations work, and [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md) gets your agent an accurate answer about any individual API. Neither gives your agent a plan.
+
+A provider integration is a sequence of decisions where a wrong early choice quietly invalidates the rest of the work, and where the code compiling doesn't mean the integration functions. That's what these tools address:
+
+- **Your agent gets a plan, not reference material.** Instead of your agent assembling an approach from several documentation pages and its own assumptions, it receives the ordered steps for this specific kind of integration, so it stops guessing what to do next.
+- **The provider's real capabilities drive the implementation.** The guides push your agent to map what the third-party service actually supports before writing any code, so it implements the methods that apply rather than stubbing out a full interface it can't back.
+- **Configuration and admin wiring are part of the deliverable.** A provider that's written correctly but not enabled in the right place is the most common way an integration silently doesn't work. The guides treat that wiring as a required step, not an afterthought.
+- **The work isn't done when it compiles.** Both guides treat the integration as finished only once it's been exercised end-to-end against the real service: a full checkout for a payment provider, and a checkout plus order fulfillment for a fulfillment provider. You find out whether it works before your customers do.
+- **The advice reflects what actually goes wrong.** The guides carry the pitfalls the Medusa team has seen break real integrations, which is knowledge that no single documentation page states outright.
+
+Your agent still calls `ask_medusa_question` while it works, for exact API shapes and current signatures. The guides decide the approach; the documentation supplies the details.
+
+For Stripe, don't use these tools. Medusa ships an official Stripe provider, so ask your agent for installation and configuration instructions for `@medusajs/payment-stripe` instead of building one from scratch.
+
+***
+
+## How to Use the Provider Integration Tools
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to integrate the provider. Your agent detects which of the two tools applies, calls it with the provider's name, and follows the returned guide.
+
+For example, to integrate a payment provider:
+
+```bash title="Example prompt"
+Integrate PayPal as a payment provider in my Medusa store.
+```
+
+To integrate a fulfillment provider:
+
+```bash title="Example prompt"
+Integrate ShipStation as a fulfillment provider in my Medusa store.
+```
+
+Other prompts that trigger these tools:
+
+```bash title="Example prompts"
+Add Razorpay checkout support to my Medusa application.
+```
+
+```bash title="Example prompts"
+Build a Medusa fulfillment provider for our 3PL's API.
+```
+
+```bash title="Example prompts"
+Create a plugin that integrates Adyen payments with Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent calls the relevant guide tool with the provider's name.
+2. It presents an implementation plan based on the returned guide, including which of the provider's capabilities it will support.
+3. Once you approve, it scaffolds the provider's directory, service class, and module provider export, and registers it in `medusa-config.ts`.
+4. It tells you which options and environment variables you need to supply, such as API keys and webhook secrets.
+5. It walks you through enabling the provider in the Medusa Admin and verifying the integration with a full checkout, or a checkout and order fulfillment for fulfillment providers.
+
+Tell your agent whether you want the provider inside your Medusa application or as a reusable plugin. The file structure and the `resolve` path in `medusa-config.ts` differ between the two.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
+
+
+# Migrate from Magento (Adobe Commerce) to Medusa
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to migrate your store's data from Magento / Adobe Commerce into Medusa.
+
+## What is the Migration Tool?
+
+The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Magento / Adobe Commerce.
+
+You tell your AI agent that you're coming from Magento and what you want to bring over, and it produces a working import: your store's data lands in Medusa with Magento's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
+
+The tool can produce a migration for any of the following data types:
+
+- Products, variants, prices, and images
+- Inventory levels
+- Collections and categories
+
+The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
+
+The same tool also has curated guides for [Shopify](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/index.html.md) and [WooCommerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
+
+***
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Merchants and teams migrating an existing store from Magento to Medusa.
+- Agencies and solution partners performing repeated Magento migrations for clients.
+- Teams running Medusa alongside a Magento store that needs continuous data synchronization.
+- Developers who need to seed a Medusa development environment with real catalog data.
+
+***
+
+## Why Use This Tool?
+
+A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the Magento store is switched off, and records that can't be matched back to Magento when you need to re-sync.
+
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+
+- **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from Magento into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
+- **Source-platform quirks accounted for.** The curated Magento guide carries the specifics of how Magento models and exports its data, which is knowledge that lives in Magento's ecosystem rather than in Medusa's documentation.
+- **Imports that can be run again.** When you choose the API-based approach, the result is built to be idempotent and resumable, so a migration becomes ongoing synchronization rather than a one-time event you can't repeat.
+
+Your agent still calls `ask_medusa_question` while it works, for the exact Medusa APIs and workflows involved. The guide decides the approach; the documentation supplies the details.
+
+***
+
+## Migration Approaches
+
+The tool supports two migration approaches, and the guide it returns differs based on the approach you choose:
+
+|Approach|How it works|When to use it|
+|---|---|---|
+| (default)|Builds a custom module and workflows in your Medusa application that pull data from Magento's API. The import is idempotent, resumable, and re-runnable, and it can be triggered from an admin widget, a scheduled job, a CLI command, or a webhook.|You need to migrate inventory levels or re-host images in Medusa's file provider, or you want ongoing synchronization rather than a one-time cutover.|
+||Builds a transform from Magento's CSV export into the CSV format that Medusa's built-in product importer accepts. You then import the resulting file from the Medusa Admin.|You can't create an API app or credentials on Magento, or you want a single minimum-effort cutover and will handle stock quantities and images yourself.|
+
+The CSV approach is much faster to build, but it's lossy: inventory quantities aren't migrated, images stay as URLs pointing to Magento's CDN, collections usually aren't part of the export, and most exports have no ID column, so records can't be keyed back to the source for later re-syncs.
+
+Don't mix the two approaches on the same store. The CSV path can't key records to source IDs, so running the API-based importer afterwards treats every record as new and fails on duplicate product handles.
+
+***
+
+## How to Use the Migration Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Magento as the source platform, along with the data type and approach, then follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Migrate my Magento store's products to Medusa.
+```
+
+Other prompts that trigger the tool:
+
+```bash title="Example prompts"
+Import our Magento catalog into Medusa.
+```
+
+```bash title="Example prompts"
+We're switching from Magento. Move our products and customers over to Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent asks which approach you want, if you haven't specified one, and explains the trade-offs.
+2. It calls the migration tool for Magento, along with the data type and approach.
+3. It scaffolds the module, workflows, and any triggers or transforms the guide specifies.
+4. It guides you through running the import and verifying the migrated data.
+
+If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+
+1. [Magento Migration](https://medusajs.com/contact?type=mcp-server-magento-migration)
+2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
+
+
+# Migrate from Shopify to Medusa
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to migrate your store's data from Shopify into Medusa.
+
+## What is the Migration Tool?
+
+The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Shopify, including Shopify Plus.
+
+You tell your AI agent that you're coming from Shopify and what you want to bring over, and it produces a working import: your store's data lands in Medusa with Shopify's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
+
+The tool can produce a migration for any of the following data types:
+
+- Products, variants, prices, and images
+- Inventory levels
+- Collections and categories
+
+The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
+
+The same tool also has curated guides for [WooCommerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/index.html.md) and [Magento / Adobe Commerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
+
+***
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Merchants and teams migrating an existing store from Shopify to Medusa.
+- Agencies and solution partners performing repeated Shopify migrations for clients.
+- Teams running Medusa alongside a Shopify store that needs continuous data synchronization.
+- Developers who need to seed a Medusa development environment with real catalog data.
+
+***
+
+## Why Use This Tool?
+
+A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the Shopify store is switched off, and records that can't be matched back to Shopify when you need to re-sync.
+
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+
+- **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from Shopify into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
+- **Source-platform quirks accounted for.** The curated Shopify guide carries the specifics of how Shopify models and exports its data, which is knowledge that lives in Shopify's ecosystem rather than in Medusa's documentation.
+- **Imports that can be run again.** When you choose the API-based approach, the result is built to be idempotent and resumable, so a migration becomes ongoing synchronization rather than a one-time event you can't repeat.
+
+Your agent still calls `ask_medusa_question` while it works, for the exact Medusa APIs and workflows involved. The guide decides the approach; the documentation supplies the details.
+
+***
+
+## Migration Approaches
+
+The tool supports two migration approaches, and the guide it returns differs based on the approach you choose:
+
+|Approach|How it works|When to use it|
+|---|---|---|
+| (default)|Builds a custom module and workflows in your Medusa application that pull data from Shopify's API. The import is idempotent, resumable, and re-runnable, and it can be triggered from an admin widget, a scheduled job, a CLI command, or a webhook.|You need to migrate inventory levels or re-host images in Medusa's file provider, or you want ongoing synchronization rather than a one-time cutover.|
+||Builds a transform from Shopify's CSV export into the CSV format that Medusa's built-in product importer accepts. You then import the resulting file from the Medusa Admin.|You can't create an API app or credentials on Shopify, or you want a single minimum-effort cutover and will handle stock quantities and images yourself.|
+
+The CSV approach is much faster to build, but it's lossy: inventory quantities aren't migrated, images stay as URLs pointing to Shopify's CDN, collections usually aren't part of the export, and most exports have no ID column, so records can't be keyed back to the source for later re-syncs.
+
+Don't mix the two approaches on the same store. The CSV path can't key records to source IDs, so running the API-based importer afterwards treats every record as new and fails on duplicate product handles.
+
+***
+
+## How to Use the Migration Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Shopify as the source platform, along with the data type and approach, then follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Migrate my Shopify store's products to Medusa.
+```
+
+Other prompts that trigger the tool:
+
+```bash title="Example prompts"
+Import our Shopify catalog into Medusa.
+```
+
+```bash title="Example prompts"
+We're switching from Shopify. Move our products and customers over to Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent asks which approach you want, if you haven't specified one, and explains the trade-offs.
+2. It calls the migration tool for Shopify, along with the data type and approach.
+3. It scaffolds the module, workflows, and any triggers or transforms the guide specifies.
+4. It guides you through running the import and verifying the migrated data.
+
+If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+
+1. [Shopify Migration](https://medusajs.com/contact?type=mcp-server-shopify-migration)
+2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
+
+
+# Migrate from WooCommerce to Medusa
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to migrate your store's data from WooCommerce into Medusa.
+
+## What is the Migration Tool?
+
+The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from WooCommerce.
+
+You tell your AI agent that you're coming from WooCommerce and what you want to bring over, and it produces a working import: your store's data lands in Medusa with WooCommerce's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
+
+The tool can produce a migration for any of the following data types:
+
+- Products, variants, prices, and images
+- Inventory levels
+- Collections and categories
+
+The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
+
+The same tool also has curated guides for [Shopify](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/index.html.md) and [Magento / Adobe Commerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
+
+***
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Merchants and teams migrating an existing store from WooCommerce to Medusa.
+- Agencies and solution partners performing repeated WooCommerce migrations for clients.
+- Teams running Medusa alongside a WooCommerce store that needs continuous data synchronization.
+- Developers who need to seed a Medusa development environment with real catalog data.
+
+***
+
+## Why Use This Tool?
+
+A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the WooCommerce store is switched off, and records that can't be matched back to WooCommerce when you need to re-sync.
+
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+
+- **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from WooCommerce into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
+- **Source-platform quirks accounted for.** The curated WooCommerce guide carries the specifics of how WooCommerce models and exports its data, which is knowledge that lives in WooCommerce's ecosystem rather than in Medusa's documentation.
+- **Imports that can be run again.** When you choose the API-based approach, the result is built to be idempotent and resumable, so a migration becomes ongoing synchronization rather than a one-time event you can't repeat.
+
+Your agent still calls `ask_medusa_question` while it works, for the exact Medusa APIs and workflows involved. The guide decides the approach; the documentation supplies the details.
+
+***
+
+## Migration Approaches
+
+The tool supports two migration approaches, and the guide it returns differs based on the approach you choose:
+
+|Approach|How it works|When to use it|
+|---|---|---|
+| (default)|Builds a custom module and workflows in your Medusa application that pull data from WooCommerce's API. The import is idempotent, resumable, and re-runnable, and it can be triggered from an admin widget, a scheduled job, a CLI command, or a webhook.|You need to migrate inventory levels or re-host images in Medusa's file provider, or you want ongoing synchronization rather than a one-time cutover.|
+||Builds a transform from WooCommerce's CSV export into the CSV format that Medusa's built-in product importer accepts. You then import the resulting file from the Medusa Admin.|You can't create an API app or credentials on WooCommerce, or you want a single minimum-effort cutover and will handle stock quantities and images yourself.|
+
+The CSV approach is much faster to build, but it's lossy: inventory quantities aren't migrated, images stay as URLs pointing to WooCommerce's CDN, collections usually aren't part of the export, and most exports have no ID column, so records can't be keyed back to the source for later re-syncs.
+
+Don't mix the two approaches on the same store. The CSV path can't key records to source IDs, so running the API-based importer afterwards treats every record as new and fails on duplicate product handles.
+
+***
+
+## How to Use the Migration Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with WooCommerce as the source platform, along with the data type and approach, then follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Migrate my WooCommerce store's products to Medusa.
+```
+
+Other prompts that trigger the tool:
+
+```bash title="Example prompts"
+Import our WooCommerce catalog into Medusa.
+```
+
+```bash title="Example prompts"
+We're switching from WooCommerce. Move our products and customers over to Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent asks which approach you want, if you haven't specified one, and explains the trade-offs.
+2. It calls the migration tool for WooCommerce, along with the data type and approach.
+3. It scaffolds the module, workflows, and any triggers or transforms the guide specifies.
+4. It guides you through running the import and verifying the migrated data.
+
+If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+
+1. [WooCommerce Migration](https://medusajs.com/contact?type=mcp-server-woocommerce-migration)
+2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
+
+
 # Medusa MCP Remote Server
 
 The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
@@ -28654,45 +29239,127 @@ For example, you can ask:
 
 ***
 
-## MCP Server Prompts
+## MCP Server Tools
 
-The MCP server provides prompts with step-by-step instructions for common tasks. These are useful for your AI agent to learn how to perform specific tasks and what information it should look for in the documentation.
+Beyond answering questions from the documentation, the MCP server provides tools that return curated, step-by-step implementation guides for common tasks. These guides tell your AI agent exactly which Medusa APIs and patterns to use, so it doesn't have to infer them.
 
-The MCP server provides prompts for the following tasks:
+The following chapters cover each tool, who it's useful for, and how to use it:
 
-When integrating third-party providers, consider adding the [Context7 MCP server](https://github.com/upstash/context7#installation). It retrieves the latest information from the provider's documentation, which is essential for successful integration.
 
-1. Integrate a third-party payment provider with Medusa. For example:
+# Submit Feedback with the MCP Server
 
-```bash title="Example prompt"
-Integrate PayPal as a payment provider in my Medusa store.
-```
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to send feedback to the Medusa team directly from your AI tool or IDE.
 
-2. Integrate a third-party fulfillment provider with Medusa. For example:
+## What is the Submit Feedback Tool?
 
-```bash title="Example prompt"
-Integrate ShipStation as a fulfillment provider in my Medusa store.
-```
+The Medusa MCP server exposes a `submit_medusa_feedback` tool that records structured feedback for the Medusa team. You can ask your AI agent to submit feedback at the moment you hit a problem, without leaving your editor, opening a browser, or writing a reproduction in an issue tracker.
 
-3. Extend the Product Module with custom properties and features. For example:
-
-```bash title="Example prompt"
-Implement a brand feature to allow merchants to associate products with brands
-```
+The Medusa team receives the feedback immediately at the moment your agent submits it. Because your agent has the full context of what you were building and what went wrong, including the code that failed, the report it writes is usually more specific than one you'd write from memory later.
 
 ***
 
-## Submit Feedback with the MCP Server
+## Why This Matters
 
-If you run into any issues or have suggestions to improve Medusa, you can ask your AI agent to submit feedback. It will use the MCP server to submit feedback to our team.
+Feedback submitted through the MCP server reaches the Medusa team, and it's one of the most direct signals our team has about where Medusa falls short in real projects.
 
-For example, you can ask:
+This matters because:
+
+- **Documentation gaps are invisible to our team until someone reports them.** If the documentation can't answer your question, our team can't see that from the outside.
+- **Friction that developers work around never gets fixed.** If you silently route around an awkward API or a confusing error message, the next developer hits the same wall. Reporting it is what turns a personal workaround into a fix for everyone.
+- **Real reproductions get bugs fixed faster.** Your agent can include the smallest reproduction from the code it was just working on, which is the difference between a ticket our team can act on and one our team has to investigate from scratch.
+
+Submitting feedback is always preferable to silently working around a problem.
+
+***
+
+## How to Use the Submit Feedback Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to submit feedback.
+
+For example:
 
 ```bash title="Example prompt"
 Submit feedback that the documentation on how to create a custom payment provider is outdated and needs to be updated.
 ```
 
-You can submit feedback about the documentation, the developer experience, the MCP server, or any other aspect of Medusa. Your feedback will help us improve Medusa for everyone.
+Your AI agent may also offer to submit feedback on its own when it encounters a documentation gap or a clearly broken API surface while helping you.
+
+
+# Upgrade Medusa with the MCP Server
+
+In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to upgrade your Medusa project to a newer version.
+
+## What is the Upgrade Instructions Tool?
+
+The Medusa MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
+
+You name the version you want to move to, and your AI agent produces an upgraded project: packages bumped, breaking changes applied across your backend, admin, and storefront, migrations run, and the result built and typechecked to prove the changes hold together. Before any of that happens, it presents a plan for your approval.
+
+If the MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
+
+***
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers upgrading a Medusa project across one or more releases.
+- Teams that have fallen several versions behind and need an ordered plan rather than a single bump.
+- Agencies maintaining multiple Medusa projects that each need the same upgrade applied.
+- Anyone who wants breaking changes surfaced and reviewed before files are modified.
+
+***
+
+## Why Use This Tool?
+
+Upgrades are the task where an AI agent's default behavior is most misleading. Asked to upgrade Medusa, an agent will bump `@medusajs/*` versions from memory, report success, and leave you with a project that no longer boots, because the breaking changes those releases introduced were never applied. Nothing about the output signals that anything is missing.
+
+Compared to reading the release notes yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+
+- **An upgrade, not a version bump.** The tool exists to make sure the changes each release requires are actually applied, rather than just the numbers in `package.json` changing.
+- **Coverage across every release in between.** Upgrading several versions at once means several sets of breaking changes. The tool accounts for all of them, which is easy to miss when you're only looking at the target release's notes.
+- **A plan you approve before files change.** You see the intended version bumps and the specific edits, with file paths, while it's still cheap to stop. Anything your agent can't resolve on its own is flagged for you to decide rather than guessed at.
+- **Your whole project considered.** Upgrades touch the backend, the admin dashboard, the storefront, configuration, dependencies, and database migrations. The tool works through all of them rather than the packages alone.
+- **Verification as part of the job.** The upgrade isn't finished until the install, the migrations, and the build and typecheck have each been run and reported, so a broken upgrade surfaces immediately instead of on your next deploy. If any of them fail, your agent reports the error and stops rather than piling on speculative fixes.
+
+Some versions also ship [codemods](https://docs.medusajs.com/learn/codemods/index.html.md) that automate large mechanical changes across your codebase. When a codemod exists for a change, using it is faster and safer than having your agent rewrite every occurrence by hand.
+
+***
+
+## How to Use the Upgrade Instructions Tool
+
+### Prerequisites
+
+- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+
+After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
+
+For example:
+
+```bash title="Example prompt"
+Update my Medusa application to v2.18.0.
+```
+
+### What to Expect
+
+1. Your AI agent resolves the target version, including resolving "latest" to a concrete version number.
+2. It calls the tool with that version.
+3. It inspects your project to determine its shape, current version, and package manager.
+4. It presents a migration plan for your approval. Review it before approving, especially the breaking changes it flags.
+5. Once you approve, it bumps the packages, applies the changes, and runs migrations.
+6. It builds and typechecks the project, including your storefront if you have one, and reports the result of each verification step.
+
+Always upgrade on a branch with a clean working tree, and review the resulting diff before merging. Upgrades touch configuration, dependencies, and database migrations.
+
+***
+
+## Not an MCP server user?
+
+If you don't use the Medusa MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
 
 
 # Build with AI Assistants and LLMs
@@ -35819,6 +36486,192 @@ await cartModuleService.setShippingMethodAdjustments(
 ```
 
 
+# Enforce Sales Channel Availability in Carts
+
+In this guide, you'll learn how to reject product variants whose product isn't available in the cart's sales channel.
+
+### Prerequisites
+
+- [Medusa application set up](https://docs.medusajs.com/docs/learn/installation/index.html.md)
+
+## Why Medusa Doesn't Enforce This by Default
+
+A product's [availability in a sales channel](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules#product-module/index.html.md) is a merchandising filter, not an authorization boundary.
+
+Medusa applies it when you retrieve products. For example, the [List Products Store API route](https://docs.medusajs.com/api/store/products/list-products) only returns the products available in the sales channels of the publishable API key in the request. So, a product that you remove from a sales channel disappears from that channel's storefront.
+
+Medusa doesn't apply that filter when a variant is added to a cart or when a cart is completed. A customer who knows a variant's ID can still add it to a cart scoped to a sales channel that the variant's product isn't available in.
+
+Medusa doesn't enforce this by default because merchants use sales channels for merchandising, and rejecting items would break carts whenever a merchant changes a product's availability. If you rely on sales channels for legal or contractual restrictions, such as licensing agreements that forbid selling a product in a country, add the validation shown in this guide.
+
+The inventory check that does run when you add an item to a cart, which the [confirmVariantInventoryWorkflow](https://docs.medusajs.com/references/medusa-workflows/confirmVariantInventoryWorkflow/index.html.md) performs, only checks the quantity available at the stock locations of the cart's sales channel. It doesn't check whether the variant's product is linked to that sales channel.
+
+To enforce the availability, consume the `validate` [hook](https://docs.medusajs.com/docs/learn/fundamentals/workflows/workflow-hooks/index.html.md) of the workflows that add items to a cart and complete a cart. A workflow hook is a point in a workflow where you can inject custom functionality as a step function. If the step function throws an error, the workflow stops and the API route returns the error.
+
+This guide doesn't cover draft orders that admin users create in the dashboard, as it's assumed that merchants don't need to enforce sales channel availability for them.
+
+***
+
+## Step 1: Create the Validation Function
+
+Start by creating a function that finds the variants that aren't available in a sales channel. You'll reuse it in both hooks.
+
+Create the file `src/utils/sales-channel-availability.ts` with the following content:
+
+```ts title="src/utils/sales-channel-availability.ts" highlights={helperHighlights}
+import { MedusaContainer } from "@medusajs/framework/types"
+
+export async function getUnavailableVariantIds({
+  container,
+  variantIds,
+  salesChannelId,
+}: {
+  container: MedusaContainer
+  variantIds: string[]
+  salesChannelId: string
+}) {
+  const query = container.resolve("query")
+
+  const { data: variants } = await query.graph({
+    entity: "variant",
+    fields: ["id", "product.sales_channels.id"],
+    filters: {
+      id: variantIds,
+    },
+  })
+
+  return variants
+    .filter((variant) => {
+      const salesChannels =
+        variant.product?.sales_channels ?? []
+
+      return !salesChannels.some(
+        (salesChannel) =>
+          salesChannel?.id === salesChannelId
+      )
+    })
+    .map((variant) => variant.id)
+}
+```
+
+The function uses [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md) to retrieve the variants with the sales channels of their product, then returns the IDs of the variants whose product isn't linked to the specified sales channel.
+
+A product without any sales channels isn't available in any of them, so the function considers its variants unavailable.
+
+***
+
+## Step 2: Validate Items Added to the Cart
+
+Next, consume the `validate` hook of the [addToCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/addToCartWorkflow/index.html.md), which the [Add Line Item Store API route](https://docs.medusajs.com/api/store/carts/add-line-item) executes.
+
+Create the file `src/workflows/hooks/validate-add-to-cart.ts` with the following content:
+
+```ts title="src/workflows/hooks/validate-add-to-cart.ts" highlights={addToCartHighlights}
+import { MedusaError } from "@medusajs/framework/utils"
+import { addToCartWorkflow } from "@medusajs/medusa/core-flows"
+import {
+  getUnavailableVariantIds,
+} from "../../utils/sales-channel-availability"
+
+addToCartWorkflow.hooks.validate(
+  async ({ input, cart }, { container }) => {
+    if (!cart.sales_channel_id) {
+      return
+    }
+
+    const variantIds = (input.items ?? [])
+      .map((item) => item.variant_id)
+      .filter(Boolean) as string[]
+
+    if (!variantIds.length) {
+      return
+    }
+
+    const unavailableIds = await getUnavailableVariantIds({
+      container,
+      variantIds,
+      salesChannelId: cart.sales_channel_id,
+    })
+
+    if (unavailableIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The variants ${unavailableIds.join(", ")} aren't ` +
+          `available in the cart's sales channel.`
+      )
+    }
+  }
+)
+```
+
+The hook receives the cart and the input passed to the workflow, which holds the items to add. You retrieve the IDs of the variants that aren't available in the cart's sales channel, then throw a `MedusaError` if there are any. The Add Line Item API route then returns a response with the `400` status code.
+
+A cart isn't always associated with a sales channel. The example returns early in that case, since there's nothing to validate against.
+
+***
+
+## Step 3: Validate the Cart on Completion
+
+A merchant can change a product's availability after a customer adds it to their cart. So, also consume the `validate` hook of the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md) to check the cart's items before Medusa creates the order.
+
+Create the file `src/workflows/hooks/validate-complete-cart.ts` with the following content:
+
+```ts title="src/workflows/hooks/validate-complete-cart.ts" highlights={completeCartHighlights}
+import { MedusaError } from "@medusajs/framework/utils"
+import {
+  completeCartWorkflow,
+} from "@medusajs/medusa/core-flows"
+import {
+  getUnavailableVariantIds,
+} from "../../utils/sales-channel-availability"
+
+completeCartWorkflow.hooks.validate(
+  async ({ cart }, { container }) => {
+    if (!cart.sales_channel_id) {
+      return
+    }
+
+    const variantIds = (cart.items ?? [])
+      .map((item) => item.variant_id)
+      .filter(Boolean) as string[]
+
+    if (!variantIds.length) {
+      return
+    }
+
+    const unavailableIds = await getUnavailableVariantIds({
+      container,
+      variantIds,
+      salesChannelId: cart.sales_channel_id,
+    })
+
+    if (unavailableIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `The variants ${unavailableIds.join(", ")} are no ` +
+          `longer available in the cart's sales channel.`
+      )
+    }
+  }
+)
+```
+
+This stops the cart completion for carts that a customer created before the merchant changed a product's availability.
+
+***
+
+## Test it Out
+
+To test out the validation:
+
+1. Start the Medusa application.
+2. In the Medusa Admin dashboard, add a product that doesn't belong to a sales channel, or remove a product from a sales channel, as explained in the [user guide](https://docs.medusajs.com/user-guide/settings/sales-channels#manage-products-in-sales-channel/index.html.md).
+3. Create a cart associated with that sales channel using a publishable API key linked to it.
+4. Send a request to the [Add Line Item Store API route](https://docs.medusajs.com/api/store/carts/add-line-item) with a variant of the product you removed.
+
+The request returns a response with the `400` status code and the error message you specified.
+
+
 # Tax Lines in Cart Module
 
 In this document, you’ll learn about tax lines in a cart and how to retrieve tax lines with the Tax Module.
@@ -40705,6 +41558,8 @@ A return is the return of items delivered from the customer back to the merchant
 
 A return is requested either by the customer from the storefront, or the merchant from the admin. Medusa supports an automated Return Merchandise Authorization (RMA) flow.
 
+The [Create Return API route](https://docs.medusajs.com/api/store/returns/create-return) doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/secure-return-creation/index.html.md).
+
 ![Diagram showcasing the automated RMA flow.](https://res.cloudinary.com/dza7lstvk/image/upload/v1719578128/Medusa%20Resources/return-rma_pzprwq.jpg)
 
 Once the merchant receives the returned items, they mark the return as received.
@@ -40752,6 +41607,324 @@ The order’s version is incremented when:
 
 1. A return is requested.
 2. A return is marked as received.
+
+
+# Restrict Order Retrieval
+
+In this guide, you'll learn how Medusa handles access to the [Get an Order API route](https://docs.medusajs.com/api/store/orders/get-an-order), and how to restrict access to it in your Medusa application.
+
+## How Medusa Handles Order Retrieval
+
+The `GET /store/orders/:id` API route doesn't require customer authentication. Any request that includes a valid [publishable API key](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/publishable-api-keys/index.html.md) and a correct order ID receives the order's details.
+
+Medusa applies this behavior intentionally. Guest customers place orders without an account, so they have no session or token to authenticate with. After they complete the cart, the storefront redirects them to an order confirmation page that retrieves the order by its ID. Requiring authentication would break that page.
+
+The order's ID acts as the credential in this flow. Medusa generates order IDs randomly, so guessing an ID requires brute forcing a value from an address space large enough to make the attempt impractical.
+
+The [List Orders API route](https://docs.medusajs.com/api/store/orders/list-orders), which lists a customer's orders, does require customer authentication. Only the retrieval route accepts unauthenticated requests.
+
+***
+
+## Restrict Access to the Route
+
+If your store doesn't allow guest checkout, you may want stricter access rules. You can add access rules with [middlewares](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/middlewares/index.html.md). Middlewares that you apply to an existing API route run in addition to the route's original middlewares, so you don't have to replicate the route.
+
+For example, add the [authenticate middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes/index.html.md) to the route:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/orders/:id",
+      method: ["GET"],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"]),
+      ],
+    },
+  ],
+})
+```
+
+A request without an authenticated customer now receives a `401` error, while a logged-in customer still retrieves the order.
+
+This middleware only checks that a customer is authenticated. It doesn't check that the customer owns the order, so any logged-in customer can retrieve any order. Refer to the [next section](#restrict-the-route-to-the-orders-customer) to also check ownership.
+
+### Restrict the Route to the Order's Customer
+
+To allow only the customer that placed the order to retrieve it, add a custom middleware that compares the authenticated customer's ID to the order's `customer_id`.
+
+Create the file `src/api/middlewares/ensure-order-owner.ts` with the following content:
+
+```ts title="src/api/middlewares/ensure-order-owner.ts" highlights={ownerHighlights}
+import {
+  AuthenticatedMedusaRequest,
+  MedusaNextFunction,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
+
+export async function ensureOrderOwner(
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { data: [order] } = await query.graph({
+    entity: "order",
+    fields: ["id", "customer_id"],
+    filters: {
+      id: req.params.id,
+    },
+  })
+
+  if (order?.customer_id !== req.auth_context.actor_id) {
+    return next(
+      new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        "You're not allowed to retrieve this order."
+      )
+    )
+  }
+
+  next()
+}
+```
+
+The middleware retrieves the order's `customer_id` with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
+
+Then, apply the middleware after the `authenticate` middleware:
+
+```ts title="src/api/middlewares.ts" highlights={[["16", "ensureOrderOwner", "Run the ownership check after authentication."]]}
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+import {
+  ensureOrderOwner,
+} from "./middlewares/ensure-order-owner"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/orders/:id",
+      method: ["GET"],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"]),
+        ensureOrderOwner,
+      ],
+    },
+  ],
+})
+```
+
+The order of the middlewares matters. The `authenticate` middleware must run first, since `ensureOrderOwner` reads the customer that it authenticated.
+
+Now, only the customer that placed the order can retrieve it. Other logged-in customers receive a `401` error.
+
+
+# Restrict Return Creation
+
+In this guide, you'll learn how Medusa handles access to the [Create Return API route](https://docs.medusajs.com/api/store/returns/create-return), and how to restrict access to it in your Medusa application.
+
+## How Medusa Handles Return Creation
+
+The `POST /store/returns` API route doesn't require customer authentication. Any request that includes a valid [publishable API key](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/storefront-development/publishable-api-keys/index.html.md) and a correct order ID creates a return for that order.
+
+Medusa applies this behavior intentionally. Guest customers place orders without an account, so they have no session or token to authenticate with. They still need a way to request a return for the items they received. Requiring authentication would leave guest customers without a self-service return flow.
+
+The order's ID acts as the credential in this flow. Medusa generates order IDs randomly, so guessing an ID requires brute forcing a value from an address space large enough to make the attempt impractical.
+
+Medusa doesn't expose a store API route to retrieve or list returns. Customers only create returns, while merchants manage them from the Medusa Admin dashboard.
+
+### The receive\_now Request Body Parameter
+
+The route accepts a `receive_now` parameter in the request body. When it's enabled, Medusa marks the return's items as received as soon as it creates the return, without waiting for the merchant to receive them.
+
+This is useful in stores that trust the customer's return request, such as digital goods or low-value items. If your store reviews returns before receiving them, reject the parameter as explained in the [Reject the receive\_now Parameter](#reject-the-receive_now-parameter) section.
+
+***
+
+## Restrict Access to the Route
+
+If your store doesn't allow guest checkout, you may want stricter access rules. You can add access rules with [middlewares](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/middlewares/index.html.md). Middlewares that you apply to an existing API route run in addition to the route's original middlewares, so you don't have to replicate the route.
+
+For example, add the [authenticate middleware](https://docs.medusajs.com/docs/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes/index.html.md) to the route:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/returns",
+      method: ["POST"],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"]),
+      ],
+    },
+  ],
+})
+```
+
+A request without an authenticated customer now receives a `401` error, while a logged-in customer still creates the return.
+
+This middleware only checks that a customer is authenticated. It doesn't check that the customer owns the order, so any logged-in customer can create a return for any order. Refer to the [next section](#restrict-the-route-to-the-orders-customer) to also check ownership.
+
+### Restrict the Route to the Order's Customer
+
+To allow only the customer that placed the order to create a return for it, add a custom middleware that compares the authenticated customer's ID to the order's `customer_id`.
+
+Create the file `src/api/middlewares/ensure-return-order-owner.ts` with the following content:
+
+```ts title="src/api/middlewares/ensure-return-order-owner.ts" highlights={ownerHighlights}
+import {
+  AuthenticatedMedusaRequest,
+  MedusaNextFunction,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
+
+export async function ensureReturnOrderOwner(
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+
+  const { order_id } = req.body as { order_id?: string }
+
+  const { data: [order] } = await query.graph({
+    entity: "order",
+    fields: ["id", "customer_id"],
+    filters: {
+      id: order_id,
+    },
+  })
+
+  if (order?.customer_id !== req.auth_context.actor_id) {
+    return next(
+      new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        "You're not allowed to create a return for this order."
+      )
+    )
+  }
+
+  next()
+}
+```
+
+The middleware retrieves the order's ID from the request body, since the Create Return API route accepts it as a body parameter. It then retrieves the order's `customer_id` with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
+
+Then, apply the middleware after the `authenticate` middleware:
+
+```ts title="src/api/middlewares.ts" highlights={[["16", "ensureReturnOrderOwner", "Run the ownership check after authentication."]]}
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+import {
+  ensureReturnOrderOwner,
+} from "./middlewares/ensure-return-order-owner"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/returns",
+      method: ["POST"],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"]),
+        ensureReturnOrderOwner,
+      ],
+    },
+  ],
+})
+```
+
+The order of the middlewares matters. The `authenticate` middleware must run first, since `ensureReturnOrderOwner` reads the customer that it authenticated.
+
+Now, only the customer that placed the order can create a return for it. Other logged-in customers receive a `401` error.
+
+***
+
+## Reject the receive\_now Parameter
+
+If your store reviews returns before marking their items as received, reject the `receive_now` parameter on the storefront. Merchants can still mark the return as received from the Medusa Admin dashboard or the Admin API.
+
+Create the file `src/api/middlewares/reject-receive-now.ts` with the following content:
+
+```ts title="src/api/middlewares/reject-receive-now.ts"
+import {
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export async function rejectReceiveNow(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  const { receive_now } = req.body as {
+    receive_now?: boolean
+  }
+
+  if (receive_now) {
+    return next(
+      new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "You can't receive a return's items."
+      )
+    )
+  }
+
+  next()
+}
+```
+
+Then, apply the middleware to the route:
+
+```ts title="src/api/middlewares.ts" highlights={[["13", "rejectReceiveNow", "Reject requests that enable receive_now."]]}
+import { defineMiddlewares } from "@medusajs/framework/http"
+import {
+  rejectReceiveNow,
+} from "./middlewares/reject-receive-now"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/returns",
+      method: ["POST"],
+      middlewares: [
+        // other middlewares...
+        rejectReceiveNow
+      ],
+    },
+  ],
+})
+```
+
+A request that enables `receive_now` now receives a `400` error. The merchant marks the return as received later, as explained in the [Order Return documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/return/index.html.md).
 
 
 # Tax Lines in Order Module
@@ -44727,7 +45900,7 @@ Learn more about product variant's inventory management in [this guide](https://
 
 ### Retrieve with Query
 
-To retrieve the inventory items of a product variant with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), pass `inventory_items.*` in `fields`:
+To retrieve the inventory items of a product variant with [Query](https://docs.medusajs.com/docs/learn/fundamentals/module-links/query/index.html.md), pass `inventory_items.inventory.*` in `fields`. The `inventory_items` relation holds link records, so use `inventory_items.inventory` to access the actual `InventoryItem` data:
 
 ### query.graph
 
@@ -44735,11 +45908,11 @@ To retrieve the inventory items of a product variant with [Query](https://docs.m
 const { data: variants } = await query.graph({
   entity: "variant",
   fields: [
-    "inventory_items.*",
+    "inventory_items.inventory.*",
   ],
 })
 
-// variants[0].inventory_items
+// variants[0].inventory_items[0].inventory
 ```
 
 ### useQueryGraphStep
@@ -44752,12 +45925,46 @@ import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 const { data: variants } = useQueryGraphStep({
   entity: "variant",
   fields: [
-    "inventory_items.*",
+    "inventory_items.inventory.*",
   ],
 })
 
-// variants[0].inventory_items
+// variants[0].inventory_items[0].inventory
 ```
+
+You can also traverse from the `product` entity through its variants to their inventory items:
+
+### query.graph
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: [
+    "variants.inventory_items.inventory.id",
+  ],
+})
+
+// products[0].variants[0].inventory_items[0].inventory.id
+```
+
+### useQueryGraphStep
+
+```ts
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: [
+    "variants.inventory_items.inventory.id",
+  ],
+})
+
+// products[0].variants[0].inventory_items[0].inventory.id
+```
+
+Creating a product variant with `manage_inventory` enabled creates an inventory item automatically, but does not create inventory levels. You must create inventory levels separately to set the stocked quantity at a specific location. Refer to the [Inventory Module's documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/inventory/index.html.md) for details.
 
 ### Manage with Link
 
@@ -47276,7 +48483,7 @@ Some use case examples for using a sales channel:
 
 - [Sales Channel Management](https://docs.medusajs.com/references/sales-channel/models/SalesChannel/index.html.md): Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
 - [Product Availability](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Medusa uses the Product and Sales Channel modules to allow merchants to specify a product's availability per sales channel.
-- [Cart and Order Scoping](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you benefit from more features like allowing only products available in sales channel in a cart.
+- [Cart and Order Scoping](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you can show customers only the products available in their sales channel, and associate the created order with that sales channel.
 - [Inventory Availability Per Sales Channel](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/links-to-other-modules/index.html.md): Medusa links sales channels to stock locations, allowing you to retrieve available inventory of products based on the specified sales channel.
 
 ***
@@ -58996,7 +60203,9 @@ You'll use this variant to add it to the cart later. You can find its ID by clic
 
 #### Retrieve Publishable API Key
 
-All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, products that aren't available in a cart's sales channel can't be added to it.
+All requests sent to API routes starting with `/store` must have a publishable API key in the header. This ensures the request's operations are scoped to the publishable API key's associated sales channels. For example, the products you retrieve are only those available in the key's sales channels.
+
+Medusa doesn't reject a variant added to a cart when its product isn't available in the cart's sales channel. Refer to the [Enforce Sales Channel Availability in Carts](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/cart/sales-channel-availability/index.html.md) guide to learn how to add that validation.
 
 To retrieve the publishable API key, on the Medusa Admin:
 
@@ -136866,6 +138075,8 @@ The API route accepts the following query parameters:
 
 Finally, you'll add a function that sends a request to the [Create Return](https://docs.medusajs.com/api/store/returns/create-return) API route. This creates a return request for an order.
 
+The Create Return API route doesn't require customer authentication, so that guest customers can request a return for their orders. To add access rules to the route, refer to the [Restrict Return Creation guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/order/secure-return-creation/index.html.md).
+
 In the same `src/lib/data/returns.ts` file, add the following function:
 
 ```ts title="src/lib/data/returns.ts"
@@ -157248,7 +158459,7 @@ curl -X POST 'http://localhost:9000/restaurants/res_01J5X704WQTFSZMRC7Z6S3YAC7/p
 }'
 ```
 
-Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. This is necessary when you later create an order, as the cart must have the same sales channel as the product.
+Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. You'll use the same sales channel for the cart you create later, so that the product shows up in the storefront requests scoped to that sales channel.
 
 The request returns the created product in the response.
 
