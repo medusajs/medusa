@@ -14304,9 +14304,28 @@
             },
             "cloud": {
               "type": "string"
+            },
+            "noProviders": {
+              "type": "string"
+            },
+            "continueWithProvider": {
+              "type": "string"
+            },
+            "or": {
+              "type": "string"
+            },
+            "provisioningFailed": {
+              "type": "string"
             }
           },
-          "required": ["authenticationFailed", "cloud"],
+          "required": [
+            "authenticationFailed",
+            "cloud",
+            "noProviders",
+            "continueWithProvider",
+            "or",
+            "provisioningFailed"
+          ],
           "additionalProperties": false
         }
       },

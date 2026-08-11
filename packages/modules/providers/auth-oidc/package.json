@@ -1,0 +1,44 @@
+{
+  "name": "@medusajs/auth-oidc",
+  "version": "2.18.0",
+  "description": "Generic OpenID Connect (OIDC) authentication provider for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa.git",
+    "directory": "packages/modules/providers/auth-oidc"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Medusa",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --watch"
+  },
+  "dependencies": {
+    "openid-client": "^5.7.1"
+  },
+  "devDependencies": {
+    "@medusajs/framework": "2.18.0"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "2.18.0"
+  },
+  "keywords": [
+    "medusa-provider",
+    "medusa-provider-auth-oidc"
+  ]
+}
