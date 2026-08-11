@@ -30,7 +30,7 @@
     "docs-ui": "*",
     "docs-utils": "*",
     "loops": "^6.0.1",
-    "next": "15.5.18",
+    "next": "15.5.21",
     "posthog-js": "^1.298.1",
     "posthog-node": "^5.29.0",
     "react": "19.2.5",

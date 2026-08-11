@@ -42,6 +42,7 @@ export const SettingsLayout = () => {
 const useSettingRoutes = (): INavItem[] => {
   const isTranslationsEnabled = useFeatureFlag("translation")
   const isRbacEnabled = useFeatureFlag("rbac")
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { t } = useTranslation()
 
   const { canRead: canReadRbacRoles } = useRbacRolePermissions()
@@ -161,7 +162,7 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      ...(canReadPropertyLabels
+      ...(isViewConfigEnabled && canReadPropertyLabels
         ? [
             {
               label: t("propertyLabels.domain", "Property Labels"),
@@ -195,6 +196,7 @@ const useSettingRoutes = (): INavItem[] => {
       canReadPropertyLabels,
       canReadStore,
       canReadUsers,
+      isViewConfigEnabled,
     ]
   )
 }

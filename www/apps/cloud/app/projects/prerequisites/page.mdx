@@ -1,3 +1,5 @@
+import { Note } from "docs-ui"
+
 export const metadata = {
   title: `Prerequisites for New Projects`,
 }
@@ -84,7 +86,7 @@ The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusaj
 
 <Note type="warning">
 
-Do not set `projectConfig.databaseDriverOptions` or `projectConfig.redisUrl` in your `medusa-config.ts` when deploying to Cloud. Cloud automatically manages the database connection, SSL configuration, connection pooling, and Redis provisioning. Setting these options manually may cause deployment or database migration failures.
+Do not set `projectConfig.databaseUrl`, `projectConfig.databaseDriverOptions`, or `projectConfig.redisUrl` in your `medusa-config.ts` when deploying to Cloud. Cloud automatically manages the database connection, SSL configuration, connection pooling, and Redis provisioning. Setting these options manually may cause deployment or database migration failures.
 
 </Note>
 
@@ -121,20 +123,62 @@ Medusa uses Node.js v24.x (LTS) to build storefronts. You can't override this ve
 
 So, ensure that your storefront is compatible with Node.js v24.x.
 
-### Root Build Script
+<Note type="warning">
 
-Your monorepo must have a `build` script that builds both the Medusa application and the storefront. Medusa executes this script during the deployment process.
+If your storefront's `package.json` has an `engines.node` field that restricts the Node.js version to a range that excludes v24.x (for example, `"22.x"`), the build will fail with a version incompatibility error. Update the field to accept v24.x, for example:
 
-For example, if you're using `turbo`, you should have the following script in your root `package.json` file:
+```json title="apps/storefront/package.json"
+{
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
+```
 
-```json title="package.json"
+</Note>
+
+### Build Scripts
+
+In a monorepo, Medusa doesn't run the `build` script of your root `package.json` file. Instead, it builds your Medusa application and your storefront separately, each targeting only its own package.
+
+So, instead of a root `build` script, you need:
+
+1. A `build` script in your Medusa application's `package.json` file that runs the `medusa build` command.
+2. A `build` script in your storefront's `package.json` file that runs the build command, such as `next build`.
+
+```json title="apps/backend/package.json"
 {
   "scripts": {
-    "build": "turbo run build"
+    "build": "medusa build"
     // other scripts...
   }
 }
 ```
+
+Medusa only builds the target package and the workspace packages it depends on. The other packages of your monorepo don't enter the build process. Learn more about the build process in the [Deployments](../../deployments/page.mdx#build-process-for-deployments) guide.
+
+#### Root Files Available During the Build (Turborepo)
+
+If you're using `turbo`, Medusa prunes your monorepo down to the package it's building before installing dependencies. As a result, the build only has access to the following files from the root of your monorepo:
+
+- `package.json`
+- The lockfile
+- `pnpm-workspace.yaml`
+- `turbo.json`
+- `.gitignore`
+- `.npmrc`
+
+Medusa doesn't copy any other root file into the build, along with the packages that the target package doesn't depend on. For example, if a workspace package's `tsconfig.json` file extends a shared `tsconfig.base.json` file at the root, the build fails with the following error, even though the build succeeds locally:
+
+```bash
+error TS5083: Cannot read file '/tsconfig.base.json'.
+```
+
+To fix this, move the shared file into a workspace package, then add that package as a dependency of your Medusa application or storefront. Medusa then includes the file in the build, since it builds the target package along with the workspace packages it depends on.
+
+This also applies to files that your Medusa application needs at runtime, such as JSON files or fonts. Keep them within your Medusa application, then copy them to the `.medusa/server` directory as part of your `build` script. Learn more in the [Built Assets](!docs!/learn/build#built-assets) documentation.
+
+If you're using `nx` instead of `turbo`, Medusa doesn't prune your monorepo, so all root files are available during the build.
 
 ### Prerequisites for Yarn Workspaces
 

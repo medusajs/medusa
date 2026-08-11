@@ -1131,7 +1131,7 @@ To retrieve the publishable API key from the Medusa Admin, refer to [this user g
 
 As mentioned before, the API route you added requires the customer to be authenticated. So, you'll first create a customer, then retrieve their authentication token to use in the request.
 
-Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](!api!/store#auth_postactor_typeauth_provider_register):
+Before creating the customer, retrieve a registration token using the [Retrieve Registration JWT Token API route](!api!/store/auth/retrieve-registration-jwt-token):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
@@ -1144,7 +1144,7 @@ curl -X POST 'http://localhost:9000/auth/customer/emailpass/register' \
 
 Make sure to replace the email and password with the credentials you want.
 
-Then, register the customer using the [Create Customer API route](!api!/store#customers_postcustomers):
+Then, register the customer using the [Create Customer API route](!api!/store/customers/register-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/customers' \
@@ -1163,7 +1163,7 @@ Make sure to replace:
 
 Also, if you changed the email in the first request, make sure to change it here as well.
 
-The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](!api!/store#auth_postactor_typeauth_provider):
+The customer is now registered. Lastly, you need to retrieve its authenticated token by sending a request to the [Authenticate Customer API route](!api!/store/auth/authenticate-customer):
 
 ```bash
 curl -X POST 'http://localhost:9000/auth/customer/emailpass' \
@@ -1180,7 +1180,7 @@ Copy the returned token to use it in the next requests.
 
 The customer needs a cart with an item before creating the quote.
 
-A cart requires a region ID. You can retrieve a region ID using the [List Regions API route](!api!/store#regions_getregions):
+A cart requires a region ID. You can retrieve a region ID using the [List Regions API route](!api!/store/regions/list-regions):
 
 ```bash
 curl 'http://localhost:9000/store/regions' \
@@ -1189,7 +1189,7 @@ curl 'http://localhost:9000/store/regions' \
 
 Make sure to replace the `{your_publishable_api_key}` with the publishable API key you retrieved from the Medusa Admin.
 
-Then, create a cart for the customer using the [Create Cart API route](!api!/store#carts_postcarts):
+Then, create a cart for the customer using the [Create Cart API route](!api!/store/carts/create-cart):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts' \
@@ -1209,7 +1209,7 @@ Make sure to replace:
 
 This will create and return a cart. Copy its ID for the next request.
 
-You now need to add a product variant to the cart. You can retrieve a product variant ID using the [List Products API route](!api!/store#products_getproducts):
+You now need to add a product variant to the cart. You can retrieve a product variant ID using the [List Products API route](!api!/store/products/list-products):
 
 ```bash
 curl 'http://localhost:9000/store/products' \
@@ -1220,7 +1220,7 @@ Make sure to replace the `{your_publishable_api_key}` with the publishable API k
 
 Copy the ID of a variant in a product from the response.
 
-Finally, to add the product variant to the cart, use the [Add Item to Cart API route](!api!/store#carts_postcartsidlineitems):
+Finally, to add the product variant to the cart, use the [Add Item to Cart API route](!api!/store/carts/add-line-item):
 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/{id}/line-items' \
@@ -1246,10 +1246,10 @@ This adds the product variant to the cart. You can now use the cart to create a 
 
 For more accurate totals and processing of the quote's draft order, you should:
 
-- Add shipping and billing addresses by [updating the cart](!api!/store#carts_postcartsid).
-- [Choose a shipping method](!api!/store#carts_postcartsidshippingmethods) for the cart.
-- [Create a payment collection](!api!/store#payment-collections_postpaymentcollections) for the cart.
-- [Initialize payment session](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions) in the payment collection.
+- Add shipping and billing addresses by [updating the cart](!api!/store/carts/update-a-cart).
+- [Choose a shipping method](!api!/store/carts/add-shipping-method) for the cart.
+- [Create a payment collection](!api!/store/payment-collections/create-payment-collection) for the cart.
+- [Initialize payment session](!api!/store/payment-collections/initialize-payment-session) in the payment collection.
 
 You can also learn how to build a checkout experience in a storefront by following [this storefront development guide](../../../storefront-development/checkout/page.mdx). It's not specific to quote management, so you'll need to change the last step to create a quote instead of an order.
 
@@ -1884,7 +1884,7 @@ You define a `useQuote` hook that accepts the quote's ID and optional query para
 
 The hook returns the fetched data from the Medusa server. You'll use this hook later in the UI route.
 
-In addition, you'll need a hook to retrieve a preview of the quote's draft order. An order preview includes changes or edits to be applied on an order's items, such as changes in prices and quantities. Medusa already provides a [Get Order Preview API route](!api!/admin#orders_getordersidpreview) that you can use to retrieve the preview.
+In addition, you'll need a hook to retrieve a preview of the quote's draft order. An order preview includes changes or edits to be applied on an order's items, such as changes in prices and quantities. Medusa already provides a [Get Order Preview API route](!api!/admin/orders/get-preview) that you can use to retrieve the preview.
 
 To create the hook, create the file `src/admin/hooks/order-preview.tsx` with the following content:
 
@@ -3670,7 +3670,7 @@ You can also view the quote from the Medusa Admin dashboard, where you'll find i
 
 The last feature you'll add is allowing merchants or admin users to make changes to the quote's items. This includes updating the item's quantity and price.
 
-Since you're using an [order change](../../../commerce-modules/order/order-change/page.mdx) to manage edits to the quote's draft orders, you don't need to implement customizations on the server side, such as adding workflows or API routes. Instead, you'll only add a new UI route in the Medusa Admin that uses the [Order Edit API routes](!api!/admin#order-edits) to provide the functionality to edit the quote's items.
+Since you're using an [order change](../../../commerce-modules/order/order-change/page.mdx) to manage edits to the quote's draft orders, you don't need to implement customizations on the server side, such as adding workflows or API routes. Instead, you'll only add a new UI route in the Medusa Admin that uses the [Order Edit API routes](!api!/admin/order-edits) to provide the functionality to edit the quote's items.
 
 <Note>
 
@@ -3682,7 +3682,7 @@ Order changes also allow you to add or remove items from the quote. However, for
 
 In this step, you'll add a new UI route to manage the quote's items. This will include:
 
-1. Adding hooks to send requests to [Medusa's Order Edits API routes](!api!/admin#order-edits).
+1. Adding hooks to send requests to [Medusa's Order Edits API routes](!api!/admin/order-edits).
 2. Implement the components you'll use within the UI route.
 3. Add the new UI route to the Medusa Admin.
 

@@ -16,7 +16,7 @@ export class FulfillmentProvider {
 
   /**
    * This method retrieves a paginated list of fulfillment providers. It sends a request to the
-   * [List Fulfillment Providers](https://docs.medusajs.com/api/admin#fulfillment-providers_getfulfillmentproviders)
+   * [List Fulfillment Providers](https://docs.medusajs.com/api/admin/fulfillment-providers/list-fulfillment-providers)
    * API route.
    *
    * @param query - Filters and pagination configurations.
@@ -59,7 +59,7 @@ export class FulfillmentProvider {
    * })
    * ```
    *
-   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store#select-fields-and-relations).
+   * Learn more about the `fields` property in the [API reference](https://docs.medusajs.com/api/store/select-fields-and-relations).
    */
   async list(
     query?: HttpTypes.AdminGetFulfillmentProvidersParams,
@@ -77,7 +77,7 @@ export class FulfillmentProvider {
 
   /**
    * This method retrieves a list of fulfillment options for a given fulfillment provider. It sends a request to the
-   * [List Fulfillment Options](https://docs.medusajs.com/api/admin#fulfillment-providers_getfulfillmentprovidersidoptions)
+   * [List Fulfillment Options](https://docs.medusajs.com/api/admin/fulfillment-providers/list-fulfillment-options)
    * API route.
    *
    * @param id - The ID of the fulfillment provider.

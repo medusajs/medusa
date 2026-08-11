@@ -169,7 +169,7 @@ export async function POST(
       files: files?.map((f) => ({
         filename: f.originalname,
         mimeType: f.mimetype,
-        content: f.buffer.toString("binary"),
+        content: f.buffer.toString("base64"),
         access: "public",
       })),
     },
@@ -180,6 +180,12 @@ export async function POST(
 ```
 
 The uploaded files are stored in the `req.files` property as an array of Multer file objects that have properties like `filename` and `mimetype`.
+
+<Note>
+
+Always encode the file content as `base64` when passing it to `uploadFilesWorkflow`. The File Module Providers expect base64-encoded content, and using `binary` encoding will corrupt binary files such as images when stored by remote providers.
+
+</Note>
 
 To upload the files, you can use the [uploadFilesWorkflow](!resources!/references/medusa-workflows/uploadFilesWorkflow), which uploads the files using the configured [File Module Provider](!resources!/infrastructure-modules/file).
 

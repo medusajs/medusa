@@ -22,7 +22,7 @@ export type CreatePromotionsWorkflowInput = {
 
 export const createPromotionsWorkflowId = "create-promotions"
 /**
- * This workflow creates one or more promotions. It's used by the [Create Promotion Admin API Route](https://docs.medusajs.com/api/admin#promotions_postpromotions).
+ * This workflow creates one or more promotions. It's used by the [Create Promotion Admin API Route](https://docs.medusajs.com/api/admin/promotions/create-promotion).
  *
  * This workflow has a hook that allows you to perform custom actions on the created promotion. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the promotions.

@@ -27,7 +27,7 @@ type UpdateProductTypesWorkflowInput = {
 export const updateProductTypesWorkflowId = "update-product-types"
 /**
  * This workflow updates one or more product types. It's used by the
- * [Update Product Type Admin API Route](https://docs.medusajs.com/api/admin#product-types_postproducttypesid).
+ * [Update Product Type Admin API Route](https://docs.medusajs.com/api/admin/product-types/update-a-product-type).
  *
  * This workflow has a hook that allows you to perform custom actions on the updated product types. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the product types.

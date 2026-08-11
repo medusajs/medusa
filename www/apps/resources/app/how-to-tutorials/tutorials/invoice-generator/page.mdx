@@ -878,7 +878,7 @@ In the component, you:
 3. Define a function that returns the current invoice configuration data, which is useful to create the form.
 4. Define a `form` instance with `useForm` from `react-hook-form`. You pass it the Zod validation schema as a type argument, and the default values using the `getFormDefaultValues` function.
 5. Define a `handleSubmit` function that updates the invoice configuration using the mutation.
-6. Define an `uploadLogo` function that uploads a logo using Medusa's [Upload API route](!api!/admin#uploads_postuploads).
+6. Define an `uploadLogo` function that uploads a logo using Medusa's [Upload API route](!api!/admin/uploads/upload-files).
 7. Reset the form's default values when the `data` changes, ensuring the form reflects the latest invoice configuration.
 
 Finally, replace the `TODO` comment with the following `return` statement:
@@ -2055,7 +2055,7 @@ const OrderInvoiceWidget = ({ data: order }: DetailWidgetProps<AdminOrder>) => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "order.details.side.before",
+  zone: "order.details.side",
 })
 
 export default OrderInvoiceWidget 

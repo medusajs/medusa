@@ -29,6 +29,7 @@ import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
+import { loadSearchIndexes } from "./search"
 
 type Options = {
   directory: string
@@ -185,6 +186,11 @@ export default async ({
   )
   await new LinkLoader(linksSourcePaths, logger).load()
 
+  // Before the app boots: the Search Module resolves the definitions when it is
+  // constructed, and the seed on application start only fills indexes it knows
+  // about. A no-op unless the module is registered.
+  await loadSearchIndexes({ plugins, configModule, logger })
+  
   const {
     onApplicationStart,
     onApplicationShutdown,

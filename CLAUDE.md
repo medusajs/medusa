@@ -2,6 +2,10 @@
 
 Open-source commerce platform. TypeScript monorepo with 30+ modular commerce packages.
 
+> When working on the API reference documentation (`www/apps/api-reference`), read [`www/apps/api-reference/CLAUDE.md`](www/apps/api-reference/CLAUDE.md) for its path structure and the OAS → public docs flow.
+
+> When working on the resources documentation (`www/apps/resources`), read [`www/apps/resources/CLAUDE.md`](www/apps/resources/CLAUDE.md) for details on references and how they're generated and built
+
 ### 1. Codebase Structure
 
 **Monorepo Organization:**
@@ -61,6 +65,14 @@ yarn test:integration:api
 # Module integration tests
 yarn test:integration:modules
 ```
+
+**Generated Files:**
+
+After adding or removing keys in `packages/admin/dashboard/src/i18n/translations/en.json`, regenerate the JSON schema that validates all translation files:
+```bash
+cd packages/admin/dashboard && yarn i18n:schema
+```
+Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, since `translations/$schema.json` is generated from `en.json` and lists every key in both `properties` and `required`. Commit the regenerated `$schema.json` with the translation change.
 
 ### 3. Testing Conventions
 

@@ -1,5 +1,5 @@
 import { InlineIcon, getOsShortcut, Kbd, Tabs, TabsList, TabsTrigger, TabsContent, TabsContentWrapper } from "docs-ui"
-import { EllipsisHorizontal, ChevronUpDown } from "@medusajs/icons"
+import { EllipsisHorizontal, ChevronUpDown, PencilSquare } from "@medusajs/icons"
 
 export const metadata = {
   title: `Long-Lived Environments`,
@@ -63,6 +63,7 @@ You can also navigate to the environment creation form from the [command palette
         - If you don't see the branch you want to use, refresh the page to load the latest branches from your repository.
     - **Custom subdomain**: Set the custom subdomain for the Medusa application (and, subsequently, storefront). Medusa applications are a subdomain of `medusajs.app`, and their storefront is a subdomain of `medusajs.site`.
         - Refer to the [Subdomain Restrictions](../../projects/page.mdx#subdomain-restrictions) guide for reserved subdomains and restrictions.
+    - **Infrastructure Specs** (optional): By default, your long-lived environment will use the infrastructure specs of your organization's plan. You can also choose to upgrade or downgrade these specs for a specific environment. For example, you can downgrade your long-lived environment to **Develop** if you want to reduce costs. When you enable the Infrastructure Specs toggle, you can choose a different spec. Refer to the [Plans and Pricing](../../pricing/page.mdx) to learn more about the specs of each plan.
 3. Once you're done, click the "Create" button.
 
 ![Side window with the form to create an environment](https://res.cloudinary.com/dza7lstvk/image/upload/v1749812846/Cloud/CleanShot_2025-06-13_at_14.04.53_2x_apb634.png)
@@ -96,7 +97,7 @@ You can set the initial admin user's email and password only once if they aren't
 To set the initial admin user's email and password:
 
 1. In the [project's dashboard](../../projects/page.mdx#open-project-dashboard), click on the environment you just created.
-2. In the environment's dashboard, click on the "Settings" tab.
+2. In the environment's dashboard, click on the **Environment variables** tab.
 3. In the "Add new environment variables" section, add the following environment variables:
 
 ```shell
@@ -266,7 +267,7 @@ Learn more in the [Monitoring guide](../../monitoring/page.mdx).
 
 ## Manage Environment Variables
 
-In the environment's "Settings" tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
+In the environment's **Environment variables** tab, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
 Learn how to manage environment variables in the [Environment Variables](../environment-variables/page.mdx) guide.
 
@@ -291,20 +292,16 @@ You can't change the branch of preview environments. This section only applies t
 
 </Note>
 
-In an environment's "Settings" tab, you can manage the deployment rules for the environment. Deployment rules allow you to control how and when deployments are triggered for the environment.
+In an environment's **Settings** tab, the **Linked Branch** section shows the branch the environment deploys from.
 
-To change the branch associated with an environment using deployment rules:
+To change the branch associated with an environment:
 
-1. In the [environment's dashboard](#open-environment-dashboard), click on the "Settings" tab.
-2. Choose the "Deployment rules" tab from the sidebar.
-3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the right side of the `branch` rule.
-4. Choose "Edit" from the dropdown menu.
-5. In the side window that opens, you can change the branch associated with the environment.
-6. Once you're done, click the "Save" button.
+1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
+2. In the **Linked Branch** section, click the <InlineIcon Icon={PencilSquare} alt="pencil" /> icon next to the current branch name.
+3. In the side window that opens, enter the new branch name in the **Branch** field.
+4. Click **Save**.
 
 Changes will take effect the next time you push a commit to the new branch. The environment will be redeployed with the latest changes from the new branch.
-
-![Change environment branch in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1750170517/Cloud/CleanShot_2025-06-17_at_17.28.25_2x_nfx79a.png)
 
 ---
 
@@ -315,6 +312,26 @@ In the environment's **Database & Storage** tab, you can export a database dump 
 You can also import a database dump to use existing data that you have, or to restore the environment to a previous state.
 
 Learn more in the [Database](../../database/page.mdx) guide.
+
+---
+
+## Change Infrastructure Specifications for Long-Lived Environment
+
+<Note>
+
+To change the infrastructure specs of the Production environment, see the [Projects](../../projects/page.mdx#change-project-infrastructure-specifications) guide.
+
+</Note>
+
+By default, long-lived environments that aren't the Production environment use the specs of the **Develop** plan. This is useful to reduce costs on those environments, but that means it may not be fitting for high-traffic or complex operations.
+
+To change the infrastructure specs for a long-lived environment:
+
+1. In the [environment's dashboard](#open-environment-dashboard), click on the **Settings** tab.
+2. In the **Infrastructure Specs** section, select the plan you'd like to use its specs for the long-lived environment.
+3. Click **Save Changes**.
+
+The new specs for the environment will be applied afterward.
 
 ---
 

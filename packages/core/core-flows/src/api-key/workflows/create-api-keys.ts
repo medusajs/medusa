@@ -25,7 +25,7 @@ export type CreateApiKeysWorkflowOutput = ApiKeyDTO[]
 export const createApiKeysWorkflowId = "create-api-keys"
 /**
  * This workflow creates one or more API keys, which can be secret or publishable. It's used by the
- * [Create API Key Admin API Route](https://docs.medusajs.com/api/admin#api-keys_postapikeys).
+ * [Create API Key Admin API Route](https://docs.medusajs.com/api/admin/api-keys/create-api-key).
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create API keys within your custom flows.

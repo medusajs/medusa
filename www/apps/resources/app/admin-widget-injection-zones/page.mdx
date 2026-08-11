@@ -28,6 +28,7 @@ import StoreCreditAccountContent from "../commerce-modules/store-credit/admin-wi
 import GiftCardContent from "../commerce-modules/loyalty/admin-widget-zones/_content/gift-card.mdx"
 import GiftCardProductContent from "../commerce-modules/loyalty/admin-widget-zones/_content/gift-card-product.mdx"
 import PropertyLabelContent from "../commerce-modules/settings/admin-widget-zones/_content.mdx"
+import DeprecationNote from "./_deprecation-note.mdx"
 
 export const metadata = {
   title: `Admin Widget Injection Zones`,
@@ -36,6 +37,8 @@ export const metadata = {
 # {metadata.title}
 
 This documentation page includes the list of injection zones you can add Admin Widgets to.
+
+<DeprecationNote />
 
 ## Campaign Pages
 
@@ -98,6 +101,12 @@ These widget zones are available starting from Medusa [v2.16.0](https://github.c
 ---
 
 ## Login Page
+
+<Note>
+
+The login page isn't part of the dashboard's layout configurations, so its zones still use the `.before` and `.after` suffixes to place the widget relative to the login form.
+
+</Note>
 
 <LoginContent />
 
@@ -225,29 +234,12 @@ These widget zones are available starting from Medusa [v2.16.0](https://github.c
     <Table.Row>
       <Table.Cell>
 
-        `workflow.list.before`
+        `workflow.list`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of the workflows list page.
-
-      </Table.Cell>
-      <Table.Cell>
-
-        \-
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `workflow.list.after`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the bottom of the workflows list page.
+        Added at the end of the workflows list page.
 
       </Table.Cell>
       <Table.Cell>
@@ -259,35 +251,12 @@ These widget zones are available starting from Medusa [v2.16.0](https://github.c
     <Table.Row>
       <Table.Cell>
 
-        `workflow.details.before`
+        `workflow.details`
 
       </Table.Cell>
       <Table.Cell>
 
-        Added at the top of a workflow execution's details page.
-
-      </Table.Cell>
-      <Table.Cell>
-      
-        Type `DetailWidgetProps<AdminWorkflowExecution>` imported from `@medusajs/framework/types`
-
-        ```ts blockStyle="inline"
-        {
-          data, // AdminWorkflowExecution object
-        }
-        ```
-
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-
-        `workflow.details.after`
-
-      </Table.Cell>
-      <Table.Cell>
-
-        Added at the bottom of a workflow execution's details page.
+        Added at the end of a workflow execution's details page.
 
       </Table.Cell>
       <Table.Cell>

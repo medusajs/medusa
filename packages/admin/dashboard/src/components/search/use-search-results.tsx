@@ -1,32 +1,8 @@
 import { HttpTypes } from "@medusajs/types"
-import { keepPreviousData } from "@tanstack/react-query"
 import { TFunction } from "i18next"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import {
-  useApiKeys,
-  useCampaigns,
-  useCollections,
-  useCustomerGroups,
-  useCustomers,
-  useInventoryItems,
-  useOrders,
-  usePriceLists,
-  useProductCategories,
-  useProducts,
-  useProductTags,
-  useProductTypes,
-  usePromotions,
-  useRegions,
-  useSalesChannels,
-  useShippingProfiles,
-  useStockLocations,
-  useTaxRegions,
-  useUsers,
-  useVariants,
-} from "../../hooks/api"
-import { useReturnReasons } from "../../hooks/api/return-reasons"
-import type { PermissionResource } from "../../lib/permissions"
+import { useAdminSearch } from "../../hooks/api"
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
 import { usePermissions } from "../../providers/permissions-provider"
@@ -70,6 +46,37 @@ type UseSearchProps = {
   limit: number
   area?: SearchArea
 }
+
+/**
+ * Entity names accepted by `/admin/search` for dynamic (data) results.
+ * Excludes static areas (`all`, `command`, `navigation`).
+ */
+const DYNAMIC_SEARCH_ENTITIES = [
+  "order",
+  "product",
+  "productVariant",
+  "category",
+  "collection",
+  "customer",
+  "customerGroup",
+  "inventory",
+  "promotion",
+  "campaign",
+  "priceList",
+  "user",
+  "region",
+  "taxRegion",
+  "returnReason",
+  "salesChannel",
+  "productType",
+  "productTag",
+  "location",
+  "shippingProfile",
+  "publishableApiKey",
+  "secretApiKey",
+] as const satisfies readonly SearchArea[]
+
+type DynamicSearchEntity = (typeof DYNAMIC_SEARCH_ENTITIES)[number]
 
 export const useSearchResults = ({
   q,
@@ -133,392 +140,50 @@ const useDynamicSearchResults = (
   q?: string
 ) => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
-
   const debouncedSearch = useDebouncedSearch(q, 300)
 
-  const isAreaSearchable = useCallback(
-    (area: SearchArea): boolean => {
-      if (!isAreaEnabled(currentArea, area)) {
-        return false
-      }
-      const resource = SEARCH_AREA_RESOURCE[area] as
-        | PermissionResource
-        | undefined
-      return resource ? hasPermission(`${resource}:read`) : true
-    },
-    [currentArea, hasPermission]
-  )
-
-  const orderResponse = useOrders(
-    {
-      q: debouncedSearch?.replace(/^#/, ""), // Since we display the ID with a # prefix, it's natural for the user to include it in the search. This will however cause no results to be returned, so we remove the # prefix from the search query.
-      limit,
-      fields: "id,display_id,email",
-    },
-    {
-      enabled: isAreaSearchable("order"),
-      placeholderData: keepPreviousData,
+  const entity = useMemo(() => {
+    if (currentArea === "all") {
+      return undefined
     }
-  )
 
-  const productResponse = useProducts(
+    if (isDynamicSearchEntity(currentArea)) {
+      return [currentArea]
+    }
+
+    return undefined
+  }, [currentArea])
+
+  const isDynamicArea =
+    currentArea === "all" || isDynamicSearchEntity(currentArea)
+
+  const { results, isFetching } = useAdminSearch(
     {
       q: debouncedSearch,
       limit,
-      // TODO: Remove exclusion once we avoid including unnecessary relations by default in the query config
-      fields:
-        "id,title,thumbnail,-type,-collection,-options,-tags,-images,-variants,-sales_channels",
+      entity,
     },
     {
-      enabled: isAreaSearchable("product"),
-      placeholderData: keepPreviousData,
+      enabled: Boolean(debouncedSearch) && isDynamicArea,
     }
   )
 
-  const productVariantResponse = useVariants(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,title,sku,product_id",
-    },
-    {
-      enabled: isAreaSearchable("productVariant"),
-      placeholderData: keepPreviousData,
+  const dynamicResults = useMemo(() => {
+    if (!q || !results?.length) {
+      return []
     }
-  )
 
-  const categoryResponse = useProductCategories(
-    {
-      // TODO: Remove the OR condition once the list endpoint does not throw when q equals an empty string
-      q: debouncedSearch || undefined,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("category"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const collectionResponse = useCollections(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,title",
-    },
-    {
-      enabled: isAreaSearchable("collection"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const customerResponse = useCustomers(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,email,first_name,last_name",
-    },
-    {
-      enabled: isAreaSearchable("customer"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const customerGroupResponse = useCustomerGroups(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("customerGroup"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const inventoryResponse = useInventoryItems(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,title,sku",
-    },
-    {
-      enabled: isAreaSearchable("inventory"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const promotionResponse = usePromotions(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,code,status",
-    },
-    {
-      enabled: isAreaSearchable("promotion"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const campaignResponse = useCampaigns(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("campaign"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const priceListResponse = usePriceLists(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,title",
-    },
-    {
-      enabled: isAreaSearchable("priceList"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const userResponse = useUsers(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,email,first_name,last_name",
-    },
-    {
-      enabled: isAreaSearchable("user"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const regionResponse = useRegions(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("region"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const taxRegionResponse = useTaxRegions(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,country_code,province_code",
-    },
-    {
-      enabled: isAreaSearchable("taxRegion"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const returnReasonResponse = useReturnReasons(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,label,value",
-    },
-    {
-      enabled: isAreaSearchable("returnReason"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const salesChannelResponse = useSalesChannels(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("salesChannel"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const productTypeResponse = useProductTypes(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,value",
-    },
-    {
-      enabled: isAreaSearchable("productType"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const productTagResponse = useProductTags(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,value",
-    },
-    {
-      enabled: isAreaSearchable("productTag"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const locationResponse = useStockLocations(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("location"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const shippingProfileResponse = useShippingProfiles(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,name",
-    },
-    {
-      enabled: isAreaSearchable("shippingProfile"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const publishableApiKeyResponse = useApiKeys(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,title,redacted",
-      type: "publishable",
-    },
-    {
-      enabled: isAreaSearchable("publishableApiKey"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const secretApiKeyResponse = useApiKeys(
-    {
-      q: debouncedSearch,
-      limit,
-      fields: "id,title,redacted",
-      type: "secret",
-    },
-    {
-      enabled: isAreaSearchable("secretApiKey"),
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const responseMap = useMemo(
-    () => ({
-      order: orderResponse,
-      product: productResponse,
-      productVariant: productVariantResponse,
-      collection: collectionResponse,
-      category: categoryResponse,
-      inventory: inventoryResponse,
-      customer: customerResponse,
-      customerGroup: customerGroupResponse,
-      promotion: promotionResponse,
-      campaign: campaignResponse,
-      priceList: priceListResponse,
-      user: userResponse,
-      region: regionResponse,
-      taxRegion: taxRegionResponse,
-      returnReason: returnReasonResponse,
-      salesChannel: salesChannelResponse,
-      productType: productTypeResponse,
-      productTag: productTagResponse,
-      location: locationResponse,
-      shippingProfile: shippingProfileResponse,
-      publishableApiKey: publishableApiKeyResponse,
-      secretApiKey: secretApiKeyResponse,
-    }),
-    [
-      orderResponse,
-      productResponse,
-      productVariantResponse,
-      inventoryResponse,
-      categoryResponse,
-      collectionResponse,
-      customerResponse,
-      customerGroupResponse,
-      promotionResponse,
-      campaignResponse,
-      priceListResponse,
-      userResponse,
-      regionResponse,
-      taxRegionResponse,
-      returnReasonResponse,
-      salesChannelResponse,
-      productTypeResponse,
-      productTagResponse,
-      locationResponse,
-      shippingProfileResponse,
-      publishableApiKeyResponse,
-      secretApiKeyResponse,
-    ]
-  )
-
-  const results = useMemo(() => {
-    const groups = Object.entries(responseMap)
-      .map(([key, response]) => {
-        const area = key as SearchArea
-        if (isAreaSearchable(area)) {
-          return transformDynamicSearchResults(
-            area,
-            limit,
-            t,
-            // Type assertion is valid since all requests pass pagination parameters and return a response with a count property
-            response as { count: number } | undefined
-          )
-        }
-        return null
-      })
-      .filter(Boolean) // Remove null values
-
-    return groups
-  }, [responseMap, isAreaSearchable, limit, t])
-
-  const isAreaFetching = useCallback(
-    (area: SearchArea): boolean => {
-      if (area === "all") {
-        return Object.values(responseMap).some(
-          (response) => response.isFetching
-        )
-      }
-
-      return (
-        isAreaEnabled(currentArea, area) &&
-        responseMap[area as keyof typeof responseMap]?.isFetching
+    return results
+      .map((group) => transformSearchResultGroup(group, limit, t))
+      .filter(
+        (group): group is DynamicSearchResult =>
+          !!group && group.items.length > 0
       )
-    },
-    [currentArea, responseMap]
-  )
-
-  const isFetching = useMemo(() => {
-    return isAreaFetching(currentArea)
-  }, [currentArea, isAreaFetching])
-
-  const dynamicResults = q
-    ? (results.filter(
-        (group) => !!group && group.items.length > 0
-      ) as DynamicSearchResult[])
-    : []
+  }, [q, results, limit, t])
 
   return {
     dynamicResults,
-    isFetching,
+    isFetching: Boolean(debouncedSearch) && isDynamicArea && isFetching,
   }
 }
 
@@ -538,19 +203,12 @@ const useDebouncedSearch = (value: string | undefined, delay: number) => {
   return debouncedValue
 }
 
-function isAreaEnabled(area: SearchArea, currentArea: SearchArea) {
-  if (area === "all") {
-    return true
-  }
-  if (area === currentArea) {
-    return true
-  }
-  return false
+function isDynamicSearchEntity(area: SearchArea): area is DynamicSearchEntity {
+  return (DYNAMIC_SEARCH_ENTITIES as readonly string[]).includes(area)
 }
 
 type TransformMap = {
-  [K in SearchArea]?: {
-    dataKey: string
+  [K in DynamicSearchEntity]: {
     transform: (item: any) => {
       id: string
       title: string
@@ -564,7 +222,6 @@ type TransformMap = {
 
 const transformMap: TransformMap = {
   order: {
-    dataKey: "orders",
     transform: (order: HttpTypes.AdminOrder) => ({
       id: order.id,
       title: `#${order.display_id}`,
@@ -574,7 +231,6 @@ const transformMap: TransformMap = {
     }),
   },
   product: {
-    dataKey: "products",
     transform: (product: HttpTypes.AdminProduct) => ({
       id: product.id,
       title: product.title,
@@ -584,7 +240,6 @@ const transformMap: TransformMap = {
     }),
   },
   productVariant: {
-    dataKey: "variants",
     transform: (variant: HttpTypes.AdminProductVariant) => ({
       id: variant.id,
       title: variant.title!,
@@ -594,7 +249,6 @@ const transformMap: TransformMap = {
     }),
   },
   category: {
-    dataKey: "product_categories",
     transform: (category: HttpTypes.AdminProductCategory) => ({
       id: category.id,
       title: category.name,
@@ -603,7 +257,6 @@ const transformMap: TransformMap = {
     }),
   },
   inventory: {
-    dataKey: "inventory_items",
     transform: (inventory: HttpTypes.AdminInventoryItem) => ({
       id: inventory.id,
       title: inventory.title ?? "",
@@ -613,7 +266,6 @@ const transformMap: TransformMap = {
     }),
   },
   customer: {
-    dataKey: "customers",
     transform: (customer: HttpTypes.AdminCustomer) => {
       const name = [customer.first_name, customer.last_name]
         .filter(Boolean)
@@ -628,7 +280,6 @@ const transformMap: TransformMap = {
     },
   },
   customerGroup: {
-    dataKey: "customer_groups",
     transform: (customerGroup: HttpTypes.AdminCustomerGroup) => ({
       id: customerGroup.id,
       title: customerGroup.name!,
@@ -637,7 +288,6 @@ const transformMap: TransformMap = {
     }),
   },
   collection: {
-    dataKey: "collections",
     transform: (collection: HttpTypes.AdminCollection) => ({
       id: collection.id,
       title: collection.title,
@@ -646,7 +296,6 @@ const transformMap: TransformMap = {
     }),
   },
   promotion: {
-    dataKey: "promotions",
     transform: (promotion: HttpTypes.AdminPromotion) => ({
       id: promotion.id,
       title: promotion.code!,
@@ -655,7 +304,6 @@ const transformMap: TransformMap = {
     }),
   },
   campaign: {
-    dataKey: "campaigns",
     transform: (campaign: HttpTypes.AdminCampaign) => ({
       id: campaign.id,
       title: campaign.name,
@@ -664,7 +312,6 @@ const transformMap: TransformMap = {
     }),
   },
   priceList: {
-    dataKey: "price_lists",
     transform: (priceList: HttpTypes.AdminPriceList) => ({
       id: priceList.id,
       title: priceList.title,
@@ -673,7 +320,6 @@ const transformMap: TransformMap = {
     }),
   },
   user: {
-    dataKey: "users",
     transform: (user: HttpTypes.AdminUser) => ({
       id: user.id,
       title: `${user.first_name} ${user.last_name}`,
@@ -683,7 +329,6 @@ const transformMap: TransformMap = {
     }),
   },
   region: {
-    dataKey: "regions",
     transform: (region: HttpTypes.AdminRegion) => ({
       id: region.id,
       title: region.name,
@@ -692,7 +337,6 @@ const transformMap: TransformMap = {
     }),
   },
   taxRegion: {
-    dataKey: "tax_regions",
     transform: (taxRegion: HttpTypes.AdminTaxRegion) => ({
       id: taxRegion.id,
       title:
@@ -704,7 +348,6 @@ const transformMap: TransformMap = {
     }),
   },
   returnReason: {
-    dataKey: "return_reasons",
     transform: (returnReason: HttpTypes.AdminReturnReason) => ({
       id: returnReason.id,
       title: returnReason.label,
@@ -714,7 +357,6 @@ const transformMap: TransformMap = {
     }),
   },
   salesChannel: {
-    dataKey: "sales_channels",
     transform: (salesChannel: HttpTypes.AdminSalesChannel) => ({
       id: salesChannel.id,
       title: salesChannel.name,
@@ -723,7 +365,6 @@ const transformMap: TransformMap = {
     }),
   },
   productType: {
-    dataKey: "product_types",
     transform: (productType: HttpTypes.AdminProductType) => ({
       id: productType.id,
       title: productType.value,
@@ -732,7 +373,6 @@ const transformMap: TransformMap = {
     }),
   },
   productTag: {
-    dataKey: "product_tags",
     transform: (productTag: HttpTypes.AdminProductTag) => ({
       id: productTag.id,
       title: productTag.value,
@@ -741,7 +381,6 @@ const transformMap: TransformMap = {
     }),
   },
   location: {
-    dataKey: "stock_locations",
     transform: (location: HttpTypes.AdminStockLocation) => ({
       id: location.id,
       title: location.name,
@@ -750,7 +389,6 @@ const transformMap: TransformMap = {
     }),
   },
   shippingProfile: {
-    dataKey: "shipping_profiles",
     transform: (shippingProfile: HttpTypes.AdminShippingProfile) => ({
       id: shippingProfile.id,
       title: shippingProfile.name,
@@ -759,7 +397,6 @@ const transformMap: TransformMap = {
     }),
   },
   publishableApiKey: {
-    dataKey: "api_keys",
     transform: (apiKey: HttpTypes.AdminApiKeyResponse["api_key"]) => ({
       id: apiKey.id,
       title: apiKey.title,
@@ -769,7 +406,6 @@ const transformMap: TransformMap = {
     }),
   },
   secretApiKey: {
-    dataKey: "api_keys",
     transform: (apiKey: HttpTypes.AdminApiKeyResponse["api_key"]) => ({
       id: apiKey.id,
       title: apiKey.title,
@@ -780,28 +416,27 @@ const transformMap: TransformMap = {
   },
 }
 
-function transformDynamicSearchResults<T extends { count: number }>(
-  type: SearchArea,
+function transformSearchResultGroup(
+  group: HttpTypes.AdminSearchResultGroup,
   limit: number,
-  t: TFunction,
-  response?: T
+  t: TFunction
 ): DynamicSearchResult | undefined {
-  if (!response || !transformMap[type]) {
+  if (!isDynamicSearchEntity(group.entity as SearchArea)) {
     return undefined
   }
 
-  const { dataKey, transform } = transformMap[type]!
-  const data = response[dataKey as keyof T]
+  const area = group.entity as DynamicSearchEntity
+  const transform = transformMap[area]?.transform
 
-  if (!data || !Array.isArray(data)) {
+  if (!transform || !Array.isArray(group.data)) {
     return undefined
   }
 
   return {
-    title: t(`app.search.groups.${type}`),
-    area: type,
-    hasMore: response.count > limit,
-    count: response.count,
-    items: data.map(transform),
+    title: t(`app.search.groups.${area}`),
+    area,
+    hasMore: group.count > limit,
+    count: group.count,
+    items: group.data.map(transform),
   }
 }

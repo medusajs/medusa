@@ -279,6 +279,7 @@ export const OrderEditWorkflowEvents = {
    * {
    *   order_id, // The ID of the order
    *   actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+   *   no_notification, // (boolean) Whether the customer shouldn't be notified of the requested order edit. Available since v2.19.0.
    * }
    * ```
    */
@@ -293,6 +294,7 @@ export const OrderEditWorkflowEvents = {
    * {
    *   order_id, // The ID of the order
    *   actions, // (array) The [actions](https://docs.medusajs.com/resources/references/fulfillment/interfaces/fulfillment.OrderChangeActionDTO) to edit the order
+   *   no_notification, // (boolean) Whether the customer shouldn't be notified of the order edit, as stored on the order change when the edit was requested. Available since v2.19.0.
    * }
    * ```
    */
@@ -376,20 +378,23 @@ export const AuthWorkflowEvents = {
   /**
    * Emitted when a verification code is generated. You can listen to
    * this event and decide how to deliver the code to the user or customer.
+   * The payload changed in v2.17.0:
+   * `actor_type` and `provider_identity_id` were removed,
+   * `provider` was renamed to `code_provider`, and `entity_type` was added.
+   * Subscribers written before v2.17.0 must be updated to use the payload below.
    *
    * @since 2.15.5
    *
    * @eventPayload
    * ```ts
    * {
-   *   entity_id, // The identifier of the user or customer. For example, an email address.
-   *   actor_type, // The type of actor. For example, "customer", "user", or custom.
-   *   provider, // The auth provider that requested verification.
+   *   entity_id, // The identifier of the entity being verified. For example, an email address.
+   *   entity_type, // The kind of entity being verified. For example, "email".
+   *   code_provider, // The verification provider that generated the code. For example, "token".
    *   auth_identity_id, // The ID of the auth identity being verified.
-   *   provider_identity_id, // The ID of the provider identity being verified.
    *   code, // The generated verification code.
-   *   expires_at, // The code expiry date.
-   *   metadata, // Optional custom metadata passed from the request.
+   *   expires_at, // (Date) The code expiry date.
+   *   metadata, // (object) Optional custom metadata passed from the request.
    * }
    * ```
    */
@@ -1015,7 +1020,7 @@ export const InventoryItemWorkflowEvents = {
   /**
    * Emitted when inventory items are created.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1028,7 +1033,7 @@ export const InventoryItemWorkflowEvents = {
   /**
    * Emitted when inventory items are updated.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1041,7 +1046,7 @@ export const InventoryItemWorkflowEvents = {
   /**
    * Emitted when inventory items are deleted.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1061,7 +1066,7 @@ export const InventoryLevelWorkflowEvents = {
   /**
    * Emitted when inventory levels are created.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1075,7 +1080,7 @@ export const InventoryLevelWorkflowEvents = {
    * Emitted when inventory levels are updated. This includes adjustments to
    * the stocked or reserved quantity, such as during order fulfillment.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1089,7 +1094,7 @@ export const InventoryLevelWorkflowEvents = {
   /**
    * Emitted when inventory levels are deleted.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1109,7 +1114,7 @@ export const ReservationItemWorkflowEvents = {
   /**
    * Emitted when reservations are created.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1123,7 +1128,7 @@ export const ReservationItemWorkflowEvents = {
   /**
    * Emitted when reservations are updated.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts
@@ -1137,7 +1142,7 @@ export const ReservationItemWorkflowEvents = {
   /**
    * Emitted when reservations are deleted.
    *
-   * @since 2.17.3
+   * @since 2.18.0
    *
    * @eventPayload
    * ```ts

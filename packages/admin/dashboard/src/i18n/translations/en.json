@@ -954,6 +954,18 @@
   "inventory": {
     "domain": "Inventory",
     "subtitle": "Manage your inventory items",
+    "export": {
+      "header": "Export Inventory List",
+      "description": "Export the inventory list to a CSV file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      }
+    },
     "reserved": "Reserved",
     "available": "Available",
     "locationLevels": "Locations",
@@ -1304,6 +1316,8 @@
       "create": "Edit Order",
       "currentTotal": "Current total",
       "noteHint": "Add an internal note for the edit",
+      "sendNotification": "Send notification",
+      "sendNotificationHint": "Notify the customer about this order edit.",
       "cancelSuccessToast": "Order edit canceled",
       "createSuccessToast": "Order edit request created",
       "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",

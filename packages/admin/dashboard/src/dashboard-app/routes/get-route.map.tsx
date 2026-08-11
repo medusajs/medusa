@@ -1267,6 +1267,11 @@ export function getRouteMap({
                       },
                     },
                     {
+                      path: "export",
+                      lazy: () =>
+                        import("../../routes/inventory/inventory-export"),
+                    },
+                    {
                       path: "stock",
                       lazy: () =>
                         import("../../routes/inventory/inventory-stock"),

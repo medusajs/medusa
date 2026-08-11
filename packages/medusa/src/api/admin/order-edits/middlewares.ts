@@ -9,6 +9,7 @@ import {
   AdminPostOrderEditsAddItemsReqSchema,
   AdminPostOrderEditsItemsActionReqSchema,
   AdminPostOrderEditsReqSchema,
+  AdminPostOrderEditsRequestReqSchema,
   AdminPostOrderEditsShippingActionReqSchema,
   AdminPostOrderEditsShippingReqSchema,
   AdminPostOrderEditsUpdateItemQuantityReqSchema,
@@ -160,6 +161,7 @@ export const adminOrderEditRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.update,
         },
       ]),
+      validateAndTransformBody(AdminPostOrderEditsRequestReqSchema),
     ],
   },
   {

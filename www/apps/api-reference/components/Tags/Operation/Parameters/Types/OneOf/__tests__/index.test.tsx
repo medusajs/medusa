@@ -125,6 +125,42 @@ describe("rendering", () => {
   })
 })
 
+describe("tab labels", () => {
+  test("labels tabs by title or type", () => {
+    const schema: OpenAPI.SchemaObject = {
+      oneOf: [
+        { type: "object", title: "Single", properties: {} },
+        { type: "array" },
+      ],
+      properties: {},
+    }
+    const { container } = render(
+      <TagsOperationParametersTypesOneOf schema={schema} />
+    )
+    const tabs = container.querySelectorAll("[data-testid='tab']")
+    expect(tabs[0]).toHaveTextContent("Single")
+    expect(tabs[1]).toHaveTextContent("array")
+  })
+
+  test("derives tab labels from allOf/anyOf members when the item has no title or type", () => {
+    // mirrors the add-shipping-method-to-cart request body: oneOf of allOf
+    // composites (object vs array) which have no direct title/type.
+    const schema: OpenAPI.SchemaObject = {
+      oneOf: [
+        { allOf: [{ type: "object", properties: {} }, { type: "object" }] },
+        { allOf: [{ type: "array" }, { type: "object" }] },
+      ],
+      properties: {},
+    }
+    const { container } = render(
+      <TagsOperationParametersTypesOneOf schema={schema} />
+    )
+    const tabs = container.querySelectorAll("[data-testid='tab']")
+    expect(tabs[0]).toHaveTextContent("object")
+    expect(tabs[1]).toHaveTextContent("array")
+  })
+})
+
 describe("interaction", () => {
   test("toggles between one of options when clicking on the tab", async () => {
     const { container } = render(<TagsOperationParametersTypesOneOf schema={mockSchema} />)

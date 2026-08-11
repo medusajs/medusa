@@ -59,7 +59,7 @@ export const DEFAULT_RBAC_ACTOR_TYPES = ["user"]
 export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
   "orders",
-  /*"customer",
+  /* "customer",
   "customers",
   "payment_collection",
   "payment_collections"*/
@@ -124,7 +124,13 @@ export function transformModules(
     delete moduleConfig.key
 
     if (!serviceName && "resolve" in moduleConfig) {
-      let resolution = isString(moduleConfig.resolve!)
+      if (!moduleConfig.resolve) {
+        throw new Error(
+          `Module must have a 'resolve' property in medusa-config.ts and it can't be empty. Please provide a module name or path for the module.`
+        )
+      }
+
+      const resolution = isString(moduleConfig.resolve!)
         ? normalizeImportPathWithSource(moduleConfig.resolve as string)
         : moduleConfig.resolve
 
