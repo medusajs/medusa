@@ -9,7 +9,6 @@ import {
 import {
   createStep,
   createWorkflow,
-  parallelize,
   StepResponse,
   transform,
   WorkflowResponse,
@@ -283,6 +282,10 @@ deleteCartCreditLinesWorkflow.runAsStep({
 
 const createdCreditLines = createCartCreditLinesWorkflow.runAsStep({
   input: creditLineActions.creditLinesToCreate,
+});
+
+refreshCartItemsWorkflow.runAsStep({
+  input: { cart_id: input.cart_id },
 });
 
     return new WorkflowResponse(createdCreditLines);
